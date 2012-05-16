@@ -1,29 +1,41 @@
 {
-    "hash": "8423f66b7c65b614c3c69e53dde1bba8",
+    "hash": "7bfc42699b02799d9d39122071749ed1",
     "packages": [
         {
             "package": "symfony/console",
             "version": "dev-master",
-            "source-reference": "ec3d45fafea157507b7dce339ce5a7c29de7642d",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
+            "source-reference": "0e67dc701ff55d2a1899a1e638a13a4be96d19b9"
         },
         {
             "package": "symfony/console",
             "version": "dev-master",
-            "source-reference": "ec3d45fafea157507b7dce339ce5a7c29de7642d"
-        },
-        {
-            "package": "symfony/finder",
-            "version": "dev-master",
-            "source-reference": "3c9379f3726401a1faf274204bd0ef3f5b24258a",
+            "source-reference": "0e67dc701ff55d2a1899a1e638a13a4be96d19b9",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
         },
         {
+            "package": "symfony/filesystem",
+            "version": "dev-master",
+            "source-reference": "e1f7c293c029502921d77f914275b411f80ccbca",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/filesystem",
+            "version": "dev-master",
+            "source-reference": "e1f7c293c029502921d77f914275b411f80ccbca"
+        },
+        {
             "package": "symfony/finder",
             "version": "dev-master",
-            "source-reference": "3c9379f3726401a1faf274204bd0ef3f5b24258a"
+            "source-reference": "360dc8c000efe2cf003deecd6777ea5d364fe23d"
+        },
+        {
+            "package": "symfony/finder",
+            "version": "dev-master",
+            "source-reference": "360dc8c000efe2cf003deecd6777ea5d364fe23d",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         }
     ],
     "packages-dev": null,

@@ -16,6 +16,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\CS\Fixer;
 
 /**
@@ -55,8 +56,14 @@ EOF
         $fixer = new Fixer();
         $fixer->registerBuiltInFixers();
 
+        $dir = $input->getArgument('dir');
+        $filesystem = new Filesystem();
+        if (!$filesystem->isAbsolutePath($dir)) {
+            $dir = getcwd().DIRECTORY_SEPARATOR.$dir;
+        }
+
         $class = 'Symfony\\CS\\Finder\\'.$input->getArgument('finder');
-        $iterator = new $class($input->getArgument('dir'));
+        $iterator = new $class($dir);
 
         $changed = $fixer->fix($iterator);
 
