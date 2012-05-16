@@ -1,0 +1,26 @@
+<?php
+
+/*
+ * This file is part of the Symfony CS utility.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+/**
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
+
+// installed via composer?
+if (file_exists($a = __DIR__.'/../../autoload.php')) {
+    require_once $a;
+} else {
+    require_once __DIR__.'/vendor/autoload.php';
+}
+
+use Symfony\CS\Console\Application;
+
+$application = new Application();
+$application->run();

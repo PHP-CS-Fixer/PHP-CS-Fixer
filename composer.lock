@@ -1,0 +1,37 @@
+{
+    "hash": "8423f66b7c65b614c3c69e53dde1bba8",
+    "packages": [
+        {
+            "package": "symfony/console",
+            "version": "dev-master",
+            "source-reference": "ec3d45fafea157507b7dce339ce5a7c29de7642d",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/console",
+            "version": "dev-master",
+            "source-reference": "ec3d45fafea157507b7dce339ce5a7c29de7642d"
+        },
+        {
+            "package": "symfony/finder",
+            "version": "dev-master",
+            "source-reference": "3c9379f3726401a1faf274204bd0ef3f5b24258a",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/finder",
+            "version": "dev-master",
+            "source-reference": "3c9379f3726401a1faf274204bd0ef3f5b24258a"
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": [
+
+    ]
+}
