@@ -10,7 +10,7 @@ Download the `symfony-cs-fixer.phar` file and execute it:
     php symfony-cs-fixer.phar fix /path/to/symfony/src Symfony20Finder
 
     # For the Symfony 2.1/master branch
-    php symfony-cs-fixer.phar fix /path/to/symfony/src Symfony20Finder
+    php symfony-cs-fixer.phar fix /path/to/symfony/src Symfony21Finder
 
 See http://symfony.com/doc/current/contributing/code/standards.html for more
 information about the Symfony Coding Standards.
