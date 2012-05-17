@@ -33,7 +33,7 @@ class FixCommand extends Command
             ->setName('fix')
             ->setDefinition(array(
                 new InputArgument('dir', InputArgument::REQUIRED, 'The Symfony dir'),
-                new InputArgument('finder', InputArgument::REQUIRED, 'The Finder short class name to use'),
+                new InputArgument('finder', InputArgument::OPTIONAL, 'The Finder short class name to use', 'SymfonyFinder'),
             ))
             ->setDescription('Fixes a project')
             ->setHelp(<<<EOF

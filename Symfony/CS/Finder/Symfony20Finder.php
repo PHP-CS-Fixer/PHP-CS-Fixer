@@ -18,11 +18,9 @@ use Symfony\Component\Finder\Finder;
  */
 class Symfony20Finder extends SymfonyFinder
 {
-    public function __construct($dir)
+    protected function getDirs($dir)
     {
-        parent::__construct($dir);
-
-        $this->in($dir.'/tests');
+        return array($dir.'/src', $dir.'/tests');
     }
 
     protected function getFileToExclude()

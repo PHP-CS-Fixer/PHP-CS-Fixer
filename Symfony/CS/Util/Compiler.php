@@ -47,6 +47,8 @@ class Compiler
         // $phar->compressFiles(\Phar::GZ);
 
         unset($phar);
+
+        chmod($pharFile, 0777);
     }
 
     protected function getCliStub()

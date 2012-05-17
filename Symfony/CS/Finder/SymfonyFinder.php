@@ -16,7 +16,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-abstract class SymfonyFinder extends Finder
+class SymfonyFinder extends Finder
 {
     public function __construct($dir)
     {
@@ -36,8 +36,18 @@ abstract class SymfonyFinder extends Finder
             ->filter(function (\SplFileInfo $file) use ($files) {
                 return !in_array($file->getRelativePathname(), $files);
             })
-            ->in($dir.'/src')
+            ->in($this->getDirs($dir))
         ;
+    }
+
+    /**
+     * Gets the directories that needs to be scanned for files to validate.
+     *
+     * @return array
+     */
+    protected function getDirs($dir)
+    {
+        return array($dir);
     }
 
     /**

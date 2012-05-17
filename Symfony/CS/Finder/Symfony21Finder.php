@@ -18,6 +18,11 @@ use Symfony\Component\Finder\Finder;
  */
 class Symfony21Finder extends SymfonyFinder
 {
+    protected function getDirs($dir)
+    {
+        return array($dir.'/src');
+    }
+
     protected function getFileToExclude()
     {
         return array(
