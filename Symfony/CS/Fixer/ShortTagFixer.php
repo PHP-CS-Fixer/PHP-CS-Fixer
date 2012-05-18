@@ -21,7 +21,7 @@ class ShortTagFixer implements FixerInterface
     public function fix(\SplFileInfo $file, $content)
     {
         // [Structure] Never use short tags (<?)
-        return str_replace('<? ', '<?php ', $content);
+        return preg_replace('/<\?(\s)/', '<?php$1', $content);
     }
 
     public function supports(\SplFileInfo $file)
