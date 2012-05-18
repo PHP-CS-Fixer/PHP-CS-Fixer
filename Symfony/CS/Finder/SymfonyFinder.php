@@ -31,7 +31,8 @@ class SymfonyFinder extends Finder
             ->name('*.twig')
             ->name('*.xml')
             ->name('*.yml')
-            ->exclude('.git')
+            ->ignoreDotFiles(true)
+            ->ignoreVCS(true)
             ->exclude('vendor')
             ->filter(function (\SplFileInfo $file) use ($files) {
                 return !in_array($file->getRelativePathname(), $files);
