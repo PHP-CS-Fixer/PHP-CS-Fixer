@@ -22,7 +22,7 @@ class SymfonyFinder extends Finder
     {
         parent::__construct();
 
-        $files = $this->getFileToExclude();
+        $files = $this->getFilesToExclude();
 
         $this
             ->files()
@@ -56,7 +56,7 @@ class SymfonyFinder extends Finder
      *
      * @return array
      */
-    protected function getFileToExclude()
+    protected function getFilesToExclude()
     {
         return array();
     }

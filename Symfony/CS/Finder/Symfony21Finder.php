@@ -23,7 +23,7 @@ class Symfony21Finder extends SymfonyFinder
         return array($dir.'/src');
     }
 
-    protected function getFileToExclude()
+    protected function getFilesToExclude()
     {
         return array(
             'Symfony/Component/Yaml/Tests/Fixtures/sfTests.yml',

@@ -23,7 +23,7 @@ class Symfony20Finder extends SymfonyFinder
         return array($dir.'/src', $dir.'/tests');
     }
 
-    protected function getFileToExclude()
+    protected function getFilesToExclude()
     {
         return array(
             'Symfony/Tests/Component/ClassLoader/ClassCollectionLoaderTest.php',
