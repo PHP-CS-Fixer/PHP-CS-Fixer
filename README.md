@@ -1,10 +1,28 @@
-Symfony Coding Standard Fixer
-=============================
+PHP Coding Standard Fixer
+=========================
 
-This tool analyzes the Symfony source code to fix as much coding standards
+This tool analyzes some PHP source code to fix as much coding standards
 problems as possible.
 
 Download the `symfony-cs-fixer.phar` file and execute it:
+
+    php symfony-cs-fixer.phar fix /path/to/project
+
+You can tweak the files and directories being analyzed by creating a `.php_cs`
+file in the root directory of your project:
+
+    <?php
+
+    return Symfony\Component\Finder\Finder::create()
+        ->name('*.php')
+        ->exclude('someDir')
+        ->in(__DIR__)
+    ;
+
+The `.php_cs` file must return a PHP iterator, like a Symfony Finder instance.
+
+You can also use specialized "finders", for instance when ran for Symfony 2.0
+or 2.1:
 
     # For the Symfony 2.0 branch
     php symfony-cs-fixer.phar fix /path/to/symfony/src Symfony20Finder
