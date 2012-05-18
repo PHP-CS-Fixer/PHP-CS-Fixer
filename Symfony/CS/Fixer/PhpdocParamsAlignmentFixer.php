@@ -18,7 +18,7 @@ use Symfony\CS\FixerInterface;
  */
 class PhpdocParamsAlignmentFixer implements FixerInterface
 {
-    const REGEX = '/^ {5}\* @param( +)(?P<hint>[^\$]+?)( +)(?P<var>\$[^ ]+)( +)(?P<desc>.*)$/';
+    const REGEX = '/^ {5}\* @param\s+(?P<hint>[^\$]+?)\s+(?P<var>\$[^\s]+)(\s+(?P<desc>.*)|\s*)$/';
 
     public function fix(\SplFileInfo $file, $content)
     {
@@ -59,8 +59,11 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
                         .$item['hint']
                         .str_repeat(' ', $hintMax - strlen($item['hint']) + 1)
                         .$item['var']
-                        .str_repeat(' ', $varMax - strlen($item['var']) + 1)
-                        .$item['desc']
+                        .(
+                            isset($item['desc'])
+                            ? str_repeat(' ', $varMax - strlen($item['var']) + 1).$item['desc']
+                            : ''
+                        )
                     ;
                 }
             }
