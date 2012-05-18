@@ -13,6 +13,7 @@ namespace Symfony\CS\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -33,6 +34,7 @@ class FixCommand extends Command
             ->setDefinition(array(
                 new InputArgument('dir', InputArgument::REQUIRED, 'The Symfony dir'),
                 new InputArgument('finder', InputArgument::OPTIONAL, 'The Finder short class name to use', 'SymfonyFinder'),
+                new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
             ))
             ->setDescription('Fixes a project')
             ->setHelp(<<<EOF
@@ -64,7 +66,7 @@ EOF
         $class = 'Symfony\\CS\\Finder\\'.$input->getArgument('finder');
         $iterator = new $class($dir);
 
-        $changed = $fixer->fix($iterator);
+        $changed = $fixer->fix($iterator, $input->getOption('dry-run'));
 
         foreach ($changed as $i => $file) {
             $output->writeln(sprintf('%4d) %s', $i, $file));

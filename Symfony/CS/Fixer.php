@@ -35,11 +35,11 @@ class Fixer
         $this->fixers[] = $fixer;
     }
 
-    public function fix(\Traversable $iterator)
+    public function fix(\Traversable $iterator, $dryRun = false)
     {
         $changed = array();
         foreach ($iterator as $file) {
-            if ($this->fixFile($file)) {
+            if ($this->fixFile($file, $dryRun)) {
                 $changed[] = $file->getRelativePathname();
             }
         }
@@ -47,7 +47,7 @@ class Fixer
         return $changed;
     }
 
-    public function fixFile(\SplFileInfo $file)
+    public function fixFile(\SplFileInfo $file, $dryRun = false)
     {
         $new = $old = file_get_contents($file->getRealpath());
 
@@ -58,7 +58,9 @@ class Fixer
         }
 
         if ($new != $old) {
-            file_put_contents($file->getRealpath(), $new);
+            if (!$dryRun) {
+                file_put_contents($file->getRealpath(), $new);
+            }
 
             return true;
         }
