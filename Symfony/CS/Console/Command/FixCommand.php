@@ -83,7 +83,7 @@ EOF
             $dir = getcwd().DIRECTORY_SEPARATOR.$dir;
         }
 
-        if (file_exists($config = $dir.'/.cs_fixer')) {
+        if (file_exists($config = $dir.'/.php_cs')) {
             $iterator = include $config;
         } else {
             $class = 'Symfony\\CS\\Finder\\'.$input->getArgument('finder');
