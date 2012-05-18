@@ -38,10 +38,10 @@ class FixCommand extends Command
             ))
             ->setDescription('Fixes a project')
             ->setHelp(<<<EOF
-The <info>fix</info> command tries to fix as much coding standards
+The <info>%command.name%</info> command tries to fix as much coding standards
 problems as possible:
 
-    <info>php fixer /path/to/dir</info>
+    <info>php %command.full_name% /path/to/dir</info>
 
 You can tweak the files and directories being analyzed by creating a
 <comment>.php_cs</comment> file in the root directory of your project:
@@ -60,8 +60,8 @@ Finder instance.
 You can also use specialized "finders", for instance when ran for Symfony
 2.0 or 2.1:
 
-        <info>php fixer /path/to/sf20 Symfony21Finder</info>
-        <info>php fixer /path/to/sf21 Symfony21Finder</info>
+        <info>php %command.full_name% /path/to/sf20 Symfony21Finder</info>
+        <info>php %command.full_name% /path/to/sf21 Symfony21Finder</info>
 
 See http://symfony.com/doc/current/contributing/code/standards.html for more
 information about the Symfony Coding Standards.
