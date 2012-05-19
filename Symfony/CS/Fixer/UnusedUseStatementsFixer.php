@@ -35,8 +35,8 @@ class UnusedUseStatementsFixer implements FixerInterface
                 $short = array_pop($parts);
             }
 
-            preg_match_all('/\b'.$short.'\b/', $content, $m);
-            if (count($m[0]) < 2) {
+            preg_match_all('/\b'.$short.'\b/', str_replace($match[0]."\n", '', $content), $m);
+            if (!count($m[0])) {
                 $content = str_replace($match[0]."\n", '', $content);
             }
         }

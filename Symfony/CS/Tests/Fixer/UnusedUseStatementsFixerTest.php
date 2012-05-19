@@ -33,6 +33,7 @@ use Foo\Bar;
 use Foo\Bar\Baz;
 use Foo\Bar\FooBar as FooBaz;
 use Foo\Bar\Foo as Fooo;
+use Foo\Bar\Baar\Baar;
 
 $a = new Bar();
 $a = new FooBaz();
