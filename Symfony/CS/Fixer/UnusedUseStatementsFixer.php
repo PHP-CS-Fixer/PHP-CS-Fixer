@@ -26,13 +26,18 @@ class UnusedUseStatementsFixer implements FixerInterface
         }
 
         // [Structure] remove unused use statements
-        preg_match_all('/^use ([^ ;]+);/m', $content, $matches);
-        foreach ($matches[1] as $class) {
-            $parts = explode('\\', $class);
-            $short = array_pop($parts);
+        preg_match_all('/^use (?P<class>[^\s;]+)(?:\s+as\s+(?P<alias>.*))?;/m', $content, $matches, PREG_SET_ORDER);
+        foreach ($matches as $match) {
+            if (isset($match['alias'])) {
+                $short = $match['alias'];
+            } else {
+                $parts = explode('\\', $match['class']);
+                $short = array_pop($parts);
+            }
+
             preg_match_all('/\b'.$short.'\b/', $content, $m);
             if (count($m[0]) < 2) {
-                $content = str_replace("use $class;\n", '', $content);
+                $content = str_replace($match[0]."\n", '', $content);
             }
         }
 
