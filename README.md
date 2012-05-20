@@ -54,6 +54,9 @@ or 2.1:
     # For a Symfony bundle or any other project using the same Symfony CS
     php php-cs-fixer.phar fix /path/to/bundle
 
+If you are using Vim, install the dedicated
+[plugin](https://github.com/stephpy/vim-php-cs-fixer).
+
 Contribute
 ----------
 
