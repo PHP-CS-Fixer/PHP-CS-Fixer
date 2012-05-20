@@ -26,7 +26,7 @@ You can limit the fixers you want to use on your project by using the
 When the level option is not passed, all PSR2 fixers and some additional ones
 are run.
 
-You can tweak the files and directories being analyzed by creating a `.php_cs`
+You can tweak the files and directories to be analyzed by creating a `.php_cs`
 file in the root directory of your project:
 
     <?php
@@ -66,7 +66,7 @@ more than welcome to contribute more of them.
 ### Fixers
 
 A *fixer* is a class that tries to fix one CS issue (a `Fixer` class must
-implements `FixerInterface`).
+implement `FixerInterface`).
 
 ### Finders
 
