@@ -12,9 +12,13 @@ soon-to-be-available PSR-1 and PSR-2 documents.
 Usage
 -----
 
-Download the `php-cs-fixer.phar` file and execute it for a given directory:
+Download the `php-cs-fixer.phar` file and execute it for a given directory or file:
 
+    # For a directory
     php php-cs-fixer.phar fix /path/to/project
+
+    # For a file
+    php php-cs-fixer.phar fix /path/to/file
 
 You can limit the fixers you want to use on your project by using the
 `--level` option:

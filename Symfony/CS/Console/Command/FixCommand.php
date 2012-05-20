@@ -33,17 +33,19 @@ class FixCommand extends Command
         $this
             ->setName('fix')
             ->setDefinition(array(
-                new InputArgument('dir', InputArgument::REQUIRED, 'The Symfony dir'),
+                new InputArgument('path', InputArgument::REQUIRED, 'The path'),
                 new InputArgument('finder', InputArgument::OPTIONAL, 'The Finder short class name to use', 'SymfonyFinder'),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
                 new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr1, psr2, or all)', 'all'),
             ))
-            ->setDescription('Fixes a project')
+            ->setDescription('Fixes a directory or a file')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> command tries to fix as much coding standards
 problems as possible:
 
     <info>php %command.full_name% /path/to/dir</info>
+    or
+    <info>php %command.full_name% /path/to/file</info>
 
 You can limit the fixers you want to use on your project by using the
 <comment>--level<comment> option:
@@ -89,17 +91,19 @@ EOF
         $fixer = new Fixer();
         $fixer->registerBuiltInFixers();
 
-        $dir = $input->getArgument('dir');
+        $path = $input->getArgument('path');
         $filesystem = new Filesystem();
-        if (!$filesystem->isAbsolutePath($dir)) {
-            $dir = getcwd().DIRECTORY_SEPARATOR.$dir;
+        if (!$filesystem->isAbsolutePath($path)) {
+            $path = getcwd().DIRECTORY_SEPARATOR.$path;
         }
 
-        if (file_exists($config = $dir.'/.php_cs')) {
+        if (is_file($path)) {
+            $iterator = new \ArrayIterator(array(new \SplFileInfo($path)));
+        } elseif (file_exists($config = $path.'/.php_cs')) {
             $iterator = include $config;
         } else {
             $class = 'Symfony\\CS\\Finder\\'.$input->getArgument('finder');
-            $iterator = new $class($dir);
+            $iterator = new $class($path);
         }
 
         switch ($input->getOption('level')) {
