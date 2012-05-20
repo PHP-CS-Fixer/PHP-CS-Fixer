@@ -35,6 +35,17 @@ class CurlyBracketsNewlineFixer implements FixerInterface
         return $content;
     }
 
+    public function getLevel()
+    {
+        // defined in PSR2 ¶4.3, ¶4.3, ¶4.4, ¶5
+        return FixerInterface::PSR2_LEVEL;
+    }
+
+    public function getPriority()
+    {
+        return 0;
+    }
+
     public function supports(\SplFileInfo $file)
     {
         return 'php' == $file->getExtension();
