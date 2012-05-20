@@ -23,9 +23,11 @@ class UnusedUseStatementsFixerTest extends \PHPUnit_Framework_TestCase
         $expected = <<<'EOF'
 use Foo\Bar;
 use Foo\Bar\FooBar as FooBaz;
+use SomeClass;
 
 $a = new Bar();
 $a = new FooBaz();
+$a = new someclass();
 EOF;
 
         $input = <<<'EOF'
@@ -34,9 +36,11 @@ use Foo\Bar\Baz;
 use Foo\Bar\FooBar as FooBaz;
 use Foo\Bar\Foo as Fooo;
 use Foo\Bar\Baar\Baar;
+use SomeClass;
 
 $a = new Bar();
 $a = new FooBaz();
+$a = new someclass();
 EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
