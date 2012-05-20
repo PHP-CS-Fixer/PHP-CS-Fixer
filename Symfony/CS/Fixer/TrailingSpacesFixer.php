@@ -24,6 +24,12 @@ class TrailingSpacesFixer implements FixerInterface
         return preg_replace('/[ \t]*$/m', '', $content);
     }
 
+    public function getLevel()
+    {
+        // defined in PSR2 ¶2.3
+        return FixerInterface::PSR2_LEVEL;
+    }
+
     public function getPriority()
     {
         return 0;

@@ -24,6 +24,12 @@ class ElseIfFixer implements FixerInterface
         return preg_replace('/} else if \(/', '} elseif (', $content);
     }
 
+    public function getLevel()
+    {
+        // defined in PSR2 ¶5.1
+        return FixerInterface::PSR2_LEVEL;
+    }
+
     public function getPriority()
     {
         return 0;

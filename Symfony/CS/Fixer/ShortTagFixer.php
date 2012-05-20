@@ -24,6 +24,12 @@ class ShortTagFixer implements FixerInterface
         return preg_replace('/<\?(\s)/', '<?php$1', $content);
     }
 
+    public function getLevel()
+    {
+        // defined in PSR1 ¶2.1
+        return FixerInterface::PSR1_LEVEL;
+    }
+
     public function getPriority()
     {
         return 0;

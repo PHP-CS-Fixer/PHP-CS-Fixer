@@ -35,13 +35,13 @@ class Fixer
         $this->fixers[] = $fixer;
     }
 
-    public function fix(\Traversable $iterator, $dryRun = false)
+    public function fix(\Traversable $iterator, $level = FixerInterface::ALL_LEVEL, $dryRun = false)
     {
         $this->sortFixers();
 
         $changed = array();
         foreach ($iterator as $file) {
-            if ($this->fixFile($file, $dryRun)) {
+            if ($this->fixFile($file, $level, $dryRun)) {
                 $changed[] = $file->getRelativePathname();
             }
         }
@@ -49,14 +49,20 @@ class Fixer
         return $changed;
     }
 
-    public function fixFile(\SplFileInfo $file, $dryRun = false)
+    public function fixFile(\SplFileInfo $file, $level = FixerInterface::ALL_LEVEL, $dryRun = false)
     {
         $new = $old = file_get_contents($file->getRealpath());
 
         foreach ($this->fixers as $fixer) {
-            if ($fixer->supports($file)) {
-                $new = $fixer->fix($file, $new);
+            if ($fixer->getLevel() !== ($fixer->getLevel() & $level)) {
+                continue;
             }
+
+            if (!$fixer->supports($file)) {
+                continue;
+            }
+
+            $new = $fixer->fix($file, $new);
         }
 
         if ($new != $old) {

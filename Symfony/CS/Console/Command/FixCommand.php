@@ -18,6 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\CS\Fixer;
+use Symfony\CS\FixerInterface;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -35,6 +36,7 @@ class FixCommand extends Command
                 new InputArgument('dir', InputArgument::REQUIRED, 'The Symfony dir'),
                 new InputArgument('finder', InputArgument::OPTIONAL, 'The Finder short class name to use', 'SymfonyFinder'),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
+                new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr1, psr2, or all)', 'all'),
             ))
             ->setDescription('Fixes a project')
             ->setHelp(<<<EOF
@@ -42,6 +44,16 @@ The <info>%command.name%</info> command tries to fix as much coding standards
 problems as possible:
 
     <info>php %command.full_name% /path/to/dir</info>
+
+You can limit the fixers you want to use on your project by using the
+<comment>--level<comment> option:
+
+    <info>php %command.full_name% /path/to/project --level=psr1</info>
+    <info>php %command.full_name% /path/to/project --level=psr2</info>
+    <info>php %command.full_name% /path/to/project --level=all</info>
+
+When the level option is not passed, all PSR2 fixers and some additional ones
+are run.
 
 You can tweak the files and directories being analyzed by creating a
 <comment>.php_cs</comment> file in the root directory of your project:
@@ -90,7 +102,21 @@ EOF
             $iterator = new $class($dir);
         }
 
-        $changed = $fixer->fix($iterator, $input->getOption('dry-run'));
+        switch ($input->getOption('level')) {
+            case 'psr1':
+                $level = FixerInterface::PSR1_LEVEL;
+                break;
+            case 'psr2':
+                $level = FixerInterface::PSR2_LEVEL;
+                break;
+            case 'all':
+                $level = FixerInterface::ALL_LEVEL;
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $input->getOption('level')));
+        }
+
+        $changed = $fixer->fix($iterator, $level, $input->getOption('dry-run'));
 
         foreach ($changed as $i => $file) {
             $output->writeln(sprintf('%4d) %s', $i, $file));

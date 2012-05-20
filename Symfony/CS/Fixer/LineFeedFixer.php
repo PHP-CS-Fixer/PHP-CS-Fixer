@@ -24,6 +24,12 @@ class LineFeedFixer implements FixerInterface
         return str_replace("\r\n", "\n", $content);
     }
 
+    public function getLevel()
+    {
+        // defined in PSR2 ¶2.2
+        return FixerInterface::PSR2_LEVEL;
+    }
+
     public function getPriority()
     {
         return 0;

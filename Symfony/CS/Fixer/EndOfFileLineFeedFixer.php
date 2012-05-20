@@ -28,6 +28,11 @@ class EndOfFileLineFeedFixer implements FixerInterface
         return $content;
     }
 
+    public function getLevel()
+    {
+        return FixerInterface::ALL_LEVEL;
+    }
+
     public function getPriority()
     {
         return 0;

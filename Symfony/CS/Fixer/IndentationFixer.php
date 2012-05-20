@@ -26,6 +26,12 @@ class IndentationFixer implements FixerInterface
         }, $content);
     }
 
+    public function getLevel()
+    {
+        // defined in PSR2 ¶2.4
+        return FixerInterface::PSR2_LEVEL;
+    }
+
     public function getPriority()
     {
         return 0;

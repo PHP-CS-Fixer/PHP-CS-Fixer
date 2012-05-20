@@ -72,6 +72,11 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
         return implode("\n", $lines);
     }
 
+    public function getLevel()
+    {
+        return FixerInterface::ALL_LEVEL;
+    }
+
     public function getPriority()
     {
         return 0;
