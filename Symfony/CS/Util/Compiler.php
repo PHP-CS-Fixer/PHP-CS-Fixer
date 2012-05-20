@@ -20,13 +20,13 @@ use Symfony\Component\Finder\Finder;
  */
 class Compiler
 {
-    public function compile($pharFile = 'symfony-cs-fixer.phar')
+    public function compile($pharFile = 'php-cs-fixer.phar')
     {
         if (file_exists($pharFile)) {
             unlink($pharFile);
         }
 
-        $phar = new \Phar($pharFile, 0, 'Symfony CS Fixer');
+        $phar = new \Phar($pharFile, 0, 'PHP CS Fixer');
         $phar->setSignatureAlgorithm(\Phar::SHA1);
 
         $phar->startBuffering();
