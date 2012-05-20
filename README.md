@@ -2,7 +2,8 @@ PHP Coding Standard Fixer
 =========================
 
 This tool analyzes some PHP source code to fix as much coding standards
-problems as possible.
+problems as possible. The coding standards are the one defined in the
+soon-to-be-available PSR-1 and PSR-2 standards.
 
 Download the `php-cs-fixer.phar` file and execute it:
 
@@ -32,6 +33,3 @@ or 2.1:
 
     # For a Symfony bundle or any other project using the same Symfony CS
     php php-cs-fixer.phar fix /path/to/bundle
-
-See http://symfony.com/doc/current/contributing/code/standards.html for more
-information about the Symfony Coding Standards.
