@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Symfony CS utility.
+ * This file is part of the PHP CS utility.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -65,7 +65,7 @@ class Compiler
     {
         return '
     /*
-     * This file is part of the Symfony CS utility.
+     * This file is part of the PHP CS utility.
      *
      * (c) Fabien Potencier <fabien@symfony.com>
      *
