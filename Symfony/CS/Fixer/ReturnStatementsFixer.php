@@ -36,6 +36,11 @@ class ReturnStatementsFixer implements FixerInterface
         }, $content);
     }
 
+    public function getPriority()
+    {
+        return 0;
+    }
+
     public function supports(\SplFileInfo $file)
     {
         return 'php' == $file->getExtension();

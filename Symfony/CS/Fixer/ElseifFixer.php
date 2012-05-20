@@ -24,6 +24,11 @@ class ElseIfFixer implements FixerInterface
         return preg_replace('/} else if \(/', '} elseif (', $content);
     }
 
+    public function getPriority()
+    {
+        return 0;
+    }
+
     public function supports(\SplFileInfo $file)
     {
         return 'php' == $file->getExtension();

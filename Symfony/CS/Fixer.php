@@ -37,6 +37,8 @@ class Fixer
 
     public function fix(\Traversable $iterator, $dryRun = false)
     {
+        $this->sortFixers();
+
         $changed = array();
         foreach ($iterator as $file) {
             if ($this->fixFile($file, $dryRun)) {
@@ -64,5 +66,16 @@ class Fixer
 
             return true;
         }
+    }
+
+    private function sortFixers()
+    {
+        usort($this->fixers, function ($a, $b) {
+            if ($a->getPriority() == $b->getPriority()) {
+                return 0;
+            }
+
+            return $a->getPriority() > $b->getPriority() ? -1 : 1;
+        });
     }
 }

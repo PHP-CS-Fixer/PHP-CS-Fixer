@@ -24,6 +24,11 @@ class ShortTagFixer implements FixerInterface
         return preg_replace('/<\?(\s)/', '<?php$1', $content);
     }
 
+    public function getPriority()
+    {
+        return 0;
+    }
+
     public function supports(\SplFileInfo $file)
     {
         return 'php' == $file->getExtension();

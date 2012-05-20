@@ -24,6 +24,11 @@ class LineFeedFixer implements FixerInterface
         return str_replace("\r\n", "\n", $content);
     }
 
+    public function getPriority()
+    {
+        return 0;
+    }
+
     public function supports(\SplFileInfo $file)
     {
         return true;

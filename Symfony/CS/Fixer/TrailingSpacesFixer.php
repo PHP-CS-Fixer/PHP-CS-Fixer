@@ -24,6 +24,11 @@ class TrailingSpacesFixer implements FixerInterface
         return preg_replace('/[ \t]*$/m', '', $content);
     }
 
+    public function getPriority()
+    {
+        return 0;
+    }
+
     public function supports(\SplFileInfo $file)
     {
         return true;

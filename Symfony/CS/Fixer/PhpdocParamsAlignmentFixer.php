@@ -72,6 +72,11 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
         return implode("\n", $lines);
     }
 
+    public function getPriority()
+    {
+        return 0;
+    }
+
     public function supports(\SplFileInfo $file)
     {
         return 'php' == $file->getExtension();

@@ -18,5 +18,7 @@ interface FixerInterface
 {
     public function fix(\SplFileInfo $file, $content);
 
+    public function getPriority();
+
     public function supports(\SplFileInfo $file);
 }
