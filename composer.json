@@ -1,5 +1,5 @@
 {
-    "name": "symfony/cs-fixer",
+    "name": "fabpot/php-cs-fixer",
     "type": "application",
     "description": "A script to automatically fix Symfony Coding Standard",
     "license": "MIT",
