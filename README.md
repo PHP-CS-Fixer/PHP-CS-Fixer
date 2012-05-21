@@ -99,7 +99,7 @@ configure the fixers and the files and directories that need to be analyzed:
         ->in(__DIR__)
     ;
 
-    return Symfony\CS\Config::create()
+    return Symfony\CS\Config\Config::create()
         ->fixers(array('indentation', 'elseif'))
         ->finder($finder)
     ;
