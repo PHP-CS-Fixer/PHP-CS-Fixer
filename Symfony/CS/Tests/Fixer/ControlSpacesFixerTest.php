@@ -11,9 +11,9 @@
 
 namespace Symfony\CS\Tests\Fixer;
 
-use Symfony\CS\Fixer\ControlsSpacesFixer as Fixer;
+use Symfony\CS\Fixer\ControlSpacesFixer as Fixer;
 
-class ControlsSpacesFixerTest extends \PHPUnit_Framework_TestCase
+class ControlSpacesFixerTest extends \PHPUnit_Framework_TestCase
 {
     public function testFixControlsWithSuffixBrace()
     {

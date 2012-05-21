@@ -16,7 +16,7 @@ use Symfony\CS\FixerInterface;
 /**
  * @author Adrien Brault <adrien.brault@gmail.com>
  */
-class ControlsSpacesFixer implements FixerInterface
+class ControlSpacesFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}

@@ -42,10 +42,6 @@ separated by a comma):
 
 Here is the list of built-in fixers:
 
- * **short_tag**       [PSR-1] PHP code must use the long <?php ?> tags or the
-                   short-echo <?= ?> tags; it must not use the other tag
-                   variations.
-
  * **phpdoc_params**   [all] All items of the @param phpdoc tags must be aligned
                    vertically.
 
@@ -59,22 +55,26 @@ Here is the list of built-in fixers:
                    structures must go on the same line, and closing braces
                    must go on the next line after the body.
 
+ * **short_tag**       [PSR-1] PHP code must use the long <?php ?> tags or the
+                   short-echo <?= ?> tags; it must not use the other tag
+                   variations.
+
+ * **eof_ending**      [all] A file must always ends with an empty line feed.
+
  * **linefeed**        [PSR-2] All PHP files must use the Unix LF (linefeed)
                    line ending.
 
- * **elseif**          [PSR-2] The keyword elseif should be used instead of else
-                   if so that all control keywords looks like single words.
+ * **indentation**     [PSR-2] Code must use 4 spaces for indenting, not tabs.
 
  * **return**          [all] An empty line feed should precede a return
                    statement.
 
- * **eof_ending**      [all] A file must always ends with an empty line feed.
-
- * **indentation**     [PSR-2] Code must use 4 spaces for indenting, not tabs.
-
  * **controls_spaces** [all] A single space should be between: the closing brace
                    and the control, the control and the opening parenthese,
                    the closing parenthese and the opening brace.
+
+ * **elseif**          [PSR-2] The keyword elseif should be used instead of else
+                   if so that all control keywords looks like single words.
 
 You can also use built-in configurations, for instance when ran for Symfony:
 
