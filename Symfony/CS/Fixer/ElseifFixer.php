@@ -32,7 +32,8 @@ class ElseIfFixer implements FixerInterface
 
     public function getPriority()
     {
-        return 0;
+        // should be run after ControlSpacesFixer
+        return -20;
     }
 
     public function supports(\SplFileInfo $file)
