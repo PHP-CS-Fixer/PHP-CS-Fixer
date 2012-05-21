@@ -47,6 +47,6 @@ class TrailingSpacesFixer implements FixerInterface
 
     public function getDescription()
     {
-        return 'PHP code must use the long <?php ?> tags or the short-echo <?= ?> tags; it must not use the other tag variations.';
+        return 'Remove trailing whitespace at the end of lines.';
     }
 }
