@@ -163,7 +163,7 @@ EOF
         $changed = $this->fixer->fix($config, $input->getOption('dry-run'));
 
         foreach ($changed as $i => $file) {
-            $output->writeln(sprintf('%4d) %s', $i, $file));
+            $output->writeln(sprintf('%4d) %s', $i + 1, $file));
         }
     }
 
