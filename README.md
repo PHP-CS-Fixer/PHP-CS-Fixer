@@ -46,9 +46,7 @@ Here is the list of built-in fixers:
                    short-echo <?= ?> tags; it must not use the other tag
                    variations.
 
- * **trailing_spaces** [PSR-2] PHP code must use the long <?php ?> tags or the
-                   short-echo <?= ?> tags; it must not use the other tag
-                   variations.
+ * **trailing_spaces** [PSR-2] Remove trailing whitespace at the end of lines.
 
  * **unused_use**      [all] Unused use statements must be removed.
 
