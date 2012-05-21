@@ -94,7 +94,7 @@ EOF;
         $help = str_replace('%command.name%', $command->getName(), $help);
         $help = preg_replace('#</?(comment|info)>#', '`', $help);
         $help = preg_replace('#^(\s+)`(.+)`$#m', '$1$2', $help);
-        $help = preg_replace('#^ \* `(.+)`#m', ' * $1', $help);
+        $help = preg_replace('#^ \* `(.+)`#m', ' * **$1**', $help);
 
         $output->writeln($header);
         $output->writeln($help);
