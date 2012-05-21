@@ -46,22 +46,12 @@ Here is the list of built-in fixers:
                    short-echo <?= ?> tags; it must not use the other tag
                    variations.
 
- * **trailing_spaces** [PSR-2] Remove trailing whitespace at the end of lines.
-
- * **unused_use**      [all] Unused use statements must be removed.
-
- * **return**          [all] An empty line feed should precede a return
-                   statement.
-
  * **phpdoc_params**   [all] All items of the @param phpdoc tags must be aligned
                    vertically.
 
- * **linefeed**        [PSR-2] All PHP files must use the Unix LF (linefeed)
-                   line ending.
+ * **trailing_spaces** [PSR-2] Remove trailing whitespace at the end of lines.
 
- * **eof_ending**      [all] A file must always ends with an empty line feed.
-
- * **indentation**     [PSR-2] Code must use 4 spaces for indenting, not tabs.
+ * **unused_use**      [all] Unused use statements must be removed.
 
  * **braces**          [PSR-2] Opening braces for classes and methods must go on
                    the next line, and closing braces must go on the next
@@ -69,8 +59,22 @@ Here is the list of built-in fixers:
                    structures must go on the same line, and closing braces
                    must go on the next line after the body.
 
+ * **linefeed**        [PSR-2] All PHP files must use the Unix LF (linefeed)
+                   line ending.
+
  * **elseif**          [PSR-2] The keyword elseif should be used instead of else
                    if so that all control keywords looks like single words.
+
+ * **return**          [all] An empty line feed should precede a return
+                   statement.
+
+ * **eof_ending**      [all] A file must always ends with an empty line feed.
+
+ * **indentation**     [PSR-2] Code must use 4 spaces for indenting, not tabs.
+
+ * **controls_spaces** [all] A single space should be between: the closing brace
+                   and the control, the control and the opening parenthese,
+                   the closing parenthese and the opening brace.
 
 You can also use built-in configurations, for instance when ran for Symfony:
 

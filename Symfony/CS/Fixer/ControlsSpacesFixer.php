@@ -45,7 +45,8 @@ class ControlsSpacesFixer implements FixerInterface
      */
     public function getPriority()
     {
-        return 0;
+        // should be run after the CurlyBracketsNewlineFixer
+        return -10;
     }
 
     /**
