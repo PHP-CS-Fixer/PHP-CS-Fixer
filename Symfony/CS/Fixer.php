@@ -12,6 +12,7 @@
 namespace Symfony\CS;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -73,7 +74,11 @@ class Fixer
         $changed = array();
         foreach ($config->getFinder() as $file) {
             if ($this->fixFile($file, $config->getFixers(), $dryRun)) {
-                $changed[] = $file->getRelativePathname();
+                if ($file instanceof FinderSplFileInfo) {
+                    $changed[] = $file->getRelativePathname();
+                } else {
+                    $changed[] = $file->getPathname();
+                }
             }
         }
 
