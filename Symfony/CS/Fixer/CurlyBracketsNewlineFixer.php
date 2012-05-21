@@ -64,27 +64,19 @@ class CurlyBracketsNewlineFixer implements FixerInterface
     private function classDeclarationFix($content)
     {
         // [Structure] Add new line after class declaration
-        return preg_replace('/(\s*)(class.*\w)\s*{\s*$/', self::ADD_NEWLINE, $content);
+        return preg_replace('/^(\s*)((?:.+ )?class .*?)[ \t]*{\s*$/m', self::ADD_NEWLINE, $content);
     }
 
     private function functionDeclarationFix($content)
     {
         // [Structure] Add new line after function declaration
-        return preg_replace(
-            '/(\s*)(.*function\s*\S+\s*\(.*\))\s*{\s*$/', 
-            self::ADD_NEWLINE,
-            $content
-        );
+        return preg_replace('/^(\s*)(.*function\s*\S+\s*\(.*\))\s*{\s*$/m', self::ADD_NEWLINE, $content);
     }
 
     private function anonymousFunctionsFix($content)
     {
         // [Structure] No new line after anonymous function call
-        return preg_replace(
-            '/((^|[\s\W])function\s*\(.*\))[^\S\n]*\n[^\S\n]*{/',
-            self::REMOVE_NEWLINE,
-            $content
-        );
+        return preg_replace('/((^|[\s\W])function\s*\(.*\))[^\S\n]*\n[^\S\n]*{/', self::REMOVE_NEWLINE, $content);
     }
 
     private function controlStatementsFix($content)
@@ -102,11 +94,7 @@ class CurlyBracketsNewlineFixer implements FixerInterface
         );
 
         // [Structure] No new line after control statements
-        return preg_replace(
-            '/((^|[\s\W])(' . implode('|', $statements) . '))[^\S\n]*\n[^\S\n]*{/',
-            self::REMOVE_NEWLINE,
-            $content
-        );
+        return preg_replace('/((^|[\s\W])('.implode('|', $statements).'))[^\S\n]*\n[^\S\n]*{/', self::REMOVE_NEWLINE, $content);
     }
 
     private function controlStatementContinuationFix($content)
@@ -117,11 +105,7 @@ class CurlyBracketsNewlineFixer implements FixerInterface
         );
 
         // [Structure] No new line after control statements
-        return preg_replace(
-            '/}\s*\n\s*(' . implode('|', $statements) . ')/',
-            '} \\1',
-            $content
-        );
+        return preg_replace('/}\s*\n\s*(' . implode('|', $statements) . ')/', '} \\1', $content);
     }
 
     private function doWhileFix($content)

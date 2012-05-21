@@ -26,6 +26,16 @@ TEST;
 
         $emptyClass = "class TestClass {}";
         $this->assertEquals($emptyClass, $fixer->fix($this->getFileMock(), $emptyClass));
+
+        $extended = <<<TEST
+abstract class TestClass extends BaseTestClass implements TestInterface {
+TEST;
+        $extendedFixed = <<<TEST
+abstract class TestClass extends BaseTestClass implements TestInterface
+{
+TEST;
+        $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extended));
+        $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extendedFixed));
     }
 
     public function testControlStatements()
