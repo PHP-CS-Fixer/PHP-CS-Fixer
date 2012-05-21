@@ -16,7 +16,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Symfony21Finder extends SymfonyFinder
+class Symfony21Finder extends DefaultFinder
 {
     protected function getDirs($dir)
     {

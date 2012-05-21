@@ -18,7 +18,7 @@ use Symfony\Component\Finder\Finder;
  */
 class Fixer
 {
-    const VERSION = '0.1';
+    const VERSION = '0.2';
 
     protected $fixers = array();
 
@@ -42,20 +42,37 @@ class Fixer
         return $this->fixers;
     }
 
+    public function registerBuiltInConfigs()
+    {
+        foreach (Finder::create()->files()->in(__DIR__.'/Config') as $file) {
+            $class = 'Symfony\\CS\\Config\\'.basename($file, '.php');
+            $this->addConfig(new $class());
+        }
+    }
+
+    public function addConfig(ConfigInterface $config)
+    {
+        $this->configs[] = $config;
+    }
+
+    public function getConfigs()
+    {
+        return $this->configs;
+    }
+
     /**
-     * Fixes all files in the given iterator.
+     * Fixes all files for the given finder.
      *
-     * @param \Traversable  $iterator    A file iterator
-     * @param array|integer $fixerConfig A level or a list of fixer names
-     * @param Boolean       $dryRun      Whether to simulate the changes or not
+     * @param ConfigInterface $config A ConfigInterface instance
+     * @param Boolean         $dryRun Whether to simulate the changes or not
      */
-    public function fix(\Traversable $iterator, $fixerConfig = FixerInterface::ALL_LEVEL, $dryRun = false)
+    public function fix(ConfigInterface $config, $dryRun = false)
     {
         $this->sortFixers();
 
         $changed = array();
-        foreach ($iterator as $file) {
-            if ($this->fixFile($file, $fixerConfig, $dryRun)) {
+        foreach ($config->getFinder() as $file) {
+            if ($this->fixFile($file, $config->getFixers(), $dryRun)) {
                 $changed[] = $file->getRelativePathname();
             }
         }
@@ -63,7 +80,7 @@ class Fixer
         return $changed;
     }
 
-    public function fixFile(\SplFileInfo $file, $fixerConfig = FixerInterface::ALL_LEVEL, $dryRun = false)
+    public function fixFile(\SplFileInfo $file, $fixerConfig, $dryRun)
     {
         $new = $old = file_get_contents($file->getRealpath());
 
@@ -99,7 +116,7 @@ class Fixer
         }
     }
 
-    public function getLevelAsString(FixerInterface $fixer)
+    static public function getLevelAsString(FixerInterface $fixer)
     {
         if ($fixer->getLevel() !== ($fixer->getLevel() & FixerInterface::PSR1_LEVEL)) {
             return 'PSR-1';

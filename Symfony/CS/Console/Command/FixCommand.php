@@ -19,6 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Config\Config;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -31,6 +32,7 @@ class FixCommand extends Command
     {
         $this->fixer = new Fixer();
         $this->fixer->registerBuiltInFixers();
+        $this->fixer->registerBuiltInConfigs();
 
         parent::__construct();
     }
@@ -44,9 +46,9 @@ class FixCommand extends Command
             ->setName('fix')
             ->setDefinition(array(
                 new InputArgument('path', InputArgument::REQUIRED, 'The path'),
-                new InputArgument('finder', InputArgument::OPTIONAL, 'The Finder short class name to use', 'SymfonyFinder'),
+                new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The configuration name', null),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
-                new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr1, psr2, or all)', 'all'),
+                new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr1, psr2, or all)', null),
                 new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
             ))
             ->setDescription('Fixes a directory or a file')
@@ -64,39 +66,41 @@ You can limit the fixers you want to use on your project by using the
     <info>php %command.full_name% /path/to/project --level=psr2</info>
     <info>php %command.full_name% /path/to/project --level=all</info>
 
-When the level option is not passed, all PSR2 fixers and some additional ones
+When the level option is not passed, all PSR-2 fixers and some additional ones
 are run.
 
-You can also explicitely name the fixers you want to use (a list of fixer
-names separated by a comma):
+You can also explicitly name the fixers you want to use (a list of fixer names
+separated by a comma):
 
     <info>php %command.full_name% /path/to/dir --fixers=linefeed,short_tag,indentation</info>
 
-The list of supported fixers:
+Here is the list of built-in fixers:
 
 {$this->getFixersHelp()}
-You can tweak the files and directories being analyzed by creating a
-<comment>.php_cs</comment> file in the root directory of your project:
+You can also use built-in configurations, for instance when ran for Symfony:
+
+    <comment># For the Symfony 2.1 branch</comment>
+    <info>php %command.full_name% /path/to/sf21 --config=symfony21</info>
+
+Here is the list of built-in configs:
+
+{$this->getConfigsHelp()}
+Instead of using the command line arguments, you can save your configuration
+in a <comment>.php_cs</comment> file in the root directory of your project. It
+must return an instance of `Symfony\CS\ConfigInterface` and it lets you
+configure the fixers and the files and directories that need to be analyzed:
 
     <?php
 
-    return Symfony\Component\Finder\Finder::create()
-        ->name('*.php')
-        ->exclude('someDir')
+    \$finder = Symfony\CS\Finder\DefaultFinder::create()
+        ->exclude('somefile')
         ->in(__DIR__)
     ;
 
-The <comment>.php_cs</comment> file must return a PHP iterator, like a Symfony
-Finder instance.
-
-You can also use specialized "finders", for instance when ran for Symfony
-2.0 or 2.1:
-
-    <comment># For the Symfony 2.0 branch</comment>
-    <info>php %command.full_name% /path/to/sf20 Symfony21Finder</info>
-
-    <comment># For the Symfony 2.1 branch</comment>
-    <info>php %command.full_name% /path/to/sf21 Symfony21Finder</info>
+    return Symfony\CS\Config::create()
+        ->fixers(array('indentation', 'elseif'))
+        ->finder(\$finder)
+    ;
 EOF
             );
     }
@@ -112,34 +116,51 @@ EOF
             $path = getcwd().DIRECTORY_SEPARATOR.$path;
         }
 
-        if (is_file($path)) {
-            $iterator = new \ArrayIterator(array(new \SplFileInfo($path)));
-        } elseif (file_exists($config = $path.'/.php_cs')) {
-            $iterator = include $config;
+        if ($input->getOption('config')) {
+            $config = null;
+            foreach ($this->fixer->getConfigs() as $c) {
+                if ($c->getName() == $input->getOption('config')) {
+                    $config = $c;
+                    break;
+                }
+            }
+
+            if (null === $config) {
+                throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined', $input->getOption('config')));
+            }
+        } elseif (file_exists($file = $path.'/.php_cs')) {
+            $config = include $file;
         } else {
-            $class = 'Symfony\\CS\\Finder\\'.$input->getArgument('finder');
-            $iterator = new $class($path);
+            $config = new Config();
+        }
+
+        if (is_file($path)) {
+            $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
+        } else {
+            $config->setDir($path);
         }
 
         if ($input->getOption('fixers')) {
-            $fixerConfig = array_map('trim', explode(',', $input->getOption('fixers')));
+            $config->fixers(array_map('trim', explode(',', $input->getOption('fixers'))));
         } else {
             switch ($input->getOption('level')) {
                 case 'psr1':
-                    $fixerConfig = FixerInterface::PSR1_LEVEL;
+                    $config->fixers(FixerInterface::PSR1_LEVEL);
                     break;
                 case 'psr2':
-                    $fixerConfig = FixerInterface::PSR2_LEVEL;
+                    $config->fixers(FixerInterface::PSR2_LEVEL);
                     break;
                 case 'all':
-                    $fixerConfig = FixerInterface::ALL_LEVEL;
+                    $config->fixers(FixerInterface::ALL_LEVEL);
+                    break;
+                case null:
                     break;
                 default:
                     throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $input->getOption('level')));
             }
         }
 
-        $changed = $this->fixer->fix($iterator, $fixerConfig, $input->getOption('dry-run'));
+        $changed = $this->fixer->fix($config, $input->getOption('dry-run'));
 
         foreach ($changed as $i => $file) {
             $output->writeln(sprintf('%4d) %s', $i, $file));
@@ -170,5 +191,31 @@ EOF
         }
 
         return $fixers;
+    }
+
+    protected function getConfigsHelp()
+    {
+        $configs = '';
+        $maxName = 0;
+        foreach ($this->fixer->getConfigs() as $config) {
+            if (strlen($config->getName()) > $maxName) {
+                $maxName = strlen($config->getName());
+            }
+        }
+
+        $count = count($this->fixer->getConfigs()) - 1;
+        foreach ($this->fixer->getConfigs() as $i => $config) {
+            $chunks = explode("\n", wordwrap($config->getDescription(), 72 - $maxName, "\n"));
+            $configs .= sprintf(" * <comment>%s</comment>%s %s\n", $config->getName(), str_repeat(' ', $maxName - strlen($config->getName())), array_shift($chunks));
+            while ($c = array_shift($chunks)) {
+                $configs .= str_repeat(' ', $maxName + 4).$c."\n";
+            }
+
+            if ($count != $i) {
+                $configs .= "\n";
+            }
+        }
+
+        return $configs;
     }
 }

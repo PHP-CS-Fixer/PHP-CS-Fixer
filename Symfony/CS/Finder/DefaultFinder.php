@@ -12,13 +12,14 @@
 namespace Symfony\CS\Finder;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\CS\FinderInterface;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SymfonyFinder extends Finder
+class DefaultFinder extends Finder implements FinderInterface
 {
-    public function __construct($dir)
+    public function __construct()
     {
         parent::__construct();
 
@@ -37,8 +38,12 @@ class SymfonyFinder extends Finder
             ->filter(function (\SplFileInfo $file) use ($files) {
                 return !in_array($file->getRelativePathname(), $files);
             })
-            ->in($this->getDirs($dir))
         ;
+    }
+
+    public function setDir($dir)
+    {
+        $this->in($this->getDirs($dir));
     }
 
     /**

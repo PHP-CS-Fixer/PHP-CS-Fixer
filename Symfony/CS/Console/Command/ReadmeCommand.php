@@ -79,11 +79,12 @@ more than welcome to contribute more of them.
 A *fixer* is a class that tries to fix one CS issue (a `Fixer` class must
 implement `FixerInterface`).
 
-### Finders
+### Configs
 
-A *finder* filters the files and directories scanned by the tool when run in
-the directory of your project when the project follows a well-known directory
-structures (like for Symfony projects for instance).
+A *config* knows about the CS level and the files and directories that must be
+scanned by the tool when run in the directory of your project. It is useful
+for projects that follow a well-known directory structures (like for Symfony
+projects for instance).
 
 EOF;
 

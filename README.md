@@ -32,15 +32,15 @@ You can limit the fixers you want to use on your project by using the
     php php-cs-fixer.phar fix /path/to/project --level=psr2
     php php-cs-fixer.phar fix /path/to/project --level=all
 
-When the level option is not passed, all PSR2 fixers and some additional ones
+When the level option is not passed, all PSR-2 fixers and some additional ones
 are run.
 
-You can also explicitely name the fixers you want to use (a list of fixer
-names separated by a comma):
+You can also explicitly name the fixers you want to use (a list of fixer names
+separated by a comma):
 
     php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,short_tag,indentation
 
-The list of supported fixers:
+Here is the list of built-in fixers:
 
  * short_tag       [all] PHP code must use the long <?php ?> tags or the
                    short-echo <?= ?> tags; it must not use the other tag
@@ -74,28 +74,35 @@ The list of supported fixers:
  * elseif          [PSR-1] The keyword elseif should be used instead of else
                    if so that all control keywords looks like single words.
 
-You can tweak the files and directories being analyzed by creating a
-`.php_cs` file in the root directory of your project:
+You can also use built-in configurations, for instance when ran for Symfony:
+
+    # For the Symfony 2.1 branch
+    php php-cs-fixer.phar fix /path/to/sf21 --config=symfony21
+
+Here is the list of built-in configs:
+
+ * default A default configuration
+
+ * sf20    The configuration for the Symfony 2.0 branch
+
+ * sf21    The configuration for the Symfony 2.1 branch
+
+Instead of using the command line arguments, you can save your configuration
+in a `.php_cs` file in the root directory of your project. It
+must return an instance of `Symfony\CS\ConfigInterface` and it lets you
+configure the fixers and the files and directories that need to be analyzed:
 
     <?php
 
-    return Symfony\Component\Finder\Finder::create()
-        ->name('*.php')
-        ->exclude('someDir')
+    $finder = Symfony\CS\Finder\DefaultFinder::create()
+        ->exclude('somefile')
         ->in(__DIR__)
     ;
 
-The `.php_cs` file must return a PHP iterator, like a Symfony
-Finder instance.
-
-You can also use specialized "finders", for instance when ran for Symfony
-2.0 or 2.1:
-
-    # For the Symfony 2.0 branch
-    php php-cs-fixer.phar fix /path/to/sf20 Symfony21Finder
-
-    # For the Symfony 2.1 branch
-    php php-cs-fixer.phar fix /path/to/sf21 Symfony21Finder
+    return Symfony\CS\Config::create()
+        ->fixers(array('indentation', 'elseif'))
+        ->finder($finder)
+    ;
 
 Helpers
 -------
@@ -114,8 +121,9 @@ more than welcome to contribute more of them.
 A *fixer* is a class that tries to fix one CS issue (a `Fixer` class must
 implement `FixerInterface`).
 
-### Finders
+### Configs
 
-A *finder* filters the files and directories scanned by the tool when run in
-the directory of your project when the project follows a well-known directory
-structures (like for Symfony projects for instance).
+A *config* knows about the CS level and the files and directories that must be
+scanned by the tool when run in the directory of your project. It is useful
+for projects that follow a well-known directory structures (like for Symfony
+projects for instance).

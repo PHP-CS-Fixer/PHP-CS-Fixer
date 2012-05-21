@@ -3,6 +3,7 @@
 namespace Symfony\CS\Tests;
 
 use Symfony\CS\Fixer;
+use Symfony\CS\Config\Config;
 
 class FixerTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,7 +24,9 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $fixer->addFixer($f2);
         $fixer->addFixer($f3);
 
-        $fixer->fix(new \DirectoryIterator(__DIR__), true);
+        $config = Config::create()->finder(new \DirectoryIterator(__DIR__));
+
+        $fixer->fix($config, true);
 
         // check the fixers order
         $r = new \ReflectionObject($fixer);
