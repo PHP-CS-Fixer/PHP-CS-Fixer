@@ -25,6 +25,16 @@ use Symfony\CS\FixerInterface;
  */
 class FixCommand extends Command
 {
+    protected $fixer;
+
+    public function __construct()
+    {
+        $this->fixer = new Fixer();
+        $this->fixer->registerBuiltInFixers();
+
+        parent::__construct();
+    }
+
     /**
      * @see Command
      */
@@ -37,18 +47,18 @@ class FixCommand extends Command
                 new InputArgument('finder', InputArgument::OPTIONAL, 'The Finder short class name to use', 'SymfonyFinder'),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
                 new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr1, psr2, or all)', 'all'),
+                new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
             ))
             ->setDescription('Fixes a directory or a file')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> command tries to fix as much coding standards
-problems as possible:
+problems as possible on a given file or directory:
 
     <info>php %command.full_name% /path/to/dir</info>
-    or
     <info>php %command.full_name% /path/to/file</info>
 
 You can limit the fixers you want to use on your project by using the
-<comment>--level<comment> option:
+<comment>--level</comment> option:
 
     <info>php %command.full_name% /path/to/project --level=psr1</info>
     <info>php %command.full_name% /path/to/project --level=psr2</info>
@@ -57,6 +67,14 @@ You can limit the fixers you want to use on your project by using the
 When the level option is not passed, all PSR2 fixers and some additional ones
 are run.
 
+You can also explicitely name the fixers you want to use (a list of fixer
+names separated by a comma):
+
+    <info>php %command.full_name% /path/to/dir --fixers=linefeed,short_tag,indentation</info>
+
+The list of supported fixers:
+
+{$this->getFixersHelp()}
 You can tweak the files and directories being analyzed by creating a
 <comment>.php_cs</comment> file in the root directory of your project:
 
@@ -74,8 +92,8 @@ Finder instance.
 You can also use specialized "finders", for instance when ran for Symfony
 2.0 or 2.1:
 
-        <info>php %command.full_name% /path/to/sf20 Symfony21Finder</info>
-        <info>php %command.full_name% /path/to/sf21 Symfony21Finder</info>
+    <info>php %command.full_name% /path/to/sf20 Symfony21Finder</info>
+    <info>php %command.full_name% /path/to/sf21 Symfony21Finder</info>
 
 See http://symfony.com/doc/current/contributing/code/standards.html for more
 information about the Symfony Coding Standards.
@@ -88,9 +106,6 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $fixer = new Fixer();
-        $fixer->registerBuiltInFixers();
-
         $path = $input->getArgument('path');
         $filesystem = new Filesystem();
         if (!$filesystem->isAbsolutePath($path)) {
@@ -106,24 +121,54 @@ EOF
             $iterator = new $class($path);
         }
 
-        switch ($input->getOption('level')) {
-            case 'psr1':
-                $level = FixerInterface::PSR1_LEVEL;
-                break;
-            case 'psr2':
-                $level = FixerInterface::PSR2_LEVEL;
-                break;
-            case 'all':
-                $level = FixerInterface::ALL_LEVEL;
-                break;
-            default:
-                throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $input->getOption('level')));
+        if ($input->getOption('fixers')) {
+            $fixerConfig = array_map('trim', explode(',', $input->getOption('fixers')));
+        } else {
+            switch ($input->getOption('level')) {
+                case 'psr1':
+                    $fixerConfig = FixerInterface::PSR1_LEVEL;
+                    break;
+                case 'psr2':
+                    $fixerConfig = FixerInterface::PSR2_LEVEL;
+                    break;
+                case 'all':
+                    $fixerConfig = FixerInterface::ALL_LEVEL;
+                    break;
+                default:
+                    throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $input->getOption('level')));
+            }
         }
 
-        $changed = $fixer->fix($iterator, $level, $input->getOption('dry-run'));
+        $changed = $this->fixer->fix($iterator, $fixerConfig, $input->getOption('dry-run'));
 
         foreach ($changed as $i => $file) {
             $output->writeln(sprintf('%4d) %s', $i, $file));
         }
+    }
+
+    protected function getFixersHelp()
+    {
+        $fixers = '';
+        $maxName = 0;
+        foreach ($this->fixer->getFixers() as $fixer) {
+            if (strlen($fixer->getName()) > $maxName) {
+                $maxName = strlen($fixer->getName());
+            }
+        }
+
+        $count = count($this->fixer->getFixers()) - 1;
+        foreach ($this->fixer->getFixers() as $i => $fixer) {
+            $chunks = explode("\n", wordwrap(sprintf('[%s] %s', $this->fixer->getLevelAsString($fixer), $fixer->getDescription()), 72 - $maxName, "\n"));
+            $fixers .= sprintf("<comment>%-".$maxName."s</comment> %s\n", $fixer->getName(), array_shift($chunks));
+            while ($c = array_shift($chunks)) {
+                $fixers .= str_repeat(' ', $maxName + 1).$c."\n";
+            }
+
+            if ($count != $i) {
+                $fixers .= "\n";
+            }
+        }
+
+        return $fixers;
     }
 }

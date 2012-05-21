@@ -39,4 +39,14 @@ class LineFeedFixer implements FixerInterface
     {
         return true;
     }
+
+    public function getName()
+    {
+        return 'linefeed';
+    }
+
+    public function getDescription()
+    {
+        return 'All PHP files must use the Unix LF (linefeed) line ending.';
+    }
 }

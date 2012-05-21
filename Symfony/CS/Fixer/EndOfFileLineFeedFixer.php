@@ -42,4 +42,14 @@ class EndOfFileLineFeedFixer implements FixerInterface
     {
         return true;
     }
+
+    public function getName()
+    {
+        return 'eof_ending';
+    }
+
+    public function getDescription()
+    {
+        return 'A file must always ends with an empty line feed.';
+    }
 }

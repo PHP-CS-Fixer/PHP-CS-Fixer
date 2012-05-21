@@ -39,4 +39,14 @@ class ShortTagFixer implements FixerInterface
     {
         return 'php' == $file->getExtension();
     }
+
+    public function getName()
+    {
+        return 'short_tag';
+    }
+
+    public function getDescription()
+    {
+        return 'PHP code must use the long <?php ?> tags or the short-echo <?= ?> tags; it must not use the other tag variations.';
+    }
 }

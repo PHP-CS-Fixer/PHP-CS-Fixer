@@ -50,4 +50,14 @@ class ReturnStatementsFixer implements FixerInterface
     {
         return 'php' == $file->getExtension();
     }
+
+    public function getName()
+    {
+        return 'return';
+    }
+
+    public function getDescription()
+    {
+        return 'An empty line feed should precede a return statement.';
+    }
 }

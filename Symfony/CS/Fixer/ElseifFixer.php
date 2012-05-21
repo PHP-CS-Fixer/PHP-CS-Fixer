@@ -39,4 +39,14 @@ class ElseIfFixer implements FixerInterface
     {
         return 'php' == $file->getExtension();
     }
+
+    public function getName()
+    {
+        return 'elseif';
+    }
+
+    public function getDescription()
+    {
+        return 'The keyword elseif should be used instead of else if so that all control keywords looks like single words.';
+    }
 }

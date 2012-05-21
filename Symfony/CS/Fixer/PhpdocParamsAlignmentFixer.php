@@ -86,4 +86,14 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
     {
         return 'php' == $file->getExtension();
     }
+
+    public function getName()
+    {
+        return 'phpdoc_params';
+    }
+
+    public function getDescription()
+    {
+        return 'All items of the @param phpdoc tags must be aligned vertically.';
+    }
 }

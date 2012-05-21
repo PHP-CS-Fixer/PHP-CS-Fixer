@@ -39,4 +39,14 @@ class TrailingSpacesFixer implements FixerInterface
     {
         return true;
     }
+
+    public function getName()
+    {
+        return 'trailing_spaces';
+    }
+
+    public function getDescription()
+    {
+        return 'PHP code must use the long <?php ?> tags or the short-echo <?= ?> tags; it must not use the other tag variations.';
+    }
 }

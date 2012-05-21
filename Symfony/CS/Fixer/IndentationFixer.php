@@ -41,4 +41,14 @@ class IndentationFixer implements FixerInterface
     {
         return 'php' == $file->getExtension();
     }
+
+    public function getName()
+    {
+        return 'indentation';
+    }
+
+    public function getDescription()
+    {
+        return 'Code must use 4 spaces for indenting, not tabs.';
+    }
 }

@@ -58,4 +58,14 @@ class UnusedUseStatementsFixer implements FixerInterface
     {
         return 'php' == $file->getExtension();
     }
+
+    public function getName()
+    {
+        return 'unused_use';
+    }
+
+    public function getDescription()
+    {
+        return 'Unused use statements must be removed.';
+    }
 }

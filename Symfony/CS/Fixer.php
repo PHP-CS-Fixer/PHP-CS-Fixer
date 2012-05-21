@@ -35,13 +35,27 @@ class Fixer
         $this->fixers[] = $fixer;
     }
 
-    public function fix(\Traversable $iterator, $level = FixerInterface::ALL_LEVEL, $dryRun = false)
+    public function getFixers()
+    {
+        $this->sortFixers();
+
+        return $this->fixers;
+    }
+
+    /**
+     * Fixes all files in the given iterator.
+     *
+     * @param \Traversable  $iterator    A file iterator
+     * @param array|integer $fixerConfig A level or a list of fixer names
+     * @param Boolean       $dryRun      Whether to simulate the changes or not
+     */
+    public function fix(\Traversable $iterator, $fixerConfig = FixerInterface::ALL_LEVEL, $dryRun = false)
     {
         $this->sortFixers();
 
         $changed = array();
         foreach ($iterator as $file) {
-            if ($this->fixFile($file, $level, $dryRun)) {
+            if ($this->fixFile($file, $fixerConfig, $dryRun)) {
                 $changed[] = $file->getRelativePathname();
             }
         }
@@ -49,15 +63,26 @@ class Fixer
         return $changed;
     }
 
-    public function fixFile(\SplFileInfo $file, $level = FixerInterface::ALL_LEVEL, $dryRun = false)
+    public function fixFile(\SplFileInfo $file, $fixerConfig = FixerInterface::ALL_LEVEL, $dryRun = false)
     {
         $new = $old = file_get_contents($file->getRealpath());
 
-        foreach ($this->fixers as $fixer) {
-            if ($fixer->getLevel() !== ($fixer->getLevel() & $level)) {
-                continue;
+        $fixers = array();
+        if (is_array($fixerConfig)) {
+            foreach ($this->fixers as $fixer) {
+                if (in_array($fixer->getName(), $fixerConfig)) {
+                    $fixers[] = $fixer;
+                }
             }
+        } else {
+            foreach ($this->fixers as $fixer) {
+                if ($fixer->getLevel() === ($fixer->getLevel() & $fixerConfig)) {
+                    $fixers[] = $fixer;
+                }
+            }
+        }
 
+        foreach ($fixers as $fixer) {
             if (!$fixer->supports($file)) {
                 continue;
             }
@@ -72,6 +97,19 @@ class Fixer
 
             return true;
         }
+    }
+
+    public function getLevelAsString(FixerInterface $fixer)
+    {
+        if ($fixer->getLevel() !== ($fixer->getLevel() & FixerInterface::PSR1_LEVEL)) {
+            return 'PSR-1';
+        }
+
+        if ($fixer->getLevel() !== ($fixer->getLevel() & FixerInterface::PSR2_LEVEL)) {
+            return 'PSR-2';
+        }
+
+        return 'all';
     }
 
     private function sortFixers()

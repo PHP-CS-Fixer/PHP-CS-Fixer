@@ -50,4 +50,22 @@ interface FixerInterface
      * @return Boolean true if the file is supported by this fixer, false otherwise
      */
     public function supports(\SplFileInfo $file);
+
+    /**
+     * Returns the name of the fixer.
+     *
+     * The name must be all lowercase and without any spaces.
+     *
+     * @return string The name of the fixer
+     */
+    public function getName();
+
+    /**
+     * Returns the description of the fixer.
+     *
+     * A short one-line description of what the fixer does.
+     *
+     * @return string The description of the fixer
+     */
+    public function getDescription();
 }
