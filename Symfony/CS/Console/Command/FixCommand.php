@@ -80,7 +80,7 @@ Here is the list of built-in fixers:
 You can also use built-in configurations, for instance when ran for Symfony:
 
     <comment># For the Symfony 2.1 branch</comment>
-    <info>php %command.full_name% /path/to/sf21 --config=symfony21</info>
+    <info>php %command.full_name% /path/to/sf21 --config=sf21</info>
 
 Here is the list of built-in configs:
 
