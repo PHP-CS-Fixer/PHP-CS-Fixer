@@ -77,7 +77,7 @@ Here is the list of built-in fixers:
 You can also use built-in configurations, for instance when ran for Symfony:
 
     # For the Symfony 2.1 branch
-    php php-cs-fixer.phar fix /path/to/sf21 --config=symfony21
+    php php-cs-fixer.phar fix /path/to/sf21 --config=sf21
 
 Here is the list of built-in configs:
 
