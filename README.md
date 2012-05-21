@@ -22,15 +22,19 @@ Usage
 The `fix` command tries to fix as much coding standards
 problems as possible on a given file or directory:
 
-    php php-cs-fixer.phar fix /path/to/dir
-    php php-cs-fixer.phar fix /path/to/file
+```bash
+php php-cs-fixer.phar fix /path/to/dir
+php php-cs-fixer.phar fix /path/to/file
+```
 
 You can limit the fixers you want to use on your project by using the
 `--level` option:
 
-    php php-cs-fixer.phar fix /path/to/project --level=psr1
-    php php-cs-fixer.phar fix /path/to/project --level=psr2
-    php php-cs-fixer.phar fix /path/to/project --level=all
+```bash
+php php-cs-fixer.phar fix /path/to/project --level=psr1
+php php-cs-fixer.phar fix /path/to/project --level=psr2
+php php-cs-fixer.phar fix /path/to/project --level=all
+```
 
 When the level option is not passed, all PSR-2 fixers and some additional ones
 are run.
@@ -38,7 +42,9 @@ are run.
 You can also explicitly name the fixers you want to use (a list of fixer names
 separated by a comma):
 
-    php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,short_tag,indentation
+```bash
+php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,short_tag,indentation
+```
 
 Here is the list of built-in fixers:
 
@@ -74,8 +80,10 @@ Here is the list of built-in fixers:
 
 You can also use built-in configurations, for instance when ran for Symfony:
 
-    # For the Symfony 2.1 branch
-    php php-cs-fixer.phar fix /path/to/sf21 --config=sf21
+```bash
+# For the Symfony 2.1 branch
+php php-cs-fixer.phar fix /path/to/sf21 --config=sf21
+```
 
 Here is the list of built-in configs:
 
@@ -90,17 +98,19 @@ in a `.php_cs` file in the root directory of your project. It
 must return an instance of `Symfony\CS\ConfigInterface` and it lets you
 configure the fixers and the files and directories that need to be analyzed:
 
-    <?php
+```php
+<?php
 
-    $finder = Symfony\CS\Finder\DefaultFinder::create()
-        ->exclude('somefile')
-        ->in(__DIR__)
-    ;
-
-    return Symfony\CS\Config\Config::create()
-        ->fixers(array('indentation', 'elseif'))
-        ->finder($finder)
-    ;
+$finder = Symfony\CS\Finder\DefaultFinder::create()
+    ->exclude('somefile')
+    ->in(__DIR__)
+;
+    
+return Symfony\CS\Config\Config::create()
+    ->fixers(array('indentation', 'elseif'))
+    ->finder($finder)
+;
+```
 
 Helpers
 -------
