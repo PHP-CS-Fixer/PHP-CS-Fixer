@@ -42,36 +42,36 @@ separated by a comma):
 
 Here is the list of built-in fixers:
 
- * **short_tag**       [all] PHP code must use the long <?php ?> tags or the
+ * **short_tag**       [PSR-1] PHP code must use the long <?php ?> tags or the
                    short-echo <?= ?> tags; it must not use the other tag
                    variations.
 
- * **trailing_spaces** [PSR-1] PHP code must use the long <?php ?> tags or the
+ * **trailing_spaces** [PSR-2] PHP code must use the long <?php ?> tags or the
                    short-echo <?= ?> tags; it must not use the other tag
                    variations.
 
- * **unused_use**      [PSR-1] Unused use statements must be removed.
+ * **unused_use**      [all] Unused use statements must be removed.
 
- * **return**          [PSR-1] An empty line feed should precede a return
+ * **return**          [all] An empty line feed should precede a return
                    statement.
 
- * **phpdoc_params**   [PSR-1] All items of the @param phpdoc tags must be
-                   aligned vertically.
+ * **phpdoc_params**   [all] All items of the @param phpdoc tags must be aligned
+                   vertically.
 
- * **linefeed**        [PSR-1] All PHP files must use the Unix LF (linefeed)
+ * **linefeed**        [PSR-2] All PHP files must use the Unix LF (linefeed)
                    line ending.
 
- * **eof_ending**      [PSR-1] A file must always ends with an empty line feed.
+ * **eof_ending**      [all] A file must always ends with an empty line feed.
 
- * **indentation**     [PSR-1] Code must use 4 spaces for indenting, not tabs.
+ * **indentation**     [PSR-2] Code must use 4 spaces for indenting, not tabs.
 
- * **braces**          [PSR-1] Opening braces for classes and methods must go on
+ * **braces**          [PSR-2] Opening braces for classes and methods must go on
                    the next line, and closing braces must go on the next
                    line after the body. Opening braces for control
                    structures must go on the same line, and closing braces
                    must go on the next line after the body.
 
- * **elseif**          [PSR-1] The keyword elseif should be used instead of else
+ * **elseif**          [PSR-2] The keyword elseif should be used instead of else
                    if so that all control keywords looks like single words.
 
 You can also use built-in configurations, for instance when ran for Symfony:

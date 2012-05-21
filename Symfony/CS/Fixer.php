@@ -118,11 +118,11 @@ class Fixer
 
     static public function getLevelAsString(FixerInterface $fixer)
     {
-        if ($fixer->getLevel() !== ($fixer->getLevel() & FixerInterface::PSR1_LEVEL)) {
+        if ($fixer->getLevel() === ($fixer->getLevel() & FixerInterface::PSR1_LEVEL)) {
             return 'PSR-1';
         }
 
-        if ($fixer->getLevel() !== ($fixer->getLevel() & FixerInterface::PSR2_LEVEL)) {
+        if ($fixer->getLevel() === ($fixer->getLevel() & FixerInterface::PSR2_LEVEL)) {
             return 'PSR-2';
         }
 
