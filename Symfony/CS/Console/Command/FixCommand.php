@@ -92,11 +92,11 @@ Finder instance.
 You can also use specialized "finders", for instance when ran for Symfony
 2.0 or 2.1:
 
+    <comment># For the Symfony 2.0 branch</comment>
     <info>php %command.full_name% /path/to/sf20 Symfony21Finder</info>
-    <info>php %command.full_name% /path/to/sf21 Symfony21Finder</info>
 
-See http://symfony.com/doc/current/contributing/code/standards.html for more
-information about the Symfony Coding Standards.
+    <comment># For the Symfony 2.1 branch</comment>
+    <info>php %command.full_name% /path/to/sf21 Symfony21Finder</info>
 EOF
             );
     }
@@ -159,9 +159,9 @@ EOF
         $count = count($this->fixer->getFixers()) - 1;
         foreach ($this->fixer->getFixers() as $i => $fixer) {
             $chunks = explode("\n", wordwrap(sprintf('[%s] %s', $this->fixer->getLevelAsString($fixer), $fixer->getDescription()), 72 - $maxName, "\n"));
-            $fixers .= sprintf("<comment>%-".$maxName."s</comment> %s\n", $fixer->getName(), array_shift($chunks));
+            $fixers .= sprintf(" * <comment>%s</comment>%s %s\n", $fixer->getName(), str_repeat(' ', $maxName - strlen($fixer->getName())), array_shift($chunks));
             while ($c = array_shift($chunks)) {
-                $fixers .= str_repeat(' ', $maxName + 1).$c."\n";
+                $fixers .= str_repeat(' ', $maxName + 4).$c."\n";
             }
 
             if ($count != $i) {
