@@ -21,7 +21,7 @@ class ElseIfFixer implements FixerInterface
     public function fix(\SplFileInfo $file, $content)
     {
         // [Structure] elseif, not else if
-        return preg_replace('/} else if \(/', '} elseif (', $content);
+        return str_replace('} else if (', '} elseif (', $content);
     }
 
     public function getLevel()
