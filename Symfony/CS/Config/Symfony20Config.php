@@ -11,8 +11,6 @@
 
 namespace Symfony\CS\Config;
 
-use Symfony\CS\FixerInterface;
-use Symfony\CS\ConfigInterface;
 use Symfony\CS\Finder\Symfony20Finder;
 
 /**
