@@ -21,7 +21,7 @@ class TrailingSpacesFixer implements FixerInterface
     public function fix(\SplFileInfo $file, $content)
     {
         // [Structure] Don't add trailing spaces at the end of lines
-        return preg_replace('/[ \t]*$/m', '', $content);
+        return preg_replace('/[ \t]+$/m', '', $content);
     }
 
     public function getLevel()
