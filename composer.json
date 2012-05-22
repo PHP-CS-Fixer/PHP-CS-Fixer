@@ -17,5 +17,6 @@
     },
     "autoload": {
         "psr-0": { "Symfony\\CS": "." }
-    }
+    },
+    "bin": ["php-cs-fixer"]
 }
