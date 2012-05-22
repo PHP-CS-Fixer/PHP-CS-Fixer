@@ -40,4 +40,48 @@ EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
+
+    public function testFixWithReturnAndThrows()
+    {
+        $fixer = new PhpdocParamsAlignmentFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+
+     * @param  EngineInterface $templating
+     * @throws Bar             description bar
+     * @return Foo             description foo
+
+EOF;
+
+        $input = <<<'EOF'
+
+     * @param EngineInterface       $templating
+     * @throws   Bar description bar
+     * @return  Foo     description foo
+
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
+
+    public function testFixOnlyReturn()
+    {
+        $fixer = new PhpdocParamsAlignmentFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+
+     * @return Foo description foo
+
+EOF;
+
+        $input = <<<'EOF'
+
+     * @return   Foo             description foo
+
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
 }

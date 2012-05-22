@@ -18,17 +18,28 @@ use Symfony\CS\FixerInterface;
  */
 class PhpdocParamsAlignmentFixer implements FixerInterface
 {
-    const REGEX = '/^ {5}\* @param\s+(?P<hint>[^\$]+?)\s+(?P<var>\$[^\s]+)(\s+(?P<desc>.*)|\s*)$/';
+    private $regex;
+
+    public function __construct()
+    {
+        // e.g. @param <hint> <$var>
+        $paramTag = '(?P<tag>param)\s+(?P<hint>[^$]+?)\s+(?P<var>\$[^\s]+)';
+        // e.g. @return <hint>
+        $returnThrowsTag = '(?P<tag2>return|throws)\s+(?P<hint2>[^$]+?)';
+        // optional <desc>
+        $desc = '(?:\s+(?P<desc>.*)|\s*)';
+        $this->regex = '/^ {5}\* @(?:'.$paramTag.'|'.$returnThrowsTag.')'.$desc.'$/';
+    }
 
     public function fix(\SplFileInfo $file, $content)
     {
         $lines = explode("\n", $content);
         for ($i = 0, $l = count($lines); $i < $l; $i++) {
             $items = array();
-            if (preg_match(self::REGEX, $lines[$i], $matches)) {
+            if ($matches = $this->getMatches($lines[$i])) {
                 $current = $i;
                 $items[] = $matches;
-                while (preg_match(self::REGEX, $lines[++$i], $matches)) {
+                while ($matches = $this->getMatches($lines[++$i])) {
                     $items[] = $matches;
                 }
 
@@ -36,35 +47,40 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
                 $beforeVar = 1;
                 $afterVar = 1;
 
-                // compute the max length of the hint
+                // compute the max length of the tag, hint and variables
+                $tagMax = 0;
                 $hintMax = 0;
-                foreach ($items as $item) {
-                    if ($hintMax < $len = strlen($item['hint'])) {
-                        $hintMax = $len;
-                    }
-                }
-
-                // compute the max length of the variables
                 $varMax = 0;
                 foreach ($items as $item) {
-                    if ($varMax < $len = strlen($item['var'])) {
-                        $varMax = $len;
-                    }
+                    $tagMax  = max($tagMax, strlen($item['tag']));
+                    $hintMax = max($hintMax, strlen($item['hint']));
+                    $varMax  = max($varMax, strlen($item['var']));
                 }
 
                 // update
                 foreach ($items as $j => $item) {
-                    $lines[$current + $j] =
-                        '     * @param '
+                    $line =
+                        '     * @'
+                        .$item['tag']
+                        .str_repeat(' ', $tagMax - strlen($item['tag']) + 1)
                         .$item['hint']
-                        .str_repeat(' ', $hintMax - strlen($item['hint']) + 1)
-                        .$item['var']
-                        .(
-                            isset($item['desc'])
-                            ? str_repeat(' ', $varMax - strlen($item['var']) + 1).$item['desc']
-                            : ''
-                        )
                     ;
+
+                    if (!empty($item['var'])) {
+                        $line .=
+                            str_repeat(' ', $hintMax - strlen($item['hint']) + 1)
+                            .$item['var']
+                            .(
+                                !empty($item['desc'])
+                                ? str_repeat(' ', $varMax - strlen($item['var']) + 1).$item['desc']
+                                : ''
+                            )
+                        ;
+                    } elseif (!empty($item['desc'])) {
+                        $line .= str_repeat(' ', $hintMax - strlen($item['hint']) + 1).$item['desc'];
+                    }
+
+                    $lines[$current + $j] = $line;
                 }
             }
         }
@@ -95,5 +111,17 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
     public function getDescription()
     {
         return 'All items of the @param phpdoc tags must be aligned vertically.';
+    }
+
+    private function getMatches($line)
+    {
+        if (preg_match($this->regex, $line, $matches)) {
+            if (!empty($matches['tag2'])) {
+                $matches['tag'] = $matches['tag2'];
+                $matches['hint'] = $matches['hint2'];
+            }
+
+            return $matches;
+        }
     }
 }
