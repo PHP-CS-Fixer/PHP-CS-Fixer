@@ -53,7 +53,7 @@ class Compiler
 
     protected function getCliStub()
     {
-        return "<?php require_once __DIR__.'/fixer'; __HALT_COMPILER();";
+        return "<?php require_once __DIR__.'/php-cs-fixer'; __HALT_COMPILER();";
     }
 
     protected function getWebStub()
@@ -78,6 +78,6 @@ class Compiler
     {
         $iterator = Finder::create()->files()->name('*.php')->in(array('vendor', 'Symfony'));
 
-        return array_merge(array('LICENSE', 'fixer'), iterator_to_array($iterator));
+        return array_merge(array('LICENSE', 'php-cs-fixer'), iterator_to_array($iterator));
     }
 }
