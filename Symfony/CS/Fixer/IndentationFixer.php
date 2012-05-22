@@ -34,7 +34,7 @@ class IndentationFixer implements FixerInterface
 
     public function getPriority()
     {
-        return 0;
+        return 50;
     }
 
     public function supports(\SplFileInfo $file)
