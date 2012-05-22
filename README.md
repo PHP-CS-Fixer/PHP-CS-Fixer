@@ -42,10 +42,19 @@ separated by a comma):
 
 Here is the list of built-in fixers:
 
- * **phpdoc_params**   [all] All items of the @param phpdoc tags must be aligned
-                   vertically.
+ * **indentation**     [PSR-2] Code must use 4 spaces for indenting, not tabs.
+
+ * **linefeed**        [PSR-2] All PHP files must use the Unix LF (linefeed)
+                   line ending.
 
  * **trailing_spaces** [PSR-2] Remove trailing whitespace at the end of lines.
+
+ * **return**          [all] An empty line feed should precede a return
+                   statement.
+
+ * **short_tag**       [PSR-1] PHP code must use the long <?php ?> tags or the
+                   short-echo <?= ?> tags; it must not use the other tag
+                   variations.
 
  * **unused_use**      [all] Unused use statements must be removed.
 
@@ -55,19 +64,14 @@ Here is the list of built-in fixers:
                    structures must go on the same line, and closing braces
                    must go on the next line after the body.
 
- * **short_tag**       [PSR-1] PHP code must use the long <?php ?> tags or the
-                   short-echo <?= ?> tags; it must not use the other tag
-                   variations.
+ * **visibility**      [PSR-2] Visibility must be declared on all properties and
+                   methods; abstract and final must be declared before the
+                   visibility; static must be declared after the visibility.
+
+ * **phpdoc_params**   [all] All items of the @param phpdoc tags must be aligned
+                   vertically.
 
  * **eof_ending**      [all] A file must always ends with an empty line feed.
-
- * **linefeed**        [PSR-2] All PHP files must use the Unix LF (linefeed)
-                   line ending.
-
- * **indentation**     [PSR-2] Code must use 4 spaces for indenting, not tabs.
-
- * **return**          [all] An empty line feed should precede a return
-                   statement.
 
  * **controls_spaces** [all] A single space should be between: the closing brace
                    and the control, the control and the opening parenthese,
