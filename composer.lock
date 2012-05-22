@@ -1,15 +1,15 @@
 {
-    "hash": "7bfc42699b02799d9d39122071749ed1",
+    "hash": "923ed53da46642da725445728cfdff8f",
     "packages": [
         {
             "package": "symfony/console",
             "version": "dev-master",
-            "source-reference": "0e67dc701ff55d2a1899a1e638a13a4be96d19b9"
+            "source-reference": "1edd7b739561e87bde81ff1c2ce08bd89e92277e"
         },
         {
             "package": "symfony/console",
             "version": "dev-master",
-            "source-reference": "0e67dc701ff55d2a1899a1e638a13a4be96d19b9",
+            "source-reference": "1edd7b739561e87bde81ff1c2ce08bd89e92277e",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
         },
@@ -28,17 +28,19 @@
         {
             "package": "symfony/finder",
             "version": "dev-master",
-            "source-reference": "360dc8c000efe2cf003deecd6777ea5d364fe23d"
+            "source-reference": "a2cef64d5072b284b671ee8e06b8ebc38c2969e1"
         },
         {
             "package": "symfony/finder",
             "version": "dev-master",
-            "source-reference": "360dc8c000efe2cf003deecd6777ea5d364fe23d",
+            "source-reference": "a2cef64d5072b284b671ee8e06b8ebc38c2969e1",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [
+
+    ],
     "aliases": [
 
     ],
