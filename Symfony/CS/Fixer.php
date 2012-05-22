@@ -73,6 +73,10 @@ class Fixer
 
         $changed = array();
         foreach ($config->getFinder() as $file) {
+            if ($file->isDir()) {
+                continue;
+            }
+
             if ($this->fixFile($file, $config->getFixers(), $dryRun)) {
                 if ($file instanceof FinderSplFileInfo) {
                     $changed[] = $file->getRelativePathname();
