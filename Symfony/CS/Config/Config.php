@@ -35,7 +35,7 @@ class Config implements ConfigInterface
         $this->finder = new DefaultFinder();
     }
 
-    static public function create()
+    public static function create()
     {
         return new static();
     }
