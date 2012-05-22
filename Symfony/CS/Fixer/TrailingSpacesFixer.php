@@ -32,7 +32,7 @@ class TrailingSpacesFixer implements FixerInterface
 
     public function getPriority()
     {
-        return 0;
+        return 20;
     }
 
     public function supports(\SplFileInfo $file)
