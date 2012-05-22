@@ -89,6 +89,8 @@ Here is the list of built-in configs:
 
  * **default** A default configuration
 
+ * **magento** The configuration for a Magento application
+
  * **sf20**    The configuration for the Symfony 2.0 branch
 
  * **sf21**    The configuration for the Symfony 2.1 branch
