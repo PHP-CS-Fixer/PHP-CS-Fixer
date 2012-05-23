@@ -13,8 +13,8 @@ Installation
 ------------
 
 Download the
-[`php-cs-fixer.phar`](https://github.com/fabpot/PHP-CS-Fixer/raw/master/php-cs-fixer.phar)
-file and store it somewhere on your computer.
+[`php-cs-fixer.phar`](http://cs.sensiolabs.org/get/php-cs-fixer.phar) file and
+store it somewhere on your computer.
 
 Usage
 -----
