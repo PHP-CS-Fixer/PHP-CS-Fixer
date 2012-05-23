@@ -72,7 +72,8 @@ Contribute
 ----------
 
 The tool comes with quite a few built-in fixers and finders, but everyone is
-more than welcome to contribute more of them.
+more than welcome to [contribute](https://github.com/fabpot/php-cs-fixer) more
+of them.
 
 ### Fixers
 
