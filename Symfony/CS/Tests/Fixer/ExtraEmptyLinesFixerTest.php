@@ -35,4 +35,190 @@ EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
+
+    public function testFixWithManyEmptyLines()
+    {
+        $fixer = new ExtraEmptyLinesFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+$a = new Bar();
+
+$a = new FooBaz();
+EOF;
+
+        $input = <<<'EOF'
+$a = new Bar();
+
+
+
+
+
+
+$a = new FooBaz();
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
+
+    public function testFixWithHeredoc()
+    {
+        $fixer = new ExtraEmptyLinesFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+$b = <<<TEXT
+Foo TEXT
+Bar
+
+
+FooFoo
+TEXT;
+EOF;
+
+        $input = <<<'EOF'
+$b = <<<TEXT
+Foo TEXT
+Bar
+
+
+FooFoo
+TEXT;
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
+
+    public function testFixWithNowdoc()
+    {
+        $fixer = new ExtraEmptyLinesFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+$b = <<<'TEXT'
+Foo TEXT;
+Bar
+
+
+FooFoo
+TEXT;
+EOF;
+
+        $input = <<<'EOF'
+$b = <<<'TEXT'
+Foo TEXT;
+Bar
+
+
+FooFoo
+TEXT;
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
+
+    public function testFixWithEncapsulatedNowdoc()
+    {
+        $fixer = new ExtraEmptyLinesFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+$b = <<<'TEXT'
+Foo TEXT
+Bar
+
+<<<'TEMPLATE'
+BarFooBar TEMPLATE
+
+
+TEMPLATE;
+
+
+FooFoo
+TEXT;
+EOF;
+
+        $input = <<<'EOF'
+$b = <<<'TEXT'
+Foo TEXT
+Bar
+
+<<<'TEMPLATE'
+BarFooBar TEMPLATE
+
+
+TEMPLATE;
+
+
+FooFoo
+TEXT;
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
+
+    public function testFixWithMultilineString()
+    {
+        $fixer = new ExtraEmptyLinesFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+$a = 'Foo
+
+
+Bar';
+EOF;
+
+        $input = <<<'EOF'
+$a = 'Foo
+
+
+Bar';
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
+
+    public function testFixWithTrickyMultilineStrings()
+    {
+        $fixer = new ExtraEmptyLinesFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+$a = 'Foo';
+
+$b = 'Bar
+
+
+Here\'s an escaped quote '
+
+.
+
+'
+
+
+FooFoo';
+EOF;
+
+        $input = <<<'EOF'
+$a = 'Foo';
+
+
+$b = 'Bar
+
+
+Here\'s an escaped quote '
+
+
+.
+
+
+'
+
+
+FooFoo';
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
 }
