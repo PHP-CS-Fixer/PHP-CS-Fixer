@@ -1,13 +1,13 @@
 PHP Coding Standard Fixer
 =========================
 
-`PHP_CodeSniffer` is a good tool to find coding standards problems in your
-project but the identified problems need to be fixed by hand, and frankly,
-this is quite boring on large projects! The goal of the PHP coding Standard
-Fixer tool is to automate the fixing of *most* issues.
+The PHP Coding Standard Fixer tool fixes *most* issues in your code when you
+want to follow the PHP coding standards as defined in the PSR-1 and PSR-2
+documents.
 
-The tool knows how to fix issues for the coding standards defined in the
-soon-to-be-available PSR-1 and PSR-2 documents.
+If you are already using `PHP_CodeSniffer` to identify coding standard
+problems in your code, you know that fixing them by hand is tedious,
+especially on large projects. This tool does the job for you.
 
 Installation
 ------------
