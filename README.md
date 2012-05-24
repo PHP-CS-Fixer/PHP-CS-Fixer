@@ -25,67 +25,73 @@ problems as possible on a given file or directory:
     php php-cs-fixer.phar fix /path/to/dir
     php php-cs-fixer.phar fix /path/to/file
 
-You can limit the fixers you want to use on your project by using the
-`--level` option:
+The `--level` option limits the fixers to apply on the
+project:
 
     php php-cs-fixer.phar fix /path/to/project --level=psr1
     php php-cs-fixer.phar fix /path/to/project --level=psr2
     php php-cs-fixer.phar fix /path/to/project --level=all
 
-When the level option is not passed, all PSR-2 fixers and some additional ones
-are run.
+By default, all PSR-2 fixers and some additional ones are run.
 
-You can also explicitly name the fixers you want to use (a list of fixer names
-separated by a comma):
+The `--fixers` option lets you choose the exact fixers to
+apply (the fixer names must be separated by a comma):
 
     php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,short_tag,indentation
 
-Here is the list of built-in fixers:
+Choose from the list of available fixers:
 
- * **indentation**     [PSR-2] Code must use 4 spaces for indenting, not tabs.
+ * **indentation**       [PSR-2] Code must use 4 spaces for indenting, not tabs.
 
- * **linefeed**        [PSR-2] All PHP files must use the Unix LF (linefeed)
-                   line ending.
+ * **linefeed**          [PSR-2] All PHP files must use the Unix LF (linefeed)
+                     line ending.
 
- * **trailing_spaces** [PSR-2] Remove trailing whitespace at the end of lines.
+ * **trailing_spaces**   [PSR-2] Remove trailing whitespace at the end of lines.
 
- * **return**          [all] An empty line feed should precede a return
-                   statement.
+ * **visibility**        [PSR-2] Visibility must be declared on all properties
+                     and methods; abstract and final must be declared before
+                     the visibility; static must be declared after the
+                     visibility.
 
- * **short_tag**       [PSR-1] PHP code must use the long <?php ?> tags or the
-                   short-echo <?= ?> tags; it must not use the other tag
-                   variations.
+ * **unused_use**        [all] Unused use statements must be removed.
 
- * **unused_use**      [all] Unused use statements must be removed.
+ * **return**            [all] An empty line feed should precede a return
+                     statement.
 
- * **braces**          [PSR-2] Opening braces for classes and methods must go on
-                   the next line, and closing braces must go on the next
-                   line after the body. Opening braces for control
-                   structures must go on the same line, and closing braces
-                   must go on the next line after the body.
+ * **short_tag**         [PSR-1] PHP code must use the long <?php ?> tags or the
+                     short-echo <?= ?> tags; it must not use the other tag
+                     variations.
 
- * **visibility**      [PSR-2] Visibility must be declared on all properties and
-                   methods; abstract and final must be declared before the
-                   visibility; static must be declared after the visibility.
+ * **extra_empty_lines** [all] Removes extra empty lines.
 
- * **phpdoc_params**   [all] All items of the @param phpdoc tags must be aligned
-                   vertically.
+ * **phpdoc_params**     [all] All items of the @param phpdoc tags must be
+                     aligned vertically.
 
- * **eof_ending**      [all] A file must always ends with an empty line feed.
+ * **eof_ending**        [all] A file must always ends with an empty line feed.
 
- * **controls_spaces** [all] A single space should be between: the closing brace
-                   and the control, the control and the opening parenthese,
-                   the closing parenthese and the opening brace.
+ * **braces**            [PSR-2] Opening braces for classes and methods must go
+                     on the next line, and closing braces must go on the
+                     next line after the body. Opening braces for control
+                     structures must go on the same line, and closing braces
+                     must go on the next line after the body.
 
- * **elseif**          [PSR-2] The keyword elseif should be used instead of else
-                   if so that all control keywords looks like single words.
+ * **controls_spaces**   [all] A single space should be between: the closing
+                     brace and the control, the control and the opening
+                     parenthese, the closing parenthese and the opening
+                     brace.
 
-You can also use built-in configurations, for instance when ran for Symfony:
+ * **elseif**            [PSR-2] The keyword elseif should be used instead of
+                     else if so that all control keywords looks like single
+                     words.
+
+
+The `--config` option customizes the files to analyse, based
+on some well-known directory structures:
 
     # For the Symfony 2.1 branch
     php php-cs-fixer.phar fix /path/to/sf21 --config=sf21
 
-Here is the list of built-in configs:
+Choose from the list of available configurations:
 
  * **default** A default configuration
 
@@ -95,10 +101,16 @@ Here is the list of built-in configs:
 
  * **sf21**    The configuration for the Symfony 2.1 branch
 
-Instead of using the command line arguments, you can save your configuration
-in a `.php_cs` file in the root directory of your project. It
-must return an instance of `Symfony\CS\ConfigInterface` and it lets you
-configure the fixers and the files and directories that need to be analyzed:
+The `--dry-run` option displays the files that need to be
+fixed but without actually modifying them:
+
+    php php-cs-fixer.phar fix /path/to/code --dry-run
+
+Instead of using command line options to customize the fixer, you can save the
+configuration in a `.php_cs` file in the root directory of
+your project. The file must return an instance of
+`Symfony\CS\ConfigInterface`, which lets you configure the fixers and the
+files and directories that need to be analyzed:
 
     <?php
 
