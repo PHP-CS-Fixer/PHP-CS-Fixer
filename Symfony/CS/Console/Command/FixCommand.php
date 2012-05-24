@@ -59,36 +59,43 @@ problems as possible on a given file or directory:
     <info>php %command.full_name% /path/to/dir</info>
     <info>php %command.full_name% /path/to/file</info>
 
-You can limit the fixers you want to use on your project by using the
-<comment>--level</comment> option:
+The <comment>--level</comment> option limits the fixers to apply on the
+project:
 
     <info>php %command.full_name% /path/to/project --level=psr1</info>
     <info>php %command.full_name% /path/to/project --level=psr2</info>
     <info>php %command.full_name% /path/to/project --level=all</info>
 
-When the level option is not passed, all PSR-2 fixers and some additional ones
-are run.
+By default, all PSR-2 fixers and some additional ones are run.
 
-You can also explicitly name the fixers you want to use (a list of fixer names
-separated by a comma):
+The <comment>--fixers</comment> option lets you choose the exact fixers to
+apply (the fixer names must be separated by a comma):
 
     <info>php %command.full_name% /path/to/dir --fixers=linefeed,short_tag,indentation</info>
 
-Here is the list of built-in fixers:
+Choose from the list of available fixers:
 
 {$this->getFixersHelp()}
-You can also use built-in configurations, for instance when ran for Symfony:
+
+The <comment>--config</comment> option customizes the files to analyse, based
+on some well-known directory structures:
 
     <comment># For the Symfony 2.1 branch</comment>
     <info>php %command.full_name% /path/to/sf21 --config=sf21</info>
 
-Here is the list of built-in configs:
+Choose from the list of available configurations:
 
 {$this->getConfigsHelp()}
-Instead of using the command line arguments, you can save your configuration
-in a <comment>.php_cs</comment> file in the root directory of your project. It
-must return an instance of `Symfony\CS\ConfigInterface` and it lets you
-configure the fixers and the files and directories that need to be analyzed:
+The <comment>--dry-run</comment> option displays the files that need to be
+fixed but without actually modifying them:
+
+    <info>php %command.full_name% /path/to/code --dry-run</info>
+
+Instead of using command line options to customize the fixer, you can save the
+configuration in a <comment>.php_cs</comment> file in the root directory of
+your project. The file must return an instance of
+`Symfony\CS\ConfigInterface`, which lets you configure the fixers and the
+files and directories that need to be analyzed:
 
     <?php
 
