@@ -32,13 +32,15 @@ class ExtraEmptyLinesFixer implements FixerInterface
 )
 |(?: # single quoted string
     '
-        (?:[^']|\\')*
-    [^\\]'
+        [^\\']*+
+        (?:\\.[^\\']*+)*+
+    '
 )
 |(?: # double quoted string
     "
-        (?:[^"]|\\")*
-    [^\\]"
+        [^\\"]*+
+        (?:\\.[^\\"]*+)*+
+    "
 )
 |(?P<to_fix>
     \n{3}\n*
