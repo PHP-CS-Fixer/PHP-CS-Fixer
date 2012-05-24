@@ -22,6 +22,7 @@ class Fixer
     const VERSION = '0.2';
 
     protected $fixers = array();
+    protected $fixersApplied = array();
 
     public function registerBuiltInFixers()
     {
@@ -79,10 +80,11 @@ class Fixer
 
             if ($this->fixFile($file, $config->getFixers(), $dryRun)) {
                 if ($file instanceof FinderSplFileInfo) {
-                    $changed[] = $file->getRelativePathname();
+                    $changed[$file->getRelativePathname()] = $this->fixersApplied;
                 } else {
-                    $changed[] = $file->getPathname();
+                    $changed[$file->getPathname()] = $this->fixersApplied;
                 }
+                $this->fixersApplied = array();
             }
         }
 
@@ -114,6 +116,9 @@ class Fixer
             }
 
             $new = $fixer->fix($file, $new);
+            if ($new != $old) {
+                $this->fixersApplied[$fixer->getName()] = $fixer;
+            }
         }
 
         if ($new != $old) {

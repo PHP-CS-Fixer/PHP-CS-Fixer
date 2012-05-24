@@ -169,8 +169,14 @@ EOF
 
         $changed = $this->fixer->fix($config, $input->getOption('dry-run'));
 
-        foreach ($changed as $i => $file) {
-            $output->writeln(sprintf('%4d) %s', $i + 1, $file));
+        $i = 1;
+        foreach ($changed as $file => $fixersApplied) {
+            $output->writeln(sprintf('%4d) %s', $i++, $file));
+            if ($input->getOption('verbose')) {
+                foreach($fixersApplied as $name => $fixer) {
+                    $output->writeln(sprintf('      *) %s', $fixer->getDescription()));
+                }
+            }
         }
     }
 
