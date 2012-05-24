@@ -72,7 +72,7 @@ class VisibilityFixer implements FixerInterface
 
     public function supports(\SplFileInfo $file)
     {
-        return 'php' == $file->getExtension();
+        return 'php' == pathinfo($file->getFilename(), PATHINFO_EXTENSION);
     }
 
     public function getName()
