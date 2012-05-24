@@ -115,10 +115,11 @@ class Fixer
                 continue;
             }
 
-            $new = $fixer->fix($file, $new);
-            if ($new != $old) {
+            $new1 = $fixer->fix($file, $new);
+            if ($new1 != $new) {
                 $this->fixersApplied[$fixer->getName()] = $fixer;
             }
+            $new = $new1;
         }
 
         if ($new != $old) {
