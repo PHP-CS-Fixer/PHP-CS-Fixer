@@ -22,7 +22,6 @@ class Fixer
     const VERSION = '0.2';
 
     protected $fixers = array();
-    protected $fixersApplied = array();
 
     public function registerBuiltInFixers()
     {
@@ -78,13 +77,12 @@ class Fixer
                 continue;
             }
 
-            if ($this->fixFile($file, $config->getFixers(), $dryRun)) {
+            if ($appliedFixers = $this->fixFile($file, $config->getFixers(), $dryRun)) {
                 if ($file instanceof FinderSplFileInfo) {
-                    $changed[$file->getRelativePathname()] = $this->fixersApplied;
+                    $changed[$file->getRelativePathname()] = $appliedFixers;
                 } else {
-                    $changed[$file->getPathname()] = $this->fixersApplied;
+                    $changed[$file->getPathname()] = $appliedFixers;
                 }
-                $this->fixersApplied = array();
             }
         }
 
@@ -94,6 +92,7 @@ class Fixer
     public function fixFile(\SplFileInfo $file, $fixerConfig, $dryRun)
     {
         $new = $old = file_get_contents($file->getRealpath());
+        $appliedFixers = array();
 
         $fixers = array();
         if (is_array($fixerConfig)) {
@@ -117,7 +116,7 @@ class Fixer
 
             $new1 = $fixer->fix($file, $new);
             if ($new1 != $new) {
-                $this->fixersApplied[$fixer->getName()] = $fixer;
+                $appliedFixers[] = $fixer->getName();
             }
             $new = $new1;
         }
@@ -127,7 +126,7 @@ class Fixer
                 file_put_contents($file->getRealpath(), $new);
             }
 
-            return true;
+            return $appliedFixers;
         }
     }
 

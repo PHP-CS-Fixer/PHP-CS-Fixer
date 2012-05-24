@@ -170,13 +170,12 @@ EOF
         $changed = $this->fixer->fix($config, $input->getOption('dry-run'));
 
         $i = 1;
-        foreach ($changed as $file => $fixersApplied) {
-            $output->writeln(sprintf('%4d) %s', $i++, $file));
+        foreach ($changed as $file => $appliedFixers) {
+            $output->write(sprintf('%4d) %s', ++$i, $file));
             if ($input->getOption('verbose')) {
-                foreach($fixersApplied as $name => $fixer) {
-                    $output->writeln(sprintf('      *) %s', $fixer->getDescription()));
-                }
+                $output->write(sprintf(' (<comment>%s</comment>)', implode(', ', $appliedFixers)));
             }
+            $output->writeln('');
         }
     }
 
