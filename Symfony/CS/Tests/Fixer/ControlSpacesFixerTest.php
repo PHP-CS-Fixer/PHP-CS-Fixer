@@ -65,6 +65,32 @@ class ControlSpacesFixerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($elseifFixed, $fixer->fix($this->getFileMock(), $elseifFixed));
     }
 
+    /**
+     * @dataProvider testFixCastsProvider
+     */
+    public function testFixCasts($cast, $castFixed)
+    {
+        $fixer = new Fixer();
+
+        $this->assertEquals($castFixed, $fixer->fix($this->getFileMock(), $cast));
+        $this->assertEquals($castFixed, $fixer->fix($this->getFileMock(), $castFixed));
+    }
+
+    public function testFixCastsProvider()
+    {
+        return array(
+            array('( int)$foo', '(int) $foo'),
+            array('( string )( int )$foo', '(string) (int) $foo'),
+            array('(string)(int)$foo', '(string) (int) $foo'),
+            array('( string   )    (   int )$foo', '(string) (int) $foo'),
+            array('( string )   $foo', '(string) $foo'),
+            array('(float )Foo::bar()', '(float) Foo::bar()'),
+            array('Foo::baz((float )Foo::bar())', 'Foo::baz((float) Foo::bar())'),
+            array('$query["params"] = (array)$query["params"]', '$query["params"] = (array) $query["params"]'),
+            array("(int)\n    *", "(int)\n    *"),
+        );
+    }
+
     private function getFileMock()
     {
         return $this->getMockBuilder('\SplFileInfo')
