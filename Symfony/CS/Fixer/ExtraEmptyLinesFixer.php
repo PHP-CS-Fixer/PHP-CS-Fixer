@@ -57,11 +57,31 @@ REGEX;
         }, $content);
     }
 
+    public function getLevel()
+    {
+        return FixerInterface::ALL_LEVEL;
+    }
+
+    public function getPriority()
+    {
+        return 0;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function supports(\SplFileInfo $file)
     {
-        return true;
+        return 'php' == pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+    }
+
+    public function getName()
+    {
+        return 'extra_empty_lines';
+    }
+
+    public function getDescription()
+    {
+        return 'Removes extra empty lines.';
     }
 }
