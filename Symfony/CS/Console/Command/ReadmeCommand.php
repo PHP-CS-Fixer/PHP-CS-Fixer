@@ -65,8 +65,10 @@ EOF;
 Helpers
 -------
 
-If you are using Vim, install the dedicated
-[plugin](https://github.com/stephpy/vim-php-cs-fixer).
+Dedicated plugins exist for:
+
+* [Vim](https://github.com/stephpy/vim-php-cs-fixer)
+* [Sublime Text 2](https://github.com/benmatselby/sublime-phpcs)
 
 Contribute
 ----------
