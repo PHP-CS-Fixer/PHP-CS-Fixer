@@ -171,7 +171,7 @@ class ControlSpacesFixer implements FixerInterface
      */
     private function fixCasts($content)
     {
-        $types =  implode('|', array(
+        $types = implode('|', array(
             'int',
             'integer',
             'bool',
