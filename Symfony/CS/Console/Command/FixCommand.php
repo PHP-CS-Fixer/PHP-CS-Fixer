@@ -171,7 +171,7 @@ EOF
 
         $i = 1;
         foreach ($changed as $file => $appliedFixers) {
-            $output->write(sprintf('%4d) %s', ++$i, $file));
+            $output->write(sprintf('%4d) %s', $i++, $file));
             if ($input->getOption('verbose')) {
                 $output->write(sprintf(' (<comment>%s</comment>)', implode(', ', $appliedFixers)));
             }
