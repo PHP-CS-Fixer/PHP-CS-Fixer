@@ -36,6 +36,7 @@ class Compiler
             $path = str_replace(__DIR__.'/', '', $file);
             $phar->addFromString($path, file_get_contents($file));
         }
+        $this->addPhpCsFixer($phar);
 
         // Stubs
         $phar['_cli_stub.php'] = $this->getCliStub();
@@ -49,6 +50,18 @@ class Compiler
         unset($phar);
 
         chmod($pharFile, 0777);
+    }
+
+    /**
+     * Remove the shebang from the file before add it to the PHAR file.
+     *
+     * @param \Phar $phar PHAR instance
+     */
+    protected function addPhpCsFixer(\Phar $phar)
+    {
+        $content = file_get_contents(__DIR__ . '/../../../php-cs-fixer');
+        $content = preg_replace('{^#!/usr/bin/env php\s*}', '', $content);
+        $phar->addFromString('php-cs-fixer', $content);
     }
 
     protected function getCliStub()
@@ -78,6 +91,6 @@ class Compiler
     {
         $iterator = Finder::create()->files()->name('*.php')->in(array('vendor', 'Symfony'));
 
-        return array_merge(array('LICENSE', 'php-cs-fixer'), iterator_to_array($iterator));
+        return array_merge(array('LICENSE'), iterator_to_array($iterator));
     }
 }
