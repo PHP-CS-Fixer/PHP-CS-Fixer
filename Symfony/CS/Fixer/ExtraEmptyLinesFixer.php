@@ -27,8 +27,8 @@ class ExtraEmptyLinesFixer implements FixerInterface
         $regex = <<<'REGEX'
 (?: # heredoc/nowdoc
     <<<(?P<nowdoc_quote>'?) (?P<nowdoc_delimiter>[_[:alpha:]][_[:alnum:]]*) (?P=nowdoc_quote)
-        (?:[^\g1]|1)*
-    (\n(?P=nowdoc_delimiter))
+        \C*(?!(?P=nowdoc_end))
+    (?P<nowdoc_end>\n(?P=nowdoc_delimiter))
 )
 |(?: # single quoted string
     '
