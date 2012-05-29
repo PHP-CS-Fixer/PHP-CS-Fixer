@@ -48,32 +48,35 @@ Choose from the list of available fixers:
 
  * **trailing_spaces**   [PSR-2] Remove trailing whitespace at the end of lines.
 
- * **visibility**        [PSR-2] Visibility must be declared on all properties
-                     and methods; abstract and final must be declared before
-                     the visibility; static must be declared after the
-                     visibility.
+ * **phpdoc_params**     [all] All items of the @param phpdoc tags must be
+                     aligned vertically.
 
  * **unused_use**        [all] Unused use statements must be removed.
-
- * **return**            [all] An empty line feed should precede a return
-                     statement.
 
  * **short_tag**         [PSR-1] PHP code must use the long <?php ?> tags or the
                      short-echo <?= ?> tags; it must not use the other tag
                      variations.
 
+ * **return**            [all] An empty line feed should precede a return
+                     statement.
+
  * **extra_empty_lines** [all] Removes extra empty lines.
 
- * **phpdoc_params**     [all] All items of the @param phpdoc tags must be
-                     aligned vertically.
-
  * **eof_ending**        [all] A file must always ends with an empty line feed.
+
+ * **visibility**        [PSR-2] Visibility must be declared on all properties
+                     and methods; abstract and final must be declared before
+                     the visibility; static must be declared after the
+                     visibility.
 
  * **braces**            [PSR-2] Opening braces for classes and methods must go
                      on the next line, and closing braces must go on the
                      next line after the body. Opening braces for control
                      structures must go on the same line, and closing braces
                      must go on the next line after the body.
+
+ * **php_closing_tag**   [PSR-2] The closing ?> tag MUST be omitted from files
+                     containing only PHP.
 
  * **controls_spaces**   [all] A single space should be between: the closing
                      brace and the control, the control and the opening
@@ -127,8 +130,10 @@ files and directories that need to be analyzed:
 Helpers
 -------
 
-If you are using Vim, install the dedicated
-[plugin](https://github.com/stephpy/vim-php-cs-fixer).
+Dedicated plugins exist for:
+
+* [Vim](https://github.com/stephpy/vim-php-cs-fixer)
+* [Sublime Text 2](https://github.com/benmatselby/sublime-phpcs)
 
 Contribute
 ----------
