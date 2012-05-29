@@ -97,7 +97,7 @@ EOF;
         $expected = <<<'EOF'
 $b = <<<'TEXT'
 Foo TEXT;
-Bar
+Bar1}
 
 
 FooFoo
@@ -107,7 +107,7 @@ EOF;
         $input = <<<'EOF'
 $b = <<<'TEXT'
 Foo TEXT;
-Bar
+Bar1}
 
 
 FooFoo
