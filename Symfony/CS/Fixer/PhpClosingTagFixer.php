@@ -21,7 +21,7 @@ class PhpClosingTagFixer implements FixerInterface
     public function fix(\SplFileInfo $file, $content)
     {
         if (strpos($content, '<?php') === 0) {
-            return preg_replace('/( *)\?>\s*$/sm', '', $content);
+            return preg_replace('/( *)\?>\s*$/s', '', $content);
         }
 
         return $content;
