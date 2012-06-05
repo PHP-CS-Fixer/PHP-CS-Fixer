@@ -73,6 +73,7 @@ EOF;
     abstract public static function foo() {}
     function ($foo) {}
     function() {}
+    function foo();
 
 EOF;
 
@@ -91,6 +92,7 @@ EOF;
     static abstract function foo() {}
     function ($foo) {}
     function() {}
+    function foo();
 
 EOF;
 
