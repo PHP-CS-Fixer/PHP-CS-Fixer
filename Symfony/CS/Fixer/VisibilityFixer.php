@@ -38,22 +38,40 @@ class VisibilityFixer implements FixerInterface
                 . ' ' . $matches[2];
         }, $content);
 
-        $content = preg_replace_callback('/^    ((?:(?:public|protected|private|static|abstract|final) +)*)(function +[a-z0-9_]+)/im', function ($matches) {
+        $content = preg_replace_callback('/^    ((?:(?:public|protected|private|static|abstract|final) +)*)(function +[a-z0-9_]+.*)(;|{)/im', function ($matches) {
             $flags = explode(' ', strtolower(trim($matches[1])));
-            if (in_array('protected', $flags)) {
-                $visibility = 'protected';
-            } elseif (in_array('private', $flags)) {
-                $visibility = 'private';
-            } else {
-                $visibility = 'public';
+
+            $parts = array();
+
+            // abstract
+            if (in_array('abstract', $flags)) {
+                $parts[] = 'abstract';
             }
 
-            return '    '
-                . (in_array('abstract', $flags) ? 'abstract ' : '')
-                . (in_array('final', $flags) ? 'final ' : '')
-                . $visibility
-                . (in_array('static', $flags) ? ' static' : '')
-                . ' '. $matches[2];
+            // final
+            if (in_array('final', $flags)) {
+                $parts[] = 'final';
+            }
+
+            // visibility
+            if (in_array('protected', $flags)) {
+                $parts[] = 'protected';
+            } elseif (in_array('private', $flags)) {
+                $parts[] = 'private';
+            } elseif (';' !== $matches[3]) {
+                $parts[] = 'public';
+            }
+
+            // static
+            if (in_array('static', $flags)) {
+                $parts[] = 'static';
+            }
+
+            if ($prefix = implode(' ', $parts)) {
+                $prefix .= ' ';
+            }
+
+            return '    '.$prefix.$matches[2].$matches[3];
         }, $content);
 
         return $content;
