@@ -50,9 +50,20 @@ TEST;
             p5=\$p5, style=\$style", ERROR_CODE);
 TEST;
 
+        $return3 = <<<TEST
+    \$foo = \$bar;
+    return;
+TEST;
+        $returnFixed3 = <<<TEST
+    \$foo = \$bar;
+
+    return;
+TEST;
+
         return array(
             array($return1, $returnFixed1),
             array($return2, $returnFixed2),
+            array($return3, $returnFixed3),
         );
     }
 

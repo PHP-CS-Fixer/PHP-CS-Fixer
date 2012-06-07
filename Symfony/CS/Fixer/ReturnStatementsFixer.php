@@ -21,7 +21,7 @@ class ReturnStatementsFixer implements FixerInterface
     public function fix(\SplFileInfo $file, $content)
     {
         // [Structure] Add a blank line before return statements
-        return preg_replace_callback('/(^.*$)\n(^ +return +)/m', function ($match) {
+        return preg_replace_callback('/(^.*$)\n(^ +return\b)/m', function ($match) {
             // don't add it if the previous line is ...
             if (
                 preg_match('/\{$/m',   $match[1]) || // ... ending with an opening brace
