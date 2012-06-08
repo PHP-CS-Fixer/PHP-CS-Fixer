@@ -65,12 +65,12 @@ EOF;
     protected function foo() {}
     private function foo() {}
     final public function foo() {}
-    abstract public function foo() {}
+    abstract public function foo();
     final public function foo() {}
-    abstract public function foo() {}
+    abstract public function foo();
     public static function foo() {}
     final public static function foo() {}
-    abstract public static function foo() {}
+    abstract public static function foo();
     function ($foo) {}
     function() {}
 
@@ -83,12 +83,12 @@ EOF;
     protected function foo() {}
     private function foo() {}
     final public function foo() {}
-    abstract public function foo() {}
+    abstract public function foo();
     public final function foo() {}
-    public abstract function foo() {}
+    public abstract function foo();
     public static function foo() {}
     final static function foo() {}
-    static abstract function foo() {}
+    static abstract function foo();
     function ($foo) {}
     function() {}
 
