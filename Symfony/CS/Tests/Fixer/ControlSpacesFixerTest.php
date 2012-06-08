@@ -39,7 +39,7 @@ class ControlSpacesFixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
 
-        $if = 'if($test){';
+        $if = 'if( $test ){';
         $ifFixed = 'if ($test) {';
         $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $if));
         $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $ifFixed));
