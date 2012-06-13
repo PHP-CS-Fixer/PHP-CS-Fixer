@@ -26,7 +26,7 @@ class Compiler
             unlink($pharFile);
         }
 
-        $phar = new \Phar($pharFile, 0, 'PHP CS Fixer');
+        $phar = new \Phar($pharFile, 0, 'php-cs-fixer.phar');
         $phar->setSignatureAlgorithm(\Phar::SHA1);
 
         $phar->startBuffering();
@@ -39,9 +39,7 @@ class Compiler
         $this->addPhpCsFixer($phar);
 
         // Stubs
-        $phar['_cli_stub.php'] = $this->getCliStub();
-        $phar['_web_stub.php'] = $this->getWebStub();
-        $phar->setDefaultStub('_cli_stub.php', '_web_stub.php');
+        $phar->setStub($this->getStub());
 
         $phar->stopBuffering();
 
@@ -61,17 +59,13 @@ class Compiler
     {
         $content = file_get_contents(__DIR__ . '/../../../php-cs-fixer');
         $content = preg_replace('{^#!/usr/bin/env php\s*}', '', $content);
+
         $phar->addFromString('php-cs-fixer', $content);
     }
 
-    protected function getCliStub()
+    protected function getStub()
     {
-        return "<?php require_once __DIR__.'/php-cs-fixer'; __HALT_COMPILER();";
-    }
-
-    protected function getWebStub()
-    {
-        return "<?php throw new \LogicException('This PHAR file can only be used from the CLI.'); __HALT_COMPILER();";
+        return "#!/usr/bin/env php\n<?php Phar::mapPhar('php-cs-fixer.phar'); require 'phar://php-cs-fixer.phar/php-cs-fixer'; __HALT_COMPILER();";
     }
 
     protected function getLicense()
