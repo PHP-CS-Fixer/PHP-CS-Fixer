@@ -12,9 +12,42 @@ especially on large projects. This tool does the job for you.
 Installation
 ------------
 
+### Locally
+
 Download the
 [`php-cs-fixer.phar`](http://cs.sensiolabs.org/get/php-cs-fixer.phar) file and
 store it somewhere on your computer.
+
+### Globally
+
+You can run these commands to easily acces `php-cs-fixer` from anywhere on your system:
+
+    $ sudo wget http://cs.sensiolabs.org/get/php-cs-fixer.phar -O /usr/local/bin/php-cs-fixer
+
+or with curl:
+
+    $ sudo curl http://cs.sensiolabs.org/get/php-cs-fixer.phar -o /usr/local/bin/php-cs-fixer
+
+then:
+
+    $ sudo chmod a+x /usr/local/bin/php-cs-fixer
+
+Then, just run `php-cs-fixer` in order to run php-cs-fixer
+
+Update
+------
+
+### Locally
+
+The `self-update` command tries to update php-cs-fixer itself:
+
+    $ php php-cs-fixer.phar self-update
+
+### Globally
+
+You can update php-cs-fixer through this command:
+
+    $ sudo php-cs-fixer self-update
 
 Usage
 -----
