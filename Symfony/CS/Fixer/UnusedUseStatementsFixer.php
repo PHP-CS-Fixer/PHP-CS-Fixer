@@ -51,7 +51,8 @@ class UnusedUseStatementsFixer implements FixerInterface
 
     public function getPriority()
     {
-        return 0;
+        // should be run before the ExtraEmptyLinesFixer
+        return 5;
     }
 
     public function supports(\SplFileInfo $file)
