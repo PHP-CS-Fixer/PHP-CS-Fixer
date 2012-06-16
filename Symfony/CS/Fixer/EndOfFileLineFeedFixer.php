@@ -21,7 +21,10 @@ class EndOfFileLineFeedFixer implements FixerInterface
     public function fix(\SplFileInfo $file, $content)
     {
         // [Structure] A file must always ends with a linefeed character
-        if (strlen($content) && "\n" != substr($content, -1)) {
+
+        $content = rtrim($content);
+
+        if (strlen($content)) {
             return $content."\n";
         }
 
