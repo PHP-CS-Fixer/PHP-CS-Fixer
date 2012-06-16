@@ -55,7 +55,7 @@ class ControlSpacesFixerTest extends \PHPUnit_Framework_TestCase
             array('if  (($test1 || $test2) && $test3){', 'if (($test1 || $test2) && $test3) {'),
             array('if(($test1 || $test2) && $test3){', 'if (($test1 || $test2) && $test3) {'),
             array('if ($this->tesT ($test)) {', 'if ($this->tesT ($test)) {'),
-            array('if ($this->testtesT ($test)) {', 'if ($this->testtesT ($test)) {'), // TODO: make this test pass
+            array('if ($this->testtesT ($test)) {', 'if ($this->testtesT ($test)) {'),
         );
     }
 
