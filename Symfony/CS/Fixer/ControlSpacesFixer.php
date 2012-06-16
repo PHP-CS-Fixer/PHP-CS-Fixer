@@ -128,7 +128,7 @@ class ControlSpacesFixer implements FixerInterface
         return preg_replace(
             array(
                 sprintf('/(%s)[^\S\n]*\([^\S\n]*([^()]*?|(?R))[^\S\n]*\)[^\S\n]*{/', implode('|', $statements)), // Fix spacing inside brackets for simple bracket cases
-                sprintf('/(%s)[^\S\n]*\((.*)\)[^\S\n]*{/', implode('|', $statements))                               // Fix spacing for all cases leaving spacing inside brackets as is
+                sprintf('/(%s)[^\S\n]*\((.*)\)[^\S\n]*{/', implode('|', $statements))                            // Fix spacing for all cases leaving spacing inside brackets as is
             ),
             array(
                 '\\1 (\\2) {',
