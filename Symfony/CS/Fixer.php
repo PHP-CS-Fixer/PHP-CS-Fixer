@@ -22,6 +22,7 @@ class Fixer
     const VERSION = '0.2';
 
     protected $fixers = array();
+    protected $configs = array();
 
     public function registerBuiltInFixers()
     {
