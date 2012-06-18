@@ -35,14 +35,28 @@ class ControlSpacesFixerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($whileFixed, $fixer->fix($this->getFileMock(), $whileFixed));
     }
 
-    public function testFixControlsWithParenthesesAndSuffixBrace()
+    /**
+     * @dataProvider testFixControlsWithParenthesesAndSuffixBraceProvider
+     */
+    public function testFixControlsWithParenthesesAndSuffixBrace($if, $ifFixed)
     {
         $fixer = new Fixer();
 
-        $if = 'if($test){';
-        $ifFixed = 'if ($test) {';
         $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $if));
         $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $ifFixed));
+    }
+
+    public function testFixControlsWithParenthesesAndSuffixBraceProvider()
+    {
+        return array(
+            array('if($test){', 'if ($test) {'),
+            array('if( $test ){', 'if ($test) {'),
+            array('if  (   $test ){', 'if ($test) {'),
+            array('if  (($test1 || $test2) && $test3){', 'if (($test1 || $test2) && $test3) {'),
+            array('if(($test1 || $test2) && $test3){', 'if (($test1 || $test2) && $test3) {'),
+            array('if ($this->tesT ($test)) {', 'if ($this->tesT ($test)) {'),
+            array('if ($this->testtesT ($test)) {', 'if ($this->testtesT ($test)) {'),
+        );
     }
 
     public function testFixControlsWithPrefixBraceAndSuffixBrace()
