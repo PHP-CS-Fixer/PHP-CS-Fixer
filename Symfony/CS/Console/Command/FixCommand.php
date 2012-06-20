@@ -48,7 +48,7 @@ class FixCommand extends Command
                 new InputArgument('path', InputArgument::REQUIRED, 'The path'),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The configuration name', null),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
-                new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr1, psr2, or all)', null),
+                new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or all)', null),
                 new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
             ))
             ->setDescription('Fixes a directory or a file')
@@ -62,6 +62,7 @@ problems as possible on a given file or directory:
 The <comment>--level</comment> option limits the fixers to apply on the
 project:
 
+    <info>php %command.full_name% /path/to/project --level=psr0</info>
     <info>php %command.full_name% /path/to/project --level=psr1</info>
     <info>php %command.full_name% /path/to/project --level=psr2</info>
     <info>php %command.full_name% /path/to/project --level=all</info>
@@ -151,6 +152,9 @@ EOF
             $config->fixers(array_map('trim', explode(',', $input->getOption('fixers'))));
         } else {
             switch ($input->getOption('level')) {
+                case 'psr0':
+                    $config->fixers(FixerInterface::PSR0_LEVEL);
+                    break;
                 case 'psr1':
                     $config->fixers(FixerInterface::PSR1_LEVEL);
                     break;
