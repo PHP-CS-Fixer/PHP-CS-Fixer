@@ -61,6 +61,7 @@ problems as possible on a given file or directory:
 The `--level` option limits the fixers to apply on the
 project:
 
+    php php-cs-fixer.phar fix /path/to/project --level=psr0
     php php-cs-fixer.phar fix /path/to/project --level=psr1
     php php-cs-fixer.phar fix /path/to/project --level=psr2
     php php-cs-fixer.phar fix /path/to/project --level=all
@@ -81,10 +82,10 @@ Choose from the list of available fixers:
 
  * **trailing_spaces**   [PSR-2] Remove trailing whitespace at the end of lines.
 
- * **phpdoc_params**     [all] All items of the @param phpdoc tags must be
-                     aligned vertically.
-
  * **unused_use**        [all] Unused use statements must be removed.
+
+ * **php_closing_tag**   [PSR-2] The closing ?> tag MUST be omitted from files
+                     containing only PHP.
 
  * **short_tag**         [PSR-1] PHP code must use the long <?php ?> tags or the
                      short-echo <?= ?> tags; it must not use the other tag
@@ -92,10 +93,6 @@ Choose from the list of available fixers:
 
  * **return**            [all] An empty line feed should precede a return
                      statement.
-
- * **extra_empty_lines** [all] Removes extra empty lines.
-
- * **eof_ending**        [all] A file must always ends with an empty line feed.
 
  * **visibility**        [PSR-2] Visibility must be declared on all properties
                      and methods; abstract and final must be declared before
@@ -108,8 +105,20 @@ Choose from the list of available fixers:
                      structures must go on the same line, and closing braces
                      must go on the next line after the body.
 
- * **php_closing_tag**   [PSR-2] The closing ?> tag MUST be omitted from files
-                     containing only PHP.
+ * **phpdoc_params**     [all] All items of the @param phpdoc tags must be
+                     aligned vertically.
+
+ * **eof_ending**        [all] A file must always ends with an empty line feed.
+
+ * **extra_empty_lines** [all] Removes extra empty lines.
+
+ * **include**           [all] Include and file path should be devided with
+                     single space. File path should not be placed under
+                     brackets.
+
+ * **psr0**              [PSR-0] Classes must be in a path that matches their
+                     namespace, be at least one namespace deep, and the
+                     class name should match the file name.
 
  * **controls_spaces**   [all] A single space should be between: the closing
                      brace and the control, the control and the opening
