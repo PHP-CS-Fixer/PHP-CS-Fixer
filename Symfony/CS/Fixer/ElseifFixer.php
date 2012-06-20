@@ -16,7 +16,7 @@ use Symfony\CS\FixerInterface;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ElseIfFixer implements FixerInterface
+class ElseifFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
