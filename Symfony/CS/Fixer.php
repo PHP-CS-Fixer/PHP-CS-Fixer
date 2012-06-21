@@ -72,13 +72,14 @@ class Fixer
     {
         $this->sortFixers();
 
+        $fixers = $this->selectFixers($config);
         $changed = array();
         foreach ($config->getFinder() as $file) {
             if ($file->isDir()) {
                 continue;
             }
 
-            if ($appliedFixers = $this->fixFile($file, $config, $dryRun)) {
+            if ($appliedFixers = $this->fixFile($file, $fixers, $dryRun)) {
                 if ($file instanceof FinderSplFileInfo) {
                     $changed[$file->getRelativePathname()] = $appliedFixers;
                 } else {
@@ -90,34 +91,14 @@ class Fixer
         return $changed;
     }
 
-    public function fixFile(\SplFileInfo $file, ConfigInterface $config, $dryRun)
+    public function fixFile(\SplFileInfo $file, array $fixers, $dryRun)
     {
-        $fixerConfig = $config->getFixers();
         $new = $old = file_get_contents($file->getRealpath());
         $appliedFixers = array();
-
-        $fixers = array();
-        if (is_array($fixerConfig)) {
-            foreach ($this->fixers as $fixer) {
-                if (in_array($fixer->getName(), $fixerConfig)) {
-                    $fixers[] = $fixer;
-                }
-            }
-        } else {
-            foreach ($this->fixers as $fixer) {
-                if ($fixer->getLevel() === ($fixer->getLevel() & $fixerConfig)) {
-                    $fixers[] = $fixer;
-                }
-            }
-        }
 
         foreach ($fixers as $fixer) {
             if (!$fixer->supports($file)) {
                 continue;
-            }
-
-            if ($fixer instanceof ConfigAwareInterface) {
-                $fixer->setConfig($config);
             }
 
             $new1 = $fixer->fix($file, $new);
@@ -162,5 +143,33 @@ class Fixer
 
             return $a->getPriority() > $b->getPriority() ? -1 : 1;
         });
+    }
+
+    private function selectFixers(ConfigInterface $config)
+    {
+        $fixerConfig = $config->getFixers();
+        $fixers = array();
+
+        if (is_array($fixerConfig)) {
+            foreach ($this->fixers as $fixer) {
+                if (in_array($fixer->getName(), $fixerConfig)) {
+                    $fixers[] = $fixer;
+                }
+            }
+        } else {
+            foreach ($this->fixers as $fixer) {
+                if ($fixer->getLevel() === ($fixer->getLevel() & $fixerConfig)) {
+                    $fixers[] = $fixer;
+                }
+            }
+        }
+
+        foreach ($fixers as $fixer) {
+            if ($fixer instanceof ConfigAwareInterface) {
+                $fixer->setConfig($config);
+            }
+        }
+
+        return $fixers;
     }
 }
