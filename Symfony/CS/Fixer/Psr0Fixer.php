@@ -43,7 +43,7 @@ class Psr0Fixer implements FixerInterface
                 if (strtolower($normNamespace) === strtolower($dir)) {
                     $content = preg_replace('{^namespace\s+(\S+)\s*;}um', 'namespace '.strtr($dir, '/', '\\').';', $content, 1);
                 } else {
-                    throw new \RuntimeException('The namespace '.$namespace.' in '.$path.' does not match the file path according to PSR-0 rules');
+                    echo '! The namespace '.$namespace.' in '.$path.' does not match the file path according to PSR-0 rules'.PHP_EOL;
                 }
             }
         } else {
@@ -52,14 +52,14 @@ class Psr0Fixer implements FixerInterface
             $filename = substr($path, -strlen($normClass)-4, -4);
 
             if (!strpos($class, '_')) {
-                throw new \RuntimeException('Class '.$class.' in '.$path.' should have at least a vendor namespace according to PSR-0 rules');
+                echo '! Class '.$class.' in '.$path.' should have at least a vendor namespace according to PSR-0 rules'.PHP_EOL;
             }
 
             if ($normClass !== $filename) {
                 if (strtolower($normClass) === strtolower($filename)) {
                     $content = preg_replace('{^'.$keyword.'\s+(\S+)}um', $keyword.' '.strtr($filename, '/', '_'), $content, 1);
                 } else {
-                    throw new \RuntimeException('The class name '.$class.' in '.$path.' does not match the file path according to PSR-0 rules');
+                    echo '! The class '.$class.' in '.$path.' does not match the file path according to PSR-0 rules'.PHP_EOL;
                 }
             }
         }
