@@ -79,7 +79,12 @@ class Psr0Fixer implements FixerInterface
 
     public function supports(\SplFileInfo $file)
     {
-        return 'php' == pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+        if ('php' !== pathinfo($file->getFilename(), PATHINFO_EXTENSION)) {
+            return false;
+        }
+
+        // ignore tests/stubs/fixtures, since they are typically containing invalid files for various reasons
+        return !preg_match('{[/\\\\](test|stub|fixture)s?[/\\\\]}i', $file->getRealPath());
     }
 
     public function getName()
