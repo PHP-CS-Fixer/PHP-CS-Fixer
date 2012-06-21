@@ -21,10 +21,10 @@ class Psr0Fixer implements FixerInterface
     public function fix(\SplFileInfo $file, $content)
     {
         $namespace = false;
-        if (preg_match('{namespace\s+(\S+)\s*;}u', $content, $match)) {
+        if (preg_match('{^namespace\s+(\S+)\s*;}um', $content, $match)) {
             $namespace = $match[1];
         }
-        if (!preg_match('{(class|interface|trait)\s+(\S+)}u', $content, $match)) {
+        if (!preg_match('{^(class|interface|trait)\s+(\S+)}um', $content, $match)) {
             return $content;
         }
 
