@@ -38,7 +38,8 @@ class EndOfFileLineFeedFixer implements FixerInterface
 
     public function getPriority()
     {
-        return 0;
+        // must run last to be sure the file is properly formatted before it runs
+        return -50;
     }
 
     public function supports(\SplFileInfo $file)
