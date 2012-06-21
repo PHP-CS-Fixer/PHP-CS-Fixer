@@ -11,6 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer;
 
+use Symfony\CS\Config\Config;
 use Symfony\CS\Fixer\Psr0Fixer;
 
 class Psr0FixerTest extends \PHPUnit_Framework_TestCase
@@ -18,24 +19,24 @@ class Psr0FixerTest extends \PHPUnit_Framework_TestCase
     public function testFixCase()
     {
         $fixer = new Psr0Fixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
 
         $expected = <<<'EOF'
-namespace Symfony\CS\Tests\Fixer;
-class Psr0FixerTest {}
+namespace Symfony\CS\Fixer;
+class Psr0Fixer {}
 EOF;
         $input = <<<'EOF'
-namespace Symfony\cs\Tests\Fixer;
-class psr0FixerteST {}
+namespace Symfony\cs\Fixer;
+class psr0Fixer {}
 EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
 
         $expected = <<<'EOF'
-class Symfony_CS_Tests_Fixer_Psr0FixerTest {}
+class Symfony_CS_Fixer_Psr0Fixer {}
 EOF;
         $input = <<<'EOF'
-class symfony_cs_tests_FiXER_Psr0FIXerTest {}
+class symfony_cs_FiXER_Psr0FIXer {}
 EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
@@ -44,15 +45,15 @@ EOF;
     public function testFixClassName()
     {
         $fixer = new Psr0Fixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
 
         $expected = <<<'EOF'
-namespace Symfony\CS\Tests\Fixer;
-class Psr0FixerTest {}
+namespace Symfony\CS\Fixer;
+class Psr0Fixer {}
 /* class foo */
 EOF;
         $input = <<<'EOF'
-namespace Symfony\CS\Tests\Fixer;
+namespace Symfony\CS\Fixer;
 class blah {}
 /* class foo */
 EOF;
@@ -60,49 +61,86 @@ EOF;
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function testFixNamespaceThrows()
     {
         $fixer = new Psr0Fixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
 
         $input = <<<'EOF'
 namespace lala;
-class Psr0FixerTest {}
+class Psr0Fixer {}
 EOF;
 
+        $expected = '! The namespace lala in';
+        ob_start();
         $fixer->fix($file, $input);
+        $this->assertContains($expected, ob_get_clean());
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function testFixOldClassnameThrows()
     {
         $fixer = new Psr0Fixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
 
         $input = <<<'EOF'
-class blah {}
+class blah_bar {}
 EOF;
 
+        $expected = '! The class blah_bar in';
+        ob_start();
         $fixer->fix($file, $input);
+        $this->assertContains($expected, ob_get_clean());
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function testMissingVendorThrows()
     {
         $fixer = new Psr0Fixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
 
         $input = <<<'EOF'
-class Psr0FixerTest {}
+class Psr0Fixer {}
 EOF;
 
+        $expected = '! Class Psr0Fixer in';
+        ob_start();
         $fixer->fix($file, $input);
+        $this->assertContains($expected, ob_get_clean());
+    }
+
+    public function testHandlePartialNamespaces()
+    {
+        $fixer = new Psr0Fixer();
+        $config = new Config();
+        $config->setDir(__DIR__.'/../../');
+        $fixer->setConfig($config);
+
+        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
+
+        $expected = <<<'EOF'
+namespace Foo\Bar\Baz\Fixer;
+class Psr0Fixer {}
+EOF;
+        $input = <<<'EOF'
+namespace Foo\Bar\Baz\FIXER;
+class Psr0Fixer {}
+EOF;
+
+        ob_start();
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertEquals('', ob_get_clean());
+
+        $config->setDir(__DIR__.'/../../Fixer');
+        $expected = <<<'EOF'
+namespace Foo\Bar\Baz;
+class Psr0Fixer {}
+EOF;
+        $input = <<<'EOF'
+namespace Foo\Bar\Baz;
+class Psr0Fixer {}
+EOF;
+
+        ob_start();
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertEquals('', ob_get_clean());
     }
 }

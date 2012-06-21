@@ -45,6 +45,11 @@ class Config implements ConfigInterface
         $this->dir = $dir;
     }
 
+    public function getDir()
+    {
+        return $this->dir;
+    }
+
     public function finder(\Traversable $finder)
     {
         $this->finder = $finder;
