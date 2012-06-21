@@ -11,13 +11,17 @@
 
 namespace Symfony\CS\Fixer;
 
+use Symfony\CS\ConfigInterface;
+use Symfony\CS\ConfigAwareInterface;
 use Symfony\CS\FixerInterface;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-class Psr0Fixer implements FixerInterface
+class Psr0Fixer implements FixerInterface, ConfigAwareInterface
 {
+    protected $config;
+
     public function fix(\SplFileInfo $file, $content)
     {
         $namespace = false;
@@ -34,14 +38,32 @@ class Psr0Fixer implements FixerInterface
         if ($namespace) {
             $normNamespace = strtr($namespace, '\\', '/');
             $path = strtr($file->getRealPath(), '\\', '/');
-            $dir = substr(dirname($path), -strlen($namespace));
+            $dir = dirname($path);
             $filename = basename($path, '.php');
+
+            if ($this->config) {
+                $dir = substr($dir, strlen(realpath($this->config->getDir())) + 1);
+                if (strlen($normNamespace) > strlen($dir)) {
+                    if (strlen($dir)) {
+                        $normNamespace = substr($normNamespace, -strlen($dir));
+                    } else {
+                        $normNamespace = '';
+                    }
+                }
+            }
+            $dir = substr($dir, -strlen($normNamespace));
+            if (false === $dir) {
+                $dir = '';
+            }
+            $filename = basename($path, '.php');
+
             if ($class !== $filename) {
                 $content = preg_replace('{^'.$keyword.'\s+(\S+)}um', $keyword.' '.$filename, $content, 1);
             }
             if ($normNamespace !== $dir) {
                 if (strtolower($normNamespace) === strtolower($dir)) {
-                    $content = preg_replace('{^namespace\s+(\S+)\s*;}um', 'namespace '.strtr($dir, '/', '\\').';', $content, 1);
+                    $namespace = substr($namespace, 0, -strlen($dir)) . strtr($dir, '/', '\\');
+                    $content = preg_replace('{^namespace\s+(\S+)\s*;}um', 'namespace '.$namespace.';', $content, 1);
                 } else {
                     echo '! The namespace '.$namespace.' in '.$path.' does not match the file path according to PSR-0 rules'.PHP_EOL;
                 }
@@ -65,6 +87,11 @@ class Psr0Fixer implements FixerInterface
         }
 
         return $content;
+    }
+
+    public function setConfig(ConfigInterface $config)
+    {
+        $this->config = $config;
     }
 
     public function getLevel()

@@ -11,6 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer;
 
+use Symfony\CS\Config\Config;
 use Symfony\CS\Fixer\Psr0Fixer;
 
 class Psr0FixerTest extends \PHPUnit_Framework_TestCase
@@ -104,5 +105,42 @@ EOF;
         ob_start();
         $fixer->fix($file, $input);
         $this->assertContains($expected, ob_get_clean());
+    }
+
+    public function testHandlePartialNamespaces()
+    {
+        $fixer = new Psr0Fixer();
+        $config = new Config();
+        $config->setDir(__DIR__.'/../../');
+        $fixer->setConfig($config);
+
+        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
+
+        $expected = <<<'EOF'
+namespace Foo\Bar\Baz\Fixer;
+class Psr0Fixer {}
+EOF;
+        $input = <<<'EOF'
+namespace Foo\Bar\Baz\FIXER;
+class Psr0Fixer {}
+EOF;
+
+        ob_start();
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertEquals('', ob_get_clean());
+
+        $config->setDir(__DIR__.'/../../Fixer');
+        $expected = <<<'EOF'
+namespace Foo\Bar\Baz;
+class Psr0Fixer {}
+EOF;
+        $input = <<<'EOF'
+namespace Foo\Bar\Baz;
+class Psr0Fixer {}
+EOF;
+
+        ob_start();
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertEquals('', ob_get_clean());
     }
 }
