@@ -54,4 +54,11 @@ interface ConfigInterface
      * @param string $dir The project root directory
      */
     public function setDir($dir);
+
+    /**
+     * Returns the root directory of the project.
+     *
+     * @return string The project root directory
+     */
+    public function getDir();
 }
