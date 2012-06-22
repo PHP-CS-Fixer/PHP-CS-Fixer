@@ -83,7 +83,7 @@ class Compiler
 
     protected function getFiles()
     {
-        $iterator = Finder::create()->files()->name('*.php')->in(array('vendor', 'Symfony'));
+        $iterator = Finder::create()->files()->exclude('Tests')->name('*.php')->in(array('vendor', 'Symfony'));
 
         return array_merge(array('LICENSE'), iterator_to_array($iterator));
     }
