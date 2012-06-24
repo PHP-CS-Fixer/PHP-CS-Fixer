@@ -33,7 +33,7 @@ class IncludeFixer implements FixerInterface
         return preg_replace(
             array(
                 sprintf('/(%s)\s*\(?\s*[\'"]{1}(?!\")([a-zA-Z0-9\-_.\/]*)[\'"]{1}\s*\)?/', $statements), // Remove enclosing brackets, trailing spaces and convert double with single quotes
-                sprintf('/(%s)[^\S\n]+(.*)/', $statements),                                              // Replace multiple spaces with single between include and file path
+                sprintf('#^((?<!(?://| \*)).*%s)[^\S\n]+(.*)#m', $statements),                           // Replace multiple spaces with single between include and file path
             ),
             array(
                 "\\1 '\\2'",
