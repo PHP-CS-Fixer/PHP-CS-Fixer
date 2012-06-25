@@ -38,12 +38,13 @@ TEST;
         $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extendedFixed));
 
         $extended = <<<TEST
-abstract class TestClass extends \\Base\\TestClass {
+abstract class TestClass extends \\Base\\TestClass implements \\TestInterface {
 TEST;
         $extendedFixed = <<<TEST
-abstract class TestClass extends \\Base\\TestClass
+abstract class TestClass extends \\Base\\TestClass implements \\TestInterface
 {
 TEST;
+
         $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extended));
         $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extendedFixed));
     }
