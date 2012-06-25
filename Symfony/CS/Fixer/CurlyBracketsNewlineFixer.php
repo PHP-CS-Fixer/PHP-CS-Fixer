@@ -18,7 +18,7 @@ use Symfony\CS\FixerInterface;
  */
 class CurlyBracketsNewlineFixer implements FixerInterface
 {
-    const REMOVE_NEWLINE = '\\1 {';
+    const REMOVE_NEWLINE = '\\1 {\\4';
 
     // Capture the indentation first
     const ADD_NEWLINE = "\\1\\2\n\\1{";
@@ -76,25 +76,25 @@ class CurlyBracketsNewlineFixer implements FixerInterface
     private function anonymousFunctionsFix($content)
     {
         // [Structure] No new line after anonymous function call
-        return preg_replace('/((^|[\s\W])function\s*\(.*\))[^\S\n]*\n[^\S\n]*{/', self::REMOVE_NEWLINE, $content);
+        return preg_replace('/((^|[\s\W])function\s*\(.*\))([^\n]*?) *\n[^\S\n]*{/', self::REMOVE_NEWLINE, $content);
     }
 
     private function controlStatementsFix($content)
     {
         $statements = array(
-            'if\s*\(.*\)',
-            'else',
-            'for\s*\(.*\)',
-            'do',
-            'while\s*\(.*\)',
-            'foreach\s*\(.*\)',
-            'switch\s*\(.*\)',
-            'try',
-            'catch\s*\(.*\)',
+            '\bif\s*\(.*\)',
+            '\belse\b',
+            '\bfor\s*\(.*\)',
+            '\bdo\b',
+            '\bwhile\s*\(.*\)',
+            '\bforeach\s*\(.*\)',
+            '\bswitch\s*\(.*\)',
+            '\btry\b',
+            '\bcatch\s*\(.*\)',
         );
 
         // [Structure] No new line after control statements
-        return preg_replace('/((^|[\s\W])('.implode('|', $statements).'))[^\S\n]*\n[^\S\n]*{/', self::REMOVE_NEWLINE, $content);
+        return preg_replace('/((^|[\s\W])('.implode('|', $statements).'))([^\n]*?) *\n[^\S\n]*{/', self::REMOVE_NEWLINE, $content);
     }
 
     private function controlStatementContinuationFix($content)
