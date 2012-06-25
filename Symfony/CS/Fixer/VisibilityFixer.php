@@ -20,6 +20,11 @@ class VisibilityFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
+        // skip files with no OOP code
+        if (!preg_match('{\b(?:class|interface|trait)\b}i', $content)) {
+            return $content;
+        }
+
         // Visibility MUST be declared on all properties and methods;
         // abstract and final MUST be declared before the visibility;
         // static MUST be declared after the visibility
