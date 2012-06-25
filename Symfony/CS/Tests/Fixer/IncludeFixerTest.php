@@ -45,6 +45,8 @@ class IncludeFixerTest extends \PHPUnit_Framework_TestCase
             array('$includeVar', '$includeVar'),
             array("ClassCollectionLoader::load(include(\$this->getCacheDir().'classes.map'), \$this->getCacheDir(), \$name, \$this->debug, false, \$extension)", "ClassCollectionLoader::load(include(\$this->getCacheDir().'classes.map'), \$this->getCacheDir(), \$name, \$this->debug, false, \$extension)"),
             array("require_once '\".__DIR__.\"/../bootstrap.php'", "require_once '\".__DIR__.\"/../bootstrap.php'"),
+            array("//  require   foo", "//  require   foo"),
+            array("* require   foo", "* require   foo"),
         );
     }
 
