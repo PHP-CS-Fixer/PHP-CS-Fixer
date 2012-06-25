@@ -58,13 +58,13 @@ class CurlyBracketsNewlineFixer implements FixerInterface
 
     public function getDescription()
     {
-        return 'Opening braces for classes and methods must go on the next line, and closing braces must go on the next line after the body. Opening braces for control structures must go on the same line, and closing braces must go on the next line after the body.';
+        return 'Opening braces for classes, interfaces, traits and methods must go on the next line, and closing braces must go on the next line after the body. Opening braces for control structures must go on the same line, and closing braces must go on the next line after the body.';
     }
 
     private function classDeclarationFix($content)
     {
         // [Structure] Add new line after class declaration
-        return preg_replace('/^([ \t]*)((?:[\w \t]+ )?class [\w \t\\\\]+?)[ \t]*{\s*$/m', self::ADD_NEWLINE, $content);
+        return preg_replace('/^([ \t]*)((?:[\w \t]+ )?(class|interface|trait) [\w \t\\\\]+?)[ \t]*{\s*$/m', self::ADD_NEWLINE, $content);
     }
 
     private function functionDeclarationFix($content)
