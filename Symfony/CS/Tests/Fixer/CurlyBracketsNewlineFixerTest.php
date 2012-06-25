@@ -36,6 +36,16 @@ abstract class TestClass extends BaseTestClass implements TestInterface
 TEST;
         $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extended));
         $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extendedFixed));
+
+        $extended = <<<TEST
+abstract class TestClass extends \\Base\\TestClass {
+TEST;
+        $extendedFixed = <<<TEST
+abstract class TestClass extends \\Base\\TestClass
+{
+TEST;
+        $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extended));
+        $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extendedFixed));
     }
 
     public function testControlStatements()
