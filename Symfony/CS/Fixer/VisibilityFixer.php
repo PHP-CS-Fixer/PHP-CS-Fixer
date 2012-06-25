@@ -20,11 +20,16 @@ class VisibilityFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
+        // skip files with no OOP code
+        if (!preg_match('{\b(?:class|interface|trait)\b}i', $content)) {
+            return $content;
+        }
+
         // Visibility MUST be declared on all properties and methods;
         // abstract and final MUST be declared before the visibility;
         // static MUST be declared after the visibility
-        $content = preg_replace_callback('/^    ((?:(?:public|protected|private|static|var) +)+) *(\$[a-z0-9_]+)/im', function ($matches) {
-            $flags = explode(' ', strtolower(trim($matches[1])));
+        $content = preg_replace_callback('/^( {2,4}|\t)((?:(?:public|protected|private|static|var) +)+) *(\$[a-z0-9_]+)/im', function ($matches) {
+            $flags = explode(' ', strtolower(trim($matches[2])));
             if (in_array('protected', $flags)) {
                 $visibility = 'protected';
             } elseif (in_array('private', $flags)) {
@@ -33,13 +38,13 @@ class VisibilityFixer implements FixerInterface
                 $visibility = 'public';
             }
 
-            return '    ' . $visibility
+            return $matches[1] . $visibility
                 . (in_array('static', $flags) ? ' static' : '')
-                . ' ' . $matches[2];
+                . ' ' . $matches[3];
         }, $content);
 
-        $content = preg_replace_callback('/^    ((?:(?:public|protected|private|static|abstract|final) +)*)(function +[a-z0-9_]+)/im', function ($matches) {
-            $flags = explode(' ', strtolower(trim($matches[1])));
+        $content = preg_replace_callback('/^( {2,4}|\t)((?:(?:public|protected|private|static|abstract|final) +)*)(function +[a-z0-9_]+)/im', function ($matches) {
+            $flags = explode(' ', strtolower(trim($matches[2])));
             if (in_array('protected', $flags)) {
                 $visibility = 'protected';
             } elseif (in_array('private', $flags)) {
@@ -48,12 +53,12 @@ class VisibilityFixer implements FixerInterface
                 $visibility = 'public';
             }
 
-            return '    '
+            return $matches[1]
                 . (in_array('abstract', $flags) ? 'abstract ' : '')
                 . (in_array('final', $flags) ? 'final ' : '')
                 . $visibility
                 . (in_array('static', $flags) ? ' static' : '')
-                . ' '. $matches[2];
+                . ' '. $matches[3];
         }, $content);
 
         return $content;

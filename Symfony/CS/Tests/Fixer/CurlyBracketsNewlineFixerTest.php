@@ -47,6 +47,16 @@ TEST;
         $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $if));
         $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $ifFixed));
 
+        $if = "if (test) // foo  \n{";
+        $ifFixed = "if (test) { // foo";
+        $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $if));
+        $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $ifFixed));
+
+        $func = "function download() {\n}";
+        $funcFixed = "function download()\n{\n}";
+        $this->assertEquals($funcFixed, $fixer->fix($this->getFileMock(), $func));
+        $this->assertEquals($funcFixed, $fixer->fix($this->getFileMock(), $funcFixed));
+
         $while = "    while (\$file = \$this->getFile())\n    {";
         $whileFixed = '    while ($file = $this->getFile()) {';
         $this->assertEquals($whileFixed, $fixer->fix($this->getFileMock(), $while));

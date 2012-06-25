@@ -38,15 +38,16 @@ class IncludeFixerTest extends \PHPUnit_Framework_TestCase
             array("include('foo.php')", "include 'foo.php'"),
             array("include_once( 'foo.php' )", "include_once 'foo.php'"),
             array('require("foo.php")', "require 'foo.php'"),
-            array("require_once  __DIR__.'foo.php'", "require_once __DIR__.'foo.php'"),
-            array("require_once  __DIR__.('foo.php')", "require_once __DIR__.('foo.php')"),
-            array("require_once  (__DIR__.('foo.php'))", "require_once (__DIR__.('foo.php'))"),
+            array("return require_once  __DIR__.'foo.php'", "return require_once __DIR__.'foo.php'"),
+            array("\$foo = require_once  __DIR__.('foo.php')", "\$foo = require_once __DIR__.('foo.php')"),
+            array("    require_once  (__DIR__.('foo.php'))", "    require_once (__DIR__.('foo.php'))"),
             array("require_once (dirname(__FILE__).'foo.php')", "require_once (dirname(__FILE__).'foo.php')"),
             array('$includeVar', '$includeVar'),
             array("ClassCollectionLoader::load(include(\$this->getCacheDir().'classes.map'), \$this->getCacheDir(), \$name, \$this->debug, false, \$extension)", "ClassCollectionLoader::load(include(\$this->getCacheDir().'classes.map'), \$this->getCacheDir(), \$name, \$this->debug, false, \$extension)"),
             array("require_once '\".__DIR__.\"/../bootstrap.php'", "require_once '\".__DIR__.\"/../bootstrap.php'"),
             array("//  require   foo", "//  require   foo"),
             array("* require   foo", "* require   foo"),
+            array('exit(\'POST must include "file"\');', 'exit(\'POST must include "file"\');'),
         );
     }
 
