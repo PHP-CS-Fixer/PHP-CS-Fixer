@@ -72,7 +72,7 @@ class Fixer
     {
         $this->sortFixers();
 
-        $fixers = $this->selectFixers($config);
+        $fixers = $this->prepareFixers($config);
         $changed = array();
         foreach ($config->getFinder() as $file) {
             if ($file->isDir()) {
@@ -145,24 +145,9 @@ class Fixer
         });
     }
 
-    private function selectFixers(ConfigInterface $config)
+    private function prepareFixers(ConfigInterface $config)
     {
-        $fixerConfig = $config->getFixers();
-        $fixers = array();
-
-        if (is_array($fixerConfig)) {
-            foreach ($this->fixers as $fixer) {
-                if (in_array($fixer->getName(), $fixerConfig)) {
-                    $fixers[] = $fixer;
-                }
-            }
-        } else {
-            foreach ($this->fixers as $fixer) {
-                if ($fixer->getLevel() === ($fixer->getLevel() & $fixerConfig)) {
-                    $fixers[] = $fixer;
-                }
-            }
-        }
+        $fixers = $config->getFixers();
 
         foreach ($fixers as $fixer) {
             if ($fixer instanceof ConfigAwareInterface) {

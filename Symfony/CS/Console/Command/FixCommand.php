@@ -153,38 +153,62 @@ EOF
             $config->setDir($path);
         }
 
-        if ($input->getOption('fixers')) {
-            if (preg_match('{(^|,)-}', $input->getOption('fixers'))) {
-                $fixers = array();
-                foreach ($this->fixer->getFixers() as $fixer) {
-                    if (!preg_match('{(^|,)-'.preg_quote($fixer->getName()).'}', $input->getOption('fixers'))) {
-                        $fixers[] = $fixer->getName();
-                    }
+        $allFixers = $this->fixer->getFixers();
+
+        switch ($input->getOption('level')) {
+            case 'psr0':
+                $level = FixerInterface::PSR0_LEVEL;
+                break;
+            case 'psr1':
+                $level = FixerInterface::PSR1_LEVEL;
+                break;
+            case 'psr2':
+                $level = FixerInterface::PSR2_LEVEL;
+                break;
+            case 'all':
+                $level = FixerInterface::ALL_LEVEL;
+                break;
+            case null:
+                $level = $input->getOption('fixers') ? null : $config->getFixers();
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $input->getOption('level')));
+        }
+
+        // select base fixers for the given level
+        $fixers = array();
+        if (is_array($level)) {
+            foreach ($allFixers as $fixer) {
+                if (in_array($fixer->getName(), $level, true) || in_array($fixer, $level, true)) {
+                    $fixers[] = $fixer;
                 }
-                $config->fixers($fixers);
-            } else {
-                $config->fixers(array_map('trim', explode(',', $input->getOption('fixers'))));
             }
         } else {
-            switch ($input->getOption('level')) {
-                case 'psr0':
-                    $config->fixers(FixerInterface::PSR0_LEVEL);
-                    break;
-                case 'psr1':
-                    $config->fixers(FixerInterface::PSR1_LEVEL);
-                    break;
-                case 'psr2':
-                    $config->fixers(FixerInterface::PSR2_LEVEL);
-                    break;
-                case 'all':
-                    $config->fixers(FixerInterface::ALL_LEVEL);
-                    break;
-                case null:
-                    break;
-                default:
-                    throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $input->getOption('level')));
+            foreach ($allFixers as $fixer) {
+                if ($fixer->getLevel() === ($fixer->getLevel() & $level)) {
+                    $fixers[] = $fixer;
+                }
             }
         }
+
+        // remove/add fixers based on the fixers option
+        if (preg_match('{(^|,)-}', $input->getOption('fixers'))) {
+            foreach ($fixers as $key => $fixer) {
+                if (preg_match('{(^|,)-'.preg_quote($fixer->getName()).'}', $input->getOption('fixers'))) {
+                    unset($fixers[$key]);
+                }
+            }
+        } elseif ($input->getOption('fixers')) {
+            $names = array_map('trim', explode(',', $input->getOption('fixers')));
+
+            foreach ($allFixers as $fixer) {
+                if (in_array($fixer->getName(), $names) && !in_array($fixer, $fixers)) {
+                    $fixers[] = $fixer;
+                }
+            }
+        }
+
+        $config->fixers($fixers);
 
         $changed = $this->fixer->fix($config, $input->getOption('dry-run'));
 

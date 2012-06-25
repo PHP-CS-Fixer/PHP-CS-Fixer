@@ -25,6 +25,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $fixer->addFixer($f3);
 
         $config = Config::create()->finder(new \DirectoryIterator(__DIR__));
+        $config->fixers($fixer->getFixers());
 
         $fixer->fix($config, true);
 
