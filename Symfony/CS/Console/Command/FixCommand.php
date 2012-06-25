@@ -74,6 +74,11 @@ apply (the fixer names must be separated by a comma):
 
     <info>php %command.full_name% /path/to/dir --fixers=linefeed,short_tag,indentation</info>
 
+You can also blacklist the fixers you don't want if this is more convenient,
+using <comment>-name</comment>:
+
+    <info>php %command.full_name% /path/to/dir --fixers=-short_tag,-indentation</info>
+
 Choose from the list of available fixers:
 
 {$this->getFixersHelp()}
@@ -149,7 +154,17 @@ EOF
         }
 
         if ($input->getOption('fixers')) {
-            $config->fixers(array_map('trim', explode(',', $input->getOption('fixers'))));
+            if (preg_match('{(^|,)-}', $input->getOption('fixers'))) {
+                $fixers = array();
+                foreach ($this->fixer->getFixers() as $fixer) {
+                    if (!preg_match('{(^|,)-'.preg_quote($fixer->getName()).'}', $input->getOption('fixers'))) {
+                        $fixers[] = $fixer->getName();
+                    }
+                }
+                $config->fixers($fixers);
+            } else {
+                $config->fixers(array_map('trim', explode(',', $input->getOption('fixers'))));
+            }
         } else {
             switch ($input->getOption('level')) {
                 case 'psr0':
