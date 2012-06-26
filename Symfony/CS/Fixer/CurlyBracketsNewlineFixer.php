@@ -64,7 +64,7 @@ class CurlyBracketsNewlineFixer implements FixerInterface
     private function classDeclarationFix($content)
     {
         // [Structure] Add new line after class declaration
-        return preg_replace('/^([ \t]*)((?:[\w \t]+ )?(class|interface|trait) [\w \t\\\\]+?)[ \t]*{\s*$/m', self::ADD_NEWLINE, $content);
+        return preg_replace('/^([ \t]*)((?:[\w \t]+ )?(class|interface|trait) [\w, \t\\\\]+?)[ \t]*{\s*$/m', self::ADD_NEWLINE, $content);
     }
 
     private function functionDeclarationFix($content)
