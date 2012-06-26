@@ -45,10 +45,10 @@ TEST;
         $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extendedFixed));
 
         $extended = <<<TEST
-abstract class TestClass extends BaseTestClass implements TestInterface {
+abstract class TestClass extends BaseTestClass implements TestInterface, TestInterface2 {
 TEST;
         $extendedFixed = <<<TEST
-abstract class TestClass extends BaseTestClass implements TestInterface
+abstract class TestClass extends BaseTestClass implements TestInterface, TestInterface2
 {
 TEST;
         $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extended));
