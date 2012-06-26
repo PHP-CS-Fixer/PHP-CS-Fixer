@@ -5,14 +5,34 @@ use Symfony\CS\Fixer\CurlyBracketsNewlineFixer as Fixer;
 
 class CurlyBracketsNewlineFixerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testClassDefinitions()
+    /**
+     * @dataProvider testSimpleTypeDefinitionsProvider
+     */
+    public function testSimpleTypeDefinitions($type)
     {
         $fixer = new Fixer();
 
-        $simple = "class TestClass  {";
-        $simpleFixed = "class TestClass\n{";
+        $simple = "$type TestType  {";
+        $simpleFixed = "$type TestType\n{";
         $this->assertEquals($simpleFixed, $fixer->fix($this->getFileMock(), $simple));
         $this->assertEquals($simpleFixed, $fixer->fix($this->getFileMock(), $simpleFixed));
+
+        $emptyType = "$type TestType {}";
+        $this->assertEquals($emptyType, $fixer->fix($this->getFileMock(), $emptyType));
+    }
+
+    public function testSimpleTypeDefinitionsProvider()
+    {
+        return array(
+            array('class'),
+            array('interface'),
+            array('trait'),
+        );
+    }
+
+    public function testExtendedClassDefinitions()
+    {
+        $fixer = new Fixer();
 
         $extended = <<<TEST
 class TestClass extends BaseTestClass implements TestInterface {
@@ -23,9 +43,6 @@ class TestClass extends BaseTestClass implements TestInterface
 TEST;
         $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extended));
         $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extendedFixed));
-
-        $emptyClass = "class TestClass {}";
-        $this->assertEquals($emptyClass, $fixer->fix($this->getFileMock(), $emptyClass));
 
         $extended = <<<TEST
 abstract class TestClass extends BaseTestClass implements TestInterface {
