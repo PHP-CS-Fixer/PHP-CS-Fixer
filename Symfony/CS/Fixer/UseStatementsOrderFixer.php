@@ -16,7 +16,7 @@ use Symfony\CS\FixerInterface;
 /**
  * @author Mateusz Heleniak
  */
-class SortUseStatementsFixer implements FixerInterface
+class UseStatementsOrderFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
@@ -67,7 +67,7 @@ class SortUseStatementsFixer implements FixerInterface
 
     public function getName()
     {
-        return 'sort_use_statements';
+        return 'use_statements_order';
     }
 
     public function getDescription()

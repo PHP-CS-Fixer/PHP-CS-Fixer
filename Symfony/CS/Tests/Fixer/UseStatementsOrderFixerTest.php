@@ -11,13 +11,13 @@
 
 namespace Symfony\CS\Tests\Fixer;
 
-use Symfony\CS\Fixer\SortUseStatementsFixer;
+use Symfony\CS\Fixer\UseStatementsOrderFixer;
 
-class SortUseStatementsFixerTest extends \PHPUnit_Framework_TestCase
+class UseStatementsOrderFixerTest extends \PHPUnit_Framework_TestCase
 {
     public function testFix()
     {
-        $fixer = new SortUseStatementsFixer();
+        $fixer = new UseStatementsOrderFixer();
         $file = new \SplFileInfo(__FILE__);
 
         $expected = <<<'EOF'
