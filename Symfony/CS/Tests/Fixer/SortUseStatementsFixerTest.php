@@ -24,10 +24,13 @@ class SortUseStatementsFixerTest extends \PHPUnit_Framework_TestCase
 use Abc\Bar\AbcBar as Baz;
 use Abc\Class;
 use Foo\Bar;
-use SomeClass;
+use Vendor/Component/SomeClass;
+use Vendor/CS/SomeClass;
 use XyzClass;
 
 $bar = new Bar();
+
+// sample comment: don't use abc;
 EOF;
 
         $input = <<<'EOF'
@@ -36,10 +39,12 @@ use Foo\Bar;
 
 use Abc\Class;
 use Abc\Bar\AbcBar as Baz;
-
-use SomeClass;
+use Vendor/CS/SomeClass;
+use Vendor/Component/SomeClass;
 
 $bar = new Bar();
+
+// sample comment: don't use abc;
 EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));

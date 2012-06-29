@@ -30,7 +30,7 @@ class SortUseStatementsFixer implements FixerInterface
 
         if ($matches) {
             usort($matches, function ($a, $b) {
-                return strcmp($a['class'], $b['class']);
+                return strcasecmp($a['class'], $b['class']);
             });
 
             $code = '';
@@ -43,7 +43,7 @@ class SortUseStatementsFixer implements FixerInterface
             }
             $code .= "\n";
 
-            $regexp  = '#(?:[ \t]*use\s+(?:[^\s;]+)(?:\s+as\s+(?:[^;]+))?;[\r\n]*){'.count($matches).'}#';
+            $regexp  = '/^(?:use\s+(?:[^\s;]+)(?:\s+as\s+(?:[^;]+))?;[\r\n]*){'.count($matches).'}/m';
             $content = preg_replace($regexp, $code, $content);
         }
 
