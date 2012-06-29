@@ -11,8 +11,8 @@
 
 namespace Symfony\CS\Fixer;
 
-use Symfony\CS\ConfigInterface;
 use Symfony\CS\ConfigAwareInterface;
+use Symfony\CS\ConfigInterface;
 use Symfony\CS\FixerInterface;
 
 /**

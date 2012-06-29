@@ -12,8 +12,8 @@
 namespace Symfony\CS\Console;
 
 use Symfony\Component\Console\Application as BaseApplication;
-use Symfony\CS\Console\Command\FixCommand;
 use Symfony\CS\Console\Command\CompileCommand;
+use Symfony\CS\Console\Command\FixCommand;
 use Symfony\CS\Console\Command\ReadmeCommand;
 use Symfony\CS\Console\Command\SelfUpdateCommand;
 use Symfony\CS\Fixer;
