@@ -1,3 +1,3 @@
-composer.phar
-phpunit.xml
 vendor
+phpunit.xml
+
