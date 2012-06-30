@@ -79,6 +79,16 @@ class ControlSpacesFixerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($elseifFixed, $fixer->fix($this->getFileMock(), $elseifFixed));
     }
 
+    public function testFixControlsWithPrefixBraceAndParenthesesAndSuffixBraceInLambdas()
+    {
+        $fixer = new Fixer();
+
+        $use = ')use($test){';
+        $useFixed = ') use ($test) {';
+        $this->assertEquals($useFixed, $fixer->fix($this->getFileMock(), $use));
+        $this->assertEquals($useFixed, $fixer->fix($this->getFileMock(), $useFixed));
+    }
+
     /**
      * @dataProvider testFixCastsProvider
      */

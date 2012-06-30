@@ -29,6 +29,7 @@ class ControlSpacesFixer implements FixerInterface
         $content = $this->fixControlsWithParenthesesAndSuffixBrace($content);
         $content = $this->fixControlsWithPrefixBraceAndSuffixBrace($content);
         $content = $this->fixControlsWithPrefixBraceAndParenthesesAndSuffixBrace($content);
+        $content = $this->fixControlsWithPrefixBraceAndParenthesesAndSuffixBraceInLambdas($content);
         $content = $this->fixCasts($content);
 
         return $content;
@@ -170,6 +171,22 @@ class ControlSpacesFixer implements FixerInterface
         );
 
         return preg_replace(sprintf('/}[^\S\n]*(%s)[^\S\n]*\((.*)\)[^\S\n]*{/', implode('|', $statements)), '} \\1 (\\2) {', $content);
+    }
+
+    /**
+     * ") use (...) {"
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    private function fixControlsWithPrefixBraceAndParenthesesAndSuffixBraceInLambdas($content)
+    {
+        $statements = array(
+            'use',
+        );
+
+        return preg_replace(sprintf('/\)[^\S\n]*(%s)[^\S\n]*\((.*)\)[^\S\n]*{/', implode('|', $statements)), ') \\1 (\\2) {', $content);
     }
 
     /**
