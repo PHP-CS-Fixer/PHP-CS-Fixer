@@ -80,6 +80,11 @@ TEST;
         $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $if));
         $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $ifFixed));
 
+        $elseif = "else if (...)\n{";
+        $elseifFixed = "else if (...) {";
+        $this->assertEquals($elseifFixed, $fixer->fix($this->getFileMock(), $elseif));
+        $this->assertEquals($elseifFixed, $fixer->fix($this->getFileMock(), $elseifFixed));
+
         $func = "function download() {\n}";
         $funcFixed = "function download()\n{\n}";
         $this->assertEquals($funcFixed, $fixer->fix($this->getFileMock(), $func));
