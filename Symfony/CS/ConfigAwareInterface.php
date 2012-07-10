@@ -19,7 +19,7 @@ interface ConfigAwareInterface
     /**
      * Sets the active config on the fixer
      *
-     * @param
+     * @param ConfigInterface $config
      */
     public function setConfig(ConfigInterface $config);
 }
