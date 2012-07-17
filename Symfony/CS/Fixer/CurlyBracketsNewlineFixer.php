@@ -84,13 +84,13 @@ class CurlyBracketsNewlineFixer implements FixerInterface
         $statements = array(
             '\bif\s*\(.*\)',
             '\belse\s*if\s*\(.*\)',
-            '\belse\b',
+            '\b(?<!\$)else\b',
             '\bfor\s*\(.*\)',
-            '\bdo\b',
+            '\b(?<!\$)do\b',
             '\bwhile\s*\(.*\)',
             '\bforeach\s*\(.*\)',
             '\bswitch\s*\(.*\)',
-            '\btry\b',
+            '\b(?<!\$)try\b',
             '\bcatch\s*\(.*\)',
         );
 

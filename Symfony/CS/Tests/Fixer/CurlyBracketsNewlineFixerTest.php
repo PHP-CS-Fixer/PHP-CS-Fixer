@@ -166,6 +166,29 @@ EOF;
         $this->assertEquals($fixedDoWhile, $fixer->fix($this->getFileMock(), $fixedDoWhile));
     }
 
+    /*
+     * @see https://github.com/fabpot/PHP-CS-Fixer/issues/114
+     */
+    public function testIssue114()
+    {
+        $fixer = new Fixer();
+
+        $declarationWithDo = '    public function test($do)     {';
+        $fixedDeclarationWithDo = "    public function test(\$do)\n    {";
+        $this->assertEquals($fixedDeclarationWithDo, $fixer->fix($this->getFileMock(), $declarationWithDo));
+        $this->assertEquals($fixedDeclarationWithDo, $fixer->fix($this->getFileMock(), $fixedDeclarationWithDo));
+
+        $declarationWithElse = '    public function test($else)     {';
+        $fixedDeclarationWithElse = "    public function test(\$else)\n    {";
+        $this->assertEquals($fixedDeclarationWithElse, $fixer->fix($this->getFileMock(), $declarationWithElse));
+        $this->assertEquals($fixedDeclarationWithElse, $fixer->fix($this->getFileMock(), $fixedDeclarationWithElse));
+
+        $declarationWithTry = '    public function test($try)     {';
+        $fixedDeclarationWithTry = "    public function test(\$try)\n    {";
+        $this->assertEquals($fixedDeclarationWithTry, $fixer->fix($this->getFileMock(), $declarationWithTry));
+        $this->assertEquals($fixedDeclarationWithTry, $fixer->fix($this->getFileMock(), $fixedDeclarationWithTry));
+    }
+
     private function getFileMock()
     {
         return $this->getMockBuilder('\SplFileInfo')
