@@ -3,7 +3,8 @@
 namespace Test\AAaa;
 
 /**
- * @author Mark van der Velden <mark@dynom.nl>
+ * Testing other possible matches of 'class', the following shouldn't match. If it does, the matchings fails:
+ * class badtwo
  */
 class BadTwo
 {

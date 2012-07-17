@@ -14,6 +14,11 @@ use Symfony\CS\FixerInterface;
 class ClassFileNameInconsistencyFixer implements FixerInterface
 {
     /**
+     * @var bool
+     */
+    private $producedWarning = false;
+
+    /**
      * Fixes a file, or in this instance it only verifies if the class name matches the case of the file name
      *
      * @param \SplFileInfo $file    A \SplFileInfo instance
@@ -24,10 +29,9 @@ class ClassFileNameInconsistencyFixer implements FixerInterface
     public function fix(\SplFileInfo $file, $content)
     {
         $matches = array();
-        if (preg_match('@(?:class|interface|trait)(?:\s+)(\w+)@', $content, $matches) !== 1) {
+        if (preg_match('@^(?:\s*)(?:(?:\w+\s+)?(?:class|interface|trait)\s+(\w+)).*?$@m', $content, $matches) !== 1) {
             return $content;
         }
-
 
         if ( ! empty($matches[1])) {
             $className = $matches[1];
@@ -40,14 +44,17 @@ class ClassFileNameInconsistencyFixer implements FixerInterface
                 $expectedFileName = $className .'.'. $file->getExtension();
                 $actualFileName = $file->getBasename();
 
+                $this->producedWarning = true;
                 echo '! WARNING the class name "'. $className .'" doesn\'t match the file name "'. $actualFileName .'"'.
-                    ', expecting the file to be named "'. $expectedFileName .'"';
+                    ', expecting the file to be named "'. $expectedFileName .'"'."\n";
             }
         }
 
         // Nothing to fix, returning the content
         return $content;
     }
+
+
 
     /**
      * Returns the level of CS standard.
@@ -102,5 +109,16 @@ class ClassFileNameInconsistencyFixer implements FixerInterface
     {
         return 'A simple check if the file name casing, match that of the class name. '.
             'A mistake developers on case-insensitive file systems might miss.';
+    }
+
+
+    /**
+     * Returns true if the fixer actually produced a warning.
+     *
+     * @return bool
+     */
+    public function producedAWarning()
+    {
+        return $this->producedWarning;
     }
 }
