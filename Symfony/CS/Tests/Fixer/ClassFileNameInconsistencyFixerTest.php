@@ -37,14 +37,18 @@ class ClassFileNameInconsistencyFixerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider badFilePathProvider
-     * @expectedException \InvalidArgumentException
      */
-    public function testBadNamingConsistency($filePath = 'bla')
+    public function testBadNamingConsistency($filePath)
     {
+        // Suppressing warnings.
+        ob_start();
         $this->fixer->fix(
             new \SplFileInfo($filePath),
             file_get_contents($filePath)
         );
+        ob_end_clean();
+
+        $this->assertTrue($this->fixer->producedAWarning());
     }
 
 
