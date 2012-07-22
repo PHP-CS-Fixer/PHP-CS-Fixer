@@ -20,6 +20,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Config\Config;
+use Symfony\CS\ConfigInterface;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -27,12 +28,18 @@ use Symfony\CS\Config\Config;
 class FixCommand extends Command
 {
     protected $fixer;
+    protected $defaultConfig;
 
-    public function __construct()
+    /**
+     * @param Fixer           $fixer
+     * @param ConfigInterface $config
+     */
+    public function __construct(Fixer $fixer = null, ConfigInterface $config = null)
     {
-        $this->fixer = new Fixer();
+        $this->fixer = $fixer ?: new Fixer();
         $this->fixer->registerBuiltInFixers();
         $this->fixer->registerBuiltInConfigs();
+        $this->defaultConfig = $config ?: new Config();
 
         parent::__construct();
     }
@@ -144,7 +151,7 @@ EOF
         } elseif (file_exists($file = $path.'/.php_cs')) {
             $config = include $file;
         } else {
-            $config = new Config();
+            $config = $this->defaultConfig;
         }
 
         if (is_file($path)) {
