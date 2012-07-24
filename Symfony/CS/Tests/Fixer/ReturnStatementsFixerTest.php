@@ -60,10 +60,40 @@ TEST;
     return;
 TEST;
 
+        $return4 = <<<TEST
+    if (\$foo == \$bar)
+        return;
+TEST;
+        $returnFixed4 = <<<TEST
+    if (\$foo == \$bar)
+        return;
+TEST;
+
+        $return5 = <<<TEST
+    else
+        return;
+TEST;
+        $returnFixed5 = <<<TEST
+    else
+        return;
+TEST;
+
+        $return6 = <<<TEST
+    elseif (\$foo == \$bar)
+        return;
+TEST;
+        $returnFixed6 = <<<TEST
+    elseif (\$foo == \$bar)
+        return;
+TEST;
+
         return array(
             array($return1, $returnFixed1),
             array($return2, $returnFixed2),
             array($return3, $returnFixed3),
+            array($return4, $returnFixed4),
+            array($return5, $returnFixed5),
+            array($return6, $returnFixed6),
         );
     }
 
