@@ -30,7 +30,7 @@ class ReturnStatementsFixer implements FixerInterface
                 preg_match('/^$/m',                        $match[1]) || // ... already blank
                 preg_match('/^(?!.*\{) *(if .+|else.*)/m', $match[1])    // ... if/else/else if/elseif without an opening brace
             ) {
-                return rtrim($match[1])."\n".$match[2];
+                return $match[1]."\n".$match[2];
             }
 
             return $match[1]."\n\n".$match[2];
