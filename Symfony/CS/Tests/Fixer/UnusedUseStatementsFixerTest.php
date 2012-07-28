@@ -23,6 +23,8 @@ class UnusedUseStatementsFixerTest extends \PHPUnit_Framework_TestCase
         $expected = <<<'EOF'
 <?php
 
+namespace My;
+
 use Foo\Bar;
 use Foo\Bar\FooBar as FooBaz;
 use SomeClass;
@@ -39,8 +41,10 @@ EOF;
         $input = <<<'EOF'
 <?php
 
-use Foo\Bar;
+namespace My;
+
 use Foo\Bar\Baz;
+use Foo\Bar;
 use Foo\Bar\FooBar as FooBaz;
 use Foo\Bar\Foo as Fooo;
 use Foo\Bar\Baar\Baar;

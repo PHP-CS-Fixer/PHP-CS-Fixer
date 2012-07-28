@@ -34,13 +34,6 @@ class UnusedUseStatementsFixer implements FixerInterface
                 $currentUse[] = $key;
 
                 if ($val === ';') {
-                    // We have to delete also the space before the use
-                    reset($currentUse);
-                    $firstKey = current($currentUse) - 1;
-                    if (isset($token[$firstKey]) and static::isTokenType($token[$firstKey], T_WHITESPACE)) {
-                        $currentUse[] = $firstKey;
-                    }
-
                     $usesToDelete[$lastElement] = $currentUse;
                     $currentUse = array();
                 }
@@ -60,9 +53,22 @@ class UnusedUseStatementsFixer implements FixerInterface
             }
         }
 
+        if (empty($usesToDelete)) {
+            return $content;
+        }
+
         foreach ($usesToDelete as $linesToDrop) {
             foreach ($linesToDrop as $key) {
                 unset($token[$key]);
+            }
+
+            // We have to delete also the space after the use
+            $whitespaceKey = end($linesToDrop) + 1;
+            if (isset($token[$whitespaceKey]) and static::isTokenType($token[$whitespaceKey], T_WHITESPACE)) {
+                // If new lines are more then 1 we have to preserve at least one
+                $newlines = explode(PHP_EOL, $token[$whitespaceKey][1]);
+                array_shift($newlines);
+                $token[$whitespaceKey] = implode(PHP_EOL, $newlines);
             }
         }
 
