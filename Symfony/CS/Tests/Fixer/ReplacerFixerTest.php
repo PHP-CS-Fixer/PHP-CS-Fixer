@@ -11,17 +11,13 @@
 
 namespace Symfony\CS\Tests\Fixer;
 
-use Symfony\CS\Fixer\VisibilityFixer;
+use Symfony\CS\Fixer\ReplacerFixer;
 
-/**
- * @author Luis Cordova <cordoval@gmail.com>
- * @author Raul Rodriguez <raulrodriguez782@gmail.com>
- */
-class ReplaceFixerTest extends \PHPUnit_Framework_TestCase
+class ReplacerFixerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testFixReplaceEqualString()
+    public function testFixReplacerEqualString()
     {
-        $fixer = new ReplaceFixer();
+        $fixer = new ReplacerFixer();
         $file = new \SplFileInfo(__FILE__);
 
         $expected = <<<'EOF'
@@ -43,9 +39,7 @@ class Foo {
     }
 }
 EOF;
-
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $options = array('target'=>'expressionWithTypo', 'source'=> 'expressionWithoutTypo');
+        $this->assertEquals($expected, $fixer->fixWithOptions($file, $input, $options));
     }
-
-
 }
