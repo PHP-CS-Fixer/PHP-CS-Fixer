@@ -25,20 +25,56 @@ class UnusedUseStatementsFixer implements FixerInterface
             return $content;
         }
 
-        // [Structure] remove unused use statements
-        preg_match_all('/^use (?P<class>[^\s;]+)(?:\s+as\s+(?P<alias>.*))?;/m', $content, $matches, PREG_SET_ORDER);
-        foreach ($matches as $match) {
-            if (isset($match['alias'])) {
-                $short = $match['alias'];
-            } else {
-                $parts = explode('\\', $match['class']);
-                $short = array_pop($parts);
+        $token = token_get_all($content);
+        $usesToDelete = array();
+        $lastElement = null;
+        $currentUse = array();
+        foreach ($token as $key => $val) {
+            if (! empty($currentUse)) {
+                $currentUse[] = $key;
+
+                if ($val === ';') {
+                    $usesToDelete[$lastElement] = $currentUse;
+                    $currentUse = array();
+                }
             }
 
-            preg_match_all('/\b'.preg_quote($short, '/').'\b/i', str_replace($match[0]."\n", '', $content), $m);
-            if (!count($m[0])) {
-                $content = str_replace($match[0]."\n", '', $content);
+            if (static::isTokenType($val, T_USE)) {
+                $currentUse[] = $key;
             }
+
+            if (static::isTokenType($val, T_STRING)) {
+                // strtoupper because class invocation as case-insensitive
+                $lastElement = strtoupper($val[1]);
+
+                if (isset($usesToDelete[$lastElement])) {
+                    unset($usesToDelete[$lastElement]);
+                }
+            }
+        }
+
+        if (empty($usesToDelete)) {
+            return $content;
+        }
+
+        foreach ($usesToDelete as $linesToDrop) {
+            foreach ($linesToDrop as $key) {
+                unset($token[$key]);
+            }
+
+            // We have to delete also the space after the use
+            $whitespaceKey = end($linesToDrop) + 1;
+            if (isset($token[$whitespaceKey]) and static::isTokenType($token[$whitespaceKey], T_WHITESPACE)) {
+                // If new lines are more then 1 we have to preserve at least one
+                $newlines = explode(PHP_EOL, $token[$whitespaceKey][1]);
+                array_shift($newlines);
+                $token[$whitespaceKey] = implode(PHP_EOL, $newlines);
+            }
+        }
+
+        $content = '';
+        foreach ($token as $val) {
+            $content .= is_array($val) ? $val[1] : $val;
         }
 
         return $content;
@@ -68,5 +104,10 @@ class UnusedUseStatementsFixer implements FixerInterface
     public function getDescription()
     {
         return 'Unused use statements must be removed.';
+    }
+
+    private static function isTokenType($token, $type)
+    {
+        return (is_array($token) and isset($token[0]) and $token[0] === $type);
     }
 }

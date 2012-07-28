@@ -21,6 +21,10 @@ class UnusedUseStatementsFixerTest extends \PHPUnit_Framework_TestCase
         $file = new \SplFileInfo(__FILE__);
 
         $expected = <<<'EOF'
+<?php
+
+namespace My;
+
 use Foo\Bar;
 use Foo\Bar\FooBar as FooBaz;
 use SomeClass;
@@ -28,19 +32,32 @@ use SomeClass;
 $a = new Bar();
 $a = new FooBaz();
 $a = new someclass();
+$a = 'new ClassCitedInString();';
+$a = <<<'LOL'
+use UseUsedInString;
+LOL;
 EOF;
 
         $input = <<<'EOF'
-use Foo\Bar;
+<?php
+
+namespace My;
+
 use Foo\Bar\Baz;
+use Foo\Bar;
 use Foo\Bar\FooBar as FooBaz;
 use Foo\Bar\Foo as Fooo;
 use Foo\Bar\Baar\Baar;
 use SomeClass;
+use ClassCitedInString;
 
 $a = new Bar();
 $a = new FooBaz();
 $a = new someclass();
+$a = 'new ClassCitedInString();';
+$a = <<<'LOL'
+use UseUsedInString;
+LOL;
 EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
