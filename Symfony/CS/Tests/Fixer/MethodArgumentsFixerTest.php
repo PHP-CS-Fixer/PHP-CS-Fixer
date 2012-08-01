@@ -33,9 +33,13 @@ class MethodArgumentsFixerTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('public function foo($a,$b,$c)', 'public function foo($a, $b, $c)'),
+            array('public function foo    ($a,$b,$c)', 'public function foo($a, $b, $c)'),
             array('function foo($a  ,$b , $c)', 'function foo($a, $b, $c)'),
             array('function foo(  $a  ,  $b , $c )', 'function foo($a, $b, $c)'),
             array("function foo(\t\$a,\t\$b,\$c)", 'function foo($a, $b, $c)'),
+            array('function foo( Typehint $a,Namespaced\Typehint $b,array $c,\Full\Namespaced\Typehint $d)', 'function foo(Typehint $a, Namespaced\Typehint $b, array $c, \Full\Namespaced\Typehint $d)'),
+            array('function foo($a,$b=12,$c="aaa",$d=array(1,2,3))', 'function foo($a, $b = 12, $c = "aaa", $d = array(1, 2, 3))'),
+            array('function foo($a=array(),$b=array(1=>"a",2=>array(2,3),3),$c=array("a"=>"b"))', 'function foo($a = array(), $b = array(1 => "a", 2 => array(2, 3), 3), $c = array("a" => "b"))'),
         );
     }
 

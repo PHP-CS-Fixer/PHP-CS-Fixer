@@ -81,11 +81,11 @@ DESC;
      */
     private function fixSingleLineArguments($content)
     {
-        $pattern = '/function[\w \s]+\(.*\)/';
+        $pattern = '/function\s+[a-z0-9_]+\s*\(.*\)/';
 
         if (preg_match_all($pattern, $content, $matches)) {
             foreach ($matches[0] as $match) {
-                $proper = preg_replace(array('/\s*\(\s*/', '/\s*\)\s*/', '/[\s]*\,[\s]*/'), array('(', ')', ', '), $match);
+                $proper = preg_replace(array('/\s*\(\s*/', '/\s*\)\s*/', '/[\s]*\,[\s]*/', '/\s*=>\s*/', '/\s*=(?!\>)\s*/'), array('(', ')', ', ', ' => ', ' = '), $match);
                 $content = str_replace($match, $proper, $content);
             }
         }
