@@ -120,4 +120,25 @@ EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
+
+
+    public function testDontGetTrickedIntoParsingFunctionsWithOoKeywordVariables()
+    {
+        $fixer = new VisibilityFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+function foo($class) {
+    static $foo;
+}
+EOF;
+
+        $input = <<<'EOF'
+function foo($class) {
+    static $foo;
+}
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
 }
