@@ -23,12 +23,12 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
     public function __construct()
     {
         // e.g. @param <hint> <$var>
-        $paramTag = '(?P<tag>param)\s+(?P<hint>[^$]+?)\s+(?P<var>\$[^\s]+)';
+        $paramTag = '(?P<tag>param)\s+(?P<hint>[^\s]+?)\s+(?P<var>[^\s]+)';
         // e.g. @return <hint>
-        $returnThrowsTag = '(?P<tag2>return|throws)\s+(?P<hint2>[^$]+?)';
+        $returnThrowsTag = '(?P<tag2>return|throws)\s+(?P<hint2>[^\s]+?)';
         // optional <desc>
         $desc = '(?:\s+(?P<desc>.*)|\s*)';
-        $this->regex = '/^ {5}\* @(?:'.$paramTag.'|'.$returnThrowsTag.')'.$desc.'$/';
+        $this->regex = '/^(?P<spaces>(?: {4})* )\* @(?:'.$paramTag.'|'.$returnThrowsTag.')'.$desc.'$/';
     }
 
     public function fix(\SplFileInfo $file, $content)
@@ -60,7 +60,7 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
                 // update
                 foreach ($items as $j => $item) {
                     $line =
-                        '     * @'
+                        $item['spaces'].'* @'
                         .$item['tag']
                         .str_repeat(' ', $tagMax - strlen($item['tag']) + 1)
                         .$item['hint']
