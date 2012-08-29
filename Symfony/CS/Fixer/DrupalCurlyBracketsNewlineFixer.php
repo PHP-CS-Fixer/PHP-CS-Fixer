@@ -15,14 +15,14 @@ use Symfony\CS\FixerInterface;
 use Symfony\CS\ConfigInterface;
 
 /**
- * @author Marek Kalnik <marekk@theodo.fr>
+ * @author Marek Kalnik <marekk@theodo.fr>, Peter Drake <pdrake@gmail.com>
  */
-class CurlyBracketsNewlineFixer implements FixerInterface
+class DrupalCurlyBracketsNewlineFixer implements FixerInterface
 {
     const REMOVE_NEWLINE = '\\1 {\\4';
 
     // Capture the indentation first
-    const ADD_NEWLINE = "\\1\\2\n\\1{";
+    const REMOVE_NEWLINE_TWO = "\\1\\2 {";
 
     public function fix(\SplFileInfo $file, $content)
     {
@@ -38,8 +38,7 @@ class CurlyBracketsNewlineFixer implements FixerInterface
 
     public function getLevel()
     {
-        // defined in PSR2 ¶4.3, ¶4.3, ¶4.4, ¶5
-        return FixerInterface::PSR2_LEVEL;
+        return FALSE;
     }
 
     public function getPriority()
@@ -54,30 +53,30 @@ class CurlyBracketsNewlineFixer implements FixerInterface
 
     public function getName()
     {
-        return 'braces';
+        return 'drupal_braces';
     }
 
     public function getDescription()
     {
-        return 'Opening braces for classes, interfaces, traits and methods must go on the next line, and closing braces must go on the next line after the body. Opening braces for control structures must go on the same line, and closing braces must go on the next line after the body.';
+        return 'Opening braces for classes, interfaces, traits, methods and control structures must go on the same line, and closing braces must go on the next line after the body.';
     }
 
     private function classDeclarationFix($content)
     {
-        // [Structure] Add new line after class declaration
-        return preg_replace('/^([ \t]*)((?:[\w \t]+ )?(class|interface|trait) [\w, \t\\\\]+?)[ \t]*{\s*$/m', self::ADD_NEWLINE, $content);
+        // [Structure] No new line after class declaration
+        return preg_replace('/^([ \t]*)((?:[\w \t]+ )?(class|interface|trait) [\w, \t\\\\]+?)[ \t]*\n{\s*$/m', self::REMOVE_NEWLINE_TWO, $content);
     }
 
     private function functionDeclarationFix($content)
     {
-        // [Structure] Add new line after function declaration
-        return preg_replace('/^([ \t]*)((?:[\w \t]+ )?function [\w \t]+\(.*?\))[ \t]*{\s*$/m', self::ADD_NEWLINE, $content);
+        // [Structure] No new line after function declaration
+        return preg_replace('/^([ \t]*)((?:[\w \t]+ )?function [\w \t]+\(.*?\))[ \t]*\n{\s*$/m', self::REMOVE_NEWLINE_TWO, $content);
     }
 
     private function anonymousFunctionsFix($content)
     {
         // [Structure] No new line after anonymous function call
-        return preg_replace('/((^|[\s\W])function\s*\(.*\))([^\n]*?) *\n[^\S\n]*{/', self::REMOVE_NEWLINE, $content);
+        return preg_replace('/((^|[\s\W])function\s*\(.*\))([^\n]*?) *\n[^\S\n]*\n{/', self::REMOVE_NEWLINE, $content);
     }
 
     private function controlStatementsFix($content)
@@ -106,8 +105,8 @@ class CurlyBracketsNewlineFixer implements FixerInterface
             'else',
         );
 
-        // [Structure] No new line after control statements
-        return preg_replace('/}\s*\n\s*('.implode('|', $statements).')/', '} \\1', $content);
+        // [Structure] Add new line after control statements
+        return preg_replace('/(^|[\s\W])}\s*(' . implode('|', $statements) . ')/', "\\1}\n\\1\\1\\2", $content);
     }
 
     private function doWhileFix($content)

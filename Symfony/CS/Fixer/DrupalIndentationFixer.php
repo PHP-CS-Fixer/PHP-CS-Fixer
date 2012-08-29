@@ -13,32 +13,23 @@ namespace Symfony\CS\Fixer;
 
 use Symfony\CS\FixerInterface;
 use Symfony\CS\ConfigInterface;
-use Symfony\CS\Tokens;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Fabien Potencier <fabien@symfony.com>, Peter Drake <pdrake@gmail.com>
  */
-class IndentationFixer implements FixerInterface
+class DrupalIndentationFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
-        $tokens = Tokens::fromCode($content);
-
-        foreach ($tokens as $index => $token) {
-            if (!$token->isWhitespace()) {
-                continue;
-            }
-
-            $tokens[$index]->content = preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $token->content);
-        }
-
-        return $tokens->generateCode();
+        // [Structure] Indentation is done by steps of four spaces (tabs are never allowed)
+        return preg_replace_callback('/^([ \t]+)/m', function ($matches) use ($content) {
+            return str_replace("\t", '    ', $matches[0]);
+        }, $content);
     }
 
     public function getLevel()
     {
-        // defined in PSR2 ¶2.4
-        return FixerInterface::PSR2_LEVEL;
+        return FALSE;
     }
 
     public function getPriority()
@@ -53,11 +44,11 @@ class IndentationFixer implements FixerInterface
 
     public function getName()
     {
-        return 'indentation';
+        return 'drupal_indentation';
     }
 
     public function getDescription()
     {
-        return 'Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting.';
+        return 'Code must use 2 spaces for indenting, not tabs.';
     }
 }

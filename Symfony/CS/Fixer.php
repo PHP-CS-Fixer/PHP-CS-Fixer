@@ -115,7 +115,7 @@ class Fixer
                 continue;
             }
 
-            if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff)) {
+            if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff, $config)) {
                 $changed[$this->getFileRelativePathname($file)] = $fixInfo;
             }
         }
@@ -127,7 +127,7 @@ class Fixer
         return $changed;
     }
 
-    public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff)
+    public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff, ConfigInterface $config)
     {
         if ($this->stopwatch) {
             $this->stopwatch->start($this->getFileRelativePathname($file));
@@ -140,7 +140,7 @@ class Fixer
         Tokens::clearCache();
 
         foreach ($fixers as $fixer) {
-            if (!$fixer->supports($file)) {
+            if (!$fixer->supports($file, $config)) {
                 continue;
             }
 

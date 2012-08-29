@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\ConfigInterface;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -35,7 +36,7 @@ class TrailingSpacesFixer implements FixerInterface
         return 20;
     }
 
-    public function supports(\SplFileInfo $file)
+    public function supports(\SplFileInfo $file, ConfigInterface $config)
     {
         return true;
     }

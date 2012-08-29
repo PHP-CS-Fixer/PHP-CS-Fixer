@@ -104,9 +104,9 @@ class Psr0Fixer implements FixerInterface, ConfigAwareInterface
         return -10;
     }
 
-    public function supports(\SplFileInfo $file)
+    public function supports(\SplFileInfo $file, ConfigInterface $config)
     {
-        if ('php' !== pathinfo($file->getFilename(), PATHINFO_EXTENSION)) {
+        if ('php' !== $config->getFileType($file)) {
             return false;
         }
 
