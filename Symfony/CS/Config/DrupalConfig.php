@@ -53,13 +53,13 @@ class DrupalConfig extends Config
 
     public function getFileType(\SplFileInfo $file)
     {
-        $file_extension = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-        $extension_map = array(
+        $fileExtension = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+        $extensionMap = array(
             'php' => 'php',
             'inc' => 'php',
             'module' => 'php'
         );
 
-        return (isset($extension_map[$file_extension]) ? $extension_map[$file_extension] : $file_extension);
+        return (isset($extensionMap[$fileExtension]) ? $extensionMap[$fileExtension] : $fileExtension);
     }
 }

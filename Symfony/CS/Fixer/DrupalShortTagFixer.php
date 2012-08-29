@@ -29,7 +29,7 @@ class DrupalShortTagFixer implements FixerInterface
 
     public function getLevel()
     {
-        return FALSE;
+        return false;
     }
 
     public function getPriority()
@@ -54,13 +54,13 @@ class DrupalShortTagFixer implements FixerInterface
 
     private function shortTagsFix($content)
     {
-      // [Structure] Never use short tags (<?)
-      return preg_replace('/<\?(\s)/', '<?php$1', $content);
+        // [Structure] Never use short tags (<?)
+        return preg_replace('/<\?(\s)/', '<?php$1', $content);
     }
 
     private function shortEchoTagsFix($content)
     {
-      // [Structure] Never use short echo tags (<?=)
-      return preg_replace('/<\?\=(\s)/', '<?php print$1', $content);
+        // [Structure] Never use short echo tags (<?=)
+        return preg_replace('/<\?\=(\s)/', '<?php print$1', $content);
     }
 }

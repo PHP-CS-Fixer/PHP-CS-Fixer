@@ -38,7 +38,7 @@ class DrupalCurlyBracketsNewlineFixer implements FixerInterface
 
     public function getLevel()
     {
-        return FALSE;
+        return false;
     }
 
     public function getPriority()
