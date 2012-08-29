@@ -59,6 +59,7 @@ class DrupalConfig extends Config
             'inc' => 'php',
             'module' => 'php'
         );
-        return $extension_map[$file_extension];
+
+        return (isset($extension_map[$file_extension]) ? $extension_map[$file_extension] : $file_extension);
     }
 }
