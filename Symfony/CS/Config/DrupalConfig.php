@@ -26,6 +26,7 @@ class DrupalConfig extends Config
         $this->fixers = array(
             'drupal_indentation',
             'controls_spaces',
+            'control_structure_braces',
             'drupal_braces',
             'elseif',
             'eof_ending',

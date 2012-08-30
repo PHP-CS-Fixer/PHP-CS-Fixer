@@ -29,9 +29,7 @@ class DrupalCurlyBracketsNewlineFixer implements FixerInterface
         $content = $this->classDeclarationFix($content);
         $content = $this->functionDeclarationFix($content);
         $content = $this->anonymousFunctionsFix($content);
-        $content = $this->controlStatementsFix($content);
         $content = $this->controlStatementContinuationFix($content);
-        $content = $this->doWhileFix($content);
 
         return $content;
     }
@@ -43,7 +41,7 @@ class DrupalCurlyBracketsNewlineFixer implements FixerInterface
 
     public function getPriority()
     {
-        return 0;
+        return -1;
     }
 
     public function supports(\SplFileInfo $file, ConfigInterface $config)
@@ -79,25 +77,6 @@ class DrupalCurlyBracketsNewlineFixer implements FixerInterface
         return preg_replace('/((^|[\s\W])function\s*\(.*\))([^\n]*?) *\n[^\S\n]*\n{/', self::REMOVE_NEWLINE, $content);
     }
 
-    private function controlStatementsFix($content)
-    {
-        $statements = array(
-            '\bif\s*\(.*\)',
-            '\belse\s*if\s*\(.*\)',
-            '\b(?<!\$)else\b',
-            '\bfor\s*\(.*\)',
-            '\b(?<!\$)do\b',
-            '\bwhile\s*\(.*\)',
-            '\bforeach\s*\(.*\)',
-            '\bswitch\s*\(.*\)',
-            '\b(?<!\$)try\b',
-            '\bcatch\s*\(.*\)',
-        );
-
-        // [Structure] No new line after control statements
-        return preg_replace('/((^|[\s\W])('.implode('|', $statements).'))([^\n]*?) *\n[^\S\n]*{/', self::REMOVE_NEWLINE, $content);
-    }
-
     private function controlStatementContinuationFix($content)
     {
         $statements = array(
@@ -107,11 +86,5 @@ class DrupalCurlyBracketsNewlineFixer implements FixerInterface
 
         // [Structure] Add new line after control statements
         return preg_replace('/(^|[\s\W])}\s*(' . implode('|', $statements) . ')/', "\\1}\n\\1\\1\\2", $content);
-    }
-
-    private function doWhileFix($content)
-    {
-        // [Structure] do...while loops are formatted like if {\n... \n} else {\n
-        return preg_replace('/(do {[\s\S]*)}\s*\n\s*while/', '\\1} while', $content);
     }
 }
