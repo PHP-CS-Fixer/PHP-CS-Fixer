@@ -17,12 +17,12 @@ use Symfony\CS\ConfigInterface;
 /**
  * @author Fabien Potencier <fabien@symfony.com>, Peter Drake <pdrake@gmail.com>
  */
-class DrupalShortTagFixer implements FixerInterface
+class ShortEchoTagFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
-        $content = $this->shortTagsFix($content);
-        $content = $this->shortEchoTagsFix($content);
+        // [Structure] Never use short echo tags (<?=)
+        return preg_replace('/<\?\=(\s)/', '<?php print$1', $content);
 
         return $content;
     }
@@ -44,23 +44,11 @@ class DrupalShortTagFixer implements FixerInterface
 
     public function getName()
     {
-        return 'drupal_short_tag';
+        return 'short_echo_tag';
     }
 
     public function getDescription()
     {
-        return 'PHP code must use the long <?php ?> tags or long tags with print (in lieu of short-echo <?= ?> tags); it must not use short tags.';
-    }
-
-    private function shortTagsFix($content)
-    {
-        // [Structure] Never use short tags (<?)
-        return preg_replace('/<\?(\s)/', '<?php$1', $content);
-    }
-
-    private function shortEchoTagsFix($content)
-    {
-        // [Structure] Never use short echo tags (<?=)
-        return preg_replace('/<\?\=(\s)/', '<?php print$1', $content);
+        return 'PHP code must use the long tags with print; it must not use short echo tags (<?= ?>).';
     }
 }

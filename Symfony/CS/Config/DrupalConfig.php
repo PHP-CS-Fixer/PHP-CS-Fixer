@@ -34,7 +34,8 @@ class DrupalConfig extends Config
             'linefeed',
             'php_closing_tag',
             'phpdoc_params',
-            'drupal_short_tag',
+            'short_tag',
+            'short_echo_tag',
             'trailing_spaces',
             'unused_use',
             'visibility'
