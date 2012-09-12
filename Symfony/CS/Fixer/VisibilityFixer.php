@@ -21,7 +21,7 @@ class VisibilityFixer implements FixerInterface
     public function fix(\SplFileInfo $file, $content)
     {
         // skip files with no OOP code
-        if (!preg_match('{\b(?:class|interface|trait)\b}i', $content)) {
+        if (!preg_match('{\b(?<!\$)(?:class|interface|trait)\b}i', $content)) {
             return $content;
         }
 
