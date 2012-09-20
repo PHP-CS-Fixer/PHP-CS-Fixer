@@ -33,7 +33,7 @@ class EndOfFileLineFeedFixer implements FixerInterface
 
     public function getLevel()
     {
-        return FixerInterface::ALL_LEVEL;
+        return FixerInterface::PSR2_LEVEL;
     }
 
     public function getPriority()
