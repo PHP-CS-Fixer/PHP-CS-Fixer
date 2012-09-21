@@ -20,7 +20,7 @@ class EndOfFileLineFeedFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
-        // [Structure] A file must always ends with a linefeed character
+        // [Structure] A file must always end with a linefeed character
 
         $content = rtrim($content);
 
@@ -33,7 +33,7 @@ class EndOfFileLineFeedFixer implements FixerInterface
 
     public function getLevel()
     {
-        return FixerInterface::ALL_LEVEL;
+        return FixerInterface::PSR2_LEVEL;
     }
 
     public function getPriority()
@@ -54,6 +54,6 @@ class EndOfFileLineFeedFixer implements FixerInterface
 
     public function getDescription()
     {
-        return 'A file must always ends with an empty line feed.';
+        return 'A file must always end with an empty line feed.';
     }
 }

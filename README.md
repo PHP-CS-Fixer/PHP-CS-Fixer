@@ -108,7 +108,7 @@ Choose from the list of available fixers:
  * **phpdoc_params**     [all] All items of the @param phpdoc tags must be
                      aligned vertically.
 
- * **eof_ending**        [all] A file must always ends with an empty line feed.
+ * **eof_ending**        [PSR-2] A file must always end with an empty line feed.
 
  * **extra_empty_lines** [all] Removes extra empty lines.
 
