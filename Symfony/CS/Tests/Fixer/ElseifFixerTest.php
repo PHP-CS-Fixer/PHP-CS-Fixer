@@ -24,7 +24,7 @@ class ElseifFixerTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Symfony\CS\Fixer\ElseifFixer::fix
      */
-    public function testThatInvalidElseIfIsFixed()
+    public function testThatInvalidElseIfInSingleLineIsFixed()
     {
         $fixer = new ElseifFixer();
 
@@ -32,6 +32,69 @@ class ElseifFixerTest extends \PHPUnit_Framework_TestCase
             'if ($some) { $test = true } elseif ($some != "test") { $test = false; }',
             $fixer->fix($this->getFileMock(), 'if ($some) { $test = true } else if ($some != "test") { $test = false; }'
         ));
+    }
+
+    /**
+     * @covers Symfony\CS\Fixer\ElseifFixer::fix
+     */
+    public function testThatInvalidElseIfInMultiLineIsFixed()
+    {
+        $fixer      = new ElseifFixer();
+        $invalid    = <<<'EOD'
+if ($some) {
+    $test = true
+} else
+if ($some != "test") {
+    $test = false;
+}
+EOD;
+        $expected   = <<<'EOD'
+if ($some) {
+    $test = true
+} elseif ($some != "test") {
+    $test = false;
+}
+EOD;
+
+        $this->assertSame(
+            $expected,
+            $fixer->fix($this->getFileMock(), $invalid)
+        );
+    }
+    /**
+     * @covers Symfony\CS\Fixer\ElseifFixer::fix
+     */
+    public function testThatInvalidElseIfInMultiLineWithoutBracketsIsFixed()
+    {
+        $fixer      = new ElseifFixer();
+        $invalid    = <<<'EOD'
+$some = 'test';
+if (true === $some)
+    $test = 'a';
+else
+if ($some != "test")
+    $test = 'b';
+else
+    $test = 'c';
+
+echo $test; // "c"
+EOD;
+        $expected   = <<<'EOD'
+$some = 'test';
+if (true === $some)
+    $test = 'a';
+elseif ($some != "test")
+    $test = 'b';
+else
+    $test = 'c';
+
+echo $test; // "c"
+EOD;
+
+        $this->assertSame(
+            $expected,
+            $fixer->fix($this->getFileMock(), $invalid)
+        );
     }
 
     /**
