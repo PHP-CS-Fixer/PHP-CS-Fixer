@@ -18,6 +18,5 @@
     "autoload": {
         "psr-0": { "Symfony\\CS": "." }
     },
-    "minimum-stability": "dev",
     "bin": ["php-cs-fixer"]
 }
