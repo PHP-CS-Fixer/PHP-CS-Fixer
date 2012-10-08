@@ -25,7 +25,7 @@ class EndOfFileLineFeedFixer implements FixerInterface
         $content = rtrim($content);
 
         if (strlen($content)) {
-            return $content."\n";
+            return $content."\n\n";
         }
 
         return $content;
