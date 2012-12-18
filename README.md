@@ -59,12 +59,13 @@ problems as possible on a given file or directory:
     php php-cs-fixer.phar fix /path/to/file
 
 The `--level` option limits the fixers to apply on the
-project:
+project (you can select multiple levels by separating them by a comma):
 
     php php-cs-fixer.phar fix /path/to/project --level=psr0
     php php-cs-fixer.phar fix /path/to/project --level=psr1
     php php-cs-fixer.phar fix /path/to/project --level=psr2
     php php-cs-fixer.phar fix /path/to/project --level=all
+    php php-cs-fixer.phar fix /path/to/project --level=psr1,psr2
 
 By default, all PSR-2 fixers and some additional ones are run.
 
