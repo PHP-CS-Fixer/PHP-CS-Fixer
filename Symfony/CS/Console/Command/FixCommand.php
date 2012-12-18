@@ -162,24 +162,41 @@ EOF
 
         $allFixers = $this->fixer->getFixers();
 
-        switch ($input->getOption('level')) {
-            case 'psr0':
-                $level = FixerInterface::PSR0_LEVEL;
-                break;
-            case 'psr1':
-                $level = FixerInterface::PSR1_LEVEL;
-                break;
-            case 'psr2':
-                $level = FixerInterface::PSR2_LEVEL;
-                break;
-            case 'all':
-                $level = FixerInterface::ALL_LEVEL;
-                break;
-            case null:
-                $level = $input->getOption('fixers') ? null : $config->getFixers();
-                break;
-            default:
-                throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $input->getOption('level')));
+        $availableLevels = array(
+            'psr0' => FixerInterface::PSR0_LEVEL,
+            'psr1' => FixerInterface::PSR1_LEVEL,
+            'psr2' => FixerInterface::PSR2_LEVEL,
+        );
+        if (preg_match('/,/', $input->getOption('level'))) {
+            $levels = array_map('trim', explode(',', $input->getOption('level')));
+            $level = 0;
+            foreach ($levels as $l) {
+                if (isset($availableLevels[$l])) {
+                    $level |= $availableLevels[$l];
+                } else {
+                    throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $l));
+                }
+            }
+        } else {
+            switch ($input->getOption('level')) {
+                case 'psr0':
+                    $level = FixerInterface::PSR0_LEVEL;
+                    break;
+                case 'psr1':
+                    $level = FixerInterface::PSR1_LEVEL;
+                    break;
+                case 'psr2':
+                    $level = FixerInterface::PSR2_LEVEL;
+                    break;
+                case 'all':
+                    $level = FixerInterface::ALL_LEVEL;
+                    break;
+                case null:
+                    $level = $input->getOption('fixers') ? null : $config->getFixers();
+                    break;
+                default:
+                    throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $input->getOption('level')));
+            }
         }
 
         // select base fixers for the given level
