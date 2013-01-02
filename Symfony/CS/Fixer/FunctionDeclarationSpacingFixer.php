@@ -25,6 +25,7 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
     {
         $content = $this->fixNamedFunctions($content);
         $content = $this->fixAnonymousFunctions($content);
+        $content = $this->fixSpaceBeforeBrace($content);
         return $content;
     }
 
@@ -72,13 +73,13 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
     private function fixAnonymousFunctions($content)
     {
         $content = preg_replace(
-            $this->regex('params'),
-            'function (\1) {',
+            $this->regex(array('params', 'end')),
+            'function (\1)\2',
             $content
         );
         $content = preg_replace(
-            $this->regex('params', 'use'),
-            'function (\1) use (\2) {',
+            $this->regex(array('params', 'use', 'end')),
+            'function (\1) use (\2)\3',
             $content
         );
         return $content;
@@ -87,13 +88,27 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
     private function fixNamedFunctions($content)
     {
         return preg_replace(
-            $this->regex('name', 'params'),
-            'function \1(\2) {',
+            $this->regex(array('name', 'params', 'end')),
+            'function \1(\2)\3',
             $content
         );
     }
 
-    private function regex()
+    /**
+     * In previous steps we have cut all horizontal whitespace,
+     * so where are left with function(){
+     * Add a missin space at the end: function () {
+     * This does not touch function declarations with brace on another line.
+     */
+    private function fixSpaceBeforeBrace($content)
+    {
+        return preg_replace(
+            '/(function[^{]+\)){/',
+            '\1 {',
+            $content);
+    }
+
+    private function regex(array $keys)
     {
         $map = array(
             'name' => '\s+([a-zA-Z0-9_]+)',
@@ -108,11 +123,12 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
                     \h*
                 \)
             ',
+            'end' => '\h*((?:\v\s*)?{)',
         );
         $map['use'] = '\s*use'.$map['params'];
 
-        return '/function'.implode('', array_map(function($arg) use ($map) {
-            return $map[$arg];
-        }, func_get_args())).'\h*{/x';
+        return '/function'.implode('', array_map(function ($key) use ($map) {
+            return $map[$key];
+        }, $keys)).'/x';
     }
 }
