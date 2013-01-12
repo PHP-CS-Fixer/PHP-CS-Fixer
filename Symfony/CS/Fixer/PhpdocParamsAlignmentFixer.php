@@ -23,7 +23,7 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
     public function __construct()
     {
         // e.g. @param <hint> <$var>
-        $paramTag = '(?P<tag>param)\s+(?P<hint>[^$]+?)\s+(?P<var>\$[^\s]+)';
+        $paramTag = '(?P<tag>param)\s+(?P<hint>[^$]+?)\s+(?P<var>&?\$[^\s]+)';
         // e.g. @return <hint>
         $returnThrowsTag = '(?P<tag2>return|throws)\s+(?P<hint2>[^$]+?)';
         // optional <desc>
