@@ -115,6 +115,29 @@ class ControlSpacesFixerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /*
+     * @see https://github.com/fabpot/PHP-CS-Fixer/issues/162
+     */
+    public function testIssue162()
+    {
+        $fixer = new Fixer();
+
+        $if = <<<'EOD'
+    if (
+        true &&
+        true
+    ) {
+        // ...
+    } elseif (
+        true &&
+        true
+    ) {
+        // ...
+    }
+EOD;
+        $this->assertEquals($if, $fixer->fix($this->getFileMock(), $if));
+    }
+
     private function getFileMock()
     {
         return $this->getMockBuilder('\SplFileInfo')
