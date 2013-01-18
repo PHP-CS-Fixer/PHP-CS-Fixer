@@ -20,8 +20,8 @@ class TrailingSpacesFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
-        // [Structure] Don't add trailing spaces at the end of lines
-        return preg_replace('/[ \t]+$/m', '', $content);
+        // [Structure] Don't add trailing spaces at the end of non-blank lines
+        return preg_replace('/(\S)[ \t]+$/m', '\1', $content);
     }
 
     public function getLevel()
@@ -47,6 +47,6 @@ class TrailingSpacesFixer implements FixerInterface
 
     public function getDescription()
     {
-        return 'Remove trailing whitespace at the end of lines.';
+        return 'Remove trailing whitespace at the end of non-blank lines.';
     }
 }
