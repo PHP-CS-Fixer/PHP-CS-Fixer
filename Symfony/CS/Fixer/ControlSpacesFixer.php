@@ -16,6 +16,7 @@ use Symfony\CS\FixerInterface;
 /**
  * @author Adrien Brault <adrien.brault@gmail.com>
  * @author Саша Стаменковић <umpirsky@gmail.com>
+ * @author Niko Kivelä <niko@tovrleaf.com>
  */
 class ControlSpacesFixer implements FixerInterface
 {
@@ -128,11 +129,33 @@ class ControlSpacesFixer implements FixerInterface
 
         return preg_replace(
             array(
-                sprintf('/(%s)[^\S\n]*\([^\S\n]*([^()]*?|(?R))[^\S\n]*\)[^\S\n]*{/', implode('|', $statements)), // Fix spacing inside brackets for simple bracket cases
-                sprintf('/(%s)[^\S\n]*\((.*)\)[^\S\n]*{/', implode('|', $statements))                            // Fix spacing for all cases leaving spacing inside brackets as is
+                // [^\S\n]* means not any non-whitespace character or newline 0
+                // means any whitespace character expect linebreak
+
+                // Fix spacing inside brackets for simple bracket cases
+                sprintf(
+                    '/(%s)  # group capture: $statements
+                    [^\S\n]*
+                    \(          # literal (
+                        [^\S\n]*
+                        (                   # group capture: start
+                            [^()]*?         # not () or newline zero or more times, greedy
+                            |               # OR
+                            (?R)            # recursive syntax
+                        )                   # group capture: end
+                        [^\S\n]*
+                    (\s*)
+                    \)          # literal )
+                    [^\S\n]*
+                    {
+                    /x', // extended free spacing mode
+                    implode('|', $statements)
+                ),
+                // Fix spacing for all cases leaving spacing inside brackets as
+                sprintf('/(%s)[^\S\n]*\((.*)\)[^\S\n]*{/', implode('|', $statements)),
             ),
             array(
-                '\\1 (\\2) {',
+                '\\1 (\\2\\3) {',
                 '\\1 (\\2) {'
             ),
             $content
