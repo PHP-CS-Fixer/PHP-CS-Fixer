@@ -227,6 +227,10 @@ EOF
             }
             $output->writeln('');
         }
+
+        $status = !empty($changed) ? 1 : 0;
+
+        return $status;
     }
 
     protected function getFixersHelp()
