@@ -230,7 +230,7 @@ EOF
 
         $status = !empty($changed) ? 1 : 0;
 
-        exit($status);
+        return $status;
     }
 
     protected function getFixersHelp()
