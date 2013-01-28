@@ -23,23 +23,23 @@ use Symfony\CS\Fixer;
  */
 class Application extends BaseApplication
 {
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        error_reporting(-1);
+		/**
+		 * Constructor.
+		 */
+		public function __construct()
+		{
+				error_reporting(-1);
 
-        parent::__construct('PHP CS Fixer', Fixer::VERSION);
+				parent::__construct('PHP CS Fixer', Fixer::VERSION);
 
-        $this->add(new FixCommand());
-        $this->add(new CompileCommand());
-        $this->add(new ReadmeCommand());
-        $this->add(new SelfUpdateCommand());
-    }
+				$this->add(new FixCommand());
+				$this->add(new CompileCommand());
+				$this->add(new ReadmeCommand());
+				$this->add(new SelfUpdateCommand());
+		}
 
-    public function getLongVersion()
-    {
-        return parent::getLongVersion().' by <comment>Fabien Potencier</comment>';
-    }
+		public function getLongVersion()
+		{
+				return parent::getLongVersion().' by <comment>Fabien Potencier</comment>';
+		}
 }

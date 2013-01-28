@@ -16,57 +16,57 @@ namespace Symfony\CS;
  */
 interface FixerInterface
 {
-    const PSR0_LEVEL = 1;
-    const PSR1_LEVEL = 3;
-    const PSR2_LEVEL = 7;
-    const ALL_LEVEL  = 15;
+		const PSR0_LEVEL = 1;
+		const PSR1_LEVEL = 3;
+		const PSR2_LEVEL = 7;
+		const ALL_LEVEL	= 15;
 
-    /**
-     * Fixes a file.
-     *
-     * @param \SplFileInfo $file    A \SplFileInfo instance
-     * @param string       $content The file content
-     *
-     * @return string The fixed file content
-     */
-    public function fix(\SplFileInfo $file, $content);
+		/**
+		 * Fixes a file.
+		 *
+		 * @param \SplFileInfo $file		A \SplFileInfo instance
+		 * @param string			 $content The file content
+		 *
+		 * @return string The fixed file content
+		 */
+		public function fix(\SplFileInfo $file, $content);
 
-    /**
-     * Returns the level of CS standard.
-     *
-     * Can be one of self::PSR1_LEVEL, self::PSR2_LEVEL, or self::ALL_LEVEL
-     */
-    public function getLevel();
+		/**
+		 * Returns the level of CS standard.
+		 *
+		 * Can be one of self::PSR1_LEVEL, self::PSR2_LEVEL, or self::ALL_LEVEL
+		 */
+		public function getLevel();
 
-    /**
-     * Returns the priority of the fixer.
-     *
-     * The default priority is 0 and higher priorities are executed first.
-     */
-    public function getPriority();
+		/**
+		 * Returns the priority of the fixer.
+		 *
+		 * The default priority is 0 and higher priorities are executed first.
+		 */
+		public function getPriority();
 
-    /**
-     * Returns true if the file is supported by this fixer.
-     *
-     * @return Boolean true if the file is supported by this fixer, false otherwise
-     */
-    public function supports(\SplFileInfo $file);
+		/**
+		 * Returns true if the file is supported by this fixer.
+		 *
+		 * @return Boolean true if the file is supported by this fixer, false otherwise
+		 */
+		public function supports(\SplFileInfo $file);
 
-    /**
-     * Returns the name of the fixer.
-     *
-     * The name must be all lowercase and without any spaces.
-     *
-     * @return string The name of the fixer
-     */
-    public function getName();
+		/**
+		 * Returns the name of the fixer.
+		 *
+		 * The name must be all lowercase and without any spaces.
+		 *
+		 * @return string The name of the fixer
+		 */
+		public function getName();
 
-    /**
-     * Returns the description of the fixer.
-     *
-     * A short one-line description of what the fixer does.
-     *
-     * @return string The description of the fixer
-     */
-    public function getDescription();
+		/**
+		 * Returns the description of the fixer.
+		 *
+		 * A short one-line description of what the fixer does.
+		 *
+		 * @return string The description of the fixer
+		 */
+		public function getDescription();
 }

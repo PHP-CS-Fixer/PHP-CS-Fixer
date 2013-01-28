@@ -15,73 +15,73 @@ use Symfony\CS\Fixer\PhpdocParamsAlignmentFixer;
 
 class PhpdocParamsAlignmentFixerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testFix()
-    {
-        $fixer = new PhpdocParamsAlignmentFixer();
-        $file = new \SplFileInfo(__FILE__);
+		public function testFix()
+		{
+				$fixer = new PhpdocParamsAlignmentFixer();
+				$file = new \SplFileInfo(__FILE__);
 
-        $expected = <<<'EOF'
+				$expected = <<<'EOF'
 
-     * @param EngineInterface $templating
-     * @param string          $format
-     * @param integer         $code       An HTTP response status code
-     * @param Boolean         $debug
-
-EOF;
-
-        $input = <<<'EOF'
-
-     * @param  EngineInterface $templating
-     * @param string      $format
-     * @param  integer  $code       An HTTP response status code
-     * @param    Boolean      $debug
+		 * @param EngineInterface $templating
+		 * @param string					$format
+		 * @param integer				 $code			 An HTTP response status code
+		 * @param Boolean				 $debug
 
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
-    }
+				$input = <<<'EOF'
 
-    public function testFixWithReturnAndThrows()
-    {
-        $fixer = new PhpdocParamsAlignmentFixer();
-        $file = new \SplFileInfo(__FILE__);
-
-        $expected = <<<'EOF'
-
-     * @param  EngineInterface $templating
-     * @throws Bar             description bar
-     * @return Foo             description foo
+		 * @param	EngineInterface $templating
+		 * @param string			$format
+		 * @param	integer	$code			 An HTTP response status code
+		 * @param		Boolean			$debug
 
 EOF;
 
-        $input = <<<'EOF'
+				$this->assertEquals($expected, $fixer->fix($file, $input));
+		}
 
-     * @param EngineInterface       $templating
-     * @throws   Bar description bar
-     * @return  Foo     description foo
+		public function testFixWithReturnAndThrows()
+		{
+				$fixer = new PhpdocParamsAlignmentFixer();
+				$file = new \SplFileInfo(__FILE__);
 
-EOF;
+				$expected = <<<'EOF'
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
-    }
-
-    public function testFixOnlyReturn()
-    {
-        $fixer = new PhpdocParamsAlignmentFixer();
-        $file = new \SplFileInfo(__FILE__);
-
-        $expected = <<<'EOF'
-
-     * @return Foo description foo
+		 * @param	EngineInterface $templating
+		 * @throws Bar						 description bar
+		 * @return Foo						 description foo
 
 EOF;
 
-        $input = <<<'EOF'
+				$input = <<<'EOF'
 
-     * @return   Foo             description foo
+		 * @param EngineInterface			 $templating
+		 * @throws	 Bar description bar
+		 * @return	Foo		 description foo
 
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
-    }
+				$this->assertEquals($expected, $fixer->fix($file, $input));
+		}
+
+		public function testFixOnlyReturn()
+		{
+				$fixer = new PhpdocParamsAlignmentFixer();
+				$file = new \SplFileInfo(__FILE__);
+
+				$expected = <<<'EOF'
+
+		 * @return Foo description foo
+
+EOF;
+
+				$input = <<<'EOF'
+
+		 * @return	 Foo						 description foo
+
+EOF;
+
+				$this->assertEquals($expected, $fixer->fix($file, $input));
+		}
 }

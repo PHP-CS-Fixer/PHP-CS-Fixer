@@ -19,49 +19,49 @@ use Symfony\CS\FinderInterface;
  */
 class DefaultFinder extends Finder implements FinderInterface
 {
-    public function __construct()
-    {
-        parent::__construct();
+		public function __construct()
+		{
+				parent::__construct();
 
-        $files = $this->getFilesToExclude();
+				$files = $this->getFilesToExclude();
 
-        $this
-            ->files()
-            ->name('*.php')
-            ->name('*.twig')
-            ->name('*.xml')
-            ->name('*.yml')
-            ->ignoreDotFiles(true)
-            ->ignoreVCS(true)
-            ->exclude('vendor')
-            ->filter(function (\SplFileInfo $file) use ($files) {
-                return !in_array($file->getRelativePathname(), $files);
-            })
-        ;
-    }
+				$this
+						->files()
+						->name('*.php')
+						->name('*.twig')
+						->name('*.xml')
+						->name('*.yml')
+						->ignoreDotFiles(true)
+						->ignoreVCS(true)
+						->exclude('vendor')
+						->filter(function (\SplFileInfo $file) use ($files) {
+								return !in_array($file->getRelativePathname(), $files);
+						})
+				;
+		}
 
-    public function setDir($dir)
-    {
-        $this->in($this->getDirs($dir));
-    }
+		public function setDir($dir)
+		{
+				$this->in($this->getDirs($dir));
+		}
 
-    /**
-     * Gets the directories that needs to be scanned for files to validate.
-     *
-     * @return array
-     */
-    protected function getDirs($dir)
-    {
-        return array($dir);
-    }
+		/**
+		 * Gets the directories that needs to be scanned for files to validate.
+		 *
+		 * @return array
+		 */
+		protected function getDirs($dir)
+		{
+				return array($dir);
+		}
 
-    /**
-     * Excludes files because modifying them would break (mainly useful for fixtures in unit tests).
-     *
-     * @return array
-     */
-    protected function getFilesToExclude()
-    {
-        return array();
-    }
+		/**
+		 * Excludes files because modifying them would break (mainly useful for fixtures in unit tests).
+		 *
+		 * @return array
+		 */
+		protected function getFilesToExclude()
+		{
+				return array();
+		}
 }

@@ -16,5 +16,5 @@ namespace Symfony\CS;
  */
 interface FinderInterface
 {
-    public function setDir($dir);
+		public function setDir($dir);
 }

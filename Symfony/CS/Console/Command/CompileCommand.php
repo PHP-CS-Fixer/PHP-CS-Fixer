@@ -21,23 +21,23 @@ use Symfony\CS\Util\Compiler;
  */
 class CompileCommand extends Command
 {
-    /**
-     * @see Command
-     */
-    protected function configure()
-    {
-        $this
-            ->setName('compile')
-            ->setDescription('Compiles the fixer as a phar file')
-        ;
-    }
+		/**
+		 * @see Command
+		 */
+		protected function configure()
+		{
+				$this
+						->setName('compile')
+						->setDescription('Compiles the fixer as a phar file')
+				;
+		}
 
-    /**
-     * @see Command
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $compiler = new Compiler();
-        $compiler->compile();
-    }
+		/**
+		 * @see Command
+		 */
+		protected function execute(InputInterface $input, OutputInterface $output)
+		{
+				$compiler = new Compiler();
+				$compiler->compile();
+		}
 }

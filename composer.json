@@ -1,27 +1,27 @@
 {
-    "name": "fabpot/php-cs-fixer",
-    "type": "application",
-    "description": "A script to automatically fix Symfony Coding Standard",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Fabien Potencier",
-            "email": "fabien@symfony.com"
-        }
-    ],
-    "require": {
-        "php": ">=5.3.3",
-        "symfony/console": "2.1.*",
-        "symfony/filesystem": "2.1.*",
-        "symfony/finder": "2.1.*"
-    },
-    "autoload": {
-        "psr-0": { "Symfony\\CS": "." }
-    },
-    "bin": ["php-cs-fixer"],
-    "extra": {
-        "branch-alias": {
-            "dev-master": "0.1.x-dev"
-        }
-    }
+		"name": "fabpot/php-cs-fixer",
+		"type": "application",
+		"description": "A script to automatically fix Symfony Coding Standard",
+		"license": "MIT",
+		"authors": [
+				{
+						"name": "Fabien Potencier",
+						"email": "fabien@symfony.com"
+				}
+		],
+		"require": {
+				"php": ">=5.3.3",
+				"symfony/console": "2.1.*",
+				"symfony/filesystem": "2.1.*",
+				"symfony/finder": "2.1.*"
+		},
+		"autoload": {
+				"psr-0": { "Symfony\\CS": "." }
+		},
+		"bin": ["php-cs-fixer"],
+		"extra": {
+				"branch-alias": {
+						"dev-master": "0.1.x-dev"
+				}
+		}
 }

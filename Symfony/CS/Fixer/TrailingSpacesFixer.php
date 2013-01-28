@@ -18,35 +18,35 @@ use Symfony\CS\FixerInterface;
  */
 class TrailingSpacesFixer implements FixerInterface
 {
-    public function fix(\SplFileInfo $file, $content)
-    {
-        // [Structure] Don't add trailing spaces at the end of lines
-        return preg_replace('/[ \t]+$/m', '', $content);
-    }
+		public function fix(\SplFileInfo $file, $content)
+		{
+				// [Structure] Don't add trailing spaces at the end of lines
+				return preg_replace('/[ \t]+$/m', '', $content);
+		}
 
-    public function getLevel()
-    {
-        // defined in PSR2 ¶2.3
-        return FixerInterface::PSR2_LEVEL;
-    }
+		public function getLevel()
+		{
+				// defined in PSR2 ¶2.3
+				return FixerInterface::PSR2_LEVEL;
+		}
 
-    public function getPriority()
-    {
-        return 20;
-    }
+		public function getPriority()
+		{
+				return 20;
+		}
 
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
+		public function supports(\SplFileInfo $file)
+		{
+				return true;
+		}
 
-    public function getName()
-    {
-        return 'trailing_spaces';
-    }
+		public function getName()
+		{
+				return 'trailing_spaces';
+		}
 
-    public function getDescription()
-    {
-        return 'Remove trailing whitespace at the end of lines.';
-    }
+		public function getDescription()
+		{
+				return 'Remove trailing whitespace at the end of lines.';
+		}
 }

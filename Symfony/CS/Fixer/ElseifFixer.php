@@ -18,36 +18,36 @@ use Symfony\CS\FixerInterface;
  */
 class ElseifFixer implements FixerInterface
 {
-    public function fix(\SplFileInfo $file, $content)
-    {
-        // [Structure] elseif, not else if
-        return str_replace('} else if (', '} elseif (', $content);
-    }
+		public function fix(\SplFileInfo $file, $content)
+		{
+				// [Structure] elseif, not else if
+				return str_replace('} else if (', '} elseif (', $content);
+		}
 
-    public function getLevel()
-    {
-        // defined in PSR2 ¶5.1
-        return FixerInterface::PSR2_LEVEL;
-    }
+		public function getLevel()
+		{
+				// defined in PSR2 ¶5.1
+				return FixerInterface::PSR2_LEVEL;
+		}
 
-    public function getPriority()
-    {
-        // should be run after ControlSpacesFixer
-        return -20;
-    }
+		public function getPriority()
+		{
+				// should be run after ControlSpacesFixer
+				return -20;
+		}
 
-    public function supports(\SplFileInfo $file)
-    {
-        return 'php' == pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-    }
+		public function supports(\SplFileInfo $file)
+		{
+				return 'php' == pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+		}
 
-    public function getName()
-    {
-        return 'elseif';
-    }
+		public function getName()
+		{
+				return 'elseif';
+		}
 
-    public function getDescription()
-    {
-        return 'The keyword elseif should be used instead of else if so that all control keywords looks like single words.';
-    }
+		public function getDescription()
+		{
+				return 'The keyword elseif should be used instead of else if so that all control keywords looks like single words.';
+		}
 }

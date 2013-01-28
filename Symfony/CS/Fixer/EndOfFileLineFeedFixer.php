@@ -18,42 +18,42 @@ use Symfony\CS\FixerInterface;
  */
 class EndOfFileLineFeedFixer implements FixerInterface
 {
-    public function fix(\SplFileInfo $file, $content)
-    {
-        // [Structure] A file must always end with a linefeed character
+		public function fix(\SplFileInfo $file, $content)
+		{
+				// [Structure] A file must always end with a linefeed character
 
-        $content = rtrim($content);
+				$content = rtrim($content);
 
-        if (strlen($content)) {
-            return $content."\n";
-        }
+				if (strlen($content)) {
+						return $content."\n";
+				}
 
-        return $content;
-    }
+				return $content;
+		}
 
-    public function getLevel()
-    {
-        return FixerInterface::PSR2_LEVEL;
-    }
+		public function getLevel()
+		{
+				return FixerInterface::PSR2_LEVEL;
+		}
 
-    public function getPriority()
-    {
-        // must run last to be sure the file is properly formatted before it runs
-        return -50;
-    }
+		public function getPriority()
+		{
+				// must run last to be sure the file is properly formatted before it runs
+				return -50;
+		}
 
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
+		public function supports(\SplFileInfo $file)
+		{
+				return true;
+		}
 
-    public function getName()
-    {
-        return 'eof_ending';
-    }
+		public function getName()
+		{
+				return 'eof_ending';
+		}
 
-    public function getDescription()
-    {
-        return 'A file must always end with an empty line feed.';
-    }
+		public function getDescription()
+		{
+				return 'A file must always end with an empty line feed.';
+		}
 }
