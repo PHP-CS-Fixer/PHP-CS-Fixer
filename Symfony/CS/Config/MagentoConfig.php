@@ -18,20 +18,20 @@ use Symfony\CS\Finder\MagentoFinder;
  */
 class MagentoConfig extends Config
 {
-    public function __construct()
-    {
-        parent::__construct();
+		public function __construct()
+		{
+				parent::__construct();
 
-        $this->finder = new MagentoFinder();
-    }
+				$this->finder = new MagentoFinder();
+		}
 
-    public function getName()
-    {
-        return 'magento';
-    }
+		public function getName()
+		{
+				return 'magento';
+		}
 
-    public function getDescription()
-    {
-        return 'The configuration for a Magento application';
-    }
+		public function getDescription()
+		{
+				return 'The configuration for a Magento application';
+		}
 }

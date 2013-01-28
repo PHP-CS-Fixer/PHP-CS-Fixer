@@ -20,23 +20,23 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ReadmeCommand extends Command
 {
-    /**
-     * @see Command
-     */
-    protected function configure()
-    {
-        $this
-            ->setName('readme')
-            ->setDescription('Generates the README content, based on the fix command help')
-        ;
-    }
+		/**
+		 * @see Command
+		 */
+		protected function configure()
+		{
+				$this
+						->setName('readme')
+						->setDescription('Generates the README content, based on the fix command help')
+				;
+		}
 
-    /**
-     * @see Command
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $header = <<<EOF
+		/**
+		 * @see Command
+		 */
+		protected function execute(InputInterface $input, OutputInterface $output)
+		{
+				$header = <<<EOF
 PHP Coding Standards Fixer
 ==========================
 
@@ -61,15 +61,15 @@ store it somewhere on your computer.
 
 You can run these commands to easily acces `php-cs-fixer` from anywhere on your system:
 
-    \$ sudo wget http://cs.sensiolabs.org/get/php-cs-fixer.phar -O /usr/local/bin/php-cs-fixer
+		\$ sudo wget http://cs.sensiolabs.org/get/php-cs-fixer.phar -O /usr/local/bin/php-cs-fixer
 
 or with curl:
 
-    \$ sudo curl http://cs.sensiolabs.org/get/php-cs-fixer.phar -o /usr/local/bin/php-cs-fixer
+		\$ sudo curl http://cs.sensiolabs.org/get/php-cs-fixer.phar -o /usr/local/bin/php-cs-fixer
 
 then:
 
-    \$ sudo chmod a+x /usr/local/bin/php-cs-fixer
+		\$ sudo chmod a+x /usr/local/bin/php-cs-fixer
 
 Then, just run `php-cs-fixer` in order to run php-cs-fixer
 
@@ -80,20 +80,20 @@ Update
 
 The `self-update` command tries to update php-cs-fixer itself:
 
-    \$ php php-cs-fixer.phar self-update
+		\$ php php-cs-fixer.phar self-update
 
 ### Globally
 
 You can update php-cs-fixer through this command:
 
-    \$ sudo php-cs-fixer self-update
+		\$ sudo php-cs-fixer self-update
 
 Usage
 -----
 
 EOF;
 
-        $footer = <<<EOF
+				$footer = <<<EOF
 
 Helpers
 -------
@@ -124,16 +124,16 @@ projects for instance).
 
 EOF;
 
-        $command = $this->getApplication()->get('fix');
-        $help = $command->getHelp();
-        $help = str_replace('%command.full_name%', 'php-cs-fixer.phar '.$command->getName(), $help);
-        $help = str_replace('%command.name%', $command->getName(), $help);
-        $help = preg_replace('#</?(comment|info)>#', '`', $help);
-        $help = preg_replace('#^(\s+)`(.+)`$#m', '$1$2', $help);
-        $help = preg_replace('#^ \* `(.+)`#m', ' * **$1**', $help);
+				$command = $this->getApplication()->get('fix');
+				$help = $command->getHelp();
+				$help = str_replace('%command.full_name%', 'php-cs-fixer.phar '.$command->getName(), $help);
+				$help = str_replace('%command.name%', $command->getName(), $help);
+				$help = preg_replace('#</?(comment|info)>#', '`', $help);
+				$help = preg_replace('#^(\s+)`(.+)`$#m', '$1$2', $help);
+				$help = preg_replace('#^ \* `(.+)`#m', ' * **$1**', $help);
 
-        $output->writeln($header);
-        $output->writeln($help);
-        $output->write($footer);
-    }
+				$output->writeln($header);
+				$output->writeln($help);
+				$output->write($footer);
+		}
 }

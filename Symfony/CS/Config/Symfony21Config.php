@@ -18,20 +18,20 @@ use Symfony\CS\Finder\Symfony21Finder;
  */
 class Symfony21Config extends Config
 {
-    public function __construct()
-    {
-        parent::__construct();
+		public function __construct()
+		{
+				parent::__construct();
 
-        $this->finder = new Symfony21Finder();
-    }
+				$this->finder = new Symfony21Finder();
+		}
 
-    public function getName()
-    {
-        return 'sf21';
-    }
+		public function getName()
+		{
+				return 'sf21';
+		}
 
-    public function getDescription()
-    {
-        return 'The configuration for the Symfony 2.1 branch';
-    }
+		public function getDescription()
+		{
+				return 'The configuration for the Symfony 2.1 branch';
+		}
 }

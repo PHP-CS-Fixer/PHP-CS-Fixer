@@ -18,15 +18,15 @@ use Symfony\Component\Finder\Finder;
  */
 class Symfony21Finder extends DefaultFinder
 {
-    protected function getDirs($dir)
-    {
-        return array($dir.'/src');
-    }
+		protected function getDirs($dir)
+		{
+				return array($dir.'/src');
+		}
 
-    protected function getFilesToExclude()
-    {
-        return array(
-            'Symfony/Component/Yaml/Tests/Fixtures/sfTests.yml',
-        );
-    }
+		protected function getFilesToExclude()
+		{
+				return array(
+						'Symfony/Component/Yaml/Tests/Fixtures/sfTests.yml',
+				);
+		}
 }

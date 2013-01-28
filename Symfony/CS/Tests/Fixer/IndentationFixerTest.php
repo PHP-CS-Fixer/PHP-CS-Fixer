@@ -15,11 +15,11 @@ use Symfony\CS\Fixer\IndentationFixer;
 
 class IndentationFixerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testFix()
-    {
-        $fixer = new IndentationFixer();
-        $file = new \SplFileInfo(__FILE__);
+		public function testFix()
+		{
+				$fixer = new IndentationFixer();
+				$file = new \SplFileInfo(__FILE__);
 
-        $this->assertEquals('           FOO', $fixer->fix($file, " \t \t FOO"));
-    }
+				$this->assertEquals('					 FOO', $fixer->fix($file, " \t \t FOO"));
+		}
 }

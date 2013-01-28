@@ -21,70 +21,70 @@ use Symfony\CS\Finder\DefaultFinder;
  */
 class Config implements ConfigInterface
 {
-    protected $name;
-    protected $description;
-    protected $finder;
-    protected $fixers;
-    protected $dir;
+		protected $name;
+		protected $description;
+		protected $finder;
+		protected $fixers;
+		protected $dir;
 
-    public function __construct($name = 'default', $description = 'A default configuration')
-    {
-        $this->name = $name;
-        $this->description = $description;
-        $this->fixers = FixerInterface::ALL_LEVEL;
-        $this->finder = new DefaultFinder();
-    }
+		public function __construct($name = 'default', $description = 'A default configuration')
+		{
+				$this->name = $name;
+				$this->description = $description;
+				$this->fixers = FixerInterface::ALL_LEVEL;
+				$this->finder = new DefaultFinder();
+		}
 
-    public static function create()
-    {
-        return new static();
-    }
+		public static function create()
+		{
+				return new static();
+		}
 
-    public function setDir($dir)
-    {
-        $this->dir = $dir;
-    }
+		public function setDir($dir)
+		{
+				$this->dir = $dir;
+		}
 
-    public function getDir()
-    {
-        return $this->dir;
-    }
+		public function getDir()
+		{
+				return $this->dir;
+		}
 
-    public function finder(\Traversable $finder)
-    {
-        $this->finder = $finder;
+		public function finder(\Traversable $finder)
+		{
+				$this->finder = $finder;
 
-        return $this;
-    }
+				return $this;
+		}
 
-    public function getFinder()
-    {
-        if ($this->finder instanceof FinderInterface) {
-            $this->finder->setDir($this->dir);
-        }
+		public function getFinder()
+		{
+				if ($this->finder instanceof FinderInterface) {
+						$this->finder->setDir($this->dir);
+				}
 
-        return $this->finder;
-    }
+				return $this->finder;
+		}
 
-    public function fixers($fixers)
-    {
-        $this->fixers = $fixers;
+		public function fixers($fixers)
+		{
+				$this->fixers = $fixers;
 
-        return $this;
-    }
+				return $this;
+		}
 
-    public function getFixers()
-    {
-        return $this->fixers;
-    }
+		public function getFixers()
+		{
+				return $this->fixers;
+		}
 
-    public function getName()
-    {
-        return $this->name;
-    }
+		public function getName()
+		{
+				return $this->name;
+		}
 
-    public function getDescription()
-    {
-        return $this->description;
-    }
+		public function getDescription()
+		{
+				return $this->description;
+		}
 }

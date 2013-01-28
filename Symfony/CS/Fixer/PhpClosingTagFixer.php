@@ -18,38 +18,38 @@ use Symfony\CS\FixerInterface;
  */
 class PhpClosingTagFixer implements FixerInterface
 {
-    public function fix(\SplFileInfo $file, $content)
-    {
-        if (strpos($content, '<?php') === 0) {
-            return preg_replace('/( *)\?>\s*$/s', '', $content);
-        }
+		public function fix(\SplFileInfo $file, $content)
+		{
+				if (strpos($content, '<?php') === 0) {
+						return preg_replace('/( *)\?>\s*$/s', '', $content);
+				}
 
-        return $content;
-    }
+				return $content;
+		}
 
-    public function getLevel()
-    {
-        // defined in PSR-2 2.2
-        return FixerInterface::PSR2_LEVEL;
-    }
+		public function getLevel()
+		{
+				// defined in PSR-2 2.2
+				return FixerInterface::PSR2_LEVEL;
+		}
 
-    public function getPriority()
-    {
-        return 0;
-    }
+		public function getPriority()
+		{
+				return 0;
+		}
 
-    public function supports(\SplFileInfo $file)
-    {
-        return 'php' == pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-    }
+		public function supports(\SplFileInfo $file)
+		{
+				return 'php' == pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+		}
 
-    public function getName()
-    {
-        return 'php_closing_tag';
-    }
+		public function getName()
+		{
+				return 'php_closing_tag';
+		}
 
-    public function getDescription()
-    {
-        return 'The closing ?> tag MUST be omitted from files containing only PHP.';
-    }
+		public function getDescription()
+		{
+				return 'The closing ?> tag MUST be omitted from files containing only PHP.';
+		}
 }

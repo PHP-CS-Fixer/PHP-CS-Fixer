@@ -16,10 +16,10 @@ namespace Symfony\CS;
  */
 interface ConfigAwareInterface
 {
-    /**
-     * Sets the active config on the fixer
-     *
-     * @param
-     */
-    public function setConfig(ConfigInterface $config);
+		/**
+		 * Sets the active config on the fixer
+		 *
+		 * @param
+		 */
+		public function setConfig(ConfigInterface $config);
 }

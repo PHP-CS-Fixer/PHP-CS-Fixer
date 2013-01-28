@@ -21,50 +21,50 @@ use Symfony\Component\Finder\Finder;
 class MagentoFinder extends DefaultFinder
 
 {
-    public function __construct()
-    {
-        parent::__construct();
+		public function __construct()
+		{
+				parent::__construct();
 
-        $this
-            ->name('*.php')
-            ->name('*.phtml')
-            ->name('*.xml')
-            ->exclude( array(
-                'lib',
-                'shell',
-                'app/Mage.php',
-                'app/code/core',
-                'app/code/community',
-                'app/design/frontend/default',
-                'app/design/frontend/enterprise/default',
-                'app/design/frontend/base',
-                'app/design/adminhtml/default')
-            )
-        ;
-    }
+				$this
+						->name('*.php')
+						->name('*.phtml')
+						->name('*.xml')
+						->exclude( array(
+								'lib',
+								'shell',
+								'app/Mage.php',
+								'app/code/core',
+								'app/code/community',
+								'app/design/frontend/default',
+								'app/design/frontend/enterprise/default',
+								'app/design/frontend/base',
+								'app/design/adminhtml/default')
+						)
+				;
+		}
 
-    public function setDir($dir)
-    {
-        $this->in($this->getDirs($dir));
-    }
+		public function setDir($dir)
+		{
+				$this->in($this->getDirs($dir));
+		}
 
-    /**
-     * Gets the directories that needs to be scanned for files to validate.
-     *
-     * @return array
-     */
-    protected function getDirs($dir)
-    {
-        return array($dir);
-    }
+		/**
+		 * Gets the directories that needs to be scanned for files to validate.
+		 *
+		 * @return array
+		 */
+		protected function getDirs($dir)
+		{
+				return array($dir);
+		}
 
-    /**
-     * Excludes files because modifying them would break (mainly useful for fixtures in unit tests).
-     *
-     * @return array
-     */
-    protected function getFilesToExclude()
-    {
-        return array();
-    }
+		/**
+		 * Excludes files because modifying them would break (mainly useful for fixtures in unit tests).
+		 *
+		 * @return array
+		 */
+		protected function getFilesToExclude()
+		{
+				return array();
+		}
 }
