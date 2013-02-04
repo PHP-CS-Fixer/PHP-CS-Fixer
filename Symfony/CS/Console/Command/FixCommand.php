@@ -228,9 +228,7 @@ EOF
             $output->writeln('');
         }
 
-        $status = !empty($changed) ? 1 : 0;
-
-        return $status;
+        return empty($changed) ? 0 : 1;
     }
 
     protected function getFixersHelp()
