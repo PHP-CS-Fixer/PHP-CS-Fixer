@@ -45,4 +45,30 @@ EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
+
+    public function testTrailingSpaces()
+    {
+        $fixer = new UnusedUseStatementsFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+use Foo\Bar ;
+use Foo\Bar\FooBar as FooBaz ;
+
+$a = new Bar();
+$a = new FooBaz();
+EOF;
+
+        $input = <<<'EOF'
+use Foo\Bar ;
+use Foo\Bar\FooBar as FooBaz ;
+use Foo\Bar\Foo as Fooo ;
+use SomeClass ;
+
+$a = new Bar();
+$a = new FooBaz();
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
 }
