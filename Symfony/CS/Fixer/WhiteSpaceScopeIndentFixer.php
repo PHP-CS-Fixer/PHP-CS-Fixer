@@ -38,7 +38,7 @@ class WhiteSpaceScopeIndentFixer
             $fixedPreviousTokenContent = $previousToken['content'];
 
             // ...but if its not:
-            if ($previousToken !== null && strpos($previousToken['content'], "\n") === 0) {
+            if ($previousToken !== null && strpos($previousToken['content'], "\n") === 0 && $token['code'] !== T_COMMENT) {
                 // split the previous content by newlines:
                 $linesOnPrevious = explode("\n", $previousToken['content']);
 
