@@ -1492,9 +1492,15 @@ class PHP_CodeSniffer_File
             // keyword, the opener will be incorrectly assigned to this IF statement.
             // E.g., if (1) 1; 1 ? (1 ? 1 : 1) : 1;
             if ($currType === T_IF && $opener === null && $tokens[$i]['code'] === T_SEMICOLON) {
+                $opener = $tokens[$stackPtr]['parenthesis_closer'] + 1;
                 if (PHP_CODESNIFFER_VERBOSITY > 1) {
                     echo str_repeat("\t", $depth);
-                    echo "=> Found semicolon before scope opener for $stackPtr (T_IF), bailing".PHP_EOL;
+                    echo "=> Found semicolon before scope opener, mark scope to be $opener-$i".PHP_EOL;
+                }
+                foreach (array($stackPtr, $opener, $i) as $token) {
+                    $tokens[$token]['scope_condition'] = $stackPtr;
+                    $tokens[$token]['scope_opener']    = $opener;
+                    $tokens[$token]['scope_closer']    = $i;
                 }
 
                 return $i;
