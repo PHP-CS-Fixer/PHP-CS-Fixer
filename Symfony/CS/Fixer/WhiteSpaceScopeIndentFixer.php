@@ -15,6 +15,13 @@ class WhiteSpaceScopeIndentFixer
     private $indent = 4;
 
     /**
+     * The tokenizer to use when code is parsed into token array.
+     *
+     * @var \PHP_CodeSniffer_Tokenizers_PHP
+     */
+    private $tokenizer = null;
+
+    /**
      * @see \Symfony\CS\FixerInterface::fix()
      */
     public function fix(\SplFileInfo $file, $content)
@@ -105,30 +112,12 @@ class WhiteSpaceScopeIndentFixer
      */
     protected function getCodeSnifferTokensByContent($content)
     {
-        // this is instantiated here just for the required constants used in PHP_CodeSniffer_File:
-        $codesniffer = new \PHP_CodeSniffer();
+        if($this->tokenizer == null) {
+            // this is instantiated here just for the required constants used in PHP_CodeSniffer_File:
+            new \PHP_CodeSniffer();
+            $this->tokenizer = new \PHP_CodeSniffer_Tokenizers_PHP();
+        }
 
-        $tokenizer = new \PHP_CodeSniffer_Tokenizers_PHP();
-        $tokens = \PHP_CodeSniffer_File::tokenizeString($content, $tokenizer);
-
-        return $tokens;
+        return \PHP_CodeSniffer_File::tokenizeString($content, $this->tokenizer);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
