@@ -84,4 +84,30 @@ EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
+
+    public function testFixJsStyle()
+    {
+        $fixer = new PhpdocParamsAlignmentFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+
+         * @param integer templating
+         * @param string  format
+         * @param integer code       An HTTP response status code
+         * @param Boolean debug
+
+EOF;
+
+        $input = <<<'EOF'
+
+         * @param  integer templating
+         * @param string      format
+         * @param  integer  code       An HTTP response status code
+         * @param    Boolean      debug
+
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
 }
