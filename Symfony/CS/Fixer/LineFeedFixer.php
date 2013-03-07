@@ -21,7 +21,7 @@ class LineFeedFixer implements FixerInterface
     public function fix(\SplFileInfo $file, $content)
     {
         // [Structure] Use the linefeed character (0x0A) to end lines
-        return str_replace("\r\n", "\n", $content);
+        return str_replace(array("\r\n", "\r"), "\n", $content);
     }
 
     public function getLevel()

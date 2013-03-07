@@ -1,8 +1,9 @@
 <?php
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\Config\Config;
+use Symfony\CS\Finder\DefaultFinder;
 
-$finder = Symfony\CS\Finder\DefaultFinder::create()
+$finder = DefaultFinder::create()
     ->notName('LICENSE')
     ->notName('README.md')
     ->notName('.php_cs')
@@ -11,11 +12,8 @@ $finder = Symfony\CS\Finder\DefaultFinder::create()
     ->notName('*.phar')
     ->exclude('vendor')
     ->exclude('Symfony/CS/Tests/Fixer')
+    ->exclude('Symfony/CS/Tests/Fixtures')
     ->notName('ElseifFixer.php')
-    ->in(__DIR__)
-;
+    ->in(__DIR__);
 
-return Symfony\CS\Config\Config::create()
-    ->finder($finder)
-;
-
+return Config::create()->finder($finder);
