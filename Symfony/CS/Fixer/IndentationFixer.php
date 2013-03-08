@@ -21,8 +21,10 @@ class IndentationFixer implements FixerInterface
     public function fix(\SplFileInfo $file, $content)
     {
         // [Structure] Indentation is done by steps of four spaces (tabs are never allowed)
-        return preg_replace_callback('/^([ \t]+)/m', function ($matches) use ($content) {
-            return str_replace("\t", '    ', $matches[0]);
+        return  preg_replace_callback('/^([ \t]+)/m', function ($matches) use ($content) {
+            $spaceCount = substr_count($matches[0], " ");
+            $spaceCount += substr_count($matches[0], "\t") * 4;
+            return str_repeat("    ", floor($spaceCount / 4));
         }, $content);
     }
 
