@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<ruleset name="PHP_CodeSniffer">
+ <description>The coding standard for PHP_CodeSniffer itself.</description>
+ <exclude-pattern>*/Tests/*</exclude-pattern>
+
+ <!-- Include the whole PEAR standard -->
+ <rule ref="PEAR"/>
+
+ <!-- Include most of the Squiz standard -->
+ <rule ref="Squiz">
+  <exclude name="Squiz.Classes.ClassFileName"/>
+  <exclude name="Squiz.Classes.ValidClassName"/>
+  <exclude name="Squiz.Commenting.ClassComment"/>
+  <exclude name="Squiz.Commenting.FileComment"/>
+  <exclude name="Squiz.Commenting.FunctionComment"/>
+  <exclude name="Squiz.Commenting.VariableComment"/>
+  <exclude name="Squiz.ControlStructures.SwitchDeclaration"/>
+  <exclude name="Squiz.Files.FileExtension"/>
+  <exclude name="Squiz.NamingConventions.ConstantCase"/>
+ </rule>
+
+ <!-- We allow variables to be used inside double quoted strings -->
+ <rule ref="Squiz.Strings.DoubleQuoteUsage.ContainsVar">
+  <severity>0</severity>
+ </rule>
+
+</ruleset>
