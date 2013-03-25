@@ -11,9 +11,9 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "symfony/console": "2.1.*",
-        "symfony/filesystem": "2.1.*",
-        "symfony/finder": "2.1.*"
+        "symfony/console": "~2.1",
+        "symfony/filesystem": "~2.1",
+        "symfony/finder": "~2.1"
     },
     "autoload": {
         "psr-0": { "Symfony\\CS": "." }
