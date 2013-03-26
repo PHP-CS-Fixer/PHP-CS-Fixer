@@ -80,6 +80,6 @@ class IncludeFixer implements FixerInterface
      */
     public function getDescription()
     {
-        return 'Include and file path should be divided with single space. File path should not be placed under brackets.';
+        return 'Include and file path should be divided with a single space. File path should not be placed under brackets.';
     }
 }
