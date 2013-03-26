@@ -112,7 +112,7 @@ Choose from the list of available fixers:
 
  * **extra_empty_lines** [all] Removes extra empty lines.
 
- * **include**           [all] Include and file path should be devided with
+ * **include**           [all] Include and file path should be divided with
                      single space. File path should not be placed under
                      brackets.
 
