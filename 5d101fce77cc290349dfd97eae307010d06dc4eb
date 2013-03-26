@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by stof at 2013-03-26T14:20:25Z
+
+The list of fixers is generated automatically from the help of each fixer (running ``./php-cs-fixer readme``). So you should fix in the Fixer class.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2013-03-26T14:44:32Z
+
+@stof updated
