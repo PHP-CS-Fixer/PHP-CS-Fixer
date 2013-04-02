@@ -11,6 +11,7 @@
 
 namespace Symfony\CS;
 
+use SebastianBergmann\Diff;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 
@@ -67,8 +68,9 @@ class Fixer
      *
      * @param ConfigInterface $config A ConfigInterface instance
      * @param Boolean         $dryRun Whether to simulate the changes or not
+     * @param Boolean         $diff Whether to provide diff
      */
-    public function fix(ConfigInterface $config, $dryRun = false)
+    public function fix(ConfigInterface $config, $dryRun = false, $diff = false)
     {
         $this->sortFixers();
 
@@ -79,11 +81,11 @@ class Fixer
                 continue;
             }
 
-            if ($appliedFixers = $this->fixFile($file, $fixers, $dryRun)) {
+            if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff)) {
                 if ($file instanceof FinderSplFileInfo) {
-                    $changed[$file->getRelativePathname()] = $appliedFixers;
+                    $changed[$file->getRelativePathname()] = $fixInfo;
                 } else {
-                    $changed[$file->getPathname()] = $appliedFixers;
+                    $changed[$file->getPathname()] = $fixInfo;
                 }
             }
         }
@@ -91,7 +93,7 @@ class Fixer
         return $changed;
     }
 
-    public function fixFile(\SplFileInfo $file, array $fixers, $dryRun)
+    public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff)
     {
         $new = $old = file_get_contents($file->getRealpath());
         $appliedFixers = array();
@@ -113,7 +115,13 @@ class Fixer
                 file_put_contents($file->getRealpath(), $new);
             }
 
-            return $appliedFixers;
+            $fixInfo = array('appliedFixers' => $appliedFixers);
+
+            if ($diff) {
+                $fixInfo['diff'] = $this->stringDiff($old, $new);
+            }
+
+            return $fixInfo;
         }
     }
 
@@ -132,6 +140,13 @@ class Fixer
         }
 
         return 'all';
+    }
+
+    protected function stringDiff($old, $new)
+    {
+        $diff = new Diff();
+
+        return $diff->diff($old, $new);
     }
 
     private function sortFixers()
