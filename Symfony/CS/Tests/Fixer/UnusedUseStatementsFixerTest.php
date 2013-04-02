@@ -28,6 +28,23 @@ use SomeClass;
 $a = new Bar();
 $a = new FooBaz();
 $a = new someclass();
+
+use Symfony\Annotation\Template;
+use Symfony\Doctrine\Entities\Entity;
+use Symfony\Array\ArrayInterface;
+
+class AnnotatedClass
+{
+    /**
+     * @Template(foobar=21)
+     * @param Entity $foo
+     */
+    public function doSomething($foo)
+    {
+        $bar = $foo->toArray();
+        /** @var ArrayInterface $bar */
+    }
+}
 EOF;
 
         $input = <<<'EOF'
@@ -41,6 +58,23 @@ use SomeClass;
 $a = new Bar();
 $a = new FooBaz();
 $a = new someclass();
+
+use Symfony\Annotation\Template;
+use Symfony\Doctrine\Entities\Entity;
+use Symfony\Array\ArrayInterface;
+
+class AnnotatedClass
+{
+    /**
+     * @Template(foobar=21)
+     * @param Entity $foo
+     */
+    public function doSomething($foo)
+    {
+        $bar = $foo->toArray();
+        /** @var ArrayInterface $bar */
+    }
+}
 EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
