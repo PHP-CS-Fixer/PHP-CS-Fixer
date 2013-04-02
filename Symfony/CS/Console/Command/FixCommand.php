@@ -57,6 +57,7 @@ class FixCommand extends Command
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
                 new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or all)', null),
                 new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
+                new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file')
             ))
             ->setDescription('Fixes a directory or a file')
             ->setHelp(<<<EOF
@@ -85,6 +86,9 @@ You can also blacklist the fixers you don't want if this is more convenient,
 using <comment>-name</comment>:
 
     <info>php %command.full_name% /path/to/dir --fixers=-short_tag,-indentation</info>
+
+A combination of <comment>--dry-run</comment>, <comment>--verbose</comment> and <comment>--diff</comment> will
+display summary of proposed fixes, leaving your files unchanged.
 
 Choose from the list of available fixers:
 
@@ -217,13 +221,19 @@ EOF
 
         $config->fixers($fixers);
 
-        $changed = $this->fixer->fix($config, $input->getOption('dry-run'));
+        $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
 
         $i = 1;
-        foreach ($changed as $file => $appliedFixers) {
+        foreach ($changed as $file => $fixResult) {
             $output->write(sprintf('%4d) %s', $i++, $file));
             if ($input->getOption('verbose')) {
-                $output->write(sprintf(' (<comment>%s</comment>)', implode(', ', $appliedFixers)));
+                $output->write(sprintf(' (<comment>%s</comment>)', implode(', ', $fixResult['appliedFixers'])));
+                if ($input->getOption('diff')) {
+                    $output->writeln('');
+                    $output->writeln('<comment>      ---------- begin diff ----------</comment>');
+                    $output->writeln($fixResult['diff']);
+                    $output->writeln('<comment>      ---------- end diff ----------</comment>');
+                }
             }
             $output->writeln('');
         }
