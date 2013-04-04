@@ -87,6 +87,9 @@ using <comment>-name</comment>:
 
     <info>php %command.full_name% /path/to/dir --fixers=-short_tag,-indentation</info>
 
+A combination of <comment>--dry-run</comment>, <comment>--verbose</comment> and <comment>--diff</comment> will
+display summary of proposed fixes, leaving your files unchanged.
+
 Choose from the list of available fixers:
 
 {$this->getFixersHelp()}
@@ -227,9 +230,9 @@ EOF
                 $output->write(sprintf(' (<comment>%s</comment>)', implode(', ', $fixResult['appliedFixers'])));
                 if ($input->getOption('diff')) {
                     $output->writeln('');
-                    $output->writeln('<comment>---------- begin diff ----------</comment>');
+                    $output->writeln('<comment>      ---------- begin diff ----------</comment>');
                     $output->writeln($fixResult['diff']);
-                    $output->writeln('<comment>---------- end diff ----------</comment>');
+                    $output->writeln('<comment>      ---------- end diff ----------</comment>');
                 }
             }
             $output->writeln('');

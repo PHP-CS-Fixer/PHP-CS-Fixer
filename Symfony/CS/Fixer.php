@@ -24,6 +24,12 @@ class Fixer
 
     protected $fixers = array();
     protected $configs = array();
+    protected $diff;
+
+    public function __construct()
+    {
+        $this->diff = new Diff();
+    }
 
     public function registerBuiltInFixers()
     {
@@ -68,7 +74,7 @@ class Fixer
      *
      * @param ConfigInterface $config A ConfigInterface instance
      * @param Boolean         $dryRun Whether to simulate the changes or not
-     * @param Boolean         $diff Whether to provide diff
+     * @param Boolean         $diff   Whether to provide diff
      */
     public function fix(ConfigInterface $config, $dryRun = false, $diff = false)
     {
@@ -144,9 +150,21 @@ class Fixer
 
     protected function stringDiff($old, $new)
     {
-        $diff = new Diff();
+        $diff = $this->diff->diff($old, $new);
 
-        return $diff->diff($old, $new);
+        $diff = implode(PHP_EOL, array_map(function ($string) {
+            $string = preg_replace('/^(\+){3}/', '<info>+++</info>', $string);
+            $string = preg_replace('/^(\+){1}/', '<info>+</info>', $string);
+
+            $string = preg_replace('/^(\-){3}/', '<error>---</error>', $string);
+            $string = preg_replace('/^(\-){1}/', '<error>-</error>', $string);
+
+            $string = str_repeat(' ', 6) . $string;
+
+            return $string;
+        }, explode(PHP_EOL, $diff)));
+
+        return $diff;
     }
 
     private function sortFixers()
