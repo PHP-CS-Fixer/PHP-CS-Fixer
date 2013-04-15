@@ -28,7 +28,7 @@ class Psr0Fixer implements FixerInterface, ConfigAwareInterface
         if (preg_match('{^namespace\s+(\S+)\s*;}um', $content, $match)) {
             $namespace = $match[1];
         }
-        if (!preg_match('{^((abstract )?class|interface|trait)\s+(\S+)}um', $content, $match)) {
+        if (!preg_match('{^((abstract\s+)?class|interface|trait)\s+(\S+)}um', $content, $match)) {
             return $content;
         }
 
