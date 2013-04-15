@@ -61,6 +61,25 @@ EOF;
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
 
+    public function testFixAbstractClassName()
+    {
+        $fixer = new Psr0Fixer();
+        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
+
+        $expected = <<<'EOF'
+namespace Symfony\CS\Fixer;
+abstract class Psr0Fixer {}
+/* class foo */
+EOF;
+        $input = <<<'EOF'
+namespace Symfony\CS\Fixer;
+abstract class blah {}
+/* class foo */
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
+
     public function testFixNamespaceThrows()
     {
         $fixer = new Psr0Fixer();
