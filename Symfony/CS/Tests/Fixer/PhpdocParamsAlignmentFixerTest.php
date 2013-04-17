@@ -69,6 +69,36 @@ EOF;
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
 
+    /**
+     * References the issue #55 on github issue
+     * https://github.com/fabpot/PHP-CS-Fixer/issues/55
+     */
+    public function testFixThreeParamsWithReturn()
+    {
+        $fixer = new PhpdocParamsAlignmentFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+
+     * @param  string $param1
+     * @param  bool   $param2 lorem ipsum
+     * @param  string $param3 lorem ipsum
+     * @return int    lorem ipsum
+
+EOF;
+
+        $input = <<<'EOF'
+
+     * @param   string $param1
+     * @param bool   $param2 lorem ipsum
+     * @param    string $param3 lorem ipsum
+     * @return int lorem ipsum
+
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
+
     public function testFixOnlyReturn()
     {
         $fixer = new PhpdocParamsAlignmentFixer();
