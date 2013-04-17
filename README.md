@@ -73,6 +73,11 @@ apply (the fixer names must be separated by a comma):
 
     php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,short_tag,indentation
 
+You can also blacklist the fixers you don't want if this is more convenient,
+using `-name`:
+
+    php php-cs-fixer.phar fix /path/to/dir --fixers=-short_tag,-indentation
+
 Choose from the list of available fixers:
 
  * **indentation**       [PSR-2] Code must use 4 spaces for indenting, not tabs.
@@ -84,37 +89,36 @@ Choose from the list of available fixers:
 
  * **unused_use**        [all] Unused use statements must be removed.
 
- * **php_closing_tag**   [PSR-2] The closing ?> tag MUST be omitted from files
-                     containing only PHP.
-
- * **short_tag**         [PSR-1] PHP code must use the long <?php ?> tags or the
-                     short-echo <?= ?> tags; it must not use the other tag
-                     variations.
-
- * **return**            [all] An empty line feed should precede a return
-                     statement.
+ * **phpdoc_params**     [all] All items of the @param phpdoc tags must be
+                     aligned vertically.
 
  * **visibility**        [PSR-2] Visibility must be declared on all properties
                      and methods; abstract and final must be declared before
                      the visibility; static must be declared after the
                      visibility.
 
- * **braces**            [PSR-2] Opening braces for classes and methods must go
-                     on the next line, and closing braces must go on the
-                     next line after the body. Opening braces for control
-                     structures must go on the same line, and closing braces
-                     must go on the next line after the body.
+ * **return**            [all] An empty line feed should precede a return
+                     statement.
 
- * **phpdoc_params**     [all] All items of the @param phpdoc tags must be
-                     aligned vertically.
+ * **short_tag**         [PSR-1] PHP code must use the long <?php ?> tags or the
+                     short-echo <?= ?> tags; it must not use the other tag
+                     variations.
 
- * **eof_ending**        [PSR-2] A file must always end with an empty line feed.
+ * **braces**            [PSR-2] Opening braces for classes, interfaces, traits
+                     and methods must go on the next line, and closing
+                     braces must go on the next line after the body. Opening
+                     braces for control structures must go on the same line,
+                     and closing braces must go on the next line after the
+                     body.
 
- * **extra_empty_lines** [all] Removes extra empty lines.
-
- * **include**           [all] Include and file path should be divided with
+ * **include**           [all] Include and file path should be divided with a
                      single space. File path should not be placed under
                      brackets.
+
+ * **php_closing_tag**   [PSR-2] The closing ?> tag MUST be omitted from files
+                     containing only PHP.
+
+ * **extra_empty_lines** [all] Removes extra empty lines.
 
  * **psr0**              [PSR-0] Classes must be in a path that matches their
                      namespace, be at least one namespace deep, and the
@@ -128,6 +132,8 @@ Choose from the list of available fixers:
  * **elseif**            [PSR-2] The keyword elseif should be used instead of
                      else if so that all control keywords looks like single
                      words.
+
+ * **eof_ending**        [PSR-2] A file must always end with an empty line feed.
 
 
 The `--config` option customizes the files to analyse, based
@@ -154,8 +160,8 @@ fixed but without actually modifying them:
 Instead of using command line options to customize the fixer, you can save the
 configuration in a `.php_cs` file in the root directory of
 your project. The file must return an instance of
-`Symfony\CS\ConfigInterface`, which lets you configure the fixers and the
-files and directories that need to be analyzed:
+`Symfony\CS\ConfigInterface`, which lets you configure the fixers, the files,
+and directories that need to be analyzed:
 
     <?php
 
