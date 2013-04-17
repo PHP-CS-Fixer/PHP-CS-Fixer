@@ -154,8 +154,8 @@ fixed but without actually modifying them:
 Instead of using command line options to customize the fixer, you can save the
 configuration in a `.php_cs` file in the root directory of
 your project. The file must return an instance of
-`Symfony\CS\ConfigInterface`, which lets you configure the fixers and the
-files and directories that need to be analyzed:
+`Symfony\CS\ConfigInterface`, which lets you configure the fixers, the
+files and directories that need to be analysed:
 
     <?php
 
