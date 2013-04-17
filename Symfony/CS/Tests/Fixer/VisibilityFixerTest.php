@@ -120,4 +120,20 @@ EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
+
+    public function testLeaveFunctionsAloneWithVariablesMatchingOopWords()
+    {
+        $fixer = new VisibilityFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+function foo() {
+    static $class;
+    $interface = 'foo';
+    $trait = 'bar;
+}
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
 }
