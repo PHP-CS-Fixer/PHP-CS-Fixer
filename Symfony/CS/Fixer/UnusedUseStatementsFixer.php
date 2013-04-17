@@ -26,7 +26,7 @@ class UnusedUseStatementsFixer implements FixerInterface
         }
 
         // [Structure] remove unused use statements
-        preg_match_all('/^use (?P<class>[^\s;]+)(?:\s+as\s+(?P<alias>.*))?;/m', $content, $matches, PREG_SET_ORDER);
+        preg_match_all('/^use (?P<class>[^\s;]+)(?:\s+as\s+(?P<alias>[^\s;]+))?\s*;/m', $content, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {
             if (isset($match['alias'])) {
                 $short = $match['alias'];
