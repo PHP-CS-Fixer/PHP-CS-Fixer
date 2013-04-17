@@ -46,6 +46,22 @@ class ControlSpacesFixerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $ifFixed));
     }
 
+    public function testFixControlClosingParenthesesKeepsIndentation()
+    {
+        $fixer = new Fixer();
+
+        $if = 'if(true === true
+            && true === true
+        )    {';
+
+        $ifFixed = 'if (true === true
+            && true === true
+        ) {';
+
+        $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $if));
+        $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $ifFixed));
+    }
+
     public function testFixControlsWithParenthesesAndSuffixBraceProvider()
     {
         return array(
