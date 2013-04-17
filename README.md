@@ -78,6 +78,9 @@ using `-name`:
 
     php php-cs-fixer.phar fix /path/to/dir --fixers=-short_tag,-indentation
 
+A combination of `--dry-run`, `--verbose` and `--diff` will
+display summary of proposed fixes, leaving your files unchanged.
+
 Choose from the list of available fixers:
 
  * **indentation**       [PSR-2] Code must use 4 spaces for indenting, not tabs.
