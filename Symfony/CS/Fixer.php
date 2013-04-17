@@ -20,7 +20,7 @@ use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
  */
 class Fixer
 {
-    const VERSION = '0.2';
+    const VERSION = '0.3-DEV';
 
     protected $fixers = array();
     protected $configs = array();
