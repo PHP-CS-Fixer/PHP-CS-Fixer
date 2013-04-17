@@ -26,6 +26,7 @@ class PhpdocParamsAlignmentFixerTest extends \PHPUnit_Framework_TestCase
      * @param string          $format
      * @param integer         $code       An HTTP response status code
      * @param Boolean         $debug
+     * @param mixed           &$reference A parameter passed by reference
 
 EOF;
 
@@ -35,6 +36,7 @@ EOF;
      * @param string      $format
      * @param  integer  $code       An HTTP response status code
      * @param    Boolean      $debug
+     * @param  mixed    &$reference     A parameter passed by reference
 
 EOF;
 
@@ -49,6 +51,7 @@ EOF;
         $expected = <<<'EOF'
 
      * @param  EngineInterface $templating
+     * @param  mixed           &$reference A parameter passed by reference
      * @throws Bar             description bar
      * @return Foo             description foo
 
@@ -57,6 +60,7 @@ EOF;
         $input = <<<'EOF'
 
      * @param EngineInterface       $templating
+     * @param  mixed    &$reference     A parameter passed by reference
      * @throws   Bar description bar
      * @return  Foo     description foo
 
