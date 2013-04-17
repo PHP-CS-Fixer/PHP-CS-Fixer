@@ -61,4 +61,18 @@ interface ConfigInterface
      * @return string The project root directory
      */
     public function getDir();
+
+    /**
+     * Adds an instance of a custom fixer.
+     *
+     * @param System\CS\FixerInterface $fixer
+     */
+    public function addCustomFixer(FixerInterface $fixer);
+
+    /**
+     * Returns the custom fixers to use.
+     *
+     * @return array|System\CS\FixerInterface
+     */
+    public function getCustomFixers();
 }

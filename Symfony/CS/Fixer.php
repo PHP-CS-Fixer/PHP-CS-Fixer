@@ -39,6 +39,13 @@ class Fixer
         }
     }
 
+    public function registerCustomFixers($fixers)
+    {
+        foreach ($fixers as $fixer) {
+            $this->addFixer($fixer);
+        }
+    }
+
     public function addFixer(FixerInterface $fixer)
     {
         $this->fixers[] = $fixer;
