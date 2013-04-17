@@ -65,14 +65,14 @@ interface ConfigInterface
     /**
      * Adds an instance of a custom fixer.
      *
-     * @param System\CS\FixerInterface $fixer
+     * @param FixerInterface $fixer
      */
     public function addCustomFixer(FixerInterface $fixer);
 
     /**
      * Returns the custom fixers to use.
      *
-     * @return array|System\CS\FixerInterface
+     * @return array
      */
     public function getCustomFixers();
 }

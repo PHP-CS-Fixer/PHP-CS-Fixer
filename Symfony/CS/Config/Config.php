@@ -95,7 +95,8 @@ class Config implements ConfigInterface
         $this->customFixers[] = $fixer;
     }
 
-    public function getCustomFixers() {
+    public function getCustomFixers()
+    {
         return $this->customFixers;
     }
 }
