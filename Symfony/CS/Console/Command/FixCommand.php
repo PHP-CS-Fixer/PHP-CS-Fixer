@@ -164,6 +164,9 @@ EOF
             $config->setDir($path);
         }
 
+        // register custom fixers from config
+        $this->fixer->registerCustomFixers($config->getCustomFixers());
+
         $allFixers = $this->fixer->getFixers();
 
         switch ($input->getOption('level')) {
