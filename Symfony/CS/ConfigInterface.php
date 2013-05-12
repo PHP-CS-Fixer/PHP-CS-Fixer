@@ -72,7 +72,7 @@ interface ConfigInterface
     /**
      * Returns the custom fixers to use.
      *
-     * @return array
+     * @return FixerInterface[]
      */
     public function getCustomFixers();
 }
