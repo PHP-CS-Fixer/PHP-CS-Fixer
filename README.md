@@ -18,7 +18,7 @@ Download the
 [`php-cs-fixer.phar`](http://cs.sensiolabs.org/get/php-cs-fixer.phar) file and
 store it somewhere on your computer.
 
-### Globally
+### Globally (manual)
 
 You can run these commands to easily acces `php-cs-fixer` from anywhere on your system:
 
@@ -34,6 +34,13 @@ then:
 
 Then, just run `php-cs-fixer` in order to run php-cs-fixer
 
+### Globally (homebrew)
+
+PHP-CS-Fixer is part of the homebrew-php project.
+
+    $ brew tap josegonzalez/homebrew-php
+    $ brew install php-cs-fixer
+
 Update
 ------
 
@@ -43,11 +50,17 @@ The `self-update` command tries to update php-cs-fixer itself:
 
     $ php php-cs-fixer.phar self-update
 
-### Globally
+### Globally (manual)
 
 You can update php-cs-fixer through this command:
 
     $ sudo php-cs-fixer self-update
+
+### Globally (homebrew)
+
+You can update php-cs-fixer through this command:
+
+    $ brew upgrade php-cs-fixer
 
 Usage
 -----
