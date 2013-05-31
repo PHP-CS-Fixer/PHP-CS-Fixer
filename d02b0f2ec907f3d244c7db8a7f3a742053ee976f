@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by fabpot at 2013-05-31T10:41:49Z
+
+You must also update `./Symfony/CS/Console/Command/ReadmeCommand.php` instead as the README is automatically generated from this file.
+
+---------------------------------------------------------------------------
+
+by dguyon at 2013-05-31T10:46:44Z
+
+Sorry, I didn't see that Command at first. Fixed and squashed.
