@@ -48,6 +48,11 @@ class IncludeFixerTest extends \PHPUnit_Framework_TestCase
             array("//  require   foo", "//  require   foo"),
             array("* require   foo", "* require   foo"),
             array('exit(\'POST must include "file"\');', 'exit(\'POST must include "file"\');'),
+            array('include_once("foo/".CONSTANT."/bar.php")', 'include_once "foo/".CONSTANT."/bar.php"'),
+            array('include_once("foo/".CONSTANT."/bar.php"); include_once("foo/".CONSTANT."/bar.php");', 'include_once "foo/".CONSTANT."/bar.php"; include_once "foo/".CONSTANT."/bar.php";'),
+            array('include_once("foo/".CONSTANT."/bar.php"); $foo = "bar";', 'include_once "foo/".CONSTANT."/bar.php"; $foo = "bar";'),
+            array('include_once("foo/".CONSTANT."/bar.php"); foo();', 'include_once "foo/".CONSTANT."/bar.php"; foo();'),
+            array('include_once("foo/" . CONSTANT . "/bar.php")', 'include_once "foo/" . CONSTANT . "/bar.php"'),
         );
     }
 
