@@ -228,45 +228,50 @@ EOF
         $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
 
         $i = 1;
-        if ($input->getOption('format') === 'xml') {
-            $dom = new \DOMDocument('1.0', 'UTF-8');
-            $dom->appendChild($filesXML = $dom->createElement('files'));
-            foreach ($changed as $file => $fixResult) {
-                $filesXML->appendChild($fileXML = $dom->createElement('file'));
-
-                $fileXML->setAttribute('id', $i++);
-                $fileXML->setAttribute('name', $file);
-                if ($input->getOption('verbose')) {
-                    $fileXML->appendChild($appliedFixersXML = $dom->createElement('applied_fixers'));
-                    foreach ($fixResult['appliedFixers'] as $appliedFixer) {
-                        $appliedFixersXML->appendChild($appliedFixerXML = $dom->createElement('applied_fixer'));
-                        $appliedFixerXML->setAttribute('name', $appliedFixer);
+        switch ($input->getOption('format')) {
+            case 'txt':
+                foreach ($changed as $file => $fixResult) {
+                    $output->write(sprintf('%4d) %s', $i++, $file));
+                    if ($input->getOption('verbose')) {
+                        $output->write(sprintf(' (<comment>%s</comment>)', implode(', ', $fixResult['appliedFixers'])));
+                        if ($input->getOption('diff')) {
+                            $output->writeln('');
+                            $output->writeln('<comment>      ---------- begin diff ----------</comment>');
+                            $output->writeln($fixResult['diff']);
+                            $output->writeln('<comment>      ---------- end diff ----------</comment>');
+                        }
                     }
+                    $output->writeln('');
+                }
+                break;
+            case 'xml':
+                $dom = new \DOMDocument('1.0', 'UTF-8');
+                $dom->appendChild($filesXML = $dom->createElement('files'));
+                foreach ($changed as $file => $fixResult) {
+                    $filesXML->appendChild($fileXML = $dom->createElement('file'));
 
-                    if ($input->getOption('diff')) {
-                        $fileXML->appendChild($diffXML = $dom->createElement('diff'));
+                    $fileXML->setAttribute('id', $i++);
+                    $fileXML->setAttribute('name', $file);
+                    if ($input->getOption('verbose')) {
+                        $fileXML->appendChild($appliedFixersXML = $dom->createElement('applied_fixers'));
+                        foreach ($fixResult['appliedFixers'] as $appliedFixer) {
+                            $appliedFixersXML->appendChild($appliedFixerXML = $dom->createElement('applied_fixer'));
+                            $appliedFixerXML->setAttribute('name', $appliedFixer);
+                        }
 
-                        $diffXML->appendChild($dom->createCDATASection($fixResult['diff']));
+                        if ($input->getOption('diff')) {
+                            $fileXML->appendChild($diffXML = $dom->createElement('diff'));
+
+                            $diffXML->appendChild($dom->createCDATASection($fixResult['diff']));
+                        }
                     }
                 }
-            }
 
-            $dom->formatOutput = true;
-            $output->write($dom->saveXML());
-        } else {
-            foreach ($changed as $file => $fixResult) {
-                $output->write(sprintf('%4d) %s', $i++, $file));
-                if ($input->getOption('verbose')) {
-                    $output->write(sprintf(' (<comment>%s</comment>)', implode(', ', $fixResult['appliedFixers'])));
-                    if ($input->getOption('diff')) {
-                        $output->writeln('');
-                        $output->writeln('<comment>      ---------- begin diff ----------</comment>');
-                        $output->writeln($fixResult['diff']);
-                        $output->writeln('<comment>      ---------- end diff ----------</comment>');
-                    }
-                }
-                $output->writeln('');
-            }
+                $dom->formatOutput = true;
+                $output->write($dom->saveXML());
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('The format "%s" is not defined.', $input->getOption('format')));
         }
 
         return empty($changed) ? 0 : 1;
