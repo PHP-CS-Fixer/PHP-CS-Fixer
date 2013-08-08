@@ -58,7 +58,7 @@ class FixCommand extends Command
                 new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or all)', null),
                 new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
-                new InputOption('xml', '', InputOption::VALUE_NONE, 'To output results as XML')
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats')
             ))
             ->setDescription('Fixes a directory or a file')
             ->setHelp(<<<EOF
@@ -228,7 +228,7 @@ EOF
         $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
 
         $i = 1;
-        if ($input->getOption('xml')) {
+        if ($input->getOption('format') === 'xml') {
             $dom = new \DOMDocument('1.0', 'UTF-8');
             $dom->appendChild($filesXML = $dom->createElement('files'));
             foreach ($changed as $file => $fixResult) {
