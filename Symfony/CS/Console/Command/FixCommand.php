@@ -57,7 +57,8 @@ class FixCommand extends Command
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
                 new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or all)', null),
                 new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
-                new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file')
+                new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt')
             ))
             ->setDescription('Fixes a directory or a file')
             ->setHelp(<<<EOF
@@ -227,18 +228,50 @@ EOF
         $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
 
         $i = 1;
-        foreach ($changed as $file => $fixResult) {
-            $output->write(sprintf('%4d) %s', $i++, $file));
-            if ($input->getOption('verbose')) {
-                $output->write(sprintf(' (<comment>%s</comment>)', implode(', ', $fixResult['appliedFixers'])));
-                if ($input->getOption('diff')) {
+        switch ($input->getOption('format')) {
+            case 'txt':
+                foreach ($changed as $file => $fixResult) {
+                    $output->write(sprintf('%4d) %s', $i++, $file));
+                    if ($input->getOption('verbose')) {
+                        $output->write(sprintf(' (<comment>%s</comment>)', implode(', ', $fixResult['appliedFixers'])));
+                        if ($input->getOption('diff')) {
+                            $output->writeln('');
+                            $output->writeln('<comment>      ---------- begin diff ----------</comment>');
+                            $output->writeln($fixResult['diff']);
+                            $output->writeln('<comment>      ---------- end diff ----------</comment>');
+                        }
+                    }
                     $output->writeln('');
-                    $output->writeln('<comment>      ---------- begin diff ----------</comment>');
-                    $output->writeln($fixResult['diff']);
-                    $output->writeln('<comment>      ---------- end diff ----------</comment>');
                 }
-            }
-            $output->writeln('');
+                break;
+            case 'xml':
+                $dom = new \DOMDocument('1.0', 'UTF-8');
+                $dom->appendChild($filesXML = $dom->createElement('files'));
+                foreach ($changed as $file => $fixResult) {
+                    $filesXML->appendChild($fileXML = $dom->createElement('file'));
+
+                    $fileXML->setAttribute('id', $i++);
+                    $fileXML->setAttribute('name', $file);
+                    if ($input->getOption('verbose')) {
+                        $fileXML->appendChild($appliedFixersXML = $dom->createElement('applied_fixers'));
+                        foreach ($fixResult['appliedFixers'] as $appliedFixer) {
+                            $appliedFixersXML->appendChild($appliedFixerXML = $dom->createElement('applied_fixer'));
+                            $appliedFixerXML->setAttribute('name', $appliedFixer);
+                        }
+
+                        if ($input->getOption('diff')) {
+                            $fileXML->appendChild($diffXML = $dom->createElement('diff'));
+
+                            $diffXML->appendChild($dom->createCDATASection($fixResult['diff']));
+                        }
+                    }
+                }
+
+                $dom->formatOutput = true;
+                $output->write($dom->saveXML());
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('The format "%s" is not defined.', $input->getOption('format')));
         }
 
         return empty($changed) ? 0 : 1;
