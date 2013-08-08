@@ -246,7 +246,7 @@ EOF
                     if ($input->getOption('diff')) {
                         $fileXML->appendChild($diffXML = $dom->createElement('diff'));
 
-                        $diffXML->appendChild($dom->createTextNode($fixResult['diff']));
+                        $diffXML->appendChild($dom->createCDATASection($fixResult['diff']));
                     }
                 }
             }
