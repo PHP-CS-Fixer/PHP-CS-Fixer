@@ -184,7 +184,7 @@ EOF
                 $level = FixerInterface::ALL_LEVEL;
                 break;
             case null:
-                $level = (!preg_match('{(^|,)-}', $input->getOption('fixers'))) ? null : $config->getFixers();
+                $level = preg_match('{(^|,)-}', $input->getOption('fixers')) ? $config->getFixers() : null;
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $input->getOption('level')));
