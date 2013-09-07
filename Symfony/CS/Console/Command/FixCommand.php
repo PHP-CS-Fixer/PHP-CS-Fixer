@@ -157,12 +157,12 @@ EOF
             $config = include $file;
         } else {
             $config = $this->defaultConfig;
-        }
-
-        if (is_file($path)) {
-            $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
-        } else {
-            $config->setDir($path);
+            
+            if (is_file($path)) {
+                $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
+            } else {
+                $config->setDir($path);
+            }
         }
 
         // register custom fixers from config
