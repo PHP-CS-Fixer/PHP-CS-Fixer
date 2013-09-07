@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by Danez at 2013-09-07T12:32:57Z
+
++1
+and it would be great to activate travis @fabpot.
+
+---------------------------------------------------------------------------
+
+by Danez at 2013-09-07T12:45:38Z
+
+@lyrixx can you also add the travis build logo to the README?
+```[![Build Status](https://travis-ci.org/fabpot/PHP-CS-Fixer.png)](https://travis-ci.org/fabpot/PHP-CS-Fixer)```
