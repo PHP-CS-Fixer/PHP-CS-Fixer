@@ -61,7 +61,7 @@ class Config implements ConfigInterface
 
     public function getFinder()
     {
-        if ($this->finder instanceof FinderInterface) {
+        if ($this->finder instanceof FinderInterface && $this->dir !== null) {
             $this->finder->setDir($this->dir);
         }
 
