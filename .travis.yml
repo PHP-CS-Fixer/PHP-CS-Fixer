@@ -7,3 +7,4 @@ before_script:
 php:
   - 5.3
   - 5.4
+  - 5.5
