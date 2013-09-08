@@ -157,7 +157,7 @@ EOF
             $config = include $file;
         } else {
             $config = $this->defaultConfig;
-            
+
             if (is_file($path)) {
                 $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
             } else {
@@ -184,7 +184,12 @@ EOF
                 $level = FixerInterface::ALL_LEVEL;
                 break;
             case null:
-                $level = preg_match('{(^|,)-}', $input->getOption('fixers')) ? $config->getFixers() : null;
+                $fixerOption = $input->getOption('fixers');
+                if (empty($fixerOption) || preg_match('{(^|,)-}', $fixerOption)) {
+                    $level = $config->getFixers();
+                } else {
+                    $level = null;
+                }
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $input->getOption('level')));
