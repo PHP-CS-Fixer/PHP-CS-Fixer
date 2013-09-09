@@ -114,7 +114,7 @@ Helpers
 Dedicated plugins exist for:
 
 * [Vim](https://github.com/stephpy/vim-php-cs-fixer)
-* [Sublime Text 2](https://github.com/benmatselby/sublime-phpcs)
+* [Sublime Text](https://github.com/benmatselby/sublime-phpcs)
 
 Contribute
 ----------
