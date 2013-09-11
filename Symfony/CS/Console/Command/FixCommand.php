@@ -141,6 +141,8 @@ EOF
             $path = getcwd().DIRECTORY_SEPARATOR.$path;
         }
 
+        $addSuppliedPathFromCli = true;
+
         if ($input->getOption('config')) {
             $config = null;
             foreach ($this->fixer->getConfigs() as $c) {
@@ -155,9 +157,12 @@ EOF
             }
         } elseif (file_exists($file = $path.'/.php_cs')) {
             $config = include $file;
+            $addSuppliedPathFromCli = false;
         } else {
             $config = $this->defaultConfig;
+        }
 
+        if ($addSuppliedPathFromCli) {
             if (is_file($path)) {
                 $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
             } else {
