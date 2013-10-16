@@ -96,61 +96,63 @@ display summary of proposed fixes, leaving your files unchanged.
 
 Choose from the list of available fixers:
 
- * **indentation**       [PSR-2] Code must use 4 spaces for indenting, not tabs.
+ * **indentation**          [PSR-2] Code must use 4 spaces for indenting, not tabs.
 
- * **linefeed**          [PSR-2] All PHP files must use the Unix LF (linefeed)
+ * **linefeed**             [PSR-2] All PHP files must use the Unix LF (linefeed)
                      line ending.
 
- * **trailing_spaces**   [PSR-2] Remove trailing whitespace at the end of lines.
+ * **trailing_spaces**      [PSR-2] Remove trailing whitespace at the end of lines.
 
- * **unused_use**        [all] Unused use statements must be removed.
+ * **unused_use**           [all] Unused use statements must be removed.
 
- * **phpdoc_params**     [all] All items of the @param phpdoc tags must be
+ * **phpdoc_params**        [all] All items of the @param phpdoc tags must be
                      aligned vertically.
 
- * **visibility**        [PSR-2] Visibility must be declared on all properties
+ * **visibility**           [PSR-2] Visibility must be declared on all properties
                      and methods; abstract and final must be declared before
                      the visibility; static must be declared after the
                      visibility.
 
- * **return**            [all] An empty line feed should precede a return
+ * **return**               [all] An empty line feed should precede a return
                      statement.
 
- * **short_tag**         [PSR-1] PHP code must use the long <?php ?> tags or the
+ * **short_tag**            [PSR-1] PHP code must use the long <?php ?> tags or the
                      short-echo <?= ?> tags; it must not use the other tag
                      variations.
 
- * **braces**            [PSR-2] Opening braces for classes, interfaces, traits
+ * **braces**               [PSR-2] Opening braces for classes, interfaces, traits
                      and methods must go on the next line, and closing
                      braces must go on the next line after the body. Opening
                      braces for control structures must go on the same line,
                      and closing braces must go on the next line after the
                      body.
 
- * **include**           [all] Include and file path should be divided with a
+ * **include**              [all] Include and file path should be divided with a
                      single space. File path should not be placed under
                      brackets.
 
- * **php_closing_tag**   [PSR-2] The closing ?> tag MUST be omitted from files
+ * **php_closing_tag**      [PSR-2] The closing ?> tag MUST be omitted from files
                      containing only PHP.
 
- * **extra_empty_lines** [all] Removes extra empty lines.
+ * **extra_empty_lines**    [all] Removes extra empty lines.
 
- * **psr0**              [PSR-0] Classes must be in a path that matches their
+ * **psr0**                 [PSR-0] Classes must be in a path that matches their
                      namespace, be at least one namespace deep, and the
                      class name should match the file name.
 
- * **controls_spaces**   [all] A single space should be between: the closing
+ * **controls_spaces**      [all] A single space should be between: the closing
                      brace and the control, the control and the opening
                      parenthese, the closing parenthese and the opening
                      brace.
 
- * **elseif**            [PSR-2] The keyword elseif should be used instead of
+ * **elseif**               [PSR-2] The keyword elseif should be used instead of
                      else if so that all control keywords looks like single
                      words.
 
- * **eof_ending**        [PSR-2] A file must always end with an empty line feed.
+ * **eof_ending**           [PSR-2] A file must always end with an empty line feed.
 
+ * **function_declaration** [PSR-2] Fix spaces around closure, function and method
+ *                          declaration and their arguments.
 
 The `--config` option customizes the files to analyse, based
 on some well-known directory structures:
