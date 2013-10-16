@@ -51,7 +51,7 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
      */
     public function supports(\SplFileInfo $file)
     {
-        return $file->getExtension() === 'php';
+        return pathinfo($file->getFilename(), PATHINFO_EXTENSION) === 'php';
     }
 
     /**
