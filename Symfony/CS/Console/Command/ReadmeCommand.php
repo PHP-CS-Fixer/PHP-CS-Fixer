@@ -59,7 +59,7 @@ store it somewhere on your computer.
 
 ### Globally (manual)
 
-You can run these commands to easily acces `php-cs-fixer` from anywhere on your system:
+You can run these commands to easily access `php-cs-fixer` from anywhere on your system:
 
     \$ sudo wget http://cs.sensiolabs.org/get/php-cs-fixer.phar -O /usr/local/bin/php-cs-fixer
 
