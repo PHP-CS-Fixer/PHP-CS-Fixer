@@ -20,7 +20,7 @@ store it somewhere on your computer.
 
 ### Globally (manual)
 
-You can run these commands to easily acces `php-cs-fixer` from anywhere on your system:
+You can run these commands to easily access `php-cs-fixer` from anywhere on your system:
 
     $ sudo wget http://cs.sensiolabs.org/get/php-cs-fixer.phar -O /usr/local/bin/php-cs-fixer
 
@@ -142,7 +142,7 @@ Choose from the list of available fixers:
 
  * **controls_spaces**   [all] A single space should be between: the closing
                      brace and the control, the control and the opening
-                     parenthese, the closing parenthese and the opening
+                     parentheses, the closing parentheses and the opening
                      brace.
 
  * **elseif**            [PSR-2] The keyword elseif should be used instead of

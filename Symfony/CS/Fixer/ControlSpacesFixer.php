@@ -74,7 +74,7 @@ class ControlSpacesFixer implements FixerInterface
      */
     public function getDescription()
     {
-        return 'A single space should be between: the closing brace and the control, the control and the opening parenthese, the closing parenthese and the opening brace.';
+        return 'A single space should be between: the closing brace and the control, the control and the opening parentheses, the closing parentheses and the opening brace.';
     }
 
     /**
