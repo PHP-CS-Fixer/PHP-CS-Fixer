@@ -74,12 +74,12 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
     {
         $content = preg_replace(
             $this->regex(array('params', 'end')),
-            'function (\1)\2',
+            '\1function (\2)\3',
             $content
         );
         $content = preg_replace(
             $this->regex(array('params', 'use', 'end')),
-            'function (\1) use (\2)\3',
+            '\1function (\2) use (\3)\4',
             $content
         );
         return $content;
@@ -89,7 +89,7 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
     {
         return preg_replace(
             $this->regex(array('name', 'params', 'end')),
-            'function \1(\2)\3',
+            '\1function \2(\3)\4',
             $content
         );
     }
@@ -127,7 +127,7 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
         );
         $map['use'] = '\s*use'.$map['params'];
 
-        return '/function'.implode('', array_map(function ($key) use ($map) {
+        return '/(^|[^a-zA-Z0-9_\x7f-\xff\$])function' . implode('', array_map(function ($key) use ($map) {
             return $map[$key];
         }, $keys)).'/x';
     }
