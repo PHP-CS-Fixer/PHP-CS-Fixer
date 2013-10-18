@@ -28,6 +28,9 @@ class FunctionDeclarationSpacingFixerTest extends \PHPUnit_Framework_TestCase
             array("function foo( \$a)\n{", "function foo(\$a)\n{"),
             array("function foo( \$a)\t\n\t{", "function foo(\$a)\n\t{"),
             array("function foo(\n\$a\n) {", "function foo(\n\$a\n) {"),
+            array("function _function () {", "function _function() {"),
+            array("\$function = function(){", "\$function = function () {"),
+            array("\$function('');", "\$function('');"),
         );
     }
 
