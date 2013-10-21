@@ -221,4 +221,39 @@ EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
+
+    public function testFixWithCommentWithAQuote()
+    {
+        $fixer = new ExtraEmptyLinesFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+$a = 'foo';
+
+// my comment's gotta have a quote
+$b = 'foobar';
+
+$c = 'bar';
+
+EOF;
+
+        $input = <<<'EOF'
+$a = 'foo';
+
+
+
+
+// my comment's gotta have a quote
+$b = 'foobar';
+
+
+
+
+
+$c = 'bar';
+
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
 }
