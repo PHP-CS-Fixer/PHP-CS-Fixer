@@ -28,6 +28,13 @@ class Fixer
 
     public function __construct()
     {
+        $this->reset();
+    }
+
+    public function reset()
+    {
+        $this->fixers = array();
+        $this->configs = array();
         $this->diff = new Diff();
     }
 

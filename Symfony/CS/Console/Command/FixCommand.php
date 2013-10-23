@@ -37,8 +37,6 @@ class FixCommand extends Command
     public function __construct(Fixer $fixer = null, ConfigInterface $config = null)
     {
         $this->fixer = $fixer ?: new Fixer();
-        $this->fixer->registerBuiltInFixers();
-        $this->fixer->registerBuiltInConfigs();
         $this->defaultConfig = $config ?: new Config();
 
         parent::__construct();
@@ -52,7 +50,7 @@ class FixCommand extends Command
         $this
             ->setName('fix')
             ->setDefinition(array(
-                new InputArgument('path', InputArgument::REQUIRED, 'The path'),
+                new InputArgument('path', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'The path'),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The configuration name', null),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
                 new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or all)', null),
@@ -135,107 +133,124 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $input->getArgument('path');
+        $paths = $input->getArgument('path');
         $filesystem = new Filesystem();
-        if (!$filesystem->isAbsolutePath($path)) {
-            $path = getcwd().DIRECTORY_SEPARATOR.$path;
+
+        foreach ($paths as $index => $path) {
+            if (!$filesystem->isAbsolutePath($path)) {
+                $paths[$index] = getcwd().DIRECTORY_SEPARATOR.$path;
+            }
         }
 
         $addSuppliedPathFromCli = true;
+        $configSuppliedFromCli = $this->defaultConfig;
 
         if ($input->getOption('config')) {
-            $config = null;
+            $configSuppliedFromCli = null;
             foreach ($this->fixer->getConfigs() as $c) {
                 if ($c->getName() == $input->getOption('config')) {
-                    $config = $c;
+                    $configSuppliedFromCli = $c;
                     break;
                 }
             }
 
-            if (null === $config) {
+            if (null === $configSuppliedFromCli) {
                 throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined', $input->getOption('config')));
             }
-        } elseif (file_exists($file = $path.'/.php_cs')) {
-            $config = include $file;
-            $addSuppliedPathFromCli = false;
-        } else {
-            $config = $this->defaultConfig;
         }
 
-        if ($addSuppliedPathFromCli) {
-            if (is_file($path)) {
-                $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
+        $changed = array();
+
+        foreach ($paths as $path) {
+            $addSuppliedPathFromCli = true;
+            if ($configSuppliedFromCli) {
+                $config = clone $configSuppliedFromCli;
+            } elseif (file_exists($file = $path.'/.php_cs')) {
+                $config = include $file;
+                $addSuppliedPathFromCli = false;
             } else {
-                $config->setDir($path);
+                $config = $this->defaultConfig;
             }
-        }
 
-        // register custom fixers from config
-        $this->fixer->registerCustomFixers($config->getCustomFixers());
-
-        $allFixers = $this->fixer->getFixers();
-
-        switch ($input->getOption('level')) {
-            case 'psr0':
-                $level = FixerInterface::PSR0_LEVEL;
-                break;
-            case 'psr1':
-                $level = FixerInterface::PSR1_LEVEL;
-                break;
-            case 'psr2':
-                $level = FixerInterface::PSR2_LEVEL;
-                break;
-            case 'all':
-                $level = FixerInterface::ALL_LEVEL;
-                break;
-            case null:
-                $fixerOption = $input->getOption('fixers');
-                if (empty($fixerOption) || preg_match('{(^|,)-}', $fixerOption)) {
-                    $level = $config->getFixers();
+            if ($addSuppliedPathFromCli) {
+                if (is_file($path)) {
+                    $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
                 } else {
-                    $level = null;
+                    $config->setDir($path);
                 }
-                break;
-            default:
-                throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $input->getOption('level')));
+            }
+
+            $this->fixer->reset();
+            $this->fixer->registerBuiltInFixers();
+            $this->fixer->registerBuiltInConfigs();
+
+            // register custom fixers from config
+            $this->fixer->registerCustomFixers($config->getCustomFixers());
+
+            switch ($input->getOption('level')) {
+                case 'psr0':
+                    $level = FixerInterface::PSR0_LEVEL;
+                    break;
+                case 'psr1':
+                    $level = FixerInterface::PSR1_LEVEL;
+                    break;
+                case 'psr2':
+                    $level = FixerInterface::PSR2_LEVEL;
+                    break;
+                case 'all':
+                    $level = FixerInterface::ALL_LEVEL;
+                    break;
+                case null:
+                    $fixerOption = $input->getOption('fixers');
+                    if (empty($fixerOption) || preg_match('{(^|,)-}', $fixerOption)) {
+                        $level = $config->getFixers();
+                    } else {
+                        $level = null;
+                    }
+                    break;
+                default:
+                    throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $input->getOption('level')));
+            }
+
+            $allFixers = $this->fixer->getFixers();
+
+            // select base fixers for the given level
+            $fixers = array();
+            if (is_array($level)) {
+                foreach ($allFixers as $fixer) {
+                    if (in_array($fixer->getName(), $level, true) || in_array($fixer, $level, true)) {
+                        $fixers[] = $fixer;
+                    }
+                }
+            } else {
+                foreach ($allFixers as $fixer) {
+                    if ($fixer->getLevel() === ($fixer->getLevel() & $level)) {
+                        $fixers[] = $fixer;
+                    }
+                }
+            }
+
+            // remove/add fixers based on the fixers option
+            if (preg_match('{(^|,)-}', $input->getOption('fixers'))) {
+                foreach ($fixers as $key => $fixer) {
+                    if (preg_match('{(^|,)-'.preg_quote($fixer->getName()).'}', $input->getOption('fixers'))) {
+                        unset($fixers[$key]);
+                    }
+                }
+            } elseif ($input->getOption('fixers')) {
+                $names = array_map('trim', explode(',', $input->getOption('fixers')));
+
+                foreach ($allFixers as $fixer) {
+                    if (in_array($fixer->getName(), $names) && !in_array($fixer, $fixers)) {
+                        $fixers[] = $fixer;
+                    }
+                }
+            }
+
+            $config->fixers($fixers);
+
+            $changed += $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
         }
-
-        // select base fixers for the given level
-        $fixers = array();
-        if (is_array($level)) {
-            foreach ($allFixers as $fixer) {
-                if (in_array($fixer->getName(), $level, true) || in_array($fixer, $level, true)) {
-                    $fixers[] = $fixer;
-                }
-            }
-        } else {
-            foreach ($allFixers as $fixer) {
-                if ($fixer->getLevel() === ($fixer->getLevel() & $level)) {
-                    $fixers[] = $fixer;
-                }
-            }
-        }
-
-        // remove/add fixers based on the fixers option
-        if (preg_match('{(^|,)-}', $input->getOption('fixers'))) {
-            foreach ($fixers as $key => $fixer) {
-                if (preg_match('{(^|,)-'.preg_quote($fixer->getName()).'}', $input->getOption('fixers'))) {
-                    unset($fixers[$key]);
-                }
-            }
-        } elseif ($input->getOption('fixers')) {
-            $names = array_map('trim', explode(',', $input->getOption('fixers')));
-
-            foreach ($allFixers as $fixer) {
-                if (in_array($fixer->getName(), $names) && !in_array($fixer, $fixers)) {
-                    $fixers[] = $fixer;
-                }
-            }
-        }
-
-        $config->fixers($fixers);
-
-        $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
 
         $i = 1;
         switch ($input->getOption('format')) {
