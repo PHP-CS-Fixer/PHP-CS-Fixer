@@ -75,8 +75,13 @@ TEST;
         $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $if));
         $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $ifFixed));
 
-        $if = "if (test) // foo  \n{";
+        $if = "if (test) // foo\n{";
         $ifFixed = "if (test) { // foo";
+        $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $if));
+        $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $ifFixed));
+
+        $if = "if (false !== strpos(\$func, '::') and\n   true\n) // method_exists()) 	// is this safe to do\n{";
+        $ifFixed = "if (false !== strpos(\$func, '::') and\n   true\n) { // method_exists()) 	// is this safe to do";
         $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $if));
         $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $ifFixed));
 
@@ -94,6 +99,16 @@ TEST;
         $whileFixed = '    while ($file = $this->getFile()) {';
         $this->assertEquals($whileFixed, $fixer->fix($this->getFileMock(), $while));
         $this->assertEquals($whileFixed, $fixer->fix($this->getFileMock(), $whileFixed));
+
+        $while = "    while (false !== strpos(\$func, '::') and\n   true\n) // method_exists()) 	// is this safe to do\n{";
+        $whileFixed = "    while (false !== strpos(\$func, '::') and\n   true\n) { // method_exists()) 	// is this safe to do";
+        $this->assertEquals($whileFixed, $fixer->fix($this->getFileMock(), $while));
+        $this->assertEquals($whileFixed, $fixer->fix($this->getFileMock(), $whileFixed));
+
+        $for = "    for (\$i = 0; false !== strpos(\$func, '::') and\n   true\n; \$i++) // method_exists()) 	// is this safe to do\n{";
+        $forFixed = "    for (\$i = 0; false !== strpos(\$func, '::') and\n   true\n; \$i++) { // method_exists()) 	// is this safe to do";
+        $this->assertEquals($forFixed, $fixer->fix($this->getFileMock(), $for));
+        $this->assertEquals($forFixed, $fixer->fix($this->getFileMock(), $forFixed));
 
         $switch = "switch(\$statement)   \n{";
         $switchFixed = 'switch($statement) {';
@@ -130,6 +145,20 @@ TEST;
         $fixedBadAnonymous = "filter(function   () {\n});";
         $this->assertEquals($fixedBadAnonymous, $fixer->fix($this->getFileMock(), $badAnonymous));
         $this->assertEquals($fixedBadAnonymous, $fixer->fix($this->getFileMock(), $fixedBadAnonymous));
+
+        $correctDeclaration = <<<'EOF'
+        if (this_is_a_function_call($with_a_param, $and_another_param)) {
+        }
+
+        return false;
+    }
+
+    static public function catchall($requestID, $user, $action, $ident, $extra, &$err, $xml, $errnum, $errmsg, $config)
+    {
+        return false;
+    }
+EOF;
+        $this->assertEquals($correctDeclaration, $fixer->fix($this->getFileMock(), $correctDeclaration));
 
         $correctMethod = <<<'EOF'
     public function __construct($id, $name)
