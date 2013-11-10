@@ -11,9 +11,9 @@
 
 namespace Symfony\CS;
 
-use SebastianBergmann\Diff;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
+use SebastianBergmann\Diff\Differ;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -28,7 +28,7 @@ class Fixer
 
     public function __construct()
     {
-        $this->diff = new Diff();
+        $this->diff = new Differ();
     }
 
     public function registerBuiltInFixers()
