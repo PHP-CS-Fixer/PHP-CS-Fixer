@@ -44,38 +44,48 @@ The PHP Coding Standards Fixer tool fixes *most* issues in your code when you
 want to follow the PHP coding standards as defined in the PSR-1 and PSR-2
 documents.
 
-If you are already using `PHP_CodeSniffer` to identify coding standards
-problems in your code, you know that fixing them by hand is tedious,
-especially on large projects. This tool does the job for you.
+If you are already using ``PHP_CodeSniffer`` to identify coding standards
+problems in your code, you know that fixing them by hand is tedious, especially
+on large projects. This tool does the job for you.
 
 Installation
 ------------
 
-### Locally
+Locally
+~~~~~~~
 
-Download the
-[`php-cs-fixer.phar`](http://cs.sensiolabs.org/get/php-cs-fixer.phar) file and
-store it somewhere on your computer.
+Download the `php-cs-fixer.phar`_ file and store it somewhere on your computer.
 
-### Globally (manual)
+Globally (manual)
+~~~~~~~~~~~~~~~~~
 
-You can run these commands to easily access `php-cs-fixer` from anywhere on your system:
+You can run these commands to easily access ``php-cs-fixer`` from anywhere on
+your system:
+
+.. code-block:: bash
 
     \$ sudo wget http://cs.sensiolabs.org/get/php-cs-fixer.phar -O /usr/local/bin/php-cs-fixer
 
 or with curl:
 
+.. code-block:: bash
+
     \$ sudo curl http://cs.sensiolabs.org/get/php-cs-fixer.phar -o /usr/local/bin/php-cs-fixer
 
 then:
 
+.. code-block:: bash
+
     \$ sudo chmod a+x /usr/local/bin/php-cs-fixer
 
-Then, just run `php-cs-fixer` in order to run php-cs-fixer
+Then, just run ``php-cs-fixer``.
 
-### Globally (homebrew)
+Globally (homebrew)
+~~~~~~~~~~~~~~~~~~~
 
-PHP-CS-Fixer is part of the homebrew-php project.
+PHP-CS-Fixer is part of the homebrew-php project:
+
+.. code-block:: bash
 
     \$ brew tap josegonzalez/homebrew-php
     \$ brew install php-cs-fixer
@@ -83,21 +93,30 @@ PHP-CS-Fixer is part of the homebrew-php project.
 Update
 ------
 
-### Locally
+Locally
+~~~~~~~
 
-The `self-update` command tries to update php-cs-fixer itself:
+The ``self-update`` command tries to update ``php-cs-fixer`` itself:
+
+.. code-block:: bash
 
     \$ php php-cs-fixer.phar self-update
 
-### Globally (manual)
+Globally (manual)
+~~~~~~~~~~~~~~~~~
 
-You can update php-cs-fixer through this command:
+You can update ``php-cs-fixer`` through this command:
+
+.. code-block:: bash
 
     \$ sudo php-cs-fixer self-update
 
-### Globally (homebrew)
+Globally (homebrew)
+~~~~~~~~~~~~~~~~~~~
 
-You can update php-cs-fixer through this command:
+You can update ``php-cs-fixer`` through this command:
+
+.. code-block:: bash
 
     \$ brew upgrade php-cs-fixer
 
@@ -113,27 +132,33 @@ Helpers
 
 Dedicated plugins exist for:
 
-* [Vim](https://github.com/stephpy/vim-php-cs-fixer)
-* [Sublime Text](https://github.com/benmatselby/sublime-phpcs)
+* `Vim`_
+* `Sublime Text`_
 
 Contribute
 ----------
 
 The tool comes with quite a few built-in fixers and finders, but everyone is
-more than welcome to [contribute](https://github.com/fabpot/php-cs-fixer) more
-of them.
+more than welcome to `contribute`_ more of them.
 
-### Fixers
+Fixers
+~~~~~~
 
-A *fixer* is a class that tries to fix one CS issue (a `Fixer` class must
-implement `FixerInterface`).
+A *fixer* is a class that tries to fix one CS issue (a ``Fixer`` class must
+implement ``FixerInterface``).
 
-### Configs
+Configs
+~~~~~~~
 
 A *config* knows about the CS level and the files and directories that must be
-scanned by the tool when run in the directory of your project. It is useful
-for projects that follow a well-known directory structures (like for Symfony
+scanned by the tool when run in the directory of your project. It is useful for
+projects that follow a well-known directory structures (like for Symfony
 projects for instance).
+
+.. _php-cs-fixer.phar: http://cs.sensiolabs.org/get/php-cs-fixer.phar
+.. _Vim:               https://github.com/stephpy/vim-php-cs-fixer
+.. _Sublime Test:      https://github.com/benmatselby/sublime-phpcs
+.. _contribute:        https://github.com/fabpot/php-cs-fixer
 
 EOF;
 
@@ -141,9 +166,9 @@ EOF;
         $help = $command->getHelp();
         $help = str_replace('%command.full_name%', 'php-cs-fixer.phar '.$command->getName(), $help);
         $help = str_replace('%command.name%', $command->getName(), $help);
-        $help = preg_replace('#</?(comment|info)>#', '`', $help);
-        $help = preg_replace('#^(\s+)`(.+)`$#m', '$1$2', $help);
-        $help = preg_replace('#^ \* `(.+)`#m', ' * **$1**', $help);
+        $help = preg_replace('#</?(comment|info)>#', '``', $help);
+        $help = preg_replace('#^(\s+)``(.+)``$#m', '$1$2', $help);
+        $help = preg_replace('#^ \* ``(.+)``#m', '* **$1**', $help);
 
         $output->writeln($header);
         $output->writeln($help);
