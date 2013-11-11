@@ -87,11 +87,15 @@ Usage
 The ``fix`` command tries to fix as much coding standards
 problems as possible on a given file or directory:
 
+.. code-block:: bash
+
     php php-cs-fixer.phar fix /path/to/dir
     php php-cs-fixer.phar fix /path/to/file
 
 The ``--level`` option limits the fixers to apply on the
 project:
+
+.. code-block:: bash
 
     php php-cs-fixer.phar fix /path/to/project --level=psr0
     php php-cs-fixer.phar fix /path/to/project --level=psr1
@@ -103,10 +107,14 @@ By default, all PSR-2 fixers and some additional ones are run.
 The ``--fixers`` option lets you choose the exact fixers to
 apply (the fixer names must be separated by a comma):
 
+.. code-block:: bash
+
     php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,short_tag,indentation
 
 You can also blacklist the fixers you don't want if this is more convenient,
 using ``-name``:
+
+.. code-block:: bash
 
     php php-cs-fixer.phar fix /path/to/dir --fixers=-short_tag,-indentation
 
@@ -115,70 +123,72 @@ display summary of proposed fixes, leaving your files unchanged.
 
 Choose from the list of available fixers:
 
-* **indentation**          [PSR-2] Code must use 4 spaces for indenting, not
-                        tabs.
+* **indentation** [PSR-2] Code must use 4 spaces for indenting, not
+  tabs.
 
-* **linefeed**             [PSR-2] All PHP files must use the Unix LF
-                        (linefeed) line ending.
+* **linefeed** [PSR-2] All PHP files must use the Unix LF
+  (linefeed) line ending.
 
-* **trailing_spaces**      [PSR-2] Remove trailing whitespace at the end of
-                        lines.
+* **trailing_spaces** [PSR-2] Remove trailing whitespace at the end of
+  lines.
 
-* **unused_use**           [all] Unused use statements must be removed.
+* **unused_use** [all] Unused use statements must be removed.
 
-* **phpdoc_params**        [all] All items of the @param phpdoc tags must be
-                        aligned vertically.
+* **phpdoc_params** [all] All items of the @param phpdoc tags must be
+  aligned vertically.
 
-* **short_tag**            [PSR-1] PHP code must use the long <?php ?> tags or
-                        the short-echo <?= ?> tags; it must not use the
-                        other tag variations.
+* **short_tag** [PSR-1] PHP code must use the long <?php ?> tags or
+  the short-echo <?= ?> tags; it must not use the
+  other tag variations.
 
-* **return**               [all] An empty line feed should precede a return
-                        statement.
+* **return** [all] An empty line feed should precede a return
+  statement.
 
-* **visibility**           [PSR-2] Visibility must be declared on all
-                        properties and methods; abstract and final must be
-                        declared before the visibility; static must be
-                        declared after the visibility.
+* **visibility** [PSR-2] Visibility must be declared on all
+  properties and methods; abstract and final must be
+  declared before the visibility; static must be
+  declared after the visibility.
 
-* **php_closing_tag**      [PSR-2] The closing ?> tag MUST be omitted from
-                        files containing only PHP.
+* **php_closing_tag** [PSR-2] The closing ?> tag MUST be omitted from
+  files containing only PHP.
 
-* **braces**               [PSR-2] Opening braces for classes, interfaces,
-                        traits and methods must go on the next line, and
-                        closing braces must go on the next line after the
-                        body. Opening braces for control structures must go
-                        on the same line, and closing braces must go on the
-                        next line after the body.
+* **braces** [PSR-2] Opening braces for classes, interfaces,
+  traits and methods must go on the next line, and
+  closing braces must go on the next line after the
+  body. Opening braces for control structures must go
+  on the same line, and closing braces must go on the
+  next line after the body.
 
-* **extra_empty_lines**    [all] Removes extra empty lines.
+* **extra_empty_lines** [all] Removes extra empty lines.
 
 * **function_declaration** [PSR-2] Spaces should be properly placed in a
-                        function declaration
+  function declaration
 
-* **include**              [all] Include and file path should be divided with a
-                        single space. File path should not be placed under
-                        brackets.
+* **include** [all] Include and file path should be divided with a
+  single space. File path should not be placed under
+  brackets.
 
-* **controls_spaces**      [all] A single space should be between: the closing
-                        brace and the control, the control and the opening
-                        parentheses, the closing parentheses and the opening
-                        brace.
+* **controls_spaces** [all] A single space should be between: the closing
+  brace and the control, the control and the opening
+  parentheses, the closing parentheses and the opening
+  brace.
 
-* **psr0**                 [PSR-0] Classes must be in a path that matches their
-                        namespace, be at least one namespace deep, and the
-                        class name should match the file name.
+* **psr0** [PSR-0] Classes must be in a path that matches their
+  namespace, be at least one namespace deep, and the
+  class name should match the file name.
 
-* **elseif**               [PSR-2] The keyword elseif should be used instead of
-                        else if so that all control keywords looks like
-                        single words.
+* **elseif** [PSR-2] The keyword elseif should be used instead of
+  else if so that all control keywords looks like
+  single words.
 
-* **eof_ending**           [PSR-2] A file must always end with an empty line
-                        feed.
+* **eof_ending** [PSR-2] A file must always end with an empty line
+  feed.
 
 
 The ``--config`` option customizes the files to analyse, based
 on some well-known directory structures:
+
+.. code-block:: bash
 
     # For the Symfony 2.1 branch
     php php-cs-fixer.phar fix /path/to/sf21 --config=sf21
@@ -196,6 +206,8 @@ Choose from the list of available configurations:
 The ``--dry-run`` option displays the files that need to be
 fixed but without actually modifying them:
 
+.. code-block:: bash
+
     php php-cs-fixer.phar fix /path/to/code --dry-run
 
 Instead of using command line options to customize the fixer, you can save the
@@ -203,6 +215,8 @@ configuration in a ``.php_cs`` file in the root directory of
 your project. The file must return an instance of
 `Symfony\CS\ConfigInterface`, which lets you configure the fixers, the files,
 and directories that need to be analyzed:
+
+.. code-block:: php
 
     <?php
 
