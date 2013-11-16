@@ -18,6 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Igor Wiedler <igor@wiedler.ch>
  * @author Stephane PY <py.stephane1@gmail.com>
+ * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */
 class SelfUpdateCommand extends Command
 {
@@ -30,10 +31,10 @@ class SelfUpdateCommand extends Command
             ->setName('self-update')
             ->setDescription('Update php-cs-fixer.phar to the latest version.')
             ->setHelp(<<<EOT
-The <info>self-update</info> command replace your php-cs-fixer.phar
-by the latest version from cs.sensiolabs.org.
+The <info>%command.name%</info> command replace your php-cs-fixer.phar by the
+latest version from cs.sensiolabs.org.
 
-<info>php php-cs-fixer.phar self-update</info>
+<info>php php-cs-fixer.phar %command.name%</info>
 
 EOT
             )
@@ -45,12 +46,20 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $remoteFilename = "http://cs.sensiolabs.org/get/php-cs-fixer.phar";
+        $remoteFilename = 'http://cs.sensiolabs.org/get/php-cs-fixer.phar';
         $localFilename  = $_SERVER['argv'][0];
         $tempFilename   = basename($localFilename, '.phar').'-temp.phar';
 
         try {
             copy($remoteFilename, $tempFilename);
+
+            if (md5_file($localFilename) == md5_file($tempFilename)) {
+                $output->writeln('<info>php-cs-fixer is already up to date.</info>');
+                unlink($tempFilename);
+
+                return;
+            }
+
             chmod($tempFilename, 0777 & ~umask());
 
             // test the phar validity
@@ -58,6 +67,8 @@ EOT
             // free the variable to unlock the file
             unset($phar);
             rename($tempFilename, $localFilename);
+
+            $output->writeln('<info>php-cs-fixer updated.</info>');
         } catch (\Exception $e) {
             if (!$e instanceof \UnexpectedValueException && !$e instanceof \PharException) {
                 throw $e;
@@ -66,7 +77,5 @@ EOT
             $output->writeln('<error>The download is corrupt ('.$e->getMessage().').</error>');
             $output->writeln('<error>Please re-run the self-update command to try again.</error>');
         }
-
-        $output->writeln("<info>php-cs-fixer updated.</info>");
     }
 }
