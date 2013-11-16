@@ -157,7 +157,7 @@ projects for instance).
 
 .. _php-cs-fixer.phar: http://cs.sensiolabs.org/get/php-cs-fixer.phar
 .. _Vim:               https://github.com/stephpy/vim-php-cs-fixer
-.. _Sublime Test:      https://github.com/benmatselby/sublime-phpcs
+.. _Sublime Text:      https://github.com/benmatselby/sublime-phpcs
 .. _contribute:        https://github.com/fabpot/php-cs-fixer
 
 EOF;
