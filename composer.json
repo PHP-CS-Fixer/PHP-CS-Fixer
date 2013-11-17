@@ -14,7 +14,7 @@
         "symfony/console": "~2.1",
         "symfony/filesystem": "~2.1",
         "symfony/finder": "~2.1",
-        "sebastian/diff": "1.1.*@dev"
+        "sebastian/diff": "1.1.*"
     },
     "autoload": {
         "psr-0": { "Symfony\\CS": "." }
