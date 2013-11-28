@@ -54,9 +54,7 @@ class JavaScriptFinder extends Finder implements FinderInterface
     }
 
     /**
-     * Excludes files because modifying them would break (mainly useful for fixtures in unit tests).
-     *
-     * @return array
+     * {@inheritdoc}
      */
     protected function getFilesToExclude()
     {

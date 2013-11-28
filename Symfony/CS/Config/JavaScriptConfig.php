@@ -10,6 +10,7 @@
  */
 
 namespace Symfony\CS\Config;
+
 use Symfony\CS\Finder\JavaScriptFinder;
 
 /**
