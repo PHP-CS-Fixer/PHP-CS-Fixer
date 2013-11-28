@@ -28,7 +28,7 @@ class VisibilityFixer implements FixerInterface
         // Visibility MUST be declared on all properties and methods;
         // abstract and final MUST be declared before the visibility;
         // static MUST be declared after the visibility
-        $content = preg_replace_callback('/^( {2,4}|\t)((?:(?:public|protected|private|static|var) +)+) *(\$[a-z0-9_]+)/im', function ($matches) {
+        $content = preg_replace_callback('/^( {2,4}|\t)((?:(?:public|protected|private|static|var)\s+)+)\s*(\$[a-z0-9_]+)/im', function ($matches) {
             $flags = explode(' ', strtolower(trim($matches[2])));
             if (in_array('protected', $flags)) {
                 $visibility = 'protected';
@@ -43,7 +43,7 @@ class VisibilityFixer implements FixerInterface
                 . ' ' . $matches[3];
         }, $content);
 
-        $content = preg_replace_callback('/^( {2,4}|\t)((?:(?:public|protected|private|static|abstract|final) +)*)(function +[a-z0-9_]+)/im', function ($matches) {
+        $content = preg_replace_callback('/^( {2,4}|\t)((?:(?:public|protected|private|static|abstract|final)\s+)*)(?:function\s+([a-z0-9_]+))/im', function ($matches) {
             $flags = explode(' ', strtolower(trim($matches[2])));
             if (in_array('protected', $flags)) {
                 $visibility = 'protected';
@@ -58,7 +58,7 @@ class VisibilityFixer implements FixerInterface
                 . (in_array('final', $flags) ? 'final ' : '')
                 . $visibility
                 . (in_array('static', $flags) ? ' static' : '')
-                . ' '. $matches[3];
+                . ' function '. $matches[3];
         }, $content);
 
         return $content;
