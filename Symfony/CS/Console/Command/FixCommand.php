@@ -54,6 +54,7 @@ class FixCommand extends Command
             ->setDefinition(array(
                 new InputArgument('path', InputArgument::REQUIRED, 'The path'),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The configuration name', null),
+                new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
                 new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or all)', null),
                 new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
@@ -126,6 +127,9 @@ and directories that need to be analyzed:
         ->fixers(array('indentation', 'elseif'))
         ->finder(\$finder)
     ;
+
+With the <comment>--config-file</comment> option you can specify the path to the
+<comment>.php_cs</comment> file.
 EOF
             );
     }
@@ -155,6 +159,9 @@ EOF
             if (null === $config) {
                 throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined', $input->getOption('config')));
             }
+        } elseif ($input->getOption('config-file')) {
+            $file = $input->getOption('config-file');
+            $config = include $file;
         } elseif (file_exists($file = $path.'/.php_cs')) {
             $config = include $file;
             $addSuppliedPathFromCli = false;
