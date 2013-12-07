@@ -19,6 +19,7 @@ use Symfony\CS\FixerInterface;
 class PhpdocParamsAlignmentFixer implements FixerInterface
 {
     private $regex;
+    private $regexCommentLine;
 
     public function __construct()
     {
@@ -29,6 +30,7 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
         // optional <desc>
         $desc = '(?:\s+(?P<desc>.*)|\s*)';
         $this->regex = '/^ {5}\* @(?:'.$paramTag.'|'.$returnThrowsTag.')'.$desc.'$/';
+        $this->regexCommentLine = '/^ {5}\*(?:\s+(?P<desc>.+))$/';
     }
 
     public function fix(\SplFileInfo $file, $content)
@@ -39,7 +41,7 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
             if ($matches = $this->getMatches($lines[$i])) {
                 $current = $i;
                 $items[] = $matches;
-                while ($matches = $this->getMatches($lines[++$i])) {
+                while ($matches = $this->getMatches($lines[++$i], true)) {
                     $items[] = $matches;
                 }
 
@@ -52,13 +54,32 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
                 $hintMax = 0;
                 $varMax = 0;
                 foreach ($items as $item) {
-                    $tagMax  = max($tagMax, strlen($item['tag']));
+                    if (null === $item['tag']) {
+                        continue;
+                    }
+
+                    $tagMax = max($tagMax, strlen($item['tag']));
                     $hintMax = max($hintMax, strlen($item['hint']));
                     $varMax  = max($varMax, strlen($item['var']));
                 }
 
+                $currTag = null;
+
                 // update
                 foreach ($items as $j => $item) {
+                    if (null === $item['tag']) {
+                        $line =
+                            '     *  '
+                            .str_repeat(' ', ($tagMax + $hintMax + $varMax + ('param' === $currTag ? 3 : 2)))
+                            .$item['desc'];
+
+                        $lines[$current + $j] = $line;
+
+                        continue;
+                    }
+
+                    $currTag = $item['tag'];
+
                     $line =
                         '     * @'
                         .$item['tag']
@@ -113,13 +134,21 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
         return 'All items of the @param phpdoc tags must be aligned vertically.';
     }
 
-    private function getMatches($line)
+    private function getMatches($line, $matchCommentOnly = false)
     {
         if (preg_match($this->regex, $line, $matches)) {
             if (!empty($matches['tag2'])) {
                 $matches['tag'] = $matches['tag2'];
                 $matches['hint'] = $matches['hint2'];
             }
+
+            return $matches;
+        }
+
+        if ($matchCommentOnly && preg_match($this->regexCommentLine, $line, $matches)) {
+            $matches['tag'] = null;
+            $matches['var'] = '';
+            $matches['hint'] = '';
 
             return $matches;
         }
