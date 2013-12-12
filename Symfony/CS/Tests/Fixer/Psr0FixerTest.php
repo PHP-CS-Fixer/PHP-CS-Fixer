@@ -80,9 +80,6 @@ EOF;
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
 
-    /**
-     * @group grain
-     */
     public function testFixNamespaceThrows()
     {
         $fixer = new Psr0Fixer();
@@ -166,9 +163,6 @@ EOF;
         $this->assertEquals('', ob_get_clean());
     }
 
-    /**
-     * @group grain
-     */
     public function testFixNamespaceLeadingSpaceThrows()
     {
         $fixer = new Psr0Fixer();
