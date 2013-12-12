@@ -163,7 +163,7 @@ EOF;
         $this->assertEquals('', ob_get_clean());
     }
 
-    public function testFixNamespaceLeadingSpaceThrows()
+    public function testLeadingSpaceNamespaceThrows()
     {
         $fixer = new Psr0Fixer();
         $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
@@ -177,5 +177,22 @@ EOF;
         ob_start();
         $fixer->fix($file, $input);
         $this->assertContains($expected, ob_get_clean());
+    }
+
+    public function testFixLeadingSpaceNamespace()
+    {
+        $fixer = new Psr0Fixer();
+        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
+
+        $expected = <<<'EOF'
+namespace LeadingSpace;
+class Psr0Fixer {}
+EOF;
+        $input = <<<'EOF'
+ namespace LeadingSpace;
+class Psr0Fixer {}
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
     }
 }
