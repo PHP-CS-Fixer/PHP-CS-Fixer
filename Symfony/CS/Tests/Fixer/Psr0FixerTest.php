@@ -80,6 +80,9 @@ EOF;
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
 
+    /**
+     * @group grain
+     */
     public function testFixNamespaceThrows()
     {
         $fixer = new Psr0Fixer();
@@ -161,5 +164,24 @@ EOF;
         ob_start();
         $this->assertEquals($expected, $fixer->fix($file, $input));
         $this->assertEquals('', ob_get_clean());
+    }
+
+    /**
+     * @group grain
+     */
+    public function testFixNamespaceLeadingSpaceThrows()
+    {
+        $fixer = new Psr0Fixer();
+        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
+
+        $input = <<<'EOF'
+ namespace LeadingSpace;
+class Psr0Fixer {}
+EOF;
+
+        $expected = '! The namespace LeadingSpace in';
+        ob_start();
+        $fixer->fix($file, $input);
+        $this->assertContains($expected, ob_get_clean());
     }
 }
