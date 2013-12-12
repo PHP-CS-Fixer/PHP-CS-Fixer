@@ -25,7 +25,7 @@ class Psr0Fixer implements FixerInterface, ConfigAwareInterface
     public function fix(\SplFileInfo $file, $content)
     {
         $namespace = false;
-        if (preg_match('{^(?:<\?php\s+)?namespace\s+(\S+)\s*;}um', $content, $match)) {
+        if (preg_match('{^[^\S\n]*(?:<\?php\s+)?namespace\s+(\S+)\s*;}um', $content, $match)) {
             $namespace = $match[1];
             if (stripos($match[0], 'namespace') > 0) {
                 $content = str_replace($match[0], ltrim($match[0], " \t"), $content);
