@@ -80,6 +80,7 @@ class Foo {
         function ($foo) {}
         function() {
             static $foo;
+    static $foo;
         }
 }
 EOF;
@@ -105,6 +106,7 @@ class Foo {
         function (\$foo) {}
         function() {
             static \$foo;
+    static \$foo;
         }
 }
 EOF;
