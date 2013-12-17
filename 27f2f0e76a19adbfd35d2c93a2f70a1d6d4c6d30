@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by stof at 2013-12-12T14:47:30Z
+
+The readme is build by the ReadmeCommand, to allow updating it easily when adding new fixers. So the new content should be added in it to avoid loosing it on next run of the command
+
+---------------------------------------------------------------------------
+
+by staabm at 2013-12-12T15:58:07Z
+
+fixed
