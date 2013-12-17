@@ -20,6 +20,23 @@ class IndentationFixerTest extends \PHPUnit_Framework_TestCase
         $fixer = new IndentationFixer();
         $file = new \SplFileInfo(__FILE__);
 
-        $this->assertEquals('           FOO', $fixer->fix($file, " \t \t FOO"));
+        // Indentation only
+        $this->assertEquals('        ALPHA', $fixer->fix($file, "\t\tALPHA"));
+        $this->assertEquals('        BRAVO', $fixer->fix($file, "\t\tBRAVO"));
+        $this->assertEquals('        CHARLIE', $fixer->fix($file, " \t\tCHARLIE"));
+        $this->assertEquals('        DELTA', $fixer->fix($file, "  \t\tDELTA"));
+        $this->assertEquals('        ECHO', $fixer->fix($file, "   \t\tECHO"));
+        $this->assertEquals('        FOXTROT', $fixer->fix($file, "\t \tFOXTROT"));
+        $this->assertEquals('        GOLF', $fixer->fix($file, "\t  \tGOLF"));
+        $this->assertEquals('        HOTEL', $fixer->fix($file, "\t   \tHOTEL"));
+        $this->assertEquals('        INDIA', $fixer->fix($file, "\t    INDIA"));
+        $this->assertEquals('        JULIET', $fixer->fix($file, " \t   \tJULIET"));
+        $this->assertEquals('        KILO', $fixer->fix($file, "  \t  \tKILO"));
+        $this->assertEquals('        MIKE', $fixer->fix($file, "   \t \tMIKE"));
+        $this->assertEquals('        NOVEMBER', $fixer->fix($file, "    \tNOVEMBER"));
+        // Indentation and alignment
+        $this->assertEquals('         OSCAR', $fixer->fix($file, "\t \t OSCAR"));
+        $this->assertEquals('          PAPA', $fixer->fix($file, "\t \t  PAPA"));
+        $this->assertEquals('           QUEBEC', $fixer->fix($file, "\t \t   QUEBEC"));
     }
 }
