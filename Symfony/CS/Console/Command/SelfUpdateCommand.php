@@ -29,6 +29,7 @@ class SelfUpdateCommand extends Command
     {
         $this
             ->setName('self-update')
+            ->setAliases(array('selfupdate'))
             ->setDescription('Update php-cs-fixer.phar to the latest version.')
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command replace your php-cs-fixer.phar by the
