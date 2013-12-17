@@ -22,7 +22,8 @@ class IndentationFixer implements FixerInterface
     {
         // [Structure] Indentation is done by steps of four spaces (tabs are never allowed)
         return preg_replace_callback('/^([ \t]+)/m', function ($matches) use ($content) {
-            return str_replace("\t", '    ', $matches[0]);
+            // Tabs may include 1 to 3 (but not 4) preceding spaces
+            return preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $matches[0]);
         }, $content);
     }
 
