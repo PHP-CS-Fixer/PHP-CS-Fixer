@@ -1,0 +1,48 @@
+---------------------------------------------------------------------------
+
+by flyboarder at 2013-05-01T19:35:01Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by sstok at 2013-12-12T08:11:18Z
+
+@jinfollc can you rebase this change and fix the CS issues?
+
+---------------------------------------------------------------------------
+
+by jinfollc at 2013-12-12T12:25:28Z
+
+Thanks for the improvement suggestions, I really appreciate it.  Will do this today!
+
+---------------------------------------------------------------------------
+
+by jinfollc at 2013-12-12T12:58:08Z
+
+@sstok Could you review my latest commit?
+
+---------------------------------------------------------------------------
+
+by sstok at 2013-12-12T13:01:55Z
+
+Can you also add a test to make sure its fixed :+1:
+
+---------------------------------------------------------------------------
+
+by jinfollc at 2013-12-12T13:06:07Z
+
+Will do, thanks!
+
+---------------------------------------------------------------------------
+
+by jinfollc at 2013-12-12T14:04:11Z
+
+@sstok added the test!
+
+---------------------------------------------------------------------------
+
+by jinfollc at 2013-12-18T15:46:49Z
+
+@sstok @fabpot I'm just starting to contribute to open source projects, so I'm still learning how to make pull requests correctly. Is there anything I can do to make this one work?  What is holding this pull request back?
+Any advice would be appreciated, thanks!
