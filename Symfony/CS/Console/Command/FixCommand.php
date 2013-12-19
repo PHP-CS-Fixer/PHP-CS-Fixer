@@ -126,9 +126,9 @@ and directories that need to be analyzed:
         ->fixers(array('indentation', 'elseif'))
         ->finder(\$finder)
     ;
-    
+
 You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
-The following example shows how to use all Fixers but the `Psr0Fixer`. 
+The following example shows how to use all Fixers but the `Psr0Fixer`.
 Note the additional <comment>-</comment> in front of the Fixer name.
 
     <?php
@@ -141,7 +141,7 @@ Note the additional <comment>-</comment> in front of the Fixer name.
     return Symfony\CS\Config\Config::create()
         ->fixers(array('-Psr0Fixer'))
         ->finder(\$finder)
-    ;    
+    ;
 EOF
             );
     }
