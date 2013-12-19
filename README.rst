@@ -230,6 +230,24 @@ and directories that need to be analyzed:
         ->finder($finder)
     ;
 
+You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
+The following example shows how to use all Fixers but the `Psr0Fixer`.
+Note the additional ``-`` in front of the Fixer name.
+
+.. code-block:: php
+
+    <?php
+
+    $finder = Symfony\CS\Finder\DefaultFinder::create()
+        ->exclude('somefile')
+        ->in(__DIR__)
+    ;
+
+    return Symfony\CS\Config\Config::create()
+        ->fixers(array('-Psr0Fixer'))
+        ->finder($finder)
+    ;
+
 Helpers
 -------
 
@@ -260,5 +278,5 @@ projects for instance).
 
 .. _php-cs-fixer.phar: http://cs.sensiolabs.org/get/php-cs-fixer.phar
 .. _Vim:               https://github.com/stephpy/vim-php-cs-fixer
-.. _Sublime Test:      https://github.com/benmatselby/sublime-phpcs
+.. _Sublime Text:      https://github.com/benmatselby/sublime-phpcs
 .. _contribute:        https://github.com/fabpot/php-cs-fixer
