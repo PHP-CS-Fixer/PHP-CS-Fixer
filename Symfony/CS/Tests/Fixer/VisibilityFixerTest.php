@@ -66,6 +66,7 @@ class Foo {
     public function foo() {}
     public function foo() {}
     protected function foo() {}
+    abstract protected function foo() {};
     private function foo() {}
     final public function foo() {}
     abstract public function foo();
@@ -90,6 +91,8 @@ class Foo {
     public function foo() {}
     function foo() {}
     protected function foo() {}
+    protected
+    abstract function foo() {};
     private function foo() {}
     final public function foo() {}
     abstract public function foo();
