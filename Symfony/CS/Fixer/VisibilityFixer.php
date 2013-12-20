@@ -44,6 +44,8 @@ class VisibilityFixer implements FixerInterface
         }, $content);
 
         $content = preg_replace_callback('/^( {2,4}|\t)((?:(?:public|protected|private|static|abstract|final)\s+)*)(?:function\s+([a-z0-9_]+))/im', function ($matches) {
+            //if there's more than 1 space between keywords or line breaks, trim it down to just one
+            $matches[2] = preg_replace("/\\s/", " ", $matches[2]);
             $flags = explode(' ', strtolower(trim($matches[2])));
             if (in_array('protected', $flags)) {
                 $visibility = 'protected';
