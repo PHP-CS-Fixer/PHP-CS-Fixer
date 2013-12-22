@@ -197,11 +197,13 @@ Choose from the list of available configurations:
 
 * **default** A default configuration
 
-* **magento** The configuration for a Magento application
+* **magento**    The configuration for a Magento application
 
-* **sf20**    The configuration for the Symfony 2.0 branch
+* **sf20**       The configuration for the Symfony 2.0 branch
 
-* **sf21**    The configuration for the Symfony 2.1 branch
+* **sf21**       The configuration for the Symfony 2.1 branch
+
+* **javascript** The configuration for the JavaScript within your project
 
 The ``--dry-run`` option displays the files that need to be
 fixed but without actually modifying them:
