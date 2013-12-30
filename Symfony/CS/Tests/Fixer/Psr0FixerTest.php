@@ -80,6 +80,25 @@ EOF;
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
 
+    public function testFixFinalClassName()
+    {
+        $fixer = new Psr0Fixer();
+        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
+
+        $expected = <<<'EOF'
+namespace Symfony\CS\Fixer;
+final class Psr0Fixer {}
+/* class foo */
+EOF;
+        $input = <<<'EOF'
+namespace Symfony\CS\Fixer;
+final class blah {}
+/* class foo */
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
+
     public function testFixNamespaceThrows()
     {
         $fixer = new Psr0Fixer();
