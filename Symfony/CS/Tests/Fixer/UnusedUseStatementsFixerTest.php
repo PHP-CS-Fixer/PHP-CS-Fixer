@@ -89,9 +89,11 @@ EOF;
 namespace Foo\Bar\FooBar;
 
 use Foo\Bar\FooBar\Foo as Fooz;
+use Foo\Bar\FooBar\Bar;
 
 $a = new Baz();
 $b = new Fooz();
+$c = new Bar\Fooz();
 EOF;
 
         $input = <<<'EOF'
@@ -99,9 +101,11 @@ namespace Foo\Bar\FooBar;
 
 use Foo\Bar\FooBar\Baz;
 use Foo\Bar\FooBar\Foo as Fooz;
+use Foo\Bar\FooBar\Bar;
 
 $a = new Baz();
 $b = new Fooz();
+$c = new Bar\Fooz();
 EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
