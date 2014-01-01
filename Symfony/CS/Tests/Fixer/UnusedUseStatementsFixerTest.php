@@ -88,16 +88,20 @@ EOF;
         $expected = <<<'EOF'
 namespace Foo\Bar\FooBar;
 
+use Foo\Bar\FooBar\Foo as Fooz;
 
 $a = new Baz();
+$b = new Fooz();
 EOF;
 
         $input = <<<'EOF'
 namespace Foo\Bar\FooBar;
 
 use Foo\Bar\FooBar\Baz;
+use Foo\Bar\FooBar\Foo as Fooz;
 
 $a = new Baz();
+$b = new Fooz();
 EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
