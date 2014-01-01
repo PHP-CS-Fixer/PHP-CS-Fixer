@@ -16,7 +16,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Symfony21Finder extends DefaultFinder
+class Symfony23Finder extends DefaultFinder
 {
     protected function getDirs($dir)
     {
@@ -26,6 +26,11 @@ class Symfony21Finder extends DefaultFinder
     protected function getFilesToExclude()
     {
         return array(
+            'Symfony/Component/Console/Tests/Fixtures/application_1.xml',
+            'Symfony/Component/Console/Tests/Fixtures/application_2.xml',
+            'Symfony/Component/Console/Tests/Helper/TableHelperTest.php',
+            'Symfony/Component/DependencyInjection/Tests/Fixtures/yaml/services1.yml',
+            'Symfony/Component/DependencyInjection/Tests/Fixtures/yaml/services8.yml',
             'Symfony/Component/Yaml/Tests/Fixtures/sfTests.yml',
         );
     }
