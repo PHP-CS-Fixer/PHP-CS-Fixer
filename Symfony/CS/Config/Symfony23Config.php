@@ -11,27 +11,27 @@
 
 namespace Symfony\CS\Config;
 
-use Symfony\CS\Finder\Symfony21Finder;
+use Symfony\CS\Finder\Symfony23Finder;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Symfony21Config extends Config
+class Symfony23Config extends Config
 {
     public function __construct()
     {
         parent::__construct();
 
-        $this->finder = new Symfony21Finder();
+        $this->finder = new Symfony23Finder();
     }
 
     public function getName()
     {
-        return 'sf21';
+        return 'sf23';
     }
 
     public function getDescription()
     {
-        return 'The configuration for the Symfony 2.1 branch';
+        return 'The configuration for the Symfony 2.3 branch';
     }
 }
