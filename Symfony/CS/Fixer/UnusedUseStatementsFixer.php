@@ -38,15 +38,12 @@ class UnusedUseStatementsFixer implements FixerInterface
             $removed = false;
 
             // if the namespace is the same as the current one, the use statement can be safely removed
-            // but only is there is no aliases and only if the use statement is not for a sub-namespace
+            // but only is there is no aliases
             if (!isset($match['alias']) && preg_match('{^[^\S\n]*(?:<\?php\s+)?namespace\s+(\S+)\s*;}um', $content, $lmatch)) {
                 $namespace = $lmatch[1];
 
                 if (preg_match('{^'.str_replace('\\', '\\\\', $namespace).'\\\\[^\\\\]+$}', trim($match['class'], '\\'))) {
-                    // check that it's not used as a sub-namespace in the file
-                    if (!preg_match('/\b'.preg_quote($short, '/').'\\\\/i', $content)) {
-                        $removed = true;
-                    }
+                    $removed = true;
                 }
             }
 

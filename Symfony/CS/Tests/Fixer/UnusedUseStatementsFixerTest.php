@@ -89,7 +89,6 @@ EOF;
 namespace Foo\Bar\FooBar;
 
 use Foo\Bar\FooBar\Foo as Fooz;
-use Foo\Bar\FooBar\Bar;
 
 $a = new Baz();
 $b = new Fooz();
