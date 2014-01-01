@@ -31,9 +31,21 @@ class Psr0Fixer implements FixerInterface, ConfigAwareInterface
                 $content = str_replace($match[0], ltrim($match[0], " \t"), $content);
             }
         }
-        if (!preg_match('{^((abstract\s+)?class|interface|trait)\s+(\S+)}um', $content, $match)) {
+
+        if (!preg_match_all('{^((abstract\s+|final\s+)?class|interface|trait)\s+(\S+)}um', $content, $matches, PREG_SET_ORDER)) {
             return $content;
         }
+
+        // no classes?
+        if (!$matches) {
+            return $content;
+        }
+
+        if (count($matches) > 1) {
+            return $content;
+        }
+
+        $match = $matches[0];
 
         $keyword = $match[1];
         $class = $match[3];
@@ -113,8 +125,8 @@ class Psr0Fixer implements FixerInterface, ConfigAwareInterface
             return false;
         }
 
-        // ignore tests/stubs/fixtures, since they are typically containing invalid files for various reasons
-        return !preg_match('{[/\\\\](test|stub|fixture)s?[/\\\\]}i', $file->getRealPath());
+        // ignore stubs/fixtures, since they are typically containing invalid files for various reasons
+        return !preg_match('{[/\\\\](stub|fixture)s?[/\\\\]}i', $file->getRealPath());
     }
 
     public function getName()
