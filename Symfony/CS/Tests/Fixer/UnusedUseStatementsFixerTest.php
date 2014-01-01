@@ -80,6 +80,29 @@ EOF;
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
 
+    public function testFixUseInTheSameNamespace()
+    {
+        $fixer = new UnusedUseStatementsFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+namespace Foo\Bar\FooBar;
+
+
+$a = new Baz();
+EOF;
+
+        $input = <<<'EOF'
+namespace Foo\Bar\FooBar;
+
+use Foo\Bar\FooBar\Baz;
+
+$a = new Baz();
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
+
     public function testTrailingSpaces()
     {
         $fixer = new UnusedUseStatementsFixer();
