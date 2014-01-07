@@ -43,7 +43,17 @@ echo \'Foo\';
 echo \'Foo\';
 
 ?>
-    ')
+    ',
+            ),
+            array('<?php echo \'Foo\'; ?>
+<p><?php echo \'this is a template\'; ?></p>
+<?php echo \'Foo\'; ?>
+',
+                  '<?php echo \'Foo\'; ?>
+<p><?php echo \'this is a template\'; ?></p>
+<?php echo \'Foo\'; ?>
+',
+            ),
         );
     }
 }
