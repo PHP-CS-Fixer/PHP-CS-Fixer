@@ -20,7 +20,9 @@ class PhpClosingTagFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
-        if (strpos($content, '<?php') === 0) {
+        // if there is more than one opening PHP tag, it's probably a template
+        // for which we don't want to remove the last closing PHP tag
+        if (strpos($content, '<?php') === 0 && substr_count($content, '<?php') < 2) {
             return preg_replace('/( *)\?>\s*$/s', '', $content);
         }
 
