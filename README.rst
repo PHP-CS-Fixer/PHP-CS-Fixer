@@ -190,8 +190,8 @@ on some well-known directory structures:
 
 .. code-block:: bash
 
-    # For the Symfony 2.1 branch
-    php php-cs-fixer.phar fix /path/to/sf21 --config=sf21
+    # For the Symfony 2.3+ branch
+    php php-cs-fixer.phar fix /path/to/sf23 --config=sf23
 
 Choose from the list of available configurations:
 
@@ -199,9 +199,7 @@ Choose from the list of available configurations:
 
 * **magento** The configuration for a Magento application
 
-* **sf20**    The configuration for the Symfony 2.0 branch
-
-* **sf21**    The configuration for the Symfony 2.1 branch
+* **sf23**    The configuration for the Symfony 2.3+ branch
 
 The ``--dry-run`` option displays the files that need to be
 fixed but without actually modifying them:

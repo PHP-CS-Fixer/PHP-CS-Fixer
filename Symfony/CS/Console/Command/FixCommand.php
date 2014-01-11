@@ -98,8 +98,8 @@ Choose from the list of available fixers:
 The <comment>--config</comment> option customizes the files to analyse, based
 on some well-known directory structures:
 
-    <comment># For the Symfony 2.1 branch</comment>
-    <info>php %command.full_name% /path/to/sf21 --config=sf21</info>
+    <comment># For the Symfony 2.3+ branch</comment>
+    <info>php %command.full_name% /path/to/sf23 --config=sf23</info>
 
 Choose from the list of available configurations:
 

@@ -32,6 +32,6 @@ class Symfony23Config extends Config
 
     public function getDescription()
     {
-        return 'The configuration for the Symfony 2.3 branch';
+        return 'The configuration for the Symfony 2.3+ branch';
     }
 }
