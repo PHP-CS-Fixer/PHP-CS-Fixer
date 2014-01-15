@@ -230,7 +230,7 @@ EOF;
 
         $input = <<<'EOF'
      * @return string
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     *  @SuppressWarnings(PHPMD.UnusedLocalVariable)
 
 EOF;
 
