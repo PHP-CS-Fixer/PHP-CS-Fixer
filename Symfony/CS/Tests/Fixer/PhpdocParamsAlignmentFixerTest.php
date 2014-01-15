@@ -196,4 +196,44 @@ EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
+
+    public function testReturnWithDollarThis()
+    {
+        $fixer = new PhpdocParamsAlignmentFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+     * @param  Foo   $foo
+     * @return $this
+
+EOF;
+
+        $input = <<<'EOF'
+     * @param Foo $foo
+     * @return $this
+
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
+
+    public function testCustomAnnotationsStayUntouched()
+    {
+        $fixer = new PhpdocParamsAlignmentFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+     * @return string
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+
+EOF;
+
+        $input = <<<'EOF'
+     * @return string
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
 }
