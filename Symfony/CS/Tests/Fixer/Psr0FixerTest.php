@@ -211,7 +211,8 @@ EOF;
  namespace LeadingSpace;
 class Psr0Fixer {}
 EOF;
-
+        ob_start();
         $this->assertEquals($expected, $fixer->fix($file, $input));
+        ob_clean();
     }
 }
