@@ -26,7 +26,7 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
         // e.g. @param <hint> <$var>
         $paramTag = '(?P<tag>param)\s+(?P<hint>[^$]+?)\s+(?P<var>&?\$[^\s]+)';
         // e.g. @return <hint>
-        $returnThrowsTag = '(?P<tag2>return|throws)\s+(?P<hint2>[^$]+?)';
+        $returnThrowsTag = '(?P<tag2>return|throws)\s+(?P<hint2>[^\s]+?)';
         // optional <desc>
         $desc = '(?:\s+(?P<desc>.*)|\s*)';
         $this->regex = '/^ {5}\* @(?:'.$paramTag.'|'.$returnThrowsTag.')'.$desc.'$/';
@@ -44,10 +44,6 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
                 while ($matches = $this->getMatches($lines[++$i], true)) {
                     $items[] = $matches;
                 }
-
-                // find the right number of spaces
-                $beforeVar = 1;
-                $afterVar = 1;
 
                 // compute the max length of the tag, hint and variables
                 $tagMax = 0;
@@ -68,6 +64,10 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
                 // update
                 foreach ($items as $j => $item) {
                     if (null === $item['tag']) {
+                        if ($item['desc'][0] === '@') {
+                            $lines[$current + $j] = '     * ' . $item['desc'];
+                            continue;
+                        }
                         $line =
                             '     *  '
                             .str_repeat(' ', ($tagMax + $hintMax + $varMax + ('param' === $currTag ? 3 : 2)))
