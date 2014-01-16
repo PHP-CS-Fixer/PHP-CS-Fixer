@@ -172,13 +172,14 @@ EOF
                 throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined', $input->getOption('config')));
             }
         } elseif (file_exists($file = $path.'/.php_cs')) {
-            $file = realpath($file);
             $config = include $file;
             //verify that the config has an instance of Config
             if (!($config instanceof Config)) {
-                throw new \RuntimeException("The config file $file does not return an instance of Symfony\\CS\\Config\\Config");
+                throw new \UnexpectedValueException(
+                    sprintf('The config file "%s" does not return an instance of Symfony\CS\Config\Config', $file)
+                );
             } else {
-                $output->writeln("Loaded config from $file");
+                $output->writeln(sprintf('Loaded config from "%s"', $file));
             }
             $addSuppliedPathFromCli = false;
         } else {
