@@ -274,7 +274,7 @@ scanned by the tool when run in the directory of your project. It is useful for
 projects that follow a well-known directory structures (like for Symfony
 projects for instance).
 
-.. _php-cs-fixer.phar: http://cs.sensiolabs.org/get/php-cs-fixer.phar
+.. _php-cs-fixer.phar: http://get.sensiolabs.org/php-cs-fixer.phar
 .. _Vim:               https://github.com/stephpy/vim-php-cs-fixer
 .. _Sublime Text:      https://github.com/benmatselby/sublime-phpcs
 .. _contribute:        https://github.com/fabpot/php-cs-fixer

@@ -13,7 +13,6 @@ namespace Symfony\CS\Console;
 
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\CS\Console\Command\FixCommand;
-use Symfony\CS\Console\Command\CompileCommand;
 use Symfony\CS\Console\Command\ReadmeCommand;
 use Symfony\CS\Console\Command\SelfUpdateCommand;
 use Symfony\CS\Fixer;
@@ -33,13 +32,18 @@ class Application extends BaseApplication
         parent::__construct('PHP CS Fixer', Fixer::VERSION);
 
         $this->add(new FixCommand());
-        $this->add(new CompileCommand());
         $this->add(new ReadmeCommand());
         $this->add(new SelfUpdateCommand());
     }
 
     public function getLongVersion()
     {
-        return parent::getLongVersion().' by <comment>Fabien Potencier</comment>';
+        $version = parent::getLongVersion().' by <comment>Fabien Potencier</comment>';
+
+        if ('@'.'git-commit@' !== $commit = '@git-commit@') {
+            $version .= ' ('.substr($commit, 0, 7).')';
+        }
+
+        return $version;
     }
 }

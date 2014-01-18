@@ -1,0 +1,21 @@
+{
+    "output": "php-cs-fixer.phar",
+    "chmod": "0755",
+    "compactors": [
+        "Herrera\\Box\\Compactor\\Php"
+    ],
+    "extract": false,
+    "files": [
+        "LICENSE"
+    ],
+    "finder": [
+        {
+            "name": ["*.php"],
+            "exclude": ["Tests", "tests"],
+            "in": ["vendor", "Symfony"]
+        }
+    ],
+    "git-commit": "git-commit",
+    "stub": "Symfony/CS/Resources/phar-stub.php",
+    "web": false
+}
