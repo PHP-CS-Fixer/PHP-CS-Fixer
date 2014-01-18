@@ -47,20 +47,28 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $remoteFilename = 'http://cs.sensiolabs.org/get/php-cs-fixer.phar';
-        $localFilename  = $_SERVER['argv'][0];
-        $tempFilename   = basename($localFilename, '.phar').'-temp.phar';
+        preg_match('/\((.*?)\)$/', $this->getApplication()->getLongVersion(), $match);
+        $localVersion = isset($match[1]) ? $match[1] : '';
 
-        try {
-            copy($remoteFilename, $tempFilename);
-
-            if (md5_file($localFilename) == md5_file($tempFilename)) {
+        if (false !== $remoteVersion = @file_get_contents('http://get.sensiolabs.org/php-cs-fixer.version')) {
+            if ($localVersion == $remoteVersion) {
                 $output->writeln('<info>php-cs-fixer is already up to date.</info>');
-                unlink($tempFilename);
 
                 return;
             }
+        }
 
+        $localFilename = $_SERVER['argv'][0];
+        $tempFilename = basename($localFilename, '.phar').'-tmp.phar';
+
+        if (false === @file_get_contents('http://get.sensiolabs.org/php-cs-fixer.phar')) {
+            $output->writeln('<error>Unable to download new versions from the server.</error>');
+
+            return 1;
+        }
+
+        try {
+            copy($remoteFilename, $tempFilename);
             chmod($tempFilename, 0777 & ~umask());
 
             // test the phar validity
@@ -75,8 +83,10 @@ EOT
                 throw $e;
             }
             unlink($tempFilename);
-            $output->writeln('<error>The download is corrupt ('.$e->getMessage().').</error>');
+            $output->writeln(sprintf('<error>The download is corrupt (%s).</error>', $e->getMessage()));
             $output->writeln('<error>Please re-run the self-update command to try again.</error>');
+
+            return 1;
         }
     }
 }
