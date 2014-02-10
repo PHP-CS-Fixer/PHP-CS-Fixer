@@ -253,6 +253,7 @@ Dedicated plugins exist for:
 
 * `Vim`_
 * `Sublime Text`_
+* `NetBeans`_
 
 Contribute
 ----------
@@ -277,4 +278,5 @@ projects for instance).
 .. _php-cs-fixer.phar: http://get.sensiolabs.org/php-cs-fixer.phar
 .. _Vim:               https://github.com/stephpy/vim-php-cs-fixer
 .. _Sublime Text:      https://github.com/benmatselby/sublime-phpcs
+.. _NetBeans:          http://plugins.netbeans.org/plugin/49042/php-cs-fixer
 .. _contribute:        https://github.com/fabpot/php-cs-fixer
