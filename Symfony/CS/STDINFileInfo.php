@@ -11,8 +11,6 @@
 
 namespace Symfony\CS;
 
-use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
-
 /**
  * @author Davi Koscianski Vidal <davividal@gmail.com>
  */
@@ -31,11 +29,20 @@ class STDINFileInfo extends \SplFileInfo
 
     public function getRealpath()
     {
+        /**
+         * So file_get_contents & friends will work.
+         */
         return 'php://stdin';
     }
 
     public function getFilename()
     {
+        /**
+         * Useful so fixers depending on PHP-only files still work.
+         *
+         * The idea to use STDIN is to parse PHP-only files, so we can
+         * assume that there will be always a PHP file out there.
+         */
         return 'stdin.php';
     }
 
