@@ -61,13 +61,14 @@ EOT
         $localFilename = $_SERVER['argv'][0];
         $tempFilename = basename($localFilename, '.phar').'-tmp.phar';
 
-        if (false === @file_get_contents('http://get.sensiolabs.org/php-cs-fixer.phar')) {
+        if (false === $remoteFilename = @file_get_contents('http://get.sensiolabs.org/php-cs-fixer.phar')) {
             $output->writeln('<error>Unable to download new versions from the server.</error>');
 
             return 1;
         }
 
         try {
+
             copy($remoteFilename, $tempFilename);
             chmod($tempFilename, 0777 & ~umask());
 
