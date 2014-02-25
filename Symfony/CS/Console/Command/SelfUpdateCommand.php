@@ -68,7 +68,6 @@ EOT
         }
 
         try {
-
             copy($remoteFilename, $tempFilename);
             chmod($tempFilename, 0777 & ~umask());
 
