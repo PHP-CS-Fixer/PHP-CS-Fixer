@@ -93,7 +93,7 @@ problems as possible on a given file or directory:
     php php-cs-fixer.phar fix /path/to/file
 
 The ``fix`` command can also read from standard input,
-but it won't automatically fix anything:
+in which case it won't automatically fix anything:
 
 .. code-block:: bash
 

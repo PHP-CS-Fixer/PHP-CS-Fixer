@@ -21,7 +21,7 @@ use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
-use Symfony\CS\STDINFileInfo;
+use Symfony\CS\StdinFileInfo;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -191,7 +191,7 @@ EOF
             if (is_file($path)) {
                 $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
             } elseif ($stdin) {
-                $config->finder(new \ArrayIterator(array(new STDINFileInfo())));
+                $config->finder(new \ArrayIterator(array(new StdinFileInfo())));
             } else {
                 $config->setDir($path);
             }
