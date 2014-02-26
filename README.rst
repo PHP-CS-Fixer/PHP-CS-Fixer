@@ -92,6 +92,14 @@ problems as possible on a given file or directory:
     php php-cs-fixer.phar fix /path/to/dir
     php php-cs-fixer.phar fix /path/to/file
 
+The ``fix`` command can also read from standard input,
+but it won't automatically fix anything:
+
+.. code-block:: bash
+
+    cat foo.php | php php-cs-fixer.phar fix -
+
+
 The ``--level`` option limits the fixers to apply on the
 project:
 
