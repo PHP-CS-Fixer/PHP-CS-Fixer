@@ -158,6 +158,8 @@ EOF
 
         if ('-' === $path) {
             $stdin = true;
+
+            // Can't write to STDIN
             $input->setOption('dry-run', true);
         }
 
