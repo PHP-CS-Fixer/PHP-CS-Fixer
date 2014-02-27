@@ -58,10 +58,10 @@ EOT
             }
         }
 
+        $remoteFilename = 'http://get.sensiolabs.org/php-cs-fixer.phar';
         $localFilename = $_SERVER['argv'][0];
         $tempFilename = basename($localFilename, '.phar').'-tmp.phar';
-
-        if (false === $remoteFilename = @file_get_contents('http://get.sensiolabs.org/php-cs-fixer.phar')) {
+        if (false === @file_get_contents($remoteFilename)) {
             $output->writeln('<error>Unable to download new versions from the server.</error>');
 
             return 1;
