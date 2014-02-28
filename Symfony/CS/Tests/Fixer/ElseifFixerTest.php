@@ -32,6 +32,11 @@ class ElseifFixerTest extends \PHPUnit_Framework_TestCase
             'if ($some) { $test = true } elseif ($some != "test") { $test = false; }',
             $fixer->fix($this->getFileMock(), 'if ($some) { $test = true } else if ($some != "test") { $test = false; }'
         ));
+
+        $this->assertSame(
+            'if ($some) { $test = true } elseif ($some != "test") { $test = false; }',
+            $fixer->fix($this->getFileMock(), 'if ($some) { $test = true } else  if ($some != "test") { $test = false; }'
+        ));
     }
 
     /**
