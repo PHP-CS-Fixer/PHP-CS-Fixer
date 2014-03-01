@@ -211,6 +211,9 @@ Choose from the list of available fixers:
 
 * **lowercase_keywords** [PSR-2] PHP keywords MUST be in lower case.
 
+* **object_operator** [all] There should not be space before or after
+  object T_OBJECT_OPERATOR.
+
 
 The ``--config`` option customizes the files to analyse, based
 on some well-known directory structures:
