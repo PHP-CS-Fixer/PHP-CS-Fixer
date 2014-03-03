@@ -21,6 +21,7 @@ use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
+use Symfony\CS\StdinFileInfo;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -91,6 +92,11 @@ using <comment>-name</comment>:
 A combination of <comment>--dry-run</comment>, <comment>--verbose</comment> and <comment>--diff</comment> will
 display summary of proposed fixes, leaving your files unchanged.
 
+The command can also read from standard input, in which case it won't
+automatically fix anything:
+
+    <info>cat foo.php | php %command.full_name% -v --diff -</info>
+
 Choose from the list of available fixers:
 
 {$this->getFixersHelp()}
@@ -152,6 +158,16 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $path = $input->getArgument('path');
+
+        $stdin = false;
+
+        if ('-' === $path) {
+            $stdin = true;
+
+            // Can't write to STDIN
+            $input->setOption('dry-run', true);
+        }
+
         $filesystem = new Filesystem();
         if (!$filesystem->isAbsolutePath($path)) {
             $path = getcwd().DIRECTORY_SEPARATOR.$path;
@@ -181,6 +197,8 @@ EOF
         if ($addSuppliedPathFromCli) {
             if (is_file($path)) {
                 $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
+            } elseif ($stdin) {
+                $config->finder(new \ArrayIterator(array(new StdinFileInfo())));
             } else {
                 $config->setDir($path);
             }

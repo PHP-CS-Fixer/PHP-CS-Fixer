@@ -121,6 +121,13 @@ using ``-name``:
 A combination of ``--dry-run``, ``--verbose`` and ``--diff`` will
 display summary of proposed fixes, leaving your files unchanged.
 
+The command can also read from standard input, in which case it won't
+automatically fix anything:
+
+.. code-block:: bash
+
+    cat foo.php | php php-cs-fixer.phar fix -v --diff -
+
 Choose from the list of available fixers:
 
 * **indentation** [PSR-2] Code must use 4 spaces for indenting, not
