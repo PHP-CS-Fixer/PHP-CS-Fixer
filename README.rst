@@ -92,14 +92,6 @@ problems as possible on a given file or directory:
     php php-cs-fixer.phar fix /path/to/dir
     php php-cs-fixer.phar fix /path/to/file
 
-The ``fix`` command can also read from standard input,
-in which case it won't automatically fix anything:
-
-.. code-block:: bash
-
-    cat foo.php | php php-cs-fixer.phar fix -
-
-
 The ``--level`` option limits the fixers to apply on the
 project:
 
@@ -128,6 +120,13 @@ using ``-name``:
 
 A combination of ``--dry-run``, ``--verbose`` and ``--diff`` will
 display summary of proposed fixes, leaving your files unchanged.
+
+The command can also read from standard input, in which case it won't
+automatically fix anything:
+
+.. code-block:: bash
+
+    cat foo.php | php php-cs-fixer.phar fix -v --diff -
 
 Choose from the list of available fixers:
 

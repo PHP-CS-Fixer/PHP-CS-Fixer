@@ -92,6 +92,11 @@ using <comment>-name</comment>:
 A combination of <comment>--dry-run</comment>, <comment>--verbose</comment> and <comment>--diff</comment> will
 display summary of proposed fixes, leaving your files unchanged.
 
+The command can also read from standard input, in which case it won't
+automatically fix anything:
+
+    <info>cat foo.php | php %command.full_name% -v --diff -</info>
+
 Choose from the list of available fixers:
 
 {$this->getFixersHelp()}

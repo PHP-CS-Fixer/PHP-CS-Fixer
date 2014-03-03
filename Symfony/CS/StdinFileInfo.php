@@ -16,7 +16,7 @@ namespace Symfony\CS;
  */
 class StdinFileInfo extends \SplFileInfo
 {
-    public function __construct($file_name)
+    public function __construct()
     {
     }
 
@@ -58,7 +58,7 @@ class StdinFileInfo extends \SplFileInfo
         return '.php';
     }
 
-    public function getFileInfo($class_name)
+    public function getFileInfo($class_name = null)
     {
         throw new \RuntimeException("Not implemented");
     }
@@ -104,7 +104,7 @@ class StdinFileInfo extends \SplFileInfo
         return '';
     }
 
-    public function getPathInfo($class_name)
+    public function getPathInfo($class_name = null)
     {
         throw new \RuntimeException("Not implemented");
     }
@@ -117,11 +117,6 @@ class StdinFileInfo extends \SplFileInfo
     public function getPerms()
     {
         return 0;
-    }
-
-    public function getRealPath()
-    {
-        return '';
     }
 
     public function getSize()
@@ -169,11 +164,11 @@ class StdinFileInfo extends \SplFileInfo
         throw new \RuntimeException("Not implemented");
     }
 
-    public function setFileClass($class_name)
+    public function setFileClass($class_name = null)
     {
     }
 
-    public function setInfoClass($class_name)
+    public function setInfoClass($class_name = null)
     {
     }
 }
