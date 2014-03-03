@@ -184,6 +184,9 @@ Choose from the list of available fixers:
 * **eof_ending** [PSR-2] A file must always end with an empty line
   feed.
 
+* **object_operator** [all] There should not be space before or after
+  object T_OBJECT_OPERATOR.
+
 
 The ``--config`` option customizes the files to analyse, based
 on some well-known directory structures:
