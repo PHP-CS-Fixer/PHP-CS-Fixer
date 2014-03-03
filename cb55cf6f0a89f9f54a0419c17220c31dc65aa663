@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by fabpot at 2014-02-26T06:05:49Z
+
+Can you also add a note about this new feature in the README?
+
+---------------------------------------------------------------------------
+
+by stof at 2014-02-26T09:57:10Z
+
+Other methods of ``SplFileInfo`` also need to be overwritten to have them working (currently, you would get an exception because the parent class does not have its file reference)
+
+---------------------------------------------------------------------------
+
+by davividal at 2014-02-26T12:48:03Z
+
+What should I remove? The VERSION constant?
+
+---------------------------------------------------------------------------
+
+by davividal at 2014-02-28T19:00:13Z
+
+Anything else I need to look at?
