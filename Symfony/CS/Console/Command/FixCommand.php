@@ -179,6 +179,8 @@ EOF
 
         $addSuppliedPathFromCli = true;
 
+        $configFile = $input->getOption('config-file') ?: $path.'/.php_cs';
+
         if ($input->getOption('config')) {
             $config = null;
             foreach ($this->fixer->getConfigs() as $c) {
@@ -191,13 +193,10 @@ EOF
             if (null === $config) {
                 throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined', $input->getOption('config')));
             }
-        } elseif ($input->getOption('config-file')) {
-            $file = $input->getOption('config-file');
+        } elseif (file_exists($configFile)) {
             $config = include $file;
-        } elseif (file_exists($file = $path.'/.php_cs')) {
-            $config = include $file;
-            //verify that the config has an instance of Config
-            if (!($config instanceof Config)) {
+            // verify that the config has an instance of Config
+            if (!$config instanceof Config) {
                 throw new \UnexpectedValueException(
                     sprintf('The config file "%s" does not return an instance of Symfony\CS\Config\Config', $file)
                 );
