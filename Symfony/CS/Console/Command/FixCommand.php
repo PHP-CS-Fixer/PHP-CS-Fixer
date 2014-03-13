@@ -196,6 +196,14 @@ EOF
             $config = include $file;
         } elseif (file_exists($file = $path.'/.php_cs')) {
             $config = include $file;
+            //verify that the config has an instance of Config
+            if (!($config instanceof Config)) {
+                throw new \UnexpectedValueException(
+                    sprintf('The config file "%s" does not return an instance of Symfony\CS\Config\Config', $file)
+                );
+            } else {
+                $output->writeln(sprintf('Loaded config from "%s"', $file));
+            }
             $addSuppliedPathFromCli = false;
         } else {
             $config = $this->defaultConfig;
