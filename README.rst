@@ -226,7 +226,7 @@ and directories that need to be analyzed:
     <?php
 
     $finder = Symfony\CS\Finder\DefaultFinder::create()
-        ->exclude('somefile')
+        ->exclude('somedir')
         ->in(__DIR__)
     ;
 
@@ -244,7 +244,7 @@ Note the additional ``-`` in front of the Fixer name.
     <?php
 
     $finder = Symfony\CS\Finder\DefaultFinder::create()
-        ->exclude('somefile')
+        ->exclude('somedir')
         ->in(__DIR__)
     ;
 
