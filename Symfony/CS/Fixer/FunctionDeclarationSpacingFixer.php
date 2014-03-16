@@ -26,6 +26,7 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
         $content = $this->fixNamedFunctions($content);
         $content = $this->fixAnonymousFunctions($content);
         $content = $this->fixSpaceBeforeBrace($content);
+
         return $content;
     }
 
@@ -82,6 +83,7 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
             '\1function (\2) use (\3)\4',
             $content
         );
+
         return $content;
     }
 
@@ -97,7 +99,7 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
     /**
      * In previous steps we have cut all horizontal whitespace,
      * so where are left with function(){
-     * Add a missin space at the end: function () {
+     * Add a missing space at the end: function () {
      * This does not touch function declarations with brace on another line.
      */
     private function fixSpaceBeforeBrace($content)
