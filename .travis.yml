@@ -4,6 +4,10 @@ before_script:
   - curl -s http://getcomposer.org/installer | php
   - php composer.phar install --dev
 
+script:
+  - phpunit
+  - php php-cs-fixer --dry-run -v .
+
 php:
   - 5.3
   - 5.4

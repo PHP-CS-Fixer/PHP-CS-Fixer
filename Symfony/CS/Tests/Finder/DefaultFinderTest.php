@@ -12,7 +12,6 @@
 namespace Symfony\CS\Tests\Finder;
 
 use Symfony\CS\Finder\DefaultFinder;
-use Symfony\CS\Fixer;
 
 class DefaultFinderTest extends \PHPUnit_Framework_TestCase
 {
