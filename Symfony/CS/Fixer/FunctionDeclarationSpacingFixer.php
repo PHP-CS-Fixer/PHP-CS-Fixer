@@ -26,6 +26,7 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
         $content = $this->fixNamedFunctions($content);
         $content = $this->fixAnonymousFunctions($content);
         $content = $this->fixSpaceBeforeBrace($content);
+
         return $content;
     }
 
@@ -82,6 +83,7 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
             '\1function (\2) use (\3)\4',
             $content
         );
+
         return $content;
     }
 

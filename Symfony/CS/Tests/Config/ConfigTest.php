@@ -13,7 +13,6 @@ namespace Symfony\CS\Tests\Config;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\CS\Finder\DefaultFinder;
-use Symfony\CS\Fixer;
 use Symfony\CS\Config\Config;
 
 class ConfigTest extends \PHPUnit_Framework_TestCase
