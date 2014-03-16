@@ -16,6 +16,9 @@
         "symfony/finder": "~2.1",
         "sebastian/diff": "1.1.*"
     },
+    "require-dev": {
+        "phpunit/phpunit": "~3.7"
+    },
     "autoload": {
         "psr-0": { "Symfony\\CS": "." }
     },
