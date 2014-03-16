@@ -253,6 +253,9 @@ Note the additional ``-`` in front of the Fixer name.
         ->finder($finder)
     ;
 
+With the ``--config-file`` option you can specify the path to the
+``.php_cs`` file.
+
 Helpers
 -------
 
