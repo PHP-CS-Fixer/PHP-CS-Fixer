@@ -20,8 +20,6 @@ use SebastianBergmann\Diff\Differ;
  */
 class Fixer
 {
-    const VERSION = '0.3-DEV';
-
     protected $fixers = array();
     protected $configs = array();
     protected $diff;
