@@ -152,4 +152,52 @@ EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $expected));
     }
+
+    public function testLeaveFunctionsAloneInsideConditionals()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+if (!function_exists('foo')) {
+    function foo($arg)
+    {
+        return $arg;
+    }
+}
+EOF;
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
+
+    public function testLeaveFunctionsAloneInsideConditionalsButOutsideClasses()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+/* class <= this is just a stop-word */
+if (!function_exists('foo')) {
+    function foo($arg)
+    {
+        return $arg;
+    }
+}
+EOF;
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
+
+    public function testLeaveFunctionsAloneOutsideClasses()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+/* class */
+function foo($arg)
+{
+    return $arg;
+}
+EOF;
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
 }
