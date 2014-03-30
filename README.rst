@@ -60,7 +60,9 @@ you're good to go:
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
 
-PHP-CS-Fixer is part of the homebrew-php project:
+PHP-CS-Fixer is part of the homebrew-php project. Follow the installation
+instructions at https://github.com/josegonzalez/homebrew-php if you don't
+already have it.
 
 .. code-block:: bash
 
