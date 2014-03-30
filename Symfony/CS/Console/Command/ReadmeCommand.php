@@ -80,6 +80,22 @@ then:
 
 Then, just run ``php-cs-fixer``.
 
+Globally (Composer)
+~~~~~~~~~~~~~~~~~~~
+
+To install PHP-CS-Fixer, install Composer and issue the following command:
+
+.. code-block:: bash
+
+    $ ./composer.phar global require fabpot/php-cs-fixer @stable
+
+Then, make sure you have ``~/.composer/vendor/bin`` in your ``PATH``, and
+you're good to go:
+
+.. code-block:: bash
+
+    export PATH="\$PATH:\$HOME/.composer/vendor/bin"
+
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
 

@@ -54,7 +54,7 @@ Then, make sure you have ``~/.composer/vendor/bin`` in your ``PATH``, and
 you're good to go:
 
 .. code-block:: bash
-    
+
     export PATH="$PATH:$HOME/.composer/vendor/bin"
 
 Globally (homebrew)
