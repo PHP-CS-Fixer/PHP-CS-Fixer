@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by bskendig at 2014-03-31T14:59:40Z
+
+https://github.com/fabpot/PHP-CS-Fixer and https://github.com/fabpot/PHP-CS-Fixer/blob/master/README.rst are both still showing the wrong URLs in the readme.
+
+---------------------------------------------------------------------------
+
+by stof at 2014-03-31T15:18:15Z
+
+have you read the description of the PR ?
+
+---------------------------------------------------------------------------
+
+by bskendig at 2014-03-31T15:26:42Z
+
+I completely forgot that it's a pull request that won't be reflected in the repository until it's pulled. My bad.
