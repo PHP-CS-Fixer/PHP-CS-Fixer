@@ -177,8 +177,6 @@ EOF
             $path = getcwd().DIRECTORY_SEPARATOR.$path;
         }
 
-        $addSuppliedPathFromCli = true;
-
         $configFile = $input->getOption('config-file') ?: $path.'/.php_cs';
 
         if ($input->getOption('config')) {
@@ -201,19 +199,16 @@ EOF
             } else {
                 $output->writeln(sprintf('Loaded config from "%s"', $configFile));
             }
-            $addSuppliedPathFromCli = false;
         } else {
             $config = $this->defaultConfig;
         }
 
-        if ($addSuppliedPathFromCli) {
-            if (is_file($path)) {
-                $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
-            } elseif ($stdin) {
-                $config->finder(new \ArrayIterator(array(new StdinFileInfo())));
-            } else {
-                $config->setDir($path);
-            }
+        if (is_file($path)) {
+            $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
+        } elseif ($stdin) {
+            $config->finder(new \ArrayIterator(array(new StdinFileInfo())));
+        } else {
+            $config->setDir($path);
         }
 
         // register custom fixers from config
