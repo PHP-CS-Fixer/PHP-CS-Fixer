@@ -271,6 +271,18 @@ Note the additional ``-`` in front of the Fixer name.
         ->finder($finder)
     ;
 
+If you want to base your configuration on the Symfony 2.3 set, then you might want to start with the
+following as your `.php_cs` file:
+
+.. code-block:: php
+
+    <?php
+
+    $config = new Symfony\CS\Config\Symfony23Config();
+    $config->getFinder()->setDir(__DIR__);
+
+    return $config;
+
 With the ``--config-file`` option you can specify the path to the
 ``.php_cs`` file.
 
