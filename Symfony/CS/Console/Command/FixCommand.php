@@ -178,8 +178,9 @@ EOF
         }
 
         $addSuppliedPathFromCli = true;
-
-        $configFile = $input->getOption('config-file') ?: $path.'/.php_cs';
+        
+        $dir = is_dir($path) ? $path : dirname($path);
+        $configFile = $input->getOption('config-file') ?: $dir.'/.php_cs';
 
         if ($input->getOption('config')) {
             $config = null;
