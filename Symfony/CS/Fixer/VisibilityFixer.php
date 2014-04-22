@@ -20,8 +20,30 @@ class VisibilityFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
-        // skip files with no OOP code
-        if (!preg_match('{\b(?<!\$)(?:class|interface|trait)\b}i', $content)) {
+        // before checking for "class|interface|trait" in source, make sure
+        // not looking in comments or strings
+        $codeContent = '';
+
+        // Strip out strings, comments, inline html
+        foreach (token_get_all($content) as $token) {
+            if (is_array($token)) {
+                switch ($token[0]) {
+                    case T_COMMENT:
+                    case T_DOC_COMMENT:
+                    case T_INLINE_HTML:
+                    case T_CONSTANT_ENCAPSED_STRING:
+                        $token = '';
+                        break;
+                    default:
+                        $token = $token[1];
+                        break;
+                }
+            }
+            $codeContent .= $token;
+        }
+
+        // skip files with no OOP code (make sure we're looking in code, not comments or strings)
+        if (!preg_match('{\b(?<!\$)(?:class|interface|trait)\b}i', $codeContent)) {
             return $content;
         }
 

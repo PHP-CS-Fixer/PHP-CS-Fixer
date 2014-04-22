@@ -21,6 +21,7 @@ class VisibilityFixerTest extends \PHPUnit_Framework_TestCase
         $file = new \SplFileInfo(__FILE__);
 
         $expected = <<<'EOF'
+<?php
 class Foo {
     public $var;
     protected $var_foo;
@@ -37,6 +38,7 @@ class Foo {
 EOF;
 
         $input = <<<'EOF'
+<?php
 class Foo {
     public $var;
     protected $var_foo;
@@ -62,6 +64,7 @@ EOF;
         $file = new \SplFileInfo(__FILE__);
 
         $expected = <<<'EOF'
+<?php
 class Foo {
     public function foo() {}
     public function foo() {}
@@ -87,6 +90,7 @@ class Foo {
 EOF;
 
         $input = <<<EOF
+<?php
 class Foo {
     public function foo() {}
     function foo() {}
@@ -123,12 +127,14 @@ EOF;
         $file = new \SplFileInfo(__FILE__);
 
         $expected = <<<'EOF'
+<?php
 function foo() {
     static $foo;
 }
 EOF;
 
         $input = <<<'EOF'
+<?php
 function foo() {
     static $foo;
 }
@@ -143,13 +149,122 @@ EOF;
         $file = new \SplFileInfo(__FILE__);
 
         $expected = <<<'EOF'
+<?php
 function foo() {
     static $class;
     $interface = 'foo';
-    $trait = 'bar;
+    $trait = 'bar';
 }
 EOF;
 
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
+
+    public function testLeaveFunctionsAloneInsideConditionals()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+if (!function_exists('foo')) {
+    function foo($arg)
+    {
+        return $arg;
+    }
+}
+EOF;
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
+
+    public function testLeaveFunctionsAloneInsideConditionalsWithOopWordInComment()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+/* class <= this is just a stop-word */
+if (!function_exists('foo')) {
+    function foo($arg)
+    {
+        return $arg;
+    }
+}
+EOF;
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
+
+    public function testLeaveFunctionsAloneWithOopWordInComment()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+/* class */
+function foo($arg)
+{
+    return $arg;
+}
+EOF;
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
+
+    public function testLeaveFunctionsAloneOutsideClassesWithOopWordInInlineHtml()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+if (!function_exists('foo')) {
+    function foo($arg)
+    {
+    ?>
+        <div class="test"></div>
+    <?php
+        return $arg;
+    }
+}
+EOF;
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
+
+    public function testLeaveFunctionsAloneOutsideClassesWithOopWordInStringValue()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+if (!function_exists('foo')) {
+    function foo($arg)
+    {
+        return 'she has class right?';
+    }
+}
+EOF;
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
+
+    public function testLeaveFunctionsAloneOutsideClassesWithOopWordInFunctionName()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+
+comment_class();
+
+if (!function_exists('foo')) {
+    function foo($arg)
+    {
+        return $arg;
+    }
+}
+EOF;
         $this->assertEquals($expected, $fixer->fix($file, $expected));
     }
 }
