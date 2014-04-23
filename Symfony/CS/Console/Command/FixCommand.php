@@ -53,7 +53,7 @@ class FixCommand extends Command
         $this
             ->setName('fix')
             ->setDefinition(array(
-                new InputArgument('path', InputArgument::REQUIRED, 'The path'),
+                new InputArgument('path', InputArgument::OPTIONAL, 'The path', null),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The configuration name', null),
                 new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
@@ -172,12 +172,18 @@ EOF
             $input->setOption('dry-run', true);
         }
 
-        $filesystem = new Filesystem();
-        if (!$filesystem->isAbsolutePath($path)) {
-            $path = getcwd().DIRECTORY_SEPARATOR.$path;
+        if (null !== $path) {
+            $filesystem = new Filesystem();
+            if (!$filesystem->isAbsolutePath($path)) {
+                $path = getcwd() . DIRECTORY_SEPARATOR . $path;
+            }
         }
 
-        $configFile = $input->getOption('config-file') ?: $path.'/.php_cs';
+        $configFile = $input->getOption('config-file');
+        if (null === $configFile) {
+            $configDir = $path ?: getcwd();
+            $configFile = $configDir . DIRECTORY_SEPARATOR . '.php_cs';
+        }
 
         if ($input->getOption('config')) {
             $config = null;
