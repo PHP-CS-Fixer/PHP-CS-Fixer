@@ -14,6 +14,7 @@ namespace Symfony\CS;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use SebastianBergmann\Diff\Differ;
+use Symfony\Component\Process\Process;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -124,7 +125,9 @@ class Fixer
         }
 
         if ($new != $old) {
-            if (!$dryRun) {
+            $fixInfo['valid'] = $this->syntaxCheck($new);
+
+            if (!$dryRun && $fixInfo['valid']) {
                 file_put_contents($file->getRealpath(), $new);
             }
 
@@ -196,5 +199,16 @@ class Fixer
         }
 
         return $fixers;
+    }
+
+    private function syntaxCheck($input)
+    {
+      $process = new Process('php -l');
+      $process->setStdin($input);
+      $process->run();
+
+      $output = $process->getOutput();
+
+      return strpos($output, 'No syntax errors detected in') !== FALSE;
     }
 }
