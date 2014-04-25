@@ -181,7 +181,14 @@ EOF
 
         $configFile = $input->getOption('config-file');
         if (null === $configFile) {
-            $configDir = $path ?: getcwd();
+            if (is_file($path) && $dirName = pathinfo($path, PATHINFO_DIRNAME)) {
+                $configDir = $dirName;
+            } elseif ($stdin) {
+                $configDir = getcwd();
+                // path is directory
+            } else {
+                $configDir = $path;
+            }
             $configFile = $configDir . DIRECTORY_SEPARATOR . '.php_cs';
         }
 
