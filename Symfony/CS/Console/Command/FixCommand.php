@@ -183,7 +183,7 @@ EOF
         if (null === $configFile) {
             if (is_file($path) && $dirName = pathinfo($path, PATHINFO_DIRNAME)) {
                 $configDir = $dirName;
-            } elseif ($stdin) {
+            } elseif ($stdin || null === $path) {
                 $configDir = getcwd();
                 // path is directory
             } else {
