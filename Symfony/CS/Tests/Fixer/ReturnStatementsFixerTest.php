@@ -22,8 +22,8 @@ class ReturnStatementsFixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
 
-        $this->assertEquals($returnFixed, $fixer->fix($this->getFileMock(), $return));
-        $this->assertEquals($returnFixed, $fixer->fix($this->getFileMock(), $returnFixed));
+        $this->assertEquals($returnFixed, $fixer->fix($this->getTestFile(), $return));
+        $this->assertEquals($returnFixed, $fixer->fix($this->getTestFile(), $returnFixed));
     }
 
     public function testFixProvider()
@@ -130,10 +130,8 @@ TEST;
         );
     }
 
-    private function getFileMock()
+    private function getTestFile()
     {
-        return $this->getMockBuilder('\SplFileInfo')
-            ->disableOriginalConstructor()
-            ->getMock();
+        return new \SplFileInfo(__FILE__);
     }
 }

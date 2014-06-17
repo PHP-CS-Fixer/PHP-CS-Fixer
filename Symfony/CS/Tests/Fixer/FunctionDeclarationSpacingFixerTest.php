@@ -40,7 +40,7 @@ class FunctionDeclarationSpacingFixerTest extends \PHPUnit_Framework_TestCase
     public function testDouble($source, $target)
     {
         $fixer = new Fixer();
-        $this->assertSame($target, $fixer->fix($this->getFileMock(), $target));
+        $this->assertSame($target, $fixer->fix($this->getTestFile(), $target));
     }
 
     /**
@@ -49,13 +49,11 @@ class FunctionDeclarationSpacingFixerTest extends \PHPUnit_Framework_TestCase
     public function testSimple($source, $target)
     {
         $fixer = new Fixer();
-        $this->assertSame($target, $fixer->fix($this->getFileMock(), $source));
+        $this->assertSame($target, $fixer->fix($this->getTestFile(), $source));
     }
 
-    private function getFileMock()
+    private function getTestFile()
     {
-        return $this->getMockBuilder('\SplFileInfo')
-            ->disableOriginalConstructor()
-            ->getMock();
+        return new \SplFileInfo(__FILE__);
     }
 }
