@@ -209,6 +209,8 @@ Choose from the list of available fixers:
 * **eof_ending** [PSR-2] A file must always end with an empty line
   feed.
 
+* **lowercase_keywords** [PSR-2] PHP keywords MUST be in lower case.
+
 
 The ``--config`` option customizes the files to analyse, based
 on some well-known directory structures:
