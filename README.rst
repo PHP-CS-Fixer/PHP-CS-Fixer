@@ -148,34 +148,39 @@ automatically fix anything:
 
 Choose from the list of available fixers:
 
-* **indentation** [PSR-2] Code must use 4 spaces for indenting, not
-  tabs.
-
 * **linefeed** [PSR-2] All PHP files must use the Unix LF
   (linefeed) line ending.
+
+* **indentation** [PSR-2] Code must use 4 spaces for indenting, not
+  tabs.
 
 * **trailing_spaces** [PSR-2] Remove trailing whitespace at the end of
   lines.
 
 * **unused_use** [all] Unused use statements must be removed.
 
+* **object_operator** [all] There should not be space before or after
+  object T_OBJECT_OPERATOR.
+
 * **phpdoc_params** [all] All items of the @param phpdoc tags must be
   aligned vertically.
-
-* **short_tag** [PSR-1] PHP code must use the long <?php ?> tags or
-  the short-echo <?= ?> tags; it must not use the
-  other tag variations.
-
-* **return** [all] An empty line feed should precede a return
-  statement.
 
 * **visibility** [PSR-2] Visibility must be declared on all
   properties and methods; abstract and final must be
   declared before the visibility; static must be
   declared after the visibility.
 
+* **short_tag** [PSR-1] PHP code must use the long <?php ?> tags or
+  the short-echo <?= ?> tags; it must not use the
+  other tag variations.
+
 * **php_closing_tag** [PSR-2] The closing ?> tag MUST be omitted from
   files containing only PHP.
+
+* **return** [all] An empty line feed should precede a return
+  statement.
+
+* **extra_empty_lines** [all] Removes extra empty lines.
 
 * **braces** [PSR-2] Opening braces for classes, interfaces,
   traits and methods must go on the next line, and
@@ -184,14 +189,14 @@ Choose from the list of available fixers:
   on the same line, and closing braces must go on the
   next line after the body.
 
-* **extra_empty_lines** [all] Removes extra empty lines.
-
-* **function_declaration** [PSR-2] Spaces should be properly placed in a
-  function declaration
+* **lowercase_keywords** [PSR-2] PHP keywords MUST be in lower case.
 
 * **include** [all] Include and file path should be divided with a
   single space. File path should not be placed under
   brackets.
+
+* **function_declaration** [PSR-2] Spaces should be properly placed in a
+  function declaration
 
 * **controls_spaces** [all] A single space should be between: the closing
   brace and the control, the control and the opening
@@ -208,11 +213,6 @@ Choose from the list of available fixers:
 
 * **eof_ending** [PSR-2] A file must always end with an empty line
   feed.
-
-* **lowercase_keywords** [PSR-2] PHP keywords MUST be in lower case.
-
-* **object_operator** [all] There should not be space before or after
-  object T_OBJECT_OPERATOR.
 
 
 The ``--config`` option customizes the files to analyse, based
