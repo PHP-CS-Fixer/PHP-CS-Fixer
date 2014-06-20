@@ -25,8 +25,8 @@ class IncludeFixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
 
-        $this->assertEquals($includeFixed, $fixer->fix($this->getFileMock(), $include));
-        $this->assertEquals($includeFixed, $fixer->fix($this->getFileMock(), $includeFixed));
+        $this->assertEquals($includeFixed, $fixer->fix($this->getTestFile(), $include));
+        $this->assertEquals($includeFixed, $fixer->fix($this->getTestFile(), $includeFixed));
     }
 
     public function testFixProvider()
@@ -51,10 +51,8 @@ class IncludeFixerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    private function getFileMock()
+    private function getTestFile()
     {
-        return $this->getMockBuilder('\SplFileInfo')
-            ->disableOriginalConstructor()
-            ->getMock();
+        return new \SplFileInfo(__FILE__);
     }
 }

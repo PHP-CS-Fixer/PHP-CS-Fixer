@@ -14,11 +14,11 @@ class CurlyBracketsNewlineFixerTest extends \PHPUnit_Framework_TestCase
 
         $simple = "$type TestType  {";
         $simpleFixed = "$type TestType\n{";
-        $this->assertEquals($simpleFixed, $fixer->fix($this->getFileMock(), $simple));
-        $this->assertEquals($simpleFixed, $fixer->fix($this->getFileMock(), $simpleFixed));
+        $this->assertEquals($simpleFixed, $fixer->fix($this->getTestFile(), $simple));
+        $this->assertEquals($simpleFixed, $fixer->fix($this->getTestFile(), $simpleFixed));
 
         $emptyType = "$type TestType {}";
-        $this->assertEquals($emptyType, $fixer->fix($this->getFileMock(), $emptyType));
+        $this->assertEquals($emptyType, $fixer->fix($this->getTestFile(), $emptyType));
     }
 
     public function testSimpleTypeDefinitionsProvider()
@@ -41,8 +41,8 @@ TEST;
 class TestClass extends BaseTestClass implements TestInterface
 {
 TEST;
-        $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extended));
-        $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extendedFixed));
+        $this->assertEquals($extendedFixed, $fixer->fix($this->getTestFile(), $extended));
+        $this->assertEquals($extendedFixed, $fixer->fix($this->getTestFile(), $extendedFixed));
 
         $extended = <<<TEST
 abstract class TestClass extends BaseTestClass implements TestInterface, TestInterface2 {
@@ -51,8 +51,8 @@ TEST;
 abstract class TestClass extends BaseTestClass implements TestInterface, TestInterface2
 {
 TEST;
-        $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extended));
-        $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extendedFixed));
+        $this->assertEquals($extendedFixed, $fixer->fix($this->getTestFile(), $extended));
+        $this->assertEquals($extendedFixed, $fixer->fix($this->getTestFile(), $extendedFixed));
 
         $extended = <<<TEST
 abstract class TestClass extends \\Base\\TestClass implements \\TestInterface {
@@ -62,8 +62,8 @@ abstract class TestClass extends \\Base\\TestClass implements \\TestInterface
 {
 TEST;
 
-        $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extended));
-        $this->assertEquals($extendedFixed, $fixer->fix($this->getFileMock(), $extendedFixed));
+        $this->assertEquals($extendedFixed, $fixer->fix($this->getTestFile(), $extended));
+        $this->assertEquals($extendedFixed, $fixer->fix($this->getTestFile(), $extendedFixed));
     }
 
     public function testControlStatements()
@@ -72,38 +72,38 @@ TEST;
 
         $if = "if (\$someTest)\n {";
         $ifFixed = 'if ($someTest) {';
-        $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $if));
-        $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $ifFixed));
+        $this->assertEquals($ifFixed, $fixer->fix($this->getTestFile(), $if));
+        $this->assertEquals($ifFixed, $fixer->fix($this->getTestFile(), $ifFixed));
 
         $if = "if (test) // foo  \n{";
         $ifFixed = "if (test) { // foo";
-        $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $if));
-        $this->assertEquals($ifFixed, $fixer->fix($this->getFileMock(), $ifFixed));
+        $this->assertEquals($ifFixed, $fixer->fix($this->getTestFile(), $if));
+        $this->assertEquals($ifFixed, $fixer->fix($this->getTestFile(), $ifFixed));
 
         $elseif = "else if (...)\n{";
         $elseifFixed = "else if (...) {";
-        $this->assertEquals($elseifFixed, $fixer->fix($this->getFileMock(), $elseif));
-        $this->assertEquals($elseifFixed, $fixer->fix($this->getFileMock(), $elseifFixed));
+        $this->assertEquals($elseifFixed, $fixer->fix($this->getTestFile(), $elseif));
+        $this->assertEquals($elseifFixed, $fixer->fix($this->getTestFile(), $elseifFixed));
 
         $func = "function download() {\n}";
         $funcFixed = "function download()\n{\n}";
-        $this->assertEquals($funcFixed, $fixer->fix($this->getFileMock(), $func));
-        $this->assertEquals($funcFixed, $fixer->fix($this->getFileMock(), $funcFixed));
+        $this->assertEquals($funcFixed, $fixer->fix($this->getTestFile(), $func));
+        $this->assertEquals($funcFixed, $fixer->fix($this->getTestFile(), $funcFixed));
 
         $while = "    while (\$file = \$this->getFile())\n    {";
         $whileFixed = '    while ($file = $this->getFile()) {';
-        $this->assertEquals($whileFixed, $fixer->fix($this->getFileMock(), $while));
-        $this->assertEquals($whileFixed, $fixer->fix($this->getFileMock(), $whileFixed));
+        $this->assertEquals($whileFixed, $fixer->fix($this->getTestFile(), $while));
+        $this->assertEquals($whileFixed, $fixer->fix($this->getTestFile(), $whileFixed));
 
         $switch = "switch(\$statement)   \n{";
         $switchFixed = 'switch($statement) {';
-        $this->assertEquals($switchFixed, $fixer->fix($this->getFileMock(), $switch));
-        $this->assertEquals($switchFixed, $fixer->fix($this->getFileMock(), $switchFixed));
+        $this->assertEquals($switchFixed, $fixer->fix($this->getTestFile(), $switch));
+        $this->assertEquals($switchFixed, $fixer->fix($this->getTestFile(), $switchFixed));
 
         $try = "try \n{\n ... \n} \n catch (Exception \$e)\n{";
         $tryFixed = "try {\n ... \n} catch (Exception \$e) {";
-        $this->assertEquals($tryFixed, $fixer->fix($this->getFileMock(), $try));
-        $this->assertEquals($tryFixed, $fixer->fix($this->getFileMock(), $tryFixed));
+        $this->assertEquals($tryFixed, $fixer->fix($this->getTestFile(), $try));
+        $this->assertEquals($tryFixed, $fixer->fix($this->getTestFile(), $tryFixed));
 
         $tryInClassName = <<<'TEST'
 
@@ -111,7 +111,7 @@ TEST;
         {
             private $fields = array();
 TEST;
-        $this->assertEquals($tryInClassName, $fixer->fix($this->getFileMock(), $tryInClassName));
+        $this->assertEquals($tryInClassName, $fixer->fix($this->getTestFile(), $tryInClassName));
     }
 
     public function testFunctionDeclaration()
@@ -120,16 +120,16 @@ TEST;
 
         $declaration = '    public function test()     {';
         $fixedDeclaration = "    public function test()\n    {";
-        $this->assertEquals($fixedDeclaration, $fixer->fix($this->getFileMock(), $declaration));
-        $this->assertEquals($fixedDeclaration, $fixer->fix($this->getFileMock(), $fixedDeclaration));
+        $this->assertEquals($fixedDeclaration, $fixer->fix($this->getTestFile(), $declaration));
+        $this->assertEquals($fixedDeclaration, $fixer->fix($this->getTestFile(), $fixedDeclaration));
 
         $goodAnonymous = "filter(function () {\n    return true;\n})";
-        $this->assertEquals($goodAnonymous, $fixer->fix($this->getFileMock(), $goodAnonymous));
+        $this->assertEquals($goodAnonymous, $fixer->fix($this->getTestFile(), $goodAnonymous));
 
         $badAnonymous = "filter(function   () \n {\n});";
         $fixedBadAnonymous = "filter(function   () {\n});";
-        $this->assertEquals($fixedBadAnonymous, $fixer->fix($this->getFileMock(), $badAnonymous));
-        $this->assertEquals($fixedBadAnonymous, $fixer->fix($this->getFileMock(), $fixedBadAnonymous));
+        $this->assertEquals($fixedBadAnonymous, $fixer->fix($this->getTestFile(), $badAnonymous));
+        $this->assertEquals($fixedBadAnonymous, $fixer->fix($this->getTestFile(), $fixedBadAnonymous));
 
         $correctMethod = <<<'EOF'
     public function __construct($id, $name)
@@ -139,7 +139,7 @@ TEST;
     }
 EOF;
 
-        $this->assertEquals($correctMethod, $fixer->fix($this->getFileMock(), $correctMethod));
+        $this->assertEquals($correctMethod, $fixer->fix($this->getTestFile(), $correctMethod));
     }
 
     public function testDoWhile()
@@ -162,8 +162,8 @@ EOF;
     } while ($test = $this->getTest());
 
 EOF;
-        $this->assertEquals($fixedDoWhile, $fixer->fix($this->getFileMock(), $doWhile));
-        $this->assertEquals($fixedDoWhile, $fixer->fix($this->getFileMock(), $fixedDoWhile));
+        $this->assertEquals($fixedDoWhile, $fixer->fix($this->getTestFile(), $doWhile));
+        $this->assertEquals($fixedDoWhile, $fixer->fix($this->getTestFile(), $fixedDoWhile));
     }
 
     /*
@@ -175,24 +175,22 @@ EOF;
 
         $declarationWithDo = '    public function test($do)     {';
         $fixedDeclarationWithDo = "    public function test(\$do)\n    {";
-        $this->assertEquals($fixedDeclarationWithDo, $fixer->fix($this->getFileMock(), $declarationWithDo));
-        $this->assertEquals($fixedDeclarationWithDo, $fixer->fix($this->getFileMock(), $fixedDeclarationWithDo));
+        $this->assertEquals($fixedDeclarationWithDo, $fixer->fix($this->getTestFile(), $declarationWithDo));
+        $this->assertEquals($fixedDeclarationWithDo, $fixer->fix($this->getTestFile(), $fixedDeclarationWithDo));
 
         $declarationWithElse = '    public function test($else)     {';
         $fixedDeclarationWithElse = "    public function test(\$else)\n    {";
-        $this->assertEquals($fixedDeclarationWithElse, $fixer->fix($this->getFileMock(), $declarationWithElse));
-        $this->assertEquals($fixedDeclarationWithElse, $fixer->fix($this->getFileMock(), $fixedDeclarationWithElse));
+        $this->assertEquals($fixedDeclarationWithElse, $fixer->fix($this->getTestFile(), $declarationWithElse));
+        $this->assertEquals($fixedDeclarationWithElse, $fixer->fix($this->getTestFile(), $fixedDeclarationWithElse));
 
         $declarationWithTry = '    public function test($try)     {';
         $fixedDeclarationWithTry = "    public function test(\$try)\n    {";
-        $this->assertEquals($fixedDeclarationWithTry, $fixer->fix($this->getFileMock(), $declarationWithTry));
-        $this->assertEquals($fixedDeclarationWithTry, $fixer->fix($this->getFileMock(), $fixedDeclarationWithTry));
+        $this->assertEquals($fixedDeclarationWithTry, $fixer->fix($this->getTestFile(), $declarationWithTry));
+        $this->assertEquals($fixedDeclarationWithTry, $fixer->fix($this->getTestFile(), $fixedDeclarationWithTry));
     }
 
-    private function getFileMock()
+    private function getTestFile()
     {
-        return $this->getMockBuilder('\SplFileInfo')
-            ->disableOriginalConstructor()
-            ->getMock();
+        return new \SplFileInfo(__FILE__);
     }
 }

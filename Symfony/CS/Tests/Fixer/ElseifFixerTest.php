@@ -30,12 +30,12 @@ class ElseifFixerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(
             'if ($some) { $test = true } elseif ($some != "test") { $test = false; }',
-            $fixer->fix($this->getFileMock(), 'if ($some) { $test = true } else if ($some != "test") { $test = false; }'
+            $fixer->fix($this->getTestFile(), 'if ($some) { $test = true } else if ($some != "test") { $test = false; }'
         ));
 
         $this->assertSame(
             'if ($some) { $test = true } elseif ($some != "test") { $test = false; }',
-            $fixer->fix($this->getFileMock(), 'if ($some) { $test = true } else  if ($some != "test") { $test = false; }'
+            $fixer->fix($this->getTestFile(), 'if ($some) { $test = true } else  if ($some != "test") { $test = false; }'
         ));
     }
 
@@ -80,32 +80,24 @@ class ElseifFixerTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatOnlyPHPFilesAreSupported()
     {
-        $phpFile = $this->getFileMock();
-        $phpFile->expects($this->any())
-            ->method('getFilename')
-            ->will($this->returnValue('file.php'));
+        $phpFile = $this->getTestFile();
 
-        $otherFile = $this->getFileMock();
-        $otherFile->expects($this->any())
-            ->method('getFilename')
-            ->will($this->returnValue('file.js'));
+        $otherFile = $this->getTestFile(__DIR__ . '/../../../../README.rst');
 
-       $fixer = new ElseIfFixer();
+        $fixer = new ElseIfFixer();
 
-       $this->assertTrue($fixer->supports($phpFile));
-       $this->assertFalse($fixer->supports($otherFile));
+        $this->assertTrue($fixer->supports($phpFile));
+        $this->assertFalse($fixer->supports($otherFile));
     }
 
     public function testThatAreDefinedInPSR2()
     {
-       $fixer = new ElseIfFixer();
-       $this->assertSame(FixerInterface::PSR2_LEVEL, $fixer->getLevel());
+        $fixer = new ElseIfFixer();
+        $this->assertSame(FixerInterface::PSR2_LEVEL, $fixer->getLevel());
     }
 
-    private function getFileMock()
+    private function getTestFile($filename = __FILE__)
     {
-        return $this->getMockBuilder('\SplFileInfo')
-            ->disableOriginalConstructor()
-            ->getMock();
+        return new \SplFileInfo($filename);
     }
 }
