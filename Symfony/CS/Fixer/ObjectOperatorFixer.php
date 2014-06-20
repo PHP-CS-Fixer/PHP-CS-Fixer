@@ -14,15 +14,46 @@ namespace Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 
 /**
- * @author Farhad Safarov <farhad.safarov@gmail.com>
+ * @author Fabien Potencier <fabien@symfony.com>
  */
 class ObjectOperatorFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
         // [Structure] there should not be space before or after T_OBJECT_OPERATOR
-        $content = preg_replace('/([^\s]) ->/', '${1}->', $content);
-        $content = preg_replace('/-> /', '->', $content);
+        $previousToken = null;
+        $tokens = token_get_all($content);
+        $newTokens = array();
+        for ($i = 0, $max = count($tokens); $i < $max; $i++) {
+            if (is_array($tokens[$i])) {
+                if (T_OBJECT_OPERATOR === $tokens[$i][0]) {
+                    $last = count($newTokens) - 1;
+                    if (isset($newTokens[$last]) && $this->isWhitespace($newTokens[$last])) {
+                        // check that the previous one is a string (not a comment)
+                        if (isset($newTokens[$last - 1]) && is_array($newTokens[$last - 1]) && T_VARIABLE === $newTokens[$last - 1][0]) {
+                            array_pop($newTokens);
+                        }
+                    }
+                    $newTokens[] = $tokens[$i];
+                    if ($i + 1 < $max && $this->isWhitespace($tokens[$i + 1])) {
+                        $i++;
+                    }
+                } else {
+                    $newTokens[] = $tokens[$i];
+                }
+            } else {
+                $newTokens[] = $tokens[$i];
+            }
+        }
+
+        $content = '';
+        foreach ($newTokens as $newToken) {
+            if (is_array($newToken)) {
+                $content .= $newToken[1];
+            } else {
+                $content .= $newToken;
+            }
+        }
 
         return $content;
     }
@@ -50,5 +81,14 @@ class ObjectOperatorFixer implements FixerInterface
     public function getDescription()
     {
         return 'There should not be space before or after object T_OBJECT_OPERATOR.';
+    }
+
+    private function isWhitespace($token)
+    {
+        return
+            (is_string($token) && '' === trim($token, ' '))
+                ||
+            (is_array($token) && T_WHITESPACE === $token[0] && '' === trim($token[1], ' '))
+        ;
     }
 }

@@ -31,17 +31,29 @@ class ObjectOperatorFixerTest extends \PHPUnit_Framework_TestCase
     public function testFixObjectOperatorSpaces()
     {
         return array(
-            array('object ->method', 'object->method'),
-            array('object -> method', 'object->method'),
-            array('object-> method', 'object->method'),
-            array('object->method', 'object->method'),
+            array('<?php $object   ->method();', '<?php $object->method();'),
+            array('<?php $object   ->   method();', '<?php $object->method();'),
+            array('<?php $object->   method();', '<?php $object->method();'),
+            array('<?php $object->method();', '<?php $object->method();'),
+            array('<?php echo "use it as you want";', '<?php echo "use it as you want";'),
             // Ensure that doesn't break chained multi-line statements
-            array('object->method()
+            array('<?php $object->method()
                         ->method2()
-                        ->method3()',
-                    'object->method()
+                        ->method3();',
+                    '<?php $object->method()
                         ->method2()
-                        ->method3()'),
+                        ->method3();'
+            ),
+            array(
+                '<?php $this
+             ->add()
+             // Some comment
+             ->delete();',
+                 '<?php $this
+             ->add()
+             // Some comment
+             ->delete();'
+            ),
         );
     }
 
