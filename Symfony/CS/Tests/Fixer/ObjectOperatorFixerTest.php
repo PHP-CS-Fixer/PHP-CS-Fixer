@@ -25,7 +25,7 @@ class ObjectOperatorFixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
 
-        $this->assertEquals($expected, $fixer->fix($this->getFileMock(), $toBeFixed));
+        $this->assertEquals($expected, $fixer->fix($this->getTestFile(), $toBeFixed));
     }
 
     public function testFixObjectOperatorSpaces()
@@ -45,10 +45,8 @@ class ObjectOperatorFixerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    private function getFileMock()
+    private function getTestFile()
     {
-        return $this->getMockBuilder('\SplFileInfo')
-            ->disableOriginalConstructor()
-            ->getMock();
+        return new \SplFileInfo(__FILE__);
     }
 }
