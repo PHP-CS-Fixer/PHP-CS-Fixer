@@ -19,4 +19,4 @@ use Symfony\CS\Console\Application;
 $application = new Application();
 $application->run();
 
-__halt_compiler();
+__HALT_COMPILER();
