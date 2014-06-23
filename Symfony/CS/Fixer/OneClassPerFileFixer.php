@@ -20,7 +20,7 @@ class OneClassPerFileFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
-        $classes = [];
+        $classes = array();
         $classTokens = array('T_CLASS', 'T_INTERFACE', 'T_TRAIT');
         $tokens = token_get_all($content);
 
