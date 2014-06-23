@@ -13,6 +13,9 @@ namespace Symfony\CS\Tests\Fixer;
 
 use Symfony\CS\Fixer\LowercaseKeywordsFixer;
 
+/**
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ */
 class LowercaseKeywordsFixerTest extends \PHPUnit_Framework_TestCase
 {
     /**

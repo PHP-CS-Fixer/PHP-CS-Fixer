@@ -207,6 +207,8 @@ Choose from the list of available fixers:
   namespace, be at least one namespace deep, and the
   class name should match the file name.
 
+* **one_class_per_file** [PSR-0] PHP file MUST contains at most one class.
+
 * **elseif** [PSR-2] The keyword elseif should be used instead of
   else if so that all control keywords looks like
   single words.
