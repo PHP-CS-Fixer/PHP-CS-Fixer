@@ -14,7 +14,7 @@ namespace Symfony\CS\Tests\Fixer;
 use Symfony\CS\Fixer\OneClassPerFileFixer;
 
 /**
- * @author Dariusz Ruminski <dariusz.ruminski@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class OneClassPerFileFixerTest extends \PHPUnit_Framework_TestCase
 {
