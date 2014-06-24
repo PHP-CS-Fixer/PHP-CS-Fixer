@@ -267,4 +267,28 @@ if (!function_exists('foo')) {
 EOF;
         $this->assertEquals($expected, $fixer->fix($file, $expected));
     }
+
+    public function testLeaveFunctionsAloneAfterClass()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+
+class Foo
+{
+    public $foo;
+}
+
+if (!function_exists('bar')) {
+    function bar()
+    {
+        return 'bar';
+    }
+}
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
 }
