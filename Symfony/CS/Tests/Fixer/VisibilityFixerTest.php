@@ -83,7 +83,7 @@ abstract class Foo {
     abstract public function foo();
         function fooG ($foo) {}
         function fooH() {
-    static $foo;
+            static $foo;
             $bar = function($baz) {};
         }
 }
@@ -268,6 +268,9 @@ EOF;
         $this->assertEquals($expected, $fixer->fix($file, $expected));
     }
 
+    /**
+     * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+     */
     public function testLeaveFunctionsAloneAfterClass()
     {
         $fixer = new VisibilityFixer();
