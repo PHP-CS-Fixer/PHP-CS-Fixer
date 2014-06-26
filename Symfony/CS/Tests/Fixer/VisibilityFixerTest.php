@@ -65,7 +65,7 @@ EOF;
 
         $expected = <<<'EOF'
 <?php
-class Foo {
+abstract class Foo {
     public function foo() {}
     public function foo() {}
     protected function foo() {}
@@ -91,7 +91,7 @@ EOF;
 
         $input = <<<EOF
 <?php
-class Foo {
+abstract class Foo {
     public function foo() {}
     function foo() {}
     protected function foo() {}
