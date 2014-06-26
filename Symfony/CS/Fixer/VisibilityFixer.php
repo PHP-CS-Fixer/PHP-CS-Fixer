@@ -115,6 +115,10 @@ class VisibilityFixer implements FixerInterface
             $token = &$this->tokens[--$tokenNo];
 
             if (!is_array($token)) {
+                if (in_array($token, array('{', '}', '(', ')', ))) {
+                    break;
+                }
+
                 continue;
             }
 
