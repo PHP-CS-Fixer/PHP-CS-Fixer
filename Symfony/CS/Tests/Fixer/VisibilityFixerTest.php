@@ -81,10 +81,10 @@ class Foo {
     public static function foo() {}
     final public static function foo() {}
     abstract public static function foo();
-        function ($foo) {}
-        function() {
-            static $foo;
+        function fooG ($foo) {}
+        function fooH() {
     static $foo;
+            $bar = function($baz) {};
         }
 }
 EOF;
@@ -110,10 +110,10 @@ class Foo {
     function foo() {}
     final static function foo() {}
     static abstract function foo();
-        function (\$foo) {}
-        function() {
-            static \$foo;
-    static \$foo;
+        function fooG ($foo) {}
+        function fooH() {
+            static $foo;
+            $bar = function($baz) {};
         }
 }
 EOF;
