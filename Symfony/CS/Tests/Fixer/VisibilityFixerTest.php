@@ -80,7 +80,7 @@ class Foo {
     public static function foo() {}
     public static function foo() {}
     final public static function foo() {}
-    abstract public static function foo();
+    abstract public function foo();
         function fooG ($foo) {}
         function fooH() {
     static $foo;
@@ -109,7 +109,7 @@ class Foo {
     public static
     function foo() {}
     final static function foo() {}
-    static abstract function foo();
+    abstract function foo();
         function fooG ($foo) {}
         function fooH() {
             static $foo;
