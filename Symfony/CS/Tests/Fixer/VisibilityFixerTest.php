@@ -103,7 +103,7 @@ abstract class Foo {
     public final function foo8() {}
     public abstract function foo9();
     public static function fooA() {}
-    public static function\tfooB() {}
+    public static function	fooB() {}
     public static function
     fooC() {}
     public static
