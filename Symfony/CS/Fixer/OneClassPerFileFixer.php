@@ -28,12 +28,12 @@ class OneClassPerFileFixer implements FixerInterface
             $token = $tokens[$i];
 
             if (is_array($token) && in_array(token_name($token[0]), $classTokens)) {
-                $classes[] = $tokens[$i+2][1];
+                $classes[] = $tokens[$i + 2][1];
             }
         }
 
         if (count($classes) > 1) {
-            echo '! Found multiple classes/interfaces/traits in ' . strtr($file->getRealPath(), '\\', '/') . ': ' . implode(', ', $classes) . PHP_EOL;
+            echo '! Found multiple classes/interfaces/traits in '.strtr($file->getRealPath(), '\\', '/').': '.implode(', ', $classes).PHP_EOL;
         }
 
         return $content;
@@ -61,6 +61,6 @@ class OneClassPerFileFixer implements FixerInterface
 
     public function getDescription()
     {
-        return 'PHP file MUST contains at most one class.';
+        return 'PHP file MUST contain at most one class.';
     }
 }
