@@ -84,7 +84,7 @@ class VisibilityFixer implements FixerInterface
      * Apply token attributes.
      * Token at given index is prepended by attributes.
      *
-     * @param int $tokenNo token index
+     * @param int   $tokenNo token index
      * @param array $attribs array of token attributes
      */
     protected function applyTokenAttribs($tokenNo, $attribs)
@@ -104,9 +104,9 @@ class VisibilityFixer implements FixerInterface
      * Grab attributes before token at gixen index.
      * Grabbed attributes are cleared by overriding them with empty string and should be manually applied with applyTokenAttribs method.
      *
-     * @param int $tokenNo token index
-     * @param array $tokenAttribsMap token to attribute name map
-     * @param array $attribs array of token attributes
+     * @param  int   $tokenNo         token index
+     * @param  array $tokenAttribsMap token to attribute name map
+     * @param  array $attribs         array of token attributes
      * @return array array of grabbed attributes
      */
     protected function grabAttribsBeforeToken($tokenNo, $tokenAttribsMap, $attribs)
@@ -146,7 +146,7 @@ class VisibilityFixer implements FixerInterface
      * Grab attributes before method token at gixen index.
      * It's a shorthand for grabAttribsBeforeToken method.
      *
-     * @param int $tokenNo token index
+     * @param  int   $tokenNo token index
      * @return array array of grabbed attributes
      */
     protected function grabAttribsBeforeMethodToken($tokenNo)
@@ -176,7 +176,7 @@ class VisibilityFixer implements FixerInterface
      * Grab attributes before property token at gixen index.
      * It's a shorthand for grabAttribsBeforeToken method.
      *
-     * @param int $tokenNo token index
+     * @param  int   $tokenNo token index
      * @return array array of grabbed attributes
      */
     protected function grabAttribsBeforePropertyToken($tokenNo)
