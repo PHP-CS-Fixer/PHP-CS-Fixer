@@ -294,4 +294,30 @@ EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $expected));
     }
+
+    /**
+     * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+     */
+    public function testLeaveComplexParsedVariableSyntaxAlone()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+
+class Foo
+{
+    private $bar;
+    public function foo()
+    {
+        $foo = "foo";
+        $fooA = "ab{$foo}cd"; // test T_CURLY_OPEN
+        $bar = "bar"; // test if nested curly braces are counting properly after T_CURLY_OPEN
+    }
+}
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
 }
