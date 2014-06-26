@@ -35,41 +35,41 @@ class VisibilityFixer implements FixerInterface
                 continue;
             }
 
-            if ($token === '(') {
+            if ('(' === $token) {
                 ++$bracesLevel;
                 continue;
             }
 
-            if ($token === ')') {
+            if (')' === $token) {
                 --$bracesLevel;
                 continue;
             }
 
-            if ($token === '{') {
+            if ('{' === $token) {
                 ++$curlyBracesLevel;
                 continue;
             }
 
-            if ($token === '}') {
+            if ('}' === $token) {
                 --$curlyBracesLevel;
 
-                if ($curlyBracesLevel === 0) {
+                if (0 === $curlyBracesLevel) {
                     $inClass = false;
                 }
 
                 continue;
             }
 
-            if ($curlyBracesLevel !== 1 || !is_array($token)) {
+            if (1 !== $curlyBracesLevel || !is_array($token)) {
                 continue;
             }
 
-            if ($token[0] === T_VARIABLE && $bracesLevel === 0) {
+            if (T_VARIABLE === $token[0] && 0 === $bracesLevel) {
                 $this->applyTokenAttribs($i, $this->grabAttribsBeforePropertyToken($i));
                 continue;
             }
 
-            if ($token[0] === T_FUNCTION) {
+            if (T_FUNCTION === $token[0]) {
                 $this->applyTokenAttribs($i, $this->grabAttribsBeforeMethodToken($i));
 
                 // force whitespace between function keyword and function name to be single space char
@@ -209,7 +209,7 @@ class VisibilityFixer implements FixerInterface
     {
         static $classTokens = array('T_CLASS', 'T_INTERFACE', 'T_TRAIT');
 
-        return (is_array($token) && in_array(token_name($token[0]), $classTokens));
+        return is_array($token) && in_array(token_name($token[0]), $classTokens);
     }
 
     /**
