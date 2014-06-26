@@ -81,8 +81,8 @@ abstract class Foo {
     public static function fooD() {}
     final public static function fooE() {}
     abstract public function fooF();
-        function fooG ($foo) {}
-        function fooH() {
+        public function fooG ($foo) {}
+        public function fooH() {
             static $foo;
             $bar = function($baz) {};
         }
