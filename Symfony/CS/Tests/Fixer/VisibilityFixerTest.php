@@ -66,21 +66,21 @@ EOF;
         $expected = <<<'EOF'
 <?php
 abstract class Foo {
-    public function foo() {}
-    public function foo() {}
-    protected function foo() {}
-    abstract protected function foo() {};
-    private function foo() {}
-    final public function foo() {}
-    abstract public function foo();
-    final public function foo() {}
-    abstract public function foo();
-    public static function foo() {}
-    public static function foo() {}
-    public static function foo() {}
-    public static function foo() {}
-    final public static function foo() {}
-    abstract public function foo();
+    public function foo1() {}
+    public function foo2() {}
+    protected function foo3() {}
+    abstract protected function foo4() {};
+    private function foo5() {}
+    final public function foo6() {}
+    abstract public function foo7();
+    final public function foo8() {}
+    abstract public function foo9();
+    public static function fooA() {}
+    public static function fooB() {}
+    public static function fooC() {}
+    public static function fooD() {}
+    final public static function fooE() {}
+    abstract public function fooF();
         function fooG ($foo) {}
         function fooH() {
             static $foo;
@@ -89,27 +89,27 @@ abstract class Foo {
 }
 EOF;
 
-        $input = <<<EOF
+        $input = <<<'EOF'
 <?php
 abstract class Foo {
-    public function foo() {}
-    function foo() {}
-    protected function foo() {}
+    public function foo1() {}
+    function foo2() {}
+    protected function foo3() {}
     protected
-    abstract function foo() {};
-    private function foo() {}
-    final public function foo() {}
-    abstract public function foo();
-    public final function foo() {}
-    public abstract function foo();
-    public static function foo() {}
-    public static function\tfoo() {}
+    abstract function foo4() {};
+    private function foo5() {}
+    final public function foo6() {}
+    abstract public function foo7();
+    public final function foo8() {}
+    public abstract function foo9();
+    public static function fooA() {}
+    public static function\tfooB() {}
     public static function
-    foo() {}
+    fooC() {}
     public static
-    function foo() {}
-    final static function foo() {}
-    abstract function foo();
+    function fooD() {}
+    final static function fooE() {}
+    abstract function fooF();
         function fooG ($foo) {}
         function fooH() {
             static $foo;
