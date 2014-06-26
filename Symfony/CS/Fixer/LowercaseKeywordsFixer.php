@@ -14,7 +14,7 @@ namespace Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 
 /**
- * @author Dariusz Ruminski <dariusz.ruminski@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class LowercaseKeywordsFixer implements FixerInterface
 {
@@ -48,7 +48,7 @@ class LowercaseKeywordsFixer implements FixerInterface
 
     public function supports(\SplFileInfo $file)
     {
-        return 'php' == pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+        return 'php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION);
     }
 
     public function getName()
