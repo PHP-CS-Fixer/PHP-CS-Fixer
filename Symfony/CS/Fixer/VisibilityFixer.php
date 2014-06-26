@@ -90,7 +90,7 @@ class VisibilityFixer implements FixerInterface
 
     public function getLevel()
     {
-        // defined in PSR2 ¶4.4
+        // defined in PSR2 ¶4.3, ¶4.5
         return FixerInterface::PSR2_LEVEL;
     }
 
@@ -111,6 +111,6 @@ class VisibilityFixer implements FixerInterface
 
     public function getDescription()
     {
-        return 'Visibility must be declared on all properties and methods; abstract and final must be declared before the visibility; static must be declared after the visibility.';
+        return 'Visibility MUST be declared on all properties and methods; abstract and final MUST be declared before the visibility; static MUST be declared after the visibility.';
     }
 }
