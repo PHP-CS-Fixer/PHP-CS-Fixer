@@ -131,6 +131,26 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Apply token attributes.
+     * Token at given index is prepended by attributes.
+     *
+     * @param int   $index   token index
+     * @param array $attribs array of token attributes
+     */
+    public function applyAttribs($index, $attribs)
+    {
+        $attribsString = '';
+
+        foreach ($attribs as $attrib) {
+            if ($attrib) {
+                $attribsString .= $attrib.' ';
+            }
+        }
+
+        $this[$index] = $attribsString.$this[$index][1];
+    }
+
+    /**
      * Clear token at given index.
      * Clearing means override token by empty string.
      *
@@ -156,5 +176,108 @@ class Tokens extends \SplFixedArray
         }
 
         return $code;
+    }
+
+    /**
+     * Grab attributes before token at gixen index.
+     * Grabbed attributes are cleared by overriding them with empty string and should be manually applied with applyTokenAttribs method.
+     *
+     * @param  int   $index           token index
+     * @param  array $tokenAttribsMap token to attribute name map
+     * @param  array $attribs         array of token attributes
+     * @return array array of grabbed attributes
+     */
+    public function grabAttribsBeforeToken($index, $tokenAttribsMap, $attribs)
+    {
+        while (true) {
+            $token = $this[--$index];
+
+            if (!is_array($token)) {
+                if (in_array($token, array('{', '}', '(', ')', ))) {
+                    break;
+                }
+
+                continue;
+            }
+
+            // if token is attribute
+            if (array_key_exists($token[0], $tokenAttribsMap)) {
+                // set token attribute if token map defines attribute name for token
+                if ($tokenAttribsMap[$token[0]]) {
+                    $attribs[$tokenAttribsMap[$token[0]]] = $token[1];
+                }
+
+                // clear the token and whitespaces after it
+                $this->clear($index);
+                $this->clear($index + 1);
+
+                continue;
+            }
+
+            if (in_array($token[0], array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT, ))) {
+                continue;
+            }
+
+            break;
+        }
+
+        return $attribs;
+    }
+
+    /**
+     * Grab attributes before method token at gixen index.
+     * It's a shorthand for grabAttribsBeforeToken method.
+     *
+     * @param  int   $index token index
+     * @return array array of grabbed attributes
+     */
+    public function grabAttribsBeforeMethodToken($index)
+    {
+        static $tokenAttribsMap = array(
+            T_PRIVATE => 'visibility',
+            T_PROTECTED => 'visibility',
+            T_PUBLIC => 'visibility',
+            T_ABSTRACT => 'abstract',
+            T_FINAL => 'final',
+            T_STATIC => 'static',
+        );
+
+        return $this->grabAttribsBeforeToken(
+            $index,
+            $tokenAttribsMap,
+            array(
+                'abstract' => '',
+                'final' => '',
+                'visibility' => 'public',
+                'static' => '',
+            )
+        );
+    }
+
+    /**
+     * Grab attributes before property token at gixen index.
+     * It's a shorthand for grabAttribsBeforeToken method.
+     *
+     * @param  int   $index token index
+     * @return array array of grabbed attributes
+     */
+    public function grabAttribsBeforePropertyToken($index)
+    {
+        static $tokenAttribsMap = array(
+            T_VAR => null, // destroy T_VAR token!
+            T_PRIVATE => 'visibility',
+            T_PROTECTED => 'visibility',
+            T_PUBLIC => 'visibility',
+            T_STATIC => 'static',
+        );
+
+        return $this->grabAttribsBeforeToken(
+            $index,
+            $tokenAttribsMap,
+            array(
+                'visibility' => 'public',
+                'static' => '',
+            )
+        );
     }
 }
