@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Tokens;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -28,14 +29,14 @@ class ObjectOperatorFixer implements FixerInterface
             if (is_array($tokens[$i])) {
                 if (T_OBJECT_OPERATOR === $tokens[$i][0]) {
                     $last = count($newTokens) - 1;
-                    if (isset($newTokens[$last]) && $this->isWhitespace($newTokens[$last])) {
+                    if (isset($newTokens[$last]) && Tokens::isWhitespace($newTokens[$last])) {
                         // check that the previous one is a string (not a comment)
                         if (isset($newTokens[$last - 1]) && is_array($newTokens[$last - 1]) && T_VARIABLE === $newTokens[$last - 1][0]) {
                             array_pop($newTokens);
                         }
                     }
                     $newTokens[] = $tokens[$i];
-                    if ($i + 1 < $max && $this->isWhitespace($tokens[$i + 1])) {
+                    if ($i + 1 < $max && Tokens::isWhitespace($tokens[$i + 1])) {
                         $i++;
                     }
                 } else {
@@ -81,14 +82,5 @@ class ObjectOperatorFixer implements FixerInterface
     public function getDescription()
     {
         return 'There should not be space before or after object T_OBJECT_OPERATOR.';
-    }
-
-    private function isWhitespace($token)
-    {
-        return
-            (is_string($token) && '' === trim($token, " \t"))
-                ||
-            (is_array($token) && T_WHITESPACE === $token[0] && '' === trim($token[1], " \t"))
-        ;
     }
 }
