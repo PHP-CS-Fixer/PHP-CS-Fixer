@@ -129,4 +129,21 @@ class Tokens extends \SplFixedArray
 
         return $keywords;
     }
+
+    /**
+     * Generate code from tokens.
+     *
+     * @return string
+     */
+    public function generateCode()
+    {
+        $code = '';
+        $this->rewind();
+
+        foreach ($this as $token) {
+            $code .= is_array($token) ? $token[1] : $token;
+        }
+
+        return $code;
+    }
 }
