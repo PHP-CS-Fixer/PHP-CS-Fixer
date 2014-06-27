@@ -12,50 +12,37 @@
 namespace Symfony\CS\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Tokens;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class ObjectOperatorFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
         // [Structure] there should not be space before or after T_OBJECT_OPERATOR
-        $previousToken = null;
-        $tokens = token_get_all($content);
-        $newTokens = array();
-        for ($i = 0, $max = count($tokens); $i < $max; $i++) {
-            if (is_array($tokens[$i])) {
-                if (T_OBJECT_OPERATOR === $tokens[$i][0]) {
-                    $last = count($newTokens) - 1;
-                    if (isset($newTokens[$last]) && $this->isWhitespace($newTokens[$last])) {
-                        // check that the previous one is a string (not a comment)
-                        if (isset($newTokens[$last - 1]) && is_array($newTokens[$last - 1]) && T_VARIABLE === $newTokens[$last - 1][0]) {
-                            array_pop($newTokens);
-                        }
-                    }
-                    $newTokens[] = $tokens[$i];
-                    if ($i + 1 < $max && $this->isWhitespace($tokens[$i + 1])) {
-                        $i++;
-                    }
-                } else {
-                    $newTokens[] = $tokens[$i];
-                }
-            } else {
-                $newTokens[] = $tokens[$i];
+        $tokens = Tokens::fromCode($content);
+
+        foreach ($tokens as $index => $token) {
+            // skip if $token is not ->
+            if (!is_array($token) || T_OBJECT_OPERATOR !== $token[0]) {
+                continue;
+            }
+
+            // clear whitespace before ->
+            if (Tokens::isWhitespace($tokens[$index - 1]) && !Tokens::isComment($tokens[$index - 2])) {
+                $tokens->clear($index - 1);
+            }
+
+            // clear whitespace after ->
+            if (Tokens::isWhitespace($tokens[$index + 1]) && !Tokens::isComment($tokens[$index + 2])) {
+                $tokens->clear($index + 1);
             }
         }
 
-        $content = '';
-        foreach ($newTokens as $newToken) {
-            if (is_array($newToken)) {
-                $content .= $newToken[1];
-            } else {
-                $content .= $newToken;
-            }
-        }
-
-        return $content;
+        return $tokens->generateCode();
     }
 
     public function getLevel()
@@ -81,14 +68,5 @@ class ObjectOperatorFixer implements FixerInterface
     public function getDescription()
     {
         return 'There should not be space before or after object T_OBJECT_OPERATOR.';
-    }
-
-    private function isWhitespace($token)
-    {
-        return
-            (is_string($token) && '' === trim($token, " \t"))
-                ||
-            (is_array($token) && T_WHITESPACE === $token[0] && '' === trim($token[1], " \t"))
-        ;
     }
 }
