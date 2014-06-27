@@ -110,7 +110,7 @@ class VisibilityFixer implements FixerInterface
      */
     private function clearFixerState()
     {
-        unset($this->tokens);
+        $this->tokens = null;
     }
 
     /**
