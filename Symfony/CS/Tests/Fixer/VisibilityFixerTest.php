@@ -65,55 +65,55 @@ EOF;
 
         $expected = <<<'EOF'
 <?php
-class Foo {
-    public function foo() {}
-    public function foo() {}
-    protected function foo() {}
-    abstract protected function foo() {};
-    private function foo() {}
-    final public function foo() {}
-    abstract public function foo();
-    final public function foo() {}
-    abstract public function foo();
-    public static function foo() {}
-    public static function foo() {}
-    public static function foo() {}
-    public static function foo() {}
-    final public static function foo() {}
-    abstract public static function foo();
-        function ($foo) {}
-        function() {
+abstract class Foo {
+    public function foo1() {}
+    public function foo2() {}
+    protected function foo3() {}
+    abstract protected function foo4() {};
+    private function foo5() {}
+    final public function foo6() {}
+    abstract public function foo7();
+    final public function foo8() {}
+    abstract public function foo9();
+    public static function fooA() {}
+    public static function fooB() {}
+    public static function fooC() {}
+    public static function fooD() {}
+    final public static function fooE() {}
+    abstract public function fooF();
+        public function fooG ($foo) {}
+        public function fooH() {
             static $foo;
-    static $foo;
+            $bar = function($baz) {};
         }
 }
 EOF;
 
-        $input = <<<EOF
+        $input = <<<'EOF'
 <?php
-class Foo {
-    public function foo() {}
-    function foo() {}
-    protected function foo() {}
+abstract class Foo {
+    public function foo1() {}
+    function foo2() {}
+    protected function foo3() {}
     protected
-    abstract function foo() {};
-    private function foo() {}
-    final public function foo() {}
-    abstract public function foo();
-    public final function foo() {}
-    public abstract function foo();
-    public static function foo() {}
-    public static function\tfoo() {}
+    abstract function foo4() {};
+    private function foo5() {}
+    final public function foo6() {}
+    abstract public function foo7();
+    public final function foo8() {}
+    public abstract function foo9();
+    public static function fooA() {}
+    public static function	fooB() {}
     public static function
-    foo() {}
+    fooC() {}
     public static
-    function foo() {}
-    final static function foo() {}
-    static abstract function foo();
-        function (\$foo) {}
-        function() {
-            static \$foo;
-    static \$foo;
+    function fooD() {}
+    final static function fooE() {}
+    abstract function fooF();
+        function fooG ($foo) {}
+        function fooH() {
+            static $foo;
+            $bar = function($baz) {};
         }
 }
 EOF;
@@ -265,6 +265,59 @@ if (!function_exists('foo')) {
     }
 }
 EOF;
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
+
+    /**
+     * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+     */
+    public function testLeaveFunctionsAloneAfterClass()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+
+class Foo
+{
+    public $foo;
+}
+
+if (!function_exists('bar')) {
+    function bar()
+    {
+        return 'bar';
+    }
+}
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
+
+    /**
+     * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+     */
+    public function testLeaveComplexParsedVariableSyntaxAlone()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+
+class Foo
+{
+    private $bar;
+    public function foo()
+    {
+        $foo = "foo";
+        $fooA = "ab{$foo}cd"; // test T_CURLY_OPEN
+        $bar = "bar"; // test if nested curly braces are counting properly after T_CURLY_OPEN
+    }
+}
+EOF;
+
         $this->assertEquals($expected, $fixer->fix($file, $expected));
     }
 }
