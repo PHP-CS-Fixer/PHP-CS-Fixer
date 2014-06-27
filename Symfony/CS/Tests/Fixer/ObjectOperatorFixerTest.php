@@ -34,6 +34,9 @@ class ObjectOperatorFixerTest extends \PHPUnit_Framework_TestCase
             array('<?php $object   ->method();', '<?php $object->method();'),
             array('<?php $object   ->   method();', '<?php $object->method();'),
             array('<?php $object->   method();', '<?php $object->method();'),
+            array('<?php $object	->method();', '<?php $object->method();'),
+            array('<?php $object->	method();', '<?php $object->method();'),
+            array('<?php $object	->	method();', '<?php $object->method();'),
             array('<?php $object->method();', '<?php $object->method();'),
             array('<?php echo "use it as you want";', '<?php echo "use it as you want";'),
             // Ensure that doesn't break chained multi-line statements

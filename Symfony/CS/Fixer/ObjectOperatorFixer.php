@@ -86,9 +86,9 @@ class ObjectOperatorFixer implements FixerInterface
     private function isWhitespace($token)
     {
         return
-            (is_string($token) && '' === trim($token, ' '))
+            (is_string($token) && '' === trim($token, " \t"))
                 ||
-            (is_array($token) && T_WHITESPACE === $token[0] && '' === trim($token[1], ' '))
+            (is_array($token) && T_WHITESPACE === $token[0] && '' === trim($token[1], " \t"))
         ;
     }
 }
