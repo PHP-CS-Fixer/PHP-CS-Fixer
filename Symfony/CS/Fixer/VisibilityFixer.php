@@ -29,9 +29,7 @@ class VisibilityFixer implements FixerInterface
         $curlyBracesLevel = 0;
         $bracesLevel = 0;
 
-        for ($i = 0, $max = count($tokens); $i < $max; ++$i) {
-            $token = $tokens[$i];
-
+        foreach ($tokens as $index => $token) {
             if (!$inClass) {
                 $inClass = Tokens::isClassy($token);
                 continue;
@@ -67,15 +65,16 @@ class VisibilityFixer implements FixerInterface
             }
 
             if (T_VARIABLE === $token[0] && 0 === $bracesLevel) {
-                $tokens->applyAttribs($i, $tokens->grabAttribsBeforePropertyToken($i));
+                $tokens->applyAttribs($index, $tokens->grabAttribsBeforePropertyToken($index));
                 continue;
             }
 
             if (T_FUNCTION === $token[0]) {
-                $tokens->applyAttribs($i, $tokens->grabAttribsBeforeMethodToken($i));
+                $tokens->applyAttribs($index, $tokens->grabAttribsBeforeMethodToken($index));
 
                 // force whitespace between function keyword and function name to be single space char
-                $tokens[++$i] = ' ';
+                $tokens->next();
+                $tokens[$tokens->key()] = ' ';
             }
         }
 
