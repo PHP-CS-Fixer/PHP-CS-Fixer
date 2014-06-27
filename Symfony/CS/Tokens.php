@@ -131,6 +131,17 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Clear token at given index.
+     * Clearing means override token by empty string.
+     *
+     * @param int $index token index
+     */
+    public function clear($index)
+    {
+        $this[$index] = '';
+    }
+
+    /**
      * Generate code from tokens.
      *
      * @return string
