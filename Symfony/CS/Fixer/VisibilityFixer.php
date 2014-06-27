@@ -77,7 +77,11 @@ class VisibilityFixer implements FixerInterface
             }
         }
 
-        return $this->generateCode();
+        $code = $this->generateCode();
+
+        $this->clearFixerState();
+
+        return $code;
     }
 
     /**
@@ -98,6 +102,15 @@ class VisibilityFixer implements FixerInterface
         }
 
         $this->tokens[$tokenNo] = $attribsString.$this->tokens[$tokenNo][1];
+    }
+
+    /**
+     * Clear fixer state after fixing single file.
+     * Release memory.
+     */
+    private function clearFixerState()
+    {
+        unset($this->tokens);
     }
 
     /**
