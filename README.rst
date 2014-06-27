@@ -148,6 +148,8 @@ automatically fix anything:
 
 Choose from the list of available fixers:
 
+* **encoding** [PSR-1] PHP code MUST use only UTF-8 without BOM (detect only).
+
 * **linefeed** [PSR-2] All PHP files must use the Unix LF
   (linefeed) line ending.
 
@@ -207,7 +209,7 @@ Choose from the list of available fixers:
   namespace, be at least one namespace deep, and the
   class name should match the file name.
 
-* **one_class_per_file** [PSR-0] PHP file MUST contains at most one class.
+* **one_class_per_file** [PSR-0] PHP file MUST contains at most one class (detect only).
 
 * **elseif** [PSR-2] The keyword elseif should be used instead of
   else if so that all control keywords looks like
