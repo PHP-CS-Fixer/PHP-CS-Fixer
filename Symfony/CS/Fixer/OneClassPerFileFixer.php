@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Tokens;
 
 if (!defined('T_TRAIT')) {
     define('T_TRAIT', 1001);
@@ -25,14 +26,11 @@ class OneClassPerFileFixer implements FixerInterface
     public function fix(\SplFileInfo $file, $content)
     {
         $classes = array();
-        $classTokens = array('T_CLASS', 'T_INTERFACE', 'T_TRAIT');
-        $tokens = token_get_all($content);
+        $tokens = Tokens::fromCode($content);
 
-        for ($i = 0, $max = count($tokens); $i < $max; ++$i) {
-            $token = $tokens[$i];
-
-            if (is_array($token) && in_array(token_name($token[0]), $classTokens)) {
-                $classes[] = $tokens[$i + 2][1];
+        foreach ($tokens as $index => $token) {
+            if (Tokens::isClassy($token)) {
+                $classes[] = $tokens[$index + 2][1];
             }
         }
 
