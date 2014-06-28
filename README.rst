@@ -205,6 +205,8 @@ Choose from the list of available fixers:
   parentheses, the closing parentheses and the opening
   brace.
 
+* **spaces_cast** [all] A single space should be between cast and variable.
+
 * **psr0** [PSR-0] Classes must be in a path that matches their
   namespace, be at least one namespace deep, and the
   class name should match the file name.
