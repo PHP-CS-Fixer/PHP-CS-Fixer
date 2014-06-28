@@ -191,6 +191,9 @@ Choose from the list of available fixers:
   on the same line, and closing braces must go on the
   next line after the body.
 
+* **lowercase_constants** [PSR-2] The PHP constants true, false,
+  and null MUST be in lower case.
+
 * **lowercase_keywords** [PSR-2] PHP keywords MUST be in lower case.
 
 * **include** [all] Include and file path should be divided with a
