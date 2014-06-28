@@ -119,6 +119,7 @@ class ControlSpacesFixerTest extends \PHPUnit_Framework_TestCase
     public function testFixCastsProvider()
     {
         return array(
+            array('<?php echo "( int ) $foo";', '<?php echo "( int ) $foo";'),
             array('( int)$foo', '(int) $foo'),
             array('( string )( int )$foo', '(string) (int) $foo'),
             array('(string)(int)$foo', '(string) (int) $foo'),
