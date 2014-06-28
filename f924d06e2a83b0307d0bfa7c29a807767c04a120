@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by stof at 2014-06-27T10:52:05Z
+
+you should have created your branch from the upstream master branch, not from your previous feature branch, as your previous commits have been squashed together before merging the PR
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-06-27T10:54:23Z
+
+This branch was created before PR was merged
+
+---------------------------------------------------------------------------
+
+by stof at 2014-06-27T10:57:42Z
+
+you should rebase it on top of the master branch (using ``git rebase --onto upstream/master <ancestor>`` to avoid rebasing the commits which are parts of the previous PR (``<ancestor>`` being the last commit of the previous PR).
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-06-27T11:50:15Z
+
+Branch recreated
