@@ -29,7 +29,10 @@ class SpacesNearCastFixerTest extends \PHPUnit_Framework_TestCase
     public function testFixCastsProvider()
     {
         return array(
+            array('<?php echo "( int ) $foo";', '<?php echo "( int ) $foo";'),
             array('<?php $bar = ( int)$foo;', '<?php $bar = (int) $foo;'),
+            array('<?php $bar = (	int)$foo;', '<?php $bar = (int) $foo;'),
+            array('<?php $bar = (int)	$foo;', '<?php $bar = (int) $foo;'),
             array('<?php $bar = ( string )( int )$foo;', '<?php $bar = (string) (int) $foo;'),
             array('<?php $bar = (string)(int)$foo;', '<?php $bar = (string) (int) $foo;'),
             array('<?php $bar = ( string   )    (   int )$foo;', '<?php $bar = (string) (int) $foo;'),
