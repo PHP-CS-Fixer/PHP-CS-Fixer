@@ -18,7 +18,7 @@ class UnusedUseStatementsFixerTest extends \PHPUnit_Framework_TestCase
     public function testFix()
     {
         $fixer = new UnusedUseStatementsFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 use Foo\Bar;
@@ -83,7 +83,7 @@ EOF;
     public function testFixUseInTheSameNamespace()
     {
         $fixer = new UnusedUseStatementsFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 namespace Foo\Bar\FooBar;
@@ -113,7 +113,7 @@ EOF;
     public function testTrailingSpaces()
     {
         $fixer = new UnusedUseStatementsFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 use Foo\Bar ;
@@ -134,5 +134,16 @@ $a = new FooBaz();
 EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
+
+    private function getTestFile($filename = __FILE__)
+    {
+        static $files = array();
+
+        if (!isset($files[$filename])) {
+            $files[$filename] = new \SplFileInfo($filename);
+        }
+
+        return $files[$filename];
     }
 }

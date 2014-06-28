@@ -21,7 +21,7 @@ class ShortTagFixerTest extends \PHPUnit_Framework_TestCase
     public function testOneLineFix($expected, $input)
     {
         $fixer = new ShortTagFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
@@ -44,5 +44,16 @@ echo \'Foo\';
 
 ')
         );
+    }
+
+    private function getTestFile($filename = __FILE__)
+    {
+        static $files = array();
+
+        if (!isset($files[$filename])) {
+            $files[$filename] = new \SplFileInfo($filename);
+        }
+
+        return $files[$filename];
     }
 }

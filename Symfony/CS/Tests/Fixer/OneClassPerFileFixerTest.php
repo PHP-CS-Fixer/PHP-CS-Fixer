@@ -32,7 +32,7 @@ class OneClassPerFileFixerTest extends \PHPUnit_Framework_TestCase
 
     public function provideExamples()
     {
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
         $expectedPrefix = '! Found multiple classes/interfaces/traits in '.strtr($file->getRealPath(), '\\', '/').': ';
 
         $examples = array(
@@ -51,5 +51,16 @@ class OneClassPerFileFixerTest extends \PHPUnit_Framework_TestCase
         }
 
         return $examples;
+    }
+
+    private function getTestFile($filename = __FILE__)
+    {
+        static $files = array();
+
+        if (!isset($files[$filename])) {
+            $files[$filename] = new \SplFileInfo($filename);
+        }
+
+        return $files[$filename];
     }
 }

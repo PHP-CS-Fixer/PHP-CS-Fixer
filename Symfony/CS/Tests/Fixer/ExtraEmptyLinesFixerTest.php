@@ -18,7 +18,7 @@ class ExtraEmptyLinesFixerTest extends \PHPUnit_Framework_TestCase
     public function testFix()
     {
         $fixer = new ExtraEmptyLinesFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 $a = new Bar();
@@ -39,7 +39,7 @@ EOF;
     public function testFixWithManyEmptyLines()
     {
         $fixer = new ExtraEmptyLinesFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 $a = new Bar();
@@ -64,7 +64,7 @@ EOF;
     public function testFixWithHeredoc()
     {
         $fixer = new ExtraEmptyLinesFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 $b = <<<TEXT
@@ -92,7 +92,7 @@ EOF;
     public function testFixWithNowdoc()
     {
         $fixer = new ExtraEmptyLinesFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 $b = <<<'TEXT'
@@ -120,7 +120,7 @@ EOF;
     public function testFixWithEncapsulatedNowdoc()
     {
         $fixer = new ExtraEmptyLinesFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 $b = <<<'TEXT'
@@ -160,7 +160,7 @@ EOF;
     public function testFixWithMultilineString()
     {
         $fixer = new ExtraEmptyLinesFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 $a = 'Foo
@@ -182,7 +182,7 @@ EOF;
     public function testFixWithTrickyMultilineStrings()
     {
         $fixer = new ExtraEmptyLinesFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 $a = 'Foo';
@@ -220,5 +220,16 @@ FooFoo';
 EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
+
+    private function getTestFile($filename = __FILE__)
+    {
+        static $files = array();
+
+        if (!isset($files[$filename])) {
+            $files[$filename] = new \SplFileInfo($filename);
+        }
+
+        return $files[$filename];
     }
 }
