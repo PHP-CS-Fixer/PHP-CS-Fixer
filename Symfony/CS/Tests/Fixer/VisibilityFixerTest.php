@@ -320,4 +320,82 @@ EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $expected));
     }
+
+    /**
+     * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+     */
+    public function testLeaveJavascriptOutsidePhpAlone()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+function foo()
+{
+    return "foo";
+}
+?>
+<script type="text/javascript">
+function foo(bar) {
+    alert(bar);
+}
+</script>
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
+
+    /**
+     * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+     */
+    public function testLeaveJavascriptInStringAlone()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+function registerJS()
+{
+echo '<script type="text/javascript">
+function foo(bar) {
+    alert(bar);
+}
+</script>';
+}
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
+
+    /**
+     * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+     */
+    public function testLeaveJavascriptInVariableAlone()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+class Foo
+{
+    public function bar()
+    {
+        $script = <<<JAVASCRIPT
+<script type="text/javascript">
+function foo(bar) {
+    alert(bar);
+}
+</script>
+JAVASCRIPT;
+
+        return $script;
+    }
+}
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
 }
