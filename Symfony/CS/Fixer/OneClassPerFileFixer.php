@@ -65,6 +65,6 @@ class OneClassPerFileFixer implements FixerInterface
 
     public function getDescription()
     {
-        return 'PHP file MUST contain at most one class.';
+        return 'PHP file MUST contain at most one class (detect only).';
     }
 }
