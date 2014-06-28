@@ -24,7 +24,7 @@ class SpacesNearCastFixer implements FixerInterface
      */
     public function fix(\SplFileInfo $file, $content)
     {
-        static $insideCastingSpaceReplaceMap = array (
+        static $insideCastSpaceReplaceMap = array (
             ' ' => '',
             "\t" => '',
             "\n" => '',
@@ -33,10 +33,10 @@ class SpacesNearCastFixer implements FixerInterface
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens as $index => $token) {
-            if (Tokens::isCasting($token)) {
-                $tokens[$index] = strtr($token[1], $insideCastingSpaceReplaceMap);
+            if (Tokens::isCast($token)) {
+                $tokens[$index] = strtr($token[1], $insideCastSpaceReplaceMap);
 
-                // force single whitespace after casting token:
+                // force single whitespace after cast token:
                 if (Tokens::isWhitespace($tokens[$index + 1], array('whitespaces' => " \t", ))) {
                     // - if next token is whitespaces that contains only spaces and tabs - override next token with single space
                     $tokens[$index + 1] = ' ';
