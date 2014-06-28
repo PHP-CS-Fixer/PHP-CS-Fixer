@@ -29,15 +29,15 @@ class SpacesNearCastFixerTest extends \PHPUnit_Framework_TestCase
     public function testFixCastsProvider()
     {
         return array(
-            array('( int)$foo', '(int) $foo'),
-            array('( string )( int )$foo', '(string) (int) $foo'),
-            array('(string)(int)$foo', '(string) (int) $foo'),
-            array('( string   )    (   int )$foo', '(string) (int) $foo'),
-            array('( string )   $foo', '(string) $foo'),
-            array('(float )Foo::bar()', '(float) Foo::bar()'),
-            array('Foo::baz((float )Foo::bar())', 'Foo::baz((float) Foo::bar())'),
-            array('$query["params"] = (array)$query["params"]', '$query["params"] = (array) $query["params"]'),
-            array("(int)\n    *", "(int)\n    *"),
+            array('<?php $bar = ( int)$foo;', '<?php $bar = (int) $foo;'),
+            array('<?php $bar = ( string )( int )$foo;', '<?php $bar = (string) (int) $foo;'),
+            array('<?php $bar = (string)(int)$foo;', '<?php $bar = (string) (int) $foo;'),
+            array('<?php $bar = ( string   )    (   int )$foo;', '<?php $bar = (string) (int) $foo;'),
+            array('<?php $bar = ( string )   $foo;', '<?php $bar = (string) $foo;'),
+            array('<?php $bar = (float )Foo::bar();', '<?php $bar = (float) Foo::bar();'),
+            array('<?php $bar = Foo::baz((float )Foo::bar());', '<?php $bar = Foo::baz((float) Foo::bar());'),
+            array('<?php $bar = $query["params"] = (array)$query["params"];', '<?php $bar = $query["params"] = (array) $query["params"];'),
+            array("<?php \$bar = (int)\n \$foo;", "<?php \$bar = (int)\n \$foo;"),
         );
     }
 
