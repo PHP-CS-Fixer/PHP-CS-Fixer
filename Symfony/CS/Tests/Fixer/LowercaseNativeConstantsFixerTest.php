@@ -47,6 +47,12 @@ class LowercaseNativeConstantsFixerTest extends \PHPUnit_Framework_TestCase
             array('<?php $x = "true story";', '<?php $x = "true story";'),
             array('<?php $x = "false";', '<?php $x = "false";'),
             array('<?php $x = "that is null";', '<?php $x = "that is null";'),
+            array('<?php $x = new True;', '<?php $x = new True;'),
+            array('<?php $x = new True();', '<?php $x = new True();'),
+            array('<?php $x = False::foo();', '<?php $x = False::foo();'),
+            array('<?php namespace Foo\Null;', '<?php namespace Foo\Null;'),
+            array('<?php use Foo\Null;', '<?php use Foo\Null;'),
+            array('<?php use Foo\Null as Null;', '<?php use Foo\Null as Null;'),
         );
     }
 
