@@ -307,6 +307,57 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Get closest sibling token which is non whitespace.
+     *
+     * @param  string|array $index     token index
+     * @param  int          $direction direction for looking, +1 or -1
+     * @param  array        $opts      array of extra options for isWhitespace method
+     * @return string|array token
+     */
+    public function getNonWhitespaceSibling($index, $direction, array $opts = array())
+    {
+        while (true) {
+            $index += $direction;
+
+            if (!$this->offsetExists($index)) {
+                return null;
+            }
+
+            $token = $this[$index];
+
+            if (!static::isWhitespace($token, $opts)) {
+                return $token;
+            }
+        }
+    }
+
+    /**
+     * Get closest next token which is non whitespace.
+     * This method is shorthand for getNonWhitespaceSibling method.
+     *
+     * @param  string|array $index token index
+     * @param  array        $opts  array of extra options for isWhitespace method
+     * @return string|array token
+     */
+    public function getNextNonWhitespace($index, array $opts = array())
+    {
+        return $this->getNonWhitespaceSibling($index, 1, $opts);
+    }
+
+    /**
+     * Get closest previous token which is non whitespace.
+     * This method is shorthand for getNonWhitespaceSibling method.
+     *
+     * @param  string|array $index token index
+     * @param  array        $opts  array of extra options for isWhitespace method
+     * @return string|array token
+     */
+    public function getPrevNonWhitespace($index, array $opts = array())
+    {
+        return $this->getNonWhitespaceSibling($index, -1, $opts);
+    }
+
+    /**
      * Grab attributes before token at gixen index.
      * Grabbed attributes are cleared by overriding them with empty string and should be manually applied with applyTokenAttribs method.
      *
