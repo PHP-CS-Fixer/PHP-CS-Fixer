@@ -25,6 +25,14 @@ class LowercaseNativeConstantsFixer implements FixerInterface
 
         foreach ($tokens as $index => $token) {
             if (Tokens::isNativeConstant($token)) {
+                if (
+                    is_array($tokens->getPrevNonWhitespace($index, array('whitespaces' => " \t\n", )))
+                    ||
+                    is_array($tokens->getNextNonWhitespace($index, array('whitespaces' => " \t\n", )))
+                ) {
+                    continue;
+                }
+
                 $tokens[$index] = strtolower($token[1]);
             }
         }
