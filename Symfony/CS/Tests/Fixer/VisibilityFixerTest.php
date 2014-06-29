@@ -411,13 +411,25 @@ EOF;
 <?php
 class Foo
 {
-    private $foo1;
+    public $foo;
+    private $foo2;
     protected $bar1, $bar2;
-    public $baz1 = null, $baz2 = false
+    public $baz1 = null, $baz2, $baz3 = false;
 }
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $expected));
+        $input = <<<'EOF'
+<?php
+class Foo
+{
+    $foo;
+    private $foo2;
+    protected $bar1, $bar2;
+    public $baz1 = null, $baz2, $baz3 = false;
+}
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
     }
 
     private function getTestFile($filename = __FILE__)
