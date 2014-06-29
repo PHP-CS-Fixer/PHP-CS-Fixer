@@ -254,6 +254,59 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Get closest sibling token of given kind.
+     *
+     * @param  string|array $index     token index
+     * @param  int          $direction direction for looking, +1 or -1
+     * @param  array        $tokens    possible tokens
+     * @return string|array token
+     */
+    public function getTokenOfKindSibling($index, $direction, array $tokens = array())
+    {
+        while (true) {
+            $index += $direction;
+
+            if (!$this->offsetExists($index)) {
+                return null;
+            }
+
+            $token = $this[$index];
+
+            foreach ($tokens as $tokenKind) {
+                if (static::compare($token, $tokenKind)) {
+                    return $token;
+                }
+            }
+        }
+    }
+
+    /**
+     * Get closest next token of given kind.
+     * This method is shorthand for getTokenOfKindSibling method.
+     *
+     * @param  string|array $index  token index
+     * @param  array        $tokens possible tokens
+     * @return string|array token
+     */
+    public function getNextTokenOfKind($index, array $tokens = array())
+    {
+        return $this->getTokenOfKindSibling($index, 1, $tokens);
+    }
+
+    /**
+     * Get closest previous token of given kind.
+     * This method is shorthand for getTokenOfKindSibling method.
+     *
+     * @param  string|array $index  token index
+     * @param  array        $tokens possible tokens
+     * @return string|array token
+     */
+    public function getPrevTokenOfKind($index, array $tokens = array())
+    {
+        return $this->getTokenOfKindSibling($index, -1, $tokens);
+    }
+
+    /**
      * Grab attributes before token at gixen index.
      * Grabbed attributes are cleared by overriding them with empty string and should be manually applied with applyTokenAttribs method.
      *
