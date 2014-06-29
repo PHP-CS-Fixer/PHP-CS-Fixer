@@ -399,6 +399,27 @@ EOF;
         $this->assertEquals($expected, $fixer->fix($file, $expected));
     }
 
+    /**
+     * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+     */
+    public function testLeaveCommaSeparatedPropertyAlone()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = $this->getTestFile();
+
+        $expected = <<<'EOF'
+<?php
+class Foo
+{
+    private $foo1;
+    protected $bar1, $bar2;
+    public $baz1 = null, $baz2 = false
+}
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
+
     private function getTestFile($filename = __FILE__)
     {
         static $files = array();
