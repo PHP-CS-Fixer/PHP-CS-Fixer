@@ -65,7 +65,13 @@ class VisibilityFixer implements FixerInterface
             }
 
             if (T_VARIABLE === $token[0] && 0 === $bracesLevel) {
-                $tokens->applyAttribs($index, $tokens->grabAttribsBeforePropertyToken($index));
+                // fix only if there is only one property defined in single statement
+                if (
+                    ',' !== $tokens->getPrevTokenOfKind($index, array(';', ',', )) &&
+                    ',' !== $tokens->getNextTokenOfKind($index, array(';', ',', ))
+                ) {
+                    $tokens->applyAttribs($index, $tokens->grabAttribsBeforePropertyToken($index));
+                }
                 continue;
             }
 
