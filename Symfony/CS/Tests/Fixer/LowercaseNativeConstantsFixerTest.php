@@ -24,7 +24,7 @@ class LowercaseNativeConstantsFixerTest extends \PHPUnit_Framework_TestCase
     public function testFix($expected, $input)
     {
         $fixer = new Fixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
@@ -48,5 +48,16 @@ class LowercaseNativeConstantsFixerTest extends \PHPUnit_Framework_TestCase
             array('<?php $x = "false";', '<?php $x = "false";'),
             array('<?php $x = "that is null";', '<?php $x = "that is null";'),
         );
+    }
+
+    private function getTestFile($filename = __FILE__)
+    {
+        static $files = array();
+
+        if (!isset($files[$filename])) {
+            $files[$filename] = new \SplFileInfo($filename);
+        }
+
+        return $files[$filename];
     }
 }
