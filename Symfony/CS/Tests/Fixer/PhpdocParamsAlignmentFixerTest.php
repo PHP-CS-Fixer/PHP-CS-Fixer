@@ -18,7 +18,7 @@ class PhpdocParamsAlignmentFixerTest extends \PHPUnit_Framework_TestCase
     public function testFix()
     {
         $fixer = new PhpdocParamsAlignmentFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 
@@ -46,7 +46,7 @@ EOF;
     public function testFixMultiLineDesc()
     {
         $fixer = new PhpdocParamsAlignmentFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 
@@ -80,7 +80,7 @@ EOF;
     public function testFixMultiLineDescWithThrows()
     {
         $fixer = new PhpdocParamsAlignmentFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 
@@ -124,7 +124,7 @@ EOF;
     public function testFixWithReturnAndThrows()
     {
         $fixer = new PhpdocParamsAlignmentFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 
@@ -154,7 +154,7 @@ EOF;
     public function testFixThreeParamsWithReturn()
     {
         $fixer = new PhpdocParamsAlignmentFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 
@@ -180,7 +180,7 @@ EOF;
     public function testFixOnlyReturn()
     {
         $fixer = new PhpdocParamsAlignmentFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 
@@ -200,7 +200,7 @@ EOF;
     public function testReturnWithDollarThis()
     {
         $fixer = new PhpdocParamsAlignmentFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
      * @param  Foo   $foo
@@ -220,7 +220,7 @@ EOF;
     public function testCustomAnnotationsStayUntouched()
     {
         $fixer = new PhpdocParamsAlignmentFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
      * @return string
@@ -235,5 +235,16 @@ EOF;
 EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
+
+    private function getTestFile($filename = __FILE__)
+    {
+        static $files = array();
+
+        if (!isset($files[$filename])) {
+            $files[$filename] = new \SplFileInfo($filename);
+        }
+
+        return $files[$filename];
     }
 }

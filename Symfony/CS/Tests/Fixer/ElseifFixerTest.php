@@ -98,6 +98,12 @@ class ElseifFixerTest extends \PHPUnit_Framework_TestCase
 
     private function getTestFile($filename = __FILE__)
     {
-        return new \SplFileInfo($filename);
+        static $files = array();
+
+        if (!isset($files[$filename])) {
+            $files[$filename] = new \SplFileInfo($filename);
+        }
+
+        return $files[$filename];
     }
 }

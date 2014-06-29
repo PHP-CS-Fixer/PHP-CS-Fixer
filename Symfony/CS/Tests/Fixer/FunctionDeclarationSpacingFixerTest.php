@@ -52,8 +52,14 @@ class FunctionDeclarationSpacingFixerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($target, $fixer->fix($this->getTestFile(), $source));
     }
 
-    private function getTestFile()
+    private function getTestFile($filename = __FILE__)
     {
-        return new \SplFileInfo(__FILE__);
+        static $files = array();
+
+        if (!isset($files[$filename])) {
+            $files[$filename] = new \SplFileInfo($filename);
+        }
+
+        return $files[$filename];
     }
 }

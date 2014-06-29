@@ -19,7 +19,7 @@ class Psr0FixerTest extends \PHPUnit_Framework_TestCase
     public function testFixCase()
     {
         $fixer = new Psr0Fixer();
-        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../Fixer/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 namespace Symfony\CS\Fixer;
@@ -45,7 +45,7 @@ EOF;
     public function testFixClassName()
     {
         $fixer = new Psr0Fixer();
-        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../Fixer/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 namespace Symfony\CS\Fixer;
@@ -64,7 +64,7 @@ EOF;
     public function testFixAbstractClassName()
     {
         $fixer = new Psr0Fixer();
-        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../Fixer/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 namespace Symfony\CS\Fixer;
@@ -83,7 +83,7 @@ EOF;
     public function testFixFinalClassName()
     {
         $fixer = new Psr0Fixer();
-        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../Fixer/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 namespace Symfony\CS\Fixer;
@@ -102,7 +102,7 @@ EOF;
     public function testFixNamespaceThrows()
     {
         $fixer = new Psr0Fixer();
-        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../Fixer/Psr0Fixer.php');
 
         $input = <<<'EOF'
 namespace lala;
@@ -118,7 +118,7 @@ EOF;
     public function testFixOldClassnameThrows()
     {
         $fixer = new Psr0Fixer();
-        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../Fixer/Psr0Fixer.php');
 
         $input = <<<'EOF'
 class blah_bar {}
@@ -133,7 +133,7 @@ EOF;
     public function testMissingVendorThrows()
     {
         $fixer = new Psr0Fixer();
-        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../Fixer/Psr0Fixer.php');
 
         $input = <<<'EOF'
 class Psr0Fixer {}
@@ -152,7 +152,7 @@ EOF;
         $config->setDir(__DIR__.'/../../');
         $fixer->setConfig($config);
 
-        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../Fixer/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 namespace Foo\Bar\Baz\Fixer;
@@ -185,7 +185,7 @@ EOF;
     public function testLeadingSpaceNamespaceThrows()
     {
         $fixer = new Psr0Fixer();
-        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../Fixer/Psr0Fixer.php');
 
         $input = <<<'EOF'
  namespace LeadingSpace;
@@ -201,7 +201,7 @@ EOF;
     public function testFixLeadingSpaceNamespace()
     {
         $fixer = new Psr0Fixer();
-        $file = new \SplFileInfo(__DIR__.'/../../Fixer/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../Fixer/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 namespace LeadingSpace;
@@ -214,5 +214,16 @@ EOF;
         ob_start();
         $this->assertEquals($expected, $fixer->fix($file, $input));
         ob_clean();
+    }
+
+    private function getTestFile($filename = __FILE__)
+    {
+        static $files = array();
+
+        if (!isset($files[$filename])) {
+            $files[$filename] = new \SplFileInfo($filename);
+        }
+
+        return $files[$filename];
     }
 }

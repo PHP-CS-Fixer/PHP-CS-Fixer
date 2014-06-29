@@ -45,12 +45,23 @@ class EncodingFixerTest extends \PHPUnit_Framework_TestCase
 
     private function prepareTestCase($file, $errorEncoding = null)
     {
-        $file = new \SplFileInfo(__DIR__.'/../Fixtures/FixerTest/encoding/'.$file);
+        $file = $this->getTestFile(__DIR__.'/../Fixtures/FixerTest/encoding/'.$file);
 
         return array(
             $errorEncoding ? '! File '.strtr($file->getRealPath(), '\\', '/').' with incorrect encoding: '.$errorEncoding.PHP_EOL : '',
             file_get_contents($file->getRealpath()),
             $file,
         );
+    }
+
+    private function getTestFile($filename = __FILE__)
+    {
+        static $files = array();
+
+        if (!isset($files[$filename])) {
+            $files[$filename] = new \SplFileInfo($filename);
+        }
+
+        return $files[$filename];
     }
 }

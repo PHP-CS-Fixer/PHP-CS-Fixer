@@ -18,7 +18,7 @@ class VisibilityFixerTest extends \PHPUnit_Framework_TestCase
     public function testFixProperties()
     {
         $fixer = new VisibilityFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 <?php
@@ -61,7 +61,7 @@ EOF;
     public function testFixMethods()
     {
         $fixer = new VisibilityFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 <?php
@@ -124,7 +124,7 @@ EOF;
     public function testLeaveFunctionsAlone()
     {
         $fixer = new VisibilityFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 <?php
@@ -146,7 +146,7 @@ EOF;
     public function testLeaveFunctionsAloneWithVariablesMatchingOopWords()
     {
         $fixer = new VisibilityFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $expected = <<<'EOF'
 <?php
@@ -163,7 +163,7 @@ EOF;
     public function testLeaveFunctionsAloneInsideConditionals()
     {
         $fixer = new VisibilityFixer();
-        $file  = new \SplFileInfo(__FILE__);
+        $file  = $this->getTestFile();
 
         $expected = <<<'EOF'
 <?php
@@ -180,7 +180,7 @@ EOF;
     public function testLeaveFunctionsAloneInsideConditionalsWithOopWordInComment()
     {
         $fixer = new VisibilityFixer();
-        $file  = new \SplFileInfo(__FILE__);
+        $file  = $this->getTestFile();
 
         $expected = <<<'EOF'
 <?php
@@ -198,7 +198,7 @@ EOF;
     public function testLeaveFunctionsAloneWithOopWordInComment()
     {
         $fixer = new VisibilityFixer();
-        $file  = new \SplFileInfo(__FILE__);
+        $file  = $this->getTestFile();
 
         $expected = <<<'EOF'
 <?php
@@ -214,7 +214,7 @@ EOF;
     public function testLeaveFunctionsAloneOutsideClassesWithOopWordInInlineHtml()
     {
         $fixer = new VisibilityFixer();
-        $file  = new \SplFileInfo(__FILE__);
+        $file  = $this->getTestFile();
 
         $expected = <<<'EOF'
 <?php
@@ -234,7 +234,7 @@ EOF;
     public function testLeaveFunctionsAloneOutsideClassesWithOopWordInStringValue()
     {
         $fixer = new VisibilityFixer();
-        $file  = new \SplFileInfo(__FILE__);
+        $file  = $this->getTestFile();
 
         $expected = <<<'EOF'
 <?php
@@ -251,7 +251,7 @@ EOF;
     public function testLeaveFunctionsAloneOutsideClassesWithOopWordInFunctionName()
     {
         $fixer = new VisibilityFixer();
-        $file  = new \SplFileInfo(__FILE__);
+        $file  = $this->getTestFile();
 
         $expected = <<<'EOF'
 <?php
@@ -274,7 +274,7 @@ EOF;
     public function testLeaveFunctionsAloneAfterClass()
     {
         $fixer = new VisibilityFixer();
-        $file  = new \SplFileInfo(__FILE__);
+        $file  = $this->getTestFile();
 
         $expected = <<<'EOF'
 <?php
@@ -301,7 +301,7 @@ EOF;
     public function testLeaveComplexParsedVariableSyntaxAlone()
     {
         $fixer = new VisibilityFixer();
-        $file  = new \SplFileInfo(__FILE__);
+        $file  = $this->getTestFile();
 
         $expected = <<<'EOF'
 <?php
@@ -327,7 +327,7 @@ EOF;
     public function testLeaveJavascriptOutsidePhpAlone()
     {
         $fixer = new VisibilityFixer();
-        $file  = new \SplFileInfo(__FILE__);
+        $file  = $this->getTestFile();
 
         $expected = <<<'EOF'
 <?php
@@ -352,7 +352,7 @@ EOF;
     public function testLeaveJavascriptInStringAlone()
     {
         $fixer = new VisibilityFixer();
-        $file  = new \SplFileInfo(__FILE__);
+        $file  = $this->getTestFile();
 
         $expected = <<<'EOF'
 <?php
@@ -375,7 +375,7 @@ EOF;
     public function testLeaveJavascriptInVariableAlone()
     {
         $fixer = new VisibilityFixer();
-        $file  = new \SplFileInfo(__FILE__);
+        $file  = $this->getTestFile();
 
         $expected = <<<'EOF'
 <?php
@@ -397,5 +397,16 @@ JAVASCRIPT;
 EOF;
 
         $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
+
+    private function getTestFile($filename = __FILE__)
+    {
+        static $files = array();
+
+        if (!isset($files[$filename])) {
+            $files[$filename] = new \SplFileInfo($filename);
+        }
+
+        return $files[$filename];
     }
 }

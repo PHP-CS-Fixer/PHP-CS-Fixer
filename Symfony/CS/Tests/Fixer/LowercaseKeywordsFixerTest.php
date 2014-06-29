@@ -24,7 +24,7 @@ class LowercaseKeywordsFixerTest extends \PHPUnit_Framework_TestCase
     public function testFix($expected, $input)
     {
         $fixer = new LowercaseKeywordsFixer();
-        $file = new \SplFileInfo(__FILE__);
+        $file = $this->getTestFile();
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
@@ -36,5 +36,16 @@ class LowercaseKeywordsFixerTest extends \PHPUnit_Framework_TestCase
             array('<?php foreach(array(1, 2, 3) as $val) {}', '<?php foreach(array(1, 2, 3) AS $val) {}'),
             array('<?php echo "GOOD AS NEW";', '<?php echo "GOOD AS NEW";'),
         );
+    }
+
+    private function getTestFile($filename = __FILE__)
+    {
+        static $files = array();
+
+        if (!isset($files[$filename])) {
+            $files[$filename] = new \SplFileInfo($filename);
+        }
+
+        return $files[$filename];
     }
 }
