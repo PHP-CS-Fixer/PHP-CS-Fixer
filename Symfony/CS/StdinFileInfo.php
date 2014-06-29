@@ -161,7 +161,7 @@ class StdinFileInfo extends \SplFileInfo
         return false;
     }
 
-    public function openFile($open_mode = 'r', $use_include_path = false, $context = NULL)
+    public function openFile($open_mode = 'r', $use_include_path = false, $context = null)
     {
         throw new \RuntimeException("Not implemented");
     }
