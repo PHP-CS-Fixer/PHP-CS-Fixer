@@ -45,7 +45,7 @@ class VisibilityFixer implements FixerInterface
                 continue;
             }
 
-            if ('{' === $token || (is_array($token) && T_CURLY_OPEN === $token[0])) {
+            if ('{' === $token || (is_array($token) && in_array($token[0], array(T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES, )))) {
                 ++$curlyBracesLevel;
                 continue;
             }
