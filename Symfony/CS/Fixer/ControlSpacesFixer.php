@@ -31,7 +31,6 @@ class ControlSpacesFixer implements FixerInterface
         $content = $this->fixControlsWithPrefixBraceAndSuffixBrace($content);
         $content = $this->fixControlsWithPrefixBraceAndParenthesesAndSuffixBrace($content);
         $content = $this->fixControlsWithPrefixBraceAndParenthesesAndSuffixBraceInLambdas($content);
-        $content = $this->fixCasts($content);
 
         return $content;
     }
@@ -210,44 +209,5 @@ class ControlSpacesFixer implements FixerInterface
         );
 
         return preg_replace(sprintf('/\)[^\S\n]*(%s)[^\S\n]*\((.*)\)[^\S\n]*{/', implode('|', $statements)), ') \\1 (\\2) {', $content);
-    }
-
-    /**
-     * "(xxx) ..."
-     *
-     * @param string $content
-     *
-     * @return string
-     */
-    private function fixCasts($content)
-    {
-        $types = implode('|', array(
-            'int',
-            'integer',
-            'bool',
-            'boolean',
-            'float',
-            'double',
-            'real',
-            'string',
-            'array',
-            'object',
-            'unset',
-            'binary',
-        ));
-
-        return preg_replace(
-            array(
-                sprintf('/\(\s*(%s)\s*\)[^\S\n]*/', $types),     // Remove spaces inside brackets and replace spaces/empty space after cast with a single space
-                sprintf('/ $/m', $types),                        // Remove trailing space
-                sprintf('/\((%s)\)\s*\((%s)\)/', $types, $types) // Replace spaces/empty space between multiple casts with a single space
-            ),
-            array(
-                '(\\1) ',
-                '',
-                '(\\1) (\\2)'
-            ),
-            $content
-        );
     }
 }
