@@ -298,7 +298,7 @@ EOF;
     /**
      * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
      */
-    public function testLeaveComplexParsedVariableSyntaxAlone()
+    public function testCurlyOpenSyntax()
     {
         $fixer = new VisibilityFixer();
         $file  = $this->getTestFile();
@@ -312,8 +312,31 @@ class Foo
     public function foo()
     {
         $foo = "foo";
-        $fooA = "ab{$foo}cd"; // test T_CURLY_OPEN
-        $bar = "bar"; // test if nested curly braces are counting properly after T_CURLY_OPEN
+        $fooA = "ab{$foo}cd";
+        $bar = "bar"; // test if variable after T_CURLY_OPEN is intact
+    }
+}
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $expected));
+    }
+
+    /**
+     * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+     */
+    public function testDolarOpenCurlyBracesSyntax()
+    {
+        $fixer = new VisibilityFixer();
+        $file  = $this->getTestFile();
+
+        $expected = <<<'EOF'
+<?php
+
+class Foo {
+    public function bar()
+    {
+        $foo = "foo${width}foo";
+        $bar = "bar"; // test if variable after T_DOLLAR_OPEN_CURLY_BRACES is intact
     }
 }
 EOF;
