@@ -19,8 +19,6 @@ use Symfony\CS\Tokens;
  */
 class VisibilityFixer implements FixerInterface
 {
-    private $tokens;
-
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
