@@ -42,6 +42,14 @@ class IndentationFixerTest extends \PHPUnit_Framework_TestCase
         $this->makeTest($expected, $input);
     }
 
+    /**
+     * @dataProvider provideTabInString
+     */
+    public function testTabInString($expected, $input)
+    {
+        $this->makeTest($expected, $input);
+    }
+
     public function provideIndentationOnly()
     {
         $cases = array();
@@ -148,6 +156,31 @@ class IndentationFixerTest extends \PHPUnit_Framework_TestCase
            echo QUEBEC;', '
 <?php
 	 	   echo QUEBEC;');
+
+        return $cases;
+    }
+
+    public function provideTabInString()
+    {
+        $cases = array();
+
+        $cases[] = array('
+<?php
+$x = "a: 	";', '
+<?php
+$x = "a: 	";');
+
+$cases[] = array('
+<?php
+$x = "
+	Like
+	a
+	dog";', '
+<?php
+$x = "
+	Like
+	a
+	dog";');
 
         return $cases;
     }
