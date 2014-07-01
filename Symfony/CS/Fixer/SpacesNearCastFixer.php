@@ -40,7 +40,7 @@ class SpacesNearCastFixer implements FixerInterface
                 if (Tokens::isWhitespace($tokens[$index + 1], array('whitespaces' => " \t", ))) {
                     // - if next token is whitespaces that contains only spaces and tabs - override next token with single space
                     $tokens[$index + 1] = ' ';
-                } elseif (!Tokens::isWhitespace($tokens[$index + 1], array('whitespaces' => " \t\n", ))) {
+                } elseif (!Tokens::isWhitespace($tokens[$index + 1])) {
                     // - if next token is not whitespaces that contains spaces, tabs and new lines - append single space to current token
                     $tokens[$index] .= ' ';
                 }

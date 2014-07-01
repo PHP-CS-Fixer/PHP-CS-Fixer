@@ -32,12 +32,12 @@ class ObjectOperatorFixer implements FixerInterface
             }
 
             // clear whitespace before ->
-            if (Tokens::isWhitespace($tokens[$index - 1]) && !Tokens::isComment($tokens[$index - 2])) {
+            if (Tokens::isWhitespace($tokens[$index - 1], array('whitespaces' => " \t", )) && !Tokens::isComment($tokens[$index - 2])) {
                 $tokens->clear($index - 1);
             }
 
             // clear whitespace after ->
-            if (Tokens::isWhitespace($tokens[$index + 1]) && !Tokens::isComment($tokens[$index + 2])) {
+            if (Tokens::isWhitespace($tokens[$index + 1], array('whitespaces' => " \t", )) && !Tokens::isComment($tokens[$index + 2])) {
                 $tokens->clear($index + 1);
             }
         }
