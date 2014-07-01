@@ -30,7 +30,7 @@ class ShortTagFixerTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('<?php echo \'Foo\';', '<? echo \'Foo\';'),
-	    array('<?= echo \'Foo\';', '<?= echo \'Foo\';'),
+            array('<?= echo \'Foo\';', '<?= echo \'Foo\';'),
             array('<?php echo \'Foo\'; ?> PLAIN TEXT', '<?php echo \'Foo\'; ?> PLAIN TEXT'),
             array('PLAIN TEXT<?php echo \'Foo\'; ?>', 'PLAIN TEXT<?php echo \'Foo\'; ?>'),
             array('<?php
