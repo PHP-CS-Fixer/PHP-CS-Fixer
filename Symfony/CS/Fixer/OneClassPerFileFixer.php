@@ -14,10 +14,6 @@ namespace Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Tokens;
 
-if (!defined('T_TRAIT')) {
-    define('T_TRAIT', 1001);
-}
-
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
