@@ -148,6 +148,8 @@ automatically fix anything:
 
 Choose from the list of available fixers:
 
+* **camel_case** [PSR-1] Method names MUST be declared in camelCase (detect only).
+
 * **encoding** [PSR-1] PHP code MUST use only UTF-8 without BOM (detect only).
 
 * **linefeed** [PSR-2] All PHP files must use the Unix LF

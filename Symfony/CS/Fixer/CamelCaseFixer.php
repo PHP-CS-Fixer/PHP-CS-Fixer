@@ -17,8 +17,11 @@ use Symfony\CS\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class VisibilityFixer implements FixerInterface
+class CamelCaseFixer implements FixerInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
@@ -26,47 +29,54 @@ class VisibilityFixer implements FixerInterface
         $elements = $tokens->getClassyElements();
 
         foreach ($elements['methods'] as $index => $token) {
-            $tokens->applyAttribs($index, $tokens->grabAttribsBeforeMethodToken($index));
+            $methodNameToken = $tokens->getNextTokenOfKind($index, array(array(T_STRING), ));
 
-            // force whitespace between function keyword and function name to be single space char
-            $tokens[++$index] = ' ';
-        }
-
-        foreach ($elements['properties'] as $index => $token) {
-            if (
-                ',' !== $tokens->getPrevTokenOfKind($index, array(';', ',', )) &&
-                ',' !== $tokens->getNextTokenOfKind($index, array(';', ',', ))
-            ) {
-                $tokens->applyAttribs($index, $tokens->grabAttribsBeforePropertyToken($index));
+            if (!Tokens::isMethodNameIsMagic($methodNameToken[1]) && !Tokens::isNameIsInCamelCase($methodNameToken[1])) {
+                echo '! File '.strtr($file->getRealPath(), '\\', '/').' contains method not in camelCase: '.$methodNameToken[1].PHP_EOL;
             }
         }
 
         return $tokens->generateCode();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLevel()
     {
-        // defined in PSR2 ¶4.3, ¶4.5
-        return FixerInterface::PSR2_LEVEL;
+        // defined in PSR-1 ¶4.3
+        return FixerInterface::PSR1_LEVEL;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         return 0;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(\SplFileInfo $file)
     {
         return 'php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
-        return 'visibility';
+        return 'camel_case';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
-        return 'Visibility MUST be declared on all properties and methods; abstract and final MUST be declared before the visibility; static MUST be declared after the visibility.';
+        return 'Method names MUST be declared in camelCase (detect only).';
     }
 }
