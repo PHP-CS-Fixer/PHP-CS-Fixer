@@ -31,7 +31,7 @@ class CamelCaseFixer implements FixerInterface
         foreach ($elements['methods'] as $index => $token) {
             $methodNameToken = $tokens->getNextTokenOfKind($index, array(array(T_STRING), ));
 
-            if (!Tokens::isMethodNameIsMagic($methodNameToken[1]) && !Tokens::isNameIsCamelCases($methodNameToken[1])) {
+            if (!Tokens::isMethodNameIsMagic($methodNameToken[1]) && !Tokens::isNameIsInCamelCase($methodNameToken[1])) {
                 echo '! File '.strtr($file->getRealPath(), '\\', '/').' contains method not in camelCase: '.$methodNameToken[1].PHP_EOL;
             }
         }

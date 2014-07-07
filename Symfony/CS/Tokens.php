@@ -151,9 +151,9 @@ class Tokens extends \SplFixedArray
      *
      * @return bool is string in camelCase
      */
-    public static function isNameIsCamelCases($content)
+    public static function isNameIsInCamelCase($name)
     {
-        return (ctype_lower($content[0]) && false === strpos($content, '_'));
+        return (ctype_lower($name[0]) && false === strpos($name, '_'));
     }
 
     /**
