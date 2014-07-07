@@ -336,6 +336,7 @@ class Tokens extends \SplFixedArray
 
             if (T_VARIABLE === $token[0] && 0 === $bracesLevel) {
                 $elements['properties'][$index] = $token;
+                continue;
             }
 
             if (T_FUNCTION === $token[0]) {
