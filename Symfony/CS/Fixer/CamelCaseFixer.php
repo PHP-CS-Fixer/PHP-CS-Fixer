@@ -26,51 +26,13 @@ class CamelCaseFixer implements FixerInterface
     {
         $tokens = Tokens::fromCode($content);
 
-        $inClass = false;
-        $curlyBracesLevel = 0;
-        $bracesLevel = 0;
+        $elements = $tokens->getClassyElements();
 
-        foreach ($tokens as $index => $token) {
-            if (!$inClass) {
-                $inClass = Tokens::isClassy($token);
-                continue;
-            }
+        foreach ($elements['methods'] as $index => $token) {
+            $methodNameToken = $tokens->getNextTokenOfKind($index, array(array(T_STRING), ));
 
-            if ('(' === $token) {
-                ++$bracesLevel;
-                continue;
-            }
-
-            if (')' === $token) {
-                --$bracesLevel;
-                continue;
-            }
-
-            if ('{' === $token || (is_array($token) && in_array($token[0], array(T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES, )))) {
-                ++$curlyBracesLevel;
-                continue;
-            }
-
-            if ('}' === $token) {
-                --$curlyBracesLevel;
-
-                if (0 === $curlyBracesLevel) {
-                    $inClass = false;
-                }
-
-                continue;
-            }
-
-            if (1 !== $curlyBracesLevel || !is_array($token)) {
-                continue;
-            }
-
-            if (T_FUNCTION === $token[0]) {
-                $methodToken = $tokens->getNextTokenOfKind($index, array(array(T_STRING), ));
-
-                if (!Tokens::isMethodNameIsMagic($methodToken[1]) && !Tokens::isNameIsCamelCases($methodToken[1])) {
-                    echo '! File '.strtr($file->getRealPath(), '\\', '/').' contains method not in camelCase: '.$methodToken[1].PHP_EOL;
-                }
+            if (!Tokens::isMethodNameIsMagic($methodNameToken[1]) && !Tokens::isNameIsCamelCases($methodNameToken[1])) {
+                echo '! File '.strtr($file->getRealPath(), '\\', '/').' contains method not in camelCase: '.$methodNameToken[1].PHP_EOL;
             }
         }
 
