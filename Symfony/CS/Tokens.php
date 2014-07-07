@@ -153,7 +153,7 @@ class Tokens extends \SplFixedArray
      */
     public static function isNativeConstant($token)
     {
-        static $nativeConstantStrings = array("true", "false", "null");
+        static $nativeConstantStrings = array('true', 'false', 'null');
 
         return is_array($token) && in_array(strtolower($token[1]), $nativeConstantStrings);
     }
@@ -295,6 +295,70 @@ class Tokens extends \SplFixedArray
         }
 
         return $code;
+    }
+
+    /**
+     * Get indexes of methods and properties in classy code (classes, interfaces and traits).
+     */
+    public function getClassyElements()
+    {
+        $this->rewind();
+
+        $elements = array(
+            'methods' => array(),
+            'properties' => array(),
+        );
+
+        $inClass = false;
+        $curlyBracesLevel = 0;
+        $bracesLevel = 0;
+
+        foreach ($this as $index => $token) {
+            if (!$inClass) {
+                $inClass = static::isClassy($token);
+                continue;
+            }
+
+            if ('(' === $token) {
+                ++$bracesLevel;
+                continue;
+            }
+
+            if (')' === $token) {
+                --$bracesLevel;
+                continue;
+            }
+
+            if ('{' === $token || (is_array($token) && in_array($token[0], array(T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES, )))) {
+                ++$curlyBracesLevel;
+                continue;
+            }
+
+            if ('}' === $token) {
+                --$curlyBracesLevel;
+
+                if (0 === $curlyBracesLevel) {
+                    $inClass = false;
+                }
+
+                continue;
+            }
+
+            if (1 !== $curlyBracesLevel || !is_array($token)) {
+                continue;
+            }
+
+            if (T_VARIABLE === $token[0] && 0 === $bracesLevel) {
+                $elements['properties'][$index] = $token;
+                continue;
+            }
+
+            if (T_FUNCTION === $token[0]) {
+                $elements['methods'][$index] = $token;
+            }
+        }
+
+        return $elements;
     }
 
     /**
