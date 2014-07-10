@@ -41,6 +41,8 @@ class OneClassPerFileFixerTest extends \PHPUnit_Framework_TestCase
             array('', '<?php namespace Foo; interface Bar {}', $file),
             array($expectedPrefix.'Bar, Baz'.PHP_EOL, '<?php namespace Foo; interface Bar {} interface Baz {}', $file),
             array($expectedPrefix.'Bar, Baz'.PHP_EOL, '<?php namespace Foo; class Bar {} interface Baz {}', $file),
+            array('', '<?php namespace Foo; class Test { public function bar() { $this->set(\RuntimeException::class); } }', $file),
+            array($expectedPrefix.'Test, Test2'.PHP_EOL, '<?php namespace Foo; class Test { public function bar() { $this->set(\RuntimeException::class); } } class Test2 { public function bar() { $this->set(\RuntimeException::class); } }', $file),
         );
 
         if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
