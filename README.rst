@@ -281,7 +281,7 @@ Note the additional ``-`` in front of the Fixer name.
     ;
 
     return Symfony\CS\Config\Config::create()
-        ->fixers(array('-Psr0Fixer'))
+        ->fixers(array('-psr0'))
         ->finder($finder)
     ;
 
