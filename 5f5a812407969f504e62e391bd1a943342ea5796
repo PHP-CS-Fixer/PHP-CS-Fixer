@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by sstok at 2014-07-11T13:14:42Z
+
+Travis failure seems unrelated.
+
+`phar-stub.php` should be added to blacklist of `.php_cs`
