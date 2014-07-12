@@ -25,8 +25,8 @@ class OneClassPerFileFixer implements FixerInterface
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens as $index => $token) {
-            if (Tokens::isClassy($token) && isset($tokens[$index + 2][1])) {
-                $classes[] = $tokens[$index + 2][1];
+            if ($token->isClassy() && $tokens[$index + 2]->isArray()) {
+                $classes[] = $tokens[$index + 2]->content;
             }
         }
 

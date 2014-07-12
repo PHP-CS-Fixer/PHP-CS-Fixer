@@ -34,21 +34,21 @@ class IncludeFixer implements FixerInterface
 
         foreach ($tokens as $index => $token) {
             if (!$inStatement) {
-                $inStatement = Tokens::isTokenGivenKind($token, $includyTokens);
+                $inStatement = $token->isGivenKind($includyTokens);
 
                 // Don't remove when the statement is wrapped. include is also legal as function parameter
                 // but requires being wrapped then
-                if ($inStatement && '(' !== $tokens->getPrevNonWhitespace($index)) {
+                if ($inStatement && '(' !== $tokens->getPrevNonWhitespace($index)->content) {
                     // Check this explicitly as there must be exactly one space after the statement
                     // And we can't add another tokens while removing this one
-                    if ('(' === $tokens[$index+1]) {
+                    if ('(' === $tokens[$index + 1]->content) {
                         $tokens->next();
-                        $tokens->removeTrailingWhitespace($index+1);
+                        $tokens->removeTrailingWhitespace($index + 1);
 
                         $inBraces = true;
                         $bracesLevel = 1; // pre-increase so the removal of the last ones works
-                        $tokens[$index+1] = ' ';
-                    } elseif ('(' === $tokens->getNextNonWhitespace($index)) {
+                        $tokens[$index + 1]->content = ' ';
+                    } elseif ('(' === $tokens->getNextNonWhitespace($index)->content) {
                         $inBraces = true;
                     }
                 }
@@ -56,15 +56,15 @@ class IncludeFixer implements FixerInterface
                 continue;
             }
 
-            if (Tokens::isWhitespace($token)) {
+            if ($token->isWhitespace()) {
                 $tokens->removeTrailingWhitespace($index);
-                $tokens[$index] = ' ';
+                $tokens[$index]->content = ' ';
                 $tokens->removeLeadingWhitespace($index);
             }
 
-            if ('(' === $token) {
+            if ('(' === $token->content) {
                 if ($inBraces && 0 === $bracesLevel) {
-                    $tokens->clear($index);
+                    $token->clear();
                 }
                 $tokens->removeTrailingWhitespace($index);
                 ++$bracesLevel;
@@ -72,19 +72,19 @@ class IncludeFixer implements FixerInterface
                 continue;
             }
 
-            if (')' === $token) {
+            if (')' === $token->content) {
                 $tokens->removeLeadingWhitespace($index);
                 --$bracesLevel;
 
                 if ($inBraces && 0 === $bracesLevel) {
-                    $tokens->clear($index);
+                    $token->clear();
                     $inStatement = false;
                 }
 
                 continue;
             }
 
-            if ($inStatement && ';' === $token) {
+            if ($inStatement && ';' === $token->content) {
                 $tokens->removeLeadingWhitespace($index);
                 $inStatement = false;
             }
