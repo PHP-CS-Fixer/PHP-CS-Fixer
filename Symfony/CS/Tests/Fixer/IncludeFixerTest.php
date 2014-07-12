@@ -34,6 +34,7 @@ class IncludeFixerTest extends \PHPUnit_Framework_TestCase
         return array(
             array("<?php include   'foo.php';", "<?php include 'foo.php';"),
             array("<?php include   'foo.php'  ;", "<?php include 'foo.php';"),
+            array("<?php include   ('foo.php')  ;", "<?php include 'foo.php';"),
             array('<?php include (  "Buzz/foo-Bar.php" );', '<?php include "Buzz/foo-Bar.php";'),
             array('<?php include (  "$buzz/foo-Bar.php" );', '<?php include "$buzz/foo-Bar.php";'),
             array('<?php include (  "{$buzz}/foo-Bar.php" );', '<?php include "{$buzz}/foo-Bar.php";'),

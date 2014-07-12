@@ -64,7 +64,9 @@ class IncludeFixer implements FixerInterface
                 if ($inBraces && 0 === $bracesLevel) {
                     $tokens->clear($index);
                 }
+
                 $tokens->removeTrailingWhitespace($index);
+                $tokens->next();
                 ++$bracesLevel;
 
                 continue;
@@ -72,6 +74,7 @@ class IncludeFixer implements FixerInterface
 
             if (')' === $token) {
                 $tokens->removeLeadingWhitespace($index);
+                $tokens->removeTrailingWhitespace($index);
                 --$bracesLevel;
 
                 if ($inBraces && 0 === $bracesLevel) {
