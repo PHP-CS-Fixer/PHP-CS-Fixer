@@ -131,14 +131,13 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Removes all the trailing whitespace, and moves the next position (when there was whitespace).
+     * Removes all the trailing whitespace.
      *
      * @param int $index
      */
     public function removeTrailingWhitespace($index)
     {
         if (isset($this[$index + 1]) && $this[$index + 1]->isWhitespace()) {
-            $this->next();
             $this[$index + 1]->clear();
         }
     }
