@@ -72,6 +72,7 @@ class Token
         $this->content = '';
         $this->id = null;
         $this->line = null;
+        $this->isArray = false;
     }
 
     /**
