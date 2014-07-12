@@ -24,6 +24,8 @@ class IncludeFixer implements FixerInterface
      */
     public function fix(\SplFileInfo $file, $content)
     {
+        static $includyTokens = array(T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE);
+
         $tokens = Tokens::fromCode($content);
 
         $inStatement = false;
@@ -32,7 +34,7 @@ class IncludeFixer implements FixerInterface
 
         foreach ($tokens as $index => $token) {
             if (!$inStatement) {
-                $inStatement = Tokens::isKeyword($token) && in_array($token[0], array(T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE));
+                $inStatement = Tokens::isTokenGivenKind($token, $includyTokens);
 
                 // Don't remove when the statement is wrapped. include is also legal as function parameter
                 // but requires being wrapped then
