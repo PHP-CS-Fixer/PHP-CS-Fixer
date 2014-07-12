@@ -132,30 +132,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Removes all the trailing whitespace.
-     *
-     * @param int $index
-     */
-    public function removeTrailingWhitespace($index)
-    {
-        if (isset($this[$index + 1]) && $this[$index + 1]->isWhitespace()) {
-            $this[$index + 1]->clear();
-        }
-    }
-
-    /**
-     * Removes all the leading whitespace.
-     *
-     * @param int $index
-     */
-    public function removeLeadingWhitespace($index)
-    {
-        if (isset($this[$index - 1]) && $this[$index - 1]->isWhitespace()) {
-            $this[$index - 1]->clear();
-        }
-    }
-
-    /**
      * Generate code from tokens.
      *
      * @return string
@@ -237,30 +213,16 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Get closest sibling token of given kind.
+     * Get closest next token which is non whitespace.
+     * This method is shorthand for getNonWhitespaceSibling method.
      *
-     * @param  string|array $index     token index
-     * @param  int          $direction direction for looking, +1 or -1
-     * @param  array        $tokens    possible tokens
+     * @param  string|array $index token index
+     * @param  array        $opts  array of extra options for isWhitespace method
      * @return string|array token
      */
-    public function getTokenOfKindSibling($index, $direction, array $tokens = array())
+    public function getNextNonWhitespace($index, array $opts = array())
     {
-        while (true) {
-            $index += $direction;
-
-            if (!$this->offsetExists($index)) {
-                return null;
-            }
-
-            $token = $this[$index];
-
-            foreach ($tokens as $tokenKind) {
-                if (static::compare($token->getInternalState(), $tokenKind)) {
-                    return $token;
-                }
-            }
-        }
+        return $this->getNonWhitespaceSibling($index, 1, $opts);
     }
 
     /**
@@ -274,19 +236,6 @@ class Tokens extends \SplFixedArray
     public function getNextTokenOfKind($index, array $tokens = array())
     {
         return $this->getTokenOfKindSibling($index, 1, $tokens);
-    }
-
-    /**
-     * Get closest previous token of given kind.
-     * This method is shorthand for getTokenOfKindSibling method.
-     *
-     * @param  string|array $index  token index
-     * @param  array        $tokens possible tokens
-     * @return string|array token
-     */
-    public function getPrevTokenOfKind($index, array $tokens = array())
-    {
-        return $this->getTokenOfKindSibling($index, -1, $tokens);
     }
 
     /**
@@ -315,19 +264,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Get closest next token which is non whitespace.
-     * This method is shorthand for getNonWhitespaceSibling method.
-     *
-     * @param  string|array $index token index
-     * @param  array        $opts  array of extra options for isWhitespace method
-     * @return string|array token
-     */
-    public function getNextNonWhitespace($index, array $opts = array())
-    {
-        return $this->getNonWhitespaceSibling($index, 1, $opts);
-    }
-
-    /**
      * Get closest previous token which is non whitespace.
      * This method is shorthand for getNonWhitespaceSibling method.
      *
@@ -341,49 +277,43 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Grab attributes before token at gixen index.
-     * Grabbed attributes are cleared by overriding them with empty string and should be manually applied with applyTokenAttribs method.
+     * Get closest previous token of given kind.
+     * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param  int   $index           token index
-     * @param  array $tokenAttribsMap token to attribute name map
-     * @param  array $attribs         array of token attributes
-     * @return array array of grabbed attributes
+     * @param  string|array $index  token index
+     * @param  array        $tokens possible tokens
+     * @return string|array token
      */
-    public function grabAttribsBeforeToken($index, $tokenAttribsMap, $attribs)
+    public function getPrevTokenOfKind($index, array $tokens = array())
+    {
+        return $this->getTokenOfKindSibling($index, -1, $tokens);
+    }
+
+    /**
+     * Get closest sibling token of given kind.
+     *
+     * @param  string|array $index     token index
+     * @param  int          $direction direction for looking, +1 or -1
+     * @param  array        $tokens    possible tokens
+     * @return string|array token
+     */
+    public function getTokenOfKindSibling($index, $direction, array $tokens = array())
     {
         while (true) {
-            $token = $this[--$index];
+            $index += $direction;
 
-            if (!$token->isArray()) {
-                if (in_array($token->content, array('{', '}', '(', ')', ))) {
-                    break;
+            if (!$this->offsetExists($index)) {
+                return null;
+            }
+
+            $token = $this[$index];
+
+            foreach ($tokens as $tokenKind) {
+                if (static::compare($token->getInternalState(), $tokenKind)) {
+                    return $token;
                 }
-
-                continue;
             }
-
-            // if token is attribute
-            if (array_key_exists($token->id, $tokenAttribsMap)) {
-                // set token attribute if token map defines attribute name for token
-                if ($tokenAttribsMap[$token->id]) {
-                    $attribs[$tokenAttribsMap[$token->id]] = $token->content;
-                }
-
-                // clear the token and whitespaces after it
-                $this[$index]->clear();
-                $this[$index + 1]->clear();
-
-                continue;
-            }
-
-            if ($token->isGivenKind(array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT, ))) {
-                continue;
-            }
-
-            break;
         }
-
-        return $attribs;
     }
 
     /**
@@ -441,5 +371,75 @@ class Tokens extends \SplFixedArray
                 'static' => '',
             )
         );
+    }
+
+    /**
+     * Grab attributes before token at gixen index.
+     * Grabbed attributes are cleared by overriding them with empty string and should be manually applied with applyTokenAttribs method.
+     *
+     * @param  int   $index           token index
+     * @param  array $tokenAttribsMap token to attribute name map
+     * @param  array $attribs         array of token attributes
+     * @return array array of grabbed attributes
+     */
+    public function grabAttribsBeforeToken($index, $tokenAttribsMap, $attribs)
+    {
+        while (true) {
+            $token = $this[--$index];
+
+            if (!$token->isArray()) {
+                if (in_array($token->content, array('{', '}', '(', ')', ))) {
+                    break;
+                }
+
+                continue;
+            }
+
+            // if token is attribute
+            if (array_key_exists($token->id, $tokenAttribsMap)) {
+                // set token attribute if token map defines attribute name for token
+                if ($tokenAttribsMap[$token->id]) {
+                    $attribs[$tokenAttribsMap[$token->id]] = $token->content;
+                }
+
+                // clear the token and whitespaces after it
+                $this[$index]->clear();
+                $this[$index + 1]->clear();
+
+                continue;
+            }
+
+            if ($token->isGivenKind(array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT, ))) {
+                continue;
+            }
+
+            break;
+        }
+
+        return $attribs;
+    }
+
+    /**
+     * Removes all the leading whitespace.
+     *
+     * @param int $index
+     */
+    public function removeLeadingWhitespace($index)
+    {
+        if (isset($this[$index - 1]) && $this[$index - 1]->isWhitespace()) {
+            $this[$index - 1]->clear();
+        }
+    }
+
+    /**
+     * Removes all the trailing whitespace.
+     *
+     * @param int $index
+     */
+    public function removeTrailingWhitespace($index)
+    {
+        if (isset($this[$index + 1]) && $this[$index + 1]->isWhitespace()) {
+            $this[$index + 1]->clear();
+        }
     }
 }
