@@ -187,12 +187,12 @@ class Token
     /**
      * Check if token is one of given kind.
      *
-     * @param  int|array $possibleKeywords check if keyword is a given keyword or one of given keywords
+     * @param  int|array $possibleKind kind or array of kinds
      * @return bool
      */
-    public function isGivenKind($possibleKinds)
+    public function isGivenKind($possibleKind)
     {
-        return $this->isArray && (is_array($possibleKinds) ? in_array($this->id, $possibleKinds) : $this->id === $possibleKinds);
+        return $this->isArray && (is_array($possibleKind) ? in_array($this->id, $possibleKind) : $this->id === $possibleKind);
     }
 
     /**
