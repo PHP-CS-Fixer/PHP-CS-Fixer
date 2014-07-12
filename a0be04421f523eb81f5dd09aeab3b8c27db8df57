@@ -1,0 +1,45 @@
+---------------------------------------------------------------------------
+
+by sstok at 2014-07-04T11:44:36Z
+
+Is there a PSR-1/2 rule about this? Should this only be done for numeric (integer and float) values?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-07-05T05:50:04Z
+
+There are no PSR rule for this, therefore it has level ALL. There are no
+PSR rules for any other fixer with level ALL.
+Just fill good to use always the same one not equal operator.
+
+PHP has the same operator for strings and numbers. It's not Perl ;)
+
+---------------------------------------------------------------------------
+
+by stof at 2014-07-08T16:00:21Z
+
+the other fixers at level ALL are related to the Symfony CS rules (it is a Symfony project initially).
+
+However, I agree with this fixer.
+
+@sstok ``!=`` and ``<>`` are strictly the same in PHP. They are both match to the same token T_IS_NOT_EQUAL
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-07-10T00:59:10Z
+
+:+1: nice insight on parsers @stof
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-07-10T08:13:11Z
+
+> the other fixers at level ALL are related to the Symfony CS rules (it is a Symfony project initially).
+
+Ah OK  :wink:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-07-12T09:28:25Z
+
+Please accept or refuse this PR ;)
