@@ -244,7 +244,7 @@ class Tokens extends \SplFixedArray
      */
     public function removeTrailingWhitespace($index)
     {
-        if (isset($this[$index+1]) && Tokens::isWhitespace($this[$index+1])) {
+        if (isset($this[$index+1]) && static::isWhitespace($this[$index+1])) {
             $this->clear($index+1);
         }
     }
@@ -256,7 +256,7 @@ class Tokens extends \SplFixedArray
      */
     public function removeLeadingWhitespace($index)
     {
-        if (isset($this[$index-1]) && Tokens::isWhitespace($this[$index-1])) {
+        if (isset($this[$index-1]) && static::isWhitespace($this[$index-1])) {
             $this->clear($index-1);
         }
     }
