@@ -132,6 +132,32 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Find tokens of given kind.
+     *
+     * @param  int|array $possibleKind kind or array of kind
+     * @return array     array of tokens of given kinds or assoc array of arrays
+     */
+    public function findGivenKind($possibleKind)
+    {
+        $this->rewind();
+
+        $elements = array();
+        $possibleKinds = is_array($possibleKind) ? $possibleKind : array($possibleKind, );
+
+        foreach ($possibleKinds as $kind) {
+            $elements[$kind] = array();
+        }
+
+        foreach ($this as $index => $token) {
+            if ($token->isGivenKind($possibleKinds)) {
+                $elements[$token->id][$index] = $token;
+            }
+        }
+
+        return is_array($possibleKind) ? $elements : $elements[$possibleKind];
+    }
+
+    /**
      * Generate code from tokens.
      *
      * @return string
