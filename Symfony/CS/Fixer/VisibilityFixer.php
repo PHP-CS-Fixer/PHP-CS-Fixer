@@ -23,62 +23,24 @@ class VisibilityFixer implements FixerInterface
     {
         $tokens = Tokens::fromCode($content);
 
-        $inClass = false;
-        $curlyBracesLevel = 0;
-        $bracesLevel = 0;
+        $elements = $tokens->getClassyElements();
 
-        foreach ($tokens as $index => $token) {
-            if (!$inClass) {
-                $inClass = Tokens::isClassy($token);
-                continue;
-            }
+        foreach ($elements['methods'] as $index => $token) {
+            $tokens->applyAttribs($index, $tokens->grabAttribsBeforeMethodToken($index));
 
-            if ('(' === $token) {
-                ++$bracesLevel;
-                continue;
-            }
+            // force whitespace between function keyword and function name to be single space char
+            $tokens[++$index]->content = ' ';
+        }
 
-            if (')' === $token) {
-                --$bracesLevel;
-                continue;
-            }
+        foreach ($elements['properties'] as $index => $token) {
+            $prevToken = $tokens->getPrevTokenOfKind($index, array(';', ',', ));
+            $nextToken = $tokens->getNextTokenOfKind($index, array(';', ',', ));
 
-            if ('{' === $token || (is_array($token) && in_array($token[0], array(T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES, )))) {
-                ++$curlyBracesLevel;
-                continue;
-            }
-
-            if ('}' === $token) {
-                --$curlyBracesLevel;
-
-                if (0 === $curlyBracesLevel) {
-                    $inClass = false;
-                }
-
-                continue;
-            }
-
-            if (1 !== $curlyBracesLevel || !is_array($token)) {
-                continue;
-            }
-
-            if (T_VARIABLE === $token[0] && 0 === $bracesLevel) {
-                // fix only if there is only one property defined in single statement
-                if (
-                    ',' !== $tokens->getPrevTokenOfKind($index, array(';', ',', )) &&
-                    ',' !== $tokens->getNextTokenOfKind($index, array(';', ',', ))
-                ) {
-                    $tokens->applyAttribs($index, $tokens->grabAttribsBeforePropertyToken($index));
-                }
-                continue;
-            }
-
-            if (T_FUNCTION === $token[0]) {
-                $tokens->applyAttribs($index, $tokens->grabAttribsBeforeMethodToken($index));
-
-                // force whitespace between function keyword and function name to be single space char
-                $tokens->next();
-                $tokens[$tokens->key()] = ' ';
+            if (
+                (!$prevToken || ',' !== $prevToken->content) &&
+                (!$nextToken || ',' !== $nextToken->content)
+            ) {
+                $tokens->applyAttribs($index, $tokens->grabAttribsBeforePropertyToken($index));
             }
         }
 

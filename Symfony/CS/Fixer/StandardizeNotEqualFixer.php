@@ -24,8 +24,8 @@ class StandardizeNotEqualFixer implements FixerInterface
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens as $index => $token) {
-            if (is_array($token) && T_IS_NOT_EQUAL === $token[0]) {
-                $tokens[$index] = '!=';
+            if ($token->isGivenKind(T_IS_NOT_EQUAL)) {
+                $tokens[$index]->content = '!=';
             }
         }
 
