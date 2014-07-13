@@ -309,7 +309,7 @@ class Tokens extends \SplFixedArray
             $token = $this[$index];
 
             foreach ($tokens as $tokenKind) {
-                if (static::compare($token->getInternalState(), $tokenKind)) {
+                if (static::compare($token->getPrototype(), $tokenKind)) {
                     return $token;
                 }
             }
