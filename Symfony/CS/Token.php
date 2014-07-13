@@ -21,13 +21,13 @@ class Token
 {
     /**
      * Content of token prototype.
-     * @type misc
+     * @type string
      */
     public $content;
 
     /**
      * ID of token prototype, if available.
-     * @type misc|null
+     * @type int|null
      */
     public $id;
 
@@ -78,9 +78,9 @@ class Token
     /**
      * Get token prototype.
      *
-     * @return misc token state
+     * @return string|array token prototype
      */
-    public function getInternalState()
+    public function getPrototype()
     {
         if (!$this->isArray) {
             return $this->content;
