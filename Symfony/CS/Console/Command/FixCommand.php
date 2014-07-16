@@ -57,6 +57,7 @@ class FixCommand extends Command
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The configuration name', null),
                 new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
+                new InputOption('output', '', InputOption::VALUE_OPTIONAL, 'Where to print out file',''),
                 new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or all)', null),
                 new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
@@ -92,6 +93,11 @@ using <comment>-name</comment>:
 
 A combination of <comment>--dry-run</comment>, <comment>--verbose</comment> and <comment>--diff</comment> will
 display summary of proposed fixes, leaving your files unchanged.
+
+The <comment>--output</comment> option lets you to set an output file where
+the result will be placed or anything else. For example you can use php://stderr/
+to get processed file contents, which will be useful if you want to create
+a binding to IDE.
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
@@ -169,7 +175,7 @@ EOF
             $stdin = true;
 
             // Can't write to STDIN
-            $input->setOption('dry-run', true);
+            $outFile='-';
         }
 
         if (null !== $path) {
@@ -192,6 +198,7 @@ EOF
             $configFile = $configDir . DIRECTORY_SEPARATOR . '.php_cs';
         }
 
+        $addSuppliedPathFromCli = true;
         if ($input->getOption('config')) {
             $config = null;
             foreach ($this->fixer->getConfigs() as $c) {
@@ -212,16 +219,23 @@ EOF
             } else {
                 $output->writeln(sprintf('Loaded config from "%s"', $configFile));
             }
+            $addSuppliedPathFromCli = false;
         } else {
             $config = $this->defaultConfig;
         }
 
-        if (is_file($path)) {
-            $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
-        } elseif ($stdin) {
-            $config->finder(new \ArrayIterator(array(new StdinFileInfo())));
-        } else {
-            $config->setDir($path);
+        $outFile=(isset($outFile)?$outFile:$input->getOption('output'));
+        if($outFile==='-')$outFile='php://stdout';
+        if($input->getOption('dry-run'))$outFile=null;
+
+        if ($addSuppliedPathFromCli) {
+            if (is_file($path)) {
+                $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
+            } elseif ($stdin) {
+                $config->finder(new \ArrayIterator(array(new StdinFileInfo())));
+            } else {
+                $config->setDir($path);
+            }
         }
 
         // register custom fixers from config
@@ -289,7 +303,7 @@ EOF
 
         $config->fixers($fixers);
 
-        $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
+        $changed = $this->fixer->fix($config, $outFile, $input->getOption('diff'));
 
         $i = 1;
         switch ($input->getOption('format')) {
