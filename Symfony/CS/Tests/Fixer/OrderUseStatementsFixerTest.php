@@ -11,12 +11,15 @@
 
 namespace Symfony\CS\Tests\Fixer;
 
+use Symfony\CS\Fixer\OrderUseStatementsFixer;
+
 class OrderUseStatementsFixerTest extends \PHPUnit_Framework_TestCase
 {
+
     public function testFix()
     {
-        $fixer = new UnusedUseStatementsFixer();
-        $file = $this->getTestFile();
+        $fixer = new OrderUseStatementsFixer();
+        $file  = $this->getTestFile();
 
         $expected = <<<'EOF'
 The normal
@@ -111,4 +114,5 @@ EOF;
 
         return $files[$filename];
     }
+
 }
