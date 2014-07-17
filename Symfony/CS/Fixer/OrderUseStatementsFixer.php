@@ -22,29 +22,46 @@ class OrderUseStatementsFixer implements FixerInterface
 
     public function fix(\SplFileInfo $file, $content)
     {
-        $unorderedLines = array();
-        $allLines       = explode("\n", $content);
+        $allLines = explode("\n", $content);
+        $tokens   = Tokens::fromCode($content);
 
-        $allTokens = Tokens::fromCode($content);
-
-        foreach ($allTokens as $key => $token) {
-            if ($token->id === T_USE) {
-                $nextToken = $allTokens->getNextNonWhitespace($key);
-                if ($nextToken && $nextToken->id) {
-                    $unorderedLines[$token->line - 1] = $allLines[$nextToken->line - 1];
-                }
-            }
-        }
-
-        $orderedLines = $unorderedLines;
-        sort($orderedLines);
+        $unorderedLines = $this->findLines($allLines, $tokens);
+        $lineOrder      = $this->getNewOrder($unorderedLines);
 
         $idx = 0;
-        foreach ($unorderedLines as $key => $value) {
-            $allLines[$key] = $orderedLines[$idx++];
+        foreach (array_keys($unorderedLines) as $lineNumber) {
+            $allLines[$lineNumber] = $unorderedLines[$lineOrder[$idx++]];
         }
 
         return implode("\n", $allLines);
+    }
+
+    private function findLines($allLines, $tokens)
+    {
+        foreach ($tokens as $key => $token) {
+            if ($token->id === T_USE) {
+                $nextToken = $tokens->getNextNonWhitespace($key);
+                if ($nextToken && $nextToken->id) {
+                    $lines[$token->line - 1] = $allLines[$nextToken->line - 1];
+                }
+            }
+        }
+        return $lines;
+    }
+
+    private function getNewOrder($lines)
+    {
+        $newLines = array_map(function($str) {
+            return trim($str);
+        }, $lines);
+        asort($newLines);
+
+        $lineOrder = array();
+        foreach ($newLines as $k => $v) {
+            $lineOrder[] = $k;
+        }
+
+        return $lineOrder;
     }
 
     public function getLevel()
