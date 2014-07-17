@@ -98,7 +98,7 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
 
     /**
      * In previous steps we have cut all horizontal whitespace,
-     * so where are left with function(){
+     * so where are left with function () {
      * Add a missing space at the end: function () {
      * This does not touch function declarations with brace on another line.
      */

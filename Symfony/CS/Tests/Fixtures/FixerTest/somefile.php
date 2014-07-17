@@ -4,7 +4,7 @@ namespace Test\AAaa;
 
 class test
 {
-    var $testA;
+    public $testA;
     public $test_B;
         public $testC;
 }

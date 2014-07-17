@@ -22,7 +22,8 @@ class VisibilityFixerTest extends \PHPUnit_Framework_TestCase
 
         $expected = <<<'EOF'
 <?php
-class Foo {
+class Foo
+{
     public $var;
     protected $var_foo;
     private $FooBar;
@@ -39,7 +40,8 @@ EOF;
 
         $input = <<<'EOF'
 <?php
-class Foo {
+class Foo
+{
     public $var;
     protected $var_foo;
     private $FooBar;
@@ -65,7 +67,8 @@ EOF;
 
         $expected = <<<'EOF'
 <?php
-abstract class Foo {
+abstract class Foo
+{
     public function foo1() {}
     public function foo2() {}
     protected function foo3() {}
@@ -81,17 +84,19 @@ abstract class Foo {
     public static function fooD() {}
     final public static function fooE() {}
     abstract public function fooF();
-        public function fooG ($foo) {}
-        public function fooH() {
+        public function fooG($foo) {}
+        public function fooH()
+        {
             static $foo;
-            $bar = function($baz) {};
+            $bar = function ($baz) {};
         }
 }
 EOF;
 
         $input = <<<'EOF'
 <?php
-abstract class Foo {
+abstract class Foo
+{
     public function foo1() {}
     function foo2() {}
     protected function foo3() {}
@@ -103,17 +108,17 @@ abstract class Foo {
     public final function foo8() {}
     public abstract function foo9();
     public static function fooA() {}
-    public static function	fooB() {}
-    public static function
-    fooC() {}
+    public static function fooB() {}
+    public static function fooC() {}
     public static
     function fooD() {}
     final static function fooE() {}
     abstract function fooF();
-        function fooG ($foo) {}
-        function fooH() {
+        function fooG($foo) {}
+        function fooH()
+        {
             static $foo;
-            $bar = function($baz) {};
+            $bar = function ($baz) {};
         }
 }
 EOF;
@@ -128,14 +133,16 @@ EOF;
 
         $expected = <<<'EOF'
 <?php
-function foo() {
+function foo()
+{
     static $foo;
 }
 EOF;
 
         $input = <<<'EOF'
 <?php
-function foo() {
+function foo()
+{
     static $foo;
 }
 EOF;
@@ -150,7 +157,8 @@ EOF;
 
         $expected = <<<'EOF'
 <?php
-function foo() {
+function foo()
+{
     static $class;
     $interface = 'foo';
     $trait = 'bar';
@@ -224,6 +232,7 @@ if (!function_exists('foo')) {
     ?>
         <div class="test"></div>
     <?php
+
         return $arg;
     }
 }
@@ -332,7 +341,8 @@ EOF;
         $expected = <<<'EOF'
 <?php
 
-class Foo {
+class Foo
+{
     public function bar()
     {
         $foo = "foo${width}foo";
@@ -360,7 +370,8 @@ function foo()
 }
 ?>
 <script type="text/javascript">
-function foo(bar) {
+function foo(bar)
+{
     alert(bar);
 }
 </script>
@@ -382,7 +393,8 @@ EOF;
 function registerJS()
 {
 echo '<script type="text/javascript">
-function foo(bar) {
+function foo(bar)
+{
     alert(bar);
 }
 </script>';
@@ -408,7 +420,8 @@ class Foo
     {
         $script = <<<JAVASCRIPT
 <script type="text/javascript">
-function foo(bar) {
+function foo(bar)
+{
     alert(bar);
 }
 </script>

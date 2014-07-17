@@ -30,6 +30,7 @@ class ReturnStatementsFixerTest extends \PHPUnit_Framework_TestCase
     {
         $return1 = <<<TEST
     \$foo = \$bar;
+
     return \$foo;
 TEST;
         $returnFixed1 = <<<TEST
@@ -52,6 +53,7 @@ TEST;
 
         $return3 = <<<TEST
     \$foo = \$bar;
+
     return;
 TEST;
         $returnFixed3 = <<<TEST
@@ -89,11 +91,6 @@ TEST;
 
         $return7 = <<<TEST
     if (\$foo == \$bar)
-
-
-
-
-
         return;
 TEST;
         $returnFixed7 = <<<TEST
@@ -103,12 +100,6 @@ TEST;
 
         $return8 = <<<TEST
     \$foo = \$bar;
-
-
-
-
-
-
 
     return \$foo;
 TEST;
