@@ -161,6 +161,8 @@ Choose from the list of available fixers:
 
 * **unused_use** [all] Unused use statements must be removed.
 
+* **ordered_use** [all] Ordering use statements.
+
 * **object_operator** [all] There should not be space before or after
   object T_OBJECT_OPERATOR.
 
