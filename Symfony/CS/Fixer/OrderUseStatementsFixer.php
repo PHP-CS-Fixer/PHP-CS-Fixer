@@ -26,14 +26,18 @@ class OrderUseStatementsFixer implements FixerInterface
         $tokens   = Tokens::fromCode($content);
 
         $unorderedLines = $this->findLines($allLines, $tokens);
-        $lineOrder      = $this->getNewOrder($unorderedLines);
+        if (count($unorderedLines)) {
+            $lineOrder = $this->getNewOrder($unorderedLines);
 
-        $idx = 0;
-        foreach (array_keys($unorderedLines) as $lineNumber) {
-            $allLines[$lineNumber] = $unorderedLines[$lineOrder[$idx++]];
+            $idx = 0;
+            foreach (array_keys($unorderedLines) as $lineNumber) {
+                $allLines[$lineNumber] = $unorderedLines[$lineOrder[$idx++]];
+            }
+
+            return implode("\n", $allLines);
+        } else {
+            return $content;
         }
-
-        return implode("\n", $allLines);
     }
 
     private function findLines($allLines, $tokens)
@@ -51,7 +55,7 @@ class OrderUseStatementsFixer implements FixerInterface
         return $lines;
     }
 
-    private function getNewOrder($lines)
+    private function getNewOrder(array $lines)
     {
         $newLines = array_map(function ($str) {
             return trim($str);
