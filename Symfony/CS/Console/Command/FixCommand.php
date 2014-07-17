@@ -334,6 +334,21 @@ EOF
                 $dom->formatOutput = true;
                 $output->write($dom->saveXML());
                 break;
+            case 'json':
+                $json = array('files'=>array());
+                foreach ($changed as $file => $fixResult) {
+                    $jfile=array('name'=>$file);
+                    if ($input->getOption('verbose')) {
+                        $jfile['appliedFixers']=$fixResult['appliedFixers'];
+                        if ($input->getOption('diff')) {
+                            $jfile['diff']=$fixResult['diff'];
+                        }
+                    }
+                    $json['files'][] = $jfile;
+                }
+                $output->write(json_encode($json));
+                //unset($json);
+                break;
             default:
                 throw new \InvalidArgumentException(sprintf('The format "%s" is not defined.', $input->getOption('format')));
         }
