@@ -38,6 +38,7 @@ class PhpClosingTagFixerTest extends \PHPUnit_Framework_TestCase
     {
         if (!ini_get('short_open_tag')) {
             $this->markTestSkipped('PHP short open tag are not enabled.');
+
             return;
         }
 
@@ -75,15 +76,15 @@ echo \'Foo\';
     public function provideCasesWithShortOpenTag()
     {
         return array(
-            array('<? echo \'Foo\';', '<? echo \'Foo\'; ?>'),
-            array('<? echo \'Foo\';', '<? echo \'Foo\';?>'),
-            array('<? echo \'Foo\'; ?>
-<p><? echo \'this is a template\'; ?></p>
-<? echo \'Foo\'; ?>
+            array('<?php echo \'Foo\';', '<?php echo \'Foo\'; ?>'),
+            array('<?php echo \'Foo\';', '<?php echo \'Foo\';?>'),
+            array('<?php echo \'Foo\'; ?>
+<p><?php echo \'this is a template\'; ?></p>
+<?php echo \'Foo\'; ?>
 ',
-                  '<? echo \'Foo\'; ?>
-<p><? echo \'this is a template\'; ?></p>
-<? echo \'Foo\'; ?>
+                  '<?php echo \'Foo\'; ?>
+<p><?php echo \'this is a template\'; ?></p>
+<?php echo \'Foo\'; ?>
 ',
             ),
         );

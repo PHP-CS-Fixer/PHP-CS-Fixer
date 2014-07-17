@@ -38,6 +38,7 @@ class OrderUseStatementsFixer implements FixerInterface
 
     private function findLines($allLines, $tokens)
     {
+        $lines = array();
         foreach ($tokens as $key => $token) {
             if ($token->id === T_USE) {
                 $nextToken = $tokens->getNextNonWhitespace($key);
@@ -46,12 +47,13 @@ class OrderUseStatementsFixer implements FixerInterface
                 }
             }
         }
+
         return $lines;
     }
 
     private function getNewOrder($lines)
     {
-        $newLines = array_map(function($str) {
+        $newLines = array_map(function ($str) {
             return trim($str);
         }, $lines);
         asort($newLines);

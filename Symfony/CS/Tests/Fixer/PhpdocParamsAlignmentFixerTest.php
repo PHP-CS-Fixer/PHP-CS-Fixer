@@ -32,11 +32,11 @@ EOF;
 
         $input = <<<'EOF'
 
-     * @param  EngineInterface $templating
-     * @param string      $format
-     * @param  integer  $code       An HTTP response status code
-     * @param    Boolean      $debug
-     * @param  mixed    &$reference     A parameter passed by reference
+     * @param EngineInterface $templating
+     * @param string          $format
+     * @param integer         $code       An HTTP response status code
+     * @param Boolean         $debug
+     * @param mixed           &$reference A parameter passed by reference
 
 EOF;
 
@@ -63,14 +63,14 @@ EOF;
 
         $input = <<<'EOF'
 
-     * @param  EngineInterface $templating
-     * @param string      $format
-     * @param  integer  $code       An HTTP response status code
-     *                              See constants
-     * @param    Boolean      $debug
-     * @param    Boolean      $debug See constants
-     * See constants
-     * @param  mixed    &$reference     A parameter passed by reference
+     * @param EngineInterface $templating
+     * @param string          $format
+     * @param integer         $code       An HTTP response status code
+     *                                    See constants
+     * @param Boolean         $debug
+     * @param Boolean         $debug      See constants
+     *                                    See constants
+     * @param mixed           &$reference A parameter passed by reference
 
 EOF;
 
@@ -102,19 +102,19 @@ EOF;
 
         $input = <<<'EOF'
 
-     * @param  EngineInterface $templating
-     * @param string      $format
-     * @param  integer  $code       An HTTP response status code
-     *                              See constants
-     * @param    Boolean      $debug
-     * @param    Boolean      $debug See constants
-     * See constants
-     * @param  mixed    &$reference     A parameter passed by reference
+     * @param EngineInterface $templating
+     * @param string          $format
+     * @param integer         $code       An HTTP response status code
+     *                                    See constants
+     * @param Boolean         $debug
+     * @param Boolean         $debug      See constants
+     *                                    See constants
+     * @param mixed           &$reference A parameter passed by reference
      *
      * @return Foo description foo
      *
-     * @throws Foo             description foo
-     * description foo
+     * @throws Foo description foo
+     *             description foo
 
 EOF;
 
@@ -137,10 +137,10 @@ EOF;
 
         $input = <<<'EOF'
 
-     * @param EngineInterface       $templating
-     * @param  mixed    &$reference     A parameter passed by reference
-     * @throws   Bar description bar
-     * @return  Foo     description foo
+     * @param  EngineInterface $templating
+     * @param  mixed           &$reference A parameter passed by reference
+     * @throws Bar             description bar
+     * @return Foo             description foo
 
 EOF;
 
@@ -167,10 +167,10 @@ EOF;
 
         $input = <<<'EOF'
 
-     * @param   string $param1
-     * @param bool   $param2 lorem ipsum
-     * @param    string $param3 lorem ipsum
-     * @return int lorem ipsum
+     * @param  string $param1
+     * @param  bool   $param2 lorem ipsum
+     * @param  string $param3 lorem ipsum
+     * @return int    lorem ipsum
 
 EOF;
 
@@ -190,7 +190,7 @@ EOF;
 
         $input = <<<'EOF'
 
-     * @return   Foo             description foo
+     * @return Foo description foo
 
 EOF;
 
@@ -209,7 +209,7 @@ EOF;
 EOF;
 
         $input = <<<'EOF'
-     * @param Foo $foo
+     * @param  Foo   $foo
      * @return $this
 
 EOF;
@@ -230,7 +230,7 @@ EOF;
 
         $input = <<<'EOF'
      * @return string
-     *  @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
 
 EOF;
 

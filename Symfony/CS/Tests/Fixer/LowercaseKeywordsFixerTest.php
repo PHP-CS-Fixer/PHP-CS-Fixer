@@ -33,7 +33,7 @@ class LowercaseKeywordsFixerTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('<?php $x = (1 and 2);', '<?php $x = (1 AND 2);'),
-            array('<?php foreach(array(1, 2, 3) as $val) {}', '<?php foreach(array(1, 2, 3) AS $val) {}'),
+            array('<?php foreach (array(1, 2, 3) as $val) {}', '<?php foreach(array(1, 2, 3) AS $val) {}'),
             array('<?php echo "GOOD AS NEW";', '<?php echo "GOOD AS NEW";'),
         );
     }

@@ -19,7 +19,7 @@ class ControlSpacesFixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
 
-        $try = 'try{';
+        $try = 'try {';
         $tryFixed = 'try {';
         $this->assertEquals($tryFixed, $fixer->fix($this->getTestFile(), $try));
         $this->assertEquals($tryFixed, $fixer->fix($this->getTestFile(), $tryFixed));
@@ -29,7 +29,7 @@ class ControlSpacesFixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
 
-        $while = 'do { ... }while($test);';
+        $while = 'do { ... } while ($test);';
         $whileFixed = 'do { ... } while ($test);';
         $this->assertEquals($whileFixed, $fixer->fix($this->getTestFile(), $while));
         $this->assertEquals($whileFixed, $fixer->fix($this->getTestFile(), $whileFixed));
@@ -50,9 +50,9 @@ class ControlSpacesFixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
 
-        $if = 'if(true === true
+        $if = 'if (true === true
             && true === true
-        )    {';
+        ) {';
 
         $ifFixed = 'if (true === true
             && true === true
@@ -65,11 +65,11 @@ class ControlSpacesFixerTest extends \PHPUnit_Framework_TestCase
     public function testFixControlsWithParenthesesAndSuffixBraceProvider()
     {
         return array(
-            array('if($test){', 'if ($test) {'),
-            array('if( $test ){', 'if ($test) {'),
-            array('if  (   $test ){', 'if ($test) {'),
-            array('if  (($test1 || $test2) && $test3){', 'if (($test1 || $test2) && $test3) {'),
-            array('if(($test1 || $test2) && $test3){', 'if (($test1 || $test2) && $test3) {'),
+            array('if ($test) {', 'if ($test) {'),
+            array('if ($test) {', 'if ($test) {'),
+            array('if ($test) {', 'if ($test) {'),
+            array('if (($test1 || $test2) && $test3){', 'if (($test1 || $test2) && $test3) {'),
+            array('if (($test1 || $test2) && $test3){', 'if (($test1 || $test2) && $test3) {'),
             array('if ($this->tesT ($test)) {', 'if ($this->tesT ($test)) {'),
             array('if ($this->testtesT ($test)) {', 'if ($this->testtesT ($test)) {'),
         );
@@ -79,7 +79,7 @@ class ControlSpacesFixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
 
-        $else = '}else{';
+        $else = '} else {';
         $elseFixed = '} else {';
         $this->assertEquals($elseFixed, $fixer->fix($this->getTestFile(), $else));
         $this->assertEquals($elseFixed, $fixer->fix($this->getTestFile(), $elseFixed));
@@ -89,7 +89,7 @@ class ControlSpacesFixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
 
-        $elseif = '}elseif($test){';
+        $elseif = '} elseif ($test) {';
         $elseifFixed = '} elseif ($test) {';
         $this->assertEquals($elseifFixed, $fixer->fix($this->getTestFile(), $elseif));
         $this->assertEquals($elseifFixed, $fixer->fix($this->getTestFile(), $elseifFixed));
@@ -99,7 +99,7 @@ class ControlSpacesFixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
 
-        $use = ')use($test){';
+        $use = ') use ($test) {';
         $useFixed = ') use ($test) {';
         $this->assertEquals($useFixed, $fixer->fix($this->getTestFile(), $use));
         $this->assertEquals($useFixed, $fixer->fix($this->getTestFile(), $useFixed));

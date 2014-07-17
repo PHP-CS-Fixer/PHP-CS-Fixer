@@ -11,8 +11,6 @@
 
 namespace Symfony\CS\Tests\Fixer;
 
-use Symfony\CS\Fixer\OrderUseStatementsFixer;
-
 class OrderUseStatementsFixerTest extends \PHPUnit_Framework_TestCase
 {
     public function testFix()
@@ -31,7 +29,6 @@ use Foo\Zar\Baz;
 <?php
 
  use Foo\Bar;
-use Foo\Bar\Baar\Baar;
    use Foo\Bar\Foo as Fooo;
 use Foo\Bar\FooBar as FooBaz;
 use Foo\Zar\Baz;
@@ -55,8 +52,8 @@ class AnnotatedClass
     {
         $bar = $foo->toArray();
         /** @var ArrayInterface $bar */
-        return function ()
-use ($bar, $baz) {};
+
+        return function () use ($bar, $baz) {};
     }
 }
 EOF;
@@ -84,7 +81,6 @@ $a = new FooBaz();
 $a = new someclass();
 
 use Symfony\Doctrine\Entities\Entity;
-use Foo\Bar\Baar\Baar;
 
 class AnnotatedClass
 {
@@ -96,8 +92,8 @@ class AnnotatedClass
     {
         $bar = $foo->toArray();
         /** @var ArrayInterface $bar */
-        return function ()
-use ($bar, $baz) {};
+
+        return function () use ($bar, $baz) {};
     }
 }
 EOF;

@@ -18,18 +18,18 @@ class FunctionDeclarationSpacingFixerTest extends \PHPUnit_Framework_TestCase
     public function data()
     {
         return array(
-            array('function foo () {', 'function foo() {'),
-            array('function foo($a, $b = true){', 'function foo($a, $b = true) {'),
-            array('function($i) {', 'function ($i) {'),
-            array('function($a)use($b) {', 'function ($a) use ($b) {'),
-            array('function foo( $a ) {', 'function foo($a) {'),
-            array('function ( $a) use ( $b ) {', 'function ($a) use ($b) {'),
+            array('function foo() {', 'function foo() {'),
+            array('function foo($a, $b = true) {', 'function foo($a, $b = true) {'),
+            array('function ($i) {', 'function ($i) {'),
+            array('function ($a) use ($b) {', 'function ($a) use ($b) {'),
+            array('function foo($a) {', 'function foo($a) {'),
+            array('function ($a) use ($b) {', 'function ($a) use ($b) {'),
             array("function foo(\$a)\n{", "function foo(\$a)\n{"),
             array("function foo( \$a)\n{", "function foo(\$a)\n{"),
             array("function foo( \$a)\t\n\t{", "function foo(\$a)\n\t{"),
             array("function foo(\n\$a\n) {", "function foo(\n\$a\n) {"),
-            array("function _function () {", "function _function() {"),
-            array("\$function = function(){", "\$function = function () {"),
+            array("function _function() {", "function _function() {"),
+            array("\$function = function () {", "\$function = function () {"),
             array("\$function('');", "\$function('');"),
         );
     }

@@ -29,7 +29,7 @@ class ShortTagFixerTest extends \PHPUnit_Framework_TestCase
     public function provideClosingTagExamples()
     {
         return array(
-            array('<?php echo \'Foo\';', '<? echo \'Foo\';'),
+            array('<?php echo \'Foo\';', '<?php echo \'Foo\';'),
             array('<?= echo \'Foo\';', '<?= echo \'Foo\';'),
             array('<?php echo \'Foo\'; ?> PLAIN TEXT', '<?php echo \'Foo\'; ?> PLAIN TEXT'),
             array('PLAIN TEXT<?php echo \'Foo\'; ?>', 'PLAIN TEXT<?php echo \'Foo\'; ?>'),
@@ -38,7 +38,7 @@ class ShortTagFixerTest extends \PHPUnit_Framework_TestCase
 echo \'Foo\';
 
 ',
-                  '<?
+                  '<?php
 
 echo \'Foo\';
 
