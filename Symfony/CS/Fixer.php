@@ -79,11 +79,11 @@ class Fixer
     /**
      * Fixes all files for the given finder.
      *
-     * @param ConfigInterface $config A ConfigInterface instance
-     * @param Boolean         $dryRun Whether to simulate the changes or not
-     * @param Boolean         $diff   Whether to provide diff
+     * @param ConfigInterface $config  A ConfigInterface instance
+     * @param mixed           $outFile A file where we should place an output, if it is an empty string, we place the output into the input, if it is null, we don't produce any output.
+     * @param Boolean         $diff    Whether to provide diff
      */
-    public function fix(ConfigInterface $config, $dryRun = false, $diff = false)
+    public function fix(ConfigInterface $config, $outFile = '', $diff = false)
     {
         $this->sortFixers();
 
@@ -94,7 +94,7 @@ class Fixer
                 continue;
             }
 
-            if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff)) {
+            if ($fixInfo = $this->fixFile($file, $fixers, $outFile, $diff)) {
                 if ($file instanceof FinderSplFileInfo) {
                     $changed[$file->getRelativePathname()] = $fixInfo;
                 } else {
@@ -106,10 +106,13 @@ class Fixer
         return $changed;
     }
 
-    public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff)
+    public function fixFile(\SplFileInfo $file, array $fixers, $outFile, $diff)
     {
-        $new = $old = file_get_contents($file->getRealpath());
+        $name=$file->getRealpath();
+        $new = $old = file_get_contents($name);
         $appliedFixers = array();
+
+        if($outFile==='')$outFile=$name;
 
         foreach ($fixers as $fixer) {
             if (!$fixer->supports($file)) {
@@ -124,8 +127,8 @@ class Fixer
         }
 
         if ($new != $old) {
-            if (!$dryRun) {
-                file_put_contents($file->getRealpath(), $new);
+            if ($outFile!==null) {
+                file_put_contents($outFile, $new);
             }
 
             $fixInfo = array('appliedFixers' => $appliedFixers);
