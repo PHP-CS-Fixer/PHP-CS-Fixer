@@ -26,7 +26,7 @@ class OrderUseStatementsFixer implements FixerInterface
             $orderedUseStatements = $useStatements;
             sort($orderedUseStatements);
         }
-        if ($useStatements !== $orderedUseStatements) {
+        if (isset($orderedUseStatements) && $useStatements !== $orderedUseStatements) {
             $md5 = array_map(function($str) {
                 return md5(time() . $str);
             }, $useStatements);
