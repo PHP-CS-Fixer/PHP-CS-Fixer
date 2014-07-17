@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Tokens;
 
 /**
  * @author Paweł Zaremba <pawzar@gmail.com>
@@ -21,19 +22,29 @@ class OrderUseStatementsFixer implements FixerInterface
 
     public function fix(\SplFileInfo $file, $content)
     {
-        preg_match_all('/^use[^;]+;/m', $content, $matches);
-        if (count($useStatements = $matches[0]) > 1) {
-            $orderedUseStatements = $useStatements;
-            sort($orderedUseStatements);
+        $unorderedLines = array();
+        $allLines       = explode("\n", $content);
+
+        $allTokens = Tokens::fromCode($content);
+
+        foreach ($allTokens as $key => $token) {
+            if ($token->id === T_USE) {
+                $nextToken = $allTokens->getNextNonWhitespace($key);
+                if ($nextToken && $nextToken->id) {
+                    $unorderedLines[$token->line - 1] = $allLines[$nextToken->line - 1];
+                }
+            }
         }
-        if (isset($orderedUseStatements) && $useStatements !== $orderedUseStatements) {
-            $md5 = array_map(function($str) {
-                return md5(time() . $str);
-            }, $useStatements);
-            $content = str_replace($useStatements, $md5, $content);
-            $content = str_replace($md5, $orderedUseStatements, $content);
+
+        $orderedLines = $unorderedLines;
+        sort($orderedLines);
+
+        $idx = 0;
+        foreach ($unorderedLines as $key => $value) {
+            $allLines[$key] = $orderedLines[$idx++];
         }
-        return $content;
+
+        return implode("\n", $allLines);
     }
 
     public function getLevel()
