@@ -52,6 +52,10 @@ class EncodingFixer implements FixerInterface
 
     public function supports(\SplFileInfo $file)
     {
+        if (!extension_loaded('mbstring')) {
+            return false;
+        }
+
         return 'php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION);
     }
 

@@ -18,6 +18,13 @@ use Symfony\CS\Fixer\EncodingFixer;
  */
 class EncodingFixerTest extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        if (!extension_loaded('mbstring')) {
+            $this->markTestSkipped('PHP mbstring extension is not enabled.');
+        }
+    }
+
     /**
      * @dataProvider provideExamples
      */
