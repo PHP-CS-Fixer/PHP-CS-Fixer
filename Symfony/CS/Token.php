@@ -144,10 +144,7 @@ class Token
      */
     public function isCast()
     {
-        static $castTokens = array(
-            T_INT_CAST, T_BOOL_CAST, T_DOUBLE_CAST, T_DOUBLE_CAST, T_DOUBLE_CAST,
-            T_STRING_CAST, T_ARRAY_CAST, T_OBJECT_CAST, T_UNSET_CAST
-        );
+        static $castTokens = array(T_ARRAY_CAST, T_BOOL_CAST, T_DOUBLE_CAST, T_INT_CAST, T_OBJECT_CAST, T_STRING_CAST, T_UNSET_CAST, );
 
         return $this->isGivenKind($castTokens);
     }
