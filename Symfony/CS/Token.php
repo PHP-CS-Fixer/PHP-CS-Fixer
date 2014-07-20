@@ -227,10 +227,10 @@ class Token
     {
         $whitespaces = isset($opts['whitespaces']) ? $opts['whitespaces'] : " \t\n";
 
-        return
-            (!$this->isArray && '' === trim($this->content, $whitespaces))
-                ||
-            ($this->isGivenKind(T_WHITESPACE) && '' === trim($this->content, $whitespaces))
-        ;
+        if ($this->isArray && !$this->isGivenKind(T_WHITESPACE)) {
+            return false;
+        }
+
+        return '' === trim($this->content, $whitespaces);
     }
 }
