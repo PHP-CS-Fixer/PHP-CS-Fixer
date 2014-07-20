@@ -57,24 +57,6 @@ class TokenTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->getForeachTokenPrototype(), $this->getForeachToken()->getPrototype());
     }
 
-    public function testGivenKind()
-    {
-        $braceToken = $this->getBraceToken();
-        $foreachToken = $this->getForeachToken();
-
-        $this->assertFalse($braceToken->isGivenKind(T_FOR));
-        $this->assertFalse($braceToken->isGivenKind(T_FOREACH));
-        $this->assertFalse($braceToken->isGivenKind(array(T_FOR, )));
-        $this->assertFalse($braceToken->isGivenKind(array(T_FOREACH, )));
-        $this->assertFalse($braceToken->isGivenKind(array(T_FOR, T_FOREACH, )));
-
-        $this->assertFalse($foreachToken->isGivenKind(T_FOR));
-        $this->assertTrue($foreachToken->isGivenKind(T_FOREACH));
-        $this->assertFalse($foreachToken->isGivenKind(array(T_FOR, )));
-        $this->assertTrue($foreachToken->isGivenKind(array(T_FOREACH, )));
-        $this->assertTrue($foreachToken->isGivenKind(array(T_FOR, T_FOREACH, )));
-    }
-
     public function testIsArray()
     {
         $this->assertFalse($this->getBraceToken()->isArray());
@@ -144,6 +126,24 @@ class TokenTest extends \PHPUnit_Framework_TestCase
             array(new Token(array(T_COMMENT, '/* comment */', 1, )), true, ),
             array(new Token(array(T_DOC_COMMENT, '/** docs */', 1, )), true, ),
         );
+    }
+
+    public function testIsGivenKind()
+    {
+        $braceToken = $this->getBraceToken();
+        $foreachToken = $this->getForeachToken();
+
+        $this->assertFalse($braceToken->isGivenKind(T_FOR));
+        $this->assertFalse($braceToken->isGivenKind(T_FOREACH));
+        $this->assertFalse($braceToken->isGivenKind(array(T_FOR, )));
+        $this->assertFalse($braceToken->isGivenKind(array(T_FOREACH, )));
+        $this->assertFalse($braceToken->isGivenKind(array(T_FOR, T_FOREACH, )));
+
+        $this->assertFalse($foreachToken->isGivenKind(T_FOR));
+        $this->assertTrue($foreachToken->isGivenKind(T_FOREACH));
+        $this->assertFalse($foreachToken->isGivenKind(array(T_FOR, )));
+        $this->assertTrue($foreachToken->isGivenKind(array(T_FOREACH, )));
+        $this->assertTrue($foreachToken->isGivenKind(array(T_FOR, T_FOREACH, )));
     }
 
     public function testIsKeywords()
