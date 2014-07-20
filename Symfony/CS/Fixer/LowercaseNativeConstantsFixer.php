@@ -24,16 +24,16 @@ class LowercaseNativeConstantsFixer implements FixerInterface
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens as $index => $token) {
-            if (Tokens::isNativeConstant($token)) {
+            if ($token->isNativeConstant()) {
                 if (
-                    is_array($tokens->getPrevNonWhitespace($index, array('whitespaces' => " \t\n", )))
+                    $tokens->getPrevNonWhitespace($index, array('whitespaces' => " \t\n", ))->isArray()
                     ||
-                    is_array($tokens->getNextNonWhitespace($index, array('whitespaces' => " \t\n", )))
+                    $tokens->getNextNonWhitespace($index, array('whitespaces' => " \t\n", ))->isArray()
                 ) {
                     continue;
                 }
 
-                $tokens[$index] = strtolower($token[1]);
+                $token->content = strtolower($token->content);
             }
         }
 

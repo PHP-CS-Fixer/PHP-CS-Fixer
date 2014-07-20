@@ -12,9 +12,10 @@
 namespace Symfony\CS\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Tokens;
 
 /**
- * @author Саша Стаменковић <umpirsky@gmail.com>
+ * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
 class IncludeFixer implements FixerInterface
 {
@@ -23,24 +24,76 @@ class IncludeFixer implements FixerInterface
      */
     public function fix(\SplFileInfo $file, $content)
     {
-        $statements = implode('|', array(
-            'include',
-            'include_once',
-            'require',
-            'require_once',
-        ));
+        static $includyTokens = array(T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE);
 
-        return preg_replace(
-            array(
-                sprintf('#^(\s*(?:return +)?(?:\$[a-z0-9_()>-]+ *= *)?(?:%s))\s*\(?\s*[\'"]{1}(?!\")([a-zA-Z0-9\-_.\/]*)[\'"]{1}\s*\)?#m', $statements), // Remove enclosing brackets, trailing spaces and convert double with single quotes
-                sprintf('#^(\s*(?:return +)?(?:\$[a-z0-9_()>-]+ *= *)?(?:%s))[^\S\n]+(.*)#m', $statements),                                              // Replace multiple spaces with single between include and file path
-            ),
-            array(
-                "\\1 '\\2'",
-                '\\1 \\2',
-            ),
-            $content
-        );
+        $tokens = Tokens::fromCode($content);
+
+        $inStatement = false;
+        $inBraces = false;
+        $bracesLevel = 0;
+
+        foreach ($tokens as $index => $token) {
+            if (!$inStatement) {
+                $inStatement = $token->isGivenKind($includyTokens);
+
+                // Don't remove when the statement is wrapped. include is also legal as function parameter
+                // but requires being wrapped then
+                if ($inStatement && '(' !== $tokens->getPrevNonWhitespace($index)->content) {
+                    // Check this explicitly as there must be exactly one space after the statement
+                    // And we can't add another tokens while removing this one
+                    if ('(' === $tokens[$index + 1]->content) {
+                        $tokens->next();
+                        $tokens->removeTrailingWhitespace($index + 1);
+
+                        $inBraces = true;
+                        $bracesLevel = 1; // pre-increase so the removal of the last ones works
+                        $tokens[$index + 1]->content = ' ';
+                    } elseif ('(' === $tokens->getNextNonWhitespace($index)->content) {
+                        $inBraces = true;
+                    }
+                }
+
+                continue;
+            }
+
+            if ($token->isWhitespace()) {
+                $tokens->removeTrailingWhitespace($index);
+                $tokens[$index]->content = ' ';
+                $tokens->removeLeadingWhitespace($index);
+            }
+
+            if ('(' === $token->content) {
+                if ($inBraces && 0 === $bracesLevel) {
+                    $token->clear();
+                }
+
+                $tokens->removeTrailingWhitespace($index);
+                $tokens->next();
+                ++$bracesLevel;
+
+                continue;
+            }
+
+            if (')' === $token->content) {
+                $tokens->removeLeadingWhitespace($index);
+                $tokens->removeTrailingWhitespace($index);
+                --$bracesLevel;
+
+                if ($inBraces && 0 === $bracesLevel) {
+                    $token->clear();
+                    $inStatement = false;
+                }
+
+                continue;
+            }
+
+            if ($inStatement && ';' === $token->content) {
+                $tokens->removeLeadingWhitespace($index);
+                $inStatement = false;
+            }
+        }
+
+        return $tokens->generateCode();
     }
 
     /**

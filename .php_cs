@@ -1,6 +1,6 @@
 <?php
 
-$finder = Symfony\CS\Finder\DefaultFinder::create()
+return Symfony\CS\Config\Config::create()->finder(Symfony\CS\Finder\DefaultFinder::create()
     ->notName('LICENSE')
     ->notName('README.md')
     ->notName('composer.*')
@@ -9,12 +9,8 @@ $finder = Symfony\CS\Finder\DefaultFinder::create()
     ->exclude('vendor')
     ->exclude('Symfony/CS/Tests/Fixer')
     ->exclude('Symfony/CS/Tests/Fixtures')
+    ->notName('phar-stub.php')
     ->notName('ElseifFixer.php')
     ->notName('FunctionDeclarationSpacingFixer.php')
     ->in(__DIR__)
-;
-
-return Symfony\CS\Config\Config::create()
-    ->finder($finder)
-;
-
+);

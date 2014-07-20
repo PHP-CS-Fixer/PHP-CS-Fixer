@@ -135,7 +135,7 @@ and directories that need to be analyzed:
     ;
 
 You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
-The following example shows how to use all Fixers but the `Psr0Fixer`.
+The following example shows how to use all Fixers but the `psr0` fixer.
 Note the additional <comment>-</comment> in front of the Fixer name.
 
     <?php
@@ -146,7 +146,7 @@ Note the additional <comment>-</comment> in front of the Fixer name.
     ;
 
     return Symfony\CS\Config\Config::create()
-        ->fixers(array('-Psr0Fixer'))
+        ->fixers(array('-psr0'))
         ->finder(\$finder)
     ;
 
@@ -333,6 +333,22 @@ EOF
 
                 $dom->formatOutput = true;
                 $output->write($dom->saveXML());
+                break;
+            case 'json':
+                $json = array('files' => array());
+                foreach ($changed as $file => $fixResult) {
+                    $jfile = array('name' => $file);
+
+                    if ($input->getOption('verbose')) {
+                        $jfile['appliedFixers'] = $fixResult['appliedFixers'];
+                        if ($input->getOption('diff')) {
+                            $jfile['diff'] = $fixResult['diff'];
+                        }
+                    }
+
+                    $json['files'][] = $jfile;
+                }
+                $output->write(json_encode($json));
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('The format "%s" is not defined.', $input->getOption('format')));

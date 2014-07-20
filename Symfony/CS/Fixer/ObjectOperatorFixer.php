@@ -27,18 +27,18 @@ class ObjectOperatorFixer implements FixerInterface
 
         foreach ($tokens as $index => $token) {
             // skip if $token is not ->
-            if (!is_array($token) || T_OBJECT_OPERATOR !== $token[0]) {
+            if (!$token->isGivenKind(T_OBJECT_OPERATOR)) {
                 continue;
             }
 
             // clear whitespace before ->
-            if (Tokens::isWhitespace($tokens[$index - 1], array('whitespaces' => " \t", )) && !Tokens::isComment($tokens[$index - 2])) {
-                $tokens->clear($index - 1);
+            if ($tokens[$index - 1]->isWhitespace(array('whitespaces' => " \t", )) && !$tokens[$index -2]->isComment()) {
+                $tokens[$index - 1]->clear();
             }
 
             // clear whitespace after ->
-            if (Tokens::isWhitespace($tokens[$index + 1], array('whitespaces' => " \t", )) && !Tokens::isComment($tokens[$index + 2])) {
-                $tokens->clear($index + 1);
+            if ($tokens[$index + 1]->isWhitespace(array('whitespaces' => " \t", )) && !$tokens[$index + 2]->isComment()) {
+                $tokens[$index + 1]->clear();
             }
         }
 

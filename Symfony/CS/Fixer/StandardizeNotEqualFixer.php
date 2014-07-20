@@ -17,15 +17,15 @@ use Symfony\CS\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class LowercaseKeywordsFixer implements FixerInterface
+class StandardizeNotEqualFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens as $index => $token) {
-            if ($token->isKeyword()) {
-                $token->content = strtolower($token->content);
+            if ($token->isGivenKind(T_IS_NOT_EQUAL)) {
+                $tokens[$index]->content = '!=';
             }
         }
 
@@ -34,8 +34,7 @@ class LowercaseKeywordsFixer implements FixerInterface
 
     public function getLevel()
     {
-        // defined in PSR2 ¶2.5
-        return FixerInterface::PSR2_LEVEL;
+        return FixerInterface::ALL_LEVEL;
     }
 
     public function getPriority()
@@ -50,11 +49,11 @@ class LowercaseKeywordsFixer implements FixerInterface
 
     public function getName()
     {
-        return 'lowercase_keywords';
+        return 'standardize_not_equal';
     }
 
     public function getDescription()
     {
-        return 'PHP keywords MUST be in lower case.';
+        return 'Replace all <> with !=.';
     }
 }

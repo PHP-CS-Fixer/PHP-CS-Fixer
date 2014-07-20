@@ -11,22 +11,40 @@
 
 namespace Symfony\CS\Tests\Fixer;
 
-use Symfony\CS\Fixer\PhpClosingTagFixer;
+use Symfony\CS\Fixer\PhpClosingTagFixer as Fixer;
 
 class PhpClosingTagFixerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @dataProvider provideClosingTagExamples
-     */
-    public function testOneLineFix($expected, $input)
+    private function makeTest($expected, $input)
     {
-        $fixer = new PhpClosingTagFixer();
+        $fixer = new Fixer();
         $file = $this->getTestFile();
 
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
 
-    public function provideClosingTagExamples()
+    /**
+     * @dataProvider provideCasesWithFullOpenTag
+     */
+    public function testCasesWithFullOpenTag($expected, $input)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    /**
+     * @dataProvider provideCasesWithShortOpenTag
+     */
+    public function testCasesWithShortOpenTag($expected, $input)
+    {
+        if (!ini_get('short_open_tag')) {
+            $this->markTestSkipped('PHP short open tag are not enabled.');
+            return;
+        }
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideCasesWithFullOpenTag()
     {
         return array(
             array('<?php echo \'Foo\';', '<?php echo \'Foo\'; ?>'),
@@ -35,15 +53,12 @@ class PhpClosingTagFixerTest extends \PHPUnit_Framework_TestCase
             array('PLAIN TEXT<?php echo \'Foo\'; ?>', 'PLAIN TEXT<?php echo \'Foo\'; ?>'),
             array('<?php
 
-echo \'Foo\';
-
-',
+echo \'Foo\';',
                   '<?php
 
 echo \'Foo\';
 
-?>
-    ',
+?>',
             ),
             array('<?php echo \'Foo\'; ?>
 <p><?php echo \'this is a template\'; ?></p>
@@ -52,6 +67,23 @@ echo \'Foo\';
                   '<?php echo \'Foo\'; ?>
 <p><?php echo \'this is a template\'; ?></p>
 <?php echo \'Foo\'; ?>
+',
+            ),
+        );
+    }
+
+    public function provideCasesWithShortOpenTag()
+    {
+        return array(
+            array('<? echo \'Foo\';', '<? echo \'Foo\'; ?>'),
+            array('<? echo \'Foo\';', '<? echo \'Foo\';?>'),
+            array('<? echo \'Foo\'; ?>
+<p><? echo \'this is a template\'; ?></p>
+<? echo \'Foo\'; ?>
+',
+                  '<? echo \'Foo\'; ?>
+<p><? echo \'this is a template\'; ?></p>
+<? echo \'Foo\'; ?>
 ',
             ),
         );

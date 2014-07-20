@@ -24,12 +24,11 @@ class IndentationFixer implements FixerInterface
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens as $index => $token) {
-            if (!Tokens::isWhitespace($token)) {
+            if (!$token->isWhitespace()) {
                 continue;
             }
 
-            $tokenContent = is_array($token) ? $token[1] : $token;
-            $tokens[$index] = preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $tokenContent);
+            $tokens[$index]->content = preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $token->content);
         }
 
         return $tokens->generateCode();
