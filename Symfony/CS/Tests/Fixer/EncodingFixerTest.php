@@ -11,7 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer;
 
-use Symfony\CS\Fixer\EncodingFixer;
+use Symfony\CS\Fixer\EncodingFixer as Fixer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -23,34 +23,28 @@ class EncodingFixerTest extends \PHPUnit_Framework_TestCase
      */
     public function testFix($expected, $input, $file)
     {
-        $this->expectOutputString($expected);
+        $fixer = new Fixer();
 
-        $fixer = new EncodingFixer();
-
-        $fixer->fix($file, $input);
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function provideExamples()
     {
-
-        $examples = array(
-            $this->prepareTestCase('test-ascii.php'),
-            $this->prepareTestCase('test-other.php', 'SJIS'),
-            $this->prepareTestCase('test-utf8.php'),
-            $this->prepareTestCase('test-utf8-bom.php', 'UTF-8 BOM'),
+        return array(
+            $this->prepareTestCase('test-utf8.php', 'test-utf8.php'),
+            $this->prepareTestCase('test-utf8.php', 'test-utf8-bom.php'),
         );
-
-        return $examples;
     }
 
-    private function prepareTestCase($file, $errorEncoding = null)
+    private function prepareTestCase($expectedFilename, $inputFilename)
     {
-        $file = $this->getTestFile(__DIR__.'/../Fixtures/FixerTest/encoding/'.$file);
+        $expectedFile = $this->getTestFile(__DIR__.'/../Fixtures/FixerTest/encoding/'.$expectedFilename);
+        $inputFile = $this->getTestFile(__DIR__.'/../Fixtures/FixerTest/encoding/'.$inputFilename);
 
         return array(
-            $errorEncoding ? '! File '.strtr($file->getRealPath(), '\\', '/').' with incorrect encoding: '.$errorEncoding.PHP_EOL : '',
-            file_get_contents($file->getRealpath()),
-            $file,
+            file_get_contents($expectedFile->getRealpath()),
+            file_get_contents($inputFile->getRealpath()),
+            $inputFile,
         );
     }
 

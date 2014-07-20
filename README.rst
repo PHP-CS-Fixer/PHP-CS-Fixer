@@ -148,7 +148,7 @@ automatically fix anything:
 
 Choose from the list of available fixers:
 
-* **encoding** [PSR-1] PHP code MUST use only UTF-8 without BOM (detect only).
+* **encoding** [PSR-1] PHP code MUST use only UTF-8 without BOM (remove BOM).
 
 * **linefeed** [PSR-2] All PHP files must use the Unix LF
   (linefeed) line ending.
