@@ -55,7 +55,7 @@ class FixCommand extends Command
             ->setDefinition(array(
                 new InputArgument('path', InputArgument::OPTIONAL, 'The path', null),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The configuration name', null),
-                new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
+                new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a php-cs-fixer.php file ', null),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
                 new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or all)', null),
                 new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
@@ -117,7 +117,7 @@ fixed but without actually modifying them:
     <info>php %command.full_name% /path/to/code --dry-run</info>
 
 Instead of using command line options to customize the fixer, you can save the
-configuration in a <comment>.php_cs</comment> file in the root directory of
+configuration in a <comment>php-cs-fixer.php</comment> file in the root directory of
 your project. The file must return an instance of
 `Symfony\CS\ConfigInterface`, which lets you configure the fixers, the files,
 and directories that need to be analyzed:
@@ -151,7 +151,7 @@ Note the additional <comment>-</comment> in front of the Fixer name.
     ;
 
 With the <comment>--config-file</comment> option you can specify the path to the
-<comment>.php_cs</comment> file.
+<comment>php-cs-fixer.php</comment> file.
 EOF
             );
     }
@@ -189,7 +189,12 @@ EOF
             } else {
                 $configDir = $path;
             }
-            $configFile = $configDir . DIRECTORY_SEPARATOR . '.php_cs';
+
+            if (file_exists($configDir . DIRECTORY_SEPARATOR . 'php-cs-fixer.php')) {
+                $configFile = $configDir . DIRECTORY_SEPARATOR . 'php-cs-fixer.php';
+            } elseif (file_exists($configDir . DIRECTORY_SEPARATOR . 'php-cs-fixer.php.dist')) {
+                $configFile = $configDir . DIRECTORY_SEPARATOR . 'php-cs-fixer.php.dist';
+            }
         }
 
         if ($input->getOption('config')) {
@@ -204,7 +209,7 @@ EOF
             if (null === $config) {
                 throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined', $input->getOption('config')));
             }
-        } elseif (file_exists($configFile)) {
+        } elseif ($configFile) {
             $config = include $configFile;
             // verify that the config has an instance of Config
             if (!$config instanceof Config) {
