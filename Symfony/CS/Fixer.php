@@ -116,14 +116,14 @@ class Fixer
                 continue;
             }
 
-            $new1 = $fixer->fix($file, $new);
-            if ($new1 != $new) {
+            $newest = $fixer->fix($file, $new);
+            if ($newest !== $new) {
                 $appliedFixers[] = $fixer->getName();
             }
-            $new = $new1;
+            $new = $newest;
         }
 
-        if ($new != $old) {
+        if ($new !== $old) {
             if (!$dryRun) {
                 file_put_contents($file->getRealpath(), $new);
             }
@@ -177,7 +177,7 @@ class Fixer
     private function sortFixers()
     {
         usort($this->fixers, function ($a, $b) {
-            if ($a->getPriority() == $b->getPriority()) {
+            if ($a->getPriority() === $b->getPriority()) {
                 return 0;
             }
 

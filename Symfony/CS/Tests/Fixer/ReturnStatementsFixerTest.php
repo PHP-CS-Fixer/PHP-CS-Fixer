@@ -61,11 +61,11 @@ TEST;
 TEST;
 
         $return4 = <<<TEST
-    if (\$foo == \$bar)
+    if (\$foo === \$bar)
         return;
 TEST;
         $returnFixed4 = <<<TEST
-    if (\$foo == \$bar)
+    if (\$foo === \$bar)
         return;
 TEST;
 
@@ -79,16 +79,16 @@ TEST;
 TEST;
 
         $return6 = <<<TEST
-    elseif (\$foo == \$bar)
+    elseif (\$foo === \$bar)
         return;
 TEST;
         $returnFixed6 = <<<TEST
-    elseif (\$foo == \$bar)
+    elseif (\$foo === \$bar)
         return;
 TEST;
 
         $return7 = <<<TEST
-    if (\$foo == \$bar)
+    if (\$foo === \$bar)
 
 
 
@@ -97,7 +97,7 @@ TEST;
         return;
 TEST;
         $returnFixed7 = <<<TEST
-    if (\$foo == \$bar)
+    if (\$foo === \$bar)
         return;
 TEST;
 
