@@ -85,13 +85,24 @@ class Tokens extends \SplFixedArray
      */
     public static function fromCode($code)
     {
-        $tokens = token_get_all($code);
+        static $cache = array();
 
-        foreach ($tokens as $index => $token) {
-            $tokens[$index] = new Token($token);
+        $hash = crc32($code);
+
+        if (isset($cache[$hash])) {
+            return clone $cache[$hash];
         }
 
-        return static::fromArray($tokens);
+        $tokens = token_get_all($code);
+
+        foreach ($tokens as $index => $tokenPrototype) {
+            $tokens[$index] = new Token($tokenPrototype);
+        }
+
+        $cache[$hash] = static::fromArray($tokens);
+
+        return $cache[$hash];
+
     }
 
     /**
@@ -466,6 +477,16 @@ class Tokens extends \SplFixedArray
     {
         if (isset($this[$index + 1]) && $this[$index + 1]->isWhitespace()) {
             $this[$index + 1]->clear();
+        }
+    }
+
+    /**
+     * Clone tokens collection.
+     */
+    public function __clone()
+    {
+        foreach ($this as $key => $val) {
+            $this[$key] = clone $val;
         }
     }
 }
