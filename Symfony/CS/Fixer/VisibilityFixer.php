@@ -44,6 +44,8 @@ class VisibilityFixer implements FixerInterface
             }
         }
 
+        $tokens->regenerate();
+
         return $tokens->generateCode();
     }
 

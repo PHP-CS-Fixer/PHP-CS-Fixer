@@ -90,7 +90,7 @@ class Tokens extends \SplFixedArray
         $hash = crc32($code);
 
         if (isset($cache[$hash])) {
-            return clone $cache[$hash];
+            return $cache[$hash];
         }
 
         $tokens = token_get_all($code);
@@ -478,6 +478,31 @@ class Tokens extends \SplFixedArray
         if (isset($this[$index + 1]) && $this[$index + 1]->isWhitespace()) {
             $this[$index + 1]->clear();
         }
+    }
+
+    /**
+     * Regenerate collection. Call method only after overriding at least single element with value that contains a few prototypes inside.
+     */
+    public function regenerate()
+    {
+        $this->setCode($this->generateCode());
+    }
+
+    /**
+     * Set code. Clear all current content and replace it by new Token items generated from code directly.
+     *
+     * @param string $code PHP code
+     */
+    public function setCode($code)
+    {
+        $tokens = token_get_all($code);
+        $this->setSize(count($tokens));
+
+        foreach ($tokens as $index => $token) {
+            $this[$index] = new Token($token);
+        }
+
+        $this->rewind();
     }
 
     /**
