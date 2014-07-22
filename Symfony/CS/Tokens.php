@@ -20,6 +20,67 @@ namespace Symfony\CS;
 class Tokens extends \SplFixedArray
 {
     /**
+     * Static class cache.
+     * @type array
+     */
+    private static $cache = array();
+
+    /**
+     * Clear cache - one position or all of them.
+     *
+     * @param int|string|null $key position to clear, when null clear all
+     */
+    public static function clearCache($key = null)
+    {
+        if (null === $key) {
+            static::$cache = array();
+
+            return;
+        }
+
+        if (static::hasCache($key)) {
+            unset(static::$cache[$key]);
+        }
+    }
+
+    /**
+     * Get cache value for given key.
+     *
+     * @param  int|string $key item key
+     * @return misc       item value
+     */
+    private static function getCache($key)
+    {
+        if (!static::hasCache($key)) {
+            throw new \OutOfBoundsException('Unknown cache key: '.$key);
+        }
+
+        return static::$cache[$key];
+    }
+
+    /**
+     * Check if given key exists in cache.
+     *
+     * @param  int|string $key item key
+     * @return bool
+     */
+    private static function hasCache($key)
+    {
+        return isset(static::$cache[$key]);
+    }
+
+    /**
+     * Set cache item.
+     *
+     * @param int|string $key   item key
+     * @param int|string $value item value
+     */
+    private static function setCache($key, $value)
+    {
+        static::$cache[$key] = $value;
+    }
+
+    /**
      * Check if given tokens are equal.
      * If tokens are arrays, then only keys defined in second token are checked.
      *
@@ -85,12 +146,10 @@ class Tokens extends \SplFixedArray
      */
     public static function fromCode($code)
     {
-        static $cache = array();
-
         $hash = crc32($code);
 
-        if (isset($cache[$hash])) {
-            return $cache[$hash];
+        if (static::hasCache($hash)) {
+            return static::getCache($hash);
         }
 
         $tokens = token_get_all($code);
@@ -99,10 +158,10 @@ class Tokens extends \SplFixedArray
             $tokens[$index] = new Token($tokenPrototype);
         }
 
-        $cache[$hash] = static::fromArray($tokens);
+        $collection = static::fromArray($tokens);
+        static::setCache($hash, $collection);
 
-        return $cache[$hash];
-
+        return $collection;
     }
 
     /**
