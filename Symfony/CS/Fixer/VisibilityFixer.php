@@ -22,25 +22,24 @@ class VisibilityFixer implements FixerInterface
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
-
         $elements = $tokens->getClassyElements();
 
-        foreach ($elements['methods'] as $index => $token) {
-            $tokens->applyAttribs($index, $tokens->grabAttribsBeforeMethodToken($index));
+        foreach (array_reverse($elements, true) as $index => $element) {
+            if ('method' === $element['type']) {
+                $tokens->applyAttribs($index, $tokens->grabAttribsBeforeMethodToken($index));
 
-            // force whitespace between function keyword and function name to be single space char
-            $tokens[++$index]->content = ' ';
-        }
+                // force whitespace between function keyword and function name to be single space char
+                $tokens[++$index]->content = ' ';
+            } elseif ('property' === $element['type']) {
+                $prevToken = $tokens->getPrevTokenOfKind($index, array(';', ',', ));
+                $nextToken = $tokens->getNextTokenOfKind($index, array(';', ',', ));
 
-        foreach ($elements['properties'] as $index => $token) {
-            $prevToken = $tokens->getPrevTokenOfKind($index, array(';', ',', ));
-            $nextToken = $tokens->getNextTokenOfKind($index, array(';', ',', ));
-
-            if (
-                (!$prevToken || ',' !== $prevToken->content) &&
-                (!$nextToken || ',' !== $nextToken->content)
-            ) {
-                $tokens->applyAttribs($index, $tokens->grabAttribsBeforePropertyToken($index));
+                if (
+                    (!$prevToken || ',' !== $prevToken->content) &&
+                    (!$nextToken || ',' !== $nextToken->content)
+                ) {
+                    $tokens->applyAttribs($index, $tokens->grabAttribsBeforePropertyToken($index));
+                }
             }
         }
 

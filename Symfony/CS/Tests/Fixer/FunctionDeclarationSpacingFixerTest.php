@@ -18,6 +18,9 @@ class FunctionDeclarationSpacingFixerTest extends \PHPUnit_Framework_TestCase
     public function data()
     {
         return array(
+            array("function\tfoo () {", 'function foo() {'),
+            array("function foo\t() {", 'function foo() {'),
+            array("function\nfoo () {", 'function foo() {'),
             array('function foo () {', 'function foo() {'),
             array('function foo($a, $b = true){', 'function foo($a, $b = true) {'),
             array('function($i) {', 'function ($i) {'),

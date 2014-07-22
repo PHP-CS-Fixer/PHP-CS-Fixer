@@ -20,6 +20,73 @@ namespace Symfony\CS;
 class Tokens extends \SplFixedArray
 {
     /**
+     * Static class cache.
+     * @type array
+     */
+    private static $cache = array();
+
+    /**
+     * crc32 hash of code string.
+     * @type array
+     */
+    private $codeHash;
+
+    /**
+     * Clear cache - one position or all of them.
+     *
+     * @param int|string|null $key position to clear, when null clear all
+     */
+    public static function clearCache($key = null)
+    {
+        if (null === $key) {
+            static::$cache = array();
+
+            return;
+        }
+
+        if (static::hasCache($key)) {
+            unset(static::$cache[$key]);
+        }
+    }
+
+    /**
+     * Get cache value for given key.
+     *
+     * @param  int|string $key item key
+     * @return misc       item value
+     */
+    private static function getCache($key)
+    {
+        if (!static::hasCache($key)) {
+            throw new \OutOfBoundsException('Unknown cache key: '.$key);
+        }
+
+        return static::$cache[$key];
+    }
+
+    /**
+     * Check if given key exists in cache.
+     *
+     * @param  int|string $key item key
+     * @return bool
+     */
+    private static function hasCache($key)
+    {
+        return isset(static::$cache[$key]);
+    }
+
+    /**
+     * Set cache item.
+     *
+     * @param int|string $key   item key
+     * @param int|string $value item value
+     */
+    private static function setCache($key, $value)
+    {
+        static::$cache[$key] = $value;
+    }
+
+    /**
      * Check if given tokens are equal.
      * If tokens are arrays, then only keys defined in second token are checked.
      *
@@ -85,13 +152,22 @@ class Tokens extends \SplFixedArray
      */
     public static function fromCode($code)
     {
-        $tokens = token_get_all($code);
+        $codeHash = crc32($code);
 
-        foreach ($tokens as $index => $token) {
-            $tokens[$index] = new Token($token);
+        if (static::hasCache($codeHash)) {
+            return static::getCache($codeHash);
         }
 
-        return static::fromArray($tokens);
+        $tokens = token_get_all($code);
+
+        foreach ($tokens as $index => $tokenPrototype) {
+            $tokens[$index] = new Token($tokenPrototype);
+        }
+
+        $collection = static::fromArray($tokens);
+        $collection->changeCodeHash($codeHash);
+
+        return $collection;
     }
 
     /**
@@ -120,15 +196,34 @@ class Tokens extends \SplFixedArray
      */
     public function applyAttribs($index, $attribs)
     {
-        $attribsString = '';
+        $toInsert = array();
 
         foreach ($attribs as $attrib) {
-            if ($attrib) {
-                $attribsString .= $attrib.' ';
+            if (null !== $attrib && '' !== $attrib->content) {
+                $toInsert[] = $attrib;
+                $toInsert[] = new Token(' ');
             }
         }
 
-        $this[$index]->content = $attribsString.$this[$index]->content;
+        if (!empty($toInsert)) {
+            $this->insertAt($index, $toInsert);
+        }
+    }
+
+    /**
+     * Change code hash.
+     * Remove old cache and set new one.
+     *
+     * @param string $codeHash new code hash
+     */
+    private function changeCodeHash($codeHash)
+    {
+        if (null !== $this->codeHash) {
+            static::clearCache($this->codeHash);
+        }
+
+        $this->codeHash = $codeHash;
+        static::setCache($this->codeHash, $this);
     }
 
     /**
@@ -171,6 +266,8 @@ class Tokens extends \SplFixedArray
             $code .= $token->content;
         }
 
+        $this->changeCodeHash(crc32($code));
+
         return $code;
     }
 
@@ -181,11 +278,7 @@ class Tokens extends \SplFixedArray
     {
         $this->rewind();
 
-        $elements = array(
-            'methods' => array(),
-            'properties' => array(),
-        );
-
+        $elements = array();
         $inClass = false;
         $curlyBracesLevel = 0;
         $bracesLevel = 0;
@@ -226,12 +319,12 @@ class Tokens extends \SplFixedArray
             }
 
             if (T_VARIABLE === $token->id && 0 === $bracesLevel) {
-                $elements['properties'][$index] = $token;
+                $elements[$index] = array('token' => $token, 'type' => 'property', );
                 continue;
             }
 
             if (T_FUNCTION === $token->id) {
-                $elements['methods'][$index] = $token;
+                $elements[$index] = array('token' => $token, 'type' => 'method', );
             }
         }
 
@@ -364,10 +457,10 @@ class Tokens extends \SplFixedArray
             $index,
             $tokenAttribsMap,
             array(
-                'abstract' => '',
-                'final' => '',
-                'visibility' => 'public',
-                'static' => '',
+                'abstract' => null,
+                'final' => null,
+                'visibility' => new Token(array(T_PUBLIC, 'public', )),
+                'static' => null,
             )
         );
     }
@@ -393,8 +486,8 @@ class Tokens extends \SplFixedArray
             $index,
             $tokenAttribsMap,
             array(
-                'visibility' => 'public',
-                'static' => '',
+                'visibility' => new Token(array(T_PUBLIC, 'public', )),
+                'static' => null,
             )
         );
     }
@@ -425,7 +518,7 @@ class Tokens extends \SplFixedArray
             if (array_key_exists($token->id, $tokenAttribsMap)) {
                 // set token attribute if token map defines attribute name for token
                 if ($tokenAttribsMap[$token->id]) {
-                    $attribs[$tokenAttribsMap[$token->id]] = $token->content;
+                    $attribs[$tokenAttribsMap[$token->id]] = clone $token;
                 }
 
                 // clear the token and whitespaces after it
@@ -443,6 +536,29 @@ class Tokens extends \SplFixedArray
         }
 
         return $attribs;
+    }
+
+    /**
+     * Insert new Token inside collection.
+     *
+     * @param int           $index start inserting index
+     * @param Token|Token[] $items tokens to insert
+     */
+    public function insertAt($key, $items)
+    {
+        $items = is_array($items) ? $items : array($items, );
+        $itemsCnt = count($items);
+        $oldSize = count($this);
+
+        $this->setSize($oldSize + $itemsCnt);
+
+        for ($i = $oldSize + $itemsCnt - 1; $i >= $key ; --$i) {
+            $this[$i] = isset($this[$i - $itemsCnt]) ? $this[$i - $itemsCnt] : new Token('');
+        }
+
+        for ($i = 0; $i < $itemsCnt; ++$i) {
+            $this[$i + $key] = $items[$i];
+        }
     }
 
     /**
@@ -466,6 +582,37 @@ class Tokens extends \SplFixedArray
     {
         if (isset($this[$index + 1]) && $this[$index + 1]->isWhitespace()) {
             $this[$index + 1]->clear();
+        }
+    }
+
+    /**
+     * Set code. Clear all current content and replace it by new Token items generated from code directly.
+     *
+     * @param string $code PHP code
+     */
+    public function setCode($code)
+    {
+        // clear memory
+        $this->setSize(0);
+
+        $tokens = token_get_all($code);
+        $this->setSize(count($tokens));
+
+        foreach ($tokens as $index => $token) {
+            $this[$index] = new Token($token);
+        }
+
+        $this->rewind();
+        $this->changeCodeHash(crc32($code));
+    }
+
+    /**
+     * Clone tokens collection.
+     */
+    public function __clone()
+    {
+        foreach ($this as $key => $val) {
+            $this[$key] = clone $val;
         }
     }
 }

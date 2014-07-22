@@ -111,6 +111,9 @@ class Fixer
         $new = $old = file_get_contents($file->getRealpath());
         $appliedFixers = array();
 
+        // we do not need Tokens to still caching previously fixed file - so clear the cache
+        Tokens::clearCache();
+
         foreach ($fixers as $fixer) {
             if (!$fixer->supports($file)) {
                 continue;
