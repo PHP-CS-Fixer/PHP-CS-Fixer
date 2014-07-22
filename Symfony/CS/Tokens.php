@@ -495,6 +495,9 @@ class Tokens extends \SplFixedArray
      */
     public function setCode($code)
     {
+        // clear memory
+        $this->setSize(0);
+
         $tokens = token_get_all($code);
         $this->setSize(count($tokens));
 
