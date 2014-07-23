@@ -26,6 +26,12 @@ class Tokens extends \SplFixedArray
     private static $cache = array();
 
     /**
+     * crc32 hash of code string.
+     * @type array
+     */
+    private $codeHash;
+
+    /**
      * Clear cache - one position or all of them.
      *
      * @param int|string|null $key position to clear, when null clear all
@@ -146,10 +152,10 @@ class Tokens extends \SplFixedArray
      */
     public static function fromCode($code)
     {
-        $hash = crc32($code);
+        $codeHash = crc32($code);
 
-        if (static::hasCache($hash)) {
-            return static::getCache($hash);
+        if (static::hasCache($codeHash)) {
+            return static::getCache($codeHash);
         }
 
         $tokens = token_get_all($code);
@@ -159,7 +165,7 @@ class Tokens extends \SplFixedArray
         }
 
         $collection = static::fromArray($tokens);
-        static::setCache($hash, $collection);
+        $collection->changeCodeHash($codeHash);
 
         return $collection;
     }
@@ -202,6 +208,22 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Change code hash.
+     * Remove old cache and set new one.
+     *
+     * @param string $codeHash new code hash
+     */
+    private function changeCodeHash($codeHash)
+    {
+        if (null !== $this->codeHash) {
+            static::clearCache($this->codeHash);
+        }
+
+        $this->codeHash = $codeHash;
+        static::setCache($this->codeHash, $this);
+    }
+
+    /**
      * Find tokens of given kind.
      *
      * @param  int|array $possibleKind kind or array of kind
@@ -240,6 +262,8 @@ class Tokens extends \SplFixedArray
         foreach ($this as $token) {
             $code .= $token->content;
         }
+
+        $this->changeCodeHash(crc32($code));
 
         return $code;
     }
@@ -565,6 +589,7 @@ class Tokens extends \SplFixedArray
         }
 
         $this->rewind();
+        $this->changeCodeHash(crc32($code));
     }
 
     /**
