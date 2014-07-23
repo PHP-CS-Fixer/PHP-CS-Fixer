@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
 /**
@@ -42,7 +43,7 @@ class SpacesNearCastFixer implements FixerInterface
                     $tokens[$index + 1]->content = ' ';
                 } elseif (!$tokens[$index + 1]->isWhitespace()) {
                     // - if next token is not whitespaces that contains spaces, tabs and new lines - append single space to current token
-                    $token->content .= ' ';
+                    $tokens->insertAt($index + 1, new Token(' '));
                 }
             }
         }
