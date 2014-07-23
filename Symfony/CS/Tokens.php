@@ -590,14 +590,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Regenerate collection. Call method only after overriding at least single element with value that contains a few prototypes inside.
-     */
-    public function regenerate()
-    {
-        $this->setCode($this->generateCode());
-    }
-
-    /**
      * Set code. Clear all current content and replace it by new Token items generated from code directly.
      *
      * @param string $code PHP code
