@@ -278,11 +278,7 @@ class Tokens extends \SplFixedArray
     {
         $this->rewind();
 
-        $elements = array(
-            'methods' => array(),
-            'properties' => array(),
-        );
-
+        $elements = array();
         $inClass = false;
         $curlyBracesLevel = 0;
         $bracesLevel = 0;
@@ -323,12 +319,12 @@ class Tokens extends \SplFixedArray
             }
 
             if (T_VARIABLE === $token->id && 0 === $bracesLevel) {
-                $elements['properties'][$index] = $token;
+                $elements[$index] = array('token' => $token, 'type' => 'property', );
                 continue;
             }
 
             if (T_FUNCTION === $token->id) {
-                $elements['methods'][$index] = $token;
+                $elements[$index] = array('token' => $token, 'type' => 'method', );
             }
         }
 
