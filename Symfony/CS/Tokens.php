@@ -540,6 +540,29 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Insert new Token inside collection.
+     *
+     * @param int           $index start inserting index
+     * @param Token|Token[] $items tokens to insert
+     */
+    public function insertAt($key, $items)
+    {
+        $items = is_array($items) ? $items : array($items, );
+        $itemsCnt = count($items);
+        $oldSize = count($this);
+
+        $this->setSize($oldSize + $itemsCnt);
+
+        for ($i = $oldSize + $itemsCnt - 1; $i >= $key ; --$i) {
+            $this[$i] = isset($this[$i - $itemsCnt]) ? $this[$i - $itemsCnt] : new Token('');
+        }
+
+        for ($i = 0; $i < $itemsCnt; ++$i) {
+            $this[$i + $key] = $items[$i];
+        }
+    }
+
+    /**
      * Removes all the leading whitespace.
      *
      * @param int $index
