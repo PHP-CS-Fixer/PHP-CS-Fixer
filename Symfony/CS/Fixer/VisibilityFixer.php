@@ -25,14 +25,14 @@ class VisibilityFixer implements FixerInterface
 
         $elements = $tokens->getClassyElements();
 
-        foreach ($elements['methods'] as $index => $token) {
+        foreach (array_reverse($elements['methods'], true) as $index => $token) {
             $tokens->applyAttribs($index, $tokens->grabAttribsBeforeMethodToken($index));
 
             // force whitespace between function keyword and function name to be single space char
             $tokens[++$index]->content = ' ';
         }
 
-        foreach ($elements['properties'] as $index => $token) {
+        foreach (array_reverse($elements['properties'], true) as $index => $token) {
             $prevToken = $tokens->getPrevTokenOfKind($index, array(';', ',', ));
             $nextToken = $tokens->getNextTokenOfKind($index, array(';', ',', ));
 
