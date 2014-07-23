@@ -196,15 +196,18 @@ class Tokens extends \SplFixedArray
      */
     public function applyAttribs($index, $attribs)
     {
-        $attribsString = '';
+        $toInsert = array();
 
         foreach ($attribs as $attrib) {
-            if ($attrib) {
-                $attribsString .= $attrib.' ';
+            if (null !== $attrib && '' !== $attrib->content) {
+                $toInsert[] = $attrib;
+                $toInsert[] = new Token(' ');
             }
         }
 
-        $this[$index]->content = $attribsString.$this[$index]->content;
+        if (!empty($toInsert)) {
+            $this->insertAt($index, $toInsert);
+        }
     }
 
     /**
@@ -458,10 +461,10 @@ class Tokens extends \SplFixedArray
             $index,
             $tokenAttribsMap,
             array(
-                'abstract' => '',
-                'final' => '',
-                'visibility' => 'public',
-                'static' => '',
+                'abstract' => null,
+                'final' => null,
+                'visibility' => new Token(array(T_PUBLIC, 'public', )),
+                'static' => null,
             )
         );
     }
@@ -487,8 +490,8 @@ class Tokens extends \SplFixedArray
             $index,
             $tokenAttribsMap,
             array(
-                'visibility' => 'public',
-                'static' => '',
+                'visibility' => new Token(array(T_PUBLIC, 'public', )),
+                'static' => null,
             )
         );
     }
@@ -519,7 +522,7 @@ class Tokens extends \SplFixedArray
             if (array_key_exists($token->id, $tokenAttribsMap)) {
                 // set token attribute if token map defines attribute name for token
                 if ($tokenAttribsMap[$token->id]) {
-                    $attribs[$tokenAttribsMap[$token->id]] = $token->content;
+                    $attribs[$tokenAttribsMap[$token->id]] = clone $token;
                 }
 
                 // clear the token and whitespaces after it
