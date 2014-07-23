@@ -1,0 +1,9 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-07-23T18:35:38Z
+
+Perf tested on bobthecow/mustache.php.
+On master: 22,4s, 4.0MB.
+On tokens-speedup: 16,5s, 4.0MB.
+
+~25% performance gain.
