@@ -76,8 +76,6 @@ abstract class Foo {
     final public function foo8() {}
     abstract public function foo9();
     public static function fooA() {}
-    public static function fooB() {}
-    public static function fooC() {}
     public static function fooD() {}
     final public static function fooE() {}
     abstract public function fooF();
@@ -103,9 +101,6 @@ abstract class Foo {
     public final function foo8() {}
     public abstract function foo9();
     public static function fooA() {}
-    public static function	fooB() {}
-    public static function
-    fooC() {}
     public static
     function fooD() {}
     final static function fooE() {}
