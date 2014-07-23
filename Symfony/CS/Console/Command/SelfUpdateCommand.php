@@ -51,7 +51,7 @@ EOT
         $localVersion = isset($match[1]) ? $match[1] : '';
 
         if (false !== $remoteVersion = @file_get_contents('http://get.sensiolabs.org/php-cs-fixer.version')) {
-            if ($localVersion == $remoteVersion) {
+            if ($localVersion === $remoteVersion) {
                 $output->writeln('<info>php-cs-fixer is already up to date.</info>');
 
                 return;

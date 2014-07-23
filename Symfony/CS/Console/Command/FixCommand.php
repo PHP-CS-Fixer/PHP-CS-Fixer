@@ -195,7 +195,7 @@ EOF
         if ($input->getOption('config')) {
             $config = null;
             foreach ($this->fixer->getConfigs() as $c) {
-                if ($c->getName() == $input->getOption('config')) {
+                if ($c->getName() === $input->getOption('config')) {
                     $config = $c;
                     break;
                 }
@@ -375,7 +375,7 @@ EOF
                 $fixers .= str_repeat(' ', $maxName + 4).$c."\n";
             }
 
-            if ($count != $i) {
+            if ($count !== $i) {
                 $fixers .= "\n";
             }
         }
@@ -401,7 +401,7 @@ EOF
                 $configs .= str_repeat(' ', $maxName + 4).$c."\n";
             }
 
-            if ($count != $i) {
+            if ($count !== $i) {
                 $configs .= "\n";
             }
         }

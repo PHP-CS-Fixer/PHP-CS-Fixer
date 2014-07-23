@@ -29,13 +29,13 @@ class ElseifFixerTest extends \PHPUnit_Framework_TestCase
         $fixer = new ElseifFixer();
 
         $this->assertSame(
-            'if ($some) { $test = true } elseif ($some != "test") { $test = false; }',
-            $fixer->fix($this->getTestFile(), 'if ($some) { $test = true } else if ($some != "test") { $test = false; }'
+            'if ($some) { $test = true } elseif ($some !== "test") { $test = false; }',
+            $fixer->fix($this->getTestFile(), 'if ($some) { $test = true } else if ($some !== "test") { $test = false; }'
         ));
 
         $this->assertSame(
-            'if ($some) { $test = true } elseif ($some != "test") { $test = false; }',
-            $fixer->fix($this->getTestFile(), 'if ($some) { $test = true } else  if ($some != "test") { $test = false; }'
+            'if ($some) { $test = true } elseif ($some !== "test") { $test = false; }',
+            $fixer->fix($this->getTestFile(), 'if ($some) { $test = true } else  if ($some !== "test") { $test = false; }'
         ));
     }
 
