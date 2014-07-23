@@ -58,6 +58,24 @@ EOF;
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
 
+    public function testFixPropertiesAfterMethod()
+    {
+        $fixer = new VisibilityFixer();
+        $file = $this->getTestFile();
+
+        $expected = <<<'EOF'
+<?php
+class Foo {
+    public function aaa() {}
+    public $bbb;
+}
+EOF;
+
+        $input = $expected;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
+
     public function testFixMethods()
     {
         $fixer = new VisibilityFixer();
@@ -76,8 +94,6 @@ abstract class Foo {
     final public function foo8() {}
     abstract public function foo9();
     public static function fooA() {}
-    public static function fooB() {}
-    public static function fooC() {}
     public static function fooD() {}
     final public static function fooE() {}
     abstract public function fooF();
@@ -103,9 +119,6 @@ abstract class Foo {
     public final function foo8() {}
     public abstract function foo9();
     public static function fooA() {}
-    public static function	fooB() {}
-    public static function
-    fooC() {}
     public static
     function fooD() {}
     final static function fooE() {}

@@ -54,7 +54,7 @@ class Token
             $this->isArray = true;
             $this->id = $token[0];
             $this->content = $token[1];
-            $this->line = $token[2];
+            $this->line = isset($token[2]) ? $token[2] : null;
         } else {
             $this->isArray = false;
             $this->content = $token;
