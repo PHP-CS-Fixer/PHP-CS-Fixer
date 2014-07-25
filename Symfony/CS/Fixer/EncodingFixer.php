@@ -18,22 +18,17 @@ use Symfony\CS\FixerInterface;
  */
 class EncodingFixer implements FixerInterface
 {
+    private $BOM;
+
+    public function __construct()
+    {
+        $this->BOM = pack('CCC', 0xef, 0xbb, 0xbf);
+    }
+
     public function fix(\SplFileInfo $file, $content)
     {
-        static $supportedEncodings = null;
-
-        if (null === $supportedEncodings) {
-            $supportedEncodings = mb_list_encodings();
-        }
-
-        $encoding = mb_detect_encoding($content, $supportedEncodings, true);
-
-        if ('UTF-8' === $encoding && 0 === strncmp($content, pack('CCC', 0xef, 0xbb, 0xbf), 3)) {
-            $encoding .= ' BOM';
-        }
-
-        if (!in_array($encoding, array('ASCII', 'UTF-8', ))) {
-            echo '! File '.strtr($file->getRealPath(), '\\', '/').' with incorrect encoding: '.$encoding.PHP_EOL;
+        if (0 === strncmp($content, $this->BOM, 3)) {
+            return substr($content, 3);
         }
 
         return $content;
@@ -47,7 +42,8 @@ class EncodingFixer implements FixerInterface
 
     public function getPriority()
     {
-        return 0;
+        // must run first (at least before Fixers that using Tokens) - for speed reason of whole fixing process
+        return 100;
     }
 
     public function supports(\SplFileInfo $file)
@@ -62,6 +58,6 @@ class EncodingFixer implements FixerInterface
 
     public function getDescription()
     {
-        return 'PHP code MUST use only UTF-8 without BOM (detect only).';
+        return 'PHP code MUST use only UTF-8 without BOM (remove BOM).';
     }
 }
