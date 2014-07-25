@@ -17,6 +17,7 @@ use Symfony\CS\FixerInterface;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class Psr0Fixer implements FixerInterface, ConfigAwareInterface
 {
@@ -36,17 +37,11 @@ class Psr0Fixer implements FixerInterface, ConfigAwareInterface
             return $content;
         }
 
-        // no classes?
-        if (!$matches) {
-            return $content;
-        }
-
-        if (count($matches) > 1) {
+        if (!$matches || count($matches) > 1) {
             return $content;
         }
 
         $match = $matches[0];
-
         $keyword = $match[1];
         $class = $match[3];
 
@@ -66,6 +61,7 @@ class Psr0Fixer implements FixerInterface, ConfigAwareInterface
                     }
                 }
             }
+
             $dir = substr($dir, -strlen($normNamespace));
             if (false === $dir) {
                 $dir = '';
@@ -75,29 +71,18 @@ class Psr0Fixer implements FixerInterface, ConfigAwareInterface
             if ($class !== $filename) {
                 $content = preg_replace('{^'.$keyword.'\s+(\S+)}um', $keyword.' '.$filename, $content, 1);
             }
-            if ($normNamespace !== $dir) {
-                if (strtolower($normNamespace) === strtolower($dir)) {
-                    $namespace = substr($namespace, 0, -strlen($dir)) . strtr($dir, '/', '\\');
-                    $content = preg_replace('{^namespace\s+(\S+)\s*;}um', 'namespace '.$namespace.';', $content, 1);
-                } else {
-                    echo '! The namespace '.$namespace.' in '.$path.' does not match the file path according to PSR-0 rules'.PHP_EOL;
-                }
+
+            if ($normNamespace !== $dir && strtolower($normNamespace) === strtolower($dir)) {
+                $namespace = substr($namespace, 0, -strlen($dir)).strtr($dir, '/', '\\');
+                $content = preg_replace('{^namespace\s+(\S+)\s*;}um', 'namespace '.$namespace.';', $content, 1);
             }
         } else {
             $normClass = strtr($class, '_', '/');
             $path = strtr($file->getRealPath(), '\\', '/');
-            $filename = substr($path, -strlen($normClass)-4, -4);
+            $filename = substr($path, -strlen($normClass) - 4, -4);
 
-            if (!strpos($class, '_')) {
-                echo '! Class '.$class.' in '.$path.' should have at least a vendor namespace according to PSR-0 rules'.PHP_EOL;
-            }
-
-            if ($normClass !== $filename) {
-                if (strtolower($normClass) === strtolower($filename)) {
-                    $content = preg_replace('{^'.$keyword.'\s+(\S+)}um', $keyword.' '.strtr($filename, '/', '_'), $content, 1);
-                } else {
-                    echo '! The class '.$class.' in '.$path.' does not match the file path according to PSR-0 rules'.PHP_EOL;
-                }
+            if ($normClass !== $filename && strtolower($normClass) === strtolower($filename)) {
+                $content = preg_replace('{^'.$keyword.'\s+(\S+)}um', $keyword.' '.strtr($filename, '/', '_'), $content, 1);
             }
         }
 

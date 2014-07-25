@@ -99,52 +99,6 @@ EOF;
         $this->assertEquals($expected, $fixer->fix($file, $input));
     }
 
-    public function testFixNamespaceThrows()
-    {
-        $fixer = new Psr0Fixer();
-        $file = $this->getTestFile(__DIR__.'/../../Fixer/Psr0Fixer.php');
-
-        $input = <<<'EOF'
-namespace lala;
-class Psr0Fixer {}
-EOF;
-
-        $expected = '! The namespace lala in';
-        ob_start();
-        $fixer->fix($file, $input);
-        $this->assertContains($expected, ob_get_clean());
-    }
-
-    public function testFixOldClassnameThrows()
-    {
-        $fixer = new Psr0Fixer();
-        $file = $this->getTestFile(__DIR__.'/../../Fixer/Psr0Fixer.php');
-
-        $input = <<<'EOF'
-class blah_bar {}
-EOF;
-
-        $expected = '! The class blah_bar in';
-        ob_start();
-        $fixer->fix($file, $input);
-        $this->assertContains($expected, ob_get_clean());
-    }
-
-    public function testMissingVendorThrows()
-    {
-        $fixer = new Psr0Fixer();
-        $file = $this->getTestFile(__DIR__.'/../../Fixer/Psr0Fixer.php');
-
-        $input = <<<'EOF'
-class Psr0Fixer {}
-EOF;
-
-        $expected = '! Class Psr0Fixer in';
-        ob_start();
-        $fixer->fix($file, $input);
-        $this->assertContains($expected, ob_get_clean());
-    }
-
     public function testHandlePartialNamespaces()
     {
         $fixer = new Psr0Fixer();
@@ -180,22 +134,6 @@ EOF;
         ob_start();
         $this->assertEquals($expected, $fixer->fix($file, $input));
         $this->assertEquals('', ob_get_clean());
-    }
-
-    public function testLeadingSpaceNamespaceThrows()
-    {
-        $fixer = new Psr0Fixer();
-        $file = $this->getTestFile(__DIR__.'/../../Fixer/Psr0Fixer.php');
-
-        $input = <<<'EOF'
- namespace LeadingSpace;
-class Psr0Fixer {}
-EOF;
-
-        $expected = '! The namespace LeadingSpace in';
-        ob_start();
-        $fixer->fix($file, $input);
-        $this->assertContains($expected, ob_get_clean());
     }
 
     public function testFixLeadingSpaceNamespace()
