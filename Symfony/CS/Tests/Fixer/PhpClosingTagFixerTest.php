@@ -37,7 +37,7 @@ class PhpClosingTagFixerTest extends \PHPUnit_Framework_TestCase
     public function testCasesWithShortOpenTag($expected, $input)
     {
         if (!ini_get('short_open_tag')) {
-            $this->markTestSkipped('PHP short open tag are not enabled.');
+            $this->markTestSkipped('PHP short open tags are not enabled.');
             return;
         }
 
