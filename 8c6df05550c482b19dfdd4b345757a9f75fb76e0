@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-07-25T11:19:34Z
+
+Also check if mbstring extension is loaded
