@@ -44,7 +44,7 @@ class EndOfFileLineFeedFixer implements FixerInterface
 
     public function supports(\SplFileInfo $file)
     {
-        return 'php' == pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+        return 'php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION);
     }
 
     public function getName()
