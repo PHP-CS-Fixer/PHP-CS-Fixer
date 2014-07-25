@@ -19,19 +19,15 @@ use Symfony\CS\FixerInterface;
 class EncodingFixer implements FixerInterface
 {
     private $BOM;
-    private $supportedEncodings;
 
     public function __construct()
     {
         $this->BOM = pack('CCC', 0xef, 0xbb, 0xbf);
-        $this->supportedEncodings = mb_list_encodings();
     }
 
     public function fix(\SplFileInfo $file, $content)
     {
-        $encoding = mb_detect_encoding($content, $this->supportedEncodings, true);
-
-        if ('UTF-8' === $encoding && 0 === strncmp($content, $this->BOM, 3)) {
+        if (0 === strncmp($content, $this->BOM, 3)) {
             return substr($content, 3);
         }
 
