@@ -23,7 +23,7 @@ class ShortTagFixerTest extends \PHPUnit_Framework_TestCase
         $fixer = new ShortTagFixer();
         $file = $this->getTestFile();
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function provideClosingTagExamples()

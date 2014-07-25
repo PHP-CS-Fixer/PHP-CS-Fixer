@@ -26,7 +26,7 @@ class LowercaseKeywordsFixerTest extends \PHPUnit_Framework_TestCase
         $fixer = new LowercaseKeywordsFixer();
         $file = $this->getTestFile();
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function provideExamples()

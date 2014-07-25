@@ -33,7 +33,7 @@ $a = new Bar();
 $a = new FooBaz();
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testFixWithManyEmptyLines()
@@ -58,7 +58,7 @@ $a = new Bar();
 $a = new FooBaz();
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testFixWithHeredoc()
@@ -86,7 +86,7 @@ FooFoo
 TEXT;
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testFixWithNowdoc()
@@ -114,7 +114,7 @@ FooFoo
 TEXT;
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testFixWithEncapsulatedNowdoc()
@@ -154,7 +154,7 @@ FooFoo
 TEXT;
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testFixWithMultilineString()
@@ -176,7 +176,7 @@ $a = 'Foo
 Bar';
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testFixWithTrickyMultilineStrings()
@@ -219,7 +219,7 @@ Here\'s an escaped quote '
 FooFoo';
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     private function getTestFile($filename = __FILE__)

@@ -77,7 +77,7 @@ class AnnotatedClass
 }
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testFixUseInTheSameNamespace()
@@ -107,7 +107,7 @@ $b = new Fooz();
 $c = new Bar\Fooz();
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testTrailingSpaces()
@@ -133,7 +133,7 @@ $a = new Bar();
 $a = new FooBaz();
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     private function getTestFile($filename = __FILE__)

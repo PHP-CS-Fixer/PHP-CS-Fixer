@@ -22,8 +22,8 @@ class ReturnStatementsFixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
 
-        $this->assertEquals($returnFixed, $fixer->fix($this->getTestFile(), $return));
-        $this->assertEquals($returnFixed, $fixer->fix($this->getTestFile(), $returnFixed));
+        $this->assertSame($returnFixed, $fixer->fix($this->getTestFile(), $return));
+        $this->assertSame($returnFixed, $fixer->fix($this->getTestFile(), $returnFixed));
     }
 
     public function testFixProvider()

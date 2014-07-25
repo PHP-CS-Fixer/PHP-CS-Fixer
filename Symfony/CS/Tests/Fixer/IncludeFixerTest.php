@@ -25,8 +25,8 @@ class IncludeFixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
 
-        $this->assertEquals($includeFixed, $fixer->fix($this->getTestFile(), $include));
-        $this->assertEquals($includeFixed, $fixer->fix($this->getTestFile(), $includeFixed));
+        $this->assertSame($includeFixed, $fixer->fix($this->getTestFile(), $include));
+        $this->assertSame($includeFixed, $fixer->fix($this->getTestFile(), $includeFixed));
     }
 
     public function testFixProvider()

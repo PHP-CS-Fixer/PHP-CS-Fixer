@@ -22,8 +22,8 @@ class SpacesNearCastFixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
 
-        $this->assertEquals($castFixed, $fixer->fix($this->getTestFile(), $cast));
-        $this->assertEquals($castFixed, $fixer->fix($this->getTestFile(), $castFixed));
+        $this->assertSame($castFixed, $fixer->fix($this->getTestFile(), $cast));
+        $this->assertSame($castFixed, $fixer->fix($this->getTestFile(), $castFixed));
     }
 
     public function testFixCastsProvider()

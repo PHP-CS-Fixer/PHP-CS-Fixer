@@ -46,7 +46,7 @@ class ElseifFixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new ElseifFixer();
 
-        $this->assertEquals('elseif', $fixer->getName());
+        $this->assertSame('elseif', $fixer->getName());
     }
 
     /**

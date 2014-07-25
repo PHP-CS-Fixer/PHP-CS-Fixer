@@ -40,7 +40,7 @@ EOF;
 
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testFixMultiLineDesc()
@@ -74,7 +74,7 @@ EOF;
 
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testFixMultiLineDescWithThrows()
@@ -118,7 +118,7 @@ EOF;
 
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testFixWithReturnAndThrows()
@@ -144,7 +144,7 @@ EOF;
 
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     /**
@@ -174,7 +174,7 @@ EOF;
 
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testFixOnlyReturn()
@@ -194,7 +194,7 @@ EOF;
 
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testReturnWithDollarThis()
@@ -214,7 +214,7 @@ EOF;
 
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testCustomAnnotationsStayUntouched()
@@ -234,7 +234,7 @@ EOF;
 
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     private function getTestFile($filename = __FILE__)

@@ -23,7 +23,7 @@ class IndentationFixerTest extends \PHPUnit_Framework_TestCase
         $fixer = new Fixer();
         $file = $this->getTestFile();
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     /**
