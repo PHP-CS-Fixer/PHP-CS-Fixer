@@ -1,0 +1,28 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-07-25T12:34:02Z
+
+What do you think of this PR @fabpot  ?
+
+---------------------------------------------------------------------------
+
+by fabpot at 2014-07-25T12:36:09Z
+
+The two are not equivalent. I really don't mind one way or the other as both do the same for most of the example we have. Honestly, changing everything to assertSame looks wrong to me though.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-07-25T12:50:27Z
+
+Of course, assertEqual and assertSame are not the same - it is like == and ===. Equivalent change was made in #403 to source code.
+
+It wasn't sed replace. Each change was verified.
+
+AssertSame use strict comparision, which gives you more control of what your test case must _exactly_ result. It also use less memory.
+Can you show me disadvantages of this change, please? I can't see them
+
+---------------------------------------------------------------------------
+
+by fabpot at 2014-07-25T12:54:11Z
+
+Work on my side, no added benefit AFAICS.
