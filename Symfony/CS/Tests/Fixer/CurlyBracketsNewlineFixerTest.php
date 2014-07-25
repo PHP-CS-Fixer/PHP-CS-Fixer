@@ -14,11 +14,11 @@ class CurlyBracketsNewlineFixerTest extends \PHPUnit_Framework_TestCase
 
         $simple = "$type TestType  {";
         $simpleFixed = "$type TestType\n{";
-        $this->assertEquals($simpleFixed, $fixer->fix($this->getTestFile(), $simple));
-        $this->assertEquals($simpleFixed, $fixer->fix($this->getTestFile(), $simpleFixed));
+        $this->assertSame($simpleFixed, $fixer->fix($this->getTestFile(), $simple));
+        $this->assertSame($simpleFixed, $fixer->fix($this->getTestFile(), $simpleFixed));
 
         $emptyType = "$type TestType {}";
-        $this->assertEquals($emptyType, $fixer->fix($this->getTestFile(), $emptyType));
+        $this->assertSame($emptyType, $fixer->fix($this->getTestFile(), $emptyType));
     }
 
     public function testSimpleTypeDefinitionsProvider()
@@ -41,8 +41,8 @@ TEST;
 class TestClass extends BaseTestClass implements TestInterface
 {
 TEST;
-        $this->assertEquals($extendedFixed, $fixer->fix($this->getTestFile(), $extended));
-        $this->assertEquals($extendedFixed, $fixer->fix($this->getTestFile(), $extendedFixed));
+        $this->assertSame($extendedFixed, $fixer->fix($this->getTestFile(), $extended));
+        $this->assertSame($extendedFixed, $fixer->fix($this->getTestFile(), $extendedFixed));
 
         $extended = <<<TEST
 abstract class TestClass extends BaseTestClass implements TestInterface, TestInterface2 {
@@ -51,8 +51,8 @@ TEST;
 abstract class TestClass extends BaseTestClass implements TestInterface, TestInterface2
 {
 TEST;
-        $this->assertEquals($extendedFixed, $fixer->fix($this->getTestFile(), $extended));
-        $this->assertEquals($extendedFixed, $fixer->fix($this->getTestFile(), $extendedFixed));
+        $this->assertSame($extendedFixed, $fixer->fix($this->getTestFile(), $extended));
+        $this->assertSame($extendedFixed, $fixer->fix($this->getTestFile(), $extendedFixed));
 
         $extended = <<<TEST
 abstract class TestClass extends \\Base\\TestClass implements \\TestInterface {
@@ -62,8 +62,8 @@ abstract class TestClass extends \\Base\\TestClass implements \\TestInterface
 {
 TEST;
 
-        $this->assertEquals($extendedFixed, $fixer->fix($this->getTestFile(), $extended));
-        $this->assertEquals($extendedFixed, $fixer->fix($this->getTestFile(), $extendedFixed));
+        $this->assertSame($extendedFixed, $fixer->fix($this->getTestFile(), $extended));
+        $this->assertSame($extendedFixed, $fixer->fix($this->getTestFile(), $extendedFixed));
     }
 
     public function testControlStatements()
@@ -72,38 +72,38 @@ TEST;
 
         $if = "if (\$someTest)\n {";
         $ifFixed = 'if ($someTest) {';
-        $this->assertEquals($ifFixed, $fixer->fix($this->getTestFile(), $if));
-        $this->assertEquals($ifFixed, $fixer->fix($this->getTestFile(), $ifFixed));
+        $this->assertSame($ifFixed, $fixer->fix($this->getTestFile(), $if));
+        $this->assertSame($ifFixed, $fixer->fix($this->getTestFile(), $ifFixed));
 
         $if = "if (test) // foo  \n{";
         $ifFixed = "if (test) { // foo";
-        $this->assertEquals($ifFixed, $fixer->fix($this->getTestFile(), $if));
-        $this->assertEquals($ifFixed, $fixer->fix($this->getTestFile(), $ifFixed));
+        $this->assertSame($ifFixed, $fixer->fix($this->getTestFile(), $if));
+        $this->assertSame($ifFixed, $fixer->fix($this->getTestFile(), $ifFixed));
 
         $elseif = "else if (...)\n{";
         $elseifFixed = "else if (...) {";
-        $this->assertEquals($elseifFixed, $fixer->fix($this->getTestFile(), $elseif));
-        $this->assertEquals($elseifFixed, $fixer->fix($this->getTestFile(), $elseifFixed));
+        $this->assertSame($elseifFixed, $fixer->fix($this->getTestFile(), $elseif));
+        $this->assertSame($elseifFixed, $fixer->fix($this->getTestFile(), $elseifFixed));
 
         $func = "function download() {\n}";
         $funcFixed = "function download()\n{\n}";
-        $this->assertEquals($funcFixed, $fixer->fix($this->getTestFile(), $func));
-        $this->assertEquals($funcFixed, $fixer->fix($this->getTestFile(), $funcFixed));
+        $this->assertSame($funcFixed, $fixer->fix($this->getTestFile(), $func));
+        $this->assertSame($funcFixed, $fixer->fix($this->getTestFile(), $funcFixed));
 
         $while = "    while (\$file = \$this->getFile())\n    {";
         $whileFixed = '    while ($file = $this->getFile()) {';
-        $this->assertEquals($whileFixed, $fixer->fix($this->getTestFile(), $while));
-        $this->assertEquals($whileFixed, $fixer->fix($this->getTestFile(), $whileFixed));
+        $this->assertSame($whileFixed, $fixer->fix($this->getTestFile(), $while));
+        $this->assertSame($whileFixed, $fixer->fix($this->getTestFile(), $whileFixed));
 
         $switch = "switch(\$statement)   \n{";
         $switchFixed = 'switch($statement) {';
-        $this->assertEquals($switchFixed, $fixer->fix($this->getTestFile(), $switch));
-        $this->assertEquals($switchFixed, $fixer->fix($this->getTestFile(), $switchFixed));
+        $this->assertSame($switchFixed, $fixer->fix($this->getTestFile(), $switch));
+        $this->assertSame($switchFixed, $fixer->fix($this->getTestFile(), $switchFixed));
 
         $try = "try \n{\n ... \n} \n catch (Exception \$e)\n{";
         $tryFixed = "try {\n ... \n} catch (Exception \$e) {";
-        $this->assertEquals($tryFixed, $fixer->fix($this->getTestFile(), $try));
-        $this->assertEquals($tryFixed, $fixer->fix($this->getTestFile(), $tryFixed));
+        $this->assertSame($tryFixed, $fixer->fix($this->getTestFile(), $try));
+        $this->assertSame($tryFixed, $fixer->fix($this->getTestFile(), $tryFixed));
 
         $tryInClassName = <<<'TEST'
 
@@ -111,7 +111,7 @@ TEST;
         {
             private $fields = array();
 TEST;
-        $this->assertEquals($tryInClassName, $fixer->fix($this->getTestFile(), $tryInClassName));
+        $this->assertSame($tryInClassName, $fixer->fix($this->getTestFile(), $tryInClassName));
     }
 
     public function testFunctionDeclaration()
@@ -120,16 +120,16 @@ TEST;
 
         $declaration = '    public function test()     {';
         $fixedDeclaration = "    public function test()\n    {";
-        $this->assertEquals($fixedDeclaration, $fixer->fix($this->getTestFile(), $declaration));
-        $this->assertEquals($fixedDeclaration, $fixer->fix($this->getTestFile(), $fixedDeclaration));
+        $this->assertSame($fixedDeclaration, $fixer->fix($this->getTestFile(), $declaration));
+        $this->assertSame($fixedDeclaration, $fixer->fix($this->getTestFile(), $fixedDeclaration));
 
         $goodAnonymous = "filter(function () {\n    return true;\n})";
-        $this->assertEquals($goodAnonymous, $fixer->fix($this->getTestFile(), $goodAnonymous));
+        $this->assertSame($goodAnonymous, $fixer->fix($this->getTestFile(), $goodAnonymous));
 
         $badAnonymous = "filter(function   () \n {\n});";
         $fixedBadAnonymous = "filter(function   () {\n});";
-        $this->assertEquals($fixedBadAnonymous, $fixer->fix($this->getTestFile(), $badAnonymous));
-        $this->assertEquals($fixedBadAnonymous, $fixer->fix($this->getTestFile(), $fixedBadAnonymous));
+        $this->assertSame($fixedBadAnonymous, $fixer->fix($this->getTestFile(), $badAnonymous));
+        $this->assertSame($fixedBadAnonymous, $fixer->fix($this->getTestFile(), $fixedBadAnonymous));
 
         $correctMethod = <<<'EOF'
     public function __construct($id, $name)
@@ -139,7 +139,7 @@ TEST;
     }
 EOF;
 
-        $this->assertEquals($correctMethod, $fixer->fix($this->getTestFile(), $correctMethod));
+        $this->assertSame($correctMethod, $fixer->fix($this->getTestFile(), $correctMethod));
     }
 
     public function testDoWhile()
@@ -162,8 +162,8 @@ EOF;
     } while ($test = $this->getTest());
 
 EOF;
-        $this->assertEquals($fixedDoWhile, $fixer->fix($this->getTestFile(), $doWhile));
-        $this->assertEquals($fixedDoWhile, $fixer->fix($this->getTestFile(), $fixedDoWhile));
+        $this->assertSame($fixedDoWhile, $fixer->fix($this->getTestFile(), $doWhile));
+        $this->assertSame($fixedDoWhile, $fixer->fix($this->getTestFile(), $fixedDoWhile));
     }
 
     /*
@@ -175,18 +175,18 @@ EOF;
 
         $declarationWithDo = '    public function test($do)     {';
         $fixedDeclarationWithDo = "    public function test(\$do)\n    {";
-        $this->assertEquals($fixedDeclarationWithDo, $fixer->fix($this->getTestFile(), $declarationWithDo));
-        $this->assertEquals($fixedDeclarationWithDo, $fixer->fix($this->getTestFile(), $fixedDeclarationWithDo));
+        $this->assertSame($fixedDeclarationWithDo, $fixer->fix($this->getTestFile(), $declarationWithDo));
+        $this->assertSame($fixedDeclarationWithDo, $fixer->fix($this->getTestFile(), $fixedDeclarationWithDo));
 
         $declarationWithElse = '    public function test($else)     {';
         $fixedDeclarationWithElse = "    public function test(\$else)\n    {";
-        $this->assertEquals($fixedDeclarationWithElse, $fixer->fix($this->getTestFile(), $declarationWithElse));
-        $this->assertEquals($fixedDeclarationWithElse, $fixer->fix($this->getTestFile(), $fixedDeclarationWithElse));
+        $this->assertSame($fixedDeclarationWithElse, $fixer->fix($this->getTestFile(), $declarationWithElse));
+        $this->assertSame($fixedDeclarationWithElse, $fixer->fix($this->getTestFile(), $fixedDeclarationWithElse));
 
         $declarationWithTry = '    public function test($try)     {';
         $fixedDeclarationWithTry = "    public function test(\$try)\n    {";
-        $this->assertEquals($fixedDeclarationWithTry, $fixer->fix($this->getTestFile(), $declarationWithTry));
-        $this->assertEquals($fixedDeclarationWithTry, $fixer->fix($this->getTestFile(), $fixedDeclarationWithTry));
+        $this->assertSame($fixedDeclarationWithTry, $fixer->fix($this->getTestFile(), $declarationWithTry));
+        $this->assertSame($fixedDeclarationWithTry, $fixer->fix($this->getTestFile(), $fixedDeclarationWithTry));
     }
 
     private function getTestFile($filename = __FILE__)

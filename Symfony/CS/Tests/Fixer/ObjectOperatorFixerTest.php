@@ -25,7 +25,7 @@ class ObjectOperatorFixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
 
-        $this->assertEquals($expected, $fixer->fix($this->getTestFile(), $toBeFixed));
+        $this->assertSame($expected, $fixer->fix($this->getTestFile(), $toBeFixed));
     }
 
     public function testFixObjectOperatorSpaces()

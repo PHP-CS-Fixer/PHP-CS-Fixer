@@ -55,7 +55,7 @@ class Foo {
 }
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testFixPropertiesAfterMethod()
@@ -73,7 +73,7 @@ EOF;
 
         $input = $expected;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testFixMethods()
@@ -131,7 +131,7 @@ abstract class Foo {
 }
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testLeaveFunctionsAlone()
@@ -153,7 +153,7 @@ function foo() {
 }
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testLeaveFunctionsAloneWithVariablesMatchingOopWords()
@@ -170,7 +170,7 @@ function foo() {
 }
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $expected));
+        $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
     public function testLeaveFunctionsAloneInsideConditionals()
@@ -187,7 +187,7 @@ if (!function_exists('foo')) {
     }
 }
 EOF;
-        $this->assertEquals($expected, $fixer->fix($file, $expected));
+        $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
     public function testLeaveFunctionsAloneInsideConditionalsWithOopWordInComment()
@@ -205,7 +205,7 @@ if (!function_exists('foo')) {
     }
 }
 EOF;
-        $this->assertEquals($expected, $fixer->fix($file, $expected));
+        $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
     public function testLeaveFunctionsAloneWithOopWordInComment()
@@ -221,7 +221,7 @@ function foo($arg)
     return $arg;
 }
 EOF;
-        $this->assertEquals($expected, $fixer->fix($file, $expected));
+        $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
     public function testLeaveFunctionsAloneOutsideClassesWithOopWordInInlineHtml()
@@ -241,7 +241,7 @@ if (!function_exists('foo')) {
     }
 }
 EOF;
-        $this->assertEquals($expected, $fixer->fix($file, $expected));
+        $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
     public function testLeaveFunctionsAloneOutsideClassesWithOopWordInStringValue()
@@ -258,7 +258,7 @@ if (!function_exists('foo')) {
     }
 }
 EOF;
-        $this->assertEquals($expected, $fixer->fix($file, $expected));
+        $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
     public function testLeaveFunctionsAloneOutsideClassesWithOopWordInFunctionName()
@@ -278,7 +278,7 @@ if (!function_exists('foo')) {
     }
 }
 EOF;
-        $this->assertEquals($expected, $fixer->fix($file, $expected));
+        $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
     /**
@@ -305,7 +305,7 @@ if (!function_exists('bar')) {
 }
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $expected));
+        $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
     /**
@@ -331,7 +331,7 @@ class Foo
 }
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $expected));
+        $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
     /**
@@ -354,7 +354,7 @@ class Foo {
 }
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $expected));
+        $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
     /**
@@ -379,7 +379,7 @@ function foo(bar) {
 </script>
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $expected));
+        $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
     /**
@@ -402,7 +402,7 @@ function foo(bar) {
 }
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $expected));
+        $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
     /**
@@ -432,7 +432,7 @@ JAVASCRIPT;
 }
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $expected));
+        $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
     /**
@@ -465,7 +465,7 @@ class Foo
 }
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     private function getTestFile($filename = __FILE__)

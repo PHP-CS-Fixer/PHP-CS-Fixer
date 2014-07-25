@@ -30,7 +30,7 @@ namespace Symfony\cs\Fixer;
 class psr0Fixer {}
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
 
         $expected = <<<'EOF'
 class Symfony_CS_Fixer_Psr0Fixer {}
@@ -39,7 +39,7 @@ EOF;
 class symfony_cs_FiXER_Psr0FIXer {}
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testFixClassName()
@@ -58,7 +58,7 @@ class blah {}
 /* class foo */
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testFixAbstractClassName()
@@ -77,7 +77,7 @@ abstract class blah {}
 /* class foo */
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testFixFinalClassName()
@@ -96,7 +96,7 @@ final class blah {}
 /* class foo */
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
     public function testHandlePartialNamespaces()
@@ -118,8 +118,8 @@ class Psr0Fixer {}
 EOF;
 
         ob_start();
-        $this->assertEquals($expected, $fixer->fix($file, $input));
-        $this->assertEquals('', ob_get_clean());
+        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->assertSame('', ob_get_clean());
 
         $config->setDir(__DIR__.'/../../Fixer');
         $expected = <<<'EOF'
@@ -132,8 +132,8 @@ class Psr0Fixer {}
 EOF;
 
         ob_start();
-        $this->assertEquals($expected, $fixer->fix($file, $input));
-        $this->assertEquals('', ob_get_clean());
+        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->assertSame('', ob_get_clean());
     }
 
     public function testFixLeadingSpaceNamespace()
@@ -150,7 +150,7 @@ EOF;
 class Psr0Fixer {}
 EOF;
         ob_start();
-        $this->assertEquals($expected, $fixer->fix($file, $input));
+        $this->assertSame($expected, $fixer->fix($file, $input));
         ob_clean();
     }
 

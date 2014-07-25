@@ -26,7 +26,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $iterator = $config->getFinder()->getIterator();
         $this->assertCount(1, $iterator);
         $iterator->rewind();
-        $this->assertEquals('somefile.php', $iterator->current()->getFilename());
+        $this->assertSame('somefile.php', $iterator->current()->getFilename());
     }
 
     public function testThatCustomDefaultFinderWorks()
@@ -40,7 +40,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $iterator = $config->getFinder()->getIterator();
         $this->assertCount(1, $iterator);
         $iterator->rewind();
-        $this->assertEquals('somefile.php', $iterator->current()->getFilename());
+        $this->assertSame('somefile.php', $iterator->current()->getFilename());
     }
 
     public function testThatCustomFinderWorks()
@@ -54,6 +54,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $iterator = $config->getFinder()->getIterator();
         $this->assertCount(1, $iterator);
         $iterator->rewind();
-        $this->assertEquals('somefile.php', $iterator->current()->getFilename());
+        $this->assertSame('somefile.php', $iterator->current()->getFilename());
     }
 }

@@ -119,8 +119,8 @@ class FixerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(1, $changed);
         $this->assertCount(2, $changed[$pathToInvalidFile]);
-        $this->assertEquals(array('appliedFixers', 'diff'), array_keys($changed[$pathToInvalidFile]));
-        $this->assertEquals('visibility', $changed[$pathToInvalidFile]['appliedFixers'][0]);
+        $this->assertSame(array('appliedFixers', 'diff'), array_keys($changed[$pathToInvalidFile]));
+        $this->assertSame('visibility', $changed[$pathToInvalidFile]['appliedFixers'][0]);
     }
 
     /**
