@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer;
+namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Fixer\ShortArraySyntaxFixer as Fixer;
+use Symfony\CS\Fixer\Contrib\ShortArraySyntaxFixer as Fixer;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
