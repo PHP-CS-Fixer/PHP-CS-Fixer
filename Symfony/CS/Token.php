@@ -199,7 +199,7 @@ class Token
      */
     public function isGivenKind($possibleKind)
     {
-        return $this->isArray && (is_array($possibleKind) ? in_array($this->id, $possibleKind) : $this->id === $possibleKind);
+        return $this->isArray && (is_array($possibleKind) ? in_array($this->id, $possibleKind, true) : $this->id === $possibleKind);
     }
 
     /**
@@ -223,7 +223,7 @@ class Token
     {
         static $nativeConstantStrings = array('true', 'false', 'null');
 
-        return $this->isArray && in_array(strtolower($this->content), $nativeConstantStrings);
+        return $this->isArray && in_array(strtolower($this->content), $nativeConstantStrings, true);
     }
 
     /**
