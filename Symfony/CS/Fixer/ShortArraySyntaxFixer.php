@@ -24,7 +24,7 @@ class ShortArraySyntaxFixer implements FixerInterface
     {
         $tokens = Tokens::fromCode($content);
 
-        for ($index = 0, $c = $tokens->count(); $index < $c; $index++) {
+        for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {
             $token = $tokens[$index];
 
             if ($token->isKeyword() && T_ARRAY === $token->id && '(' === $tokens->getNextNonWhitespace($index)->content) {
@@ -38,12 +38,11 @@ class ShortArraySyntaxFixer implements FixerInterface
 
     private function fixArray(Tokens $tokens, &$index)
     {
-        $bracesLevel = 0;
-
         $tokens[$index]->clear();
-        $index++;
+        $bracesLevel = 0;
+        ++$index;
 
-        for ($c = $tokens->count(); $index < $c; $index++) {
+        for ($c = $tokens->count(); $index < $c; ++$index) {
             $token = $tokens[$index];
 
             if ('(' === $token->content) {
