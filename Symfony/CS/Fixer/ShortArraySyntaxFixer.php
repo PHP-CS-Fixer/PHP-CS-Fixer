@@ -27,7 +27,7 @@ class ShortArraySyntaxFixer implements FixerInterface
         for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isKeyword() && T_ARRAY === $token->id && '(' === $tokens->getNextNonWhitespace($index)->content) {
+            if ($token->isGivenKind(T_ARRAY) && '(' === $tokens->getNextNonWhitespace($index)->content) {
                 $this->fixArray($tokens, $index);
                 continue;
             }
@@ -54,7 +54,7 @@ class ShortArraySyntaxFixer implements FixerInterface
                 continue;
             }
 
-            if ($token->isKeyword() && T_ARRAY === $token->id && '(' === $tokens->getNextNonWhitespace($index)->content) {
+            if ($token->isGivenKind(T_ARRAY) && '(' === $tokens->getNextNonWhitespace($index)->content) {
                 $this->fixArray($tokens, $index);
                 continue;
             }
