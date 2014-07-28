@@ -62,7 +62,8 @@ class Fixer
     public function registerBuiltInConfigs()
     {
         foreach (Finder::create()->files()->in(__DIR__.'/Config') as $file) {
-            $class = 'Symfony\\CS\\Config\\'.basename($file, '.php');
+            $relativeNamespace = $file->getRelativePath();
+            $class = 'Symfony\\CS\\Config\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
             $this->addConfig(new $class());
         }
     }
