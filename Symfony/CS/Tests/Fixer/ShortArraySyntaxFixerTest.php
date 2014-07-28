@@ -38,7 +38,7 @@ class ShortArraySyntaxFixerTest extends \PHPUnit_Framework_TestCase
             array('<?php $x = [\'foo\'];', '<?php $x = array(\'foo\');'),
             array('<?php $x = [ \'foo\' ];', '<?php $x = array( \'foo\' );'),
             array('<?php $x = [($y ? true : false)];', '<?php $x = array(($y ? true : false));'),
-            array('<?php $x = [($y ? [true] : [false])];', '<?php $x = array(($y ? array(true) : array(false)));'),//
+            array('<?php $x = [($y ? [true] : [false])];', '<?php $x = array(($y ? array(true) : array(false)));'),
             array('<?php $x = [($y ? [true] : [ false ])];', '<?php $x = array(($y ? array(true) : array( false )));'),
             array('<?php $x = [($y ? ["t" => true] : ["f" => false])];', '<?php $x = array(($y ? array("t" => true) : array("f" => false)));'),
             array('<?php print_r([($y ? true : false)]);', '<?php print_r(array(($y ? true : false)));'),

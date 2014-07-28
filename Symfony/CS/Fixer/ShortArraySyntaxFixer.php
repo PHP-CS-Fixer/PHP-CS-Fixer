@@ -16,6 +16,7 @@ use Symfony\CS\Tokens;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class ShortArraySyntaxFixer implements FixerInterface
 {
@@ -26,7 +27,7 @@ class ShortArraySyntaxFixer implements FixerInterface
         for ($index = 0, $c = $tokens->count(); $index < $c; $index++) {
             $token = $tokens[$index];
 
-            if (Tokens::isKeyword($token) && T_ARRAY === $token[0] && '(' === $tokens->getNextNonWhitespace($index)) {
+            if ($token->isKeyword() && T_ARRAY === $token->id && '(' === $tokens->getNextNonWhitespace($index)->content) {
                 $this->fixArray($tokens, $index);
                 continue;
             }
@@ -39,31 +40,31 @@ class ShortArraySyntaxFixer implements FixerInterface
     {
         $bracesLevel = 0;
 
-        unset($tokens[$index]);
+        $tokens[$index]->clear();
         $index++;
 
         for ($c = $tokens->count(); $index < $c; $index++) {
             $token = $tokens[$index];
 
-            if ('(' === $token) {
+            if ('(' === $token->content) {
                 if (0 === $bracesLevel) {
-                    $tokens[$index] = '[';
+                    $tokens[$index]->content = '[';
                 }
 
                 ++$bracesLevel;
                 continue;
             }
 
-            if (Tokens::isKeyword($token) && T_ARRAY === $token[0] && '(' === $tokens->getNextNonWhitespace($index)) {
+            if ($token->isKeyword() && T_ARRAY === $token->id && '(' === $tokens->getNextNonWhitespace($index)->content) {
                 $this->fixArray($tokens, $index);
                 continue;
             }
 
-            if (')' === $token) {
+            if (')' === $token->content) {
                 --$bracesLevel;
 
                 if (0 === $bracesLevel) {
-                    $tokens[$index] = ']';
+                    $tokens[$index]->content = ']';
                     break;
                 }
             }
