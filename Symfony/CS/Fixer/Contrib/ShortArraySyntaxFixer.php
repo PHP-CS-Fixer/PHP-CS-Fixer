@@ -72,7 +72,7 @@ class ShortArraySyntaxFixer implements FixerInterface
 
     public function getLevel()
     {
-        return FixerInterface::ALL_LEVEL;
+        return FixerInterface::CONTRIB_LEVEL;
     }
 
     public function getPriority()
