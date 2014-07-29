@@ -335,9 +335,9 @@ class Tokens extends \SplFixedArray
      * Get closest next token which is non whitespace.
      * This method is shorthand for getNonWhitespaceSibling method.
      *
-     * @param  string|array $index token index
-     * @param  array        $opts  array of extra options for isWhitespace method
-     * @return string|array token
+     * @param  int   $index token index
+     * @param  array $opts  array of extra options for isWhitespace method
+     * @return Token token
      */
     public function getNextNonWhitespace($index, array $opts = array())
     {
@@ -348,9 +348,9 @@ class Tokens extends \SplFixedArray
      * Get closest next token of given kind.
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param  string|array $index  token index
-     * @param  array        $tokens possible tokens
-     * @return string|array token
+     * @param  int   $index  token index
+     * @param  array $tokens possible tokens
+     * @return Token token
      */
     public function getNextTokenOfKind($index, array $tokens = array())
     {
@@ -360,10 +360,10 @@ class Tokens extends \SplFixedArray
     /**
      * Get closest sibling token which is non whitespace.
      *
-     * @param  string|array $index     token index
-     * @param  int          $direction direction for looking, +1 or -1
-     * @param  array        $opts      array of extra options for isWhitespace method
-     * @return string|array token
+     * @param  int   $index     token index
+     * @param  int   $direction direction for looking, +1 or -1
+     * @param  array $opts      array of extra options for isWhitespace method
+     * @return Token token
      */
     public function getNonWhitespaceSibling($index, $direction, array $opts = array())
     {
@@ -386,9 +386,9 @@ class Tokens extends \SplFixedArray
      * Get closest previous token which is non whitespace.
      * This method is shorthand for getNonWhitespaceSibling method.
      *
-     * @param  string|array $index token index
-     * @param  array        $opts  array of extra options for isWhitespace method
-     * @return string|array token
+     * @param  int   $index token index
+     * @param  array $opts  array of extra options for isWhitespace method
+     * @return Token token
      */
     public function getPrevNonWhitespace($index, array $opts = array())
     {
@@ -399,9 +399,9 @@ class Tokens extends \SplFixedArray
      * Get closest previous token of given kind.
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param  string|array $index  token index
-     * @param  array        $tokens possible tokens
-     * @return string|array token
+     * @param  int   $index  token index
+     * @param  array $tokens possible tokens
+     * @return Token token
      */
     public function getPrevTokenOfKind($index, array $tokens = array())
     {
@@ -411,10 +411,10 @@ class Tokens extends \SplFixedArray
     /**
      * Get closest sibling token of given kind.
      *
-     * @param  string|array $index     token index
-     * @param  int          $direction direction for looking, +1 or -1
-     * @param  array        $tokens    possible tokens
-     * @return string|array token
+     * @param  int   $index     token index
+     * @param  int   $direction direction for looking, +1 or -1
+     * @param  array $tokens    possible tokens
+     * @return Token token
      */
     public function getTokenOfKindSibling($index, $direction, array $tokens = array())
     {
