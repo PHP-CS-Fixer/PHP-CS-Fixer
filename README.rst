@@ -223,6 +223,9 @@ Choose from the list of available fixers:
 
 * **standardize_not_equal** [all] Replace all <> with !=.
 
+* **new_with_braces** [all] All instances created with new keyword must be
+  followed by braces.
+
 The ``--config`` option customizes the files to analyse, based
 on some well-known directory structures:
 
