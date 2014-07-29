@@ -335,37 +335,40 @@ class Tokens extends \SplFixedArray
      * Get closest next token which is non whitespace.
      * This method is shorthand for getNonWhitespaceSibling method.
      *
-     * @param  int   $index token index
-     * @param  array $opts  array of extra options for isWhitespace method
-     * @return Token token
+     * @param  int      $index       token index
+     * @param  array    $opts        array of extra options for isWhitespace method
+     * @param  int|null &$foundIndex index of founded token, if any
+     * @return Token    token
      */
-    public function getNextNonWhitespace($index, array $opts = array())
+    public function getNextNonWhitespace($index, array $opts = array(), &$foundIndex = null)
     {
-        return $this->getNonWhitespaceSibling($index, 1, $opts);
+        return $this->getNonWhitespaceSibling($index, 1, $opts, $foundIndex);
     }
 
     /**
      * Get closest next token of given kind.
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param  int   $index  token index
-     * @param  array $tokens possible tokens
-     * @return Token token
+     * @param  int      $index       token index
+     * @param  array    $tokens      possible tokens
+     * @param  int|null &$foundIndex index of founded token, if any
+     * @return Token    token
      */
-    public function getNextTokenOfKind($index, array $tokens = array())
+    public function getNextTokenOfKind($index, array $tokens = array(), &$foundIndex = null)
     {
-        return $this->getTokenOfKindSibling($index, 1, $tokens);
+        return $this->getTokenOfKindSibling($index, 1, $tokens, $foundIndex);
     }
 
     /**
      * Get closest sibling token which is non whitespace.
      *
-     * @param  int   $index     token index
-     * @param  int   $direction direction for looking, +1 or -1
-     * @param  array $opts      array of extra options for isWhitespace method
-     * @return Token token
+     * @param  int      $index       token index
+     * @param  int      $direction   direction for looking, +1 or -1
+     * @param  array    $opts        array of extra options for isWhitespace method
+     * @param  int|null &$foundIndex index of founded token, if any
+     * @return Token    token
      */
-    public function getNonWhitespaceSibling($index, $direction, array $opts = array())
+    public function getNonWhitespaceSibling($index, $direction, array $opts = array(), &$foundIndex = null)
     {
         while (true) {
             $index += $direction;
@@ -377,6 +380,8 @@ class Tokens extends \SplFixedArray
             $token = $this[$index];
 
             if (!$token->isWhitespace($opts)) {
+                $foundIndex = $index;
+
                 return $token;
             }
         }
@@ -386,37 +391,40 @@ class Tokens extends \SplFixedArray
      * Get closest previous token which is non whitespace.
      * This method is shorthand for getNonWhitespaceSibling method.
      *
-     * @param  int   $index token index
-     * @param  array $opts  array of extra options for isWhitespace method
-     * @return Token token
+     * @param  int      $index       token index
+     * @param  array    $opts        array of extra options for isWhitespace method
+     * @param  int|null &$foundIndex index of founded token, if any
+     * @return Token    token
      */
-    public function getPrevNonWhitespace($index, array $opts = array())
+    public function getPrevNonWhitespace($index, array $opts = array(), &$foundIndex = null)
     {
-        return $this->getNonWhitespaceSibling($index, -1, $opts);
+        return $this->getNonWhitespaceSibling($index, -1, $opts, $foundIndex);
     }
 
     /**
      * Get closest previous token of given kind.
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param  int   $index  token index
-     * @param  array $tokens possible tokens
-     * @return Token token
+     * @param  int      $index       token index
+     * @param  array    $tokens      possible tokens
+     * @param  int|null &$foundIndex index of founded token, if any
+     * @return Token    token
      */
-    public function getPrevTokenOfKind($index, array $tokens = array())
+    public function getPrevTokenOfKind($index, array $tokens = array(), &$foundIndex = null)
     {
-        return $this->getTokenOfKindSibling($index, -1, $tokens);
+        return $this->getTokenOfKindSibling($index, -1, $tokens, $foundIndex);
     }
 
     /**
      * Get closest sibling token of given kind.
      *
-     * @param  int   $index     token index
-     * @param  int   $direction direction for looking, +1 or -1
-     * @param  array $tokens    possible tokens
-     * @return Token token
+     * @param  int      $index       token index
+     * @param  int      $direction   direction for looking, +1 or -1
+     * @param  array    $tokens      possible tokens
+     * @param  int|null &$foundIndex index of founded token, if any
+     * @return Token    token
      */
-    public function getTokenOfKindSibling($index, $direction, array $tokens = array())
+    public function getTokenOfKindSibling($index, $direction, array $tokens = array(), &$foundIndex = null)
     {
         while (true) {
             $index += $direction;
@@ -429,6 +437,8 @@ class Tokens extends \SplFixedArray
 
             foreach ($tokens as $tokenKind) {
                 if (static::compare($token->getPrototype(), $tokenKind)) {
+                    $foundIndex = $index;
+
                     return $token;
                 }
             }
