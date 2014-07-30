@@ -20,6 +20,11 @@ class ShortTagFixerTest extends \PHPUnit_Framework_TestCase
      */
     public function testOneLineFix($expected, $input)
     {
+        if (!ini_get('short_open_tag')) {
+            $this->markTestSkipped('PHP short open tags are not enabled.');
+            return;
+        }
+
         $fixer = new Fixer();
         $file = $this->getTestFile();
 
