@@ -12,16 +12,25 @@
 namespace Symfony\CS\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Tokens;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class ShortTagFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
-        // [Structure] Never use short tags (<?)
-        return preg_replace('/<\?(\s|$)/', '<?php$1', $content);
+        $tokens = Tokens::fromCode($content);
+
+        foreach ($tokens as $token) {
+            if ($token->isGivenKind(T_OPEN_TAG)) {
+                $token->content = preg_replace('/<\?(\s|$)/', '<?php$1', $token->content, 1);
+            }
+        }
+
+        return $tokens->generateCode();
     }
 
     public function getLevel()
