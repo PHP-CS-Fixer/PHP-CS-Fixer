@@ -11,7 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer;
 
-use Symfony\CS\Fixer\ShortTagFixer;
+use Symfony\CS\Fixer\ShortTagFixer as Fixer;
 
 class ShortTagFixerTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +20,7 @@ class ShortTagFixerTest extends \PHPUnit_Framework_TestCase
      */
     public function testOneLineFix($expected, $input)
     {
-        $fixer = new ShortTagFixer();
+        $fixer = new Fixer();
         $file = $this->getTestFile();
 
         $this->assertSame($expected, $fixer->fix($file, $input));
@@ -32,6 +32,7 @@ class ShortTagFixerTest extends \PHPUnit_Framework_TestCase
             array('<?php echo \'Foo\';', '<? echo \'Foo\';'),
             array('<?= echo \'Foo\';', '<?= echo \'Foo\';'),
             array('<?php echo \'Foo\'; ?> PLAIN TEXT', '<?php echo \'Foo\'; ?> PLAIN TEXT'),
+            array('<?php $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";', '<? $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";'),
             array('PLAIN TEXT<?php echo \'Foo\'; ?>', 'PLAIN TEXT<?php echo \'Foo\'; ?>'),
             array('<?php
 
@@ -42,7 +43,21 @@ echo \'Foo\';
 
 echo \'Foo\';
 
-')
+'),
+            array(
+                "<?php if ('<?php' === '<?') { }",
+                "<? if ('<?php' === '<?') { }",
+            ),
+            array(
+                'foo <?php  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
+                'foo <?  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";'
+            ),
+            array(
+                '<?php
+// Replace all <? with <?php !',
+                '<?php
+// Replace all <? with <?php !',
+            ),
         );
     }
 
