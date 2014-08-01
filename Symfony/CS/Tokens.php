@@ -284,6 +284,10 @@ class Tokens extends \SplFixedArray
         $bracesLevel = 0;
 
         foreach ($this as $index => $token) {
+            if ($token->isGivenKind(array(T_ENCAPSED_AND_WHITESPACE, T_WHITESPACE))) {
+                continue;
+            }
+
             if (!$inClass) {
                 $inClass = $token->isClassy();
                 continue;

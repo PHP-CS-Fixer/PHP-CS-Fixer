@@ -94,6 +94,16 @@ class Token
     }
 
     /**
+     * Get token name.
+     *
+     * @return null|string token name
+     */
+    public function getName()
+    {
+        return isset($this->id) ? token_name($this->id) : null;
+    }
+
+    /**
      * Generate keywords array contains all keywords that exists in used PHP version.
      *
      * @return array
