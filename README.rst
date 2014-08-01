@@ -9,10 +9,15 @@ If you are already using ``PHP_CodeSniffer`` to identify coding standards
 problems in your code, you know that fixing them by hand is tedious, especially
 on large projects. This tool does the job for you.
 
+Requirements
+------------
+
+PHP needs to be a minimum version of PHP 5.3.6
+
 Installation
 ------------
 
-Locally
+Locally 
 ~~~~~~~
 
 Download the `php-cs-fixer.phar`_ file and store it somewhere on your computer.
