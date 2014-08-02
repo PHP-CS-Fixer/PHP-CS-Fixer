@@ -255,7 +255,7 @@ fixed but without actually modifying them:
     php php-cs-fixer.phar fix /path/to/code --dry-run
 
 Instead of using command line options to customize the fixer, you can save the
-configuration in a ``.php_cs`` file in the root directory of
+configuration in a ``php-cs-fixer.php`` file in the root directory of
 your project. The file must return an instance of
 `Symfony\CS\ConfigInterface`, which lets you configure the fixers, the files,
 and directories that need to be analyzed:
@@ -293,7 +293,7 @@ Note the additional ``-`` in front of the Fixer name.
     ;
 
 With the ``--config-file`` option you can specify the path to the
-``.php_cs`` file.
+``php-cs-fixer.php`` file.
 
 Helpers
 -------
