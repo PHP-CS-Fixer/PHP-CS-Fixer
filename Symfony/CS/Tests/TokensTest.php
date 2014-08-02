@@ -44,5 +44,4 @@ PHP
             $this->assertSame('method', $element['type']);
         }
     }
-
 }
