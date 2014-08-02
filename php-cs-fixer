@@ -14,6 +14,11 @@
  * @author Fabien Potencier <fabien@symfony.com>
  */
 
+if (version_compare(phpversion(), '5.3.6', '<')) {
+    echo "PHP needs to be a minimum version of PHP 5.3.6\n";
+    exit(1);
+}
+
 // installed via composer?
 if (file_exists($a = __DIR__.'/../../autoload.php')) {
     require_once $a;
