@@ -17,7 +17,7 @@ PHP needs to be a minimum version of PHP 5.3.6
 Installation
 ------------
 
-Locally 
+Locally
 ~~~~~~~
 
 Download the `php-cs-fixer.phar`_ file and store it somewhere on your computer.
