@@ -21,12 +21,14 @@ class ExtraEmptyLinesFixerTest extends \PHPUnit_Framework_TestCase
         $file = $this->getTestFile();
 
         $expected = <<<'EOF'
+<?php
 $a = new Bar();
 
 $a = new FooBaz();
 EOF;
 
         $input = <<<'EOF'
+<?php
 $a = new Bar();
 
 
@@ -42,12 +44,14 @@ EOF;
         $file = $this->getTestFile();
 
         $expected = <<<'EOF'
+<?php
 $a = new Bar();
 
 $a = new FooBaz();
 EOF;
 
         $input = <<<'EOF'
+<?php
 $a = new Bar();
 
 
@@ -67,6 +71,7 @@ EOF;
         $file = $this->getTestFile();
 
         $expected = <<<'EOF'
+<?php
 $b = <<<TEXT
 Foo TEXT
 Bar
@@ -77,6 +82,7 @@ TEXT;
 EOF;
 
         $input = <<<'EOF'
+<?php
 $b = <<<TEXT
 Foo TEXT
 Bar
@@ -95,6 +101,7 @@ EOF;
         $file = $this->getTestFile();
 
         $expected = <<<'EOF'
+<?php
 $b = <<<'TEXT'
 Foo TEXT;
 Bar1}
@@ -105,6 +112,7 @@ TEXT;
 EOF;
 
         $input = <<<'EOF'
+<?php
 $b = <<<'TEXT'
 Foo TEXT;
 Bar1}
@@ -123,6 +131,7 @@ EOF;
         $file = $this->getTestFile();
 
         $expected = <<<'EOF'
+<?php
 $b = <<<'TEXT'
 Foo TEXT
 Bar
@@ -139,6 +148,7 @@ TEXT;
 EOF;
 
         $input = <<<'EOF'
+<?php
 $b = <<<'TEXT'
 Foo TEXT
 Bar
@@ -163,6 +173,7 @@ EOF;
         $file = $this->getTestFile();
 
         $expected = <<<'EOF'
+<?php
 $a = 'Foo
 
 
@@ -170,6 +181,7 @@ Bar';
 EOF;
 
         $input = <<<'EOF'
+<?php
 $a = 'Foo
 
 
@@ -185,6 +197,7 @@ EOF;
         $file = $this->getTestFile();
 
         $expected = <<<'EOF'
+<?php
 $a = 'Foo';
 
 $b = 'Bar
@@ -201,6 +214,7 @@ FooFoo';
 EOF;
 
         $input = <<<'EOF'
+<?php
 $a = 'Foo';
 
 
@@ -217,6 +231,36 @@ Here\'s an escaped quote '
 
 
 FooFoo';
+EOF;
+
+        $this->assertSame($expected, $fixer->fix($file, $input));
+    }
+
+    public function testFixWithCommentWithAQuote()
+    {
+        $fixer = new ExtraEmptyLinesFixer();
+        $file = new \SplFileInfo(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+$a = 'foo';
+
+// my comment's gotta have a quote
+$b = 'foobar';
+
+$c = 'bar';
+EOF;
+
+        $input = <<<'EOF'
+<?php
+$a = 'foo';
+
+
+// my comment's gotta have a quote
+$b = 'foobar';
+
+
+$c = 'bar';
 EOF;
 
         $this->assertSame($expected, $fixer->fix($file, $input));
