@@ -184,7 +184,7 @@ class Tokens extends \SplFixedArray
             '__sleep', '__wakeup', '__toString', '__invoke', '__set_state', '__clone',
         );
 
-        return in_array($name, $magicMethods);
+        return in_array($name, $magicMethods, true);
     }
 
     /**
@@ -521,7 +521,7 @@ class Tokens extends \SplFixedArray
             $token = $this[--$index];
 
             if (!$token->isArray()) {
-                if (in_array($token->content, array('{', '}', '(', ')', ))) {
+                if (in_array($token->content, array('{', '}', '(', ')', ), true)) {
                     break;
                 }
 

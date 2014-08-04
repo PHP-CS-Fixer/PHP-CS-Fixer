@@ -16,10 +16,11 @@ namespace Symfony\CS;
  */
 interface FixerInterface
 {
-    const PSR0_LEVEL = 1;
-    const PSR1_LEVEL = 3;
-    const PSR2_LEVEL = 7;
-    const ALL_LEVEL  = 15;
+    const PSR0_LEVEL    = 1;
+    const PSR1_LEVEL    = 3;
+    const PSR2_LEVEL    = 7;
+    const ALL_LEVEL     = 15;
+    const CONTRIB_LEVEL = 32;
 
     /**
      * Fixes a file.
