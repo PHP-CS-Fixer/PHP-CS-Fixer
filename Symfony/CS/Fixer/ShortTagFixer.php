@@ -59,7 +59,7 @@ class ShortTagFixer implements FixerInterface
                     if ($i !== $iLast) {
                         if ('<?php' === substr($content, $tokensOldContentLength + $tokenContentLength, 5)) {
                             $tokenContent .= '<?php ';
-                            $tokenContentLength += 5;
+                            $tokenContentLength += 6;
                         } else {
                             $tokenContent .= '<? ';
                             $tokenContentLength += 3;
