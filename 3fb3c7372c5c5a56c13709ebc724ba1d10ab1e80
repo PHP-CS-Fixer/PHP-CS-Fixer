@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-04T17:35:19Z
+
+If merged please bump patch version
+
+---------------------------------------------------------------------------
+
+by weierophinney at 2014-08-04T17:39:08Z
+
+Needs one other test:
+
+```
+$this->data = preg_replace('/<\?(?!xml|php)/s', '<?php ',       $this->data);
+```
+
+should remain untouched (currently, it replaces the `'<?php'` string to `<?`).
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-04T17:51:24Z
+
+For me it is the same case, and this PR already fix it.
+But here you are, I added it ;)
+
+Thanks again for found out this bug !
