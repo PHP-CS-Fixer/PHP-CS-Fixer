@@ -58,6 +58,18 @@ echo \'Foo\';
                 '<?php
 // Replace all <? with <?php !',
             ),
+            array(
+                '<?php
+/**
+ * Convert <?= ?> to long-form <?php echo ?> and <?php ?> to <?php ?>
+ *
+ */',
+                '<?php
+/**
+ * Convert <?= ?> to long-form <?php echo ?> and <?php ?> to <?php ?>
+ *
+ */',
+            ),
         );
     }
 
