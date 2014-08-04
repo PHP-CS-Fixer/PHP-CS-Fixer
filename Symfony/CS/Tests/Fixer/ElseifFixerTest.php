@@ -29,13 +29,34 @@ class ElseifFixerTest extends \PHPUnit_Framework_TestCase
         $fixer = new ElseifFixer();
 
         $this->assertSame(
-            'if ($some) { $test = true } elseif ($some !== "test") { $test = false; }',
-            $fixer->fix($this->getTestFile(), 'if ($some) { $test = true } else if ($some !== "test") { $test = false; }'
+            '<?php if ($some) { $test = true; } elseif ($some !== "test") { $test = false; }',
+            $fixer->fix($this->getTestFile(), '<?php if ($some) { $test = true; } else if ($some !== "test") { $test = false; }'
         ));
 
         $this->assertSame(
-            'if ($some) { $test = true } elseif ($some !== "test") { $test = false; }',
-            $fixer->fix($this->getTestFile(), 'if ($some) { $test = true } else  if ($some !== "test") { $test = false; }'
+            '<?php if ($some) { $test = true; } elseif ($some !== "test") { $test = false; }',
+            $fixer->fix($this->getTestFile(), '<?php if ($some) { $test = true; } else  if ($some !== "test") { $test = false; }'
+        ));
+
+        $this->assertSame(
+            '<?php $js = \'if (foo.a) { foo.a = "OK"; } else if (foo.b) { foo.b = "OK"; }\';',
+            $fixer->fix($this->getTestFile(), '<?php $js = \'if (foo.a) { foo.a = "OK"; } else if (foo.b) { foo.b = "OK"; }\';'
+        ));
+
+        $this->assertSame(
+            '<?php
+if ($a) {
+    $x = 1;
+} elseif ($b) {
+    $x = 2;
+}',
+            $fixer->fix($this->getTestFile(), '<?php
+if ($a) {
+    $x = 1;
+} else
+if ($b) {
+    $x = 2;
+}'
         ));
     }
 
