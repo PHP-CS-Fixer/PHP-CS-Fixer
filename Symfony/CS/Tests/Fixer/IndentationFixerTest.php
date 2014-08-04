@@ -170,7 +170,7 @@ $x = "a: 	";', '
 <?php
 $x = "a: 	";');
 
-$cases[] = array('
+        $cases[] = array('
 <?php
 $x = "
 	Like
