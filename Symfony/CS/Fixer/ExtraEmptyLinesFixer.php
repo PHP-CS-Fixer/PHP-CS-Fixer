@@ -12,10 +12,10 @@
 namespace Symfony\CS\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Tokens;
 
 /**
- * @author Christophe Coevoet <stof@notk.org>
- * @author Adrien Brault <adrien.brault@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class ExtraEmptyLinesFixer implements FixerInterface
 {
@@ -24,37 +24,35 @@ class ExtraEmptyLinesFixer implements FixerInterface
      */
     public function fix(\SplFileInfo $file, $content)
     {
-        $regex = <<<'REGEX'
-(?: # heredoc/nowdoc
-    <<<(?P<nowdoc_quote>'?) (?P<nowdoc_delimiter>[_[:alpha:]][_[:alnum:]]*) (?P=nowdoc_quote)
-        \C*(?!(?P=nowdoc_end))
-    (?P<nowdoc_end>\n(?P=nowdoc_delimiter))
-)
-|(?: # single quoted string
-    '
-        [^\\']*+
-        (?:\\.[^\\']*+)*+
-    '
-)
-|(?: # double quoted string
-    "
-        [^\\"]*+
-        (?:\\.[^\\"]*+)*+
-    "
-)
-|(?P<to_fix>
-    \n{3,}
-)
-REGEX;
+        $tokens = Tokens::fromCode($content);
 
-        // [Structure] Duplicated empty lines outside strings should not be used.
-        return preg_replace_callback(sprintf('@%s@x', $regex), function ($matches) {
-            if (isset($matches['to_fix'])) {
-                return "\n\n";
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_WHITESPACE)) {
+                continue;
             }
 
-            return $matches[0];
-        }, $content);
+            $content = '';
+            $count = 0;
+            $parts = explode("\n", $token->content);
+
+            for ($i = 0, $last = count($parts) - 1; $i <= $last; ++$i) {
+                if ('' === $parts[$i]) {
+                    // if part is empty then we between two \n
+                    ++$count;
+                } else {
+                    $count = 0;
+                    $content .= $parts[$i];
+                }
+
+                if ($i !== $last && $count < 3) {
+                    $content .= "\n";
+                }
+            }
+
+            $token->content = $content;
+        }
+
+        return $tokens->generateCode();
     }
 
     public function getLevel()
