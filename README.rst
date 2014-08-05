@@ -231,6 +231,8 @@ Choose from the list of available fixers:
 * **new_with_braces** [all] All instances created with new keyword must be
   followed by braces.
 
+* **ternary_spaces** [all] Standardize spaces around ternary operator.
+
 The ``--config`` option customizes the files to analyse, based
 on some well-known directory structures:
 
