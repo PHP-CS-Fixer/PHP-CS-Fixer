@@ -126,6 +126,7 @@ project:
     php php-cs-fixer.phar fix /path/to/project --level=all
 
 By default, all PSR-2 fixers and some additional ones are run.
+Note that you can not set contrib level by this option. You should set fixer with contrib level manually in --fixers option.
 
 The ``--fixers`` option lets you choose the exact fixers to
 apply (the fixer names must be separated by a comma):
@@ -232,6 +233,9 @@ Choose from the list of available fixers:
   followed by braces.
 
 * **ternary_spaces** [all] Standardize spaces around ternary operator.
+
+* **short_array_syntax** [contrib] PHP array's should use the PHP 5.4
+  short-syntax.
 
 The ``--config`` option customizes the files to analyse, based
 on some well-known directory structures:
