@@ -1,0 +1,51 @@
+---------------------------------------------------------------------------
+
+by sstok at 2014-07-29T08:27:02Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-04T12:30:34Z
+
+@fabpot, what do you think?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-04T12:47:24Z
+
+Well, it will need rebasing, and probably squashing to one commit before it can be merged by @fabpot.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-04T13:34:06Z
+
+Rebasing done, it was needed because of age.
+IMO squashing should be done during merging, is it not?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-04T13:35:40Z
+
+It can be, but then you'll loose your name from the commits because the replacement commit will be under the name of someone else in the git history.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-04T13:52:53Z
+
+#415 had 3 commit at PR
+After merge on master there is:
+5e5e63018db138df80c860f7bd41db3072f167d7 - keradus authored, fabpot committed
+If #415 had only 1 commit at PR the commit would had only "keradus authored".
+
+Can't see why squashing at PR is better - and IMO atomic commits at PR gives better overview of what and why was done.
+
+It is more important for me if this PR will be merged or not than what name will be see at `git hist`.
+
+And IMO matter of squashing before or during merge is irrelevant for the matter of acceptance this PR.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-04T13:55:59Z
+
+Sure. This whole squashing thing is a non-issue anyway. It didn't deserve this discussion.
