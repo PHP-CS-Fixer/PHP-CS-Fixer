@@ -48,6 +48,11 @@ If you are already using ``PHP_CodeSniffer`` to identify coding standards
 problems in your code, you know that fixing them by hand is tedious, especially
 on large projects. This tool does the job for you.
 
+Requirements
+------------
+
+PHP needs to be a minimum version of PHP 5.3.6
+
 Installation
 ------------
 
@@ -153,6 +158,7 @@ Dedicated plugins exist for:
 * `Vim`_
 * `Sublime Text`_
 * `NetBeans`_
+* `PhpStorm`_
 
 Contribute
 ----------
@@ -178,6 +184,7 @@ projects for instance).
 .. _Vim:               https://github.com/stephpy/vim-php-cs-fixer
 .. _Sublime Text:      https://github.com/benmatselby/sublime-phpcs
 .. _NetBeans:          http://plugins.netbeans.org/plugin/49042/php-cs-fixer
+.. _PhpStorm:          http://arnolog.net/post/92715936483/use-fabpots-php-cs-fixer-tool-in-phpstorm-in-2-steps
 .. _contribute:        https://github.com/fabpot/php-cs-fixer
 
 EOF;

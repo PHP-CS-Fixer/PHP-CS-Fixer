@@ -78,7 +78,9 @@ project:
     <info>php %command.full_name% /path/to/project --level=psr2</info>
     <info>php %command.full_name% /path/to/project --level=all</info>
 
-By default, all PSR-2 fixers and some additional ones are run.
+By default, all PSR-2 fixers and some additional ones are run. The "contrib
+level" fixers cannot be enabled via this option; you should instead set them
+manually by their name via the <comment>--fixers</comment> option.
 
 The <comment>--fixers</comment> option lets you choose the exact fixers to
 apply (the fixer names must be separated by a comma):
