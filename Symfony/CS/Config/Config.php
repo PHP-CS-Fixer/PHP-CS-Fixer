@@ -11,10 +11,10 @@
 
 namespace Symfony\CS\Config;
 
-use Symfony\CS\FixerInterface;
-use Symfony\CS\FinderInterface;
 use Symfony\CS\ConfigInterface;
+use Symfony\CS\FinderInterface;
 use Symfony\CS\Finder\DefaultFinder;
+use Symfony\CS\FixerInterface;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -24,6 +24,7 @@ class Config implements ConfigInterface
     protected $name;
     protected $description;
     protected $finder;
+    protected $level;
     protected $fixers;
     protected $dir;
     protected $customFixers;
@@ -68,11 +69,23 @@ class Config implements ConfigInterface
         return $this->finder;
     }
 
+    public function level($level)
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
     public function fixers($fixers)
     {
         $this->fixers = $fixers;
 
         return $this;
+    }
+
+    public function getLevel()
+    {
+        return $this->level;
     }
 
     public function getFixers()
