@@ -107,7 +107,8 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
         return preg_replace(
             '/(function[^{]+\)){/',
             '\1 {',
-            $content);
+            $content
+        );
     }
 
     private function regex(array $keys)

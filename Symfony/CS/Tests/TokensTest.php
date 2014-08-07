@@ -20,7 +20,7 @@ class TokensTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetClassyElements()
     {
-        $tokens = Tokens::fromCode(<<<'PHP'
+        $source = <<<'PHP'
 <?php
 class Foo
 {
@@ -34,8 +34,9 @@ class Foo
     {
     }
 }
-PHP
-    );
+PHP;
+
+        $tokens = Tokens::fromCode($source);
         $elements = $tokens->getClassyElements();
 
         $this->assertCount(2, $elements);
