@@ -28,7 +28,7 @@ class MagentoFinder extends DefaultFinder
             ->name('*.php')
             ->name('*.phtml')
             ->name('*.xml')
-            ->exclude( array(
+            ->exclude(array(
                 'lib',
                 'shell',
                 'app/Mage.php',

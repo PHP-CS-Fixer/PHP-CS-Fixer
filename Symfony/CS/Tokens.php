@@ -123,8 +123,8 @@ class Tokens extends \SplFixedArray
      * @param  bool   $saveIndexes save the numeric indexes used in the original array, default is yes
      * @return Tokens
      */
-     public static function fromArray($array, $saveIndexes = null)
-     {
+    public static function fromArray($array, $saveIndexes = null)
+    {
         $tokens = new Tokens(count($array));
 
         if (null === $saveIndexes || $saveIndexes) {
@@ -142,7 +142,7 @@ class Tokens extends \SplFixedArray
         }
 
         return $tokens;
-     }
+    }
 
     /**
      * Create token collection directly from code.
@@ -566,7 +566,7 @@ class Tokens extends \SplFixedArray
 
         $this->setSize($oldSize + $itemsCnt);
 
-        for ($i = $oldSize + $itemsCnt - 1; $i >= $key ; --$i) {
+        for ($i = $oldSize + $itemsCnt - 1; $i >= $key; --$i) {
             $this[$i] = isset($this[$i - $itemsCnt]) ? $this[$i - $itemsCnt] : new Token('');
         }
 

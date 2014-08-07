@@ -35,7 +35,7 @@ class Foo
     }
 }
 PHP
-    );
+        );
         $elements = $tokens->getClassyElements();
 
         $this->assertCount(2, $elements);
