@@ -222,7 +222,7 @@ EOF
             $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
         } elseif ($stdin) {
             $config->finder(new \ArrayIterator(array(new StdinFileInfo())));
-        } else {
+        } elseif (null !== $path) {
             $config->setDir($path);
         }
 
