@@ -71,8 +71,8 @@ echo \'Foo\';
  */',
             ),
             array(
-                "\$this->data = preg_replace('/<\?(?!xml|php)/s', '<?php ',       \$this->data);",
-                "\$this->data = preg_replace('/<\?(?!xml|php)/s', '<?php ',       \$this->data);",
+                "<?php \$this->data = preg_replace('/<\?(?!xml|php)/s', '<?php ',       \$this->data);",
+                "<?php \$this->data = preg_replace('/<\?(?!xml|php)/s', '<?php ',       \$this->data);",
             ),
         );
     }
