@@ -172,6 +172,16 @@ Choose from the list of available fixers:
 
 * **unused_use** [all] Unused use statements must be removed.
 
+* **return** [all] An empty line feed should precede a return
+   statement.
+
+* **short_array_syntax** [contrib] PHP array's should use the PHP 5.4
+   short-syntax
+
+* **ordered_use** [contrib] Ordering use statements.
+
+* **ternary_spaces** [all] Standardize spaces around ternary operator.
+
 * **short_tag** [PSR-1] PHP code must use the long <?php ?> tags or
    the short-echo <?= ?> tags; it must not use the
    other tag variations.
@@ -221,17 +231,24 @@ Choose from the list of available fixers:
 
 * **ternary_spaces** [all] Standardize spaces around ternary operator.
 
-* **short_array_syntax** [contrib] PHP array's should use the PHP 5.4
-   short-syntax
+* **object_operator** [all] There should not be space before or after
+   object T_OBJECT_OPERATOR.
+
+* **function_declaration** [PSR-2] Spaces should be properly placed in a
+   function declaration
 
 * **psr0** [PSR-0] Classes must be in a path that matches
    their namespace, be at least one namespace deep,
    and the class name should match the file name.
 
-* **controls_spaces** [all] A single space should be between: the closing
-   brace and the control, the control and the opening
-   parentheses, the closing parentheses and the
-   opening brace.
+* **lowercase_keywords** [PSR-2] PHP keywords MUST be in lower case.
+
+* **include** [all] Include and file path should be divided with
+   a single space. File path should not be placed
+   under brackets.
+
+* **phpdoc_params** [all] All items of the @param phpdoc tags must be
+   aligned vertically.
 
 * **elseif** [PSR-2] The keyword elseif should be used instead
    of else if so that all control keywords looks like
