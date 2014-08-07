@@ -218,7 +218,7 @@ Choose from the list of available fixers:
 
 * **lowercase_keywords** [PSR-2] PHP keywords MUST be in lower case.
 
-* **short_array_syntax** [all] PHP array's should use the PHP 5.4
+* **short_array_syntax** [contrib] PHP array's should use the PHP 5.4
    short-syntax
 
 * **lowercase_constants** [PSR-2] The PHP constants true, false, and null
