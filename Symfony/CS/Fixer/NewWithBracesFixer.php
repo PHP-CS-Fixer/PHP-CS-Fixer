@@ -30,7 +30,7 @@ class NewWithBracesFixer implements FixerInterface
             }
 
             $nextIndex = null;
-            $nextToken = $tokens->getNextTokenOfKind($index, array('(', ';', ')'), $nextIndex);
+            $nextToken = $tokens->getNextTokenOfKind($index, array('(', ';', ',', ')', ']', ), $nextIndex);
 
             // no correct end of code - break
             if (null === $nextToken) {
@@ -42,7 +42,10 @@ class NewWithBracesFixer implements FixerInterface
                 continue;
             }
 
-            $tokens->insertAt($nextIndex, array(new Token('('), new Token(')'), ));
+            $meaningBeforeNextIndex = null;
+            $tokens->getPrevNonWhitespace($nextIndex, array(), $meaningBeforeNextIndex);
+
+            $tokens->insertAt($meaningBeforeNextIndex + 1, array(new Token('('), new Token(')'), ));
         }
 
         return $tokens->generateCode();

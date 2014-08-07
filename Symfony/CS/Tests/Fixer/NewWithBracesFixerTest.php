@@ -18,10 +18,7 @@ use Symfony\CS\Fixer\NewWithBracesFixer as Fixer;
  */
 class NewWithBracesFixerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @dataProvider provideCases
-     */
-    public function testFix($expected, $input)
+    public function makeTest($expected, $input)
     {
         $fixer = new Fixer();
         $file = $this->getTestFile();
@@ -30,11 +27,28 @@ class NewWithBracesFixerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
-    public function provideCases()
+    /**
+     * @dataProvider provideStandardCases
+     */
+    public function testStandard($expected, $input)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    /**
+     * @dataProvider provide54Cases
+     * @requires PHP 5.4
+     */
+    public function test54($expected, $input)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideStandardCases()
     {
         return array(
             array('<?php $x = new X();', '<?php $x = new X;', ),
-            array('<?php $y = new Y ();', '<?php $y = new Y ;', ),
+            array('<?php $y = new Y() ;', '<?php $y = new Y ;', ),
             array('<?php $foo = new $foo();', '<?php $foo = new $foo;', ),
             array('<?php $baz = new {$bar->baz}();', '<?php $baz = new {$bar->baz};', ),
             array('<?php $xyz = new X(new Y(new Z()));', '<?php $xyz = new X(new Y(new Z));', ),
@@ -42,6 +56,28 @@ class NewWithBracesFixerTest extends \PHPUnit_Framework_TestCase
             array('<?php $self = new self();', '<?php $self = new self;', ),
             array('<?php $static = new static();', '<?php $static = new static;', ),
             array('<?php $magic = new __CLASS__();', '<?php $magic = new __CLASS__;'),
+            array(
+                '<?php $a = array( "key" => new DateTime(), );',
+                '<?php $a = array( "key" => new DateTime, );',
+            ),
+            array(
+                '<?php $a = array( "key" => new DateTime() );',
+                '<?php $a = array( "key" => new DateTime );',
+            ),
+        );
+    }
+
+    public function provide54Cases()
+    {
+        return array(
+            array(
+                '<?php $a = [ "key" => new DateTime(), ];',
+                '<?php $a = [ "key" => new DateTime, ];',
+            ),
+            array(
+                '<?php $a = [ "key" => new DateTime() ];',
+                '<?php $a = [ "key" => new DateTime ];',
+            ),
         );
     }
 
