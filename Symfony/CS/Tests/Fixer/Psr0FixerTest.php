@@ -117,9 +117,7 @@ namespace Foo\Bar\Baz\FIXER;
 class Psr0Fixer {}
 EOF;
 
-        ob_start();
         $this->assertSame($expected, $fixer->fix($file, $input));
-        $this->assertSame('', ob_get_clean());
 
         $config->setDir(__DIR__.'/../../Fixer');
         $expected = <<<'EOF'
@@ -131,9 +129,7 @@ namespace Foo\Bar\Baz;
 class Psr0Fixer {}
 EOF;
 
-        ob_start();
         $this->assertSame($expected, $fixer->fix($file, $input));
-        $this->assertSame('', ob_get_clean());
     }
 
     public function testFixLeadingSpaceNamespace()
@@ -149,9 +145,8 @@ EOF;
  namespace LeadingSpace;
 class Psr0Fixer {}
 EOF;
-        ob_start();
+
         $this->assertSame($expected, $fixer->fix($file, $input));
-        ob_clean();
     }
 
     private function getTestFile($filename = __FILE__)
