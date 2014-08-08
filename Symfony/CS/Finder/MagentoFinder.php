@@ -19,7 +19,6 @@ use Symfony\Component\Finder\Finder;
  * @author Myke Hines <myke@webhines.com>
  */
 class MagentoFinder extends DefaultFinder
-
 {
     public function __construct()
     {
@@ -29,7 +28,7 @@ class MagentoFinder extends DefaultFinder
             ->name('*.php')
             ->name('*.phtml')
             ->name('*.xml')
-            ->exclude( array(
+            ->exclude(array(
                 'lib',
                 'shell',
                 'app/Mage.php',

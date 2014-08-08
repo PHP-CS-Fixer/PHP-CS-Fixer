@@ -162,27 +162,24 @@ class IndentationFixerTest extends \PHPUnit_Framework_TestCase
 
     public function provideTabInString()
     {
-        $cases = array();
-
-        $cases[] = array('
-<?php
-$x = "a: 	";', '
-<?php
-$x = "a: 	";');
-
-$cases[] = array('
-<?php
+        return array(
+            array(
+                '<?php $x = "a: 	";',
+                '<?php $x = "a: 	";',
+            ),
+            array(
+                '<?php
 $x = "
 	Like
 	a
-	dog";', '
-<?php
+	dog";',
+                '<?php
 $x = "
 	Like
 	a
-	dog";');
-
-        return $cases;
+	dog";'
+            ),
+        );
     }
 
     private function getTestFile($filename = __FILE__)
