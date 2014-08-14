@@ -39,13 +39,13 @@ class Tokens extends \SplFixedArray
     public static function clearCache($key = null)
     {
         if (null === $key) {
-            static::$cache = array();
+            self::$cache = array();
 
             return;
         }
 
-        if (static::hasCache($key)) {
-            unset(static::$cache[$key]);
+        if (self::hasCache($key)) {
+            unset(self::$cache[$key]);
         }
     }
 
@@ -57,11 +57,11 @@ class Tokens extends \SplFixedArray
      */
     private static function getCache($key)
     {
-        if (!static::hasCache($key)) {
+        if (!self::hasCache($key)) {
             throw new \OutOfBoundsException('Unknown cache key: '.$key);
         }
 
-        return static::$cache[$key];
+        return self::$cache[$key];
     }
 
     /**
@@ -72,7 +72,7 @@ class Tokens extends \SplFixedArray
      */
     private static function hasCache($key)
     {
-        return isset(static::$cache[$key]);
+        return isset(self::$cache[$key]);
     }
 
     /**
@@ -83,7 +83,7 @@ class Tokens extends \SplFixedArray
      */
     private static function setCache($key, $value)
     {
-        static::$cache[$key] = $value;
+        self::$cache[$key] = $value;
     }
 
     /**
@@ -154,8 +154,8 @@ class Tokens extends \SplFixedArray
     {
         $codeHash = crc32($code);
 
-        if (static::hasCache($codeHash)) {
-            return static::getCache($codeHash);
+        if (self::hasCache($codeHash)) {
+            return self::getCache($codeHash);
         }
 
         $tokens = token_get_all($code);
@@ -164,7 +164,7 @@ class Tokens extends \SplFixedArray
             $tokens[$index] = new Token($tokenPrototype);
         }
 
-        $collection = static::fromArray($tokens);
+        $collection = self::fromArray($tokens);
         $collection->changeCodeHash($codeHash);
 
         return $collection;
@@ -219,11 +219,11 @@ class Tokens extends \SplFixedArray
     private function changeCodeHash($codeHash)
     {
         if (null !== $this->codeHash) {
-            static::clearCache($this->codeHash);
+            self::clearCache($this->codeHash);
         }
 
         $this->codeHash = $codeHash;
-        static::setCache($this->codeHash, $this);
+        self::setCache($this->codeHash, $this);
     }
 
     /**
