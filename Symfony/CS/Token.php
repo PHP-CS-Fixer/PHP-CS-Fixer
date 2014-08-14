@@ -64,8 +64,6 @@ class Token
     /**
      * Clear token at given index.
      * Clearing means override token by empty string.
-     *
-     * @param int $index token index
      */
     public function clear()
     {
