@@ -23,7 +23,7 @@ class LowercaseKeywordsFixer implements FixerInterface
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens as $index => $token) {
+        foreach ($tokens as $token) {
             if ($token->isKeyword()) {
                 $token->content = strtolower($token->content);
             }
