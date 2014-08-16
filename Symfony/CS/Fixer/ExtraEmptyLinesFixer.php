@@ -26,7 +26,7 @@ class ExtraEmptyLinesFixer implements FixerInterface
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens as $index => $token) {
+        foreach ($tokens as $token) {
             if (!$token->isGivenKind(T_WHITESPACE)) {
                 continue;
             }
