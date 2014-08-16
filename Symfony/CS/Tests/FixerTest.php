@@ -24,24 +24,32 @@ class FixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
 
-        $f1 = $this->getMock('Symfony\CS\FixerInterface');
-        $f1->expects($this->any())->method('getPriority')->will($this->returnValue(0));
+        $fxPrototypes = array(
+            array('getPriority' =>   0, 'getLevel' => FixerInterface::PSR0_LEVEL, 'getName' => 'aaa', ),
+            array('getPriority' => -10, 'getLevel' => FixerInterface::PSR1_LEVEL, 'getName' => 'bbb', ),
+            array('getPriority' =>  10, 'getLevel' => FixerInterface::PSR0_LEVEL, 'getName' => 'ccc', ),
+            array('getPriority' => -10, 'getLevel' => FixerInterface::PSR0_LEVEL, 'getName' => 'eee', ),
+            array('getPriority' => -10, 'getLevel' => FixerInterface::PSR0_LEVEL, 'getName' => 'ddd', ),
+        );
 
-        $f2 = $this->getMock('Symfony\CS\FixerInterface');
-        $f2->expects($this->any())->method('getPriority')->will($this->returnValue(-10));
+        $fxs = array();
 
-        $f3 = $this->getMock('Symfony\CS\FixerInterface');
-        $f3->expects($this->any())->method('getPriority')->will($this->returnValue(10));
+        foreach ($fxPrototypes as $fxPrototype) {
+            $fx = $this->getMock('Symfony\CS\FixerInterface');
+            $fx->expects($this->any())->method('getPriority')->willReturn($fxPrototype['getPriority']);
+            $fx->expects($this->any())->method('getLevel')->willReturn($fxPrototype['getLevel']);
+            $fx->expects($this->any())->method('getName')->willReturn($fxPrototype['getName']);
 
-        $f4 = $this->getMock('Symfony\CS\FixerInterface');
-        $f4->expects($this->any())->method('getPriority')->will($this->returnValue(-10));
+            $fixer->addFixer($fx);
+            $fxs[] = $fx;
+        }
 
-        $fixer->addFixer($f1);
-        $fixer->addFixer($f2);
-        $fixer->addFixer($f3);
-        $fixer->addFixer($f4);
-
-        $this->assertSame(array($f3, $f1, $f4, $f2), $fixer->getFixers());
+        $this->assertSame(
+            array($fxs[2], $fxs[0], $fxs[4], $fxs[3], $fxs[1]),
+            // supress warning: usort(): Array was modified by the user comparision function
+            // because accessing the getters of the mocks changed their state
+            @$fixer->getFixers()
+        );
     }
 
     /**

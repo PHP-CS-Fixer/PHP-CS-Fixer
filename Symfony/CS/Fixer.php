@@ -38,6 +38,15 @@ class Fixer
         $this->diff = new Differ();
     }
 
+    public static function cmpInt($a, $b)
+    {
+        if ($a === $b) {
+            return 0;
+        }
+
+        return $a < $b ? -1 : 1;
+    }
+
     public function registerBuiltInFixers()
     {
         foreach (Finder::create()->files()->in(__DIR__.'/Fixer') as $file) {
@@ -94,8 +103,6 @@ class Fixer
      */
     public function fix(ConfigInterface $config, $dryRun = false, $diff = false)
     {
-        $this->sortFixers();
-
         $fixers = $this->prepareFixers($config);
         $changed = array();
 
@@ -218,12 +225,19 @@ class Fixer
 
     private function sortFixers()
     {
-        usort($this->fixers, function ($a, $b) {
-            if ($a->getPriority() === $b->getPriority()) {
-                return 0;
+        $selfName = __CLASS__;
+        usort($this->fixers, function ($a, $b) use ($selfName) {
+            $cmp = $selfName::cmpInt($b->getPriority(), $a->getPriority());
+            if (0 !== $cmp) {
+                return $cmp;
             }
 
-            return $a->getPriority() > $b->getPriority() ? -1 : 1;
+            $cmp = $selfName::cmpInt($a->getLevel(), $b->getLevel());
+            if (0 !== $cmp) {
+                return $cmp;
+            }
+
+            return strcmp($a->getName(), $b->getName());
         });
     }
 
