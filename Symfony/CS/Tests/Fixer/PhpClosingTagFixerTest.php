@@ -69,6 +69,7 @@ echo \'Foo\';
 <?php echo \'Foo\'; ?>
 ',
             ),
+            array('<?php echo "foo";', '<?php echo "foo" ?>'),
         );
     }
 
