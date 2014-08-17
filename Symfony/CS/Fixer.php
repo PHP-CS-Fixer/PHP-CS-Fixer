@@ -226,18 +226,9 @@ class Fixer
     private function sortFixers()
     {
         $selfName = __CLASS__;
+
         usort($this->fixers, function ($a, $b) use ($selfName) {
-            $cmp = $selfName::cmpInt($b->getPriority(), $a->getPriority());
-            if (0 !== $cmp) {
-                return $cmp;
-            }
-
-            $cmp = $selfName::cmpInt($a->getLevel(), $b->getLevel());
-            if (0 !== $cmp) {
-                return $cmp;
-            }
-
-            return strcmp($a->getName(), $b->getName());
+            return $selfName::cmpInt($b->getPriority(), $a->getPriority());
         });
     }
 
