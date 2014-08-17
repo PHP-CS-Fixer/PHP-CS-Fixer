@@ -340,4 +340,4 @@ projects for instance).
 .. _Sublime Text:      https://github.com/benmatselby/sublime-phpcs
 .. _NetBeans:          http://plugins.netbeans.org/plugin/49042/php-cs-fixer
 .. _PhpStorm:          http://arnolog.net/post/92715936483/use-fabpots-php-cs-fixer-tool-in-phpstorm-in-2-steps
-.. _contribute:        https://github.com/fabpot/php-cs-fixer
+.. _contribute:        https://github.com/fabpot/php-cs-fixer/CONTRIBUTING.md
