@@ -12,10 +12,12 @@
 namespace Symfony\CS\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class IncludeFixer implements FixerInterface
 {
@@ -24,76 +26,138 @@ class IncludeFixer implements FixerInterface
      */
     public function fix(\SplFileInfo $file, $content)
     {
-        static $includyTokens = array(T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE);
-
         $tokens = Tokens::fromCode($content);
+
+        $includies = $this->findIncludies($tokens);
+        $this->clearIncludies($tokens, $includies);
+
+        return $tokens->generateCode();
+    }
+
+    private function clearIncludies(&$tokens, $includies)
+    {
+        foreach (array_reverse($includies) as $includy) {
+            if ($includy['end']) {
+                $tokens->removeLeadingWhitespace($includy['end']);
+            }
+
+            $braces = $includy['braces'];
+
+            if ($braces) {
+                $nextToken = $tokens->getNextNonWhitespace($includy['braces']['close']);
+
+                if (!$nextToken->isArray() && ';' === $nextToken->content) {
+                    $tokens->removeLeadingWhitespace($braces['open']);
+                    $tokens->removeTrailingWhitespace($braces['open']);
+                    $tokens->removeLeadingWhitespace($braces['close']);
+                    $tokens->removeTrailingWhitespace($braces['close']);
+
+                    $tokens[$braces['open']] = new Token(array(T_WHITESPACE, ' ', ));
+                    $tokens[$braces['close']]->clear();
+                }
+            }
+
+            $nextIndex = $includy['begin'] + 1;
+            $nextToken = $tokens[$nextIndex];
+
+            while ($nextToken->isEmpty()) {
+                $nextToken = $tokens[++$nextIndex];
+            }
+
+            if ($nextToken->isWhitespace()) {
+                $nextToken->content = ' ';
+            } elseif ($braces) {
+                $tokens->insertAt($includy['begin'] + 1, new Token(array(T_WHITESPACE, ' ', )));
+            }
+        }
+    }
+
+    private function findIncludies(&$tokens)
+    {
+        static $includyTokens = array(T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE);
 
         $inStatement = false;
         $inBraces = false;
         $bracesLevel = 0;
 
-        foreach ($tokens as $index => $token) {
+        $includies = array();
+        $includiesCount = 0;
+
+        for ($index = 0, $indexLimit = count($tokens); $index < $indexLimit; ++$index) {
+            $token = $tokens[$index];
+
             if (!$inStatement) {
                 $inStatement = $token->isGivenKind($includyTokens);
 
+                if (!$inStatement) {
+                    continue;
+                }
+
+                $includies[$includiesCount] = array(
+                    'begin' => $index,
+                    'braces' => null,
+                    'end' => null,
+                );
+
                 // Don't remove when the statement is wrapped. include is also legal as function parameter
                 // but requires being wrapped then
-                if ($inStatement && '(' !== $tokens->getPrevNonWhitespace($index)->content) {
-                    // Check this explicitly as there must be exactly one space after the statement
-                    // And we can't add another tokens while removing this one
-                    if ('(' === $tokens[$index + 1]->content) {
-                        $tokens->next();
-                        $tokens->removeTrailingWhitespace($index + 1);
+                if ('(' !== $tokens->getPrevNonWhitespace($index)->content) {
+                    $nextTokenIndex = null;
+                    $nextToken = $tokens->getNextNonWhitespace($index, array(), $nextTokenIndex);
 
+                    if ('(' === $nextToken->content) {
                         $inBraces = true;
-                        $bracesLevel = 1; // pre-increase so the removal of the last ones works
-                        $tokens[$index + 1]->content = ' ';
-                    } elseif ('(' === $tokens->getNextNonWhitespace($index)->content) {
-                        $inBraces = true;
+                        $bracesLevel = 1;
+                        $index = $nextTokenIndex;
+                        $includies[$includiesCount]['braces'] = array(
+                            'open' => $index,
+                            'close' => null,
+                        );
                     }
                 }
 
                 continue;
             }
 
-            if ($token->isWhitespace()) {
-                $tokens->removeTrailingWhitespace($index);
-                $tokens[$index]->content = ' ';
-                $tokens->removeLeadingWhitespace($index);
+            if ($token->isArray() || $token->isWhitespace()) {
+                continue;
             }
 
             if ('(' === $token->content) {
-                if ($inBraces && 0 === $bracesLevel) {
-                    $token->clear();
-                }
-
-                $tokens->removeTrailingWhitespace($index);
-                $tokens->next();
                 ++$bracesLevel;
 
                 continue;
             }
 
             if (')' === $token->content) {
-                $tokens->removeLeadingWhitespace($index);
-                $tokens->removeTrailingWhitespace($index);
                 --$bracesLevel;
 
                 if ($inBraces && 0 === $bracesLevel) {
-                    $token->clear();
                     $inStatement = false;
+                    $includies[$includiesCount]['braces']['close'] = $index;
+
+                    $nextTokenIndex = null;
+                    $nextToken = $tokens->getNextNonWhitespace($index, array(), $nextTokenIndex);
+
+                    if (';' === $nextToken->content) {
+                        $includies[$includiesCount]['end'] = $nextTokenIndex;
+                        ++$includiesCount;
+                    }
+
+                    $index = $nextTokenIndex;
                 }
 
                 continue;
             }
 
             if ($inStatement && ';' === $token->content) {
-                $tokens->removeLeadingWhitespace($index);
                 $inStatement = false;
+                $includies[$includiesCount]['end'] = $index;
+                ++$includiesCount;
             }
         }
 
-        return $tokens->generateCode();
+        return $includies;
     }
 
     /**

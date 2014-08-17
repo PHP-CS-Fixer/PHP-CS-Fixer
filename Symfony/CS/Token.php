@@ -190,6 +190,16 @@ class Token
     }
 
     /**
+     * Check if token is empty, e.g. because of clearing.
+     *
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return null === $this->id && ('' === $this->content || null === $this->content);
+    }
+
+    /**
      * Check if token is one of given kind.
      *
      * @param  int|array $possibleKind kind or array of kinds
