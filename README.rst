@@ -155,22 +155,12 @@ automatically fix anything:
 
 Choose from the list of available fixers:
 
+* **psr0** [PSR-0] Classes must be in a path that matches
+   their namespace, be at least one namespace deep,
+   and the class name should match the file name.
+
 * **encoding** [PSR-1] PHP code MUST use only UTF-8 without BOM
    (remove BOM).
-
-* **indentation** [PSR-2] Code MUST use an indent of 4 spaces, and
-   MUST NOT use tabs for indenting.
-
-* **linefeed** [PSR-2] All PHP files must use the Unix LF
-   (linefeed) line ending.
-
-* **trailing_spaces** [PSR-2] Remove trailing whitespace at the end of
-   lines.
-
-* **php_closing_tag** [PSR-2] The closing ?> tag MUST be omitted from
-   files containing only PHP.
-
-* **unused_use** [all] Unused use statements must be removed.
 
 * **short_tag** [PSR-1] PHP code must use the long <?php ?> tags or
    the short-echo <?= ?> tags; it must not use the
@@ -183,18 +173,42 @@ Choose from the list of available fixers:
    on the same line, and closing braces must go on the
    next line after the body.
 
+* **elseif** [PSR-2] The keyword elseif should be used instead
+   of else if so that all control keywords looks like
+   single words.
+
+* **eof_ending** [PSR-2] A file must always end with an empty line
+   feed.
+
 * **function_declaration** [PSR-2] Spaces should be properly placed in a
    function declaration
+
+* **indentation** [PSR-2] Code MUST use an indent of 4 spaces, and
+   MUST NOT use tabs for indenting.
+
+* **linefeed** [PSR-2] All PHP files must use the Unix LF
+   (linefeed) line ending.
 
 * **lowercase_constants** [PSR-2] The PHP constants true, false, and null
    MUST be in lower case.
 
 * **lowercase_keywords** [PSR-2] PHP keywords MUST be in lower case.
 
+* **php_closing_tag** [PSR-2] The closing ?> tag MUST be omitted from
+   files containing only PHP.
+
+* **trailing_spaces** [PSR-2] Remove trailing whitespace at the end of
+   lines.
+
 * **visibility** [PSR-2] Visibility MUST be declared on all
    properties and methods; abstract and final MUST be
    declared before the visibility; static MUST be
    declared after the visibility.
+
+* **controls_spaces** [all] A single space should be between: the closing
+   brace and the control, the control and the opening
+   parentheses, the closing parentheses and the
+   opening brace.
 
 * **extra_empty_lines** [all] Removes extra empty lines.
 
@@ -221,24 +235,10 @@ Choose from the list of available fixers:
 
 * **ternary_spaces** [all] Standardize spaces around ternary operator.
 
+* **unused_use** [all] Unused use statements must be removed.
+
 * **short_array_syntax** [contrib] PHP array's should use the PHP 5.4
    short-syntax
-
-* **psr0** [PSR-0] Classes must be in a path that matches
-   their namespace, be at least one namespace deep,
-   and the class name should match the file name.
-
-* **controls_spaces** [all] A single space should be between: the closing
-   brace and the control, the control and the opening
-   parentheses, the closing parentheses and the
-   opening brace.
-
-* **elseif** [PSR-2] The keyword elseif should be used instead
-   of else if so that all control keywords looks like
-   single words.
-
-* **eof_ending** [PSR-2] A file must always end with an empty line
-   feed.
 
 
 The ``--config`` option customizes the files to analyse, based

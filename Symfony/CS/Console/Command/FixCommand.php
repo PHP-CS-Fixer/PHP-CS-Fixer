@@ -453,28 +453,40 @@ EOF
 
     protected function getFixersHelp()
     {
-        $fixers = '';
+        $help = '';
         $maxName = 0;
-        foreach ($this->fixer->getFixers() as $fixer) {
+        $fixers = $this->fixer->getFixers();
+
+        // sort fixers by level and name
+        usort($fixers, function ($a, $b) {
+            $cmp = Fixer::cmpInt($a->getLevel(), $b->getLevel());
+            if (0 !== $cmp) {
+                return $cmp;
+            }
+
+            return strcmp($a->getName(), $b->getName());
+        });
+
+        foreach ($fixers as $fixer) {
             if (strlen($fixer->getName()) > $maxName) {
                 $maxName = strlen($fixer->getName());
             }
         }
 
-        $count = count($this->fixer->getFixers()) - 1;
-        foreach ($this->fixer->getFixers() as $i => $fixer) {
+        $count = count($fixers) - 1;
+        foreach ($fixers as $i => $fixer) {
             $chunks = explode("\n", wordwrap(sprintf('[%s] %s', $this->fixer->getLevelAsString($fixer), $fixer->getDescription()), 72 - $maxName, "\n"));
-            $fixers .= sprintf(" * <comment>%s</comment>%s %s\n", $fixer->getName(), str_repeat(' ', $maxName - strlen($fixer->getName())), array_shift($chunks));
+            $help .= sprintf(" * <comment>%s</comment>%s %s\n", $fixer->getName(), str_repeat(' ', $maxName - strlen($fixer->getName())), array_shift($chunks));
             while ($c = array_shift($chunks)) {
-                $fixers .= str_repeat(' ', $maxName + 4).$c."\n";
+                $help .= str_repeat(' ', $maxName + 4).$c."\n";
             }
 
             if ($count !== $i) {
-                $fixers .= "\n";
+                $help .= "\n";
             }
         }
 
-        return $fixers;
+        return $help;
     }
 
     protected function getConfigsHelp()
