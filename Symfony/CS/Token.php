@@ -64,8 +64,6 @@ class Token
     /**
      * Clear token at given index.
      * Clearing means override token by empty string.
-     *
-     * @param int $index token index
      */
     public function clear()
     {
@@ -189,6 +187,16 @@ class Token
         static $commentTokens = array(T_COMMENT, T_DOC_COMMENT);
 
         return $this->isGivenKind($commentTokens);
+    }
+
+    /**
+     * Check if token is empty, e.g. because of clearing.
+     *
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return null === $this->id && ('' === $this->content || null === $this->content);
     }
 
     /**

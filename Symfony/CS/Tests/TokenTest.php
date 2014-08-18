@@ -128,6 +128,28 @@ class TokenTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testIsEmpty()
+    {
+        $braceToken = $this->getBraceToken();
+        $this->assertFalse($braceToken->isEmpty());
+
+        $braceToken->content = '';
+        $this->assertTrue($braceToken->isEmpty());
+
+        $whitespaceToken = new Token(array(T_WHITESPACE, ' ', ));
+        $this->assertFalse($whitespaceToken->isEmpty());
+
+        $whitespaceToken->content = '';
+        $this->assertFalse($whitespaceToken->isEmpty());
+
+        $whitespaceToken->id = null;
+        $this->assertTrue($whitespaceToken->isEmpty());
+
+        $whitespaceToken = new Token(array(T_WHITESPACE, ' ', ));
+        $whitespaceToken->clear();
+        $this->assertTrue($whitespaceToken->isEmpty());
+    }
+
     public function testIsGivenKind()
     {
         $braceToken = $this->getBraceToken();

@@ -13,6 +13,7 @@ namespace Symfony\CS;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
+use Symfony\Component\Stopwatch\Stopwatch;
 use SebastianBergmann\Diff\Differ;
 
 /**
@@ -26,9 +27,24 @@ class Fixer
     protected $configs = array();
     protected $diff;
 
+    /**
+     * Stopwatch instance.
+     * @type \Symfony\Component\Stopwatch\Stopwatch|null
+     */
+    protected $stopwatch;
+
     public function __construct()
     {
         $this->diff = new Differ();
+    }
+
+    public static function cmpInt($a, $b)
+    {
+        if ($a === $b) {
+            return 0;
+        }
+
+        return $a < $b ? -1 : 1;
     }
 
     public function registerBuiltInFixers()
@@ -87,22 +103,25 @@ class Fixer
      */
     public function fix(ConfigInterface $config, $dryRun = false, $diff = false)
     {
-        $this->sortFixers();
-
         $fixers = $this->prepareFixers($config);
         $changed = array();
+
+        if ($this->stopwatch) {
+            $this->stopwatch->openSection();
+        }
+
         foreach ($config->getFinder() as $file) {
             if ($file->isDir()) {
                 continue;
             }
 
             if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff)) {
-                if ($file instanceof FinderSplFileInfo) {
-                    $changed[$file->getRelativePathname()] = $fixInfo;
-                } else {
-                    $changed[$file->getPathname()] = $fixInfo;
-                }
+                $changed[$this->getFileRelativePathname($file)] = $fixInfo;
             }
+        }
+
+        if ($this->stopwatch) {
+            $this->stopwatch->stopSection('fixFile');
         }
 
         return $changed;
@@ -110,6 +129,10 @@ class Fixer
 
     public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff)
     {
+        if ($this->stopwatch) {
+            $this->stopwatch->start($this->getFileRelativePathname($file));
+        }
+
         $new = $old = file_get_contents($file->getRealpath());
         $appliedFixers = array();
 
@@ -128,6 +151,8 @@ class Fixer
             $new = $newest;
         }
 
+        $fixInfo = null;
+
         if ($new !== $old) {
             if (!$dryRun) {
                 file_put_contents($file->getRealpath(), $new);
@@ -138,9 +163,22 @@ class Fixer
             if ($diff) {
                 $fixInfo['diff'] = $this->stringDiff($old, $new);
             }
-
-            return $fixInfo;
         }
+
+        if ($this->stopwatch) {
+            $this->stopwatch->stop($this->getFileRelativePathname($file));
+        }
+
+        return $fixInfo;
+    }
+
+    private function getFileRelativePathname(\SplFileInfo $file)
+    {
+        if ($file instanceof FinderSplFileInfo) {
+            return $file->getRelativePathname();
+        }
+
+        return $file->getPathname();
     }
 
     public static function getLevelAsString(FixerInterface $fixer)
@@ -187,12 +225,19 @@ class Fixer
 
     private function sortFixers()
     {
-        usort($this->fixers, function ($a, $b) {
-            if ($a->getPriority() === $b->getPriority()) {
-                return 0;
+        $selfName = __CLASS__;
+        usort($this->fixers, function ($a, $b) use ($selfName) {
+            $cmp = $selfName::cmpInt($b->getPriority(), $a->getPriority());
+            if (0 !== $cmp) {
+                return $cmp;
             }
 
-            return $a->getPriority() > $b->getPriority() ? -1 : 1;
+            $cmp = $selfName::cmpInt($a->getLevel(), $b->getLevel());
+            if (0 !== $cmp) {
+                return $cmp;
+            }
+
+            return strcmp($a->getName(), $b->getName());
         });
     }
 
@@ -207,5 +252,10 @@ class Fixer
         }
 
         return $fixers;
+    }
+
+    public function setStopwatch(Stopwatch $stopwatch)
+    {
+        $this->stopwatch = $stopwatch;
     }
 }

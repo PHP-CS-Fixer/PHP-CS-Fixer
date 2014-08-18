@@ -40,19 +40,12 @@ class FunctionDeclarationSpacingFixerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider data
      */
-    public function testDouble($source, $target)
+    public function testFix($source, $target)
     {
         $fixer = new Fixer();
-        $this->assertSame($target, $fixer->fix($this->getTestFile(), $target));
-    }
-
-    /**
-     * @dataProvider data
-     */
-    public function testSimple($source, $target)
-    {
-        $fixer = new Fixer();
-        $this->assertSame($target, $fixer->fix($this->getTestFile(), $source));
+        $testFile = $this->getTestFile();
+        $this->assertSame($target, $fixer->fix($testFile, $source));
+        $this->assertSame($target, $fixer->fix($testFile, $target));
     }
 
     private function getTestFile($filename = __FILE__)

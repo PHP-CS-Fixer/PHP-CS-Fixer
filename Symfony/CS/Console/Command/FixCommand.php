@@ -17,6 +17,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Config\Config;
@@ -28,6 +29,11 @@ use Symfony\CS\StdinFileInfo;
  */
 class FixCommand extends Command
 {
+    /**
+     * Stopwatch instance.
+     * @type \Symfony\Component\Stopwatch\Stopwatch
+     */
+    protected $stopwatch;
     protected $fixer;
     protected $defaultConfig;
 
@@ -37,9 +43,11 @@ class FixCommand extends Command
      */
     public function __construct(Fixer $fixer = null, ConfigInterface $config = null)
     {
+        $this->stopwatch = new Stopwatch();
         $this->fixer = $fixer ?: new Fixer();
         $this->fixer->registerBuiltInFixers();
         $this->fixer->registerBuiltInConfigs();
+        $this->fixer->setStopwatch($this->stopwatch);
         $this->defaultConfig = $config ?: new Config();
 
         parent::__construct();
@@ -291,15 +299,21 @@ EOF
 
         $config->fixers($fixers);
 
+        $this->stopwatch->start('fixFiles');
         $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
+        $this->stopwatch->stop('fixFiles');
 
+        $verbosity = $output->getVerbosity();
         $i = 1;
+
         switch ($input->getOption('format')) {
             case 'txt':
                 foreach ($changed as $file => $fixResult) {
                     $output->write(sprintf('%4d) %s', $i++, $file));
-                    if ($input->getOption('verbose')) {
+
+                    if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
                         $output->write(sprintf(' (<comment>%s</comment>)', implode(', ', $fixResult['appliedFixers'])));
+
                         if ($input->getOption('diff')) {
                             $output->writeln('');
                             $output->writeln('<comment>      ---------- begin diff ----------</comment>');
@@ -307,18 +321,38 @@ EOF
                             $output->writeln('<comment>      ---------- end diff ----------</comment>');
                         }
                     }
+
                     $output->writeln('');
                 }
+
+                if (OutputInterface::VERBOSITY_VERY_VERBOSE <= $verbosity) {
+                    $output->writeln('Fixing time per file:');
+
+                    foreach ($this->stopwatch->getSectionEvents('fixFile') as $file => $event) {
+                        if ('__section__' === $file) {
+                            continue;
+                        }
+
+                        $output->writeln(sprintf('[%.3f s] %s', $event->getDuration() / 1000, $file));
+                    }
+
+                    $output->writeln('');
+                }
+
+                $fixEvent = $this->stopwatch->getEvent('fixFiles');
+                $output->writeln(sprintf('Fixed all files in %.3f seconds, %.3f MB memory used', $fixEvent->getDuration() / 1000, $fixEvent->getMemory() / 1024 / 1024));
                 break;
             case 'xml':
                 $dom = new \DOMDocument('1.0', 'UTF-8');
                 $dom->appendChild($filesXML = $dom->createElement('files'));
+
                 foreach ($changed as $file => $fixResult) {
                     $filesXML->appendChild($fileXML = $dom->createElement('file'));
 
                     $fileXML->setAttribute('id', $i++);
                     $fileXML->setAttribute('name', $file);
-                    if ($input->getOption('verbose')) {
+
+                    if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
                         $fileXML->appendChild($appliedFixersXML = $dom->createElement('applied_fixers'));
                         foreach ($fixResult['appliedFixers'] as $appliedFixer) {
                             $appliedFixersXML->appendChild($appliedFixerXML = $dom->createElement('applied_fixer'));
@@ -327,9 +361,41 @@ EOF
 
                         if ($input->getOption('diff')) {
                             $fileXML->appendChild($diffXML = $dom->createElement('diff'));
-
                             $diffXML->appendChild($dom->createCDATASection($fixResult['diff']));
                         }
+                    }
+                }
+
+                $fixEvent = $this->stopwatch->getEvent('fixFiles');
+
+                $timeXML = $dom->createElement('time');
+                $memoryXML = $dom->createElement('memory');
+                $dom->appendChild($timeXML);
+                $dom->appendChild($memoryXML);
+
+                $memoryXML->setAttribute('value', round($fixEvent->getMemory() / 1024 / 1024, 3));
+                $memoryXML->setAttribute('unit', 'MB');
+
+                $timeXML->setAttribute('unit', 's');
+                $timeTotalXML = $dom->createElement('total');
+                $timeTotalXML->setAttribute('value', round($fixEvent->getDuration() / 1000, 3));
+                $timeXML->appendChild($timeTotalXML);
+
+                if (OutputInterface::VERBOSITY_VERY_VERBOSE <= $verbosity) {
+                    $timeFilesXML = $dom->createElement('files');
+                    $timeXML->appendChild($timeFilesXML);
+                    $eventCounter = 1;
+
+                    foreach ($this->stopwatch->getSectionEvents('fixFile') as $file => $event) {
+                        if ('__section__' === $file) {
+                            continue;
+                        }
+
+                        $timeFileXML = $dom->createElement('file');
+                        $timeFilesXML->appendChild($timeFileXML);
+                        $timeFileXML->setAttribute('id', $eventCounter++);
+                        $timeFileXML->setAttribute('name', $file);
+                        $timeFileXML->setAttribute('value', round($event->getDuration() / 1000, 3));
                     }
                 }
 
@@ -337,19 +403,45 @@ EOF
                 $output->write($dom->saveXML());
                 break;
             case 'json':
-                $json = array('files' => array());
+                $jFiles = array();
+
                 foreach ($changed as $file => $fixResult) {
                     $jfile = array('name' => $file);
 
-                    if ($input->getOption('verbose')) {
+                    if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
                         $jfile['appliedFixers'] = $fixResult['appliedFixers'];
                         if ($input->getOption('diff')) {
                             $jfile['diff'] = $fixResult['diff'];
                         }
                     }
 
-                    $json['files'][] = $jfile;
+                    $jFiles[] = $jfile;
                 }
+
+                $fixEvent = $this->stopwatch->getEvent('fixFiles');
+
+                $json = array(
+                    'files' => $jFiles,
+                    'memory' => round($fixEvent->getMemory() / 1024 / 1024, 3),
+                    'time' => array(
+                        'total' => round($fixEvent->getDuration() / 1000, 3),
+                    ),
+                );
+
+                if (OutputInterface::VERBOSITY_VERY_VERBOSE <= $verbosity) {
+                    $jFileTime = array();
+
+                    foreach ($this->stopwatch->getSectionEvents('fixFile') as $file => $event) {
+                        if ('__section__' === $file) {
+                            continue;
+                        }
+
+                        $jFileTime[$file] = round($event->getDuration() / 1000, 3);
+                    }
+
+                    $json['time']['files'] = $jFileTime;
+                }
+
                 $output->write(json_encode($json));
                 break;
             default:
