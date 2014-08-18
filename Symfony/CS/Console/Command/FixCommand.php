@@ -133,7 +133,6 @@ your project. The file must return an instance of
 and directories that need to be analyzed:
 
     <?php
-
     \$finder = Symfony\CS\Finder\DefaultFinder::create()
         ->exclude('somedir')
         ->in(__DIR__)
@@ -149,7 +148,6 @@ The following example shows how to use all Fixers but the `psr0` fixer.
 Note the additional <comment>-</comment> in front of the Fixer name.
 
     <?php
-
     \$finder = Symfony\CS\Finder\DefaultFinder::create()
         ->exclude('somedir')
         ->in(__DIR__)

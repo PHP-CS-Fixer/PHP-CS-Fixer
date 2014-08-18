@@ -253,9 +253,9 @@ Choose from the list of available configurations:
 
 * **default** A default configuration
 
-* **magento** The configuration for a Magento application
-
 * **sf23**    The configuration for the Symfony 2.3+ branch
+
+* **magento** The configuration for a Magento application
 
 The ``--dry-run`` option displays the files that need to be
 fixed but without actually modifying them:
@@ -273,7 +273,6 @@ and directories that need to be analyzed:
 .. code-block:: php
 
     <?php
-
     $finder = Symfony\CS\Finder\DefaultFinder::create()
         ->exclude('somedir')
         ->in(__DIR__)
@@ -291,7 +290,6 @@ Note the additional ``-`` in front of the Fixer name.
 .. code-block:: php
 
     <?php
-
     $finder = Symfony\CS\Finder\DefaultFinder::create()
         ->exclude('somedir')
         ->in(__DIR__)
