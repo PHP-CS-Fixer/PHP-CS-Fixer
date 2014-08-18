@@ -106,7 +106,7 @@ class CurlyBracketsNewlineFixer implements FixerInterface
         );
 
         // [Structure] No new line after control statements
-        return preg_replace('/}\s*\n\s*(' . implode('|', $statements) . ')/', '} \\1', $content);
+        return preg_replace('/}\s*\n\s*('.implode('|', $statements).')/', '} \\1', $content);
     }
 
     private function doWhileFix($content)

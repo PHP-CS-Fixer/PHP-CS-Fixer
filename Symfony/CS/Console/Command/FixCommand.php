@@ -185,7 +185,7 @@ EOF
         if (null !== $path) {
             $filesystem = new Filesystem();
             if (!$filesystem->isAbsolutePath($path)) {
-                $path = getcwd() . DIRECTORY_SEPARATOR . $path;
+                $path = getcwd().DIRECTORY_SEPARATOR.$path;
             }
         }
 
@@ -199,7 +199,7 @@ EOF
             } else {
                 $configDir = $path;
             }
-            $configFile = $configDir . DIRECTORY_SEPARATOR . '.php_cs';
+            $configFile = $configDir.DIRECTORY_SEPARATOR.'.php_cs';
         }
 
         if ($input->getOption('config')) {

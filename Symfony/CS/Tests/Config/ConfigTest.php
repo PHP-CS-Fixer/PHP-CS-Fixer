@@ -21,7 +21,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     public function testThatDefaultFinderWorksWithDirSetOnConfig()
     {
         $config = Config::create();
-        $config->setDir(__DIR__ . '/../Fixtures/FinderDirectory');
+        $config->setDir(__DIR__.'/../Fixtures/FinderDirectory');
 
         $iterator = $config->getFinder()->getIterator();
         $this->assertCount(1, $iterator);
@@ -32,7 +32,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     public function testThatCustomDefaultFinderWorks()
     {
         $finder = DefaultFinder::create();
-        $finder->in(__DIR__ . '/../Fixtures/FinderDirectory');
+        $finder->in(__DIR__.'/../Fixtures/FinderDirectory');
 
         $config = Config::create();
         $config->finder($finder);
@@ -46,7 +46,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     public function testThatCustomFinderWorks()
     {
         $finder = Finder::create();
-        $finder->in(__DIR__ . '/../Fixtures/FinderDirectory');
+        $finder->in(__DIR__.'/../Fixtures/FinderDirectory');
 
         $config = Config::create();
         $config->finder($finder);
