@@ -194,7 +194,7 @@ class Tokens extends \SplFixedArray
      * @param int   $index   token index
      * @param array $attribs array of token attributes
      */
-    public function applyAttribs($index, $attribs)
+    public function applyAttribs($index, array $attribs)
     {
         $toInsert = array();
 
@@ -515,7 +515,7 @@ class Tokens extends \SplFixedArray
      * @param  array $attribs         array of token attributes
      * @return array array of grabbed attributes
      */
-    public function grabAttribsBeforeToken($index, $tokenAttribsMap, $attribs)
+    public function grabAttribsBeforeToken($index, array $tokenAttribsMap, array $attribs)
     {
         while (true) {
             $token = $this[--$index];

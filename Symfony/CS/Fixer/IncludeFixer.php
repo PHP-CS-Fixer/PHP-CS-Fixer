@@ -34,7 +34,7 @@ class IncludeFixer implements FixerInterface
         return $tokens->generateCode();
     }
 
-    private function clearIncludies(&$tokens, $includies)
+    private function clearIncludies(Tokens $tokens, array $includies)
     {
         foreach (array_reverse($includies) as $includy) {
             if ($includy['end']) {
@@ -72,7 +72,7 @@ class IncludeFixer implements FixerInterface
         }
     }
 
-    private function findIncludies(&$tokens)
+    private function findIncludies(Tokens $tokens)
     {
         static $includyTokens = array(T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE);
 
