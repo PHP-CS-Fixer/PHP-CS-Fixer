@@ -208,6 +208,9 @@ Choose from the list of available fixers:
 * **object_operator** [all] There should not be space before or after
    object T_OBJECT_OPERATOR.
 
+* **operators_spaces** [all] Operators should be arounded by at least one
+   space.
+
 * **phpdoc_params** [all] All items of the @param phpdoc tags must be
    aligned vertically.
 
