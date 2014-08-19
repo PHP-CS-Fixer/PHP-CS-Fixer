@@ -25,11 +25,10 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $fixer = new Fixer();
 
         $fxPrototypes = array(
-            array('getPriority' =>   0, 'getLevel' => FixerInterface::PSR0_LEVEL, 'getName' => 'aaa', ),
-            array('getPriority' => -10, 'getLevel' => FixerInterface::PSR1_LEVEL, 'getName' => 'bbb', ),
-            array('getPriority' =>  10, 'getLevel' => FixerInterface::PSR0_LEVEL, 'getName' => 'ccc', ),
-            array('getPriority' => -10, 'getLevel' => FixerInterface::PSR0_LEVEL, 'getName' => 'eee', ),
-            array('getPriority' => -10, 'getLevel' => FixerInterface::PSR0_LEVEL, 'getName' => 'ddd', ),
+            array('getPriority' =>   0, ),
+            array('getPriority' => -10, ),
+            array('getPriority' =>  10, ),
+            array('getPriority' => -10, ),
         );
 
         $fxs = array();
@@ -37,19 +36,12 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         foreach ($fxPrototypes as $fxPrototype) {
             $fx = $this->getMock('Symfony\CS\FixerInterface');
             $fx->expects($this->any())->method('getPriority')->willReturn($fxPrototype['getPriority']);
-            $fx->expects($this->any())->method('getLevel')->willReturn($fxPrototype['getLevel']);
-            $fx->expects($this->any())->method('getName')->willReturn($fxPrototype['getName']);
 
             $fixer->addFixer($fx);
             $fxs[] = $fx;
         }
 
-        $this->assertSame(
-            array($fxs[2], $fxs[0], $fxs[4], $fxs[3], $fxs[1]),
-            // supress warning: usort(): Array was modified by the user comparision function
-            // because accessing the getters of the mocks changed their state
-            @$fixer->getFixers()
-        );
+        $this->assertSame(array($fxs[2], $fxs[0], $fxs[3], $fxs[1]), $fixer->getFixers());
     }
 
     /**
