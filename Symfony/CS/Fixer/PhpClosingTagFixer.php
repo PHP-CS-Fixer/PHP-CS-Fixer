@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
 /**
@@ -32,9 +33,16 @@ class PhpClosingTagFixer implements FixerInterface
             return $content;
         }
 
-        foreach ($kinds[T_CLOSE_TAG] as $index => $token) {
+        foreach (array_reverse($kinds[T_CLOSE_TAG], true) as $index => $token) {
             $tokens->removeLeadingWhitespace($index);
             $token->clear();
+
+            $prevIndex = null;
+            $prevToken = $tokens->getPrevNonWhitespace($index, array(), $prevIndex);
+
+            if (null !== $prevToken->id || ';' !== $prevToken->content) {
+                $tokens->insertAt($prevIndex + 1, new Token(';'));
+            }
         }
 
         return $tokens->generateCode();
