@@ -6,7 +6,7 @@ before_script:
 
 script:
   - phpunit
-  - php php-cs-fixer --dry-run -v fix .
+  - php php-cs-fixer --dry-run -v fix
 
 php:
   - 5.3

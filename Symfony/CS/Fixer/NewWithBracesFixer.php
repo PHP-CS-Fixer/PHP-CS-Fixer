@@ -24,21 +24,35 @@ class NewWithBracesFixer implements FixerInterface
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens as $index => $token) {
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            $token = $tokens[$index];
+
             if (T_NEW !== $token->id) {
                 continue;
             }
 
             $nextIndex = null;
-            $nextToken = $tokens->getNextTokenOfKind($index, array('(', ';', ',', ')', ']', ), $nextIndex);
+            $nextToken = $tokens->getNextTokenOfKind($index, array(';', ',', '(', ')', '[', ']', ), $nextIndex);
 
             // no correct end of code - break
             if (null === $nextToken) {
                 break;
             }
 
+            // entrance into array index syntax - need to look for exit
+            if (!$nextToken->isArray() && '[' === $nextToken->content) {
+                $braceLevel = 1;
+
+                while (0 < $braceLevel) {
+                    $nextToken = $tokens->getNextTokenOfKind($nextIndex, array('[', ']', ), $nextIndex);
+                    $braceLevel += ('[' === $nextToken->content ? 1 : -1);
+                }
+
+                $nextToken = $tokens[++$nextIndex];
+            }
+
             // new statement with () - nothing to do
-            if ('(' === $nextToken->content) {
+            if (!$nextToken->isArray() && '(' === $nextToken->content) {
                 continue;
             }
 
