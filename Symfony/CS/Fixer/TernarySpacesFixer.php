@@ -70,7 +70,7 @@ class TernarySpacesFixer implements FixerInterface
         return $tokens->generateCode();
     }
 
-    private function ensureWhitespaceExistance(&$tokens, $index, $after)
+    private function ensureWhitespaceExistance(Tokens $tokens, $index, $after)
     {
         $indexChange = $after ? 0 : 1;
         $token = $tokens[$index];
