@@ -10,6 +10,11 @@
  * with this source code in the file LICENSE.
  */
 
+if (version_compare(phpversion(), '5.3.6', '<')) {
+    fwrite(STDERR, "PHP needs to be a minimum version of PHP 5.3.6\n");
+    exit(1);
+}
+
 Phar::mapPhar('php-cs-fixer.phar');
 
 require_once 'phar://php-cs-fixer.phar/vendor/autoload.php';
