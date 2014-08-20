@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Tests\Fixer;
 
-use Symfony\CS\Fixer\TrailingSpacesFixer as Fixer;
+use Symfony\CS\Fixer\WhitespacyLinesFixer as Fixer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class TrailingSpacesFixerTest extends \PHPUnit_Framework_TestCase
+class WhitespacyLinesFixerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider provideCases
@@ -34,32 +34,20 @@ class TrailingSpacesFixerTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 '<?php
-$a = 1;',
+    $a = 1;   ',
                 '<?php
-$a = 1;   ',
+    $a = 1;   ',
             ),
             array(
                 '<?php
-$a = 1  ;',
+	$b = 1;		',
                 '<?php
-$a = 1  ;   ',
+	$b = 1;		',
             ),
             array(
                 '<?php
-$b = 1;',
-                '<?php
-$b = 1;		',
-            ),
-            array(
-                '<?php
-$b = 1;',
-                '<?php
-$b = 1;   	   ',
-            ),
-            array(
-                '<?php
-                
-	
+
+
 $b = 1;',
                 '<?php
                 
