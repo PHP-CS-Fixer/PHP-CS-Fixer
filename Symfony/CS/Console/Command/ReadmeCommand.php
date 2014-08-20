@@ -197,11 +197,13 @@ EOF;
         $help = preg_replace('#^(\s+)``(.+)``$#m', '$1$2', $help);
         $help = preg_replace('#^ \* ``(.+)``#m', '* **$1**', $help);
         $help = preg_replace("#^\n( +)#m", "\n.. code-block:: bash\n\n$1", $help);
+        $help = preg_replace("#^\.\. code-block:: bash\n\n( +<\?php)#m", ".. code-block:: php\n\n$1", $help);
+        $help = preg_replace_callback("#<\?php.*?\?>#s", function ($matches) {
+            return preg_replace("#\n\n +\?>#", '', preg_replace("#^\.\. code-block:: bash\n\n#m", '', $matches[0]));
+        }, $help);
         $help = preg_replace('#^                        #m', '  ', $help);
         $help = preg_replace('#\*\* +\[#', '** [', $help);
 
-        $output->writeln($header);
-        $output->writeln($help);
-        $output->write($footer);
+        $output->write($header."\n".$help."\n".$footer);
     }
 }
