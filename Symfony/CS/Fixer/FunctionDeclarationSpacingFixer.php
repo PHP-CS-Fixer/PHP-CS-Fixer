@@ -68,7 +68,7 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
      */
     public function getDescription()
     {
-        return 'Spaces should be properly placed in a function declaration';
+        return 'Spaces should be properly placed in a function declaration.';
     }
 
     private function fixAnonymousFunctions($content)

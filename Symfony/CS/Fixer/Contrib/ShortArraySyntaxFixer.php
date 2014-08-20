@@ -92,6 +92,6 @@ class ShortArraySyntaxFixer implements FixerInterface
 
     public function getDescription()
     {
-        return 'PHP array\'s should use the PHP 5.4 short-syntax';
+        return 'PHP array\'s should use the PHP 5.4 short-syntax.';
     }
 }
