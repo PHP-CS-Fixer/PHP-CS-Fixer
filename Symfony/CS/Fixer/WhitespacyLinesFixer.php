@@ -14,25 +14,23 @@ namespace Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 
 /**
- * @author Fabien Potencier <fabien@symfony.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class TrailingSpacesFixer implements FixerInterface
+class WhitespacyLinesFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
-        // [Structure] Don't add trailing spaces at the end of non-blank lines
-        return preg_replace('/(?<=\S)\h+$/m', '', $content);
+        return preg_replace('/^\h+$/m', '', $content);
     }
 
     public function getLevel()
     {
-        // defined in PSR2 ¶2.3
-        return FixerInterface::PSR2_LEVEL;
+        return FixerInterface::ALL_LEVEL;
     }
 
     public function getPriority()
     {
-        return 20;
+        return 0;
     }
 
     public function supports(\SplFileInfo $file)
@@ -42,11 +40,11 @@ class TrailingSpacesFixer implements FixerInterface
 
     public function getName()
     {
-        return 'trailing_spaces';
+        return 'whitespacy_lines';
     }
 
     public function getDescription()
     {
-        return 'Remove trailing whitespace at the end of non-blank lines.';
+        return 'Remove trailing whitespace at the end of lines.';
     }
 }

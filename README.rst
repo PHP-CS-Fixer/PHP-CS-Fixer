@@ -198,7 +198,7 @@ Choose from the list of available fixers:
    files containing only PHP.
 
 * **trailing_spaces** [PSR-2] Remove trailing whitespace at the end of
-   lines.
+   non-blank lines.
 
 * **visibility** [PSR-2] Visibility MUST be declared on all
    properties and methods; abstract and final MUST be
@@ -236,6 +236,9 @@ Choose from the list of available fixers:
 * **ternary_spaces** [all] Standardize spaces around ternary operator.
 
 * **unused_use** [all] Unused use statements must be removed.
+
+* **whitespacy_lines** [all] Remove trailing whitespace at the end of
+   lines.
 
 * **short_array_syntax** [contrib] PHP array's should use the PHP 5.4
    short-syntax
