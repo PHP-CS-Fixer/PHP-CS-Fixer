@@ -32,7 +32,7 @@ class NewWithBracesFixer implements FixerInterface
             }
 
             $nextIndex = null;
-            $nextToken = $tokens->getNextTokenOfKind($index, array(';', ',', '(', ')', '[', ']', ), $nextIndex);
+            $nextToken = $tokens->getNextTokenOfKind($index, array(';', ',', '(', ')', '[', ']'), $nextIndex);
 
             // no correct end of code - break
             if (null === $nextToken) {
@@ -44,7 +44,7 @@ class NewWithBracesFixer implements FixerInterface
                 $braceLevel = 1;
 
                 while (0 < $braceLevel) {
-                    $nextToken = $tokens->getNextTokenOfKind($nextIndex, array('[', ']', ), $nextIndex);
+                    $nextToken = $tokens->getNextTokenOfKind($nextIndex, array('[', ']'), $nextIndex);
                     $braceLevel += ('[' === $nextToken->content ? 1 : -1);
                 }
 
@@ -59,7 +59,7 @@ class NewWithBracesFixer implements FixerInterface
             $meaningBeforeNextIndex = null;
             $tokens->getPrevNonWhitespace($nextIndex, array(), $meaningBeforeNextIndex);
 
-            $tokens->insertAt($meaningBeforeNextIndex + 1, array(new Token('('), new Token(')'), ));
+            $tokens->insertAt($meaningBeforeNextIndex + 1, array(new Token('('), new Token(')')));
         }
 
         return $tokens->generateCode();

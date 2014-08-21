@@ -24,7 +24,7 @@ class PhpClosingTagFixer implements FixerInterface
     {
         $tokens = Tokens::fromCode($content);
 
-        $kinds = $tokens->findGivenKind(array(T_OPEN_TAG, T_CLOSE_TAG, T_INLINE_HTML, ));
+        $kinds = $tokens->findGivenKind(array(T_OPEN_TAG, T_CLOSE_TAG, T_INLINE_HTML));
 
         // leave code intact if there is:
         // - any T_INLINE_HTML code

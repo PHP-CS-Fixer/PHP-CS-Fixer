@@ -31,8 +31,8 @@ class VisibilityFixer implements FixerInterface
                 // force whitespace between function keyword and function name to be single space char
                 $tokens[++$index]->content = ' ';
             } elseif ('property' === $element['type']) {
-                $prevToken = $tokens->getPrevTokenOfKind($index, array(';', ',', ));
-                $nextToken = $tokens->getNextTokenOfKind($index, array(';', ',', ));
+                $prevToken = $tokens->getPrevTokenOfKind($index, array(';', ','));
+                $nextToken = $tokens->getNextTokenOfKind($index, array(';', ','));
 
                 if (
                     (!$prevToken || ',' !== $prevToken->content) &&

@@ -103,7 +103,7 @@ class ControlSpacesFixer implements FixerInterface
     private function fixControlsWithPrefixBraceAndParentheses($content)
     {
         $statements = array(
-            'while'
+            'while',
         );
 
         return preg_replace(sprintf('/}[^\S\n]*(%s)[^\S\n]*\((.*)\)/', implode('|', $statements)), '} \\1 (\\2)', $content);
@@ -155,7 +155,7 @@ class ControlSpacesFixer implements FixerInterface
             ),
             array(
                 '\\1 (\\2\\3) {',
-                '\\1 (\\2) {'
+                '\\1 (\\2) {',
             ),
             $content
         );

@@ -46,7 +46,7 @@ class ShortTagFixer implements FixerInterface
                 continue;
             }
 
-            if ($token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT, T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_STRING, ))) {
+            if ($token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT, T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_STRING))) {
                 $tokenContent = '';
                 $tokenContentLength = 0;
                 $parts = explode('<?php ', $token->content);

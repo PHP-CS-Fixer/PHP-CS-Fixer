@@ -52,7 +52,7 @@ class IncludeFixer implements FixerInterface
                     $tokens->removeLeadingWhitespace($braces['close']);
                     $tokens->removeTrailingWhitespace($braces['close']);
 
-                    $tokens[$braces['open']] = new Token(array(T_WHITESPACE, ' ', ));
+                    $tokens[$braces['open']] = new Token(array(T_WHITESPACE, ' '));
                     $tokens[$braces['close']]->clear();
                 }
             }
@@ -67,7 +67,7 @@ class IncludeFixer implements FixerInterface
             if ($nextToken->isWhitespace()) {
                 $nextToken->content = ' ';
             } elseif ($braces) {
-                $tokens->insertAt($includy['begin'] + 1, new Token(array(T_WHITESPACE, ' ', )));
+                $tokens->insertAt($includy['begin'] + 1, new Token(array(T_WHITESPACE, ' ')));
             }
         }
     }

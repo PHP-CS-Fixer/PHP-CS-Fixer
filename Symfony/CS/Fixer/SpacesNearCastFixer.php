@@ -38,7 +38,7 @@ class SpacesNearCastFixer implements FixerInterface
                 $token->content = strtr($token->content, $insideCastSpaceReplaceMap);
 
                 // force single whitespace after cast token:
-                if ($tokens[$index + 1]->isWhitespace(array('whitespaces' => " \t", ))) {
+                if ($tokens[$index + 1]->isWhitespace(array('whitespaces' => " \t"))) {
                     // - if next token is whitespaces that contains only spaces and tabs - override next token with single space
                     $tokens[$index + 1]->content = ' ';
                 } elseif (!$tokens[$index + 1]->isWhitespace()) {

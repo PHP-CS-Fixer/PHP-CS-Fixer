@@ -79,7 +79,7 @@ class TernarySpacesFixer implements FixerInterface
             return;
         }
 
-        $tokens->insertAt($index + $indexChange, new Token(array(T_WHITESPACE, ' ', $token->line, )));
+        $tokens->insertAt($index + $indexChange, new Token(array(T_WHITESPACE, ' ', $token->line)));
     }
 
     public function getLevel()
