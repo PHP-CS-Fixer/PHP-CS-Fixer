@@ -155,7 +155,10 @@ class Tokens extends \SplFixedArray
         $codeHash = crc32($code);
 
         if (self::hasCache($codeHash)) {
-            return self::getCache($codeHash);
+            $tokens = self::getCache($codeHash);
+            $tokens->clearEmptyTokens();
+
+            return $tokens;
         }
 
         $tokens = token_get_all($code);
@@ -224,6 +227,23 @@ class Tokens extends \SplFixedArray
 
         $this->codeHash = $codeHash;
         self::setCache($this->codeHash, $this);
+    }
+
+    /**
+     * Clear empty tokens.
+     * Empty tokens can occur e.g. after calling clear on element of collection.
+     */
+    public function clearEmptyTokens()
+    {
+        $count = 0;
+
+        foreach ($this as $token) {
+            if (!$token->isEmpty()) {
+                $this[$count++] = $token;
+            }
+        }
+
+        $this->setSize($count);
     }
 
     /**
