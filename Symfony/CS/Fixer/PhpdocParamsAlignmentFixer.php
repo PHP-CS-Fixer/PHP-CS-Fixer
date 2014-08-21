@@ -65,7 +65,7 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
                 foreach ($items as $j => $item) {
                     if (null === $item['tag']) {
                         if ($item['desc'][0] === '@') {
-                            $lines[$current + $j] = '     * ' . $item['desc'];
+                            $lines[$current + $j] = '     * '.$item['desc'];
                             continue;
                         }
                         $line =

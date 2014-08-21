@@ -215,7 +215,7 @@ class Fixer
             $string = preg_replace('/^(\-){3}/', '<error>---</error>', $string);
             $string = preg_replace('/^(\-){1}/', '<error>-</error>', $string);
 
-            $string = str_repeat(' ', 6) . $string;
+            $string = str_repeat(' ', 6).$string;
 
             return $string;
         }, explode(PHP_EOL, $diff)));

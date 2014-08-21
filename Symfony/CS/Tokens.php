@@ -578,11 +578,12 @@ class Tokens extends \SplFixedArray
     /**
      * Removes all the leading whitespace.
      *
-     * @param int $index
+     * @param int   $index
+     * @param array $opts  optional array of extra options for Token::isWhitespace method
      */
-    public function removeLeadingWhitespace($index)
+    public function removeLeadingWhitespace($index, array $opts = array())
     {
-        if (isset($this[$index - 1]) && $this[$index - 1]->isWhitespace()) {
+        if (isset($this[$index - 1]) && $this[$index - 1]->isWhitespace($opts)) {
             $this[$index - 1]->clear();
         }
     }
@@ -590,11 +591,12 @@ class Tokens extends \SplFixedArray
     /**
      * Removes all the trailing whitespace.
      *
-     * @param int $index
+     * @param int   $index
+     * @param array $opts  optional array of extra options for Token::isWhitespace method
      */
-    public function removeTrailingWhitespace($index)
+    public function removeTrailingWhitespace($index, array $opts = array())
     {
-        if (isset($this[$index + 1]) && $this[$index + 1]->isWhitespace()) {
+        if (isset($this[$index + 1]) && $this[$index + 1]->isWhitespace($opts)) {
             $this[$index + 1]->clear();
         }
     }
