@@ -144,6 +144,8 @@ and directories that need to be analyzed:
         ->finder(\$finder)
     ;
 
+    ?>
+
 You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
 The following example shows how to use all Fixers but the `psr0` fixer.
 Note the additional <comment>-</comment> in front of the Fixer name.
@@ -159,6 +161,8 @@ Note the additional <comment>-</comment> in front of the Fixer name.
         ->fixers(array('-psr0'))
         ->finder(\$finder)
     ;
+
+    ?>
 
 With the <comment>--config-file</comment> option you can specify the path to the
 <comment>.php_cs</comment> file.
