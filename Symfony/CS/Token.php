@@ -121,7 +121,7 @@ class Token
                 'T_INTERFACE', 'T_ISSET', 'T_LIST', 'T_LOGICAL_AND', 'T_LOGICAL_OR', 'T_LOGICAL_XOR',
                 'T_NAMESPACE', 'T_NEW', 'T_PRINT', 'T_PRIVATE', 'T_PROTECTED', 'T_PUBLIC', 'T_REQUIRE',
                 'T_REQUIRE_ONCE', 'T_RETURN', 'T_STATIC', 'T_SWITCH', 'T_THROW', 'T_TRAIT', 'T_TRY',
-                'T_UNSET', 'T_USE', 'T_VAR', 'T_WHILE', 'T_YIELD'
+                'T_UNSET', 'T_USE', 'T_VAR', 'T_WHILE', 'T_YIELD',
             );
 
             foreach ($keywordsStrings as $keywordName) {
@@ -152,7 +152,7 @@ class Token
      */
     public function isCast()
     {
-        static $castTokens = array(T_ARRAY_CAST, T_BOOL_CAST, T_DOUBLE_CAST, T_INT_CAST, T_OBJECT_CAST, T_STRING_CAST, T_UNSET_CAST, );
+        static $castTokens = array(T_ARRAY_CAST, T_BOOL_CAST, T_DOUBLE_CAST, T_INT_CAST, T_OBJECT_CAST, T_STRING_CAST, T_UNSET_CAST);
 
         return $this->isGivenKind($castTokens);
     }

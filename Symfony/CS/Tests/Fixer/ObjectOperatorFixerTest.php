@@ -45,7 +45,7 @@ class ObjectOperatorFixerTest extends \PHPUnit_Framework_TestCase
                         ->method3();',
                     '<?php $object->method()
                         ->method2()
-                        ->method3();'
+                        ->method3();',
             ),
             array(
                 '<?php $this
@@ -55,7 +55,7 @@ class ObjectOperatorFixerTest extends \PHPUnit_Framework_TestCase
                  '<?php $this
              ->add()
              // Some comment
-             ->delete();'
+             ->delete();',
             ),
         );
     }

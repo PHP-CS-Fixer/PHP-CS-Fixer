@@ -323,12 +323,12 @@ class Tokens extends \SplFixedArray
             }
 
             if (T_VARIABLE === $token->id && 0 === $bracesLevel) {
-                $elements[$index] = array('token' => $token, 'type' => 'property', );
+                $elements[$index] = array('token' => $token, 'type' => 'property');
                 continue;
             }
 
             if (T_FUNCTION === $token->id) {
-                $elements[$index] = array('token' => $token, 'type' => 'method', );
+                $elements[$index] = array('token' => $token, 'type' => 'method');
             }
         }
 
@@ -473,7 +473,7 @@ class Tokens extends \SplFixedArray
             array(
                 'abstract' => null,
                 'final' => null,
-                'visibility' => new Token(array(T_PUBLIC, 'public', )),
+                'visibility' => new Token(array(T_PUBLIC, 'public')),
                 'static' => null,
             )
         );
@@ -500,7 +500,7 @@ class Tokens extends \SplFixedArray
             $index,
             $tokenAttribsMap,
             array(
-                'visibility' => new Token(array(T_PUBLIC, 'public', )),
+                'visibility' => new Token(array(T_PUBLIC, 'public')),
                 'static' => null,
             )
         );
@@ -521,7 +521,7 @@ class Tokens extends \SplFixedArray
             $token = $this[--$index];
 
             if (!$token->isArray()) {
-                if (in_array($token->content, array('{', '}', '(', ')', ), true)) {
+                if (in_array($token->content, array('{', '}', '(', ')'), true)) {
                     break;
                 }
 
@@ -542,7 +542,7 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            if ($token->isGivenKind(array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT, ))) {
+            if ($token->isGivenKind(array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT))) {
                 continue;
             }
 
@@ -560,7 +560,7 @@ class Tokens extends \SplFixedArray
      */
     public function insertAt($key, $items)
     {
-        $items = is_array($items) ? $items : array($items, );
+        $items = is_array($items) ? $items : array($items);
         $itemsCnt = count($items);
         $oldSize = count($this);
 
