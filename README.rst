@@ -253,6 +253,9 @@ Choose from the list of available fixers:
 * **short_array_syntax** [contrib] PHP array's should use the PHP 5.4
    short-syntax
 
+* **strict** [contrib] Comparison should be strict. Warning!
+   This could change code behavior.
+
 
 The ``--config`` option customizes the files to analyse, based
 on some well-known directory structures:
