@@ -248,6 +248,8 @@ Choose from the list of available fixers:
 * **concat_with_spaces** [contrib] Concatenation should be used with at
    least one whitespace around.
 
+* **ordered_use** [contrib] Ordering use statements.
+
 * **short_array_syntax** [contrib] PHP array's should use the PHP 5.4
    short-syntax
 
