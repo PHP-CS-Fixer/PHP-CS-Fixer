@@ -167,13 +167,10 @@ Choose from the list of available fixers:
             ?> tags or the short-echo <?= ?> tags; it
             must not use the other tag variations.
 
-* **braces** [PSR-2] Opening braces for classes,
-            interfaces, traits and methods must go on
-            the next line, and closing braces must go
-            on the next line after the body. Opening
-            braces for control structures must go on
-            the same line, and closing braces must go
-            on the next line after the body.
+* **braces** [PSR-2] The body of each structure MUST be
+            enclosed by braces. Braces should be
+            properly placed. Body of braces should be
+            properly indented.
 
 * **elseif** [PSR-2] The keyword elseif should be used
             instead of else if so that all control
@@ -218,11 +215,6 @@ Choose from the list of available fixers:
 
 * **concat_without_spaces** [all] Concatenation should be used without
             spaces.
-
-* **control_spaces** [all] A single space should be between:
-            the closing brace and the control, the
-            control and the opening parentheses, the
-            closing parentheses and the opening brace.
 
 * **extra_empty_lines** [all] Removes extra empty lines.
 

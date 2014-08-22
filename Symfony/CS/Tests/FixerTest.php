@@ -167,12 +167,11 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         }
 
         return array(
-            array($fixers['control_spaces'], $fixers['elseif']),
-            array($fixers['braces'], $fixers['control_spaces']),
             array($fixers['php_closing_tag'], $fixers['short_tag']),
             array($fixers['multiple_use'], $fixers['unused_use']),
             array($fixers['multiple_use'], $fixers['ordered_use']),
             array($fixers['concat_without_spaces'], $fixers['concat_with_spaces']),
+            array($fixers['elseif'], $fixers['braces']),
         );
     }
 

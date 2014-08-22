@@ -111,6 +111,24 @@ class Token
     }
 
     /**
+     * Check if token is equals to one of given.
+     *
+     * @param array $others array of tokens or token prototypes
+     *
+     * @return bool
+     */
+    public function equalsAny(array $others)
+    {
+        foreach ($others as $other) {
+            if ($this->equals($other)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Get token prototype.
      *
      * @return string|array token prototype
@@ -270,6 +288,18 @@ class Token
         static $nativeConstantStrings = array('true', 'false', 'null');
 
         return $this->isArray && in_array(strtolower($this->content), $nativeConstantStrings, true);
+    }
+
+    /**
+     * Check if token is one of structure alternative end syntax (T_END...)
+     *
+     * @return bool
+     */
+    public function isStructureAlternativeEnd()
+    {
+        static $commentTokens = array(T_ENDDECLARE, T_ENDFOR, T_ENDFOREACH, T_ENDIF, T_ENDSWITCH, T_ENDWHILE, T_END_HEREDOC);
+
+        return $this->isGivenKind($commentTokens);
     }
 
     /**
