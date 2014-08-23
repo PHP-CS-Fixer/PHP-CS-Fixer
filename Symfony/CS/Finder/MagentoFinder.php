@@ -37,8 +37,8 @@ class MagentoFinder extends DefaultFinder
                 'app/design/frontend/default',
                 'app/design/frontend/enterprise/default',
                 'app/design/frontend/base',
-                'app/design/adminhtml/default')
-            )
+                'app/design/adminhtml/default',
+            ))
         ;
     }
 

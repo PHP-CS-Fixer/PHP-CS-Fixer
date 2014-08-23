@@ -68,7 +68,7 @@ class FixCommand extends Command
                 new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or all)', null),
                 new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
-                new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt')
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
             ))
             ->setDescription('Fixes a directory or a file')
             ->setHelp(<<<EOF

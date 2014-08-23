@@ -227,6 +227,9 @@ Choose from the list of available fixers:
             divided with a single space. File path
             should not be placed under brackets.
 
+* **multiline_array_trailing_comma** [all] PHP Multi-line arrays should have a
+            trailing comma
+
 * **new_with_braces** [all] All instances created with new
             keyword must be followed by braces.
 
