@@ -35,6 +35,7 @@ class StructureBracesFixer implements FixerInterface
         $tokens = Tokens::fromCode($content);
 
         $this->fixMissingBraces($tokens);
+        $tokens->clearEmptyTokens();
         $this->fixIndents($tokens);
 
         return $tokens->generateCode();
