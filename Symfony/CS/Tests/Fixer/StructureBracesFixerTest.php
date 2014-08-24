@@ -35,43 +35,73 @@ class StructureBracesFixerTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 '<?php
-if (true) { $foo = 1; }',
+if (true) {
+    $foo = 1;
+}',
                 '<?php
 if (true)$foo = 1;',
             ),
             array(
                 '<?php
-if (true) { $foo = 1; }',
+if (true) {
+    $foo = 2;
+}',
                 '<?php
-if (true)    $foo = 1;',
+if (true)    $foo = 2;',
             ),
             array(
                 '<?php
-if(true) { echo 1; } else { echo 2; }',
+if(true) {
+    echo 1;
+} else {
+    echo 2;
+}',
                 '<?php
 if(true) { echo 1; } else echo 2;',
             ),
             array(
                 '<?php
-if(true) { echo 1; } else { echo 2; }',
+if(true) {
+    echo 3;
+} else {
+    echo 4;
+}',
                 '<?php
-if(true) echo 1; else { echo 2; }',
+if(true) echo 3; else { echo 4; }',
             ),
             array(
                 '<?php
-if(true) { echo 1; } else { echo 2; }',
+if(true) {
+    echo 5;
+} else {
+    echo 6;
+}',
                 '<?php
-if(true) echo 1; else echo 2;',
+if(true) echo 5; else echo 6;',
             ),
+            // TODO:
             array(
                 '<?php
-if (true) { if (true) { $foo = 1; } }',
+if (true) {
+    if (true) {
+    $foo = 1;
+}
+}',
                 '<?php
 if (true) if (true) { $foo = 1; }',
             ),
+            // TODO:
             array(
                 '<?php
-if (true) { if (true) { echo 1; } else { echo 2; } } else { echo 3; }',
+if (true) {
+    if (true) {
+    echo 1;
+} else {
+    echo 2;
+}
+} else {
+    echo 3;
+}',
                 '<?php
 if (true) if (true) echo 1; else echo 2; else echo 3;',
             ),
@@ -80,7 +110,9 @@ if (true) if (true) echo 1; else echo 2; else echo 3;',
 if (true) {
     // sth here...
 
-    if ($a && ($b || $c)) { $d = 1; }
+    if ($a && ($b || $c)) {
+        $d = 1;
+    }
 }',
                 '<?php
 if (true) {
@@ -91,21 +123,32 @@ if (true) {
             ),
             array(
                 '<?php
-for ($i = 1; $i < 10; ++$) { echo $i; }
-for ($i = 1; $i < 10; ++$) { echo $i; }',
+for ($i = 1; $i < 10; ++$) {
+    echo $i;
+}
+for ($i = 1; $i < 10; ++$) {
+    echo $i;
+}',
                 '<?php
 for ($i = 1; $i < 10; ++$) echo $i;
 for ($i = 1; $i < 10; ++$) { echo $i; }',
             ),
+            // TODO:
             array(
                 '<?php
-for ($i = 1; $i < 10; ++$i) { for ($i = 1; $i < 10; ++$i) { echo $i; } }',
+for ($i = 1; $i < 5; ++$i) {
+    for ($i = 1; $i < 10; ++$i) {
+    echo $i;
+}
+}',
                 '<?php
-for ($i = 1; $i < 10; ++$i) for ($i = 1; $i < 10; ++$i) { echo $i; }',
+for ($i = 1; $i < 5; ++$i) for ($i = 1; $i < 10; ++$i) { echo $i; }',
             ),
             array(
                 '<?php
-do { echo 1; } while (false);',
+do {
+    echo 1;
+} while (false);',
                 '<?php
 do { echo 1; } while (false);',
             ),
@@ -117,7 +160,9 @@ while($foo->next());',
             ),
             array(
                 '<?php
-foreach ($foo as $bar) { echo $bar; }',
+foreach ($foo as $bar) {
+    echo $bar;
+}',
                 '<?php
 foreach ($foo as $bar) echo $bar;',
             ),
