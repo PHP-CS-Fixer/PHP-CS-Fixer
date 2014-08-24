@@ -75,46 +75,29 @@ class StructureBracesFixer implements FixerInterface
             $indent = $this->detectIndent($tokens, $index);
 
             // fix indent near closing brace
-            $beforeEndBraceToken = $tokens[$endBraceIndex - 1];
-
-            if ($beforeEndBraceToken->isWhitespace()) {
-                $beforeEndBraceToken->content = "\n".$indent;
-            } else {
-                $tokens->insertAt(
-                    $endBraceIndex,
-                    array(
-                        new Token(array(T_WHITESPACE, "\n".$indent)),
-                    )
-                );
-            }
+            $this->ensureWhitespaceAtIndex($tokens, $endBraceIndex - 1, 1, "\n".$indent);
 
             // fix indent near opening brace
-            $afterStartBraceToken = $tokens[$startBraceIndex + 1];
-
-            if ($afterStartBraceToken->isWhitespace()) {
-                $afterStartBraceToken->content = "\n".$indent.'    ';
-            } else {
-                $tokens->insertAt(
-                    $startBraceIndex + 1,
-                    array(
-                        new Token(array(T_WHITESPACE, "\n".$indent.'    ')),
-                    )
-                );
-            }
-
-            $beforeStartBraceToken = $tokens[$startBraceIndex - 1];
-
-            if ($beforeStartBraceToken->isWhitespace()) {
-                $beforeStartBraceToken->content = ' ';
-            } else {
-                $tokens->insertAt(
-                    $startBraceIndex,
-                    array(
-                        new Token(array(T_WHITESPACE, ' ')),
-                    )
-                );
-            }
+            $this->ensureWhitespaceAtIndex($tokens, $startBraceIndex + 1, 0, "\n".$indent.'    ');
+            $this->ensureWhitespaceAtIndex($tokens, $startBraceIndex - 1, 1, ' ');
         }
+    }
+
+    private function ensureWhitespaceAtIndex(Tokens $tokens, $index, $indexOffset, $whitespace = ' ')
+    {
+        $token = $tokens[$index];
+
+        if ($token->isWhitespace()) {
+            $token->content = $whitespace;
+            return;
+        }
+
+        $tokens->insertAt(
+            $index + $indexOffset,
+            array(
+                new Token(array(T_WHITESPACE, $whitespace)),
+            )
+        );
     }
 
     private function fixMissingBraces(Tokens $tokens)
