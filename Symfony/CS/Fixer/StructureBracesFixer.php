@@ -101,6 +101,19 @@ class StructureBracesFixer implements FixerInterface
                     )
                 );
             }
+
+            $beforeStartBraceToken = $tokens[$startBraceIndex - 1];
+
+            if ($beforeStartBraceToken->isWhitespace()) {
+                $beforeStartBraceToken->content = ' ';
+            } else {
+                $tokens->insertAt(
+                    $startBraceIndex,
+                    array(
+                        new Token(array(T_WHITESPACE, ' ')),
+                    )
+                );
+            }
         }
     }
 

@@ -51,6 +51,14 @@ if (true)    $foo = 2;',
             ),
             array(
                 '<?php
+if (true) {
+    $foo = 3;
+}',
+                '<?php
+if (true){$foo = 3;}',
+            ),
+            array(
+                '<?php
 if(true) {
     echo 1;
 } else {
