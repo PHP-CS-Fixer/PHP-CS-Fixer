@@ -70,7 +70,37 @@ class StructureBracesFixer implements FixerInterface
             }
 
             $endBraceIndex = $this->findBracesBlockEnd($tokens, $startBraceIndex);
-            $endBraceToken = $tokens[$endBraceIndex];
+            //$endBraceToken = $tokens[$endBraceIndex];
+
+            $indent = $this->detectIndent($tokens, $index);
+
+            // fix indent near closing brace
+            $beforeEndBraceToken = $tokens[$endBraceIndex - 1];
+
+            if ($beforeEndBraceToken->isWhitespace()) {
+                $beforeEndBraceToken->content = "\n".$indent;
+            } else {
+                $tokens->insertAt(
+                    $endBraceIndex,
+                    array(
+                        new Token(array(T_WHITESPACE, "\n".$indent)),
+                    )
+                );
+            }
+
+            // fix indent near opening brace
+            $afterStartBraceToken = $tokens[$startBraceIndex + 1];
+
+            if ($afterStartBraceToken->isWhitespace()) {
+                $afterStartBraceToken->content = "\n".$indent.'    ';
+            } else {
+                $tokens->insertAt(
+                    $startBraceIndex + 1,
+                    array(
+                        new Token(array(T_WHITESPACE, "\n".$indent.'    ')),
+                    )
+                );
+            }
         }
     }
 
@@ -102,17 +132,25 @@ class StructureBracesFixer implements FixerInterface
         }
     }
 
-    private function detectIndent(Tokens $tokens, $structureTokenIndex)
+    private function detectIndent(Tokens $tokens, $index)
     {
-        $token = $tokens[$structureTokenIndex - 1];
-/// co z wcieciami dla:
-/// } else { ... } ???
+        $prevIndex = $index - 1;
+        $prevToken = $tokens[$prevIndex];
+
+        if ('}' === $prevToken->content) {
+            return $this->detectIndent($tokens, $prevIndex);
+        }
+
         // if can not detect indent:
-        if (!$token->isWhitespace()) {
+        if (!$prevToken->isWhitespace()) {
             return '';
         }
 
-        $explodedContent = explode("\n", $token->content);
+        if ('}' === $tokens[$index - 2]->content) {
+            return $this->detectIndent($tokens, $index - 2);
+        }
+
+        $explodedContent = explode("\n", $prevToken->content);
 
         return end($explodedContent);
     }

@@ -166,6 +166,24 @@ foreach ($foo as $bar) {
                 '<?php
 foreach ($foo as $bar) echo $bar;',
             ),
+            array(
+                '<?php
+if (true) {
+    $a = 1;
+}',
+                '<?php
+if (true) {$a = 1;}',
+            ),
+            array(
+                '<?php
+if (true) {
+    $a = 1;
+}',
+                '<?php
+if (true) {
+ $a = 1;
+}',
+            ),
         );
     }
 
