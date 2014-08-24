@@ -87,29 +87,29 @@ if(true) {
                 '<?php
 if(true) echo 5; else echo 6;',
             ),
-            // TODO:
             array(
                 '<?php
 if (true) {
-    if (true) {
-    $foo = 1;
-}
+    while (true) {
+        $foo = 1;
+        $bar = 2;
+    }
 }',
                 '<?php
-if (true) if (true) { $foo = 1; }',
+if (true) while (true) { $foo = 1; $bar = 2;}',
             ),
             // TODO:
             array(
                 '<?php
 if (true) {
     if (true) {
-    echo 1;
+        echo 1;
+    } else {
+        echo 2;
+    }
 } else {
-    echo 2;
-}
-} else {
-    echo 3;
-}',
+        echo 3;
+    }',
                 '<?php
 if (true) if (true) echo 1; else echo 2; else echo 3;',
             ),
@@ -141,13 +141,12 @@ for ($i = 1; $i < 10; ++$) {
 for ($i = 1; $i < 10; ++$) echo $i;
 for ($i = 1; $i < 10; ++$) { echo $i; }',
             ),
-            // TODO:
             array(
                 '<?php
 for ($i = 1; $i < 5; ++$i) {
     for ($i = 1; $i < 10; ++$i) {
-    echo $i;
-}
+        echo $i;
+    }
 }',
                 '<?php
 for ($i = 1; $i < 5; ++$i) for ($i = 1; $i < 10; ++$i) { echo $i; }',
@@ -190,6 +189,26 @@ if (true) {
                 '<?php
 if (true) {
  $a = 1;
+}',
+            ),
+            array(
+                '<?php
+if (true) {
+    $a = 1;
+    $b = 2;
+    while (true) {
+        $c = 3;
+    }
+    $d = 4;
+}',
+                '<?php
+if (true) {
+ $a = 1;
+        $b = 2;
+  while (true) {
+            $c = 3;
+                        }
+        $d = 4;
 }',
             ),
         );

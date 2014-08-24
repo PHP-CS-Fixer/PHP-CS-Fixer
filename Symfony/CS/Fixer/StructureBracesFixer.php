@@ -43,8 +43,6 @@ class StructureBracesFixer implements FixerInterface
 
     private function fixIndents(Tokens $tokens)
     {
-        $structureFixedCollection = new \SplObjectStorage();
-
         for ($index = 0, $limit = count($tokens); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
@@ -53,38 +51,60 @@ class StructureBracesFixer implements FixerInterface
                 continue;
             }
 
-            // if token was already fixed - continue
-            if ($structureFixedCollection->contains($token)) {
-                continue;
-            }
-
-            // set info that token was fixed
-            $structureFixedCollection->attach($token);
+/* debug
+echo "-----\n";
+echo "Content: " . $token->content . "\n";
+echo "Indent: > " . $this->detectIndent($tokens, $index) . "<\n";
+echo "=====\n";
+*/
 
             $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
             $startBraceIndex = null;
             $startBraceToken = $tokens->getNextNonWhitespace($parenthesisEndIndex, array(), $startBraceIndex);
 
-            // structure without block - nothing to do
+            // structure without block - nothing to do, e.g. do { } while (true);
             if ('{' !== $startBraceToken->content) {
                 continue;
             }
 
             $endBraceIndex = $this->findBracesBlockEnd($tokens, $startBraceIndex);
-            //$endBraceToken = $tokens[$endBraceIndex];
 
             $indent = $this->detectIndent($tokens, $index);
 
             // fix indent near closing brace
             $this->ensureWhitespaceAtIndex($tokens, $endBraceIndex - 1, 1, "\n".$indent);
 
+            // fix indent between braces
+            $lastCommaIndex = null;
+            $tokens->getPrevTokenOfKind($endBraceIndex - 1, array(';', '}'), $lastCommaIndex);
+
+            $nestLevel = 1;
+            for ($nestIndex = $lastCommaIndex - 1; $nestIndex >= $startBraceIndex; --$nestIndex) {
+                if (1 === $nestLevel && in_array($tokens[$nestIndex]->content, array(';', '}'), true)) {
+                    $this->ensureWhitespaceAtIndex($tokens, $nestIndex + 1, 0, "\n".$indent.'    ');
+                }
+
+                if ('}' === $tokens[$nestIndex]->content) {
+                    ++$nestLevel;
+                    continue;
+                }
+
+                if ('{' === $tokens[$nestIndex]->content) {
+                    --$nestLevel;
+                    continue;
+                }
+            }
+
             // fix indent near opening brace
             $this->ensureWhitespaceAtIndex($tokens, $startBraceIndex + 1, 0, "\n".$indent.'    ');
             $this->ensureWhitespaceAtIndex($tokens, $startBraceIndex - 1, 1, ' ');
+
+            // reset loop due to collection change
+            $limit = count($tokens);
         }
     }
 
-    private function ensureWhitespaceAtIndex(Tokens $tokens, $index, $indexOffset, $whitespace = ' ')
+    private function ensureWhitespaceAtIndex(Tokens $tokens, $index, $indexOffset, $whitespace)
     {
         $token = $tokens[$index];
 
