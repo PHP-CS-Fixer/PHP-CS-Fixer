@@ -216,11 +216,13 @@ if (true) {
 if (true) {
     $a = 1;
 
+
     $b = 2;
 }',
                 '<?php
 if (true) {
     $a = 1;
+
 
     $b = 2;
 }',
