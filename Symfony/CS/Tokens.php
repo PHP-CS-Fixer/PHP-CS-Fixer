@@ -351,6 +351,39 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Find braces block end.
+     *
+     * @param  int $startBraceIndex index of opening brace
+     * @return int index of closing brace
+     */
+    public function findBracesBlockEnd($startBraceIndex)
+    {
+        $bracesLevel = 0;
+
+        for ($index = $startBraceIndex; ; ++$index) {
+            $token = $this[$index];
+
+            if ('{' === $token->content) {
+                ++$bracesLevel;
+
+                continue;
+            }
+
+            if ('}' === $token->content) {
+                --$bracesLevel;
+
+                if (0 === $bracesLevel) {
+                    break;
+                }
+
+                continue;
+            }
+        }
+
+        return $index;
+    }
+
+    /**
      * Find tokens of given kind.
      *
      * @param int|array $possibleKind kind or array of kind

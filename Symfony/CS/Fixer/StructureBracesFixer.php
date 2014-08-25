@@ -67,7 +67,7 @@ echo "=====\n";
                 continue;
             }
 
-            $endBraceIndex = $this->findBracesBlockEnd($tokens, $startBraceIndex);
+            $endBraceIndex = $tokens->findBracesBlockEnd($startBraceIndex);
 
             $indent = $this->detectIndent($tokens, $index);
 
@@ -172,33 +172,6 @@ echo "=====\n";
         return end($explodedContent);
     }
 
-    private function findBracesBlockEnd(Tokens $tokens, $startBraceIndex)
-    {
-        $bracesLevel = 0;
-
-        for ($index = $startBraceIndex; ; ++$index) {
-            $token = $tokens[$index];
-
-            if ('{' === $token->content) {
-                ++$bracesLevel;
-
-                continue;
-            }
-
-            if ('}' === $token->content) {
-                --$bracesLevel;
-
-                if (0 === $bracesLevel) {
-                    break;
-                }
-
-                continue;
-            }
-        }
-
-        return $index;
-    }
-
     private function findStatementEnd(Tokens $tokens, $parenthesisEndIndex)
     {
         $nextIndex = null;
@@ -209,7 +182,7 @@ echo "=====\n";
         }
 
         if ('{' === $nextToken->content) {
-            return $this->findBracesBlockEnd($tokens, $nextIndex);
+            return $tokens->findBracesBlockEnd($nextIndex);
         }
 
         if ($nextToken->isArray() && isset(self::$structures[$nextToken->id])) {
