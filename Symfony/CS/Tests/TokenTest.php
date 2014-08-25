@@ -76,13 +76,13 @@ class TokenTest extends \PHPUnit_Framework_TestCase
         return array(
             array($this->getBraceToken(), false),
             array($this->getForeachToken(), false),
-            array(new Token(array(T_ARRAY_CAST, '(array)', 1, )), true),
-            array(new Token(array(T_BOOL_CAST, '(bool)', 1, )), true),
-            array(new Token(array(T_DOUBLE_CAST, '(double)', 1, )), true),
-            array(new Token(array(T_INT_CAST, '(int)', 1, )), true),
-            array(new Token(array(T_OBJECT_CAST, '(object)', 1, )), true),
-            array(new Token(array(T_STRING_CAST, '(string)', 1, )), true),
-            array(new Token(array(T_UNSET_CAST, '(unset)', 1, )), true),
+            array(new Token(array(T_ARRAY_CAST, '(array)', 1)), true),
+            array(new Token(array(T_BOOL_CAST, '(bool)', 1)), true),
+            array(new Token(array(T_DOUBLE_CAST, '(double)', 1)), true),
+            array(new Token(array(T_INT_CAST, '(int)', 1)), true),
+            array(new Token(array(T_OBJECT_CAST, '(object)', 1)), true),
+            array(new Token(array(T_STRING_CAST, '(string)', 1)), true),
+            array(new Token(array(T_UNSET_CAST, '(unset)', 1)), true),
         );
     }
 
@@ -99,12 +99,12 @@ class TokenTest extends \PHPUnit_Framework_TestCase
         $cases = array(
             array($this->getBraceToken(), false),
             array($this->getForeachToken(), false),
-            array(new Token(array(T_CLASS, 'class', 1, )), true),
-            array(new Token(array(T_INTERFACE, 'interface', 1, )), true),
+            array(new Token(array(T_CLASS, 'class', 1)), true),
+            array(new Token(array(T_INTERFACE, 'interface', 1)), true),
         );
 
         if (defined('T_TRAIT')) {
-            $cases[] = array(new Token(array(T_TRAIT, 'trait', 1, )), true);
+            $cases[] = array(new Token(array(T_TRAIT, 'trait', 1)), true);
         }
 
         return $cases;
@@ -123,8 +123,8 @@ class TokenTest extends \PHPUnit_Framework_TestCase
         return array(
             array($this->getBraceToken(), false),
             array($this->getForeachToken(), false),
-            array(new Token(array(T_COMMENT, '/* comment */', 1, )), true),
-            array(new Token(array(T_DOC_COMMENT, '/** docs */', 1, )), true),
+            array(new Token(array(T_COMMENT, '/* comment */', 1)), true),
+            array(new Token(array(T_DOC_COMMENT, '/** docs */', 1)), true),
         );
     }
 
@@ -187,11 +187,11 @@ class TokenTest extends \PHPUnit_Framework_TestCase
         return array(
             array($this->getBraceToken(), false),
             array($this->getForeachToken(), false),
-            array(new Token(array(T_STRING, 'null', 1, )), true),
-            array(new Token(array(T_STRING, 'false', 1, )), true),
-            array(new Token(array(T_STRING, 'true', 1, )), true),
-            array(new Token(array(T_STRING, 'tRuE', 1, )), true),
-            array(new Token(array(T_STRING, 'TRUE', 1, )), true),
+            array(new Token(array(T_STRING, 'null', 1)), true),
+            array(new Token(array(T_STRING, 'false', 1)), true),
+            array(new Token(array(T_STRING, 'true', 1)), true),
+            array(new Token(array(T_STRING, 'tRuE', 1)), true),
+            array(new Token(array(T_STRING, 'TRUE', 1)), true),
         );
     }
 
@@ -212,7 +212,7 @@ class TokenTest extends \PHPUnit_Framework_TestCase
             array(new Token("\t "), true),
             array(new Token("\t "), false, array('whitespaces' => ' ')),
             array(new Token(array(T_WHITESPACE, "\n", 1)), true),
-            array(new Token(array(T_WHITESPACE, "\n", 1)), false, array('whitespaces' => " \t", )),
+            array(new Token(array(T_WHITESPACE, "\n", 1)), false, array('whitespaces' => " \t")),
         );
     }
 
