@@ -155,106 +155,117 @@ automatically fix anything:
 
 Choose from the list of available fixers:
 
-* **psr0** [PSR-0] Classes must be in a path that matches
-   their namespace, be at least one namespace deep,
-   and the class name should match the file name.
+* **psr0** [PSR-0] Classes must be in a path that
+            matches their namespace, be at least one
+            namespace deep, and the class name should
+            match the file name.
 
-* **encoding** [PSR-1] PHP code MUST use only UTF-8 without BOM
-   (remove BOM).
+* **encoding** [PSR-1] PHP code MUST use only UTF-8
+            without BOM (remove BOM).
 
-* **short_tag** [PSR-1] PHP code must use the long <?php ?> tags or
-   the short-echo <?= ?> tags; it must not use the
-   other tag variations.
+* **short_tag** [PSR-1] PHP code must use the long <?php
+            ?> tags or the short-echo <?= ?> tags; it
+            must not use the other tag variations.
 
-* **braces** [PSR-2] Opening braces for classes, interfaces,
-   traits and methods must go on the next line, and
-   closing braces must go on the next line after the
-   body. Opening braces for control structures must go
-   on the same line, and closing braces must go on the
-   next line after the body.
+* **braces** [PSR-2] Opening braces for classes,
+            interfaces, traits and methods must go on
+            the next line, and closing braces must go
+            on the next line after the body. Opening
+            braces for control structures must go on
+            the same line, and closing braces must go
+            on the next line after the body.
 
-* **elseif** [PSR-2] The keyword elseif should be used instead
-   of else if so that all control keywords looks like
-   single words.
+* **elseif** [PSR-2] The keyword elseif should be used
+            instead of else if so that all control
+            keywords looks like single words.
 
-* **eof_ending** [PSR-2] A file must always end with an empty line
-   feed.
+* **eof_ending** [PSR-2] A file must always end with an
+            empty line feed.
 
-* **function_declaration** [PSR-2] Spaces should be properly placed in a
-   function declaration
+* **function_declaration** [PSR-2] Spaces should be properly placed
+            in a function declaration
 
-* **indentation** [PSR-2] Code MUST use an indent of 4 spaces, and
-   MUST NOT use tabs for indenting.
+* **indentation** [PSR-2] Code MUST use an indent of 4
+            spaces, and MUST NOT use tabs for
+            indenting.
 
 * **linefeed** [PSR-2] All PHP files must use the Unix LF
-   (linefeed) line ending.
+            (linefeed) line ending.
 
-* **lowercase_constants** [PSR-2] The PHP constants true, false, and null
-   MUST be in lower case.
+* **lowercase_constants** [PSR-2] The PHP constants true, false, and
+            null MUST be in lower case.
 
-* **lowercase_keywords** [PSR-2] PHP keywords MUST be in lower case.
+* **lowercase_keywords** [PSR-2] PHP keywords MUST be in lower
+            case.
 
-* **php_closing_tag** [PSR-2] The closing ?> tag MUST be omitted from
-   files containing only PHP.
+* **php_closing_tag** [PSR-2] The closing ?> tag MUST be omitted
+            from files containing only PHP.
 
-* **trailing_spaces** [PSR-2] Remove trailing whitespace at the end of
-   non-blank lines.
+* **trailing_spaces** [PSR-2] Remove trailing whitespace at the
+            end of non-blank lines.
 
 * **visibility** [PSR-2] Visibility MUST be declared on all
-   properties and methods; abstract and final MUST be
-   declared before the visibility; static MUST be
-   declared after the visibility.
+            properties and methods; abstract and final
+            MUST be declared before the visibility;
+            static MUST be declared after the
+            visibility.
 
-* **concat_without_spaces** [all] Concatenation should be used without spaces.
+* **concat_without_spaces** [all] Concatenation should be used without
+            spaces.
 
-* **controls_spaces** [all] A single space should be between: the closing
-   brace and the control, the control and the opening
-   parentheses, the closing parentheses and the
-   opening brace.
+* **controls_spaces** [all] A single space should be between:
+            the closing brace and the control, the
+            control and the opening parentheses, the
+            closing parentheses and the opening brace.
 
 * **extra_empty_lines** [all] Removes extra empty lines.
 
-* **include** [all] Include and file path should be divided with
-   a single space. File path should not be placed
-   under brackets.
+* **include** [all] Include and file path should be
+            divided with a single space. File path
+            should not be placed under brackets.
 
-* **new_with_braces** [all] All instances created with new keyword must
-   be followed by braces.
+* **new_with_braces** [all] All instances created with new
+            keyword must be followed by braces.
 
-* **object_operator** [all] There should not be space before or after
-   object T_OBJECT_OPERATOR.
+* **object_operator** [all] There should not be space before or
+            after object T_OBJECT_OPERATOR.
 
-* **operators_spaces** [all] Operators should be arounded by at least one
-   space.
+* **operators_spaces** [all] Operators should be arounded by at
+            least one space.
 
-* **phpdoc_params** [all] All items of the @param phpdoc tags must be
-   aligned vertically.
+* **phpdoc_params** [all] All items of the @param phpdoc tags
+            must be aligned vertically.
 
-* **return** [all] An empty line feed should precede a return
-   statement.
+* **return** [all] An empty line feed should precede a
+            return statement.
 
-* **spaces_cast** [all] A single space should be between cast and
-   variable.
+* **single_array_no_trailing_comma** [all] PHP single-line arrays should not
+            have trailing comma.
+
+* **spaces_cast** [all] A single space should be between
+            cast and variable.
 
 * **standardize_not_equal** [all] Replace all <> with !=.
 
-* **ternary_spaces** [all] Standardize spaces around ternary operator.
+* **ternary_spaces** [all] Standardize spaces around ternary
+            operator.
 
-* **unused_use** [all] Unused use statements must be removed.
+* **unused_use** [all] Unused use statements must be
+            removed.
 
-* **whitespacy_lines** [all] Remove trailing whitespace at the end of
-   lines.
+* **whitespacy_lines** [all] Remove trailing whitespace at the
+            end of lines.
 
-* **concat_with_spaces** [contrib] Concatenation should be used with at
-   least one whitespace around.
+* **concat_with_spaces** [contrib] Concatenation should be used
+            with at least one whitespace around.
 
 * **ordered_use** [contrib] Ordering use statements.
 
-* **short_array_syntax** [contrib] PHP array's should use the PHP 5.4
-   short-syntax
+* **short_array_syntax** [contrib] PHP array's should use the PHP
+            5.4 short-syntax
 
-* **strict** [contrib] Comparison should be strict. Warning!
-   This could change code behavior.
+* **strict** [contrib] Comparison should be strict.
+            Warning! This could change code behavior.
 
 
 The ``--config`` option customizes the files to analyse, based

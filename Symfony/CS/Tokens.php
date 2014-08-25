@@ -191,6 +191,86 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Check if the array at index is multiline.
+     *
+     * This only checks the root-level of the array.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isArrayMultiLine($index)
+    {
+        $multiline = false;
+        $bracesLevel = 0;
+
+        // Skip only when its an array, for short arrays we need the brace for correct
+        // level counting
+        if ($this[$index]->isGivenKind(T_ARRAY)) {
+            ++$index;
+        }
+
+        for ($c = $this->count(); $index < $c; ++$index) {
+            $token = $this[$index];
+
+            if ('(' === $token->content || '[' === $token->content) {
+                ++$bracesLevel;
+                continue;
+            }
+
+            if (1 === $bracesLevel && $token->isGivenKind(T_WHITESPACE) && false !== strpos($token->content, "\n")) {
+                $multiline = true;
+                break;
+            }
+
+            if (')' === $token->content || ']' === $token->content) {
+                --$bracesLevel;
+
+                if (0 === $bracesLevel) {
+                    break;
+                }
+            }
+        }
+
+        return $multiline;
+    }
+
+    /**
+     * Check if the array at index uses the short-syntax.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isShortArray($index)
+    {
+        $token = $this[$index];
+
+        if ('[' !== $token->content) {
+            return false;
+        }
+
+        $prevToken = $this->getPrevNonWhitespace($index);
+        if (!$prevToken->isArray() && in_array($prevToken->content, array('=>', '=', '+', '(', '['), true)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the array at index uses the short-syntax.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isArray($index)
+    {
+        return $this[$index]->isGivenKind(T_ARRAY) || $this->isShortArray($index);
+    }
+
+    /**
      * Apply token attributes.
      * Token at given index is prepended by attributes.
      *
@@ -257,7 +337,7 @@ class Tokens extends \SplFixedArray
         $this->rewind();
 
         $elements = array();
-        $possibleKinds = is_array($possibleKind) ? $possibleKind : array($possibleKind, );
+        $possibleKinds = is_array($possibleKind) ? $possibleKind : array($possibleKind);
 
         foreach ($possibleKinds as $kind) {
             $elements[$kind] = array();
@@ -323,7 +403,7 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            if ('{' === $token->content || $token->isGivenKind(array(T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES, ))) {
+            if ('{' === $token->content || $token->isGivenKind(array(T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES))) {
                 ++$curlyBracesLevel;
                 continue;
             }

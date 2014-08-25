@@ -32,11 +32,11 @@ class SpacesAroundOperatorsFixer implements FixerInterface
             }
 
             if (!$tokens[$index + 1]->isWhitespace()) {
-                $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ', )));
+                $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
             }
 
             if (!$tokens[$index - 1]->isWhitespace()) {
-                $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ', )));
+                $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
             }
         }
 
