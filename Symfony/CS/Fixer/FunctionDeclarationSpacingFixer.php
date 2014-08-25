@@ -130,7 +130,7 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
         );
         $map['use'] = '\s*use'.$map['params'];
 
-        return '/(^|[^a-zA-Z0-9_\x7f-\xff\$])function' . implode('', array_map(function ($key) use ($map) {
+        return '/(^|[^a-zA-Z0-9_\x7f-\xff\$])function'.implode('', array_map(function ($key) use ($map) {
             return $map[$key];
         }, $keys)).'/x';
     }

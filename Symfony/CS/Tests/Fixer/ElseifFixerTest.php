@@ -106,7 +106,7 @@ if ($b) {
     {
         $phpFile = $this->getTestFile();
 
-        $otherFile = $this->getTestFile(__DIR__ . '/../../../../README.rst');
+        $otherFile = $this->getTestFile(__DIR__.'/../../../../README.rst');
 
         $fixer = new ElseIfFixer();
 
