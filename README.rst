@@ -183,11 +183,14 @@ Choose from the list of available fixers:
             empty line feed.
 
 * **function_declaration** [PSR-2] Spaces should be properly placed
-            in a function declaration
+            in a function declaration.
 
 * **indentation** [PSR-2] Code MUST use an indent of 4
             spaces, and MUST NOT use tabs for
             indenting.
+
+* **line_after_namespace** [PSR-2] There MUST be one blank line after
+            the namespace declaration.
 
 * **linefeed** [PSR-2] All PHP files must use the Unix LF
             (linefeed) line ending.
@@ -262,7 +265,7 @@ Choose from the list of available fixers:
 * **ordered_use** [contrib] Ordering use statements.
 
 * **short_array_syntax** [contrib] PHP array's should use the PHP
-            5.4 short-syntax
+            5.4 short-syntax.
 
 * **strict** [contrib] Comparison should be strict.
             Warning! This could change code behavior.
