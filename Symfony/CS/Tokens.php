@@ -359,14 +359,26 @@ class Tokens extends \SplFixedArray
      */
     public function generateCode()
     {
-        $code = '';
-        $this->rewind();
-
-        foreach ($this as $token) {
-            $code .= $token->content;
-        }
-
+        $code = $this->generatePartialCode(0, count($this) - 1);
         $this->changeCodeHash(crc32($code));
+
+        return $code;
+    }
+
+    /**
+     * Generate code from tokens between given indexes.
+     *
+     * @param  int    $start start index
+     * @param  int    $end   end index
+     * @return string
+     */
+    public function generatePartialCode($start, $end)
+    {
+        $code = '';
+
+        for ($i = $start; $i <= $end; ++$i) {
+            $code .= $this[$i]->content;
+        }
 
         return $code;
     }
@@ -433,6 +445,56 @@ class Tokens extends \SplFixedArray
         }
 
         return $elements;
+    }
+
+    /**
+     * Get indexes of namespae uses.
+     */
+    public function getNamespaceUseIndexes()
+    {
+        $this->rewind();
+
+        $uses = array();
+        $bracesLevel = 0;
+
+        $namespaceWithBraces = false;
+
+        foreach ($this as $index => $token) {
+            if (T_NAMESPACE === $token->id) {
+                $nextToken = $this->getNextTokenOfKind($index, array(';', '{'));
+
+                if ('{' === $nextToken->content) {
+                    $namespaceWithBraces = true;
+                }
+
+                continue;
+            }
+
+            if ('{' === $token->content) {
+                ++$bracesLevel;
+                continue;
+            }
+
+            if ('}' === $token->content) {
+                --$bracesLevel;
+                continue;
+            }
+
+            if (T_USE !== $token->id || $bracesLevel > ($namespaceWithBraces ? 1 : 0)) {
+                continue;
+            }
+
+            $nextToken = $this->getNextNonWhitespace($index);
+
+            // ignore function () use ($foo) {}
+            if ('(' === $nextToken->content) {
+                continue;
+            }
+
+            $uses[] = $index;
+        }
+
+        return $uses;
     }
 
     /**
@@ -653,14 +715,14 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Insert new Token inside collection.
+     * Insert instances of Token inside collection.
      *
-     * @param int           $index start inserting index
-     * @param Token|Token[] $items tokens to insert
+     * @param int                  $index start inserting index
+     * @param Tokens|Token[]|Token $items instances of Token to insert
      */
     public function insertAt($key, $items)
     {
-        $items = is_array($items) ? $items : array($items);
+        $items = is_array($items) || $items instanceof self ? $items : array($items);
         $itemsCnt = count($items);
         $oldSize = count($this);
 
