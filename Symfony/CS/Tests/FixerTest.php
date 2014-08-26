@@ -142,6 +142,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array(FixerInterface::PSR1_LEVEL, 'PSR-1'),
             array(FixerInterface::PSR2_LEVEL, 'PSR-2'),
             array(FixerInterface::ALL_LEVEL, 'all'),
+            array(FixerInterface::CONTRIB_LEVEL, 'contrib'),
         );
     }
 }
