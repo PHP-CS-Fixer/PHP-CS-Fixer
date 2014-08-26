@@ -135,6 +135,44 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expectedLevelString, Fixer::getLevelAsString($fixer));
     }
 
+    public function testFixersPriorityEdgeFixers()
+    {
+        $fixer = new Fixer();
+        $fixer->registerBuiltInFixers();
+        $fixers = $fixer->getFixers();
+
+        $this->assertSame('encoding', $fixers[0]->getName());
+        $this->assertSame('eof_ending', $fixers[count($fixers) - 1]->getName());
+    }
+
+    /**
+     * @dataProvider getFixersPriorityCases
+     */
+    public function testFixersPriority(FixerInterface $first, FixerInterface $second)
+    {
+        $this->assertLessThan($first->getPriority(), $second->getPriority());
+    }
+
+    public function getFixersPriorityCases()
+    {
+        $fixer = new Fixer();
+        $fixer->registerBuiltInFixers();
+
+        $fixers = array();
+
+        foreach ($fixer->getFixers() as $fixer) {
+            $fixers[$fixer->getName()] = $fixer;
+        }
+
+        return array(
+            array($fixers['controls_spaces'], $fixers['elseif']),
+            array($fixers['braces'], $fixers['controls_spaces']),
+            array($fixers['php_closing_tag'], $fixers['short_tag']),
+            array($fixers['unused_use'], $fixers['extra_empty_lines']),
+            array($fixers['concat_without_spaces'], $fixers['concat_with_spaces']),
+        );
+    }
+
     public static function getFixerLevels()
     {
         return array(
