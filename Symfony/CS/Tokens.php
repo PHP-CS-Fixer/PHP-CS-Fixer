@@ -441,7 +441,7 @@ class Tokens extends \SplFixedArray
      *
      * @param  int      $index       token index
      * @param  array    $opts        array of extra options for isWhitespace method
-     * @param  int|null &$foundIndex index of founded token, if any
+     * @param  int|null &$foundIndex index of found token, if any
      * @return Token    token
      */
     public function getNextNonWhitespace($index, array $opts = array(), &$foundIndex = null)
@@ -455,7 +455,7 @@ class Tokens extends \SplFixedArray
      *
      * @param  int      $index       token index
      * @param  array    $tokens      possible tokens
-     * @param  int|null &$foundIndex index of founded token, if any
+     * @param  int|null &$foundIndex index of found token, if any
      * @return Token    token
      */
     public function getNextTokenOfKind($index, array $tokens = array(), &$foundIndex = null)
@@ -469,7 +469,7 @@ class Tokens extends \SplFixedArray
      * @param  int      $index       token index
      * @param  int      $direction   direction for looking, +1 or -1
      * @param  array    $opts        array of extra options for isWhitespace method
-     * @param  int|null &$foundIndex index of founded token, if any
+     * @param  int|null &$foundIndex index of found token, if any
      * @return Token    token
      */
     public function getNonWhitespaceSibling($index, $direction, array $opts = array(), &$foundIndex = null)
@@ -497,7 +497,7 @@ class Tokens extends \SplFixedArray
      *
      * @param  int      $index       token index
      * @param  array    $opts        array of extra options for isWhitespace method
-     * @param  int|null &$foundIndex index of founded token, if any
+     * @param  int|null &$foundIndex index of found token, if any
      * @return Token    token
      */
     public function getPrevNonWhitespace($index, array $opts = array(), &$foundIndex = null)
@@ -511,7 +511,7 @@ class Tokens extends \SplFixedArray
      *
      * @param  int      $index       token index
      * @param  array    $tokens      possible tokens
-     * @param  int|null &$foundIndex index of founded token, if any
+     * @param  int|null &$foundIndex index of found token, if any
      * @return Token    token
      */
     public function getPrevTokenOfKind($index, array $tokens = array(), &$foundIndex = null)
@@ -525,7 +525,7 @@ class Tokens extends \SplFixedArray
      * @param  int      $index       token index
      * @param  int      $direction   direction for looking, +1 or -1
      * @param  array    $tokens      possible tokens
-     * @param  int|null &$foundIndex index of founded token, if any
+     * @param  int|null &$foundIndex index of found token, if any
      * @return Token    token
      */
     public function getTokenOfKindSibling($index, $direction, array $tokens = array(), &$foundIndex = null)
