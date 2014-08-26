@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace Symfony\CS\Tests\Fixer;
 
-use Symfony\CS\Fixer\Contrib\NoTrailingCommaInSingLineArrayFixer as Fixer;
+use Symfony\CS\Fixer\NoTrailingCommaInSingLineArrayFixer as Fixer;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
