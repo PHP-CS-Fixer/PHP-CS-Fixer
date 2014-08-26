@@ -1,0 +1,49 @@
+---------------------------------------------------------------------------
+
+by sstok at 2014-08-25T11:59:38Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-25T17:41:00Z
+
+seems to be changed, thx ;)
+
+---------------------------------------------------------------------------
+
+by fabpot at 2014-08-26T14:10:04Z
+
+Looks like there are a lot of unrelated commits.
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-08-26T14:10:59Z
+
+you need to rebase that will clean your commits @keradus
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-26T16:55:26Z
+
+@cordoval yes, i know.
+I start using this scheme of actions:
+- PR, with one or few commits
+- as many commits as needed during review, one per ~issue
+- when PR is ready to merge with master - squash all and rebase on master.
+
+I think it works well, look at #471 or #472, which are more bigger changes and lives a lot during discussion.
+
+@fabpot ready ;)
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-26T16:59:24Z
+
+@keradus the issue was that this branch was including totally unrelated commits (there were commits about new fixers in it)
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-26T16:59:33Z
+
+:+1:
