@@ -41,7 +41,8 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             $fxs[] = $fx;
         }
 
-        $this->assertSame(array($fxs[2], $fxs[0], $fxs[3], $fxs[1]), $fixer->getFixers());
+        // There are no rules that forces $fxs[1] to be prioritized before $fxs[3]. We should not test against that
+        $this->assertSame(array($fxs[2], $fxs[0]), array_slice($fixer->getFixers(), 0, 2));
     }
 
     /**
@@ -81,7 +82,8 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $fixer->addFixer($f1);
         $fixer->addFixer($f2);
 
-        $this->assertSame(array($f2, $f1), $fixer->getFixers());
+        $this->assertTrue(in_array($f1, $fixer->getFixers()));
+        $this->assertTrue(in_array($f2, $fixer->getFixers()));
     }
 
     /**
@@ -108,8 +110,8 @@ class FixerTest extends \PHPUnit_Framework_TestCase
     public function testThatFixSuccessfully()
     {
         $fixer = new Fixer();
-        $fixer->addFixer(new \Symfony\CS\Fixer\VisibilityFixer());
-        $fixer->addFixer(new \Symfony\CS\Fixer\Psr0Fixer()); //will be ignored cause of test keyword in namespace
+        $fixer->addFixer(new \Symfony\CS\Fixer\PSR2\VisibilityFixer());
+        $fixer->addFixer(new \Symfony\CS\Fixer\PSR0\Psr0Fixer()); //will be ignored cause of test keyword in namespace
 
         $config = Config::create()->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'));
         $config->fixers($fixer->getFixers());
@@ -135,6 +137,44 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expectedLevelString, Fixer::getLevelAsString($fixer));
     }
 
+    public function testFixersPriorityEdgeFixers()
+    {
+        $fixer = new Fixer();
+        $fixer->registerBuiltInFixers();
+        $fixers = $fixer->getFixers();
+
+        $this->assertSame('encoding', $fixers[0]->getName());
+        $this->assertSame('eof_ending', $fixers[count($fixers) - 1]->getName());
+    }
+
+    /**
+     * @dataProvider getFixersPriorityCases
+     */
+    public function testFixersPriority(FixerInterface $first, FixerInterface $second)
+    {
+        $this->assertLessThan($first->getPriority(), $second->getPriority());
+    }
+
+    public function getFixersPriorityCases()
+    {
+        $fixer = new Fixer();
+        $fixer->registerBuiltInFixers();
+
+        $fixers = array();
+
+        foreach ($fixer->getFixers() as $fixer) {
+            $fixers[$fixer->getName()] = $fixer;
+        }
+
+        return array(
+            array($fixers['controls_spaces'], $fixers['elseif']),
+            array($fixers['braces'], $fixers['controls_spaces']),
+            array($fixers['php_closing_tag'], $fixers['short_tag']),
+            array($fixers['multiple_use'], $fixers['unused_use']),
+            array($fixers['concat_without_spaces'], $fixers['concat_with_spaces']),
+        );
+    }
+
     public static function getFixerLevels()
     {
         return array(
@@ -142,6 +182,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array(FixerInterface::PSR1_LEVEL, 'PSR-1'),
             array(FixerInterface::PSR2_LEVEL, 'PSR-2'),
             array(FixerInterface::ALL_LEVEL, 'all'),
+            array(FixerInterface::CONTRIB_LEVEL, 'contrib'),
         );
     }
 }

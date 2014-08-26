@@ -48,13 +48,13 @@ class ConcatWithSpaces implements FixerInterface
 
     public function getPriority()
     {
-        // should be run after the ConcatWithSpaces
+        // should be run after the ConcatWithoutSpaces
         return -10;
     }
 
     public function supports(\SplFileInfo $file)
     {
-        return 'php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+        return true;
     }
 
     public function getName()

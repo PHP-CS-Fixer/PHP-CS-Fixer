@@ -21,7 +21,7 @@ use SebastianBergmann\Diff\Differ;
  */
 class Fixer
 {
-    const VERSION = '0.5-DEV';
+    const VERSION = '1.0-DEV';
 
     protected $fixers = array();
     protected $configs = array();
@@ -29,7 +29,8 @@ class Fixer
 
     /**
      * Stopwatch instance.
-     * @type \Symfony\Component\Stopwatch\Stopwatch|null
+     *
+     * @var \Symfony\Component\Stopwatch\Stopwatch|null
      */
     protected $stopwatch;
 
@@ -100,6 +101,8 @@ class Fixer
      * @param ConfigInterface $config A ConfigInterface instance
      * @param Boolean         $dryRun Whether to simulate the changes or not
      * @param Boolean         $diff   Whether to provide diff
+     *
+     * @return array
      */
     public function fix(ConfigInterface $config, $dryRun = false, $diff = false)
     {
@@ -227,7 +230,7 @@ class Fixer
     {
         $selfName = __CLASS__;
 
-        usort($this->fixers, function ($a, $b) use ($selfName) {
+        usort($this->fixers, function (FixerInterface $a, FixerInterface $b) use ($selfName) {
             return $selfName::cmpInt($b->getPriority(), $a->getPriority());
         });
     }

@@ -21,13 +21,15 @@ class Tokens extends \SplFixedArray
 {
     /**
      * Static class cache.
-     * @type array
+     *
+     * @var array
      */
     private static $cache = array();
 
     /**
      * crc32 hash of code string.
-     * @type array
+     *
+     * @var array
      */
     private $codeHash;
 
@@ -52,8 +54,9 @@ class Tokens extends \SplFixedArray
     /**
      * Get cache value for given key.
      *
-     * @param  int|string $key item key
-     * @return misc       item value
+     * @param int|string $key item key
+     *
+     * @return misc item value
      */
     private static function getCache($key)
     {
@@ -67,7 +70,8 @@ class Tokens extends \SplFixedArray
     /**
      * Check if given key exists in cache.
      *
-     * @param  int|string $key item key
+     * @param int|string $key item key
+     *
      * @return bool
      */
     private static function hasCache($key)
@@ -90,8 +94,9 @@ class Tokens extends \SplFixedArray
      * Check if given tokens are equal.
      * If tokens are arrays, then only keys defined in second token are checked.
      *
-     * @param  string|array $tokenA token prototype
-     * @param  string|array $tokenB token prototype or only few keys of it
+     * @param string|array $tokenA token prototype
+     * @param string|array $tokenB token prototype or only few keys of it
+     *
      * @return bool
      */
     public static function compare($tokenA, $tokenB)
@@ -119,8 +124,9 @@ class Tokens extends \SplFixedArray
     /**
      * Create token collection from array.
      *
-     * @param  array  $array       the array to import
-     * @param  bool   $saveIndexes save the numeric indexes used in the original array, default is yes
+     * @param array $array       the array to import
+     * @param bool  $saveIndexes save the numeric indexes used in the original array, default is yes
+     *
      * @return Tokens
      */
     public static function fromArray($array, $saveIndexes = null)
@@ -147,7 +153,8 @@ class Tokens extends \SplFixedArray
     /**
      * Create token collection directly from code.
      *
-     * @param  string $code PHP code
+     * @param string $code PHP code
+     *
      * @return Tokens
      */
     public static function fromCode($code)
@@ -295,6 +302,7 @@ class Tokens extends \SplFixedArray
 
     /**
      * Change code hash.
+     *
      * Remove old cache and set new one.
      *
      * @param string $codeHash new code hash
@@ -311,6 +319,7 @@ class Tokens extends \SplFixedArray
 
     /**
      * Clear empty tokens.
+     *
      * Empty tokens can occur e.g. after calling clear on element of collection.
      */
     public function clearEmptyTokens()
@@ -329,8 +338,9 @@ class Tokens extends \SplFixedArray
     /**
      * Find tokens of given kind.
      *
-     * @param  int|array $possibleKind kind or array of kind
-     * @return array     array of tokens of given kinds or assoc array of arrays
+     * @param int|array $possibleKind kind or array of kind
+     *
+     * @return array array of tokens of given kinds or assoc array of arrays
      */
     public function findGivenKind($possibleKind)
     {
@@ -359,14 +369,26 @@ class Tokens extends \SplFixedArray
      */
     public function generateCode()
     {
-        $code = '';
-        $this->rewind();
-
-        foreach ($this as $token) {
-            $code .= $token->content;
-        }
-
+        $code = $this->generatePartialCode(0, count($this) - 1);
         $this->changeCodeHash(crc32($code));
+
+        return $code;
+    }
+
+    /**
+     * Generate code from tokens between given indexes.
+     *
+     * @param  int    $start start index
+     * @param  int    $end   end index
+     * @return string
+     */
+    public function generatePartialCode($start, $end)
+    {
+        $code = '';
+
+        for ($i = $start; $i <= $end; ++$i) {
+            $code .= $this[$i]->content;
+        }
 
         return $code;
     }
@@ -436,13 +458,65 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Get indexes of namespae uses.
+     */
+    public function getNamespaceUseIndexes()
+    {
+        $this->rewind();
+
+        $uses = array();
+        $bracesLevel = 0;
+
+        $namespaceWithBraces = false;
+
+        foreach ($this as $index => $token) {
+            if (T_NAMESPACE === $token->id) {
+                $nextToken = $this->getNextTokenOfKind($index, array(';', '{'));
+
+                if ('{' === $nextToken->content) {
+                    $namespaceWithBraces = true;
+                }
+
+                continue;
+            }
+
+            if ('{' === $token->content) {
+                ++$bracesLevel;
+                continue;
+            }
+
+            if ('}' === $token->content) {
+                --$bracesLevel;
+                continue;
+            }
+
+            if (T_USE !== $token->id || $bracesLevel > ($namespaceWithBraces ? 1 : 0)) {
+                continue;
+            }
+
+            $nextToken = $this->getNextNonWhitespace($index);
+
+            // ignore function () use ($foo) {}
+            if ('(' === $nextToken->content) {
+                continue;
+            }
+
+            $uses[] = $index;
+        }
+
+        return $uses;
+    }
+
+    /**
      * Get closest next token which is non whitespace.
+     *
      * This method is shorthand for getNonWhitespaceSibling method.
      *
-     * @param  int      $index       token index
-     * @param  array    $opts        array of extra options for isWhitespace method
-     * @param  int|null &$foundIndex index of founded token, if any
-     * @return Token    token
+     * @param int      $index       token index
+     * @param array    $opts        array of extra options for isWhitespace method
+     * @param int|null &$foundIndex index of found token, if any
+     *
+     * @return Token
      */
     public function getNextNonWhitespace($index, array $opts = array(), &$foundIndex = null)
     {
@@ -451,12 +525,14 @@ class Tokens extends \SplFixedArray
 
     /**
      * Get closest next token of given kind.
+     *
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param  int      $index       token index
-     * @param  array    $tokens      possible tokens
-     * @param  int|null &$foundIndex index of founded token, if any
-     * @return Token    token
+     * @param int      $index       token index
+     * @param array    $tokens      possible tokens
+     * @param int|null &$foundIndex index of found token, if any
+     *
+     * @return Token
      */
     public function getNextTokenOfKind($index, array $tokens = array(), &$foundIndex = null)
     {
@@ -466,11 +542,12 @@ class Tokens extends \SplFixedArray
     /**
      * Get closest sibling token which is non whitespace.
      *
-     * @param  int      $index       token index
-     * @param  int      $direction   direction for looking, +1 or -1
-     * @param  array    $opts        array of extra options for isWhitespace method
-     * @param  int|null &$foundIndex index of founded token, if any
-     * @return Token    token
+     * @param int      $index       token index
+     * @param int      $direction   direction for looking, +1 or -1
+     * @param array    $opts        array of extra options for isWhitespace method
+     * @param int|null &$foundIndex index of found token, if any
+     *
+     * @return Token
      */
     public function getNonWhitespaceSibling($index, $direction, array $opts = array(), &$foundIndex = null)
     {
@@ -493,12 +570,14 @@ class Tokens extends \SplFixedArray
 
     /**
      * Get closest previous token which is non whitespace.
+     *
      * This method is shorthand for getNonWhitespaceSibling method.
      *
-     * @param  int      $index       token index
-     * @param  array    $opts        array of extra options for isWhitespace method
-     * @param  int|null &$foundIndex index of founded token, if any
-     * @return Token    token
+     * @param int      $index       token index
+     * @param array    $opts        array of extra options for isWhitespace method
+     * @param int|null &$foundIndex index of found token, if any
+     *
+     * @return Token
      */
     public function getPrevNonWhitespace($index, array $opts = array(), &$foundIndex = null)
     {
@@ -509,10 +588,11 @@ class Tokens extends \SplFixedArray
      * Get closest previous token of given kind.
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param  int      $index       token index
-     * @param  array    $tokens      possible tokens
-     * @param  int|null &$foundIndex index of founded token, if any
-     * @return Token    token
+     * @param int      $index       token index
+     * @param array    $tokens      possible tokens
+     * @param int|null &$foundIndex index of found token, if any
+     *
+     * @return Token
      */
     public function getPrevTokenOfKind($index, array $tokens = array(), &$foundIndex = null)
     {
@@ -522,11 +602,12 @@ class Tokens extends \SplFixedArray
     /**
      * Get closest sibling token of given kind.
      *
-     * @param  int      $index       token index
-     * @param  int      $direction   direction for looking, +1 or -1
-     * @param  array    $tokens      possible tokens
-     * @param  int|null &$foundIndex index of founded token, if any
-     * @return Token    token
+     * @param int      $index       token index
+     * @param int      $direction   direction for looking, +1 or -1
+     * @param array    $tokens      possible tokens
+     * @param int|null &$foundIndex index of found token, if any
+     *
+     * @return Token
      */
     public function getTokenOfKindSibling($index, $direction, array $tokens = array(), &$foundIndex = null)
     {
@@ -550,10 +631,44 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Get closest sibling token not of given kind.
+     *
+     * @param int      $index       token index
+     * @param int      $direction   direction for looking, +1 or -1
+     * @param array    $tokens      possible tokens
+     * @param int|null &$foundIndex index of founded token, if any
+     *
+     * @return Token
+     */
+    public function getTokenNotOfKindSibling($index, $direction, array $tokens = array(), &$foundIndex = null)
+    {
+        while (true) {
+            $index += $direction;
+
+            if (!$this->offsetExists($index)) {
+                return null;
+            }
+
+            $token = $this[$index];
+
+            foreach ($tokens as $tokenKind) {
+                if (static::compare($token->getPrototype(), $tokenKind)) {
+                    continue 2;
+                }
+            }
+
+            $foundIndex = $index;
+
+            return $token;
+        }
+    }
+
+    /**
      * Grab attributes before method token at gixen index.
      * It's a shorthand for grabAttribsBeforeToken method.
      *
-     * @param  int   $index token index
+     * @param int $index token index
+     *
      * @return array array of grabbed attributes
      */
     public function grabAttribsBeforeMethodToken($index)
@@ -583,7 +698,8 @@ class Tokens extends \SplFixedArray
      * Grab attributes before property token at gixen index.
      * It's a shorthand for grabAttribsBeforeToken method.
      *
-     * @param  int   $index token index
+     * @param int $index token index
+     *
      * @return array array of grabbed attributes
      */
     public function grabAttribsBeforePropertyToken($index)
@@ -608,11 +724,13 @@ class Tokens extends \SplFixedArray
 
     /**
      * Grab attributes before token at gixen index.
+     *
      * Grabbed attributes are cleared by overriding them with empty string and should be manually applied with applyTokenAttribs method.
      *
-     * @param  int   $index           token index
-     * @param  array $tokenAttribsMap token to attribute name map
-     * @param  array $attribs         array of token attributes
+     * @param int   $index           token index
+     * @param array $tokenAttribsMap token to attribute name map
+     * @param array $attribs         array of token attributes
+     *
      * @return array array of grabbed attributes
      */
     public function grabAttribsBeforeToken($index, array $tokenAttribsMap, array $attribs)
@@ -653,14 +771,14 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Insert new Token inside collection.
+     * Insert instances of Token inside collection.
      *
-     * @param int           $index start inserting index
-     * @param Token|Token[] $items tokens to insert
+     * @param int                  $index start inserting index
+     * @param Tokens|Token[]|Token $items instances of Token to insert
      */
     public function insertAt($key, $items)
     {
-        $items = is_array($items) ? $items : array($items);
+        $items = is_array($items) || $items instanceof self ? $items : array($items);
         $itemsCnt = count($items);
         $oldSize = count($this);
 
@@ -702,6 +820,21 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * If $index is below zero, we know that it does not exist.
+     *
+     * This was added to be compatible with HHVM 3.2.0.
+     * Note that HHVM 3.3.0 no longer requires this work around.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function offsetExists($index)
+    {
+        return $index >= 0 && parent::offsetExists($index);
+    }
+
+    /**
      * Set code. Clear all current content and replace it by new Token items generated from code directly.
      *
      * @param string $code PHP code
@@ -720,6 +853,29 @@ class Tokens extends \SplFixedArray
 
         $this->rewind();
         $this->changeCodeHash(crc32($code));
+    }
+
+    public function toJSON()
+    {
+        static $optNames = array('JSON_PRETTY_PRINT', 'JSON_NUMERIC_CHECK');
+
+        $output = new \SplFixedArray(count($this));
+
+        foreach ($this as $index => $token) {
+            $output[$index] = $token->toArray();
+        }
+
+        $this->rewind();
+
+        $options = 0;
+
+        foreach ($optNames as $optName) {
+            if (defined($optName)) {
+                $options |= constant($optName);
+            }
+        }
+
+        return json_encode($output, $options);
     }
 
     /**

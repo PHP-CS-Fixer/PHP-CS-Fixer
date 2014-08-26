@@ -201,6 +201,9 @@ Choose from the list of available fixers:
 * **lowercase_keywords** [PSR-2] PHP keywords MUST be in lower
             case.
 
+* **multiple_use** [PSR-2] There MUST be one use keyword per
+            declaration.
+
 * **php_closing_tag** [PSR-2] The closing ?> tag MUST be omitted
             from files containing only PHP.
 
@@ -227,6 +230,9 @@ Choose from the list of available fixers:
             divided with a single space. File path
             should not be placed under brackets.
 
+* **multiline_array_trailing_comma** [all] PHP multi-line arrays should have a
+            trailing comma.
+
 * **new_with_braces** [all] All instances created with new
             keyword must be followed by braces.
 
@@ -241,6 +247,9 @@ Choose from the list of available fixers:
 
 * **return** [all] An empty line feed should precede a
             return statement.
+
+* **semicolon_spaces** [all] Single-line whitespaces before
+            closing semicolon are prohibited.
 
 * **single_array_no_trailing_comma** [all] PHP single-line arrays should not
             have trailing comma.
@@ -257,7 +266,7 @@ Choose from the list of available fixers:
             removed.
 
 * **whitespacy_lines** [all] Remove trailing whitespace at the
-            end of lines.
+            end of blank lines.
 
 * **concat_with_spaces** [contrib] Concatenation should be used
             with at least one whitespace around.

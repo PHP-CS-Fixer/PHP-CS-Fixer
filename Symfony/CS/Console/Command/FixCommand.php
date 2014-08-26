@@ -31,15 +31,16 @@ class FixCommand extends Command
 {
     /**
      * Stopwatch instance.
-     * @type \Symfony\Component\Stopwatch\Stopwatch
+     *
+     * @var \Symfony\Component\Stopwatch\Stopwatch
      */
     protected $stopwatch;
     protected $fixer;
     protected $defaultConfig;
 
     /**
-     * @param Fixer           $fixer
-     * @param ConfigInterface $config
+     * @param Fixer|null           $fixer
+     * @param ConfigInterface|null $config
      */
     public function __construct(Fixer $fixer = null, ConfigInterface $config = null)
     {
@@ -68,7 +69,7 @@ class FixCommand extends Command
                 new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or all)', null),
                 new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
-                new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt')
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
             ))
             ->setDescription('Fixes a directory or a file')
             ->setHelp(<<<EOF
@@ -462,7 +463,7 @@ EOF
         $fixers = $this->fixer->getFixers();
 
         // sort fixers by level and name
-        usort($fixers, function ($a, $b) {
+        usort($fixers, function (FixerInterface $a, FixerInterface $b) {
             $cmp = Fixer::cmpInt($a->getLevel(), $b->getLevel());
             if (0 !== $cmp) {
                 return $cmp;
