@@ -108,8 +108,8 @@ class FixerTest extends \PHPUnit_Framework_TestCase
     public function testThatFixSuccessfully()
     {
         $fixer = new Fixer();
-        $fixer->addFixer(new \Symfony\CS\Fixer\VisibilityFixer());
-        $fixer->addFixer(new \Symfony\CS\Fixer\Psr0Fixer()); //will be ignored cause of test keyword in namespace
+        $fixer->addFixer(new \Symfony\CS\Fixer\PSR2\VisibilityFixer());
+        $fixer->addFixer(new \Symfony\CS\Fixer\PSR0\Psr0Fixer()); //will be ignored cause of test keyword in namespace
 
         $config = Config::create()->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'));
         $config->fixers($fixer->getFixers());
