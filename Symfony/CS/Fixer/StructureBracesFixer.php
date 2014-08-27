@@ -190,7 +190,7 @@ echo "=====\n";
 
             $endIndex = $this->findStatementEnd($tokens, $parenthesisEndIndex);
 
-            if (T_IF === $nextToken->id) {
+            if ($nextToken->isGivenKind(T_IF)) {
                 $nextIndex = null;
                 $nextToken = $tokens->getNextNonWhitespace($endIndex, array(), $nextIndex);
 
