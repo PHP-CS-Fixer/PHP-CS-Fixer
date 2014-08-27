@@ -98,7 +98,6 @@ if (true) {
                 '<?php
 if (true) while (true) { $foo = 1; $bar = 2;}',
             ),
-            // TODO:
             array(
                 '<?php
 if (true) {
@@ -248,7 +247,7 @@ if (1) {
         $a = "a";
     } elseif (3) {
         $b = "b";
-        // path is directory
+        // comment
     } else {
         $c = "c";
     }
@@ -260,7 +259,7 @@ if (1) {
         $a = "a";
     } elseif (3) {
         $b = "b";
-        // path is directory
+        // comment
     } else {
         $c = "c";
     }
