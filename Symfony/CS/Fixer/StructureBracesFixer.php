@@ -77,23 +77,29 @@ echo "=====\n\n\n";
 
             // fix indent between braces
             $lastCommaIndex = null;
-            $tokens->getPrevTokenOfKind($endBraceIndex - 1, array(';', '}'), $lastCommaIndex);
+            $prevToken = $tokens->getPrevTokenOfKind($endBraceIndex - 1, array(';', '}'), $lastCommaIndex);
 
             $nestLevel = 1;
             for ($nestIndex = $lastCommaIndex - 1; $nestIndex >= $startBraceIndex; --$nestIndex) {
                 if (1 === $nestLevel && in_array($tokens[$nestIndex]->content, array(';', '}'), true)) {
-                    $nextToken = $tokens[$nestIndex + 1];
-                    $nextWhitespace = '';
+                    if ($tokens->getNextNonWhitespace($nestIndex)->isGivenKind(array(T_ELSE, T_ELSEIF))) {
+                        $whitespace = ' ';
+                    } else {
+                        $nextToken = $tokens[$nestIndex + 1];
+                        $nextWhitespace = '';
 
-                    if ($nextToken->isWhitespace()) {
-                        $nextWhitespace = rtrim($nextToken->content, " \t");
+                        if ($nextToken->isWhitespace()) {
+                            $nextWhitespace = rtrim($nextToken->content, " \t");
 
-                        if (strlen($nextWhitespace) && "\n" === $nextWhitespace[strlen($nextWhitespace) - 1]) {
-                            $nextWhitespace = substr($nextWhitespace, 0, -1);
+                            if (strlen($nextWhitespace) && "\n" === $nextWhitespace[strlen($nextWhitespace) - 1]) {
+                                $nextWhitespace = substr($nextWhitespace, 0, -1);
+                            }
                         }
+
+                        $whitespace = $nextWhitespace."\n".$indent.'    ';
                     }
 
-                    $this->ensureWhitespaceAtIndex($tokens, $nestIndex + 1, 0, $nextWhitespace."\n".$indent.'    ');
+                    $this->ensureWhitespaceAtIndex($tokens, $nestIndex + 1, 0, $whitespace);
                 }
 
                 if ('}' === $tokens[$nestIndex]->content) {
@@ -118,17 +124,22 @@ echo "=====\n\n\n";
 
     private function ensureWhitespaceAtIndex(Tokens $tokens, $index, $indexOffset, $whitespace)
     {
+        $removeLastCommentLine = function ($token, $indexOffset) {
+            // becouse comments tokens are greedy and may consume single \n if we are putting whitespace after it let trim that \n
+            if (1 === $indexOffset && $token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT)) && "\n" === $token->content[strlen($token->content) - 1]) {
+                $token->content = substr($token->content, 0, -1);
+            }
+        };
+
         $token = $tokens[$index];
 
         if ($token->isWhitespace()) {
+            $removeLastCommentLine($tokens[$index - 1], $indexOffset);
             $token->content = $whitespace;
             return;
         }
 
-        // becouse comments tokens are greedy and may consume single \n if we are putting whitespace after it let trim that \n
-        if ($token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT)) && 1 === $indexOffset && "\n" === $token->content[strlen($token->content) - 1]) {
-            $token->content = substr($token->content, 0, -1);
-        }
+        $removeLastCommentLine($token, $indexOffset);
 
         $tokens->insertAt(
             $index + $indexOffset,
