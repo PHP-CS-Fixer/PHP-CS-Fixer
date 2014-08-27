@@ -230,6 +230,20 @@ if (true) {
             array(
                 '<?php
 if (1) {
+    $a = 1;
+
+    // comment at end
+}',
+                '<?php
+if (1) {
+    $a = 1;
+
+    // comment at end
+}',
+            ),
+            array(
+                '<?php
+if (1) {
     if (2) {
         $a = "a";
     } elseif (3) {
@@ -252,7 +266,7 @@ if (1) {
     }
     $d = "d";
 }',
-            )
+            ),
         );
     }
 
