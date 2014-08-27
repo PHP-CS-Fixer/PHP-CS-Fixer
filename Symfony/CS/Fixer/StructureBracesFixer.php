@@ -53,9 +53,10 @@ class StructureBracesFixer implements FixerInterface
 
 /* debug
 echo "-----\n";
-echo "Content: " . $token->content . "\n";
-echo "Indent: > " . $this->detectIndent($tokens, $index) . "<\n";
-echo "=====\n";
+echo "Content: " . $token->content . " | " . $index . "\n";
+$indent = $this->detectIndent($tokens, $index);
+echo "Indent: > " . $indent . "<\n";
+echo "=====\n\n\n";
 */
 
             $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
