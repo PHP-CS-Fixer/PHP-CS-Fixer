@@ -227,6 +227,32 @@ if (true) {
     $b = 2;
 }',
             ),
+            array(
+                '<?php
+if (1) {
+    if (2) {
+        $a = "a";
+    } elseif (3) {
+        $b = "b";
+        // path is directory
+    } else {
+        $c = "c";
+    }
+    $d = "d";
+}',
+                '<?php
+if (1) {
+    if (2) {
+        $a = "a";
+    } elseif (3) {
+        $b = "b";
+        // path is directory
+    } else {
+        $c = "c";
+    }
+    $d = "d";
+}',
+            )
         );
     }
 
