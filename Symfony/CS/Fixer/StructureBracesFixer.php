@@ -82,7 +82,18 @@ echo "=====\n\n\n";
             $nestLevel = 1;
             for ($nestIndex = $lastCommaIndex - 1; $nestIndex >= $startBraceIndex; --$nestIndex) {
                 if (1 === $nestLevel && in_array($tokens[$nestIndex]->content, array(';', '}'), true)) {
-                    $this->ensureWhitespaceAtIndex($tokens, $nestIndex + 1, 0, "\n".$indent.'    ');
+                    $nextToken = $tokens[$nestIndex + 1];
+                    $nextWhitespace = '';
+
+                    if ($nextToken->isWhitespace()) {
+                        $nextWhitespace = rtrim($nextToken->content, " \t");
+
+                        if (strlen($nextWhitespace) && "\n" === $nextWhitespace[strlen($nextWhitespace) - 1]) {
+                            $nextWhitespace = substr($nextWhitespace, 0, -1);
+                        }
+                    }
+
+                    $this->ensureWhitespaceAtIndex($tokens, $nestIndex + 1, 0, $nextWhitespace."\n".$indent.'    ');
                 }
 
                 if ('}' === $tokens[$nestIndex]->content) {
