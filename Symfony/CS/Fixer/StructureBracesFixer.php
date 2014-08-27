@@ -21,13 +21,13 @@ use Symfony\CS\Tokens;
 class StructureBracesFixer implements FixerInterface
 {
     static private $structures = array(
-        T_DO        => true,
-        T_ELSE      => true,
-        T_ELSEIF    => true,
-        T_FOR       => true,
-        T_FOREACH   => true,
-        T_IF        => true,
-        T_WHILE     => true,
+        T_DO        => T_DO,
+        T_ELSE      => T_ELSE,
+        T_ELSEIF    => T_ELSEIF,
+        T_FOR       => T_FOR,
+        T_FOREACH   => T_FOREACH,
+        T_IF        => T_IF,
+        T_WHILE     => T_WHILE,
     );
 
     public function fix(\SplFileInfo $file, $content)
@@ -47,7 +47,7 @@ class StructureBracesFixer implements FixerInterface
             $token = $tokens[$index];
 
             // if token is not a structure element - continue
-            if (!$token->isArray() || !isset(self::$structures[$token->id])) {
+            if (!$token->isGivenKind(self::$structures)) {
                 continue;
             }
 
@@ -126,7 +126,7 @@ echo "=====\n";
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isArray() || !isset(self::$structures[$token->id])) {
+            if (!$token->isGivenKind(self::$structures)) {
                 continue;
             }
 
@@ -185,7 +185,7 @@ echo "=====\n";
             return $tokens->findBracesBlockEnd($nextIndex);
         }
 
-        if ($nextToken->isArray() && isset(self::$structures[$nextToken->id])) {
+        if ($nextToken->isGivenKind(self::$structures)) {
             $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $nextIndex);
 
             $endIndex = $this->findStatementEnd($tokens, $parenthesisEndIndex);
