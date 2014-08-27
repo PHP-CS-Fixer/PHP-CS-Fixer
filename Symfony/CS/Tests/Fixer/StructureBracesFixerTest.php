@@ -108,8 +108,8 @@ if (true) {
         echo 2;
     }
 } else {
-        echo 3;
-    }',
+    echo 3;
+}',
                 '<?php
 if (true) if (true) echo 1; else echo 2; else echo 3;',
             ),

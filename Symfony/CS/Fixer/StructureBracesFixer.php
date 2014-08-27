@@ -164,11 +164,15 @@ echo "=====\n\n\n";
             return '';
         }
 
-        if ('}' === $tokens[$index - 2]->content) {
-            return $this->detectIndent($tokens, $index - 2);
-        }
-
         $explodedContent = explode("\n", $prevToken->content);
+
+
+        // proper decect indent for code: `    } else {`
+        if (1 === count($explodedContent)) {
+            if ('}' === $tokens[$index - 2]->content) {
+                return $this->detectIndent($tokens, $index - 2);
+            }
+        }
 
         return end($explodedContent);
     }
