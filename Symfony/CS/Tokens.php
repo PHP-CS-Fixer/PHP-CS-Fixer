@@ -360,7 +360,7 @@ class Tokens extends \SplFixedArray
     {
         $bracesLevel = 0;
 
-        for ($index = $startBraceIndex; ; ++$index) {
+        for ($index = $startBraceIndex, $limit = $this->count(); $index < $limit; ++$index) {
             $token = $this[$index];
 
             if ('{' === $token->content) {
