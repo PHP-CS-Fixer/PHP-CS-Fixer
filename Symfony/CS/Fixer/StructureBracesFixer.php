@@ -125,6 +125,11 @@ echo "=====\n\n\n";
             return;
         }
 
+        // becouse comments tokens are greedy and may consume single \n if we are putting whitespace after it let trim that \n
+        if ($token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT)) && 1 === $indexOffset && "\n" === $token->content[strlen($token->content) - 1]) {
+            $token->content = substr($token->content, 0, -1);
+        }
+
         $tokens->insertAt(
             $index + $indexOffset,
             array(
