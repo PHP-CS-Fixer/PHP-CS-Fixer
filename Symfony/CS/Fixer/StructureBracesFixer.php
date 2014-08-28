@@ -81,6 +81,12 @@ echo "=====\n\n\n";
 
             $nestLevel = 1;
             for ($nestIndex = $lastCommaIndex - 1; $nestIndex >= $startBraceIndex; --$nestIndex) {
+
+                if (')' === $tokens[$nestIndex]->content) {
+                    $nestIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nestIndex, false);
+                    continue;
+                }
+
                 if (1 === $nestLevel && in_array($tokens[$nestIndex]->content, array(';', '}'), true)) {
                     if ($tokens->getNextNonWhitespace($nestIndex)->isGivenKind(array(T_ELSE, T_ELSEIF))) {
                         $whitespace = ' ';
