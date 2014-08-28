@@ -21,13 +21,13 @@ use Symfony\CS\Tokens;
 class StructureBracesFixer implements FixerInterface
 {
     static private $structures = array(
-        T_DO        => T_DO,
-        T_ELSE      => T_ELSE,
-        T_ELSEIF    => T_ELSEIF,
-        T_FOR       => T_FOR,
-        T_FOREACH   => T_FOREACH,
-        T_IF        => T_IF,
-        T_WHILE     => T_WHILE,
+        T_DO,
+        T_ELSE,
+        T_ELSEIF,
+        T_FOR,
+        T_FOREACH,
+        T_IF,
+        T_WHILE,
     );
 
     public function fix(\SplFileInfo $file, $content)
