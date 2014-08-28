@@ -101,4 +101,10 @@ class Config implements ConfigInterface
     {
         return $this->customFixers;
     }
+
+    public function getFileType(\SplFileInfo $file)
+    {
+        return pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+    }
+
 }

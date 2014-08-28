@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\ConfigInterface;
 use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
@@ -179,9 +180,9 @@ class IncludeFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(\SplFileInfo $file)
+    public function supports(\SplFileInfo $file, ConfigInterface $config)
     {
-        return 'php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+        return 'php' === $config->getFileType($file);
     }
 
     /**

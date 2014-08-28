@@ -290,6 +290,8 @@ Choose from the list of available configurations:
 
 * **sf23**    The configuration for the Symfony 2.3+ branch
 
+* **drupal**  The configuration for Drupal
+
 The ``--dry-run`` option displays the files that need to be
 fixed but without actually modifying them:
 

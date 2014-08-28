@@ -13,37 +13,28 @@ namespace Symfony\CS\Fixer;
 
 use Symfony\CS\FixerInterface;
 use Symfony\CS\ConfigInterface;
-use Symfony\CS\Tokens;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Fabien Potencier <fabien@symfony.com>, Peter Drake <pdrake@gmail.com>
  */
-class IndentationFixer implements FixerInterface
+class ShortEchoTagFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
-        $tokens = Tokens::fromCode($content);
+        // [Structure] Never use short echo tags (<?=)
+        return preg_replace('/<\?\=(\s)/', '<?php print$1', $content);
 
-        foreach ($tokens as $index => $token) {
-            if (!$token->isWhitespace()) {
-                continue;
-            }
-
-            $tokens[$index]->content = preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $token->content);
-        }
-
-        return $tokens->generateCode();
+        return $content;
     }
 
     public function getLevel()
     {
-        // defined in PSR2 ¶2.4
-        return FixerInterface::PSR2_LEVEL;
+        return false;
     }
 
     public function getPriority()
     {
-        return 50;
+        return 0;
     }
 
     public function supports(\SplFileInfo $file, ConfigInterface $config)
@@ -53,11 +44,11 @@ class IndentationFixer implements FixerInterface
 
     public function getName()
     {
-        return 'indentation';
+        return 'short_echo_tag';
     }
 
     public function getDescription()
     {
-        return 'Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting.';
+        return 'PHP code must use the long tags with print; it must not use short echo tags (<?= ?>).';
     }
 }

@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\ConfigInterface;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -119,9 +120,9 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
         return 0;
     }
 
-    public function supports(\SplFileInfo $file)
+    public function supports(\SplFileInfo $file, ConfigInterface $config)
     {
-        return 'php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+        return 'php' === $config->getFileType($file);
     }
 
     public function getName()

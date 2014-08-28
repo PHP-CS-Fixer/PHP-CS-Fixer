@@ -51,7 +51,7 @@ interface FixerInterface
      *
      * @return Boolean true if the file is supported by this fixer, false otherwise
      */
-    public function supports(\SplFileInfo $file);
+    public function supports(\SplFileInfo $file, ConfigInterface $config);
 
     /**
      * Returns the name of the fixer.
