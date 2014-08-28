@@ -84,22 +84,6 @@ if ($b) {
     }
 
     /**
-     * @covers Symfony\CS\Fixer\ElseifFixer::getPriority
-     */
-    public function testThatWillBeRunAfterControlSpacesFixer()
-    {
-        $fixer = new Fixer();
-
-        $elseIfFixer = new ElseIfFixer();
-        $controlSpacesFixer = new ControlSpacesFixer();
-
-        $fixer->addFixer($controlSpacesFixer);
-        $fixer->addFixer($elseIfFixer);
-
-        $this->assertSame(array($controlSpacesFixer, $elseIfFixer), $fixer->getFixers());
-    }
-
-    /**
      * @covers Symfony\CS\Fixer\ElseifFixer::supports
      */
     public function testThatOnlyPHPFilesAreSupported()
