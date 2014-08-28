@@ -68,7 +68,7 @@ echo "=====\n\n\n";
                 continue;
             }
 
-            $endBraceIndex = $tokens->findBracesBlockEnd($startBraceIndex);
+            $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startBraceIndex);
 
             $indent = $this->detectIndent($tokens, $index);
 
@@ -214,7 +214,7 @@ echo "=====\n\n\n";
         }
 
         if ('{' === $nextToken->content) {
-            return $tokens->findBracesBlockEnd($nextIndex);
+            return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextIndex);
         }
 
         if ($nextToken->isGivenKind(self::$structures)) {
@@ -251,36 +251,15 @@ echo "=====\n\n\n";
 
     private function findParenthesisEnd(Tokens $tokens, $structureTokenIndex)
     {
-        $nextToken = $tokens->getNextNonWhitespace($structureTokenIndex);
+        $nextIndex = null;
+        $nextToken = $tokens->getNextNonWhitespace($structureTokenIndex, array(), $nextIndex);
 
         // return if next token is not opening parenthesis
         if ('(' !== $nextToken->content) {
             return $structureTokenIndex;
         }
 
-        $parenthesisLevel = 0;
-        $index = $structureTokenIndex;
-
-        while (true) {
-            $token = $tokens[++$index];
-
-            if ('(' === $token->content) {
-                ++$parenthesisLevel;
-                continue;
-            }
-
-            if (')' === $token->content) {
-                --$parenthesisLevel;
-
-                if (0 === $parenthesisLevel) {
-                    break;
-                }
-
-                continue;
-            }
-        }
-
-        return $index;
+        return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
     }
 
     public function getLevel()
