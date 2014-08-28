@@ -27,7 +27,8 @@ class StructureBracesFixerTest extends \PHPUnit_Framework_TestCase
         $file = $this->getTestFile();
 
         $this->assertSame($expected, $fixer->fix($file, $input));
-        //$this->assertSame($expected, $fixer->fix($file, $expected));
+        // TODO: enable double test!
+        // $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
     public function provideCases()
