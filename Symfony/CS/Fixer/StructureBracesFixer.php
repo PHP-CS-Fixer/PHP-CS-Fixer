@@ -142,6 +142,7 @@ echo "=====\n\n\n";
         if ($token->isWhitespace()) {
             $removeLastCommentLine($tokens[$index - 1], $indexOffset);
             $token->content = $whitespace;
+
             return;
         }
 
@@ -198,7 +199,6 @@ echo "=====\n\n\n";
         }
 
         $explodedContent = explode("\n", $prevToken->content);
-
 
         // proper decect indent for code: `    } else {`
         if (1 === count($explodedContent)) {
