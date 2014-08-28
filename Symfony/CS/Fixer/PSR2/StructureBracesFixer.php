@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer;
+namespace Symfony\CS\Fixer\PSR2;
 
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Token;

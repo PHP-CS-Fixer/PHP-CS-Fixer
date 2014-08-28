@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer;
+namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Fixer\StructureBracesFixer as Fixer;
+use Symfony\CS\Fixer\PSR2\StructureBracesFixer as Fixer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
