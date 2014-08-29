@@ -13,120 +13,179 @@ namespace Symfony\CS\Tests\Fixer\All;
 
 use Symfony\CS\Fixer\All\ReturnStatementsFixer as Fixer;
 
+/**
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ */
 class ReturnStatementsFixerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @dataProvider testFixProvider
+     * @dataProvider provideCases
      */
-    public function testFix($return, $returnFixed)
+    public function testFix($expected, $input)
     {
         $fixer = new Fixer();
 
-        $this->assertSame($returnFixed, $fixer->fix($this->getTestFile(), $return));
-        $this->assertSame($returnFixed, $fixer->fix($this->getTestFile(), $returnFixed));
+        $this->assertSame($expected, $fixer->fix($this->getTestFile(), $input));
+        $this->assertSame($expected, $fixer->fix($this->getTestFile(), $expected));
     }
 
-    public function testFixProvider()
+    public function provideCases()
     {
-        $return1 = <<<TEST
-    \$foo = \$bar;
-    return \$foo;
-TEST;
-        $returnFixed1 = <<<TEST
-    \$foo = \$bar;
-
-    return \$foo;
-TEST;
-        $return2 = <<<TEST
-    throw new Exception("MyClass::myMethod(\$param1, \$param2)
-            returned: \$status,
-            p3=\$p3, p4=\$p4,
-            p5=\$p5, style=\$style", ERROR_CODE);
-TEST;
-        $returnFixed2 = <<<TEST
-    throw new Exception("MyClass::myMethod(\$param1, \$param2)
-            returned: \$status,
-            p3=\$p3, p4=\$p4,
-            p5=\$p5, style=\$style", ERROR_CODE);
-TEST;
-
-        $return3 = <<<TEST
-    \$foo = \$bar;
-    return;
-TEST;
-        $returnFixed3 = <<<TEST
-    \$foo = \$bar;
-
-    return;
-TEST;
-
-        $return4 = <<<TEST
-    if (\$foo === \$bar)
-        return;
-TEST;
-        $returnFixed4 = <<<TEST
-    if (\$foo === \$bar)
-        return;
-TEST;
-
-        $return5 = <<<TEST
-    else
-        return;
-TEST;
-        $returnFixed5 = <<<TEST
-    else
-        return;
-TEST;
-
-        $return6 = <<<TEST
-    elseif (\$foo === \$bar)
-        return;
-TEST;
-        $returnFixed6 = <<<TEST
-    elseif (\$foo === \$bar)
-        return;
-TEST;
-
-        $return7 = <<<TEST
-    if (\$foo === \$bar)
-
-
-
-
-
-        return;
-TEST;
-        $returnFixed7 = <<<TEST
-    if (\$foo === \$bar)
-        return;
-TEST;
-
-        $return8 = <<<TEST
-    \$foo = \$bar;
-
-
-
-
-
-
-
-    return \$foo;
-TEST;
-        $returnFixed8 = <<<TEST
-    \$foo = \$bar;
-
-    return \$foo;
-TEST;
-
         return array(
-            array($return1, $returnFixed1),
-            array($return2, $returnFixed2),
-            array($return3, $returnFixed3),
-            array($return4, $returnFixed4),
-            array($return5, $returnFixed5),
-            array($return6, $returnFixed6),
-            array($return7, $returnFixed7),
-            array($return8, $returnFixed8),
+            array(
+                '
+$a = $a;
+return $a;',
+                '
+$a = $a;
+return $a;',
+            ),
+            array(
+                '<?php
+$a = $a;
+
+return $a;',
+                '<?php
+$a = $a; return $a;',
+            ),
+            array(
+                '<?php
+$b = $b;
+
+return $b;',
+                '<?php
+$b = $b;return $b;',
+            ),
+            array(
+                '<?php
+$c = $c;
+
+return $c;',
+                '<?php
+$c = $c;
+return $c;',
+            ),
+            array(
+                '<?php
+    $d = $d;
+
+    return $d;',
+                '<?php
+    $d = $d;
+    return $d;',
+            ),
+            array(
+                '<?php
+    if (true) {
+        return 1;
+    }',
+                '<?php
+    if (true) {
+        return 1;
+    }',
+            ),
+            array(
+                '<?php
+    if (true)
+        return 1;
+    ',
+                '<?php
+    if (true)
+        return 1;
+    ',
+            ),
+            array(
+                '<?php
+    if (true) {
+        return 1;
+    } else {
+        return 2;
+    }',
+                '<?php
+    if (true) {
+        return 1;
+    } else {
+        return 2;
+    }',
+            ),
+            array(
+                '<?php
+    if (true)
+        return 1;
+    else
+        return 2;
+    ',
+                '<?php
+    if (true)
+        return 1;
+    else
+        return 2;
+    ',
+            ),
+            array(
+                '<?php
+    if (true) {
+        return 1;
+    } elseif (false) {
+        return 2;
+    }',
+                '<?php
+    if (true) {
+        return 1;
+    } elseif (false) {
+        return 2;
+    }',
+            ),
+            array(
+                '<?php
+    if (true)
+        return 1;
+    elseif (false)
+        return 2;
+    ',
+                '<?php
+    if (true)
+        return 1;
+    elseif (false)
+        return 2;
+    ',
+            ),
+            array(
+                '<?php
+    throw new Exception("return true;");',
+                '<?php
+    throw new Exception("return true;");',
+            ),
+            array(
+                '<?php
+    function foo()
+    {
+        // comment
+        return "foo";
+    }',
+                '<?php
+    function foo()
+    {
+        // comment
+        return "foo";
+    }',
+            ),
+            array(
+                '<?php
+    function foo()
+    {
+        // comment
+
+        return "bar";
+    }',
+                '<?php
+    function foo()
+    {
+        // comment
+
+        return "bar";
+    }',
+            ),
         );
     }
 

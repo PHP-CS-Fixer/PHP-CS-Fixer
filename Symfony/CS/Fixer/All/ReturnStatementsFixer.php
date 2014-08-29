@@ -12,29 +12,51 @@
 namespace Symfony\CS\Fixer\All;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Token;
+use Symfony\CS\Tokens;
 
 /**
- * @author Fabien Potencier <fabien@symfony.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class ReturnStatementsFixer implements FixerInterface
 {
     public function fix(\SplFileInfo $file, $content)
     {
-        // [Structure] Add a blank line before return statements
-        return preg_replace_callback('/(^.*$)\n+(^ +return\b)/m', function ($match) {
-            // don't add it if the previous line is ...
-            if (
-                preg_match('/\{$/m',                       $match[1]) || // ... ending with an opening brace
-                preg_match('/\:$/m',                       $match[1]) || // ... ending with a colon (e.g. a case statement)
-                preg_match('%^ *//%m',                     $match[1]) || // ... an inline comment
-                preg_match('/^$/m',                        $match[1]) || // ... already blank
-                preg_match('/^(?!.*\{) *(if .+|else.*)/m', $match[1])    // ... if/else/else if/elseif without an opening brace
-            ) {
-                return $match[1]."\n".$match[2];
+        $tokens = Tokens::fromCode($content);
+
+        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+            $token = $tokens[$index];
+
+            if (!$token->isGivenKind(T_RETURN)) {
+                continue;
             }
 
-            return $match[1]."\n\n".$match[2];
-        }, $content);
+            $prevNonWhitespaceToken = $tokens->getPrevNonWhitespace($index);
+
+            if (!in_array($prevNonWhitespaceToken->content, array(';', '}'), true)) {
+                continue;
+            }
+
+            $prevToken = $tokens[$index - 1];
+
+            if ($prevToken->isWhitespace()) {
+                $parts = explode("\n", $prevToken->content);
+                $countParts = count($parts);
+
+                if (1 === $countParts) {
+                    $prevToken->content = rtrim($prevToken->content, " \t")."\n\n";
+                } elseif (count($parts) <= 2) {
+                    $prevToken->content = "\n".$prevToken->content;
+                }
+            } else {
+                $tokens->insertAt($index, new Token(array(T_WHITESPACE, "\n\n")));
+
+                ++$index;
+                ++$limit;
+            }
+        }
+
+        return $tokens->generateCode();
     }
 
     public function getLevel()
@@ -49,7 +71,7 @@ class ReturnStatementsFixer implements FixerInterface
 
     public function supports(\SplFileInfo $file)
     {
-        return 'php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+        return true;
     }
 
     public function getName()
