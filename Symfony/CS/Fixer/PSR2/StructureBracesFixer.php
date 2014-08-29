@@ -151,7 +151,7 @@ echo "=====\n\n\n";
             // structure without block or with block with braces - nothing to do
             // do not add braces for cases:
             // - structure without block, e.g. while ($iter->next());
-            // - structure with block, e.g. while ($i) {...}, while: ($i) {...} endwhile;
+            // - structure with block, e.g. while ($i) {...}, while ($i) : {...} endwhile;
             if (in_array($tokenAfterParenthesis->content, array(';', '{', ':'), true)) {
                 continue;
             }
@@ -302,6 +302,6 @@ echo "=====\n\n\n";
 
     public function getDescription()
     {
-        return 'The body of each structure MUST be enclosed by braces. Braces should be properly placed.';
+        return 'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Fix indent of body as well.';
     }
 }
