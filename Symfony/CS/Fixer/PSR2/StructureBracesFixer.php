@@ -51,7 +51,7 @@ class StructureBracesFixer implements FixerInterface
                 continue;
             }
 
-/* debug
+            /* debug
 echo "-----\n";
 echo "Content: " . $token->content . " | " . $index . "\n";
 $indent = $this->detectIndent($tokens, $index);
