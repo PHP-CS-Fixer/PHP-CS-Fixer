@@ -70,7 +70,7 @@ EOF;
         $fixer = new ExtraEmptyLinesFixer();
         $file = $this->getTestFile();
 
-        $expected = <<<'EOF'
+        $expected = '
 <?php
 $b = <<<TEXT
 Foo TEXT
@@ -79,9 +79,9 @@ Bar
 
 FooFoo
 TEXT;
-EOF;
+';
 
-        $input = <<<'EOF'
+        $input = '
 <?php
 $b = <<<TEXT
 Foo TEXT
@@ -90,7 +90,7 @@ Bar
 
 FooFoo
 TEXT;
-EOF;
+';
 
         $this->assertSame($expected, $fixer->fix($file, $input));
     }
@@ -100,28 +100,27 @@ EOF;
         $fixer = new ExtraEmptyLinesFixer();
         $file = $this->getTestFile();
 
-        $expected = <<<'EOF'
+        $expected = '
 <?php
-$b = <<<'TEXT'
+$b = <<<\'TEXT\'
 Foo TEXT;
 Bar1}
 
 
 FooFoo
 TEXT;
-EOF;
+';
 
-        $input = <<<'EOF'
+        $input = '
 <?php
-$b = <<<'TEXT'
+$b = <<<\'TEXT\'
 Foo TEXT;
 Bar1}
 
 
 FooFoo
 TEXT;
-EOF;
-
+';
         $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
@@ -130,13 +129,13 @@ EOF;
         $fixer = new ExtraEmptyLinesFixer();
         $file = $this->getTestFile();
 
-        $expected = <<<'EOF'
+        $expected = '
 <?php
-$b = <<<'TEXT'
+$b = <<<\'TEXT\'
 Foo TEXT
 Bar
 
-<<<'TEMPLATE'
+<<<\'TEMPLATE\'
 BarFooBar TEMPLATE
 
 
@@ -145,15 +144,15 @@ TEMPLATE;
 
 FooFoo
 TEXT;
-EOF;
+';
 
-        $input = <<<'EOF'
+        $input = '
 <?php
-$b = <<<'TEXT'
+$b = <<<\'TEXT\'
 Foo TEXT
 Bar
 
-<<<'TEMPLATE'
+<<<\'TEMPLATE\'
 BarFooBar TEMPLATE
 
 
@@ -162,7 +161,7 @@ TEMPLATE;
 
 FooFoo
 TEXT;
-EOF;
+';
 
         $this->assertSame($expected, $fixer->fix($file, $input));
     }
