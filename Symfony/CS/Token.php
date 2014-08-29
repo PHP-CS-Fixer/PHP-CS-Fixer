@@ -273,6 +273,18 @@ class Token
     }
 
     /**
+     * Check if token is one of structure alternative end syntax (T_END...)
+     *
+     * @return bool
+     */
+    public function isStructureAlternativeEnd()
+    {
+        static $commentTokens = array(T_ENDDECLARE, T_ENDFOR, T_ENDFOREACH, T_ENDIF, T_ENDSWITCH, T_ENDWHILE, T_END_HEREDOC);
+
+        return $this->isGivenKind($commentTokens);
+    }
+
+    /**
      * Check if token is a whitespace.
      *
      * @param array  $opts                array of extra options
