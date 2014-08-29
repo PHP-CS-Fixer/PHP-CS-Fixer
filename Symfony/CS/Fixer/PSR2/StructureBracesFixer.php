@@ -135,34 +135,6 @@ echo "=====\n\n\n";
         }
     }
 
-    private function ensureWhitespaceAtIndex(Tokens $tokens, $index, $indexOffset, $whitespace)
-    {
-        $removeLastCommentLine = function ($token, $indexOffset) {
-            // becouse comments tokens are greedy and may consume single \n if we are putting whitespace after it let trim that \n
-            if (1 === $indexOffset && $token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT)) && "\n" === $token->content[strlen($token->content) - 1]) {
-                $token->content = substr($token->content, 0, -1);
-            }
-        };
-
-        $token = $tokens[$index];
-
-        if ($token->isWhitespace()) {
-            $removeLastCommentLine($tokens[$index - 1], $indexOffset);
-            $token->content = $whitespace;
-
-            return;
-        }
-
-        $removeLastCommentLine($token, $indexOffset);
-
-        $tokens->insertAt(
-            $index + $indexOffset,
-            array(
-                new Token(array(T_WHITESPACE, $whitespace)),
-            )
-        );
-    }
-
     private function fixMissingBraces(Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
@@ -217,6 +189,47 @@ echo "=====\n\n\n";
         return end($explodedContent);
     }
 
+    private function ensureWhitespaceAtIndex(Tokens $tokens, $index, $indexOffset, $whitespace)
+    {
+        $removeLastCommentLine = function ($token, $indexOffset) {
+            // becouse comments tokens are greedy and may consume single \n if we are putting whitespace after it let trim that \n
+            if (1 === $indexOffset && $token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT)) && "\n" === $token->content[strlen($token->content) - 1]) {
+                $token->content = substr($token->content, 0, -1);
+            }
+        };
+
+        $token = $tokens[$index];
+
+        if ($token->isWhitespace()) {
+            $removeLastCommentLine($tokens[$index - 1], $indexOffset);
+            $token->content = $whitespace;
+
+            return;
+        }
+
+        $removeLastCommentLine($token, $indexOffset);
+
+        $tokens->insertAt(
+            $index + $indexOffset,
+            array(
+                new Token(array(T_WHITESPACE, $whitespace)),
+            )
+        );
+    }
+
+    private function findParenthesisEnd(Tokens $tokens, $structureTokenIndex)
+    {
+        $nextIndex = null;
+        $nextToken = $tokens->getNextNonWhitespace($structureTokenIndex, array(), $nextIndex);
+
+        // return if next token is not opening parenthesis
+        if ('(' !== $nextToken->content) {
+            return $structureTokenIndex;
+        }
+
+        return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
+    }
+
     private function findStatementEnd(Tokens $tokens, $parenthesisEndIndex)
     {
         $nextIndex = null;
@@ -260,19 +273,6 @@ echo "=====\n\n\n";
         }
 
         return $index;
-    }
-
-    private function findParenthesisEnd(Tokens $tokens, $structureTokenIndex)
-    {
-        $nextIndex = null;
-        $nextToken = $tokens->getNextNonWhitespace($structureTokenIndex, array(), $nextIndex);
-
-        // return if next token is not opening parenthesis
-        if ('(' !== $nextToken->content) {
-            return $structureTokenIndex;
-        }
-
-        return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
     }
 
     public function getLevel()
