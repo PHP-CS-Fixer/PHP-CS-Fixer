@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by stof at 2014-08-29T08:07:10Z
+
+So ``assertCount()`` freezes on HHVM ? This should be reported to PHPUnit
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-29T08:17:28Z
+
+@Nyholm if you can debug the failing tests on HHVM, it would be great as well
