@@ -36,6 +36,32 @@ class StructureBracesFixerTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 '<?php
+if (true):
+    $foo = 0;
+endif;',
+                '<?php
+if (true):
+    $foo = 0;
+endif;',
+            ),
+array(
+                '<?php
+if (true)  :
+    $foo = 0;
+endif;',
+                '<?php
+if (true)  :
+    $foo = 0;
+endif;',
+            ),
+            array(
+                '<?php
+    if (true) : $foo = 1; elseif;',
+                '<?php
+    if (true) : $foo = 1; elseif;',
+            ),
+            array(
+                '<?php
 if (true) {
     $foo = 1;
 }',

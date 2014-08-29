@@ -63,7 +63,7 @@ echo "=====\n\n\n";
             $startBraceIndex = null;
             $startBraceToken = $tokens->getNextNonWhitespace($parenthesisEndIndex, array(), $startBraceIndex);
 
-            // structure without block - nothing to do, e.g. do { } while (true);
+            // structure without braces block - nothing to do, e.g. do { } while (true);
             if ('{' !== $startBraceToken->content) {
                 continue;
             }
@@ -148,7 +148,10 @@ echo "=====\n\n\n";
             $tokenAfterParenthesis = $tokens->getNextNonWhitespace($parenthesisEndIndex);
 
             // structure without block or with block with braces - nothing to do
-            if (in_array($tokenAfterParenthesis->content, array(';', '{'), true)) {
+            // do not add braces for cases:
+            // - structure without block, e.g. while ($iter->next());
+            // - structure with block, e.g. while ($i) {...}, while: ($i) {...} endwhile;
+            if (in_array($tokenAfterParenthesis->content, array(';', '{', ':'), true)) {
                 continue;
             }
 
