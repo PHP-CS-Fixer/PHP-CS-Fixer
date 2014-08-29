@@ -89,7 +89,9 @@ echo "=====\n\n\n";
                 }
 
                 if (1 === $nestLevel && in_array($nestToken->content, array(';', '}'), true)) {
-                    if ($tokens->getNextNonWhitespace($nestIndex)->isGivenKind(array(T_ELSE, T_ELSEIF))) {
+                    $nextNonWhitespaceNestToken = $tokens->getNextNonWhitespace($nestIndex);
+
+                    if ($nextNonWhitespaceNestToken->isGivenKind(array(T_ELSE, T_ELSEIF))) {
                         $whitespace = ' ';
                     } else {
                         $nextToken = $tokens[$nestIndex + 1];
