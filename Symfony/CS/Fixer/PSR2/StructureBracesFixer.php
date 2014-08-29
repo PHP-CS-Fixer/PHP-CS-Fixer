@@ -21,6 +21,7 @@ use Symfony\CS\Tokens;
 class StructureBracesFixer implements FixerInterface
 {
     static private $structures = array(
+        T_DECLARE,
         T_DO,
         T_ELSE,
         T_ELSEIF,
