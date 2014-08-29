@@ -45,6 +45,6 @@ class WhitespacyLinesFixer implements FixerInterface
 
     public function getDescription()
     {
-        return 'Remove trailing whitespace at the end of lines.';
+        return 'Remove trailing whitespace at the end of blank lines.';
     }
 }

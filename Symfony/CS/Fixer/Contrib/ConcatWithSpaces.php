@@ -48,7 +48,7 @@ class ConcatWithSpaces implements FixerInterface
 
     public function getPriority()
     {
-        // should be run after the ConcatWithSpaces
+        // should be run after the ConcatWithoutSpaces
         return -10;
     }
 
