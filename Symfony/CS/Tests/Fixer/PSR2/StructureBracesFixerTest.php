@@ -283,6 +283,28 @@ foreach ($numbers as $num) {
     $b = "b";
 }',
             ),
+            array(
+                '<?php
+if (1) {
+    if (2) {
+        $foo = 2;
+
+        if (3) {
+            $foo = 3;
+        }
+    }
+}',
+                '<?php
+if (1) {
+    if (2) {
+        $foo = 2;
+
+        if (3) {
+            $foo = 3;
+        }
+    }
+}',
+            ),
         );
     }
 
