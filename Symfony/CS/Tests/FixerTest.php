@@ -41,7 +41,8 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             $fxs[] = $fx;
         }
 
-        $this->assertSame(array($fxs[2], $fxs[0], $fxs[3], $fxs[1]), $fixer->getFixers());
+        // There are no rules that forces $fxs[1] to be prioritized before $fxs[3]. We should not test against that
+        $this->assertSame(array($fxs[2], $fxs[0]), array_slice($fixer->getFixers(), 0, 2));
     }
 
     /**
