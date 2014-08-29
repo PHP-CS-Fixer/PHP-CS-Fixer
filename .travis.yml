@@ -1,12 +1,5 @@
 language: php
 
-install:
-  - composer install
-
-script:
-  - phpunit
-  - php php-cs-fixer --dry-run -v fix
-
 php:
   - 5.3
   - 5.4
@@ -14,7 +7,9 @@ php:
   - 5.6
   - hhvm
 
-matrix:
-  allow_failures:
-    - php: hhvm
-  fast_finish: true
+install:
+  - travis_retry composer install --no-interaction --prefer-source
+
+script:
+  - phpunit --verbose
+  - php php-cs-fixer --dry-run -v fix
