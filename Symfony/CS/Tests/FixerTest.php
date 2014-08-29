@@ -82,7 +82,8 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $fixer->addFixer($f1);
         $fixer->addFixer($f2);
 
-        $this->assertSame(array($f2, $f1), $fixer->getFixers());
+        $this->assertTrue(in_array($f1, $fixer->getFixers()));
+        $this->assertTrue(in_array($f2, $fixer->getFixers()));
     }
 
     /**
