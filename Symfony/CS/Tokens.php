@@ -595,10 +595,7 @@ class Tokens extends \SplFixedArray
         while (true) {
             $index += $direction;
 
-            /*
-             * Using $index < 0 to be compatible with HHVM 3.2.0
-             */
-            if (!$this->offsetExists($index) || $index < 0) {
+            if (!$this->offsetExists($index)) {
                 return null;
             }
 
@@ -731,10 +728,7 @@ class Tokens extends \SplFixedArray
 
         $this->setSize($oldSize + $itemsCnt);
 
-        /*
-         * Make sure that $i - $itemsCnt >= 0 to be compatible with HHVM 3.2.0
-         */
-        for ($i = $oldSize + $itemsCnt - 1; $i >= $key && $i - $itemsCnt >= 0; --$i) {
+        for ($i = $oldSize + $itemsCnt - 1; $i >= $key; --$i) {
             $this[$i] = isset($this[$i - $itemsCnt]) ? $this[$i - $itemsCnt] : new Token('');
         }
 
@@ -767,6 +761,19 @@ class Tokens extends \SplFixedArray
         if (isset($this[$index + 1]) && $this[$index + 1]->isWhitespace($opts)) {
             $this[$index + 1]->clear();
         }
+    }
+
+    /**
+     * If $index is below zero, we know that it does not exist.
+     * This was added to be compatible with HHVM 3.2.0
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function offsetExists($index)
+    {
+        return $index >= 0 && parent::offsetExists($index);
     }
 
     /**
