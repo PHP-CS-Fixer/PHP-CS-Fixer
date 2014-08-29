@@ -80,7 +80,7 @@ echo "=====\n\n\n";
             $prevToken = $tokens->getPrevTokenOfKind($endBraceIndex - 1, array(';', '}'), $lastCommaIndex);
 
             $nestLevel = 1;
-            for ($nestIndex = $lastCommaIndex - 1; $nestIndex >= $startBraceIndex; --$nestIndex) {
+            for ($nestIndex = $lastCommaIndex; $nestIndex >= $startBraceIndex; --$nestIndex) {
                 $nestToken = $tokens[$nestIndex];
 
                 if (')' === $nestToken->content) {
@@ -105,7 +105,11 @@ echo "=====\n\n\n";
                             }
                         }
 
-                        $whitespace = $nextWhitespace."\n".$indent.'    ';
+                        $whitespace = $nextWhitespace."\n".$indent;
+
+                        if ('}' !== $nextNonWhitespaceNestToken->content) {
+                            $whitespace .= '    ';
+                        }
                     }
 
                     $this->ensureWhitespaceAtIndex($tokens, $nestIndex + 1, 0, $whitespace);
