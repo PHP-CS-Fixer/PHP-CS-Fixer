@@ -612,6 +612,38 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Get closest sibling token not of given kind.
+     *
+     * @param  int      $index       token index
+     * @param  int      $direction   direction for looking, +1 or -1
+     * @param  array    $tokens      possible tokens
+     * @param  int|null &$foundIndex index of founded token, if any
+     * @return Token    token
+     */
+    public function getTokenNotOfKindSibling($index, $direction, array $tokens = array(), &$foundIndex = null)
+    {
+        while (true) {
+            $index += $direction;
+
+            if (!$this->offsetExists($index)) {
+                return null;
+            }
+
+            $token = $this[$index];
+
+            foreach ($tokens as $tokenKind) {
+                if (static::compare($token->getPrototype(), $tokenKind)) {
+                    continue 2;
+                }
+            }
+
+            $foundIndex = $index;
+
+            return $token;
+        }
+    }
+
+    /**
      * Grab attributes before method token at gixen index.
      * It's a shorthand for grabAttribsBeforeToken method.
      *
