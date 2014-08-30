@@ -12,9 +12,12 @@
 namespace Symfony\CS\Fixer\All;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Tokens;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author Jordi Boggiano <j.boggiano@seld.be>
+ * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
 class PhpdocParamsAlignmentFixer implements FixerInterface
 {
@@ -29,18 +32,65 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
         $returnThrowsTag = '(?P<tag2>return|throws)\s+(?P<hint2>[^\s]+?)';
         // optional <desc>
         $desc = '(?:\s+(?P<desc>.*)|\s*)';
+
         $this->regex = '/^ {5}\* @(?:'.$paramTag.'|'.$returnThrowsTag.')'.$desc.'$/';
         $this->regexCommentLine = '/^ {5}\*(?:\s+(?P<desc>.+))$/';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
-        $lines = explode("\n", $content);
+        $tokens = Tokens::fromCode($content);
+
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $tokens[$index]->content = $this->fixDocBlock($token->content);
+        }
+
+        return $tokens->generateCode();
+    }
+
+    public function getLevel()
+    {
+        return FixerInterface::ALL_LEVEL;
+    }
+
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    public function supports(\SplFileInfo $file)
+    {
+        return true;
+    }
+
+    public function getName()
+    {
+        return 'phpdoc_params';
+    }
+
+    public function getDescription()
+    {
+        return 'All items of the @param phpdoc tags must be aligned vertically.';
+    }
+
+    private function fixDocBlock($content)
+    {
+        $lines = explode("\n", str_replace(array("\r\n", "\r"), "\n", $content));
+
         for ($i = 0, $l = count($lines); $i < $l; $i++) {
             $items = array();
+
             if ($matches = $this->getMatches($lines[$i])) {
                 $current = $i;
                 $items[] = $matches;
+
                 while ($matches = $this->getMatches($lines[++$i], true)) {
                     $items[] = $matches;
                 }
@@ -49,6 +99,7 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
                 $tagMax = 0;
                 $hintMax = 0;
                 $varMax = 0;
+
                 foreach ($items as $item) {
                     if (null === $item['tag']) {
                         continue;
@@ -107,31 +158,6 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
         }
 
         return implode("\n", $lines);
-    }
-
-    public function getLevel()
-    {
-        return FixerInterface::ALL_LEVEL;
-    }
-
-    public function getPriority()
-    {
-        return 0;
-    }
-
-    public function supports(\SplFileInfo $file)
-    {
-        return 'php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-    }
-
-    public function getName()
-    {
-        return 'phpdoc_params';
-    }
-
-    public function getDescription()
-    {
-        return 'All items of the @param phpdoc tags must be aligned vertically.';
     }
 
     private function getMatches($line, $matchCommentOnly = false)
