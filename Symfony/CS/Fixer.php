@@ -21,7 +21,7 @@ use SebastianBergmann\Diff\Differ;
  */
 class Fixer
 {
-    const VERSION = '0.5-DEV';
+    const VERSION = '1.0-DEV';
 
     protected $fixers = array();
     protected $configs = array();
