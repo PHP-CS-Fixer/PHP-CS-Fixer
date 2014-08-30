@@ -18,12 +18,15 @@
         "sebastian/diff": "1.1.*"
     },
     "autoload": {
-        "psr-0": { "Symfony\\CS": "." }
+        "psr-0": { "Symfony\\CS": "src/" }
+    },
+    "autoload-dev": {
+        "psr-0": { "Symfony\\CS\\Tests": "tests/" }
     },
     "bin": ["php-cs-fixer"],
     "extra": {
         "branch-alias": {
-            "dev-master": "0.5.x-dev"
+            "dev-master": "0.6.x-dev"
         }
     }
 }

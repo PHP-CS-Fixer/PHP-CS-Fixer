@@ -19,7 +19,7 @@ class Psr0FixerTest extends \PHPUnit_Framework_TestCase
     public function testFixCase()
     {
         $fixer = new Psr0Fixer();
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../../../../../src/Symfony/CS/Fixer/PSR0/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 namespace Symfony\CS\Fixer\PSR0;
@@ -45,7 +45,7 @@ EOF;
     public function testFixClassName()
     {
         $fixer = new Psr0Fixer();
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../../../../../src/Symfony/CS/Fixer/PSR0/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 namespace Symfony\CS\Fixer\PSR0;
@@ -64,7 +64,7 @@ EOF;
     public function testFixAbstractClassName()
     {
         $fixer = new Psr0Fixer();
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../../../../../src/Symfony/CS/Fixer/PSR0/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 namespace Symfony\CS\Fixer\PSR0;
@@ -83,7 +83,7 @@ EOF;
     public function testFixFinalClassName()
     {
         $fixer = new Psr0Fixer();
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../../../../../src/Symfony/CS/Fixer/PSR0/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 namespace Symfony\CS\Fixer\PSR0;
@@ -106,7 +106,7 @@ EOF;
         $config->setDir(__DIR__.'/../../../');
         $fixer->setConfig($config);
 
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../../../../../src/Symfony/CS/Fixer/PSR0/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 namespace Foo\Bar\Baz\Fixer\PSR0;
@@ -119,7 +119,7 @@ EOF;
 
         $this->assertSame($expected, $fixer->fix($file, $input));
 
-        $config->setDir(__DIR__.'/../../../Fixer/PSR0');
+        $config->setDir(__DIR__.'/../../../../../../src/Symfony/CS/Fixer/PSR0');
         $expected = <<<'EOF'
 namespace Foo\Bar\Baz;
 class Psr0Fixer {}
@@ -135,7 +135,7 @@ EOF;
     public function testFixLeadingSpaceNamespace()
     {
         $fixer = new Psr0Fixer();
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../../../../../src/Symfony/CS/Fixer/PSR0/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 namespace LeadingSpace;

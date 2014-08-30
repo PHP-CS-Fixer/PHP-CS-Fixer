@@ -12,7 +12,7 @@
         {
             "name": ["*.php"],
             "exclude": ["Tests", "tests"],
-            "in": ["vendor", "Symfony"]
+            "in": ["vendor", "src"]
         }
     ],
     "git-commit": "git-commit",
