@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer;
+namespace Symfony\CS\Fixer\All;
 
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Token;
