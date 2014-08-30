@@ -1,0 +1,94 @@
+---------------------------------------------------------------------------
+
+by sstok at 2014-08-26T13:52:20Z
+
+Rewriting the logic, much cleaner now (no more crazy recursion).
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-26T16:20:08Z
+
+Indeed, looks cleaner now, good job !
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-26T18:38:29Z
+
+:+1:
+could you squash commits @sstok ?
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-26T18:48:58Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-26T18:49:37Z
+
+@keradus you can do it automatically when merging with the GH tool
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-26T18:50:29Z
+
+@stof I see, don't know that tool :(
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-08-26T18:52:07Z
+
+@keradus maybe you can ask access or if that is not possible feel free to use Gush which is open source. we can try implementing it there.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-26T18:57:43Z
+
+@cordoval
+If it one presented by Fabien at Warsow year ago then yes, I asked for it. Let give Fabien some time, he just come back and I'm sure he has tons of mails ;)
+I already take a quick look at Gush (find out about it reading it's footer on some PR), but so little time to start knowing it
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-08-26T19:00:06Z
+
+@keradus gush is super simple because is a symfony console app, i bet is very similar to gh since Gush got inspiration from it. However Gush teamed up with bldr-io which is another tool for workflows. So you can find gush bldr block for instance. But yeah, whichever does the job. I know @sstok uses Gush :blush:
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-26T19:06:09Z
+
+@keradus I thought you were using it when merging, given that the commit messages are looking similar to @fabpot's ones, but this is indeed not true for the long description
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-26T19:18:49Z
+
+@stof just imitate the commitlog to preserve changelog form, no notes are made etc. That's why I merge only single-commit PR.
+
+And we are so far from the fixer itself :D
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-08-27T09:22:01Z
+
+squashed.
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-28T16:49:36Z
+
+@keradus I think this one can be merged
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-08-29T09:19:54Z
+
+Ready for merging :shipit:
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-08-30T08:56:06Z
+
+@keradus @fabpot ping
