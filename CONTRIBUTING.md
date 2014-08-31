@@ -15,9 +15,7 @@
 You can do some things to increase the chance that your pull request is accepted the first time:
 
  * Submit one pull request per fix or feature.
- * Categorize your PR - prefix it with `bug`, `feature` or `minor`.
  * If your changes are not up to date - rebase your branch on master.
- * Let single PR contains single commit, if not squash them.
  * Follow the conventions used in the project.
  * Remember about tests and documentation.
  * Don't bump version.
