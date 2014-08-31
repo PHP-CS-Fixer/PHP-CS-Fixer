@@ -1,0 +1,69 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-31T12:40:01Z
+
+PSR5 proposal suggest to change `@var` into `@type` (https://github.com/php-fig/fig-standards/pull/169/files).
+Just mention ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-31T12:45:20Z
+
+Yeh, I'm aware of the PSR proposal, thanks.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-31T12:45:34Z
+
+It is a "proposal" though, it's not accepted.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-31T12:46:20Z
+
+Yes. I even said that in my comment ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-31T12:46:37Z
+
+Sure.
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-31T13:19:47Z
+
+:+1:
+And I'm in favor of keeping ``@var`` for now. It has better IDE support
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-31T13:28:04Z
+
+@stof Yeh, that was my reason. :)
+
+> There was a mixture of these, so I went for @var since it's supported by more ides/text editors.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-31T13:33:56Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-31T14:04:21Z
+
+Is this good to merge then?
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-31T14:06:12Z
+
+@GrahamCampbell the ``+1`` mean that exactly. Just give @keradus the time to merge the different PRs. He cannot do it for all PRs at the same time.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-31T14:07:31Z
+
+Sorry, yeh.
