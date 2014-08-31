@@ -305,7 +305,8 @@ class StructureBracesFixer implements FixerInterface
 
     public function getPriority()
     {
-        return 0;
+        // should be run after the CurlyBracketsNewlineFixer and ElseIfFixer
+        return -25;
     }
 
     public function supports(\SplFileInfo $file)
