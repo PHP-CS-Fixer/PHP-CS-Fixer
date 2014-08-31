@@ -1,0 +1,81 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-23T23:25:00Z
+
+Seems to be ready.
+
+After review commits will be squashed.
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-08-26T11:48:43Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-26T17:25:28Z
+
+Again in WIP status, waiting for #480 (MultipleUse)
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-26T17:41:17Z
+
+@keradus could you rebase this on top of master so that the common which was duplicated in #480 (which has been merged) does not appear in the diff anymore ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-26T18:08:39Z
+
+(Branch rebased on current master)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-26T18:39:37Z
+
+Very well. It seems to be finished. Start squashing
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-26T19:00:34Z
+
+25 commits squashed.
+We made biggest fixer here!
+I remove WIP flag again.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-28T16:07:13Z
+
+Any news on this going through? It looks pretty awesome. :)
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-28T16:20:55Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-28T16:25:35Z
+
+@GrahamCampbell actually it is a big fixer. @stof have done a great review but rush is not needed here. Maybe sb else want to review it as well. Fixer already has so many testcases, maybe I missed sth
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-28T16:45:55Z
+
+Sure.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-28T21:12:36Z
+
+(just rebase to resolve conflicts)
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-30T19:12:55Z
+
+@keradus anything preventing the merge ?
