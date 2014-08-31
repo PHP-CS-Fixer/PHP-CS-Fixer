@@ -126,28 +126,6 @@ EOF;
         $this->makeTest($correctMethod);
     }
 
-    public function testDoWhile()
-    {
-        $doWhile = <<<'EOF'
-
-    do
-    {
-        echo $test;
-    }
-    while ($test = $this->getTest());
-
-EOF;
-        $fixedDoWhile = <<<'EOF'
-
-    do {
-        echo $test;
-    } while ($test = $this->getTest());
-
-EOF;
-
-        $this->makeTest($fixedDoWhile, $doWhile);
-    }
-
     /*
      * @see https://github.com/fabpot/PHP-CS-Fixer/issues/114
      */

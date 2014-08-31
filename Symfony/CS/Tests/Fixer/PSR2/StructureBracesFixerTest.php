@@ -341,6 +341,56 @@ if (1) {
   $ticks = 1;
     }',
             ),
+            array(
+                '<?php
+    if (true) {
+        foo();
+    } elseif (true) {
+        bar();
+    }',
+                '<?php
+    if (true)
+    {
+        foo();
+    } elseif (true)
+    {
+        bar();
+    }',
+            ),
+            array(
+                '<?php
+    while (true) {
+        foo();
+    }',
+                '<?php
+    while (true)
+    {
+        foo();
+    }',
+            ),
+            array(
+                '<?php
+    do {
+        echo $test;
+    } while ($test = $this->getTest());',
+                '<?php
+    do
+    {
+        echo $test;
+    }
+    while ($test = $this->getTest());',
+            ),
+            array(
+                '<?php
+    do {
+        echo $test;
+    } while ($test = $this->getTest());',
+                '<?php
+    do
+    {
+        echo $test;
+    }while ($test = $this->getTest());',
+            ),
         );
     }
 

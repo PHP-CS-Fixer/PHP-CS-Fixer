@@ -35,7 +35,6 @@ class CurlyBracketsNewlineFixer extends AbstractFixer
         $content = $this->anonymousFunctionsFix($content);
         $content = $this->controlStatementsFix($content);
         $content = $this->controlStatementContinuationFix($content);
-        $content = $this->doWhileFix($content);
 
         return $content;
     }
@@ -102,19 +101,5 @@ class CurlyBracketsNewlineFixer extends AbstractFixer
 
         // [Structure] No new line after control statements
         return preg_replace('/}\s*\n\s*('.implode('|', $statements).')/', '} \\1', $content);
-    }
-
-    private function doWhileFix($content)
-    {
-        // [Structure] do...while loops are formatted like if {\n... \n} else {\n
-        return preg_replace('/(do {[\s\S]*)}\s*\n\s*while/', '\\1} while', $content);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'braces';
     }
 }

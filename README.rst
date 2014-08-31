@@ -167,7 +167,7 @@ Choose from the list of available fixers:
             ?> tags or the short-echo <?= ?> tags; it
             must not use the other tag variations.
 
-* **braces** [PSR-2] Opening braces for classes,
+* **curly_brackets_newline** [PSR-2] Opening braces for classes,
             interfaces, traits and methods must go on
             the next line, and closing braces must go
             on the next line after the body. Opening
@@ -206,6 +206,11 @@ Choose from the list of available fixers:
 
 * **php_closing_tag** [PSR-2] The closing ?> tag MUST be omitted
             from files containing only PHP.
+
+* **structure_braces** [PSR-2] The body of each structure MUST be
+            enclosed by braces. Braces should be
+            properly placed. Fix indent of body as
+            well.
 
 * **trailing_spaces** [PSR-2] Remove trailing whitespace at the
             end of non-blank lines.

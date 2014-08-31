@@ -983,4 +983,3 @@ class Tokens extends \SplFixedArray
         }
     }
 }
-
