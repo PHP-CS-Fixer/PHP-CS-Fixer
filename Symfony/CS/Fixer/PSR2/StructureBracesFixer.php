@@ -175,7 +175,6 @@ class StructureBracesFixer implements FixerInterface
             $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
             $tokenAfterParenthesis = $tokens->getNextNonWhitespace($parenthesisEndIndex);
 
-            // structure without block or with block with braces - nothing to do
             // do not add braces for cases:
             // - structure without block, e.g. while ($iter->next());
             // - structure with block, e.g. while ($i) {...}, while ($i) : {...} endwhile;
