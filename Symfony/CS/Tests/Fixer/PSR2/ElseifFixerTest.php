@@ -83,21 +83,6 @@ if ($b) {
         $this->assertNotEmpty($fixer->getDescription());
     }
 
-    /**
-     * @covers Symfony\CS\Fixer\ElseifFixer::supports
-     */
-    public function testThatOnlyPHPFilesAreSupported()
-    {
-        $phpFile = $this->getTestFile();
-
-        $otherFile = $this->getTestFile(__DIR__.'/../../../../README.rst');
-
-        $fixer = new ElseIfFixer();
-
-        $this->assertTrue($fixer->supports($phpFile));
-        $this->assertFalse($fixer->supports($otherFile));
-    }
-
     public function testThatAreDefinedInPSR2()
     {
         $fixer = new ElseIfFixer();

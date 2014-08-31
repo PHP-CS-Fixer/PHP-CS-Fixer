@@ -48,7 +48,7 @@ class EncodingFixer implements FixerInterface
 
     public function supports(\SplFileInfo $file)
     {
-        return 'php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+        return true;
     }
 
     public function getName()
