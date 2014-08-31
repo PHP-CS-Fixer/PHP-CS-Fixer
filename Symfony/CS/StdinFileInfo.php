@@ -27,10 +27,7 @@ class StdinFileInfo extends \SplFileInfo
 
     public function getRealpath()
     {
-        /**
-         * So file_get_contents & friends will work.
-         */
-
+        // So file_get_contents & friends will work.
         return 'php://stdin';
     }
 

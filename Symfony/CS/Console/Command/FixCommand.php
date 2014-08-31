@@ -31,15 +31,16 @@ class FixCommand extends Command
 {
     /**
      * Stopwatch instance.
-     * @type \Symfony\Component\Stopwatch\Stopwatch
+     *
+     * @var \Symfony\Component\Stopwatch\Stopwatch
      */
     protected $stopwatch;
     protected $fixer;
     protected $defaultConfig;
 
     /**
-     * @param Fixer           $fixer
-     * @param ConfigInterface $config
+     * @param Fixer|null           $fixer
+     * @param ConfigInterface|null $config
      */
     public function __construct(Fixer $fixer = null, ConfigInterface $config = null)
     {

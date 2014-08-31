@@ -17,7 +17,7 @@ namespace Symfony\CS;
 interface ConfigAwareInterface
 {
     /**
-     * Sets the active config on the fixer
+     * Sets the active config on the fixer.
      *
      * @param ConfigInterface $config
      */

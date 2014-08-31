@@ -21,25 +21,29 @@ class Token
 {
     /**
      * Content of token prototype.
-     * @type string
+     *
+     * @var string
      */
     public $content;
 
     /**
      * ID of token prototype, if available.
-     * @type int|null
+     *
+     * @var int|null
      */
     public $id;
 
     /**
      * If token prototype is an array.
-     * @type bool
+     *
+     * @var bool
      */
     private $isArray;
 
     /**
      * Line of token prototype occurrence, if available.
-     * @type int|null
+     *
+     * @var int|null
      */
     public $line;
 
@@ -63,6 +67,7 @@ class Token
 
     /**
      * Clear token at given index.
+     *
      * Clearing means override token by empty string.
      */
     public function clear()
@@ -202,7 +207,8 @@ class Token
     /**
      * Check if token is one of given kind.
      *
-     * @param  int|array $possibleKind kind or array of kinds
+     * @param int|array $possibleKind kind or array of kinds
+     *
      * @return bool
      */
     public function isGivenKind($possibleKind)
@@ -237,8 +243,9 @@ class Token
     /**
      * Check if token is a whitespace.
      *
-     * @param  array  $opts                array of extra options
-     * @param  string $opts['whitespaces'] string determining whitespaces chars, default is " \t\n"
+     * @param array  $opts                array of extra options
+     * @param string $opts['whitespaces'] string determining whitespaces chars, default is " \t\n"
+     *
      * @return bool
      */
     public function isWhitespace(array $opts = array())

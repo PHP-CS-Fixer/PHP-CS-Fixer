@@ -29,7 +29,8 @@ class Fixer
 
     /**
      * Stopwatch instance.
-     * @type \Symfony\Component\Stopwatch\Stopwatch|null
+     *
+     * @var \Symfony\Component\Stopwatch\Stopwatch|null
      */
     protected $stopwatch;
 
@@ -100,6 +101,8 @@ class Fixer
      * @param ConfigInterface $config A ConfigInterface instance
      * @param Boolean         $dryRun Whether to simulate the changes or not
      * @param Boolean         $diff   Whether to provide diff
+     *
+     * @return array
      */
     public function fix(ConfigInterface $config, $dryRun = false, $diff = false)
     {
