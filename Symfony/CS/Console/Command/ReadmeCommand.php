@@ -40,6 +40,9 @@ class ReadmeCommand extends Command
 PHP Coding Standards Fixer
 ==========================
 
+.. image:: https://travis-ci.org/fabpot/PHP-CS-Fixer.svg?branch=master
+    :target: https://travis-ci.org/fabpot/PHP-CS-Fixer
+
 The PHP Coding Standards Fixer tool fixes *most* issues in your code when you
 want to follow the PHP coding standards as defined in the PSR-1 and PSR-2
 documents.
