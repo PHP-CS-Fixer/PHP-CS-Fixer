@@ -52,14 +52,6 @@ class StructureBracesFixer implements FixerInterface
                 continue;
             }
 
-            /* debug
-echo "-----\n";
-echo "Content: " . $token->content . " | " . $index . "\n";
-$indent = $this->detectIndent($tokens, $index);
-echo "Indent: > " . $indent . "<\n";
-echo "=====\n\n\n";
-*/
-
             $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
             $startBraceIndex = null;
             $startBraceToken = $tokens->getNextNonWhitespace($parenthesisEndIndex, array(), $startBraceIndex);
