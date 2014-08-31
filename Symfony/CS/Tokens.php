@@ -829,6 +829,29 @@ class Tokens extends \SplFixedArray
         $this->changeCodeHash(crc32($code));
     }
 
+    public function toJSON()
+    {
+        static $optNames = array('JSON_PRETTY_PRINT', 'JSON_NUMERIC_CHECK');
+
+        $output = new \SplFixedArray(count($this));
+
+        foreach ($this as $index => $token) {
+            $output[$index] = $token->toArray();
+        }
+
+        $this->rewind();
+
+        $options = 0;
+
+        foreach ($optNames as $optName) {
+            if (defined($optName)) {
+                $options |= constant($optName);
+            }
+        }
+
+        return json_encode($output, $options);
+    }
+
     /**
      * Clone tokens collection.
      */

@@ -251,4 +251,30 @@ class Token
 
         return '' === trim($this->content, $whitespaces);
     }
+
+    public function toArray()
+    {
+        return array(
+            'id' => $this->id,
+            'name' => $this->getName(),
+            'content' => $this->content,
+            'line' => $this->line,
+            'isArray' => $this->isArray,
+        );
+    }
+
+    public function toJSON()
+    {
+        static $optNames = array('JSON_PRETTY_PRINT', 'JSON_NUMERIC_CHECK');
+
+        $options = 0;
+
+        foreach ($optNames as $optName) {
+            if (defined($optName)) {
+                $options |= constant($optName);
+            }
+        }
+
+        return json_encode($this->toArray(), $options);
+    }
 }
