@@ -55,7 +55,7 @@ class TrailingCommaInMultiLineArrayFixer implements FixerInterface
 
     public function getDescription()
     {
-        return 'PHP multi-line arrays should have a trailing comma';
+        return 'PHP multi-line arrays should have a trailing comma.';
     }
 
     private function fixArray(Tokens $tokens, $index)
