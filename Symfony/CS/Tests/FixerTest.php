@@ -172,7 +172,6 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['multiple_use'], $fixers['unused_use']),
             array($fixers['multiple_use'], $fixers['ordered_use']),
             array($fixers['concat_without_spaces'], $fixers['concat_with_spaces']),
-            array($fixers['braces'], $fixers['structure_braces']),
             array($fixers['elseif'], $fixers['structure_braces']),
         );
     }

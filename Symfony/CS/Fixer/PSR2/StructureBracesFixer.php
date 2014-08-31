@@ -20,27 +20,38 @@ use Symfony\CS\Tokens;
  */
 class StructureBracesFixer implements FixerInterface
 {
-    static private $structures = array(
-        T_DECLARE,
-        T_DO,
-        T_ELSE,
-        T_ELSEIF,
-        T_FOR,
-        T_FOREACH,
-        T_IF,
-        T_WHILE,
-    );
-
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
 
-        $this->fixMissingBraces($tokens);
+        //$this->fixClassyBracesPosition($tokens);
+        $this->fixMissingControlBraces($tokens);
         $tokens->clearEmptyTokens();
         $this->fixIndents($tokens);
         $this->fixDoWhile($tokens);
 
         return $tokens->generateCode();
+    }
+
+    private function fixClassyBracesPosition(Tokens $tokens)
+    {
+        $classyTokens = $this->getClassyTokens();
+
+        for ($index = count($tokens) - 1; 0 <= $index; --$index) {
+            $token = $tokens[$index];
+
+            if (!$token->isGivenKind($classyTokens)) {
+                continue;
+            }
+
+            $indent = $this->detectIndent($tokens, $index);
+            $startBraceIndex = null;
+            $startBraceToken = $tokens->getNextTokenOfKind($index, array('{'), $startBraceIndex);
+            $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startBraceIndex);
+
+            $this->ensureWhitespaceAtIndex($tokens, $endBraceIndex - 1, 1, "\n".$indent);
+            $this->ensureWhitespaceAtIndex($tokens, $startBraceIndex - 1, 1, "\n".$indent);
+        }
     }
 
     private function fixDoWhile(Tokens $tokens)
@@ -70,17 +81,26 @@ class StructureBracesFixer implements FixerInterface
 
     private function fixIndents(Tokens $tokens)
     {
+        $classyTokens = $this->getClassyTokens();
+        $controlTokens = $this->getControlTokens();
+        $classyAndControlTokens = array_merge($classyTokens, $controlTokens);
+
         for ($index = 0, $limit = count($tokens); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
             // if token is not a structure element - continue
-            if (!$token->isGivenKind(self::$structures)) {
+            if (!$token->isGivenKind($classyAndControlTokens)) {
                 continue;
             }
 
-            $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
-            $startBraceIndex = null;
-            $startBraceToken = $tokens->getNextNonWhitespace($parenthesisEndIndex, array(), $startBraceIndex);
+            if ($token->isGivenKind($classyTokens)) {
+                $startBraceIndex = null;
+                $startBraceToken = $tokens->getNextTokenOfKind($index, array('{'), $startBraceIndex);
+            } else {
+                $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
+                $startBraceIndex = null;
+                $startBraceToken = $tokens->getNextNonWhitespace($parenthesisEndIndex, array(), $startBraceIndex);
+            }
 
             // structure without braces block - nothing to do, e.g. do { } while (true);
             if ('{' !== $startBraceToken->content) {
@@ -146,20 +166,31 @@ class StructureBracesFixer implements FixerInterface
             }
 
             // fix indent near opening brace
-            $this->ensureWhitespaceAtIndex($tokens, $startBraceIndex + 1, 0, "\n".$indent.'    ');
-            $this->ensureWhitespaceAtIndex($tokens, $startBraceIndex - 1, 1, ' ');
+            if (isset($tokens[$startBraceIndex + 2]) && '}' === $tokens[$startBraceIndex + 2]->content) {
+                $this->ensureWhitespaceAtIndex($tokens, $startBraceIndex + 1, 0, "\n".$indent);
+            } else {
+                $this->ensureWhitespaceAtIndex($tokens, $startBraceIndex + 1, 0, "\n".$indent.'    ');
+            }
+
+            if ($token->isGivenKind($classyTokens)) {
+                $this->ensureWhitespaceAtIndex($tokens, $startBraceIndex - 1, 1, "\n".$indent);
+            } else {
+                $this->ensureWhitespaceAtIndex($tokens, $startBraceIndex - 1, 1, ' ');
+            }
 
             // reset loop due to collection change
             $limit = count($tokens);
         }
     }
 
-    private function fixMissingBraces(Tokens $tokens)
+    private function fixMissingControlBraces(Tokens $tokens)
     {
+        $controlTokens = $this->getControlTokens();
+
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(self::$structures)) {
+            if (!$token->isGivenKind($controlTokens)) {
                 continue;
             }
 
@@ -265,7 +296,7 @@ class StructureBracesFixer implements FixerInterface
             return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextIndex);
         }
 
-        if ($nextToken->isGivenKind(self::$structures)) {
+        if ($nextToken->isGivenKind($this->getControlTokens())) {
             $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $nextIndex);
 
             $endIndex = $this->findStatementEnd($tokens, $parenthesisEndIndex);
@@ -295,6 +326,37 @@ class StructureBracesFixer implements FixerInterface
         }
 
         return $index;
+    }
+
+    private function getClassyTokens()
+    {
+        static $tokens = null;
+
+        if ($tokens === null) {
+            $tokens = array(T_CLASS, T_INTERFACE);
+
+            if (defined('T_TRAIT')) {
+                $tokens[] = T_TRAIT;
+            }
+        }
+
+        return $tokens;
+    }
+
+    private function getControlTokens()
+    {
+        static $tokens = array(
+            T_DECLARE,
+            T_DO,
+            T_ELSE,
+            T_ELSEIF,
+            T_FOR,
+            T_FOREACH,
+            T_IF,
+            T_WHILE,
+        );
+
+        return $tokens;
     }
 
     public function getLevel()

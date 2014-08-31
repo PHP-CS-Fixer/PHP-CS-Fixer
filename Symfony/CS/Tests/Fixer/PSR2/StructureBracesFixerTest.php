@@ -18,10 +18,7 @@ use Symfony\CS\Fixer\PSR2\StructureBracesFixer as Fixer;
  */
 class StructureBracesFixerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @dataProvider provideCases
-     */
-    public function testFix($expected, $input)
+    private function makeTest($expected, $input)
     {
         $fixer = new Fixer();
         $file = $this->getTestFile();
@@ -31,7 +28,15 @@ class StructureBracesFixerTest extends \PHPUnit_Framework_TestCase
         // $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
-    public function provideCases()
+    /**
+     * @dataProvider provideFixMissingBracesAndIndentCases
+     */
+    public function testFixMissingBracesAndIndent($expected, $input)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideFixMissingBracesAndIndentCases()
     {
         return array(
             array(
@@ -390,6 +395,87 @@ if (1) {
     {
         echo $test;
     }while ($test = $this->getTest());',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideFixClassyBracesCases
+     */
+    public function testFixClassyBraces($expected, $input)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideFixClassyBracesCases()
+    {
+        return array(
+            array(
+                '<?php
+                    class FooA
+                    {
+                    }',
+                '<?php
+                    class FooA {}',
+            ),
+            array(
+                '<?php
+                    class FooB
+                    {
+                    }',
+                '<?php
+                    class FooB{}',
+            ),
+            array(
+                '<?php
+                    class FooC
+                    {
+                    }',
+                '<?php
+                    class FooC
+{}',
+            ),
+            array(
+                '<?php
+                    interface FooD
+                    {
+                    }',
+                '<?php
+                    interface FooD {}',
+            ),
+            array(
+                '<?php
+                class TestClass extends BaseTestClass implements TestInterface
+                {
+                    private $foo;
+                }',
+                '<?php
+                class TestClass extends BaseTestClass implements TestInterface { private $foo;}',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideFixClassyBraces54Cases
+     * @requires PHP 5.4
+     * czy to dziala ?
+     */
+    public function testFixClassyBraces54($expected, $input)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideFixClassyBraces54Cases()
+    {
+        return array(
+            array(
+                '<?php
+    trait TFoo
+    {
+        public $a;
+    }',
+                '<?php
+    trait TFoo {public $a;}',
             ),
         );
     }

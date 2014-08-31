@@ -15,54 +15,6 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 class CurlyBracketsNewlineFixerTest extends AbstractFixerTestBase
 {
-    /**
-     * @dataProvider testSimpleTypeDefinitionsProvider
-     */
-    public function testSimpleTypeDefinitions($type)
-    {
-        $this->makeTest("$type TestType\n{", "$type TestType  {");
-        $this->makeTest("$type TestType {}");
-    }
-
-    public function testSimpleTypeDefinitionsProvider()
-    {
-        return array(
-            array('class'),
-            array('interface'),
-            array('trait'),
-        );
-    }
-
-    public function testExtendedClassDefinitions()
-    {
-        $extended = <<<TEST
-class TestClass extends BaseTestClass implements TestInterface {
-TEST;
-        $extendedFixed = <<<TEST
-class TestClass extends BaseTestClass implements TestInterface
-{
-TEST;
-        $this->makeTest($extendedFixed, $extended);
-
-        $extended = <<<TEST
-abstract class TestClass extends BaseTestClass implements TestInterface, TestInterface2 {
-TEST;
-        $extendedFixed = <<<TEST
-abstract class TestClass extends BaseTestClass implements TestInterface, TestInterface2
-{
-TEST;
-        $this->makeTest($extendedFixed, $extended);
-
-        $extended = <<<TEST
-abstract class TestClass extends \\Base\\TestClass implements \\TestInterface {
-TEST;
-        $extendedFixed = <<<TEST
-abstract class TestClass extends \\Base\\TestClass implements \\TestInterface
-{
-TEST;
-        $this->makeTest($extendedFixed, $extended);
-    }
-
     public function testControlStatements()
     {
         $if = "if (\$someTest)\n {";
