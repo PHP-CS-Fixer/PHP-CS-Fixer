@@ -53,6 +53,13 @@ namespace Boo {
     use BarI;
     use BarJ;
     use BarZ;
+
+    Trait Foo {}
+    Trait Bar {}
+
+    class Foo {
+        use Foo, Bar;
+    }
 }
 
 EOF;
@@ -79,6 +86,13 @@ namespace Boo {
       BarH,     BarI,
             BarJ;
     use BarZ;
+
+    Trait Foo {}
+    Trait Bar {}
+
+    class Foo {
+        use Foo, Bar;
+    }
 }
 
 EOF;
@@ -86,6 +100,9 @@ EOF;
         $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
+    /**
+     * @requires PHP 5.4
+     */
     private function getTestFile($filename = __FILE__)
     {
         static $files = array();
