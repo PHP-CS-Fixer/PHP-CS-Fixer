@@ -21,22 +21,26 @@ class PhpdocParamsAlignmentFixerTest extends \PHPUnit_Framework_TestCase
         $file = $this->getTestFile();
 
         $expected = <<<'EOF'
-
+<?php
+    /**
      * @param EngineInterface $templating
      * @param string          $format
      * @param integer         $code       An HTTP response status code
      * @param Boolean         $debug
      * @param mixed           &$reference A parameter passed by reference
+     */
 
 EOF;
 
         $input = <<<'EOF'
-
+<?php
+    /**
      * @param  EngineInterface $templating
      * @param string      $format
      * @param  integer  $code       An HTTP response status code
      * @param    Boolean      $debug
      * @param  mixed    &$reference     A parameter passed by reference
+     */
 
 EOF;
 
@@ -49,7 +53,8 @@ EOF;
         $file = $this->getTestFile();
 
         $expected = <<<'EOF'
-
+<?php
+    /**
      * @param EngineInterface $templating
      * @param string          $format
      * @param integer         $code       An HTTP response status code
@@ -58,11 +63,13 @@ EOF;
      * @param Boolean         $debug      See constants
      *                                    See constants
      * @param mixed           &$reference A parameter passed by reference
+     */
 
 EOF;
 
         $input = <<<'EOF'
-
+<?php
+    /**
      * @param  EngineInterface $templating
      * @param string      $format
      * @param  integer  $code       An HTTP response status code
@@ -71,6 +78,7 @@ EOF;
      * @param    Boolean      $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
+     */
 
 EOF;
 
@@ -83,7 +91,8 @@ EOF;
         $file = $this->getTestFile();
 
         $expected = <<<'EOF'
-
+<?php
+    /**
      * @param EngineInterface $templating
      * @param string          $format
      * @param integer         $code       An HTTP response status code
@@ -97,11 +106,13 @@ EOF;
      *
      * @throws Foo description foo
      *             description foo
+     */
 
 EOF;
 
         $input = <<<'EOF'
-
+<?php
+    /**
      * @param  EngineInterface $templating
      * @param string      $format
      * @param  integer  $code       An HTTP response status code
@@ -115,6 +126,7 @@ EOF;
      *
      * @throws Foo             description foo
      * description foo
+     */
 
 EOF;
 
@@ -127,20 +139,24 @@ EOF;
         $file = $this->getTestFile();
 
         $expected = <<<'EOF'
-
+<?php
+    /**
      * @param  EngineInterface $templating
      * @param  mixed           &$reference A parameter passed by reference
      * @throws Bar             description bar
      * @return Foo             description foo
+     */
 
 EOF;
 
         $input = <<<'EOF'
-
+<?php
+    /**
      * @param EngineInterface       $templating
      * @param  mixed    &$reference     A parameter passed by reference
      * @throws   Bar description bar
      * @return  Foo     description foo
+     */
 
 EOF;
 
@@ -157,20 +173,24 @@ EOF;
         $file = $this->getTestFile();
 
         $expected = <<<'EOF'
-
+<?php
+    /**
      * @param  string $param1
      * @param  bool   $param2 lorem ipsum
      * @param  string $param3 lorem ipsum
      * @return int    lorem ipsum
+     */
 
 EOF;
 
         $input = <<<'EOF'
-
+<?php
+    /**
      * @param   string $param1
      * @param bool   $param2 lorem ipsum
      * @param    string $param3 lorem ipsum
      * @return int lorem ipsum
+     */
 
 EOF;
 
@@ -183,14 +203,18 @@ EOF;
         $file = $this->getTestFile();
 
         $expected = <<<'EOF'
-
+<?php
+    /**
      * @return Foo description foo
+     */
 
 EOF;
 
         $input = <<<'EOF'
-
+<?php
+    /**
      * @return   Foo             description foo
+     */
 
 EOF;
 
@@ -203,14 +227,20 @@ EOF;
         $file = $this->getTestFile();
 
         $expected = <<<'EOF'
+<?php
+    /**
      * @param  Foo   $foo
      * @return $this
+     */
 
 EOF;
 
         $input = <<<'EOF'
+<?php
+    /**
      * @param Foo $foo
      * @return $this
+     */
 
 EOF;
 
@@ -223,14 +253,20 @@ EOF;
         $file = $this->getTestFile();
 
         $expected = <<<'EOF'
+<?php
+    /**
      * @return string
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     */
 
 EOF;
 
         $input = <<<'EOF'
+<?php
+    /**
      * @return string
      *  @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     */
 
 EOF;
 
