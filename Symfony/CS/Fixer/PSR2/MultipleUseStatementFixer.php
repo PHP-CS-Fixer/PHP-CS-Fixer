@@ -26,7 +26,7 @@ class MultipleUseStatementFixer implements FixerInterface
 
         foreach ($uses as $index) {
             $endIndex = null;
-            $endToken = $tokens->getNextTokenOfKind($index, array(';'), $endIndex);
+            $tokens->getNextTokenOfKind($index, array(';'), $endIndex);
             $declarationContent = $tokens->generatePartialCode($index + 1, $endIndex - 1);
 
             $declarationParts = explode(',', $declarationContent);
