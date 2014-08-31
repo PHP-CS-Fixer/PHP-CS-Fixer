@@ -25,7 +25,6 @@ class StructureBracesFixer implements FixerInterface
         $tokens = Tokens::fromCode($content);
 
         $this->fixMissingControlBraces($tokens);
-        $tokens->clearEmptyTokens();
         $this->fixIndents($tokens);
         $this->fixDoWhile($tokens);
 
@@ -189,7 +188,8 @@ class StructureBracesFixer implements FixerInterface
 
             // insert opening brace
             $tokens->removeTrailingWhitespace($parenthesisEndIndex);
-            $tokens->insertAt($parenthesisEndIndex + 1, array(new Token(array(T_WHITESPACE, ' ')), new Token('{'), new Token(array(T_WHITESPACE, ' '))));
+            $tokens->insertAt($parenthesisEndIndex + 1, new Token('{'));
+            $this->ensureWhitespaceAtIndex($tokens, $parenthesisEndIndex + 1, 0, ' ');
         }
     }
 
