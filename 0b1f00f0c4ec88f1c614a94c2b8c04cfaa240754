@@ -1,0 +1,49 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-28T15:24:48Z
+
+Hmmm. This makes it more difficult for people to use the command line version with no configuration. :-1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-28T15:29:19Z
+
+Therefore you have default configuration which find .php, .twig, .xml and .yml files.
+And most rules will not touch .xml files due to tokenizer and not touching T_INLINE_HTML token.
+Some rules will apply, which is quite good - e.g. change UTF8BOM into UTF8
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-28T15:30:58Z
+
+k
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-28T15:57:25Z
+
+Only fixers relying on the Tokens class should do this, as others are not safe when running them on other files
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-28T16:31:02Z
+
+@stof sad but done. Thx.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-28T21:07:49Z
+
+(just rebase on master)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-31T13:43:42Z
+
+Is this good to go?
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-31T13:46:03Z
+
+:+1:
