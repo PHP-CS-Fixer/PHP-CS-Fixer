@@ -400,8 +400,9 @@ if (1) {
                 '<?php
     class ClassName
     {
-        /* comment */
-
+        /**
+         * comment
+         */
         public $foo = null;
     }',
                 '<?php
@@ -411,8 +412,9 @@ if (1) {
 
 
 
-        /* comment */
-
+        /**
+         * comment
+         */
         public $foo = null;
 
 
