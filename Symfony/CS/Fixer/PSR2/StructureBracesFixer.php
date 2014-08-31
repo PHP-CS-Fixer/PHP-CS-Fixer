@@ -24,34 +24,12 @@ class StructureBracesFixer implements FixerInterface
     {
         $tokens = Tokens::fromCode($content);
 
-        //$this->fixClassyBracesPosition($tokens);
         $this->fixMissingControlBraces($tokens);
         $tokens->clearEmptyTokens();
         $this->fixIndents($tokens);
         $this->fixDoWhile($tokens);
 
         return $tokens->generateCode();
-    }
-
-    private function fixClassyBracesPosition(Tokens $tokens)
-    {
-        $classyTokens = $this->getClassyTokens();
-
-        for ($index = count($tokens) - 1; 0 <= $index; --$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind($classyTokens)) {
-                continue;
-            }
-
-            $indent = $this->detectIndent($tokens, $index);
-            $startBraceIndex = null;
-            $startBraceToken = $tokens->getNextTokenOfKind($index, array('{'), $startBraceIndex);
-            $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startBraceIndex);
-
-            $this->ensureWhitespaceAtIndex($tokens, $endBraceIndex - 1, 1, "\n".$indent);
-            $this->ensureWhitespaceAtIndex($tokens, $startBraceIndex - 1, 1, "\n".$indent);
-        }
     }
 
     private function fixDoWhile(Tokens $tokens)
