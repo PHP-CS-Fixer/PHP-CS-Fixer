@@ -396,6 +396,28 @@ if (1) {
         echo $test;
     }while ($test = $this->getTest());',
             ),
+            array(
+                '<?php
+    class ClassName
+    {
+        /* comment */
+
+        public $foo = null;
+    }',
+                '<?php
+    class ClassName
+    {
+
+
+
+
+        /* comment */
+
+        public $foo = null;
+
+
+    }',
+            ),
         );
     }
 

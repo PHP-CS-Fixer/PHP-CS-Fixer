@@ -361,7 +361,7 @@ class StructureBracesFixer implements FixerInterface
 
     public function getLevel()
     {
-        // defined in PSR2 ¶5
+        // defined in PSR2 ¶4.1, ¶5
         return FixerInterface::PSR2_LEVEL;
     }
 
