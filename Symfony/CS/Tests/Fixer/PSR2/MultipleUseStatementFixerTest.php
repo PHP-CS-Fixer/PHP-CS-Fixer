@@ -87,8 +87,8 @@ namespace Boo {
             BarJ;
     use BarZ;
 
-    Trait Foo {}
-    Trait Bar {}
+    trait Foo {}
+    trait Bar {}
 
     class Foo {
         use Foo, Bar;
