@@ -227,7 +227,7 @@ class Fixer
     {
         $selfName = __CLASS__;
 
-        usort($this->fixers, function ($a, $b) use ($selfName) {
+        usort($this->fixers, function (FixerInterface $a, FixerInterface $b) use ($selfName) {
             return $selfName::cmpInt($b->getPriority(), $a->getPriority());
         });
     }

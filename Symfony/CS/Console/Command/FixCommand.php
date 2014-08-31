@@ -462,7 +462,7 @@ EOF
         $fixers = $this->fixer->getFixers();
 
         // sort fixers by level and name
-        usort($fixers, function ($a, $b) {
+        usort($fixers, function (FixerInterface $a, FixerInterface $b) {
             $cmp = Fixer::cmpInt($a->getLevel(), $b->getLevel());
             if (0 !== $cmp) {
                 return $cmp;
