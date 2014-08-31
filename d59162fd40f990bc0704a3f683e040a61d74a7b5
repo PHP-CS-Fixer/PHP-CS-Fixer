@@ -1,0 +1,42 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-28T19:53:37Z
+
+Because all fixers deserve to use Tokens ;)
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-28T21:07:56Z
+
+@keradus when mentionning the fixed issues, it is better to put them in the PR description rather than the title. This way, they would get linked automatically
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-28T21:09:22Z
+
+Actually they were linked by commit ;)
+But very well, desc filled
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-28T21:11:38Z
+
+Can you add a testcase for https://github.com/fabpot/PHP-CS-Fixer/issues/167 as well ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-28T21:35:39Z
+
+yes
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-31T13:20:50Z
+
+any opinion ?
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-31T13:30:38Z
+
+:+1:
