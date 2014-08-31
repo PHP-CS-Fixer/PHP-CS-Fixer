@@ -45,7 +45,7 @@ class StructureBracesFixer implements FixerInterface
 
     private function fixDoWhile(Tokens $tokens)
     {
-        for ($index = 0, $limit = count($tokens); $index < $limit; ++$index) {
+        for ($index = count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
             if (!$token->isGivenKind(T_DO)) {
