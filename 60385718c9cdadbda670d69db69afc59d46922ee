@@ -1,0 +1,57 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-30T18:53:50Z
+
+In my opinion it would be good to do some more work before 1.0.0 release:
+- [ ] extensions should be check by Finder, not Fixer itself - PR #486
+- [ ] rewrite tokens that use regexp to not change T_INLINE_HTML or
+T_STRING, issue #489, some work already done: PR #471, PR #488,
+partially PR #472 (it is a new token, but may replace part of
+ControlSpacesFixer and CurlyBracketsNewlineFixer
+- [ ] decide about ALL level name, it is misleading when using Contrib
+level: issue #464
+- [X] make Travis jobs pass, on HHVM as well
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-30T19:19:38Z
+
+I wasn't suggesting we release 1.0 now, I'm saying we need to switch the target. Otherwise people are getting all the 1.0 wip stuff when they asked for `0.5.*@dev`.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-30T19:23:34Z
+
+Can this be merged then since it's pretty important that people expecting 0.5 don't get the current changes from the master branch.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-30T19:37:44Z
+
+I am not against changing 0.5 into sth. I am against changing it into 1.x.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-30T19:38:57Z
+
+I don't understand what you mean? Did you prefer my other pull request to switch the target to 0.6-dev?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-30T19:44:54Z
+
+Let me explain again:
+
+People who are requiring 0.5.* in the composer.json files of their projects, with dev stability are experiencing problems breakages because of bc breaks to the master branch here. I'm saying we have to fix this and change our branch alias. This should have been done immediately after the first new feature or breaking change was introduced, but it wasn't for some reason?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-08-30T23:17:58Z
+
+What did you mean by "sth"?
+
+---------------------------------------------------------------------------
+
+by fabpot at 2014-08-31T03:00:08Z
+
+@keradus I think we are all on the same page here. We target 1.0 soon, and as such the current alias should be 1.0-dev.
