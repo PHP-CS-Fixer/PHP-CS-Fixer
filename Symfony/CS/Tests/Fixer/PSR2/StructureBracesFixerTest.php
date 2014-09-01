@@ -18,20 +18,22 @@ use Symfony\CS\Fixer\PSR2\StructureBracesFixer as Fixer;
  */
 class StructureBracesFixerTest extends \PHPUnit_Framework_TestCase
 {
-    private function makeTest($expected, $input)
+    private function makeTest($expected, $input = null)
     {
         $fixer = new Fixer();
         $file = $this->getTestFile();
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
-        // TODO: enable double test!
-        // $this->assertSame($expected, $fixer->fix($file, $expected));
+        if (null !== $input) {
+            $this->assertSame($expected, $fixer->fix($file, $input));
+        }
+
+        $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
     /**
      * @dataProvider provideFixMissingBracesAndIndentCases
      */
-    public function testFixMissingBracesAndIndent($expected, $input)
+    public function testFixMissingBracesAndIndent($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
@@ -44,24 +46,14 @@ class StructureBracesFixerTest extends \PHPUnit_Framework_TestCase
 if (true):
     $foo = 0;
 endif;',
-                '<?php
-if (true):
-    $foo = 0;
-endif;',
             ),
 array(
                 '<?php
 if (true)  :
     $foo = 0;
 endif;',
-                '<?php
-if (true)  :
-    $foo = 0;
-endif;',
             ),
             array(
-                '<?php
-    if (true) : $foo = 1; elseif;',
                 '<?php
     if (true) : $foo = 1; elseif;',
             ),
@@ -193,8 +185,6 @@ do { echo 1; } while (false);',
             array(
                 '<?php
 while($foo->next());',
-                '<?php
-while($foo->next());',
             ),
             array(
                 '<?php
@@ -250,13 +240,6 @@ if (true) {
 
     $b = 2;
 }',
-                '<?php
-if (true) {
-    $a = 1;
-
-
-    $b = 2;
-}',
             ),
             array(
                 '<?php
@@ -265,26 +248,8 @@ if (1) {
 
     // comment at end
 }',
-                '<?php
-if (1) {
-    $a = 1;
-
-    // comment at end
-}',
             ),
             array(
-                '<?php
-if (1) {
-    if (2) {
-        $a = "a";
-    } elseif (3) {
-        $b = "b";
-        // comment
-    } else {
-        $c = "c";
-    }
-    $d = "d";
-}',
                 '<?php
 if (1) {
     if (2) {
@@ -306,25 +271,8 @@ foreach ($numbers as $num) {
     }
     $b = "b";
 }',
-                '<?php
-foreach ($numbers as $num) {
-    for ($i = 0; $i < $num; ++$i) {
-        $a = "a";
-    }
-    $b = "b";
-}',
             ),
             array(
-                '<?php
-if (1) {
-    if (2) {
-        $foo = 2;
-
-        if (3) {
-            $foo = 3;
-        }
-    }
-}',
                 '<?php
 if (1) {
     if (2) {
@@ -426,7 +374,7 @@ if (1) {
     /**
      * @dataProvider provideFixClassyBracesCases
      */
-    public function testFixClassyBraces($expected, $input)
+    public function testFixClassyBraces($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
@@ -484,7 +432,7 @@ if (1) {
      * @requires PHP 5.4
      * czy to dziala ?
      */
-    public function testFixClassyBraces54($expected, $input)
+    public function testFixClassyBraces54($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
