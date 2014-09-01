@@ -26,9 +26,32 @@ class StructureBracesFixer implements FixerInterface
 
         $this->fixMissingControlBraces($tokens);
         $this->fixIndents($tokens);
+        $this->fixControlContinuationBraces($tokens);
         $this->fixDoWhile($tokens);
 
         return $tokens->generateCode();
+    }
+
+    private function fixControlContinuationBraces(Tokens $tokens)
+    {
+        $controlContinuationTokens = $this->getControlContinuationTokens();
+
+        for ($index = count($tokens) - 1; 0 <= $index; --$index) {
+            $token = $tokens[$index];
+
+            if (!$token->isGivenKind($controlContinuationTokens)) {
+                continue;
+            }
+
+            $prevIndex = null;
+            $prevToken = $tokens->getPrevNonWhitespace($index, array(), $prevIndex);
+
+            if ('}' !== $prevToken->content) {
+                continue;
+            }
+
+            $this->ensureWhitespaceAtIndex($tokens, $index - 1, 1, ' ');
+        }
     }
 
     private function fixDoWhile(Tokens $tokens)
@@ -60,6 +83,7 @@ class StructureBracesFixer implements FixerInterface
     {
         $classyTokens = $this->getClassyTokens();
         $controlTokens = $this->getControlTokens();
+        $controlContinuationTokens = $this->getControlContinuationTokens();
         $classyAndControlTokens = array_merge($classyTokens, $controlTokens);
 
         for ($index = 0, $limit = count($tokens); $index < $limit; ++$index) {
@@ -107,7 +131,7 @@ class StructureBracesFixer implements FixerInterface
                 if (1 === $nestLevel && in_array($nestToken->content, array(';', '}'), true)) {
                     $nextNonWhitespaceNestToken = $tokens->getNextNonWhitespace($nestIndex);
 
-                    if ($nextNonWhitespaceNestToken->isGivenKind(array(T_ELSE, T_ELSEIF, T_CATCH))) {
+                    if ($nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens())) {
                         $whitespace = ' ';
                     } else {
                         $nextToken = $tokens[$nestIndex + 1];
@@ -291,7 +315,7 @@ class StructureBracesFixer implements FixerInterface
                 $nextIndex = null;
                 $nextToken = $tokens->getNextNonWhitespace($endIndex, array(), $nextIndex);
 
-                if ($nextToken && $nextToken->isGivenKind(array(T_ELSE, T_ELSEIF))) {
+                if ($nextToken && $nextToken->isGivenKind($this->getControlContinuationTokens())) {
                     $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $nextIndex);
 
                     return $this->findStatementEnd($tokens, $parenthesisEndIndex);
@@ -340,6 +364,19 @@ class StructureBracesFixer implements FixerInterface
             T_FOREACH,
             T_IF,
             T_WHILE,
+            T_TRY,
+            T_CATCH,
+        );
+
+        return $tokens;
+    }
+
+    private function getControlContinuationTokens()
+    {
+        static $tokens = array(
+            T_ELSE,
+            T_ELSEIF,
+            T_CATCH,
         );
 
         return $tokens;

@@ -31,6 +31,54 @@ class StructureBracesFixerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider provideFixControlContinuationBracesCases
+     */
+    public function testFixControlContinuationBraces($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideFixControlContinuationBracesCases()
+    {
+        return array(
+            array(
+                '<?php
+    if (true) {
+        $a = 1;
+    } else {
+        $b = 2;
+    }',
+                '<?php
+    if (true) {
+        $a = 1;
+    }
+    else {
+        $b = 2;
+    }',
+            ),
+            array(
+        '<?php
+    try {
+        throw new \Exeption();
+    } catch (\LogicException $e) {
+        // do nothing
+    } catch (\Exception $e) {
+        // do nothing
+    }',
+        '<?php
+    try {
+        throw new \Exeption();
+    }catch (\LogicException $e) {
+        // do nothing
+    }
+    catch (\Exception $e) {
+        // do nothing
+    }',
+            ),
+        );
+    }
+
+    /**
      * @dataProvider provideFixMissingBracesAndIndentCases
      */
     public function testFixMissingBracesAndIndent($expected, $input = null)
@@ -370,13 +418,13 @@ if (1) {
             ),
             array(
                 '<?php
-        while ($true) {
-            try {
-                throw new \Exeption();
-            } catch (\Exception $e) {
-                // do nothing
-            }
-        }',
+    while ($true) {
+        try {
+            throw new \Exeption();
+        } catch (\Exception $e) {
+            // do nothing
+        }
+    }',
             ),
         );
     }
