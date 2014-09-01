@@ -107,7 +107,7 @@ class StructureBracesFixer implements FixerInterface
                 if (1 === $nestLevel && in_array($nestToken->content, array(';', '}'), true)) {
                     $nextNonWhitespaceNestToken = $tokens->getNextNonWhitespace($nestIndex);
 
-                    if ($nextNonWhitespaceNestToken->isGivenKind(array(T_ELSE, T_ELSEIF))) {
+                    if ($nextNonWhitespaceNestToken->isGivenKind(array(T_ELSE, T_ELSEIF, T_CATCH))) {
                         $whitespace = ' ';
                     } else {
                         $nextToken = $tokens[$nestIndex + 1];

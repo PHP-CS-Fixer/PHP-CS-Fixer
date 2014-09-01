@@ -368,6 +368,16 @@ if (1) {
 
     }',
             ),
+            array(
+                '<?php
+        while ($true) {
+            try {
+                throw new \Exeption();
+            } catch (\Exception $e) {
+                // do nothing
+            }
+        }',
+            ),
         );
     }
 
