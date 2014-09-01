@@ -95,7 +95,7 @@ if (true):
     $foo = 0;
 endif;',
             ),
-array(
+            array(
                 '<?php
 if (true)  :
     $foo = 0;
