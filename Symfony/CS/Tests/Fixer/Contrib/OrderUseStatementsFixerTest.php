@@ -54,7 +54,7 @@ class AnnotatedClass
         $bar = $foo->toArray();
         /** @var ArrayInterface $bar */
 
-        return function () use ($bar, $baz) {};
+        return function () use ($bar, $foo) {};
     }
 }
 EOF;
@@ -94,7 +94,89 @@ class AnnotatedClass
         $bar = $foo->toArray();
         /** @var ArrayInterface $bar */
 
-        return function () use ($bar, $baz) {};
+        return function () use ($bar, $foo) {};
+    }
+}
+EOF;
+
+        $this->assertEquals($expected, $fixer->fix($file, $input));
+    }
+
+
+    /**
+     * @requires PHP 5.4
+     */
+    public function test54()
+    {
+        $fixer = new Fixer();
+        $file  = $this->getTestFile();
+
+        $expected = <<<'EOF'
+<?php
+
+ use Foo\Bar;
+   use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+use Foo\Bar\FooBar as FooBaz;
+use Foo\Zar\Baz;
+use SomeClass;
+use Symfony\Annotation\Template;
+use Symfony\Doctrine\Entities\Entity;
+
+use Zoo\Bar, Zoo\Tar;
+
+trait Foo {}
+
+trait Bar {}
+
+class AnnotatedClass
+{
+    use Foo, Bar;
+
+    /**
+     * @Template(foobar=21)
+     * @param Entity $foo
+     */
+    public function doSomething($foo)
+    {
+        $bar = $foo->toArray();
+        /** @var ArrayInterface $bar */
+
+        return function () use ($bar, $foo) {};
+    }
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use Foo\Bar\FooBar as FooBaz;
+use Zoo\Bar, Zoo\Tar;
+ use Foo\Bar;
+use Foo\Zar\Baz;
+use Symfony\Annotation\Template;
+   use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+use SomeClass;
+
+use Symfony\Doctrine\Entities\Entity;
+
+trait Foo {}
+
+trait Bar {}
+
+class AnnotatedClass
+{
+    use Foo, Bar;
+
+    /**
+     * @Template(foobar=21)
+     * @param Entity $foo
+     */
+    public function doSomething($foo)
+    {
+        $bar = $foo->toArray();
+        /** @var ArrayInterface $bar */
+
+        return function () use ($bar, $foo) {};
     }
 }
 EOF;
