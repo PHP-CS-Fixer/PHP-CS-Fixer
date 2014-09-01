@@ -424,6 +424,18 @@ if (1) {
                 '<?php
                 class TestClass extends BaseTestClass implements TestInterface { private $foo;}',
             ),
+            array(
+                '<?php
+<?php
+
+abstract class Foo
+{
+    public function getProcess($foo)
+    {
+        return true;
+    }
+}',
+            ),
         );
     }
 

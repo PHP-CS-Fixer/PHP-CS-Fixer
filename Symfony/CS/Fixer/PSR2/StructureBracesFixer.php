@@ -195,6 +195,15 @@ class StructureBracesFixer implements FixerInterface
 
     private function detectIndent(Tokens $tokens, $index)
     {
+        if ($tokens[$index]->isGivenKind($this->getClassyTokens())) {
+            $prevIndex = null;
+            $prevToken = $tokens->getPrevNonWhitespace($index, array(), $prevIndex);
+
+            if ($prevToken->isGivenKind(array(T_ABSTRACT, T_FINAL))) {
+                $index = $prevIndex;
+            }
+        }
+
         $prevIndex = $index - 1;
         $prevToken = $tokens[$prevIndex];
 
