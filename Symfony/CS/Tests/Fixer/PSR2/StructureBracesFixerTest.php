@@ -452,7 +452,6 @@ abstract class Foo
     /**
      * @dataProvider provideFixClassyBraces54Cases
      * @requires PHP 5.4
-     * czy to dziala ?
      */
     public function testFixClassyBraces54($expected, $input = null)
     {
