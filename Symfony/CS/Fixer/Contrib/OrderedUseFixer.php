@@ -11,10 +11,11 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
 /**
- * @author Paweł Zaremba <pawzar@gmail.com>
+ * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
 class OrderedUseFixer extends AbstractFixer
 {
@@ -23,52 +24,108 @@ class OrderedUseFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, $content)
     {
-        $allLines = explode("\n", $content);
-        $tokens   = Tokens::fromCode($content);
+        $tokens = Tokens::fromCode($content);
 
-        $unorderedLines = $this->findLines($allLines, $tokens);
-        if (count($unorderedLines)) {
-            $lineOrder = $this->getNewOrder($unorderedLines);
+        $namespacesImports = $tokens->getNamespaceUseIndexes(true);
+        $usesOrder = array();
 
-            $idx = 0;
-            foreach (array_keys($unorderedLines) as $lineNumber) {
-                $allLines[$lineNumber] = $unorderedLines[$lineOrder[$idx++]];
-            }
-
-            return implode("\n", $allLines);
+        if (!count($namespacesImports)) {
+            return $content;
         }
 
-        return $content;
+        foreach ($namespacesImports as $uses) {
+            $uses = array_reverse($uses);
+            $usesOrder = array_replace($usesOrder, $this->getNewOrder($uses, $tokens));
+        }
+
+        // First clean the old content
+        // This must be done first as the indexes can be scattered
+        foreach ($usesOrder as $use) {
+            for ($i = $use[1]; $i <= $use[2]; ++$i) {
+                $tokens[$i]->clear();
+            }
+        }
+
+        $usesOrder = array_reverse($usesOrder, true);
+
+        // Now insert the new tokens, starting from the end
+        foreach ($usesOrder as $index => $use) {
+            $declarationTokens = Tokens::fromCode('<?php use '.$use[0].';');
+            $declarationTokens[0]->clear(); // <?php
+            $declarationTokens[1]->clear(); // use
+            $declarationTokens[2]->clear(); // space
+            $declarationTokens[count($declarationTokens) - 1]->clear(); // ;
+
+            $tokens->insertAt($index, $declarationTokens);
+        }
+
+        return $tokens->generateCode();
     }
 
-    private function findLines($allLines, $tokens)
+    private function getNewOrder(array $uses, Tokens $tokens)
     {
-        $lines = array();
-        foreach ($tokens as $index => $token) {
-            if (T_USE === $token->id) {
-                $nextToken = $tokens->getNextNonWhitespace($index);
-                if ($nextToken && $nextToken->id) {
-                    $lines[$token->line - 1] = $allLines[$nextToken->line - 1];
+        $uses = array_reverse($uses);
+
+        $indexes = array();
+        $originalIndexes = array();
+
+        foreach ($uses as $index) {
+            $tokens->getNextTokenOfKind($index, array(';'), $endIndex);
+            $tokens->getTokenNotOfKindSibling($index + 1, 1, array(array(T_WHITESPACE)), $startIndex);
+
+            $namespace = '';
+            $index = $startIndex;
+
+            while ($index <= $endIndex) {
+                $token = $tokens[$index];
+                /** @var Token $token */
+
+                if (',' === $token->content || $index === $endIndex) {
+                    $indexes[$startIndex] = array($namespace, $startIndex, $index - 1);
+                    $originalIndexes[] = $startIndex;
+
+                    $namespace = '';
+                    $nextPartIndex = $endIndex;
+
+                    $tokens->getTokenNotOfKindSibling($index, 1, array(array(','), array(T_WHITESPACE)), $nextPartIndex);
+
+                    $startIndex = $nextPartIndex;
+                    $index = $nextPartIndex;
+
+                    continue;
                 }
+
+                $namespace .= $token->content;
+                ++$index;
             }
         }
 
-        return $lines;
-    }
+        uasort($indexes, 'self::sortingCallBack');
 
-    private function getNewOrder(array $lines)
-    {
-        $newLines = array_map(function ($str) {
-            return trim($str);
-        }, $lines);
-        asort($newLines);
+        $i = -1;
 
-        $lineOrder = array();
-        foreach ($newLines as $k => $v) {
-            $lineOrder[] = $k;
+        $usesOrder = array();
+
+        // Loop trough the index but use original index order
+        foreach ($indexes as $v) {
+            $usesOrder[$originalIndexes[++$i]] = $v;
         }
 
-        return $lineOrder;
+        return $usesOrder;
+    }
+
+    /**
+     * This method is used for sorting the uses in a namespace
+     * and is only meant for internal usage.
+     *
+     * @internal
+     */
+    public static function sortingCallBack(array $first, array $second)
+    {
+        $a = trim(preg_replace('%/\*(.*)\*/%s', '', $first[0]));
+        $b = trim(preg_replace('%/\*(.*)\*/%s', '', $second[0]));
+
+        return strcmp($a, $b);
     }
 
     /**
