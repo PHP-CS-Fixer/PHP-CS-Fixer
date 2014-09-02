@@ -50,7 +50,7 @@ class StructureBracesFixer implements FixerInterface
                 continue;
             }
 
-            $this->ensureWhitespaceAtIndex($tokens, $index - 1, 1, ' ');
+            $tokens->ensureWhitespaceAtIndex($index - 1, 1, ' ');
         }
     }
 
@@ -75,7 +75,7 @@ class StructureBracesFixer implements FixerInterface
             }
 
             $beforeWhileToken = $tokens[$nextNonWhitespaceIndex - 1];
-            $this->ensureWhitespaceAtIndex($tokens, $nextNonWhitespaceIndex - 1, 1, ' ');
+            $tokens->ensureWhitespaceAtIndex($nextNonWhitespaceIndex - 1, 1, ' ');
         }
     }
 
@@ -113,7 +113,7 @@ class StructureBracesFixer implements FixerInterface
             $indent = $this->detectIndent($tokens, $index);
 
             // fix indent near closing brace
-            $this->ensureWhitespaceAtIndex($tokens, $endBraceIndex - 1, 1, "\n".$indent);
+            $tokens->ensureWhitespaceAtIndex($endBraceIndex - 1, 1, "\n".$indent);
 
             // fix indent between braces
             $lastCommaIndex = null;
@@ -152,7 +152,7 @@ class StructureBracesFixer implements FixerInterface
                         }
                     }
 
-                    $this->ensureWhitespaceAtIndex($tokens, $nestIndex + 1, 0, $whitespace);
+                    $tokens->ensureWhitespaceAtIndex($nestIndex + 1, 0, $whitespace);
                 }
 
                 if ('}' === $nestToken->content) {
@@ -168,15 +168,15 @@ class StructureBracesFixer implements FixerInterface
 
             // fix indent near opening brace
             if (isset($tokens[$startBraceIndex + 2]) && '}' === $tokens[$startBraceIndex + 2]->content) {
-                $this->ensureWhitespaceAtIndex($tokens, $startBraceIndex + 1, 0, "\n".$indent);
+                $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent);
             } else {
-                $this->ensureWhitespaceAtIndex($tokens, $startBraceIndex + 1, 0, "\n".$indent.'    ');
+                $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
             }
 
             if ($token->isGivenKind($classyTokens)) {
-                $this->ensureWhitespaceAtIndex($tokens, $startBraceIndex - 1, 1, "\n".$indent);
+                $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, "\n".$indent);
             } else {
-                $this->ensureWhitespaceAtIndex($tokens, $startBraceIndex - 1, 1, ' ');
+                $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
             }
 
             // reset loop due to collection change
@@ -213,7 +213,7 @@ class StructureBracesFixer implements FixerInterface
             // insert opening brace
             $tokens->removeTrailingWhitespace($parenthesisEndIndex);
             $tokens->insertAt($parenthesisEndIndex + 1, new Token('{'));
-            $this->ensureWhitespaceAtIndex($tokens, $parenthesisEndIndex + 1, 0, ' ');
+            $tokens->ensureWhitespaceAtIndex($parenthesisEndIndex + 1, 0, ' ');
         }
     }
 
@@ -250,34 +250,6 @@ class StructureBracesFixer implements FixerInterface
         }
 
         return end($explodedContent);
-    }
-
-    private function ensureWhitespaceAtIndex(Tokens $tokens, $index, $indexOffset, $whitespace)
-    {
-        $removeLastCommentLine = function ($token, $indexOffset) {
-            // becouse comments tokens are greedy and may consume single \n if we are putting whitespace after it let trim that \n
-            if (1 === $indexOffset && $token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT)) && "\n" === $token->content[strlen($token->content) - 1]) {
-                $token->content = substr($token->content, 0, -1);
-            }
-        };
-
-        $token = $tokens[$index];
-
-        if ($token->isWhitespace()) {
-            $removeLastCommentLine($tokens[$index - 1], $indexOffset);
-            $token->content = $whitespace;
-
-            return;
-        }
-
-        $removeLastCommentLine($token, $indexOffset);
-
-        $tokens->insertAt(
-            $index + $indexOffset,
-            array(
-                new Token(array(T_WHITESPACE, $whitespace)),
-            )
-        );
     }
 
     private function findParenthesisEnd(Tokens $tokens, $structureTokenIndex)

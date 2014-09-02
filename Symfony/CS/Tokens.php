@@ -135,6 +135,48 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Ensure that on given index is a whitespace with given kind.
+     *
+     * If there is a whitespace then it's content will be modified.
+     * If not - the new Token will be added.
+     *
+     * @param int    $index       index
+     * @param int    $indexOffset index offset for Token insertion
+     * @param string $whitespace  whitespace to set
+     *
+     * @return bool if new Token was added
+     */
+    public function ensureWhitespaceAtIndex($index, $indexOffset, $whitespace)
+    {
+        $removeLastCommentLine = function ($token, $indexOffset) {
+            // becouse comments tokens are greedy and may consume single \n if we are putting whitespace after it let trim that \n
+            if (1 === $indexOffset && $token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT)) && "\n" === $token->content[strlen($token->content) - 1]) {
+                $token->content = substr($token->content, 0, -1);
+            }
+        };
+
+        $token = $this[$index];
+
+        if ($token->isWhitespace()) {
+            $removeLastCommentLine($this[$index - 1], $indexOffset);
+            $token->content = $whitespace;
+
+            return false;
+        }
+
+        $removeLastCommentLine($token, $indexOffset);
+
+        $this->insertAt(
+            $index + $indexOffset,
+            array(
+                new Token(array(T_WHITESPACE, $whitespace)),
+            )
+        );
+
+        return true;
+    }
+
+    /**
      * Get cache value for given key.
      *
      * @param int|string $key item key
