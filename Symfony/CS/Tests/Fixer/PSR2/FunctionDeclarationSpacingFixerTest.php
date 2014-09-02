@@ -128,6 +128,13 @@ foo () {}',
                 '<?php function ($a) use ($b) {}',
                 '<?php function (  $a   ) use (   $b      ) {}',
             ),
+            array(
+                '<?php
+    interface Foo
+    {
+        public function setConfig(ConfigInterface $config);
+    }',
+            ),
         );
     }
 

@@ -39,17 +39,18 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
             $tokens->getNextTokenOfKind($index, array('('), $startParenthesisIndex);
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
             $startBraceIndex = null;
-            $tokens->getNextTokenOfKind($endParenthesisIndex, array('{'), $startBraceIndex);
-            $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startBraceIndex);
+            $startBraceToken = $tokens->getNextTokenOfKind($endParenthesisIndex, array(';', '{'), $startBraceIndex);
 
-            // fix single-line whitespace before {
-            // eg: `function foo(){}` => `function foo() {}`
-            // eg: `function foo()   {}` => `function foo() {}`
-            if (
-                !$tokens[$startBraceIndex - 1]->isWhitespace() ||
-                $tokens[$startBraceIndex - 1]->isWhitespace($this->singleLineWhitespaceOptions)
-            ) {
-                $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
+            if ('{' === $startBraceToken->content) {
+                // fix single-line whitespace before {
+                // eg: `function foo(){}` => `function foo() {}`
+                // eg: `function foo()   {}` => `function foo() {}`
+                if (
+                    !$tokens[$startBraceIndex - 1]->isWhitespace() ||
+                    $tokens[$startBraceIndex - 1]->isWhitespace($this->singleLineWhitespaceOptions)
+                ) {
+                    $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
+                }
             }
 
             $afterParenthesisIndex = null;
