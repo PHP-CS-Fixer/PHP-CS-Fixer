@@ -15,7 +15,8 @@ use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
 /**
- * @author John Kelly <johnmkelly86@gmail.com>
+ * @author John Kelly <wablam@gmail.com>
+ * @author Graham Campbell <graham@mineuk.com>
  */
 class SpaceBeforeClosingSemicolonFixer implements FixerInterface
 {
@@ -32,15 +33,10 @@ class SpaceBeforeClosingSemicolonFixer implements FixerInterface
                 continue;
             }
 
-            $prevNonWhitespaceIndex = null;
-            $prevNonWhitespaceToken = $tokens->getPrevNonWhitespace($index, array(), $prevNonWhitespaceIndex);
+            $previous = $tokens[$index - 1];
 
-            if (!$prevNonWhitespaceToken->isArray()) {
-                for ($i = $index - 1; $i > $prevNonWhitespaceIndex; --$i) {
-                    if (false === strpos($tokens[$i]->content, "\n")) {
-                        $tokens[$i]->clear();
-                    }
-                }
+            if ($previous->isWhitespace()) {
+                $previous->clear();
             }
         }
 
@@ -68,7 +64,7 @@ class SpaceBeforeClosingSemicolonFixer implements FixerInterface
      */
     public function supports(\SplFileInfo $file)
     {
-        return 'php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+        return true;
     }
 
     /**

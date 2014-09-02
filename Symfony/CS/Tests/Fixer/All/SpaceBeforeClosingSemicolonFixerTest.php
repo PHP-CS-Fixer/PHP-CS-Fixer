@@ -13,7 +13,8 @@ namespace Symfony\CS\Tests\Fixer\All;
 use Symfony\CS\Fixer\All\SpaceBeforeClosingSemicolonFixer as Fixer;
 
 /**
- * @author John Kelly <johnmkelly86@gmail.com>
+ * @author John Kelly <wablam@gmail.com>
+ * @author Graham Campbell <graham@mineuk.com>
  */
 class SpaceBeforeClosingSemicolonFixerTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,27 +34,21 @@ class SpaceBeforeClosingSemicolonFixerTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 '<?php
-$this
-    ->setName(\'readme\')
-    ->setDescription(\'Generates the README content, based on the fix command help\')
-;
+$this->setName(\'readme\')
+    ->setDescription(\'Generates the README content, based on the fix command help\');
 ?>',
                 '<?php
-$this
-    ->setName(\'readme\')
+$this->setName(\'readme\')
     ->setDescription(\'Generates the README content, based on the fix command help\')
 ;
 ?>'),
             array(
                 '<?php
-$this
-    ->setName(\'readme\')
-    ->setDescription(\'Generates the README content, based on the fix command help\')
-    ;
+$this->setName(\'readme\')
+    ->setDescription(\'Generates the README content, based on the fix command help\');
 ?>',
                 '<?php
-$this
-    ->setName(\'readme\')
+$this->setName(\'readme\')
     ->setDescription(\'Generates the README content, based on the fix command help\')
     ;
 ?>'),
@@ -75,7 +70,7 @@ $this
             ),
             array(
                 '<?php $this->foo("with param containing ) ; "); ?>',
-                '<?php $this->foo("with param containing ) ; ") ; ?>',
+                '<?php $this->foo("with param containing ) ; ")  ; ?>',
             ),
             array(
                 '<?php $this->foo(); ?>',
