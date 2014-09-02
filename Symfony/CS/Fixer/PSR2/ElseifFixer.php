@@ -41,10 +41,8 @@ class ElseifFixer implements FixerInterface
             }
 
             // now we have T_ELSE following by T_IF so we could fix this
-            // 1. clear all whitespaces between T_ELSE and T_IF
-            for ($i = $index + 1; $i < $nextIndex; ++$i) {
-                $tokens[$i]->clear();
-            }
+            // 1. clear whitespaces between T_ELSE and T_IF
+            $tokens[$index + 1]->clear();
 
             // 2. change token from T_ELSE into T_ELSEIF
             $token->content = 'elseif';
