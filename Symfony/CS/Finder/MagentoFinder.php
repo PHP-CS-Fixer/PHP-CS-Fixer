@@ -38,8 +38,7 @@ class MagentoFinder extends DefaultFinder
                 'app/design/frontend/enterprise/default',
                 'app/design/frontend/base',
                 'app/design/adminhtml/default',
-            ))
-        ;
+            ));
     }
 
     public function setDir($dir)

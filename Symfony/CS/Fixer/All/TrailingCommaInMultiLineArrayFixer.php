@@ -69,7 +69,7 @@ class TrailingCommaInMultiLineArrayFixer implements FixerInterface
         }
 
         if (!$tokens->isArrayMultiLine($index)) {
-            return ;
+            return;
         }
 
         for ($c = $tokens->count(); $index < $c; ++$index) {
