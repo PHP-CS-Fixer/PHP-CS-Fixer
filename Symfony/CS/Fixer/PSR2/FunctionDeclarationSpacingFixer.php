@@ -64,14 +64,14 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
                 // fix whitespace after T_USE
                 $tokens->ensureWhitespaceAtIndex($afterParenthesisIndex + 1, 0, ' ');
 
-                // remove signle-line edge whitespaces inside use parenthesis
+                // remove single-line edge whitespaces inside use parentheses
                 $this->fixParenthesisInnerEdge($tokens, $useStartParenthesisIndex, $useEndParenthesisIndex);
 
                 // fix whitespace before T_USE
                 $tokens->ensureWhitespaceAtIndex($afterParenthesisIndex - 1, 1, ' ');
             }
 
-            // remove signle-line edge whitespaces inside parameters list parenthesis
+            // remove single-line edge whitespaces inside parameters list parentheses
             $this->fixParenthesisInnerEdge($tokens, $startParenthesisIndex, $endParenthesisIndex);
 
             // remove whitespace before (
