@@ -496,27 +496,34 @@ EOF
 
     protected function getConfigsHelp()
     {
-        $configs = '';
+        $help = '';
         $maxName = 0;
-        foreach ($this->fixer->getConfigs() as $config) {
+
+        $configs = $this->fixer->getConfigs();
+
+        usort($configs, function (ConfigInterface $a, ConfigInterface $b) {
+            return strcmp($a->getName(), $b->getName());
+        });
+
+        foreach ($configs as $config) {
             if (strlen($config->getName()) > $maxName) {
                 $maxName = strlen($config->getName());
             }
         }
 
         $count = count($this->fixer->getConfigs()) - 1;
-        foreach ($this->fixer->getConfigs() as $i => $config) {
+        foreach ($configs as $i => $config) {
             $chunks = explode("\n", wordwrap($config->getDescription(), 72 - $maxName, "\n"));
-            $configs .= sprintf(" * <comment>%s</comment>%s %s\n", $config->getName(), str_repeat(' ', $maxName - strlen($config->getName())), array_shift($chunks));
+            $help .= sprintf(" * <comment>%s</comment>%s %s\n", $config->getName(), str_repeat(' ', $maxName - strlen($config->getName())), array_shift($chunks));
             while ($c = array_shift($chunks)) {
-                $configs .= str_repeat(' ', $maxName + 4).$c."\n";
+                $help .= str_repeat(' ', $maxName + 4).$c."\n";
             }
 
             if ($count !== $i) {
-                $configs .= "\n";
+                $help .= "\n";
             }
         }
 
-        return $configs;
+        return $help;
     }
 }
