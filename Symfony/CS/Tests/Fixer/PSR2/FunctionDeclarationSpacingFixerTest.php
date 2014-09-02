@@ -43,6 +43,10 @@ class FunctionDeclarationSpacingFixerTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
+                // non-PHP test
+                'function foo () {}',
+            ),
+            array(
                 '<?php function foo() {}',
                 '<?php function	foo() {}',
             ),
