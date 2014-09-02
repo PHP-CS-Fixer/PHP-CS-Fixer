@@ -25,6 +25,9 @@ class EncodingFixer implements FixerInterface
         $this->BOM = pack('CCC', 0xef, 0xbb, 0xbf);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
         if (0 === strncmp($content, $this->BOM, 3)) {
@@ -34,28 +37,43 @@ class EncodingFixer implements FixerInterface
         return $content;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLevel()
     {
         // defined in PSR1 ¶2.2
         return FixerInterface::PSR1_LEVEL;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // must run first (at least before Fixers that using Tokens) - for speed reason of whole fixing process
         return 100;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(\SplFileInfo $file)
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'encoding';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'PHP code MUST use only UTF-8 without BOM (remove BOM).';

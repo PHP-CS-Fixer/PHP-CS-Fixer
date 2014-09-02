@@ -21,6 +21,8 @@ class ElseifFixer implements FixerInterface
 {
     /**
      * Replace all `else if` (T_ELSE T_IF) with `elseif` (T_ELSEIF)
+     *
+     * {@inheritdoc}
      */
     public function fix(\SplFileInfo $file, $content)
     {
@@ -57,28 +59,43 @@ class ElseifFixer implements FixerInterface
         return $tokens->generateCode();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLevel()
     {
         // defined in PSR2 ¶5.1
         return FixerInterface::PSR2_LEVEL;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run after ControlSpacesFixer
         return -20;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(\SplFileInfo $file)
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'elseif';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'The keyword elseif should be used instead of else if so that all control keywords looks like single words.';
