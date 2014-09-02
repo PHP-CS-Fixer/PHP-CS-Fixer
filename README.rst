@@ -248,6 +248,9 @@ Choose from the list of available fixers:
 * **return** [all] An empty line feed should precede a
             return statement.
 
+* **semicolon_spaces** [all] Single-line whitespaces before
+            closing semicolon are prohibited.
+
 * **single_array_no_trailing_comma** [all] PHP single-line arrays should not
             have trailing comma.
 
