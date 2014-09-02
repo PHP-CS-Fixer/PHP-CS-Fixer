@@ -12,22 +12,93 @@
 namespace Symfony\CS\Fixer\PSR2;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Tokens;
 
 /**
- * @author Denis Sokolov <denis@sokolov.cc>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class FunctionDeclarationSpacingFixer implements FixerInterface
 {
+    private $singleLineWhitespaceOptions = array('whitespaces' => " \t");
+
     /**
      * {@inheritdoc}
      */
     public function fix(\SplFileInfo $file, $content)
     {
-        $content = $this->fixNamedFunctions($content);
-        $content = $this->fixAnonymousFunctions($content);
-        $content = $this->fixSpaceBeforeBrace($content);
+        $tokens = Tokens::fromCode($content);
 
-        return $content;
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            $token = $tokens[$index];
+
+            if (!$token->isGivenKind(T_FUNCTION)) {
+                continue;
+            }
+
+            $startParenthesisIndex = null;
+            $tokens->getNextTokenOfKind($index, array('('), $startParenthesisIndex);
+            $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
+            $startBraceIndex = null;
+            $startBraceToken = $tokens->getNextTokenOfKind($endParenthesisIndex, array(';', '{'), $startBraceIndex);
+
+            if ('{' === $startBraceToken->content) {
+                // fix single-line whitespace before {
+                // eg: `function foo(){}` => `function foo() {}`
+                // eg: `function foo()   {}` => `function foo() {}`
+                if (
+                    !$tokens[$startBraceIndex - 1]->isWhitespace() ||
+                    $tokens[$startBraceIndex - 1]->isWhitespace($this->singleLineWhitespaceOptions)
+                ) {
+                    $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
+                }
+            }
+
+            $afterParenthesisIndex = null;
+            $afterParenthesisToken = $tokens->getNextNonWhitespace($endParenthesisIndex, array(), $afterParenthesisIndex);
+
+            if ($afterParenthesisToken->isGivenKind(T_USE)) {
+                $useStartParenthesisIndex = null;
+                $tokens->getNextTokenOfKind($afterParenthesisIndex, array('('), $useStartParenthesisIndex);
+                $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $useStartParenthesisIndex);
+
+                // fix whitespace after T_USE
+                $tokens->ensureWhitespaceAtIndex($afterParenthesisIndex + 1, 0, ' ');
+
+                // remove single-line edge whitespaces inside use parentheses
+                $this->fixParenthesisInnerEdge($tokens, $useStartParenthesisIndex, $useEndParenthesisIndex);
+
+                // fix whitespace before T_USE
+                $tokens->ensureWhitespaceAtIndex($afterParenthesisIndex - 1, 1, ' ');
+            }
+
+            // remove single-line edge whitespaces inside parameters list parentheses
+            $this->fixParenthesisInnerEdge($tokens, $startParenthesisIndex, $endParenthesisIndex);
+
+            // remove whitespace before (
+            // eg: `function foo () {}` => `function foo() {}`
+            if ($tokens[$startParenthesisIndex - 1]->isWhitespace()) {
+                $tokens[$startParenthesisIndex - 1]->clear();
+            }
+
+            // fix whitespace after T_FUNCTION
+            // eg: `function     foo() {}` => `function foo() {}`
+            $tokens->ensureWhitespaceAtIndex($index + 1, 0, ' ');
+        }
+
+        return $tokens->generateCode();
+    }
+
+    private function fixParenthesisInnerEdge(Tokens $tokens, $start, $end)
+    {
+        // remove single-line whitespace before )
+        if ($tokens[$end - 1]->isWhitespace($this->singleLineWhitespaceOptions)) {
+            $tokens[$end - 1]->clear();
+        }
+
+        // remove single-line whitespace after (
+        if ($tokens[$start + 1]->isWhitespace($this->singleLineWhitespaceOptions)) {
+            $tokens[$start + 1]->clear();
+        }
     }
 
     /**
@@ -52,7 +123,7 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
      */
     public function supports(\SplFileInfo $file)
     {
-        return 'php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+        return true;
     }
 
     /**
@@ -69,69 +140,5 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
     public function getDescription()
     {
         return 'Spaces should be properly placed in a function declaration.';
-    }
-
-    private function fixAnonymousFunctions($content)
-    {
-        $content = preg_replace(
-            $this->regex(array('params', 'end')),
-            '\1function (\2)\3',
-            $content
-        );
-        $content = preg_replace(
-            $this->regex(array('params', 'use', 'end')),
-            '\1function (\2) use (\3)\4',
-            $content
-        );
-
-        return $content;
-    }
-
-    private function fixNamedFunctions($content)
-    {
-        return preg_replace(
-            $this->regex(array('name', 'params', 'end')),
-            '\1function \2(\3)\4',
-            $content
-        );
-    }
-
-    /**
-     * In previous steps we have cut all horizontal whitespace,
-     * so where are left with function(){
-     * Add a missing space at the end: function () {
-     * This does not touch function declarations with brace on another line.
-     */
-    private function fixSpaceBeforeBrace($content)
-    {
-        return preg_replace(
-            '/(function[^{]+\)){/',
-            '\1 {',
-            $content
-        );
-    }
-
-    private function regex(array $keys)
-    {
-        $map = array(
-            'name' => '\s+([a-zA-Z0-9_]+)',
-            'params' => '
-                \s*
-                \(
-                    \h*
-                    (
-                        [^)]*
-                        [^)\s]
-                    )?
-                    \h*
-                \)
-            ',
-            'end' => '\h*((?:\v\s*)?{)',
-        );
-        $map['use'] = '\s*use'.$map['params'];
-
-        return '/(^|[^a-zA-Z0-9_\x7f-\xff\$])function'.implode('', array_map(function ($key) use ($map) {
-            return $map[$key];
-        }, $keys)).'/x';
     }
 }

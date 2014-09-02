@@ -13,39 +13,129 @@ namespace Symfony\CS\Tests\Fixer\PSR2;
 
 use Symfony\CS\Fixer\PSR2\FunctionDeclarationSpacingFixer as Fixer;
 
+/**
+ * @author Denis Sokolov <denis@sokolov.cc>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ */
 class FunctionDeclarationSpacingFixerTest extends \PHPUnit_Framework_TestCase
 {
-    public function data()
+    private function makeTest($expected, $input = null)
     {
-        return array(
-            array("function\tfoo () {", 'function foo() {'),
-            array("function foo\t() {", 'function foo() {'),
-            array("function\nfoo () {", 'function foo() {'),
-            array('function foo () {', 'function foo() {'),
-            array('function foo($a, $b = true){', 'function foo($a, $b = true) {'),
-            array('function($i) {', 'function ($i) {'),
-            array('function($a)use($b) {', 'function ($a) use ($b) {'),
-            array('function foo( $a ) {', 'function foo($a) {'),
-            array('function ( $a) use ( $b ) {', 'function ($a) use ($b) {'),
-            array("function foo(\$a)\n{", "function foo(\$a)\n{"),
-            array("function foo( \$a)\n{", "function foo(\$a)\n{"),
-            array("function foo( \$a)\t\n\t{", "function foo(\$a)\n\t{"),
-            array("function foo(\n\$a\n) {", "function foo(\n\$a\n) {"),
-            array("function _function () {", "function _function() {"),
-            array("\$function = function(){", "\$function = function () {"),
-            array("\$function('');", "\$function('');"),
-        );
+        $fixer = new Fixer();
+        $file = $this->getTestFile();
+
+        if (null !== $input) {
+            $this->assertSame($expected, $fixer->fix($file, $input));
+        }
+
+        $this->assertSame($expected, $fixer->fix($file, $expected));
     }
 
     /**
-     * @dataProvider data
+     * @dataProvider provideCases
      */
-    public function testFix($source, $target)
+    public function testFix($expected, $input = null)
     {
-        $fixer = new Fixer();
-        $testFile = $this->getTestFile();
-        $this->assertSame($target, $fixer->fix($testFile, $source));
-        $this->assertSame($target, $fixer->fix($testFile, $target));
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideCases()
+    {
+        return array(
+            array(
+                // non-PHP test
+                'function foo () {}',
+            ),
+            array(
+                '<?php function foo() {}',
+                '<?php function	foo() {}',
+            ),
+            array(
+                '<?php function foo() {}',
+                '<?php function foo () {}',
+            ),
+            array(
+                '<?php function foo() {}',
+                '<?php function foo	() {}',
+            ),
+            array(
+                '<?php function foo() {}',
+                '<?php function
+foo () {}',
+            ),
+            array(
+                '<?php function ($i) {}',
+                '<?php function($i) {}',
+            ),
+            array(
+                '<?php function _function() {}',
+                '<?php function _function () {}',
+            ),
+            array(
+                '<?php function foo($a, $b = true) {}',
+                '<?php function foo($a, $b = true){}',
+            ),
+            array(
+                '<?php function foo($a, $b = true) {}',
+                '<?php function foo($a, $b = true)    {}',
+            ),
+            array(
+                '<?php function foo($a)
+{}',
+            ),
+            array(
+                '<?php function ($a) use ($b) {}',
+                '<?php function ($a) use ($b)     {}',
+            ),
+            array(
+                '<?php function foo($a) {}',
+                '<?php function foo( $a ) {}',
+            ),
+            array(
+                '<?php function foo($a)
+	{}',
+                '<?php function foo( $a)
+	{}',
+            ),
+            array(
+                '<?php
+    function foo(
+        $a,
+        $b,
+        $c
+    ) {}',
+            ),
+            array(
+                '<?php $function = function () {}',
+                '<?php $function = function(){}',
+            ),
+            array(
+                '<?php $function("");',
+            ),
+            array(
+                '<?php function ($a) use ($b) {}',
+                '<?php function($a)use($b) {}',
+            ),
+            array(
+                '<?php function ($a) use ($b) {}',
+                '<?php function($a)         use      ($b) {}',
+            ),
+            array(
+                '<?php function ($a) use ($b) {}',
+                '<?php function ($a) use ( $b ) {}',
+            ),
+            array(
+                '<?php function ($a) use ($b) {}',
+                '<?php function (  $a   ) use (   $b      ) {}',
+            ),
+            array(
+                '<?php
+    interface Foo
+    {
+        public function setConfig(ConfigInterface $config);
+    }',
+            ),
+        );
     }
 
     private function getTestFile($filename = __FILE__)
