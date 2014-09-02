@@ -68,8 +68,7 @@ class NewWithBracesFixerTest extends \PHPUnit_Framework_TestCase
                 '<?php $a = new $b[$c]();',
                 '<?php $a = new $b[$c];',
             ),
-	    array(
-                '<?php $a = new $b["a"]()', '<?php $a = new $b["a"]()'),
+	    array('<?php $a = new $b["a"]()', '<?php $a = new $b["a"]()'),
             array(
                 '<?php $a = new $b[$c[$d ? foo() : bar("bar[...]") - 1]]();',
                 '<?php $a = new $b[$c[$d ? foo() : bar("bar[...]") - 1]];',
