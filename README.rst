@@ -167,14 +167,6 @@ Choose from the list of available fixers:
             ?> tags or the short-echo <?= ?> tags; it
             must not use the other tag variations.
 
-* **curly_brackets_newline** [PSR-2] Opening braces for classes,
-            interfaces, traits and methods must go on
-            the next line, and closing braces must go
-            on the next line after the body. Opening
-            braces for control structures must go on
-            the same line, and closing braces must go
-            on the next line after the body.
-
 * **elseif** [PSR-2] The keyword elseif should be used
             instead of else if so that all control
             keywords looks like single words.

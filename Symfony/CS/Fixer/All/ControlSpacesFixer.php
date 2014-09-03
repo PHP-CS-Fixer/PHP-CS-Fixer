@@ -40,8 +40,7 @@ class ControlSpacesFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run after the CurlyBracketsNewlineFixer
-        return -10;
+        return 0;
     }
 
     /**

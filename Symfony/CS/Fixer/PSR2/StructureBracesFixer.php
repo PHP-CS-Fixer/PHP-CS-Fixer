@@ -430,7 +430,7 @@ class StructureBracesFixer implements FixerInterface
      */
     public function getPriority()
     {
-        // should be run after the CurlyBracketsNewlineFixer and ElseIfFixer
+        // should be run after the ElseIfFixer
         return -25;
     }
 
