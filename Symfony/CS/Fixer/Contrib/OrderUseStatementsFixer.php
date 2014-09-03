@@ -75,7 +75,8 @@ class OrderUseStatementsFixer implements FixerInterface
 
     public function getPriority()
     {
-        return 0;
+        // should be run after the MultipleUseStatementFixer
+        return -10;
     }
 
     public function supports(\SplFileInfo $file)
