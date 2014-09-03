@@ -8,17 +8,15 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Fixer\Contrib\OrderUseStatementsFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class OrderUseStatementsFixerTest extends \PHPUnit_Framework_TestCase
+class OrderUseStatementsFixerTest extends AbstractFixerTestBase
 {
     public function testFix()
     {
-        $fixer = new Fixer();
-        $file  = $this->getTestFile();
-
         $expected = <<<'EOF'
 The normal
 use of this fixer
@@ -99,17 +97,6 @@ class AnnotatedClass
 }
 EOF;
 
-        $this->assertEquals($expected, $fixer->fix($file, $input));
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
+        $this->makeTest($expected, $input);
     }
 }

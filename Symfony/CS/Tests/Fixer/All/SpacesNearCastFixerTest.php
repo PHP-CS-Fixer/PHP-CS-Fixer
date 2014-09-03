@@ -11,41 +11,67 @@
 
 namespace Symfony\CS\Tests\Fixer\All;
 
-use Symfony\CS\Fixer\All\SpacesNearCastFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class SpacesNearCastFixerTest extends \PHPUnit_Framework_TestCase
+class SpacesNearCastFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider testFixCastsProvider
      */
-    public function testFixCasts($cast, $castFixed)
+    public function testFixCasts($expected, $input = null)
     {
-        $fixer = new Fixer();
-
-        $this->assertSame($castFixed, $fixer->fix($this->getTestFile(), $cast));
-        $this->assertSame($castFixed, $fixer->fix($this->getTestFile(), $castFixed));
+        $this->makeTest($expected, $input);
     }
 
     public function testFixCastsProvider()
     {
         return array(
-            array('<?php echo "( int ) $foo";', '<?php echo "( int ) $foo";'),
-            array('<?php $bar = ( int)$foo;', '<?php $bar = (int) $foo;'),
-            array('<?php $bar = (	int)$foo;', '<?php $bar = (int) $foo;'),
-            array('<?php $bar = (int)	$foo;', '<?php $bar = (int) $foo;'),
-            array('<?php $bar = ( string )( int )$foo;', '<?php $bar = (string) (int) $foo;'),
-            array('<?php $bar = (string)(int)$foo;', '<?php $bar = (string) (int) $foo;'),
-            array('<?php $bar = ( string   )    (   int )$foo;', '<?php $bar = (string) (int) $foo;'),
-            array('<?php $bar = ( string )   $foo;', '<?php $bar = (string) $foo;'),
-            array('<?php $bar = (float )Foo::bar();', '<?php $bar = (float) Foo::bar();'),
-            array('<?php $bar = Foo::baz((float )Foo::bar());', '<?php $bar = Foo::baz((float) Foo::bar());'),
-            array('<?php $bar = $query["params"] = (array)$query["params"];', '<?php $bar = $query["params"] = (array) $query["params"];'),
-            array("<?php \$bar = (int)\n \$foo;", "<?php \$bar = (int)\n \$foo;"),
+            array(
+                '<?php echo "( int ) $foo";',
+            ),
+            array(
+                '<?php $bar = (int) $foo;',
+                '<?php $bar = ( int)$foo;',
+            ),
+            array(
+                '<?php $bar = (int) $foo;',
+                '<?php $bar = (	int)$foo;',
+            ),
+            array(
+                '<?php $bar = (int) $foo;',
+                '<?php $bar = (int)	$foo;',
+            ),
+            array(
+                '<?php $bar = (string) (int) $foo;',
+                '<?php $bar = ( string )( int )$foo;',
+            ),
+            array(
+                '<?php $bar = (string) (int) $foo;',
+                '<?php $bar = (string)(int)$foo;',
+            ),
+            array(
+                '<?php $bar = (string) (int) $foo;',
+                '<?php $bar = ( string   )    (   int )$foo;',
+            ),
+            array(
+                '<?php $bar = (string) $foo;',
+                '<?php $bar = ( string )   $foo;',
+            ),
+            array(
+                '<?php $bar = (float) Foo::bar();',
+                '<?php $bar = (float )Foo::bar();',
+            ),
+            array(
+                '<?php $bar = Foo::baz((float) Foo::bar());',
+                '<?php $bar = Foo::baz((float )Foo::bar());',
+            ),
+            array(
+                '<?php $bar = $query["params"] = (array) $query["params"];',
+                '<?php $bar = $query["params"] = (array)$query["params"];',
+            ),
+            array(
+                "<?php \$bar = (int)\n \$foo;",
+            ),
         );
-    }
-
-    private function getTestFile()
-    {
-        return new \SplFileInfo(__FILE__);
     }
 }

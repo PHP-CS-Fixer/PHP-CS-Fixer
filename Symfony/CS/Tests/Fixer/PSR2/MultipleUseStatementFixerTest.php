@@ -11,18 +11,15 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Fixer\PSR2\MultipleUseStatementFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class MultipleUseStatementFixerTest extends \PHPUnit_Framework_TestCase
+class MultipleUseStatementFixerTest extends AbstractFixerTestBase
 {
     public function testFix()
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 use Some, Not, PHP, Like, Use, Statement;
 <?php
@@ -83,17 +80,6 @@ namespace Boo {
 
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
+        $this->makeTest($expected, $input);
     }
 }

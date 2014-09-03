@@ -12,13 +12,12 @@
 namespace Symfony\CS\Tests\Fixer\PSR0;
 
 use Symfony\CS\Config\Config;
-use Symfony\CS\Fixer\PSR0\Psr0Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class Psr0FixerTest extends \PHPUnit_Framework_TestCase
+class Psr0FixerTest extends AbstractFixerTestBase
 {
     public function testFixCase()
     {
-        $fixer = new Psr0Fixer();
         $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
 
         $expected = <<<'EOF'
@@ -30,7 +29,7 @@ namespace Symfony\cs\Fixer\PSR0;
 class psr0Fixer {}
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input, $file);
 
         $expected = <<<'EOF'
 class Symfony_CS_Fixer_PSR0_Psr0Fixer {}
@@ -39,12 +38,11 @@ EOF;
 class symfony_cs_FiXER_PSR0_Psr0FIXer {}
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input, $file);
     }
 
     public function testFixClassName()
     {
-        $fixer = new Psr0Fixer();
         $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
 
         $expected = <<<'EOF'
@@ -58,12 +56,11 @@ class blah {}
 /* class foo */
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input, $file);
     }
 
     public function testFixAbstractClassName()
     {
-        $fixer = new Psr0Fixer();
         $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
 
         $expected = <<<'EOF'
@@ -77,12 +74,11 @@ abstract class blah {}
 /* class foo */
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input, $file);
     }
 
     public function testFixFinalClassName()
     {
-        $fixer = new Psr0Fixer();
         $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
 
         $expected = <<<'EOF'
@@ -96,12 +92,12 @@ final class blah {}
 /* class foo */
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input, $file);
     }
 
     public function testHandlePartialNamespaces()
     {
-        $fixer = new Psr0Fixer();
+        $fixer = $this->getFixer();
         $config = new Config();
         $config->setDir(__DIR__.'/../../../');
         $fixer->setConfig($config);
@@ -134,7 +130,6 @@ EOF;
 
     public function testFixLeadingSpaceNamespace()
     {
-        $fixer = new Psr0Fixer();
         $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
 
         $expected = <<<'EOF'
@@ -146,17 +141,6 @@ EOF;
 class Psr0Fixer {}
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
+        $this->makeTest($expected, $input, $file);
     }
 }

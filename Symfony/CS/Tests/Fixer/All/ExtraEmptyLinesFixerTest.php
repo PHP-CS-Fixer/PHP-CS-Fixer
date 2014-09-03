@@ -11,15 +11,12 @@
 
 namespace Symfony\CS\Tests\Fixer\All;
 
-use Symfony\CS\Fixer\All\ExtraEmptyLinesFixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class ExtraEmptyLinesFixerTest extends \PHPUnit_Framework_TestCase
+class ExtraEmptyLinesFixerTest extends AbstractFixerTestBase
 {
     public function testFix()
     {
-        $fixer = new ExtraEmptyLinesFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 $a = new Bar();
@@ -35,14 +32,11 @@ $a = new Bar();
 $a = new FooBaz();
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testFixWithManyEmptyLines()
     {
-        $fixer = new ExtraEmptyLinesFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 $a = new Bar();
@@ -62,14 +56,11 @@ $a = new Bar();
 $a = new FooBaz();
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testFixWithHeredoc()
     {
-        $fixer = new ExtraEmptyLinesFixer();
-        $file = $this->getTestFile();
-
         $expected = '
 <?php
 $b = <<<TEXT
@@ -81,25 +72,11 @@ FooFoo
 TEXT;
 ';
 
-        $input = '
-<?php
-$b = <<<TEXT
-Foo TEXT
-Bar
-
-
-FooFoo
-TEXT;
-';
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected);
     }
 
     public function testFixWithNowdoc()
     {
-        $fixer = new ExtraEmptyLinesFixer();
-        $file = $this->getTestFile();
-
         $expected = '
 <?php
 $b = <<<\'TEXT\'
@@ -111,24 +88,11 @@ FooFoo
 TEXT;
 ';
 
-        $input = '
-<?php
-$b = <<<\'TEXT\'
-Foo TEXT;
-Bar1}
-
-
-FooFoo
-TEXT;
-';
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected);
     }
 
     public function testFixWithEncapsulatedNowdoc()
     {
-        $fixer = new ExtraEmptyLinesFixer();
-        $file = $this->getTestFile();
-
         $expected = '
 <?php
 $b = <<<\'TEXT\'
@@ -146,31 +110,11 @@ FooFoo
 TEXT;
 ';
 
-        $input = '
-<?php
-$b = <<<\'TEXT\'
-Foo TEXT
-Bar
-
-<<<\'TEMPLATE\'
-BarFooBar TEMPLATE
-
-
-TEMPLATE;
-
-
-FooFoo
-TEXT;
-';
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected);
     }
 
     public function testFixWithMultilineString()
     {
-        $fixer = new ExtraEmptyLinesFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 $a = 'Foo
@@ -179,22 +123,11 @@ $a = 'Foo
 Bar';
 EOF;
 
-        $input = <<<'EOF'
-<?php
-$a = 'Foo
-
-
-Bar';
-EOF;
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected);
     }
 
     public function testFixWithTrickyMultilineStrings()
     {
-        $fixer = new ExtraEmptyLinesFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 $a = 'Foo';
@@ -232,14 +165,11 @@ Here\'s an escaped quote '
 FooFoo';
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testFixWithCommentWithAQuote()
     {
-        $fixer = new ExtraEmptyLinesFixer();
-        $file = new \SplFileInfo(__FILE__);
-
         $expected = <<<'EOF'
 <?php
 $a = 'foo';
@@ -262,17 +192,6 @@ $b = 'foobar';
 $c = 'bar';
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
+        $this->makeTest($expected, $input);
     }
 }

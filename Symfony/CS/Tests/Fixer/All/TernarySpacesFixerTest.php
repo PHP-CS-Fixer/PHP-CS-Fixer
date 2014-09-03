@@ -11,23 +11,19 @@
 
 namespace Symfony\CS\Tests\Fixer\All;
 
-use Symfony\CS\Fixer\All\TernarySpacesFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class TernarySpacesFixerTest extends \PHPUnit_Framework_TestCase
+class TernarySpacesFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
      */
-    public function testFix($expected, $input)
+    public function testFix($expected, $input = null)
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
-        $this->assertSame($expected, $fixer->fix($file, $expected));
+        $this->makeTest($expected, $input);
     }
 
     public function provideCases()
@@ -45,21 +41,12 @@ class TernarySpacesFixerTest extends \PHPUnit_Framework_TestCase
                 '<?php
 $a = $b  ? 2 : 3;
 $a = $bc ? 2 : 3;',
-                '<?php
-$a = $b  ? 2 : 3;
-$a = $bc ? 2 : 3;',
             ),
             array(
                 '<?php $config = $config ?: new Config();',
                 '<?php $config = $config ? : new Config();',
             ),
             array(
-                '<?php
-$a = $b ? (
-        $c + 1
-    ) : (
-        $d + 1
-    );',
                 '<?php
 $a = $b ? (
         $c + 1
@@ -86,14 +73,6 @@ $a = ($b
         : $f
     )
 );',
-                '<?php
-$a = ($b
-    ? $c
-    : ($d
-        ? $e
-        : $f
-    )
-);',
             ),
             array(
                 '<?php
@@ -108,16 +87,5 @@ $a = ($b
 );',
             ),
         );
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
     }
 }

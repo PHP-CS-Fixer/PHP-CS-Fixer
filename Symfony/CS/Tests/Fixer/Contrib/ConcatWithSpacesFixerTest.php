@@ -11,23 +11,19 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Fixer\Contrib\ConcatWithSpacesFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ConcatWithSpacesFixerTest extends \PHPUnit_Framework_TestCase
+class ConcatWithSpacesFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
      */
-    public function testFix($expected, $input)
+    public function testFix($expected, $input = null)
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
-        $this->assertSame($expected, $fixer->fix($file, $expected));
+        $this->makeTest($expected, $input);
     }
 
     public function provideCases()
@@ -50,16 +46,5 @@ class ConcatWithSpacesFixerTest extends \PHPUnit_Framework_TestCase
     ."baz";',
             ),
         );
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
     }
 }

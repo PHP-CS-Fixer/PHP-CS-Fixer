@@ -11,15 +11,12 @@
 
 namespace Symfony\CS\Tests\Fixer\All;
 
-use Symfony\CS\Fixer\All\PhpdocParamsAlignmentFixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class PhpdocParamsAlignmentFixerTest extends \PHPUnit_Framework_TestCase
+class PhpdocParamsAlignmentFixerTest extends AbstractFixerTestBase
 {
     public function testFix()
     {
-        $fixer = new PhpdocParamsAlignmentFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
     /**
@@ -44,14 +41,11 @@ EOF;
 
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testFixMultiLineDesc()
     {
-        $fixer = new PhpdocParamsAlignmentFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
     /**
@@ -82,14 +76,11 @@ EOF;
 
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testFixMultiLineDescWithThrows()
     {
-        $fixer = new PhpdocParamsAlignmentFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
     /**
@@ -130,14 +121,11 @@ EOF;
 
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testFixWithReturnAndThrows()
     {
-        $fixer = new PhpdocParamsAlignmentFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
     /**
@@ -160,7 +148,7 @@ EOF;
 
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     /**
@@ -169,9 +157,6 @@ EOF;
      */
     public function testFixThreeParamsWithReturn()
     {
-        $fixer = new PhpdocParamsAlignmentFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
     /**
@@ -194,14 +179,11 @@ EOF;
 
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testFixOnlyReturn()
     {
-        $fixer = new PhpdocParamsAlignmentFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
     /**
@@ -218,14 +200,11 @@ EOF;
 
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testReturnWithDollarThis()
     {
-        $fixer = new PhpdocParamsAlignmentFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
     /**
@@ -244,14 +223,11 @@ EOF;
 
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testCustomAnnotationsStayUntouched()
     {
-        $fixer = new PhpdocParamsAlignmentFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
     /**
@@ -270,17 +246,6 @@ EOF;
 
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
+        $this->makeTest($expected, $input);
     }
 }
