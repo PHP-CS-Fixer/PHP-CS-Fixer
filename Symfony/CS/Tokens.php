@@ -892,7 +892,7 @@ class Tokens extends \SplFixedArray
         $nextIndex = null;
         $nextToken = $this->getNextNonWhitespace($endParenthesisIndex, array(), $nextIndex);
 
-        if ('{' !== $nextToken->content) {
+        if ('{' !== $nextToken->content && !$nextToken->isGivenKind(T_USE)) {
             return false;
         }
 
