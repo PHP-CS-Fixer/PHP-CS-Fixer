@@ -203,7 +203,7 @@ class UnusedUseFixer implements FixerInterface
      */
     public function getPriority()
     {
-        // should be run after the MultipleUseStatementFixer
+        // should be run after the MultipleUseFixer
         return -10;
     }
 
