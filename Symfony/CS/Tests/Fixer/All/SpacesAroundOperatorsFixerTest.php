@@ -11,22 +11,19 @@
 
 namespace Symfony\CS\Tests\Fixer\All;
 
-use Symfony\CS\Fixer\All\SpacesAroundOperatorsFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class SpacesAroundOperatorsFixerTest extends \PHPUnit_Framework_TestCase
+class SpacesAroundOperatorsFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
      */
-    public function testFix($expected, $input)
+    public function testFix($expected, $input = null)
     {
-        $fixer = new Fixer();
-
-        $this->assertSame($expected, $fixer->fix($this->getTestFile(), $input));
-        $this->assertSame($expected, $fixer->fix($this->getTestFile(), $expected));
+        $this->makeTest($expected, $input);
     }
 
     public function provideCases()
@@ -46,15 +43,11 @@ class SpacesAroundOperatorsFixerTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 '<?php $a &= $b;',
-                '<?php $a &= $b;',
             ),
             array(
                 '<?php $a  &=   $b;',
-                '<?php $a  &=   $b;',
             ),
             array(
-                '<?php $a &=
-$b;',
                 '<?php $a &=
 $b;',
             ),
@@ -170,10 +163,5 @@ $b;',
                 '<?php $a = array("b"=>"c", );',
             ),
         );
-    }
-
-    private function getTestFile()
-    {
-        return new \SplFileInfo(__FILE__);
     }
 }
