@@ -21,10 +21,6 @@ class CurlyBracketsNewlineFixerTest extends AbstractFixerTestBase
         $ifFixed = 'if ($someTest) {';
         $this->makeTest($ifFixed, $if);
 
-        $if = "if (test) // foo  \n{";
-        $ifFixed = "if (test) { // foo";
-        $this->makeTest($ifFixed, $if);
-
         $func = "function download() {\n}";
         $funcFixed = "function download()\n{\n}";
         $this->makeTest($funcFixed, $func);

@@ -554,6 +554,24 @@ abstract class Foo
         );
     }
 
+    public function testFixCommentBeforeBrace()
+    {
+        $expected = '<?php
+    if (test) {
+        // foo
+
+        echo 1;
+    }';
+
+        $input = '<?php
+    if (test) // foo
+    {
+        echo 1;
+    }';
+
+        $this->makeTest($expected, $input);
+    }
+
     private function getTestFile($filename = __FILE__)
     {
         static $files = array();

@@ -27,6 +27,7 @@ class StructureBracesFixer implements FixerInterface
     {
         $tokens = Tokens::fromCode($content);
 
+        $this->fixCommentBeforeBrace($tokens);
         $this->fixMissingControlBraces($tokens);
         $this->fixIndents($tokens);
         $this->fixControlContinuationBraces($tokens);
@@ -217,6 +218,37 @@ class StructureBracesFixer implements FixerInterface
             $tokens->removeTrailingWhitespace($parenthesisEndIndex);
             $tokens->insertAt($parenthesisEndIndex + 1, new Token('{'));
             $tokens->ensureWhitespaceAtIndex($parenthesisEndIndex + 1, 0, ' ');
+        }
+    }
+
+    private function fixCommentBeforeBrace(Tokens $tokens)
+    {
+        $controlTokens = $this->getControlTokens();
+
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            $token = $tokens[$index];
+
+            if (!$token->isGivenKind($controlTokens)) {
+                continue;
+            }
+
+            $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
+            $afterParenthesisIndex = null;
+            $afterParenthesisToken = $tokens->getNextNonWhitespace($parenthesisEndIndex, array(), $afterParenthesisIndex);
+
+            if (!$afterParenthesisToken->isComment()) {
+                continue;
+            }
+
+            $afterCommentIndex = null;
+            $afterCommentToken = $tokens->getNextNonWhitespace($afterParenthesisIndex, array(), $afterCommentIndex);
+
+            if ('{' !== $afterCommentToken->content) {
+                continue;
+            }
+
+            $tokens[$afterCommentIndex] = $afterParenthesisToken;
+            $tokens[$afterParenthesisIndex] = $afterCommentToken;
         }
     }
 
