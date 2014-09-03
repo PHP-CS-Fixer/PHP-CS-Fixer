@@ -11,15 +11,12 @@
 
 namespace Symfony\CS\Tests\Fixer\All;
 
-use Symfony\CS\Fixer\All\UnusedUseStatementsFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class UnusedUseStatementsFixerTest extends \PHPUnit_Framework_TestCase
+class UnusedUseStatementsFixerTest extends AbstractFixerTestBase
 {
     public function testFix()
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 
@@ -81,15 +78,12 @@ class AnnotatedClass
 }
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
 
     public function testFixFunWithIndent()
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 
@@ -121,14 +115,11 @@ $a = new SomeClassIndented();
 
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testFixUseInTheSameNamespace()
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 
@@ -159,14 +150,11 @@ $c = new Bar\Fooz();
 $d = new Bbb();
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testMultipleUseStatements()
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 
@@ -195,14 +183,11 @@ $c = new D();
 $e = new BarE();
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testNamespaceWithBraces()
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 
@@ -233,14 +218,11 @@ namespace Foo\Bar\FooBar {
 }
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testTrailingSpaces()
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 
@@ -263,14 +245,11 @@ $a = new Bar();
 $a = new FooBaz();
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testTraits()
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 
@@ -298,14 +277,11 @@ use MyTrait2;
 }
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testFunctionUse()
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 
@@ -329,14 +305,11 @@ $a = function ($item) use ($f) {
 };
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testSimilarNames()
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 
@@ -366,30 +339,20 @@ class SomeService
 }
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     /**
      * @dataProvider providerUseInString
      */
-    public function testUseInString($expected, $input)
+    public function testUseInString($expected, $input = null)
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();;
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function providerUseInString()
     {
         $expected1 = <<<'EOF'
-$x=<<<'EOA'
-use a;
-use b;
-EOA;
-EOF;
-
-        $input1 = <<<'EOF'
 $x=<<<'EOA'
 use a;
 use b;
@@ -403,12 +366,6 @@ use b;
 ';
 EOF;
 
-        $input2 = <<<'EOF'
-$x='
-use a;
-use b;
-';
-EOF;
         $expected3 = <<<'EOF'
 $x="
 use a;
@@ -416,28 +373,10 @@ use b;
 ";
 EOF;
 
-        $input3 = <<<'EOF'
-$x="
-use a;
-use b;
-";
-EOF;
-
         return array(
-            array($expected1, $input1),
-            array($expected2, $input2),
-            array($expected3, $input3),
+            array($expected1),
+            array($expected2),
+            array($expected3),
         );
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
     }
 }
