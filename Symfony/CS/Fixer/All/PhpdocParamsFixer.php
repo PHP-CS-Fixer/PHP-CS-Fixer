@@ -19,7 +19,7 @@ use Symfony\CS\Tokens;
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class PhpdocParamsAlignmentFixer implements FixerInterface
+class PhpdocParamsFixer implements FixerInterface
 {
     private $regex;
     private $regexCommentLine;

@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class MultipleUseStatementFixerTest extends AbstractFixerTestBase
+class MultipleUseFixerTest extends AbstractFixerTestBase
 {
     public function testFix()
     {

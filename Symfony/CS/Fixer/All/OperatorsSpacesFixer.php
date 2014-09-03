@@ -18,7 +18,7 @@ use Symfony\CS\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class SpacesAroundOperatorsFixer implements FixerInterface
+class OperatorsSpacesFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}

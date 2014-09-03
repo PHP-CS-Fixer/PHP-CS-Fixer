@@ -16,7 +16,7 @@ use Symfony\CS\Tokens;
 /**
  * @author Paweł Zaremba <pawzar@gmail.com>
  */
-class OrderUseStatementsFixer implements FixerInterface
+class OrderUseFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}
@@ -84,7 +84,7 @@ class OrderUseStatementsFixer implements FixerInterface
      */
     public function getPriority()
     {
-        // should be run after the MultipleUseStatementFixer
+        // should be run after the MultipleUseFixer
         return -10;
     }
 

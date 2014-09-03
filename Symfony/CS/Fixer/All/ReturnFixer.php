@@ -18,7 +18,7 @@ use Symfony\CS\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ReturnStatementsFixer implements FixerInterface
+class ReturnFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}
