@@ -131,7 +131,7 @@ class StructureBracesFixer implements FixerInterface
 
             if ($token->isGivenKind($classyAndFunctionTokens)) {
                 $startBraceIndex = null;
-                $startBraceToken = $tokens->getNextTokenOfKind($index, array('{'), $startBraceIndex);
+                $startBraceToken = $tokens->getNextTokenOfKind($index, array(';', '{'), $startBraceIndex);
             } else {
                 $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
                 $startBraceIndex = null;

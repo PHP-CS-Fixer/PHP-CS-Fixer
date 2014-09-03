@@ -447,6 +447,13 @@ if (1) {
         }
     }',
             ),
+            array(
+                '<?php
+    interface Foo
+    {
+        public function setConfig(ConfigInterface $config);
+    }',
+            ),
         );
     }
 
