@@ -18,33 +18,51 @@ use Symfony\CS\FixerInterface;
  */
 class LineFeedFixer implements FixerInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
         // [Structure] Use the linefeed character (0x0A) to end lines
         return str_replace("\r\n", "\n", $content);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLevel()
     {
         // defined in PSR2 ¶2.2
         return FixerInterface::PSR2_LEVEL;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         return 50;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(\SplFileInfo $file)
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'linefeed';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'All PHP files must use the Unix LF (linefeed) line ending.';

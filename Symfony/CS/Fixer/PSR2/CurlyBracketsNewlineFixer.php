@@ -23,6 +23,9 @@ class CurlyBracketsNewlineFixer implements FixerInterface
     // Capture the indentation first
     const ADD_NEWLINE = "\\1\\2\n\\1{";
 
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
         $content = $this->classDeclarationFix($content);
@@ -35,27 +38,42 @@ class CurlyBracketsNewlineFixer implements FixerInterface
         return $content;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLevel()
     {
         // defined in PSR2 ¶4.3, ¶4.3, ¶4.4, ¶5
         return FixerInterface::PSR2_LEVEL;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         return 0;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(\SplFileInfo $file)
     {
         return 'php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'braces';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'Opening braces for classes, interfaces, traits and methods must go on the next line, and closing braces must go on the next line after the body. Opening braces for control structures must go on the same line, and closing braces must go on the next line after the body.';

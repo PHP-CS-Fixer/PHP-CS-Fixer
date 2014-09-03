@@ -23,6 +23,9 @@ class Psr0Fixer implements FixerInterface, ConfigAwareInterface
 {
     protected $config;
 
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
         $namespace = false;
@@ -89,21 +92,33 @@ class Psr0Fixer implements FixerInterface, ConfigAwareInterface
         return $content;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setConfig(ConfigInterface $config)
     {
         $this->config = $config;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLevel()
     {
         return FixerInterface::PSR0_LEVEL;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         return -10;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(\SplFileInfo $file)
     {
         if ('php' !== pathinfo($file->getFilename(), PATHINFO_EXTENSION)) {
@@ -114,11 +129,17 @@ class Psr0Fixer implements FixerInterface, ConfigAwareInterface
         return !preg_match('{[/\\\\](stub|fixture)s?[/\\\\]}i', $file->getRealPath());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'psr0';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'Classes must be in a path that matches their namespace, be at least one namespace deep, and the class name should match the file name.';

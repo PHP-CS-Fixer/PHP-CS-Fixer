@@ -20,6 +20,9 @@ use Symfony\CS\Tokens;
  */
 class SpacesAroundOperatorsFixer implements FixerInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
@@ -80,26 +83,41 @@ class SpacesAroundOperatorsFixer implements FixerInterface
         return $token->isArray() ? isset($arrayOperators[$token->id]) : isset($nonArrayOperators[$token->content]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLevel()
     {
         return FixerInterface::ALL_LEVEL;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         return 0;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(\SplFileInfo $file)
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'operators_spaces';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'Operators should be arounded by at least one space.';

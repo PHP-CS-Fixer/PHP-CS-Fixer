@@ -20,6 +20,9 @@ use Symfony\CS\Tokens;
  */
 class TernarySpacesFixer implements FixerInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
         $ternaryLevel = 0;
@@ -82,26 +85,41 @@ class TernarySpacesFixer implements FixerInterface
         $tokens->insertAt($index + $indexChange, new Token(array(T_WHITESPACE, ' ', $token->line)));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLevel()
     {
         return FixerInterface::ALL_LEVEL;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         return 0;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(\SplFileInfo $file)
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'ternary_spaces';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'Standardize spaces around ternary operator.';

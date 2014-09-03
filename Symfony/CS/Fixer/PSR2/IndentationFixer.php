@@ -19,6 +19,9 @@ use Symfony\CS\Tokens;
  */
 class IndentationFixer implements FixerInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
@@ -34,27 +37,42 @@ class IndentationFixer implements FixerInterface
         return $tokens->generateCode();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLevel()
     {
         // defined in PSR2 ¶2.4
         return FixerInterface::PSR2_LEVEL;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         return 50;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(\SplFileInfo $file)
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'indentation';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting.';

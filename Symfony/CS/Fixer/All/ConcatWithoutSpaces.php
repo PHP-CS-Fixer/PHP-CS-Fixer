@@ -19,6 +19,9 @@ use Symfony\CS\Tokens;
  */
 class ConcatWithoutSpaces implements FixerInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
@@ -34,26 +37,41 @@ class ConcatWithoutSpaces implements FixerInterface
         return $tokens->generateCode();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLevel()
     {
         return FixerInterface::ALL_LEVEL;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         return 0;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(\SplFileInfo $file)
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'concat_without_spaces';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'Concatenation should be used without spaces.';

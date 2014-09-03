@@ -20,6 +20,9 @@ use Symfony\CS\Tokens;
  */
 class ShortArraySyntaxFixer implements FixerInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
@@ -70,26 +73,41 @@ class ShortArraySyntaxFixer implements FixerInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLevel()
     {
         return FixerInterface::CONTRIB_LEVEL;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         return 0;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(\SplFileInfo $file)
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'short_array_syntax';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'PHP array\'s should use the PHP 5.4 short-syntax.';

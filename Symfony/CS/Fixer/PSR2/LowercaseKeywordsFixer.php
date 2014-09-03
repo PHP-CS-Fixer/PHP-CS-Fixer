@@ -19,6 +19,9 @@ use Symfony\CS\Tokens;
  */
 class LowercaseKeywordsFixer implements FixerInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
@@ -32,27 +35,42 @@ class LowercaseKeywordsFixer implements FixerInterface
         return $tokens->generateCode();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLevel()
     {
         // defined in PSR2 ¶2.5
         return FixerInterface::PSR2_LEVEL;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         return 0;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(\SplFileInfo $file)
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'lowercase_keywords';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'PHP keywords MUST be in lower case.';

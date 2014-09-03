@@ -20,6 +20,9 @@ use Symfony\CS\Tokens;
  */
 class ConcatWithSpaces implements FixerInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
@@ -41,27 +44,42 @@ class ConcatWithSpaces implements FixerInterface
         return $tokens->generateCode();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLevel()
     {
         return FixerInterface::CONTRIB_LEVEL;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run after the ConcatWithoutSpaces
         return -10;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(\SplFileInfo $file)
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'concat_with_spaces';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'Concatenation should be used with at least one whitespace around.';
