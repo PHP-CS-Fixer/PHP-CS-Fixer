@@ -85,10 +85,10 @@ class StructureBracesFixer implements FixerInterface
 
     private function fixIndents(Tokens $tokens)
     {
-        $classyTokens = $this->getClassyTokens();
+        $classyAndFunctionTokens = array_merge(array(T_FUNCTION), $this->getClassyTokens());
         $controlTokens = $this->getControlTokens();
         $controlContinuationTokens = $this->getControlContinuationTokens();
-        $indentTokens = array_filter(array_merge($classyTokens, $controlTokens), function ($item) { return T_SWITCH !== $item; });;
+        $indentTokens = array_filter(array_merge($classyAndFunctionTokens, $controlTokens), function ($item) { return T_SWITCH !== $item; });
 
         for ($index = 0, $limit = count($tokens); $index < $limit; ++$index) {
             $token = $tokens[$index];
@@ -98,7 +98,7 @@ class StructureBracesFixer implements FixerInterface
                 continue;
             }
 
-            if ($token->isGivenKind($classyTokens)) {
+            if ($token->isGivenKind($classyAndFunctionTokens)) {
                 $startBraceIndex = null;
                 $startBraceToken = $tokens->getNextTokenOfKind($index, array('{'), $startBraceIndex);
             } else {
@@ -177,7 +177,7 @@ class StructureBracesFixer implements FixerInterface
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
             }
 
-            if ($token->isGivenKind($classyTokens)) {
+            if ($token->isGivenKind($classyAndFunctionTokens)) {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, "\n".$indent);
             } else {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
@@ -260,12 +260,12 @@ class StructureBracesFixer implements FixerInterface
 
     private function detectIndent(Tokens $tokens, $index)
     {
-        if ($tokens[$index]->isGivenKind($this->getClassyTokens())) {
+        if ($tokens[$index]->isGivenKind($this->getClassyTokens()) || $tokens[$index]->isGivenKind(T_FUNCTION)) {
             $prevIndex = null;
             $prevToken = $tokens->getPrevNonWhitespace($index, array(), $prevIndex);
 
-            if ($prevToken->isGivenKind(array(T_ABSTRACT, T_FINAL))) {
-                $index = $prevIndex;
+            if ($prevToken->isGivenKind(array(T_ABSTRACT, T_FINAL, T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC))) {
+                return $this->detectIndent($tokens, $prevIndex);
             }
         }
 

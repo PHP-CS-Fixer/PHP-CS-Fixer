@@ -636,4 +636,43 @@ abstract class Foo
             ),
         );
     }
+
+    /**
+     * @dataProvider provideTestFixFunctionsCases
+     */
+     // FRS
+    public function testFixFunctions($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideTestFixFunctionsCases()
+    {
+        return array(
+            array(
+                '<?php
+    function download()
+    {
+    }',
+                '<?php
+    function download() {
+    }',
+            ),
+            array(
+                '<?php
+class Foo
+{
+    public function test(){
+    }
+}',
+                '<?php
+class Foo
+{
+    public function test()
+    {
+    }
+}',
+            ),
+        );
+    }
 }
