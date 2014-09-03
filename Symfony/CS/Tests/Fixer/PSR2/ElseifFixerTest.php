@@ -63,32 +63,6 @@ if ($b) {
         );
     }
 
-    /**
-     * @covers Symfony\CS\Fixer\ElseifFixer::getName
-     */
-    public function testThatHaveExpectedName()
-    {
-        $fixer = new ElseifFixer();
-
-        $this->assertSame('elseif', $fixer->getName());
-    }
-
-    /**
-     * @covers Symfony\CS\Fixer\ElseifFixer::getDescription
-     */
-    public function testThatHaveDescription()
-    {
-        $fixer = new ElseifFixer();
-
-        $this->assertNotEmpty($fixer->getDescription());
-    }
-
-    public function testThatAreDefinedInPSR2()
-    {
-        $fixer = new ElseIfFixer();
-        $this->assertSame(FixerInterface::PSR2_LEVEL, $fixer->getLevel());
-    }
-
     private function getTestFile($filename = __FILE__)
     {
         static $files = array();
