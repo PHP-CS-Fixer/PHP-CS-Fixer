@@ -38,8 +38,8 @@ class TernarySpacesFixer implements FixerInterface
 
                 if (!$nextNonWhitespaceToken->isArray() && ':' === $nextNonWhitespaceToken->content) {
                     // for `$a ?: $b` remove spaces between `?` and `:`
-                    for ($i = $index + 1; $i < $nextNonWhitespaceIndex; ++$i) {
-                        $tokens[$i]->clear();
+                    if ($tokens[$index + 1]->isWhitespace()) {
+                        $tokens[$index + 1]->clear();
                     }
                 } else {
                     // for `$a ? $b : $c` ensure space after `?`
