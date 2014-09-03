@@ -11,26 +11,17 @@
 
 namespace Symfony\CS\Tests\Fixer\All;
 
-use Symfony\CS\Fixer\All\NewWithBracesFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class NewWithBracesFixerTest extends \PHPUnit_Framework_TestCase
+class NewWithBracesFixerTest extends AbstractFixerTestBase
 {
-    public function makeTest($expected, $input)
-    {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
-        $this->assertSame($expected, $fixer->fix($file, $expected));
-    }
-
     /**
      * @dataProvider provideStandardCases
      */
-    public function testStandard($expected, $input)
+    public function testStandard($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
@@ -39,7 +30,7 @@ class NewWithBracesFixerTest extends \PHPUnit_Framework_TestCase
      * @dataProvider provide54Cases
      * @requires PHP 5.4
      */
-    public function test54($expected, $input)
+    public function test54($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
@@ -87,16 +78,5 @@ class NewWithBracesFixerTest extends \PHPUnit_Framework_TestCase
                 '<?php $a = [ "key" => new DateTime ];',
             ),
         );
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
     }
 }

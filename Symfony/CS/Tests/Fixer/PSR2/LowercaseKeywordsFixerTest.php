@@ -11,22 +11,19 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Fixer\PSR2\LowercaseKeywordsFixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class LowercaseKeywordsFixerTest extends \PHPUnit_Framework_TestCase
+class LowercaseKeywordsFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideExamples
      */
-    public function testFix($expected, $input)
+    public function testFix($expected, $input = null)
     {
-        $fixer = new LowercaseKeywordsFixer();
-        $file = $this->getTestFile();
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function provideExamples()
@@ -34,18 +31,7 @@ class LowercaseKeywordsFixerTest extends \PHPUnit_Framework_TestCase
         return array(
             array('<?php $x = (1 and 2);', '<?php $x = (1 AND 2);'),
             array('<?php foreach(array(1, 2, 3) as $val) {}', '<?php foreach(array(1, 2, 3) AS $val) {}'),
-            array('<?php echo "GOOD AS NEW";', '<?php echo "GOOD AS NEW";'),
+            array('<?php echo "GOOD AS NEW";'),
         );
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
     }
 }

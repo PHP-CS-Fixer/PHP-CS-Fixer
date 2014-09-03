@@ -11,51 +11,38 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR1;
 
-use Symfony\CS\Fixer\PSR1\EncodingFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class EncodingFixerTest extends \PHPUnit_Framework_TestCase
+class EncodingFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideExamples
      */
     public function testFix($expected, $input, $file)
     {
-        $fixer = new Fixer();
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input, $file);
     }
 
     public function provideExamples()
     {
         return array(
-            $this->prepareTestCase('test-utf8.php', 'test-utf8.php'),
+            $this->prepareTestCase('test-utf8.php'),
             $this->prepareTestCase('test-utf8.php', 'test-utf8-bom.php'),
         );
     }
 
-    private function prepareTestCase($expectedFilename, $inputFilename)
+    private function prepareTestCase($expectedFilename, $inputFilename = null)
     {
         $expectedFile = $this->getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$expectedFilename);
-        $inputFile = $this->getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$inputFilename);
+        $inputFile = $inputFilename ? $this->getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$inputFilename) : null;
 
         return array(
             file_get_contents($expectedFile->getRealpath()),
-            file_get_contents($inputFile->getRealpath()),
-            $inputFile,
+            $inputFile ? file_get_contents($inputFile->getRealpath()) : null,
+            $inputFile ?: $expectedFile,
         );
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
     }
 }

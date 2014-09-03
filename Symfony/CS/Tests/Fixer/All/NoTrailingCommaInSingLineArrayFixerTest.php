@@ -11,57 +11,43 @@
 
 namespace Symfony\CS\Tests\Fixer\All;
 
-use Symfony\CS\Fixer\All\NoTrailingCommaInSingLineArrayFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class NoTrailingCommaInSingLineArrayFixerTest extends \PHPUnit_Framework_TestCase
+class NoTrailingCommaInSingLineArrayFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideExamples
      */
-    public function testFix($expected, $input)
+    public function testFix($expected, $input = null)
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function provideExamples()
     {
         return array(
-            array('<?php $x = array();', '<?php $x = array();'),
-            array('<?php $x = array(());', '<?php $x = array(());'),
-            array('<?php $x = array("foo");', '<?php $x = array("foo");'),
+            array('<?php $x = array();'),
+            array('<?php $x = array(());'),
+            array('<?php $x = array("foo");'),
             array('<?php $x = array("foo");', '<?php $x = array("foo", );'),
-            array("<?php \$x = array(\n'foo', \n);", "<?php \$x = array(\n'foo', \n);"),
-            array("<?php \$x = array('foo', \n);", "<?php \$x = array('foo', \n);"),
+            array("<?php \$x = array(\n'foo', \n);"),
+            array("<?php \$x = array('foo', \n);"),
             array("<?php \$x = array(array('foo'), \n);", "<?php \$x = array(array('foo',), \n);"),
-            array("<?php \$x = array(array('foo',\n), \n);", "<?php \$x = array(array('foo',\n), \n);"),
+            array("<?php \$x = array(array('foo',\n), \n);"),
 
             // Short syntax
-            array('<?php $x = array([]);', '<?php $x = array([]);'),
-            array('<?php $x = [[]];', '<?php $x = [[]];'),
+            array('<?php $x = array([]);'),
+            array('<?php $x = [[]];'),
             array('<?php $x = ["foo"];', '<?php $x = ["foo",];'),
             array('<?php $x = bar(["foo"]);', '<?php $x = bar(["foo",]);'),
-            array("<?php \$x = bar(['foo'],\n]);", "<?php \$x = bar(['foo'],\n]);"),
-            array("<?php \$x = ['foo', \n];", "<?php \$x = ['foo', \n];"),
+            array("<?php \$x = bar(['foo'],\n]);"),
+            array("<?php \$x = ['foo', \n];"),
             array('<?php $x = array([]);', '<?php $x = array([],);'),
             array('<?php $x = [[]];', '<?php $x = [[],];'),
             array('<?php $x = [$y[]];', '<?php $x = [$y[],];'),
         );
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
     }
 }

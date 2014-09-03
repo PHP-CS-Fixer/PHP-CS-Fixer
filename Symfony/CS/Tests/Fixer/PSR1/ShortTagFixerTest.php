@@ -11,29 +11,26 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR1;
 
-use Symfony\CS\Fixer\PSR1\ShortTagFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class ShortTagFixerTest extends \PHPUnit_Framework_TestCase
+class ShortTagFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideClosingTagExamples
      */
-    public function testOneLineFix($expected, $input)
+    public function testOneLineFix($expected, $input = null)
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function provideClosingTagExamples()
     {
         return array(
             array('<?php echo \'Foo\';', '<? echo \'Foo\';'),
-            array('<?= echo \'Foo\';', '<?= echo \'Foo\';'),
-            array('<?php echo \'Foo\'; ?> PLAIN TEXT', '<?php echo \'Foo\'; ?> PLAIN TEXT'),
+            array('<?= echo \'Foo\';'),
+            array('<?php echo \'Foo\'; ?> PLAIN TEXT'),
+            array('PLAIN TEXT<?php echo \'Foo\'; ?>'),
             array('<?php $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";', '<? $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";'),
-            array('PLAIN TEXT<?php echo \'Foo\'; ?>', 'PLAIN TEXT<?php echo \'Foo\'; ?>'),
             array('<?php
 
 echo \'Foo\';
@@ -56,8 +53,6 @@ echo \'Foo\';
             array(
                 '<?php
 // Replace all <? with <?php !',
-                '<?php
-// Replace all <? with <?php !',
             ),
             array(
                 '<?php
@@ -65,27 +60,10 @@ echo \'Foo\';
  * Convert <?= ?> to long-form <?php echo ?> and <?php ?> to <?php ?>
  *
  */',
-                '<?php
-/**
- * Convert <?= ?> to long-form <?php echo ?> and <?php ?> to <?php ?>
- *
- */',
             ),
             array(
-                "<?php \$this->data = preg_replace('/<\?(?!xml|php)/s', '<?php ',       \$this->data);",
                 "<?php \$this->data = preg_replace('/<\?(?!xml|php)/s', '<?php ',       \$this->data);",
             ),
         );
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
     }
 }

@@ -11,15 +11,12 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Fixer\PSR2\VisibilityFixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class VisibilityFixerTest extends \PHPUnit_Framework_TestCase
+class VisibilityFixerTest extends AbstractFixerTestBase
 {
     public function testFixProperties()
     {
-        $fixer = new VisibilityFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 class Foo {
@@ -55,14 +52,11 @@ class Foo {
 }
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testFixPropertiesAfterMethod()
     {
-        $fixer = new VisibilityFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 class Foo {
@@ -71,16 +65,11 @@ class Foo {
 }
 EOF;
 
-        $input = $expected;
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected);
     }
 
     public function testFixMethods()
     {
-        $fixer = new VisibilityFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 abstract class Foo {
@@ -131,14 +120,11 @@ abstract class Foo {
 }
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function testLeaveFunctionsAlone()
     {
-        $fixer = new VisibilityFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 function foo() {
@@ -146,21 +132,11 @@ function foo() {
 }
 EOF;
 
-        $input = <<<'EOF'
-<?php
-function foo() {
-    static $foo;
-}
-EOF;
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected);
     }
 
     public function testLeaveFunctionsAloneWithVariablesMatchingOopWords()
     {
-        $fixer = new VisibilityFixer();
-        $file = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 function foo() {
@@ -170,14 +146,11 @@ function foo() {
 }
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $expected));
+        $this->makeTest($expected);
     }
 
     public function testLeaveFunctionsAloneInsideConditionals()
     {
-        $fixer = new VisibilityFixer();
-        $file  = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 if (!function_exists('foo')) {
@@ -187,14 +160,11 @@ if (!function_exists('foo')) {
     }
 }
 EOF;
-        $this->assertSame($expected, $fixer->fix($file, $expected));
+        $this->makeTest($expected);
     }
 
     public function testLeaveFunctionsAloneInsideConditionalsWithOopWordInComment()
     {
-        $fixer = new VisibilityFixer();
-        $file  = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 /* class <= this is just a stop-word */
@@ -205,14 +175,12 @@ if (!function_exists('foo')) {
     }
 }
 EOF;
-        $this->assertSame($expected, $fixer->fix($file, $expected));
+
+        $this->makeTest($expected);
     }
 
     public function testLeaveFunctionsAloneWithOopWordInComment()
     {
-        $fixer = new VisibilityFixer();
-        $file  = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 /* class */
@@ -221,14 +189,11 @@ function foo($arg)
     return $arg;
 }
 EOF;
-        $this->assertSame($expected, $fixer->fix($file, $expected));
+        $this->makeTest($expected);
     }
 
     public function testLeaveFunctionsAloneOutsideClassesWithOopWordInInlineHtml()
     {
-        $fixer = new VisibilityFixer();
-        $file  = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 if (!function_exists('foo')) {
@@ -241,14 +206,11 @@ if (!function_exists('foo')) {
     }
 }
 EOF;
-        $this->assertSame($expected, $fixer->fix($file, $expected));
+        $this->makeTest($expected);
     }
 
     public function testLeaveFunctionsAloneOutsideClassesWithOopWordInStringValue()
     {
-        $fixer = new VisibilityFixer();
-        $file  = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 if (!function_exists('foo')) {
@@ -258,14 +220,11 @@ if (!function_exists('foo')) {
     }
 }
 EOF;
-        $this->assertSame($expected, $fixer->fix($file, $expected));
+        $this->makeTest($expected);
     }
 
     public function testLeaveFunctionsAloneOutsideClassesWithOopWordInFunctionName()
     {
-        $fixer = new VisibilityFixer();
-        $file  = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 
@@ -278,7 +237,7 @@ if (!function_exists('foo')) {
     }
 }
 EOF;
-        $this->assertSame($expected, $fixer->fix($file, $expected));
+        $this->makeTest($expected);
     }
 
     /**
@@ -286,9 +245,6 @@ EOF;
      */
     public function testLeaveFunctionsAloneAfterClass()
     {
-        $fixer = new VisibilityFixer();
-        $file  = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 
@@ -305,7 +261,7 @@ if (!function_exists('bar')) {
 }
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $expected));
+        $this->makeTest($expected);
     }
 
     /**
@@ -313,9 +269,6 @@ EOF;
      */
     public function testCurlyOpenSyntax()
     {
-        $fixer = new VisibilityFixer();
-        $file  = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 
@@ -331,7 +284,7 @@ class Foo
 }
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $expected));
+        $this->makeTest($expected);
     }
 
     /**
@@ -339,9 +292,6 @@ EOF;
      */
     public function testDolarOpenCurlyBracesSyntax()
     {
-        $fixer = new VisibilityFixer();
-        $file  = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 
@@ -354,7 +304,7 @@ class Foo {
 }
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $expected));
+        $this->makeTest($expected);
     }
 
     /**
@@ -362,9 +312,6 @@ EOF;
      */
     public function testLeaveJavascriptOutsidePhpAlone()
     {
-        $fixer = new VisibilityFixer();
-        $file  = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 function foo()
@@ -379,7 +326,7 @@ function foo(bar) {
 </script>
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $expected));
+        $this->makeTest($expected);
     }
 
     /**
@@ -387,9 +334,6 @@ EOF;
      */
     public function testLeaveJavascriptInStringAlone()
     {
-        $fixer = new VisibilityFixer();
-        $file  = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 function registerJS()
@@ -402,7 +346,7 @@ function foo(bar) {
 }
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $expected));
+        $this->makeTest($expected);
     }
 
     /**
@@ -410,9 +354,6 @@ EOF;
      */
     public function testLeaveJavascriptInVariableAlone()
     {
-        $fixer = new VisibilityFixer();
-        $file  = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 class Foo
@@ -432,7 +373,7 @@ JAVASCRIPT;
 }
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $expected));
+        $this->makeTest($expected);
     }
 
     /**
@@ -440,9 +381,6 @@ EOF;
      */
     public function testLeaveCommaSeparatedPropertyAlone()
     {
-        $fixer = new VisibilityFixer();
-        $file  = $this->getTestFile();
-
         $expected = <<<'EOF'
 <?php
 class Foo
@@ -465,17 +403,6 @@ class Foo
 }
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
+        $this->makeTest($expected, $input);
     }
 }

@@ -11,22 +11,19 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Fixer\PSR2\BlankLineAfterNamespaceFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class BlankLineAfterNamespaceFixerTest extends \PHPUnit_Framework_TestCase
+class BlankLineAfterNamespaceFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
      */
-    public function testFix($expected, $input)
+    public function testFix($expected, $input = null)
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function provideCases()
@@ -47,11 +44,6 @@ class C {}
 ',
             ),
             array(
-                '<?php
-namespace A\B;
-
-class C {}
-',
                 '<?php
 namespace A\B;
 
@@ -98,26 +90,7 @@ namespace A\B {
     }
 }
 ',
-                '<?php
-namespace A\B {
-    class C {
-        public $foo;
-        private $bar;
-    }
-}
-',
             ),
         );
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
     }
 }

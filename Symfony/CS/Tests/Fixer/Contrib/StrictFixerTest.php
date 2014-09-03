@@ -11,22 +11,19 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Fixer\Contrib\StrictFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class StrictFixerTest extends \PHPUnit_Framework_TestCase
+class StrictFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideComparisonsExamples
      */
-    public function testFixComparisons($expected, $input)
+    public function testFixComparisons($expected, $input = null)
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function provideComparisonsExamples()
@@ -35,18 +32,7 @@ class StrictFixerTest extends \PHPUnit_Framework_TestCase
             array('<?php $a === $b;', '<?php $a == $b;', ),
             array('<?php $a !== $b;', '<?php $a != $b;', ),
             array('<?php $a !== $b;', '<?php $a <> $b;', ),
-            array('<?php echo "$a === $b";', '<?php echo "$a === $b";', ),
+            array('<?php echo "$a === $b";'),
         );
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
     }
 }
