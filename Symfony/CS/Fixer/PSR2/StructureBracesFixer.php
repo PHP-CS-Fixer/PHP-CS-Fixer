@@ -20,6 +20,9 @@ use Symfony\CS\Tokens;
  */
 class StructureBracesFixer implements FixerInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
@@ -354,28 +357,43 @@ class StructureBracesFixer implements FixerInterface
         return $tokens;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLevel()
     {
         // defined in PSR2 ¶4.1, ¶5
         return FixerInterface::PSR2_LEVEL;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run after the CurlyBracketsNewlineFixer and ElseIfFixer
         return -25;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(\SplFileInfo $file)
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'structure_braces';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Fix indent of body as well.';
