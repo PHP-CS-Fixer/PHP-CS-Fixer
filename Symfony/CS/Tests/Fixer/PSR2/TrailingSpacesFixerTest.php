@@ -11,22 +11,19 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Fixer\PSR2\TrailingSpacesFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class TrailingSpacesFixerTest extends \PHPUnit_Framework_TestCase
+class TrailingSpacesFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
      */
-    public function testFix($expected, $input)
+    public function testFix($expected, $input = null)
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function provideCases()
@@ -61,22 +58,7 @@ $b = 1;   	   ',
                 
 	
 $b = 1;',
-                '<?php
-                
-	
-$b = 1;',
             ),
         );
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
     }
 }
