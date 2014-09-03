@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ReturnStatementsFixerTest extends AbstractFixerTestBase
+class ReturnFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
