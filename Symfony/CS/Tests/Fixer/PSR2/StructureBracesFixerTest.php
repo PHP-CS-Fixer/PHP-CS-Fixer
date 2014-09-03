@@ -714,6 +714,16 @@ class Foo
                 '<?php
     filter(function   ($b){});'
             ),
+            array(
+                '<?php
+class Foo
+{
+    public static function bar()
+    {
+        return 1;
+    }
+}',
+            ),
         );
     }
 }
