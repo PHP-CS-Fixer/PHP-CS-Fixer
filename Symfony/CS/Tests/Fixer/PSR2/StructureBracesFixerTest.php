@@ -454,6 +454,13 @@ if (1) {
         public function setConfig(ConfigInterface $config);
     }',
             ),
+            array(
+                '<?php
+function bar()
+{
+    $a = 1; //comment
+}',
+            ),
         );
     }
 

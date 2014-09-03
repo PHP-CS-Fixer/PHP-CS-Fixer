@@ -172,28 +172,30 @@ class StructureBracesFixer implements FixerInterface
                 if (1 === $nestLevel && in_array($nestToken->content, array(';', '}'), true)) {
                     $nextNonWhitespaceNestToken = $tokens->getNextNonWhitespace($nestIndex);
 
-                    if ($nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens())) {
-                        $whitespace = ' ';
-                    } else {
-                        $nextToken = $tokens[$nestIndex + 1];
-                        $nextWhitespace = '';
+                    if (!$nextNonWhitespaceNestToken->isComment()) {
+                        if ($nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens())) {
+                            $whitespace = ' ';
+                        } else {
+                            $nextToken = $tokens[$nestIndex + 1];
+                            $nextWhitespace = '';
 
-                        if ($nextToken->isWhitespace()) {
-                            $nextWhitespace = rtrim($nextToken->content, " \t");
+                            if ($nextToken->isWhitespace()) {
+                                $nextWhitespace = rtrim($nextToken->content, " \t");
 
-                            if (strlen($nextWhitespace) && "\n" === $nextWhitespace[strlen($nextWhitespace) - 1]) {
-                                $nextWhitespace = substr($nextWhitespace, 0, -1);
+                                if (strlen($nextWhitespace) && "\n" === $nextWhitespace[strlen($nextWhitespace) - 1]) {
+                                    $nextWhitespace = substr($nextWhitespace, 0, -1);
+                                }
+                            }
+
+                            $whitespace = $nextWhitespace."\n".$indent;
+
+                            if ('}' !== $nextNonWhitespaceNestToken->content) {
+                                $whitespace .= '    ';
                             }
                         }
 
-                        $whitespace = $nextWhitespace."\n".$indent;
-
-                        if ('}' !== $nextNonWhitespaceNestToken->content) {
-                            $whitespace .= '    ';
-                        }
+                        $tokens->ensureWhitespaceAtIndex($nestIndex + 1, 0, $whitespace);
                     }
-
-                    $tokens->ensureWhitespaceAtIndex($nestIndex + 1, 0, $whitespace);
                 }
 
                 if ('}' === $nestToken->content) {
