@@ -866,6 +866,40 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Check if there is a lambda function under given index.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isLambda($index)
+    {
+        $token = $this[$index];
+
+        if (!$token->isGivenKind(T_FUNCTION)) {
+            throw new \LogicException('No T_FUNCTION at given index');
+        }
+
+        $nextIndex = null;
+        $nextToken = $this->getNextNonWhitespace($index, array(), $nextIndex);
+
+        if ('(' !== $nextToken->content) {
+            return false;
+        }
+
+        $endParenthesisIndex = $this->findBlockEnd(self::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
+
+        $nextIndex = null;
+        $nextToken = $this->getNextNonWhitespace($endParenthesisIndex, array(), $nextIndex);
+
+        if ('{' !== $nextToken->content) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Check if the array at index uses the short-syntax.
      *
      * @param int $index
