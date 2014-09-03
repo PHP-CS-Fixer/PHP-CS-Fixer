@@ -18,7 +18,7 @@ use Symfony\CS\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class StructureBracesFixer implements FixerInterface
+class BracesFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}
@@ -458,7 +458,7 @@ class StructureBracesFixer implements FixerInterface
      */
     public function getName()
     {
-        return 'structure_braces';
+        return 'braces';
     }
 
     /**
@@ -466,6 +466,6 @@ class StructureBracesFixer implements FixerInterface
      */
     public function getDescription()
     {
-        return 'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Fix indent of body as well.';
+        return 'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body should be properly indent.';
     }
 }

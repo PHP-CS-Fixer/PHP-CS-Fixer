@@ -167,6 +167,11 @@ Choose from the list of available fixers:
             ?> tags or the short-echo <?= ?> tags; it
             must not use the other tag variations.
 
+* **braces** [PSR-2] The body of each structure MUST be
+            enclosed by braces. Braces should be
+            properly placed. Body should be properly
+            indent.
+
 * **elseif** [PSR-2] The keyword elseif should be used
             instead of else if so that all control
             keywords looks like single words.
@@ -198,11 +203,6 @@ Choose from the list of available fixers:
 
 * **php_closing_tag** [PSR-2] The closing ?> tag MUST be omitted
             from files containing only PHP.
-
-* **structure_braces** [PSR-2] The body of each structure MUST be
-            enclosed by braces. Braces should be
-            properly placed. Fix indent of body as
-            well.
 
 * **trailing_spaces** [PSR-2] Remove trailing whitespace at the
             end of non-blank lines.
