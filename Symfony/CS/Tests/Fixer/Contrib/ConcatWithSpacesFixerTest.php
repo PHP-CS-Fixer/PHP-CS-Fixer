@@ -9,14 +9,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\All;
+namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Fixer\All\ConcatWithoutSpaces as Fixer;
+use Symfony\CS\Fixer\Contrib\ConcatWithSpacesFixer as Fixer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ConcatWithoutSpacesTest extends \PHPUnit_Framework_TestCase
+class ConcatWithSpacesFixerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider provideCases
@@ -34,18 +34,18 @@ class ConcatWithoutSpacesTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                '<?php $foo = "a".\'b\'."c"."d".$e.($f + 1);',
-                '<?php $foo = "a" . \'b\' ."c". "d" . $e.($f + 1);',
+                '<?php $foo = "a" . \'b\' . "c" . "d"    .  $e . ($f + 1);',
+                '<?php $foo = "a" . \'b\' ."c". "d"    .  $e.($f + 1);',
             ),
             array(
-                '<?php $foo = "a".
-"b"',
                 '<?php $foo = "a" .
+"b"',
+                '<?php $foo = "a".
 "b"',
             ),
             array(
                 '<?php $a = "foobar"
-    ."baz";',
+    . "baz";',
                 '<?php $a = "foobar"
     ."baz";',
             ),
