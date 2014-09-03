@@ -25,10 +25,6 @@ class CurlyBracketsNewlineFixerTest extends AbstractFixerTestBase
         $ifFixed = "if (test) { // foo";
         $this->makeTest($ifFixed, $if);
 
-        $elseif = "else if (...)\n{";
-        $elseifFixed = "else if (...) {";
-        $this->makeTest($elseifFixed, $elseif);
-
         $func = "function download() {\n}";
         $funcFixed = "function download()\n{\n}";
         $this->makeTest($funcFixed, $func);
@@ -40,10 +36,6 @@ class CurlyBracketsNewlineFixerTest extends AbstractFixerTestBase
         $switch = "switch(\$statement)   \n{";
         $switchFixed = 'switch($statement) {';
         $this->makeTest($switchFixed, $switch);
-
-        $try = "try \n{\n ... \n} \n catch (Exception \$e)\n{";
-        $tryFixed = "try {\n ... \n} catch (Exception \$e) {";
-        $this->makeTest($tryFixed, $try);
 
         $tryInClassName = <<<'TEST'
 

@@ -33,7 +33,6 @@ class CurlyBracketsNewlineFixer extends AbstractFixer
         $content = $this->functionDeclarationFix($content);
         $content = $this->anonymousFunctionsFix($content);
         $content = $this->controlStatementsFix($content);
-        $content = $this->controlStatementContinuationFix($content);
 
         return $content;
     }
@@ -83,16 +82,5 @@ class CurlyBracketsNewlineFixer extends AbstractFixer
 
         // [Structure] No new line after control statements
         return preg_replace('/((^|[\s\W])('.implode('|', $statements).'))([^\n]*?) *\n[^\S\n]*{/', self::REMOVE_NEWLINE, $content);
-    }
-
-    private function controlStatementContinuationFix($content)
-    {
-        $statements = array(
-            'catch',
-            'else',
-        );
-
-        // [Structure] No new line after control statements
-        return preg_replace('/}\s*\n\s*('.implode('|', $statements).')/', '} \\1', $content);
     }
 }

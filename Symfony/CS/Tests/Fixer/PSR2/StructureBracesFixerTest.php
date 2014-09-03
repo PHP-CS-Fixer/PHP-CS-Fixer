@@ -75,6 +75,39 @@ class StructureBracesFixerTest extends \PHPUnit_Framework_TestCase
         // do nothing
     }',
             ),
+
+            array(
+                '<?php
+    if (true) {
+        echo 1;
+    } elseif (true) {
+        echo 2;
+    }',
+                '<?php
+    if (true) {
+        echo 1;
+    } elseif (true)
+    {
+        echo 2;
+    }',
+            ),
+            array(
+                '<?php
+    try {
+        echo 1;
+    } catch (Exception $2) {
+        echo 2;
+    }',
+                '<?php
+    try
+    {
+        echo 1;
+    }
+    catch (Exception $2)
+    {
+        echo 2;
+    }',
+            ),
         );
     }
 
