@@ -172,7 +172,12 @@ class StructureBracesFixer implements FixerInterface
                 if (1 === $nestLevel && in_array($nestToken->content, array(';', '}'), true)) {
                     $nextNonWhitespaceNestToken = $tokens->getNextNonWhitespace($nestIndex);
 
-                    if (!$nextNonWhitespaceNestToken->isComment()) {
+                    if (
+                        // next Token is not a comment
+                        !$nextNonWhitespaceNestToken->isComment() &&
+                        // and it is not a $foo = function () {}; situation
+                        !('}' === $nestToken->content && ';' === $nextNonWhitespaceNestToken->content)
+                    ) {
                         if ($nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens())) {
                             $whitespace = ' ';
                         } else {

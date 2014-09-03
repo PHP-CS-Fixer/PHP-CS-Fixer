@@ -461,6 +461,14 @@ function bar()
     $a = 1; //comment
 }',
             ),
+            array(
+                '<?php
+
+function lambda()
+{
+    return function () {};
+}',
+            ),
         );
     }
 
