@@ -21,10 +21,6 @@ class CurlyBracketsNewlineFixerTest extends AbstractFixerTestBase
         $ifFixed = 'if ($someTest) {';
         $this->makeTest($ifFixed, $if);
 
-        $func = "function download() {\n}";
-        $funcFixed = "function download()\n{\n}";
-        $this->makeTest($funcFixed, $func);
-
         $while = "    while (\$file = \$this->getFile())\n    {";
         $whileFixed = '    while ($file = $this->getFile()) {';
         $this->makeTest($whileFixed, $while);
@@ -47,6 +43,10 @@ TEST;
         $declaration = '    public function test()     {';
         $fixedDeclaration = "    public function test()\n    {";
         $this->makeTest($fixedDeclaration, $declaration);
+
+        $func = "function download() {\n}";
+        $funcFixed = "function download()\n{\n}";
+        $this->makeTest($funcFixed, $func);
 
         $goodAnonymous = "filter(function () {\n    return true;\n})";
         $this->makeTest($goodAnonymous);
