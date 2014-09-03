@@ -11,25 +11,17 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Fixer\PSR2\IndentationFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class IndentationFixerTest extends \PHPUnit_Framework_TestCase
+class IndentationFixerTest extends AbstractFixerTestBase
 {
-    private function makeTest($expected, $input)
-    {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
-    }
-
     /**
      * @dataProvider provideIndentationOnly
      */
-    public function testIndentationOnly($expected, $input)
+    public function testIndentationOnly($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
@@ -37,7 +29,7 @@ class IndentationFixerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideIndentationAndAlignment
      */
-    public function testIndentationAndAlignment($expected, $input)
+    public function testIndentationAndAlignment($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
@@ -45,7 +37,7 @@ class IndentationFixerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideTabInString
      */
-    public function testTabInString($expected, $input)
+    public function testTabInString($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
@@ -165,7 +157,6 @@ class IndentationFixerTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 '<?php $x = "a: 	";',
-                '<?php $x = "a: 	";',
             ),
             array(
                 '<?php
@@ -173,23 +164,7 @@ $x = "
 	Like
 	a
 	dog";',
-                '<?php
-$x = "
-	Like
-	a
-	dog";'
             ),
         );
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
     }
 }
