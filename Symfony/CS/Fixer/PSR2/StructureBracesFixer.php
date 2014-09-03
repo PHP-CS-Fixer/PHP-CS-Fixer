@@ -88,13 +88,13 @@ class StructureBracesFixer implements FixerInterface
         $classyTokens = $this->getClassyTokens();
         $controlTokens = $this->getControlTokens();
         $controlContinuationTokens = $this->getControlContinuationTokens();
-        $classyAndControlTokens = array_merge($classyTokens, $controlTokens);
+        $indentTokens = array_filter(array_merge($classyTokens, $controlTokens), function ($item) { return T_SWITCH !== $item; });;
 
         for ($index = 0, $limit = count($tokens); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
             // if token is not a structure element - continue
-            if (!$token->isGivenKind($classyAndControlTokens)) {
+            if (!$token->isGivenKind($indentTokens)) {
                 continue;
             }
 
@@ -201,6 +201,12 @@ class StructureBracesFixer implements FixerInterface
 
             $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
             $tokenAfterParenthesis = $tokens->getNextNonWhitespace($parenthesisEndIndex);
+
+            // if Token after parenthesis is { then we do not need to insert brace, but to fix whitespace before it
+            if ('{' === $tokenAfterParenthesis->content) {
+                $tokens->ensureWhitespaceAtIndex($parenthesisEndIndex + 1, 0, ' ');
+                continue;
+            }
 
             // do not add braces for cases:
             // - structure without block, e.g. while ($iter->next());
@@ -373,6 +379,7 @@ class StructureBracesFixer implements FixerInterface
             T_WHILE,
             T_TRY,
             T_CATCH,
+            T_SWITCH,
         );
 
         return $tokens;

@@ -15,29 +15,6 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 class CurlyBracketsNewlineFixerTest extends AbstractFixerTestBase
 {
-    public function testControlStatements()
-    {
-        $if = "if (\$someTest)\n {";
-        $ifFixed = 'if ($someTest) {';
-        $this->makeTest($ifFixed, $if);
-
-        $while = "    while (\$file = \$this->getFile())\n    {";
-        $whileFixed = '    while ($file = $this->getFile()) {';
-        $this->makeTest($whileFixed, $while);
-
-        $switch = "switch(\$statement)   \n{";
-        $switchFixed = 'switch($statement) {';
-        $this->makeTest($switchFixed, $switch);
-
-        $tryInClassName = <<<'TEST'
-
-        class FormFieldRegistry
-        {
-            private $fields = array();
-TEST;
-        $this->makeTest($tryInClassName);
-    }
-
     public function testFunctionDeclaration()
     {
         $declaration = '    public function test()     {';

@@ -559,4 +559,81 @@ abstract class Foo
 
         $this->makeTest($expected, $input);
     }
+
+    /**
+     * @dataProvider provideTestFixWhitespaceBeforeBraceCases
+     */
+    public function testFixWhitespaceBeforeBrace($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideTestFixWhitespaceBeforeBraceCases()
+    {
+        return array(
+            array(
+                '<?php
+    if (true) {
+        echo 1;
+    }',
+                '<?php
+    if (true)
+    {
+        echo 1;
+    }',
+            ),
+            array(
+                '<?php
+    if (true) {
+        echo 1;
+    }',
+                '<?php
+    if (true){
+        echo 1;
+    }',
+            ),
+            array(
+                '<?php
+    if (true) {
+        echo 1;
+    }',
+                '<?php
+    if (true)           {
+        echo 1;
+    }',
+            ),
+            array(
+                '<?php
+    while ($file = $this->getFile()) {
+    }',
+                '<?php
+    while ($file = $this->getFile())
+    {
+    }',
+            ),
+            array(
+                '<?php
+    switch (n) {
+        case label1:
+            echo 1;
+            echo 2;
+            break;
+        default:
+            echo 3;
+            echo 4;
+    }',
+    '<?php
+    switch (n)
+    {
+        case label1:
+            echo 1;
+            echo 2;
+            break;
+        default:
+            echo 3;
+            echo 4;
+    }',
+            ),
+        );
+    }
 }
