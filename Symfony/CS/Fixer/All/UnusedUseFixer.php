@@ -17,7 +17,7 @@ use Symfony\CS\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class UnusedUseStatementsFixer implements FixerInterface
+class UnusedUseFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}
