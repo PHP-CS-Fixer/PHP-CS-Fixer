@@ -13,7 +13,6 @@ namespace Symfony\CS\Tests\Fixer\PSR2;
 
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
-use Symfony\CS\Fixer\All\ControlSpacesFixer;
 use Symfony\CS\Fixer\PSR2\ElseifFixer;
 
 /**
