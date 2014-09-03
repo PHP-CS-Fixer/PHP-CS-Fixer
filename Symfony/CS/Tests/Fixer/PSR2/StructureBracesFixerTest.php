@@ -549,33 +549,42 @@ abstract class Foo
         );
     }
 
-    public function testFixCommentBeforeBrace()
+    /**
+     * @dataProvider provideFixCommentBeforeBraceCases
+     */
+    public function testFixCommentBeforeBrace($expected, $input = null)
     {
-        $expected = '<?php
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideFixCommentBeforeBraceCases()
+    {
+        return array(
+            array(
+                '<?php
     if (test) {
         // foo
 
         echo 1;
-    }';
-
-        $input = '<?php
+    }',
+                '<?php
     if (test) // foo
     {
         echo 1;
-    }';
-
-        $this->makeTest($expected, $input);
+    }',
+            ),
+        );
     }
 
     /**
-     * @dataProvider provideTestFixWhitespaceBeforeBraceCases
+     * @dataProvider provideFixWhitespaceBeforeBraceCases
      */
     public function testFixWhitespaceBeforeBrace($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
 
-    public function provideTestFixWhitespaceBeforeBraceCases()
+    public function provideFixWhitespaceBeforeBraceCases()
     {
         return array(
             array(
@@ -645,14 +654,14 @@ abstract class Foo
     }
 
     /**
-     * @dataProvider provideTestFixFunctionsCases
+     * @dataProvider provideFixFunctionsCases
      */
     public function testFixFunctions($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
 
-    public function provideTestFixFunctionsCases()
+    public function provideFixFunctionsCases()
     {
         return array(
             array(
