@@ -19,6 +19,24 @@ namespace Symfony\CS;
  */
 class Tokens extends \SplFixedArray
 {
+    const BLOCK_TYPE_PARENTHESIS_BRACE = 1;
+    const BLOCK_TYPE_CURLY_BRACE = 2;
+
+    /**
+     * Array defining possible block edge.
+     * @type array
+     */
+    static private $blockEdgeDefinition = array(
+        self::BLOCK_TYPE_CURLY_BRACE => array(
+            'start' => array('{'),
+            'end' => array('}'),
+        ),
+        self::BLOCK_TYPE_PARENTHESIS_BRACE => array(
+            'start' => array('('),
+            'end' => array(')'),
+        ),
+    );
+
     /**
      * Static class cache.
      *
@@ -49,6 +67,48 @@ class Tokens extends \SplFixedArray
         if (self::hasCache($key)) {
             unset(self::$cache[$key]);
         }
+    }
+
+    /**
+     * Ensure that on given index is a whitespace with given kind.
+     *
+     * If there is a whitespace then it's content will be modified.
+     * If not - the new Token will be added.
+     *
+     * @param int    $index       index
+     * @param int    $indexOffset index offset for Token insertion
+     * @param string $whitespace  whitespace to set
+     *
+     * @return bool if new Token was added
+     */
+    public function ensureWhitespaceAtIndex($index, $indexOffset, $whitespace)
+    {
+        $removeLastCommentLine = function ($token, $indexOffset) {
+            // becouse comments tokens are greedy and may consume single \n if we are putting whitespace after it let trim that \n
+            if (1 === $indexOffset && $token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT)) && "\n" === $token->content[strlen($token->content) - 1]) {
+                $token->content = substr($token->content, 0, -1);
+            }
+        };
+
+        $token = $this[$index];
+
+        if ($token->isWhitespace()) {
+            $removeLastCommentLine($this[$index - 1], $indexOffset);
+            $token->content = $whitespace;
+
+            return false;
+        }
+
+        $removeLastCommentLine($token, $indexOffset);
+
+        $this->insertAt(
+            $index + $indexOffset,
+            array(
+                new Token(array(T_WHITESPACE, $whitespace)),
+            )
+        );
+
+        return true;
     }
 
     /**
@@ -333,6 +393,67 @@ class Tokens extends \SplFixedArray
         }
 
         $this->setSize($count);
+    }
+
+    /**
+     * Find block end.
+     *
+     * @param  int  $type        type of block, BLOCK_TYPE_CURLY_BRACE or BLOCK_TYPE_PARENTHESIS_BRACE
+     * @param  int  $searchIndex index of opening brace
+     * @param  bool $findEnd     if method should find block's end, default true, otherwise method find block's start
+     * @return int  index of closing brace
+     */
+    public function findBlockEnd($type, $searchIndex, $findEnd = true)
+    {
+        if (!isset(self::$blockEdgeDefinition[$type])) {
+            throw new \InvalidArgumentException('Invalid param $type');
+        }
+
+        $edgeDefinition = self::$blockEdgeDefinition[$type];
+
+        $startEdge = self::$blockEdgeDefinition[$type]['start'];
+        $endEdge = self::$blockEdgeDefinition[$type]['end'];
+        $startIndex = $searchIndex;
+        $endIndex = $this->count() - 1;
+        $indexOffset = 1;
+
+        if (!$findEnd) {
+            list($startEdge, $endEdge) = array($endEdge, $startEdge);
+            $indexOffset = -1;
+            $endIndex = 0;
+        }
+
+        if (!in_array($this[$startIndex]->content, $startEdge, true)) {
+            throw new \InvalidArgumentException('Invalid param $startIndex - not a proper block start');
+        }
+
+        $blockLevel = 0;
+
+        for ($index = $startIndex; $index !== $endIndex; $index += $indexOffset) {
+            $token = $this[$index];
+
+            if (in_array($token->content, $startEdge, true)) {
+                ++$blockLevel;
+
+                continue;
+            }
+
+            if (in_array($token->content, $endEdge, true)) {
+                --$blockLevel;
+
+                if (0 === $blockLevel) {
+                    break;
+                }
+
+                continue;
+            }
+        }
+
+        if (!in_array($this[$index]->content, $endEdge, true)) {
+            throw new \UnexpectedValueException('Missing block end');
+        }
+
+        return $index;
     }
 
     /**
