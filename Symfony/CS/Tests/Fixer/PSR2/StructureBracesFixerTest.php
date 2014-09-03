@@ -662,13 +662,28 @@ abstract class Foo
                 '<?php
 class Foo
 {
-    public function test(){
+    public function testA()
+    {
+    }
+
+    public function testB()
+    {
+    }
+
+    public function testC()
+    {
     }
 }',
                 '<?php
 class Foo
 {
-    public function test()
+    public function testA(){
+    }
+
+    public function testB()   {
+    }
+
+    public function testC()
     {
     }
 }',
