@@ -1,0 +1,42 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-02T20:10:18Z
+
+I'm pretty sure the correct form for `inheritdoc` is all lower case, with no upper case `D`. That's how php documentor already reference it, and that's how their proposed psr standard uses it: https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-02T20:12:57Z
+
+I see ambiguity here.
+http://phpdoc.org/docs/latest/guides/inheritance.html
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-02T20:16:41Z
+
+I just looked at the source code for phpdocumentor, and they use all lower case in there. Their website must just have typos on it where someone thought it was with an uppercase D.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-02T20:16:54Z
+
+Example file: https://github.com/phpDocumentor/ReflectionDocBlock/blob/master/src/phpDocumentor/Reflection/DocBlock/Tag/SeeTag.php.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-03T15:34:25Z
+
+Changed.
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-03T15:35:41Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-03T15:40:03Z
+
+:+1:
