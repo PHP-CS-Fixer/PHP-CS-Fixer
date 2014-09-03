@@ -41,7 +41,7 @@ class BracesFixer implements FixerInterface
     {
         $controlTokens = $this->getControlTokens();
 
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
             if (!$token->isGivenKind($controlTokens)) {
@@ -234,7 +234,7 @@ class BracesFixer implements FixerInterface
 
     private function fixLambdas(Tokens $tokens)
     {
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
             if (!$token->isGivenKind(T_FUNCTION) || !$tokens->isLambda($index)) {
@@ -252,7 +252,7 @@ class BracesFixer implements FixerInterface
     {
         $controlTokens = $this->getControlTokens();
 
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
             if (!$token->isGivenKind($controlTokens)) {
