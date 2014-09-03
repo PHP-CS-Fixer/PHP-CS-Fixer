@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Fixer\PSR2\BlankLineAfterNamespace as Fixer;
+use Symfony\CS\Fixer\PSR2\BlankLineAfterNamespaceFixer as Fixer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class BlankLineAfterNamespaceTest extends \PHPUnit_Framework_TestCase
+class BlankLineAfterNamespaceFixerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider provideCases

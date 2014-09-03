@@ -18,7 +18,7 @@ use Symfony\CS\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ConcatWithSpaces implements FixerInterface
+class ConcatWithSpacesFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}
@@ -57,7 +57,7 @@ class ConcatWithSpaces implements FixerInterface
      */
     public function getPriority()
     {
-        // should be run after the ConcatWithoutSpaces
+        // should be run after the ConcatWithoutSpacesFixer
         return -10;
     }
 

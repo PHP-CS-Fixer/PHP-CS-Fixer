@@ -18,7 +18,7 @@ use Symfony\CS\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class BlankLineAfterNamespace implements FixerInterface
+class BlankLineAfterNamespaceFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}

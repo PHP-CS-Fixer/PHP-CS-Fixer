@@ -17,7 +17,7 @@ use Symfony\CS\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ConcatWithoutSpaces implements FixerInterface
+class ConcatWithoutSpacesFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}
