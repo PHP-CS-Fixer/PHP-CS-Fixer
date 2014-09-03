@@ -34,10 +34,10 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
         return $files[$filename];
     }
 
-    protected function makeTest($expected, $input = null)
+    protected function makeTest($expected, $input = null, \SplFileInfo $file = null)
     {
         $fixer = $this->getFixer();
-        $file = $this->getTestFile();
+        $file = $file ?: $this->getTestFile();
 
         if (null !== $input) {
             $this->assertSame($expected, $fixer->fix($file, $input));
