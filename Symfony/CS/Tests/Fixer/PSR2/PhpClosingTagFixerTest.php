@@ -11,22 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Fixer\PSR2\PhpClosingTagFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class PhpClosingTagFixerTest extends \PHPUnit_Framework_TestCase
+class PhpClosingTagFixerTest extends AbstractFixerTestBase
 {
-    private function makeTest($expected, $input)
-    {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
-    }
-
     /**
      * @dataProvider provideCasesWithFullOpenTag
      */
-    public function testCasesWithFullOpenTag($expected, $input)
+    public function testCasesWithFullOpenTag($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
@@ -34,7 +26,7 @@ class PhpClosingTagFixerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideCasesWithShortOpenTag
      */
-    public function testCasesWithShortOpenTag($expected, $input)
+    public function testCasesWithShortOpenTag($expected, $input = null)
     {
         if (!ini_get('short_open_tag')) {
             $this->markTestSkipped('PHP short open tags are not enabled.');
@@ -50,8 +42,8 @@ class PhpClosingTagFixerTest extends \PHPUnit_Framework_TestCase
         return array(
             array('<?php echo \'Foo\';', '<?php echo \'Foo\'; ?>'),
             array('<?php echo \'Foo\';', '<?php echo \'Foo\';?>'),
-            array('<?php echo \'Foo\'; ?> PLAIN TEXT', '<?php echo \'Foo\'; ?> PLAIN TEXT'),
-            array('PLAIN TEXT<?php echo \'Foo\'; ?>', 'PLAIN TEXT<?php echo \'Foo\'; ?>'),
+            array('<?php echo \'Foo\'; ?> PLAIN TEXT'),
+            array('PLAIN TEXT<?php echo \'Foo\'; ?>'),
             array('<?php
 
 echo \'Foo\';',
@@ -63,12 +55,7 @@ echo \'Foo\';
             ),
             array('<?php echo \'Foo\'; ?>
 <p><?php echo \'this is a template\'; ?></p>
-<?php echo \'Foo\'; ?>
-',
-                  '<?php echo \'Foo\'; ?>
-<p><?php echo \'this is a template\'; ?></p>
-<?php echo \'Foo\'; ?>
-',
+<?php echo \'Foo\'; ?>',
             ),
             array('<?php echo "foo";', '<?php echo "foo" ?>'),
         );
@@ -81,24 +68,8 @@ echo \'Foo\';
             array('<? echo \'Foo\';', '<? echo \'Foo\';?>'),
             array('<? echo \'Foo\'; ?>
 <p><? echo \'this is a template\'; ?></p>
-<? echo \'Foo\'; ?>
-',
-                  '<? echo \'Foo\'; ?>
-<p><? echo \'this is a template\'; ?></p>
-<? echo \'Foo\'; ?>
-',
+<? echo \'Foo\'; ?>',
             ),
         );
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
     }
 }
