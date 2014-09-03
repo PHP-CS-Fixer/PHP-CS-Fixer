@@ -11,22 +11,19 @@
 
 namespace Symfony\CS\Tests\Fixer\All;
 
-use Symfony\CS\Fixer\All\WhitespacyLinesFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class WhitespacyLinesFixerTest extends \PHPUnit_Framework_TestCase
+class WhitespacyLinesFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
      */
-    public function testFix($expected, $input)
+    public function testFix($expected, $input = null)
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function provideCases()
@@ -35,12 +32,8 @@ class WhitespacyLinesFixerTest extends \PHPUnit_Framework_TestCase
             array(
                 '<?php
     $a = 1;   ',
-                '<?php
-    $a = 1;   ',
             ),
             array(
-                '<?php
-	$b = 1;		',
                 '<?php
 	$b = 1;		',
             ),
@@ -55,16 +48,5 @@ $b = 1;',
 $b = 1;',
             ),
         );
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
     }
 }
