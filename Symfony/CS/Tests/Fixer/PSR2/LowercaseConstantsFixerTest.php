@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class LowercaseNativeConstantsFixerTest extends AbstractFixerTestBase
+class LowercaseConstantsFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideExamples
