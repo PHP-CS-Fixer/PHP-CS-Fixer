@@ -57,7 +57,7 @@ class StructureBracesFixerTest extends \PHPUnit_Framework_TestCase
     }',
             ),
             array(
-        '<?php
+                '<?php
     try {
         throw new \Exeption();
     } catch (\LogicException $e) {
@@ -65,7 +65,7 @@ class StructureBracesFixerTest extends \PHPUnit_Framework_TestCase
     } catch (\Exception $e) {
         // do nothing
     }',
-        '<?php
+                '<?php
     try {
         throw new \Exeption();
     }catch (\LogicException $e) {
