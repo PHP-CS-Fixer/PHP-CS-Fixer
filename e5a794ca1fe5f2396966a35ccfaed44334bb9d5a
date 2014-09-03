@@ -1,0 +1,42 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-02T18:44:32Z
+
+:+1: Nice. :)
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-02T18:59:51Z
+
+:+1: but it should still be safe in case the multiple use fixer is not run before though. Is it the case ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-02T19:27:54Z
+
+Yes. You can run only OrderedUse.
+
+But - if OrderedUse will be run before MultipleUse then:
+* original:
+```php
+use A;
+use B, D;
+use C;
+```
+* after OrderedUse:
+no changes
+* after MultipleUse
+```php
+use A;
+use B;
+use D;
+use C;
+```
+
+Which is not so ordered ;)
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-02T19:31:45Z
+
+yeah, indeed.
