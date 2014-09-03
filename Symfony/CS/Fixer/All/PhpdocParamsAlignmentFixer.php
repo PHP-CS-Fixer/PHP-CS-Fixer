@@ -150,8 +150,7 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
                         '     * @'
                         .$item['tag']
                         .str_repeat(' ', $tagMax - strlen($item['tag']) + 1)
-                        .$item['hint']
-                    ;
+                        .$item['hint'];
 
                     if (!empty($item['var'])) {
                         $line .=
@@ -161,8 +160,7 @@ class PhpdocParamsAlignmentFixer implements FixerInterface
                                 !empty($item['desc'])
                                 ? str_repeat(' ', $varMax - strlen($item['var']) + 1).$item['desc']
                                 : ''
-                            )
-                        ;
+                            );
                     } elseif (!empty($item['desc'])) {
                         $line .= str_repeat(' ', $hintMax - strlen($item['hint']) + 1).$item['desc'];
                     }

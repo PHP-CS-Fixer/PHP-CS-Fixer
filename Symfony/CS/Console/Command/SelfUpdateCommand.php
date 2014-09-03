@@ -38,8 +38,7 @@ latest version from cs.sensiolabs.org.
 <info>php php-cs-fixer.phar %command.name%</info>
 
 EOT
-            )
-        ;
+            );
     }
 
     /**

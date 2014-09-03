@@ -36,8 +36,7 @@ class DefaultFinder extends Finder implements FinderInterface
             ->exclude('vendor')
             ->filter(function (\SplFileInfo $file) use ($files) {
                 return !in_array($file->getRelativePathname(), $files);
-            })
-        ;
+            });
     }
 
     public function setDir($dir)
