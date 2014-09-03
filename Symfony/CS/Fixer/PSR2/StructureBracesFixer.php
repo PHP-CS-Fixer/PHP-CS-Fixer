@@ -32,6 +32,7 @@ class StructureBracesFixer implements FixerInterface
         $this->fixIndents($tokens);
         $this->fixControlContinuationBraces($tokens);
         $this->fixDoWhile($tokens);
+        $this->fixLambdas($tokens);
 
         return $tokens->generateCode();
     }
@@ -129,6 +130,11 @@ class StructureBracesFixer implements FixerInterface
                 continue;
             }
 
+            // do not change indent for lambda functions
+            if ($token->isGivenKind(T_FUNCTION) && $tokens->isLambda($index)) {
+                continue;
+            }
+
             if ($token->isGivenKind($classyAndFunctionTokens)) {
                 $startBraceIndex = null;
                 $startBraceToken = $tokens->getNextTokenOfKind($index, array(';', '{'), $startBraceIndex);
@@ -216,6 +222,20 @@ class StructureBracesFixer implements FixerInterface
 
             // reset loop due to collection change
             $limit = count($tokens);
+        }
+    }
+
+    private function fixLambdas(Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_FUNCTION) || !$tokens->isLambda($index)) {
+                continue;
+            }
+
+            $nextIndex = null;
+            $tokens->getNextTokenOfKind($index, array('{'), $nextIndex);
+
+            $tokens->ensureWhitespaceAtIndex($nextIndex - 1, 1, ' ');
         }
     }
 

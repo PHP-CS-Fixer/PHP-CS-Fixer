@@ -695,6 +695,26 @@ class Foo
     }
 }',
             ),
+            array(
+                '<?php
+    filter(function () {
+        return true;
+    })
+',
+            ),
+            array(
+                '<?php
+    filter(function   ($a) {});',
+                '<?php
+    filter(function   ($a)
+    {});'
+            ),
+            array(
+                '<?php
+    filter(function   ($b) {});',
+                '<?php
+    filter(function   ($b){});'
+            ),
         );
     }
 }
