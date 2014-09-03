@@ -647,7 +647,6 @@ abstract class Foo
     /**
      * @dataProvider provideTestFixFunctionsCases
      */
-     // FRS
     public function testFixFunctions($expected, $input = null)
     {
         $this->makeTest($expected, $input);
