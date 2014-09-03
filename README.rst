@@ -169,8 +169,8 @@ Choose from the list of available fixers:
 
 * **braces** [PSR-2] The body of each structure MUST be
             enclosed by braces. Braces should be
-            properly placed. Body should be properly
-            indent.
+            properly placed. Body of braces should be
+            properly indent.
 
 * **elseif** [PSR-2] The keyword elseif should be used
             instead of else if so that all control

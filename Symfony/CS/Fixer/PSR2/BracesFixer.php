@@ -468,6 +468,6 @@ class BracesFixer implements FixerInterface
      */
     public function getDescription()
     {
-        return 'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body should be properly indent.';
+        return 'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indent.';
     }
 }
