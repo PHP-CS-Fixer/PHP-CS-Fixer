@@ -16,7 +16,7 @@ use Symfony\CS\Tokens;
 /**
  * @author Paweł Zaremba <pawzar@gmail.com>
  */
-class OrderUseStatementsFixer implements FixerInterface
+class OrderUseFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}

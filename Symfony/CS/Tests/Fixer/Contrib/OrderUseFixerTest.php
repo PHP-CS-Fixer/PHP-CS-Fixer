@@ -13,7 +13,7 @@ namespace Symfony\CS\Tests\Fixer\Contrib;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class OrderUseStatementsFixerTest extends AbstractFixerTestBase
+class OrderUseFixerTest extends AbstractFixerTestBase
 {
     public function testFix()
     {
