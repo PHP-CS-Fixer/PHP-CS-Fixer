@@ -11,13 +11,13 @@
 
 namespace Symfony\CS\Fixer\PSR2;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ElseifFixer implements FixerInterface
+class ElseifFixer extends AbstractFixer
 {
     /**
      * Replace all `else if` (T_ELSE T_IF) with `elseif` (T_ELSEIF)
@@ -60,35 +60,10 @@ class ElseifFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
-    {
-        // defined in PSR2 ¶5.1
-        return FixerInterface::PSR2_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // should be run after ControlSpacesFixer
         return -20;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'elseif';
     }
 
     /**

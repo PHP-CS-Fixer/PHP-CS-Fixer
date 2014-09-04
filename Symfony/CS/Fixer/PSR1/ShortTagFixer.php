@@ -11,13 +11,13 @@
 
 namespace Symfony\CS\Fixer\PSR1;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ShortTagFixer implements FixerInterface
+class ShortTagFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -78,39 +78,6 @@ class ShortTagFixer implements FixerInterface
         }
 
         return $tokens->generateCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLevel()
-    {
-        // defined in PSR1 ¶2.1
-        return FixerInterface::PSR1_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'short_tag';
     }
 
     /**

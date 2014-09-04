@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Fixer\PSR2;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class LineAfterNamespaceFixer implements FixerInterface
+class LineAfterNamespaceFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -49,39 +49,6 @@ class LineAfterNamespaceFixer implements FixerInterface
         }
 
         return $tokens->generateCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLevel()
-    {
-        // defined in PSR2 ¶3
-        return FixerInterface::PSR2_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'line_after_namespace';
     }
 
     /**

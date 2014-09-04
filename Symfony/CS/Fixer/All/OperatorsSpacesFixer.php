@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Fixer\All;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class OperatorsSpacesFixer implements FixerInterface
+class OperatorsSpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -81,38 +81,6 @@ class OperatorsSpacesFixer implements FixerInterface
         );
 
         return $token->isArray() ? isset($arrayOperators[$token->id]) : isset($nonArrayOperators[$token->content]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLevel()
-    {
-        return FixerInterface::ALL_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'operators_spaces';
     }
 
     /**

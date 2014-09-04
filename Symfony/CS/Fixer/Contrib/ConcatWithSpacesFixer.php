@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Fixer\Contrib;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ConcatWithSpacesFixer implements FixerInterface
+class ConcatWithSpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -47,34 +47,10 @@ class ConcatWithSpacesFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
-    {
-        return FixerInterface::CONTRIB_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // should be run after the ConcatWithoutSpacesFixer
         return -10;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'concat_with_spaces';
     }
 
     /**

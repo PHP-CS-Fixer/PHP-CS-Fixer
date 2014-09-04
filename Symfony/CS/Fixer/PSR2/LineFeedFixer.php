@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Fixer\PSR2;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class LineFeedFixer implements FixerInterface
+class LineFeedFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -30,15 +30,6 @@ class LineFeedFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
-    {
-        // defined in PSR2 ¶2.2
-        return FixerInterface::PSR2_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         return 50;
@@ -47,9 +38,9 @@ class LineFeedFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(\SplFileInfo $file)
+    public function getDescription()
     {
-        return true;
+        return 'All PHP files must use the Unix LF (linefeed) line ending.';
     }
 
     /**
@@ -58,13 +49,5 @@ class LineFeedFixer implements FixerInterface
     public function getName()
     {
         return 'linefeed';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'All PHP files must use the Unix LF (linefeed) line ending.';
     }
 }

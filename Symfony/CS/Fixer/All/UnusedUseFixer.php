@@ -11,13 +11,13 @@
 
 namespace Symfony\CS\Fixer\All;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class UnusedUseFixer implements FixerInterface
+class UnusedUseFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -193,14 +193,6 @@ class UnusedUseFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
-    {
-        return FixerInterface::ALL_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // should be run after the MultipleUseFixer
@@ -218,14 +210,6 @@ class UnusedUseFixer implements FixerInterface
         }
 
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'unused_use';
     }
 
     /**

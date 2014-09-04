@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Fixer\PSR2;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class EofEndingFixer implements FixerInterface
+class EofEndingFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -37,34 +37,10 @@ class EofEndingFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
-    {
-        return FixerInterface::PSR2_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // must run last to be sure the file is properly formatted before it runs
         return -50;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'eof_ending';
     }
 
     /**

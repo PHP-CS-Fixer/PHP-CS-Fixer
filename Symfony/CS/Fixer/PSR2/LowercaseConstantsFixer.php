@@ -11,13 +11,13 @@
 
 namespace Symfony\CS\Fixer\PSR2;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class LowercaseConstantsFixer implements FixerInterface
+class LowercaseConstantsFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -41,39 +41,6 @@ class LowercaseConstantsFixer implements FixerInterface
         }
 
         return $tokens->generateCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLevel()
-    {
-        // defined in PSR2 ¶2.5
-        return FixerInterface::PSR2_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'lowercase_constants';
     }
 
     /**

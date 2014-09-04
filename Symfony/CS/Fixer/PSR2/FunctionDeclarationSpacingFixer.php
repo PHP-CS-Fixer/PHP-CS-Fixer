@@ -11,13 +11,13 @@
 
 namespace Symfony\CS\Fixer\PSR2;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class FunctionDeclarationSpacingFixer implements FixerInterface
+class FunctionDeclarationSpacingFixer extends AbstractFixer
 {
     private $singleLineWhitespaceOptions = array('whitespaces' => " \t");
 
@@ -104,26 +104,9 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
+    public function getDescription()
     {
-        // defined in PSR2 generally (¶1 and ¶6)
-        return FixerInterface::PSR2_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
+        return 'Spaces should be properly placed in a function declaration.';
     }
 
     /**
@@ -132,13 +115,5 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
     public function getName()
     {
         return 'function_declaration';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Spaces should be properly placed in a function declaration.';
     }
 }

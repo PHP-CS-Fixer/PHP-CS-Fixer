@@ -13,13 +13,13 @@ namespace Symfony\CS\Fixer\PSR0;
 
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\ConfigAwareInterface;
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class Psr0Fixer implements FixerInterface, ConfigAwareInterface
+class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
 {
     protected $config;
 
@@ -103,14 +103,6 @@ class Psr0Fixer implements FixerInterface, ConfigAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
-    {
-        return FixerInterface::PSR0_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         return -10;
@@ -127,14 +119,6 @@ class Psr0Fixer implements FixerInterface, ConfigAwareInterface
 
         // ignore stubs/fixtures, since they are typically containing invalid files for various reasons
         return !preg_match('{[/\\\\](stub|fixture)s?[/\\\\]}i', $file->getRealPath());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'psr0';
     }
 
     /**

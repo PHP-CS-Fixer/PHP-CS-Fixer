@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Fixer\All;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class WhitespacyLinesFixer implements FixerInterface
+class WhitespacyLinesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -24,38 +24,6 @@ class WhitespacyLinesFixer implements FixerInterface
     public function fix(\SplFileInfo $file, $content)
     {
         return preg_replace('/^\h+$/m', '', $content);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLevel()
-    {
-        return FixerInterface::ALL_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'whitespacy_lines';
     }
 
     /**

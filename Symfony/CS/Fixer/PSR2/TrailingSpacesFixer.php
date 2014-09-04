@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Fixer\PSR2;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TrailingSpacesFixer implements FixerInterface
+class TrailingSpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -30,34 +30,9 @@ class TrailingSpacesFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
-    {
-        // defined in PSR2 ¶2.3
-        return FixerInterface::PSR2_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         return 20;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'trailing_spaces';
     }
 
     /**
