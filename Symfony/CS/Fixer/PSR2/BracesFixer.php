@@ -31,6 +31,7 @@ class BracesFixer implements FixerInterface
         $this->fixMissingControlBraces($tokens);
         $this->fixIndents($tokens);
         $this->fixControlContinuationBraces($tokens);
+        $this->fixSpaceAfter($tokens);
         $this->fixDoWhile($tokens);
         $this->fixLambdas($tokens);
 
@@ -284,6 +285,25 @@ class BracesFixer implements FixerInterface
             $tokens->removeTrailingWhitespace($parenthesisEndIndex);
             $tokens->insertAt($parenthesisEndIndex + 1, new Token('{'));
             $tokens->ensureWhitespaceAtIndex($parenthesisEndIndex + 1, 0, ' ');
+        }
+    }
+
+    private function fixSpaceAfter(Tokens $tokens)
+    {
+        $controlTokens = $this->getControlTokens();
+
+        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
+            $token = $tokens[$index];
+
+            if ($token->isGivenKind($controlTokens) || $token->isGivenKind(T_USE)) {
+                $tokens->ensureWhitespaceAtIndex($index + 1, 0, ' ');
+
+                $prevToken = $tokens[$index - 1];
+
+                if (!$prevToken->isWhitespace() && !$prevToken->isGivenKind(T_OPEN_TAG)) {
+                    $tokens->ensureWhitespaceAtIndex($index - 1, 1, ' ');
+                }
+            }
         }
     }
 

@@ -124,7 +124,7 @@ endif;',
             ),
             array(
                 '<?php
-    if (true) : $foo = 1; elseif;',
+    if (true) : $foo = 1; endif;',
             ),
             array(
                 '<?php
@@ -152,7 +152,7 @@ if (true){$foo = 3;}',
             ),
             array(
                 '<?php
-if(true) {
+if (true) {
     echo 1;
 } else {
     echo 2;
@@ -162,7 +162,7 @@ if(true) { echo 1; } else echo 2;',
             ),
             array(
                 '<?php
-if(true) {
+if (true) {
     echo 3;
 } else {
     echo 4;
@@ -172,13 +172,13 @@ if(true) echo 3; else { echo 4; }',
             ),
             array(
                 '<?php
-if(true) {
+if (true) {
     echo 5;
 } else {
     echo 6;
 }',
                 '<?php
-if(true) echo 5; else echo 6;',
+if (true) echo 5; else echo 6;',
             ),
             array(
                 '<?php
@@ -253,7 +253,7 @@ do { echo 1; } while (false);',
             ),
             array(
                 '<?php
-while($foo->next());',
+while ($foo->next());',
             ),
             array(
                 '<?php
@@ -355,11 +355,11 @@ if (1) {
             ),
             array(
                 '<?php
-    declare(ticks=1) {
+    declare (ticks=1) {
         $ticks = 1;
     }',
                 '<?php
-    declare(ticks=1) {
+    declare (ticks=1) {
   $ticks = 1;
     }',
             ),
@@ -753,6 +753,86 @@ class Foo
     usort($this->fixers, function ($a, $b) use ($selfName) {
         return 1;
     });',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideFixSpaceAfterCases
+     */
+    public function testFixSpaceAfter($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideFixSpaceAfterCases()
+    {
+        return array(
+            array(
+                '<?php
+    try {
+        throw new Exception();
+    } catch (Exception $e) {
+        log($e);
+    }',
+                '<?php
+    try{
+        throw new Exception();
+    }catch (Exception $e){
+        log($e);
+    }',
+            ),
+            array(
+                '<?php
+    do {
+        echo 1;
+    } while ($test);',
+                '<?php
+    do{
+        echo 1;
+    }while($test);',
+            ),
+            array(
+                '<?php
+    if (true === true
+        && true === true
+    ) {
+    }',
+                '<?php
+    if(true === true
+        && true === true
+    )     {
+    }',
+            ),
+            array(
+                '<?php
+    if (1) {
+    }
+    if ($this->tesT ($test)) {
+    }',
+                '<?php
+    if(1){
+    }
+    if ($this->tesT ($test)) {
+    }',
+            ),
+            array(
+                '<?php
+    if (true) {
+    } elseif (false) {
+    } else {
+    }',
+                '<?php
+    if(true){
+    }elseif(false){
+    }else{
+    }',
+            ),
+            array(
+                '<?php
+    $foo = function () use ($bar) {}',
+                '<?php
+    $foo = function ()use($bar){}',
             ),
         );
     }
