@@ -409,8 +409,6 @@ class Tokens extends \SplFixedArray
             throw new \InvalidArgumentException('Invalid param $type');
         }
 
-        $edgeDefinition = self::$blockEdgeDefinition[$type];
-
         $startEdge = self::$blockEdgeDefinition[$type]['start'];
         $endEdge = self::$blockEdgeDefinition[$type]['end'];
         $startIndex = $searchIndex;
