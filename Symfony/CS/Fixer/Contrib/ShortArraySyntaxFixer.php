@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Fixer\Contrib;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokens;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ShortArraySyntaxFixer implements FixerInterface
+class ShortArraySyntaxFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -71,38 +71,6 @@ class ShortArraySyntaxFixer implements FixerInterface
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLevel()
-    {
-        return FixerInterface::CONTRIB_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'short_array_syntax';
     }
 
     /**

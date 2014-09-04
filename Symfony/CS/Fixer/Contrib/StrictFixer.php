@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Fixer\Contrib;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class StrictFixer implements FixerInterface
+class StrictFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -51,38 +51,6 @@ class StrictFixer implements FixerInterface
                 $token->id = $map[$token->id]['id'];
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLevel()
-    {
-        return FixerInterface::CONTRIB_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'strict';
     }
 
     /**

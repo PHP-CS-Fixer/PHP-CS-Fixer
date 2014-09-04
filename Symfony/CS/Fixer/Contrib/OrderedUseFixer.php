@@ -10,13 +10,13 @@
  */
 namespace Symfony\CS\Fixer\Contrib;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokens;
 
 /**
  * @author Paweł Zaremba <pawzar@gmail.com>
  */
-class OrderUseFixer implements FixerInterface
+class OrderedUseFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -74,34 +74,10 @@ class OrderUseFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
-    {
-        return FixerInterface::CONTRIB_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // should be run after the MultipleUseFixer
         return -10;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'ordered_use';
     }
 
     /**

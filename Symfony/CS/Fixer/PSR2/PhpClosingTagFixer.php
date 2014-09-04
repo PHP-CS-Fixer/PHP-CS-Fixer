@@ -11,14 +11,16 @@
 
 namespace Symfony\CS\Fixer\PSR2;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
 /**
+ * Fixer for rules defined in PSR2 ¶2.2.
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class PhpClosingTagFixer implements FixerInterface
+class PhpClosingTagFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -54,35 +56,10 @@ class PhpClosingTagFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
-    {
-        // defined in PSR-2 2.2
-        return FixerInterface::PSR2_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // should be run before the ShortTagFixer
         return 5;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'php_closing_tag';
     }
 
     /**

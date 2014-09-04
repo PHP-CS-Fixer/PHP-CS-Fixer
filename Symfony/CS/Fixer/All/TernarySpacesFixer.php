@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Fixer\All;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class TernarySpacesFixer implements FixerInterface
+class TernarySpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -83,38 +83,6 @@ class TernarySpacesFixer implements FixerInterface
         }
 
         $tokens->insertAt($index + $indexChange, new Token(array(T_WHITESPACE, ' ', $token->line)));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLevel()
-    {
-        return FixerInterface::ALL_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'ternary_spaces';
     }
 
     /**

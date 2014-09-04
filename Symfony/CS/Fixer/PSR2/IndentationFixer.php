@@ -11,13 +11,15 @@
 
 namespace Symfony\CS\Fixer\PSR2;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokens;
 
 /**
+ * Fixer for rules defined in PSR2 ¶2.4.
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class IndentationFixer implements FixerInterface
+class IndentationFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -40,34 +42,9 @@ class IndentationFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
-    {
-        // defined in PSR2 ¶2.4
-        return FixerInterface::PSR2_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         return 50;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'indentation';
     }
 
     /**
