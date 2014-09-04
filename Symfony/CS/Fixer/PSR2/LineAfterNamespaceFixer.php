@@ -16,6 +16,8 @@ use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
 /**
+ * Fixer for rules defined in PSR2 ¶3.
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class LineAfterNamespaceFixer extends AbstractFixer

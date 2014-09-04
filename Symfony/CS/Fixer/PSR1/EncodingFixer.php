@@ -14,6 +14,8 @@ namespace Symfony\CS\Fixer\PSR1;
 use Symfony\CS\AbstractFixer;
 
 /**
+ * Fixer for rules defined in PSR1 ¶2.2.
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class EncodingFixer extends AbstractFixer

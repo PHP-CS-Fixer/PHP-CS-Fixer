@@ -14,6 +14,8 @@ namespace Symfony\CS\Fixer\PSR2;
 use Symfony\CS\AbstractFixer;
 
 /**
+ * Fixer for rules defined in PSR2 ¶4.3, ¶4.3, ¶4.4, ¶5.
+ *
  * @author Marek Kalnik <marekk@theodo.fr>
  */
 class CurlyBracketsNewlineFixer extends AbstractFixer

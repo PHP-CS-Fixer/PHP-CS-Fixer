@@ -14,6 +14,8 @@ namespace Symfony\CS\Fixer\PSR2;
 use Symfony\CS\AbstractFixer;
 
 /**
+ * Fixer for rules defined in PSR2 ¶2.2.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class LinefeedFixer extends AbstractFixer

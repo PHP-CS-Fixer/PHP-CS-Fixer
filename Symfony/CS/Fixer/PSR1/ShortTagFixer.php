@@ -15,6 +15,8 @@ use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokens;
 
 /**
+ * Fixer for rules defined in PSR1 ¶2.1.
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class ShortTagFixer extends AbstractFixer

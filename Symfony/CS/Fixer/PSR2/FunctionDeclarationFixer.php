@@ -15,6 +15,8 @@ use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokens;
 
 /**
+ * Fixer for rules defined in PSR2 generally (¶1 and ¶6).
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class FunctionDeclarationFixer extends AbstractFixer

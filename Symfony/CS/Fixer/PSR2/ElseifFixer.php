@@ -15,6 +15,8 @@ use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokens;
 
 /**
+ * Fixer for rules defined in PSR2 ¶5.1.
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class ElseifFixer extends AbstractFixer
