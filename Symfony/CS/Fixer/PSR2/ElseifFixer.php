@@ -62,7 +62,7 @@ class ElseifFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run after ControlSpacesFixer
+        // should be run after ControlsSpacesFixer
         return -20;
     }
 

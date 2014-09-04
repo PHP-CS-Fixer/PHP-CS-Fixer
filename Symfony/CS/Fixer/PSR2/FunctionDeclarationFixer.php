@@ -17,7 +17,7 @@ use Symfony\CS\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class FunctionDeclarationSpacingFixer extends AbstractFixer
+class FunctionDeclarationFixer extends AbstractFixer
 {
     private $singleLineWhitespaceOptions = array('whitespaces' => " \t");
 
@@ -107,13 +107,5 @@ class FunctionDeclarationSpacingFixer extends AbstractFixer
     public function getDescription()
     {
         return 'Spaces should be properly placed in a function declaration.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'function_declaration';
     }
 }

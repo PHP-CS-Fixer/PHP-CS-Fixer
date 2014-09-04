@@ -16,7 +16,7 @@ use Symfony\CS\AbstractFixer;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class LineFeedFixer extends AbstractFixer
+class LinefeedFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -41,13 +41,5 @@ class LineFeedFixer extends AbstractFixer
     public function getDescription()
     {
         return 'All PHP files must use the Unix LF (linefeed) line ending.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'linefeed';
     }
 }

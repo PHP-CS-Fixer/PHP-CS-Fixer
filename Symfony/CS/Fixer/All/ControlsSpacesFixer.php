@@ -18,7 +18,7 @@ use Symfony\CS\AbstractFixer;
  * @author Саша Стаменковић <umpirsky@gmail.com>
  * @author Niko Kivelä <niko@tovrleaf.com>
  */
-class ControlSpacesFixer extends AbstractFixer
+class ControlsSpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -193,13 +193,5 @@ class ControlSpacesFixer extends AbstractFixer
         );
 
         return preg_replace(sprintf('/\)[^\S\n]*(%s)[^\S\n]*\((.*)\)[^\S\n]*{/', implode('|', $statements)), ') \\1 (\\2) {', $content);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'controls_spaces';
     }
 }

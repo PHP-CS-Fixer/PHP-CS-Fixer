@@ -16,7 +16,7 @@ use Symfony\CS\Tokens;
 /**
  * @author Paweł Zaremba <pawzar@gmail.com>
  */
-class OrderUseFixer extends AbstractFixer
+class OrderedUseFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -86,13 +86,5 @@ class OrderUseFixer extends AbstractFixer
     public function getDescription()
     {
         return 'Ordering use statements.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'ordered_use';
     }
 }
