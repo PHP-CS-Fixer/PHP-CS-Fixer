@@ -40,7 +40,13 @@ abstract class AbstractFixer implements FixerInterface
             'Contrib' => FixerInterface::CONTRIB_LEVEL,
         );
 
-        return $map[current(explode('\\', substr(get_called_class(), strlen(__NAMESPACE__.'\\Fixer\\'))))];
+        $level = current(explode('\\', substr(get_called_class(), strlen(__NAMESPACE__.'\\Fixer\\'))));
+
+        if (!isset($map[$level])) {
+            throw new \LogicException("Can not determine Fixer level");
+        }
+
+        return $map[$level];
     }
 
     /**
