@@ -16,7 +16,7 @@ use Symfony\CS\FixerInterface;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class EndOfFileLineFeedFixer implements FixerInterface
+class EofEndingFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}

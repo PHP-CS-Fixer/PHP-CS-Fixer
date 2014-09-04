@@ -17,7 +17,7 @@ use Symfony\CS\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class LowercaseNativeConstantsFixer implements FixerInterface
+class LowercaseConstantsFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}

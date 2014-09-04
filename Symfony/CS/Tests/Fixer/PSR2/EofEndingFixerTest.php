@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class EndOfFileLineFeedFixerTest extends AbstractFixerTestBase
+class EofEndingFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

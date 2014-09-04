@@ -18,7 +18,7 @@ use Symfony\CS\Tokens;
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class TrailingCommaInMultiLineArrayFixer implements FixerInterface
+class MultilineArrayTrailingCommaFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}

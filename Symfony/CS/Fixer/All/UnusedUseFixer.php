@@ -17,7 +17,7 @@ use Symfony\CS\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class UnusedUseStatementsFixer implements FixerInterface
+class UnusedUseFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}
@@ -203,7 +203,7 @@ class UnusedUseStatementsFixer implements FixerInterface
      */
     public function getPriority()
     {
-        // should be run after the MultipleUseStatementFixer
+        // should be run after the MultipleUseFixer
         return -10;
     }
 

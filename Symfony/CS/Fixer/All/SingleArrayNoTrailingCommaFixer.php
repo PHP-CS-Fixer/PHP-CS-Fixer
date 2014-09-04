@@ -17,7 +17,7 @@ use Symfony\CS\Tokens;
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class NoTrailingCommaInSingLineArrayFixer implements FixerInterface
+class SingleArrayNoTrailingCommaFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}

@@ -18,7 +18,7 @@ use Symfony\CS\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class SpacesNearCastFixer implements FixerInterface
+class SpacesCastFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}
