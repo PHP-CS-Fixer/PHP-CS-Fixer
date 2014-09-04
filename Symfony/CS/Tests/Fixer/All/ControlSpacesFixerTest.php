@@ -25,7 +25,7 @@ class ControlSpacesFixerTest extends AbstractFixerTestBase
 
     public function testFixControlsWithPrefixBraceAndParentheses()
     {
-        $while = 'do { ... }while($test);';
+        $while = 'do{ ... }while($test);';
         $whileFixed = 'do { ... } while ($test);';
 
         $this->makeTest($whileFixed, $while);
