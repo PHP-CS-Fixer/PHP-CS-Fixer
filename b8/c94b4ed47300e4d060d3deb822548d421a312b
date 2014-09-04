@@ -1,0 +1,36 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-03T16:45:31Z
+
+Nice. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-03T16:45:53Z
+
+Maybe we could automatically infer the command name from the class name too?
+
+And the level based on the namespace?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-03T16:46:28Z
+
+We could keep the interface the same, and have an AbstractFixer class to do the logic here?
+
+I could send a pull for that after this goes through if you like?
+
+I'll add it my list of things to do.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-03T16:53:32Z
+
+@Graham I thought about that. See that all my recent (let say 1-2 weeks) changes that not modify Fixer content are going in that direction. Just want to send changes as atomic as they could be.
+I do already have that change locally.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-03T16:58:35Z
+
+Ok, cool. :) It seemed the natural progression.
