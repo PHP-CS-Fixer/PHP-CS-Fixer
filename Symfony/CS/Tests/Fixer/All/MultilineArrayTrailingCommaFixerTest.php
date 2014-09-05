@@ -284,6 +284,16 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
             array(
                 "<?php
 
+                throw new \\InvalidArgumentException(sprintf(
+                    'ExceptionController::showAction can only accept some exceptions (%s, %s), \"%s\" given',
+                    'Symfony\\Component\\HttpKernel\\Exception\\FlattenException',
+                    'Symfony\\Component\\Debug\\Exception\\FlattenException',
+                    get_class(\$exception)
+                ));"
+            ),
+            array(
+                "<?php
+
                 \$foo = array(
                     array(
                     )
