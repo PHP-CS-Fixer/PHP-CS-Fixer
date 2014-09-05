@@ -290,6 +290,22 @@ class Tokens extends \SplFixedArray
         return true;
     }
 
+    public function isClosingBraceInsideString($index)
+    {
+        if (!$this[$index]->equals('}')) {
+            throw new \InvalidArgumentException('Invalid param $startIndex - not a proper block start');
+        }
+
+        $prevIndex = null;
+        $prevToken = $this->getPrevTokenOfKind(
+            $index,
+            array('}', '{', array(T_CURLY_OPEN), array(T_DOLLAR_OPEN_CURLY_BRACES)),
+            $prevIndex,
+        );
+
+        return $prevToken->isGivenKind(array(T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES));
+    }
+
     /**
      * Find block end.
      *
