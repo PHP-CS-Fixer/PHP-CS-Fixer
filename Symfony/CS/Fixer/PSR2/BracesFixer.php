@@ -237,7 +237,7 @@ class BracesFixer implements FixerInterface
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
             }
 
-            // reset loop due to collection change
+            // reset loop limit due to collection change
             $limit = count($tokens);
         }
     }
