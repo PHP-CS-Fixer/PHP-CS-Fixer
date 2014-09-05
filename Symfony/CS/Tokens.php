@@ -833,7 +833,7 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Check if the array at index uses the short-syntax.
+     * Check if there is an array at given index.
      *
      * @param int $index
      *
