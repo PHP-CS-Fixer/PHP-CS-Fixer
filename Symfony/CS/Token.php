@@ -111,6 +111,24 @@ class Token
     }
 
     /**
+     * Check if token is equals to one of given.
+     *
+     * @param array $others array of tokens or token prototypes
+     *
+     * @return bool
+     */
+    public function equalsAny(array $others)
+    {
+        foreach ($others as $other) {
+            if ($this->equals($other)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Get token prototype.
      *
      * @return string|array token prototype
