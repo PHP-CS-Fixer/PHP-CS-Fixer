@@ -262,7 +262,6 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                 );",
             ),
 
-            // see https://github.com/fabpot/PHP-CS-Fixer/issues/525
             array(
                 "<?php
 
