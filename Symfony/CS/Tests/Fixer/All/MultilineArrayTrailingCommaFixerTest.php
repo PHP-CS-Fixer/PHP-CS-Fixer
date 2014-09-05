@@ -261,6 +261,26 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                     )
                 );",
             ),
+
+            // see https://github.com/fabpot/PHP-CS-Fixer/issues/525
+            array(
+                "<?php\n
+
+                throw new BadMethodCallException(\n
+                    sprintf(\n
+                        'Method \"%s\" not implemented',\n
+                        __METHOD__\n
+                    )\n
+                );"
+            ),
+            array(
+                "<?php
+
+                throw new BadMethodCallException(sprintf(\n
+                    'Method \"%s\" not implemented',\n
+                    __METHOD__\n
+                ));"
+            ),
         );
     }
 }
