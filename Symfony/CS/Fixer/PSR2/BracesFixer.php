@@ -170,7 +170,16 @@ class BracesFixer implements FixerInterface
                     continue;
                 }
 
-                if (1 === $nestLevel && in_array($nestToken->content, array(';', '}'), true)) {
+                if (
+                    1 === $nestLevel
+                    && (
+                        $nestToken->equals(';')
+                        || (
+                            $nestToken->equals('}')
+                            && !$tokens->isClosingBraceInsideString($nestIndex)
+                        )
+                    )
+                ) {
                     $nextNonWhitespaceNestToken = $tokens->getNextNonWhitespace($nestIndex);
 
                     if (
