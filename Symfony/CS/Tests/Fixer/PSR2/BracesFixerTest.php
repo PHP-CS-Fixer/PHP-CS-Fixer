@@ -469,6 +469,13 @@ function lambda()
     return function () {};
 }',
             ),
+            array(
+                '<?php
+function nested()
+{
+    $a = "a{$b->c()}d";
+}',
+            ),
         );
     }
 
