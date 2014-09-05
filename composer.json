@@ -17,6 +17,9 @@
         "symfony/stopwatch": "~2.5",
         "sebastian/diff": "1.1.*"
     },
+    "require-dev": {
+        "phpunit/phpunit": "4.2.*"
+    },
     "autoload": {
         "psr-0": { "Symfony\\CS": "." }
     },
