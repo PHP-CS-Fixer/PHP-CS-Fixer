@@ -60,7 +60,7 @@ class BracesFixer implements FixerInterface
             $afterCommentIndex = null;
             $afterCommentToken = $tokens->getNextNonWhitespace($afterParenthesisIndex, array(), $afterCommentIndex);
 
-            if ('{' !== $afterCommentToken->content) {
+            if (!$afterCommentToken->equals('{')) {
                 continue;
             }
 
@@ -83,7 +83,7 @@ class BracesFixer implements FixerInterface
             $prevIndex = null;
             $prevToken = $tokens->getPrevNonWhitespace($index, array(), $prevIndex);
 
-            if ('}' !== $prevToken->content) {
+            if (!$prevToken->equals('}')) {
                 continue;
             }
 
@@ -146,7 +146,7 @@ class BracesFixer implements FixerInterface
             }
 
             // structure without braces block - nothing to do, e.g. do { } while (true);
-            if ('{' !== $startBraceToken->content) {
+            if (!$startBraceToken->equals('{')) {
                 continue;
             }
 
@@ -165,7 +165,7 @@ class BracesFixer implements FixerInterface
             for ($nestIndex = $lastCommaIndex; $nestIndex >= $startBraceIndex; --$nestIndex) {
                 $nestToken = $tokens[$nestIndex];
 
-                if (')' === $nestToken->content) {
+                if ($nestToken->equals(')')) {
                     $nestIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nestIndex, false);
                     continue;
                 }
@@ -177,7 +177,7 @@ class BracesFixer implements FixerInterface
                         // next Token is not a comment
                         !$nextNonWhitespaceNestToken->isComment() &&
                         // and it is not a $foo = function () {}; situation
-                        !('}' === $nestToken->content && ';' === $nextNonWhitespaceNestToken->content)
+                        !($nestToken->equals('}') && ';' === $nextNonWhitespaceNestToken->content)
                     ) {
                         if ($nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens())) {
                             $whitespace = ' ';
@@ -195,7 +195,7 @@ class BracesFixer implements FixerInterface
 
                             $whitespace = $nextWhitespace."\n".$indent;
 
-                            if ('}' !== $nextNonWhitespaceNestToken->content) {
+                            if (!$nextNonWhitespaceNestToken->equals('}')) {
                                 $whitespace .= '    ';
                             }
                         }
@@ -204,19 +204,19 @@ class BracesFixer implements FixerInterface
                     }
                 }
 
-                if ('}' === $nestToken->content) {
+                if ($nestToken->equals('}')) {
                     ++$nestLevel;
                     continue;
                 }
 
-                if ('{' === $nestToken->content) {
+                if ($nestToken->equals('{')) {
                     --$nestLevel;
                     continue;
                 }
             }
 
             // fix indent near opening brace
-            if (isset($tokens[$startBraceIndex + 2]) && '}' === $tokens[$startBraceIndex + 2]->content) {
+            if (isset($tokens[$startBraceIndex + 2]) && $tokens[$startBraceIndex + 2]->equals('}')) {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent);
             } else {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
@@ -264,7 +264,7 @@ class BracesFixer implements FixerInterface
             $tokenAfterParenthesis = $tokens->getNextNonWhitespace($parenthesisEndIndex);
 
             // if Token after parenthesis is { then we do not need to insert brace, but to fix whitespace before it
-            if ('{' === $tokenAfterParenthesis->content) {
+            if ($tokenAfterParenthesis->equals('{')) {
                 $tokens->ensureWhitespaceAtIndex($parenthesisEndIndex + 1, 0, ' ');
                 continue;
             }
@@ -325,7 +325,7 @@ class BracesFixer implements FixerInterface
         $prevIndex = $index - 1;
         $prevToken = $tokens[$prevIndex];
 
-        if ('}' === $prevToken->content) {
+        if ($prevToken->equals('}')) {
             return $this->detectIndent($tokens, $prevIndex);
         }
 
@@ -338,7 +338,7 @@ class BracesFixer implements FixerInterface
 
         // proper decect indent for code: `    } else {`
         if (1 === count($explodedContent)) {
-            if ('}' === $tokens[$index - 2]->content) {
+            if ($tokens[$index - 2]->equals('}')) {
                 return $this->detectIndent($tokens, $index - 2);
             }
         }
@@ -352,7 +352,7 @@ class BracesFixer implements FixerInterface
         $nextToken = $tokens->getNextNonWhitespace($structureTokenIndex, array(), $nextIndex);
 
         // return if next token is not opening parenthesis
-        if ('(' !== $nextToken->content) {
+        if (!$nextToken->equals('(')) {
             return $structureTokenIndex;
         }
 
@@ -368,7 +368,7 @@ class BracesFixer implements FixerInterface
             return $parenthesisEndIndex;
         }
 
-        if ('{' === $nextToken->content) {
+        if ($nextToken->equals('{')) {
             return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextIndex);
         }
 
