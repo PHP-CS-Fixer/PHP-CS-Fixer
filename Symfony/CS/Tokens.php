@@ -70,87 +70,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Ensure that on given index is a whitespace with given kind.
-     *
-     * If there is a whitespace then it's content will be modified.
-     * If not - the new Token will be added.
-     *
-     * @param int    $index       index
-     * @param int    $indexOffset index offset for Token insertion
-     * @param string $whitespace  whitespace to set
-     *
-     * @return bool if new Token was added
-     */
-    public function ensureWhitespaceAtIndex($index, $indexOffset, $whitespace)
-    {
-        $removeLastCommentLine = function ($token, $indexOffset) {
-            // becouse comments tokens are greedy and may consume single \n if we are putting whitespace after it let trim that \n
-            if (1 === $indexOffset && $token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT)) && "\n" === $token->content[strlen($token->content) - 1]) {
-                $token->content = substr($token->content, 0, -1);
-            }
-        };
-
-        $token = $this[$index];
-
-        if ($token->isWhitespace()) {
-            $removeLastCommentLine($this[$index - 1], $indexOffset);
-            $token->content = $whitespace;
-
-            return false;
-        }
-
-        $removeLastCommentLine($token, $indexOffset);
-
-        $this->insertAt(
-            $index + $indexOffset,
-            array(
-                new Token(array(T_WHITESPACE, $whitespace)),
-            )
-        );
-
-        return true;
-    }
-
-    /**
-     * Get cache value for given key.
-     *
-     * @param int|string $key item key
-     *
-     * @return misc item value
-     */
-    private static function getCache($key)
-    {
-        if (!self::hasCache($key)) {
-            throw new \OutOfBoundsException('Unknown cache key: '.$key);
-        }
-
-        return self::$cache[$key];
-    }
-
-    /**
-     * Check if given key exists in cache.
-     *
-     * @param int|string $key item key
-     *
-     * @return bool
-     */
-    private static function hasCache($key)
-    {
-        return isset(self::$cache[$key]);
-    }
-
-    /**
-     * Set cache item.
-     *
-     * @param int|string $key   item key
-     * @param int|string $value item value
-     */
-    private static function setCache($key, $value)
-    {
-        self::$cache[$key] = $value;
-    }
-
-    /**
      * Check if given tokens are equal.
      * If tokens are arrays, then only keys defined in second token are checked.
      *
@@ -241,6 +160,34 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Get cache value for given key.
+     *
+     * @param int|string $key item key
+     *
+     * @return misc item value
+     */
+    private static function getCache($key)
+    {
+        if (!self::hasCache($key)) {
+            throw new \OutOfBoundsException('Unknown cache key: '.$key);
+        }
+
+        return self::$cache[$key];
+    }
+
+    /**
+     * Check if given key exists in cache.
+     *
+     * @param int|string $key item key
+     *
+     * @return bool
+     */
+    private static function hasCache($key)
+    {
+        return isset(self::$cache[$key]);
+    }
+
+    /**
      * Check whether passed method name is one of magic methods.
      *
      * @param string $content name of method
@@ -258,83 +205,14 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Check if the array at index is multiline.
+     * Set cache item.
      *
-     * This only checks the root-level of the array.
-     *
-     * @param int $index
-     *
-     * @return bool
+     * @param int|string $key   item key
+     * @param int|string $value item value
      */
-    public function isArrayMultiLine($index)
+    private static function setCache($key, $value)
     {
-        $multiline = false;
-        $bracesLevel = 0;
-
-        // Skip only when its an array, for short arrays we need the brace for correct
-        // level counting
-        if ($this[$index]->isGivenKind(T_ARRAY)) {
-            ++$index;
-        }
-
-        for ($c = $this->count(); $index < $c; ++$index) {
-            $token = $this[$index];
-
-            if ('(' === $token->content || '[' === $token->content) {
-                ++$bracesLevel;
-                continue;
-            }
-
-            if (1 === $bracesLevel && $token->isGivenKind(T_WHITESPACE) && false !== strpos($token->content, "\n")) {
-                $multiline = true;
-                break;
-            }
-
-            if (')' === $token->content || ']' === $token->content) {
-                --$bracesLevel;
-
-                if (0 === $bracesLevel) {
-                    break;
-                }
-            }
-        }
-
-        return $multiline;
-    }
-
-    /**
-     * Check if the array at index uses the short-syntax.
-     *
-     * @param int $index
-     *
-     * @return bool
-     */
-    public function isShortArray($index)
-    {
-        $token = $this[$index];
-
-        if ('[' !== $token->content) {
-            return false;
-        }
-
-        $prevToken = $this->getPrevNonWhitespace($index);
-        if (!$prevToken->isArray() && in_array($prevToken->content, array('=>', '=', '+', '(', '['), true)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if the array at index uses the short-syntax.
-     *
-     * @param int $index
-     *
-     * @return bool
-     */
-    public function isArray($index)
-    {
-        return $this[$index]->isGivenKind(T_ARRAY) || $this->isShortArray($index);
+        self::$cache[$key] = $value;
     }
 
     /**
@@ -393,6 +271,48 @@ class Tokens extends \SplFixedArray
         }
 
         $this->setSize($count);
+    }
+
+    /**
+     * Ensure that on given index is a whitespace with given kind.
+     *
+     * If there is a whitespace then it's content will be modified.
+     * If not - the new Token will be added.
+     *
+     * @param int    $index       index
+     * @param int    $indexOffset index offset for Token insertion
+     * @param string $whitespace  whitespace to set
+     *
+     * @return bool if new Token was added
+     */
+    public function ensureWhitespaceAtIndex($index, $indexOffset, $whitespace)
+    {
+        $removeLastCommentLine = function ($token, $indexOffset) {
+            // becouse comments tokens are greedy and may consume single \n if we are putting whitespace after it let trim that \n
+            if (1 === $indexOffset && $token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT)) && "\n" === $token->content[strlen($token->content) - 1]) {
+                $token->content = substr($token->content, 0, -1);
+            }
+        };
+
+        $token = $this[$index];
+
+        if ($token->isWhitespace()) {
+            $removeLastCommentLine($this[$index - 1], $indexOffset);
+            $token->content = $whitespace;
+
+            return false;
+        }
+
+        $removeLastCommentLine($token, $indexOffset);
+
+        $this->insertAt(
+            $index + $indexOffset,
+            array(
+                new Token(array(T_WHITESPACE, $whitespace)),
+            )
+        );
+
+        return true;
     }
 
     /**
@@ -913,6 +833,101 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Check if the array at index uses the short-syntax.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isArray($index)
+    {
+        return $this[$index]->isGivenKind(T_ARRAY) || $this->isShortArray($index);
+    }
+
+    /**
+     * Check if the array at index is multiline.
+     *
+     * This only checks the root-level of the array.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isArrayMultiLine($index)
+    {
+        $multiline = false;
+        $bracesLevel = 0;
+
+        // Skip only when its an array, for short arrays we need the brace for correct
+        // level counting
+        if ($this[$index]->isGivenKind(T_ARRAY)) {
+            ++$index;
+        }
+
+        for ($c = $this->count(); $index < $c; ++$index) {
+            $token = $this[$index];
+
+            if ('(' === $token->content || '[' === $token->content) {
+                ++$bracesLevel;
+                continue;
+            }
+
+            if (1 === $bracesLevel && $token->isGivenKind(T_WHITESPACE) && false !== strpos($token->content, "\n")) {
+                $multiline = true;
+                break;
+            }
+
+            if (')' === $token->content || ']' === $token->content) {
+                --$bracesLevel;
+
+                if (0 === $bracesLevel) {
+                    break;
+                }
+            }
+        }
+
+        return $multiline;
+    }
+
+    /**
+     * Check if the array at index uses the short-syntax.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isShortArray($index)
+    {
+        $token = $this[$index];
+
+        if ('[' !== $token->content) {
+            return false;
+        }
+
+        $prevToken = $this->getPrevNonWhitespace($index);
+        if (!$prevToken->isArray() && in_array($prevToken->content, array('=>', '=', '+', '(', '['), true)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * If $index is below zero, we know that it does not exist.
+     *
+     * This was added to be compatible with HHVM 3.2.0.
+     * Note that HHVM 3.3.0 no longer requires this work around.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function offsetExists($index)
+    {
+        return $index >= 0 && parent::offsetExists($index);
+    }
+
+    /**
      * Removes all the leading whitespace.
      *
      * @param int   $index
@@ -936,21 +951,6 @@ class Tokens extends \SplFixedArray
         if (isset($this[$index + 1]) && $this[$index + 1]->isWhitespace($opts)) {
             $this[$index + 1]->clear();
         }
-    }
-
-    /**
-     * If $index is below zero, we know that it does not exist.
-     *
-     * This was added to be compatible with HHVM 3.2.0.
-     * Note that HHVM 3.3.0 no longer requires this work around.
-     *
-     * @param int $index
-     *
-     * @return bool
-     */
-    public function offsetExists($index)
-    {
-        return $index >= 0 && parent::offsetExists($index);
     }
 
     /**
