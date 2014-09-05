@@ -18,7 +18,7 @@ use Symfony\CS\AbstractFixer;
  * @author Саша Стаменковић <umpirsky@gmail.com>
  * @author Niko Kivelä <niko@tovrleaf.com>
  */
-class ControlsSpacesFixer extends AbstractFixer
+class ControlSpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

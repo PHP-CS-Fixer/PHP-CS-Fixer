@@ -13,7 +13,7 @@ namespace Symfony\CS\Tests\Fixer\All;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class ControlsSpacesFixerTest extends AbstractFixerTestBase
+class ControlSpacesFixerTest extends AbstractFixerTestBase
 {
     public function testFixControlsWithSuffixBrace()
     {
