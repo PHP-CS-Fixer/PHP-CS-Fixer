@@ -342,6 +342,12 @@ class Tokens extends \SplFixedArray
         for ($index = $startIndex; $index !== $endIndex; $index += $indexOffset) {
             $token = $this[$index];
 
+            if ($token->equals('}')) {
+                if ($this->isClosingBraceInsideString($index, $d)) {
+                    continue;
+                }
+            }
+
             if ($token->equals($startEdge)) {
                 ++$blockLevel;
 
