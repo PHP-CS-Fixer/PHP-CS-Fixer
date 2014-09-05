@@ -300,7 +300,7 @@ class Tokens extends \SplFixedArray
         $prevToken = $this->getPrevTokenOfKind(
             $index,
             array('}', '{', array(T_CURLY_OPEN), array(T_DOLLAR_OPEN_CURLY_BRACES)),
-            $prevIndex,
+            $prevIndex
         );
 
         return $prevToken->isGivenKind(array(T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES));
@@ -343,7 +343,7 @@ class Tokens extends \SplFixedArray
             $token = $this[$index];
 
             if ($token->equals('}')) {
-                if ($this->isClosingBraceInsideString($index, $d)) {
+                if ($this->isClosingBraceInsideString($index)) {
                     continue;
                 }
             }
