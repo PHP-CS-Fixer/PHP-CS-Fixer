@@ -537,6 +537,12 @@ abstract class Foo
     }
 }',
             ),
+            array('<?php
+function foo()
+{
+    return "$c ($d)";
+}',
+            ),
         );
     }
 
