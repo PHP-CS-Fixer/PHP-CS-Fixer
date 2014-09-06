@@ -1,0 +1,34 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-04T11:30:29Z
+
+1000 lines less :D
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-04T22:48:59Z
+
+hahahahahahaha :D error from Travis:
+```console
+$ phpenv global 5.5
+/home/travis/build.sh: line 41: phpenv: command not found
+The command "phpenv global 5.5" failed and exited with 127 during .
+```
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-04T22:51:39Z
+
+@keradus please report it to Travis. It looks like the update they just deployed is broken
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-04T22:58:14Z
+
+done: https://github.com/travis-ci/travis-ci/issues/2759
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-05T11:58:43Z
+
+Any new thoughts or ready to merge?
