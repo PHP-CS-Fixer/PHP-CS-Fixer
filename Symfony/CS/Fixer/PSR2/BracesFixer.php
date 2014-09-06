@@ -11,7 +11,7 @@
 
 namespace Symfony\CS\Fixer\PSR2;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
@@ -20,7 +20,7 @@ use Symfony\CS\Tokens;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class BracesFixer implements FixerInterface
+class BracesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
