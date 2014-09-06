@@ -743,13 +743,13 @@ class Foo
     filter(function   ($a) {});',
                 '<?php
     filter(function   ($a)
-    {});'
+    {});',
             ),
             array(
                 '<?php
     filter(function   ($b) {});',
                 '<?php
-    filter(function   ($b){});'
+    filter(function   ($b){});',
             ),
             array(
                 '<?php
