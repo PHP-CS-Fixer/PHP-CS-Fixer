@@ -16,6 +16,8 @@ use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
 /**
+ * Fixer for rules defined in PSR2 ¶4.1, ¶5.
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class BracesFixer implements FixerInterface
@@ -465,35 +467,10 @@ class BracesFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
-    {
-        // defined in PSR2 ¶4.1, ¶5
-        return FixerInterface::PSR2_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // should be run after the ElseIfFixer
         return -25;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'braces';
     }
 
     /**
