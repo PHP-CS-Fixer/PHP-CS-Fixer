@@ -847,6 +847,16 @@ class Foo
                 '<?php
     $foo = function ()use($bar){}',
             ),
+            array(
+                '<?php
+
+// comment
+declare (ticks = 1);
+
+// comment
+while (true) {
+}',
+            ),
         );
     }
 }

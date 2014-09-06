@@ -309,7 +309,7 @@ class BracesFixer implements FixerInterface
 
                 $prevToken = $tokens[$index - 1];
 
-                if (!$prevToken->isWhitespace() && !$prevToken->isGivenKind(T_OPEN_TAG)) {
+                if (!$prevToken->isWhitespace() && !$prevToken->isComment() && !$prevToken->isGivenKind(T_OPEN_TAG)) {
                     $tokens->ensureWhitespaceAtIndex($index - 1, 1, ' ');
                 }
             }
