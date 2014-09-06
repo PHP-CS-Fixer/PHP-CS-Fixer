@@ -31,7 +31,7 @@ class BracesFixer implements FixerInterface
         $this->fixMissingControlBraces($tokens);
         $this->fixIndents($tokens);
         $this->fixControlContinuationBraces($tokens);
-        $this->fixSpaceAfter($tokens);
+        $this->fixSpaceAroundToken($tokens);
         $this->fixDoWhile($tokens);
         $this->fixLambdas($tokens);
 
@@ -297,7 +297,7 @@ class BracesFixer implements FixerInterface
         }
     }
 
-    private function fixSpaceAfter(Tokens $tokens)
+    private function fixSpaceAroundToken(Tokens $tokens)
     {
         $controlTokens = $this->getControlTokens();
 

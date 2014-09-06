@@ -771,14 +771,14 @@ class Foo
     }
 
     /**
-     * @dataProvider provideFixSpaceAfterCases
+     * @dataProvider provideFixSpaceAroundTokenCases
      */
-    public function testFixSpaceAfter($expected, $input = null)
+    public function testFixSpaceAroundToken($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
 
-    public function provideFixSpaceAfterCases()
+    public function provideFixSpaceAroundTokenCases()
     {
         return array(
             array(
