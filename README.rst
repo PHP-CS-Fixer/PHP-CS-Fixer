@@ -216,11 +216,6 @@ Choose from the list of available fixers:
 * **concat_without_spaces** [all] Concatenation should be used without
             spaces.
 
-* **control_spaces** [all] A single space should be between:
-            the closing brace and the control, the
-            control and the opening parentheses, the
-            closing parentheses and the opening brace.
-
 * **extra_empty_lines** [all] Removes extra empty lines.
 
 * **include** [all] Include and file path should be
