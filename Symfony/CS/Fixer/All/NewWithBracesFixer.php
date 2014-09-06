@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Fixer\All;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class NewWithBracesFixer implements FixerInterface
+class NewWithBracesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -66,38 +66,6 @@ class NewWithBracesFixer implements FixerInterface
         }
 
         return $tokens->generateCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLevel()
-    {
-        return FixerInterface::ALL_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'new_with_braces';
     }
 
     /**

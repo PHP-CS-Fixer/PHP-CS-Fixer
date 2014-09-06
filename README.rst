@@ -219,7 +219,7 @@ Choose from the list of available fixers:
 * **concat_without_spaces** [all] Concatenation should be used without
             spaces.
 
-* **controls_spaces** [all] A single space should be between:
+* **control_spaces** [all] A single space should be between:
             the closing brace and the control, the
             control and the opening parentheses, the
             closing parentheses and the opening brace.

@@ -11,13 +11,15 @@
 
 namespace Symfony\CS\Fixer\PSR2;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokens;
 
 /**
+ * Fixer for rules defined in PSR2 generally (¶1 and ¶6).
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class FunctionDeclarationSpacingFixer implements FixerInterface
+class FunctionDeclarationFixer extends AbstractFixer
 {
     private $singleLineWhitespaceOptions = array('whitespaces' => " \t");
 
@@ -99,39 +101,6 @@ class FunctionDeclarationSpacingFixer implements FixerInterface
         if ($tokens[$start + 1]->isWhitespace($this->singleLineWhitespaceOptions)) {
             $tokens[$start + 1]->clear();
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLevel()
-    {
-        // defined in PSR2 generally (¶1 and ¶6)
-        return FixerInterface::PSR2_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'function_declaration';
     }
 
     /**

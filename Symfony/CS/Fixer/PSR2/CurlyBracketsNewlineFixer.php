@@ -11,12 +11,14 @@
 
 namespace Symfony\CS\Fixer\PSR2;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 
 /**
+ * Fixer for rules defined in PSR2 ¶4.3, ¶4.3, ¶4.4, ¶5.
+ *
  * @author Marek Kalnik <marekk@theodo.fr>
  */
-class CurlyBracketsNewlineFixer implements FixerInterface
+class CurlyBracketsNewlineFixer extends AbstractFixer
 {
     const REMOVE_NEWLINE = '\\1 {\\4';
 
@@ -41,34 +43,9 @@ class CurlyBracketsNewlineFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
-    {
-        // defined in PSR2 ¶4.3, ¶4.3, ¶4.4, ¶5
-        return FixerInterface::PSR2_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function supports(\SplFileInfo $file)
     {
         return 'php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'braces';
     }
 
     /**
@@ -131,5 +108,13 @@ class CurlyBracketsNewlineFixer implements FixerInterface
     {
         // [Structure] do...while loops are formatted like if {\n... \n} else {\n
         return preg_replace('/(do {[\s\S]*)}\s*\n\s*while/', '\\1} while', $content);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'braces';
     }
 }

@@ -11,13 +11,13 @@
 
 namespace Symfony\CS\Fixer\All;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokens;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class SingleArrayNoTrailingCommaFixer implements FixerInterface
+class SingleArrayNoTrailingCommaFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -33,38 +33,6 @@ class SingleArrayNoTrailingCommaFixer implements FixerInterface
         }
 
         return $tokens->generateCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLevel()
-    {
-        return FixerInterface::ALL_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'single_array_no_trailing_comma';
     }
 
     /**

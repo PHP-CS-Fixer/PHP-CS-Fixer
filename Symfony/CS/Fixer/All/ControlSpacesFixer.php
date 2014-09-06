@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Fixer\All;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 
 /**
  * @author Adrien Brault <adrien.brault@gmail.com>
  * @author Саша Стаменковић <umpirsky@gmail.com>
  * @author Niko Kivelä <niko@tovrleaf.com>
  */
-class ControlSpacesFixer implements FixerInterface
+class ControlSpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -38,14 +38,6 @@ class ControlSpacesFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
-    {
-        return FixerInterface::ALL_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // should be run after the CurlyBracketsNewlineFixer
@@ -58,14 +50,6 @@ class ControlSpacesFixer implements FixerInterface
     public function supports(\SplFileInfo $file)
     {
         return 'php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'controls_spaces';
     }
 
     /**

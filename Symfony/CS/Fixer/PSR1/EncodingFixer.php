@@ -11,12 +11,14 @@
 
 namespace Symfony\CS\Fixer\PSR1;
 
-use Symfony\CS\FixerInterface;
+use Symfony\CS\AbstractFixer;
 
 /**
+ * Fixer for rules defined in PSR1 ¶2.2.
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class EncodingFixer implements FixerInterface
+class EncodingFixer extends AbstractFixer
 {
     private $BOM;
 
@@ -40,35 +42,10 @@ class EncodingFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
-    {
-        // defined in PSR1 ¶2.2
-        return FixerInterface::PSR1_LEVEL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // must run first (at least before Fixers that using Tokens) - for speed reason of whole fixing process
         return 100;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'encoding';
     }
 
     /**
