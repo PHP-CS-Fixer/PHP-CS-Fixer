@@ -78,6 +78,38 @@ class Token
         $this->isArray = false;
     }
 
+    /*
+     * Check if token is equals to given one.
+     *
+     * If tokens are arrays, then only keys defined in parameter token are checked.
+     *
+     * @param Token|array|string $other token or it's prototype
+     *
+     * @return bool
+     */
+    public function equals($other)
+    {
+        $otherPrototype = $other instanceof Token ? $other->getPrototype() : $other;
+
+        if ($this->isArray() !== is_array($otherPrototype)) {
+            return false;
+        }
+
+        if (!$this->isArray()) {
+            return $this->content === $otherPrototype;
+        }
+
+        $selfPrototype = $this->getPrototype();
+
+        foreach ($otherPrototype as $key => $val) {
+            if ($selfPrototype[$key] !== $val) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * Get token prototype.
      *

@@ -28,12 +28,12 @@ class Tokens extends \SplFixedArray
      */
     static private $blockEdgeDefinition = array(
         self::BLOCK_TYPE_CURLY_BRACE => array(
-            'start' => array('{'),
-            'end' => array('}'),
+            'start' => '{',
+            'end' => '}',
         ),
         self::BLOCK_TYPE_PARENTHESIS_BRACE => array(
-            'start' => array('('),
-            'end' => array(')'),
+            'start' => '(',
+            'end' => ')',
         ),
     );
 
@@ -67,37 +67,6 @@ class Tokens extends \SplFixedArray
         if (self::hasCache($key)) {
             unset(self::$cache[$key]);
         }
-    }
-
-    /**
-     * Check if given tokens are equal.
-     * If tokens are arrays, then only keys defined in second token are checked.
-     *
-     * @param string|array $tokenA token prototype
-     * @param string|array $tokenB token prototype or only few keys of it
-     *
-     * @return bool
-     */
-    public static function compare($tokenA, $tokenB)
-    {
-        $tokenAIsArray = is_array($tokenA);
-        $tokenBIsArray = is_array($tokenB);
-
-        if ($tokenAIsArray !== $tokenBIsArray) {
-            return false;
-        }
-
-        if (!$tokenAIsArray) {
-            return $tokenA === $tokenB;
-        }
-
-        foreach ($tokenB as $key => $val) {
-            if ($tokenA[$key] !== $val) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /**
@@ -318,10 +287,11 @@ class Tokens extends \SplFixedArray
     /**
      * Find block end.
      *
-     * @param  int  $type        type of block, BLOCK_TYPE_CURLY_BRACE or BLOCK_TYPE_PARENTHESIS_BRACE
-     * @param  int  $searchIndex index of opening brace
-     * @param  bool $findEnd     if method should find block's end, default true, otherwise method find block's start
-     * @return int  index of closing brace
+     * @param int  $type        type of block, BLOCK_TYPE_CURLY_BRACE or BLOCK_TYPE_PARENTHESIS_BRACE
+     * @param int  $searchIndex index of opening brace
+     * @param bool $findEnd     if method should find block's end, default true, otherwise method find block's start
+     *
+     * @return int index of closing brace
      */
     public function findBlockEnd($type, $searchIndex, $findEnd = true)
     {
@@ -341,7 +311,7 @@ class Tokens extends \SplFixedArray
             $endIndex = 0;
         }
 
-        if (!in_array($this[$startIndex]->content, $startEdge, true)) {
+        if (!$this[$startIndex]->equals($startEdge)) {
             throw new \InvalidArgumentException('Invalid param $startIndex - not a proper block start');
         }
 
@@ -350,13 +320,13 @@ class Tokens extends \SplFixedArray
         for ($index = $startIndex; $index !== $endIndex; $index += $indexOffset) {
             $token = $this[$index];
 
-            if (in_array($token->content, $startEdge, true)) {
+            if ($token->equals($startEdge)) {
                 ++$blockLevel;
 
                 continue;
             }
 
-            if (in_array($token->content, $endEdge, true)) {
+            if ($token->equals($endEdge)) {
                 --$blockLevel;
 
                 if (0 === $blockLevel) {
@@ -367,7 +337,7 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        if (!in_array($this[$index]->content, $endEdge, true)) {
+        if (!$this[$index]->equals($endEdge)) {
             throw new \UnexpectedValueException('Missing block end');
         }
 
@@ -660,7 +630,7 @@ class Tokens extends \SplFixedArray
             $token = $this[$index];
 
             foreach ($tokens as $tokenKind) {
-                if (static::compare($token->getPrototype(), $tokenKind)) {
+                if ($token->equals($tokenKind)) {
                     $foundIndex = $index;
 
                     return $token;
@@ -691,7 +661,7 @@ class Tokens extends \SplFixedArray
             $token = $this[$index];
 
             foreach ($tokens as $tokenKind) {
-                if (static::compare($token->getPrototype(), $tokenKind)) {
+                if ($token->equals($tokenKind)) {
                     continue 2;
                 }
             }
