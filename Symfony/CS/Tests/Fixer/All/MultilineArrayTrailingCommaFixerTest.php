@@ -301,12 +301,12 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                 }"
             ),
             array(
-                "<?php
+                '<?php
 
-                \$foo = array(
+                $foo = array(
                     array(
-                    )
-                );"
+                    ),
+                );',
             ),
         );
     }
