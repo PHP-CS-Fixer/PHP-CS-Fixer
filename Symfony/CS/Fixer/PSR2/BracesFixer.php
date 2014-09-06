@@ -185,6 +185,10 @@ class BracesFixer implements FixerInterface
                     if (
                         // next Token is not a comment
                         !$nextNonWhitespaceNestToken->isComment() &&
+                        // next Token is not:
+                        // - '=', e.g.: $a = $b->{$c}($e);
+                        // - '(', e.g.: $a->{$b} = $c;
+                        !$nextNonWhitespaceNestToken->equalsAny(array('=', '(')) &&
                         // and it is not a $foo = function () {}; situation
                         !($nestToken->equals('}') && ';' === $nextNonWhitespaceNestToken->content)
                     ) {

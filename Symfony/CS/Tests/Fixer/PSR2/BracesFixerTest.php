@@ -476,6 +476,14 @@ function nested()
     $a = "a{$b->c()}d";
 }',
             ),
+            array(
+                '<?php
+function foo()
+{
+    $a = $b->{$c->d}($e);
+    $f->{$g} = $h;
+}',
+            ),
         );
     }
 
