@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-06T12:39:28Z
+
+:+1: works perfect.
+
+Btw php.net mentions that `many crc32 checksums will result in negative integers on 32bit platforms.`
+You can solve this by using `hash('crc32b', $code)` instead.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-06T12:43:24Z
+
+About negative integers - IMO it is not a big deal for us. We compare if one hash equals second one.
+Don't care if hash is positive or not.
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-06T12:46:35Z
+
+OK :) :shipit:
