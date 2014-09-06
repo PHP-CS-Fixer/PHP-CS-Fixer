@@ -81,7 +81,6 @@ EOF;
         $this->makeTest($expected, $input);
     }
 
-
     public function testFixFunWithIndent()
     {
         $expected = <<<'EOF'

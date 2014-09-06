@@ -29,9 +29,9 @@ class StrictFixerTest extends AbstractFixerTestBase
     public function provideComparisonsExamples()
     {
         return array(
-            array('<?php $a === $b;', '<?php $a == $b;', ),
-            array('<?php $a !== $b;', '<?php $a != $b;', ),
-            array('<?php $a !== $b;', '<?php $a <> $b;', ),
+            array('<?php $a === $b;', '<?php $a == $b;'),
+            array('<?php $a !== $b;', '<?php $a != $b;'),
+            array('<?php $a !== $b;', '<?php $a <> $b;'),
             array('<?php echo "$a === $b";'),
         );
     }

@@ -12,7 +12,6 @@
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
 use Symfony\CS\Fixer;
-use Symfony\CS\FixerInterface;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
