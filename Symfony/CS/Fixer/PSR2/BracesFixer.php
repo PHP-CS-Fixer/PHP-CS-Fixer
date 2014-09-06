@@ -326,7 +326,7 @@ class BracesFixer implements FixerInterface
 
         $token = $tokens[$index];
 
-        if ($token->isGivenKind($goBackTokens) || $token->isGivenKind($this->getClassyTokens()) || $token->isGivenKind(T_FUNCTION)) {
+        if ($token->isGivenKind($goBackTokens) || $token->isClassy() || $token->isGivenKind(T_FUNCTION)) {
             $prevIndex = null;
             $prevToken = $tokens->getPrevNonWhitespace($index, array(), $prevIndex);
 
