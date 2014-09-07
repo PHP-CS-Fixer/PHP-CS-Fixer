@@ -47,6 +47,7 @@ class MultilineArrayTrailingCommaFixer extends AbstractFixer
     private function fixArray(Tokens $tokens, $index)
     {
         $bracesLevel = 0;
+        $hasContent = false;
 
         // Skip only when it is an array, for short arrays we need the brace for correct
         // level counting
@@ -60,6 +61,7 @@ class MultilineArrayTrailingCommaFixer extends AbstractFixer
 
         for ($c = $tokens->count(); $index < $c; ++$index) {
             $token = $tokens[$index];
+            /** @var Token $token */
 
             if ('(' === $token->content || '[' === $token->content) {
                 ++$bracesLevel;
@@ -77,11 +79,15 @@ class MultilineArrayTrailingCommaFixer extends AbstractFixer
                 $foundIndex = null;
                 $prevToken = $tokens->getTokenNotOfKindSibling($index, -1, array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT)), $foundIndex);
 
-                if (',' !== $prevToken->content) {
+                if ($hasContent && ',' !== $prevToken->content) {
                     $tokens->insertAt($foundIndex + 1, array(new Token(',')));
                 }
 
                 break;
+            }
+
+            if (!$hasContent && !$token->isWhitespace() && !$token->isComment()) {
+                $hasContent = true;
             }
         }
     }

@@ -30,6 +30,8 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
     {
         return array(
             array('<?php $x = array();'),
+            array("<?php \$x = array(\n);"),
+            array("<?php \$x = array(\n /* He */ \n);"),
             array('<?php $x = array(());'),
             array('<?php $x = array("foo");'),
             array('<?php $x = array("foo", );'),
@@ -260,6 +262,53 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                         )
                     )
                 );",
+            ),
+
+            array(
+                "<?php
+
+                throw new BadMethodCallException(
+                    sprintf(
+                        'Method \"%s\" not implemented',
+                        __METHOD__
+                    )
+                );"
+            ),
+            array(
+                "<?php
+
+                throw new BadMethodCallException(sprintf(
+                    'Method \"%s\" not implemented',
+                    __METHOD__
+                ));"
+            ),
+            array(
+                "<?php
+
+                namespace FOS\\RestBundle\\Controller;
+
+                class ExceptionController extends ContainerAware
+                {
+                    public function showAction(Request \$request, \$exception, DebugLoggerInterface \$logger = null, \$format = 'html')
+                    {
+                        if (!\$exception instanceof DebugFlattenException && !\$exception instanceof HttpFlattenException) {
+                            throw new \\InvalidArgumentException(sprintf(
+                                'ExceptionController::showAction can only accept some exceptions (%s, %s), \"%s\" given',
+                                'Symfony\\Component\\HttpKernel\\Exception\\FlattenException',
+                                'Symfony\\Component\\Debug\\Exception\\FlattenException',
+                                get_class(\$exception)
+                            ));
+                        }
+                    }
+                }"
+            ),
+            array(
+                "<?php
+
+                \$foo = array(
+                    array(
+                    )
+                );"
             ),
         );
     }
