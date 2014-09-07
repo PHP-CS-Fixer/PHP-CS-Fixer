@@ -17,6 +17,7 @@ use Symfony\CS\Tokens;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class MultilineArrayTrailingCommaFixer extends AbstractFixer
 {
@@ -48,41 +49,28 @@ class MultilineArrayTrailingCommaFixer extends AbstractFixer
     {
         $bracesLevel = 0;
 
-        // Skip only when it is an array, for short arrays we need the brace for correct
-        // level counting
+        $startIndex = $index;
+
         if ($tokens[$index]->isGivenKind(T_ARRAY)) {
-            ++$index;
+            $tokens->getNextTokenOfKind($index, array('(', '['), $startIndex);
         }
 
         if (!$tokens->isArrayMultiLine($index)) {
-            return ;
+            return;
         }
 
-        for ($c = $tokens->count(); $index < $c; ++$index) {
-            $token = $tokens[$index];
+        if ($tokens[$startIndex]->equals('(')) {
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
+        } else {
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $startIndex);
+        }
 
-            if ('(' === $token->content || '[' === $token->content) {
-                ++$bracesLevel;
+        $beforeEndIndex = null;
+        $beforeEndToken = $tokens->getTokenNotOfKindSibling($endIndex, -1, array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT)), $beforeEndIndex);
 
-                continue;
-            }
-
-            if (')' === $token->content || ']' === $token->content) {
-                --$bracesLevel;
-
-                if (0 !== $bracesLevel) {
-                    continue;
-                }
-
-                $foundIndex = null;
-                $prevToken = $tokens->getTokenNotOfKindSibling($index, -1, array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT)), $foundIndex);
-
-                if (',' !== $prevToken->content) {
-                    $tokens->insertAt($foundIndex + 1, array(new Token(',')));
-                }
-
-                break;
-            }
+        // if there is some item between braces then add `,` after it
+        if ($startIndex !== $beforeEndIndex && !$beforeEndToken->equals(',')) {
+            $tokens->insertAt($beforeEndIndex + 1, new Token(','));
         }
     }
 }
