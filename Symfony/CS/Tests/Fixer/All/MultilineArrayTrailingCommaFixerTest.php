@@ -134,7 +134,7 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                         'Method \"%s\" not implemented',
                         __METHOD__
                     )
-                );"
+                );",
             ),
             array(
                 "<?php
@@ -142,7 +142,7 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                 throw new BadMethodCallException(sprintf(
                     'Method \"%s\" not implemented',
                     __METHOD__
-                ));"
+                ));",
             ),
             array(
                 "<?php
@@ -162,7 +162,7 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                             ));
                         }
                     }
-                }"
+                }",
             ),
         );
     }
