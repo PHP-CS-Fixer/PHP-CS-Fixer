@@ -30,6 +30,8 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
     {
         return array(
             array('<?php $x = array();'),
+            array("<?php \$x = array(\n);"),
+            array("<?php \$x = array(\n /* He */ \n);"),
             array('<?php $x = array(());'),
             array('<?php $x = array("foo");'),
             array('<?php $x = array("foo", );'),
