@@ -29,6 +29,7 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
     public function provideExamples()
     {
         return array(
+            // long syntax tests
             array('<?php $x = array();'),
             array('<?php $x = array(());'),
             array('<?php $x = array("foo");'),
@@ -104,7 +105,7 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                 );",
             ),
 
-            // Short syntax
+            // short syntax tests
             array('<?php $x = array([]);'),
             array('<?php $x = [[]];'),
             array('<?php $x = ["foo",];'),
@@ -124,6 +125,7 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                 ];',
             ),
 
+            // no array tests
             array(
                 "<?php
 
