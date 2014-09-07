@@ -1,0 +1,43 @@
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-07T07:49:47Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-07T13:18:46Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-07T13:25:52Z
+
+Maybe we should pull in the test cases from #536 too like @keradus suggested over on that pull.
+
+Otherwise, :+1:.
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-07T14:15:30Z
+
+Good idea.
+
+Only this one is actually new the rest was merged from localheinz.
+`array("<?php \$x = array(\n /* He */ \n);"),`
+
+And this one `array("<?php \$x = array(\n);"),` is redundant with another test.
+
+---------------------------------------------------------------------------
+
+by spiasecki at 2014-09-07T18:16:11Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-07T18:51:40Z
+
+@sstok I've added it in both short and long syntax, thanks ;)
+I also made some cleanup like removing duplicated tests or move them, more info in commit logs
