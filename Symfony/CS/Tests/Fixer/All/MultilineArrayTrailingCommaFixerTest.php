@@ -41,110 +41,13 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
             array("<?php \$x = array(\narray('foo',\n),\n);", "<?php \$x = array(\narray('foo'\n)\n);"),
             array("<?php \$x = array(\narray('foo'),\n);", "<?php \$x = array(\narray('foo')\n);"),
             array("<?php \$x = array(\n /* He */ \n);"),
-
             array(
-                "<?php
+                '<?php
 
-                \$x = array(
-                    'foo',
-                    'bar',
+                $foo = array(
                     array(
-                        'foo',
-                        'bar',
-                        array(
-                            'foo',
-                            'bar',
-                            array(
-                                'foo',
-                                ('bar' ? true : !(false)),
-                                array(
-                                    'foo',
-                                    'bar',
-                                    array(
-                                        'foo',
-                                        ('bar'),
-                                    ),
-                                ),
-                            ),
-                        ),
                     ),
-                );
-
-                \$y = array(
-                    'foo',
-                    'bar',
-                    array(
-                        'foo',
-                        'bar',
-                        array(
-                            'foo',
-                            'bar',
-                            array(
-                                'foo',
-                                ('bar' ? true : !(false)),
-                                array(
-                                    'foo',
-                                    'bar',
-                                    array(
-                                        'foo',
-                                        ('bar'),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                );",
-                "<?php
-
-                \$x = array(
-                    'foo',
-                    'bar',
-                    array(
-                        'foo',
-                        'bar',
-                        array(
-                            'foo',
-                            'bar',
-                            array(
-                                'foo',
-                                ('bar' ? true : !(false)),
-                                array(
-                                    'foo',
-                                    'bar',
-                                    array(
-                                        'foo',
-                                        ('bar'),
-                                    )
-                                )
-                            )
-                        )
-                    )
-                );
-
-                \$y = array(
-                    'foo',
-                    'bar',
-                    array(
-                        'foo',
-                        'bar',
-                        array(
-                            'foo',
-                            'bar',
-                            array(
-                                'foo',
-                                ('bar' ? true : !(false)),
-                                array(
-                                    'foo',
-                                    'bar',
-                                    array(
-                                        'foo',
-                                        ('bar'),
-                                    )
-                                )
-                            )
-                        )
-                    )
-                );",
+                );',
             ),
 
             // Short syntax
@@ -158,6 +61,14 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
             array('<?php $x = [[],];'),
             array('<?php $x = [$y[],];'),
             array("<?php \$x = [\n /* He */ \n];"),
+            array(
+                '<?php
+
+                $foo = [
+                    [
+                    ],
+                ];',
+            ),
 
             array(
                 "<?php
@@ -173,31 +84,7 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                             'bar',
                             array(
                                 'foo',
-                                ('bar' ? [true] : !(false)),
-                                array(
-                                    'foo',
-                                    'bar',
-                                    array(
-                                        'foo',
-                                        ('bar'),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                );
-
-                \$y = array(
-                    'foo',
-                    'bar',
-                    array(
-                        'foo',
-                        'bar',
-                        array(
-                            'foo',
-                            'bar',
-                            array(
-                                'foo',
+                                ('bar' ? true : !false),
                                 ('bar' ? [true] : !(false)),
                                 array(
                                     'foo',
@@ -224,31 +111,7 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                             'bar',
                             array(
                                 'foo',
-                                ('bar' ? [true] : !(false)),
-                                array(
-                                    'foo',
-                                    'bar',
-                                    array(
-                                        'foo',
-                                        ('bar'),
-                                    )
-                                )
-                            )
-                        )
-                    )
-                );
-
-                \$y = array(
-                    'foo',
-                    'bar',
-                    array(
-                        'foo',
-                        'bar',
-                        array(
-                            'foo',
-                            'bar',
-                            array(
-                                'foo',
+                                ('bar' ? true : !false),
                                 ('bar' ? [true] : !(false)),
                                 array(
                                     'foo',
@@ -301,14 +164,6 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                         }
                     }
                 }"
-            ),
-            array(
-                '<?php
-
-                $foo = array(
-                    array(
-                    ),
-                );',
             ),
         );
     }
