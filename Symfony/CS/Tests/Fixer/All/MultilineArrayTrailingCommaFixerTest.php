@@ -49,6 +49,60 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                     ),
                 );',
             ),
+            array(
+                "<?php
+                \$x = array(
+                    'foo',
+                    'bar',
+                    array(
+                        'foo',
+                        'bar',
+                        array(
+                            'foo',
+                            'bar',
+                            array(
+                                'foo',
+                                ('bar' ? true : !false),
+                                ('bar' ? array(true) : !(false)),
+                                array(
+                                    'foo',
+                                    'bar',
+                                    array(
+                                        'foo',
+                                        ('bar'),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                );",
+                "<?php
+                \$x = array(
+                    'foo',
+                    'bar',
+                    array(
+                        'foo',
+                        'bar',
+                        array(
+                            'foo',
+                            'bar',
+                            array(
+                                'foo',
+                                ('bar' ? true : !false),
+                                ('bar' ? array(true) : !(false)),
+                                array(
+                                    'foo',
+                                    'bar',
+                                    array(
+                                        'foo',
+                                        ('bar'),
+                                    )
+                                )
+                            )
+                        )
+                    )
+                );",
+            ),
 
             // Short syntax
             array('<?php $x = array([]);'),
@@ -68,63 +122,6 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                     [
                     ],
                 ];',
-            ),
-
-            array(
-                "<?php
-
-                \$x = array(
-                    'foo',
-                    'bar',
-                    array(
-                        'foo',
-                        'bar',
-                        array(
-                            'foo',
-                            'bar',
-                            array(
-                                'foo',
-                                ('bar' ? true : !false),
-                                ('bar' ? [true] : !(false)),
-                                array(
-                                    'foo',
-                                    'bar',
-                                    array(
-                                        'foo',
-                                        ('bar'),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                );",
-                "<?php
-
-                \$x = array(
-                    'foo',
-                    'bar',
-                    array(
-                        'foo',
-                        'bar',
-                        array(
-                            'foo',
-                            'bar',
-                            array(
-                                'foo',
-                                ('bar' ? true : !false),
-                                ('bar' ? [true] : !(false)),
-                                array(
-                                    'foo',
-                                    'bar',
-                                    array(
-                                        'foo',
-                                        ('bar'),
-                                    )
-                                )
-                            )
-                        )
-                    )
-                );",
             ),
 
             array(
