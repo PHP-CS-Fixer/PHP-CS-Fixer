@@ -21,6 +21,7 @@ class Tokens extends \SplFixedArray
 {
     const BLOCK_TYPE_PARENTHESIS_BRACE = 1;
     const BLOCK_TYPE_CURLY_BRACE = 2;
+    const BLOCK_TYPE_SQUARE_BRACE = 3;
 
     /**
      * Array defining possible block edge.
@@ -34,6 +35,10 @@ class Tokens extends \SplFixedArray
         self::BLOCK_TYPE_PARENTHESIS_BRACE => array(
             'start' => '(',
             'end' => ')',
+        ),
+        self::BLOCK_TYPE_SQUARE_BRACE => array(
+            'start' => '[',
+            'end' => ']',
         ),
     );
 
