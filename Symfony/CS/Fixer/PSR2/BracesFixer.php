@@ -436,30 +436,46 @@ class BracesFixer extends AbstractFixer
 
     private function getControlTokens()
     {
-        static $tokens = array(
-            T_DECLARE,
-            T_DO,
-            T_ELSE,
-            T_ELSEIF,
-            T_FOR,
-            T_FOREACH,
-            T_IF,
-            T_WHILE,
-            T_TRY,
-            T_CATCH,
-            T_SWITCH,
-        );
+        static $tokens = null;
+
+        if (null === $tokens) {
+            $tokens = array(
+                T_DECLARE,
+                T_DO,
+                T_ELSE,
+                T_ELSEIF,
+                T_FOR,
+                T_FOREACH,
+                T_IF,
+                T_WHILE,
+                T_TRY,
+                T_CATCH,
+                T_SWITCH,
+            );
+
+            if (defined('T_FINALLY')) {
+                $tokens[] = T_FINALLY;
+            }
+        }
 
         return $tokens;
     }
 
     private function getControlContinuationTokens()
     {
-        static $tokens = array(
-            T_ELSE,
-            T_ELSEIF,
-            T_CATCH,
-        );
+        static $tokens = null;
+
+        if (null === $tokens) {
+            $tokens = array(
+                T_ELSE,
+                T_ELSEIF,
+                T_CATCH,
+            );
+
+            if (defined('T_FINALLY')) {
+                $tokens[] = T_FINALLY;
+            }
+        }
 
         return $tokens;
     }

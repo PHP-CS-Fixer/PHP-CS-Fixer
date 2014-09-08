@@ -63,7 +63,6 @@ class BracesFixerTest extends AbstractFixerTestBase
         // do nothing
     }',
             ),
-
             array(
                 '<?php
     if (true) {
@@ -864,6 +863,45 @@ declare (ticks = 1);
 // comment
 while (true) {
 }',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provide55Cases
+     * @requires PHP 5.5
+     */
+    public function test55($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provide55Cases()
+    {
+        return array(
+            array(
+                '<?php
+    try {
+        throw new \Exeption();
+    } catch (\LogicException $e) {
+        // do nothing
+    } catch (\Exception $e) {
+        // do nothing
+    } finally {
+        echo "finish!";
+    }',
+                '<?php
+    try {
+        throw new \Exeption();
+    }catch (\LogicException $e) {
+        // do nothing
+    }
+    catch (\Exception $e) {
+        // do nothing
+    }
+    finally     {
+        echo "finish!";
+    }',
             ),
         );
     }
