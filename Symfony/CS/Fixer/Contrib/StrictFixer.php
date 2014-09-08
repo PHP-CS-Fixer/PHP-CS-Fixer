@@ -25,15 +25,6 @@ class StrictFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, $content)
     {
-        $tokens = Tokens::fromCode($content);
-
-        $this->fixComparisons($tokens);
-
-        return $tokens->generateCode();
-    }
-
-    private function fixComparisons(Tokens $tokens)
-    {
         static $map = array(
             T_IS_EQUAL => array(
                 'id' => T_IS_IDENTICAL,
@@ -45,6 +36,8 @@ class StrictFixer extends AbstractFixer
             ),
         );
 
+        $tokens = Tokens::fromCode($content);
+
         foreach ($tokens as $token) {
             $tokenId = $token->getId();
 
@@ -52,6 +45,8 @@ class StrictFixer extends AbstractFixer
                 $token->override(array($map[$tokenId]['id'], $map[$tokenId]['content'], $token->getLine()));
             }
         }
+
+        return $tokens->generateCode();
     }
 
     /**

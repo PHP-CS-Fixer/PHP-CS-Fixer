@@ -19,14 +19,14 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 class StrictFixerTest extends AbstractFixerTestBase
 {
     /**
-     * @dataProvider provideComparisonsExamples
+     * @dataProvider provideTestFixCases
      */
-    public function testFixComparisons($expected, $input = null)
+    public function testFix($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
 
-    public function provideComparisonsExamples()
+    public function provideTestFixCases()
     {
         return array(
             array('<?php $a === $b;', '<?php $a == $b;'),
