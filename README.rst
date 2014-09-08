@@ -288,6 +288,10 @@ Choose from the list of available fixers:
                Warning! This could change code
                behavior.
 
+* **strict_param** [contrib] Functions should be used with
+               $strict param. Warning! This could
+               change code behavior.
+
 
 The ``--config`` option customizes the files to analyse, based
 on some well-known directory structures:
