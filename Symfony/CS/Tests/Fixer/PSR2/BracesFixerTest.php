@@ -873,6 +873,14 @@ while (true) {
      */
     public function test55($expected, $input = null)
     {
+        // if T_FINALLY does not exist then skip test
+        // may occur on hhvm
+        if (!defined('T_FINALLY')) {
+            $this->markTestSkipped('Lack of T_FINALLY token.');
+
+            return;
+        }
+
         $this->makeTest($expected, $input);
     }
 
