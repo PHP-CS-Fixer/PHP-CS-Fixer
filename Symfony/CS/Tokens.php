@@ -881,7 +881,7 @@ class Tokens extends \SplFixedArray
     public function isClosingBraceInsideString($index)
     {
         if (!$this[$index]->equals('}')) {
-            throw new \InvalidArgumentException('Invalid param $startIndex - not a proper block start');
+            throw new \InvalidArgumentException('Invalid param - not a `}` token at given index');
         }
 
         $prevIndex = null;
