@@ -95,6 +95,28 @@ class BracesFixerTest extends AbstractFixerTestBase
         echo 2;
     }',
             ),
+            array(
+                '<?php
+    class Foo
+    {
+        public function bar(
+            FooInterface $foo,
+            BarInterface $bar,
+            array $data = []
+        ) {
+        }
+    }',
+                '<?php
+    class Foo
+    {
+        public function bar(
+            FooInterface $foo,
+            BarInterface $bar,
+            array $data = []
+        ){
+        }
+    }',
+            ),
         );
     }
 

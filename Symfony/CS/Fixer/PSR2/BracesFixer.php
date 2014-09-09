@@ -16,7 +16,7 @@ use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
 /**
- * Fixer for rules defined in PSR2 ¶4.1, ¶5.
+ * Fixer for rules defined in PSR2 ¶4.1, ¶4.4, ¶5.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
@@ -120,7 +120,8 @@ class BracesFixer extends AbstractFixer
 
     private function fixIndents(Tokens $tokens)
     {
-        $classyAndFunctionTokens = array_merge(array(T_FUNCTION), $this->getClassyTokens());
+        $classyTokens = $this->getClassyTokens();
+        $classyAndFunctionTokens = array_merge(array(T_FUNCTION), $classyTokens);
         $controlTokens = $this->getControlTokens();
         $controlContinuationTokens = $this->getControlContinuationTokens();
         $indentTokens = array_filter(array_merge($classyAndFunctionTokens, $controlTokens), function ($item) { return T_SWITCH !== $item; });
@@ -237,8 +238,18 @@ class BracesFixer extends AbstractFixer
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
             }
 
-            if ($token->isGivenKind($classyAndFunctionTokens)) {
+            if ($token->isGivenKind($classyTokens)) {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, "\n".$indent);
+            } elseif ($token->isGivenKind(T_FUNCTION)) {
+                $closingParenthesisIndex = null;
+                $tokens->getPrevTokenOfKind($startBraceIndex, array(')'), $closingParenthesisIndex);
+                $prevToken = $tokens[$closingParenthesisIndex - 1];
+
+                if ($prevToken->isWhitespace() && false !== strpos($prevToken->content, "\n")) {
+                    $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
+                } else {
+                    $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, "\n".$indent);
+                }
             } else {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
             }
