@@ -36,7 +36,7 @@ abstract class AbstractFixer implements FixerInterface
             'PSR0' => FixerInterface::PSR0_LEVEL,
             'PSR1' => FixerInterface::PSR1_LEVEL,
             'PSR2' => FixerInterface::PSR2_LEVEL,
-            'All' => FixerInterface::ALL_LEVEL,
+            'Symfony' => FixerInterface::SYMFONY_LEVEL,
             'Contrib' => FixerInterface::CONTRIB_LEVEL,
         );
 

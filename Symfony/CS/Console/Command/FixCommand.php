@@ -66,7 +66,7 @@ class FixCommand extends Command
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The configuration name', null),
                 new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
-                new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or all)', null),
+                new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or symfony (formerly all))', null),
                 new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
                 new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
@@ -85,7 +85,7 @@ project:
     <info>php %command.full_name% /path/to/project --level=psr0</info>
     <info>php %command.full_name% /path/to/project --level=psr1</info>
     <info>php %command.full_name% /path/to/project --level=psr2</info>
-    <info>php %command.full_name% /path/to/project --level=all</info>
+    <info>php %command.full_name% /path/to/project --level=symfony</info>
 
 By default, all PSR-2 fixers and some additional ones are run. The "contrib
 level" fixers cannot be enabled via this option; you should instead set them
@@ -254,8 +254,8 @@ EOF
             case 'psr2':
                 $level = FixerInterface::PSR2_LEVEL;
                 break;
-            case 'all':
-                $level = FixerInterface::ALL_LEVEL;
+            case 'symfony':
+                $level = FixerInterface::SYMFONY_LEVEL;
                 break;
             case null:
                 $fixerOption = $input->getOption('fixers');
