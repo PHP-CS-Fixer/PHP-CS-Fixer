@@ -17,7 +17,6 @@ use Symfony\CS\Config\Config;
 
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testThatDefaultFinderWorksWithDirSetOnConfig()
     {
         $config = Config::create();

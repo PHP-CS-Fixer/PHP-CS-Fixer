@@ -331,6 +331,12 @@ class Tokens extends \SplFixedArray
         for ($index = $startIndex; $index !== $endIndex; $index += $indexOffset) {
             $token = $this[$index];
 
+            if ($token->equals('}')) {
+                if ($this->isClosingBraceInsideString($index)) {
+                    continue;
+                }
+            }
+
             if ($token->equals($startEdge)) {
                 ++$blockLevel;
 
@@ -868,6 +874,63 @@ class Tokens extends \SplFixedArray
         }
 
         return $multiline;
+    }
+
+    /**
+     * Check if a closing curly bracket at given index is end for { and not T_CURLY_OPEN or T_DOLLAR_OPEN_CURLY_BRACES.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isClosingBraceInsideString($index)
+    {
+        if (!$this[$index]->equals('}')) {
+            throw new \InvalidArgumentException('Invalid param - not a `}` token at given index');
+        }
+
+        $prevIndex = null;
+        $prevToken = $this->getPrevTokenOfKind(
+            $index,
+            array('}', '{', array(T_CURLY_OPEN), array(T_DOLLAR_OPEN_CURLY_BRACES)),
+            $prevIndex
+        );
+
+        return $prevToken->isGivenKind(array(T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES));
+    }
+
+    /**
+     * Check if there is a lambda function under given index.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isLambda($index)
+    {
+        $token = $this[$index];
+
+        if (!$token->isGivenKind(T_FUNCTION)) {
+            throw new \LogicException('No T_FUNCTION at given index');
+        }
+
+        $nextIndex = null;
+        $nextToken = $this->getNextNonWhitespace($index, array(), $nextIndex);
+
+        if ('(' !== $nextToken->content) {
+            return false;
+        }
+
+        $endParenthesisIndex = $this->findBlockEnd(self::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
+
+        $nextIndex = null;
+        $nextToken = $this->getNextNonWhitespace($endParenthesisIndex, array(), $nextIndex);
+
+        if ('{' !== $nextToken->content && !$nextToken->isGivenKind(T_USE)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
