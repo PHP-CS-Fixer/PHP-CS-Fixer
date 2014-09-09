@@ -204,7 +204,7 @@ class Fixer
             return 'contrib';
         }
 
-        return 'all';
+        return 'symfony';
     }
 
     protected function stringDiff($old, $new)

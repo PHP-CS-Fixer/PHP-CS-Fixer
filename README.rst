@@ -123,7 +123,7 @@ project:
     php php-cs-fixer.phar fix /path/to/project --level=psr0
     php php-cs-fixer.phar fix /path/to/project --level=psr1
     php php-cs-fixer.phar fix /path/to/project --level=psr2
-    php php-cs-fixer.phar fix /path/to/project --level=all
+    php php-cs-fixer.phar fix /path/to/project --level=symfony
 
 By default, all PSR-2 fixers and some additional ones are run. The "contrib
 level" fixers cannot be enabled via this option; you should instead set them
@@ -213,49 +213,49 @@ Choose from the list of available fixers:
             static MUST be declared after the
             visibility.
 
-* **concat_without_spaces** [all] Concatenation should be used without
-            spaces.
+* **concat_without_spaces** [symfony] Concatenation should be used
+            without spaces.
 
-* **extra_empty_lines** [all] Removes extra empty lines.
+* **extra_empty_lines** [symfony] Removes extra empty lines.
 
-* **include** [all] Include and file path should be
+* **include** [symfony] Include and file path should be
             divided with a single space. File path
             should not be placed under brackets.
 
-* **multiline_array_trailing_comma** [all] PHP multi-line arrays should have a
-            trailing comma.
+* **multiline_array_trailing_comma** [symfony] PHP multi-line arrays should
+            have a trailing comma.
 
-* **new_with_braces** [all] All instances created with new
+* **new_with_braces** [symfony] All instances created with new
             keyword must be followed by braces.
 
-* **object_operator** [all] There should not be space before or
-            after object T_OBJECT_OPERATOR.
+* **object_operator** [symfony] There should not be space before
+            or after object T_OBJECT_OPERATOR.
 
-* **operators_spaces** [all] Operators should be arounded by at
-            least one space.
+* **operators_spaces** [symfony] Operators should be arounded by
+            at least one space.
 
-* **phpdoc_params** [all] All items of the @param phpdoc tags
-            must be aligned vertically.
+* **phpdoc_params** [symfony] All items of the @param phpdoc
+            tags must be aligned vertically.
 
-* **return** [all] An empty line feed should precede a
-            return statement.
+* **return** [symfony] An empty line feed should
+            precede a return statement.
 
-* **single_array_no_trailing_comma** [all] PHP single-line arrays should not
-            have trailing comma.
+* **single_array_no_trailing_comma** [symfony] PHP single-line arrays should
+            not have trailing comma.
 
-* **spaces_cast** [all] A single space should be between
+* **spaces_cast** [symfony] A single space should be between
             cast and variable.
 
-* **standardize_not_equal** [all] Replace all <> with !=.
+* **standardize_not_equal** [symfony] Replace all <> with !=.
 
-* **ternary_spaces** [all] Standardize spaces around ternary
-            operator.
+* **ternary_spaces** [symfony] Standardize spaces around
+            ternary operator.
 
-* **unused_use** [all] Unused use statements must be
+* **unused_use** [symfony] Unused use statements must be
             removed.
 
-* **whitespacy_lines** [all] Remove trailing whitespace at the
-            end of blank lines.
+* **whitespacy_lines** [symfony] Remove trailing whitespace at
+            the end of blank lines.
 
 * **concat_with_spaces** [contrib] Concatenation should be used
             with at least one whitespace around.

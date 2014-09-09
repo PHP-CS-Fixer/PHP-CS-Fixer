@@ -32,7 +32,7 @@ class Config implements ConfigInterface
     {
         $this->name = $name;
         $this->description = $description;
-        $this->fixers = FixerInterface::ALL_LEVEL;
+        $this->fixers = FixerInterface::SYMFONY_LEVEL;
         $this->finder = new DefaultFinder();
         $this->customFixers = array();
     }
