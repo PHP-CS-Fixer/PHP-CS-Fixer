@@ -451,12 +451,12 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            if ('{' === $token->content || $token->isGivenKind(array(T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES))) {
+            if ($token->equals('{') || $token->isGivenKind(array(T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES))) {
                 ++$curlyBracesLevel;
                 continue;
             }
 
-            if ('}' === $token->content) {
+            if ($token->equals('}')) {
                 --$curlyBracesLevel;
 
                 if (0 === $curlyBracesLevel) {
@@ -499,19 +499,19 @@ class Tokens extends \SplFixedArray
             if (T_NAMESPACE === $token->id) {
                 $nextToken = $this->getNextTokenOfKind($index, array(';', '{'));
 
-                if ('{' === $nextToken->content) {
+                if ($nextToken->equals('{')) {
                     $namespaceWithBraces = true;
                 }
 
                 continue;
             }
 
-            if ('{' === $token->content) {
+            if ($token->equals('{')) {
                 ++$bracesLevel;
                 continue;
             }
 
-            if ('}' === $token->content) {
+            if ($token->equals('}')) {
                 --$bracesLevel;
                 continue;
             }
