@@ -1,0 +1,37 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-06T21:51:14Z
+
+This would be less confusing :+1:. Can I suggest that we change `Contrib` to `All` after this goes though?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-06T22:10:27Z
+
+Change ALL_LEVEL to SYMFONY_LEVEL is done because ALL_LEVEL is misleading - it not use all fixers!
+Using the same argue I am against rename CONTRIB_LEVEL to ALL_LEVEL. CONTRIB_LEVEL won't run all fixers, even more - you can't set CONTRIB_LEVEL as console option.
+If you want to discuss about renaming CONTRIB_LEVEL please create separate thread for it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-08T19:50:41Z
+
+Looks good now. :+1:
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-08T20:01:40Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-09T06:47:18Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-09T18:50:14Z
+
+(rebase to resolve conflicts)
