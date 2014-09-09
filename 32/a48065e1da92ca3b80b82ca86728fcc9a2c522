@@ -1,0 +1,219 @@
+---------------------------------------------------------------------------
+
+by stof at 2014-08-27T00:55:00Z
+
+It looks like applying the new fixer on the project codebase changes lots of files, which looks wrong as I think the codebase already uses brances everywhere. It looks like there is a bug in your fixer
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-27T00:56:35Z
+
+Also, I think it will break for codebases using the following syntax:
+
+```php
+if (2 > 1):
+    echo 'This is always reached':
+    echo 'More code';
+endif;
+```
+
+the fixer should take such code into account to avoid breaking it
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-27T08:09:38Z
+
+@stof
+1. applying fixer on codebase - yes, it change a lot. it is not a bug, it just a fixer that is not finish yet. take a look at todo list - probably missing of `correct multi-level intend` change your code in bad way.
+2. `endif` etc - argh, ugly syntax. actually consider between learning this fixer or ignore it (without codebreak) and creating new fixer to replace with {}
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-28T14:52:30Z
+
+fix `T_FOR` token syntax
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-28T21:22:40Z
+
+(just rebase on master)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-29T12:33:14Z
+
+Next to task done:
+- correct multi-level intend
+- make Travis pass
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-29T12:35:17Z
+
+@stof
+Running fixer on project itself do not change anything now. I think you may run it on your codebase again
+
+Be aware that
+```php
+if (2 > 1):
+    echo 'This is always reached':
+    echo 'More code';
+endif;
+```
+syntax is not touched yet
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-29T12:36:20Z
+
+@keradus I don't have such codebase (the case where it is common to use such syntax is in templates, and I use Twig for that)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-29T12:39:15Z
+
+@stof OK. I think I will ignore this syntax, at least for now. Maybe some day.
+
+The intresting thing is that the fixer do not only add missing braces, but also correct indent inside it ;)
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-29T13:03:40Z
+
+@keradus IMO, changing the if/endif syntax to the brace syntax is a job for a different fixer, as you might now want it globally
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-29T13:08:12Z
+
+@stof Then agreed, this fixer should ignore that syntax.
+Do you have time to create `if ... endif` -> `if {}` fixer ?
+
+---------------------------------------------------------------------------
+
+by stof at 2014-08-29T13:15:36Z
+
+I don't, and I'm not so much interested in it. Thus, in Symfony, we accept (and use) this syntax in PHP template, so it would be a nightmare to configure things (it would require 2 separate configs)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-29T13:46:23Z
+
+ignore T_END* syntax done
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-08-31T21:40:30Z
+
+So many common with CurlyBracketsNewlineFixer - merging it inside this fixer ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-01T17:14:05Z
+
+remove new line between `}` and T_ELSE, E_ELSEIF, T_CATCH
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-01T19:24:09Z
+
+Are closures dealt with here?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-01T19:29:15Z
+
+How are closures related with constrol structures, like if, for etc?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-01T19:35:51Z
+
+Here's an example:
+
+```php
+$foo = function () {
+    //
+}
+```
+
+We need to ensure the braces are placed in the correct place.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-01T19:41:29Z
+
+StructureBraces does not modify that code
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-01T19:42:46Z
+
+Sure. Do currently have a fixer for that is what I'm really asking?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-01T19:46:32Z
+
+See good piece of code so... don't know - what have to be fixed. But since it is not question for this PR please ask in proper PR / issue.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-03T17:26:32Z
+
+(just do the work and resolve conflicts with master)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-03T23:07:53Z
+
+`CurlyBracketsNewlineFixer` is now gone.
+`StructureBracesFixer` is now `BracesFixer`.
+
+I am tired of this...
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-04T13:48:46Z
+
+Remove ControlSpacesFixer  :D as duplicate work of BracesFixer
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-04T13:48:56Z
+
+remove WIP flag and change title to BracesFixer
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-04T18:46:43Z
+
+run without any problems on project itself and on https://github.com/bobthecow/mustache.php
+(see: https://github.com/bobthecow/mustache.php/pull/226 for applied changes)
+
+Please comment ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-04T22:30:15Z
+
+crash at symfony/symfony :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-05T22:55:06Z
+
+Yeah, now do not crash on symfony, but still some minors to fix
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-06T12:35:53Z
+
+Work well on https://github.com/bobthecow/mustache.php and https://github.com/symfony/symfony :D
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-06T16:44:13Z
+
+Is this close to getting merged now?
