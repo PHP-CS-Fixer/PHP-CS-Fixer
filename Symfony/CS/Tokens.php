@@ -493,14 +493,16 @@ class Tokens extends \SplFixedArray
         $uses = array();
         $bracesLevel = 0;
 
-        $namespaceWithBraces = false;
+        //foreach ($this as $index => $token) {
+        for ($index = 0, $limit = $this->count(); $index < $limit; ++$index) {
+            $token = $this[$index];
 
-        foreach ($this as $index => $token) {
             if (T_NAMESPACE === $token->id) {
-                $nextToken = $this->getNextTokenOfKind($index, array(';', '{'));
+                $nextTokenIndex = null;
+                $nextToken = $this->getNextTokenOfKind($index, array(';', '{'), $nextTokenIndex);
 
                 if ($nextToken->equals('{')) {
-                    $namespaceWithBraces = true;
+                    $index = $nextTokenIndex;
                 }
 
                 continue;
@@ -516,7 +518,7 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            if (T_USE !== $token->id || $bracesLevel > ($namespaceWithBraces ? 1 : 0)) {
+            if (T_USE !== $token->id || 0 < $bracesLevel) {
                 continue;
             }
 
