@@ -451,12 +451,12 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            if ('{' === $token->content || $token->isGivenKind(array(T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES))) {
+            if ($token->equals('{') || $token->isGivenKind(array(T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES))) {
                 ++$curlyBracesLevel;
                 continue;
             }
 
-            if ('}' === $token->content) {
+            if ($token->equals('}')) {
                 --$curlyBracesLevel;
 
                 if (0 === $curlyBracesLevel) {
@@ -493,30 +493,32 @@ class Tokens extends \SplFixedArray
         $uses = array();
         $bracesLevel = 0;
 
-        $namespaceWithBraces = false;
+        //foreach ($this as $index => $token) {
+        for ($index = 0, $limit = $this->count(); $index < $limit; ++$index) {
+            $token = $this[$index];
 
-        foreach ($this as $index => $token) {
             if (T_NAMESPACE === $token->id) {
-                $nextToken = $this->getNextTokenOfKind($index, array(';', '{'));
+                $nextTokenIndex = null;
+                $nextToken = $this->getNextTokenOfKind($index, array(';', '{'), $nextTokenIndex);
 
-                if ('{' === $nextToken->content) {
-                    $namespaceWithBraces = true;
+                if ($nextToken->equals('{')) {
+                    $index = $nextTokenIndex;
                 }
 
                 continue;
             }
 
-            if ('{' === $token->content) {
+            if ($token->equals('{')) {
                 ++$bracesLevel;
                 continue;
             }
 
-            if ('}' === $token->content) {
+            if ($token->equals('}')) {
                 --$bracesLevel;
                 continue;
             }
 
-            if (T_USE !== $token->id || $bracesLevel > ($namespaceWithBraces ? 1 : 0)) {
+            if (T_USE !== $token->id || 0 < $bracesLevel) {
                 continue;
             }
 
