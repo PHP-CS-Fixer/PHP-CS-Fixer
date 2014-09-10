@@ -29,10 +29,11 @@ class NamespaceNoLeadingWhitespaceFixerTest extends AbstractFixerTestBase
     public function provideExamples()
     {
         return array(
-            // long syntax tests
+            // with newline
             array("<?php\nnamespace Test;"),
             array("<?php\n\nnamespace Test;"),
             array("<?php\nnamespace Test;", "<?php\n namespace Test;"),
+            // without newline
             array('<?php namespace Test;'),
             array('<?php namespace Test;', '<?php  namespace Test;'),
         );
