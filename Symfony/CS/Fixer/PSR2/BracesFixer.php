@@ -287,7 +287,7 @@ class BracesFixer extends AbstractFixer
             // do not add braces for cases:
             // - structure without block, e.g. while ($iter->next());
             // - structure with block, e.g. while ($i) {...}, while ($i) : {...} endwhile;
-            if (in_array($tokenAfterParenthesis->content, array(';', '{', ':'), true)) {
+            if ($tokenAfterParenthesis->equalsAny(array(';', '{', ':'))) {
                 continue;
             }
 
