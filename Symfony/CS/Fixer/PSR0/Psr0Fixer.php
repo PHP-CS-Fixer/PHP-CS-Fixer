@@ -50,7 +50,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
 
                 $namespace = trim($tokens->generatePartialCode($namespaceIndex, $namespaceEndIndex - 1));
             } elseif ($token->isClassy()) {
-                if (null !==$classyName) {
+                if (null !== $classyName) {
                     return $content;
                 }
 

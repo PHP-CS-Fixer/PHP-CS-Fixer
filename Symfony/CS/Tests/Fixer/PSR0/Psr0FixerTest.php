@@ -141,22 +141,4 @@ EOF;
 
         $this->assertSame($expected, $fixer->fix($file, $input));
     }
-
-    public function testFixLeadingSpaceNamespace()
-    {
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
-
-        $expected = <<<'EOF'
-<?php
-namespace LeadingSpace;
-class Psr0Fixer {}
-EOF;
-        $input = <<<'EOF'
-<?php
- namespace LeadingSpace;
-class Psr0Fixer {}
-EOF;
-
-        $this->makeTest($expected, $input, $file);
-    }
 }
