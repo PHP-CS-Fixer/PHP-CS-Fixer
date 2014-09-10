@@ -21,10 +21,12 @@ class Psr0FixerTest extends AbstractFixerTestBase
         $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
 
         $expected = <<<'EOF'
+<?php
 namespace Symfony\CS\Fixer\PSR0;
 class Psr0Fixer {}
 EOF;
         $input = <<<'EOF'
+<?php
 namespace Symfony\cs\Fixer\PSR0;
 class psr0Fixer {}
 EOF;
@@ -32,9 +34,11 @@ EOF;
         $this->makeTest($expected, $input, $file);
 
         $expected = <<<'EOF'
+<?php
 class Symfony_CS_Fixer_PSR0_Psr0Fixer {}
 EOF;
         $input = <<<'EOF'
+<?php
 class symfony_cs_FiXER_PSR0_Psr0FIXer {}
 EOF;
 
@@ -46,11 +50,13 @@ EOF;
         $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
 
         $expected = <<<'EOF'
+<?php
 namespace Symfony\CS\Fixer\PSR0;
 class Psr0Fixer {}
 /* class foo */
 EOF;
         $input = <<<'EOF'
+<?php
 namespace Symfony\CS\Fixer\PSR0;
 class blah {}
 /* class foo */
@@ -64,11 +70,13 @@ EOF;
         $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
 
         $expected = <<<'EOF'
+<?php
 namespace Symfony\CS\Fixer\PSR0;
 abstract class Psr0Fixer {}
 /* class foo */
 EOF;
         $input = <<<'EOF'
+<?php
 namespace Symfony\CS\Fixer\PSR0;
 abstract class blah {}
 /* class foo */
@@ -82,11 +90,13 @@ EOF;
         $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
 
         $expected = <<<'EOF'
+<?php
 namespace Symfony\CS\Fixer\PSR0;
 final class Psr0Fixer {}
 /* class foo */
 EOF;
         $input = <<<'EOF'
+<?php
 namespace Symfony\CS\Fixer\PSR0;
 final class blah {}
 /* class foo */
@@ -105,10 +115,12 @@ EOF;
         $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
 
         $expected = <<<'EOF'
+<?php
 namespace Foo\Bar\Baz\Fixer\PSR0;
 class Psr0Fixer {}
 EOF;
         $input = <<<'EOF'
+<?php
 namespace Foo\Bar\Baz\FIXER\PSR0;
 class Psr0Fixer {}
 EOF;
@@ -117,30 +129,16 @@ EOF;
 
         $config->setDir(__DIR__.'/../../../Fixer/PSR0');
         $expected = <<<'EOF'
+<?php
 namespace Foo\Bar\Baz;
 class Psr0Fixer {}
 EOF;
         $input = <<<'EOF'
+<?php
 namespace Foo\Bar\Baz;
 class Psr0Fixer {}
 EOF;
 
         $this->assertSame($expected, $fixer->fix($file, $input));
-    }
-
-    public function testFixLeadingSpaceNamespace()
-    {
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
-
-        $expected = <<<'EOF'
-namespace LeadingSpace;
-class Psr0Fixer {}
-EOF;
-        $input = <<<'EOF'
- namespace LeadingSpace;
-class Psr0Fixer {}
-EOF;
-
-        $this->makeTest($expected, $input, $file);
     }
 }

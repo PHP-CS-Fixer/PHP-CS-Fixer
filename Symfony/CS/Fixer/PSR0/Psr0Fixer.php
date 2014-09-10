@@ -14,10 +14,12 @@ namespace Symfony\CS\Fixer\PSR0;
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\ConfigAwareInterface;
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokens;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Bram Gotink <bram@gotink.me>
  */
 class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
 {
@@ -28,27 +30,39 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
      */
     public function fix(\SplFileInfo $file, $content)
     {
+        $tokens = Tokens::fromCode($content);
+
         $namespace = false;
-        if (preg_match('{^[^\S\n]*(?:<\?php\s+)?namespace\s+(\S+)\s*;}um', $content, $match)) {
-            $namespace = $match[1];
-            if (stripos($match[0], 'namespace') > 0) {
-                $content = str_replace($match[0], ltrim($match[0], " \t"), $content);
+        $namespaceIndex = 0;
+        $namespaceEndIndex = 0;
+
+        $classyName = null;
+        $classyIndex = 0;
+
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind(T_NAMESPACE)) {
+                if (false !== $namespace) {
+                    return $content;
+                }
+
+                $tokens->getNextNonWhitespace($index, array(), $namespaceIndex);
+                $tokens->getNextTokenOfKind($index, array(';'), $namespaceEndIndex);
+
+                $namespace = trim($tokens->generatePartialCode($namespaceIndex, $namespaceEndIndex - 1));
+            } elseif ($token->isClassy()) {
+                if (null !== $classyName) {
+                    return $content;
+                }
+
+                $classyName = $tokens->getNextNonWhitespace($index, array(), $classyIndex)->content;
             }
         }
 
-        if (!preg_match_all('{^((abstract\s+|final\s+)?class|interface|trait)\s+(\S+)}um', $content, $matches, PREG_SET_ORDER)) {
+        if (null === $classyName) {
             return $content;
         }
 
-        if (!$matches || count($matches) > 1) {
-            return $content;
-        }
-
-        $match = $matches[0];
-        $keyword = $match[1];
-        $class = $match[3];
-
-        if ($namespace) {
+        if (false !== $namespace) {
             $normNamespace = strtr($namespace, '\\', '/');
             $path = strtr($file->getRealPath(), '\\', '/');
             $dir = dirname($path);
@@ -71,25 +85,34 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
             }
             $filename = basename($path, '.php');
 
-            if ($class !== $filename) {
-                $content = preg_replace('{^'.$keyword.'\s+(\S+)}um', $keyword.' '.$filename, $content, 1);
+            if ($classyName !== $filename) {
+                $tokens[$classyIndex]->content = $filename;
             }
 
             if ($normNamespace !== $dir && strtolower($normNamespace) === strtolower($dir)) {
+                for ($i = $namespaceIndex; $i <= $namespaceEndIndex; $i++) {
+                    $tokens[$i]->clear();
+                }
                 $namespace = substr($namespace, 0, -strlen($dir)).strtr($dir, '/', '\\');
-                $content = preg_replace('{^namespace\s+(\S+)\s*;}um', 'namespace '.$namespace.';', $content, 1);
+
+                $newNamespace = Tokens::fromCode('<?php namespace '.$namespace.';');
+                $newNamespace[0]->clear();
+                $newNamespace[1]->clear();
+                $newNamespace[2]->clear();
+
+                $tokens->insertAt($namespaceIndex, $newNamespace);
             }
         } else {
-            $normClass = strtr($class, '_', '/');
+            $normClass = strtr($classyName, '_', '/');
             $path = strtr($file->getRealPath(), '\\', '/');
             $filename = substr($path, -strlen($normClass) - 4, -4);
 
             if ($normClass !== $filename && strtolower($normClass) === strtolower($filename)) {
-                $content = preg_replace('{^'.$keyword.'\s+(\S+)}um', $keyword.' '.strtr($filename, '/', '_'), $content, 1);
+                $tokens[$classyIndex]->content = strtr($filename, '/', '_');
             }
         }
 
-        return $content;
+        return $tokens->generateCode();
     }
 
     /**
