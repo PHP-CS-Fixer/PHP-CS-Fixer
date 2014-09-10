@@ -669,16 +669,15 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Get closest sibling token not of given kind.
+     * Get index for closest sibling token not of given kind.
      *
-     * @param int      $index       token index
-     * @param int      $direction   direction for looking, +1 or -1
-     * @param array    $tokens      possible tokens
-     * @param int|null &$foundIndex index of founded token, if any
+     * @param int   $index     token index
+     * @param int   $direction direction for looking, +1 or -1
+     * @param array $tokens    possible tokens
      *
-     * @return Token
+     * @return int|null
      */
-    public function getTokenNotOfKindSibling($index, $direction, array $tokens = array(), &$foundIndex = null)
+    public function getTokenNotOfKindSibling($index, $direction, array $tokens = array())
     {
         while (true) {
             $index += $direction;
@@ -693,9 +692,7 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            $foundIndex = $index;
-
-            return $token;
+            return $index;
         }
     }
 

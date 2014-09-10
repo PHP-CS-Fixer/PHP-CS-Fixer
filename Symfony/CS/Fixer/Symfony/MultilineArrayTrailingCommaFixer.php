@@ -65,8 +65,8 @@ class MultilineArrayTrailingCommaFixer extends AbstractFixer
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $startIndex);
         }
 
-        $beforeEndIndex = null;
-        $beforeEndToken = $tokens->getTokenNotOfKindSibling($endIndex, -1, array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT)), $beforeEndIndex);
+        $beforeEndIndex = $tokens->getTokenNotOfKindSibling($endIndex, -1, array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT)));
+        $beforeEndToken = $tokens[$beforeEndIndex];
 
         // if there is some item between braces then add `,` after it
         if ($startIndex !== $beforeEndIndex && !$beforeEndToken->equals(',')) {
