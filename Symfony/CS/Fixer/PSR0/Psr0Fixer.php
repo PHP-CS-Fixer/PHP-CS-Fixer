@@ -41,7 +41,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
 
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_NAMESPACE)) {
-                if ($namespace !== false) {
+                if (false !== $namespace) {
                     return $content;
                 }
 
@@ -50,7 +50,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
 
                 $namespace = trim($tokens->generatePartialCode($namespaceIndex, $namespaceEndIndex - 1));
             } elseif ($token->isClassy()) {
-                if ($classyName !== null) {
+                if (null !==$classyName) {
                     return $content;
                 }
 
@@ -58,11 +58,11 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
             }
         }
 
-        if ($classyName === null) {
+        if (null === $classyName) {
             return $content;
         }
 
-        if ($namespace !== false) {
+        if (false !== $namespace) {
             $normNamespace = strtr($namespace, '\\', '/');
             $path = strtr($file->getRealPath(), '\\', '/');
             $dir = dirname($path);
