@@ -1,0 +1,445 @@
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-03T12:54:12Z
+
+(now also works for traits importing other traits)
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-03T13:05:38Z
+
+(check version php version for traits)
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-03T13:07:35Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-03T13:07:42Z
+
+It might have been useful for you to include my original commit adding the tests, but nvm.
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-03T13:50:17Z
+
+@GrahamCampbell do you have a PR or branch where I can find the tests?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-03T13:50:45Z
+
+@sstok Yeh: https://github.com/fabpot/PHP-CS-Fixer/pull/505.
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-03T13:51:04Z
+
+(use classy)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-03T13:51:13Z
+
+Will this not be a problem:
+```php
+namespace A;
+use B;
+class C {}
+use D;
+class E {}
+```
+?
+
+Please take a look at `Tokens::getNamespaceUseIndexes` method
+
+btw T_USE will also match here: `function () use ($foo) {}` - is this fixer protected against it ?
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-03T13:52:28Z
+
+No it only checks against classes so that will properly fail.
+And multiple classes was something I forgot about :)
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-03T14:35:56Z
+
+I have come-up with something that hopefully works :)
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-03T15:59:49Z
+
+A better fix would be to use ``$tokens->getNamespaceUseIndexes()`` to find the indexes of use statements
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-03T22:59:05Z
+
+@sstok your proposal will still break for the following code:
+
+```php
+$a = true;
+$b = false;
+$c = function () use ($c) {};
+$d = function () use ($a) {};
+```
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-04T08:45:50Z
+
+I'm on it, it seems that namespace imports are not full strings, and every part and namespace separator is also a token :sweat:
+
+The original implementation used actual lines to sort the uses, but something like;
+
+```
+use Zoo\Tar, Zoo\Bar;
+```
+
+Would not be properly sorted, and the fixer could even move complete lines and not just the uses.
+So I need recompose the use for sorting and then re set all the tokens on there correct position :scream:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-04T12:19:11Z
+
+@sstok Do I understand you that you want to change
+`use Zoo\Tar, Zoo\Bar;` into `use Zoo\Bar, Zoo\Tar;` ?
+
+If yes - IMO no need to do that,  Leave it as it is.
+If we came up and analise that to recompose it - it is better to leave it splitted than compose it again but with sorted order. But wait, we do that in MultipleUseFixer ;)
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-04T12:46:50Z
+
+I agree that we should not try to split the different use statements for multiple use statements.. There is another fixer for that.
+
+something using the ``getNamespaceUseDeclarations`` method defined in the UnusedUseFixer (moving it to Tokens) would probably do the work of identifying used names: https://github.com/fabpot/PHP-CS-Fixer/blob/b8c94b4ed47300e4d060d3deb822548d421a312b/Symfony/CS/Fixer/All/UnusedUseFixer.php#L90
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-04T12:55:26Z
+
+Be aware that that method get only single use statement (ignore `use Foo, Bar;`).
+This method can't return anything good for multiple-use statements in return keys like shortName, fullName or aliased
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-04T14:12:48Z
+
+Ah so thats why it did not work :)
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-04T16:52:36Z
+
+I will try to finish this tomorrow, its really driving me crazy :rage:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-04T17:35:06Z
+
+@sstok, relax, you are dilling with it only since yesterday ;)
+I fight with BracesFixer (#472) for 2 weeks :/
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-05T17:04:04Z
+
+(rebased, cleaned-up)
+
+Its working very well but I found a minor problem when using comments in the use.
+Not that this is very common but it should be resolved.
+
+And there is a problem with the `Tokens::fromCode()` when you clear some tokens and load use the method again with a cached content then you get an OutOfRangeException because the cached version is outdated or invalid somehow.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-05T17:08:05Z
+
+If I understand you correctly.
+1. You calculate indexes
+2. You call `Tokens::fromCode`
+?
+
+`Tokens::fromCode` create new instance - which may have different indexes. You need to calc indexes for new instance.
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-05T18:23:10Z
+
+When you call `Tokens::fromCode()` it will generate the tokens and store them in cache.
+Then when you clear some tokens and call `generateCode()` it will generate them, update the cache with the new cache-key but the original cache still remains (with the cleared tokens) and then when calling `Tokens::fromCode()` it uses the cache removes cleared tokens and return the updated Tokens object. The cleared tokens are gone so only the remaining tokens are still there (with new index) and because they count lower this results in an exception.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-05T18:29:33Z
+
+I know how it works, just do not understand what you do to results exception.
+
+Each time you create _new_ instance with `Tokens::fromCode` then the collection may have different size. You can't rely on indexes calculate on different instance.
+
+Or wait, maybe you use multiple instances for the same code?
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-06T07:09:30Z
+
+@keradus
+> Or wait, maybe you use multiple instances for the same code?
+
+Yep ;) this bug was not shown before as the generated code was always different. I will look into providing an isolated test case to demonstrate the bug.
+
+Edit. OK its a bug in the fixer because I cant reproduce the error in isolation and some indexes are wrong  :skull:
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-06T11:57:01Z
+
+OK that was a bit to optimistic, there was a bug with the wrong index but the cache problem is still present.
+
+You can use the following code to reproduce the exception.
+Problem is exactly as described, when changing any of the tokens of the code returned by `Tokens::fromCode()` then a next call with the exact same input will give an error because the cached version with removed tokens is used.
+
+The problem was not so easy to find because it only happens when resulting cached tokens is lower then the index your clearing.
+
+```php
+    public function testTokensBreakage()
+    {
+        $declarationTokens = Tokens::fromCode('<?php use Foo\Bar;');
+
+        echo "Input: \n";
+        print_r($declarationTokens);
+
+        $declarationTokens[0]->clear(); // <?php
+        $declarationTokens[1]->clear(); // space
+        $declarationTokens[2]->clear(); // use
+        $declarationTokens[count($declarationTokens) - 1]->clear(); // ;
+
+        echo "\nAfter changes: \n";
+        print_r($declarationTokens);
+
+        $declarationTokens = Tokens::fromCode('<?php use Foo\Bar;');
+
+        echo "\nFrom cache: \n";
+        print_r($declarationTokens);
+
+        $declarationTokens[0]->clear(); // <?php
+        $declarationTokens[1]->clear(); // space
+        $declarationTokens[2]->clear(); // use
+        $declarationTokens[count($declarationTokens) - 1]->clear(); // ;
+
+        $declarationTokens = Tokens::fromCode('<?php use Foo\Bar;');
+
+        echo "\nFrom cache (second): \n";
+        print_r($declarationTokens);
+
+        // and now the error because the tokens count is slowly decreased
+
+        $declarationTokens[0]->clear(); // <?php
+        $declarationTokens[1]->clear(); // space
+        $declarationTokens[2]->clear(); // use
+        $declarationTokens[count($declarationTokens) - 1]->clear(); // ;
+    }
+```
+
+Debugging output.
+
+```
+Input:
+Symfony\CS\Tokens Object
+(
+    [codeHash:Symfony\CS\Tokens:private] => -790221661
+    [0] => Symfony\CS\Token Object
+        (
+            [content] => <?php
+            [id] => 372
+            [isArray:Symfony\CS\Token:private] => 1
+            [line] => 1
+        )
+
+    [1] => Symfony\CS\Token Object
+        (
+            [content] => use
+            [id] => 340
+            [isArray:Symfony\CS\Token:private] => 1
+            [line] => 1
+        )
+
+    [2] => Symfony\CS\Token Object
+        (
+            [content] =>
+            [id] => 375
+            [isArray:Symfony\CS\Token:private] => 1
+            [line] => 1
+        )
+
+    [3] => Symfony\CS\Token Object
+        (
+            [content] => Foo
+            [id] => 307
+            [isArray:Symfony\CS\Token:private] => 1
+            [line] => 1
+        )
+
+    [4] => Symfony\CS\Token Object
+        (
+            [content] => \
+            [id] => 384
+            [isArray:Symfony\CS\Token:private] => 1
+            [line] => 1
+        )
+
+    [5] => Symfony\CS\Token Object
+        (
+            [content] => Bar
+            [id] => 307
+            [isArray:Symfony\CS\Token:private] => 1
+            [line] => 1
+        )
+
+    [6] => Symfony\CS\Token Object
+        (
+            [content] => ;
+            [id] =>
+            [isArray:Symfony\CS\Token:private] =>
+            [line] =>
+        )
+
+)
+
+After changes:
+Symfony\CS\Tokens Object
+(
+    [codeHash:Symfony\CS\Tokens:private] => -790221661
+    [0] => Symfony\CS\Token Object
+        (
+            [content] =>
+            [id] =>
+            [isArray:Symfony\CS\Token:private] =>
+            [line] =>
+        )
+
+    [1] => Symfony\CS\Token Object
+        (
+            [content] =>
+            [id] =>
+            [isArray:Symfony\CS\Token:private] =>
+            [line] =>
+        )
+
+    [2] => Symfony\CS\Token Object
+        (
+            [content] =>
+            [id] =>
+            [isArray:Symfony\CS\Token:private] =>
+            [line] =>
+        )
+
+    [3] => Symfony\CS\Token Object
+        (
+            [content] => Foo
+            [id] => 307
+            [isArray:Symfony\CS\Token:private] => 1
+            [line] => 1
+        )
+
+    [4] => Symfony\CS\Token Object
+        (
+            [content] => \
+            [id] => 384
+            [isArray:Symfony\CS\Token:private] => 1
+            [line] => 1
+        )
+
+    [5] => Symfony\CS\Token Object
+        (
+            [content] => Bar
+            [id] => 307
+            [isArray:Symfony\CS\Token:private] => 1
+            [line] => 1
+        )
+
+    [6] => Symfony\CS\Token Object
+        (
+            [content] =>
+            [id] =>
+            [isArray:Symfony\CS\Token:private] =>
+            [line] =>
+        )
+
+)
+
+From cache:
+Symfony\CS\Tokens Object
+(
+    [codeHash:Symfony\CS\Tokens:private] => -790221661
+    [0] => Symfony\CS\Token Object
+        (
+            [content] => Foo
+            [id] => 307
+            [isArray:Symfony\CS\Token:private] => 1
+            [line] => 1
+        )
+
+    [1] => Symfony\CS\Token Object
+        (
+            [content] => \
+            [id] => 384
+            [isArray:Symfony\CS\Token:private] => 1
+            [line] => 1
+        )
+
+    [2] => Symfony\CS\Token Object
+        (
+            [content] => Bar
+            [id] => 307
+            [isArray:Symfony\CS\Token:private] => 1
+            [line] => 1
+        )
+
+)
+
+From cache (second):
+Symfony\CS\Tokens Object
+(
+    [codeHash:Symfony\CS\Tokens:private] => -790221661
+)
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-06T12:30:26Z
+
+Please try this: #533
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-06T12:45:46Z
+
+(rebased and ready for merge)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-06T12:48:44Z
+
+We need to see if Travis will pass after merge of #533
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-06T12:51:36Z
+
+Could you comply with review issues like docs or preincrementation?
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-06T14:13:38Z
+
+(fixed CS issues)
