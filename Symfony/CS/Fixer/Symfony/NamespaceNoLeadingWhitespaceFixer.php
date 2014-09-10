@@ -35,7 +35,7 @@ class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
             $beforeNamespace = $tokens[$index - 1];
 
             if (!$beforeNamespace->isWhitespace()) {
-                return $content;
+                continue;
             }
 
             $lastNewline = strrpos($beforeNamespace->content, "\n");

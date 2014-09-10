@@ -39,9 +39,12 @@ class NamespaceNoLeadingWhitespaceFixerTest extends AbstractFixerTestBase
             // multiple namespaces with newline
             array("<?php\nnamespace Test1;\nnamespace Test2;"),
             array("<?php\nnamespace Test1;\nnamespace Test2;", "<?php\n namespace Test1;\n   namespace Test2;"),
+            array("<?php\nnamespace Test1;\nclass Test {}\nnamespace Test2;", "<?php\n namespace Test1;\nclass Test {}\n   namespace Test2;"),
+            array("<?php\nnamespace Test1;\nuse Exception;\nnamespace Test2;", "<?php\n namespace Test1;\nuse Exception;\n   namespace Test2;"),
             // multiple namespaces without newline
             array('<?php namespace Test1; namespace Test2;'),
             array('<?php namespace Test1; namespace Test2;', '<?php    namespace Test1;  namespace Test2;'),
+            array('<?php namespace Test1; namespace Test2;', '<?php namespace Test1;  namespace Test2;'),
         );
     }
 }
