@@ -172,6 +172,24 @@ class BracesFixer extends AbstractFixer
                     continue;
                 }
 
+                // skip situations like `->{`, e.g.:
+                // - $a = $b->{$c}($e);
+                // - $a->{$b} = $c;
+                // - $a->{$b}[$c] = $d;
+                if ($nestToken->equals('}') && !$tokens->isClosingBraceInsideString($nestIndex)) {
+                    $startNestBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nestIndex, false);
+                    $prevNestStartBraceToken = $tokens->getTokenNotOfKindSibling(
+                        $startNestBraceIndex,
+                        -1,
+                        array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT))
+                    );
+
+                    if ($prevNestStartBraceToken->equals(array(T_OBJECT_OPERATOR))) {
+                        $nestIndex = $startNestBraceIndex;
+                        continue;
+                    }
+                }
+
                 if (
                     1 === $nestLevel
                     && (
@@ -187,10 +205,6 @@ class BracesFixer extends AbstractFixer
                     if (
                         // next Token is not a comment
                         !$nextNonWhitespaceNestToken->isComment() &&
-                        // next Token is not:
-                        // - '=', e.g.: $a = $b->{$c}($e);
-                        // - '(', e.g.: $a->{$b} = $c;
-                        !$nextNonWhitespaceNestToken->equalsAny(array('=', '(')) &&
                         // and it is not a $foo = function () {}; situation
                         !($nestToken->equals('}') && ';' === $nextNonWhitespaceNestToken->content)
                     ) {
