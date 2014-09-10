@@ -59,8 +59,7 @@ class NewWithBracesFixer extends AbstractFixer
                 continue;
             }
 
-            $meaningBeforeNextIndex = null;
-            $tokens->getPrevNonWhitespace($nextIndex, array(), $meaningBeforeNextIndex);
+            $meaningBeforeNextIndex = $tokens->getPrevNonWhitespace($nextIndex);
 
             $tokens->insertAt($meaningBeforeNextIndex + 1, array(new Token('('), new Token(')')));
         }

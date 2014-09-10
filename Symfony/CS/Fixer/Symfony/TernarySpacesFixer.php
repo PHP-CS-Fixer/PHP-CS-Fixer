@@ -36,8 +36,8 @@ class TernarySpacesFixer extends AbstractFixer
             if ('?' === $token->content) {
                 ++$ternaryLevel;
 
-                $nextNonWhitespaceIndex = null;
-                $nextNonWhitespaceToken = $tokens->getNextNonWhitespace($index, array(), $nextNonWhitespaceIndex);
+                $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($index);
+                $nextNonWhitespaceToken = $tokens[$nextNonWhitespaceIndex];
 
                 if (!$nextNonWhitespaceToken->isArray() && ':' === $nextNonWhitespaceToken->content) {
                     // for `$a ?: $b` remove spaces between `?` and `:`
@@ -59,7 +59,7 @@ class TernarySpacesFixer extends AbstractFixer
                 // for `$a ? $b : $c` ensure space after `:`
                 $this->ensureWhitespaceExistance($tokens, $index + 1, true);
 
-                $prevNonWhitespaceToken = $tokens->getPrevNonWhitespace($index);
+                $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
 
                 if ($prevNonWhitespaceToken->isArray() || '?' !== $prevNonWhitespaceToken->content) {
                     // for `$a ? $b : $c` ensure space before `:`

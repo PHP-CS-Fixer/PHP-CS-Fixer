@@ -34,7 +34,7 @@ class ReturnFixer extends AbstractFixer
                 continue;
             }
 
-            $prevNonWhitespaceToken = $tokens->getPrevNonWhitespace($index);
+            $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
 
             if (!$prevNonWhitespaceToken->equalsAny(array(';', '}'))) {
                 continue;

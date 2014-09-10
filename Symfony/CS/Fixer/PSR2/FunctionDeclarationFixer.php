@@ -55,8 +55,8 @@ class FunctionDeclarationFixer extends AbstractFixer
                 }
             }
 
-            $afterParenthesisIndex = null;
-            $afterParenthesisToken = $tokens->getNextNonWhitespace($endParenthesisIndex, array(), $afterParenthesisIndex);
+            $afterParenthesisIndex = $tokens->getNextNonWhitespace($endParenthesisIndex);
+            $afterParenthesisToken = $tokens[$afterParenthesisIndex];
 
             if ($afterParenthesisToken->isGivenKind(T_USE)) {
                 $useStartParenthesisIndex = null;

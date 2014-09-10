@@ -531,7 +531,7 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            $nextToken = $this->getNextNonWhitespace($index);
+            $nextToken = $this[$this->getNextNonWhitespace($index)];
 
             // ignore function () use ($foo) {}
             if ('(' === $nextToken->content) {
@@ -553,19 +553,18 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Get closest next token which is non whitespace.
+     * Get index for closest next token which is non whitespace.
      *
      * This method is shorthand for getNonWhitespaceSibling method.
      *
-     * @param int      $index       token index
-     * @param array    $opts        array of extra options for isWhitespace method
-     * @param int|null &$foundIndex index of found token, if any
+     * @param int   $index token index
+     * @param array $opts  array of extra options for isWhitespace method
      *
-     * @return Token
+     * @return int|null
      */
-    public function getNextNonWhitespace($index, array $opts = array(), &$foundIndex = null)
+    public function getNextNonWhitespace($index, array $opts = array())
     {
-        return $this->getNonWhitespaceSibling($index, 1, $opts, $foundIndex);
+        return $this->getNonWhitespaceSibling($index, 1, $opts);
     }
 
     /**
@@ -585,16 +584,15 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Get closest sibling token which is non whitespace.
+     * Get index for closest sibling token which is non whitespace.
      *
-     * @param int      $index       token index
-     * @param int      $direction   direction for looking, +1 or -1
-     * @param array    $opts        array of extra options for isWhitespace method
-     * @param int|null &$foundIndex index of found token, if any
+     * @param int   $index     token index
+     * @param int   $direction direction for looking, +1 or -1
+     * @param array $opts      array of extra options for isWhitespace method
      *
-     * @return Token
+     * @return int|null
      */
-    public function getNonWhitespaceSibling($index, $direction, array $opts = array(), &$foundIndex = null)
+    public function getNonWhitespaceSibling($index, $direction, array $opts = array())
     {
         while (true) {
             $index += $direction;
@@ -606,27 +604,24 @@ class Tokens extends \SplFixedArray
             $token = $this[$index];
 
             if (!$token->isWhitespace($opts)) {
-                $foundIndex = $index;
-
-                return $token;
+                return $index;
             }
         }
     }
 
     /**
-     * Get closest previous token which is non whitespace.
+     * Get index for closest previous token which is non whitespace.
      *
      * This method is shorthand for getNonWhitespaceSibling method.
      *
-     * @param int      $index       token index
-     * @param array    $opts        array of extra options for isWhitespace method
-     * @param int|null &$foundIndex index of found token, if any
+     * @param int   $index token index
+     * @param array $opts  array of extra options for isWhitespace method
      *
-     * @return Token
+     * @return int|null
      */
-    public function getPrevNonWhitespace($index, array $opts = array(), &$foundIndex = null)
+    public function getPrevNonWhitespace($index, array $opts = array())
     {
-        return $this->getNonWhitespaceSibling($index, -1, $opts, $foundIndex);
+        return $this->getNonWhitespaceSibling($index, -1, $opts);
     }
 
     /**
@@ -929,8 +924,8 @@ class Tokens extends \SplFixedArray
             throw new \LogicException('No T_FUNCTION at given index');
         }
 
-        $nextIndex = null;
-        $nextToken = $this->getNextNonWhitespace($index, array(), $nextIndex);
+        $nextIndex = $this->getNextNonWhitespace($index);
+        $nextToken = $this[$nextIndex];
 
         if ('(' !== $nextToken->content) {
             return false;
@@ -938,8 +933,8 @@ class Tokens extends \SplFixedArray
 
         $endParenthesisIndex = $this->findBlockEnd(self::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
 
-        $nextIndex = null;
-        $nextToken = $this->getNextNonWhitespace($endParenthesisIndex, array(), $nextIndex);
+        $nextIndex = $this->getNextNonWhitespace($endParenthesisIndex);
+        $nextToken = $this[$nextIndex];
 
         if ('{' !== $nextToken->content && !$nextToken->isGivenKind(T_USE)) {
             return false;
@@ -963,7 +958,7 @@ class Tokens extends \SplFixedArray
             return false;
         }
 
-        $prevToken = $this->getPrevNonWhitespace($index);
+        $prevToken = $this[$this->getPrevNonWhitespace($index)];
         if (!$prevToken->isArray() && in_array($prevToken->content, array('=>', '=', '+', '(', '['), true)) {
             return true;
         }

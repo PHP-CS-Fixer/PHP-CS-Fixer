@@ -44,7 +44,7 @@ class IncludeFixer extends AbstractFixer
             $braces = $includy['braces'];
 
             if ($braces) {
-                $nextToken = $tokens->getNextNonWhitespace($includy['braces']['close']);
+                $nextToken = $tokens[$tokens->getNextNonWhitespace($includy['braces']['close'])];
 
                 if (!$nextToken->isArray() && ';' === $nextToken->content) {
                     $tokens->removeLeadingWhitespace($braces['open']);
@@ -101,9 +101,9 @@ class IncludeFixer extends AbstractFixer
 
                 // Don't remove when the statement is wrapped. include is also legal as function parameter
                 // but requires being wrapped then
-                if ('(' !== $tokens->getPrevNonWhitespace($index)->content) {
-                    $nextTokenIndex = null;
-                    $nextToken = $tokens->getNextNonWhitespace($index, array(), $nextTokenIndex);
+                if ('(' !== $tokens[$tokens->getPrevNonWhitespace($index)]->content) {
+                    $nextTokenIndex = $tokens->getNextNonWhitespace($index);
+                    $nextToken = $tokens[$nextTokenIndex];
 
                     if ('(' === $nextToken->content) {
                         $inBraces = true;
@@ -136,8 +136,8 @@ class IncludeFixer extends AbstractFixer
                     $inStatement = false;
                     $includies[$includiesCount]['braces']['close'] = $index;
 
-                    $nextTokenIndex = null;
-                    $nextToken = $tokens->getNextNonWhitespace($index, array(), $nextTokenIndex);
+                    $nextTokenIndex = $tokens->getNextNonWhitespace($index);
+                    $nextToken = $tokens[$nextTokenIndex];
 
                     if (';' === $nextToken->content) {
                         $includies[$includiesCount]['end'] = $nextTokenIndex;
