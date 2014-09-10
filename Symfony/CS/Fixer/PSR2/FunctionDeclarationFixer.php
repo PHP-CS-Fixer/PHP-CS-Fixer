@@ -43,7 +43,7 @@ class FunctionDeclarationFixer extends AbstractFixer
             $startBraceIndex = null;
             $startBraceToken = $tokens->getNextTokenOfKind($endParenthesisIndex, array(';', '{'), $startBraceIndex);
 
-            if ('{' === $startBraceToken->content) {
+            if ($startBraceToken->equals('{')) {
                 // fix single-line whitespace before {
                 // eg: `function foo(){}` => `function foo() {}`
                 // eg: `function foo()   {}` => `function foo() {}`
