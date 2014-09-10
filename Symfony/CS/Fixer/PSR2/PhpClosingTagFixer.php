@@ -42,8 +42,8 @@ class PhpClosingTagFixer extends AbstractFixer
             $tokens->removeLeadingWhitespace($index);
             $token->clear();
 
-            $prevIndex = null;
-            $prevToken = $tokens->getPrevNonWhitespace($index, array(), $prevIndex);
+            $prevIndex = $tokens->getPrevNonWhitespace($index);
+            $prevToken = $tokens[$prevIndex];
 
             if (null !== $prevToken->id || ';' !== $prevToken->content) {
                 $tokens->insertAt($prevIndex + 1, new Token(';'));

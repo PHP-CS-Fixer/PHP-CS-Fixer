@@ -70,8 +70,8 @@ class OrderedUseFixer extends AbstractFixer
         $originalIndexes = array();
 
         foreach ($uses as $index) {
-            $tokens->getNextTokenOfKind($index, array(';'), $endIndex);
-            $tokens->getTokenNotOfKindSibling($index + 1, 1, array(array(T_WHITESPACE)), $startIndex);
+            $endIndex = $tokens->getNextTokenOfKind($index, array(';'));
+            $startIndex = $tokens->getTokenNotOfKindSibling($index + 1, 1, array(array(T_WHITESPACE)));
 
             $namespace = '';
             $index = $startIndex;
@@ -85,10 +85,7 @@ class OrderedUseFixer extends AbstractFixer
                     $originalIndexes[] = $startIndex;
 
                     $namespace = '';
-                    $nextPartIndex = $endIndex;
-
-                    $tokens->getTokenNotOfKindSibling($index, 1, array(array(','), array(T_WHITESPACE)), $nextPartIndex);
-
+                    $nextPartIndex = $tokens->getTokenNotOfKindSibling($index, 1, array(array(','), array(T_WHITESPACE)));
                     $startIndex = $nextPartIndex;
                     $index = $nextPartIndex;
 

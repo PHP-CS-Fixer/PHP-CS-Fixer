@@ -73,11 +73,14 @@ class SingleArrayNoTrailingCommaFixer extends AbstractFixer
             if (')' === $token->content || ']' === $token->content) {
                 --$bracesLevel;
 
-                $foundIndex = null;
+                if (!$multiline && 0 === $bracesLevel) {
+                    $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($index);
+                    $prevNonWhitespaceToken = $tokens[$prevNonWhitespaceIndex];
 
-                if (!$multiline && 0 === $bracesLevel && ',' === $tokens->getPrevNonWhitespace($index, array(), $foundIndex)->content) {
-                    $tokens->removeTrailingWhitespace($foundIndex);
-                    $tokens[$foundIndex]->clear();
+                    if (',' === $prevNonWhitespaceToken->content) {
+                        $tokens->removeTrailingWhitespace($prevNonWhitespaceIndex);
+                        $tokens[$prevNonWhitespaceIndex]->clear();
+                    }
                 }
 
                 if (0 === $bracesLevel) {

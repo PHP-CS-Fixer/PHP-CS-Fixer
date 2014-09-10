@@ -52,15 +52,15 @@ class BracesFixer extends AbstractFixer
             }
 
             $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
-            $afterParenthesisIndex = null;
-            $afterParenthesisToken = $tokens->getNextNonWhitespace($parenthesisEndIndex, array(), $afterParenthesisIndex);
+            $afterParenthesisIndex = $tokens->getNextNonWhitespace($parenthesisEndIndex);
+            $afterParenthesisToken = $tokens[$afterParenthesisIndex];
 
             if (!$afterParenthesisToken->isComment()) {
                 continue;
             }
 
-            $afterCommentIndex = null;
-            $afterCommentToken = $tokens->getNextNonWhitespace($afterParenthesisIndex, array(), $afterCommentIndex);
+            $afterCommentIndex = $tokens->getNextNonWhitespace($afterParenthesisIndex);
+            $afterCommentToken = $tokens[$afterCommentIndex];
 
             if (!$afterCommentToken->equals('{')) {
                 continue;
@@ -82,8 +82,8 @@ class BracesFixer extends AbstractFixer
                 continue;
             }
 
-            $prevIndex = null;
-            $prevToken = $tokens->getPrevNonWhitespace($index, array(), $prevIndex);
+            $prevIndex = $tokens->getPrevNonWhitespace($index);
+            $prevToken = $tokens[$prevIndex];
 
             if (!$prevToken->equals('}')) {
                 continue;
@@ -103,11 +103,11 @@ class BracesFixer extends AbstractFixer
             }
 
             $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
-            $startBraceIndex = null;
-            $startBraceToken = $tokens->getNextNonWhitespace($parenthesisEndIndex, array(), $startBraceIndex);
+            $startBraceIndex = $tokens->getNextNonWhitespace($parenthesisEndIndex);
+            $startBraceToken = $tokens[$startBraceIndex];
             $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startBraceIndex);
-            $nextNonWhitespaceIndex = null;
-            $nextNonWhitespaceToken = $tokens->getNextNonWhitespace($endBraceIndex, array(), $nextNonWhitespaceIndex);
+            $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($endBraceIndex);
+            $nextNonWhitespaceToken = $tokens[$nextNonWhitespaceIndex];
 
             if (!$nextNonWhitespaceToken->isGivenKind(T_WHILE)) {
                 continue;
@@ -140,12 +140,12 @@ class BracesFixer extends AbstractFixer
             }
 
             if ($token->isGivenKind($classyAndFunctionTokens)) {
-                $startBraceIndex = null;
-                $startBraceToken = $tokens->getNextTokenOfKind($index, array(';', '{'), $startBraceIndex);
+                $startBraceIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
+                $startBraceToken = $tokens[$startBraceIndex];
             } else {
                 $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
-                $startBraceIndex = null;
-                $startBraceToken = $tokens->getNextNonWhitespace($parenthesisEndIndex, array(), $startBraceIndex);
+                $startBraceIndex = $tokens->getNextNonWhitespace($parenthesisEndIndex);
+                $startBraceToken = $tokens[$startBraceIndex];
             }
 
             // structure without braces block - nothing to do, e.g. do { } while (true);
@@ -161,8 +161,7 @@ class BracesFixer extends AbstractFixer
             $tokens->ensureWhitespaceAtIndex($endBraceIndex - 1, 1, "\n".$indent);
 
             // fix indent between braces
-            $lastCommaIndex = null;
-            $prevToken = $tokens->getPrevTokenOfKind($endBraceIndex - 1, array(';', '}'), $lastCommaIndex);
+            $lastCommaIndex = $tokens->getPrevTokenOfKind($endBraceIndex - 1, array(';', '}'));
 
             $nestLevel = 1;
             for ($nestIndex = $lastCommaIndex; $nestIndex >= $startBraceIndex; --$nestIndex) {
@@ -183,7 +182,7 @@ class BracesFixer extends AbstractFixer
                         )
                     )
                 ) {
-                    $nextNonWhitespaceNestToken = $tokens->getNextNonWhitespace($nestIndex);
+                    $nextNonWhitespaceNestToken = $tokens[$tokens->getNextNonWhitespace($nestIndex)];
 
                     if (
                         // next Token is not a comment
@@ -241,8 +240,7 @@ class BracesFixer extends AbstractFixer
             if ($token->isGivenKind($classyTokens)) {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, "\n".$indent);
             } elseif ($token->isGivenKind(T_FUNCTION)) {
-                $closingParenthesisIndex = null;
-                $tokens->getPrevTokenOfKind($startBraceIndex, array(')'), $closingParenthesisIndex);
+                $closingParenthesisIndex = $tokens->getPrevTokenOfKind($startBraceIndex, array(')'));
                 $prevToken = $tokens[$closingParenthesisIndex - 1];
 
                 if ($prevToken->isWhitespace() && false !== strpos($prevToken->content, "\n")) {
@@ -268,8 +266,7 @@ class BracesFixer extends AbstractFixer
                 continue;
             }
 
-            $nextIndex = null;
-            $tokens->getNextTokenOfKind($index, array('{'), $nextIndex);
+            $nextIndex = $tokens->getNextTokenOfKind($index, array('{'));
 
             $tokens->ensureWhitespaceAtIndex($nextIndex - 1, 1, ' ');
         }
@@ -287,7 +284,7 @@ class BracesFixer extends AbstractFixer
             }
 
             $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
-            $tokenAfterParenthesis = $tokens->getNextNonWhitespace($parenthesisEndIndex);
+            $tokenAfterParenthesis = $tokens[$tokens->getNextNonWhitespace($parenthesisEndIndex)];
 
             // if Token after parenthesis is { then we do not need to insert brace, but to fix whitespace before it
             if ($tokenAfterParenthesis->equals('{')) {
@@ -340,8 +337,8 @@ class BracesFixer extends AbstractFixer
         $token = $tokens[$index];
 
         if ($token->isGivenKind($goBackTokens) || $token->isClassy() || $token->isGivenKind(T_FUNCTION)) {
-            $prevIndex = null;
-            $prevToken = $tokens->getPrevNonWhitespace($index, array(), $prevIndex);
+            $prevIndex = $tokens->getPrevNonWhitespace($index);
+            $prevToken = $tokens[$prevIndex];
 
             if ($prevToken->isGivenKind($goBackTokens)) {
                 return $this->detectIndent($tokens, $prevIndex);
@@ -374,8 +371,8 @@ class BracesFixer extends AbstractFixer
 
     private function findParenthesisEnd(Tokens $tokens, $structureTokenIndex)
     {
-        $nextIndex = null;
-        $nextToken = $tokens->getNextNonWhitespace($structureTokenIndex, array(), $nextIndex);
+        $nextIndex = $tokens->getNextNonWhitespace($structureTokenIndex);
+        $nextToken = $tokens[$nextIndex];
 
         // return if next token is not opening parenthesis
         if (!$nextToken->equals('(')) {
@@ -387,8 +384,8 @@ class BracesFixer extends AbstractFixer
 
     private function findStatementEnd(Tokens $tokens, $parenthesisEndIndex)
     {
-        $nextIndex = null;
-        $nextToken = $tokens->getNextNonWhitespace($parenthesisEndIndex, array(), $nextIndex);
+        $nextIndex = $tokens->getNextNonWhitespace($parenthesisEndIndex);
+        $nextToken = $tokens[$nextIndex];
 
         if (!$nextToken) {
             return $parenthesisEndIndex;
@@ -404,8 +401,8 @@ class BracesFixer extends AbstractFixer
             $endIndex = $this->findStatementEnd($tokens, $parenthesisEndIndex);
 
             if ($nextToken->isGivenKind(T_IF)) {
-                $nextIndex = null;
-                $nextToken = $tokens->getNextNonWhitespace($endIndex, array(), $nextIndex);
+                $nextIndex = $tokens->getNextNonWhitespace($endIndex);
+                $nextToken = $tokens[$nextIndex];
 
                 if ($nextToken && $nextToken->isGivenKind($this->getControlContinuationTokens())) {
                     $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $nextIndex);

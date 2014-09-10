@@ -34,8 +34,8 @@ class NewWithBracesFixer extends AbstractFixer
                 continue;
             }
 
-            $nextIndex = null;
-            $nextToken = $tokens->getNextTokenOfKind($index, array(';', ',', '(', ')', '[', ']'), $nextIndex);
+            $nextIndex = $tokens->getNextTokenOfKind($index, array(';', ',', '(', ')', '[', ']'));
+            $nextToken = $tokens[$nextIndex];
 
             // no correct end of code - break
             if (null === $nextToken) {
@@ -47,7 +47,8 @@ class NewWithBracesFixer extends AbstractFixer
                 $braceLevel = 1;
 
                 while (0 < $braceLevel) {
-                    $nextToken = $tokens->getNextTokenOfKind($nextIndex, array('[', ']'), $nextIndex);
+                    $nextIndex = $tokens->getNextTokenOfKind($nextIndex, array('[', ']'));
+                    $nextToken = $tokens[$nextIndex];
                     $braceLevel += ('[' === $nextToken->content ? 1 : -1);
                 }
 
@@ -59,8 +60,7 @@ class NewWithBracesFixer extends AbstractFixer
                 continue;
             }
 
-            $meaningBeforeNextIndex = null;
-            $tokens->getPrevNonWhitespace($nextIndex, array(), $meaningBeforeNextIndex);
+            $meaningBeforeNextIndex = $tokens->getPrevNonWhitespace($nextIndex);
 
             $tokens->insertAt($meaningBeforeNextIndex + 1, array(new Token('('), new Token(')')));
         }

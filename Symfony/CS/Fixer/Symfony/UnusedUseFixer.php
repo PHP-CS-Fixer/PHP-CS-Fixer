@@ -45,9 +45,7 @@ class UnusedUseFixer extends AbstractFixer
                 continue;
             }
 
-            $declarationEndIndex = null;
-            $tokens->getNextTokenOfKind($index, array(';', '{'), $declarationEndIndex);
-
+            $declarationEndIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
             $declarationContent = $tokens->generatePartialCode($index + 1, $declarationEndIndex - 1);
 
             return trim($declarationContent);
@@ -92,9 +90,7 @@ class UnusedUseFixer extends AbstractFixer
         $uses = array();
 
         foreach ($useIndexes as $index) {
-            $declarationEndIndex = null;
-            $tokens->getNextTokenOfKind($index, array(';'), $declarationEndIndex);
-
+            $declarationEndIndex = $tokens->getNextTokenOfKind($index, array(';'));
             $declarationContent = $tokens->generatePartialCode($index + 1, $declarationEndIndex - 1);
 
             // ignore multiple use statements like: `use BarB, BarC as C, BarD;`
