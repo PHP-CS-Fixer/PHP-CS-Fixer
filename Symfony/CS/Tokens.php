@@ -665,12 +665,10 @@ class Tokens extends \SplFixedArray
 
             $token = $this[$index];
 
-            foreach ($tokens as $tokenKind) {
-                if ($token->equals($tokenKind)) {
-                    $foundIndex = $index;
+            if ($token->equalsAny($tokens)) {
+                $foundIndex = $index;
 
-                    return $token;
-                }
+                return $token;
             }
         }
     }
@@ -696,10 +694,8 @@ class Tokens extends \SplFixedArray
 
             $token = $this[$index];
 
-            foreach ($tokens as $tokenKind) {
-                if ($token->equals($tokenKind)) {
-                    continue 2;
-                }
+            if ($token->equalsAny($tokens)) {
+                continue;
             }
 
             $foundIndex = $index;
