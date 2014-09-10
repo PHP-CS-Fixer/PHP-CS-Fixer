@@ -484,14 +484,19 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Get indexes of namespae uses.
+     * Get indexes of namespace uses.
+     *
+     * @param bool $perNamespace Return namespace uses per namespace
+     *
+     * @return array|array[]
      */
-    public function getNamespaceUseIndexes()
+    public function getNamespaceUseIndexes($perNamespace = false)
     {
         $this->rewind();
 
         $uses = array();
         $bracesLevel = 0;
+        $namespaceIndex = 0;
 
         $namespaceWithBraces = false;
 
@@ -501,6 +506,10 @@ class Tokens extends \SplFixedArray
 
                 if ('{' === $nextToken->content) {
                     $namespaceWithBraces = true;
+                }
+
+                if ($perNamespace) {
+                    ++$namespaceIndex;
                 }
 
                 continue;
@@ -527,7 +536,15 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            $uses[] = $index;
+            if (!isset($usesInNamespace[$namespaceIndex])) {
+                $usesInNamespace[$namespaceIndex] = array();
+            }
+
+            $uses[$namespaceIndex][] = $index;
+        }
+
+        if (!$perNamespace && isset($uses[$namespaceIndex])) {
+            return $uses[$namespaceIndex];
         }
 
         return $uses;
