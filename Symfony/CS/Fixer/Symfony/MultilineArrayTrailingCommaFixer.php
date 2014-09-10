@@ -52,7 +52,7 @@ class MultilineArrayTrailingCommaFixer extends AbstractFixer
         $startIndex = $index;
 
         if ($tokens[$index]->isGivenKind(T_ARRAY)) {
-            $tokens->getNextTokenOfKind($index, array('(', '['), $startIndex);
+            $startIndex = $tokens->getNextTokenOfKind($index, array('(', '['));
         }
 
         if (!$tokens->isArrayMultiLine($index)) {

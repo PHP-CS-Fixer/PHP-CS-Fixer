@@ -140,8 +140,8 @@ class BracesFixer extends AbstractFixer
             }
 
             if ($token->isGivenKind($classyAndFunctionTokens)) {
-                $startBraceIndex = null;
-                $startBraceToken = $tokens->getNextTokenOfKind($index, array(';', '{'), $startBraceIndex);
+                $startBraceIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
+                $startBraceToken = $tokens[$startBraceIndex];
             } else {
                 $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
                 $startBraceIndex = $tokens->getNextNonWhitespace($parenthesisEndIndex);
@@ -161,8 +161,7 @@ class BracesFixer extends AbstractFixer
             $tokens->ensureWhitespaceAtIndex($endBraceIndex - 1, 1, "\n".$indent);
 
             // fix indent between braces
-            $lastCommaIndex = null;
-            $prevToken = $tokens->getPrevTokenOfKind($endBraceIndex - 1, array(';', '}'), $lastCommaIndex);
+            $lastCommaIndex = $tokens->getPrevTokenOfKind($endBraceIndex - 1, array(';', '}'));
 
             $nestLevel = 1;
             for ($nestIndex = $lastCommaIndex; $nestIndex >= $startBraceIndex; --$nestIndex) {
@@ -241,8 +240,7 @@ class BracesFixer extends AbstractFixer
             if ($token->isGivenKind($classyTokens)) {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, "\n".$indent);
             } elseif ($token->isGivenKind(T_FUNCTION)) {
-                $closingParenthesisIndex = null;
-                $tokens->getPrevTokenOfKind($startBraceIndex, array(')'), $closingParenthesisIndex);
+                $closingParenthesisIndex = $tokens->getPrevTokenOfKind($startBraceIndex, array(')'));
                 $prevToken = $tokens[$closingParenthesisIndex - 1];
 
                 if ($prevToken->isWhitespace() && false !== strpos($prevToken->content, "\n")) {
@@ -268,8 +266,7 @@ class BracesFixer extends AbstractFixer
                 continue;
             }
 
-            $nextIndex = null;
-            $tokens->getNextTokenOfKind($index, array('{'), $nextIndex);
+            $nextIndex = $tokens->getNextTokenOfKind($index, array('{'));
 
             $tokens->ensureWhitespaceAtIndex($nextIndex - 1, 1, ' ');
         }

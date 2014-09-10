@@ -503,8 +503,8 @@ class Tokens extends \SplFixedArray
             $token = $this[$index];
 
             if (T_NAMESPACE === $token->id) {
-                $nextTokenIndex = null;
-                $nextToken = $this->getNextTokenOfKind($index, array(';', '{'), $nextTokenIndex);
+                $nextTokenIndex = $this->getNextTokenOfKind($index, array(';', '{'));
+                $nextToken = $this[$nextTokenIndex];
 
                 if ($nextToken->equals('{')) {
                     $index = $nextTokenIndex;
@@ -568,19 +568,18 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Get closest next token of given kind.
+     * Get index for closest next token of given kind.
      *
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param int      $index       token index
-     * @param array    $tokens      possible tokens
-     * @param int|null &$foundIndex index of found token, if any
+     * @param int   $index  token index
+     * @param array $tokens possible tokens
      *
-     * @return Token
+     * @return int|null
      */
-    public function getNextTokenOfKind($index, array $tokens = array(), &$foundIndex = null)
+    public function getNextTokenOfKind($index, array $tokens = array())
     {
-        return $this->getTokenOfKindSibling($index, 1, $tokens, $foundIndex);
+        return $this->getTokenOfKindSibling($index, 1, $tokens);
     }
 
     /**
@@ -625,31 +624,29 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Get closest previous token of given kind.
+     * Get index for closest previous token of given kind.
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param int      $index       token index
-     * @param array    $tokens      possible tokens
-     * @param int|null &$foundIndex index of found token, if any
+     * @param int   $index  token index
+     * @param array $tokens possible tokens
      *
-     * @return Token
+     * @return int|null
      */
-    public function getPrevTokenOfKind($index, array $tokens = array(), &$foundIndex = null)
+    public function getPrevTokenOfKind($index, array $tokens = array())
     {
-        return $this->getTokenOfKindSibling($index, -1, $tokens, $foundIndex);
+        return $this->getTokenOfKindSibling($index, -1, $tokens);
     }
 
     /**
-     * Get closest sibling token of given kind.
+     * Get index for closest sibling token of given kind.
      *
-     * @param int      $index       token index
-     * @param int      $direction   direction for looking, +1 or -1
-     * @param array    $tokens      possible tokens
-     * @param int|null &$foundIndex index of found token, if any
+     * @param int   $index     token index
+     * @param int   $direction direction for looking, +1 or -1
+     * @param array $tokens    possible tokens
      *
-     * @return Token
+     * @return int|null
      */
-    public function getTokenOfKindSibling($index, $direction, array $tokens = array(), &$foundIndex = null)
+    public function getTokenOfKindSibling($index, $direction, array $tokens = array())
     {
         while (true) {
             $index += $direction;
@@ -661,9 +658,7 @@ class Tokens extends \SplFixedArray
             $token = $this[$index];
 
             if ($token->equalsAny($tokens)) {
-                $foundIndex = $index;
-
-                return $token;
+                return $index;
             }
         }
     }
@@ -896,12 +891,11 @@ class Tokens extends \SplFixedArray
             throw new \InvalidArgumentException('Invalid param - not a `}` token at given index');
         }
 
-        $prevIndex = null;
-        $prevToken = $this->getPrevTokenOfKind(
+        $prevIndex = $this->getPrevTokenOfKind(
             $index,
-            array('}', '{', array(T_CURLY_OPEN), array(T_DOLLAR_OPEN_CURLY_BRACES)),
-            $prevIndex
+            array('}', '{', array(T_CURLY_OPEN), array(T_DOLLAR_OPEN_CURLY_BRACES))
         );
+        $prevToken = $this[$prevIndex];
 
         return $prevToken->isGivenKind(array(T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES));
     }
