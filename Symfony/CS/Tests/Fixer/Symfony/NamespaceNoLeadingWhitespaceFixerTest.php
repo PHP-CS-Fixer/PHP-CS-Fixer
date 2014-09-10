@@ -37,14 +37,58 @@ class NamespaceNoLeadingWhitespaceFixerTest extends AbstractFixerTestBase
             array('<?php namespace Test;'),
             array('<?php namespace Test;', '<?php  namespace Test;'),
             // multiple namespaces with newline
-            array("<?php\nnamespace Test1;\nnamespace Test2;"),
-            array("<?php\nnamespace Test1;\nnamespace Test2;", "<?php\n namespace Test1;\n   namespace Test2;"),
-            array("<?php\nnamespace Test1;\nclass Test {}\nnamespace Test2;", "<?php\n namespace Test1;\nclass Test {}\n   namespace Test2;"),
-            array("<?php\nnamespace Test1;\nuse Exception;\nnamespace Test2;", "<?php\n namespace Test1;\nuse Exception;\n   namespace Test2;"),
+            array(
+                '<?php
+namespace Test1;
+namespace Test2;'
+            ),
+            array(
+                '<?php
+namespace Test1;
+namespace Test2;',
+                '<?php
+ namespace Test1;
+    namespace Test2;'
+            ),
+            array(
+                '<?php
+namespace Test1;
+class Test {}
+namespace Test2;',
+                '<?php
+ namespace Test1;
+class Test {}
+   namespace Test2;'
+            ),
+            array(
+                '<?php
+namespace Test1;
+use Exception;
+namespace Test2;',
+                '<?php
+ namespace Test1;
+use Exception;
+   namespace Test2;'
+            ),
             // multiple namespaces without newline
             array('<?php namespace Test1; namespace Test2;'),
             array('<?php namespace Test1; namespace Test2;', '<?php    namespace Test1;  namespace Test2;'),
             array('<?php namespace Test1; namespace Test2;', '<?php namespace Test1;  namespace Test2;'),
+            // namespaces without spaces in between
+            array(
+                '<?php
+namespace Test1{}
+namespace Test2{}',
+                '<?php
+     namespace Test1{}namespace Test2{}'
+            ),
+            array(
+                '<?php
+namespace Test1;
+namespace Test2;',
+                '<?php
+namespace Test1;namespace Test2;'
+            ),
         );
     }
 }

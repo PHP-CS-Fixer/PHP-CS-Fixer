@@ -20,6 +20,11 @@ use Symfony\CS\Tokens;
  */
 class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
 {
+    private static function endsWithWhitespace($str)
+    {
+        return strlen($str) > 0 && ctype_space(substr($str, -1));
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -35,6 +40,10 @@ class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
             $beforeNamespace = $tokens[$index - 1];
 
             if (!$beforeNamespace->isWhitespace()) {
+                if (!self::endsWithWhitespace($beforeNamespace->content)) {
+                    $beforeNamespace->content .= "\n";
+                }
+
                 continue;
             }
 
@@ -42,9 +51,8 @@ class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
 
             if (false === $lastNewline) {
                 $beforeBeforeNamespace = $tokens[$index - 2];
-                $last = substr($beforeBeforeNamespace->content, -1);
 
-                if (ctype_space($last)) {
+                if (self::endsWithWhitespace($beforeBeforeNamespace->content)) {
                     $beforeNamespace->content = '';
                 } else {
                     $beforeNamespace->content = ' ';
