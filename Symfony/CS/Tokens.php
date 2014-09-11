@@ -196,29 +196,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Apply token attributes.
-     * Token at given index is prepended by attributes.
-     *
-     * @param int   $index   token index
-     * @param array $attribs array of token attributes
-     */
-    public function applyAttribs($index, array $attribs)
-    {
-        $toInsert = array();
-
-        foreach ($attribs as $attrib) {
-            if (null !== $attrib && '' !== $attrib->content) {
-                $toInsert[] = $attrib;
-                $toInsert[] = new Token(' ');
-            }
-        }
-
-        if (!empty($toInsert)) {
-            $this->insertAt($index, $toInsert);
-        }
-    }
-
-    /**
      * Change code hash.
      *
      * Remove old cache and set new one.
@@ -692,113 +669,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Grab attributes before method token at gixen index.
-     * It's a shorthand for grabAttribsBeforeToken method.
-     *
-     * @param int $index token index
-     *
-     * @return array array of grabbed attributes
-     */
-    public function grabAttribsBeforeMethodToken($index)
-    {
-        static $tokenAttribsMap = array(
-            T_PRIVATE => 'visibility',
-            T_PROTECTED => 'visibility',
-            T_PUBLIC => 'visibility',
-            T_ABSTRACT => 'abstract',
-            T_FINAL => 'final',
-            T_STATIC => 'static',
-        );
-
-        return $this->grabAttribsBeforeToken(
-            $index,
-            $tokenAttribsMap,
-            array(
-                'abstract' => null,
-                'final' => null,
-                'visibility' => new Token(array(T_PUBLIC, 'public')),
-                'static' => null,
-            )
-        );
-    }
-
-    /**
-     * Grab attributes before property token at gixen index.
-     * It's a shorthand for grabAttribsBeforeToken method.
-     *
-     * @param int $index token index
-     *
-     * @return array array of grabbed attributes
-     */
-    public function grabAttribsBeforePropertyToken($index)
-    {
-        static $tokenAttribsMap = array(
-            T_VAR => null, // destroy T_VAR token!
-            T_PRIVATE => 'visibility',
-            T_PROTECTED => 'visibility',
-            T_PUBLIC => 'visibility',
-            T_STATIC => 'static',
-        );
-
-        return $this->grabAttribsBeforeToken(
-            $index,
-            $tokenAttribsMap,
-            array(
-                'visibility' => new Token(array(T_PUBLIC, 'public')),
-                'static' => null,
-            )
-        );
-    }
-
-    /**
-     * Grab attributes before token at gixen index.
-     *
-     * Grabbed attributes are cleared by overriding them with empty string and should be manually applied with applyTokenAttribs method.
-     *
-     * @param int   $index           token index
-     * @param array $tokenAttribsMap token to attribute name map
-     * @param array $attribs         array of token attributes
-     *
-     * @return array array of grabbed attributes
-     */
-    public function grabAttribsBeforeToken($index, array $tokenAttribsMap, array $attribs)
-    {
-        while (true) {
-            $token = $this[--$index];
-
-            if (!$token->isArray()) {
-                if (in_array($token->content, array('{', '}', '(', ')'), true)) {
-                    break;
-                }
-
-                continue;
-            }
-
-            // if token is attribute
-            if (array_key_exists($token->id, $tokenAttribsMap)) {
-                // set token attribute if token map defines attribute name for token
-                if ($tokenAttribsMap[$token->id]) {
-                    $attribs[$tokenAttribsMap[$token->id]] = clone $token;
-                }
-
-                // clear the token and whitespaces after it
-                $this[$index]->clear();
-                $this[$index + 1]->clear();
-
-                continue;
-            }
-
-            if ($token->isGivenKind(array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT))) {
-                continue;
-            }
-
-            break;
-        }
-
-        return $attribs;
-    }
-
-    /**
      * Insert instances of Token inside collection.
      *
      * @param int                  $index start inserting index
@@ -844,7 +714,7 @@ class Tokens extends \SplFixedArray
      */
     public function isArrayMultiLine($index)
     {
-        $multiline = false;
+        $isMultiline = false;
         $bracesLevel = 0;
 
         // Skip only when its an array, for short arrays we need the brace for correct
@@ -856,17 +726,17 @@ class Tokens extends \SplFixedArray
         for ($c = $this->count(); $index < $c; ++$index) {
             $token = $this[$index];
 
-            if ('(' === $token->content || '[' === $token->content) {
+            if ($token->equalsAny(array('(', '['))) {
                 ++$bracesLevel;
                 continue;
             }
 
             if (1 === $bracesLevel && $token->isGivenKind(T_WHITESPACE) && false !== strpos($token->content, "\n")) {
-                $multiline = true;
+                $isMultiline = true;
                 break;
             }
 
-            if (')' === $token->content || ']' === $token->content) {
+            if ($token->equalsAny(array(')', ']'))) {
                 --$bracesLevel;
 
                 if (0 === $bracesLevel) {
@@ -875,7 +745,7 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        return $multiline;
+        return $isMultiline;
     }
 
     /**
@@ -927,7 +797,7 @@ class Tokens extends \SplFixedArray
         $nextIndex = $this->getNextNonWhitespace($endParenthesisIndex);
         $nextToken = $this[$nextIndex];
 
-        if ('{' !== $nextToken->content && !$nextToken->isGivenKind(T_USE)) {
+        if (!$nextToken->equalsAny(array('{', array(T_USE)))) {
             return false;
         }
 
@@ -950,7 +820,8 @@ class Tokens extends \SplFixedArray
         }
 
         $prevToken = $this[$this->getPrevNonWhitespace($index)];
-        if (!$prevToken->isArray() && in_array($prevToken->content, array('=>', '=', '+', '(', '['), true)) {
+
+        if ($prevToken->equalsAny(array(array(T_DOUBLE_ARROW), '=', '+', '(', '['))) {
             return true;
         }
 
