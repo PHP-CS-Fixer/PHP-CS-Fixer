@@ -54,6 +54,7 @@ class VisibilityFixer extends AbstractFixer
 
     /**
      * Apply token attributes.
+     *
      * Token at given index is prepended by attributes.
      *
      * @param Tokens $tokens  Tokens collection
@@ -78,6 +79,7 @@ class VisibilityFixer extends AbstractFixer
 
     /**
      * Grab attributes before method token at gixen index.
+     *
      * It's a shorthand for grabAttribsBeforeToken method.
      *
      * @param Tokens $tokens Tokens collection
@@ -111,6 +113,7 @@ class VisibilityFixer extends AbstractFixer
 
     /**
      * Grab attributes before property token at gixen index.
+     *
      * It's a shorthand for grabAttribsBeforeToken method.
      *
      * @param Tokens $tokens Tokens collection
