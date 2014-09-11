@@ -798,7 +798,7 @@ class Tokens extends \SplFixedArray
         $nextIndex = $this->getNextNonWhitespace($endParenthesisIndex);
         $nextToken = $this[$nextIndex];
 
-        if ('{' !== $nextToken->content && !$nextToken->isGivenKind(T_USE)) {
+        if (!$nextToken->equalsAny(array('{', array(T_USE)))) {
             return false;
         }
 
