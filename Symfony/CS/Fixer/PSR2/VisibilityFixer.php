@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\PSR2;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Token;
 use Symfony\CS\Tokens;
 
 /**
@@ -31,7 +32,7 @@ class VisibilityFixer extends AbstractFixer
 
         foreach (array_reverse($elements, true) as $index => $element) {
             if ('method' === $element['type']) {
-                $tokens->applyAttribs($index, $tokens->grabAttribsBeforeMethodToken($index));
+                $this->applyAttribs($tokens, $index, $tokens->grabAttribsBeforeMethodToken($index));
 
                 // force whitespace between function keyword and function name to be single space char
                 $tokens[++$index]->content = ' ';
@@ -43,12 +44,36 @@ class VisibilityFixer extends AbstractFixer
                     (!$prevIndex || ',' !== $tokens[$prevIndex]->content) &&
                     (!$nextIndex || ',' !== $tokens[$nextIndex]->content)
                 ) {
-                    $tokens->applyAttribs($index, $tokens->grabAttribsBeforePropertyToken($index));
+                    $this->applyAttribs($tokens, $index, $tokens->grabAttribsBeforePropertyToken($index));
                 }
             }
         }
 
         return $tokens->generateCode();
+    }
+
+    /**
+     * Apply token attributes.
+     * Token at given index is prepended by attributes.
+     *
+     * @param Tokens $tokens  Tokens collection
+     * @param int    $index   token index
+     * @param array  $attribs array of token attributes
+     */
+    private function applyAttribs(Tokens $tokens, $index, array $attribs)
+    {
+        $toInsert = array();
+
+        foreach ($attribs as $attrib) {
+            if (null !== $attrib && '' !== $attrib->content) {
+                $toInsert[] = $attrib;
+                $toInsert[] = new Token(' ');
+            }
+        }
+
+        if (!empty($toInsert)) {
+            $tokens->insertAt($index, $toInsert);
+        }
     }
 
     /**

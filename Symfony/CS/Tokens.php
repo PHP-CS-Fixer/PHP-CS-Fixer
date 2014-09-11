@@ -196,29 +196,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Apply token attributes.
-     * Token at given index is prepended by attributes.
-     *
-     * @param int   $index   token index
-     * @param array $attribs array of token attributes
-     */
-    public function applyAttribs($index, array $attribs)
-    {
-        $toInsert = array();
-
-        foreach ($attribs as $attrib) {
-            if (null !== $attrib && '' !== $attrib->content) {
-                $toInsert[] = $attrib;
-                $toInsert[] = new Token(' ');
-            }
-        }
-
-        if (!empty($toInsert)) {
-            $this->insertAt($index, $toInsert);
-        }
-    }
-
-    /**
      * Change code hash.
      *
      * Remove old cache and set new one.
