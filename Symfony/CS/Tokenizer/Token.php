@@ -161,7 +161,7 @@ class Token
     public function getName()
     {
         if (!isset($this->id)) {
-            return null;
+            return;
         }
 
         if (isset(self::$customTokens[$this->id])) {
