@@ -32,7 +32,9 @@ class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens as $index => $token) {
+        for ($index = count($tokens) -1; $index >= 0; $index--) {
+            $token = $tokens[$index];
+
             if (!$token->isGivenKind(T_NAMESPACE)) {
                 continue;
             }
