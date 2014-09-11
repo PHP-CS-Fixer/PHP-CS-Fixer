@@ -12,7 +12,7 @@
 namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
-use Symfony\CS\Tokens;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>

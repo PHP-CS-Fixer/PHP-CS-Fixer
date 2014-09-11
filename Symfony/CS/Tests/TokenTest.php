@@ -11,7 +11,7 @@
 
 namespace Symfony\CS\Tests;
 
-use Symfony\CS\Token;
+use Symfony\CS\Tokenizer\Token;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

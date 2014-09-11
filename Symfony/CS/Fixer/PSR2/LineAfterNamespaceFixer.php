@@ -12,8 +12,8 @@
 namespace Symfony\CS\Fixer\PSR2;
 
 use Symfony\CS\AbstractFixer;
-use Symfony\CS\Token;
-use Symfony\CS\Tokens;
+use Symfony\CS\Tokenizer\Token;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * Fixer for rules defined in PSR2 ¶3.
