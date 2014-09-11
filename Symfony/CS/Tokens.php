@@ -727,7 +727,7 @@ class Tokens extends \SplFixedArray
         for ($c = $this->count(); $index < $c; ++$index) {
             $token = $this[$index];
 
-            if ('(' === $token->content || '[' === $token->content) {
+            if ($token->equalsAny(array('(', '['))) {
                 ++$bracesLevel;
                 continue;
             }
@@ -737,7 +737,7 @@ class Tokens extends \SplFixedArray
                 break;
             }
 
-            if (')' === $token->content || ']' === $token->content) {
+            if ($token->equalsAny(array(')', ']'))) {
                 --$bracesLevel;
 
                 if (0 === $bracesLevel) {
