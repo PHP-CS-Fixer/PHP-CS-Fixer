@@ -817,7 +817,7 @@ class Tokens extends \SplFixedArray
      * @param int                  $index start inserting index
      * @param Tokens|Token[]|Token $items instances of Token to insert
      */
-    public function insertAt($key, $items)
+    public function insertAt($index, $items)
     {
         $items = is_array($items) || $items instanceof self ? $items : array($items);
         $itemsCnt = count($items);
@@ -825,12 +825,12 @@ class Tokens extends \SplFixedArray
 
         $this->setSize($oldSize + $itemsCnt);
 
-        for ($i = $oldSize + $itemsCnt - 1; $i >= $key; --$i) {
+        for ($i = $oldSize + $itemsCnt - 1; $i >= $index; --$i) {
             $this[$i] = isset($this[$i - $itemsCnt]) ? $this[$i - $itemsCnt] : new Token('');
         }
 
         for ($i = 0; $i < $itemsCnt; ++$i) {
-            $this[$i + $key] = $items[$i];
+            $this[$i + $index] = $items[$i];
         }
     }
 
