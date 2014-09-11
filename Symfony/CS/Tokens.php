@@ -821,7 +821,8 @@ class Tokens extends \SplFixedArray
         }
 
         $prevToken = $this[$this->getPrevNonWhitespace($index)];
-        if (!$prevToken->isArray() && in_array($prevToken->content, array('=>', '=', '+', '(', '['), true)) {
+
+        if ($prevToken->equalsAny(array(array(T_DOUBLE_ARROW), '=', '+', '(', '['))) {
             return true;
         }
 
