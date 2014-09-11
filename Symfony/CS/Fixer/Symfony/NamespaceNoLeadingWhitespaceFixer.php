@@ -41,7 +41,7 @@ class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
 
             if (!$beforeNamespace->isWhitespace()) {
                 if (!self::endsWithWhitespace($beforeNamespace->content)) {
-                    $beforeNamespace->content .= "\n";
+                    $tokens->insertAt($index, new Token(array(T_WHITESPACE, "\n")));
                 }
 
                 continue;
