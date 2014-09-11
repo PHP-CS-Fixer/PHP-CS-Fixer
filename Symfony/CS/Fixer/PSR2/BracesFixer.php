@@ -190,7 +190,7 @@ class BracesFixer extends AbstractFixer
                         // next Token is not:
                         // - '=', e.g.: $a = $b->{$c}($e);
                         // - '(', e.g.: $a->{$b} = $c;
-                        // - '(', e.g.: $a->{$b}[$c] = $d;
+                        // - '[', e.g.: $a->{$b}[$c] = $d;
                         !$nextNonWhitespaceNestToken->equalsAny(array('=', '(', '[')) &&
                         // and it is not a $foo = function () {}; situation
                         !($nestToken->equals('}') && ';' === $nextNonWhitespaceNestToken->content)
