@@ -9,11 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tokens\Transformator;
+namespace Symfony\CS\Tokenizer\Transformator;
 
 use Symfony\CS\Token;
 use Symfony\CS\Tokens;
-use Symfony\CS\Tokens\AbstractTransformator;
+use Symfony\CS\Tokenizer\AbstractTransformator;
 
 /**
  * Transform `array` typehint from T_ARRAY to T_ARRAY_TYPEHINT.

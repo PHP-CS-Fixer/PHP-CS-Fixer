@@ -12,7 +12,7 @@
 namespace Symfony\CS\Tokenizer;
 
 use Symfony\Component\Finder\Finder;
-use Symfony\CS\Tokens\TransformatorInterface;
+use Symfony\CS\Tokenizer\TransformatorInterface;
 
 /**
  * Collection of code tokens.
@@ -155,9 +155,9 @@ class Tokens extends \SplFixedArray
 
         $registered = true;
 
-        foreach (Finder::create()->files()->in(__DIR__.'/Tokens/Transformator') as $file) {
+        foreach (Finder::create()->files()->in(__DIR__.'/Tokenizer/Transformator') as $file) {
             $relativeNamespace = $file->getRelativePath();
-            $class = __NAMESPACE__.'\\Tokens\\Transformator\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
+            $class = __NAMESPACE__.'\\Tokenizer\\Transformator\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
             self::registerTransformator(new $class());
         }
     }
