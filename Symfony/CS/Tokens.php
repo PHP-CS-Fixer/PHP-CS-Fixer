@@ -715,7 +715,7 @@ class Tokens extends \SplFixedArray
      */
     public function isArrayMultiLine($index)
     {
-        $multiline = false;
+        $isMultiline = false;
         $bracesLevel = 0;
 
         // Skip only when its an array, for short arrays we need the brace for correct
@@ -733,7 +733,7 @@ class Tokens extends \SplFixedArray
             }
 
             if (1 === $bracesLevel && $token->isGivenKind(T_WHITESPACE) && false !== strpos($token->content, "\n")) {
-                $multiline = true;
+                $isMultiline = true;
                 break;
             }
 
@@ -746,7 +746,7 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        return $multiline;
+        return $isMultiline;
     }
 
     /**
