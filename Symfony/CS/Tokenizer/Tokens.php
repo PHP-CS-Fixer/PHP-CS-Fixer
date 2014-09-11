@@ -134,6 +134,8 @@ class Tokens extends \SplFixedArray
         }
 
         $collection = self::fromArray($tokens);
+        $transformators = Transformators::create();
+        $transformators->transform($collection);
         $collection->changeCodeHash($codeHash);
 
         return $collection;
@@ -308,12 +310,6 @@ class Tokens extends \SplFixedArray
         for ($index = $startIndex; $index !== $endIndex; $index += $indexOffset) {
             $token = $this[$index];
 
-            if ($token->equals('}')) {
-                if ($this->isClosingBraceInsideString($index)) {
-                    continue;
-                }
-            }
-
             if ($token->equals($startEdge)) {
                 ++$blockLevel;
 
@@ -428,7 +424,7 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            if ($token->equals('{') || $token->isGivenKind(array(T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES))) {
+            if ($token->equals('{')) {
                 ++$curlyBracesLevel;
                 continue;
             }
@@ -746,28 +742,6 @@ class Tokens extends \SplFixedArray
         }
 
         return $isMultiline;
-    }
-
-    /**
-     * Check if a closing curly bracket at given index is end for { and not T_CURLY_OPEN or T_DOLLAR_OPEN_CURLY_BRACES.
-     *
-     * @param int $index
-     *
-     * @return bool
-     */
-    public function isClosingBraceInsideString($index)
-    {
-        if (!$this[$index]->equals('}')) {
-            throw new \InvalidArgumentException('Invalid param - not a `}` token at given index');
-        }
-
-        $prevIndex = $this->getPrevTokenOfKind(
-            $index,
-            array('}', '{', array(T_CURLY_OPEN), array(T_DOLLAR_OPEN_CURLY_BRACES))
-        );
-        $prevToken = $this[$prevIndex];
-
-        return $prevToken->isGivenKind(array(T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES));
     }
 
     /**

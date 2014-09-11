@@ -153,7 +153,17 @@ class Token
      */
     public function getName()
     {
-        return isset($this->id) ? token_name($this->id) : null;
+        if (!isset($this->id)) {
+            return;
+        }
+
+        $transformators = Transformators::create();
+
+        if ($transformators->hasCustomToken($this->id)) {
+            return $transformators->getCustomToken($this->id);
+        }
+
+        return token_name($this->id);
     }
 
     /**
