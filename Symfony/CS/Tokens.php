@@ -242,7 +242,6 @@ class Tokens extends \SplFixedArray
      *
      * @return bool if new Token was added
      */
-
     public function ensureWhitespaceAtIndex($index, $indexOffset, $whitespace)
     {
         $removeLastCommentLine = function ($token, $indexOffset) {
