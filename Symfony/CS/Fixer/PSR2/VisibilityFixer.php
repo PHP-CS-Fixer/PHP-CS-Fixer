@@ -67,7 +67,7 @@ class VisibilityFixer extends AbstractFixer
         foreach ($attribs as $attrib) {
             if (null !== $attrib && '' !== $attrib->content) {
                 $toInsert[] = $attrib;
-                $toInsert[] = new Token(' ');
+                $toInsert[] = new Token(array(T_WHITESPACE, ' '));
             }
         }
 
