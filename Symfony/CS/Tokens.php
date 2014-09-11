@@ -242,6 +242,7 @@ class Tokens extends \SplFixedArray
      *
      * @return bool if new Token was added
      */
+
     public function ensureWhitespaceAtIndex($index, $indexOffset, $whitespace)
     {
         $removeLastCommentLine = function ($token, $indexOffset) {
@@ -666,113 +667,6 @@ class Tokens extends \SplFixedArray
 
             return $index;
         }
-    }
-
-    /**
-     * Grab attributes before method token at gixen index.
-     * It's a shorthand for grabAttribsBeforeToken method.
-     *
-     * @param int $index token index
-     *
-     * @return array array of grabbed attributes
-     */
-    public function grabAttribsBeforeMethodToken($index)
-    {
-        static $tokenAttribsMap = array(
-            T_PRIVATE => 'visibility',
-            T_PROTECTED => 'visibility',
-            T_PUBLIC => 'visibility',
-            T_ABSTRACT => 'abstract',
-            T_FINAL => 'final',
-            T_STATIC => 'static',
-        );
-
-        return $this->grabAttribsBeforeToken(
-            $index,
-            $tokenAttribsMap,
-            array(
-                'abstract' => null,
-                'final' => null,
-                'visibility' => new Token(array(T_PUBLIC, 'public')),
-                'static' => null,
-            )
-        );
-    }
-
-    /**
-     * Grab attributes before property token at gixen index.
-     * It's a shorthand for grabAttribsBeforeToken method.
-     *
-     * @param int $index token index
-     *
-     * @return array array of grabbed attributes
-     */
-    public function grabAttribsBeforePropertyToken($index)
-    {
-        static $tokenAttribsMap = array(
-            T_VAR => null, // destroy T_VAR token!
-            T_PRIVATE => 'visibility',
-            T_PROTECTED => 'visibility',
-            T_PUBLIC => 'visibility',
-            T_STATIC => 'static',
-        );
-
-        return $this->grabAttribsBeforeToken(
-            $index,
-            $tokenAttribsMap,
-            array(
-                'visibility' => new Token(array(T_PUBLIC, 'public')),
-                'static' => null,
-            )
-        );
-    }
-
-    /**
-     * Grab attributes before token at gixen index.
-     *
-     * Grabbed attributes are cleared by overriding them with empty string and should be manually applied with applyTokenAttribs method.
-     *
-     * @param int   $index           token index
-     * @param array $tokenAttribsMap token to attribute name map
-     * @param array $attribs         array of token attributes
-     *
-     * @return array array of grabbed attributes
-     */
-    public function grabAttribsBeforeToken($index, array $tokenAttribsMap, array $attribs)
-    {
-        while (true) {
-            $token = $this[--$index];
-
-            if (!$token->isArray()) {
-                if (in_array($token->content, array('{', '}', '(', ')'), true)) {
-                    break;
-                }
-
-                continue;
-            }
-
-            // if token is attribute
-            if (array_key_exists($token->id, $tokenAttribsMap)) {
-                // set token attribute if token map defines attribute name for token
-                if ($tokenAttribsMap[$token->id]) {
-                    $attribs[$tokenAttribsMap[$token->id]] = clone $token;
-                }
-
-                // clear the token and whitespaces after it
-                $this[$index]->clear();
-                $this[$index + 1]->clear();
-
-                continue;
-            }
-
-            if ($token->isGivenKind(array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT))) {
-                continue;
-            }
-
-            break;
-        }
-
-        return $attribs;
     }
 
     /**
