@@ -11,8 +11,8 @@
 
 namespace Symfony\CS\Tokenizer\Transformator;
 
-use Symfony\CS\Token;
-use Symfony\CS\Tokens;
+use Symfony\CS\Tokenizer\Token;
+use Symfony\CS\Tokenizer\Tokens;
 use Symfony\CS\Tokenizer\AbstractTransformator;
 
 /**

@@ -11,7 +11,6 @@
 
 namespace Symfony\CS\Tokenizer;
 
-
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
