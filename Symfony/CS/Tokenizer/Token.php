@@ -19,13 +19,6 @@ namespace Symfony\CS\Tokenizer;
  */
 class Token
 {
-    private static $customTokens = array();
-
-    public static function registerCustomToken($value, $name)
-    {
-        self::$customTokens[$value] = $name;
-    }
-
     /**
      * Content of token prototype.
      *
@@ -164,8 +157,10 @@ class Token
             return;
         }
 
-        if (isset(self::$customTokens[$this->id])) {
-            return self::$customTokens[$this->id].'*';
+        $transformators = Transformators::create();
+
+        if ($transformators->hasCustomToken($this->id)) {
+            return $transformators->getCustomToken($this->id).'*';
         }
 
         return token_name($this->id);
