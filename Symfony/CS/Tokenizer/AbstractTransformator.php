@@ -16,8 +16,6 @@ namespace Symfony\CS\Tokenizer;
  */
 abstract class AbstractTransformator implements TransformatorInterface
 {
-    abstract public function getConstantDefinitions();
-
     public function registerConstants()
     {
         foreach ($this->getConstantDefinitions() as $value => $name) {
