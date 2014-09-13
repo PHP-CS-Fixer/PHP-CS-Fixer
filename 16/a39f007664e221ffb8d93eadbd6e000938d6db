@@ -1,0 +1,58 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-10T19:27:28Z
+
+Great that you take care of that fixer !
+
+IMO it is good to remove that leading whitespaces.
+You may change previous token when you met T_WHITESPACE in loop
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-10T19:42:59Z
+
+Can't find the rule for whitespaces before T_NAMESPACE.
+Maybe indeed this behavior should be removed from this fixer (Then it would be nice to create fixer for it in SYMFONY_LEVEL)
+
+---------------------------------------------------------------------------
+
+by bgotink at 2014-09-10T20:15:31Z
+
+I've added a new fixer.
+I saw somewhere in the comments that some projects use the `<?php namespace My\Namespace;` (i.e. without a newline between `<?php` and `namespace`), so I've made sure this works as well.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-10T20:49:53Z
+
+Are those changes to the readme auto-generated through the command, because they need to be?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-10T20:50:36Z
+
+If there were not then the Travis job will failed.
+
+---------------------------------------------------------------------------
+
+by bgotink at 2014-09-10T20:51:04Z
+
+They are auto-generated as requested in `CONTRIBUTING.md`.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-10T21:17:40Z
+
+Some of these test cases my be easier to read/maintain if they were actually split out on to multiple lines rather than trying to keep them on one line.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-10T21:27:46Z
+
+Oh, @keradus already mentioned that. I agree with him then. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-11T15:34:18Z
+
+:+1:
