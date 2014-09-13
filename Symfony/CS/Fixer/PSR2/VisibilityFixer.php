@@ -160,7 +160,7 @@ class VisibilityFixer extends AbstractFixer
             $token = $tokens[--$index];
 
             if (!$token->isArray()) {
-                if (in_array($token->content, array('{', '}', '(', ')'), true)) {
+                if ($token->equalsAny(array('{', '}', '(', ')'))) {
                     break;
                 }
 
