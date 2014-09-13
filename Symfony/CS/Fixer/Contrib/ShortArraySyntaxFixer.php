@@ -30,7 +30,7 @@ class ShortArraySyntaxFixer extends AbstractFixer
         for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_ARRAY) && '(' === $tokens->getNextNonWhitespace($index)->content) {
+            if ($token->isGivenKind(T_ARRAY) && '(' === $tokens[$tokens->getNextNonWhitespace($index)]->content) {
                 $this->fixArray($tokens, $index);
                 continue;
             }
@@ -57,7 +57,7 @@ class ShortArraySyntaxFixer extends AbstractFixer
                 continue;
             }
 
-            if ($token->isGivenKind(T_ARRAY) && '(' === $tokens->getNextNonWhitespace($index)->content) {
+            if ($token->isGivenKind(T_ARRAY) && '(' === $tokens[$tokens->getNextNonWhitespace($index)]->content) {
                 $this->fixArray($tokens, $index);
                 continue;
             }

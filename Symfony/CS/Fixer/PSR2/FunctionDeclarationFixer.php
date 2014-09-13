@@ -37,11 +37,10 @@ class FunctionDeclarationFixer extends AbstractFixer
                 continue;
             }
 
-            $startParenthesisIndex = null;
-            $tokens->getNextTokenOfKind($index, array('('), $startParenthesisIndex);
+            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, array('('));
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
-            $startBraceIndex = null;
-            $startBraceToken = $tokens->getNextTokenOfKind($endParenthesisIndex, array(';', '{'), $startBraceIndex);
+            $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, array(';', '{'));
+            $startBraceToken = $tokens[$startBraceIndex];
 
             if ($startBraceToken->equals('{')) {
                 // fix single-line whitespace before {
@@ -55,12 +54,11 @@ class FunctionDeclarationFixer extends AbstractFixer
                 }
             }
 
-            $afterParenthesisIndex = null;
-            $afterParenthesisToken = $tokens->getNextNonWhitespace($endParenthesisIndex, array(), $afterParenthesisIndex);
+            $afterParenthesisIndex = $tokens->getNextNonWhitespace($endParenthesisIndex);
+            $afterParenthesisToken = $tokens[$afterParenthesisIndex];
 
             if ($afterParenthesisToken->isGivenKind(T_USE)) {
-                $useStartParenthesisIndex = null;
-                $tokens->getNextTokenOfKind($afterParenthesisIndex, array('('), $useStartParenthesisIndex);
+                $useStartParenthesisIndex = $tokens->getNextTokenOfKind($afterParenthesisIndex, array('('));
                 $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $useStartParenthesisIndex);
 
                 // fix whitespace after T_USE

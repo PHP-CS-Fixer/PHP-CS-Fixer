@@ -45,8 +45,8 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                     return $content;
                 }
 
-                $tokens->getNextNonWhitespace($index, array(), $namespaceIndex);
-                $tokens->getNextTokenOfKind($index, array(';'), $namespaceEndIndex);
+                $namespaceIndex = $tokens->getNextNonWhitespace($index);
+                $namespaceEndIndex = $tokens->getNextTokenOfKind($index, array(';'));
 
                 $namespace = trim($tokens->generatePartialCode($namespaceIndex, $namespaceEndIndex - 1));
             } elseif ($token->isClassy()) {
@@ -54,7 +54,8 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                     return $content;
                 }
 
-                $classyName = $tokens->getNextNonWhitespace($index, array(), $classyIndex)->content;
+                $classyIndex = $tokens->getNextNonWhitespace($index);
+                $classyName = $tokens[$classyIndex]->content;
             }
         }
 

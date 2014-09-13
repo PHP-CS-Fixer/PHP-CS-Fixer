@@ -30,8 +30,7 @@ class MultipleUseFixer extends AbstractFixer
         $uses = array_reverse($tokens->getNamespaceUseIndexes());
 
         foreach ($uses as $index) {
-            $endIndex = null;
-            $tokens->getNextTokenOfKind($index, array(';'), $endIndex);
+            $endIndex = $tokens->getNextTokenOfKind($index, array(';'));
             $declarationContent = $tokens->generatePartialCode($index + 1, $endIndex - 1);
 
             $declarationParts = explode(',', $declarationContent);

@@ -36,8 +36,8 @@ class ElseifFixer extends AbstractFixer
                 continue;
             }
 
-            $nextIndex = null;
-            $nextToken = $tokens->getNextNonWhitespace($index, array(), $nextIndex);
+            $nextIndex = $tokens->getNextNonWhitespace($index);
+            $nextToken = $tokens[$nextIndex];
 
             // if next meaning token is not T_IF - continue searching, this is not the case for fixing
             if (!$nextToken->isGivenKind(T_IF)) {
