@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-11T16:47:08Z
+
+Rebase on master to resolve ~conflict with master after method interface change, now Travis passes.
+Comments are welcome !
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-11T18:38:58Z
+
+Looks good in theory. :)
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-12T12:08:41Z
+
+I fully agree with dropping the API using references. It is much better
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-13T14:58:09Z
+
+(just rebase to resolve conflicts with master)
