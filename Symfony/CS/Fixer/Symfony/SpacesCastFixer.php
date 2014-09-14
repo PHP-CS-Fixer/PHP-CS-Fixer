@@ -29,6 +29,9 @@ class SpacesCastFixer extends AbstractFixer
             ' ' => '',
             "\t" => '',
             "\n" => '',
+            "\r" => '',
+            "\0" => '',
+            "\x0B" => '',
         );
 
         $tokens = Tokens::fromCode($content);

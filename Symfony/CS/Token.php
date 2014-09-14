@@ -306,13 +306,13 @@ class Token
      * Check if token is a whitespace.
      *
      * @param array  $opts                array of extra options
-     * @param string $opts['whitespaces'] string determining whitespaces chars, default is " \t\n"
+     * @param string $opts['whitespaces'] string determining whitespaces chars, default is " \t\n\r\0\x0B"
      *
      * @return bool
      */
     public function isWhitespace(array $opts = array())
     {
-        $whitespaces = isset($opts['whitespaces']) ? $opts['whitespaces'] : " \t\n";
+        $whitespaces = isset($opts['whitespaces']) ? $opts['whitespaces'] : " \t\n\r\0\x0B";
 
         if ($this->isArray && !$this->isGivenKind(T_WHITESPACE)) {
             return false;

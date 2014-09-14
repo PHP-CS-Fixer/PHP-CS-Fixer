@@ -91,6 +91,12 @@ namespace A\B {
 }
 ',
             ),
+            array(
+                "<?php\rnamespace A\B;
+
+class C {}\r",
+                "<?php\rnamespace A\B;\r\r\r\r\r\rclass C {}\r",
+            ),
         );
     }
 }
