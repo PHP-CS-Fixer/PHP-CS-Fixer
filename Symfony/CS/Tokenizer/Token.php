@@ -160,7 +160,7 @@ class Token
         $transformators = Transformators::create();
 
         if ($transformators->hasCustomToken($this->id)) {
-            return $transformators->getCustomToken($this->id).'*';
+            return $transformators->getCustomToken($this->id);
         }
 
         return token_name($this->id);
