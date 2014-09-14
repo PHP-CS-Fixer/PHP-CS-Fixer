@@ -60,7 +60,7 @@ class Transformators
     private function addCustomToken($value, $name)
     {
         if ($this->hasCustomToken($value)) {
-            throw new \Exception();
+            throw new \LogicException("Trying to register token $name ($value), token with this value was already defined: ".$this->getCustomToken($value));
         }
 
         $this->customTokens[$value] = $name;
