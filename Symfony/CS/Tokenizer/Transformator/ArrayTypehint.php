@@ -38,14 +38,14 @@ class ArrayTypehint extends AbstractTransformator
             $nextToken = $tokens[$nextIndex];
 
             if (!$nextToken->equals('(')) {
-                $token->id = T_ARRAY_TYPEHINT;
+                $token->id = CT_ARRAY_TYPEHINT;
             }
         }
     }
 
     public function getConstantDefinitions()
     {
-        static $defs = array(10001 => 'T_ARRAY_TYPEHINT');
+        static $defs = array(10001 => 'CT_ARRAY_TYPEHINT');
 
         return $defs;
     }
