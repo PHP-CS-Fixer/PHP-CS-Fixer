@@ -178,13 +178,13 @@ class BracesFixer extends AbstractFixer
                 // - $a->{$b}[$c] = $d;
                 if ($nestToken->equals('}') && !$tokens->isClosingBraceInsideString($nestIndex)) {
                     $startNestBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nestIndex, false);
-                    $prevNestStartBraceToken = $tokens->getTokenNotOfKindSibling(
+                    $prevNestStartBraceIndex = $tokens->getTokenNotOfKindSibling(
                         $startNestBraceIndex,
                         -1,
                         array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT))
                     );
 
-                    if ($prevNestStartBraceToken->equals(array(T_OBJECT_OPERATOR))) {
+                    if ($tokens[$prevNestStartBraceIndex]->equals(array(T_OBJECT_OPERATOR))) {
                         $nestIndex = $startNestBraceIndex;
                         continue;
                     }
