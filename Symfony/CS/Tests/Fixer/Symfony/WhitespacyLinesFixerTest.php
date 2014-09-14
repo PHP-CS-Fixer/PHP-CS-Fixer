@@ -38,14 +38,8 @@ class WhitespacyLinesFixerTest extends AbstractFixerTestBase
 	$b = 1;		',
             ),
             array(
-                '<?php
-
-
-$b = 1;',
-                '<?php
-                
-	
-$b = 1;',
+                "<?php\n\n\n\$b = 1;",
+                "<?php\n                \n	\n\$b = 1;",
             ),
         );
     }
