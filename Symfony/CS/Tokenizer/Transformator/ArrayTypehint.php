@@ -27,13 +27,7 @@ class ArrayTypehint extends AbstractTransformator
      */
     public function process(Tokens $tokens)
     {
-        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind(T_ARRAY)) {
-                continue;
-            }
-
+        foreach ($tokens->findGivenKind(T_ARRAY) as $index => $token) {
             $nextIndex = $tokens->getTokenNotOfKindSibling($index, 1, array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT)));
             $nextToken = $tokens[$nextIndex];
 
