@@ -45,7 +45,7 @@ class NamespaceNoLeadingWhitespaceFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
 namespace Test1;
-namespace Test2;'
+namespace Test2;',
             ),
             array(
                 '<?php
@@ -53,7 +53,7 @@ namespace Test1;
 namespace Test2;',
                 '<?php
  namespace Test1;
-    namespace Test2;'
+    namespace Test2;',
             ),
             array(
                 '<?php
@@ -63,7 +63,7 @@ namespace Test2;',
                 '<?php
  namespace Test1;
 class Test {}
-   namespace Test2;'
+   namespace Test2;',
             ),
             array(
                 '<?php
@@ -73,7 +73,7 @@ namespace Test2;',
                 '<?php
  namespace Test1;
 use Exception;
-   namespace Test2;'
+   namespace Test2;',
             ),
             // multiple namespaces without newline
             array('<?php namespace Test1; namespace Test2;'),
@@ -85,14 +85,14 @@ use Exception;
 namespace Test1{}
 namespace Test2{}',
                 '<?php
-     namespace Test1{}namespace Test2{}'
+     namespace Test1{}namespace Test2{}',
      ),
             array(
                 '<?php
 namespace Test1;
 namespace Test2;',
                 '<?php
-namespace Test1;namespace Test2;'
+namespace Test1;namespace Test2;',
             ),
             array(
                 '<?php
