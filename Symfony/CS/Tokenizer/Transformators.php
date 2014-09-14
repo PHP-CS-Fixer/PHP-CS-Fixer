@@ -39,6 +39,14 @@ class Transformators
 
     private function registerBuiltInTransformators()
     {
+        static $registered = false;
+
+        if ($registered) {
+            return;
+        }
+
+        $registered = true;
+
         foreach (Finder::create()->files()->in(__DIR__.'/Transformator') as $file) {
             $relativeNamespace = $file->getRelativePath();
             $class = __NAMESPACE__.'\\Transformator\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
