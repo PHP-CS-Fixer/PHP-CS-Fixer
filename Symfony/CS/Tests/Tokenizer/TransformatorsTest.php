@@ -28,18 +28,19 @@ class TransformatorsTest extends \PHPUnit_Framework_TestCase
 
     public function provideCustomTokenPrefixCases()
     {
-        $class = new \ReflectionClass('Symfony\\CS\\Tokenizer\\Transformators');
-        $property = $class->getProperty('items');
-        $property->setAccessible(true);
-
         $transformators = Transformators::create();
-        $items = $property->getValue($transformators);
+
+        $transformatorsReflection = new \ReflectionClass($transformators);
+        $propertyReflection = $transformatorsReflection->getProperty('items');
+        $propertyReflection->setAccessible(true);
+
+        $items = $propertyReflection->getValue($transformators);
 
         $cases = array();
 
         foreach ($items as $item) {
             foreach ($item->getConstantDefinitions() as $value => $name) {
-                $cases[] = array('value' => $value, 'name' => $name);
+                $cases[] = array($value, $name);
             }
         }
 
