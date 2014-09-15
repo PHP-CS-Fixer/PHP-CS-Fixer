@@ -31,9 +31,9 @@ class LowercaseConstantsFixer extends AbstractFixer
         foreach ($tokens as $index => $token) {
             if ($token->isNativeConstant()) {
                 if (
-                    $tokens[$tokens->getPrevNonWhitespace($index, array('whitespaces' => " \t\n"))]->isArray()
+                    $tokens[$tokens->getPrevNonWhitespace($index)]->isArray()
                     ||
-                    $tokens[$tokens->getNextNonWhitespace($index, array('whitespaces' => " \t\n"))]->isArray()
+                    $tokens[$tokens->getNextNonWhitespace($index)]->isArray()
                 ) {
                     continue;
                 }
