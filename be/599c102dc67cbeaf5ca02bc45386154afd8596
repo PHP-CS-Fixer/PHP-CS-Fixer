@@ -1,0 +1,112 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-03T15:20:45Z
+
+@GrahamCampbell if this fix #485 could you add testcase?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-03T15:37:33Z
+
+Can that go through in a separate pull?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-03T15:46:44Z
+
+For what reason?
+You said it fixes #485, so please add a testcase here.
+See no need for separate PR - testcase added to master will not pass without that change.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-03T15:47:31Z
+
+This will also be required for my contrib fixer for semicolons.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-03T15:48:00Z
+
+That is, when I get around to writing it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-03T15:50:55Z
+
+Great - so you made a fix here, will add a testcase here, we will merge it into master and - you will have it for your contrib fixer. And if you will want to make fixer earlier - then just cherry-pick changes you need from other branch. I do it so often between FunctionDeclarationSpacesFixer, UnusedUseFixer and StructureBracesFixer.
+
+Or am I missing sth?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-03T15:53:07Z
+
+I'll add a test case (or a few) here before I start on the other stuff later tonight.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-11T20:08:29Z
+
+How does this look now @keradus?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-14T08:55:35Z
+
+@keradus Supporting all those whitespace characters seems to have broken things.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-14T08:56:07Z
+
+https://travis-ci.org/fabpot/PHP-CS-Fixer/jobs/35244867
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-14T08:57:34Z
+
+What is the point of cloning Travis link? All of us see it near commit hash.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-14T08:59:14Z
+
+I was just linking you to hhvm because if you look at the php ones they've crashed quite early on, so aren't very useful, so I was trying to save you some time there.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-14T09:00:49Z
+
+No need to clone info that is already available ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-14T09:04:00Z
+
+Fix basing only on php output: #558
+Please rebase your PR.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-14T09:08:53Z
+
+Will do...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-14T09:11:25Z
+
+Seems to be working now. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-14T09:11:48Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-15T07:25:12Z
+
+:+1:
