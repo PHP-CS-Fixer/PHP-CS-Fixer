@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-15T07:21:38Z
+
+I even think we no longer need to exclude any of the fixers as there input is in strings and all fixers now use the Tokens class :)
+
+Edit. Never mind.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-15T16:27:13Z
+
+Cool edit @sstok
+Last Test file that was left is changed on project fixing, so I kept it excluded.
+Reason why it was changed is a separate issue i think which need deeper look.
