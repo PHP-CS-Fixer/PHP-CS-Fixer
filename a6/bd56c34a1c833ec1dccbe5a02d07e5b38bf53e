@@ -1,0 +1,30 @@
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-14T08:16:14Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-15T16:28:15Z
+
+Anyone know if there was a reason why we add this requirement as `1.1.*` ?
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-16T00:10:48Z
+
+Well, it was set to this range in https://github.com/fabpot/PHP-CS-Fixer/pull/252. I suspect it is because of a missing knowledge of Composer semantic versionning operator
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-16T09:50:43Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-16T13:52:14Z
+
+I will merge it this evening.
+Definitely we need this, see https://github.com/sebastianbergmann/diff/issues/16
