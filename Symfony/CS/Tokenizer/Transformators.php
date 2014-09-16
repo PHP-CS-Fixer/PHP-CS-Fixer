@@ -18,6 +18,14 @@ use Symfony\Component\Finder\Finder;
  */
 class Transformators
 {
+    private $items = array();
+    private $customTokens = array();
+
+    private function __construct()
+    {
+        $this->registerBuiltInTransformators();
+    }
+
     public static function create()
     {
         static $instance = null;
@@ -29,12 +37,45 @@ class Transformators
         return $instance;
     }
 
-    private $items = array();
-    private $customTokens = array();
-
-    private function __construct()
+    public function getCustomToken($value)
     {
-        $this->registerBuiltInTransformators();
+        if (!$this->hasCustomToken($value)) {
+            throw new \Exception();
+        }
+
+        return $this->customTokens[$value];
+    }
+
+    public function hasCustomToken($value)
+    {
+        return isset($this->customTokens[$value]);
+    }
+
+    public function registerTransformator(TransformatorInterface $transformator)
+    {
+        $this->items[] = $transformator;
+
+        $transformator->registerConstants();
+
+        foreach ($transformator->getConstantDefinitions() as $value => $name) {
+            $this->addCustomToken($value, $name);
+        }
+    }
+
+    public function transform(Tokens $tokens)
+    {
+        foreach ($this->items as $transformator) {
+            $transformator->process($tokens);
+        }
+    }
+
+    private function addCustomToken($value, $name)
+    {
+        if ($this->hasCustomToken($value)) {
+            throw new \LogicException("Trying to register token $name ($value), token with this value was already defined: ".$this->getCustomToken($value));
+        }
+
+        $this->customTokens[$value] = $name;
     }
 
     private function registerBuiltInTransformators()
@@ -51,47 +92,6 @@ class Transformators
             $relativeNamespace = $file->getRelativePath();
             $class = __NAMESPACE__.'\\Transformator\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
             $this->registerTransformator(new $class());
-        }
-    }
-
-    public function registerTransformator(TransformatorInterface $transformator)
-    {
-        $this->items[] = $transformator;
-
-        $transformator->registerConstants();
-
-        foreach ($transformator->getConstantDefinitions() as $value => $name) {
-            $this->addCustomToken($value, $name);
-        }
-    }
-
-    private function addCustomToken($value, $name)
-    {
-        if ($this->hasCustomToken($value)) {
-            throw new \LogicException("Trying to register token $name ($value), token with this value was already defined: ".$this->getCustomToken($value));
-        }
-
-        $this->customTokens[$value] = $name;
-    }
-
-    public function hasCustomToken($value)
-    {
-        return isset($this->customTokens[$value]);
-    }
-
-    public function getCustomToken($value)
-    {
-        if (!$this->hasCustomToken($value)) {
-            throw new \Exception();
-        }
-
-        return $this->customTokens[$value];
-    }
-
-    public function transform(Tokens $tokens)
-    {
-        foreach ($this->items as $transformator) {
-            $transformator->process($tokens);
         }
     }
 }
