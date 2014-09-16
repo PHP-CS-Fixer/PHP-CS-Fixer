@@ -12,8 +12,8 @@
 namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
-use Symfony\CS\Token;
-use Symfony\CS\Tokens;
+use Symfony\CS\Tokenizer\Token;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Bram Gotink <bram@gotink.me>

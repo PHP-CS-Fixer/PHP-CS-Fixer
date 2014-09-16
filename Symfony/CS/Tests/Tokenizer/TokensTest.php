@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests;
+namespace Symfony\CS\Tests\Tokenizer;
 
-use Symfony\CS\Tokens;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

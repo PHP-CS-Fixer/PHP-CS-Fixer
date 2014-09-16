@@ -12,7 +12,7 @@
 namespace Symfony\CS\Fixer\PSR1;
 
 use Symfony\CS\AbstractFixer;
-use Symfony\CS\Tokens;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * Fixer for rules defined in PSR1 ¶2.1.

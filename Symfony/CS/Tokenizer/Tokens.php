@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS;
+namespace Symfony\CS\Tokenizer;
 
 /**
  * Collection of code tokens.
