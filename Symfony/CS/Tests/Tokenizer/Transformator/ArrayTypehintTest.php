@@ -22,7 +22,7 @@ class ArrayTypehintTest extends AbstractTransformatorTestBase
     /**
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source = 1, $expectedTokens = null)
+    public function testProcess($source, array $expectedTokens)
     {
         $tokens = Tokens::fromCode($source);
         static::$transformator->process($tokens);
