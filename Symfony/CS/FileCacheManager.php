@@ -34,12 +34,12 @@ class FileCacheManager
     private $dir;
     private $oldHashes = array();
     private $newHashes = array();
-    private $scriptName;
+    private $scriptDir;
 
     public function __construct($dir)
     {
         $this->dir = null !== $dir ? $dir.DIRECTORY_SEPARATOR : '';
-        $this->scriptName = $_SERVER['SCRIPT_NAME'];
+        $this->scriptDir = dirname($_SERVER['SCRIPT_NAME']);
         $this->readFromFile();
     }
 
@@ -91,7 +91,7 @@ class FileCacheManager
         }
 
         if (null === $result) {
-            $composerLock = json_decode(file_get_contents(dirname($this->scriptName).self::COMPOSER_LOCK_FILE), true);
+            $composerLock = json_decode(file_get_contents($this->scriptDir.self::COMPOSER_LOCK_FILE), true);
 
             foreach ($composerLock['packages'] as $package) {
                 if (self::COMPOSER_PACKAGE_NAME === $package['name']) {
@@ -138,7 +138,7 @@ class FileCacheManager
         static $result;
 
         if (null === $result) {
-            $result = '.phar' === substr($this->scriptName, -5);
+            $result = 'phar://' === substr(__DIR__, 0, 7);
         }
 
         return $result;
@@ -149,7 +149,7 @@ class FileCacheManager
         static $result;
 
         if (null === $result) {
-            $result = !$this->isInstalledAsPhar() && file_exists(dirname($this->scriptName).self::COMPOSER_JSON_FILE);
+            $result = !$this->isInstalledAsPhar() && file_exists($this->scriptDir.self::COMPOSER_JSON_FILE);
         }
 
         return $result;
