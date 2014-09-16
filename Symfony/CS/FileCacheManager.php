@@ -168,7 +168,7 @@ class FileCacheManager
         $content = file_get_contents($this->dir.self::CACHE_FILE);
         $data = unserialize($content);
 
-        // Set Hashes only if version do not changed.
+        // Set hashes only if version has not changed.
         // If version changed then we need to parse all files because the fixer changed!
         if ($this->isSameFixerVersion($data['version'])) {
             $this->oldHashes = $data['hashes'];
