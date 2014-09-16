@@ -79,7 +79,7 @@ class FileCacheManager
 
     private function calcHash($content)
     {
-        return md5($content);
+        return crc32($content);
     }
 
     private function getComposerVersion()
