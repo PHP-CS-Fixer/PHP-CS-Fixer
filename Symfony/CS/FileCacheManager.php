@@ -124,7 +124,7 @@ class FileCacheManager
         return $result;
     }
 
-    private function isFixerVersionMatches($cacheVersion)
+    private function isSameFixerVersion($cacheVersion)
     {
         if (!$this->isCacheSupported()) {
             return false;
@@ -170,7 +170,7 @@ class FileCacheManager
 
         // Set Hashes only if version do not changed.
         // If version changed then we need to parse all files because the fixer changed!
-        if ($this->isFixerVersionMatches($data['version'])) {
+        if ($this->isSameFixerVersion($data['version'])) {
             $this->oldHashes = $data['hashes'];
         }
     }
