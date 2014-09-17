@@ -43,16 +43,9 @@ class NewWithBracesFixer extends AbstractFixer
             }
 
             // entrance into array index syntax - need to look for exit
-            if (!$nextToken->isArray() && '[' === $nextToken->content) {
-                $braceLevel = 1;
-
-                while (0 < $braceLevel) {
-                    $nextIndex = $tokens->getNextTokenOfKind($nextIndex, array('[', ']'));
-                    $nextToken = $tokens[$nextIndex];
-                    $braceLevel += ('[' === $nextToken->content ? 1 : -1);
-                }
-
-                $nextToken = $tokens[++$nextIndex];
+            if ($nextToken->equals('[')) {
+                $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $nextIndex) + 1;
+                $nextToken = $tokens[$nextIndex];
             }
 
             // new statement with () - nothing to do
