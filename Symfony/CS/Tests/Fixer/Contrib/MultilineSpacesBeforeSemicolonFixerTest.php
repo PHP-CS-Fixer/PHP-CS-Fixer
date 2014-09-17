@@ -8,14 +8,15 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\All;
+namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Fixer\All\SpaceBeforeClosingSemicolonFixer as Fixer;
+use Symfony\CS\Fixer\Contrib\MultilineSpacesBeforeSemicolonFixer as Fixer;
 
 /**
- * @author John Kelly <johnmkelly86@gmail.com>
+ * @author John Kelly <wablam@gmail.com>
+ * @author Graham Campbell <graham@mineuk.com>
  */
-class SpaceBeforeClosingSemicolonFixerTest extends \PHPUnit_Framework_TestCase
+class MultilineSpacesBeforeSemicolonFixerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider provideCases
@@ -35,8 +36,7 @@ class SpaceBeforeClosingSemicolonFixerTest extends \PHPUnit_Framework_TestCase
                 '<?php
 $this
     ->setName(\'readme\')
-    ->setDescription(\'Generates the README content, based on the fix command help\')
-;
+    ->setDescription(\'Generates the README content, based on the fix command help\');
 ?>',
                 '<?php
 $this
@@ -48,8 +48,7 @@ $this
                 '<?php
 $this
     ->setName(\'readme\')
-    ->setDescription(\'Generates the README content, based on the fix command help\')
-    ;
+    ->setDescription(\'Generates the README content, based on the fix command help\');
 ?>',
                 '<?php
 $this
@@ -75,7 +74,7 @@ $this
             ),
             array(
                 '<?php $this->foo("with param containing ) ; "); ?>',
-                '<?php $this->foo("with param containing ) ; ") ; ?>',
+                '<?php $this->foo("with param containing ) ; ")  ; ?>',
             ),
             array(
                 '<?php $this->foo(); ?>',
