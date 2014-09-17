@@ -51,10 +51,10 @@ class OrderedUseFixer extends AbstractFixer
         // Now insert the new tokens, starting from the end
         foreach ($usesOrder as $index => $use) {
             $declarationTokens = Tokens::fromCode('<?php use '.$use[0].';');
-            $declarationTokens[0]->clear(); // <?php
-            $declarationTokens[1]->clear(); // use
-            $declarationTokens[2]->clear(); // space
-            $declarationTokens[count($declarationTokens) - 1]->clear(); // ;
+            $declarationTokens[0]->clear(); // clear `<?php`
+            $declarationTokens[1]->clear(); // clear `use`
+            $declarationTokens[2]->clear(); // clear `space`
+            $declarationTokens[count($declarationTokens) - 1]->clear(); // clear `;`
 
             $tokens->insertAt($index, $declarationTokens);
         }

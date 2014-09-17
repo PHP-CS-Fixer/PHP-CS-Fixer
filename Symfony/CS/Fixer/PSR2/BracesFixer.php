@@ -172,10 +172,7 @@ class BracesFixer extends AbstractFixer
                     continue;
                 }
 
-                // skip situations like `->{`, e.g.:
-                // - $a = $b->{$c}($e);
-                // - $a->{$b} = $c;
-                // - $a->{$b}[$c] = $d;
+                // skip braces like `$b->{$c}`
                 if ($nestToken->equals('}') && !$tokens->isClosingBraceInsideString($nestIndex)) {
                     $startNestBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nestIndex, false);
                     $prevNestStartBraceIndex = $tokens->getTokenNotOfKindSibling(
