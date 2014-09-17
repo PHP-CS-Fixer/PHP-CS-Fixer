@@ -8,25 +8,23 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Symfony;
+namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Fixer\Contrib\MultilineSpacesBeforeSemicolonFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author John Kelly <wablam@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class MultilineSpacesBeforeSemicolonFixerTest extends \PHPUnit_Framework_TestCase
+class MultilineSpacesBeforeSemicolonFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
      */
-    public function testOneLineFix($expected, $input)
+    public function testFix($expected, $input = null)
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function provideCases()
@@ -35,79 +33,60 @@ class MultilineSpacesBeforeSemicolonFixerTest extends \PHPUnit_Framework_TestCas
             array(
                 '<?php
 $this
-    ->setName(\'readme\')
-    ->setDescription(\'Generates the README content, based on the fix command help\');
-?>',
+    ->setName(\'readme1\')
+    ->setDescription(\'Generates the README\');
+',
                 '<?php
 $this
-    ->setName(\'readme\')
-    ->setDescription(\'Generates the README content, based on the fix command help\')
+    ->setName(\'readme1\')
+    ->setDescription(\'Generates the README\')
 ;
-?>'),
+',
+            ),
             array(
                 '<?php
 $this
-    ->setName(\'readme\')
-    ->setDescription(\'Generates the README content, based on the fix command help\');
-?>',
+    ->setName(\'readme2\')
+    ->setDescription(\'Generates the README\');
+',
                 '<?php
 $this
-    ->setName(\'readme\')
-    ->setDescription(\'Generates the README content, based on the fix command help\')
+    ->setName(\'readme2\')
+    ->setDescription(\'Generates the README\')
     ;
-?>'),
-            array(
-                '<?php echo "$this->foo(\'with param containing ;\') ;"; ?>',
-                '<?php echo "$this->foo(\'with param containing ;\') ;" ; ?>',
+',
             ),
             array(
-                '<?php $this->foo(); ?>',
-                '<?php $this->foo() ; ?>',
+                '<?php echo "$this->foo(\'with param containing ;\') ;" ;',
             ),
             array(
-                '<?php $this->foo(\'with param containing ;\'); ?>',
-                '<?php $this->foo(\'with param containing ;\') ; ?>',
+                '<?php $this->foo();',
             ),
             array(
-                '<?php $this->foo(\'with param containing ) ; \'); ?>',
-                '<?php $this->foo(\'with param containing ) ; \') ; ?>',
+                '<?php $this->foo() ;',
             ),
             array(
-                '<?php $this->foo("with param containing ) ; "); ?>',
+                '<?php $this->foo(\'with param containing ;\') ;',
+            ),
+            array(
+                '<?php $this->foo(\'with param containing ) ; \') ;',
+            ),
+            array(
                 '<?php $this->foo("with param containing ) ; ")  ; ?>',
             ),
             array(
-                '<?php $this->foo(); ?>',
-                '<?php $this->foo(); ?>',
+                '<?php $this->foo("with semicolon in string) ; "); ?>',
             ),
             array(
-                '<?php $this->foo("with semicolon in string) ; "); ?>',
-                '<?php $this->foo("with semicolon in string) ; "); ?>',
-            ),
-            array('<?php
-
-$this->foo();
-
-?>
-',
                 '<?php
+$this
+    ->example();',
+                '<?php
+$this
+    ->example()
 
-$this->foo() ;
-
-?>
-',
+    ;',
             ),
         );
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
     }
 }

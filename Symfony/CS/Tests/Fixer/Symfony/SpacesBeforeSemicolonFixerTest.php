@@ -10,23 +10,21 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Fixer\Symfony\SpacesBeforeSemicolonFixer as Fixer;
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author John Kelly <wablam@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class SpacesBeforeSemicolonFixerTest extends \PHPUnit_Framework_TestCase
+class SpacesBeforeSemicolonFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
      */
-    public function testOneLineFix($expected, $input)
+    public function testFix($expected, $input = null)
     {
-        $fixer = new Fixer();
-        $file = $this->getTestFile();
-
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input);
     }
 
     public function provideCases()
@@ -35,81 +33,43 @@ class SpacesBeforeSemicolonFixerTest extends \PHPUnit_Framework_TestCase
             array(
                 '<?php
 $this
-    ->setName(\'readme\')
+    ->setName(\'readme1\')
     ->setDescription(\'Generates the README content, based on the fix command help\')
-;
-?>',
-                '<?php
-$this
-    ->setName(\'readme\')
-    ->setDescription(\'Generates the README content, based on the fix command help\')
-;
-?>'),
+;',
+            ),
             array(
                 '<?php
 $this
-    ->setName(\'readme\')
+    ->setName(\'readme2\')
     ->setDescription(\'Generates the README content, based on the fix command help\')
-    ;
-?>',
-                '<?php
-$this
-    ->setName(\'readme\')
-    ->setDescription(\'Generates the README content, based on the fix command help\')
-    ;
-?>'),
-            array(
-                '<?php echo "$this->foo(\'with param containing ;\') ;"; ?>',
-                '<?php echo "$this->foo(\'with param containing ;\') ;" ; ?>',
+    ;',
             ),
             array(
-                '<?php $this->foo(); ?>',
-                '<?php $this->foo() ; ?>',
+                '<?php echo "$this->foo(\'with param containing ;\') ;";',
+                '<?php echo "$this->foo(\'with param containing ;\') ;" ;',
             ),
             array(
-                '<?php $this->foo(\'with param containing ;\'); ?>',
-                '<?php $this->foo(\'with param containing ;\') ; ?>',
+                '<?php $this->foo();',
+                '<?php $this->foo() ;',
             ),
             array(
-                '<?php $this->foo(\'with param containing ) ; \'); ?>',
-                '<?php $this->foo(\'with param containing ) ; \') ; ?>',
+                '<?php $this->foo(\'with param containing ;\');',
+                '<?php $this->foo(\'with param containing ;\') ;',
             ),
             array(
-                '<?php $this->foo("with param containing ) ; "); ?>',
-                '<?php $this->foo("with param containing ) ; ")  ; ?>',
+                '<?php $this->foo(\'with param containing ) ; \');',
+                '<?php $this->foo(\'with param containing ) ; \') ;',
             ),
             array(
-                '<?php $this->foo(); ?>',
-                '<?php $this->foo(); ?>',
+                '<?php $this->foo("with param containing ) ; ");',
+                '<?php $this->foo("with param containing ) ; ")  ;',
             ),
             array(
-                '<?php $this->foo("with semicolon in string) ; "); ?>',
-                '<?php $this->foo("with semicolon in string) ; "); ?>',
+                '<?php $this->foo();',
             ),
-            array('<?php
-
-$this->foo();
-
-?>
-',
-                '<?php
-
-$this->foo() ;
-
-?>
-',
+            array(
+                '<?php $this->foo("with semicolon in string) ; ");',
             ),
         );
-    }
-
-    private function getTestFile($filename = __FILE__)
-    {
-        static $files = array();
-
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
     }
 }
