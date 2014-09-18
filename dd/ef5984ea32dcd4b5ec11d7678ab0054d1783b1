@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by stof at 2014-09-18T14:19:00Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-18T18:40:44Z
+
+Rebase on master and set `duplicate_semicolon` to run before:
+* `before spaces_before_semicolon`
+* `multiline_spaces_before_semicolon`
+
+just to save few proc cycles ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-18T18:44:21Z
+
+:+1:
