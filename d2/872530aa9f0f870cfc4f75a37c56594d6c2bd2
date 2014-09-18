@@ -1,0 +1,77 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-14T10:05:47Z
+
+Please remember to take a look at outdated diff comments. They are outdated only becouse of file names changed.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-16T20:36:48Z
+
+@GrahamCampbell Could you just cherry-pick d3e031d37d31aeeaed1f82b4f623776feeba9a60 and get rid of that ugly merge commit?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-16T20:40:38Z
+
+Yeh. The fastest way to get rid of merge commits like that is actually to simply rebase. Very useful. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-16T20:46:48Z
+
+Or just cherry-pick instead of merging PR ;) however you like ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-16T21:07:21Z
+
+Nice!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-16T21:24:03Z
+
+@GrahamCampbell would you be so kind and rebase it on master again due to merge of #569 ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-16T22:06:18Z
+
+Will do tomorrow.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-17T21:16:08Z
+
+Ping @keradus.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-17T21:19:42Z
+
+could you squash 911ff2b with 87bc4e5 ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-17T22:07:31Z
+
+Done.
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-18T08:45:57Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-18T09:23:32Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-18T10:32:34Z
+
+Time to merge then?
