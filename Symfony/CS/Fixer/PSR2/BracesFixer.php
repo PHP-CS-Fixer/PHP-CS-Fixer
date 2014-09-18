@@ -501,7 +501,7 @@ class BracesFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run after the ElseIfFixer
+        // should be run after the ElseIfFixer and DuplicateSemicolonFixer
         return -25;
     }
 
