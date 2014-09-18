@@ -104,7 +104,6 @@ class BracesFixer extends AbstractFixer
 
             $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
             $startBraceIndex = $tokens->getNextNonWhitespace($parenthesisEndIndex);
-            $startBraceToken = $tokens[$startBraceIndex];
             $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startBraceIndex);
             $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($endBraceIndex);
             $nextNonWhitespaceToken = $tokens[$nextNonWhitespaceIndex];
@@ -113,7 +112,6 @@ class BracesFixer extends AbstractFixer
                 continue;
             }
 
-            $beforeWhileToken = $tokens[$nextNonWhitespaceIndex - 1];
             $tokens->ensureWhitespaceAtIndex($nextNonWhitespaceIndex - 1, 1, ' ');
         }
     }
@@ -123,7 +121,6 @@ class BracesFixer extends AbstractFixer
         $classyTokens = $this->getClassyTokens();
         $classyAndFunctionTokens = array_merge(array(T_FUNCTION), $classyTokens);
         $controlTokens = $this->getControlTokens();
-        $controlContinuationTokens = $this->getControlContinuationTokens();
         $indentTokens = array_filter(array_merge($classyAndFunctionTokens, $controlTokens), function ($item) { return T_SWITCH !== $item; });
 
         for ($index = 0, $limit = count($tokens); $index < $limit; ++$index) {
