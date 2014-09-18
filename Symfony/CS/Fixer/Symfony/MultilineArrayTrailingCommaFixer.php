@@ -47,19 +47,14 @@ class MultilineArrayTrailingCommaFixer extends AbstractFixer
 
     private function fixArray(Tokens $tokens, $index)
     {
-        $bracesLevel = 0;
-
-        $startIndex = $index;
-
-        if ($tokens[$index]->isGivenKind(T_ARRAY)) {
-            $startIndex = $tokens->getNextTokenOfKind($index, array('(', '['));
-        }
-
         if (!$tokens->isArrayMultiLine($index)) {
             return;
         }
 
-        if ($tokens[$startIndex]->equals('(')) {
+        $startIndex = $index;
+
+        if ($tokens[$startIndex]->isGivenKind(T_ARRAY)) {
+            $startIndex = $tokens->getNextTokenOfKind($startIndex, array('('));
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
         } else {
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $startIndex);
