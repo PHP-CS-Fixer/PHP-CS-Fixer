@@ -21,7 +21,7 @@ class TransformatorsTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideCustomTokenPrefixCases
      */
-    public function testCustomTokenPrefix($value, $name)
+    public function testCustomTokenPrefix($name)
     {
         $this->assertStringStartsWith('CT_', $name, 'Custom token should start with `CT_` prefix.');
     }
@@ -39,8 +39,8 @@ class TransformatorsTest extends \PHPUnit_Framework_TestCase
         $cases = array();
 
         foreach ($items as $item) {
-            foreach ($item->getConstantDefinitions() as $value => $name) {
-                $cases[] = array($value, $name);
+            foreach ($item->getCustomTokenNames() as $name) {
+                $cases[] = array($name);
             }
         }
 

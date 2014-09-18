@@ -16,12 +16,19 @@ namespace Symfony\CS\Tokenizer;
  */
 abstract class AbstractTransformator implements TransformatorInterface
 {
-    public function registerConstants()
+    protected static $lastGeneratedNextCustomTokenValue = 10000;
+
+    public function registerCustomTokens()
     {
-        foreach ($this->getConstantDefinitions() as $value => $name) {
+        foreach ($this->getCustomTokenNames() as $name) {
             if (!defined($name)) {
-                define($name, $value);
+                define($name, static::generateNextCustomTokenValue());
             }
         }
+    }
+
+    protected static function generateNextCustomTokenValue()
+    {
+        return ++static::$lastGeneratedNextCustomTokenValue;
     }
 }

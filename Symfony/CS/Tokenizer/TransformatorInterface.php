@@ -17,6 +17,6 @@ namespace Symfony\CS\Tokenizer;
 interface TransformatorInterface
 {
     public function process(Tokens $tokens);
-    public function registerConstants();
-    public function getConstantDefinitions();
+    public function registerCustomTokens();
+    public function getCustomTokenNames();
 }

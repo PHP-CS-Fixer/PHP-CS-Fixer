@@ -55,10 +55,10 @@ class Transformators
     {
         $this->items[] = $transformator;
 
-        $transformator->registerConstants();
+        $transformator->registerCustomTokens();
 
-        foreach ($transformator->getConstantDefinitions() as $value => $name) {
-            $this->addCustomToken($value, $name);
+        foreach ($transformator->getCustomTokenNames() as $name) {
+            $this->addCustomToken(constant($name), $name);
         }
     }
 
