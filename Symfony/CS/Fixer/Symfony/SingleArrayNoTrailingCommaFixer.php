@@ -15,6 +15,7 @@ use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
 class SingleArrayNoTrailingCommaFixer extends AbstractFixer
@@ -43,50 +44,27 @@ class SingleArrayNoTrailingCommaFixer extends AbstractFixer
         return 'PHP single-line arrays should not have trailing comma.';
     }
 
-    private function fixArray(Tokens $tokens, &$index)
+    private function fixArray(Tokens $tokens, $index)
     {
-        $bracesLevel = 0;
-
-        // Skip only when its an array, for short arrays we need the brace for correct
-        // level counting
-        if ($tokens[$index]->isGivenKind(T_ARRAY)) {
-            ++$index;
+        if ($tokens->isArrayMultiLine($index)) {
+            return;
         }
 
-        $multiline = $tokens->isArrayMultiLine($index);
+        $startIndex = $index;
 
-        for ($c = $tokens->count(); $index < $c; ++$index) {
-            $token = $tokens[$index];
+        if ($tokens[$startIndex]->isGivenKind(T_ARRAY)) {
+            $startIndex = $tokens->getNextTokenOfKind($startIndex, array('('));
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
+        } else {
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $startIndex);
+        }
 
-            if ('(' === $token->content || '[' === $token->content) {
-                ++$bracesLevel;
+        $beforeEndIndex = $tokens->getTokenNotOfKindSibling($endIndex, -1, array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT)));
+        $beforeEndToken = $tokens[$beforeEndIndex];
 
-                continue;
-            }
-
-            if ($token->isGivenKind(T_ARRAY) || $tokens->isShortArray($index)) {
-                $this->fixArray($tokens, $index);
-
-                continue;
-            }
-
-            if (')' === $token->content || ']' === $token->content) {
-                --$bracesLevel;
-
-                if (!$multiline && 0 === $bracesLevel) {
-                    $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($index);
-                    $prevNonWhitespaceToken = $tokens[$prevNonWhitespaceIndex];
-
-                    if (',' === $prevNonWhitespaceToken->content) {
-                        $tokens->removeTrailingWhitespace($prevNonWhitespaceIndex);
-                        $tokens[$prevNonWhitespaceIndex]->clear();
-                    }
-                }
-
-                if (0 === $bracesLevel) {
-                    break;
-                }
-            }
+        if ($beforeEndToken->equals(',')) {
+            $tokens->removeTrailingWhitespace($beforeEndIndex);
+            $beforeEndToken->clear();
         }
     }
 }
