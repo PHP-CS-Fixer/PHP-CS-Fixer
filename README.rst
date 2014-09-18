@@ -218,6 +218,8 @@ Choose from the list of available fixers:
 * **concat_without_spaces** [symfony] Concatenation should be used
                without spaces.
 
+* **duplicate_semicolon** [symfony] Remove duplicated semicolons.
+
 * **extra_empty_lines** [symfony] Removes extra empty lines.
 
 * **include** [symfony] Include and file path should
