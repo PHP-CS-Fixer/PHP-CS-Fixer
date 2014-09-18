@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-17T21:02:43Z
+
+I dislike code changes to make automated tools happy. It doesn't seem to make much scene.
+Then again, if this really does improve readability, then maybe it's ok.
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-18T07:22:18Z
+
+:+1:
+
+And you can also ignore reported issues, if they really do not make sense for the project.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-18T13:50:39Z
+
+Idea of removing commented code is good. Here just comment looks like code, so I don't want to discard whole rule.
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-18T15:00:08Z
+
+:+1:
