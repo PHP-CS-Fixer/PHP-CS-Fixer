@@ -25,7 +25,6 @@ class ArrayTypehintTest extends AbstractTransformatorTestBase
     public function testProcess($source, array $expectedTokens)
     {
         $tokens = Tokens::fromCode($source);
-        static::$transformator->process($tokens);
 
         foreach ($expectedTokens as $index => $name) {
             $this->assertSame(constant($name), $tokens[$index]->id);
