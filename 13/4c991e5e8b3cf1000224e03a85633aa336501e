@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-18T08:00:45Z
+
+:+1:
+
+Btw you can move the `$tokens->isArrayMultiLine($index)` check to the main loop so it only calls the fixArray when the array is not multi-line.
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-18T08:09:03Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-18T09:22:59Z
+
+@sstok even all `fixArray` method can be moved.
+I left method and this check inside for consistency with some other fixers
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-18T10:08:00Z
+
+ok then ;)
