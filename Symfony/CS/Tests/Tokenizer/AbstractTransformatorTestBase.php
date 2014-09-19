@@ -35,7 +35,7 @@ abstract class AbstractTransformatorTestBase extends \PHPUnit_Framework_TestCase
 
     protected static function getTransformator()
     {
-        $transformatorName = 'Symfony\CS\Tokenizer'.substr(get_called_class(), strlen(__NAMESPACE__), -strlen('Test'));
+        $transformatorClass = 'Symfony\CS\Tokenizer'.substr(get_called_class(), strlen(__NAMESPACE__), -strlen('Test'));
 
         $transformatorsReflection = new \ReflectionClass(static::$transformators);
         $propertyReflection = $transformatorsReflection->getProperty('items');
@@ -44,12 +44,12 @@ abstract class AbstractTransformatorTestBase extends \PHPUnit_Framework_TestCase
         $items = $propertyReflection->getValue(static::$transformators);
 
         foreach ($items as $item) {
-            if ($item instanceof $transformatorName) {
+            if ($item instanceof $transformatorClass) {
                 return $item;
             }
         }
 
-        throw new \RuntimeException("Transformator $transformatorName not found.");
+        throw new \RuntimeException("Transformator $transformatorClass not found.");
     }
 
     protected static function getTransformators()
