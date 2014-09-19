@@ -35,8 +35,6 @@ class DollarCloseCurlyBraces extends AbstractTransformator
 
     public function getCustomTokenNames()
     {
-        static $defs = array('CT_DOLLAR_CLOSE_CURLY_BRACES');
-
-        return $defs;
+        return array('CT_DOLLAR_CLOSE_CURLY_BRACES');
     }
 }

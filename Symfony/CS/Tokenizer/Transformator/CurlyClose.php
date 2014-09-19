@@ -52,8 +52,6 @@ class CurlyClose extends AbstractTransformator
 
     public function getCustomTokenNames()
     {
-        static $defs = array('CT_CURLY_CLOSE');
-
-        return $defs;
+        return array('CT_CURLY_CLOSE');
     }
 }

@@ -39,8 +39,6 @@ class ArrayTypehint extends AbstractTransformator
 
     public function getCustomTokenNames()
     {
-        static $defs = array('CT_ARRAY_TYPEHINT');
-
-        return $defs;
+        return array('CT_ARRAY_TYPEHINT');
     }
 }
