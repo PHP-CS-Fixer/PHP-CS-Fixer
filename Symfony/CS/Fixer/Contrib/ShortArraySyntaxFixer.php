@@ -27,50 +27,20 @@ class ShortArraySyntaxFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {
-            $token = $tokens[$index];
-
-            if ($token->isGivenKind(T_ARRAY) && '(' === $tokens[$tokens->getNextNonWhitespace($index)]->content) {
-                $this->fixArray($tokens, $index);
+        foreach ($tokens->findGivenKind(T_ARRAY) as $index => $token) {
+            if (!$tokens[$tokens->getNextNonWhitespace($index)]->equals('(')) {
                 continue;
             }
+
+            $openIndex = $tokens->getNextTokenOfKind($index, array('('));
+            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+
+            $token->clear();
+            $tokens[$openIndex]->content = '[';
+            $tokens[$closeIndex]->content = ']';
         }
 
         return $tokens->generateCode();
-    }
-
-    private function fixArray(Tokens $tokens, &$index)
-    {
-        $tokens[$index]->clear();
-        $bracesLevel = 0;
-        ++$index;
-
-        for ($c = $tokens->count(); $index < $c; ++$index) {
-            $token = $tokens[$index];
-
-            if ('(' === $token->content) {
-                if (0 === $bracesLevel) {
-                    $tokens[$index]->content = '[';
-                }
-
-                ++$bracesLevel;
-                continue;
-            }
-
-            if ($token->isGivenKind(T_ARRAY) && '(' === $tokens[$tokens->getNextNonWhitespace($index)]->content) {
-                $this->fixArray($tokens, $index);
-                continue;
-            }
-
-            if (')' === $token->content) {
-                --$bracesLevel;
-
-                if (0 === $bracesLevel) {
-                    $tokens[$index]->content = ']';
-                    break;
-                }
-            }
-        }
     }
 
     /**
