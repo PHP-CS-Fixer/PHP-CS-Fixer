@@ -12,6 +12,7 @@
 namespace Symfony\CS;
 
 use SebastianBergmann\Diff\Differ;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -19,6 +20,7 @@ use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class Fixer
 {
@@ -26,12 +28,25 @@ class Fixer
 
     protected $fixers = array();
     protected $configs = array();
+
+    /**
+     * Differ instance.
+     *
+     * @var Differ
+     */
     protected $diff;
+
+    /**
+     * EventDispatcher instance.
+     *
+     * @var EventDispatcher|null
+     */
+    protected $eventDispatcher;
 
     /**
      * Stopwatch instance.
      *
-     * @var \Symfony\Component\Stopwatch\Stopwatch|null
+     * @var Stopwatch|null
      */
     protected $stopwatch;
 
@@ -100,8 +115,8 @@ class Fixer
      * Fixes all files for the given finder.
      *
      * @param ConfigInterface $config A ConfigInterface instance
-     * @param Boolean         $dryRun Whether to simulate the changes or not
-     * @param Boolean         $diff   Whether to provide diff
+     * @param bool            $dryRun Whether to simulate the changes or not
+     * @param bool            $diff   Whether to provide diff
      *
      * @return array
      */
@@ -121,8 +136,16 @@ class Fixer
                 continue;
             }
 
+            if ($this->stopwatch) {
+                $this->stopwatch->start($this->getFileRelativePathname($file));
+            }
+
             if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff, $fileCacheManager)) {
                 $changed[$this->getFileRelativePathname($file)] = $fixInfo;
+            }
+
+            if ($this->stopwatch) {
+                $this->stopwatch->stop($this->getFileRelativePathname($file));
             }
         }
 
@@ -135,17 +158,14 @@ class Fixer
 
     public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff, FileCacheManager $fileCacheManager)
     {
-        $relativePath = $this->getFileRelativePathname($file);
-
-        if ($this->stopwatch) {
-            $this->stopwatch->start($relativePath);
-        }
-
         $new = $old = file_get_contents($file->getRealpath());
 
-        if (!$fileCacheManager->needFixing($relativePath, $old)) {
-            if ($this->stopwatch) {
-                $this->stopwatch->stop($relativePath);
+        if (!$fileCacheManager->needFixing($this->getFileRelativePathname($file), $old)) {
+            if ($this->eventDispatcher) {
+                $this->eventDispatcher->dispatch(
+                    FixerFileProcessedEvent::NAME,
+                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_SKIPPED)
+                );
             }
 
             return;
@@ -182,11 +202,14 @@ class Fixer
             }
         }
 
-        if ($this->stopwatch) {
-            $this->stopwatch->stop($relativePath);
-        }
+        $fileCacheManager->setFile($this->getFileRelativePathname($file), $new);
 
-        $fileCacheManager->setFile($relativePath, $new);
+        if ($this->eventDispatcher) {
+            $this->eventDispatcher->dispatch(
+                FixerFileProcessedEvent::NAME,
+                FixerFileProcessedEvent::create()->setStatus($fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES)
+            );
+        }
 
         return $fixInfo;
     }
@@ -264,7 +287,22 @@ class Fixer
         return $fixers;
     }
 
-    public function setStopwatch(Stopwatch $stopwatch)
+    /**
+     * Set EventDispatcher instance.
+     *
+     * @param EventDispatcher|null $eventDispatcher
+     */
+    public function setEventDispatcher(EventDispatcher $eventDispatcher = null)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+    /**
+     * Set Stopwatch instance.
+     *
+     * @param Stopwatch|null $stopwatch
+     */
+    public function setStopwatch(Stopwatch $stopwatch = null)
     {
         $this->stopwatch = $stopwatch;
     }
