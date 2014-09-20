@@ -248,8 +248,12 @@ class Tokens extends \SplFixedArray
     {
         $removeLastCommentLine = function ($token, $indexOffset) {
             // becouse comments tokens are greedy and may consume single \n if we are putting whitespace after it let trim that \n
-            if (1 === $indexOffset && $token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT)) && "\n" === $token->content[strlen($token->content) - 1]) {
-                $token->content = substr($token->content, 0, -1);
+            if (1 === $indexOffset && $token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT))) {
+                $content = $token->getContent();
+
+                if ("\n" === $content[strlen($content) - 1]) {
+                    $token->setContent(substr($content, 0, -1));
+                }
             }
         };
 
@@ -257,7 +261,7 @@ class Tokens extends \SplFixedArray
 
         if ($token->isWhitespace()) {
             $removeLastCommentLine($this[$index - 1], $indexOffset);
-            $token->content = $whitespace;
+            $token->setContent($whitespace);
 
             return false;
         }
@@ -354,7 +358,7 @@ class Tokens extends \SplFixedArray
 
         foreach ($this as $index => $token) {
             if ($token->isGivenKind($possibleKinds)) {
-                $elements[$token->id][$index] = $token;
+                $elements[$token->getId()][$index] = $token;
             }
         }
 
@@ -386,7 +390,7 @@ class Tokens extends \SplFixedArray
         $code = '';
 
         for ($i = $start; $i <= $end; ++$i) {
-            $code .= $this[$i]->content;
+            $code .= $this[$i]->getContent();
         }
 
         return $code;
@@ -414,12 +418,12 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            if ('(' === $token->content) {
+            if ($token->equals('(')) {
                 ++$bracesLevel;
                 continue;
             }
 
-            if (')' === $token->content) {
+            if ($token->equals(')')) {
                 --$bracesLevel;
                 continue;
             }
@@ -443,12 +447,12 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            if (T_VARIABLE === $token->id && 0 === $bracesLevel) {
+            if (T_VARIABLE === $token->getId() && 0 === $bracesLevel) {
                 $elements[$index] = array('token' => $token, 'type' => 'property');
                 continue;
             }
 
-            if (T_FUNCTION === $token->id) {
+            if (T_FUNCTION === $token->getId()) {
                 $elements[$index] = array('token' => $token, 'type' => 'method');
             }
         }
@@ -475,7 +479,7 @@ class Tokens extends \SplFixedArray
         for ($index = 0, $limit = $this->count(); $index < $limit; ++$index) {
             $token = $this[$index];
 
-            if (T_NAMESPACE === $token->id) {
+            if (T_NAMESPACE === $token->getId()) {
                 $nextTokenIndex = $this->getNextTokenOfKind($index, array(';', '{'));
                 $nextToken = $this[$nextTokenIndex];
 
@@ -500,14 +504,14 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            if (T_USE !== $token->id || 0 < $bracesLevel) {
+            if (T_USE !== $token->getId() || 0 < $bracesLevel) {
                 continue;
             }
 
             $nextToken = $this[$this->getNextNonWhitespace($index)];
 
             // ignore function () use ($foo) {}
-            if ('(' === $nextToken->content) {
+            if ($nextToken->equals('(')) {
                 continue;
             }
 
@@ -727,7 +731,7 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            if (1 === $bracesLevel && $token->isGivenKind(T_WHITESPACE) && false !== strpos($token->content, "\n")) {
+            if (1 === $bracesLevel && $token->isGivenKind(T_WHITESPACE) && false !== strpos($token->getContent(), "\n")) {
                 $isMultiline = true;
                 break;
             }
@@ -762,7 +766,7 @@ class Tokens extends \SplFixedArray
         $nextIndex = $this->getNextNonWhitespace($index);
         $nextToken = $this[$nextIndex];
 
-        if ('(' !== $nextToken->content) {
+        if (!$nextToken->equals('(')) {
             return false;
         }
 
@@ -789,7 +793,7 @@ class Tokens extends \SplFixedArray
     {
         $token = $this[$index];
 
-        if ('[' !== $token->content) {
+        if (!$token->equals('[')) {
             return false;
         }
 

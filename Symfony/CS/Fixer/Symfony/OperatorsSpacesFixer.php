@@ -80,7 +80,7 @@ class OperatorsSpacesFixer extends AbstractFixer
             '=' => true,
         );
 
-        return $token->isArray() ? isset($arrayOperators[$token->id]) : isset($nonArrayOperators[$token->content]);
+        return $token->isArray() ? isset($arrayOperators[$token->getId()]) : isset($nonArrayOperators[$token->getContent()]);
     }
 
     /**

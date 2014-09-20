@@ -70,7 +70,7 @@ class MultipleUseFixer extends AbstractFixer
             return '';
         }
 
-        $explodedContent = explode("\n", $prevToken->content);
+        $explodedContent = explode("\n", $prevToken->getContent());
 
         return end($explodedContent);
     }

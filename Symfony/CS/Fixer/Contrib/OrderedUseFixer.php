@@ -80,7 +80,7 @@ class OrderedUseFixer extends AbstractFixer
                 $token = $tokens[$index];
                 /** @var Token $token */
 
-                if (',' === $token->content || $index === $endIndex) {
+                if ($token->equals(',') || $index === $endIndex) {
                     $indexes[$startIndex] = array($namespace, $startIndex, $index - 1);
                     $originalIndexes[] = $startIndex;
 
@@ -92,7 +92,7 @@ class OrderedUseFixer extends AbstractFixer
                     continue;
                 }
 
-                $namespace .= $token->content;
+                $namespace .= $token->getContent();
                 ++$index;
             }
         }

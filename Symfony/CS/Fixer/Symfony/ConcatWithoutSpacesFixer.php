@@ -28,7 +28,7 @@ class ConcatWithoutSpacesFixer extends AbstractFixer
         $whitespaces = array('whitespaces' => " \t");
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isArray() && '.' === $token->content) {
+            if ($token->equals('.')) {
                 $tokens->removeLeadingWhitespace($index, $whitespaces);
                 $tokens->removeTrailingWhitespace($index, $whitespaces);
             }

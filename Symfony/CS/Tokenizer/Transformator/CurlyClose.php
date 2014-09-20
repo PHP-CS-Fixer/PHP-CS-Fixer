@@ -35,18 +35,18 @@ class CurlyClose extends AbstractTransformator
                 ++$nestIndex;
 
                 // we count all kind of {
-                if ('{' === $tokens[$nestIndex]->content) {
+                if ('{' === $tokens[$nestIndex]->getContent()) {
                     ++$level;
                     continue;
                 }
 
                 // we count all kind of }
-                if ('}' === $tokens[$nestIndex]->content) {
+                if ('}' === $tokens[$nestIndex]->getContent()) {
                     --$level;
                 }
             }
 
-            $tokens[$nestIndex] = new Token(array(CT_CURLY_CLOSE, '}', $tokens[$nestIndex]->line));
+            $tokens[$nestIndex]->override(array(CT_CURLY_CLOSE, '}', $tokens[$nestIndex]->getLine()));
         }
     }
 

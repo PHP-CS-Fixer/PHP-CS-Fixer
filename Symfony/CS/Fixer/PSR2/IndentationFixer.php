@@ -33,7 +33,7 @@ class IndentationFixer extends AbstractFixer
                 continue;
             }
 
-            $tokens[$index]->content = preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $token->content);
+            $tokens[$index]->setContent(preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $token->getContent()));
         }
 
         return $tokens->generateCode();

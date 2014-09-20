@@ -38,7 +38,7 @@ class LowercaseConstantsFixer extends AbstractFixer
                     continue;
                 }
 
-                $token->content = strtolower($token->content);
+                $token->setContent(strtolower($token->getContent()));
             }
         }
 

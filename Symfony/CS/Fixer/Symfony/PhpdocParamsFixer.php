@@ -49,7 +49,7 @@ class PhpdocParamsFixer extends AbstractFixer
                 continue;
             }
 
-            $tokens[$index]->content = $this->fixDocBlock($token->content);
+            $tokens[$index]->setContent($this->fixDocBlock($token->getContent()));
         }
 
         return $tokens->generateCode();

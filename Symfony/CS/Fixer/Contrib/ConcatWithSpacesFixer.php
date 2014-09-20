@@ -30,7 +30,7 @@ class ConcatWithSpacesFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isArray() && '.' === $token->content) {
+            if (!$token->isArray() && $token->equals('.')) {
                 if (!$tokens[$index + 1]->isWhitespace()) {
                     $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
                 }

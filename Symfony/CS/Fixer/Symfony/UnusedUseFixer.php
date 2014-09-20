@@ -41,7 +41,7 @@ class UnusedUseFixer extends AbstractFixer
     private function detectNamespace(Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (T_NAMESPACE !== $token->id) {
+            if (T_NAMESPACE !== $token->getId()) {
                 continue;
             }
 
@@ -78,7 +78,7 @@ class UnusedUseFixer extends AbstractFixer
             }
 
             if ($allowToAppend) {
-                $content .= $token->content;
+                $content .= $token->getContent();
             }
         }
 
@@ -145,19 +145,19 @@ class UnusedUseFixer extends AbstractFixer
         $token = $tokens[$useDeclaration['declarationStart'] - 1];
 
         if ($token->isWhitespace()) {
-            $token->content = rtrim($token->content, " \t");
+            $token->setContent(rtrim($token->getContent(), " \t"));
         }
 
         $token = $tokens[$useDeclaration['declarationEnd'] + 1];
 
         if ($token->isWhitespace()) {
-            $content = ltrim($token->content, " \t");
+            $content = ltrim($token->getContent(), " \t");
 
             if ($content && "\n" === $content[0]) {
                 $content = substr($content, 1);
             }
 
-            $token->content = $content;
+            $token->setContent($content);
         }
     }
 

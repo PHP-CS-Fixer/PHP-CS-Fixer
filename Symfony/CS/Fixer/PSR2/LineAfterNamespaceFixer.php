@@ -32,11 +32,11 @@ class LineAfterNamespaceFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (T_NAMESPACE === $token->id) {
+            if (T_NAMESPACE === $token->getId()) {
                 $semicolonIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
                 $semicolonToken = $tokens[$semicolonIndex];
 
-                if (';' !== $semicolonToken->content || !isset($tokens[$semicolonIndex + 1])) {
+                if (!$semicolonToken->equals(';') || !isset($tokens[$semicolonIndex + 1])) {
                     continue;
                 }
 
@@ -45,7 +45,7 @@ class LineAfterNamespaceFixer extends AbstractFixer
                 if (!$nextToken->isWhitespace()) {
                     $tokens->insertAt($semicolonIndex + 1, new Token(array(T_WHITESPACE, "\n\n")));
                 } else {
-                    $nextToken->content = "\n\n".ltrim($nextToken->content);
+                    $nextToken->setContent("\n\n".ltrim($nextToken->getContent()));
                 }
             }
         }
