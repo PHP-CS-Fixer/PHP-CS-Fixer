@@ -40,7 +40,7 @@ class Transformators
     public function getCustomToken($value)
     {
         if (!$this->hasCustomToken($value)) {
-            throw new \Exception();
+            throw new \InvalidArgumentException("No custom token was found for $value");
         }
 
         return $this->customTokens[$value];
