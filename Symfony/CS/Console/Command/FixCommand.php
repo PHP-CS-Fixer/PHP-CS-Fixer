@@ -16,9 +16,11 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Fixer;
+use Symfony\CS\FixerFileProcessedEvent;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
@@ -30,12 +32,31 @@ use Symfony\CS\StdinFileInfo;
 class FixCommand extends Command
 {
     /**
+     * EventDispatcher instance.
+     *
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
      * Stopwatch instance.
      *
-     * @var \Symfony\Component\Stopwatch\Stopwatch
+     * @var Stopwatch
      */
     protected $stopwatch;
+
+    /**
+     * Fixer instance.
+     *
+     * @var Fixer
+     */
     protected $fixer;
+
+    /**
+     * Config instance.
+     *
+     * @var Config
+     */
     protected $defaultConfig;
 
     /**
@@ -44,11 +65,13 @@ class FixCommand extends Command
      */
     public function __construct(Fixer $fixer = null, ConfigInterface $config = null)
     {
+        $this->eventDispatcher = new EventDispatcher();
         $this->stopwatch = new Stopwatch();
         $this->fixer = $fixer ?: new Fixer();
         $this->fixer->registerBuiltInFixers();
         $this->fixer->registerBuiltInConfigs();
         $this->fixer->setStopwatch($this->stopwatch);
+        $this->fixer->setEventDispatcher($this->eventDispatcher);
         $this->defaultConfig = $config ?: new Config();
 
         parent::__construct();
@@ -303,12 +326,28 @@ EOF
         }
 
         $config->fixers($fixers);
+        $verbosity = $output->getVerbosity();
+        $listenForFixerFileProcessedEvent = OutputInterface::VERBOSITY_VERY_VERBOSE <= $verbosity;
+
+        if ($listenForFixerFileProcessedEvent) {
+            $fileProcessedEventListener = function (FixerFileProcessedEvent $event) use ($output) {
+                $output->write($event->isFileChanged() ? 'F' : '.');
+            };
+        }
+
+        if ($listenForFixerFileProcessedEvent) {
+            $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
+        }
 
         $this->stopwatch->start('fixFiles');
         $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
         $this->stopwatch->stop('fixFiles');
 
-        $verbosity = $output->getVerbosity();
+        if ($listenForFixerFileProcessedEvent) {
+            $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
+            $output->writeln('');
+        }
+
         $i = 1;
 
         switch ($input->getOption('format')) {
@@ -330,7 +369,7 @@ EOF
                     $output->writeln('');
                 }
 
-                if (OutputInterface::VERBOSITY_VERY_VERBOSE <= $verbosity) {
+                if (OutputInterface::VERBOSITY_DEBUG <= $verbosity) {
                     $output->writeln('Fixing time per file:');
 
                     foreach ($this->stopwatch->getSectionEvents('fixFile') as $file => $event) {
@@ -386,7 +425,7 @@ EOF
                 $timeTotalXML->setAttribute('value', round($fixEvent->getDuration() / 1000, 3));
                 $timeXML->appendChild($timeTotalXML);
 
-                if (OutputInterface::VERBOSITY_VERY_VERBOSE <= $verbosity) {
+                if (OutputInterface::VERBOSITY_DEBUG <= $verbosity) {
                     $timeFilesXML = $dom->createElement('files');
                     $timeXML->appendChild($timeFilesXML);
                     $eventCounter = 1;
@@ -433,7 +472,7 @@ EOF
                     ),
                 );
 
-                if (OutputInterface::VERBOSITY_VERY_VERBOSE <= $verbosity) {
+                if (OutputInterface::VERBOSITY_DEBUG <= $verbosity) {
                     $jFileTime = array();
 
                     foreach ($this->stopwatch->getSectionEvents('fixFile') as $file => $event) {

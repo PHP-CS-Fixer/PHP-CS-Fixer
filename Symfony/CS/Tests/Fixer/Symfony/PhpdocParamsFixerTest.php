@@ -23,7 +23,7 @@ class PhpdocParamsFixerTest extends AbstractFixerTestBase
      * @param EngineInterface $templating
      * @param string          $format
      * @param integer         $code       An HTTP response status code
-     * @param Boolean         $debug
+     * @param bool            $debug
      * @param mixed           &$reference A parameter passed by reference
      */
 
@@ -35,7 +35,7 @@ EOF;
      * @param  EngineInterface $templating
      * @param string      $format
      * @param  integer  $code       An HTTP response status code
-     * @param    Boolean      $debug
+     * @param    bool         $debug
      * @param  mixed    &$reference     A parameter passed by reference
      */
 
@@ -53,8 +53,8 @@ EOF;
      * @param string          $format
      * @param integer         $code       An HTTP response status code
      *                                    See constants
-     * @param Boolean         $debug
-     * @param Boolean         $debug      See constants
+     * @param bool            $debug
+     * @param bool            $debug      See constants
      *                                    See constants
      * @param mixed           &$reference A parameter passed by reference
      */
@@ -68,8 +68,8 @@ EOF;
      * @param string      $format
      * @param  integer  $code       An HTTP response status code
      *                              See constants
-     * @param    Boolean      $debug
-     * @param    Boolean      $debug See constants
+     * @param    bool         $debug
+     * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
      */
@@ -88,8 +88,8 @@ EOF;
      * @param string          $format
      * @param integer         $code       An HTTP response status code
      *                                    See constants
-     * @param Boolean         $debug
-     * @param Boolean         $debug      See constants
+     * @param bool            $debug
+     * @param bool            $debug      See constants
      *                                    See constants
      * @param mixed           &$reference A parameter passed by reference
      *
@@ -108,8 +108,8 @@ EOF;
      * @param string      $format
      * @param  integer  $code       An HTTP response status code
      *                              See constants
-     * @param    Boolean      $debug
-     * @param    Boolean      $debug See constants
+     * @param    bool         $debug
+     * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
      *

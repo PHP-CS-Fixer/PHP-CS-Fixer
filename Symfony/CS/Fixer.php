@@ -12,6 +12,7 @@
 namespace Symfony\CS;
 
 use SebastianBergmann\Diff\Differ;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -19,6 +20,7 @@ use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class Fixer
 {
@@ -26,12 +28,25 @@ class Fixer
 
     protected $fixers = array();
     protected $configs = array();
+
+    /**
+     * Differ instance.
+     *
+     * @var Differ
+     */
     protected $diff;
+
+    /**
+     * EventDispatcher instance.
+     *
+     * @var EventDispatcher|null
+     */
+    protected $eventDispatcher;
 
     /**
      * Stopwatch instance.
      *
-     * @var \Symfony\Component\Stopwatch\Stopwatch|null
+     * @var Stopwatch|null
      */
     protected $stopwatch;
 
@@ -100,8 +115,8 @@ class Fixer
      * Fixes all files for the given finder.
      *
      * @param ConfigInterface $config A ConfigInterface instance
-     * @param Boolean         $dryRun Whether to simulate the changes or not
-     * @param Boolean         $diff   Whether to provide diff
+     * @param bool            $dryRun Whether to simulate the changes or not
+     * @param bool            $diff   Whether to provide diff
      *
      * @return array
      */
@@ -188,6 +203,12 @@ class Fixer
 
         $fileCacheManager->setFile($relativePath, $new);
 
+        if ($this->eventDispatcher) {
+            $event = new FixerFileProcessedEvent();
+            $event->setFileChanged(null !== $fixInfo);
+            $this->eventDispatcher->dispatch(FixerFileProcessedEvent::NAME, $event);
+        }
+
         return $fixInfo;
     }
 
@@ -264,6 +285,21 @@ class Fixer
         return $fixers;
     }
 
+    /**
+     * Set EventDispatcher instance.
+     *
+     * @param EventDispatcher $eventDispatcher
+     */
+    public function setEventDispatcher(EventDispatcher $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+    /**
+     * Set Stopwatch instance.
+     *
+     * @param Stopwatch $stopwatch
+     */
     public function setStopwatch(Stopwatch $stopwatch)
     {
         $this->stopwatch = $stopwatch;
