@@ -1,0 +1,118 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-14T09:14:29Z
+
+@fabpot, @stof, @sstok
+What do you think about idea of Transformators and changing token's id ?
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-14T09:24:54Z
+
+Very interesting approach :) I like it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-14T16:01:10Z
+
+(rebase on master)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-16T09:51:32Z
+
+Thanks @sstok
+Any other opinions?
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-16T10:11:57Z
+
+I think this approach will indeed simplify the fixers a lot by making token unambiguous for the different cases we need to support.
+
+Btw, this needs a rebase
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-16T10:13:08Z
+
+btw, to make the merging easier, you should maybe extract the namespace change in a separate PR merged quickly. this way, it will not impact other fixers being added in separate branches. They will be able to use the new namespace directly
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-16T10:14:55Z
+
+Regarding the implementation. I'm not a fan of the singleton. Is here a way to avoid it ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-16T10:35:01Z
+
+Thanks for opinion and review!
+I know it need rebasing - just don't know if this idea will be accepted.
+Issues will be fixed today.
+
+I am not fan of singleton either. At first there was a lot of static props/methods but that wans't good too.
+There will be a lot performance decrease if we do not keep single instance :/
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-16T14:02:35Z
+
+(rebased)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-16T14:23:14Z
+
+Tokenizer subnamespace extracted into #569
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-16T21:20:47Z
+
+(rebased on master)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-16T21:21:17Z
+
+IMHO it is ready for merge, if we decide to merge it !
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-18T20:14:19Z
+
+Rebased on master and simplify interface.
+Now not need to manually set custom token constant value!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-18T21:00:31Z
+
+Created `CT_CURLY_CLOSE` for `T_CURLY_OPEN` and `CT_DOLLAR_CLOSE_CURLY_BRACES` for `T_DOLLAR_OPEN_CURLY_BRACES`.
+So less confusing now!
+
+No hear from @fabpot :(
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-20T20:06:25Z
+
+Looking good. :)
+
+One small thing - there are a few methods missing docblocks.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-21T10:37:59Z
+
+docs added
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-21T10:48:57Z
+
+Rebased on master.
+Ready to merge.
+Do you agree?
