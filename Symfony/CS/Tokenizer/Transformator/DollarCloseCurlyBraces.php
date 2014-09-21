@@ -33,6 +33,9 @@ class DollarCloseCurlyBraces extends AbstractTransformator
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getCustomTokenNames()
     {
         return array('CT_DOLLAR_CLOSE_CURLY_BRACES');

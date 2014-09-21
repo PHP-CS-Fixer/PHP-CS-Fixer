@@ -37,6 +37,9 @@ class ArrayTypehint extends AbstractTransformator
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getCustomTokenNames()
     {
         return array('CT_ARRAY_TYPEHINT');

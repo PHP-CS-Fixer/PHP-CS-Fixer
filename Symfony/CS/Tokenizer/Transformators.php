@@ -14,18 +14,39 @@ namespace Symfony\CS\Tokenizer;
 use Symfony\Component\Finder\Finder;
 
 /**
+ * Collection of Transformator classes.
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class Transformators
 {
+    /**
+     * Array of registered Transformator classes.
+     *
+     * @var Transformator[]
+     */
     private $items = array();
+
+    /**
+     * Array mapping custom token value => custom token name.
+     *
+     * @var array
+     */
     private $customTokens = array();
 
+    /**
+     * Constructor. Register built in Transformators.
+     */
     private function __construct()
     {
         $this->registerBuiltInTransformators();
     }
 
+    /**
+     * Create Transformators instance.
+     *
+     * @return Transformators
+     */
     public static function create()
     {
         static $instance = null;
@@ -37,6 +58,13 @@ class Transformators
         return $instance;
     }
 
+    /**
+     * Get name for registered custom token.
+     *
+     * @param int $value custom token value
+     *
+     * @return string
+     */
     public function getCustomToken($value)
     {
         if (!$this->hasCustomToken($value)) {
@@ -46,11 +74,23 @@ class Transformators
         return $this->customTokens[$value];
     }
 
+    /**
+     * Check if given custom token was added to collection.
+     *
+     * @param int $value custom token value
+     *
+     * @return bool
+     */
     public function hasCustomToken($value)
     {
         return isset($this->customTokens[$value]);
     }
 
+    /**
+     * Register Transformator.
+     *
+     * @param TransformatorInterface $transformator Transformator
+     */
     public function registerTransformator(TransformatorInterface $transformator)
     {
         $this->items[] = $transformator;
@@ -62,6 +102,11 @@ class Transformators
         }
     }
 
+    /**
+     * Transform given Tokens collection thru all Transformator classes.
+     *
+     * @param Tokens $tokens Tokens collection
+     */
     public function transform(Tokens $tokens)
     {
         foreach ($this->items as $transformator) {
@@ -69,6 +114,12 @@ class Transformators
         }
     }
 
+    /**
+     * Add custom token.
+     *
+     * @param int    $value custom token value
+     * @param string $name  custom token name
+     */
     private function addCustomToken($value, $name)
     {
         if ($this->hasCustomToken($value)) {
@@ -78,6 +129,9 @@ class Transformators
         $this->customTokens[$value] = $name;
     }
 
+    /**
+     * Register all built in Transformatrs.
+     */
     private function registerBuiltInTransformators()
     {
         static $registered = false;

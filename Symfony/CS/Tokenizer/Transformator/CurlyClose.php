@@ -50,6 +50,9 @@ class CurlyClose extends AbstractTransformator
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getCustomTokenNames()
     {
         return array('CT_CURLY_CLOSE');
