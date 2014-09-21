@@ -137,6 +137,20 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                 );",
             ),
             array(
+<<<'OET'
+<?php
+
+function getConfiguration(array $config, ContainerBuilder $container)
+{
+    $r = new \ReflectionClass(__NAMESPACE__.'\\Configuration');
+    $container->addResource(new FileResource(
+        $r->getFileName())
+    );
+}
+OET
+
+            ),
+            array(
                 "<?php
 
                 throw new BadMethodCallException(sprintf(
