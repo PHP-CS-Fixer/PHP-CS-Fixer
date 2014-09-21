@@ -55,7 +55,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                 }
 
                 $classyIndex = $tokens->getNextNonWhitespace($index);
-                $classyName = $tokens[$classyIndex]->content;
+                $classyName = $tokens[$classyIndex]->getContent();
             }
         }
 
@@ -87,7 +87,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
             $filename = basename($path, '.php');
 
             if ($classyName !== $filename) {
-                $tokens[$classyIndex]->content = $filename;
+                $tokens[$classyIndex]->setContent($filename);
             }
 
             if ($normNamespace !== $dir && strtolower($normNamespace) === strtolower($dir)) {
@@ -109,7 +109,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
             $filename = substr($path, -strlen($normClass) - 4, -4);
 
             if ($normClass !== $filename && strtolower($normClass) === strtolower($filename)) {
-                $tokens[$classyIndex]->content = strtr($filename, '/', '_');
+                $tokens[$classyIndex]->setContent(strtr($filename, '/', '_'));
             }
         }
 

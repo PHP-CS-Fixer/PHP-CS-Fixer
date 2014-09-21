@@ -191,7 +191,7 @@ class BracesFixer extends AbstractFixer
                         // next Token is not a comment
                         !$nextNonWhitespaceNestToken->isComment() &&
                         // and it is not a $foo = function () {}; situation
-                        !($nestToken->equals('}') && ';' === $nextNonWhitespaceNestToken->content)
+                        !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equals(';'))
                     ) {
                         if ($nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens())) {
                             $whitespace = ' ';
@@ -200,7 +200,7 @@ class BracesFixer extends AbstractFixer
                             $nextWhitespace = '';
 
                             if ($nextToken->isWhitespace()) {
-                                $nextWhitespace = rtrim($nextToken->content, " \t");
+                                $nextWhitespace = rtrim($nextToken->getContent(), " \t");
 
                                 if (strlen($nextWhitespace) && "\n" === $nextWhitespace[strlen($nextWhitespace) - 1]) {
                                     $nextWhitespace = substr($nextWhitespace, 0, -1);
@@ -242,7 +242,7 @@ class BracesFixer extends AbstractFixer
                 $closingParenthesisIndex = $tokens->getPrevTokenOfKind($startBraceIndex, array(')'));
                 $prevToken = $tokens[$closingParenthesisIndex - 1];
 
-                if ($prevToken->isWhitespace() && false !== strpos($prevToken->content, "\n")) {
+                if ($prevToken->isWhitespace() && false !== strpos($prevToken->getContent(), "\n")) {
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
                 } else {
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, "\n".$indent);
@@ -356,7 +356,7 @@ class BracesFixer extends AbstractFixer
             return '';
         }
 
-        $explodedContent = explode("\n", $prevToken->content);
+        $explodedContent = explode("\n", $prevToken->getContent());
 
         // proper decect indent for code: `    } else {`
         if (1 === count($explodedContent)) {
@@ -418,7 +418,7 @@ class BracesFixer extends AbstractFixer
         while (true) {
             $token = $tokens[++$index];
 
-            if (';' === $token->content) {
+            if ($token->equals(';')) {
                 break;
             }
         }

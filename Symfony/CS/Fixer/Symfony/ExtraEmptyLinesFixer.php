@@ -33,7 +33,7 @@ class ExtraEmptyLinesFixer extends AbstractFixer
 
             $content = '';
             $count = 0;
-            $parts = explode("\n", $token->content);
+            $parts = explode("\n", $token->getContent());
 
             for ($i = 0, $last = count($parts) - 1; $i <= $last; ++$i) {
                 if ('' === $parts[$i]) {
@@ -49,7 +49,7 @@ class ExtraEmptyLinesFixer extends AbstractFixer
                 }
             }
 
-            $token->content = $content;
+            $token->setContent($content);
         }
 
         return $tokens->generateCode();

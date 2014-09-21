@@ -45,9 +45,9 @@ class TokenTest extends \PHPUnit_Framework_TestCase
         $token = $this->getForeachToken();
         $token->clear();
 
-        $this->assertSame('', $token->content);
-        $this->assertNull($token->id);
-        $this->assertNull($token->line);
+        $this->assertSame('', $token->getContent());
+        $this->assertNull($token->getId());
+        $this->assertNull($token->getLine());
         $this->assertFalse($token->isArray());
     }
 
@@ -133,16 +133,16 @@ class TokenTest extends \PHPUnit_Framework_TestCase
         $braceToken = $this->getBraceToken();
         $this->assertFalse($braceToken->isEmpty());
 
-        $braceToken->content = '';
+        $braceToken->setContent('');
         $this->assertTrue($braceToken->isEmpty());
 
         $whitespaceToken = new Token(array(T_WHITESPACE, ' '));
         $this->assertFalse($whitespaceToken->isEmpty());
 
-        $whitespaceToken->content = '';
+        $whitespaceToken->setContent('');
         $this->assertFalse($whitespaceToken->isEmpty());
 
-        $whitespaceToken->id = null;
+        $whitespaceToken->override(array(null, ''));
         $this->assertTrue($whitespaceToken->isEmpty());
 
         $whitespaceToken = new Token(array(T_WHITESPACE, ' '));
@@ -224,9 +224,9 @@ class TokenTest extends \PHPUnit_Framework_TestCase
         $prototype = $this->getForeachTokenPrototype();
         $token = $this->getForeachToken();
 
-        $this->assertSame($prototype[0], $token->id);
-        $this->assertSame($prototype[1], $token->content);
-        $this->assertSame($prototype[2], $token->line);
+        $this->assertSame($prototype[0], $token->getId());
+        $this->assertSame($prototype[1], $token->getContent());
+        $this->assertSame($prototype[2], $token->getLine());
         $this->assertTrue($token->isArray());
     }
 
@@ -235,9 +235,9 @@ class TokenTest extends \PHPUnit_Framework_TestCase
         $prototype = $this->getBraceTokenPrototype();
         $token = $this->getBraceToken();
 
-        $this->assertSame($prototype, $token->content);
-        $this->assertNull($token->id);
-        $this->assertNull($token->line);
+        $this->assertSame($prototype, $token->getContent());
+        $this->assertNull($token->getId());
+        $this->assertNull($token->getLine());
         $this->assertFalse($token->isArray());
     }
 }

@@ -24,14 +24,14 @@ class Token
      *
      * @var string
      */
-    public $content;
+    private $content;
 
     /**
      * ID of token prototype, if available.
      *
      * @var int|null
      */
-    public $id;
+    private $id;
 
     /**
      * If token prototype is an array.
@@ -45,7 +45,7 @@ class Token
      *
      * @var int|null
      */
-    public $line;
+    private $line;
 
     /**
      * Constructor.
@@ -72,10 +72,7 @@ class Token
      */
     public function clear()
     {
-        $this->content = '';
-        $this->id = null;
-        $this->line = null;
-        $this->isArray = false;
+        $this->override('');
     }
 
     /*
@@ -144,6 +141,36 @@ class Token
             $this->content,
             $this->line,
         );
+    }
+
+    /**
+     * Get token's content.
+     *
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Get token's id.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get token's line.
+     *
+     * @return int
+     */
+    public function getLine()
+    {
+        return $this->line;
     }
 
     /**
@@ -329,6 +356,38 @@ class Token
         }
 
         return '' === trim($this->content, $whitespaces);
+    }
+
+    /**
+     * Override token.
+     *
+     * @param string|array $prototype token prototype
+     */
+    public function override($prototype)
+    {
+        if (is_array($prototype)) {
+            $this->isArray = true;
+            $this->id = $prototype[0];
+            $this->content = $prototype[1];
+            $this->line = isset($prototype[2]) ? $prototype[2] : null;
+
+            return;
+        }
+
+        $this->isArray = false;
+        $this->id = null;
+        $this->content = $prototype;
+        $this->line = null;
+    }
+
+    /**
+     * Set token's content.
+     *
+     * @param string $content
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
     }
 
     public function toArray()

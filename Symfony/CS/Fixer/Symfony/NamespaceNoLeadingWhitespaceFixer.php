@@ -42,25 +42,25 @@ class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
             $beforeNamespace = $tokens[$index - 1];
 
             if (!$beforeNamespace->isWhitespace()) {
-                if (!self::endsWithWhitespace($beforeNamespace->content)) {
+                if (!self::endsWithWhitespace($beforeNamespace->getContent())) {
                     $tokens->insertAt($index, new Token(array(T_WHITESPACE, "\n")));
                 }
 
                 continue;
             }
 
-            $lastNewline = strrpos($beforeNamespace->content, "\n");
+            $lastNewline = strrpos($beforeNamespace->getContent(), "\n");
 
             if (false === $lastNewline) {
                 $beforeBeforeNamespace = $tokens[$index - 2];
 
-                if (self::endsWithWhitespace($beforeBeforeNamespace->content)) {
-                    $beforeNamespace->content = '';
+                if (self::endsWithWhitespace($beforeBeforeNamespace->getContent())) {
+                    $beforeNamespace->setContent('');
                 } else {
-                    $beforeNamespace->content = ' ';
+                    $beforeNamespace->setContent(' ');
                 }
             } else {
-                $beforeNamespace->content = substr($beforeNamespace->content, 0, $lastNewline + 1);
+                $beforeNamespace->setContent(substr($beforeNamespace->getContent(), 0, $lastNewline + 1));
             }
         }
 

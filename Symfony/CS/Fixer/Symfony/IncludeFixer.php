@@ -46,7 +46,7 @@ class IncludeFixer extends AbstractFixer
             if ($braces) {
                 $nextToken = $tokens[$tokens->getNextNonWhitespace($includy['braces']['close'])];
 
-                if (!$nextToken->isArray() && ';' === $nextToken->content) {
+                if ($nextToken->equals(';')) {
                     $tokens->removeLeadingWhitespace($braces['open']);
                     $tokens->removeTrailingWhitespace($braces['open']);
                     $tokens->removeLeadingWhitespace($braces['close']);
@@ -65,7 +65,7 @@ class IncludeFixer extends AbstractFixer
             }
 
             if ($nextToken->isWhitespace()) {
-                $nextToken->content = ' ';
+                $nextToken->setContent(' ');
             } elseif ($braces) {
                 $tokens->insertAt($includy['begin'] + 1, new Token(array(T_WHITESPACE, ' ')));
             }
@@ -101,11 +101,11 @@ class IncludeFixer extends AbstractFixer
 
                 // Don't remove when the statement is wrapped. include is also legal as function parameter
                 // but requires being wrapped then
-                if ('(' !== $tokens[$tokens->getPrevNonWhitespace($index)]->content) {
+                if (!$tokens[$tokens->getPrevNonWhitespace($index)]->equals('(')) {
                     $nextTokenIndex = $tokens->getNextNonWhitespace($index);
                     $nextToken = $tokens[$nextTokenIndex];
 
-                    if ('(' === $nextToken->content) {
+                    if ($nextToken->equals('(')) {
                         $inBraces = true;
                         $bracesLevel = 1;
                         $index = $nextTokenIndex;
@@ -123,13 +123,13 @@ class IncludeFixer extends AbstractFixer
                 continue;
             }
 
-            if ('(' === $token->content) {
+            if ($token->equals('(')) {
                 ++$bracesLevel;
 
                 continue;
             }
 
-            if (')' === $token->content) {
+            if ($token->equals(')')) {
                 --$bracesLevel;
 
                 if ($inBraces && 0 === $bracesLevel) {
@@ -139,7 +139,7 @@ class IncludeFixer extends AbstractFixer
                     $nextTokenIndex = $tokens->getNextNonWhitespace($index);
                     $nextToken = $tokens[$nextTokenIndex];
 
-                    if (';' === $nextToken->content) {
+                    if ($nextToken->equals(';')) {
                         $includies[$includiesCount]['end'] = $nextTokenIndex;
                         ++$includiesCount;
                     }
@@ -150,7 +150,7 @@ class IncludeFixer extends AbstractFixer
                 continue;
             }
 
-            if ($inStatement && ';' === $token->content) {
+            if ($inStatement && $token->equals(';')) {
                 $inStatement = false;
                 $includies[$includiesCount]['end'] = $index;
                 ++$includiesCount;

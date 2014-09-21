@@ -33,13 +33,13 @@ class TernarySpacesFixer extends AbstractFixer
                 continue;
             }
 
-            if ('?' === $token->content) {
+            if ($token->equals('?')) {
                 ++$ternaryLevel;
 
                 $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($index);
                 $nextNonWhitespaceToken = $tokens[$nextNonWhitespaceIndex];
 
-                if (!$nextNonWhitespaceToken->isArray() && ':' === $nextNonWhitespaceToken->content) {
+                if (!$nextNonWhitespaceToken->isArray() && $nextNonWhitespaceToken->equals(':')) {
                     // for `$a ?: $b` remove spaces between `?` and `:`
                     if ($tokens[$index + 1]->isWhitespace()) {
                         $tokens[$index + 1]->clear();
@@ -55,13 +55,13 @@ class TernarySpacesFixer extends AbstractFixer
                 continue;
             }
 
-            if ($ternaryLevel && ':' === $token->content) {
+            if ($ternaryLevel && $token->equals(':')) {
                 // for `$a ? $b : $c` ensure space after `:`
                 $this->ensureWhitespaceExistance($tokens, $index + 1, true);
 
                 $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
 
-                if ($prevNonWhitespaceToken->isArray() || '?' !== $prevNonWhitespaceToken->content) {
+                if ($prevNonWhitespaceToken->isArray() || !$prevNonWhitespaceToken->equals('?')) {
                     // for `$a ? $b : $c` ensure space before `:`
                     $this->ensureWhitespaceExistance($tokens, $index - 1, false);
                 }
@@ -82,7 +82,7 @@ class TernarySpacesFixer extends AbstractFixer
             return;
         }
 
-        $tokens->insertAt($index + $indexChange, new Token(array(T_WHITESPACE, ' ', $token->line)));
+        $tokens->insertAt($index + $indexChange, new Token(array(T_WHITESPACE, ' ', $token->getLine())));
     }
 
     /**

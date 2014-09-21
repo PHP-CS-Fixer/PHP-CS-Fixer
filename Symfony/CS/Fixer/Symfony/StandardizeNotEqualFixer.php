@@ -28,7 +28,7 @@ class StandardizeNotEqualFixer extends AbstractFixer
 
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_IS_NOT_EQUAL)) {
-                $tokens[$index]->content = '!=';
+                $tokens[$index]->setContent('!=');
             }
         }
 

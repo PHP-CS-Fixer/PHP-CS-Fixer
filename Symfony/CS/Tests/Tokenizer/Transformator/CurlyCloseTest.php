@@ -27,7 +27,7 @@ class CurlyCloseTest extends AbstractTransformatorTestBase
         $tokens = Tokens::fromCode($source);
 
         foreach ($expectedTokens as $index => $name) {
-            $this->assertSame(constant($name), $tokens[$index]->id);
+            $this->assertSame(constant($name), $tokens[$index]->getId());
             $this->assertSame($name, $tokens[$index]->getName());
         }
     }

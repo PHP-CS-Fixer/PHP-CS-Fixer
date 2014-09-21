@@ -30,7 +30,7 @@ class LowercaseKeywordsFixer extends AbstractFixer
 
         foreach ($tokens as $token) {
             if ($token->isKeyword()) {
-                $token->content = strtolower($token->content);
+                $token->setContent(strtolower($token->getContent()));
             }
         }
 

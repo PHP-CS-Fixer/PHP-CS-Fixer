@@ -40,7 +40,7 @@ class ShortTagFixer extends AbstractFixer
 
         foreach ($tokens as $token) {
             if ($token->isGivenKind(T_OPEN_TAG)) {
-                $tokenContent = $token->content;
+                $tokenContent = $token->getContent();
 
                 if ('<?php' !== substr($content, $tokensOldContentLength, 5)) {
                     $tokenContent = '<? ';
@@ -54,7 +54,7 @@ class ShortTagFixer extends AbstractFixer
             if ($token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT, T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_STRING))) {
                 $tokenContent = '';
                 $tokenContentLength = 0;
-                $parts = explode('<?php ', $token->content);
+                $parts = explode('<?php ', $token->getContent());
                 $iLast = count($parts) - 1;
 
                 foreach ($parts as $i => $part) {
@@ -72,11 +72,11 @@ class ShortTagFixer extends AbstractFixer
                     }
                 }
 
-                $token->content = $tokenContent;
+                $token->setContent($tokenContent);
             }
 
-            $tokensOldContent .= $token->content;
-            $tokensOldContentLength += strlen($token->content);
+            $tokensOldContent .= $token->getContent();
+            $tokensOldContentLength += strlen($token->getContent());
         }
 
         return $tokens->generateCode();

@@ -35,14 +35,14 @@ class VisibilityFixer extends AbstractFixer
                 $this->applyAttribs($tokens, $index, $this->grabAttribsBeforeMethodToken($tokens, $index));
 
                 // force whitespace between function keyword and function name to be single space char
-                $tokens[++$index]->content = ' ';
+                $tokens[++$index]->setContent(' ');
             } elseif ('property' === $element['type']) {
                 $prevIndex = $tokens->getPrevTokenOfKind($index, array(';', ','));
                 $nextIndex = $tokens->getNextTokenOfKind($index, array(';', ','));
 
                 if (
-                    (!$prevIndex || ',' !== $tokens[$prevIndex]->content) &&
-                    (!$nextIndex || ',' !== $tokens[$nextIndex]->content)
+                    (!$prevIndex || !$tokens[$prevIndex]->equals(',')) &&
+                    (!$nextIndex || !$tokens[$nextIndex]->equals(','))
                 ) {
                     $this->applyAttribs($tokens, $index, $this->grabAttribsBeforePropertyToken($tokens, $index));
                 }
@@ -66,7 +66,7 @@ class VisibilityFixer extends AbstractFixer
         $toInsert = array();
 
         foreach ($attribs as $attrib) {
-            if (null !== $attrib && '' !== $attrib->content) {
+            if (null !== $attrib && '' !== $attrib->getContent()) {
                 $toInsert[] = $attrib;
                 $toInsert[] = new Token(array(T_WHITESPACE, ' '));
             }
@@ -168,10 +168,10 @@ class VisibilityFixer extends AbstractFixer
             }
 
             // if token is attribute
-            if (array_key_exists($token->id, $tokenAttribsMap)) {
+            if (array_key_exists($token->getId(), $tokenAttribsMap)) {
                 // set token attribute if token map defines attribute name for token
-                if ($tokenAttribsMap[$token->id]) {
-                    $attribs[$tokenAttribsMap[$token->id]] = clone $token;
+                if ($tokenAttribsMap[$token->getId()]) {
+                    $attribs[$tokenAttribsMap[$token->getId()]] = clone $token;
                 }
 
                 // clear the token and whitespaces after it

@@ -43,13 +43,13 @@ class ReturnFixer extends AbstractFixer
             $prevToken = $tokens[$index - 1];
 
             if ($prevToken->isWhitespace()) {
-                $parts = explode("\n", $prevToken->content);
+                $parts = explode("\n", $prevToken->getContent());
                 $countParts = count($parts);
 
                 if (1 === $countParts) {
-                    $prevToken->content = rtrim($prevToken->content, " \t")."\n\n";
+                    $prevToken->setContent(rtrim($prevToken->getContent(), " \t")."\n\n");
                 } elseif (count($parts) <= 2) {
-                    $prevToken->content = "\n".$prevToken->content;
+                    $prevToken->setContent("\n".$prevToken->getContent());
                 }
             } else {
                 $tokens->insertAt($index, new Token(array(T_WHITESPACE, "\n\n")));

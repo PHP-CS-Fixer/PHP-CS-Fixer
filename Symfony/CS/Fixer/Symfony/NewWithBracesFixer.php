@@ -30,7 +30,7 @@ class NewWithBracesFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (T_NEW !== $token->id) {
+            if (T_NEW !== $token->getId()) {
                 continue;
             }
 
@@ -44,7 +44,7 @@ class NewWithBracesFixer extends AbstractFixer
             }
 
             // new statement with () - nothing to do
-            if (!$nextToken->isArray() && '(' === $nextToken->content) {
+            if ($nextToken->equals('(')) {
                 continue;
             }
 

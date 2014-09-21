@@ -36,8 +36,8 @@ class ShortArraySyntaxFixer extends AbstractFixer
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
             $token->clear();
-            $tokens[$openIndex]->content = '[';
-            $tokens[$closeIndex]->content = ']';
+            $tokens[$openIndex]->setContent('[');
+            $tokens[$closeIndex]->setContent(']');
         }
 
         return $tokens->generateCode();

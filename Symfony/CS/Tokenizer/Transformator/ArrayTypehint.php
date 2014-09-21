@@ -32,7 +32,7 @@ class ArrayTypehint extends AbstractTransformator
             $nextToken = $tokens[$nextIndex];
 
             if (!$nextToken->equals('(')) {
-                $token->id = CT_ARRAY_TYPEHINT;
+                $token->override(array(CT_ARRAY_TYPEHINT, $token->getContent(), $token->getLine()));
             }
         }
     }

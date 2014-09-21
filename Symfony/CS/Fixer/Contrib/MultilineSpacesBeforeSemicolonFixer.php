@@ -32,7 +32,7 @@ class MultilineSpacesBeforeSemicolonFixer extends AbstractFixer
 
             $previous = $tokens[$index - 1];
 
-            if ($previous->isWhitespace() && false !== strpos($previous->content, "\n")) {
+            if ($previous->isWhitespace() && false !== strpos($previous->getContent(), "\n")) {
                 $previous->clear();
             }
         }
