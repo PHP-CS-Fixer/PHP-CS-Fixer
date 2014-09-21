@@ -12,16 +12,16 @@
 namespace Symfony\CS\Tokenizer;
 
 /**
- * Interface for Transformator class.
+ * Interface for Transformer class.
  *
- * Transformator role is to register custom tokens and transform Tokens collection to use them.
+ * Transformer role is to register custom tokens and transform Tokens collection to use them.
  *
  * Custom token is a user defined token type and is used to separate different meaning of original token type.
  * For example T_ARRAY is a token for both creating new array and typehinting a parameter. This two meaning should have two token types.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-interface TransformatorInterface
+interface TransformerInterface
 {
     /**
      * Process Tokens collection to transform tokens into custom tokens when needed.
@@ -31,12 +31,12 @@ interface TransformatorInterface
     public function process(Tokens $tokens);
 
     /**
-     * Register constants for custom tokens created by Transformator.
+     * Register constants for custom tokens created by Transformer.
      */
     public function registerCustomTokens();
 
     /**
-     * Get names of custom tokens created by Transformator.
+     * Get names of custom tokens created by Transformer.
      *
      * @return array
      */

@@ -14,16 +14,16 @@ namespace Symfony\CS\Tokenizer;
 use Symfony\Component\Finder\Finder;
 
 /**
- * Collection of Transformator classes.
+ * Collection of Transformer classes.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class Transformators
+class Transformers
 {
     /**
-     * Array of registered Transformator classes.
+     * Array of registered Transformer classes.
      *
-     * @var Transformator[]
+     * @var Transformer[]
      */
     private $items = array();
 
@@ -35,17 +35,17 @@ class Transformators
     private $customTokens = array();
 
     /**
-     * Constructor. Register built in Transformators.
+     * Constructor. Register built in Transformers.
      */
     private function __construct()
     {
-        $this->registerBuiltInTransformators();
+        $this->registerBuiltInTransformers();
     }
 
     /**
-     * Create Transformators instance.
+     * Create Transformers instance.
      *
-     * @return Transformators
+     * @return Transformers
      */
     public static function create()
     {
@@ -87,30 +87,30 @@ class Transformators
     }
 
     /**
-     * Register Transformator.
+     * Register Transformer.
      *
-     * @param TransformatorInterface $transformator Transformator
+     * @param TransformerInterface $transformer Transformer
      */
-    public function registerTransformator(TransformatorInterface $transformator)
+    public function registerTransformer(TransformerInterface $transformer)
     {
-        $this->items[] = $transformator;
+        $this->items[] = $transformer;
 
-        $transformator->registerCustomTokens();
+        $transformer->registerCustomTokens();
 
-        foreach ($transformator->getCustomTokenNames() as $name) {
+        foreach ($transformer->getCustomTokenNames() as $name) {
             $this->addCustomToken(constant($name), $name);
         }
     }
 
     /**
-     * Transform given Tokens collection thru all Transformator classes.
+     * Transform given Tokens collection thru all Transformer classes.
      *
      * @param Tokens $tokens Tokens collection
      */
     public function transform(Tokens $tokens)
     {
-        foreach ($this->items as $transformator) {
-            $transformator->process($tokens);
+        foreach ($this->items as $transformer) {
+            $transformer->process($tokens);
         }
     }
 
@@ -132,7 +132,7 @@ class Transformators
     /**
      * Register all built in Transformatrs.
      */
-    private function registerBuiltInTransformators()
+    private function registerBuiltInTransformers()
     {
         static $registered = false;
 
@@ -142,10 +142,10 @@ class Transformators
 
         $registered = true;
 
-        foreach (Finder::create()->files()->in(__DIR__.'/Transformator') as $file) {
+        foreach (Finder::create()->files()->in(__DIR__.'/Transformer') as $file) {
             $relativeNamespace = $file->getRelativePath();
-            $class = __NAMESPACE__.'\\Transformator\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
-            $this->registerTransformator(new $class());
+            $class = __NAMESPACE__.'\\Transformer\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
+            $this->registerTransformer(new $class());
         }
     }
 }

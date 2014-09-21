@@ -9,15 +9,15 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Tokenizer\Transformator;
+namespace Symfony\CS\Tests\Tokenizer\Transformer;
 
-use Symfony\CS\Tests\Tokenizer\AbstractTransformatorTestBase;
+use Symfony\CS\Tests\Tokenizer\AbstractTransformerTestBase;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ClassConstantTest extends AbstractTransformatorTestBase
+class DollarCloseCurlyBracesTest extends AbstractTransformerTestBase
 {
     /**
      * @dataProvider provideProcessCases
@@ -36,9 +36,10 @@ class ClassConstantTest extends AbstractTransformatorTestBase
     {
         return array(
             array(
-                '<?php echo X::class',
+                '<?php echo "This is ${great}"',
                 array(
-                    5 => 'CT_CLASS_CONSTANT',
+                    5 => 'T_DOLLAR_OPEN_CURLY_BRACES',
+                    7 => 'CT_DOLLAR_CLOSE_CURLY_BRACES',
                 ),
             ),
         );
