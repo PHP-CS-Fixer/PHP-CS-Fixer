@@ -60,4 +60,13 @@ class StrictFixer extends AbstractFixer
     {
         return 'Comparison should be strict. Warning! This could change code behavior.';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run after the StandardizeNotEqualFixer
+        return -10;
+    }
 }
