@@ -164,6 +164,17 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                     }
                 }",
             ),
+            array(
+                '<?php
+    function foo(array $a)
+    {
+        bar(
+            baz(
+                1
+            )
+        );
+    }',
+            ),
         );
     }
 }
