@@ -114,12 +114,14 @@ class Fixer
             $this->stopwatch->openSection();
         }
 
+        $fileCacheManager = new FileCacheManager($config->usingCache(), $config->getDir());
+
         foreach ($config->getFinder() as $file) {
             if ($file->isDir()) {
                 continue;
             }
 
-            if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff)) {
+            if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff, $fileCacheManager)) {
                 $changed[$this->getFileRelativePathname($file)] = $fixInfo;
             }
         }
@@ -131,13 +133,24 @@ class Fixer
         return $changed;
     }
 
-    public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff)
+    public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff, FileCacheManager $fileCacheManager)
     {
+        $relativePath = $this->getFileRelativePathname($file);
+
         if ($this->stopwatch) {
-            $this->stopwatch->start($this->getFileRelativePathname($file));
+            $this->stopwatch->start($relativePath);
         }
 
         $new = $old = file_get_contents($file->getRealpath());
+
+        if (!$fileCacheManager->needFixing($relativePath, $old)) {
+            if ($this->stopwatch) {
+                $this->stopwatch->stop($relativePath);
+            }
+
+            return;
+        }
+
         $appliedFixers = array();
 
         // we do not need Tokens to still caching previously fixed file - so clear the cache
@@ -170,8 +183,10 @@ class Fixer
         }
 
         if ($this->stopwatch) {
-            $this->stopwatch->stop($this->getFileRelativePathname($file));
+            $this->stopwatch->stop($relativePath);
         }
+
+        $fileCacheManager->setFile($relativePath, $new);
 
         return $fixInfo;
     }
