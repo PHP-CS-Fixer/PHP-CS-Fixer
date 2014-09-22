@@ -63,6 +63,19 @@ class NewWithBracesFixerTest extends AbstractFixerTestBase
                 '<?php $a = new $b[$c[$d ? foo() : bar("bar[...]") - 1]]();',
                 '<?php $a = new $b[$c[$d ? foo() : bar("bar[...]") - 1]];',
             ),
+            array(
+                '<?php $a = new $b[\'class\']();',
+                '<?php $a = new $b[\'class\'];',
+            ),
+            array(
+                '<?php $a = new $b[\'class\'] ($foo[\'bar\']);',
+            ),
+            array(
+                '<?php $a = new $b[\'class\'] () ;',
+            ),
+            array(
+                '<?php $a = new $b[$c] ($hello[$world]) ;',
+            ),
         );
     }
 
