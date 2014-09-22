@@ -32,12 +32,14 @@ class FileCacheManager
     const COMPOSER_PACKAGE_NAME = 'fabpot/php-cs-fixer';
 
     private $dir;
-    private $oldHashes = array();
+    private $isEnabled;
     private $newHashes = array();
+    private $oldHashes = array();
     private $scriptDir;
 
-    public function __construct($dir)
+    public function __construct($isEnabled, $dir)
     {
+        $this->isEnabled = $isEnabled;
         $this->dir = null !== $dir ? $dir.DIRECTORY_SEPARATOR : '';
         $this->scriptDir = dirname($_SERVER['SCRIPT_NAME']);
         $this->readFromFile();
@@ -50,7 +52,7 @@ class FileCacheManager
 
     public function needFixing($file, $fileContent)
     {
-        if (!$this->isCacheSupported()) {
+        if (!$this->isCacheAvailable()) {
             return true;
         }
 
@@ -70,7 +72,7 @@ class FileCacheManager
 
     public function setFile($file, $fileContent)
     {
-        if (!$this->isCacheSupported()) {
+        if (!$this->isCacheAvailable()) {
             return;
         }
 
@@ -113,12 +115,12 @@ class FileCacheManager
         return Fixer::VERSION;
     }
 
-    private function isCacheSupported()
+    private function isCacheAvailable()
     {
         static $result;
 
         if (null === $result) {
-            $result = $this->isInstalledAsPhar() || $this->isInstalledByComposer();
+            $result = $this->isEnabled && ($this->isInstalledAsPhar() || $this->isInstalledByComposer());
         }
 
         return $result;
@@ -126,7 +128,7 @@ class FileCacheManager
 
     private function isSameFixerVersion($cacheVersion)
     {
-        if (!$this->isCacheSupported()) {
+        if (!$this->isCacheAvailable()) {
             return false;
         }
 
@@ -157,7 +159,7 @@ class FileCacheManager
 
     private function readFromFile()
     {
-        if (!$this->isCacheSupported()) {
+        if (!$this->isCacheAvailable()) {
             return;
         }
 
@@ -177,7 +179,7 @@ class FileCacheManager
 
     private function saveToFile()
     {
-        if (!$this->isCacheSupported()) {
+        if (!$this->isCacheAvailable()) {
             return;
         }
 

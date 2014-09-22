@@ -27,6 +27,7 @@ class Config implements ConfigInterface
     protected $fixers;
     protected $dir;
     protected $customFixers;
+    protected $usingCache = false;
 
     public function __construct($name = 'default', $description = 'A default configuration')
     {
@@ -45,6 +46,13 @@ class Config implements ConfigInterface
     public function setDir($dir)
     {
         $this->dir = $dir;
+    }
+
+    public function setUsingCache($usingCache)
+    {
+        $this->usingCache = $usingCache;
+
+        return $this;
     }
 
     public function getDir()
@@ -100,5 +108,10 @@ class Config implements ConfigInterface
     public function getCustomFixers()
     {
         return $this->customFixers;
+    }
+
+    public function usingCache()
+    {
+        return $this->usingCache;
     }
 }
