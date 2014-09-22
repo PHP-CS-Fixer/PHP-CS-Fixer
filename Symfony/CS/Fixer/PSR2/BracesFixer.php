@@ -318,7 +318,11 @@ class BracesFixer extends AbstractFixer
             $token = $tokens[$index];
 
             if ($token->isGivenKind($controlTokens) || $token->isGivenKind(T_USE)) {
-                $tokens->ensureWhitespaceAtIndex($index + 1, 0, ' ');
+                $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($index);
+
+                if (!$tokens[$nextNonWhitespaceIndex]->equals(':')) {
+                    $tokens->ensureWhitespaceAtIndex($index + 1, 0, ' ');
+                }
 
                 $prevToken = $tokens[$index - 1];
 

@@ -509,6 +509,15 @@ function foo()
     $u->{$v}->w = 1;
 }',
             ),
+            array(
+                '<?php
+    if (true):
+        echo 1;
+    else:
+        echo 2;
+    endif;
+',
+            ),
         );
     }
 
