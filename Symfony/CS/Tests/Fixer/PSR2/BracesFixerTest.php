@@ -518,6 +518,12 @@ function foo()
     endif;
 ',
             ),
+            array(
+                '<?php
+    if ($test) { //foo
+        echo 1;
+    }',
+            ),
         );
     }
 
