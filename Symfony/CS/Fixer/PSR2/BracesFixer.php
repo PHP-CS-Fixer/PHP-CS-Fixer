@@ -66,7 +66,9 @@ class BracesFixer extends AbstractFixer
                 continue;
             }
 
+            $afterParenthesisToken->setContent(rtrim($afterParenthesisToken->getContent()));
             $tokens[$afterCommentIndex] = $afterParenthesisToken;
+            $tokens[$afterCommentIndex - 1]->setContent(' ');
             $tokens[$afterParenthesisIndex] = $afterCommentToken;
         }
     }
@@ -233,7 +235,13 @@ class BracesFixer extends AbstractFixer
             if (isset($tokens[$startBraceIndex + 2]) && $tokens[$startBraceIndex + 2]->equals('}')) {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent);
             } else {
-                $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
+                $nextToken = $tokens[$startBraceIndex + 1];
+                $nextNonWhitespaceToken = $tokens[$tokens->getNextNonWhitespace($startBraceIndex)];
+
+                // set indent only if it is not a case, when comment is following { in same line
+                if (!$nextNonWhitespaceToken->isComment() || !($nextToken->isWhitespace() && $nextToken->isWhitespace(array('whitespaces' => " \t")))) {
+                    $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
+                }
             }
 
             if ($token->isGivenKind($classyTokens)) {

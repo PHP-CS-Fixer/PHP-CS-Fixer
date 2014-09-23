@@ -518,6 +518,12 @@ function foo()
     endif;
 ',
             ),
+            array(
+                '<?php
+    if ($test) { //foo
+        echo 1;
+    }',
+            ),
         );
     }
 
@@ -632,13 +638,11 @@ function foo()
         return array(
             array(
                 '<?php
-    if (test) {
-        // foo
-
+    if ($test) { // foo
         echo 1;
     }',
                 '<?php
-    if (test) // foo
+    if ($test) // foo
     {
         echo 1;
     }',
