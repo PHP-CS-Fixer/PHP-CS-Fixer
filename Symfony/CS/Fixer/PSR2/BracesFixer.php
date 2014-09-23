@@ -66,7 +66,9 @@ class BracesFixer extends AbstractFixer
                 continue;
             }
 
+            $afterParenthesisToken->setContent(rtrim($afterParenthesisToken->getContent()));
             $tokens[$afterCommentIndex] = $afterParenthesisToken;
+            $tokens[$afterCommentIndex - 1]->setContent(' ');
             $tokens[$afterParenthesisIndex] = $afterCommentToken;
         }
     }
