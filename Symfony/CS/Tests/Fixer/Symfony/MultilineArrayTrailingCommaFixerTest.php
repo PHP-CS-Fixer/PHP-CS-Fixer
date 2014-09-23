@@ -42,6 +42,8 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
             array("<?php \$x = array(\narray('foo',\n),\n);", "<?php \$x = array(\narray('foo'\n)\n);"),
             array("<?php \$x = array(\narray('foo'),\n);", "<?php \$x = array(\narray('foo')\n);"),
             array("<?php \$x = array(\n /* He */ \n);"),
+            array("<?php \$x = array(\n<<<EOT\noet\nEOT\n);"),
+            array("<?php \$x = array(\n<<<'EOT'\noet\nEOT\n);"),
             array(
                 '<?php
 
