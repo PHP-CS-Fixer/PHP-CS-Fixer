@@ -25,33 +25,65 @@ class FixerFileProcessedEvent extends Event
      */
     const NAME = 'fixer.file_processed';
 
-    /**
-     * Flag indicated if file changed.
-     *
-     * @var bool
-     */
-    private $fileChanged = null;
+    const STATUS_UNKNOWN = 0;
+    const STATUS_FIXED = 1;
+    const STATUS_NO_CHANGES = 2;
+    const STATUS_SKIPPED = 3;
 
     /**
-     * check is file changed.
+     * File statuses map.
      *
-     * @return bool
+     * @var array
      */
-    public function isFileChanged()
-    {
-        return $this->fileChanged;
-    }
+    private static $statusMap = array(
+        self::STATUS_UNKNOWN    => '?',
+        self::STATUS_FIXED      => 'F',
+        self::STATUS_NO_CHANGES => '.',
+        self::STATUS_SKIPPED    => '',
+    );
 
     /**
-     * Set is file changed flag.
+     * File status.
      *
-     * @param bool $changed
+     * @var int
+     */
+    private $status = self::STATUS_UNKNOWN;
+
+    /**
+     * Create instance.
      *
      * @return FixerFileProcessedEvent
      */
-    public function setFileChanged($changed)
+    public static function create()
     {
-        $this->fileChanged = $changed;
+        return new static();
+    }
+
+    /**
+     * Get status.
+     *
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function getStatusAsString()
+    {
+        return self::$statusMap[$this->status];
+    }
+
+    /**
+     * Set status.
+     *
+     * @param int $status
+     *
+     * @return FixerFileProcessedEvent
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
 
         return $this;
     }

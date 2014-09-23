@@ -71,7 +71,6 @@ class FixCommand extends Command
         $this->fixer->registerBuiltInFixers();
         $this->fixer->registerBuiltInConfigs();
         $this->fixer->setStopwatch($this->stopwatch);
-        $this->fixer->setEventDispatcher($this->eventDispatcher);
         $this->defaultConfig = $config ?: new Config();
 
         parent::__construct();
@@ -331,11 +330,12 @@ EOF
 
         if ($listenForFixerFileProcessedEvent) {
             $fileProcessedEventListener = function (FixerFileProcessedEvent $event) use ($output) {
-                $output->write($event->isFileChanged() ? 'F' : '.');
+                $output->write($event->getStatusAsString());
             };
         }
 
         if ($listenForFixerFileProcessedEvent) {
+            $this->fixer->setEventDispatcher($this->eventDispatcher);
             $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
         }
 
@@ -344,6 +344,7 @@ EOF
         $this->stopwatch->stop('fixFiles');
 
         if ($listenForFixerFileProcessedEvent) {
+            $this->fixer->setEventDispatcher(null);
             $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
             $output->writeln('');
         }

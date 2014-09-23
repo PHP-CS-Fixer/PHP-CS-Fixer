@@ -136,8 +136,16 @@ class Fixer
                 continue;
             }
 
+            if ($this->stopwatch) {
+                $this->stopwatch->start($this->getFileRelativePathname($file));
+            }
+
             if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff, $fileCacheManager)) {
                 $changed[$this->getFileRelativePathname($file)] = $fixInfo;
+            }
+
+            if ($this->stopwatch) {
+                $this->stopwatch->stop($this->getFileRelativePathname($file));
             }
         }
 
@@ -150,17 +158,14 @@ class Fixer
 
     public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff, FileCacheManager $fileCacheManager)
     {
-        $relativePath = $this->getFileRelativePathname($file);
-
-        if ($this->stopwatch) {
-            $this->stopwatch->start($relativePath);
-        }
-
         $new = $old = file_get_contents($file->getRealpath());
 
-        if (!$fileCacheManager->needFixing($relativePath, $old)) {
-            if ($this->stopwatch) {
-                $this->stopwatch->stop($relativePath);
+        if (!$fileCacheManager->needFixing($this->getFileRelativePathname($file), $old)) {
+            if ($this->eventDispatcher) {
+                $this->eventDispatcher->dispatch(
+                    FixerFileProcessedEvent::NAME,
+                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_SKIPPED)
+                );
             }
 
             return;
@@ -197,16 +202,13 @@ class Fixer
             }
         }
 
-        if ($this->stopwatch) {
-            $this->stopwatch->stop($relativePath);
-        }
-
-        $fileCacheManager->setFile($relativePath, $new);
+        $fileCacheManager->setFile($this->getFileRelativePathname($file), $new);
 
         if ($this->eventDispatcher) {
-            $event = new FixerFileProcessedEvent();
-            $event->setFileChanged(null !== $fixInfo);
-            $this->eventDispatcher->dispatch(FixerFileProcessedEvent::NAME, $event);
+            $this->eventDispatcher->dispatch(
+                FixerFileProcessedEvent::NAME,
+                FixerFileProcessedEvent::create()->setStatus($fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES)
+            );
         }
 
         return $fixInfo;
@@ -288,9 +290,9 @@ class Fixer
     /**
      * Set EventDispatcher instance.
      *
-     * @param EventDispatcher $eventDispatcher
+     * @param EventDispatcher|null $eventDispatcher
      */
-    public function setEventDispatcher(EventDispatcher $eventDispatcher)
+    public function setEventDispatcher(EventDispatcher $eventDispatcher = null)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -298,9 +300,9 @@ class Fixer
     /**
      * Set Stopwatch instance.
      *
-     * @param Stopwatch $stopwatch
+     * @param Stopwatch|null $stopwatch
      */
-    public function setStopwatch(Stopwatch $stopwatch)
+    public function setStopwatch(Stopwatch $stopwatch = null)
     {
         $this->stopwatch = $stopwatch;
     }
