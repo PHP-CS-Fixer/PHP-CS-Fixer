@@ -71,8 +71,7 @@ already have it.
 
 .. code-block:: bash
 
-    $ brew tap josegonzalez/homebrew-php
-    $ brew install php-cs-fixer
+    $ brew install homebrew/php/php-cs-fixer
 
 Update
 ------
