@@ -1,0 +1,42 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-23T21:36:33Z
+
+any thoughts?
+
+// cc @weierophinney
+
+---------------------------------------------------------------------------
+
+by weierophinney at 2014-09-23T21:45:37Z
+
+Yes -- this is a step in the right direction, and makes it operate more similarly to PHPUnit. I want to be clear that it addresses only a symptom -- but at the same time, it will make it so that Travis will be able to complete the CS checks.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-23T21:48:53Z
+
+Yes, this do not change performance.
+After each new fixer performance will decrease - just because there are more things to do.
+
+You may enable cache in your projects in [`.php_cs` file](https://github.com/fabpot/PHP-CS-Fixer/blob/master/Symfony/CS/Config/Config.php#L51)
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-23T22:21:27Z
+
+so just to true and that is it or it needs more configuration? however cache will be of no use in travis right?
+
+---------------------------------------------------------------------------
+
+by weierophinney at 2014-09-23T22:22:03Z
+
+Correct -- cache will be useless in Travis.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-23T22:28:15Z
+
+Yes, just set it to true.
+
+If sb really want to he may add `.php_cs.cache` to repo. Then Travis will check only that changes, that was not checked by user.
