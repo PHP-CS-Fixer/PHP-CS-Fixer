@@ -246,7 +246,7 @@ class Tokens extends \SplFixedArray
      */
     public function ensureWhitespaceAtIndex($index, $indexOffset, $whitespace)
     {
-        $removeLastCommentLine = function ($token, $indexOffset) {
+        $removeLastCommentLine = function (Token $token, $indexOffset) {
             // becouse comments tokens are greedy and may consume single \n if we are putting whitespace after it let trim that \n
             if (1 === $indexOffset && $token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT))) {
                 $content = $token->getContent();
