@@ -247,6 +247,9 @@ Choose from the list of available fixers:
 * **phpdoc_params** [symfony] All items of the @param
                phpdoc tags must be aligned vertically.
 
+* **remove_lines_between_uses** [symfony] Removes line breaks between
+               use statements.
+
 * **return** [symfony] An empty line feed should
                precede a return statement.
 
@@ -277,9 +280,6 @@ Choose from the list of available fixers:
                closing semicolon are prohibited.
 
 * **ordered_use** [contrib] Ordering use statements.
-
-* **remove_lines_between_uses** [contrib] Removes line breaks between
-               use statements.
 
 * **short_array_syntax** [contrib] PHP array's should use the
                PHP 5.4 short-syntax.
