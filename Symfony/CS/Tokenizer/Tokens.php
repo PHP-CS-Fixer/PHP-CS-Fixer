@@ -134,8 +134,8 @@ class Tokens extends \SplFixedArray
         }
 
         $collection = self::fromArray($tokens);
-        $transformators = Transformators::create();
-        $transformators->transform($collection);
+        $transformers = Transformers::create();
+        $transformers->transform($collection);
         $collection->changeCodeHash($codeHash);
 
         return $collection;

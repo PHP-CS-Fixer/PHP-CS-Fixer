@@ -9,18 +9,18 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tokenizer\Transformator;
+namespace Symfony\CS\Tokenizer\Transformer;
 
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
-use Symfony\CS\Tokenizer\AbstractTransformator;
+use Symfony\CS\Tokenizer\AbstractTransformer;
 
 /**
  * Transform closing `}` for T_CURLY_OPEN into CT_CURLY_CLOSE.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class CurlyClose extends AbstractTransformator
+class CurlyClose extends AbstractTransformer
 {
     /**
      * {@inheritdoc}

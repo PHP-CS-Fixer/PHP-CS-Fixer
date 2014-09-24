@@ -12,13 +12,13 @@
 namespace Symfony\CS\Tokenizer;
 
 /**
- * Abstract base for Transformator class.
+ * Abstract base for Transformer class.
  *
  * It provides unified registerCustomTokens method.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-abstract class AbstractTransformator implements TransformatorInterface
+abstract class AbstractTransformer implements TransformerInterface
 {
     /**
      * Last generated value for custom token.

@@ -9,18 +9,18 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tokenizer\Transformator;
+namespace Symfony\CS\Tokenizer\Transformer;
 
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
-use Symfony\CS\Tokenizer\AbstractTransformator;
+use Symfony\CS\Tokenizer\AbstractTransformer;
 
 /**
  * Transform `array` typehint from T_ARRAY into T_ARRAY_TYPEHINT.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ArrayTypehint extends AbstractTransformator
+class ArrayTypehint extends AbstractTransformer
 {
     /**
      * {@inheritdoc}

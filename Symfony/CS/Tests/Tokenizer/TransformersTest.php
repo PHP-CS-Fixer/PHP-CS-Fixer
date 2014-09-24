@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Tests\Tokenizer;
 
-use Symfony\CS\Tokenizer\Transformators;
+use Symfony\CS\Tokenizer\Transformers;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class TransformatorsTest extends \PHPUnit_Framework_TestCase
+class TransformersTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider provideCustomTokenPrefixCases
@@ -28,13 +28,13 @@ class TransformatorsTest extends \PHPUnit_Framework_TestCase
 
     public function provideCustomTokenPrefixCases()
     {
-        $transformators = Transformators::create();
+        $transformers = Transformers::create();
 
-        $transformatorsReflection = new \ReflectionClass($transformators);
-        $propertyReflection = $transformatorsReflection->getProperty('items');
+        $transformersReflection = new \ReflectionClass($transformers);
+        $propertyReflection = $transformersReflection->getProperty('items');
         $propertyReflection->setAccessible(true);
 
-        $items = $propertyReflection->getValue($transformators);
+        $items = $propertyReflection->getValue($transformers);
 
         $cases = array();
 
