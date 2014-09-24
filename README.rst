@@ -278,6 +278,9 @@ Choose from the list of available fixers:
 
 * **ordered_use** [contrib] Ordering use statements.
 
+* **remove_lines_between_uses** [contrib] Removes line breaks between
+               use statements.
+
 * **short_array_syntax** [contrib] PHP array's should use the
                PHP 5.4 short-syntax.
 
