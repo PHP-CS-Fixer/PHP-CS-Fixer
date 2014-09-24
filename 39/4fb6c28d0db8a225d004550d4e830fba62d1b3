@@ -1,0 +1,312 @@
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-18T04:34:27Z
+
+@keradus @sstok i got stuck, I basically copied pasted the remove lines private method from the other class fixer but not sure how to tweak it to accomplish the removal of things.
+
+I thought that i was going to be able to tell it go remove the empty lines between this index and this other index which are the extremes of the use instances.
+
+What other approach simpler of course can i take? can someone take it away or send me a PR please?
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-18T07:18:17Z
+
+This is actually very simple, you first use (no pun) the `getNamespaceUseIndexes()` to all the use indexes. Then you loop trough provided uses (remember you get an index not the token).
+
+Then look where the use ends.
+https://github.com/fabpot/PHP-CS-Fixer/blob/master/Symfony/CS/Fixer/Contrib/OrderedUseFixer.php#L72-L77
+
+And then you continue till you find a whitespace, you change the content of the whitespace token to normalize the new-lines and then you continue with the next use.
+
+Comments between uses should not be a problem as your only normalizing whitespace and not removing it ;)
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-18T23:41:37Z
+
+ok i will give it a shot tomorrow or tonight, will you be around @sstok?
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-20T09:20:14Z
+
+Ah looking at what your doing, you are changing an existing fixer.
+
+The OrderedUseFixer is about sorting the uses order, removing newlines should be done in a separate fixer. Unless the fixer is also adding some extra whitespace, which means something is wrong :)
+
+Using a separate fixer will also make your implementation much easier ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-20T11:33:16Z
+
+On the other hand running only ordered_use without removing this extra lines will produce extra ugly code :/
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-20T19:55:54Z
+
+@cordoval please remember to regenerate readme file ;)
+see how [here](https://github.com/fabpot/PHP-CS-Fixer/blob/master/CONTRIBUTING.md#quick-guide)
+
+btw... http://shrib.com/yw1smUHp ;)
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-20T21:19:55Z
+
+@keradus are you using gh? i disagree with the naming of your remote upstream, it should be origin.
+Gush allows for this and provides also gush b:f for automatic fork. The naming convention comes from composer.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-20T21:23:51Z
+
+@cordoval no I do not.
+Please see that I am using both origin and upstream ;)
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-20T21:27:32Z
+
+```
+~ git r                                                                                 Luiss-MacBook-Pro-3 [16:27:09]
+cordoval	git@github.com:cordoval/PHP-CS-Fixer.git (fetch)
+cordoval	git@github.com:cordoval/PHP-CS-Fixer.git (push)
+origin	git@github.com:fabpot/PHP-CS-Fixer.git (fetch)
+origin	git@github.com:fabpot/PHP-CS-Fixer.git (push)
+sstok	git@github.com:sstok/PHP-CS-Fixer.git (fetch)
+sstok	git@github.com:sstok/PHP-CS-Fixer.git (push)
+cordoval•/Users/cordoval/Sites/libs/php-cs-fixer(master)»
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-20T21:31:20Z
+
+keeping that notation shouldn't you use `fabpot` as name of your `origin` remote? :P
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-20T21:39:27Z
+
+about the notation, the clone of the repo is done like origin. Because it is indeed the _origin_.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-20T22:33:49Z
+
+@cordoval one test failed only becouse the expected output not only remove empty line, but also sort uses.
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-21T05:57:40Z
+
+@keradus there is still a fail because i was expecting getNamespaceUseIndexes(true) to actually return two groups even if they are intertwined with a $c = 1; however it seems it is not the case. I wonder if we can create a method that does such a thing. or which fixer already moves all use statements up to the top? cc/ @sstok
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-21T11:01:00Z
+
+By the way, I think it is a rule used in Symfony (can't find it written down however).
+Maybe it will be cool to move it into Symfony level?
+
+// cc @sstok, @stof
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-21T11:10:44Z
+
+@cordoval I don't think we need a new method for it. Another fixer to move uses into one place would be cool, but this fixer must work even without it.
+
+What about sth like doing lookahead and decide what to do next?
+```php
+    private function fixLineBreakPerImportGroup(array $uses, Tokens $tokens)
+    {
+        foreach ($uses as $key => $index) {
+            $endIndex = $tokens->getNextTokenOfKind($index, array(';'));
+            $afterCommaIndex = $tokens->getNextNonWhitespace($endIndex);
+
+            if (null !== $afterCommaIndex && !$tokens[$afterCommaIndex]->isGivenKind(T_USE)) {
+                continue;
+            }
+
+            if ($this->normalizeEOLWithOneReturn($endIndex, $tokens)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+```
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-22T16:57:55Z
+
+@keradus @sstok tests should be green now. :+1: any suggestions on how to make the algorithm linear?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-22T18:58:51Z
+
+Please rebase on master first, you will need to apply some changes to make fixer work again ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-22T19:21:54Z
+
+it so sad when we get new notification after rebased due to @somebody inside commit log :(
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-22T19:37:50Z
+
+so you discourage that practice? interesting, i think if i did not have the name i would have ping you here either way.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-22T19:41:04Z
+
+One ping per one commit is cool. But now it's a ping on every rebase for the same commit over and over again...
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-22T19:48:29Z
+
+oh i see, i will rebsae and override the @ then, good reasoning.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-23T17:19:20Z
+
+@cordoval due to recent changes on master you must update your changes to not use Token's props directly - now they are privete and you should get them by getters
+(eg `$token->content` => `$token->getContent()`)
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-23T17:22:11Z
+
+oh i see, i will do the changes according to the new API, thanks @keradus yeah I am trying to solve internal problems as fast as possible and then get this sorted out by my evening. Thanks again!
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-24T06:19:12Z
+
+last @keradus notification i just fixed, it seemed the rebase -i origin/master did not change the commits, I had to change to e instead of just pick.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-24T06:29:06Z
+
+Rebase is only a bulk cherry-pick, it won't automagically change commit's code ;)
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-24T06:42:06Z
+
+:+1: @keradus
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-24T07:39:32Z
+
+> By the way, I think it is a rule used in Symfony (can't find it written down however).
+> Maybe it will be cool to move it into Symfony level?
+
+yeah, this rule should be at the Symfony level
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-24T13:11:29Z
+
+re: "Rebase is only a bulk cherry-pick, it won't automagically change commit's code ;)" rebase -i you can edit commits:
+
+```
+Commands:
+#  p, pick = use commit
+#  r, reword = use commit, but edit the commit message
+#  e, edit = use commit, but stop for amending
+```
+
+:sweat_smile:
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-24T13:18:43Z
+
+@stof yes for that rule (moving use statements atop), _not_ for this fixer.
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-24T13:25:32Z
+
+bump @keradus
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-24T13:28:33Z
+
+squashed too
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-24T13:49:16Z
+
+@cordoval with cherry-pick you can change single commit as well ;)
+you say we shouldn't move it to Symfony level? why not ? Can you show any case when Symfony do not use this rule?
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-24T13:54:56Z
+
+not symfony i am talking other projects, it is not particular to symfony. It makes sense no?
+It is also useful to undo or go back and forth formatters such as https://github.com/mmoreram/php-formatter.
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-24T14:11:25Z
+
+@keradus @stof was talking about the other fixer proposal the MoveUseStatementsATopFixer so not this on of PR #578. Please don't confuse things.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-24T15:30:36Z
+
+And I was talking about moving _this_ PR into SYMFONY_LEVEL 3 days ago:
+> By the way, I think it is a rule used in Symfony (can't find it written down however).
+> Maybe it will be cool to move it into Symfony level?
+
+If Fixer may be use by some project it should be in Contrib level, but if also should be use in all Symfony projects - it should be in Symfony level.
+I would move this `remove_lines_between_uses` fixer into Symfony level
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-24T18:57:02Z
+
+@keradus ok will move it then, hold a sec, looking at how one would do such a thing
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-24T19:12:57Z
+
+Just move fixer from `Fixer\Contrib` to `Fixer\Symfony` subnamespace.
+Test class analogously.
+And regenerate readme.
+
+Should do the trick!
+
+---------------------------------------------------------------------------
+
+by cordoval at 2014-09-24T19:18:34Z
+
+I do appreciate all your help @keradus and @sstok, I feel like standing on the shoulders of giants when I work on FOSS. Great joy here when I see this finished and working and merged/used :flushed: :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-24T19:20:23Z
+
+great work @cordoval
+
+:+1:
