@@ -1,0 +1,44 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-23T13:25:28Z
+
+Cool work, looks really simple!
+
+Shouldn't we add that comma, but in new line?
+What about `newdoc`? It would be nice to add a test for it too!
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-23T13:29:08Z
+
+>  What about newdoc? It would be nice to add a test for it too!
+
+I think you mean nowdoc and thats tested as well ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-23T13:30:13Z
+
+Yeah, typo ;)
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-23T13:34:07Z
+
+> Shouldn't we add that comma, but in new line?
+
+Hmmm, good question I have no idea :)
+
+/cc @stof @fabpot
+
+---------------------------------------------------------------------------
+
+by fabpot at 2014-09-24T13:53:27Z
+
+I don't think so. At least, in the examples I have in mind, it would not make sense.
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-24T14:33:38Z
+
+Good to merge then.
