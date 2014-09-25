@@ -23,6 +23,7 @@ use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerFileProcessedEvent;
 use Symfony\CS\FixerInterface;
+use Symfony\CS\FixersResolver;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\StdinFileInfo;
@@ -133,6 +134,10 @@ using <comment>-name</comment>:
 
     <info>php %command.full_name% /path/to/dir --fixers=-short_tag,-indentation</info>
 
+When using combination with exact and blacklist fixers, apply exact fixers along with above blacklisted result:
+
+    <info>php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,-short_tag</info>
+
 A combination of <comment>--dry-run</comment> and <comment>--diff</comment> will
 display summary of proposed fixes, leaving your files unchanged.
 
@@ -162,7 +167,7 @@ fixed but without actually modifying them:
 Instead of using command line options to customize the fixer, you can save the
 configuration in a <comment>.php_cs</comment> file in the root directory of
 your project. The file must return an instance of
-`Symfony\CS\ConfigInterface`, which lets you configure the fixers, the files,
+`Symfony\CS\ConfigInterface`, which lets you configure the fixers, the level, the files,
 and directories that need to be analyzed:
 
     <?php
@@ -180,7 +185,7 @@ and directories that need to be analyzed:
     ?>
 
 You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
-The following example shows how to use all Fixers but the `psr0` fixer.
+The following example shows how to use all PSR-2 Fixers but the `psr0` fixer.
 Note the additional <comment>-</comment> in front of the Fixer name.
 
     <?php
@@ -191,6 +196,7 @@ Note the additional <comment>-</comment> in front of the Fixer name.
     ;
 
     return Symfony\CS\Config\Config::create()
+        ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
         ->fixers(array('-psr0'))
         ->finder(\$finder)
     ;
@@ -274,67 +280,11 @@ EOF
         // register custom fixers from config
         $this->fixer->registerCustomFixers($config->getCustomFixers());
 
-        $allFixers = $this->fixer->getFixers();
+        $resolver = new FixersResolver($this->fixer->getFixers(), $config);
+        $resolver->resolve($input->getOption('level'), $input->getOption('fixers'));
 
-        switch ($input->getOption('level')) {
-            case 'psr0':
-                $level = FixerInterface::PSR0_LEVEL;
-                break;
-            case 'psr1':
-                $level = FixerInterface::PSR1_LEVEL;
-                break;
-            case 'psr2':
-                $level = FixerInterface::PSR2_LEVEL;
-                break;
-            case 'symfony':
-                $level = FixerInterface::SYMFONY_LEVEL;
-                break;
-            case null:
-                $fixerOption = $input->getOption('fixers');
-                if (empty($fixerOption) || preg_match('{(^|,)-}', $fixerOption)) {
-                    $level = $config->getFixers();
-                } else {
-                    $level = null;
-                }
-                break;
-            default:
-                throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $input->getOption('level')));
-        }
+        $config->fixers($resolver->getFixers());
 
-        // select base fixers for the given level
-        $fixers = array();
-        if (is_array($level)) {
-            foreach ($allFixers as $fixer) {
-                if (in_array($fixer->getName(), $level, true) || in_array($fixer, $level, true)) {
-                    $fixers[] = $fixer;
-                }
-            }
-        } else {
-            foreach ($allFixers as $fixer) {
-                if ($fixer->getLevel() === ($fixer->getLevel() & $level)) {
-                    $fixers[] = $fixer;
-                }
-            }
-        }
-
-        // remove/add fixers based on the fixers option
-        if (preg_match('{(^|,)-}', $input->getOption('fixers'))) {
-            foreach ($fixers as $key => $fixer) {
-                if (preg_match('{(^|,)-'.preg_quote($fixer->getName()).'}', $input->getOption('fixers'))) {
-                    unset($fixers[$key]);
-                }
-            }
-        } elseif ($input->getOption('fixers')) {
-            $names = array_map('trim', explode(',', $input->getOption('fixers')));
-
-            foreach ($allFixers as $fixer) {
-                if (in_array($fixer->getName(), $names, true) && !in_array($fixer, $fixers, true)) {
-                    $fixers[] = $fixer;
-                }
-            }
-        }
-
-        $config->fixers($fixers);
         $verbosity = $output->getVerbosity();
         $listenForFixerFileProcessedEvent = OutputInterface::VERBOSITY_VERY_VERBOSE <= $verbosity;
 

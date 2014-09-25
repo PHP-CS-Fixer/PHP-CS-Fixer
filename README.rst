@@ -143,6 +143,12 @@ using ``-name``:
 
     php php-cs-fixer.phar fix /path/to/dir --fixers=-short_tag,-indentation
 
+When using combination with exact and blacklist fixers, apply exact fixers along with above blacklisted result:
+
+.. code-block:: bash
+
+    php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,-short_tag
+
 A combination of ``--dry-run`` and ``--diff`` will
 display summary of proposed fixes, leaving your files unchanged.
 
@@ -319,7 +325,7 @@ fixed but without actually modifying them:
 Instead of using command line options to customize the fixer, you can save the
 configuration in a ``.php_cs`` file in the root directory of
 your project. The file must return an instance of
-`Symfony\CS\ConfigInterface`, which lets you configure the fixers, the files,
+`Symfony\CS\ConfigInterface`, which lets you configure the fixers, the level, the files,
 and directories that need to be analyzed:
 
 .. code-block:: php
@@ -337,7 +343,7 @@ and directories that need to be analyzed:
     ;
 
 You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
-The following example shows how to use all Fixers but the `psr0` fixer.
+The following example shows how to use all PSR-2 Fixers but the `psr0` fixer.
 Note the additional ``-`` in front of the Fixer name.
 
 .. code-block:: php
@@ -350,6 +356,7 @@ Note the additional ``-`` in front of the Fixer name.
     ;
 
     return Symfony\CS\Config\Config::create()
+        ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
         ->fixers(array('-psr0'))
         ->finder($finder)
     ;

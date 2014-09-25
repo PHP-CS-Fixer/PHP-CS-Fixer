@@ -42,9 +42,16 @@ interface ConfigInterface
     public function getFinder();
 
     /**
+     * Returns the level to run.
+     *
+     * @return integer A level
+     */
+    public function getLevel();
+
+    /**
      * Returns the fixers to run.
      *
-     * @return array|integer A level or a list of fixer names
+     * @return array A list of fixer names
      */
     public function getFixers();
 
