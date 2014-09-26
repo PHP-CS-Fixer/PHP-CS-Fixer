@@ -318,7 +318,7 @@ EOF
             $names = array_map('trim', explode(',', $input->getOption('fixers')));
 
             foreach ($allFixers as $fixer) {
-                if (in_array($fixer->getName(), $names) && !in_array($fixer, $fixers)) {
+                if (in_array($fixer->getName(), $names, true) && !in_array($fixer, $fixers, true)) {
                     $fixers[] = $fixer;
                 }
             }
