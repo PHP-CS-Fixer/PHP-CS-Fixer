@@ -1,0 +1,76 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-16T13:42:09Z
+
+Please fix your indentation.
+
+---------------------------------------------------------------------------
+
+by wjaspers at 2014-09-16T13:45:50Z
+
+Oops, missed one. Thanks for catching that.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-16T21:36:28Z
+
+please add a testcase:
+```php
+            array(
+                '<?php $a = new $longName[\'class\']() ;',
+                '<?php $a = new $longName[\'class\'] ;',
+            ),
+```
+
+It will fail :(
+
+---------------------------------------------------------------------------
+
+by stof at 2014-09-19T23:51:07Z
+
+Please rebase your branch to remove all these ugly merge commits.
+
+See http://symfony.com/doc/current/contributing/code/patches.html#rebase-your-patch for the way to rebase
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-21T11:15:32Z
+
+For some reason you have two authors @wjaspers : `Will Jaspers` and `wjaspers`.
+Could you squash commits manually to left only one of them?
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-21T18:04:26Z
+
+GitHub uses the commit author e-mail for linking to the user profile.
+One is gmail.com the other bestbuy.com
+
+You should be able to fix this by adding the secondary email address in your profile.
+https://github.com/settings/emails
+
+---------------------------------------------------------------------------
+
+by wjaspers at 2014-09-22T02:43:44Z
+
+@sstok that was actually the problem, i dont want the secondary email to be exposed at all and i tried to fix it (the wrong way).
+
+---------------------------------------------------------------------------
+
+by wjaspers at 2014-09-22T03:30:59Z
+
+Ok, i nuked my old changeset since it was hosed, rebased my fork, and reapplied the tests and changes. Sorry for the mess in this PR.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-22T19:58:45Z
+
+Cool bugfix!
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by wjaspers at 2014-09-26T04:33:59Z
+
+rebased with master
