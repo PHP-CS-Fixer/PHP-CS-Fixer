@@ -66,6 +66,10 @@ class MultilineArrayTrailingCommaFixer extends AbstractFixer
         // if there is some item between braces then add `,` after it
         if ($startIndex !== $beforeEndIndex && !$beforeEndToken->equalsAny(array(',', array(T_END_HEREDOC)))) {
             $tokens->insertAt($beforeEndIndex + 1, new Token(','));
+
+            if (!$tokens[$endIndex]->isWhitespace()) {
+                $tokens->ensureWhitespaceAtIndex($endIndex, 1, ' ');
+            }
         }
     }
 }

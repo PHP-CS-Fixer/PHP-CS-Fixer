@@ -42,6 +42,22 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
             array("<?php \$x = array(\narray('foo',\n),\n);", "<?php \$x = array(\narray('foo'\n)\n);"),
             array("<?php \$x = array(\narray('foo'),\n);", "<?php \$x = array(\narray('foo')\n);"),
             array("<?php \$x = array(\n /* He */ \n);"),
+            array(
+                "<?php \$x = array('a', 'b', 'c',\n  'd', 'q', 'z', );",
+                "<?php \$x = array('a', 'b', 'c',\n  'd', 'q', 'z');",
+            ),
+            array(
+                "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z', );",
+                "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z');",
+            ),
+            array(
+                "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z', );",
+                "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z' );",
+            ),
+            array(
+                "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z',\t);",
+                "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z'\t);",
+            ),
             array("<?php \$x = array(\n<<<EOT\noet\nEOT\n);"),
             array("<?php \$x = array(\n<<<'EOT'\noet\nEOT\n);"),
             array(
