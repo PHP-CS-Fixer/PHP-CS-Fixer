@@ -1,0 +1,34 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-26T16:02:41Z
+
+(rebased)
+
+---------------------------------------------------------------------------
+
+by bgotink at 2014-09-26T22:55:24Z
+
+I love the idea, but what if you have this one piece of code where you don't want strict matching?
+
+The same goes for some other fixers as well actually. Perhaps it would be nice to have some sort of php-cs-fixer directives users can add in the code? For example:
+```php
+// @pcf off strict_param
+$result = in_array($needle, $haystack);
+// @pcf on strict_param
+```
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-27T07:18:36Z
+
+For this fixer its better to just set the strict parameter to false yourself as it only sets this when its not present. For the StrictFixer thats indeed an option, now that we actually use a Tokenizer it should be possible.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-28T21:00:19Z
+
+All fixers at contrib level need to be manually enabled. If one don't want to use that rule - just do not enable this fixer.
+
+I am against comment-directives to ignore some code in rules:
+* fixer is a rule. one should either follow it of not. no exception
+* exception will produce total mess in fixer code
