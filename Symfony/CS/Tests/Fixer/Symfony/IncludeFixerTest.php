@@ -134,6 +134,10 @@ class IncludeFixerTest extends AbstractFixerTestBase
                 '<?php require ($a ? $b : $c) . $d;',
                 '<?php require($a ? $b : $c) . $d;',
             ),
+            array(
+                '<?php require_once SOME_CONST . "file.php"; require Foo::Bar($baz);',
+                '<?php require_once( SOME_CONST . "file.php" ); require Foo::Bar($baz);',
+            ),
         );
     }
 }
