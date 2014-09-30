@@ -56,19 +56,19 @@ class YodaConditionsFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php return "" === $this->myArray[$index];',
-                '<?php return $this->myArray[$index] === "";'
+                '<?php return $this->myArray[$index] === "";',
             ),
             array(
                 '<?php return "" === $this->myArray[$index]->a;',
-                '<?php return $this->myArray[$index]->a === "";'
+                '<?php return $this->myArray[$index]->a === "";',
             ),
             array(
                 '<?php return "" === $this->myObject->{$index};',
-                '<?php return $this->myObject->{$index} === "";'
+                '<?php return $this->myObject->{$index} === "";',
             ),
             array(
                 '<?php return "" === $this->myObject->{$index}->a;',
-                '<?php return $this->myObject->{$index}->a === "";'
+                '<?php return $this->myObject->{$index}->a === "";',
             ),
             array(
                 '<?php return ($a & self::MY_BITMASK) === $a;',
