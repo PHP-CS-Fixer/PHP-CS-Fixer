@@ -273,6 +273,9 @@ Choose from the list of available fixers:
 * **whitespacy_lines** [symfony] Remove trailing whitespace at
                the end of blank lines.
 
+* **yoda_conditions** [symfony] Comparisons should be done
+               using Yoda conditions.
+
 * **concat_with_spaces** [contrib] Concatenation should be used
                with at least one whitespace around.
 
