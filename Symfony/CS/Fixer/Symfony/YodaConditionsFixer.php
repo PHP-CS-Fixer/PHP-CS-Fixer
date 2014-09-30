@@ -101,18 +101,33 @@ class YodaConditionsFixer extends AbstractFixer
         $this->fixTokens($left);
         $this->fixTokens($right);
 
-        for ($index = $startLeft; $index <= $endLeft; ++$index) {
-            $tokens[$index]->clear();
+        for ($i = $startLeft; $i <= $endLeft; ++$i) {
+            $tokens[$i]->clear();
         }
 
-        for ($index = $startRight; $index <= $endRight; ++$index) {
-            $tokens[$index]->clear();
+        for ($i = $startRight; $i <= $endRight; ++$i) {
+            $tokens[$i]->clear();
         }
 
+        $this->turnAround($tokens[$index]);
         $tokens->insertAt($startRight, $left);
         $tokens->insertAt($startLeft, $right);
 
         $index = $startLeft;
+    }
+
+    private function turnAround(Token $token)
+    {
+        static $mapping = array(
+            '<' => '>',
+            '>' => '<',
+            '<=' => '>=',
+            '>=' => '<=',
+        );
+
+        if (isset($mapping[$token->getContent()])) {
+            $token->setContent($mapping[$token->getContent()]);
+        }
     }
 
     private function isSimple(Tokens $tokens, $start, $end)
