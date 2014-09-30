@@ -34,7 +34,7 @@ class PhpClosingTagFixer extends AbstractFixer
         // leave code intact if there is:
         // - any T_INLINE_HTML code
         // - several opening tags
-        if (count($kinds[T_INLINE_HTML]) || 1 < count($kinds[T_OPEN_TAG])) {
+        if (count($kinds[T_INLINE_HTML]) || count($kinds[T_OPEN_TAG]) > 1) {
             return $content;
         }
 

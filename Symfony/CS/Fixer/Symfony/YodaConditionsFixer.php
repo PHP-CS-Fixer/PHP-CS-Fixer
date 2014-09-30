@@ -191,7 +191,7 @@ class YodaConditionsFixer extends AbstractFixer
             } elseif ($token->equals('(')) {
                 --$level;
 
-                if (0 > $level) {
+                if ($level < 0) {
                     break;
                 }
             }
@@ -218,7 +218,7 @@ class YodaConditionsFixer extends AbstractFixer
             } elseif ($token->equals(')')) {
                 --$level;
 
-                if (0 > $level) {
+                if ($level < 0) {
                     break;
                 }
             }

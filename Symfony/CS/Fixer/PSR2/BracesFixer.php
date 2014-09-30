@@ -442,7 +442,7 @@ class BracesFixer extends AbstractFixer
     {
         static $tokens = null;
 
-        if (null === $tokens) {
+        if ($tokens === null) {
             $tokens = array(T_CLASS, T_INTERFACE);
 
             if (defined('T_TRAIT')) {

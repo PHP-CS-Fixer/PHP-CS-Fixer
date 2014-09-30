@@ -29,7 +29,7 @@ class LineAfterNamespaceFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
             if (T_NAMESPACE === $token->getId()) {

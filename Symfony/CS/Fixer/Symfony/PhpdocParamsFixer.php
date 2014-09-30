@@ -98,7 +98,7 @@ class PhpdocParamsFixer extends AbstractFixer
                 // update
                 foreach ($items as $j => $item) {
                     if (null === $item['tag']) {
-                        if ('@' === $item['desc'][0]) {
+                        if ($item['desc'][0] === '@') {
                             $lines[$current + $j] = '     * '.$item['desc'];
                             continue;
                         }

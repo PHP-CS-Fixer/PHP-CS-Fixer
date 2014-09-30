@@ -44,7 +44,7 @@ class ExtraEmptyLinesFixer extends AbstractFixer
                     $content .= $parts[$i];
                 }
 
-                if ($i !== $last && 3 > $count) {
+                if ($i !== $last && $count < 3) {
                     $content .= "\n";
                 }
             }

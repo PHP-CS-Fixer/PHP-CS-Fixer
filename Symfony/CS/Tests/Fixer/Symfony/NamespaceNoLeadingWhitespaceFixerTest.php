@@ -29,7 +29,7 @@ class NamespaceNoLeadingWhitespaceFixerTest extends AbstractFixerTestBase
     public function provideExamples()
     {
         $manySpaces = array();
-        for ($i = 1; 100 >= $i; ++$i) {
+        for ($i = 1; $i <= 100; ++$i) {
             $manySpaces[] = 'namespace Test'.$i.';';
         }
 

@@ -818,7 +818,7 @@ class Tokens extends \SplFixedArray
      */
     public function offsetExists($index)
     {
-        return 0 <= $index && parent::offsetExists($index);
+        return $index >= 0 && parent::offsetExists($index);
     }
 
     /**

@@ -28,7 +28,7 @@ class MultilineArrayTrailingCommaFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             if ($tokens->isArray($index)) {
                 $this->fixArray($tokens, $index);
             }
