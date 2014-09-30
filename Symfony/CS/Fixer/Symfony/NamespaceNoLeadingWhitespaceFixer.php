@@ -22,7 +22,7 @@ class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
 {
     private static function endsWithWhitespace($str)
     {
-        return strlen($str) > 0 && ctype_space(substr($str, -1));
+        return 0 < strlen($str) && ctype_space(substr($str, -1));
     }
 
     /**

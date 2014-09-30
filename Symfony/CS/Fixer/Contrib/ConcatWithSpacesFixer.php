@@ -27,7 +27,7 @@ class ConcatWithSpacesFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
             if (!$token->isArray() && $token->equals('.')) {

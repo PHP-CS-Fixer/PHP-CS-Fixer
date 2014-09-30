@@ -80,7 +80,7 @@ if ($a > 2) {
     return $b % 2 < 1 ? $b - 1 : $b;
 } elseif (($a % 3 > 1 ? $b->getC($c ? $c : $a)) > 0) {
     return $a or $b > 0;
-}'
+}',
             ),
         );
     }
@@ -147,7 +147,7 @@ if ($a === 2) {
     return $b % 2 === 1 ? $b - 1 : $b;
 } elseif (($a % 2 === 1 ? $b->getC($c ? $c : $a)) !== null) {
     return $a or $b !== null;
-}'
+}',
             ),
         );
     }

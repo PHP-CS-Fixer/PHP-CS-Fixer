@@ -48,7 +48,7 @@ class ReturnFixer extends AbstractFixer
 
                 if (1 === $countParts) {
                     $prevToken->setContent(rtrim($prevToken->getContent(), " \t")."\n\n");
-                } elseif (count($parts) <= 2) {
+                } elseif (2 >= count($parts)) {
                     $prevToken->setContent("\n".$prevToken->getContent());
                 }
             } else {
