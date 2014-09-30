@@ -74,29 +74,16 @@ class IncludeFixer extends AbstractFixer
 
     private function findIncludies(Tokens $tokens)
     {
-        static $includyTokens = array(T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE);
-
-        $inStatement = false;
-        $inBraces = false;
-        $bracesLevel = 0;
+        static $includyTokenKinds = array(T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE);
 
         $includies = array();
-        $includiesCount = 0;
 
-        for ($index = 0, $indexLimit = count($tokens); $index < $indexLimit; ++$index) {
-            $token = $tokens[$index];
-
-            if (!$inStatement) {
-                $inStatement = $token->isGivenKind($includyTokens);
-
-                if (!$inStatement) {
-                    continue;
-                }
-
-                $includies[$includiesCount] = array(
+        foreach ($tokens->findGivenKind($includyTokenKinds) as $includyTokens) {
+            foreach ($includyTokens as $index => $token) {
+                $includy = array(
                     'begin' => $index,
                     'braces' => null,
-                    'end' => null,
+                    'end' => $tokens->getNextTokenOfKind($index, array(';')),
                 );
 
                 // Don't remove when the statement is wrapped. include is also legal as function parameter
@@ -106,54 +93,14 @@ class IncludeFixer extends AbstractFixer
                     $nextToken = $tokens[$nextTokenIndex];
 
                     if ($nextToken->equals('(')) {
-                        $inBraces = true;
-                        $bracesLevel = 1;
-                        $index = $nextTokenIndex;
-                        $includies[$includiesCount]['braces'] = array(
-                            'open' => $index,
-                            'close' => null,
+                        $includy['braces'] = array(
+                            'open' => $nextTokenIndex,
+                            'close' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextTokenIndex),
                         );
                     }
                 }
 
-                continue;
-            }
-
-            if ($token->isArray() || $token->isWhitespace()) {
-                continue;
-            }
-
-            if ($token->equals('(')) {
-                ++$bracesLevel;
-
-                continue;
-            }
-
-            if ($token->equals(')')) {
-                --$bracesLevel;
-
-                if ($inBraces && 0 === $bracesLevel) {
-                    $inStatement = false;
-                    $includies[$includiesCount]['braces']['close'] = $index;
-
-                    $nextTokenIndex = $tokens->getNextNonWhitespace($index);
-                    $nextToken = $tokens[$nextTokenIndex];
-
-                    if ($nextToken->equals(';')) {
-                        $includies[$includiesCount]['end'] = $nextTokenIndex;
-                        ++$includiesCount;
-                    }
-
-                    $index = $nextTokenIndex;
-                }
-
-                continue;
-            }
-
-            if ($inStatement && $token->equals(';')) {
-                $inStatement = false;
-                $includies[$includiesCount]['end'] = $index;
-                ++$includiesCount;
+                $includies[] = $includy;
             }
         }
 
