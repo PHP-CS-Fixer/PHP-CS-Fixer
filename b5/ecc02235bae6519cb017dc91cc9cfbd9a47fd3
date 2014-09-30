@@ -1,0 +1,153 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-28T20:56:41Z
+
+From fixer descr:
+> PHP multi-line arrays should have a trailing comma.
+
+I would add a comma, and a whitespace if missing:
+```php
+$a = array(1, 2, 3,
+    4, 5, 6);
+```
+into
+```php
+$a = array(1, 2, 3,
+    4, 5, 6, );
+```
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-28T20:58:55Z
+
+I disagree. Isn't the multiline fixer only designed to add commas when there is one element per line?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-28T21:03:47Z
+
+Can't see that condition in fixer descr.
+
+So you would not add a comma after last element here?
+```php
+$a = array(
+    1, 2, 3,
+    4, 5, 6,
+    7, 8, 9
+);
+```
+?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-28T21:09:52Z
+
+Ahh, well that's different. Disregard my previous comment. This is what I'd consider to be correct:
+
+```php
+$a = array(
+    1, 2, 3,
+    4, 5, 6,
+    7, 8, 9,
+);
+
+$a = array(1, 2, 3,
+    4, 5, 6,
+    7, 8, 9);
+```
+
+Both of these are "ok", but I'd always user the first one. Maybe we need a fixer to get from the second one to the first one?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-28T21:30:22Z
+
+It is the same! This is a fixer for multiline-array. Each of theme are multiline-arrays! So each should have a comma after last element.
+With or without a new fixer you proposed this fixer should do it's job good.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-28T21:48:46Z
+
+I prefer the behaviour this pull brings.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-29T11:29:55Z
+
+After this PR we look what fixer is supposed to do (descr) and then we see that it doesn't do it...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-29T15:43:31Z
+
+Do you agree that
+```php
+$a = array(1, 2, 3,
+    4, 5, 6,);
+```
+Is wrong though?
+
+We need to change it to something. Maybe we should add a comma and put the bracket on a new line (ie move the bracket and all content following the bracket)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-29T16:52:07Z
+
+If we add a space:
+```php
+$a = array(1, 2, 3,
+    4, 5, 6, );
+```
+it will be cool for me.
+
+Adding new lines shouldn't be done here - if one want it should be done as separate fixer IMO.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-09-29T17:49:35Z
+
+Ok then. That sounds like a plan. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-29T20:39:39Z
+
+@sstok how do you think ?
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-30T07:14:55Z
+
+Both are OK with me :) I will update the PR so inserts a space after a comma (when there is no newline before the closing brace)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-30T08:33:00Z
+
+great ;)
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-30T11:22:29Z
+
+Done.
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-30T12:16:07Z
+
+Updated.
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-09-30T12:37:36Z
+
+Updated, should be good now.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-30T12:43:42Z
+
+great work @sstok !
+:+1:
