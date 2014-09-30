@@ -132,7 +132,7 @@ class FileCacheManager
             return false;
         }
 
-        return $cacheVersion === $this->getVersion();
+        return $this->getVersion() === $cacheVersion;
     }
 
     private function isInstalledAsPhar()
