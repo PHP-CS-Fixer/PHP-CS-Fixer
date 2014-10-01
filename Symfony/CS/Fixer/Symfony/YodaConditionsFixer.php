@@ -71,7 +71,6 @@ class YodaConditionsFixer extends AbstractFixer
         $right[0]->clear();
 
         $this->fixTokens($left);
-        $this->fixTokens($right);
 
         for ($i = $startLeft; $i <= $endLeft; ++$i) {
             $tokens[$i]->clear();
