@@ -28,7 +28,8 @@ class FixerFileProcessedEvent extends Event
     const STATUS_UNKNOWN = 0;
     const STATUS_FIXED = 1;
     const STATUS_NO_CHANGES = 2;
-    const STATUS_SKIPPED = 3;
+    const STATUS_EXCEPTION = 3;
+    const STATUS_SKIPPED = 4;
 
     /**
      * File statuses map.
@@ -36,9 +37,10 @@ class FixerFileProcessedEvent extends Event
      * @var array
      */
     private static $statusMap = array(
-        self::STATUS_UNKNOWN    => '?',
-        self::STATUS_FIXED      => 'F',
         self::STATUS_NO_CHANGES => '.',
+        self::STATUS_FIXED      => 'F',
+        self::STATUS_EXCEPTION  => 'E',
+        self::STATUS_UNKNOWN    => '?',
         self::STATUS_SKIPPED    => '',
     );
 
