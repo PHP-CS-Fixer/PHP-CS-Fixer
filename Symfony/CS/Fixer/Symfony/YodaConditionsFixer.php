@@ -177,6 +177,12 @@ class YodaConditionsFixer extends AbstractFixer
 
     private function findComparisonStart(Tokens $tokens, $index)
     {
+        static $blockTypes = array(
+            ')' => Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+            ']' => Tokens::BLOCK_TYPE_SQUARE_BRACE,
+            '}' => Tokens::BLOCK_TYPE_CURLY_BRACE,
+        );
+
         while (0 <= $index) {
             $token = $tokens[$index];
 
@@ -184,9 +190,9 @@ class YodaConditionsFixer extends AbstractFixer
                 break;
             }
 
-            if ($token->equals(')')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false) - 1;
-            } elseif ($token->equals('(')) {
+            if ($token->equalsAny(array(')', ']', '}'))) {
+                $index = $tokens->findBlockEnd($blockTypes[$token->getContent()], $index, false) - 1;
+            } elseif ($token->equalsAny(array('(', '[', '{'))) {
                 break;
             } else {
                 --$index;
@@ -198,6 +204,12 @@ class YodaConditionsFixer extends AbstractFixer
 
     private function findComparisonEnd(Tokens $tokens, $index)
     {
+        static $blockTypes = array(
+            '(' => Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+            '[' => Tokens::BLOCK_TYPE_SQUARE_BRACE,
+            '{' => Tokens::BLOCK_TYPE_CURLY_BRACE,
+        );
+
         $count = count($tokens);
         while ($index < $count) {
             $token = $tokens[$index];
@@ -206,9 +218,9 @@ class YodaConditionsFixer extends AbstractFixer
                 break;
             }
 
-            if ($token->equals('(')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index) + 1;
-            } elseif ($token->equals(')')) {
+            if ($token->equalsAny(array('(', '[', '{'))) {
+                $index = $tokens->findBlockEnd($blockTypes[$token->getContent()], $index) + 1;
+            } elseif ($token->equalsAny(array(')', ']', '}'))) {
                 break;
             } else {
                 ++$index;

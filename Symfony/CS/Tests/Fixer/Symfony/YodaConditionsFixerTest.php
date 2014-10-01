@@ -40,6 +40,8 @@ class YodaConditionsFixerTest extends AbstractFixerTestBase
             array('<?php return ($a & self::MY_BITMASK) === $a;'),
             array('<?php return self::MY_CONST === self::$myVariable;'),
             array('<?php return 2 * $myVar % 3 === $a;'),
+            array('<?php return null === $a[0 === $b ? $c : $d];'),
+            array('<?php return null === $this->{null === $a ? \'a\' : \'b\'};'),
 
             // simple non-Yoda conditions
             array(
@@ -81,6 +83,14 @@ class YodaConditionsFixerTest extends AbstractFixerTestBase
             array(
                 '<?php return 2 * $myVar % 3 === $a;',
                 '<?php return $a === 2 * $myVar % 3;',
+            ),
+            array(
+                '<?php return null === $a[0 === $b ? $c : $d];',
+                '<?php return $a[$b === 0 ? $c : $d] === null;',
+            ),
+            array(
+                '<?php return null === $this->{null === $a ? \'a\' : \'b\'};',
+                '<?php return $this->{$a === null ? \'a\' : \'b\'} === null;',
             ),
 
             // complex code sample
