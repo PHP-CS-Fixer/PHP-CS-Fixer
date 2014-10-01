@@ -177,25 +177,20 @@ class YodaConditionsFixer extends AbstractFixer
 
     private function findComparisonStart(Tokens $tokens, $index)
     {
-        $level = 0;
         while (0 <= $index) {
             $token = $tokens[$index];
 
-            if (0 === $level && $this->isTokenOfLowerPrecedence($token)) {
+            if ($this->isTokenOfLowerPrecedence($token)) {
                 break;
             }
 
             if ($token->equals(')')) {
-                ++$level;
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false) - 1;
             } elseif ($token->equals('(')) {
-                --$level;
-
-                if ($level < 0) {
-                    break;
-                }
+                break;
+            } else {
+                --$index;
             }
-
-            --$index;
         }
 
         return $tokens->getNextNonWhitespace($index);
@@ -203,26 +198,21 @@ class YodaConditionsFixer extends AbstractFixer
 
     private function findComparisonEnd(Tokens $tokens, $index)
     {
-        $level = 0;
         $count = count($tokens);
         while ($index < $count) {
             $token = $tokens[$index];
 
-            if (0 === $level && $this->isTokenOfLowerPrecedence($token)) {
+            if ($this->isTokenOfLowerPrecedence($token)) {
                 break;
             }
 
             if ($token->equals('(')) {
-                ++$level;
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index) + 1;
             } elseif ($token->equals(')')) {
-                --$level;
-
-                if ($level < 0) {
-                    break;
-                }
+                break;
+            } else {
+                ++$index;
             }
-
-            ++$index;
         }
 
         return $tokens->getPrevNonWhitespace($index);
@@ -230,39 +220,42 @@ class YodaConditionsFixer extends AbstractFixer
 
     private function isTokenOfLowerPrecedence(Token $token)
     {
-        static $tokens = array(
-            // '&&', '||',
-            T_BOOLEAN_AND, T_BOOLEAN_OR,
-            // '.=', '/=', '-=', '%=', '*=', '+=',
-            T_CONCAT_EQUAL, T_DIV_EQUAL, T_MINUS_EQUAL, T_MUL_EQUAL, T_PLUS_EQUAL,
-            // '&=', '|=', '^=',
-            T_AND_EQUAL, T_OR_EQUAL, T_XOR_EQUAL,
-            // '<<=', '>>=', '=>',
-            T_SL_EQUAL, T_SR_EQUAL, T_DOUBLE_ARROW,
-            // 'and', 'or', 'xor',
-            T_LOGICAL_AND, T_LOGICAL_OR, T_LOGICAL_XOR,
-            // keywords like 'return'
-            T_RETURN, T_THROW, T_GOTO, T_CASE,
-        );
+        static $tokens;
 
-        static $nonTokens = array(
-            '&', '|', '^',
-            '?', ':',
-            '=',
-        );
+        if (null === $tokens) {
+            $tokens = array(
+                // '&&', '||',
+                T_BOOLEAN_AND, T_BOOLEAN_OR,
+                // '.=', '/=', '-=', '%=', '*=', '+=',
+                T_CONCAT_EQUAL, T_DIV_EQUAL, T_MINUS_EQUAL, T_MUL_EQUAL, T_PLUS_EQUAL,
+                // '&=', '|=', '^=',
+                T_AND_EQUAL, T_OR_EQUAL, T_XOR_EQUAL,
+                // '<<=', '>>=', '=>',
+                T_SL_EQUAL, T_SR_EQUAL, T_DOUBLE_ARROW,
+                // 'and', 'or', 'xor',
+                T_LOGICAL_AND, T_LOGICAL_OR, T_LOGICAL_XOR,
+                // keywords like 'return'
+                T_RETURN, T_THROW, T_GOTO, T_CASE,
+            );
 
-        if ($token->isGivenKind($tokens) || $token->equalsAny($nonTokens)) {
-            return true;
-        }
-
-        // PHP 5.6 introduced **=
-        if (defined('T_POW_EQUAL')) {
-            if ($token->isGivenKind(constant('T_POW_EQUAL'))) {
-                return true;
+            // PHP 5.6 introduced **=
+            if (defined('T_POW_EQUAL')) {
+                $tokens[] = constant('T_POW_EQUAL');
             }
         }
 
-        return $token->equalsAny(array(',', ';'));
+        static $otherTokens = array(
+            // bitwise and, or, xor
+            '&', '|', '^',
+            // ternary operators
+            '?', ':',
+            // assignment
+            '=',
+            // end of PHP statement
+            ',', ';',
+        );
+
+        return $token->isGivenKind($tokens) || $token->equalsAny($otherTokens);
     }
 
     /**

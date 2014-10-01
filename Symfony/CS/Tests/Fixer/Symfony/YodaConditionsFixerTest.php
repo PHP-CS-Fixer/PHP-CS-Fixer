@@ -106,4 +106,27 @@ if ($a == $b) {
             ),
         );
     }
+
+    /**
+     * @dataProvider provideExamplesPhp56
+     * @requires PHP 5.6
+     */
+    public function testFixerPhp56($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideExamplesPhp56()
+    {
+        return array(
+            // simple Yoda condition
+            array('<?php $a **= 4 === $b ? 2 : 3;'),
+
+            // simple non-Yoda condition
+            array(
+                '<?php $a **= 4 === $b ? 2 : 3;',
+                '<?php $a **= $b === 4 ? 2 : 3;',
+            ),
+        );
+    }
 }
