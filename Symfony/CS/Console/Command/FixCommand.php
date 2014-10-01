@@ -347,6 +347,15 @@ EOF
             $this->fixer->setEventDispatcher(null);
             $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
             $output->writeln('');
+
+            $legend = array();
+            foreach (FixerFileProcessedEvent::getStatusMap() as $status) {
+                if ($status['symbol'] && $status['description']) {
+                    $legend[] = $status['symbol'].'-'.$status['description'];
+                }
+            }
+
+            $output->writeln('Legend: '.implode(', ', $legend));
         }
 
         $i = 1;

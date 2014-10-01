@@ -37,11 +37,11 @@ class FixerFileProcessedEvent extends Event
      * @var array
      */
     private static $statusMap = array(
-        self::STATUS_NO_CHANGES => '.',
-        self::STATUS_FIXED      => 'F',
-        self::STATUS_EXCEPTION  => 'E',
-        self::STATUS_UNKNOWN    => '?',
-        self::STATUS_SKIPPED    => '',
+        self::STATUS_NO_CHANGES => array('symbol' => '.', 'description' => 'no changes'),
+        self::STATUS_FIXED      => array('symbol' => 'F', 'description' => 'fixed'),
+        self::STATUS_EXCEPTION  => array('symbol' => 'E', 'description' => 'error'),
+        self::STATUS_UNKNOWN    => array('symbol' => '?', 'description' => 'unknown'),
+        self::STATUS_SKIPPED    => array('symbol' => '',  'description' => ''),
     );
 
     /**
@@ -62,6 +62,16 @@ class FixerFileProcessedEvent extends Event
     }
 
     /**
+     * Get status map.
+     *
+     * @return array
+     */
+    public static function getStatusMap()
+    {
+        return self::$statusMap;
+    }
+
+    /**
      * Get status.
      *
      * @return int
@@ -71,9 +81,14 @@ class FixerFileProcessedEvent extends Event
         return $this->status;
     }
 
+    /**
+     * Get status as string.
+     *
+     * @return string
+     */
     public function getStatusAsString()
     {
-        return self::$statusMap[$this->status];
+        return self::$statusMap[$this->status]['symbol'];
     }
 
     /**
