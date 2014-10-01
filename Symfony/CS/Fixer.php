@@ -176,16 +176,27 @@ class Fixer
         // we do not need Tokens to still caching previously fixed file - so clear the cache
         Tokens::clearCache();
 
-        foreach ($fixers as $fixer) {
-            if (!$fixer->supports($file)) {
-                continue;
+        try {
+            foreach ($fixers as $fixer) {
+                if (!$fixer->supports($file)) {
+                    continue;
+                }
+
+                $newest = $fixer->fix($file, $new);
+                if ($newest !== $new) {
+                    $appliedFixers[] = $fixer->getName();
+                }
+                $new = $newest;
+            }
+        } catch (\Exception $e) {
+            if ($this->eventDispatcher) {
+                $this->eventDispatcher->dispatch(
+                    FixerFileProcessedEvent::NAME,
+                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)
+                );
             }
 
-            $newest = $fixer->fix($file, $new);
-            if ($newest !== $new) {
-                $appliedFixers[] = $fixer->getName();
-            }
-            $new = $newest;
+            return;
         }
 
         $fixInfo = null;
