@@ -29,10 +29,10 @@ class ConcatWithoutSpacesFixer extends AbstractFixer
 
         foreach ($tokens as $index => $token) {
             if ($token->equals('.')) {
-                if ($tokens[$tokens->getPrevNonWhitespace($index)]->getName() !== 'T_LNUMBER') {
+                if (!$tokens[$tokens->getPrevNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
                     $tokens->removeLeadingWhitespace($index, $whitespaces);
                 }
-                if ($tokens[$tokens->getNextNonWhitespace($index)]->getName() !== 'T_LNUMBER') {
+                if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
                     $tokens->removeTrailingWhitespace($index, $whitespaces);
                 }
             }
