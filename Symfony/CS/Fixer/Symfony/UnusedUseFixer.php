@@ -29,10 +29,8 @@ class UnusedUseFixer extends AbstractFixer
         $namespaceDeclarations = $this->getNamespaceDeclarations($tokens);
         $useDeclarationsIndexes = $tokens->getImportUseIndexes();
         $useDeclarations = $this->getNamespaceUseDeclarations($tokens, $useDeclarationsIndexes);
-        $contentWithoutUseDeclarations = $this->generateCodeWithoutPartials($tokens, array_merge($namespaceDeclarations, $useDeclarations));
-        $useUsages = $this->detectUseUsages($contentWithoutUseDeclarations, $useDeclarations);
 
-        $this->removeUnusedUseDeclarations($tokens, $useDeclarations, $useUsages);
+        $this->removeUnusedUseDeclarations($tokens, $useDeclarations, $namespaceDeclarations);
         $this->removeUsesInSameNamespace($tokens, $useDeclarations, $namespaceDeclarations);
 
         return $tokens->generateCode();
@@ -42,7 +40,8 @@ class UnusedUseFixer extends AbstractFixer
     {
         $usages = array();
 
-        foreach ($useDeclarations as $shortName => $useDeclaration) {
+        foreach ($useDeclarations as $useDeclaration) {
+            $shortName = $useDeclaration['shortName'];
             $usages[$shortName] = (bool) preg_match('/\b'.preg_quote($shortName).'\b/i', $content);
         }
 
@@ -85,8 +84,14 @@ class UnusedUseFixer extends AbstractFixer
             $namespaces[] = array(
                 'end'   => $declarationEndIndex,
                 'name'  => trim($tokens->generatePartialCode($index + 1, $declarationEndIndex - 1)),
+                'scope' => array('start' => null, 'end' => null),
                 'start' => $index,
             );
+        }
+
+        foreach (array_reverse($namespaces, true) as $i => $namespace) {
+            $namespaces[$i]['scope']['start'] = $namespace['start'];
+            $namespaces[$i]['scope']['end'] = isset($namespaces[$i + 1]) ? $namespaces[$i + 1]['scope']['start'] - 1 : $tokens->getSize();
         }
 
         return $namespaces;
@@ -122,7 +127,7 @@ class UnusedUseFixer extends AbstractFixer
 
             $shortName = trim($shortName);
 
-            $uses[$shortName] = array(
+            $uses[] = array(
                 'aliased'   => $aliased,
                 'end'       => $declarationEndIndex,
                 'fullName'  => trim($fullName),
@@ -134,13 +139,19 @@ class UnusedUseFixer extends AbstractFixer
         return $uses;
     }
 
-    private function removeUnusedUseDeclarations(Tokens $tokens, array $useDeclarations, array $useUsages)
+    private function removeUnusedUseDeclarations(Tokens $tokens, array $useDeclarations, array $namespaceDeclarations)
     {
-        foreach ($useDeclarations as $shortName => $useDeclaration) {
-            if (!$useUsages[$shortName]) {
-                $this->removeUseDeclaration($tokens, $useDeclaration);
+        //foreach ($namespaceDeclarations as $index => $namespaceDeclaration) {
+            $deniedPartials = array_merge(array(), $useDeclarations, $namespaceDeclarations);
+            $contentWithoutUseDeclarations = $this->generateCodeWithoutPartials($tokens, $deniedPartials);
+            $useUsages = $this->detectUseUsages($contentWithoutUseDeclarations, $useDeclarations);
+
+            foreach ($useDeclarations as $useDeclaration) {
+                if (!$useUsages[$useDeclaration['shortName']]) {
+                    $this->removeUseDeclaration($tokens, $useDeclaration);
+                }
             }
-        }
+        //}
     }
 
     private function removeUseDeclaration(Tokens $tokens, array $useDeclaration)
@@ -174,31 +185,32 @@ class UnusedUseFixer extends AbstractFixer
 
     private function removeUsesInSameNamespace(Tokens $tokens, array $useDeclarations, array $namespaceDeclarations)
     {
-        if (empty($namespaceDeclarations)) {
-            return;
-        }
+        foreach ($namespaceDeclarations as $namespaceDeclaration) {
+            $namespace = $namespaceDeclaration['name'];
+            $nsLength = strlen($namespace.'\\');
 
-        // safeguard for files with multiple namespaces to avoid breaking them until we support this case
-        if (count($namespaceDeclarations) > 1) {
-            return;
-        }
+            foreach ($useDeclarations as $useDeclaration) {
+                // ignore declaration if it is in different scope
+                if (
+                    $useDeclaration['start'] < $namespaceDeclaration['scope']['start'] ||
+                    $useDeclaration['end'] > $namespaceDeclaration['scope']['end']
+                ) {
+                    continue;
+                }
 
-        $namespace = $namespaceDeclarations[0]['name'];
-        $nsLength = strlen($namespace.'\\');
+                if ($useDeclaration['aliased']) {
+                    continue;
+                }
 
-        foreach ($useDeclarations as $useDeclaration) {
-            if ($useDeclaration['aliased']) {
-                continue;
-            }
+                if (0 !== strpos($useDeclaration['fullName'], $namespace.'\\')) {
+                    continue;
+                }
 
-            if (0 !== strpos($useDeclaration['fullName'], $namespace.'\\')) {
-                continue;
-            }
+                $partName = substr($useDeclaration['fullName'], $nsLength);
 
-            $partName = substr($useDeclaration['fullName'], $nsLength);
-
-            if (false === strpos($partName, '\\')) {
-                $this->removeUseDeclaration($tokens, $useDeclaration);
+                if (false === strpos($partName, '\\')) {
+                    $this->removeUseDeclaration($tokens, $useDeclaration);
+                }
             }
         }
     }

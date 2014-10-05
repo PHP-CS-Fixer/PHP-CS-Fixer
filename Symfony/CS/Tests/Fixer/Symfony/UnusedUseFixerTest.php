@@ -151,8 +151,18 @@ EOF;
 
         $this->makeTest($expected, $input);
 
-        // the fixer doesn't support file with multiple namespace - test if we don't remove imports in that case
         $expected = <<<'EOF'
+<?php
+
+namespace Foooooooo;
+namespace Foo;
+
+
+$a = new Bar();
+$b = new Baz();
+EOF;
+
+        $input = <<<'EOF'
 <?php
 
 namespace Foooooooo;
@@ -165,7 +175,7 @@ $a = new Bar();
 $b = new Baz();
 EOF;
 
-        $this->makeTest($expected);
+        $this->makeTest($expected, $input);
     }
 
     public function testMultipleUseStatements()
@@ -426,6 +436,105 @@ EOF;
 namespace Foo\Finder;
 
 use Bar\Finder;
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testRemoveUsesInSameNamespaceInMultiNamespaceCode()
+    {
+        $expected = <<<'EOF'
+<?php
+
+namespace Foo\A;
+
+use Foo\B\B1;
+
+new A1();
+new B1();
+
+namespace Foo\B;
+
+use Foo\A\A1;
+
+new A1();
+new B1();
+new B2();
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+namespace Foo\A;
+
+use Foo\A\A1;
+use Foo\B\B1;
+
+new A1();
+new B1();
+
+namespace Foo\B;
+
+use Foo\A\A1;
+use Foo\B\B1;
+
+new A1();
+new B1();
+new B2();
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testRemoveUnusedUseDeclarationsInMultiNamespaceCode()
+    {
+        $expected = <<<'EOF'
+<?php
+
+namespace Foo\A;
+
+use Bar\A;
+use Bar\C;
+
+new A();
+new C();
+
+namespace Foo\B;
+
+use Bar\B;
+use Bar\C;
+
+new B();
+new C();
+new Z();
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+namespace Foo\A;
+
+use Bar\A;
+use Bar\B;
+use Bar\C;
+use Bar\Z;
+
+new A();
+new C();
+
+namespace Foo\B;
+
+use Bar\A;
+use Bar\B;
+use Bar\C;
+
+new B();
+new C();
+new Z();
+
 EOF;
 
         $this->makeTest($expected, $input);
