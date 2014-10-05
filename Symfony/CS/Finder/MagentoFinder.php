@@ -13,8 +13,6 @@
 
 namespace Symfony\CS\Finder;
 
-use Symfony\Component\Finder\Finder;
-
 /**
  * @author Myke Hines <myke@webhines.com>
  */

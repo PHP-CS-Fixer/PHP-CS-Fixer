@@ -26,30 +26,16 @@ class UnusedUseFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        $namespace = $this->detectNamespace($tokens);
+        $namespaceDeclarations = $this->getNamespaceDeclarations($tokens);
         $useDeclarationsIndexes = $tokens->getNamespaceUseIndexes();
         $useDeclarations = $this->getNamespaceUseDeclarations($tokens, $useDeclarationsIndexes);
-        $contentWithoutUseDeclarations = $this->generateCodeWithoutUses($tokens, $useDeclarations);
+        $contentWithoutUseDeclarations = $this->generateCodeWithoutPartials($tokens, array_merge($namespaceDeclarations, $useDeclarations));
         $useUsages = $this->detectUseUsages($contentWithoutUseDeclarations, $useDeclarations);
 
         $this->removeUnusedUseDeclarations($tokens, $useDeclarations, $useUsages);
-        $this->removeUsesInSameNamespace($tokens, $useDeclarations, $namespace);
+        $this->removeUsesInSameNamespace($tokens, $useDeclarations, $namespaceDeclarations);
 
         return $tokens->generateCode();
-    }
-
-    private function detectNamespace(Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (T_NAMESPACE !== $token->getId()) {
-                continue;
-            }
-
-            $declarationEndIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
-            $declarationContent = $tokens->generatePartialCode($index + 1, $declarationEndIndex - 1);
-
-            return trim($declarationContent);
-        }
     }
 
     private function detectUseUsages($content, array $useDeclarations)
@@ -63,15 +49,15 @@ class UnusedUseFixer extends AbstractFixer
         return $usages;
     }
 
-    private function generateCodeWithoutUses(Tokens $tokens, array $useDeclarations)
+    private function generateCodeWithoutPartials(Tokens $tokens, array $partials)
     {
         $content = '';
 
         foreach ($tokens as $index => $token) {
             $allowToAppend = true;
 
-            foreach ($useDeclarations as $useDeclaration) {
-                if ($useDeclaration['declarationStart'] <= $index && $index <= $useDeclaration['declarationEnd']) {
+            foreach ($partials as $partial) {
+                if ($partial['declarationStart'] <= $index && $index <= $partial['declarationEnd']) {
                     $allowToAppend = false;
                     break;
                 }
@@ -83,6 +69,27 @@ class UnusedUseFixer extends AbstractFixer
         }
 
         return $content;
+    }
+
+    private function getNamespaceDeclarations(Tokens $tokens)
+    {
+        $namespaces = array();
+
+        foreach ($tokens as $index => $token) {
+            if (T_NAMESPACE !== $token->getId()) {
+                continue;
+            }
+
+            $declarationEndIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
+
+            $namespaces[] = array(
+                'content' => trim($tokens->generatePartialCode($index + 1, $declarationEndIndex - 1)),
+                'declarationStart' => $index,
+                'declarationEnd' => $declarationEndIndex,
+            );
+        }
+
+        return $namespaces;
     }
 
     private function getNamespaceUseDeclarations(Tokens $tokens, array $useIndexes)
@@ -165,12 +172,18 @@ class UnusedUseFixer extends AbstractFixer
         }
     }
 
-    private function removeUsesInSameNamespace(Tokens $tokens, array $useDeclarations, $namespace)
+    private function removeUsesInSameNamespace(Tokens $tokens, array $useDeclarations, array $namespaceDeclarations)
     {
-        if (!$namespace) {
+        if (empty($namespaceDeclarations)) {
             return;
         }
 
+        // safeguard for files with multiple namespaces to avoid breaking them until we support this case
+        if (count($namespaceDeclarations) > 1) {
+            return;
+        }
+
+        $namespace = $namespaceDeclarations[0]['content'];
         $nsLength = strlen($namespace.'\\');
 
         foreach ($useDeclarations as $useDeclaration) {
