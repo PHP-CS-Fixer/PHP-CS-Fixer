@@ -174,24 +174,31 @@ class UnusedUseFixer extends AbstractFixer
 
     private function removeUsesInSameNamespace(Tokens $tokens, array $useDeclarations, array $namespaceDeclarations)
     {
-        foreach ($namespaceDeclarations as $namespaceDeclaration) {
-            $namespace = $namespaceDeclaration['content'];
-            $nsLength = strlen($namespace.'\\');
+        if (empty($namespaceDeclarations)) {
+            return;
+        }
 
-            foreach ($useDeclarations as $useDeclaration) {
-                if ($useDeclaration['aliased']) {
-                    continue;
-                }
+        // safeguard for files with multiple namespaces to avoid breaking them until we support this case
+        if (count($namespaceDeclarations) > 1) {
+            return;
+        }
 
-                if (0 !== strpos($useDeclaration['fullName'], $namespace.'\\')) {
-                    continue;
-                }
+        $namespace = $namespaceDeclarations[0]['content'];
+        $nsLength = strlen($namespace.'\\');
 
-                $partName = substr($useDeclaration['fullName'], $nsLength);
+        foreach ($useDeclarations as $useDeclaration) {
+            if ($useDeclaration['aliased']) {
+                continue;
+            }
 
-                if (false === strpos($partName, '\\')) {
-                    $this->removeUseDeclaration($tokens, $useDeclaration);
-                }
+            if (0 !== strpos($useDeclaration['fullName'], $namespace.'\\')) {
+                continue;
+            }
+
+            $partName = substr($useDeclaration['fullName'], $nsLength);
+
+            if (false === strpos($partName, '\\')) {
+                $this->removeUseDeclaration($tokens, $useDeclaration);
             }
         }
     }
