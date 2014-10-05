@@ -34,8 +34,8 @@ class ConcatWithoutSpacesFixerTest extends AbstractFixerTestBase
                 '<?php $foo = "a" . \'b\' ."c". "d" . $e.($f + 1);',
             ),
             array(
-                '<?php $foo = 5; $bar = $foo + 1 ."foo";',
-                '<?php $foo = 5; $bar = $foo + 1 . "foo";',
+                '<?php $foo = 1 ."foo";',
+                '<?php $foo = 1 . "foo";',
             ),
             array(
                 '<?php $foo = "foo". 1;',
