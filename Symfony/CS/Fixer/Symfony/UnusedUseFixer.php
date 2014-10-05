@@ -148,6 +148,10 @@ class UnusedUseFixer extends AbstractFixer
             $token->setContent(rtrim($token->getContent(), " \t"));
         }
 
+        if (!isset($tokens[$useDeclaration['declarationEnd'] + 1])) {
+            return;
+        }
+
         $token = $tokens[$useDeclaration['declarationEnd'] + 1];
 
         if ($token->isWhitespace()) {
