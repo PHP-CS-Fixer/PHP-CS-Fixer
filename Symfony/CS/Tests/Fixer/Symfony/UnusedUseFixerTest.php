@@ -393,4 +393,25 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
+
+    public function testUseWithSameLastPartThatIsInNamespace()
+    {
+        $expected = <<<'EOF'
+<?php
+
+namespace Foo\Finder;
+
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+namespace Foo\Finder;
+
+use Bar\Finder;
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
 }
