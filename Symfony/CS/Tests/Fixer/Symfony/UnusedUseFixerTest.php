@@ -378,4 +378,19 @@ EOF;
             array($expected3),
         );
     }
+
+    public function testUseAsLastStatement()
+    {
+        $expected = <<<'EOF'
+<?php
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+use Bar\Finder;
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
 }
