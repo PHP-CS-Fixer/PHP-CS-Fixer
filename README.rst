@@ -143,7 +143,7 @@ using ``-name``:
 
     php php-cs-fixer.phar fix /path/to/dir --fixers=-short_tag,-indentation
 
-A combination of ``--dry-run``, ``--verbose`` and ``--diff`` will
+A combination of ``--dry-run`` and ``--diff`` will
 display summary of proposed fixes, leaving your files unchanged.
 
 The command can also read from standard input, in which case it won't
@@ -151,7 +151,7 @@ automatically fix anything:
 
 .. code-block:: bash
 
-    cat foo.php | php php-cs-fixer.phar fix -v --diff -
+    cat foo.php | php php-cs-fixer.phar fix --diff -
 
 Choose from the list of available fixers:
 
