@@ -62,4 +62,13 @@ class ExtraEmptyLinesFixer extends AbstractFixer
     {
         return 'Removes extra empty lines.';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run after the UnusedUseFixer
+        return -20;
+    }
 }

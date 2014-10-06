@@ -11,8 +11,6 @@
 
 namespace Symfony\CS\Finder;
 
-use Symfony\Component\Finder\Finder;
-
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
