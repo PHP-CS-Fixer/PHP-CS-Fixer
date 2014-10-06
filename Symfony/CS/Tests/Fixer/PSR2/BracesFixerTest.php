@@ -117,6 +117,14 @@ class BracesFixerTest extends AbstractFixerTestBase
         }
     }',
             ),
+            array(
+                '<?php
+    if (true) echo 1;',
+                '<?php
+    if (true) {
+        echo 1;
+    }'
+            )
         );
     }
 
