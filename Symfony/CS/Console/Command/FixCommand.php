@@ -123,13 +123,13 @@ using <comment>-name</comment>:
 
     <info>php %command.full_name% /path/to/dir --fixers=-short_tag,-indentation</info>
 
-A combination of <comment>--dry-run</comment>, <comment>--verbose</comment> and <comment>--diff</comment> will
+A combination of <comment>--dry-run</comment> and <comment>--diff</comment> will
 display summary of proposed fixes, leaving your files unchanged.
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
 
-    <info>cat foo.php | php %command.full_name% -v --diff -</info>
+    <info>cat foo.php | php %command.full_name% --diff -</info>
 
 Choose from the list of available fixers:
 
@@ -367,13 +367,13 @@ EOF
 
                     if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
                         $output->write(sprintf(' (<comment>%s</comment>)', implode(', ', $fixResult['appliedFixers'])));
+                    }
 
-                        if ($input->getOption('diff')) {
-                            $output->writeln('');
-                            $output->writeln('<comment>      ---------- begin diff ----------</comment>');
-                            $output->writeln($fixResult['diff']);
-                            $output->writeln('<comment>      ---------- end diff ----------</comment>');
-                        }
+                    if ($input->getOption('diff')) {
+                        $output->writeln('');
+                        $output->writeln('<comment>      ---------- begin diff ----------</comment>');
+                        $output->writeln($fixResult['diff']);
+                        $output->writeln('<comment>      ---------- end diff ----------</comment>');
                     }
 
                     $output->writeln('');
@@ -408,15 +408,16 @@ EOF
 
                     if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
                         $fileXML->appendChild($appliedFixersXML = $dom->createElement('applied_fixers'));
+
                         foreach ($fixResult['appliedFixers'] as $appliedFixer) {
                             $appliedFixersXML->appendChild($appliedFixerXML = $dom->createElement('applied_fixer'));
                             $appliedFixerXML->setAttribute('name', $appliedFixer);
                         }
+                    }
 
-                        if ($input->getOption('diff')) {
-                            $fileXML->appendChild($diffXML = $dom->createElement('diff'));
-                            $diffXML->appendChild($dom->createCDATASection($fixResult['diff']));
-                        }
+                    if ($input->getOption('diff')) {
+                        $fileXML->appendChild($diffXML = $dom->createElement('diff'));
+                        $diffXML->appendChild($dom->createCDATASection($fixResult['diff']));
                     }
                 }
 
@@ -464,9 +465,10 @@ EOF
 
                     if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
                         $jfile['appliedFixers'] = $fixResult['appliedFixers'];
-                        if ($input->getOption('diff')) {
-                            $jfile['diff'] = $fixResult['diff'];
-                        }
+                    }
+
+                    if ($input->getOption('diff')) {
+                        $jfile['diff'] = $fixResult['diff'];
                     }
 
                     $jFiles[] = $jfile;
