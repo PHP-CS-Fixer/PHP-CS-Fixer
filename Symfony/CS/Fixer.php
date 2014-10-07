@@ -44,6 +44,13 @@ class Fixer
     protected $eventDispatcher;
 
     /**
+     * ErrorsManager instance.
+     *
+     * @var ErrorsManager|null
+     */
+    protected $errorsManager;
+
+    /**
      * Stopwatch instance.
      *
      * @var Stopwatch|null
@@ -196,6 +203,10 @@ class Fixer
                 );
             }
 
+            if ($this->errorsManager) {
+                $this->errorsManager->report(ErrorsManager::ERROR_TYPE_EXCEPTION, $this->getFileRelativePathname($file), $e->__toString());
+            }
+
             return;
         }
 
@@ -306,6 +317,16 @@ class Fixer
     public function setEventDispatcher(EventDispatcher $eventDispatcher = null)
     {
         $this->eventDispatcher = $eventDispatcher;
+    }
+
+    /**
+     * Set ErrorsManager instance.
+     *
+     * @param ErrorsManager|null $stopwatch
+     */
+    public function setErrorsManager(ErrorsManager $errorsManager = null)
+    {
+        $this->errorsManager = $errorsManager;
     }
 
     /**

@@ -19,6 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerFileProcessedEvent;
 use Symfony\CS\FixerInterface;
@@ -37,6 +38,13 @@ class FixCommand extends Command
      * @var EventDispatcher
      */
     protected $eventDispatcher;
+
+    /**
+     * ErrorsManager instance.
+     *
+     * @var ErrorsManager
+     */
+    protected $errorsManager;
 
     /**
      * Stopwatch instance.
@@ -66,11 +74,13 @@ class FixCommand extends Command
     public function __construct(Fixer $fixer = null, ConfigInterface $config = null)
     {
         $this->eventDispatcher = new EventDispatcher();
+        $this->errorsManager = new ErrorsManager();
         $this->stopwatch = new Stopwatch();
         $this->fixer = $fixer ?: new Fixer();
         $this->fixer->registerBuiltInFixers();
         $this->fixer->registerBuiltInConfigs();
         $this->fixer->setStopwatch($this->stopwatch);
+        $this->fixer->setErrorsManager($this->errorsManager);
         $this->defaultConfig = $config ?: new Config();
 
         parent::__construct();
@@ -502,6 +512,15 @@ EOF
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('The format "%s" is not defined.', $input->getOption('format')));
+        }
+
+        if (!$this->errorsManager->isEmpty()) {
+            $output->writeLn('');
+            $output->writeLn('Files that were not fixed due to internal error:');
+
+            foreach ($this->errorsManager->getErrors() as $i => $error) {
+                $output->writeLn(sprintf('%4d) %s', $i + 1, $error['filepath']));
+            }
         }
 
         return empty($changed) ? 0 : 1;
