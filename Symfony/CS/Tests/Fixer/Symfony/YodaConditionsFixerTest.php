@@ -93,6 +93,11 @@ class YodaConditionsFixerTest extends AbstractFixerTestBase
                 '<?php return $this->{$a === null ? \'a\' : \'b\'} === null;',
             ),
 
+            array(
+                '<?php return count($this->array[$var]) === $a[0 === $b ? $c : $d];',
+                '<?php return $a[$b === 0 ? $c : $d] === count($this->array[$var]);',
+            ),
+
             // complex code sample
             array(
 '<?php
