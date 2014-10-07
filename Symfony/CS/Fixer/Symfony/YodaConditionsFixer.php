@@ -34,21 +34,22 @@ class YodaConditionsFixer extends AbstractFixer
 
     private function fixTokens(Tokens $tokens)
     {
-        for ($index = count($tokens) - 1; 0 <= $index; --$index) {
-            if ($this->isEqualComparison($tokens[$index])) {
-                $this->fixComparison($tokens, $index);
+        $comparisons = $tokens->findGivenKind(array(T_IS_EQUAL, T_IS_IDENTICAL));
+        $comparisons = array_merge(array_keys($comparisons[T_IS_EQUAL]), array_keys($comparisons[T_IS_IDENTICAL]));
+        sort($comparisons);
+
+        $lastFixedIndex = count($tokens);
+
+        foreach (array_reverse($comparisons) as $index) {
+            if ($index >= $lastFixedIndex) {
+                continue;
             }
+
+            $lastFixedIndex = $this->fixComparison($tokens, $index);
         }
     }
 
-    private function isEqualComparison(Token $token)
-    {
-        return $token->isGivenKind(array(
-            T_IS_EQUAL, T_IS_IDENTICAL,
-        ));
-    }
-
-    private function fixComparison(Tokens $tokens, &$index)
+    private function fixComparison(Tokens $tokens, $index)
     {
         $startLeft = $this->findComparisonStart($tokens, $index);
         $endLeft = $tokens->getPrevNonWhitespace($index);
@@ -59,7 +60,7 @@ class YodaConditionsFixer extends AbstractFixer
         if (!$this->isVariable($tokens, $startLeft, $endLeft)
                 || $this->isVariable($tokens, $startRight, $endRight)) {
             // already using Yoda conditions, or impossible to write Yoda-style
-            return;
+            return $index;
         }
 
         $left = $tokens->generatePartialCode($startLeft, $endLeft);
@@ -83,7 +84,7 @@ class YodaConditionsFixer extends AbstractFixer
         $tokens->insertAt($startRight, $left);
         $tokens->insertAt($startLeft, $right);
 
-        $index = $startLeft;
+        return $startLeft;
     }
 
     private function isVariable(Tokens $tokens, $start, $end)
