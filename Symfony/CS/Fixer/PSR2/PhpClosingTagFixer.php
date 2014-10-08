@@ -45,7 +45,7 @@ class PhpClosingTagFixer extends AbstractFixer
             $prevIndex = $tokens->getPrevNonWhitespace($index);
             $prevToken = $tokens[$prevIndex];
 
-            if (!$prevToken->equals(';')) {
+            if (!$prevToken->equalsAny(array(';', '}'))) {
                 $tokens->insertAt($prevIndex + 1, new Token(';'));
             }
         }

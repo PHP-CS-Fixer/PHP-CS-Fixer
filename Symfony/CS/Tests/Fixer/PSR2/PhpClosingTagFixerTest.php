@@ -58,6 +58,46 @@ echo \'Foo\';
 <?php echo \'Foo\'; ?>',
             ),
             array('<?php echo "foo";', '<?php echo "foo" ?>'),
+            array(
+                '<?php
+class foo
+{
+    public function bar()
+    {
+        echo "Here I am!";
+    }
+}',
+                '<?php
+class foo
+{
+    public function bar()
+    {
+        echo "Here I am!";
+    }
+}?>',
+            ),
+            array(
+                '<?php
+public function bar()
+{
+    echo "Here I am!";
+}',
+                '<?php
+public function bar()
+{
+    echo "Here I am!";
+}?>',
+            ),
+            array(
+                '<?php
+if (true) {
+    echo "Here I am!";
+}',
+                '<?php
+if (true) {
+    echo "Here I am!";
+}?>',
+            ),
         );
     }
 
