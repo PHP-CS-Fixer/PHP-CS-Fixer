@@ -647,6 +647,34 @@ function foo()
     }
 
     /**
+     * @dataProvider provideFixShortArraySyntax54Cases
+     * @requires PHP 5.4
+     */
+    public function testFixShortArraySyntax54($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideFixShortArraySyntax54Cases()
+    {
+        return array(
+            array(
+                '<?php
+    function myFunction()
+    {
+        return [
+            [
+                "callback" => function ($data) {
+                    return true;
+                }
+            ],
+        ];
+    }'
+            ),
+        );
+    }
+
+    /**
      * @dataProvider provideFixCommentBeforeBraceCases
      */
     public function testFixCommentBeforeBrace($expected, $input = null)
