@@ -1,0 +1,37 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-08T14:15:21Z
+
+> I will patch up this PR with the fix if this is deemed valid and worthy.
+
+Yes, please provide a fix ;)
+
+---------------------------------------------------------------------------
+
+by jian-wu at 2014-10-08T14:19:42Z
+
+The fix is in.  I was looking to see if there's a PHP built-in constant for the closing brace.  The only one I found exists in PHP_CodeSniffer's Tokens class - T_CLOSE_CURLY_BRACKET.  https://github.com/squizlabs/PHP_CodeSniffer/blob/master/CodeSniffer/Tokens.php#L19
+
+I didn't want to introduce a dependency to this lib so left the fix with a hard-coded closing brace.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-08T16:56:18Z
+
+We do not use external tokenizer. We use Tokenizer that is build in PHP itself - `token_get_all`. Just wrap it with some cool stuff and use it OOP way.
+Closing curly bracket is trival token and it not has token constant.
+Even if you add a dep. here there will be that const - but still the code won't use it. You will be forced to use CodeSniffer/Tokens instead of CS/Tokenizer/Tokens - and there are no reason to do so.
+
+One way or another - nice fix!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-09T08:04:35Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by jian-wu at 2014-10-10T21:03:32Z
+
+Hi @fabpot & @keradus, can we have a merge please?  Thanks.
