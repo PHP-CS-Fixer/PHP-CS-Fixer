@@ -712,7 +712,7 @@ function foo()
             echo 3;
             echo 4;
     }',
-    '<?php
+                '<?php
     switch (n)
     {
         case label1:
