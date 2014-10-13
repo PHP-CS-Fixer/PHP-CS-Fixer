@@ -180,6 +180,17 @@ class Fixer
 
     public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff, FileCacheManager $fileCacheManager)
     {
+        if (!$this->createLintProcessForFile($file->getRealpath())->isSuccessful()) {
+            if ($this->eventDispatcher) {
+                $this->eventDispatcher->dispatch(
+                    FixerFileProcessedEvent::NAME,
+                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
+                );
+            }
+
+            return;
+        }
+
         $new = $old = file_get_contents($file->getRealpath());
 
         if (!$fileCacheManager->needFixing($this->getFileRelativePathname($file), $old)) {
@@ -228,6 +239,23 @@ class Fixer
         $fixInfo = null;
 
         if ($new !== $old) {
+            $lintProcess = $this->createLintProcessForSource($new);
+
+            if (!$lintProcess->isSuccessful()) {
+                if ($this->eventDispatcher) {
+                    $this->eventDispatcher->dispatch(
+                        FixerFileProcessedEvent::NAME,
+                        FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
+                    );
+                }
+
+                if ($this->errorsManager) {
+                    $this->errorsManager->report(ErrorsManager::ERROR_TYPE_LINT, $this->getFileRelativePathname($file), $lintProcess->getOutput());
+                }
+
+                return;
+            }
+
             if (!$dryRun) {
                 file_put_contents($file->getRealpath(), $new);
             }
