@@ -31,7 +31,7 @@ class FixerFileProcessedEvent extends Event
     const STATUS_NO_CHANGES = 3;
     const STATUS_FIXED = 4;
     const STATUS_EXCEPTION = 5;
-    const STATUS_LINT = 5;
+    const STATUS_LINT = 6;
 
     /**
      * File statuses map.
