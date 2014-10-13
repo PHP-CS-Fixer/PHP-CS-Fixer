@@ -15,6 +15,8 @@ use SebastianBergmann\Diff\Differ;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\ProcessUtils;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Tokenizer\Tokens;
 
@@ -51,6 +53,13 @@ class Fixer
     protected $errorsManager;
 
     /**
+     * Temporary file for code linting.
+     *
+     * @var string|null
+     */
+    protected $lintTemporaryFile;
+
+    /**
      * Stopwatch instance.
      *
      * @var Stopwatch|null
@@ -60,6 +69,13 @@ class Fixer
     public function __construct()
     {
         $this->diff = new Differ();
+    }
+
+    public function __destruct()
+    {
+        if ($this->lintTemporaryFile) {
+            unlink($this->lintTemporaryFile);
+        }
     }
 
     public static function cmpInt($a, $b)
@@ -165,6 +181,17 @@ class Fixer
 
     public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff, FileCacheManager $fileCacheManager)
     {
+        if (!$this->createLintProcessForFile($file->getRealpath())->isSuccessful()) {
+            if ($this->eventDispatcher) {
+                $this->eventDispatcher->dispatch(
+                    FixerFileProcessedEvent::NAME,
+                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
+                );
+            }
+
+            return;
+        }
+
         $new = $old = file_get_contents($file->getRealpath());
 
         if (!$fileCacheManager->needFixing($this->getFileRelativePathname($file), $old)) {
@@ -213,6 +240,23 @@ class Fixer
         $fixInfo = null;
 
         if ($new !== $old) {
+            $lintProcess = $this->createLintProcessForSource($new);
+
+            if (!$lintProcess->isSuccessful()) {
+                if ($this->eventDispatcher) {
+                    $this->eventDispatcher->dispatch(
+                        FixerFileProcessedEvent::NAME,
+                        FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
+                    );
+                }
+
+                if ($this->errorsManager) {
+                    $this->errorsManager->report(ErrorsManager::ERROR_TYPE_LINT, $this->getFileRelativePathname($file), $lintProcess->getOutput());
+                }
+
+                return;
+            }
+
             if (!$dryRun) {
                 file_put_contents($file->getRealpath(), $new);
             }
@@ -234,6 +278,41 @@ class Fixer
         }
 
         return $fixInfo;
+    }
+
+    /**
+     * Create process that lint PHP file.
+     *
+     * @param string $path path to file
+     *
+     * @return Process
+     */
+    protected function createLintProcessForFile($path)
+    {
+        $process = new Process('php -l '.ProcessUtils::escapeArgument($path));
+        $process->setTimeout(null);
+        $process->run();
+
+        return $process;
+    }
+
+    /**
+     * Create process that lint PHP code.
+     *
+     * @param string $source code
+     *
+     * @return Process
+     */
+    protected function createLintProcessForSource($source)
+    {
+        if (!$this->lintTemporaryFile) {
+            $this->lintTemporaryFile = tempnam('.', 'tmp');
+        }
+
+        file_put_contents($this->lintTemporaryFile, $source);
+        $process = $this->createLintProcessForFile($this->lintTemporaryFile);
+
+        return $process;
     }
 
     private function getFileRelativePathname(\SplFileInfo $file)

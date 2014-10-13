@@ -19,6 +19,7 @@ namespace Symfony\CS;
 class ErrorsManager
 {
     const ERROR_TYPE_EXCEPTION = 1;
+    const ERROR_TYPE_LINT = 2;
 
     /**
      * Errors.
