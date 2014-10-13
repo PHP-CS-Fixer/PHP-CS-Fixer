@@ -16,6 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\ProcessUtils;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Tokenizer\Tokens;
 
@@ -288,7 +289,7 @@ class Fixer
      */
     protected function createLintProcessForFile($path)
     {
-        $process = new Process('php -l '.$path);
+        $process = new Process('php -l '.ProcessUtils::escapeArgument($path));
         $process->setTimeout(null);
         $process->run();
 
