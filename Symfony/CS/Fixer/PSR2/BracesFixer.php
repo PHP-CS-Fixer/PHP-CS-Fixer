@@ -123,7 +123,12 @@ class BracesFixer extends AbstractFixer
         $classyTokens = $this->getClassyTokens();
         $classyAndFunctionTokens = array_merge(array(T_FUNCTION), $classyTokens);
         $controlTokens = $this->getControlTokens();
-        $indentTokens = array_filter(array_merge($classyAndFunctionTokens, $controlTokens), function ($item) { return T_SWITCH !== $item; });
+        $indentTokens = array_filter(
+            array_merge($classyAndFunctionTokens, $controlTokens),
+            function ($item) {
+                return T_SWITCH !== $item;
+            }
+        );
 
         for ($index = 0, $limit = count($tokens); $index < $limit; ++$index) {
             $token = $tokens[$index];
@@ -239,7 +244,10 @@ class BracesFixer extends AbstractFixer
                 $nextNonWhitespaceToken = $tokens[$tokens->getNextNonWhitespace($startBraceIndex)];
 
                 // set indent only if it is not a case, when comment is following { in same line
-                if (!$nextNonWhitespaceToken->isComment() || !($nextToken->isWhitespace() && $nextToken->isWhitespace(array('whitespaces' => " \t")))) {
+                if (
+                    !$nextNonWhitespaceToken->isComment()
+                    || !($nextToken->isWhitespace() && $nextToken->isWhitespace(array('whitespaces' => " \t")))
+                ) {
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
                 }
             }
