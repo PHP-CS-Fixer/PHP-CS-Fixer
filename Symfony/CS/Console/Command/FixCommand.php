@@ -25,6 +25,7 @@ use Symfony\CS\FixerFileProcessedEvent;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
+use Symfony\CS\LintManager;
 use Symfony\CS\StdinFileInfo;
 
 /**
@@ -73,15 +74,20 @@ class FixCommand extends Command
      */
     public function __construct(Fixer $fixer = null, ConfigInterface $config = null)
     {
+        $this->defaultConfig = $config ?: new Config();
         $this->eventDispatcher = new EventDispatcher();
         $this->errorsManager = new ErrorsManager();
         $this->stopwatch = new Stopwatch();
+
         $this->fixer = $fixer ?: new Fixer();
         $this->fixer->registerBuiltInFixers();
         $this->fixer->registerBuiltInConfigs();
         $this->fixer->setStopwatch($this->stopwatch);
         $this->fixer->setErrorsManager($this->errorsManager);
-        $this->defaultConfig = $config ?: new Config();
+
+        if ($this->defaultConfig->usingLinter()) {
+            $this->fixer->setLintManager(new LintManager());
+        }
 
         parent::__construct();
     }
