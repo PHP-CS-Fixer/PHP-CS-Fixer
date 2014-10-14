@@ -1,0 +1,16 @@
+---------------------------------------------------------------------------
+
+by sstok at 2014-10-14T07:27:42Z
+
+I think it should be possible to disable linting also because I always check my changes manually.
+And linting does slow down the process.
+
+Besides that :+1: for this pr.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-14T07:57:14Z
+
+Let leave ability to disable linting for separate PR. I can't do it soon
+
+Thanks for great review, it is good to have you here!
