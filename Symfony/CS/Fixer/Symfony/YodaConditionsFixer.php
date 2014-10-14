@@ -32,6 +32,11 @@ class YodaConditionsFixer extends AbstractFixer
         return $tokens->generateCode();
     }
 
+    /**
+     * Fixes the comparisons in the given tokens.
+     *
+     * @param Tokens $tokens The token list to fix
+     */
     private function fixTokens(Tokens $tokens)
     {
         $comparisons = $tokens->findGivenKind(array(T_IS_EQUAL, T_IS_IDENTICAL));
@@ -49,6 +54,22 @@ class YodaConditionsFixer extends AbstractFixer
         }
     }
 
+    /**
+     * Fixes the comparison at the given index.
+     *
+     * A comparison is considered fixed when
+     * - both sides are a variable (e.g. $a === $b)
+     * - neither side is a variable (e.g. self::CONST === 3)
+     * - only the right-hand side is a variable (e.g. 3 === self::$var)
+     *
+     * If the left-hand side and right-hand side of the given comparison are
+     * swapped, this function runs recursively on the previous left-hand-side.
+     *
+     * @param Tokens $tokens The token list
+     * @param int    $index  The index of the comparison to fix
+     *
+     * @return int A upper bound for all non-fixed comparisons.
+     */
     private function fixComparison(Tokens $tokens, $index)
     {
         $startLeft = $this->findComparisonStart($tokens, $index);
@@ -87,6 +108,16 @@ class YodaConditionsFixer extends AbstractFixer
         return $startLeft;
     }
 
+    /**
+     * Checks whether the tokens between the given start and end describe a
+     * variable.
+     *
+     * @param Tokens $tokens The token list
+     * @param int    $start  The first index of the possible variable
+     * @param int    $end    The last index of the possible varaible
+     *
+     * @return bool Whether the tokens describe a variable
+     */
     private function isVariable(Tokens $tokens, $start, $end)
     {
         if ($end === $start) {
@@ -176,6 +207,19 @@ class YodaConditionsFixer extends AbstractFixer
         return false;
     }
 
+    /**
+     * Finds the start of the left-hand side of the comparison at the given
+     * index.
+     *
+     * The left-hand side ends when an operator with a lower precedence is
+     * encountered or when the block level for `()`, `{}` or `[]` goes below
+     * zero.
+     *
+     * @param Tokens $tokens The token list
+     * @param int    $index  The index of the comparison
+     *
+     * @return int The first index of the left-hand side of the comparison
+     */
     private function findComparisonStart(Tokens $tokens, $index)
     {
         static $blockTypes = array(
@@ -203,6 +247,19 @@ class YodaConditionsFixer extends AbstractFixer
         return $tokens->getNextNonWhitespace($index);
     }
 
+    /**
+     * Finds the end of the right-hand side of the comparison at the given
+     * index.
+     *
+     * The right-hand side ends when an operator with a lower precedence is
+     * encountered or when the block level for `()`, `{}` or `[]` goes below
+     * zero.
+     *
+     * @param Tokens $tokens The token list
+     * @param int    $index  The index of the comparison
+     *
+     * @return int The last index of the right-hand side of the comparison
+     */
     private function findComparisonEnd(Tokens $tokens, $index)
     {
         static $blockTypes = array(
@@ -231,6 +288,14 @@ class YodaConditionsFixer extends AbstractFixer
         return $tokens->getPrevNonWhitespace($index);
     }
 
+    /**
+     * Checks whether the given token has a lower precedence than `T_IS_EQUAL`
+     * or `T_IS_IDENTICAL`.
+     *
+     * @param Token $token The token to check
+     *
+     * @return bool Whether the token has a lower precedence
+     */
     private function isTokenOfLowerPrecedence(Token $token)
     {
         static $tokens;
