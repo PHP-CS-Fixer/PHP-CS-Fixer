@@ -38,12 +38,10 @@ class IndentationFixer extends AbstractFixer
                 }
 
                 $tokens[$index]->setContent($content);
-                continue;
             }
 
             if ($token->isWhitespace()) {
                 $tokens[$index]->setContent(preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $token->getContent()));
-                continue;
             }
         }
 
