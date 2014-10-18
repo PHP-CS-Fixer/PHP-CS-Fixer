@@ -198,7 +198,7 @@ $x = "
 	 * @test
 	 *
 	 * @return
-	 */'
+	 */',
         );
 
         $cases[] = array(
@@ -211,7 +211,7 @@ $x = "
 <?php
 		/*
 		 * Test that tabs in docblocks are converted to spaces.
-		 */'
+		 */',
         );
 
         $cases[] = array(
@@ -224,7 +224,7 @@ $x = "
 <?php
 	/*
 	 | Test that tabs in comments are converted to spaces.
-	 */'
+	 */',
         );
 
         return $cases;
