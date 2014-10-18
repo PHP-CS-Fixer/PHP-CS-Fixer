@@ -42,6 +42,14 @@ class IndentationFixerTest extends AbstractFixerTestBase
         $this->makeTest($expected, $input);
     }
 
+    /**
+     * @dataProvider provideTabInComment
+     */
+    public function testTabInComment($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
     public function provideIndentationOnly()
     {
         $cases = array();
@@ -166,5 +174,59 @@ $x = "
 	dog";',
             ),
         );
+    }
+
+    public function provideTabInComment()
+    {
+        $cases = array();
+
+        $cases[] = array(
+            '
+<?php
+    /*
+     * Test that tabs in docblocks are converted to spaces.
+     *
+     * @test
+     *
+     * @return
+     */',
+            '
+<?php
+	/*
+	 * Test that tabs in docblocks are converted to spaces.
+	 *
+	 * @test
+	 *
+	 * @return
+	 */'
+        );
+
+        $cases[] = array(
+            '
+<?php
+        /*
+         * Test that tabs in docblocks are converted to spaces.
+         */',
+            '
+<?php
+		/*
+		 * Test that tabs in docblocks are converted to spaces.
+		 */'
+        );
+
+        $cases[] = array(
+            '
+<?php
+    /*
+     | Test that tabs in comments are converted to spaces.
+     */',
+            '
+<?php
+	/*
+	 | Test that tabs in comments are converted to spaces.
+	 */'
+        );
+
+        return $cases;
     }
 }
