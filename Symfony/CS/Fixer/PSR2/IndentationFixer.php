@@ -33,11 +33,12 @@ class IndentationFixer extends AbstractFixer
                 $content = preg_replace('/^(?:(?<! ) {1,3})?\t/m', '\1    ', $token->getContent(), -1, $count);
 
                 // Also check for more tabs.
-                while($count !== 0) {
+                while ($count !== 0) {
                     $content = preg_replace('/^(\ +)?\t/m', '\1    ', $content, -1, $count);
                 }
 
                 $tokens[$index]->setContent($content);
+                continue;
             }
 
             if ($token->isWhitespace()) {
