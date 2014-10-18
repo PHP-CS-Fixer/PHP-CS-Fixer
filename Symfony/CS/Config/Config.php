@@ -28,6 +28,7 @@ class Config implements ConfigInterface
     protected $dir;
     protected $customFixers;
     protected $usingCache = false;
+    protected $usingLinter = true;
 
     public function __construct($name = 'default', $description = 'A default configuration')
     {
@@ -51,6 +52,13 @@ class Config implements ConfigInterface
     public function setUsingCache($usingCache)
     {
         $this->usingCache = $usingCache;
+
+        return $this;
+    }
+
+    public function setUsingLinter($usingLinter)
+    {
+        $this->usingLinter = $usingLinter;
 
         return $this;
     }
@@ -113,5 +121,10 @@ class Config implements ConfigInterface
     public function usingCache()
     {
         return $this->usingCache;
+    }
+
+    public function usingLinter()
+    {
+        return $this->usingLinter;
     }
 }
