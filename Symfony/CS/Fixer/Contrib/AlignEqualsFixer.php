@@ -73,7 +73,7 @@ class AlignEqualsFixer extends AbstractFixer
             }
 
             $lines = explode(self::NEW_LINE, $tmpCode);
-            $linesWithPlaceholder = [];
+            $linesWithPlaceholder = array();
             $blockSize = 0;
 
             foreach ($lines as $idx => $line) {
