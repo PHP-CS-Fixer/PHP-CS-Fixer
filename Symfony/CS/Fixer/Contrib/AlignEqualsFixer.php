@@ -115,18 +115,6 @@ class AlignEqualsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
-    {
-        // this is a fixer that change only cosmetics, no token is change,
-        // no token is introduced or removed. However, its effects may be
-        // rolled back by other fixers, fixing something more relevant.
-        // Thus, pushing to the end of process.
-        return -99;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription()
     {
         return 'Align equals symbols in consecutive lines';
