@@ -71,7 +71,7 @@ function a($a = 1, $b = 2, $c = 3)
 }
 function b(
     $a = 1,
-    $b = 2,
+    $bbb = 2,
     $c = 3
 ) {
     $a[$b = 1]     = 1;
@@ -115,7 +115,7 @@ function a($a = 1, $b = 2, $c = 3)
 }
 function b(
     $a = 1,
-    $b = 2,
+    $bbb = 2,
     $c = 3
 ) {
     $a[$b = 1] = 1;
