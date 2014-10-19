@@ -49,13 +49,13 @@ class AlignEqualsFixer extends AbstractFixer
             }
             if ($token->isGivenKind(T_FUNCTION)) {
                 ++$contextCounter;
-            } elseif ('(' === $tokenContent) {
+            } elseif ($token->equals('(')) {
                 ++$parenCount;
-            } elseif (')' === $tokenContent) {
+            } elseif ($token->equals(')')) {
                 --$parenCount;
-            } elseif ('[' === $tokenContent) {
+            } elseif ($token->equals('[')) {
                 ++$bracketCount;
-            } elseif (']' === $tokenContent) {
+            } elseif ($token->equals(']')) {
                 --$bracketCount;
             }
             $code .= $tokenContent;
