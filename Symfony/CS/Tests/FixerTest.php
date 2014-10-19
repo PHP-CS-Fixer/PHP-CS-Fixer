@@ -144,7 +144,8 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $fixers = $fixer->getFixers();
 
         $this->assertSame('encoding', $fixers[0]->getName());
-        $this->assertSame('eof_ending', $fixers[count($fixers) - 1]->getName());
+        $this->assertSame('eof_ending', $fixers[count($fixers) - 2]->getName());
+        $this->assertSame('align_equals', $fixers[count($fixers) - 1]->getName());
     }
 
     /**
