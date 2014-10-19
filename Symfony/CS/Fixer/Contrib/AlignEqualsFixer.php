@@ -81,6 +81,7 @@ class AlignEqualsFixer extends AbstractFixer
                     $linesWithPlaceholder[$blockSize][] = $idx;
                 } else {
                     $blockSize++;
+                    $linesWithPlaceholder[$blockSize] = array();
                 }
             }
 
