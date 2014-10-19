@@ -42,7 +42,7 @@ class AlignEqualsFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
         foreach ($tokens as $token) {
             $tokenContent = $token->getContent();
-            if ('=' === $tokenContent
+            if ($token->equals('=')
                  && 0 === $parenCount && 0 === $bracketCount) {
                 $code .= sprintf(self::ALIGNABLE_EQUAL, $contextCounter).$tokenContent;
                 continue;
