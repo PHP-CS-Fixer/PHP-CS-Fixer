@@ -76,6 +76,7 @@ class AlignEqualsFixer extends AbstractFixer
             $linesWithPlaceholder = array();
             $blockSize = 0;
 
+            $linesWithPlaceholder[$blockSize] = array();
             foreach ($lines as $idx => $line) {
                 if (substr_count($line, $placeholder) > 0) {
                     $linesWithPlaceholder[$blockSize][] = $idx;
