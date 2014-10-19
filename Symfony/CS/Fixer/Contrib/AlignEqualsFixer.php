@@ -48,15 +48,15 @@ class AlignEqualsFixer extends AbstractFixer
                 continue;
             }
             if ($token->isGivenKind(T_FUNCTION)) {
-                $contextCounter++;
+                ++$contextCounter;
             } elseif ('(' === $tokenContent) {
-                $parenCount++;
+                ++$parenCount;
             } elseif (')' === $tokenContent) {
-                $parenCount--;
+                --$parenCount;
             } elseif ('[' === $tokenContent) {
-                $bracketCount++;
+                ++$bracketCount;
             } elseif (']' === $tokenContent) {
-                $bracketCount--;
+                --$bracketCount;
             }
             $code .= $tokenContent;
         }
@@ -66,7 +66,7 @@ class AlignEqualsFixer extends AbstractFixer
 
     private function replacePlaceholder($tmpCode, $contextCounter)
     {
-        for ($j = 0; $j <= $contextCounter; $j++) {
+        for ($j = 0; $j <= $contextCounter; ++$j) {
             $placeholder = sprintf(self::ALIGNABLE_EQUAL, $j);
             if (false === strpos($tmpCode, $placeholder)) {
                 continue;
@@ -80,7 +80,7 @@ class AlignEqualsFixer extends AbstractFixer
                 if (substr_count($line, $placeholder) > 0) {
                     $linesWithPlaceholder[$blockSize][] = $idx;
                 } else {
-                    $blockSize++;
+                    ++$blockSize;
                     $linesWithPlaceholder[$blockSize] = array();
                 }
             }
@@ -90,7 +90,7 @@ class AlignEqualsFixer extends AbstractFixer
                 if (1 === sizeof($group)) {
                     continue;
                 }
-                $i++;
+                ++$i;
                 $rightmostSymbol = 0;
                 foreach ($group as $idx) {
                     $rightmostSymbol = max($rightmostSymbol, strpos($lines[$idx], $placeholder));
