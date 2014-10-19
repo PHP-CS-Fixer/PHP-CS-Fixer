@@ -292,6 +292,9 @@ Choose from the list of available fixers:
 * **yoda_conditions** [symfony] Comparisons should be done
                using Yoda conditions.
 
+* **align_equals** [contrib] Align equals symbols in
+               consecutive lines.
+
 * **concat_with_spaces** [contrib] Concatenation should be used
                with at least one whitespace around.
 
