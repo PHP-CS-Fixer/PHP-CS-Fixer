@@ -247,6 +247,9 @@ Choose from the list of available fixers:
                path should not be placed under
                brackets.
 
+* **merge_double_arrow_and_array** [symfony] Merge in a single line double
+               arrows and array statements.
+
 * **multiline_array_trailing_comma** [symfony] PHP multi-line arrays should
                have a trailing comma.
 
