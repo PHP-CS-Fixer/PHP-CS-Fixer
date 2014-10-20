@@ -292,6 +292,9 @@ Choose from the list of available fixers:
 * **yoda_conditions** [symfony] Comparisons should be done
                using Yoda conditions.
 
+* **align_double_arrow** [contrib] Align double arrow symbols in
+               consecutive lines.
+
 * **align_equals** [contrib] Align equals symbols in
                consecutive lines.
 
