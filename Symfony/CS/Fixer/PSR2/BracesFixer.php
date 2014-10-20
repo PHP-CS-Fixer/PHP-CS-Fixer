@@ -176,21 +176,6 @@ class BracesFixer extends AbstractFixer
                     continue;
                 }
 
-                // skip braces like `$b->{$c}`
-                if ($nestToken->equals('}')) {
-                    $startNestBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nestIndex, false);
-                    $prevNestStartBraceIndex = $tokens->getTokenNotOfKindSibling(
-                        $startNestBraceIndex,
-                        -1,
-                        array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT))
-                    );
-
-                    if ($tokens[$prevNestStartBraceIndex]->equals(array(T_OBJECT_OPERATOR))) {
-                        $nestIndex = $startNestBraceIndex;
-                        continue;
-                    }
-                }
-
                 if (1 === $nestLevel && $nestToken->equalsAny(array(';', '}'))) {
                     $nextNonWhitespaceNestToken = $tokens[$tokens->getNextNonWhitespace($nestIndex)];
 
