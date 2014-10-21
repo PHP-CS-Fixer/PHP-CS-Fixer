@@ -14,6 +14,7 @@ namespace Symfony\CS;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class FixersResolver
 {
@@ -44,6 +45,10 @@ class FixersResolver
     protected function resolveByLevel($levelOption, $fixerOption)
     {
         $level = $this->parseLevelOption($levelOption, $fixerOption);
+
+        if (null === $level) {
+            return;
+        }
 
         $fixers = array();
 
@@ -92,37 +97,35 @@ class FixersResolver
             'symfony' => FixerInterface::SYMFONY_LEVEL,
         );
 
-        if (isset($levelMap[$levelOption])) {
-            $level = $levelMap[$levelOption];
-        } elseif (null === $levelOption) {
-            $level = null;
-
-            $names = $this->parseFixerOption($fixerOption);
-            if (empty($names)) {
-                $level = $this->config->getLevel();
-            } else {
-                foreach ($names as $name) {
-                    if (0 === strpos($name, '-')) {
-                        $level = $this->config->getLevel();
-                        break;
-                    }
-                }
+        if (null !== $levelOption) {
+            if (!isset($levelMap[$levelOption])) {
+                throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $levelOption));
             }
-        } else {
-            throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $levelOption));
+
+            return $levelMap[$levelOption];
         }
 
-        return $level;
+        $names = $this->parseFixerOption($fixerOption);
+
+        if (empty($names)) {
+            return $this->config->getLevel();
+        }
+
+        foreach ($names as $name) {
+            if (0 === strpos($name, '-')) {
+                return $this->config->getLevel();
+            }
+        }
+
+        return null;
     }
 
     protected function parseFixerOption($fixerOption)
     {
         if (null === $fixerOption) {
-            $names = $this->config->getFixers();
-        } else {
-            $names = array_map('trim', explode(',', $fixerOption));
+            return $this->config->getFixers();
         }
 
-        return $names;
+        return array_map('trim', explode(',', $fixerOption));
     }
 }
