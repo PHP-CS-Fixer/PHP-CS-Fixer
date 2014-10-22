@@ -33,6 +33,12 @@ class AlignEqualsFixer extends AbstractFixer
         return $this->replacePlaceholder($tmpCode, $contextCounter);
     }
 
+    /**
+     * Inject into the text placeholders of candidates of vertical alignment.
+     *
+     * @param  string       $content
+     * @return array($code, $context_counter)
+     */
     private function injectAlignmentPlaceholders($content)
     {
         $contextCounter = 0;
@@ -40,13 +46,16 @@ class AlignEqualsFixer extends AbstractFixer
         $bracketCount = 0;
         $code = '';
         $tokens = Tokens::fromCode($content);
+
         foreach ($tokens as $token) {
             $tokenContent = $token->getContent();
+
             if ($token->equals('=')
-                 && 0 === $parenCount && 0 === $bracketCount) {
+                && 0 === $parenCount && 0 === $bracketCount) {
                 $code .= sprintf(self::ALIGNABLE_EQUAL, $contextCounter).$tokenContent;
                 continue;
             }
+
             if ($token->isGivenKind(T_FUNCTION)) {
                 ++$contextCounter;
             } elseif ($token->equals('(')) {
@@ -58,16 +67,25 @@ class AlignEqualsFixer extends AbstractFixer
             } elseif ($token->equals(']')) {
                 --$bracketCount;
             }
+
             $code .= $tokenContent;
         }
 
         return array($code, $contextCounter);
     }
 
+    /**
+     * Look for group of placeholders, and provide vertical alignment.
+     *
+     * @param  string $tmpCode
+     * @param  int    $contextCounter
+     * @return string
+     */
     private function replacePlaceholder($tmpCode, $contextCounter)
     {
         for ($j = 0; $j <= $contextCounter; ++$j) {
             $placeholder = sprintf(self::ALIGNABLE_EQUAL, $j);
+
             if (false === strpos($tmpCode, $placeholder)) {
                 continue;
             }
@@ -77,6 +95,7 @@ class AlignEqualsFixer extends AbstractFixer
             $blockSize = 0;
 
             $linesWithPlaceholder[$blockSize] = array();
+
             foreach ($lines as $idx => $line) {
                 if (substr_count($line, $placeholder) > 0) {
                     $linesWithPlaceholder[$blockSize][] = $idx;
@@ -91,11 +110,14 @@ class AlignEqualsFixer extends AbstractFixer
                 if (1 === sizeof($group)) {
                     continue;
                 }
+
                 ++$i;
                 $rightmostSymbol = 0;
+
                 foreach ($group as $idx) {
                     $rightmostSymbol = max($rightmostSymbol, strpos($lines[$idx], $placeholder));
                 }
+
                 foreach ($group as $idx) {
                     $line = $lines[$idx];
                     $currentSymbol = strpos($line, $placeholder);
@@ -118,6 +140,6 @@ class AlignEqualsFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Align equals symbols in consecutive lines';
+        return 'Align equals symbols in consecutive lines.';
     }
 }

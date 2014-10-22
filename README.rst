@@ -274,7 +274,7 @@ Choose from the list of available fixers:
                the end of blank lines.
 
 * **align_equals** [contrib] Align equals symbols in
-               consecutive lines
+               consecutive lines.
 
 * **concat_with_spaces** [contrib] Concatenation should be used
                with at least one whitespace around.
