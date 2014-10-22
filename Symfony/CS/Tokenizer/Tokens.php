@@ -281,7 +281,7 @@ class Tokens extends \SplFixedArray
     /**
      * Find block end.
      *
-     * @param int  $type        type of block, BLOCK_TYPE_CURLY_BRACE or BLOCK_TYPE_PARENTHESIS_BRACE
+     * @param int  $type        type of block, one of BLOCK_TYPE_*
      * @param int  $searchIndex index of opening brace
      * @param bool $findEnd     if method should find block's end, default true, otherwise method find block's start
      *
