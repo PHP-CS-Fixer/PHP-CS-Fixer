@@ -1,0 +1,74 @@
+---------------------------------------------------------------------------
+
+by stof at 2014-09-30T15:59:55Z
+
+Note that we apply yoda conditions for equalities in Symfony, but I don't think we enforce them in ``<``, ``<=`` and their counterparts. The main reason to choose yoda conditions in coding standards is avoiding to turn a ``==`` into a valid assignment when doing a typo. This does not apply to ``<``
+
+---------------------------------------------------------------------------
+
+by bgotink at 2014-09-30T16:21:53Z
+
+True, only `==` and `===` could be mistyped as `=`.
+
+I can easily change the code, in fact it would seriously simplify things, but...
+I figured if you use Yoda conditions, you'd do it everywhere. I for one find
+```php
+return 0 === $a && $b > 0;
+```
+less readable than
+```php
+return 0 === $a && 0 < $b;
+```
+.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-30T19:57:02Z
+
+The whole descr how the fixer work should be put into fixer docs.
+
+---------------------------------------------------------------------------
+
+by bgotink at 2014-09-30T22:09:07Z
+
+@keradus will do before finalizing the PR
+
+@stof I've changed the fixer to only fix `==` and `===`.
+
+There's another change: it now checks whether the left-hand side is a variable and the right-hand-side is not, in which case it switches the sides.
+This means the fixer now supports complicated comparisons, e.g.
+```php
+<?php
+// this
+return self::$variable->{$a}->a[$b] === null;
+// now becomes
+return null === self::$variable->{$a}->a[0];
+```
+
+I've just realised it won't work for `$this->{$a}[0]`, that's a TODO.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-13T21:41:29Z
+
+Hmmm.... is it ready to merge?
+
+---------------------------------------------------------------------------
+
+by bgotink at 2014-10-14T06:59:34Z
+
+I've added comments explaining what the methods do, so should be ready now.
+
+My computer is currently in repair due to GPU problems and I can't seem to get PHP to work on my partner's Windows installation, so I haven't been able to run `./php-cs-fixer fix .` before committing.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-16T20:05:06Z
+
+BTW when using with .php_cs you dont need to specify dir in command `php-cs-fixer fix .` (use without dot)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-19T10:13:08Z
+
+@sstok @stof @GrahamCampbell any thoughts?
