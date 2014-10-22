@@ -42,87 +42,95 @@ class IndentationFixerTest extends AbstractFixerTestBase
         $this->makeTest($expected, $input);
     }
 
+    /**
+     * @dataProvider provideTabInComment
+     */
+    public function testTabInComment($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
     public function provideIndentationOnly()
     {
         $cases = array();
 
         $cases[] = array('
 <?php
-        echo ALPHA;', '
+        echo ALPHA;', "
 <?php
-		echo ALPHA;');
+\t\techo ALPHA;");
 
         $cases[] = array('
 <?php
-        echo BRAVO;', '
+        echo BRAVO;', "
 <?php
-		echo BRAVO;');
+\t\techo BRAVO;");
 
         $cases[] = array('
 <?php
-        echo CHARLIE;', '
+        echo CHARLIE;', "
 <?php
- 		echo CHARLIE;');
+ \t\techo CHARLIE;");
 
         $cases[] = array('
 <?php
-        echo DELTA;', '
+        echo DELTA;', "
 <?php
-  		echo DELTA;');
+  \t\techo DELTA;");
 
         $cases[] = array('
 <?php
-        echo ECHO;', '
+        echo ECHO;', "
 <?php
-   		echo ECHO;');
+   \t\techo ECHO;");
 
         $cases[] = array('
 <?php
-        echo FOXTROT;', '
+        echo FOXTROT;', "
 <?php
-	 	echo FOXTROT;');
+\t \techo FOXTROT;");
 
         $cases[] = array('
 <?php
-        echo GOLF;', '
+        echo GOLF;', "
 <?php
-	  	echo GOLF;');
+\t  \techo GOLF;");
 
         $cases[] = array('
 <?php
-        echo HOTEL;', '
+        echo HOTEL;', "
 <?php
-	   	echo HOTEL;');
+\t   \techo HOTEL;");
 
         $cases[] = array('
 <?php
-        echo INDIA;', '
+        echo INDIA;', "
 <?php
-	    echo INDIA;');
+\t    echo INDIA;");
 
         $cases[] = array('
 <?php
-        echo JULIET;', '
+        echo JULIET;', "
 <?php
- 	   	echo JULIET;');
+ \t   \techo JULIET;");
 
         $cases[] = array('
 <?php
-        echo KILO;', '
+        echo KILO;', "
 <?php
-  	  	echo KILO;');
+  \t  \techo KILO;");
 
         $cases[] = array('
 <?php
-        echo MIKE;', '
+        echo MIKE;', "
 <?php
-   	 	echo MIKE;');
+   \t \techo MIKE;");
 
         $cases[] = array('
 <?php
-        echo NOVEMBER;', '
+        echo NOVEMBER;', "
 <?php
-    	echo NOVEMBER;');
+    \techo NOVEMBER;");
 
         return $cases;
     }
@@ -133,21 +141,21 @@ class IndentationFixerTest extends AbstractFixerTestBase
 
         $cases[] = array('
 <?php
-         echo OSCAR;', '
+         echo OSCAR;', "
 <?php
-	 	 echo OSCAR;');
+\t \t echo OSCAR;");
 
         $cases[] = array('
 <?php
-          echo PAPA;', '
+          echo PAPA;', "
 <?php
-	 	  echo PAPA;');
+\t \t  echo PAPA;");
 
         $cases[] = array('
 <?php
-           echo QUEBEC;', '
+           echo QUEBEC;', "
 <?php
-	 	   echo QUEBEC;');
+\t \t   echo QUEBEC;");
 
         return $cases;
     }
@@ -156,15 +164,84 @@ class IndentationFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
-                '<?php $x = "a: 	";',
+                '<?php $x = "a: \t";',
             ),
             array(
-                '<?php
-$x = "
-	Like
-	a
-	dog";',
+                "<?php
+\$x = \"
+\tLike
+\ta
+\tdog\";",
             ),
         );
+    }
+
+    public function provideTabInComment()
+    {
+        $cases = array();
+
+        $cases[] = array(
+            '
+<?php
+    /**
+     * Test that tabs in docblocks are converted to spaces.
+     *
+     * @test
+     *
+     * @return
+     */',
+            "
+<?php
+\t/**
+\t * Test that tabs in docblocks are converted to spaces.
+\t *
+\t * @test
+\t *
+\t * @return
+\t */",
+        );
+
+        $cases[] = array(
+            '
+<?php
+        /**
+         * Test that tabs in docblocks are converted to spaces.
+         */',
+            "
+<?php
+\t\t/**
+\t\t * Test that tabs in docblocks are converted to spaces.
+\t\t */",
+        );
+
+        $cases[] = array(
+            '
+<?php
+    /*
+     | Test that tabs in comments are converted to spaces.
+     */',
+            "
+<?php
+\t/*
+\t | Test that tabs in comments are converted to spaces.
+\t */",
+        );
+
+        $cases[] = array(
+            "
+<?php
+    /**
+     * This variable
+     * should not be '\t', really!
+     */",
+            "
+<?php
+\t/**
+\t * This variable
+\t * should not be '\t', really!
+\t */",
+        );
+
+        return $cases;
     }
 }

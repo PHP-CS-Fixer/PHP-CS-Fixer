@@ -29,11 +29,21 @@ class IndentationFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isWhitespace()) {
+            if ($token->isComment()) {
+                $content = preg_replace('/^(?:(?<! ) {1,3})?\t/m', '\1    ', $token->getContent(), -1, $count);
+
+                // Also check for more tabs.
+                while ($count !== 0) {
+                    $content = preg_replace('/^(\ +)?\t/m', '\1    ', $content, -1, $count);
+                }
+
+                $tokens[$index]->setContent($content);
                 continue;
             }
 
-            $tokens[$index]->setContent(preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $token->getContent()));
+            if ($token->isWhitespace()) {
+                $tokens[$index]->setContent(preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $token->getContent()));
+            }
         }
 
         return $tokens->generateCode();
