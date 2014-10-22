@@ -127,82 +127,88 @@ class YodaConditionsFixer extends AbstractFixer
 
         $index = $start;
         $expectString = false;
+
         while ($index <= $end) {
             $current = $tokens[$index];
-            if ($index < $end) {
-                $next = $tokens[$index + 1];
 
-                // self:: or ClassName::
-                if ($current->isGivenKind(T_STRING) && $next->isGivenKind(T_DOUBLE_COLON)) {
-                    $index += 2;
-                    continue;
-                }
-
-                // \ClassName
-                if ($current->isGivenKind(T_NS_SEPARATOR) && $next->isGivenKind(T_STRING)) {
-                    ++$index;
-                    continue;
-                }
-
-                // ClassName\
-                if ($current->isGivenKind(T_STRING) && $next->isGivenKind(T_NS_SEPARATOR)) {
-                    $index += 2;
-                    continue;
-                }
-
-                // $a-> or a-> (as in $b->a->c)
-                if ($current->isGivenKind($expectString ? T_STRING : T_VARIABLE) && $next->isGivenKind(T_OBJECT_OPERATOR)) {
-                    $index += 2;
-                    $expectString = true;
-                    continue;
-                }
-
-                // {...} (as in $a->{$b})
-                if ($expectString && $current->isGivenKind(CT_DYNAMIC_PROP_BRACE_OPEN)) {
-                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, $index);
-
-                    if ($index === $end) {
-                        return true;
-                    } elseif ($index > $end) {
-                        return false;
-                    }
-
-                    ++$index;
-
-                    if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
-                        return false;
-                    }
-                    ++$index;
-
-                    continue;
-                }
-
-                // $a[...] or a[...] (as in $c->a[$b])
-                if ($current->isGivenKind($expectString ? T_STRING : T_VARIABLE) && $next->equals('[')) {
-                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $index + 1);
-
-                    if ($index === $end) {
-                        return true;
-                    } elseif ($index > $end) {
-                        return false;
-                    }
-
-                    ++$index;
-
-                    if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
-                        return false;
-                    }
-                    ++$index;
-
-                    $expectString = true;
-                    continue;
-                }
-
-                return false;
-            } else {
-                // this is the last token!
+            // check if this is the last token
+            if ($index === $end) {
                 return $current->isGivenKind($expectString ? T_STRING : T_VARIABLE);
             }
+
+            $next = $tokens[$index + 1];
+
+            // self:: or ClassName::
+            if ($current->isGivenKind(T_STRING) && $next->isGivenKind(T_DOUBLE_COLON)) {
+                $index += 2;
+                continue;
+            }
+
+            // \ClassName
+            if ($current->isGivenKind(T_NS_SEPARATOR) && $next->isGivenKind(T_STRING)) {
+                ++$index;
+                continue;
+            }
+
+            // ClassName\
+            if ($current->isGivenKind(T_STRING) && $next->isGivenKind(T_NS_SEPARATOR)) {
+                $index += 2;
+                continue;
+            }
+
+            // $a-> or a-> (as in $b->a->c)
+            if ($current->isGivenKind($expectString ? T_STRING : T_VARIABLE) && $next->isGivenKind(T_OBJECT_OPERATOR)) {
+                $index += 2;
+                $expectString = true;
+                continue;
+            }
+
+            // {...} (as in $a->{$b})
+            if ($expectString && $current->isGivenKind(CT_DYNAMIC_PROP_BRACE_OPEN)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, $index);
+
+                if ($index === $end) {
+                    return true;
+                }
+
+                if ($index > $end) {
+                    return false;
+                }
+
+                ++$index;
+
+                if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
+                    return false;
+                }
+
+                ++$index;
+                continue;
+            }
+
+            // $a[...] or a[...] (as in $c->a[$b])
+            if ($current->isGivenKind($expectString ? T_STRING : T_VARIABLE) && $next->equals('[')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $index + 1);
+
+                if ($index === $end) {
+                    return true;
+                }
+
+                if ($index > $end) {
+                    return false;
+                }
+
+                ++$index;
+
+                if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
+                    return false;
+                }
+
+                ++$index;
+                $expectString = true;
+                continue;
+            }
+
+            return false;
         }
 
         return false;
