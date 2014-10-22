@@ -22,25 +22,7 @@ class Tokens extends \SplFixedArray
     const BLOCK_TYPE_PARENTHESIS_BRACE = 1;
     const BLOCK_TYPE_CURLY_BRACE = 2;
     const BLOCK_TYPE_SQUARE_BRACE = 3;
-
-    /**
-     * Array defining possible block edge.
-     * @type array
-     */
-    static private $blockEdgeDefinition = array(
-        self::BLOCK_TYPE_CURLY_BRACE => array(
-            'start' => '{',
-            'end' => '}',
-        ),
-        self::BLOCK_TYPE_PARENTHESIS_BRACE => array(
-            'start' => '(',
-            'end' => ')',
-        ),
-        self::BLOCK_TYPE_SQUARE_BRACE => array(
-            'start' => '[',
-            'end' => ']',
-        ),
-    );
+    const BLOCK_TYPE_DYNAMIC_PROP_BRACE = 4;
 
     /**
      * Static class cache.
@@ -72,6 +54,28 @@ class Tokens extends \SplFixedArray
         if (self::hasCache($key)) {
             unset(self::$cache[$key]);
         }
+    }
+
+    /**
+     * Detect type of block.
+     *
+     * @param Token $token token
+     *
+     * @return null|array array with 'type' and 'isStart' keys or null if not found
+     */
+    public static function detectBlockType(Token $token)
+    {
+        foreach (self::getBlockEdgeDefinitions() as $type => $definition) {
+            if ($token->equals($definition['start'])) {
+                return array('type' => $type, 'isStart' => true);
+            }
+
+            if ($token->equals($definition['end'])) {
+                return array('type' => $type, 'isStart' => false);
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -139,6 +143,33 @@ class Tokens extends \SplFixedArray
         $collection->changeCodeHash($codeHash);
 
         return $collection;
+    }
+
+    /**
+     * Return block edge definitions.
+     *
+     * @return array
+     */
+    private static function getBlockEdgeDefinitions()
+    {
+        return array(
+            self::BLOCK_TYPE_CURLY_BRACE => array(
+                'start' => '{',
+                'end' => '}',
+            ),
+            self::BLOCK_TYPE_PARENTHESIS_BRACE => array(
+                'start' => '(',
+                'end' => ')',
+            ),
+            self::BLOCK_TYPE_SQUARE_BRACE => array(
+                'start' => '[',
+                'end' => ']',
+            ),
+            self::BLOCK_TYPE_DYNAMIC_PROP_BRACE => array(
+                'start' => array(CT_DYNAMIC_PROP_BRACE_OPEN, '{'),
+                'end' => array(CT_DYNAMIC_PROP_BRACE_CLOSE, '}'),
+            ),
+        );
     }
 
     /**
@@ -289,12 +320,14 @@ class Tokens extends \SplFixedArray
      */
     public function findBlockEnd($type, $searchIndex, $findEnd = true)
     {
-        if (!isset(self::$blockEdgeDefinition[$type])) {
+        $blockEdgeDefinitions = self::getBlockEdgeDefinitions();
+
+        if (!isset($blockEdgeDefinitions[$type])) {
             throw new \InvalidArgumentException('Invalid param $type');
         }
 
-        $startEdge = self::$blockEdgeDefinition[$type]['start'];
-        $endEdge = self::$blockEdgeDefinition[$type]['end'];
+        $startEdge = $blockEdgeDefinitions[$type]['start'];
+        $endEdge = $blockEdgeDefinitions[$type]['end'];
         $startIndex = $searchIndex;
         $endIndex = $this->count() - 1;
         $indexOffset = 1;

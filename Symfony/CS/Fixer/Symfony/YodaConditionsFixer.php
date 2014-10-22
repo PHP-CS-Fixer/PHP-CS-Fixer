@@ -17,6 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Bram Gotink <bram@gotink.me>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class YodaConditionsFixer extends AbstractFixer
 {
@@ -157,8 +158,8 @@ class YodaConditionsFixer extends AbstractFixer
                 }
 
                 // {...} (as in $a->{$b})
-                if ($expectString && $current->equals('{')) {
-                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                if ($expectString && $current->isGivenKind(CT_DYNAMIC_PROP_BRACE_OPEN)) {
+                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, $index);
 
                     if ($index === $end) {
                         return true;
@@ -222,12 +223,6 @@ class YodaConditionsFixer extends AbstractFixer
      */
     private function findComparisonStart(Tokens $tokens, $index)
     {
-        static $blockTypes = array(
-            ')' => Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
-            ']' => Tokens::BLOCK_TYPE_SQUARE_BRACE,
-            '}' => Tokens::BLOCK_TYPE_CURLY_BRACE,
-        );
-
         while (0 <= $index) {
             $token = $tokens[$index];
 
@@ -235,13 +230,18 @@ class YodaConditionsFixer extends AbstractFixer
                 break;
             }
 
-            if ($token->equalsAny(array(')', ']', '}'))) {
-                $index = $tokens->findBlockEnd($blockTypes[$token->getContent()], $index, false) - 1;
-            } elseif ($token->equalsAny(array('(', '[', '{'))) {
-                break;
-            } else {
+            $block = $tokens->detectBlockType($token);
+
+            if (null === $block) {
                 --$index;
+                continue;
             }
+
+            if ($block['isStart']) {
+                break;
+            }
+
+            $index = $tokens->findBlockEnd($block['type'], $index, false) - 1;
         }
 
         return $tokens->getNextNonWhitespace($index);
@@ -262,13 +262,8 @@ class YodaConditionsFixer extends AbstractFixer
      */
     private function findComparisonEnd(Tokens $tokens, $index)
     {
-        static $blockTypes = array(
-            '(' => Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
-            '[' => Tokens::BLOCK_TYPE_SQUARE_BRACE,
-            '{' => Tokens::BLOCK_TYPE_CURLY_BRACE,
-        );
-
         $count = count($tokens);
+
         while ($index < $count) {
             $token = $tokens[$index];
 
@@ -276,13 +271,18 @@ class YodaConditionsFixer extends AbstractFixer
                 break;
             }
 
-            if ($token->equalsAny(array('(', '[', '{'))) {
-                $index = $tokens->findBlockEnd($blockTypes[$token->getContent()], $index) + 1;
-            } elseif ($token->equalsAny(array(')', ']', '}'))) {
-                break;
-            } else {
+            $block = $tokens->detectBlockType($token);
+
+            if (null === $block) {
                 ++$index;
+                continue;
             }
+
+            if (!$block['isStart']) {
+                break;
+            }
+
+            $index = $tokens->findBlockEnd($block['type'], $index) + 1;
         }
 
         return $tokens->getPrevNonWhitespace($index);
