@@ -31,107 +31,107 @@ class AlignEqualsFixerTest extends AbstractFixerTestBase
         return array(
             array(
                 '<?php
-$a    = 1;
-$bbbb = \'
-$cccccccc = 3;
-\';
-',
+                $a    = 1;
+                $bbbb = \'
+                $cccccccc = 3;
+                \';
+                ',
                 '<?php
-$a = 1;
-$bbbb = \'
-$cccccccc = 3;
-\';
-',
-                array(
-                    '<?php
-$ccc = 1;
-$bb  = 1;
-$a   = 1;
-/*
-Others alignments
- */
-$a[$b = 1]     = 1;
-$ab[$bc = 1]   = 1;
-$abc[$bcd = 1] = 1;
-$a[$b]         = 1;
-$ab[$bc]       = 1;
-$abc[$bcd]     = 1;
+                $a = 1;
+                $bbbb = \'
+                $cccccccc = 3;
+                \';
+                ',
+            ),
+            array(
+                '<?php
+                $ccc = 1;
+                $bb  = 1;
+                $a   = 1;
+                /*
+                Others alignments
+                 */
+                $a[$b = 1]     = 1;
+                $ab[$bc = 1]   = 1;
+                $abc[$bcd = 1] = 1;
+                $a[$b]         = 1;
+                $ab[$bc]       = 1;
+                $abc[$bcd]     = 1;
 
-if ($a = 1) {
-    $ccc = 1;
-    $bb  = 1;
-    $a   = 1;
-}
+                if ($a = 1) {
+                    $ccc = 1;
+                    $bb  = 1;
+                    $a   = 1;
+                }
 
-function a($a = 1, $b = 2, $c = 3)
-{
-    $a[$b = 1]     = 1;
-    $ab[$bc = 1]   = 1;
-    $abc[$bcd = 1] = 1;
-}
-function b(
-    $a = 1,
-    $bbb = 2,
-    $c = 3
-) {
-    $a[$b = 1]     = 1;
-    $ab[$bc = 1]   = 1;
-    $abc[$bcd = 1] = 1;
-}
-while (false) {
-    $aa    = 2;
-    $a[$b] = array();
-}
-for ($i = 0; $i < 10; $i++) {
-    $aa    = 2;
-    $a[$b] = array();
-}
-',
-                    '<?php
-$ccc = 1;
-$bb = 1;
-$a = 1;
-/*
-Others alignments
- */
-$a[$b = 1] = 1;
-$ab[$bc = 1] = 1;
-$abc[$bcd = 1] = 1;
-$a[$b] = 1;
-$ab[$bc] = 1;
-$abc[$bcd] = 1;
+                function a($a = 1, $b = 2, $c = 3)
+                {
+                    $a[$b = 1]     = 1;
+                    $ab[$bc = 1]   = 1;
+                    $abc[$bcd = 1] = 1;
+                }
+                function b(
+                    $a = 1,
+                    $bbb = 2,
+                    $c = 3
+                ) {
+                    $a[$b = 1]     = 1;
+                    $ab[$bc = 1]   = 1;
+                    $abc[$bcd = 1] = 1;
+                }
+                while (false) {
+                    $aa    = 2;
+                    $a[$b] = array();
+                }
+                for ($i = 0; $i < 10; $i++) {
+                    $aa    = 2;
+                    $a[$b] = array();
+                }
+                ',
+                '<?php
+                $ccc = 1;
+                $bb = 1;
+                $a = 1;
+                /*
+                Others alignments
+                 */
+                $a[$b = 1] = 1;
+                $ab[$bc = 1] = 1;
+                $abc[$bcd = 1] = 1;
+                $a[$b] = 1;
+                $ab[$bc] = 1;
+                $abc[$bcd] = 1;
 
-if ($a = 1) {
-    $ccc = 1;
-    $bb = 1;
-    $a = 1;
-}
+                if ($a = 1) {
+                    $ccc = 1;
+                    $bb = 1;
+                    $a = 1;
+                }
 
-function a($a = 1, $b = 2, $c = 3)
-{
-    $a[$b = 1] = 1;
-    $ab[$bc = 1] = 1;
-    $abc[$bcd = 1] = 1;
-}
-function b(
-    $a = 1,
-    $bbb = 2,
-    $c = 3
-) {
-    $a[$b = 1] = 1;
-    $ab[$bc = 1] = 1;
-    $abc[$bcd = 1] = 1;
-}
-while (false) {
-    $aa = 2;
-    $a[$b] = array();
-}
-for ($i = 0; $i < 10; $i++) {
-    $aa = 2;
-    $a[$b] = array();
-}
-',
-                ),
+                function a($a = 1, $b = 2, $c = 3)
+                {
+                    $a[$b = 1] = 1;
+                    $ab[$bc = 1] = 1;
+                    $abc[$bcd = 1] = 1;
+                }
+                function b(
+                    $a = 1,
+                    $bbb = 2,
+                    $c = 3
+                ) {
+                    $a[$b = 1] = 1;
+                    $ab[$bc = 1] = 1;
+                    $abc[$bcd = 1] = 1;
+                }
+                while (false) {
+                    $aa = 2;
+                    $a[$b] = array();
+                }
+                for ($i = 0; $i < 10; $i++) {
+                    $aa = 2;
+                    $a[$b] = array();
+                }
+                ',
             ),
         );
     }
