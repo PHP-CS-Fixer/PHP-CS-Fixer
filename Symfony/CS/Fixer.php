@@ -286,19 +286,19 @@ class Fixer
     {
         $level = $fixer->getLevel();
 
-        if ($level === ($level & FixerInterface::PSR0_LEVEL)) {
+        if (($level & FixerInterface::PSR0_LEVEL) === $level) {
             return 'PSR-0';
         }
 
-        if ($level === ($level & FixerInterface::PSR1_LEVEL)) {
+        if (($level & FixerInterface::PSR1_LEVEL) === $level) {
             return 'PSR-1';
         }
 
-        if ($level === ($level & FixerInterface::PSR2_LEVEL)) {
+        if (($level & FixerInterface::PSR2_LEVEL) === $level) {
             return 'PSR-2';
         }
 
-        if ($level === ($level & FixerInterface::CONTRIB_LEVEL)) {
+        if (($level & FixerInterface::CONTRIB_LEVEL) === $level) {
             return 'contrib';
         }
 
