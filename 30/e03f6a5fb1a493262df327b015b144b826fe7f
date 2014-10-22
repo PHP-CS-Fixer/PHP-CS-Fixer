@@ -1,0 +1,64 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-17T20:55:29Z
+
+https://github.com/fabpot/PHP-CS-Fixer/blob/master/CONTRIBUTING.md
+
+> If you are adding functionality or fixing a bug - add a test!
+
+---------------------------------------------------------------------------
+
+by hannesvdvreken at 2014-10-18T07:03:44Z
+
+Will do! Thanks!
+
+---------------------------------------------------------------------------
+
+by hannesvdvreken at 2014-10-18T13:28:07Z
+
+@keradus done!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-18T14:24:31Z
+
+What about https://github.com/fabpot/PHP-CS-Fixer/issues/350#issuecomment-57514572 ?
+
+---------------------------------------------------------------------------
+
+by hannesvdvreken at 2014-10-18T14:33:36Z
+
+@keradus I'll provide a test for that, but that's what `^` is for in the regex. It only deletes tabs in front of the docblocks, at the beginning of the line.
+
+---------------------------------------------------------------------------
+
+by hannesvdvreken at 2014-10-18T14:47:45Z
+
+@keradus https://github.com/hannesvdvreken/PHP-CS-Fixer/commit/8ba39e09b75aa37b27cf2f4009f48a027f981140#diff-0a5a8e57941334c075fe28ca54085d59R232
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-18T15:01:53Z
+
+Great!
+When sb will change this fixer in the future one would change that regexp as well. The testcase will protect against losing that behavior.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-18T15:01:57Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-19T21:49:36Z
+
+Any more opinions?
+
+// cc @sstok @stof @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-10-19T21:50:43Z
+
+:+1:
