@@ -518,6 +518,20 @@ function mixed()
             ),
             array(
                 '<?php
+function mixedComplex()
+{
+    $a = $b->{"a{$c->{\'foo-bar\'}()}d"}();
+}',
+            ),
+            array(
+                '<?php
+function mixedComplex()
+{
+    $a = ${"b{$foo}"}->{"a{$c->{\'foo-bar\'}()}d"}();
+}',
+            ),
+            array(
+                '<?php
     if (true):
         echo 1;
     else:
