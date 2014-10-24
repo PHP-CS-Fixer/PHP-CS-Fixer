@@ -511,6 +511,13 @@ function foo()
             ),
             array(
                 '<?php
+function mixed()
+{
+    $a = $b->{"a{$c}d"}();
+}',
+            ),
+            array(
+                '<?php
     if (true):
         echo 1;
     else:
