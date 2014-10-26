@@ -19,6 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
  * Fixer for rules defined in PSR2 ¶4.3, ¶4.6, ¶5.
  *
  * @author Marc Aubé
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class ParenthesisFixer extends AbstractFixer
 {
@@ -30,11 +31,21 @@ class ParenthesisFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens as $index => $token) {
-            if ($token->equals('(')) {
-                $this->removeSpaceAroundToken($tokens, $index, 1);
-            } elseif ($token->equals(')')) {
-                $this->removeSpaceAroundToken($tokens, $index, -1);
+            if (!$token->equals('(')) {
+                continue;
             }
+
+            $prevIndex = $tokens->getPrevNonWhitespace($index);
+
+            // ignore parenthesis for T_ARRAY
+            if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_ARRAY)) {
+                continue;
+            }
+
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+
+            $this->removeSpaceAroundToken($tokens, $index, 1);
+            $this->removeSpaceAroundToken($tokens, $endIndex, -1);
         }
 
         return $tokens->generateCode();
@@ -49,22 +60,21 @@ class ParenthesisFixer extends AbstractFixer
      */
     private function removeSpaceAroundToken(Tokens $tokens, $index, $offset)
     {
-        if (!isset($tokens[$index + $offset])) {
+        if (
+            !isset($tokens[$index + $offset])
+            || !isset($tokens[$index + $offset - 1])
+        ) {
             return;
         }
 
         /** @var Token $spaceToken */
-        $spaceToken = $tokens[$index + $offset];
+        $spaceToken     = $tokens[$index + $offset];
 
         /** @var Token $precedingToken */
-        if (isset($tokens[$index + $offset - 1])) {
-            $precedingToken = $tokens[$index + $offset - 1];
-        } else {
-            $precedingToken = null;
-        }
+        $precedingToken = $tokens[$index + $offset - 1];
 
         $tokenIsNotNewLine = $spaceToken->isWhitespace() && false === strpos($spaceToken->getContent(), "\n");
-        $precedingTokenIsNotNewLine = ($precedingToken == null || false === strpos($precedingToken->getContent(), "\n"));
+        $precedingTokenIsNotNewLine = false === strpos($precedingToken->getContent(), "\n");
 
         if ($tokenIsNotNewLine && $precedingTokenIsNotNewLine) {
             $spaceToken->clear();
