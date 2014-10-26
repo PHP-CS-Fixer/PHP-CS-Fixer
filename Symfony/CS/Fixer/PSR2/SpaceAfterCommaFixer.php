@@ -27,7 +27,6 @@ class SpaceAfterCommaFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens as $index => $token) {
-
             if (!$tokens[$index]->equals(",")) {
                 continue;
             }
@@ -45,6 +44,7 @@ class SpaceAfterCommaFixer extends AbstractFixer
             $tokens->insertAt($index+1, new Token(array(T_WHITESPACE, ' ')));
             continue;
         }
+
         return $tokens->generateCode();
     }
 
