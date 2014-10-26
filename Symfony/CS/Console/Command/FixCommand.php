@@ -282,7 +282,10 @@ EOF
 
         $allFixers = $this->fixer->getFixers();
 
-        switch ($input->getOption('level')) {
+        $levelOption = $input->getOption('level') ?: $config->getLevel();
+        $fixerOption = $input->getOption('fixers') ?: (is_string($config->getFixers()) ? $config->getFixers() : null);
+
+        switch ($levelOption) {
             case 'psr0':
                 $level = FixerInterface::PSR0_LEVEL;
                 break;
@@ -296,7 +299,6 @@ EOF
                 $level = FixerInterface::SYMFONY_LEVEL;
                 break;
             case null:
-                $fixerOption = $input->getOption('fixers');
                 if (empty($fixerOption) || preg_match('{(^|,)-}', $fixerOption)) {
                     $level = $config->getFixers();
                 } else {
@@ -324,14 +326,14 @@ EOF
         }
 
         // remove/add fixers based on the fixers option
-        if (preg_match('{(^|,)-}', $input->getOption('fixers'))) {
+        if (preg_match('{(^|,)-}', $fixerOption)) {
             foreach ($fixers as $key => $fixer) {
-                if (preg_match('{(^|,)-'.preg_quote($fixer->getName()).'}', $input->getOption('fixers'))) {
+                if (preg_match('{(^|,)-'.preg_quote($fixer->getName()).'}', $fixerOption)) {
                     unset($fixers[$key]);
                 }
             }
-        } elseif ($input->getOption('fixers')) {
-            $names = array_map('trim', explode(',', $input->getOption('fixers')));
+        } elseif ($fixerOption) {
+            $names = array_map('trim', explode(',', $fixerOption));
 
             foreach ($allFixers as $fixer) {
                 if (in_array($fixer->getName(), $names, true) && !in_array($fixer, $fixers, true)) {
