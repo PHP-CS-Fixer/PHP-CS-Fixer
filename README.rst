@@ -200,6 +200,11 @@ Choose from the list of available fixers:
 * **lowercase_keywords** [PSR-2] PHP keywords MUST be in lower
                case.
 
+* **method_argument_space** [PSR-2] In method arguments and method
+               call, there MUST NOT be a space before
+               each comma and there MUST be one space
+               after each comma.
+
 * **multiple_use** [PSR-2] There MUST be one use keyword
                per declaration.
 
