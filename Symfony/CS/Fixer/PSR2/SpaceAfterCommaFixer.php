@@ -25,7 +25,6 @@ class SpaceAfterCommaFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
-        print_r($tokens);
 
         foreach ($tokens as $index => $token) {
 
