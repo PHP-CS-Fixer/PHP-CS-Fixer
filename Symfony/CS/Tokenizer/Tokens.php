@@ -34,14 +34,14 @@ class Tokens extends \SplFixedArray
     /**
      * crc32 hash of code string.
      *
-     * @var array
+     * @var string
      */
     private $codeHash;
 
     /**
      * Clear cache - one position or all of them.
      *
-     * @param int|string|null $key position to clear, when null clear all
+     * @param string|null $key position to clear, when null clear all
      */
     public static function clearCache($key = null)
     {
@@ -175,9 +175,9 @@ class Tokens extends \SplFixedArray
     /**
      * Get cache value for given key.
      *
-     * @param int|string $key item key
+     * @param string $key item key
      *
-     * @return misc item value
+     * @return Tokens
      */
     private static function getCache($key)
     {
@@ -191,7 +191,7 @@ class Tokens extends \SplFixedArray
     /**
      * Check if given key exists in cache.
      *
-     * @param int|string $key item key
+     * @param string $key item key
      *
      * @return bool
      */
@@ -203,7 +203,7 @@ class Tokens extends \SplFixedArray
     /**
      * Check whether passed method name is one of magic methods.
      *
-     * @param string $content name of method
+     * @param string $name name of method
      *
      * @return bool is method a magical
      */
@@ -220,10 +220,10 @@ class Tokens extends \SplFixedArray
     /**
      * Set cache item.
      *
-     * @param int|string $key   item key
-     * @param int|string $value item value
+     * @param string $key   item key
+     * @param Tokens $value item value
      */
-    private static function setCache($key, $value)
+    private static function setCache($key, Tokens $value)
     {
         self::$cache[$key] = $value;
     }
@@ -278,7 +278,7 @@ class Tokens extends \SplFixedArray
     public function ensureWhitespaceAtIndex($index, $indexOffset, $whitespace)
     {
         $removeLastCommentLine = function (Token $token, $indexOffset) {
-            // becouse comments tokens are greedy and may consume single \n if we are putting whitespace after it let trim that \n
+            // because comments tokens are greedy and may consume single \n if we are putting whitespace after it let trim that \n
             if (1 === $indexOffset && $token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT))) {
                 $content = $token->getContent();
 
@@ -414,8 +414,9 @@ class Tokens extends \SplFixedArray
     /**
      * Generate code from tokens between given indexes.
      *
-     * @param  int    $start start index
-     * @param  int    $end   end index
+     * @param int $start start index
+     * @param int $end   end index
+     *
      * @return string
      */
     public function generatePartialCode($start, $end)
@@ -431,6 +432,8 @@ class Tokens extends \SplFixedArray
 
     /**
      * Get indexes of methods and properties in classy code (classes, interfaces and traits).
+     *
+     * @return array
      */
     public function getClassyElements()
     {
