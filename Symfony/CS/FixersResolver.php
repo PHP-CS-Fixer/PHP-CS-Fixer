@@ -12,23 +12,32 @@
 namespace Symfony\CS;
 
 /**
+ * The resolver that resolves fixers to use by command line options and config.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class FixersResolver
 {
+    protected $fixers = array();
     protected $allFixers;
-    protected $fixers;
     protected $config;
 
     public function __construct(array $allFixers, ConfigInterface $config)
     {
         $this->allFixers = $allFixers;
-        $this->fixers = $allFixers;
         $this->config = $config;
     }
 
+    /**
+     * Resolves fixers.
+     *
+     * @param string $levelOption
+     * @param string $fixerOption
+     *
+     * @return array An array of FixerInterface
+     */
     public function resolve($levelOption, $fixerOption)
     {
         $this->resolveByLevel($levelOption, $fixerOption);
@@ -37,6 +46,11 @@ class FixersResolver
         return $this->getFixers();
     }
 
+    /**
+     * Returns fixers.
+     *
+     * @return array An array of FixerInterface
+     */
     public function getFixers()
     {
         return $this->fixers;

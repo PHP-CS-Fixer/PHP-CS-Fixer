@@ -185,7 +185,7 @@ and directories that need to be analyzed:
     ?>
 
 You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
-The following example shows how to use all PSR-2 Fixers but the `psr0` fixer.
+The following example shows how to use all ``symfony`` Fixers but the `psr0` fixer.
 Note the additional <comment>-</comment> in front of the Fixer name.
 
     <?php
@@ -196,12 +196,29 @@ Note the additional <comment>-</comment> in front of the Fixer name.
     ;
 
     return Symfony\CS\Config\Config::create()
-        ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
         ->fixers(array('-psr0'))
         ->finder(\$finder)
     ;
 
     ?>
+
+The ``symfony`` level is set by default, you can also change the default level:
+
+    <?php
+
+    return Symfony\CS\Config\Config::create()
+        ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
+    ;
+
+    ?>
+
+In combination with these config and command line options, you can choose various usage.
+
+For example, default level is ``symfony``, but if you also don't want to use
+the ``psr0`` fixer, you can specify the ``--fixers="-psr0"`` option.
+
+But if you use the ``--fixers`` option with only exact fixers,
+only those exact fixers are enabled whether or not level is set.
 
 With the <comment>--config-file</comment> option you can specify the path to the
 <comment>.php_cs</comment> file.

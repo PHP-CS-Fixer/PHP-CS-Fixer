@@ -18,6 +18,7 @@ use Symfony\CS\Finder\DefaultFinder;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  */
 class Config implements ConfigInterface
 {
