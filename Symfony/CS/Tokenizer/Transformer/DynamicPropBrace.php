@@ -46,4 +46,13 @@ class DynamicPropBrace extends AbstractTransformer
     {
         return array('CT_DYNAMIC_PROP_BRACE_OPEN', 'CT_DYNAMIC_PROP_BRACE_CLOSE');
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run after the CurlyClose
+        return -10;
+    }
 }
