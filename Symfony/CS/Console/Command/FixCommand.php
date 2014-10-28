@@ -371,7 +371,7 @@ EOF
                 }
             }
 
-            $output->writeln('Legend: '.implode(', ', $legend));
+            $output->writeln('Legend: '.implode(', ', array_unique($legend)));
         }
 
         $i = 1;
