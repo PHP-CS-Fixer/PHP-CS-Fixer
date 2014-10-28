@@ -1,0 +1,183 @@
+---------------------------------------------------------------------------
+
+by marcaube at 2014-10-19T00:53:44Z
+
+I've got to say, you're one hell of a code reviewer, it's humbling. :+1:
+
+I've just pushed what I think is getting the job done, but I'd have to run it on a legacy codebase to see if there are more edge-cases. Let me know what you think.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-19T10:10:43Z
+
+Take a look what this fixer does:
+
+```diff
+ <?php
+
+ // case 1
+-if ( 1 ) {}
++if (1) {}
+
+ // case 2
+-function foo( $a, $b, $c ) {}
++function foo($a, $b, $c) {}
+
+ // case 3
+-foo ( 1, 2, 3 );
++foo (1, 2, 3);
+
+ // case 4
+-$arrray = array( 1, 2, 3, );
++$arrray = array(1, 2, 3,);
+```
+
+* case 1: cool, fixed rule PSR2 ¶5 (Control Structures) as supposed
+* case 2: fixes rules PSR2 ¶4.3, but wait, this fixer told it fix only ¶5 !
+* case 3: fixes rules PSR2 ¶4.6, but wait, this fixer told it fix only ¶5 !
+* case 4: this should be left intact!
+
+---------------------------------------------------------------------------
+
+by marcaube at 2014-10-19T12:30:16Z
+
+case 2: then `VisibilityFixer` is not doing its job properly either. Or does `Fixer for rules defined in PSR2 ¶4.3` means it fixes only *some* of the rules in 4.3? Should I simply change the class docblock to `Fixer for rules defined in PSR2 ¶4.3, ¶4.6, ¶5.` then?
+
+case 4: good point, that's not a control structure, and I can't seam to find arrays in PSR-1 or PSR-2. Guess I should leave that one alone.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-19T12:34:00Z
+
+case 2: `VisibilityFixer` do not fix spaces. And it MUST NOT do it. Fixer class description provide only brief that show where to seek for PSR rule. See `getDescription` method to see full descr.
+You may do so, but then you should also provide a tests for new cases (From 4.3 and 4.6)
+
+case 4: indeed
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-19T16:19:06Z
+
+Please fix project itself to prevent Travis complaining
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-22T23:34:20Z
+
+Please add case 4 to tests.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-26T21:05:11Z
+
+Any news on that @marcaube ? It would be great to see that !
+
+---------------------------------------------------------------------------
+
+by marcaube at 2014-10-26T21:13:29Z
+
+I wrote a test case for number 4 last week but couldn't figure out how to make it pass. I'm stuck trying to determine if the token preceding the parenthesis is a control structure, function or other (like the array).
+
+I've been a bit busy since last week and have not worked on it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-26T21:16:14Z
+
+Please add that tests (for array in full and short syntax) to PR even so ;)
+If you will have a time then you will finish it, if not it will be usefull for sb else to finish this PR.
+
+---------------------------------------------------------------------------
+
+by marcaube at 2014-10-26T21:22:16Z
+
+There you go!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-26T21:23:47Z
+
+great!
+Could you squash commits? It will be usefull when merging PR with multiple contributors
+
+---------------------------------------------------------------------------
+
+by marcaube at 2014-10-26T21:24:58Z
+
+All of them? And since the feature is not complete, what should the commit message be?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-26T21:26:01Z
+
+All. Then there will be one commit per one contributor.
+Sth like `Add a fixer for spaces inside parenthesis` perhaps?
+
+---------------------------------------------------------------------------
+
+by marcaube at 2014-10-26T21:32:09Z
+
+Done.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-26T21:48:35Z
+
+See: https://github.com/marcaube/PHP-CS-Fixer/pull/1
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-26T21:57:14Z
+
+You merge a commit instead of cherry-picking it so please, rebase your branch on master, it should remove that ugly merge commit ;)
+
+---------------------------------------------------------------------------
+
+by marcaube at 2014-10-26T22:01:57Z
+
+I'm not quite sure but I think my git-fu worked.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-26T22:05:40Z
+
+Nope, it mess with spaces somehow :/
+When there was a merge commit the Travis passes, now it does not.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-26T22:07:16Z
+
+Maybe
+```
+git checkout bd8c2b1
+git cherry-pick ddb228066
+git branch -D master
+git checkout -b master
+git push -f
+```
+?
+
+---------------------------------------------------------------------------
+
+by marcaube at 2014-10-26T22:11:34Z
+
+The checkout left me in detached HEAD mode. Had to `git reset --hard bd8c2b1` instead and do the cherry-pick again.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-26T22:12:18Z
+
+You can override branch from detached HEAD ;) But great you managed it yourself ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-26T22:12:25Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by marcaube at 2014-10-26T22:13:37Z
+
+At last it's green!
