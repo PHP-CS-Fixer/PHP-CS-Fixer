@@ -60,24 +60,21 @@ class ParenthesisFixer extends AbstractFixer
      */
     private function removeSpaceAroundToken(Tokens $tokens, $index, $offset)
     {
-        if (
-            !isset($tokens[$index + $offset])
-            || !isset($tokens[$index + $offset - 1])
-        ) {
+        if (!isset($tokens[$index + $offset])) {
             return;
         }
 
-        /** @var Token $spaceToken */
-        $spaceToken     = $tokens[$index + $offset];
+        $token = $tokens[$index + $offset];
 
-        /** @var Token $precedingToken */
-        $precedingToken = $tokens[$index + $offset - 1];
+        if ($token->isWhitespace() && false === strpos($token->getContent(), "\n")) {
+            if (isset($tokens[$index + $offset - 1])) {
+                $prevToken = $tokens[$index + $offset - 1];
+                if ($prevToken->isComment() && false !== strpos($prevToken->getContent(), "\n")) {
+                    return;
+                }
+            }
 
-        $tokenIsNotNewLine = $spaceToken->isWhitespace() && false === strpos($spaceToken->getContent(), "\n");
-        $precedingTokenIsNotNewLine = false === strpos($precedingToken->getContent(), "\n");
-
-        if ($tokenIsNotNewLine && $precedingTokenIsNotNewLine) {
-            $spaceToken->clear();
+            $token->clear();
         }
     }
 
