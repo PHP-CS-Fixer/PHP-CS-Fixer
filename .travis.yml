@@ -12,4 +12,4 @@ install:
 
 script:
   - phpunit --verbose
-  - php php-cs-fixer --dry-run -v fix
+  - php php-cs-fixer --diff --dry-run -v fix
