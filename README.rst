@@ -203,6 +203,11 @@ Choose from the list of available fixers:
 * **multiple_use** [PSR-2] There MUST be one use keyword
                per declaration.
 
+* **parenthesis** [PSR-2] There MUST NOT be a space after
+               the opening parenthesis. There MUST NOT
+               be a space before the closing
+               parenthesis.
+
 * **php_closing_tag** [PSR-2] The closing ?> tag MUST be
                omitted from files containing only PHP.
 
