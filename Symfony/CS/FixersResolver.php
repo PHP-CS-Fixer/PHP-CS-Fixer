@@ -20,45 +20,59 @@ namespace Symfony\CS;
  */
 class FixersResolver
 {
-    protected $fixers = array();
     protected $allFixers;
     protected $config;
+    protected $fixers = array();
+    protected $options = array(
+        'fixers' => null,
+        'level'  => null,
+    );
 
-    public function __construct(array $allFixers, ConfigInterface $config)
+    public function __construct(array $allFixers)
     {
         $this->allFixers = $allFixers;
+    }
+
+    public function setConfig(ConfigInterface $config)
+    {
         $this->config = $config;
+
+        return $this;
+    }
+
+    public function setOption($name, $value)
+    {
+        $this->options[$name] = $value;
+
+        return $this;
     }
 
     /**
      * Resolves fixers.
      *
-     * @param string $levelOption
-     * @param string $fixerOption
-     *
-     * @return array An array of FixerInterface
+     * @return FixersResolver
      */
-    public function resolve($levelOption, $fixerOption)
+    public function resolve()
     {
-        $this->resolveByLevel($levelOption, $fixerOption);
-        $this->resolveByNames($fixerOption);
+        $this->resolveByLevel();
+        $this->resolveByNames();
 
-        return $this->getFixers();
+        return $this;
     }
 
     /**
      * Returns fixers.
      *
-     * @return array An array of FixerInterface
+     * @return FixerInterface[] An array of FixerInterface
      */
     public function getFixers()
     {
         return $this->fixers;
     }
 
-    protected function resolveByLevel($levelOption, $fixerOption)
+    protected function resolveByLevel()
     {
-        $level = $this->parseLevelOption($levelOption, $fixerOption);
+        $level = $this->parseLevel();
 
         if (null === $level) {
             return;
@@ -75,9 +89,13 @@ class FixersResolver
         $this->fixers = $fixers;
     }
 
-    protected function resolveByNames($fixerOption)
+    protected function resolveByNames()
     {
-        $names = $this->parseFixerOption($fixerOption);
+        $names = $this->parseFixers();
+
+        if (null === $names) {
+            return;
+        }
 
         $addNames = array();
         $removeNames = array();
@@ -102,7 +120,7 @@ class FixersResolver
         }
     }
 
-    protected function parseLevelOption($levelOption, $fixerOption)
+    protected function parseLevel()
     {
         static $levelMap = array(
             'psr0'    => FixerInterface::PSR0_LEVEL,
@@ -110,6 +128,8 @@ class FixersResolver
             'psr2'    => FixerInterface::PSR2_LEVEL,
             'symfony' => FixerInterface::SYMFONY_LEVEL,
         );
+
+        $levelOption = $this->options['level'];
 
         if (null !== $levelOption) {
             if (!isset($levelMap[$levelOption])) {
@@ -119,14 +139,12 @@ class FixersResolver
             return $levelMap[$levelOption];
         }
 
-        $names = $this->parseFixerOption($fixerOption);
-
-        if (empty($names)) {
+        if (null === $this->options['fixers']) {
             return $this->config->getLevel();
         }
 
-        foreach ($names as $name) {
-            if (0 === strpos($name, '-')) {
+        foreach ($this->parseFixers() as $fixer) {
+            if (0 === strpos($fixer, '-')) {
                 return $this->config->getLevel();
             }
         }
@@ -134,12 +152,16 @@ class FixersResolver
         return null;
     }
 
-    protected function parseFixerOption($fixerOption)
+    protected function parseFixers()
     {
-        if (null === $fixerOption) {
+        if (null !== $this->options['fixers']) {
+            return array_map('trim', explode(',', $this->options['fixers']));
+        }
+
+        if (null === $this->options['level']) {
             return $this->config->getFixers();
         }
 
-        return array_map('trim', explode(',', $fixerOption));
+        return null;
     }
 }
