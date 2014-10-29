@@ -123,7 +123,7 @@ project:
     php php-cs-fixer.phar fix /path/to/project --level=psr0
     php php-cs-fixer.phar fix /path/to/project --level=psr1
     php php-cs-fixer.phar fix /path/to/project --level=psr2
-    php php-cs-fixer.phar fix /path/to/project --level=symfony
+    php php-cs-fixer.phar fix /path/to/project --level=all
 
 By default, all PSR-2 fixers and some additional ones are run. The "contrib
 level" fixers cannot be enabled via this option; you should instead set them
