@@ -13,12 +13,14 @@
 namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class MergeDoubleArrowAndArrayFixer extends AbstractFixer
+class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -27,20 +29,26 @@ class MergeDoubleArrowAndArrayFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens as $idx => $token) {
-            if ($token->isGivenKind(T_ARRAY)) {
-                $prevTokenIdx = $tokens->getPrevNonWhitespace($idx);
-                $prevToken = $tokens[$prevTokenIdx];
-                $prevWhitespace = $tokens[$idx - 1];
-                $prevWhitespaceContent = $prevWhitespace->getContent();
-
-                if (false !== strpos($prevWhitespaceContent, "\n") && $prevToken->isGivenKind(T_DOUBLE_ARROW)) {
-                    $prevWhitespace->setContent(rtrim($prevWhitespaceContent).' ');
-                }
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOUBLE_ARROW)) {
+                continue;
             }
+
+            $this->fixWhitespace($tokens[$index - 1]);
+            $this->fixWhitespace($tokens[$index + 1]);
         }
 
         return $tokens->generateCode();
+    }
+
+    private function fixWhitespace(Token $token)
+    {
+        if (
+            $token->isWhitespace()
+            && !$token->isWhitespace(array('whitespaces' => " \t"))
+        ) {
+            $token->setContent(rtrim($token->getContent()).' ');
+        }
     }
 
     /**
@@ -48,7 +56,7 @@ class MergeDoubleArrowAndArrayFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Merge in a single line double arrows and array statements.';
+        return 'Operator => should not be arounded by multi-line whitespaces.';
     }
 
     /**

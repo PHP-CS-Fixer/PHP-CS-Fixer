@@ -178,7 +178,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['duplicate_semicolon'], $fixers['spaces_before_semicolon']),
             array($fixers['duplicate_semicolon'], $fixers['multiline_spaces_before_semicolon']),
             array($fixers['standardize_not_equal'], $fixers['strict']),
-            array($fixers['merge_double_arrow_and_array'], $fixers['multiline_array_trailing_comma']),
+            array($fixers['double_arrow_multiline_whitespaces'], $fixers['multiline_array_trailing_comma']),
         );
     }
 
