@@ -35,11 +35,14 @@ class Foo
 {
     private function bar()
     {
-        \$var = array(
-            'foo',
-            'bar',
+        if (foo(
+            'foo' ,
+            'bar'    ,
+            [1, 2, 3],
             'baz' // a comment just to mix things up
-        );
+        )) {
+            return 1;
+        };
     }
 }
 EOF;
