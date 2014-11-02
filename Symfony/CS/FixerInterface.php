@@ -66,6 +66,8 @@ interface FixerInterface
      * Returns the priority of the fixer.
      *
      * The default priority is 0 and higher priorities are executed first.
+     *
+     * @return int
      */
     public function getPriority();
 
