@@ -130,7 +130,7 @@ class Transformers
     }
 
     /**
-     * Register all built in Transformatrs.
+     * Register all built in Transformers.
      */
     private function registerBuiltInTransformers()
     {
