@@ -18,12 +18,14 @@ use Symfony\CS\Finder\DefaultFinder;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  */
 class Config implements ConfigInterface
 {
     protected $name;
     protected $description;
     protected $finder;
+    protected $level;
     protected $fixers;
     protected $dir;
     protected $customFixers;
@@ -34,7 +36,8 @@ class Config implements ConfigInterface
     {
         $this->name = $name;
         $this->description = $description;
-        $this->fixers = FixerInterface::SYMFONY_LEVEL;
+        $this->level = FixerInterface::SYMFONY_LEVEL;
+        $this->fixers = array();
         $this->finder = new DefaultFinder();
         $this->customFixers = array();
     }
@@ -82,6 +85,18 @@ class Config implements ConfigInterface
         }
 
         return $this->finder;
+    }
+
+    public function level($level)
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    public function getLevel()
+    {
+        return $this->level;
     }
 
     public function fixers($fixers)
