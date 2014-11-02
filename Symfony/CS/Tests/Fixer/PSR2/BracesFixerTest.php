@@ -647,15 +647,15 @@ function foo()
     }
 
     /**
-     * @dataProvider provideFixShortArraySyntax54Cases
+     * @dataProvider provideFixAnonFunctionInShortArraySyntax54Cases
      * @requires PHP 5.4
      */
-    public function testFixShortArraySyntax54($expected, $input = null)
+    public function testFixAnonFunctionInShortArraySyntax54($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
 
-    public function provideFixShortArraySyntax54Cases()
+    public function provideFixAnonFunctionInShortArraySyntax54Cases()
     {
         return array(
             array(
@@ -668,8 +668,13 @@ function foo()
                     return true;
                 }
             ],
+            [
+                "callback" => function ($data) {
+                    return true;
+                },
+            ],
         ];
-    }'
+    }',
             ),
         );
     }
