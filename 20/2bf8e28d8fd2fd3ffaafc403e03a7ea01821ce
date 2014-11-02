@@ -1,0 +1,334 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-25T14:05:35Z
+
+Maybe this is good plase to separate Config::$fixers into two values?
+One that handle LEVEL, and second that handle fixers array? Now this props handle both :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-25T14:08:46Z
+
+Idea itself looks nice!
+It would be great to add info about levels/fixers and mixing them (with excluding/including extra fixers) into readme.
+I know that this is not intuitive now.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-25T14:09:02Z
+
+> Fix `fix` command to handle `--filter` option
+
+--filter? where?
+
+---------------------------------------------------------------------------
+
+by fivestar at 2014-09-25T16:18:37Z
+
+Thanks for your comments! I replied some line notes.
+
+* Sorry `--filter` is mistaken. `--fixers` is right. Do i have to amend commit message?
+* Will be fix php5.2 (5.3?) crash.
+
+* > Maybe this is good plase to separate Config::$fixers into two values?
+  > One that handle LEVEL, and second that handle fixers array? Now this props handle both :(
+    * Do you have any ideas? Maybe current code has any problems?
+
+* > It would be great to add info about levels/fixers and mixing them (with excluding/including extra fixers) into readme.
+    * I'll see what I can do.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-25T19:14:37Z
+
+> Do i have to amend commit message?
+
+If you will keep this PR with only one commit then please, do it. If PR will has several then I will do it during merge.
+
+> Will be fix php5.2 (5.3?) crash.
+
+Yeah, 5.3, sorry ;)
+
+>> Maybe this is good plase to separate Config::$fixers into two values?
+>
+> Do you have any ideas? Maybe current code has any problems?
+
+No problems on that, just now we have one variable with dual responsibility. You are dealing with them now so it will be cool to fix it as well ;) Just create Config::$level for level value and change Config::$fixers to handle only fixers array
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-26T15:52:41Z
+
+Please rebase on master ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-09-30T20:12:28Z
+
+any news @fivestar ? The work you have already done is cool!
+
+---------------------------------------------------------------------------
+
+by fivestar at 2014-10-01T08:01:44Z
+
+Sorry, I've been so busy lately...  Please wait for a little while longer!
+
+---------------------------------------------------------------------------
+
+by fivestar at 2014-10-06T03:16:10Z
+
+@keradus Please check it!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-06T13:05:37Z
+
+Nice progress @fivestar ;)
+But I think it needs just a little more (see code comments)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-09T09:27:12Z
+
+It would be great to see that on master! Waiting for progress ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-13T21:43:26Z
+
+@fivestar please rebase on master ;)
+Any news on that btw? I would really appreciate to see that finished ;)
+
+---------------------------------------------------------------------------
+
+by fivestar at 2014-10-16T14:28:11Z
+
+Thank you for waiting! I fixed `FixersResolver` and `Config` interface. Please check again.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-16T20:01:07Z
+
+Again you made cool work here! I'm glad to see that!
+I hope we make this merged before release of 1.0
+
+---------------------------------------------------------------------------
+
+by fivestar at 2014-10-27T14:29:19Z
+
+I'm sorry for my late response, and thank you for your help!I was updated the README. Please check it.
+But, I'm not good at English, if my description is not well, so please want to fix it.
+
+---------------------------------------------------------------------------
+
+by fivestar at 2014-10-27T17:43:57Z
+
+Thank you for your comments. README was fixed. Am I correct?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-27T20:08:23Z
+
+IMO yes, README was fixed (one minor in commit's comment), but I am not perfect at english either
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-27T20:12:06Z
+
+Could you rebase your branch to remove merge commit and squash commits of same author, please?
+
+Of course after that two minors ;)
+
+---------------------------------------------------------------------------
+
+by fivestar at 2014-10-27T23:21:47Z
+
+Well, I fixed the README and rebased this branch!
+
+---------------------------------------------------------------------------
+
+by fivestar at 2014-10-27T23:54:55Z
+
+I have one last commit that add test cases for FixersResolver.
+
+---------------------------------------------------------------------------
+
+by fivestar at 2014-10-28T01:11:18Z
+
+OMG. I really fixed.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-28T16:25:04Z
+
+Just need to squash commits after 6876726 ;)
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-28T19:38:29Z
+
+I test this branch a lot, results are below.
+
+-----
+
+```
+             CONFIG      OPTION
+LEVEL           X
+FIXERS
+```
+Result: Take level from config.
+OK
+
+-----
+
+```
+             CONFIG      OPTION
+LEVEL           X
+FIXERS          X
+```
+Result:
+If fixers from config have only "positive" fixers: Take fixers from config and ignore level from config.
+If fixers from config have "negative" fixers: Take level from config and apply fixers from config as patch.
+**ERROR**: In both cases the fixers from config should be applied as patch.
+
+-----
+
+```
+             CONFIG      OPTION
+LEVEL           X           X
+FIXERS
+```
+Result: Take level from option.
+OK
+
+-----
+
+```
+             CONFIG      OPTION
+LEVEL           X           X
+FIXERS          X           X
+```
+Result: Take level from option and apply fixers from options as patch.
+OK
+
+-----
+
+```
+             CONFIG      OPTION
+LEVEL           X
+FIXERS          X           X
+```
+Result:
+If fixers from options have only "positive" fixers: Take fixers from option and ignore level from config.
+If fixers from options have "negative" fixers: Take level from config and apply fixers from option as patch.
+OK
+
+-----
+
+```
+             CONFIG      OPTION
+LEVEL           X           X
+FIXERS          X
+```
+Result: Take level from option and ignore level from config. Then apply fixers from config as patch.
+**ERROR**: Fixer from config should not be applied.
+
+-----
+
+When sb run `php-cs-fixer fix --level=symfony` then one want to run only the level he set, without fixers from config as patch
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-28T19:55:26Z
+
+@fabpot @fivestar @stof @sstok @GrahamCampbell
+what do you think about above strategy of dealing with level/fixers config/options ?
+
+BTW, tests and solution for that behavior are availeble here: https://github.com/fivestar/PHP-CS-Fixer/pull/2
+
+---------------------------------------------------------------------------
+
+by fivestar at 2014-10-28T23:50:47Z
+
+Thanks!! I misread your specified commit number so I'll squash after merging your PR ;)
+
+---------------------------------------------------------------------------
+
+by fivestar at 2014-10-29T03:42:30Z
+
+I've seen test results and your PR, so I think your strategy is better because it's is useful for actual use case.
+If you judge your PR can merge, please call me again.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-29T09:35:47Z
+
+I am not PR-ing with code I don't want to be merged ;)
+(Sth I use `WIP` flag to show that PR is not done yet).
+
+If you agreed with changes just accept that PR (https://github.com/fivestar/PHP-CS-Fixer/pull/2). I don't change the whole strategy - just fix 2 cases.
+
+The other thing is if this PR (#599) will be merged - and I will be glad to see more opinions here.
+For me it should be ;)
+
+---------------------------------------------------------------------------
+
+by fivestar at 2014-10-29T10:34:42Z
+
+Ok I merged your PR. (What is `WIP`? I can't find the keyword)
+What should I do sth else?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-29T10:36:35Z
+
+* `WIP` stands for `Work In Progress`
+* 6f0cb71 and 97a8abf should be squashed
+* I want to wait a little for some other opinions about this PR. I will be glad to see them.
+
+---------------------------------------------------------------------------
+
+by fivestar at 2014-10-29T10:48:01Z
+
+Uh oh I thought you are judged. I'll remove commits later. Please resend PR.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-29T11:41:23Z
+
+> I'll remove commits later. Please resend PR.
+
+Why to remove? The new commits are good - they improve this PR (#599).
+Just please squash them.
+
+> Uh oh I thought you are judged.
+
+Yes, I can perform a merge. But since this PR change tool interface and break BC it is worthly to give community a time to give a feedback with opinion :)
+
+---------------------------------------------------------------------------
+
+by radziem at 2014-10-29T13:14:39Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-10-29T13:30:42Z
+
+:+1: for this feature.
+
+---------------------------------------------------------------------------
+
+by fivestar at 2014-10-29T15:00:16Z
+
+I've just got it! I squashed some commits.
+
+@sstok Thanks for your help! I fixed some messages.
+
+---------------------------------------------------------------------------
+
+by alterphp at 2014-10-31T10:00:06Z
+
+:+1: great job !
