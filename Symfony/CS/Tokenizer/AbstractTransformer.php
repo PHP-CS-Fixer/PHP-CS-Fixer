@@ -11,6 +11,8 @@
 
 namespace Symfony\CS\Tokenizer;
 
+use Symfony\CS\Utils;
+
 /**
  * Abstract base for Transformer class.
  *
@@ -20,17 +22,6 @@ namespace Symfony\CS\Tokenizer;
  */
 abstract class AbstractTransformer implements TransformerInterface
 {
-    protected static function camelCaseToUnderscore($string)
-    {
-        return preg_replace_callback(
-            '/(^|[a-z])([A-Z])/',
-            function (array $matches) {
-                return strtolower(strlen($matches[1]) ? $matches[1].'_'.$matches[2] : $matches[2]);
-            },
-            $string
-        );
-    }
-
     /**
      * Last generated value for custom token.
      *
@@ -46,7 +37,7 @@ abstract class AbstractTransformer implements TransformerInterface
         $nameParts = explode('\\', get_called_class());
         $name = end($nameParts);
 
-        return self::camelCaseToUnderscore($name);
+        return Utils::camelCaseToUnderscore($name);
     }
 
     /**

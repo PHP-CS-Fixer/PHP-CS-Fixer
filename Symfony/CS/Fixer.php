@@ -69,15 +69,6 @@ class Fixer
         $this->diff = new Differ();
     }
 
-    public static function cmpInt($a, $b)
-    {
-        if ($a === $b) {
-            return 0;
-        }
-
-        return $a < $b ? -1 : 1;
-    }
-
     public function registerBuiltInFixers()
     {
         foreach (Finder::create()->files()->in(__DIR__.'/Fixer') as $file) {
@@ -326,10 +317,8 @@ class Fixer
 
     private function sortFixers()
     {
-        $selfName = __CLASS__;
-
-        usort($this->fixers, function (FixerInterface $a, FixerInterface $b) use ($selfName) {
-            return $selfName::cmpInt($b->getPriority(), $a->getPriority());
+        usort($this->fixers, function (FixerInterface $a, FixerInterface $b) {
+            return Utils::cmpInt($b->getPriority(), $a->getPriority());
         });
     }
 

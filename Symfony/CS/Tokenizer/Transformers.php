@@ -12,6 +12,7 @@
 namespace Symfony\CS\Tokenizer;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\CS\Utils;
 
 /**
  * Collection of Transformer classes.
@@ -56,15 +57,6 @@ class Transformers
         }
 
         return $instance;
-    }
-
-    public static function cmpInt($a, $b)
-    {
-        if ($a === $b) {
-            return 0;
-        }
-
-        return $a < $b ? -1 : 1;
     }
 
     /**
@@ -170,10 +162,8 @@ class Transformers
      */
     private function sortTransformers()
     {
-        $selfName = __CLASS__;
-
-        usort($this->items, function (TransformerInterface $a, TransformerInterface $b) use ($selfName) {
-            return $selfName::cmpInt($b->getPriority(), $a->getPriority());
+        usort($this->items, function (TransformerInterface $a, TransformerInterface $b) {
+            return Utils::cmpInt($b->getPriority(), $a->getPriority());
         });
     }
 }
