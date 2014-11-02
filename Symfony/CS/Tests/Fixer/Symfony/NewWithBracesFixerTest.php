@@ -80,6 +80,10 @@ class NewWithBracesFixerTest extends AbstractFixerTestBase
                 '<?php $a = new $b[\'class\']() ;',
                 '<?php $a = new $b[\'class\'] ;',
             ),
+            array(
+                '<?php $a = $b ? new DateTime() : $b;',
+                '<?php $a = $b ? new DateTime : $b;',
+            ),
         );
     }
 
