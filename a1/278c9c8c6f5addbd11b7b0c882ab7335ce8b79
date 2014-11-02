@@ -1,0 +1,74 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-10-28T20:54:51Z
+
+Well, it works I guess. :/
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-28T20:57:42Z
+
+Then why
+
+> :/
+
+?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-10-28T20:59:22Z
+
+Well, you've just dumped a return infront of the previous code, which I assume you were aware, and that if statement is pretty pumped up right now - not so pretty, or maintainable.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-28T21:02:37Z
+
+Yes, that if statement is hard to read and maintenance. I am aware of that and therefore I added a lot of comments in whole BracesFixer class.
+
+But remember this case itself is very ugly:
+```php
+function mixedComplex()
+{
+    $a = ${"b{$foo}"}->{"a{$c->{\'foo-bar\'}()}d"}();
+}
+```
+
+If you can come up with cleaner solution be my guest! ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-02T18:50:28Z
+
+> If you can come up with cleaner solution be my guest! ;)
+
+Even just abstracting them to separate methods with descriptions might help.
+
+I'm keen to get this merged though. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-02T18:53:10Z
+
+Actually I don't get what you want to abstract here.
+
+I was offline this weekend.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-02T19:44:37Z
+
+Move each line of the if statement to a separate function. Now I look at it again, I don't see the point now since we've got quite a few variables about. We really need a better way to do this though.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-02T19:45:36Z
+
+The commit you just pushed looks good. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-02T19:47:35Z
+
+I just push changes to repo and the comments are just here ! :D
+Fixed, remove WIP flag
