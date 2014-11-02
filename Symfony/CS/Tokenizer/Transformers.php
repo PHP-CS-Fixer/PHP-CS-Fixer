@@ -58,6 +58,15 @@ class Transformers
         return $instance;
     }
 
+    public static function cmpInt($a, $b)
+    {
+        if ($a === $b) {
+            return 0;
+        }
+
+        return $a < $b ? -1 : 1;
+    }
+
     /**
      * Get name for registered custom token.
      *
@@ -72,6 +81,13 @@ class Transformers
         }
 
         return $this->customTokens[$value];
+    }
+
+    public function getTransformers()
+    {
+        $this->sortTransformers();
+
+        return $this->items;
     }
 
     /**
@@ -109,7 +125,7 @@ class Transformers
      */
     public function transform(Tokens $tokens)
     {
-        foreach ($this->items as $transformer) {
+        foreach ($this->getTransformers() as $transformer) {
             $transformer->process($tokens);
         }
     }
@@ -147,5 +163,17 @@ class Transformers
             $class = __NAMESPACE__.'\\Transformer\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
             $this->registerTransformer(new $class());
         }
+    }
+
+    /**
+     * Sort registered Transformers.
+     */
+    private function sortTransformers()
+    {
+        $selfName = __CLASS__;
+
+        usort($this->items, function (TransformerInterface $a, TransformerInterface $b) use ($selfName) {
+            return $selfName::cmpInt($b->getPriority(), $a->getPriority());
+        });
     }
 }

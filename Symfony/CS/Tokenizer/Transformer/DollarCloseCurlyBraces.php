@@ -39,4 +39,13 @@ class DollarCloseCurlyBraces extends AbstractTransformer
     {
         return array('CT_DOLLAR_CLOSE_CURLY_BRACES');
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run after the CurlyClose
+        return -10;
+    }
 }

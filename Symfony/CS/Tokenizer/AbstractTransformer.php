@@ -20,12 +20,42 @@ namespace Symfony\CS\Tokenizer;
  */
 abstract class AbstractTransformer implements TransformerInterface
 {
+    protected static function camelCaseToUnderscore($string)
+    {
+        return preg_replace_callback(
+            '/(^|[a-z])([A-Z])/',
+            function (array $matches) {
+                return strtolower(strlen($matches[1]) ? $matches[1].'_'.$matches[2] : $matches[2]);
+            },
+            $string
+        );
+    }
+
     /**
      * Last generated value for custom token.
      *
      * @var int
      */
     private static $lastGeneratedCustomTokenValue = 10000;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        $nameParts = explode('\\', get_called_class());
+        $name = end($nameParts);
+
+        return self::camelCaseToUnderscore($name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
 
     /**
      * {@inheritdoc}

@@ -41,4 +41,22 @@ interface TransformerInterface
      * @return array
      */
     public function getCustomTokenNames();
+
+    /**
+     * Returns the name of the fixer.
+     *
+     * The name must be all lowercase and without any spaces.
+     *
+     * @return string The name of the fixer
+     */
+    public function getName();
+
+    /**
+     * Returns the priority of the Transformer.
+     *
+     * The default priority is 0 and higher priorities are executed first.
+     *
+     * @return int
+     */
+    public function getPriority();
 }
