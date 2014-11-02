@@ -28,6 +28,7 @@ use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\LintManager;
 use Symfony\CS\StdinFileInfo;
+use Symfony\CS\Utils;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -511,7 +512,8 @@ EOF
 
         // sort fixers by level and name
         usort($fixers, function (FixerInterface $a, FixerInterface $b) {
-            $cmp = Fixer::cmpInt($a->getLevel(), $b->getLevel());
+            $cmp = Utils::cmpInt($a->getLevel(), $b->getLevel());
+
             if (0 !== $cmp) {
                 return $cmp;
             }

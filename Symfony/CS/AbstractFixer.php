@@ -16,17 +16,6 @@ namespace Symfony\CS;
  */
 abstract class AbstractFixer implements FixerInterface
 {
-    protected static function camelCaseToUnderscore($string)
-    {
-        return preg_replace_callback(
-            '/(^|[a-z])([A-Z])/',
-            function (array $matches) {
-                return strtolower(strlen($matches[1]) ? $matches[1].'_'.$matches[2] : $matches[2]);
-            },
-            $string
-        );
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -57,7 +46,7 @@ abstract class AbstractFixer implements FixerInterface
         $nameParts = explode('\\', get_called_class());
         $name = substr(end($nameParts), 0, -strlen('Fixer'));
 
-        return self::camelCaseToUnderscore($name);
+        return Utils::camelCaseToUnderscore($name);
     }
 
     /**
