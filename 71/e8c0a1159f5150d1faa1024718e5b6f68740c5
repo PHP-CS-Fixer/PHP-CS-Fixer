@@ -1,0 +1,128 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-10-26T14:45:51Z
+
+We need some multiline tests too to check they're not incorrectly handled.
+
+---------------------------------------------------------------------------
+
+by ericj at 2014-10-26T15:00:46Z
+
+hi @GrahamCampbell  thanks for your review, please let me know if there are anything else I can do  :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-26T20:57:45Z
+
+A little review from me...
+
+---------------------------------------------------------------------------
+
+by ericj at 2014-10-27T06:22:14Z
+
+@keradus thanks for your review, I am working on it per your comment!
+Now I am more clear about my goal:
+1. fix space in method arguments (no space before comma, space after comma)
+2. fix space in method call (no space before comma, space after comma)
+
+But I was wondering should I fix the space around comma even in array?
+
+Please let me know if there are anything I can improve.
+Really appreciate for your time and comment. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-27T09:20:34Z
+
+> But I was wondering should I fix the space around comma even in array?
+
+That could be a good fixer - but it is not a PSR rule, therefore it MUST be a separate fixer. Fixer itself MUST NOT fix PSR rule and sth extra.
+If there will be a fixer for spaces in array - I will use it ;)
+
+---------------------------------------------------------------------------
+
+by ericj at 2014-10-27T13:42:09Z
+
+@keradus Thanks for your review again.
+I have made the changes per your comment which I can fix.
+
+But there are still two problems:
+1. I don't know how to use backward iterate to make it safer.
+2. the space fixer in method call will stop work for the following once it got additional ")" in the method call argument, I think I need to find out a better way to handle this case.
+
+I will keep studying and back to here once I got the idea.
+Please kindly let me know if you have any ideas.  :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-27T14:20:22Z
+
+> 2. the space fixer in method call will stop work for the following once it got additional ")" in the method call argument, I think I need to find out a better way to handle this case.
+
+Please add a testcase for that for letting us see that problem too ! ;)
+
+---------------------------------------------------------------------------
+
+by ericj at 2014-10-27T14:27:15Z
+
+@keradus I think I figured out how to fix it. The test case has passed!
+
+The only problem now, is how to use backward iterate to make fixSpace() safer.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-27T17:04:35Z
+
+Great to hear that!
+
+Already answered here: https://github.com/fabpot/PHP-CS-Fixer/pull/662#discussion_r19406958
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-27T17:14:31Z
+
+Maybe sth like this will be a little more readable, what do you think?
+
+```php
+for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+    $token = $tokens[$index];
+
+    if (!$token->equals('(') || $tokens[$index - 1]->isGivenKind(T_ARRAY)) {
+        continue;
+    }
+
+    $endIndex = $tokens->findBlockEnd(...);
+
+    for ($i = $endIndex - 1; $i > $index; --$i) {
+        if ($tokens[$i]->equals(',')) {
+            $this->fixSpace($tokens, $i);
+        }
+    }
+}
+```
+
+---------------------------------------------------------------------------
+
+by ericj at 2014-10-28T01:13:53Z
+
+@keradus Yes, seems great! Give me some time to work on it. Thank you. :)
+
+---------------------------------------------------------------------------
+
+by ericj at 2014-10-28T12:52:03Z
+
+@keradus Thanks for your instruction! I have rewrite this fixer with backward iteration, and the helper you mentioned findBlockEnd() which gives great help to reduce the code and make logic much easier to understand.
+
+---------------------------------------------------------------------------
+
+by ericj at 2014-10-29T01:58:51Z
+
+@keradus Thanks for your time to review my code again and again.... It's really helpful and make me learnt a lot.  Please let me know if there are anything I missed. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-29T09:39:41Z
+
+I'm glad to be helpful ;)
+
+:+1:
