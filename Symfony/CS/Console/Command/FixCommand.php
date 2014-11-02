@@ -85,10 +85,6 @@ class FixCommand extends Command
         $this->fixer->setStopwatch($this->stopwatch);
         $this->fixer->setErrorsManager($this->errorsManager);
 
-        if ($this->defaultConfig->usingLinter()) {
-            $this->fixer->setLintManager(new LintManager());
-        }
-
         parent::__construct();
     }
 
@@ -269,6 +265,10 @@ EOF
             $config = $this->defaultConfig;
         }
 
+        if ($config->usingLinter()) {
+            $this->fixer->setLintManager(new LintManager());
+        }
+
         if (is_file($path)) {
             $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
         } elseif ($stdin) {
@@ -371,7 +371,7 @@ EOF
                 }
             }
 
-            $output->writeln('Legend: '.implode(', ', $legend));
+            $output->writeln('Legend: '.implode(', ', array_unique($legend)));
         }
 
         $i = 1;

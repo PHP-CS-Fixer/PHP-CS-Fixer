@@ -41,7 +41,15 @@ class FileCacheManager
     {
         $this->isEnabled = $isEnabled;
         $this->dir = null !== $dir ? $dir.DIRECTORY_SEPARATOR : '';
-        $this->scriptDir = dirname($_SERVER['SCRIPT_NAME']);
+
+        $script = $_SERVER['SCRIPT_NAME'];
+
+        if (is_link($script)) {
+            $script = dirname($script).'/'.readlink($script);
+        }
+
+        $this->scriptDir = dirname($script);
+
         $this->readFromFile();
     }
 
@@ -132,7 +140,7 @@ class FileCacheManager
             return false;
         }
 
-        return $cacheVersion === $this->getVersion();
+        return $this->getVersion() === $cacheVersion;
     }
 
     private function isInstalledAsPhar()

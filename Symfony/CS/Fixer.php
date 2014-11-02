@@ -172,17 +172,6 @@ class Fixer
 
     public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff, FileCacheManager $fileCacheManager)
     {
-        if ($this->lintManager && !$this->lintManager->createProcessForFile($file->getRealpath())->isSuccessful()) {
-            if ($this->eventDispatcher) {
-                $this->eventDispatcher->dispatch(
-                    FixerFileProcessedEvent::NAME,
-                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
-                );
-            }
-
-            return;
-        }
-
         $new = $old = file_get_contents($file->getRealpath());
 
         if (!$fileCacheManager->needFixing($this->getFileRelativePathname($file), $old)) {
@@ -190,6 +179,17 @@ class Fixer
                 $this->eventDispatcher->dispatch(
                     FixerFileProcessedEvent::NAME,
                     FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_SKIPPED)
+                );
+            }
+
+            return;
+        }
+
+        if ($this->lintManager && !$this->lintManager->createProcessForFile($file->getRealpath())->isSuccessful()) {
+            if ($this->eventDispatcher) {
+                $this->eventDispatcher->dispatch(
+                    FixerFileProcessedEvent::NAME,
+                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
                 );
             }
 
@@ -286,19 +286,19 @@ class Fixer
     {
         $level = $fixer->getLevel();
 
-        if ($level === ($level & FixerInterface::PSR0_LEVEL)) {
+        if (($level & FixerInterface::PSR0_LEVEL) === $level) {
             return 'PSR-0';
         }
 
-        if ($level === ($level & FixerInterface::PSR1_LEVEL)) {
+        if (($level & FixerInterface::PSR1_LEVEL) === $level) {
             return 'PSR-1';
         }
 
-        if ($level === ($level & FixerInterface::PSR2_LEVEL)) {
+        if (($level & FixerInterface::PSR2_LEVEL) === $level) {
             return 'PSR-2';
         }
 
-        if ($level === ($level & FixerInterface::CONTRIB_LEVEL)) {
+        if (($level & FixerInterface::CONTRIB_LEVEL) === $level) {
             return 'contrib';
         }
 
