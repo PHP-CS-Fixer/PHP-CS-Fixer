@@ -1,0 +1,49 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-28T20:13:17Z
+
+What do you think @marcaube ?
+I can't figure it out why it is needed to check prev token.
+
+---------------------------------------------------------------------------
+
+by marcaube at 2014-10-30T17:14:53Z
+
+@keradus It was needed for parameters on multiple lines like
+
+```php
+$var = func(
+    $foo,
+    $bar,
+    [1, 2, 3]
+);
+```
+
+It may no longer be needed after your refactoring.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-10-30T17:19:27Z
+
+@marcaube Is there a test case for that?
+
+---------------------------------------------------------------------------
+
+by marcaube at 2014-10-30T17:24:48Z
+
+There was [one](https://github.com/fabpot/PHP-CS-Fixer/blob/master/Symfony/CS/Tests/Fixer/PSR2/ParenthesisFixerTest.php#L29) but it was not updated with the code.
+
+The fixer now only check control structures, the test should be updated to reflect that.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-30T23:46:46Z
+
+Thanks for info @marcaube
+Please check it now !
+
+---------------------------------------------------------------------------
+
+by marcaube at 2014-10-30T23:52:09Z
+
+Looks good to me.
