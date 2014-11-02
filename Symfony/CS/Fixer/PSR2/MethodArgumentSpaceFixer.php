@@ -16,7 +16,7 @@ use Symfony\CS\Tokenizer\Tokens;
 use Symfony\CS\Tokenizer\Token;
 
 /**
- * Fixer for rules defined in PSR2 ¶4.4. Method Arguments
+ * Fixer for rules defined in PSR2 ¶4.4, ¶4.6.
  *
  * @author Kuanhung Chen <ericj.tw@gmail.com>
  */
