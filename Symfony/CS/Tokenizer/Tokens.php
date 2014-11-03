@@ -705,6 +705,47 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Get index for closest sibling token that is not a whitespace or comment.
+     *
+     * @param int $index     token index
+     * @param int $direction direction for looking, +1 or -1
+     *
+     * @return int|null
+     */
+    public function getMeaningTokenSibling($index, $direction)
+    {
+        return $this->getTokenNotOfKindSibling(
+            $index,
+            $direction,
+            array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT))
+        );
+    }
+
+    /**
+     * Get index for closest next token that is not a whitespace or comment.
+     *
+     * @param int $index token index
+     *
+     * @return int|null
+     */
+    public function getNextMeaningToken($index)
+    {
+        return $this->getMeaningTokenSibling($index, 1);
+    }
+
+    /**
+     * Get index for closest previous token that is not a whitespace or comment.
+     *
+     * @param int $index token index
+     *
+     * @return int|null
+     */
+    public function getPrevMeaningToken($index)
+    {
+        return $this->getMeaningTokenSibling($index, -1);
+    }
+
+    /**
      * Insert instances of Token inside collection.
      *
      * @param int                  $index start inserting index
