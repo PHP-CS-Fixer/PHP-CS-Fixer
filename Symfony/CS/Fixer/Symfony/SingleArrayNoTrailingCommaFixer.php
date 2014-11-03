@@ -59,7 +59,7 @@ class SingleArrayNoTrailingCommaFixer extends AbstractFixer
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $startIndex);
         }
 
-        $beforeEndIndex = $tokens->getPrevMeaningToken($endIndex);
+        $beforeEndIndex = $tokens->getPrevMeaningfulToken($endIndex);
         $beforeEndToken = $tokens[$beforeEndIndex];
 
         if ($beforeEndToken->equals(',')) {

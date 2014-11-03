@@ -712,7 +712,7 @@ class Tokens extends \SplFixedArray
      *
      * @return int|null
      */
-    public function getMeaningTokenSibling($index, $direction)
+    public function getMeaningfulTokenSibling($index, $direction)
     {
         return $this->getTokenNotOfKindSibling(
             $index,
@@ -728,9 +728,9 @@ class Tokens extends \SplFixedArray
      *
      * @return int|null
      */
-    public function getNextMeaningToken($index)
+    public function getNextMeaningfulToken($index)
     {
-        return $this->getMeaningTokenSibling($index, 1);
+        return $this->getMeaningfulTokenSibling($index, 1);
     }
 
     /**
@@ -740,9 +740,9 @@ class Tokens extends \SplFixedArray
      *
      * @return int|null
      */
-    public function getPrevMeaningToken($index)
+    public function getPrevMeaningfulToken($index)
     {
-        return $this->getMeaningTokenSibling($index, -1);
+        return $this->getMeaningfulTokenSibling($index, -1);
     }
 
     /**

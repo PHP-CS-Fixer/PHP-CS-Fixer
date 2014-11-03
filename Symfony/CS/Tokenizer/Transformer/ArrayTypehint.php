@@ -27,7 +27,7 @@ class ArrayTypehint extends AbstractTransformer
     public function process(Tokens $tokens)
     {
         foreach ($tokens->findGivenKind(T_ARRAY) as $index => $token) {
-            $nextIndex = $tokens->getNextMeaningToken($index);
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
             $nextToken = $tokens[$nextIndex];
 
             if (!$nextToken->equals('(')) {
