@@ -1,0 +1,80 @@
+---------------------------------------------------------------------------
+
+by jian-wu at 2014-10-31T19:17:54Z
+
+Nice!  :+1:
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-11-01T10:09:03Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-01T13:36:50Z
+
+IMO there is no point to change autoload strategy to PSR-4 without using
+it's benefits like changing directory structure.
+
+:-1:
+
+---------------------------------------------------------------------------
+
+by jian-wu at 2014-11-01T15:04:44Z
+
+@keradus, just so you know, PSR-0 has been deprecated on 10/21/2014 in favor of PSR-4.  That's a good reason enough to upgrade to PSR-4.  In terms of changing folder structure with PSR-4 compared to PSR-0, you would just need to drop the top level VendorNameSpace\PackageNameSpace\ folders.
+
+So for this project, you would just need to move everything inside Symfony/CS/ to the root.  But usually you would instead want to have a src/ folder to contain everything.  So the autoload config in composer.json would look like this:
+```
+"psr-4": { "Symfony\\CS\\": "src/" }
+```
+or this, if everything is in the root.
+```
+"psr-4": { "Symfony\\CS\\": "./" }
+```
+Best regards.
+
+---------------------------------------------------------------------------
+
+by jian-wu at 2014-11-01T15:10:07Z
+
+@GrahamCampbell, I think we should just change the folder structure with this.  I've just done one for one my other projects and It's really painless.  Of course, you would need to update phpunit config to reflect the folder structure change.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-01T16:13:20Z
+
+It doesn't need moving about. I actually submitted this pull after chatting with fabpot about this, and he suggested this.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-01T17:00:27Z
+
+I know the difference Jian.
+Change to PSR -4 is nice move, but why not take full advantage of that and
+update project's structure as well ?
+
+---------------------------------------------------------------------------
+
+by jian-wu at 2014-11-01T19:42:01Z
+
+I'm cool with either one.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-01T19:51:55Z
+
+Ping @fabpot. Do you want to retain the directory structure in this project, like you requested in Sami?
+
+---------------------------------------------------------------------------
+
+by fabpot at 2014-11-03T19:08:14Z
+
+Yes, it helps to have the namespace and the directory structure to be the same.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-03T19:11:43Z
+
+Then decided! ;)
