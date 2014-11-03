@@ -545,6 +545,29 @@ function mixedComplex()
         echo 1;
     }',
             ),
+            array(
+                '<?php
+    if (true) {
+        // foo
+        // bar
+
+        if (true) {
+            print("foo");
+            print("bar");
+        }
+    }',
+                '<?php
+    if (true)
+        // foo
+        // bar
+            {
+        if (true)
+        {
+            print("foo");
+            print("bar");
+        }
+    }',
+            ),
         );
     }
 
@@ -692,7 +715,9 @@ function foo()
         return array(
             array(
                 '<?php
-    if ($test) { // foo
+    if ($test) {
+        // foo
+
         echo 1;
     }',
                 '<?php
