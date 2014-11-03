@@ -334,9 +334,9 @@ class Token
      */
     public function isStructureAlternativeEnd()
     {
-        static $commentTokens = array(T_ENDDECLARE, T_ENDFOR, T_ENDFOREACH, T_ENDIF, T_ENDSWITCH, T_ENDWHILE, T_END_HEREDOC);
+        static $tokens = array(T_ENDDECLARE, T_ENDFOR, T_ENDFOREACH, T_ENDIF, T_ENDSWITCH, T_ENDWHILE, T_END_HEREDOC);
 
-        return $this->isGivenKind($commentTokens);
+        return $this->isGivenKind($tokens);
     }
 
     /**
