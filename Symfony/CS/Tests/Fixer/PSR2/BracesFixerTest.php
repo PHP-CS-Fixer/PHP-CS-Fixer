@@ -647,6 +647,39 @@ function foo()
     }
 
     /**
+     * @dataProvider provideFixAnonFunctionInShortArraySyntax54Cases
+     * @requires PHP 5.4
+     */
+    public function testFixAnonFunctionInShortArraySyntax54($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideFixAnonFunctionInShortArraySyntax54Cases()
+    {
+        return array(
+            array(
+                '<?php
+    function myFunction()
+    {
+        return [
+            [
+                "callback" => function ($data) {
+                    return true;
+                }
+            ],
+            [
+                "callback" => function ($data) {
+                    return true;
+                },
+            ],
+        ];
+    }',
+            ),
+        );
+    }
+
+    /**
      * @dataProvider provideFixCommentBeforeBraceCases
      */
     public function testFixCommentBeforeBrace($expected, $input = null)
