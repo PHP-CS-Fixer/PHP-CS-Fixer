@@ -59,17 +59,21 @@ class BracesFixer extends AbstractFixer
                 continue;
             }
 
-            $afterCommentIndex = $tokens->getNextNonWhitespace($afterParenthesisIndex);
+            $afterCommentIndex = $tokens->getNextMeaningfulToken($afterParenthesisIndex);
             $afterCommentToken = $tokens[$afterCommentIndex];
 
             if (!$afterCommentToken->equals('{')) {
                 continue;
             }
 
-            $afterParenthesisToken->setContent(rtrim($afterParenthesisToken->getContent()));
-            $tokens[$afterCommentIndex] = $afterParenthesisToken;
-            $tokens[$afterCommentIndex - 1]->setContent(' ');
-            $tokens[$afterParenthesisIndex] = $afterCommentToken;
+            $tokenTmp = $tokens[$afterCommentIndex];
+            $tokens[$afterCommentIndex - 1]->setContent(rtrim($tokens[$afterCommentIndex - 1]->getContent()));
+
+            for ($i = $afterCommentIndex; $i > $afterParenthesisIndex; --$i) {
+                $tokens[$i] = $tokens[$i - 1];
+            }
+
+            $tokens[$afterParenthesisIndex] = $tokenTmp;
         }
     }
 
@@ -286,7 +290,7 @@ class BracesFixer extends AbstractFixer
             }
 
             $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
-            $tokenAfterParenthesis = $tokens[$tokens->getNextNonWhitespace($parenthesisEndIndex)];
+            $tokenAfterParenthesis = $tokens[$tokens->getNextMeaningfulToken($parenthesisEndIndex)];
 
             // if Token after parenthesis is { then we do not need to insert brace, but to fix whitespace before it
             if ($tokenAfterParenthesis->equals('{')) {

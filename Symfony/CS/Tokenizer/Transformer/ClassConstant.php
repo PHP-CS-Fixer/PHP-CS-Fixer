@@ -27,7 +27,7 @@ class ClassConstant extends AbstractTransformer
     public function process(Tokens $tokens)
     {
         foreach ($tokens->findGivenKind(T_CLASS) as $index => $token) {
-            $prevIndex = $tokens->getTokenNotOfKindSibling($index, -1, array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT)));
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevIndex];
 
             if ($prevToken->isGivenKind(T_DOUBLE_COLON)) {
