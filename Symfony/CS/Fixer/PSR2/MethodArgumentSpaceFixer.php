@@ -59,7 +59,11 @@ class MethodArgumentSpaceFixer extends AbstractFixer
     {
         // remove space before comma if exist
         if ($tokens[$index - 1]->isWhitespace()) {
-            $tokens[$index - 1]->clear();
+            $prevIndex = $tokens->getPrevNonWhitespace($index - 1);
+
+            if (!$tokens[$prevIndex]->isGivenKind(T_END_HEREDOC)) {
+                $tokens[$index - 1]->clear();
+            }
         }
 
         // add space after comma if not exist

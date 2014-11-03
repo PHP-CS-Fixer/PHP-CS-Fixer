@@ -85,11 +85,26 @@ class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
             ),
             // skip short array
             array(
-                '<?php $foo = ["a"=>"apple", "b"=>"bed" ,"c"=>"car"]',
+                '<?php
+    $foo = ["a"=>"apple", "b"=>"bed" ,"c"=>"car"];
+    $foo = ["a" ,"b" ,"c"];
+    ',
             ),
-            // skip short array
+            // don't change HEREDOC and NOWDOC
             array(
-                '<?php $foo = ["a" ,"b" ,"c"]',
+                "<?php
+    \$this->foo(
+        <<<EOTXTa
+    heredoc
+EOTXTa
+        ,
+        <<<'EOTXTb'
+    nowdoc
+EOTXTb
+        ,
+        'foo'
+    );
+",
             ),
         );
     }
