@@ -37,9 +37,9 @@ class FunctionCallSpaceFixer extends AbstractFixer
 
             // looking for start brace
             if ($token->equals('(')) {
-
                 // last non-witespace token
                 $lastTokenIndex = $tokens->getPrevNonWhitespace($index);
+
                 if (null === $lastTokenIndex) {
                     continue;
                 }
