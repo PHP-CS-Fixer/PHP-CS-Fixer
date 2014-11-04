@@ -25,7 +25,7 @@ class SpacesCastFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, $content)
     {
-        static $insideCastSpaceReplaceMap = array (
+        static $insideCastSpaceReplaceMap = array(
             ' ' => '',
             "\t" => '',
             "\n" => '',

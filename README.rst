@@ -187,6 +187,11 @@ Choose from the list of available fixers:
 * **eof_ending** [PSR-2] A file must always end with an
                empty line feed.
 
+* **function_call_space** [PSR-2] When making a method or
+               function call, there MUST NOT be a
+               space between the method or function
+               name and the opening parenthesis.
+
 * **function_declaration** [PSR-2] Spaces should be properly
                placed in a function declaration.
 
