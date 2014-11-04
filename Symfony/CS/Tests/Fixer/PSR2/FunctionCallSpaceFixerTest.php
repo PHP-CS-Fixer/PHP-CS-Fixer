@@ -14,7 +14,7 @@ namespace Symfony\CS\Tests\Fixer\PSR2;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
- * @author Kuanhung Chen <ericj.tw@gmail.com>
+ * @author Varga Bence <vbence@czentral.org>
  */
 class FunctionCallSpaceFixerTest extends AbstractFixerTestBase
 {
@@ -41,8 +41,34 @@ class FunctionCallSpaceFixerTest extends AbstractFixerTestBase
             ),
            // test function-like constructs
            array(
-                '<?php include("something.php"); include_once("something.php"); require("something.php"); require_once("something.php"); print("hello"); unset($hello); isset($hello); empty($hello); die($hello); echo("hello"); array("hello"); list($a, $b) = $c; eval("a"); ',
-                '<?php include ("something.php"); include_once ("something.php"); require ("something.php"); require_once ("something.php"); print ("hello"); unset ($hello); isset ($hello); empty ($hello); die ($hello); echo ("hello"); array ("hello"); list ($a, $b) = $c; eval ("a"); ',
+                '<?php
+    include("something.php");
+    include_once("something.php");
+    require("something.php");
+    require_once("something.php");
+    print("hello");
+    unset($hello);
+    isset($hello);
+    empty($hello);
+    die($hello);
+    echo("hello");
+    array("hello");
+    list($a, $b) = $c;
+    eval("a");',
+                '<?php
+    include ("something.php");
+    include_once ("something.php");
+    require ("something.php");
+    require_once ("something.php");
+    print ("hello");
+    unset ($hello);
+    isset ($hello);
+    empty ($hello);
+    die ($hello);
+    echo ("hello");
+    array ("hello");
+    list ($a, $b) = $c;
+    eval ("a");',
             ),
             // skip other language constructs
             array(

@@ -37,15 +37,15 @@ class FunctionCallSpaceFixer extends AbstractFixer
 
             // looking for start brace
             if ($token->equals('(')) {
+
                 // last non-witespace token
                 $lastTokenIndex = $tokens->getPrevNonWhitespace($index);
-                if (null == $lastTokenIndex) {
+                if (null === $lastTokenIndex) {
                     continue;
                 }
-                $lastToken = $tokens[$lastTokenIndex];
 
                 // check if it is a function call
-                if ($lastToken->isGivenKind($functionyTokens)) {
+                if ($tokens[$lastTokenIndex]->isGivenKind($functionyTokens)) {
                     $this->fixFunctionCall($tokens, $index);
                 }
             }
@@ -56,21 +56,25 @@ class FunctionCallSpaceFixer extends AbstractFixer
 
     /**
      * Fixes whitespaces around braces of a function(y) call.
-     * @param  Tokens $tokens tokens to handle
-     * @param  int    $index  index of token
+     *
+     * @param Tokens $tokens tokens to handle
+     * @param int    $index  index of token
+     *
      * @return none
      */
-    public function fixFunctionCall(Tokens $tokens, $index)
+    private function fixFunctionCall(Tokens $tokens, $index)
     {
         // remove space before opening brace
-        if ($index > 0 && $tokens[$index - 1]->isWhitespace()) {
+        if ($tokens[$index - 1]->isWhitespace()) {
             $tokens[$index - 1]->clear();
         }
     }
 
     /**
      * Gets the name of tokens which can work as function calls.
+     *
      * @staticvar string[] $tokens Token names.
+     *
      * @return string[] Token names.
      */
     private function getFunctionyTokens()
