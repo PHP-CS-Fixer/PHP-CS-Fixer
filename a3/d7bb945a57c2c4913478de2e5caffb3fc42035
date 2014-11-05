@@ -1,0 +1,43 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-04T20:37:01Z
+
+Please see Travis status.
+The project need to fix itself ;d
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-04T20:46:26Z
+
+Great work @vbence !
+Just need to tweak it a little more ;)
+
+---------------------------------------------------------------------------
+
+by vbence at 2014-11-04T21:07:38Z
+
+Awesome... getting there. Is PHP 5.4 the required minimum? I'm seeing the short array syntax used in many places, but composer.json and travis.yml both say 5.3.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-04T21:35:47Z
+
+Supported version is 5.3. Where have you seen short array in actual code?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-04T21:40:45Z
+
+Please see Travis status.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-05T14:18:08Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by vbence at 2014-11-05T16:05:27Z
+
+:grinning:
