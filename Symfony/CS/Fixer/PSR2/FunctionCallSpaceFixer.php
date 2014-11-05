@@ -19,6 +19,7 @@ use Symfony\CS\Tokenizer\Token;
  * Fixer for rules defined in PSR2 ¶4.6.
  *
  * @author Varga Bence <vbence@czentral.org>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class FunctionCallSpaceFixer extends AbstractFixer
 {
@@ -31,23 +32,22 @@ class FunctionCallSpaceFixer extends AbstractFixer
 
         $functionyTokens = $this->getFunctionyTokens();
 
-        // iterate on the tokens
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            $token = $tokens[$index];
-
+        foreach ($tokens as $index => $token) {
             // looking for start brace
-            if ($token->equals('(')) {
-                // last non-witespace token
-                $lastTokenIndex = $tokens->getPrevNonWhitespace($index);
+            if (!$token->equals('(')) {
+                continue;
+            }
 
-                if (null === $lastTokenIndex) {
-                    continue;
-                }
+            // last non-witespace token
+            $lastTokenIndex = $tokens->getPrevNonWhitespace($index);
 
-                // check if it is a function call
-                if ($tokens[$lastTokenIndex]->isGivenKind($functionyTokens)) {
-                    $this->fixFunctionCall($tokens, $index);
-                }
+            if (null === $lastTokenIndex) {
+                continue;
+            }
+
+            // check if it is a function call
+            if ($tokens[$lastTokenIndex]->isGivenKind($functionyTokens)) {
+                $this->fixFunctionCall($tokens, $index);
             }
         }
 
