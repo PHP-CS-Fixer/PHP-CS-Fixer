@@ -11,8 +11,8 @@
 
 namespace Symfony\CS\Tokenizer\Transformer;
 
-use Symfony\CS\Tokenizer\Tokens;
 use Symfony\CS\Tokenizer\AbstractTransformer;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * Transform closing `}` for T_DOLLAR_OPEN_CURLY_BRACES into CT_DOLLAR_CLOSE_CURLY_BRACES.

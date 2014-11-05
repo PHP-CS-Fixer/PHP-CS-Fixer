@@ -11,8 +11,8 @@
 
 namespace Symfony\CS\Tokenizer\Transformer;
 
-use Symfony\CS\Tokenizer\Tokens;
 use Symfony\CS\Tokenizer\AbstractTransformer;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * Transform `class` class' constant from T_CLASS into CT_CLASS_CONSTANT.

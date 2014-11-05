@@ -11,8 +11,8 @@
 
 namespace Symfony\CS\Tokenizer;
 
-use Symfony\Component\Finder\Finder;
 use Symfony\CS\Utils;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Collection of Transformer classes.

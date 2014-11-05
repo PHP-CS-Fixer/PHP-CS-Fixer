@@ -12,8 +12,8 @@
 namespace Symfony\CS\Fixer\PSR0;
 
 use Symfony\CS\AbstractFixer;
-use Symfony\CS\ConfigInterface;
 use Symfony\CS\ConfigAwareInterface;
+use Symfony\CS\ConfigInterface;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
