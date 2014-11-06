@@ -1,0 +1,147 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-28T17:49:25Z
+
+Please rebase on master.
+Latest commits aren't linked with github account
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-02T19:03:17Z
+
+Sth really wrong happened here.
+Why there is a AlignEqualsFixer here ?
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-02T19:14:48Z
+
+It is here by a huge mistake of mine. Gonna rebase it out.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-02T19:17:26Z
+
+Please just rebase this branch on current master.
+AlignEqualsFixer is currently on master ;)
+Then everything should be ok!
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-02T19:17:59Z
+
+oh! awesome!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-02T19:18:53Z
+
+BTW you may want to squash all commits and then set author to properly link commit with your github account.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-02T19:34:50Z
+
+@keradus just squased everything in a single commit and fixed the author.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-02T19:37:47Z
+
+Hmmm. They don't seem to have been squashed. Did you force push?
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-02T19:39:58Z
+
+@GrahamCampbell at least I think I did... My log looks like:
+```
+98e0f1da45e28c783ddf61f6f0c131d2b09f186 Adding support to AlignDoubleArrow Fixer
+1bf7d722daa065e847f44083b770c2e790e36bd3 Merge remote-tracking branch 'upstream/master'
+2c0c85bf9319aeb60061c86af772a796f45b6ef9 feature #672 Add AlignEqualsFixer (dericofilho)
+```
+and I did, yes, git push --force.
+
+https://github.com/dericofilho/PHP-CS-Fixer/commits/AlignDoubleArrow
+you can see just one commit.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-02T19:40:54Z
+
+https://github.com/fabpot/PHP-CS-Fixer/pull/646/commits There are 16 commits here.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-02T19:42:11Z
+
+interesting. What is the canonical sources of my commits? My repo or this PR? Now I am lost, tbh.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-02T19:50:26Z
+
+Your master was broken - you prepared your previous feature on branch master.
+
+Please try the following:
+```
+git checkout upstream/master
+git branch -D master
+git checkout -b master
+git push origin master -f
+```
+
+Now you should have clean master.
+Then just
+```
+git checkout AlignDoubleArrow
+git rebase master
+git push origin AlignDoubleArrow -f
+```
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-02T19:58:27Z
+
+It didn't work. It created several conflicts. So I did:
+
+```
+git checkout upstream/master
+git branch -D master
+git checkout -b master
+git push origin master -f
+git checkout AlignDoubleArrow
+git checkout -b AlignDoubleArrow2
+git checkout AlignDoubleArrow
+git reset --hard 88d1ad3ae717b78266dd8d85131e8dba4cdf8898
+git merge master
+git cherry-pick 698e0f1da45e28c783ddf61f6f0c131d2b09f186
+git push -f
+```
+It should be OK now from what I see at https://github.com/fabpot/PHP-CS-Fixer/pull/646/commits
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-02T20:00:49Z
+
+Yeah, it may created conflicts on README file. Glad you managed it.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-02T20:01:23Z
+
+@keradus yeah. Is it OK now?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-02T20:02:26Z
+
+I always deal with conflicted README like accepting even conflicted file and then just regenerate whole file at finish.
+
+Yeah, looks good now ! :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-02T20:02:50Z
+
+:+1:
