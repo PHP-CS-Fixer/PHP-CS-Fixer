@@ -31,6 +31,9 @@ class YodaConditionsFixerTest extends AbstractFixerTestBase
         return array(
             // simple Yoda conditions
             array('<?php return 2 == $a;'),
+            array('<?php return array(2) == $a;'),
+            array('<?php return array($a) == $a;'),
+            array('<?php return $a == array($a);'),
             array('<?php return null == $a[2];'),
             array('<?php return $this->getStuff() === $myVarirable;'),
             array('<?php return "" === $this->myArray[$index];'),
@@ -47,6 +50,10 @@ class YodaConditionsFixerTest extends AbstractFixerTestBase
             array(
                 '<?php return 2 == $a;',
                 '<?php return $a == 2;',
+            ),
+            array(
+                '<?php return 2 == ($a);',
+                '<?php return ($a) == 2;',
             ),
             array(
                 '<?php return null == $a[2];',
