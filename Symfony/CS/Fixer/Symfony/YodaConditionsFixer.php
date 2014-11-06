@@ -73,14 +73,16 @@ class YodaConditionsFixer extends AbstractFixer
      */
     private function fixComparison(Tokens $tokens, $index)
     {
-        $startLeft = $this->findComparisonStart($tokens, $index);
-        $endLeft = $tokens->getPrevNonWhitespace($index);
+        $startLeft  = $this->findComparisonStart($tokens, $index);
+        $endLeft    = $tokens->getPrevNonWhitespace($index);
 
         $startRight = $tokens->getNextNonWhitespace($index);
-        $endRight = $this->findComparisonEnd($tokens, $index);
+        $endRight   = $this->findComparisonEnd($tokens, $index);
 
-        if (!$this->isVariable($tokens, $startLeft, $endLeft)
-                || $this->isVariable($tokens, $startRight, $endRight)) {
+        if (
+            !$this->isVariable($tokens, $startLeft, $endLeft)
+            || $this->isVariable($tokens, $startRight, $endRight)
+        ) {
             // already using Yoda conditions, or impossible to write Yoda-style
             return $index;
         }
@@ -123,6 +125,14 @@ class YodaConditionsFixer extends AbstractFixer
     {
         if ($end === $start) {
             return $tokens[$start]->isGivenKind(T_VARIABLE);
+        }
+
+        while (
+            $tokens[$start]->equals('(')
+            && $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $start) === $end
+        ) {
+            $start = $tokens->getNextMeaningfulToken($start);
+            $end   = $tokens->getPrevMeaningfulToken($end);
         }
 
         $index = $start;
