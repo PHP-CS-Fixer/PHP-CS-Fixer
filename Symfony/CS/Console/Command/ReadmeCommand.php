@@ -105,13 +105,12 @@ Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
 
 PHP-CS-Fixer is part of the homebrew-php project. Follow the installation
-instructions at https://github.com/josegonzalez/homebrew-php if you don't
+instructions at https://github.com/homebrew/homebrew-php if you don't
 already have it.
 
 .. code-block:: bash
 
-    \$ brew tap josegonzalez/homebrew-php
-    \$ brew install php-cs-fixer
+    \$ brew install homebrew/php/php-cs-fixer
 
 Update
 ------
