@@ -100,8 +100,7 @@ class YodaConditionsFixerTest extends AbstractFixerTestBase
 
             // complex code sample
             array(
-'<?php
-
+                '<?php
 if ($a == $b) {
     return null === $b ? (null === $a ? 0 : 0 === $a->b) : 0 === $b->a;
 } else {
@@ -109,8 +108,7 @@ if ($a == $b) {
         return false === $d;
     }
 }',
-'<?php
-
+                '<?php
 if ($a == $b) {
     return $b === null ? ($a === null ? 0 : $a->b === 0) : $b->a === 0;
 } else {

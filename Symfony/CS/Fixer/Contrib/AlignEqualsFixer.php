@@ -36,7 +36,8 @@ class AlignEqualsFixer extends AbstractFixer
     /**
      * Inject into the text placeholders of candidates of vertical alignment.
      *
-     * @param  string       $content
+     * @param string $content
+     *
      * @return array($code, $context_counter)
      */
     private function injectAlignmentPlaceholders($content)
@@ -77,8 +78,9 @@ class AlignEqualsFixer extends AbstractFixer
     /**
      * Look for group of placeholders, and provide vertical alignment.
      *
-     * @param  string $tmpCode
-     * @param  int    $contextCounter
+     * @param string $tmpCode
+     * @param int    $contextCounter
+     *
      * @return string
      */
     private function replacePlaceholder($tmpCode, $contextCounter)
