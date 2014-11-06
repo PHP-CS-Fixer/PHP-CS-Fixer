@@ -153,7 +153,7 @@ EOF;
 
     /**
      * References the issue #55 on github issue
-     * https://github.com/fabpot/PHP-CS-Fixer/issues/55
+     * https://github.com/FriendsOfPhp/PHP-CS-Fixer/issues/55
      */
     public function testFixThreeParamsWithReturn()
     {

@@ -92,7 +92,7 @@ To install PHP-CS-Fixer, install Composer and issue the following command:
 
 .. code-block:: bash
 
-    $ ./composer.phar global require fabpot/php-cs-fixer @stable
+    $ ./composer.phar global require FriendsOfPhp/php-cs-fixer @stable
 
 Then, make sure you have ``~/.composer/vendor/bin`` in your ``PATH``, and
 you're good to go:
@@ -184,7 +184,7 @@ projects for instance).
 .. _Sublime Text:      https://github.com/benmatselby/sublime-phpcs
 .. _NetBeans:          http://plugins.netbeans.org/plugin/49042/php-cs-fixer
 .. _PhpStorm:          http://arnolog.net/post/92715936483/use-fabpots-php-cs-fixer-tool-in-phpstorm-in-2-steps
-.. _contribute:        https://github.com/fabpot/php-cs-fixer/blob/master/CONTRIBUTING.md
+.. _contribute:        https://github.com/FriendsOfPhp/php-cs-fixer/blob/master/CONTRIBUTING.md
 
 EOF;
 

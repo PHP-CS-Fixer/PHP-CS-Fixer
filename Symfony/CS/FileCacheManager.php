@@ -29,7 +29,7 @@ class FileCacheManager
     const CACHE_FILE = '.php_cs.cache';
     const COMPOSER_JSON_FILE = '/../../../composer.json';
     const COMPOSER_LOCK_FILE = '/../../../composer.lock';
-    const COMPOSER_PACKAGE_NAME = 'fabpot/php-cs-fixer';
+    const COMPOSER_PACKAGE_NAME = 'FriendsOfPhp/php-cs-fixer';
 
     private $dir;
     private $isEnabled;
