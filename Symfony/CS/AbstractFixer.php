@@ -32,7 +32,7 @@ abstract class AbstractFixer implements FixerInterface
         $level = current(explode('\\', substr(get_called_class(), strlen(__NAMESPACE__.'\\Fixer\\'))));
 
         if (!isset($map[$level])) {
-            throw new \LogicException("Can not determine Fixer level");
+            throw new \LogicException('Can not determine Fixer level');
         }
 
         return $map[$level];

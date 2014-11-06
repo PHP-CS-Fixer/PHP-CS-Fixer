@@ -51,8 +51,9 @@ class MethodArgumentSpaceFixer extends AbstractFixer
 
     /**
      * Method to insert space after comma and remove space before comma
-     * @param  Tokens $tokens tokens to handle
-     * @param  int    $index  index of token
+     * @param Tokens $tokens tokens to handle
+     * @param int    $index  index of token
+     *
      * @return none
      */
     public function fixSpace(Tokens $tokens, $index)
