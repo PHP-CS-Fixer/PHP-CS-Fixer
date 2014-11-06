@@ -11,8 +11,8 @@
 
 namespace Symfony\CS\Tokenizer\Transformer;
 
-use Symfony\CS\Tokenizer\Tokens;
 use Symfony\CS\Tokenizer\AbstractTransformer;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * Transform `array` typehint from T_ARRAY into T_ARRAY_TYPEHINT.

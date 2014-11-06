@@ -11,9 +11,9 @@
 
 namespace Symfony\CS\Tests;
 
+use Symfony\CS\Config\Config;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
-use Symfony\CS\Config\Config;
 
 class FixerTest extends \PHPUnit_Framework_TestCase
 {

@@ -11,8 +11,8 @@
 
 namespace Symfony\CS\Tokenizer\Transformer;
 
-use Symfony\CS\Tokenizer\Tokens;
 use Symfony\CS\Tokenizer\AbstractTransformer;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * Transform curly braces in `$foo->{$bar}` into CT_DYNAMIC_PROP_BRACE_OPEN and CT_DYNAMIC_PROP_BRACE_CLOSE.

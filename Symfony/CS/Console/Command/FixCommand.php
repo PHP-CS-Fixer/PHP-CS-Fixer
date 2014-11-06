@@ -11,24 +11,24 @@
 
 namespace Symfony\CS\Console\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\CS\ConfigInterface;
+use Symfony\CS\Config\Config;
 use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerFileProcessedEvent;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\FixersResolver;
-use Symfony\CS\Config\Config;
-use Symfony\CS\ConfigInterface;
 use Symfony\CS\LintManager;
 use Symfony\CS\StdinFileInfo;
 use Symfony\CS\Utils;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
