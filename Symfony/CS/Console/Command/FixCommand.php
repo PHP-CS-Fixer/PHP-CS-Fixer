@@ -97,16 +97,18 @@ class FixCommand extends Command
     {
         $this
             ->setName('fix')
-            ->setDefinition(array(
-                new InputArgument('path', InputArgument::OPTIONAL, 'The path', null),
-                new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The configuration name', null),
-                new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
-                new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
-                new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or symfony (formerly all))', null),
-                new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
-                new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
-                new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
-            ))
+            ->setDefinition(
+                array(
+                    new InputArgument('path', InputArgument::OPTIONAL, 'The path', null),
+                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The configuration name', null),
+                    new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
+                    new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
+                    new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or symfony (formerly all))', null),
+                    new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
+                    new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
+                    new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
+                )
+            )
             ->setDescription('Fixes a directory or a file')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> command tries to fix as much coding standards
@@ -511,15 +513,18 @@ EOF
         $fixers = $this->fixer->getFixers();
 
         // sort fixers by level and name
-        usort($fixers, function (FixerInterface $a, FixerInterface $b) {
-            $cmp = Utils::cmpInt($a->getLevel(), $b->getLevel());
+        usort(
+            $fixers,
+            function (FixerInterface $a, FixerInterface $b) {
+                $cmp = Utils::cmpInt($a->getLevel(), $b->getLevel());
 
-            if (0 !== $cmp) {
-                return $cmp;
+                if (0 !== $cmp) {
+                    return $cmp;
+                }
+
+                return strcmp($a->getName(), $b->getName());
             }
-
-            return strcmp($a->getName(), $b->getName());
-        });
+        );
 
         foreach ($fixers as $fixer) {
             if (strlen($fixer->getName()) > $maxName) {
@@ -550,9 +555,12 @@ EOF
 
         $configs = $this->fixer->getConfigs();
 
-        usort($configs, function (ConfigInterface $a, ConfigInterface $b) {
-            return strcmp($a->getName(), $b->getName());
-        });
+        usort(
+            $configs,
+            function (ConfigInterface $a, ConfigInterface $b) {
+                return strcmp($a->getName(), $b->getName());
+            }
+        );
 
         foreach ($configs as $config) {
             if (strlen($config->getName()) > $maxName) {
