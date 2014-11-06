@@ -300,17 +300,23 @@ class Fixer
     {
         $diff = $this->diff->diff($old, $new);
 
-        $diff = implode(PHP_EOL, array_map(function ($string) {
-            $string = preg_replace('/^(\+){3}/', '<info>+++</info>', $string);
-            $string = preg_replace('/^(\+){1}/', '<info>+</info>', $string);
+        $diff = implode(
+            PHP_EOL,
+            array_map(
+                function ($string) {
+                    $string = preg_replace('/^(\+){3}/', '<info>+++</info>', $string);
+                    $string = preg_replace('/^(\+){1}/', '<info>+</info>', $string);
 
-            $string = preg_replace('/^(\-){3}/', '<error>---</error>', $string);
-            $string = preg_replace('/^(\-){1}/', '<error>-</error>', $string);
+                    $string = preg_replace('/^(\-){3}/', '<error>---</error>', $string);
+                    $string = preg_replace('/^(\-){1}/', '<error>-</error>', $string);
 
-            $string = str_repeat(' ', 6).$string;
+                    $string = str_repeat(' ', 6).$string;
 
-            return $string;
-        }, explode(PHP_EOL, $diff)));
+                    return $string;
+                },
+                explode(PHP_EOL, $diff)
+            )
+        );
 
         return $diff;
     }

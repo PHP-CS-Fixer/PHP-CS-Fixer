@@ -26,17 +26,19 @@ class MagentoFinder extends DefaultFinder
             ->name('*.php')
             ->name('*.phtml')
             ->name('*.xml')
-            ->exclude(array(
-                'lib',
-                'shell',
-                'app/Mage.php',
-                'app/code/core',
-                'app/code/community',
-                'app/design/frontend/default',
-                'app/design/frontend/enterprise/default',
-                'app/design/frontend/base',
-                'app/design/adminhtml/default',
-            ))
+            ->exclude(
+                array(
+                    'lib',
+                    'shell',
+                    'app/Mage.php',
+                    'app/code/core',
+                    'app/code/community',
+                    'app/design/frontend/default',
+                    'app/design/frontend/enterprise/default',
+                    'app/design/frontend/base',
+                    'app/design/adminhtml/default',
+                )
+            )
         ;
     }
 

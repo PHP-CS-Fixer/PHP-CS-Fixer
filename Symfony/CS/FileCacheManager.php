@@ -191,10 +191,12 @@ class FileCacheManager
             return;
         }
 
-        $data = serialize(array(
-            'version' => $this->getVersion(),
-            'hashes' => $this->newHashes,
-        ));
+        $data = serialize(
+            array(
+                'version' => $this->getVersion(),
+                'hashes' => $this->newHashes,
+            )
+        );
 
         file_put_contents($this->dir.self::CACHE_FILE, $data, LOCK_EX);
     }
