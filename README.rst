@@ -161,166 +161,171 @@ automatically fix anything:
 
 Choose from the list of available fixers:
 
-* **psr0** [PSR-0] Classes must be in a path that
-               matches their namespace, be at least
-               one namespace deep, and the class name
-               should match the file name.
+====================================    ========================================    ============
+Rule                                    Description                                 Group
+====================================    ========================================    ============
+psr-0                                   Classes must be in a path that              PSR-0
+                                        matches their namespace, be at least
+                                        one namespace deep, and the class name 
+                                        should match the file name.
+                                        
+encoding                                PHP code MUST use only UTF-8                PSR-1
+                                        without BOM (remove BOM).
+                                        
+short_tag                               PHP code must use the long                  PSR-1
+                                        <?php ?> tags or the short-echo <?= ?>
+                                        tags; it must not use the other tag
+                                        variations.
 
-* **encoding** [PSR-1] PHP code MUST use only UTF-8
-               without BOM (remove BOM).
+braces                                  The body of each structure MUST             PSR-2
+                                        be enclosed by braces. Braces should be
+                                        properly placed. Body of braces should
+                                        be properly indented.
 
-* **short_tag** [PSR-1] PHP code must use the long
-               <?php ?> tags or the short-echo <?= ?>
-               tags; it must not use the other tag
-               variations.
+elseif                                  The keyword elseif should be                PSR-2
+                                        used instead of else if so that all
+                                        control keywords looks like single
+                                        words.
 
-* **braces** [PSR-2] The body of each structure MUST
-               be enclosed by braces. Braces should be
-               properly placed. Body of braces should
-               be properly indented.
+eof_ending                              A file must always end with an              PSR-2
+                                        empty line feed.
 
-* **elseif** [PSR-2] The keyword elseif should be
-               used instead of else if so that all
-               control keywords looks like single
-               words.
+function_call_space                     When making a method or                     PSR-2
+                                        function call, there MUST NOT be a
+                                        space between the method or function
+                                        name and the opening parenthesis.
 
-* **eof_ending** [PSR-2] A file must always end with an
-               empty line feed.
+function_declaration                    Spaces should be properly                   PSR-2
+                                        placed in a function declaration.
 
-* **function_call_space** [PSR-2] When making a method or
-               function call, there MUST NOT be a
-               space between the method or function
-               name and the opening parenthesis.
+indentation                             Code MUST use an indent of 4                PSR-2
+                                        spaces, and MUST NOT use tabs for
+                                        identing.
 
-* **function_declaration** [PSR-2] Spaces should be properly
-               placed in a function declaration.
+line_after_namespace                    There MUST be one blank line                PSR-2
+                                        after the namespace declaration.
 
-* **indentation** [PSR-2] Code MUST use an indent of 4
-               spaces, and MUST NOT use tabs for
-               indenting.
+linefeed                                All PHP files must use the Unix             PSR-2
+                                        LF (linefeed) line ending.
 
-* **line_after_namespace** [PSR-2] There MUST be one blank line
-               after the namespace declaration.
+lowercase_constants                     The PHP constants true, false,              PSR-2
+                                        and null MUST be in lower case.
 
-* **linefeed** [PSR-2] All PHP files must use the Unix
-               LF (linefeed) line ending.
+lowercase_keywords                      PHP keywords MUST be in lower               PSR-2
+                                        case.
 
-* **lowercase_constants** [PSR-2] The PHP constants true, false,
-               and null MUST be in lower case.
+method_argument_space                   In method arguments and method              PSR-2
+                                        call, there MUST NOT be a space before
+                                        each comma and there MUST be one space
+                                        after each comma.
 
-* **lowercase_keywords** [PSR-2] PHP keywords MUST be in lower
-               case.
+multiple_use                            There MUST be one use keyword               PSR-2
+                                        per declaration.
 
-* **method_argument_space** [PSR-2] In method arguments and method
-               call, there MUST NOT be a space before
-               each comma and there MUST be one space
-               after each comma.
+parenthesis                             There MUST NOT be a space after             PSR-2
+                                        the opening parenthesis. There MUST NOT
+                                        be a space before the closing
+                                        parenthesis.
 
-* **multiple_use** [PSR-2] There MUST be one use keyword
-               per declaration.
+php_closing_tag                         The closing ?> tag MUST be                  PSR-2
+                                        omitted from files containing only PHP.
 
-* **parenthesis** [PSR-2] There MUST NOT be a space after
-               the opening parenthesis. There MUST NOT
-               be a space before the closing
-               parenthesis.
+trailing_spaces                         Remove trailing whitespace at               PSR-2
+                                        the end of non-blank lines.
 
-* **php_closing_tag** [PSR-2] The closing ?> tag MUST be
-               omitted from files containing only PHP.
+visibility                              Visibility MUST be declared on              PSR-2
+                                        all properties and methods; abstract
+                                        and final MUST be declared before the
+                                        visibility; static MUST be declared
+                                        after the visibility.
 
-* **trailing_spaces** [PSR-2] Remove trailing whitespace at
-               the end of non-blank lines.
+concat_without_spaces                   Concatenation should be used                symfony
+                                        without spaces.
 
-* **visibility** [PSR-2] Visibility MUST be declared on
-               all properties and methods; abstract
-               and final MUST be declared before the
-               visibility; static MUST be declared
-               after the visibility.
+duplicate_semicolon                     Remove duplicated semicolons.               symfony
 
-* **concat_without_spaces** [symfony] Concatenation should be used
-               without spaces.
+extra_empty_lines                       Removes extra empty lines.                  symfony
 
-* **duplicate_semicolon** [symfony] Remove duplicated semicolons.
+include                                 Include and file path should                symfony
+                                        be divided with a single space. File
+                                        path should not be placed under
+                                        brackets.
 
-* **extra_empty_lines** [symfony] Removes extra empty lines.
+multiline_array_trailing_comma          PHP multi-line arrays should                symfony
+                                        have a trailing comma.
 
-* **include** [symfony] Include and file path should
-               be divided with a single space. File
-               path should not be placed under
-               brackets.
+namespace_no_leading_whitespace         The namespace declaration                   symfony
+                                        line shouldn't contain leading
+                                        whitespace.
 
-* **multiline_array_trailing_comma** [symfony] PHP multi-line arrays should
-               have a trailing comma.
+new_with_braces                         All instances created with                  symfony
+                                        new keyword must be followed by braces.
 
-* **namespace_no_leading_whitespace** [symfony] The namespace declaration
-               line shouldn't contain leading
-               whitespace.
+object_operator                         There should not be space                   symfony
+                                        before or after object
+                                        T_OBJECT_OPERATOR.
 
-* **new_with_braces** [symfony] All instances created with
-               new keyword must be followed by braces.
+operators_spaces                        Operators should be arounded                symfony
+                                        by at least one space.
 
-* **object_operator** [symfony] There should not be space
-               before or after object
-               T_OBJECT_OPERATOR.
+phpdoc_params                           All items of the @param                     symfony
+                                        phpdoc tags must be aligned vertically.
 
-* **operators_spaces** [symfony] Operators should be arounded
-               by at least one space.
+remove_lines_between_uses               Removes line breaks between                 symfony
+                                        use statements.
 
-* **phpdoc_params** [symfony] All items of the @param
-               phpdoc tags must be aligned vertically.
+return                                  An empty line feed should                   symfony
+                                        precede a return statement.
 
-* **remove_lines_between_uses** [symfony] Removes line breaks between
-               use statements.
+single_array_no_trailing_comma          PHP single-line arrays should               symfony
+                                        not have trailing comma.
 
-* **return** [symfony] An empty line feed should
-               precede a return statement.
+spaces_before_semicolon                 Single-line whitespace before               symfony
+                                        closing semicolon are prohibited.
 
-* **single_array_no_trailing_comma** [symfony] PHP single-line arrays should
-               not have trailing comma.
+spaces_cast                             A single space should be                    symfony
+                                        between cast and variable.                         
 
-* **spaces_before_semicolon** [symfony] Single-line whitespace before
-               closing semicolon are prohibited.
+standardize_not_equal                   Replace all <> with !=.                     symfony
 
-* **spaces_cast** [symfony] A single space should be
-               between cast and variable.
+ternary_spaces                          Standardize spaces around                   symfony
+                                        ternary operator.
 
-* **standardize_not_equal** [symfony] Replace all <> with !=.
+unused_use                              Unused use statements must be               symfony
+                                        removed.
 
-* **ternary_spaces** [symfony] Standardize spaces around
-               ternary operator.
+whitespacy_lines                        Remove trailing whitespace at               symfony
+                                        the end of blank lines.
 
-* **unused_use** [symfony] Unused use statements must be
-               removed.
+yoda_conditions                         Comparisons should be done                  symfony
+                                        using Yoda conditions.
+                                        
+align_double_arrow                      Align double arrow symbols in               contrib
+                                        consecutive lines.
 
-* **whitespacy_lines** [symfony] Remove trailing whitespace at
-               the end of blank lines.
+align_equals                            Align equals symbols in                     contrib
+                                        consecutive lines.
 
-* **yoda_conditions** [symfony] Comparisons should be done
-               using Yoda conditions.
+concat_with_spaces                      Concatenation should be used                contrib
+                                        with at least one whitespace around.
 
-* **align_double_arrow** [contrib] Align double arrow symbols in
-               consecutive lines.
+multiline_spaces_before_semicolon       Multi-line whitespace before                contrib
+                                        closing semicolon are prohibited.
 
-* **align_equals** [contrib] Align equals symbols in
-               consecutive lines.
+ordered_use                             Ordering use statements.                    contrib
 
-* **concat_with_spaces** [contrib] Concatenation should be used
-               with at least one whitespace around.
+short_array_syntax                      PHP array's should use the                  contrib
+                                        PHP 5.4 short-syntax.
 
-* **multiline_spaces_before_semicolon** [contrib] Multi-line whitespace before
-               closing semicolon are prohibited.
+strict                                  Comparison should be strict.                contrib
+                                        Warning! This could change code
+                                        behavior.
 
-* **ordered_use** [contrib] Ordering use statements.
+strict_param                            Functions should be used with               contrib
+                                        $strict param. Warning! This could
+                                        change code behavior.
 
-* **short_array_syntax** [contrib] PHP array's should use the
-               PHP 5.4 short-syntax.
-
-* **strict** [contrib] Comparison should be strict.
-               Warning! This could change code
-               behavior.
-
-* **strict_param** [contrib] Functions should be used with
-               $strict param. Warning! This could
-               change code behavior.
+====================================    ========================================    ============
 
 
 The ``--config`` option customizes the files to analyse, based
