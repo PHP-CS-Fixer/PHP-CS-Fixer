@@ -31,6 +31,36 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
         return array(
             array(
                 '<?php
+                    $a = [
+                        0  => 1,
+                        10 => [
+                            1  => 2,
+                            22 => 3,
+                        ],
+                        100 => [
+                            1  => 2,
+                            22 => 3,
+                        ]
+                    ];
+                ',
+            ),
+            array(
+                '<?php
+                    $a = array(
+                        0  => 1,
+                        10 => array(
+                            1  => 2,
+                            22 => 3,
+                        ),
+                        100 => array(
+                            1  => 2,
+                            22 => 3,
+                        )
+                    );
+                ',
+            ),
+            array(
+                '<?php
                 $arr = array(
                 $a    => 1,
                 $bbbb => \'
@@ -63,6 +93,18 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
                 $cccccccc = 3;
                 \',
                 ];
+                ',
+            ),
+            array(
+                '<?php
+                foreach($arr as $k => $v){
+                    $arr = array($k => 1,
+                        $a          => 1,
+                        $bbbb       => \'
+                        $cccccccc = 3;
+                        \',
+                    );
+                }
                 ',
             ),
         );
