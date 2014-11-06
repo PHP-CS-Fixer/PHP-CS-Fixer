@@ -39,8 +39,9 @@ class Application extends BaseApplication
     public function getLongVersion()
     {
         $version = parent::getLongVersion().' by <comment>Fabien Potencier</comment>';
+        $commit  = '@git-commit@';
 
-        if ('@'.'git-commit@' !== $commit = '@git-commit@') {
+        if ('@'.'git-commit@' !== $commit) {
             $version .= ' ('.substr($commit, 0, 7).')';
         }
 
