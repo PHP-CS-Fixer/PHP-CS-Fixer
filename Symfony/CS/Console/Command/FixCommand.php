@@ -385,27 +385,31 @@ EOF
                 $output->writeln(sprintf('Fixed all files in %.3f seconds, %.3f MB memory used', $fixEvent->getDuration() / 1000, $fixEvent->getMemory() / 1024 / 1024));
                 break;
             case 'xml':
-                $dom = new \DOMDocument('1.0', 'UTF-8');
-                $dom->appendChild($filesXML = $dom->createElement('files'));
+                $dom      = new \DOMDocument('1.0', 'UTF-8');
+                $filesXML = $dom->createElement('files');
+                $dom->appendChild($filesXML);
 
                 foreach ($changed as $file => $fixResult) {
-                    $filesXML->appendChild($fileXML = $dom->createElement('file'));
-
+                    $fileXML = $dom->createElement('file');
                     $fileXML->setAttribute('id', $i++);
                     $fileXML->setAttribute('name', $file);
+                    $filesXML->appendChild($fileXML);
 
                     if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
-                        $fileXML->appendChild($appliedFixersXML = $dom->createElement('applied_fixers'));
+                        $appliedFixersXML = $dom->createElement('applied_fixers');
+                        $fileXML->appendChild($appliedFixersXML);
 
                         foreach ($fixResult['appliedFixers'] as $appliedFixer) {
-                            $appliedFixersXML->appendChild($appliedFixerXML = $dom->createElement('applied_fixer'));
+                            $appliedFixerXML = $dom->createElement('applied_fixer');
                             $appliedFixerXML->setAttribute('name', $appliedFixer);
+                            $appliedFixersXML->appendChild($appliedFixerXML);
                         }
                     }
 
                     if ($input->getOption('diff')) {
-                        $fileXML->appendChild($diffXML = $dom->createElement('diff'));
+                        $diffXML = $dom->createElement('diff');
                         $diffXML->appendChild($dom->createCDATASection($fixResult['diff']));
+                        $fileXML->appendChild($diffXML);
                     }
                 }
 
