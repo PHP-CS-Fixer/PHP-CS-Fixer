@@ -20,7 +20,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 class ElseifFixerTest extends AbstractFixerTestBase
 {
     /**
-     * @covers Symfony\CS\Fixer\ElseifFixer::fix
+     * @covers Symfony\CS\Fixer\PSR2\ElseifFixer::fix
      */
     public function testThatInvalidElseIfIsFixed()
     {
