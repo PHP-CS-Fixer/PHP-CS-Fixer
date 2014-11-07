@@ -53,7 +53,7 @@ To install PHP-CS-Fixer, install Composer and issue the following command:
 
 .. code-block:: bash
 
-    $ ./composer.phar global require FriendsOfPhp/php-cs-fixer @stable
+    $ ./composer.phar global require FriendsOfPhp/php-cs-fixer
 
 Then, make sure you have ``~/.composer/vendor/bin`` in your ``PATH``, and
 you're good to go:
