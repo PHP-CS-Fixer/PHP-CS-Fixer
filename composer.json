@@ -1,5 +1,5 @@
 {
-    "name": "fabpot/php-cs-fixer",
+    "name": "friendsofphp/php-cs-fixer",
     "type": "application",
     "description": "A script to automatically fix Symfony Coding Standard",
     "license": "MIT",
@@ -9,6 +9,9 @@
             "email": "fabien@symfony.com"
         }
     ],
+    "replace" : {
+        "fabpot/php-cs-fixer" : "self.version"
+    },
     "require": {
         "php": ">=5.3.6",
         "symfony/console": "~2.1",
