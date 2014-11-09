@@ -290,6 +290,9 @@ Choose from the list of available fixers:
                 phpdoc tags must be aligned
                 vertically.
 
+* **remove_leading_slash_use** [symfony] Remove leading slashes in
+                use clauses.
+
 * **remove_lines_between_uses** [symfony] Removes line breaks between
                 use statements.
 

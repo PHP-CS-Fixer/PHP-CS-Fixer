@@ -503,7 +503,7 @@ class Tokens extends \SplFixedArray
      *
      * @return array|array[]
      */
-    public function getNamespaceUseIndexes($perNamespace = false)
+    public function getImportUseIndexes($perNamespace = false)
     {
         $this->rewind();
 

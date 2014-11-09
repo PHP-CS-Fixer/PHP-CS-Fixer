@@ -27,7 +27,7 @@ class UnusedUseFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         $namespaceDeclarations = $this->getNamespaceDeclarations($tokens);
-        $useDeclarationsIndexes = $tokens->getNamespaceUseIndexes();
+        $useDeclarationsIndexes = $tokens->getImportUseIndexes();
         $useDeclarations = $this->getNamespaceUseDeclarations($tokens, $useDeclarationsIndexes);
         $contentWithoutUseDeclarations = $this->generateCodeWithoutPartials($tokens, array_merge($namespaceDeclarations, $useDeclarations));
         $useUsages = $this->detectUseUsages($contentWithoutUseDeclarations, $useDeclarations);
