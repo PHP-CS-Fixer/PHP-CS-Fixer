@@ -22,7 +22,6 @@ class AlignDoubleArrowFixer extends AbstractFixer
 {
     const ALIGNABLE_DOUBLEARROW = "\x2 DOUBLEARROW%d \x3";
     const NEW_LINE = "\n";
-    const ST_SEMI_COLON = ";";
 
     /**
      * {@inheritdoc}
@@ -54,17 +53,18 @@ class AlignDoubleArrowFixer extends AbstractFixer
                 continue;
             }
 
-            if ($token->equals(self::ST_SEMI_COLON) || $token->isGivenKind(T_FOREACH, T_ARRAY)) {
+            if ($token->equals(';') || $token->isGivenKind(array(T_FOREACH, T_ARRAY))) {
                 ++$contextCounter;
                 $code .= $tokenContent;
                 continue;
             }
 
-            $prevTokenIdx = $tokens->getPrevNonWhitespace($idx);
-            $prevToken = $tokens[$idx];
+            if ($token->equals('[')) {
+                $prevToken = $tokens[$tokens->getPrevNonWhitespace($idx)];
 
-            if ($prevToken->equals('[')) {
-                ++$contextCounter;
+                if ($prevToken->isGivenKind(T_DOUBLE_ARROW)) {
+                    ++$contextCounter;
+                }
             }
 
             $code .= $tokenContent;
