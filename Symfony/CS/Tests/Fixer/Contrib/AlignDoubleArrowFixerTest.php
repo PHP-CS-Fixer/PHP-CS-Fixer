@@ -95,6 +95,18 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
                 ];
                 ',
             ),
+            array(
+                '<?php
+                foreach($arr as $k => $v){
+                    $arr = array($k => 1,
+                        $a          => 1,
+                        $bbbb       => \'
+                        $cccccccc = 3;
+                        \',
+                    );
+                }
+                ',
+            ),
         );
     }
 }
