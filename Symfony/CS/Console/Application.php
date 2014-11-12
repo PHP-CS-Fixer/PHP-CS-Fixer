@@ -13,7 +13,6 @@ namespace Symfony\CS\Console;
 
 use Symfony\CS\Console\Command\FixCommand;
 use Symfony\CS\Console\Command\ReadmeCommand;
-use Symfony\CS\Console\Command\SelfUpdateCommand;
 use Symfony\CS\Fixer;
 use Symfony\Component\Console\Application as BaseApplication;
 
@@ -33,7 +32,6 @@ class Application extends BaseApplication
 
         $this->add(new FixCommand());
         $this->add(new ReadmeCommand());
-        $this->add(new SelfUpdateCommand());
     }
 
     public function getLongVersion()
