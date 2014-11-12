@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by jian-wu at 2014-11-10T13:41:56Z
+
+:-1:
+
+This is not the only place the name was changed.  This project is supposed to be moved to this new name.
+
+If the install doesn't work, there could be two problems.  One, the project name probably needs to be updated in composer.json.  Two, packagist has not updates the project name.
+
+---------------------------------------------------------------------------
+
+by jian-wu at 2014-11-10T13:46:30Z
+
+@Kanti , at the least, you should have provided with some description for your pull request.  Thanks.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-10T20:30:49Z
+
+@jian-wu You are actually wrong. The package name has not changed. This pull is correct.
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/composer.json#L2
+
+---------------------------------------------------------------------------
+
+by jian-wu at 2014-11-10T20:39:06Z
+
+Actually, I meant the only place the project name that hasn't changed is in the composer.json.  This pull is invalid because the name change is intended.  #699 addresses the name change in composer.json.
