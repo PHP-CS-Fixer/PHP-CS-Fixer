@@ -51,7 +51,7 @@ on large projects. This tool does the job for you.
 Requirements
 ------------
 
-PHP needs to be a minimum version of PHP 5.3.6
+PHP needs to be a minimum version of PHP 5.3.6.
 
 Installation
 ------------
@@ -92,7 +92,7 @@ To install PHP-CS-Fixer, install Composer and issue the following command:
 
 .. code-block:: bash
 
-    $ ./composer.phar global require FriendsOfPhp/php-cs-fixer @stable
+    $ ./composer.phar global require FriendsOfPhp/php-cs-fixer
 
 Then, make sure you have ``~/.composer/vendor/bin`` in your ``PATH``, and
 you're good to go:
