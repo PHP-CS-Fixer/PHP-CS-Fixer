@@ -1,0 +1,439 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-21T22:48:55Z
+
+Why the fixer fix:
+```php
+$a = array(
+    'a' =>
+    array()
+);
+```
+
+but not
+```php
+$a = array(
+    'a' =>
+    'b'
+);
+```
+?
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-10-21T22:51:13Z
+
+Because the fixer only merges T_DOUBLE_ARROW with T_ARRAY.
+
+That's the exactly the port of what's currently available in php.tools.
+
+Literals bear a very different policy there.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-22T21:00:24Z
+
+ > Because the fixer only merges T_DOUBLE_ARROW with T_ARRAY.
+
+I know what it does and what doesn't. But I don't know why.
+Changing only T_ARRAY is pointless for me - if we want `=> ***` to be fixed it should be fixed whatever `***` will be.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-10-22T21:47:30Z
+
+> But I don't know why.
+
+in php.tools, literal spacing is separated from T_* spacing. This is a port of compiler pass which deals with nested arrays - and that may be extrapolated into something more generic for sure.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-22T21:56:21Z
+
+yeah, let's generalize it!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-22T21:57:36Z
+
+Btw it is a good practice to answer code comments that was fixed.
+
+I see that some `commented on an outdated diff a day ago` here was fixed, but some still need to be faced.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-10-22T21:58:36Z
+
+Right now, I don't have time to generalize it for you. It is your call to accept it this way and later someone take over - or wait until I am able to do it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-22T22:01:06Z
+
+I see. then please face all code comments and when done I will PR to your branch to generalize it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-23T15:16:27Z
+
+I wondering if this fixer should run before `multiline_array_trailing_comma `
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-10-23T17:12:00Z
+
+Semantically speaking it should make difference. One addresses what happens before the array and the other, after.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-23T21:34:21Z
+
+To simplify:
+
+--------------------------------------------------
+
+Original code:
+```php
+$a = array(1 =>
+    array());
+```
+
+--------------------------------------------------
+
+If `multiline_array_trailing_comma` is first:
+after `multiline_array_trailing_comma`:
+```php
+$a = array(1 =>
+    array(),);
+```
+after `merge_double_arrow_and_array`:
+```php
+$a = array(1 => array(),);
+```
+
+--------------------------------------------------
+
+If `merge_double_arrow_and_array` is first:
+after `merge_double_arrow_and_array`:
+```php
+$a = array(1 => array());
+```
+after `multiline_array_trailing_comma`:
+```php
+$a = array(1 => array());
+```
+
+--------------------------------------------------
+
+See a difference here?
+Or am I wrong?
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-10-23T22:09:40Z
+
+```php
+$a = array(1 =>
+    array());
+```
+is a bad example. It needs more context. For instance:
+```php
+$a = array(
+    1 =>
+    array(),
+    2 => array(),
+    3 => array()
+);
+```
+becomes correctly this, independent of the order:
+```php
+$a = array(
+    1 => array(),
+    2 => array(),
+    3 => array(),
+);
+```
+
+or even:
+```php
+$a = array(
+    1 => array(),
+    2 => array(),
+    3 =>
+array()
+);
+```
+to
+```php
+$a = array(
+    1 => array(),
+    2 => array(),
+    3 => array(),
+);
+```
+
+This is only relevant if you know the larger context:
+```php
+$a = array(1 =>
+    array());
+```
+maybe:
+```php
+$a = array(
+    1 => array());
+```
+which will trigger a lot of discussion about how smart the Fixer should be - some will say:
+```php
+// Why not this?
+$a = array(1 => array());
+// Why not this instead?
+$a = array(
+    1 => array()
+);
+```
+Meaning, why not automatically convert into multiline? Why not automatically convert to single line? In the end, the power should reside in hands of developer. And there is a cue (at least is the one I follow):
+```php
+$a = array(
+    1 =>
+array()
+); //note the lone ) in the line -- this is a multiline array.
+$a = array(
+    1 =>
+array()); //note )) - this is a single line array multi-lined by accident
+```
+Therefore:
+```php
+$a = array(
+    1 => array(), // extra comma here
+);
+$a = array(
+    1 => array()); // This is a single line array, but with wordwrap depeding how deep nested it already is.
+```
+
+So for really deep nested single line arrays:
+```php
+// This already starts around column 80
+if ($cond) {
+    do {
+        if ($cond) {
+            $a = array(
+                  1 => array()); // This is a deep-nested single line array
+```
+
+For all these cases, IMHO, adding the trailing comma is not directly related to this fixer. It might be the case that the trailing comma fixer should actually look for a line break before the last closing parentheses to decide to put an extra comma.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-23T23:55:02Z
+
+Lot of text and still you missing the whole point here.
+I __do not__ talking here about changing any other fixer!
+The deep itself is __irrelevant__!
+Also why talking about converting to multiline? This fixer is designed to do sth else and __should not convert array to multiline array__! Each fixer must be atomic. This fixer merge `=>` with following array. And it __must not__ convert to multiline.
+
+My example
+```php
+$a = array(1 =>
+    array());
+```
+is a great example here!
+
+It is fixed by your fixer into
+```php
+$a = array(1 => array());
+```
+which is quite cool for this fixer! Couse your fixer is designed to change it that way.
+
+BUT - if the order of fixers will be:
+`multiline_array_trailing_comma`, `merge_double_arrow_and_array`
+then the code result will be:
+```php
+$a = array(1 => array(), );
+```
+Which is bad!
+
+The whole point is not to add some odd functionality here or changing fix logic itself - the point is to properly deal with order of this fixer in whole fixers collection.
+You must ensure `merge_double_arrow_and_array` to run before `multiline_array_trailing_comma` - just set appropriate priorities.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-10-23T23:56:10Z
+
+OK.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-10-26T15:59:24Z
+
+> You must ensure merge_double_arrow_and_array to run before multiline_array_trailing_comma - just set appropriate priorities.
+
+I don't know how to do it? Should I add this to the class?
+
+```php
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run before the MultilineArrayTrailingComma
+        return 1;
+    }
+
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-10-26T21:11:25Z
+
+Yes, and also add a test for it here:
+https://github.com/fabpot/PHP-CS-Fixer/blob/master/Symfony/CS/Tests/FixerTest.php#L180
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-02T19:03:02Z
+
+Sth really wrong happened here.
+Why there is a AlignEqualsFixer here ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-02T19:03:35Z
+
+> Yes, and also add a test for it here:
+> https://github.com/fabpot/PHP-CS-Fixer/blob/master/Symfony/CS/Tests/FixerTest.php#L180
+
+Still need that test
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-02T19:15:17Z
+
+> Still need that test
+
+I hope to finish this ASAP this week.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-02T20:06:09Z
+
+@keradus
+
+Test added.
+Commits Squashed.
+Author fixed.
+
+Could you please check whether is there anything else I need to fix, please?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-02T20:18:50Z
+
+IMO it looks good now.
+It needs generalization to not change only array after =>.
+I will do it this week.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-02T20:50:19Z
+
+See: https://github.com/dericofilho/PHP-CS-Fixer/pull/1 .
+Generalization done.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-02T21:58:42Z
+
+Hmmm. The name is a bit verbose. Is there any way to shorten the fixer name?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-02T21:59:33Z
+
+I don't see any.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-06T08:05:27Z
+
+@dericofilho please rebase on master/do some cherry picking to remove that ugly merge commit.
+In this PR should be only 2 commits - one per each author.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-06T14:57:55Z
+
+@keradus done!
+2 commits only.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-06T15:04:07Z
+
+@keradus I regenerated README. Tests are now OK.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-06T15:05:36Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-11T10:06:57Z
+
+@dericofilho could you please rebase on master?
+
+This will be merged into 1.1@dev
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-11T12:22:02Z
+
+@keradus rebased.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-11T12:29:51Z
+
+Great! Thanks! Then it is ready to be merged in 1.1@dev when we release 1.0!
+
+@stof @sstok what do you think about moving this fixer into SYMFONY level ?
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-11-11T12:31:25Z
+
+:+1: for moving to Symfony level.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-11T16:35:40Z
+
+@keradus @stof @sstok changed to symfony level.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-11T17:27:08Z
+
+Cool!
+Could you combine e1c971827a79a9f9ce8e792e4207b20d1ede6ea9 with 4551aa584470cf679a0f303a10007d6996e0946b please, @dericofilho ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-13T15:06:07Z
+
+Could you @dericofilho ?
+I would like to merge this PR ;)
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-13T16:09:11Z
+
+@keradus sorry for taking so long! Done! Double check please.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-13T18:06:54Z
+
+Great one!
