@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------
+
+by brtriver at 2014-11-13T05:17:17Z
+
+I have same problem about Japanese UTF-8 char.
+My script has been broken by "trailing spaces" below.
+
+* before
+```
+$b = 1; //追加
+```
+
+* after
+```
+$b = 1; //追�
+```
+
+I confirmed this PR fix my problem too.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-13T15:15:15Z
+
+Cool @brtriver !
