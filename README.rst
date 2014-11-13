@@ -94,6 +94,15 @@ You can update ``php-cs-fixer`` through this command:
 
     $ sudo php-cs-fixer self-update
 
+Globally (Composer)
+~~~~~~~~~~~~~~~~~~~
+
+You can update ``php-cs-fixer`` through this command:
+
+.. code-block:: bash
+
+    $ ./composer.phar global update fabpot/php-cs-fixer
+
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
 
@@ -400,6 +409,20 @@ only those exact fixers are enabled whether or not level is set.
 
 With the ``--config-file`` option you can specify the path to the
 ``.php_cs`` file.
+
+Caching
+-------
+
+You can enable caching by returning a custom config with caching enabled. This will
+speed up further runs.
+
+.. code-block:: php
+
+    <?php
+
+    return Symfony\CS\Config\Config::create()
+        ->setUsingCache(true)
+    ;
 
 Helpers
 -------

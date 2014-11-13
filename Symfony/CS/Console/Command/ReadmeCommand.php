@@ -133,6 +133,15 @@ You can update ``php-cs-fixer`` through this command:
 
     \$ sudo php-cs-fixer self-update
 
+Globally (Composer)
+~~~~~~~~~~~~~~~~~~~
+
+You can update ``php-cs-fixer`` through this command:
+
+.. code-block:: bash
+
+    \$ ./composer.phar global update fabpot/php-cs-fixer
+
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
 
