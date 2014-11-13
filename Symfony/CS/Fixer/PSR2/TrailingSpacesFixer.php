@@ -26,7 +26,7 @@ class TrailingSpacesFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         // [Structure] Don't add trailing spaces at the end of non-blank lines
-        return preg_replace('/(?<=\S)\h+$/m', '', $content);
+        return preg_replace('/(?<=\S)[ \t]+$/m', '', $content);
     }
 
     /**
