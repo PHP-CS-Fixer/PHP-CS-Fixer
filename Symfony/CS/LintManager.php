@@ -44,6 +44,11 @@ class LintManager
      */
     public function createProcessForFile($path)
     {
+        // in case php://stdin
+        if (!is_file($path)) {
+            return $this->createProcessForSource(file_get_contents($path));
+        }
+
         $process = new Process('php -l '.ProcessUtils::escapeArgument($path));
         $process->setTimeout(null);
         $process->run();
