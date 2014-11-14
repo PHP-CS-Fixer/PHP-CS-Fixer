@@ -43,6 +43,10 @@ class DuplicateSemicolonFixerTest extends AbstractFixerTestBase
 ;
     ;',
             ),
+            array(
+                '<?php $foo = 1; ',
+                '<?php $foo = 1;; ',
+            ),
         );
     }
 }

@@ -39,7 +39,7 @@ class DuplicateSemicolonFixer extends AbstractFixer
                 continue;
             }
 
-            $tokens->removeTrailingWhitespace($index);
+            $tokens->removeLeadingWhitespace($index);
             $token->clear();
         }
 
