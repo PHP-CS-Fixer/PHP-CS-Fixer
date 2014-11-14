@@ -3,12 +3,13 @@
 ## Quick guide:
 
  * Fork the repo.
+ * Install dependencies: `composer install`.
  * Create branch, e.g. feature-foo or bugfix-bar.
  * Make changes.
  * If you are adding functionality or fixing a bug - add a test!
  * Fix project itself: `php php-cs-fixer fix`.
  * Regenerate readme: `php php-cs-fixer readme > README.rst`. Do not modify README.rst manually!
- * Check if tests pass.
+ * Check if tests pass: `phpunit`.
 
 ## Opening a pull request
 
