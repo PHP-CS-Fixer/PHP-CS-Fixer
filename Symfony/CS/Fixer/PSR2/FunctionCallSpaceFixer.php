@@ -38,7 +38,7 @@ class FunctionCallSpaceFixer extends AbstractFixer
                 continue;
             }
 
-            // last non-witespace token
+            // last non-whitespace token
             $lastTokenIndex = $tokens->getPrevNonWhitespace($index);
 
             if (null === $lastTokenIndex) {

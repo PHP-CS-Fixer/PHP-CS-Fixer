@@ -290,7 +290,7 @@ EOF;
     /**
      * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
      */
-    public function testDolarOpenCurlyBracesSyntax()
+    public function testDollarOpenCurlyBracesSyntax()
     {
         $expected = <<<'EOF'
 <?php
