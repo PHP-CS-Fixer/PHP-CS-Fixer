@@ -189,8 +189,7 @@ class FileCacheManager
             $data['fixers'] = null;
         }
 
-        // Set hashes only if version has not changed.
-        // If version changed then we need to parse all files because the fixer changed!
+        // Set hashes only if the cache is fresh, otherwise we need to parse all files
         if (!$this->isCacheStale($data['version'], $data['fixers'])) {
             $this->oldHashes = $data['hashes'];
         }
