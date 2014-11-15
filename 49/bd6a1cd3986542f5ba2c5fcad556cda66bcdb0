@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by Seldaek at 2014-11-15T13:49:16Z
+
+Seems ok to me, although I think people installing with composer will logically update with composer, but this is nicer to the confused ones so why not :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T13:55:22Z
+
+The problem currently is that when working on composer installed version and running self-update command its actually run and claim to perform the update.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-15T14:09:32Z
+
+This is probably a cleaner solution than the alternative. :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T14:10:26Z
+
+(rebased on master)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T14:10:48Z
+
+Thanks!
