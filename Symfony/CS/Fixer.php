@@ -354,7 +354,7 @@ class Fixer
     /**
      * Set ErrorsManager instance.
      *
-     * @param ErrorsManager|null $stopwatch
+     * @param ErrorsManager|null $errorsManager
      */
     public function setErrorsManager(ErrorsManager $errorsManager = null)
     {
