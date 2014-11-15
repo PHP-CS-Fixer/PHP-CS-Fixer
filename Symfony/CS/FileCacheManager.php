@@ -19,6 +19,7 @@ namespace Symfony\CS;
  * File will be processed by PHP CS Fixer only if any of the following conditions is fulfilled:
  *  - cache is not available,
  *  - fixer version changed,
+ *  - fixers list is changed,
  *  - file is new,
  *  - file changed.
  *
@@ -33,14 +34,19 @@ class FileCacheManager
 
     private $dir;
     private $isEnabled;
+    private $fixers;
     private $newHashes = array();
     private $oldHashes = array();
     private $scriptDir;
 
-    public function __construct($isEnabled, $dir)
+    public function __construct($isEnabled, $dir, array $fixers)
     {
         $this->isEnabled = $isEnabled;
         $this->dir = null !== $dir ? $dir.DIRECTORY_SEPARATOR : '';
+        $this->fixers = array_map(function ($f) {
+            return $f->getName();
+        }, $fixers);
+        sort($this->fixers);
 
         $script = $_SERVER['SCRIPT_NAME'];
 
@@ -134,13 +140,13 @@ class FileCacheManager
         return $result;
     }
 
-    private function isSameFixerVersion($cacheVersion)
+    private function isCacheStale($cacheVersion, $fixers)
     {
         if (!$this->isCacheAvailable()) {
-            return false;
+            return true;
         }
 
-        return $this->getVersion() === $cacheVersion;
+        return $this->getVersion() !== $cacheVersion || $this->fixers !== $fixers;
     }
 
     private function isInstalledAsPhar()
@@ -178,9 +184,13 @@ class FileCacheManager
         $content = file_get_contents($this->dir.self::CACHE_FILE);
         $data = unserialize($content);
 
-        // Set hashes only if version has not changed.
-        // If version changed then we need to parse all files because the fixer changed!
-        if ($this->isSameFixerVersion($data['version'])) {
+        // BC for old cache without fixers list
+        if (!isset($data['fixers'])) {
+            $data['fixers'] = null;
+        }
+
+        // Set hashes only if the cache is fresh, otherwise we need to parse all files
+        if (!$this->isCacheStale($data['version'], $data['fixers'])) {
             $this->oldHashes = $data['hashes'];
         }
     }
@@ -194,6 +204,7 @@ class FileCacheManager
         $data = serialize(
             array(
                 'version' => $this->getVersion(),
+                'fixers' => $this->fixers,
                 'hashes' => $this->newHashes,
             )
         );
