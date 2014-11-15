@@ -134,7 +134,7 @@ class Fixer
             $this->stopwatch->openSection();
         }
 
-        $fileCacheManager = new FileCacheManager($config->usingCache(), $config->getDir());
+        $fileCacheManager = new FileCacheManager($config->usingCache(), $config->getDir(), array_merge($config->getFixers(), $config->getCustomFixers()));
 
         foreach ($config->getFinder() as $file) {
             if ($file->isDir()) {

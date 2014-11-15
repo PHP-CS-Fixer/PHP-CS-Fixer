@@ -19,6 +19,7 @@ namespace Symfony\CS;
  * File will be processed by PHP CS Fixer only if any of the following conditions is fulfilled:
  *  - cache is not available,
  *  - fixer version changed,
+ *  - fixers list is changed,
  *  - file is new,
  *  - file changed.
  *
@@ -33,14 +34,19 @@ class FileCacheManager
 
     private $dir;
     private $isEnabled;
+    private $fixers;
     private $newHashes = array();
     private $oldHashes = array();
     private $scriptDir;
 
-    public function __construct($isEnabled, $dir)
+    public function __construct($isEnabled, $dir, array $fixers)
     {
         $this->isEnabled = $isEnabled;
         $this->dir = null !== $dir ? $dir.DIRECTORY_SEPARATOR : '';
+        $this->fixers = array_map(function ($f) {
+            return $f->getName();
+        }, $fixers);
+        sort($this->fixers);
 
         $script = $_SERVER['SCRIPT_NAME'];
 
@@ -116,11 +122,12 @@ class FileCacheManager
 
     private function getVersion()
     {
+        $fixers = ':'.implode(',', $this->fixers);
         if ($this->isInstalledByComposer()) {
-            return Fixer::VERSION.':'.$this->getComposerVersion();
+            return Fixer::VERSION.':'.$this->getComposerVersion().$fixers;
         }
 
-        return Fixer::VERSION;
+        return Fixer::VERSION.$fixers;
     }
 
     private function isCacheAvailable()
