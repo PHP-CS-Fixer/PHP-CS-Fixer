@@ -75,7 +75,7 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -610,7 +610,7 @@ class Tokens extends \SplFixedArray
             $index += $direction;
 
             if (!$this->offsetExists($index)) {
-                return null;
+                return;
             }
 
             $token = $this[$index];
@@ -665,7 +665,7 @@ class Tokens extends \SplFixedArray
             $index += $direction;
 
             if (!$this->offsetExists($index)) {
-                return null;
+                return;
             }
 
             $token = $this[$index];
@@ -691,7 +691,7 @@ class Tokens extends \SplFixedArray
             $index += $direction;
 
             if (!$this->offsetExists($index)) {
-                return null;
+                return;
             }
 
             $token = $this[$index];
