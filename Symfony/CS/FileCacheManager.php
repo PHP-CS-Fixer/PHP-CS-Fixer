@@ -28,16 +28,12 @@ namespace Symfony\CS;
 class FileCacheManager
 {
     const CACHE_FILE = '.php_cs.cache';
-    const COMPOSER_JSON_FILE = '/../../../composer.json';
-    const COMPOSER_LOCK_FILE = '/../../../composer.lock';
-    const COMPOSER_PACKAGE_NAME = 'fabpot/php-cs-fixer';
 
     private $dir;
     private $isEnabled;
     private $fixers;
     private $newHashes = array();
     private $oldHashes = array();
-    private $scriptDir;
 
     public function __construct($isEnabled, $dir, array $fixers)
     {
@@ -47,14 +43,6 @@ class FileCacheManager
             return $f->getName();
         }, $fixers);
         sort($this->fixers);
-
-        $script = $_SERVER['SCRIPT_NAME'];
-
-        if (is_link($script)) {
-            $script = dirname($script).'/'.readlink($script);
-        }
-
-        $this->scriptDir = dirname($script);
 
         $this->readFromFile();
     }
@@ -98,43 +86,12 @@ class FileCacheManager
         return crc32($content);
     }
 
-    private function getComposerVersion()
-    {
-        static $result;
-
-        if (!$this->isInstalledByComposer()) {
-            throw new \LogicException('Can not get composer version for tool not installed by composer.');
-        }
-
-        if (null === $result) {
-            $composerLock = json_decode(file_get_contents($this->scriptDir.self::COMPOSER_LOCK_FILE), true);
-
-            foreach ($composerLock['packages'] as $package) {
-                if (self::COMPOSER_PACKAGE_NAME === $package['name']) {
-                    $result = $package['version'].'#'.$package['dist']['reference'];
-                    break;
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    private function getVersion()
-    {
-        if ($this->isInstalledByComposer()) {
-            return Fixer::VERSION.':'.$this->getComposerVersion();
-        }
-
-        return Fixer::VERSION;
-    }
-
     private function isCacheAvailable()
     {
         static $result;
 
         if (null === $result) {
-            $result = $this->isEnabled && ($this->isInstalledAsPhar() || $this->isInstalledByComposer());
+            $result = $this->isEnabled && (ToolInfo::isInstalledAsPhar() || ToolInfo::isInstalledByComposer());
         }
 
         return $result;
@@ -146,29 +103,7 @@ class FileCacheManager
             return true;
         }
 
-        return $this->getVersion() !== $cacheVersion || $this->fixers !== $fixers;
-    }
-
-    private function isInstalledAsPhar()
-    {
-        static $result;
-
-        if (null === $result) {
-            $result = 'phar://' === substr(__DIR__, 0, 7);
-        }
-
-        return $result;
-    }
-
-    private function isInstalledByComposer()
-    {
-        static $result;
-
-        if (null === $result) {
-            $result = !$this->isInstalledAsPhar() && file_exists($this->scriptDir.self::COMPOSER_JSON_FILE);
-        }
-
-        return $result;
+        return ToolInfo::getVersion() !== $cacheVersion || $this->fixers !== $fixers;
     }
 
     private function readFromFile()
@@ -203,7 +138,7 @@ class FileCacheManager
 
         $data = serialize(
             array(
-                'version' => $this->getVersion(),
+                'version' => ToolInfo::getVersion(),
                 'fixers' => $this->fixers,
                 'hashes' => $this->newHashes,
             )

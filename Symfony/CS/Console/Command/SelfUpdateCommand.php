@@ -11,6 +11,7 @@
 
 namespace Symfony\CS\Console\Command;
 
+use Symfony\CS\ToolInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -47,6 +48,12 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (!ToolInfo::isInstalledAsPhar()) {
+            $output->writeln('<error>Self-update is available only for PHAR version.</error>');
+
+            return 1;
+        }
+
         preg_match('/\((.*?)\)$/', $this->getApplication()->getLongVersion(), $match);
         $localVersion = isset($match[1]) ? $match[1] : '';
 
