@@ -277,6 +277,10 @@ class Fixer
     {
         $level = $fixer->getLevel();
 
+        if (($level & FixerInterface::NONE_LEVEL) === $level) {
+            return 'none';
+        }
+
         if (($level & FixerInterface::PSR0_LEVEL) === $level) {
             return 'PSR-0';
         }

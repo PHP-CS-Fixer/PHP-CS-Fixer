@@ -16,6 +16,7 @@ namespace Symfony\CS;
  */
 interface FixerInterface
 {
+    const NONE_LEVEL    = 0;
     const PSR0_LEVEL    = 1;
     const PSR1_LEVEL    = 3;
     const PSR2_LEVEL    = 7;
