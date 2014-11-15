@@ -64,7 +64,7 @@ class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run before the MultilineArrayTrailingComma
+        // should be run before the MultilineArrayTrailingCommaFixer and AlignDoubleArrowFixer
         return 1;
     }
 }
