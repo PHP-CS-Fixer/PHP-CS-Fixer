@@ -1,0 +1,66 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T11:52:38Z
+
+Please see: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Config/Config.php#L39
+
+Yeah, you are correct. When running from CLI `--fixers=a,b` will run only that 2 fixers.
+
+Like idea! Dislike solution
+
+---------------------------------------------------------------------------
+
+by Seldaek at 2014-11-15T12:05:24Z
+
+OK all good now I think?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T12:19:45Z
+
+Great change!
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-15T12:21:03Z
+
+fabot.io seems sad?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-15T12:23:44Z
+
+See #734 and #735.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T12:33:26Z
+
+Master updated.
+@Seldaek , could you rebase on master to prove that PR status is green?
+
+---------------------------------------------------------------------------
+
+by Seldaek at 2014-11-15T12:34:53Z
+
+I can but it's kind of clear that it's the only issue listed in fabbot and that travis passed..
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T12:36:09Z
+
+Just hate to merge "red PR" ;)
+
+---------------------------------------------------------------------------
+
+by Seldaek at 2014-11-15T12:38:05Z
+
+Green now :P
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T12:39:23Z
+
+Great, thanks!
+:+1:
