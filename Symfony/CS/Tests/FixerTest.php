@@ -185,6 +185,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
     public static function getFixerLevels()
     {
         return array(
+            array(FixerInterface::NONE_LEVEL, 'none'),
             array(FixerInterface::PSR0_LEVEL, 'PSR-0'),
             array(FixerInterface::PSR1_LEVEL, 'PSR-1'),
             array(FixerInterface::PSR2_LEVEL, 'PSR-2'),

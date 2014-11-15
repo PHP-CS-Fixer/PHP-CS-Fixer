@@ -173,7 +173,8 @@ Instead of using command line options to customize the fixer, you can save the
 configuration in a <comment>.php_cs</comment> file in the root directory of
 your project. The file must return an instance of
 `Symfony\CS\ConfigInterface`, which lets you configure the fixers, the level, the files,
-and directories that need to be analyzed:
+and directories that need to be analyzed. The example below will add two contrib fixers
+to the default list of symfony-level fixers:
 
     <?php
 
@@ -183,7 +184,24 @@ and directories that need to be analyzed:
     ;
 
     return Symfony\CS\Config\Config::create()
-        ->fixers(array('indentation', 'elseif'))
+        ->fixers(array('strict_param', 'short_array_syntax'))
+        ->finder(\$finder)
+    ;
+
+    ?>
+
+If you want complete control over which fixers you use, you may use the empty level and
+then specify all fixers to be used:
+
+    <?php
+
+    \$finder = Symfony\CS\Finder\DefaultFinder::create()
+        ->in(__DIR__)
+    ;
+
+    return Symfony\CS\Config\Config::create()
+        ->level(Symfony\CS\FixerInterface::NONE_LEVEL)
+        ->fixers(array('trailing_spaces', 'encoding'))
         ->finder(\$finder)
     ;
 
