@@ -17,6 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class AlignDoubleArrowFixer extends AbstractFixer
 {
@@ -50,6 +51,17 @@ class AlignDoubleArrowFixer extends AbstractFixer
 
             if ($token->isGivenKind(T_DOUBLE_ARROW)) {
                 $code .= sprintf(self::ALIGNABLE_DOUBLEARROW, $contextCounter).$tokenContent;
+
+                $nextToken = $tokens[$idx + 1];
+
+                if (!$nextToken->isWhitespace()) {
+                    // if there is no whitespaces after T_DOUBLE_ARROW add it
+                    $code .= ' ';
+                } elseif ($nextToken->isWhitespace(array('whitespaces' => " \t"))) {
+                    // if there is single line whitespaces after T_DOUBLE_ARROW normalize it with single space
+                    $nextToken->setContent(' ');
+                }
+
                 continue;
             }
 
