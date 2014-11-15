@@ -74,7 +74,7 @@ interface FixerInterface
     /**
      * Returns true if the file is supported by this fixer.
      *
-     * @return Boolean true if the file is supported by this fixer, false otherwise
+     * @return bool true if the file is supported by this fixer, false otherwise
      */
     public function supports(\SplFileInfo $file);
 }

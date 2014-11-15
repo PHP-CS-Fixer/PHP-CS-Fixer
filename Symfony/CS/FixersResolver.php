@@ -149,7 +149,7 @@ class FixersResolver
             }
         }
 
-        return null;
+        return;
     }
 
     protected function parseFixers()
@@ -162,6 +162,6 @@ class FixersResolver
             return $this->config->getFixers();
         }
 
-        return null;
+        return;
     }
 }
