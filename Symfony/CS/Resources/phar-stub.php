@@ -20,8 +20,10 @@ Phar::mapPhar('php-cs-fixer.phar');
 require_once 'phar://php-cs-fixer.phar/vendor/autoload.php';
 
 use Symfony\CS\Console\Application;
+use Symfony\CS\Console\Command\SelfUpdateCommand;
 
 $application = new Application();
+$application->add(new SelfUpdateCommand());
 $application->run();
 
 __HALT_COMPILER();
