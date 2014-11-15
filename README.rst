@@ -254,6 +254,10 @@ Choose from the list of available fixers:
 * **duplicate_semicolon** [symfony] Remove duplicated
                 semicolons.
 
+* **empty_return** [symfony] A return statement wishing
+                to return nothing should be simply
+                "return".
+
 * **extra_empty_lines** [symfony] Removes extra empty lines.
 
 * **include** [symfony] Include and file path should
