@@ -122,12 +122,11 @@ class FileCacheManager
 
     private function getVersion()
     {
-        $fixers = ':'.implode(',', $this->fixers);
         if ($this->isInstalledByComposer()) {
-            return Fixer::VERSION.':'.$this->getComposerVersion().$fixers;
+            return Fixer::VERSION.':'.$this->getComposerVersion();
         }
 
-        return Fixer::VERSION.$fixers;
+        return Fixer::VERSION;
     }
 
     private function isCacheAvailable()
@@ -141,13 +140,13 @@ class FileCacheManager
         return $result;
     }
 
-    private function isSameFixerVersion($cacheVersion)
+    private function isCacheStale($cacheVersion, $fixers)
     {
         if (!$this->isCacheAvailable()) {
-            return false;
+            return true;
         }
 
-        return $this->getVersion() === $cacheVersion;
+        return $this->getVersion() !== $cacheVersion || $this->fixers !== $fixers;
     }
 
     private function isInstalledAsPhar()
@@ -185,9 +184,14 @@ class FileCacheManager
         $content = file_get_contents($this->dir.self::CACHE_FILE);
         $data = unserialize($content);
 
+        // BC for old cache without fixers list
+        if (!isset($data['fixers'])) {
+            $data['fixers'] = null;
+        }
+
         // Set hashes only if version has not changed.
         // If version changed then we need to parse all files because the fixer changed!
-        if ($this->isSameFixerVersion($data['version'])) {
+        if (!$this->isCacheStale($data['version'], $data['fixers'])) {
             $this->oldHashes = $data['hashes'];
         }
     }
@@ -201,6 +205,7 @@ class FileCacheManager
         $data = serialize(
             array(
                 'version' => $this->getVersion(),
+                'fixers' => $this->fixers,
                 'hashes' => $this->newHashes,
             )
         );
