@@ -1,0 +1,48 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T20:27:51Z
+
+Looks nice ;)
+Please on master.
+
+---------------------------------------------------------------------------
+
+by cmodijk at 2014-11-15T22:56:16Z
+
+What do you mean with "Please on master." ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-15T22:58:58Z
+
+Please rebase this. :)
+
+---------------------------------------------------------------------------
+
+by cmodijk at 2014-11-15T23:11:08Z
+
+Done :)
+I just forked it this evening and it already changed to a new class thats fast.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T23:28:39Z
+
+Ops, forget one word ;)
+Well, the community is quite snappy ;)
+Cool job, thanks!
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by cmodijk at 2014-11-15T23:33:41Z
+
+@keradus In the issue you mentioned to add a test case but I don't do a lot of testing. But I will give it a try to add some test cases. Do you want that in this pull requests or an other one?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T23:36:33Z
+
+If you can do it soon (let say before monday) please do it in this PR.
+As this PR fix issue and currently we have no tests for caching it will be no harm if new tests come up with new PR
