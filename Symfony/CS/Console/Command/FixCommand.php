@@ -13,11 +13,11 @@ namespace Symfony\CS\Console\Command;
 
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\Config\Config;
+use Symfony\CS\ConfigurationResolver;
 use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerFileProcessedEvent;
 use Symfony\CS\FixerInterface;
-use Symfony\CS\FixersResolver;
 use Symfony\CS\LintManager;
 use Symfony\CS\StdinFileInfo;
 use Symfony\CS\Utils;
@@ -341,7 +341,7 @@ EOF
         // register custom fixers from config
         $this->fixer->registerCustomFixers($config->getCustomFixers());
 
-        $resolver = new FixersResolver();
+        $resolver = new ConfigurationResolver();
         $resolver
             ->setAllFixers($this->fixer->getFixers())
             ->setConfig($config)

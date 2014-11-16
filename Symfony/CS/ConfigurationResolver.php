@@ -12,13 +12,13 @@
 namespace Symfony\CS;
 
 /**
- * The resolver that resolves fixers to use by command line options and config.
+ * The resolver that resolves configuration to use by command line options and config.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class FixersResolver
+class ConfigurationResolver
 {
     protected $allFixers;
     protected $config;
