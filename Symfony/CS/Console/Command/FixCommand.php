@@ -107,6 +107,7 @@ class FixCommand extends Command
                     new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
+                    new InputOption('no-progress', '', InputOption::VALUE_NONE, 'Hide progress bar'),
                 )
             )
             ->setDescription('Fixes a directory or a file')
@@ -116,6 +117,8 @@ problems as possible on a given file or directory:
 
     <info>php %command.full_name% /path/to/dir</info>
     <info>php %command.full_name% /path/to/file</info>
+
+The <comment>--no-progress</comment> option hides progress notification.
 
 The <comment>--level</comment> option limits the fixers to apply on the
 project:
@@ -346,11 +349,9 @@ EOF
             ->resolve();
 
         $config->fixers($resolver->getFixers());
+        $showProgress = !$input->getOption('no-progress');
 
-        $verbosity = $output->getVerbosity();
-        $listenForFixerFileProcessedEvent = OutputInterface::VERBOSITY_VERY_VERBOSE <= $verbosity;
-
-        if ($listenForFixerFileProcessedEvent) {
+        if ($showProgress) {
             $fileProcessedEventListener = function (FixerFileProcessedEvent $event) use ($output) {
                 $output->write($event->getStatusAsString());
             };
@@ -363,7 +364,7 @@ EOF
         $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
         $this->stopwatch->stop('fixFiles');
 
-        if ($listenForFixerFileProcessedEvent) {
+        if ($showProgress) {
             $this->fixer->setEventDispatcher(null);
             $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
             $output->writeln('');
@@ -378,6 +379,7 @@ EOF
             $output->writeln('Legend: '.implode(', ', array_unique($legend)));
         }
 
+        $verbosity = $output->getVerbosity();
         $i = 1;
 
         switch ($input->getOption('format')) {

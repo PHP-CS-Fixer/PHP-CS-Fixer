@@ -123,6 +123,8 @@ problems as possible on a given file or directory:
     php php-cs-fixer.phar fix /path/to/dir
     php php-cs-fixer.phar fix /path/to/file
 
+The ``--no-progress`` option hides progress notification.
+
 The ``--level`` option limits the fixers to apply on the
 project:
 
