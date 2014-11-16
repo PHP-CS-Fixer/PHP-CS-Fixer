@@ -13,11 +13,11 @@ namespace Symfony\CS\Console\Command;
 
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\Config\Config;
+use Symfony\CS\ConfigurationResolver;
 use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerFileProcessedEvent;
 use Symfony\CS\FixerInterface;
-use Symfony\CS\FixersResolver;
 use Symfony\CS\LintManager;
 use Symfony\CS\StdinFileInfo;
 use Symfony\CS\Utils;
@@ -107,6 +107,7 @@ class FixCommand extends Command
                     new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
+                    new InputOption('no-progress', '', InputOption::VALUE_NONE, 'Hide progress bar'),
                 )
             )
             ->setDescription('Fixes a directory or a file')
@@ -116,6 +117,8 @@ problems as possible on a given file or directory:
 
     <info>php %command.full_name% /path/to/dir</info>
     <info>php %command.full_name% /path/to/file</info>
+
+The <comment>--no-progress</comment> option hides progress notification.
 
 The <comment>--level</comment> option limits the fixers to apply on the
 project:
@@ -338,25 +341,25 @@ EOF
         // register custom fixers from config
         $this->fixer->registerCustomFixers($config->getCustomFixers());
 
-        $resolver = new FixersResolver($this->fixer->getFixers());
+        $resolver = new ConfigurationResolver();
         $resolver
+            ->setAllFixers($this->fixer->getFixers())
             ->setConfig($config)
-            ->setOption('level', $input->getOption('level'))
-            ->setOption('fixers', $input->getOption('fixers'))
+            ->setOptions(array(
+                'level'         => $input->getOption('level'),
+                'fixers'        => $input->getOption('fixers'),
+                'no-progress'   => $input->getOption('no-progress'),
+            ))
             ->resolve();
 
         $config->fixers($resolver->getFixers());
+        $showProgress = $resolver->getProgress();
 
-        $verbosity = $output->getVerbosity();
-        $listenForFixerFileProcessedEvent = OutputInterface::VERBOSITY_VERY_VERBOSE <= $verbosity;
-
-        if ($listenForFixerFileProcessedEvent) {
+        if ($showProgress) {
             $fileProcessedEventListener = function (FixerFileProcessedEvent $event) use ($output) {
                 $output->write($event->getStatusAsString());
             };
-        }
 
-        if ($listenForFixerFileProcessedEvent) {
             $this->fixer->setEventDispatcher($this->eventDispatcher);
             $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
         }
@@ -365,7 +368,7 @@ EOF
         $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
         $this->stopwatch->stop('fixFiles');
 
-        if ($listenForFixerFileProcessedEvent) {
+        if ($showProgress) {
             $this->fixer->setEventDispatcher(null);
             $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
             $output->writeln('');
@@ -380,6 +383,7 @@ EOF
             $output->writeln('Legend: '.implode(', ', array_unique($legend)));
         }
 
+        $verbosity = $output->getVerbosity();
         $i = 1;
 
         switch ($input->getOption('format')) {
