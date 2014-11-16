@@ -18,8 +18,7 @@ namespace Symfony\CS;
  */
 class ToolInfo
 {
-    const COMPOSER_JSON_FILE = '/../../../composer.json';
-    const COMPOSER_LOCK_FILE = '/../../../composer.lock';
+    const COMPOSER_INSTALLED_FILE = '/../../composer/installed.json';
     const COMPOSER_PACKAGE_NAME = 'fabpot/php-cs-fixer';
 
     public static function getComposerVersion()
@@ -31,9 +30,9 @@ class ToolInfo
         }
 
         if (null === $result) {
-            $composerLock = json_decode(file_get_contents(self::getScriptDir().self::COMPOSER_LOCK_FILE), true);
+            $composerInstalled = json_decode(file_get_contents(self::getScriptDir().self::COMPOSER_INSTALLED_FILE), true);
 
-            foreach ($composerLock['packages'] as $package) {
+            foreach ($composerInstalled as $package) {
                 if (self::COMPOSER_PACKAGE_NAME === $package['name']) {
                     $result = $package['version'].'#'.$package['dist']['reference'];
                     break;
@@ -86,7 +85,7 @@ class ToolInfo
         static $result;
 
         if (null === $result) {
-            $result = !self::isInstalledAsPhar() && file_exists(self::getScriptDir().self::COMPOSER_JSON_FILE);
+            $result = !self::isInstalledAsPhar() && file_exists(self::getScriptDir().self::COMPOSER_INSTALLED_FILE);
         }
 
         return $result;
