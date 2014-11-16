@@ -47,6 +47,15 @@ class FixersResolver
         return $this;
     }
 
+    public function setOptions(array $options)
+    {
+        foreach ($options as $name => $value) {
+            $this->setOption($name, $value);
+        }
+
+        return $this;
+    }
+
     /**
      * Resolves fixers.
      *

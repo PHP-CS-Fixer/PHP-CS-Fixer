@@ -345,8 +345,10 @@ EOF
         $resolver
             ->setAllFixers($this->fixer->getFixers())
             ->setConfig($config)
-            ->setOption('level', $input->getOption('level'))
-            ->setOption('fixers', $input->getOption('fixers'))
+            ->setOptions(array(
+                'level'  => $input->getOption('level'),
+                'fixers' => $input->getOption('fixers'),
+            ))
             ->resolve();
 
         $config->fixers($resolver->getFixers());
