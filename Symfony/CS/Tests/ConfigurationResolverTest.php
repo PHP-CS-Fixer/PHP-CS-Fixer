@@ -12,15 +12,15 @@
 namespace Symfony\CS\Tests;
 
 use Symfony\CS\Config\Config;
+use Symfony\CS\ConfigurationResolver;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
-use Symfony\CS\FixersResolver;
 
 /**
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class FixersResolverTest extends \PHPUnit_Framework_TestCase
+class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 {
     protected $config;
     protected $resolver;
@@ -47,8 +47,10 @@ class FixersResolverTest extends \PHPUnit_Framework_TestCase
         $this->fixersMap = $fixersMap;
 
         $this->config = new Config();
-        $this->resolver = new FixersResolver($fixer->getFixers());
-        $this->resolver->setConfig($this->config);
+        $this->resolver = new ConfigurationResolver();
+        $this->resolver
+            ->setAllFixers($fixer->getFixers())
+            ->setConfig($this->config);
     }
 
     protected function makeTest($expectedFixers, $resolvedFixers)
