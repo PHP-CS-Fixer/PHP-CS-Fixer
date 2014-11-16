@@ -31,6 +31,7 @@ class Config implements ConfigInterface
     protected $customFixers;
     protected $usingCache = false;
     protected $usingLinter = true;
+    protected $showProgress = true;
 
     public function __construct($name = 'default', $description = 'A default configuration')
     {
@@ -121,6 +122,11 @@ class Config implements ConfigInterface
         return $this->description;
     }
 
+    public function getShowProgress()
+    {
+        return $this->showProgress;
+    }
+
     public function addCustomFixer(FixerInterface $fixer)
     {
         $this->customFixers[] = $fixer;
@@ -131,6 +137,13 @@ class Config implements ConfigInterface
     public function getCustomFixers()
     {
         return $this->customFixers;
+    }
+
+    public function showProgress($showProgress)
+    {
+        $this->showProgress = $showProgress;
+
+        return $this;
     }
 
     public function usingCache()

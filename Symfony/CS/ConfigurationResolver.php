@@ -12,13 +12,13 @@
 namespace Symfony\CS;
 
 /**
- * The resolver that resolves fixers to use by command line options and config.
+ * The resolver that resolves configuration to use by command line options and config.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class FixersResolver
+class ConfigurationResolver
 {
     protected $allFixers;
     protected $config;
@@ -26,11 +26,14 @@ class FixersResolver
     protected $options = array(
         'fixers' => null,
         'level'  => null,
+        'no-progress' => null,
     );
 
-    public function __construct(array $allFixers)
+    public function setAllFixers(array $allFixers)
     {
         $this->allFixers = $allFixers;
+
+        return $this;
     }
 
     public function setConfig(ConfigInterface $config)
@@ -43,6 +46,15 @@ class FixersResolver
     public function setOption($name, $value)
     {
         $this->options[$name] = $value;
+
+        return $this;
+    }
+
+    public function setOptions(array $options)
+    {
+        foreach ($options as $name => $value) {
+            $this->setOption($name, $value);
+        }
 
         return $this;
     }
@@ -68,6 +80,11 @@ class FixersResolver
     public function getFixers()
     {
         return $this->fixers;
+    }
+
+    public function getProgress()
+    {
+        return !$this->options['no-progress'] && $this->config->getShowProgress();
     }
 
     protected function resolveByLevel()
