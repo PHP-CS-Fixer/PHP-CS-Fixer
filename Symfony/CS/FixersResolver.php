@@ -28,7 +28,7 @@ class FixersResolver
         'level'  => null,
     );
 
-    public function __construct(array $allFixers)
+    public function setAllFixers(array $allFixers)
     {
         $this->allFixers = $allFixers;
     }

@@ -341,8 +341,9 @@ EOF
         // register custom fixers from config
         $this->fixer->registerCustomFixers($config->getCustomFixers());
 
-        $resolver = new FixersResolver($this->fixer->getFixers());
+        $resolver = new FixersResolver();
         $resolver
+            ->setAllFixers($this->fixer->getFixers())
             ->setConfig($config)
             ->setOption('level', $input->getOption('level'))
             ->setOption('fixers', $input->getOption('fixers'))
