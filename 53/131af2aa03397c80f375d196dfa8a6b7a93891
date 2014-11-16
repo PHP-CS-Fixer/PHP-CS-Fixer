@@ -1,0 +1,61 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-16T17:20:11Z
+
+Done!
+
+What do you think @fzaninotto @GrahamCampbell @stof @sstok
+?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-16T18:20:23Z
+
+:+1: Nice.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-16T18:20:57Z
+
+Is renaming this class not a breaking change though?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-16T18:25:04Z
+
+This class should not be used outside the project.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-16T18:26:34Z
+
+Indeed, in PHP there is lack of private class or sealed access type
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-16T18:29:09Z
+
+Is the `@internal` annotation allowed a class level. That might be useful to add to such classes so people who are messing about with that stuff know what might break from minor version bumps.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-16T18:30:16Z
+
+Then we should add it to almost all class. But yeah, why not! Cool! But in separate PR.
+It's your idea, wanna do that?
+
+---------------------------------------------------------------------------
+
+by fzaninotto at 2014-11-16T19:40:04Z
+
+Nice!
+
+But if you also implement a progress bar, which display will be the default in next version? If it's the progress bar, I suggest you wait to merge this PR, otherwise users of the master version will see two changes in the interface instead of one.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-16T19:42:25Z
+
+I do not plan to add a progress bar like [this](http://symfony.com/doc/current/components/console/helpers/progressbar.html).
+
+It will be unable to show state of each file like F (fixer) or E (error)
