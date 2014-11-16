@@ -84,7 +84,7 @@ class ConfigurationResolver
 
     public function getProgress()
     {
-        return !$this->options['no-progress'];
+        return !$this->options['no-progress'] && $this->config->getShowProgress();
     }
 
     protected function resolveByLevel()
