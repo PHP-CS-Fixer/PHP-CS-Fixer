@@ -230,4 +230,31 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             $this->resolver->getFixers()
         );
     }
+
+    public function testResolveProgressWithPositiveConfigAndPositiveOption()
+    {
+        $this->resolver->setOption('no-progress', true);
+
+        $this->assertFalse($this->resolver->getProgress());
+    }
+
+    public function testResolveProgressWithPositiveConfigAndNegativeOption()
+    {
+        $this->assertTrue($this->resolver->getProgress());
+    }
+
+    public function testResolveProgressWithNegativeConfigAndPositiveOption()
+    {
+        $this->config->showProgress(false);
+        $this->resolver->setOption('no-progress', true);
+
+        $this->assertFalse($this->resolver->getProgress());
+    }
+
+    public function testResolveProgressWithNegativeConfigAndNegativeOption()
+    {
+        $this->config->showProgress(false);
+
+        $this->assertFalse($this->resolver->getProgress());
+    }
 }
