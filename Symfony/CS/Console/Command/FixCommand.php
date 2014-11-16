@@ -354,9 +354,7 @@ EOF
             $fileProcessedEventListener = function (FixerFileProcessedEvent $event) use ($output) {
                 $output->write($event->getStatusAsString());
             };
-        }
 
-        if ($listenForFixerFileProcessedEvent) {
             $this->fixer->setEventDispatcher($this->eventDispatcher);
             $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
         }
