@@ -53,7 +53,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->setConfig($this->config);
     }
 
-    protected function makeTest($expectedFixers, $resolvedFixers)
+    protected function makeFixersTest($expectedFixers, $resolvedFixers)
     {
         $this->assertCount(count($expectedFixers), $resolvedFixers);
 
@@ -64,7 +64,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveFixersReturnsEmptyArrayByDefault()
     {
-        $this->makeTest(array(), $this->resolver->getFixers());
+        $this->makeFixersTest(array(), $this->resolver->getFixers());
     }
 
     public function testResolveFixersWithLevelConfig()
@@ -73,7 +73,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
         $this->resolver->resolve();
 
-        $this->makeTest(
+        $this->makeFixersTest(
             array_merge($this->fixersMap[FixerInterface::PSR0_LEVEL], $this->fixersMap[FixerInterface::PSR1_LEVEL]),
             $this->resolver->getFixers()
         );
@@ -94,7 +94,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             array($this->fixersMap[FixerInterface::CONTRIB_LEVEL]['strict'], $this->fixersMap[FixerInterface::CONTRIB_LEVEL]['strict_param'])
         );
 
-        $this->makeTest(
+        $this->makeFixersTest(
             $expectedFixers,
             $this->resolver->getFixers()
         );
@@ -122,7 +122,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $this->makeTest(
+        $this->makeFixersTest(
             $expectedFixers,
             $this->resolver->getFixers()
         );
@@ -134,7 +134,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->setOption('level', 'psr1')
             ->resolve();
 
-        $this->makeTest(
+        $this->makeFixersTest(
             array_merge($this->fixersMap[FixerInterface::PSR0_LEVEL], $this->fixersMap[FixerInterface::PSR1_LEVEL]),
             $this->resolver->getFixers()
         );
@@ -149,7 +149,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->setOption('level', 'psr1')
             ->resolve();
 
-        $this->makeTest(
+        $this->makeFixersTest(
             array_merge($this->fixersMap[FixerInterface::PSR0_LEVEL], $this->fixersMap[FixerInterface::PSR1_LEVEL]),
             $this->resolver->getFixers()
         );
@@ -164,7 +164,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->setOption('fixers', 'psr0')
             ->resolve();
 
-        $this->makeTest(
+        $this->makeFixersTest(
             array($this->fixersMap[FixerInterface::PSR0_LEVEL]['psr0']),
             $this->resolver->getFixers()
         );
@@ -194,7 +194,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $this->makeTest(
+        $this->makeFixersTest(
             $expectedFixers,
             $this->resolver->getFixers()
         );
@@ -225,7 +225,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $this->makeTest(
+        $this->makeFixersTest(
             $expectedFixers,
             $this->resolver->getFixers()
         );
