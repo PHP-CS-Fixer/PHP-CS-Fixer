@@ -346,13 +346,14 @@ EOF
             ->setAllFixers($this->fixer->getFixers())
             ->setConfig($config)
             ->setOptions(array(
-                'level'  => $input->getOption('level'),
-                'fixers' => $input->getOption('fixers'),
+                'level'         => $input->getOption('level'),
+                'fixers'        => $input->getOption('fixers'),
+                'no-progress'   => $input->getOption('no-progress'),
             ))
             ->resolve();
 
         $config->fixers($resolver->getFixers());
-        $showProgress = !$input->getOption('no-progress');
+        $showProgress = $resolver->getProgress();
 
         if ($showProgress) {
             $fileProcessedEventListener = function (FixerFileProcessedEvent $event) use ($output) {

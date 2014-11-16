@@ -26,11 +26,14 @@ class ConfigurationResolver
     protected $options = array(
         'fixers' => null,
         'level'  => null,
+        'no-progress' => null,
     );
 
     public function setAllFixers(array $allFixers)
     {
         $this->allFixers = $allFixers;
+
+        return $this;
     }
 
     public function setConfig(ConfigInterface $config)
@@ -77,6 +80,11 @@ class ConfigurationResolver
     public function getFixers()
     {
         return $this->fixers;
+    }
+
+    public function getProgress()
+    {
+        return !$this->options['no-progress'];
     }
 
     protected function resolveByLevel()
