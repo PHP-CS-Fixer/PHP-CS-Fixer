@@ -65,6 +65,20 @@ $this
                 '<?php $this->foo("with param containing ) ; ")  ;',
             ),
             array(
+                '<?php
+    $foo
+        ->bar(1)
+        ->baz(2)
+    ;',
+            ),
+            array(
+                '<?php
+    $foo
+        ->bar(1)
+        //->baz(2)
+    ;',
+            ),
+            array(
                 '<?php $this->foo();',
             ),
             array(
