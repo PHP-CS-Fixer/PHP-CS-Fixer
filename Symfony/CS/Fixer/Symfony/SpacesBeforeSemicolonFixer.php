@@ -32,7 +32,7 @@ class SpacesBeforeSemicolonFixer extends AbstractFixer
 
             $previous = $tokens[$index - 1];
 
-            if ($previous->isWhitespace(array('whitespaces' => " \t"))) {
+            if ($previous->isWhitespace(array('whitespaces' => " \t")) && !$tokens[$index - 2]->isComment()) {
                 $previous->clear();
             }
         }
