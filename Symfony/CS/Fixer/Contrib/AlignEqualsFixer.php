@@ -17,6 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
+ * @author Graham Campbell <graham@mineuk.com>
  */
 class AlignEqualsFixer extends AbstractFixer
 {
@@ -98,9 +99,9 @@ class AlignEqualsFixer extends AbstractFixer
 
             $linesWithPlaceholder[$blockSize] = array();
 
-            foreach ($lines as $idx => $line) {
+            foreach ($lines as $index => $line) {
                 if (substr_count($line, $placeholder) > 0) {
-                    $linesWithPlaceholder[$blockSize][] = $idx;
+                    $linesWithPlaceholder[$blockSize][] = $index;
                 } else {
                     ++$blockSize;
                     $linesWithPlaceholder[$blockSize] = array();
@@ -116,17 +117,17 @@ class AlignEqualsFixer extends AbstractFixer
                 ++$i;
                 $rightmostSymbol = 0;
 
-                foreach ($group as $idx) {
-                    $rightmostSymbol = max($rightmostSymbol, strpos($lines[$idx], $placeholder));
+                foreach ($group as $index) {
+                    $rightmostSymbol = max($rightmostSymbol, strpos($lines[$index], $placeholder));
                 }
 
-                foreach ($group as $idx) {
-                    $line = $lines[$idx];
+                foreach ($group as $index) {
+                    $line = $lines[$index];
                     $currentSymbol = strpos($line, $placeholder);
                     $delta = abs($rightmostSymbol - $currentSymbol);
                     if ($delta > 0) {
                         $line = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
-                        $lines[$idx] = $line;
+                        $lines[$index] = $line;
                     }
                 }
             }

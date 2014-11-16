@@ -30,12 +30,7 @@ class ElseifFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens as $index => $token) {
-            // if token is not T_ELSE - continue searching, this is not right token to fix
-            if (!$token->isGivenKind(T_ELSE)) {
-                continue;
-            }
-
+        foreach ($tokens->findGivenKind(T_ELSE) as $index => $token) {
             $nextIndex = $tokens->getNextNonWhitespace($index);
             $nextToken = $tokens[$nextIndex];
 
