@@ -493,4 +493,43 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
+
+    public function testFixWithDifferentCases()
+    {
+        $expected = <<<'EOF'
+The normal
+use of this fixer
+should not change this sentence nor those statements below
+use Zoo\Bar;
+use abc\Bar;
+
+<?php
+
+use abc\Bar;
+use Zoo\Bar;
+
+class Test
+{
+}
+EOF;
+
+        $input = <<<'EOF'
+The normal
+use of this fixer
+should not change this sentence nor those statements below
+use Zoo\Bar;
+use abc\Bar;
+
+<?php
+
+use Zoo\Bar;
+use abc\Bar;
+
+class Test
+{
+}
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
 }

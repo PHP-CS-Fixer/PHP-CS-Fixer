@@ -123,7 +123,7 @@ class OrderedUseFixer extends AbstractFixer
         $a = trim(preg_replace('%/\*(.*)\*/%s', '', $first[0]));
         $b = trim(preg_replace('%/\*(.*)\*/%s', '', $second[0]));
 
-        return strcmp($a, $b);
+        return strcasecmp($a, $b);
     }
 
     /**
