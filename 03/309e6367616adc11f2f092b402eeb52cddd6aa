@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-17T07:36:18Z
+
+The whole idea was to display progress to people by default, to let them know that something goes on.
+Please see #712 and #745.
+
+On current `master` we display progress by default - it is done in [config](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Config/Config.php#L142) and allow to hide by both changing config in `.php_cs` or option (`--no-progress`).
+After that change to show progress one must always set `--verbose`, whatever he have in `.php_cs`.
+
+Using PHP CS Fixer in CI workflow should rely on exit code, but ok, I agree that showing proress may corrupt output.
+
+In that case all what can be done with config is hide progress when sb use `--verbose` to display only list of applied fixers. So the config should be changed to be more intuitive.
+
+If you agree with me please consider cherry-picking into this PR: https://github.com/fabpot/PHP-CS-Fixer/pull/1
