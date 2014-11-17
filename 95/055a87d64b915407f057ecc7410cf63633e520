@@ -1,0 +1,140 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-15T16:10:59Z
+
+Hmmmm...
+
+![](http://i.imgur.com/wxlUJkI.png)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T16:14:11Z
+
+Looks like a bug in fabbot.
+Please report it and for now write that test as `'<?php return '.'null;'`, should work
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-15T17:16:26Z
+
+This seems to be working now.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-15T17:24:49Z
+
+I still don't like this. Feels really hacky. I'm going to try a different approach.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-15T17:40:30Z
+
+@keradus What do you make of my new approach?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T20:45:26Z
+
+The code looks so exaggerated just to fix `( null )` as well.
+And it still fails on `((null))`.
+I would not taking care of expression that result in null like `( null)`.
+Then sb will want to remove some dirty code like `null ? null : null` as well ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-15T21:10:23Z
+
+The code is like this to avoid false positives such as `return null == $foo`.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-15T21:10:50Z
+
+And to deal with comments in the way you wanted.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-15T21:12:10Z
+
+Why would we want `((null))`? I can update it to do that if you really want.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T21:18:40Z
+
+My point is that we don't want `((null))`, so why would we want and support `(null)` ?
+
+Keeping `return null == $foo` is completely different case
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-15T21:40:58Z
+
+@keradus How does that look now. I've cleaned things up, and added documentation to the functions.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T21:58:05Z
+
+I see you insist with support for `(null)`. Very well.
+Code would be extra simple without it, but when keeping it we still may do some impr.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T22:00:47Z
+
+One ammend and all comments looks outdated for github :(
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-15T22:03:47Z
+
+I seem to have broken this. Oops...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-15T22:07:26Z
+
+Odd. Works on my pc? http://i.imgur.com/c6c0U5C.png.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T22:08:25Z
+
+Can't see how it can works with https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/740#discussion_r20405454
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-15T22:09:39Z
+
+lol - I'd switched to the wrong branch while running phpunit. No wonder the tests passed.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-16T12:26:24Z
+
+Anyone else want to review this?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-16T20:58:21Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-17T22:06:12Z
+
+Anyone else willing to make a review?
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-17T22:18:25Z
+
+LGTM - I just stress this branch in several way here. It seems to be working fine in the cases it proposes to address. Even weird cases like:
+
+```
+return null?null:null;
+```
+
+It is handling correctly.
