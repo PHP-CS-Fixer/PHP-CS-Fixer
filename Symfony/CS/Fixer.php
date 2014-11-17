@@ -24,7 +24,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
  */
 class Fixer
 {
-    const VERSION = '1.1-DEV';
+    const VERSION = '1.1';
 
     protected $fixers = array();
     protected $configs = array();
