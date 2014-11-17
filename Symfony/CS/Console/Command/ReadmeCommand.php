@@ -69,19 +69,20 @@ your system:
 
 .. code-block:: bash
 
-    \$ sudo wget http://get.sensiolabs.org/php-cs-fixer.phar -O /usr/local/bin/php-cs-fixer
+    \$ wget http://get.sensiolabs.org/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
 .. code-block:: bash
 
-    \$ sudo curl http://get.sensiolabs.org/php-cs-fixer.phar -o /usr/local/bin/php-cs-fixer
+    \$ curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
 
 then:
 
 .. code-block:: bash
 
-    \$ sudo chmod a+x /usr/local/bin/php-cs-fixer
+    \$ sudo chmod a+x php-cs-fixer
+    \$ sudo mv php-cs-fixer /usr/local/bin/php-cs-fixer
 
 Then, just run ``php-cs-fixer``.
 
