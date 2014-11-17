@@ -107,7 +107,6 @@ class FixCommand extends Command
                     new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
-                    new InputOption('no-progress', '', InputOption::VALUE_NONE, 'Hide progress bar'),
                 )
             )
             ->setDescription('Fixes a directory or a file')
@@ -118,7 +117,7 @@ problems as possible on a given file or directory:
     <info>php %command.full_name% /path/to/dir</info>
     <info>php %command.full_name% /path/to/file</info>
 
-The <comment>--no-progress</comment> option hides progress notification.
+The <comment>--verbose</comment> option displays progress notification and show applied fixers.
 
 The <comment>--level</comment> option limits the fixers to apply on the
 project:
@@ -346,9 +345,9 @@ EOF
             ->setAllFixers($this->fixer->getFixers())
             ->setConfig($config)
             ->setOptions(array(
-                'level'         => $input->getOption('level'),
-                'fixers'        => $input->getOption('fixers'),
-                'no-progress'   => $input->getOption('no-progress'),
+                'level'     => $input->getOption('level'),
+                'fixers'    => $input->getOption('fixers'),
+                'progress'  => $output->isVerbose(),
             ))
             ->resolve();
 
