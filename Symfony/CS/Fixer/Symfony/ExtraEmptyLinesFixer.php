@@ -26,11 +26,7 @@ class ExtraEmptyLinesFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens as $token) {
-            if (!$token->isGivenKind(T_WHITESPACE)) {
-                continue;
-            }
-
+        foreach ($tokens->findGivenKind(T_WHITESPACE) as $token) {
             $content = '';
             $count = 0;
             $parts = explode("\n", $token->getContent());

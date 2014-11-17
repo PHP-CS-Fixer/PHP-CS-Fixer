@@ -19,6 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Graham Campbell <graham@mineuk.com>
  */
 class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
 {
@@ -29,11 +30,7 @@ class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOUBLE_ARROW)) {
-                continue;
-            }
-
+        foreach ($tokens->findGivenKind(T_DOUBLE_ARROW) as $index => $token) {
             $this->fixWhitespace($tokens[$index - 1]);
             $this->fixWhitespace($tokens[$index + 1]);
         }
@@ -43,10 +40,7 @@ class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
 
     private function fixWhitespace(Token $token)
     {
-        if (
-            $token->isWhitespace()
-            && !$token->isWhitespace(array('whitespaces' => " \t"))
-        ) {
+        if ($token->isWhitespace() && !$token->isWhitespace(array('whitespaces' => " \t"))) {
             $token->setContent(rtrim($token->getContent()).' ');
         }
     }

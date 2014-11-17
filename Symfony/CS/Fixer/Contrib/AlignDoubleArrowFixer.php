@@ -18,6 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Graham Campbell <graham@mineuk.com>
  */
 class AlignDoubleArrowFixer extends AbstractFixer
 {
@@ -46,13 +47,13 @@ class AlignDoubleArrowFixer extends AbstractFixer
         $code = '';
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens as $idx => $token) {
+        foreach ($tokens as $index => $token) {
             $tokenContent = $token->getContent();
 
             if ($token->isGivenKind(T_DOUBLE_ARROW)) {
                 $code .= sprintf(self::ALIGNABLE_DOUBLEARROW, $contextCounter).$tokenContent;
 
-                $nextToken = $tokens[$idx + 1];
+                $nextToken = $tokens[$index + 1];
 
                 if (!$nextToken->isWhitespace()) {
                     // if there is no whitespaces after T_DOUBLE_ARROW add it
@@ -72,7 +73,7 @@ class AlignDoubleArrowFixer extends AbstractFixer
             }
 
             if ($token->equals('[')) {
-                $prevToken = $tokens[$tokens->getPrevNonWhitespace($idx)];
+                $prevToken = $tokens[$tokens->getPrevNonWhitespace($index)];
 
                 if ($prevToken->isGivenKind(T_DOUBLE_ARROW)) {
                     ++$contextCounter;
@@ -107,9 +108,9 @@ class AlignDoubleArrowFixer extends AbstractFixer
 
             $linesWithPlaceholder[$blockSize] = array();
 
-            foreach ($lines as $idx => $line) {
+            foreach ($lines as $index => $line) {
                 if (substr_count($line, $placeholder) > 0) {
-                    $linesWithPlaceholder[$blockSize][] = $idx;
+                    $linesWithPlaceholder[$blockSize][] = $index;
                 } else {
                     ++$blockSize;
                     $linesWithPlaceholder[$blockSize] = array();
@@ -124,18 +125,18 @@ class AlignDoubleArrowFixer extends AbstractFixer
                 ++$i;
                 $rightmostSymbol = 0;
 
-                foreach ($group as $idx) {
-                    $rightmostSymbol = max($rightmostSymbol, strpos($lines[$idx], $placeholder));
+                foreach ($group as $index) {
+                    $rightmostSymbol = max($rightmostSymbol, strpos($lines[$index], $placeholder));
                 }
 
-                foreach ($group as $idx) {
-                    $line = $lines[$idx];
+                foreach ($group as $index) {
+                    $line = $lines[$index];
                     $currentSymbol = strpos($line, $placeholder);
                     $delta = abs($rightmostSymbol - $currentSymbol);
 
                     if ($delta > 0) {
                         $line = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
-                        $lines[$idx] = $line;
+                        $lines[$index] = $line;
                     }
                 }
             }
