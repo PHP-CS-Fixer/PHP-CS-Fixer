@@ -1,0 +1,70 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-12T23:59:25Z
+
+Please see `Quick guide` in [CONTRIBUTING file](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/CONTRIBUTING.md) @michaelsauter
+
+---------------------------------------------------------------------------
+
+by michaelsauter at 2014-11-13T23:50:52Z
+
+Alright. I've followed those steps and they don't work.
+
+Here's what I did:
+1) Install `php-cs-fixer` manually
+2) Clone my fork of the repo
+3) Edit `Symfony/CS/Console/Command/ReadmeCommand.php`
+4) `php php-cs-fixer readme > README.rst`
+
+This will complain that no vendors exist. Obviously, but this should be added to the guide.
+So:
+```
+composer install
+php php-cs-fixer readme > README.rst
+```
+Which will replace README.rst with:
+```
+Fatal error: Class 'Symfony\CS\Console\Application' not found in /path/to/PHP-CS-Fixer/php-cs-fixer on line 31
+```
+
+BTW, if I use my globally installed `php-cs-fixer`
+```
+php-cs-fixer readme > README.rst
+```
+It'll fix the composer install instructions to use `$ ./composer.phar global require FriendsOfPHP/php-cs-fixer` instead of `$ ./composer.phar global require fabpot/php-cs-fixer`.
+
+---------------------------------------------------------------------------
+
+by stof at 2014-11-14T09:09:10Z
+
+you need to run ``composer install`` to have the dependencies of the project when developing on it
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-14T22:30:35Z
+
+You must not use globally installed php-cs-fixer to regenerate readme file. It generate readme for your globally installed version, which looks like latest stable. Thing you mentioned is already fixed at current dev.
+
+But yeah, why not add it: #726
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T12:43:02Z
+
+Could you regenerate README file @michaelsauter  ?
+
+---------------------------------------------------------------------------
+
+by michaelsauter at 2014-11-16T22:30:53Z
+
+@stof I did run `composer install`. But somehow it could not find `Symfony\CS\Console\Application`. I've synced my branch and updated composer (it's been a while since I last used PHP) and it is working now.
+
+@keradus Thanks for adding it. I was using the local version (as described above) to generate the readme. Only tried with the global version once for fun since the local version failed due to some error with the autoloader.
+
+All good now, and I've updated this PR.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-16T22:33:15Z
+
+Looks good now, thanks ;)
