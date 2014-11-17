@@ -26,7 +26,7 @@ class ConfigurationResolver
     protected $options = array(
         'fixers' => null,
         'level'  => null,
-        'no-progress' => null,
+        'progress' => null,
     );
 
     public function setAllFixers(array $allFixers)
@@ -84,7 +84,7 @@ class ConfigurationResolver
 
     public function getProgress()
     {
-        return !$this->options['no-progress'] && $this->config->getShowProgress();
+        return $this->options['progress'] && !$this->config->getHideProgress();
     }
 
     protected function resolveByLevel()
