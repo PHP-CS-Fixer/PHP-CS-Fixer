@@ -44,46 +44,57 @@ class AlignDoubleArrowFixer extends AbstractFixer
     private function injectAlignmentPlaceholders($content)
     {
         $contextCounter = 0;
-        $code = '';
         $tokens = Tokens::fromCode($content);
+        $countTokens = count($tokens);
 
-        foreach ($tokens as $index => $token) {
-            $tokenContent = $token->getContent();
+        for ($index = 0; $index < $countTokens; ++$index) {
+            $token = $tokens[$index];
+
+            if ($token->isGivenKind(T_FOREACH)) {
+                $index = $tokens->getNextMeaningfulToken($index);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                continue;
+            }
 
             if ($token->isGivenKind(T_DOUBLE_ARROW)) {
-                $code .= sprintf(self::ALIGNABLE_DOUBLEARROW, $contextCounter).$tokenContent;
+                $tokenContent = sprintf(self::ALIGNABLE_DOUBLEARROW, $contextCounter).$token->getContent();
 
                 $nextToken = $tokens[$index + 1];
-
                 if (!$nextToken->isWhitespace()) {
                     // if there is no whitespaces after T_DOUBLE_ARROW add it
-                    $code .= ' ';
+                    $tokenContent .= ' ';
                 } elseif ($nextToken->isWhitespace(array('whitespaces' => " \t"))) {
                     // if there is single line whitespaces after T_DOUBLE_ARROW normalize it with single space
                     $nextToken->setContent(' ');
                 }
 
+                $token->setContent($tokenContent);
                 continue;
             }
 
-            if ($token->equals(';') || $token->isGivenKind(array(T_FOREACH, T_ARRAY))) {
+            if ($token->equals(';') || $token->isGivenKind(T_ARRAY)) {
                 ++$contextCounter;
-                $code .= $tokenContent;
                 continue;
             }
 
             if ($token->equals('[')) {
-                $prevToken = $tokens[$tokens->getPrevNonWhitespace($index)];
+                $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
                 if ($prevToken->isGivenKind(T_DOUBLE_ARROW)) {
                     ++$contextCounter;
                 }
             }
 
-            $code .= $tokenContent;
+            if ($token->equals(',')) {
+                $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+
+                if ($prevToken->equals(']')) {
+                    ++$contextCounter;
+                }
+            }
         }
 
-        return array($code, $contextCounter);
+        return array($tokens->generateCode(), $contextCounter);
     }
 
     /**
