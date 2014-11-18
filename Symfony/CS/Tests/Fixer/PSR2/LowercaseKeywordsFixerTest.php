@@ -34,4 +34,12 @@ class LowercaseKeywordsFixerTest extends AbstractFixerTestBase
             array('<?php echo "GOOD AS NEW";'),
         );
     }
+
+    /**
+     * @requires PHP 5.4
+     */
+    public function testHaltCompiler()
+    {
+        $this->makeTest('<?php __HALT_COMPILER();');
+    }
 }

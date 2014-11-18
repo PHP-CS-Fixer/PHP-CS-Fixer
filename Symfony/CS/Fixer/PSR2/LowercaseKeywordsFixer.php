@@ -21,6 +21,8 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class LowercaseKeywordsFixer extends AbstractFixer
 {
+    private static $excludedTokens = array(T_HALT_COMPILER);
+
     /**
      * {@inheritdoc}
      */
@@ -29,7 +31,7 @@ class LowercaseKeywordsFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens as $token) {
-            if ($token->isKeyword()) {
+            if ($token->isKeyword() && !$token->isGivenKind(self::$excludedTokens)) {
                 $token->setContent(strtolower($token->getContent()));
             }
         }
