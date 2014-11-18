@@ -111,7 +111,7 @@ class Transformers
     }
 
     /**
-     * Transform given Tokens collection thru all Transformer classes.
+     * Transform given Tokens collection through all Transformer classes.
      *
      * @param Tokens $tokens Tokens collection
      */
