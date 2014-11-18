@@ -12,8 +12,8 @@
 namespace Symfony\CS\Config;
 
 use Symfony\CS\ConfigInterface;
-use Symfony\CS\FinderInterface;
 use Symfony\CS\Finder\DefaultFinder;
+use Symfony\CS\FinderInterface;
 use Symfony\CS\FixerInterface;
 
 /**
