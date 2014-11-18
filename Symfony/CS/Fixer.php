@@ -12,11 +12,11 @@
 namespace Symfony\CS;
 
 use SebastianBergmann\Diff\Differ;
-use Symfony\CS\Tokenizer\Tokens;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>

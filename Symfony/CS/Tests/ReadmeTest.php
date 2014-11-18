@@ -11,9 +11,9 @@
 
 namespace Symfony\CS\Tests;
 
-use Symfony\CS\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\CS\Console\Application;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
