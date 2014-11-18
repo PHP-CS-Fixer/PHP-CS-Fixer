@@ -1,0 +1,48 @@
+---------------------------------------------------------------------------
+
+by stof at 2014-11-17T15:59:36Z
+
+Please update the test where the case insensitive sorting changes the expected result
+
+---------------------------------------------------------------------------
+
+by stof at 2014-11-17T16:00:46Z
+
+Actually, it is not a failing test. It is the fixer changing something on its own codebase. So please run the fixer on itself once the code is working.
+and please add a test ensuring the case insensitive sorting in the future
+
+---------------------------------------------------------------------------
+
+by rusitschka at 2014-11-17T17:01:15Z
+
+Can this test be added to the test suite? Anyway I fixed the sort order and added a test case.
+
+---------------------------------------------------------------------------
+
+by rusitschka at 2014-11-18T09:07:50Z
+
+In order to make the fabbot test succeed I also fixed the "thru" typo in Transformers.php
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-18T09:11:19Z
+
+Great to fix it ;)
+
+Please do not merge PR with master - it produces ugly merge commit.
+Instead just rebase your PR on master.
+You may do it now too - it will remove the merge commit.
+
+Then just remember to push with `-f` option
+
+---------------------------------------------------------------------------
+
+by stof at 2014-11-18T09:23:26Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-18T11:17:31Z
+
+:+1:
