@@ -54,8 +54,7 @@ EOT
             return 1;
         }
 
-        preg_match('/\((.*?)\)$/', $this->getApplication()->getLongVersion(), $match);
-        $localVersion = isset($match[1]) ? $match[1] : '';
+        $localVersion = $this->getApplication()->getVersion();
 
         if (false !== $remoteVersion = @file_get_contents('http://get.sensiolabs.org/php-cs-fixer.version')) {
             if ($localVersion === $remoteVersion) {
