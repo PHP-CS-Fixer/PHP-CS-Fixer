@@ -31,9 +31,83 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
         return array(
             array(
                 '<?php
+                $var = [];
+                foreach ($foo as $i => $bar) {
+                    $var[] = /* Comment */ [$i => $bar];
+                }
+                ',
+            ),
+            array(
+                '<?php
+                $var = [];
+                foreach ($foo as $i => $bar) {
+                    $var[] = [$i => $bar];
+                }
+                ',
+            ),
+            array(
+                '<?php
+                $var = [];
+                foreach ([1 => 2] as $k => $v) {
+                    $var[] = [$i => $bar];
+                }
+                ',
+            ),
+            array(
+                '<?php
+                $var = [];
+                foreach (fncCall() as $k => $v){
+                    $var[] = [$i => $bar];
+                }
+                ',
+            ),
+            array(
+                '<?php
+                $var = [];
+                foreach ($foo as $bar) {
+                    $var[] = [
+                        $i    => $bar,
+                        $iaaa => $bar,
+                    ];
+                }
+                ',
+            ),
+            array(
+                '<?php
+                $data = [
+                    "foo"  => "Bar",
+                    "main" => [["baz" => "Test", "bar" => "Test2"]],
+                    "bar"  => [],
+                ];
+                ',
+            ),
+            array(
+                '<?php
+                $data = [
+                    "foo"  => "Bar",
+                    "main" => ["baz" => "Test"],
+                    "bar"  => [],
+                ];
+                ',
+            ),
+            array(
+                '<?php
+                    $a = [
+                        0              => 1,
+                        10 /*Comment*/ => [
+                            1  => 2,
+                            22 => 3,
+                        ],
+                        100 => [
+                            1  => 2,
+                            22 => 3,
+                        ]
+                    ];
+                ',
+                '<?php
                     $a = [
                         0  => 1,
-                        10 => [
+                        10 /*Comment*/ => [
                             1  => 2,
                             22 => 3,
                         ],
