@@ -1,0 +1,18 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-21T21:37:12Z
+
+How about we enable that fixer for this project in the config too?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-21T21:51:31Z
+
+Not before merge of #756
+Even during using it I produce (and report of course) some more test cases that still fail
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-21T21:54:29Z
+
+k
