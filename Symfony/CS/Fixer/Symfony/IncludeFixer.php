@@ -81,9 +81,9 @@ class IncludeFixer extends AbstractFixer
         foreach ($tokens->findGivenKind($includyTokenKinds) as $includyTokens) {
             foreach ($includyTokens as $index => $token) {
                 $includy = array(
-                    'begin' => $index,
+                    'begin'  => $index,
                     'braces' => null,
-                    'end' => $tokens->getNextTokenOfKind($index, array(';')),
+                    'end'    => $tokens->getNextTokenOfKind($index, array(';')),
                 );
 
                 // Don't remove when the statement is wrapped. include is also legal as function parameter
@@ -94,7 +94,7 @@ class IncludeFixer extends AbstractFixer
 
                     if ($nextToken->equals('(')) {
                         $includy['braces'] = array(
-                            'open' => $nextTokenIndex,
+                            'open'  => $nextTokenIndex,
                             'close' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextTokenIndex),
                         );
                     }

@@ -506,9 +506,9 @@ EOF
                 $fixEvent = $this->stopwatch->getEvent('fixFiles');
 
                 $json = array(
-                    'files' => $jFiles,
+                    'files'  => $jFiles,
                     'memory' => round($fixEvent->getMemory() / 1024 / 1024, 3),
-                    'time' => array(
+                    'time'   => array(
                         'total' => round($fixEvent->getDuration() / 1000, 3),
                     ),
                 );

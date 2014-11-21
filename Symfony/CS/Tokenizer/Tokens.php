@@ -155,15 +155,15 @@ class Tokens extends \SplFixedArray
         return array(
             self::BLOCK_TYPE_CURLY_BRACE => array(
                 'start' => '{',
-                'end' => '}',
+                'end'   => '}',
             ),
             self::BLOCK_TYPE_PARENTHESIS_BRACE => array(
                 'start' => '(',
-                'end' => ')',
+                'end'   => ')',
             ),
             self::BLOCK_TYPE_SQUARE_BRACE => array(
                 'start' => '[',
-                'end' => ']',
+                'end'   => ']',
             ),
             self::BLOCK_TYPE_DYNAMIC_PROP_BRACE => array(
                 'start' => array(CT_DYNAMIC_PROP_BRACE_OPEN, '{'),
