@@ -383,7 +383,7 @@ EOF
         }
 
         $verbosity = $output->getVerbosity();
-        $i         = 1;
+        $i = 1;
 
         switch ($input->getOption('format')) {
             case 'txt':
