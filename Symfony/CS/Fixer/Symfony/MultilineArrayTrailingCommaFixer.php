@@ -55,7 +55,7 @@ class MultilineArrayTrailingCommaFixer extends AbstractFixer
 
         if ($tokens[$startIndex]->isGivenKind(T_ARRAY)) {
             $startIndex = $tokens->getNextTokenOfKind($startIndex, array('('));
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
+            $endIndex   = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
         } else {
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $startIndex);
         }

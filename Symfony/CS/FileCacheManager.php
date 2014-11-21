@@ -38,8 +38,8 @@ class FileCacheManager
     public function __construct($isEnabled, $dir, array $fixers)
     {
         $this->isEnabled = $isEnabled;
-        $this->dir = null !== $dir ? $dir.DIRECTORY_SEPARATOR : '';
-        $this->fixers = array_map(function ($f) {
+        $this->dir       = null !== $dir ? $dir.DIRECTORY_SEPARATOR : '';
+        $this->fixers    = array_map(function ($f) {
             return $f->getName();
         }, $fixers);
         sort($this->fixers);
@@ -117,7 +117,7 @@ class FileCacheManager
         }
 
         $content = file_get_contents($this->dir.self::CACHE_FILE);
-        $data = unserialize($content);
+        $data    = unserialize($content);
 
         // BC for old cache without fixers list
         if (!isset($data['fixers'])) {

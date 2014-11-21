@@ -116,7 +116,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $config = Config::create()->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'));
         $config->fixers($fixer->getFixers());
 
-        $changed = $fixer->fix($config, true, true);
+        $changed           = $fixer->fix($config, true, true);
         $pathToInvalidFile = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'somefile.php';
 
         $this->assertCount(1, $changed);

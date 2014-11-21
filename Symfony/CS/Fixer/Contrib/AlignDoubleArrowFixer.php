@@ -23,7 +23,7 @@ use Symfony\CS\Tokenizer\Tokens;
 class AlignDoubleArrowFixer extends AbstractFixer
 {
     const ALIGNABLE_DOUBLEARROW = "\x2 DOUBLEARROW%d \x3";
-    const NEW_LINE = "\n";
+    const NEW_LINE              = "\n";
 
     /**
      * {@inheritdoc}
@@ -44,8 +44,8 @@ class AlignDoubleArrowFixer extends AbstractFixer
     private function injectAlignmentPlaceholders($content)
     {
         $contextCounter = 0;
-        $tokens = Tokens::fromCode($content);
-        $countTokens = count($tokens);
+        $tokens         = Tokens::fromCode($content);
+        $countTokens    = count($tokens);
 
         for ($index = 0; $index < $countTokens; ++$index) {
             $token = $tokens[$index];
@@ -113,9 +113,9 @@ class AlignDoubleArrowFixer extends AbstractFixer
                 continue;
             }
 
-            $lines = explode(self::NEW_LINE, $tmpCode);
+            $lines                = explode(self::NEW_LINE, $tmpCode);
             $linesWithPlaceholder = array();
-            $blockSize = 0;
+            $blockSize            = 0;
 
             $linesWithPlaceholder[$blockSize] = array();
 
@@ -141,12 +141,12 @@ class AlignDoubleArrowFixer extends AbstractFixer
                 }
 
                 foreach ($group as $index) {
-                    $line = $lines[$index];
+                    $line          = $lines[$index];
                     $currentSymbol = strpos($line, $placeholder);
-                    $delta = abs($rightmostSymbol - $currentSymbol);
+                    $delta         = abs($rightmostSymbol - $currentSymbol);
 
                     if ($delta > 0) {
-                        $line = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
+                        $line          = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
                         $lines[$index] = $line;
                     }
                 }

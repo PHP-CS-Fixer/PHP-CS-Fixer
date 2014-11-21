@@ -90,7 +90,7 @@ class IncludeFixer extends AbstractFixer
                 // but requires being wrapped then
                 if (!$tokens[$tokens->getPrevNonWhitespace($index)]->equals('(')) {
                     $nextTokenIndex = $tokens->getNextNonWhitespace($index);
-                    $nextToken = $tokens[$nextTokenIndex];
+                    $nextToken      = $tokens[$nextTokenIndex];
 
                     if ($nextToken->equals('(')) {
                         $includy['braces'] = array(

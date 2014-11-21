@@ -25,13 +25,13 @@ class FixerFileProcessedEvent extends Event
      */
     const NAME = 'fixer.file_processed';
 
-    const STATUS_UNKNOWN = 0;
-    const STATUS_INVALID = 1;
-    const STATUS_SKIPPED = 2;
+    const STATUS_UNKNOWN    = 0;
+    const STATUS_INVALID    = 1;
+    const STATUS_SKIPPED    = 2;
     const STATUS_NO_CHANGES = 3;
-    const STATUS_FIXED = 4;
-    const STATUS_EXCEPTION = 5;
-    const STATUS_LINT = 6;
+    const STATUS_FIXED      = 4;
+    const STATUS_EXCEPTION  = 5;
+    const STATUS_LINT       = 6;
 
     /**
      * File statuses map.

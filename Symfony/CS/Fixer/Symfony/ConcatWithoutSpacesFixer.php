@@ -24,7 +24,7 @@ class ConcatWithoutSpacesFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, $content)
     {
-        $tokens = Tokens::fromCode($content);
+        $tokens      = Tokens::fromCode($content);
         $whitespaces = array('whitespaces' => " \t");
 
         foreach ($tokens as $index => $token) {

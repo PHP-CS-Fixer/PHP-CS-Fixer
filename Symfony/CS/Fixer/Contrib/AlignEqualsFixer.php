@@ -22,7 +22,7 @@ use Symfony\CS\Tokenizer\Tokens;
 class AlignEqualsFixer extends AbstractFixer
 {
     const ALIGNABLE_EQUAL = "\x2 EQUAL%d \x3";
-    const NEW_LINE = "\n";
+    const NEW_LINE        = "\n";
 
     /**
      * {@inheritdoc}
@@ -44,10 +44,10 @@ class AlignEqualsFixer extends AbstractFixer
     private function injectAlignmentPlaceholders($content)
     {
         $contextCounter = 0;
-        $parenCount = 0;
-        $bracketCount = 0;
-        $code = '';
-        $tokens = Tokens::fromCode($content);
+        $parenCount     = 0;
+        $bracketCount   = 0;
+        $code           = '';
+        $tokens         = Tokens::fromCode($content);
 
         foreach ($tokens as $token) {
             $tokenContent = $token->getContent();
@@ -93,9 +93,9 @@ class AlignEqualsFixer extends AbstractFixer
                 continue;
             }
 
-            $lines = explode(self::NEW_LINE, $tmpCode);
+            $lines                = explode(self::NEW_LINE, $tmpCode);
             $linesWithPlaceholder = array();
-            $blockSize = 0;
+            $blockSize            = 0;
 
             $linesWithPlaceholder[$blockSize] = array();
 
@@ -122,11 +122,11 @@ class AlignEqualsFixer extends AbstractFixer
                 }
 
                 foreach ($group as $index) {
-                    $line = $lines[$index];
+                    $line          = $lines[$index];
                     $currentSymbol = strpos($line, $placeholder);
-                    $delta = abs($rightmostSymbol - $currentSymbol);
+                    $delta         = abs($rightmostSymbol - $currentSymbol);
                     if ($delta > 0) {
-                        $line = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
+                        $line          = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
                         $lines[$index] = $line;
                     }
                 }

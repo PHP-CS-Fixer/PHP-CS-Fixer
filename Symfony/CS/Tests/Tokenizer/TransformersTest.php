@@ -32,7 +32,7 @@ class TransformersTest extends \PHPUnit_Framework_TestCase
         $transformers = Transformers::create();
 
         $transformersReflection = new \ReflectionClass($transformers);
-        $propertyReflection = $transformersReflection->getProperty('items');
+        $propertyReflection     = $transformersReflection->getProperty('items');
         $propertyReflection->setAccessible(true);
 
         $items = $propertyReflection->getValue($transformers);
@@ -59,7 +59,7 @@ class TransformersTest extends \PHPUnit_Framework_TestCase
     public function getPriorityCases()
     {
         $transformersObject = Transformers::create();
-        $transformers = array();
+        $transformers       = array();
 
         foreach ($transformersObject->getTransformers() as $transformer) {
             $transformers[$transformer->getName()] = $transformer;

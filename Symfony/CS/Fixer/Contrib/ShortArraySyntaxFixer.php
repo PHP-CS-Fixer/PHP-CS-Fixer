@@ -32,7 +32,7 @@ class ShortArraySyntaxFixer extends AbstractFixer
                 continue;
             }
 
-            $openIndex = $tokens->getNextTokenOfKind($index, array('('));
+            $openIndex  = $tokens->getNextTokenOfKind($index, array('('));
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
             $token->clear();

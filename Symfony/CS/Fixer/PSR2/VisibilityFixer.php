@@ -27,7 +27,7 @@ class VisibilityFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, $content)
     {
-        $tokens = Tokens::fromCode($content);
+        $tokens   = Tokens::fromCode($content);
         $elements = $tokens->getClassyElements();
 
         foreach (array_reverse($elements, true) as $index => $element) {

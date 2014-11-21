@@ -46,7 +46,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
         $this->fixersMap = $fixersMap;
 
-        $this->config = new Config();
+        $this->config   = new Config();
         $this->resolver = new ConfigurationResolver();
         $this->resolver
             ->setAllFixers($fixer->getFixers())

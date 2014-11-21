@@ -152,7 +152,7 @@ class TokenTest extends \PHPUnit_Framework_TestCase
 
     public function testIsGivenKind()
     {
-        $braceToken = $this->getBraceToken();
+        $braceToken   = $this->getBraceToken();
         $foreachToken = $this->getForeachToken();
 
         $this->assertFalse($braceToken->isGivenKind(T_FOR));
@@ -222,7 +222,7 @@ class TokenTest extends \PHPUnit_Framework_TestCase
     public function testPropertiesOfArrayToken()
     {
         $prototype = $this->getForeachTokenPrototype();
-        $token = $this->getForeachToken();
+        $token     = $this->getForeachToken();
 
         $this->assertSame($prototype[0], $token->getId());
         $this->assertSame($prototype[1], $token->getContent());
@@ -233,7 +233,7 @@ class TokenTest extends \PHPUnit_Framework_TestCase
     public function testPropertiesOfNonArrayToken()
     {
         $prototype = $this->getBraceTokenPrototype();
-        $token = $this->getBraceToken();
+        $token     = $this->getBraceToken();
 
         $this->assertSame($prototype, $token->getContent());
         $this->assertNull($token->getId());

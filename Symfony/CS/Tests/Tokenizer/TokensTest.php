@@ -37,7 +37,7 @@ class Foo
 }
 PHP;
 
-        $tokens = Tokens::fromCode($source);
+        $tokens   = Tokens::fromCode($source);
         $elements = $tokens->getClassyElements();
 
         $this->assertCount(2, $elements);
@@ -49,7 +49,7 @@ PHP;
 
     public function testReadFromCacheAfterClearing()
     {
-        $code = '<?php echo 1;';
+        $code   = '<?php echo 1;';
         $tokens = Tokens::fromCode($code);
 
         $countBefore = $tokens->count();

@@ -22,9 +22,9 @@ class ReadmeTest extends \PHPUnit_Framework_TestCase
 {
     public function testIfReadmeFileIsCorrect()
     {
-        $input = new ArrayInput(array('readme'));
+        $input  = new ArrayInput(array('readme'));
         $output = new BufferedOutput();
-        $app = new Application();
+        $app    = new Application();
 
         $app->get('readme')->run($input, $output);
 
