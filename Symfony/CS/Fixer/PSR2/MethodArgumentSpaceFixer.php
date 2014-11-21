@@ -62,7 +62,7 @@ class MethodArgumentSpaceFixer extends AbstractFixer
         if ($tokens[$index - 1]->isWhitespace()) {
             $prevIndex = $tokens->getPrevNonWhitespace($index - 1);
 
-            if (!$tokens[$prevIndex]->isGivenKind(T_END_HEREDOC)) {
+            if (!$tokens[$prevIndex]->equalsAny(array(',', array(T_END_HEREDOC)))) {
                 $tokens[$index - 1]->clear();
             }
         }
