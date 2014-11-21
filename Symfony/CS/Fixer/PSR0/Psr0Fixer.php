@@ -32,11 +32,11 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
     {
         $tokens = Tokens::fromCode($content);
 
-        $namespace = false;
-        $namespaceIndex = 0;
+        $namespace         = false;
+        $namespaceIndex    = 0;
         $namespaceEndIndex = 0;
 
-        $classyName = null;
+        $classyName  = null;
         $classyIndex = 0;
 
         foreach ($tokens as $index => $token) {
@@ -45,7 +45,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                     return $content;
                 }
 
-                $namespaceIndex = $tokens->getNextNonWhitespace($index);
+                $namespaceIndex    = $tokens->getNextNonWhitespace($index);
                 $namespaceEndIndex = $tokens->getNextTokenOfKind($index, array(';'));
 
                 $namespace = trim($tokens->generatePartialCode($namespaceIndex, $namespaceEndIndex - 1));
@@ -55,7 +55,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                 }
 
                 $classyIndex = $tokens->getNextNonWhitespace($index);
-                $classyName = $tokens[$classyIndex]->getContent();
+                $classyName  = $tokens[$classyIndex]->getContent();
             }
         }
 
@@ -65,9 +65,9 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
 
         if (false !== $namespace) {
             $normNamespace = strtr($namespace, '\\', '/');
-            $path = strtr($file->getRealPath(), '\\', '/');
-            $dir = dirname($path);
-            $filename = basename($path, '.php');
+            $path          = strtr($file->getRealPath(), '\\', '/');
+            $dir           = dirname($path);
+            $filename      = basename($path, '.php');
 
             if ($this->config) {
                 $dir = substr($dir, strlen(realpath($this->config->getDir())) + 1);
@@ -105,8 +105,8 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
             }
         } else {
             $normClass = strtr($classyName, '_', '/');
-            $path = strtr($file->getRealPath(), '\\', '/');
-            $filename = substr($path, -strlen($normClass) - 4, -4);
+            $path      = strtr($file->getRealPath(), '\\', '/');
+            $filename  = substr($path, -strlen($normClass) - 4, -4);
 
             if ($normClass !== $filename && strtolower($normClass) === strtolower($filename)) {
                 $tokens[$classyIndex]->setContent(strtr($filename, '/', '_'));

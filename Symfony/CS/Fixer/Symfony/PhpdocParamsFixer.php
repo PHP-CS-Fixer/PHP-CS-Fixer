@@ -33,7 +33,7 @@ class PhpdocParamsFixer extends AbstractFixer
         // optional <desc>
         $desc = '(?:\s+(?P<desc>.*)|\s*)';
 
-        $this->regex = '/^ {5}\* @(?:'.$paramTag.'|'.$returnThrowsTag.')'.$desc.'$/';
+        $this->regex            = '/^ {5}\* @(?:'.$paramTag.'|'.$returnThrowsTag.')'.$desc.'$/';
         $this->regexCommentLine = '/^ {5}\*(?:\s+(?P<desc>.+))$/';
     }
 
@@ -79,16 +79,16 @@ class PhpdocParamsFixer extends AbstractFixer
                 }
 
                 // compute the max length of the tag, hint and variables
-                $tagMax = 0;
+                $tagMax  = 0;
                 $hintMax = 0;
-                $varMax = 0;
+                $varMax  = 0;
 
                 foreach ($items as $item) {
                     if (null === $item['tag']) {
                         continue;
                     }
 
-                    $tagMax = max($tagMax, strlen($item['tag']));
+                    $tagMax  = max($tagMax, strlen($item['tag']));
                     $hintMax = max($hintMax, strlen($item['hint']));
                     $varMax  = max($varMax, strlen($item['var']));
                 }
@@ -147,7 +147,7 @@ class PhpdocParamsFixer extends AbstractFixer
     {
         if (preg_match($this->regex, $line, $matches)) {
             if (!empty($matches['tag2'])) {
-                $matches['tag'] = $matches['tag2'];
+                $matches['tag']  = $matches['tag2'];
                 $matches['hint'] = $matches['hint2'];
             }
 
@@ -155,8 +155,8 @@ class PhpdocParamsFixer extends AbstractFixer
         }
 
         if ($matchCommentOnly && preg_match($this->regexCommentLine, $line, $matches)) {
-            $matches['tag'] = null;
-            $matches['var'] = '';
+            $matches['tag']  = null;
+            $matches['var']  = '';
             $matches['hint'] = '';
 
             return $matches;

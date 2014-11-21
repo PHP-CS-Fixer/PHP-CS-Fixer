@@ -19,9 +19,9 @@ namespace Symfony\CS\Tokenizer;
  */
 class Tokens extends \SplFixedArray
 {
-    const BLOCK_TYPE_PARENTHESIS_BRACE = 1;
-    const BLOCK_TYPE_CURLY_BRACE = 2;
-    const BLOCK_TYPE_SQUARE_BRACE = 3;
+    const BLOCK_TYPE_PARENTHESIS_BRACE  = 1;
+    const BLOCK_TYPE_CURLY_BRACE        = 2;
+    const BLOCK_TYPE_SQUARE_BRACE       = 3;
     const BLOCK_TYPE_DYNAMIC_PROP_BRACE = 4;
 
     /**
@@ -137,7 +137,7 @@ class Tokens extends \SplFixedArray
             $tokens[$index] = new Token($tokenPrototype);
         }
 
-        $collection = self::fromArray($tokens);
+        $collection   = self::fromArray($tokens);
         $transformers = Transformers::create();
         $transformers->transform($collection);
         $collection->changeCodeHash($codeHash);
@@ -326,16 +326,17 @@ class Tokens extends \SplFixedArray
             throw new \InvalidArgumentException('Invalid param $type');
         }
 
-        $startEdge = $blockEdgeDefinitions[$type]['start'];
-        $endEdge = $blockEdgeDefinitions[$type]['end'];
-        $startIndex = $searchIndex;
-        $endIndex = $this->count() - 1;
+        $startEdge   = $blockEdgeDefinitions[$type]['start'];
+        $endEdge     = $blockEdgeDefinitions[$type]['end'];
+        $startIndex  = $searchIndex;
+        $endIndex    = $this->count() - 1;
         $indexOffset = 1;
 
         if (!$findEnd) {
             list($startEdge, $endEdge) = array($endEdge, $startEdge);
+
             $indexOffset = -1;
-            $endIndex = 0;
+            $endIndex    = 0;
         }
 
         if (!$this[$startIndex]->equals($startEdge)) {
@@ -382,7 +383,7 @@ class Tokens extends \SplFixedArray
     {
         $this->rewind();
 
-        $elements = array();
+        $elements      = array();
         $possibleKinds = is_array($possibleKind) ? $possibleKind : array($possibleKind);
 
         foreach ($possibleKinds as $kind) {
@@ -439,10 +440,10 @@ class Tokens extends \SplFixedArray
     {
         $this->rewind();
 
-        $elements = array();
-        $inClass = false;
+        $elements         = array();
+        $inClass          = false;
         $curlyBracesLevel = 0;
-        $bracesLevel = 0;
+        $bracesLevel      = 0;
 
         foreach ($this as $index => $token) {
             if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
@@ -507,8 +508,8 @@ class Tokens extends \SplFixedArray
     {
         $this->rewind();
 
-        $uses = array();
-        $bracesLevel = 0;
+        $uses           = array();
+        $bracesLevel    = 0;
         $namespaceIndex = 0;
 
         //foreach ($this as $index => $token) {
@@ -517,7 +518,7 @@ class Tokens extends \SplFixedArray
 
             if (T_NAMESPACE === $token->getId()) {
                 $nextTokenIndex = $this->getNextTokenOfKind($index, array(';', '{'));
-                $nextToken = $this[$nextTokenIndex];
+                $nextToken      = $this[$nextTokenIndex];
 
                 if ($nextToken->equals('{')) {
                     $index = $nextTokenIndex;
@@ -753,9 +754,9 @@ class Tokens extends \SplFixedArray
      */
     public function insertAt($index, $items)
     {
-        $items = is_array($items) || $items instanceof self ? $items : array($items);
+        $items    = is_array($items) || $items instanceof self ? $items : array($items);
         $itemsCnt = count($items);
-        $oldSize = count($this);
+        $oldSize  = count($this);
 
         $this->setSize($oldSize + $itemsCnt);
 

@@ -76,10 +76,10 @@ class FixCommand extends Command
      */
     public function __construct(Fixer $fixer = null, ConfigInterface $config = null)
     {
-        $this->defaultConfig = $config ?: new Config();
+        $this->defaultConfig   = $config ?: new Config();
         $this->eventDispatcher = new EventDispatcher();
-        $this->errorsManager = new ErrorsManager();
-        $this->stopwatch = new Stopwatch();
+        $this->errorsManager   = new ErrorsManager();
+        $this->stopwatch       = new Stopwatch();
 
         $this->fixer = $fixer ?: new Fixer();
         $this->fixer->registerBuiltInFixers();
@@ -452,7 +452,7 @@ EOF
 
                 $fixEvent = $this->stopwatch->getEvent('fixFiles');
 
-                $timeXML = $dom->createElement('time');
+                $timeXML   = $dom->createElement('time');
                 $memoryXML = $dom->createElement('memory');
                 $dom->appendChild($timeXML);
                 $dom->appendChild($memoryXML);
@@ -547,9 +547,9 @@ EOF
 
     protected function getFixersHelp()
     {
-        $help = '';
+        $help    = '';
         $maxName = 0;
-        $fixers = $this->fixer->getFixers();
+        $fixers  = $this->fixer->getFixers();
 
         // sort fixers by level and name
         usort(
@@ -589,7 +589,7 @@ EOF
 
     protected function getConfigsHelp()
     {
-        $help = '';
+        $help    = '';
         $maxName = 0;
 
         $configs = $this->fixer->getConfigs();

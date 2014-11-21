@@ -27,10 +27,10 @@ class MultipleUseFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
-        $uses = array_reverse($tokens->getNamespaceUseIndexes());
+        $uses   = array_reverse($tokens->getNamespaceUseIndexes());
 
         foreach ($uses as $index) {
-            $endIndex = $tokens->getNextTokenOfKind($index, array(';'));
+            $endIndex           = $tokens->getNextTokenOfKind($index, array(';'));
             $declarationContent = $tokens->generatePartialCode($index + 1, $endIndex - 1);
 
             $declarationParts = explode(',', $declarationContent);

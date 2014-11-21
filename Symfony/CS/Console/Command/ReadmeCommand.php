@@ -199,6 +199,7 @@ projects for instance).
 EOF;
 
         $command = $this->getApplication()->get('fix');
+
         $help = $command->getHelp();
         $help = str_replace('%command.full_name%', 'php-cs-fixer.phar '.$command->getName(), $help);
         $help = str_replace('%command.name%', $command->getName(), $help);

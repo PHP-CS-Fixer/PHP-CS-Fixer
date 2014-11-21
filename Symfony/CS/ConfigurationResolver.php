@@ -22,7 +22,7 @@ class ConfigurationResolver
 {
     protected $allFixers;
     protected $config;
-    protected $fixers = array();
+    protected $fixers  = array();
     protected $options = array(
         'fixers'   => null,
         'level'    => null,
@@ -114,7 +114,7 @@ class ConfigurationResolver
             return;
         }
 
-        $addNames = array();
+        $addNames    = array();
         $removeNames = array();
         foreach ($names as $name) {
             if (0 === strpos($name, '-')) {

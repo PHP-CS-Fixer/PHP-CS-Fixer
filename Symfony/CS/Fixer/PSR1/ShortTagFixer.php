@@ -34,8 +34,8 @@ class ShortTagFixer extends AbstractFixer
          * with
          * > echo '<?php ';
         */
-        $tokens = Tokens::fromCode($newContent);
-        $tokensOldContent = '';
+        $tokens                 = Tokens::fromCode($newContent);
+        $tokensOldContent       = '';
         $tokensOldContentLength = 0;
 
         foreach ($tokens as $token) {
@@ -52,10 +52,10 @@ class ShortTagFixer extends AbstractFixer
             }
 
             if ($token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT, T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_STRING))) {
-                $tokenContent = '';
+                $tokenContent       = '';
                 $tokenContentLength = 0;
-                $parts = explode('<?php ', $token->getContent());
-                $iLast = count($parts) - 1;
+                $parts              = explode('<?php ', $token->getContent());
+                $iLast              = count($parts) - 1;
 
                 foreach ($parts as $i => $part) {
                     $tokenContent .= $part;

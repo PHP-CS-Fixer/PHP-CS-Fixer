@@ -29,17 +29,17 @@ class Config implements ConfigInterface
     protected $fixers;
     protected $dir;
     protected $customFixers;
-    protected $usingCache = false;
-    protected $usingLinter = true;
+    protected $usingCache   = false;
+    protected $usingLinter  = true;
     protected $hideProgress = false;
 
     public function __construct($name = 'default', $description = 'A default configuration')
     {
-        $this->name = $name;
-        $this->description = $description;
-        $this->level = FixerInterface::SYMFONY_LEVEL;
-        $this->fixers = array();
-        $this->finder = new DefaultFinder();
+        $this->name         = $name;
+        $this->description  = $description;
+        $this->level        = FixerInterface::SYMFONY_LEVEL;
+        $this->fixers       = array();
+        $this->finder       = new DefaultFinder();
         $this->customFixers = array();
     }
 

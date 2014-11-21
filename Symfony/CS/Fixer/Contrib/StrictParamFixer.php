@@ -58,9 +58,9 @@ class StrictParamFixer extends AbstractFixer
     private function fixFunction(Tokens $tokens, $functionIndex, array $functionParams)
     {
         $startBraceIndex = $tokens->getNextTokenOfKind($functionIndex, array('('));
-        $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startBraceIndex);
-        $commaCounter = 0;
-        $sawParameter = false;
+        $endBraceIndex   = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startBraceIndex);
+        $commaCounter    = 0;
+        $sawParameter    = false;
 
         for ($index = $startBraceIndex + 1; $index < $endBraceIndex; ++$index) {
             $token = $tokens[$index];
@@ -86,7 +86,7 @@ class StrictParamFixer extends AbstractFixer
         }
 
         $functionParamsQuantity = count($functionParams);
-        $paramsQuantity = ($sawParameter ? 1 : 0) + $commaCounter;
+        $paramsQuantity         = ($sawParameter ? 1 : 0) + $commaCounter;
 
         if ($paramsQuantity === $functionParamsQuantity) {
             return;

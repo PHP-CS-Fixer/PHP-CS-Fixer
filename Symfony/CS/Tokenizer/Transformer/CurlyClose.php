@@ -27,7 +27,7 @@ class CurlyClose extends AbstractTransformer
     public function process(Tokens $tokens)
     {
         foreach ($tokens->findGivenKind(T_CURLY_OPEN) as $index => $token) {
-            $level = 1;
+            $level     = 1;
             $nestIndex = $index;
 
             while (0 < $level) {

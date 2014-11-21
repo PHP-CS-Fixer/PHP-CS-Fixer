@@ -28,14 +28,14 @@ class OrderedUseFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         $namespacesImports = $tokens->getNamespaceUseIndexes(true);
-        $usesOrder = array();
+        $usesOrder         = array();
 
         if (!count($namespacesImports)) {
             return $content;
         }
 
         foreach ($namespacesImports as $uses) {
-            $uses = array_reverse($uses);
+            $uses      = array_reverse($uses);
             $usesOrder = array_replace($usesOrder, $this->getNewOrder($uses, $tokens));
         }
 
@@ -67,15 +67,15 @@ class OrderedUseFixer extends AbstractFixer
     {
         $uses = array_reverse($uses);
 
-        $indexes = array();
+        $indexes         = array();
         $originalIndexes = array();
 
         foreach ($uses as $index) {
-            $endIndex = $tokens->getNextTokenOfKind($index, array(';'));
+            $endIndex   = $tokens->getNextTokenOfKind($index, array(';'));
             $startIndex = $tokens->getTokenNotOfKindSibling($index + 1, 1, array(array(T_WHITESPACE)));
 
             $namespace = '';
-            $index = $startIndex;
+            $index     = $startIndex;
 
             while ($index <= $endIndex) {
                 $token = $tokens[$index];
@@ -83,12 +83,12 @@ class OrderedUseFixer extends AbstractFixer
 
                 if ($token->equals(',') || $index === $endIndex) {
                     $indexes[$startIndex] = array($namespace, $startIndex, $index - 1);
-                    $originalIndexes[] = $startIndex;
+                    $originalIndexes[]    = $startIndex;
 
-                    $namespace = '';
+                    $namespace     = '';
                     $nextPartIndex = $tokens->getTokenNotOfKindSibling($index, 1, array(array(','), array(T_WHITESPACE)));
-                    $startIndex = $nextPartIndex;
-                    $index = $nextPartIndex;
+                    $startIndex    = $nextPartIndex;
+                    $index         = $nextPartIndex;
 
                     continue;
                 }

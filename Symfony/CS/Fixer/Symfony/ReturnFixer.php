@@ -43,7 +43,7 @@ class ReturnFixer extends AbstractFixer
             $prevToken = $tokens[$index - 1];
 
             if ($prevToken->isWhitespace()) {
-                $parts = explode("\n", $prevToken->getContent());
+                $parts      = explode("\n", $prevToken->getContent());
                 $countParts = count($parts);
 
                 if (1 === $countParts) {

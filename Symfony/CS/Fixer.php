@@ -26,7 +26,7 @@ class Fixer
 {
     const VERSION = '1.2-DEV';
 
-    protected $fixers = array();
+    protected $fixers  = array();
     protected $configs = array();
 
     /**
@@ -73,7 +73,7 @@ class Fixer
     {
         foreach (Finder::create()->files()->in(__DIR__.'/Fixer') as $file) {
             $relativeNamespace = $file->getRelativePath();
-            $class = 'Symfony\\CS\\Fixer\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
+            $class             = 'Symfony\\CS\\Fixer\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
             $this->addFixer(new $class());
         }
     }
@@ -101,7 +101,7 @@ class Fixer
     {
         foreach (Finder::create()->files()->in(__DIR__.'/Config') as $file) {
             $relativeNamespace = $file->getRelativePath();
-            $class = 'Symfony\\CS\\Config\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
+            $class             = 'Symfony\\CS\\Config\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
             $this->addConfig(new $class());
         }
     }
@@ -127,7 +127,7 @@ class Fixer
      */
     public function fix(ConfigInterface $config, $dryRun = false, $diff = false)
     {
-        $fixers = $this->prepareFixers($config);
+        $fixers  = $this->prepareFixers($config);
         $changed = array();
 
         if ($this->stopwatch) {

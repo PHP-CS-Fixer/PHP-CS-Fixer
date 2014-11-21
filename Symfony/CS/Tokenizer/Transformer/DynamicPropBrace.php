@@ -31,7 +31,7 @@ class DynamicPropBrace extends AbstractTransformer
                 continue;
             }
 
-            $openIndex = $index + 1;
+            $openIndex  = $index + 1;
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
 
             $tokens[$openIndex]->override(array(CT_DYNAMIC_PROP_BRACE_OPEN, '{', $tokens[$openIndex]->getLine()));

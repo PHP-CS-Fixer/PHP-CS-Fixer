@@ -24,12 +24,12 @@ abstract class AbstractTransformerTestBase extends \PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
         static::$transformers = static::getTransformers();
-        static::$transformer = static::getTransformer();
+        static::$transformer  = static::getTransformer();
     }
 
     public static function tearDownAfterClass()
     {
-        static::$transformer = null;
+        static::$transformer  = null;
         static::$transformers = null;
     }
 
@@ -38,7 +38,7 @@ abstract class AbstractTransformerTestBase extends \PHPUnit_Framework_TestCase
         $transformerClass = 'Symfony\CS\Tokenizer'.substr(get_called_class(), strlen(__NAMESPACE__), -strlen('Test'));
 
         $transformersReflection = new \ReflectionClass(static::$transformers);
-        $propertyReflection = $transformersReflection->getProperty('items');
+        $propertyReflection     = $transformersReflection->getProperty('items');
         $propertyReflection->setAccessible(true);
 
         $items = $propertyReflection->getValue(static::$transformers);

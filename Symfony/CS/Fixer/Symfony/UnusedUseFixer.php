@@ -26,11 +26,11 @@ class UnusedUseFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        $namespaceDeclarations = $this->getNamespaceDeclarations($tokens);
-        $useDeclarationsIndexes = $tokens->getNamespaceUseIndexes();
-        $useDeclarations = $this->getNamespaceUseDeclarations($tokens, $useDeclarationsIndexes);
+        $namespaceDeclarations         = $this->getNamespaceDeclarations($tokens);
+        $useDeclarationsIndexes        = $tokens->getNamespaceUseIndexes();
+        $useDeclarations               = $this->getNamespaceUseDeclarations($tokens, $useDeclarationsIndexes);
         $contentWithoutUseDeclarations = $this->generateCodeWithoutPartials($tokens, array_merge($namespaceDeclarations, $useDeclarations));
-        $useUsages = $this->detectUseUsages($contentWithoutUseDeclarations, $useDeclarations);
+        $useUsages                     = $this->detectUseUsages($contentWithoutUseDeclarations, $useDeclarations);
 
         $this->removeUnusedUseDeclarations($tokens, $useDeclarations, $useUsages);
         $this->removeUsesInSameNamespace($tokens, $useDeclarations, $namespaceDeclarations);
@@ -98,7 +98,7 @@ class UnusedUseFixer extends AbstractFixer
 
         foreach ($useIndexes as $index) {
             $declarationEndIndex = $tokens->getNextTokenOfKind($index, array(';'));
-            $declarationContent = $tokens->generatePartialCode($index + 1, $declarationEndIndex - 1);
+            $declarationContent  = $tokens->generatePartialCode($index + 1, $declarationEndIndex - 1);
 
             // ignore multiple use statements like: `use BarB, BarC as C, BarD;`
             // that should be split into few separate statements
@@ -109,15 +109,15 @@ class UnusedUseFixer extends AbstractFixer
             $declarationParts = preg_split('/\s+as\s+/i', $declarationContent);
 
             if (1 === count($declarationParts)) {
-                $fullName = $declarationContent;
+                $fullName         = $declarationContent;
                 $declarationParts = explode('\\', $fullName);
-                $shortName = end($declarationParts);
-                $aliased = false;
+                $shortName        = end($declarationParts);
+                $aliased          = false;
             } else {
-                $fullName = $declarationParts[0];
-                $shortName = $declarationParts[1];
+                $fullName         = $declarationParts[0];
+                $shortName        = $declarationParts[1];
                 $declarationParts = explode('\\', $fullName);
-                $aliased = $shortName !== end($declarationParts);
+                $aliased          = $shortName !== end($declarationParts);
             }
 
             $shortName = trim($shortName);
@@ -184,7 +184,7 @@ class UnusedUseFixer extends AbstractFixer
         }
 
         $namespace = $namespaceDeclarations[0]['content'];
-        $nsLength = strlen($namespace.'\\');
+        $nsLength  = strlen($namespace.'\\');
 
         foreach ($useDeclarations as $useDeclaration) {
             if ($useDeclaration['aliased']) {

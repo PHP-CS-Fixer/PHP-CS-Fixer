@@ -107,7 +107,7 @@ EOF;
 
     public function testHandlePartialNamespaces()
     {
-        $fixer = $this->getFixer();
+        $fixer  = $this->getFixer();
         $config = new Config();
         $config->setDir(__DIR__.'/../../../');
         $fixer->setConfig($config);

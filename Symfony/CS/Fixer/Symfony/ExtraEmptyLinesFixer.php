@@ -28,8 +28,8 @@ class ExtraEmptyLinesFixer extends AbstractFixer
 
         foreach ($tokens->findGivenKind(T_WHITESPACE) as $token) {
             $content = '';
-            $count = 0;
-            $parts = explode("\n", $token->getContent());
+            $count   = 0;
+            $parts   = explode("\n", $token->getContent());
 
             for ($i = 0, $last = count($parts) - 1; $i <= $last; ++$i) {
                 if ('' === $parts[$i]) {

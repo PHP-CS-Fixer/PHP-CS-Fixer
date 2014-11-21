@@ -56,9 +56,9 @@ class Token
     {
         if (is_array($token)) {
             $this->isArray = true;
-            $this->id = $token[0];
+            $this->id      = $token[0];
             $this->content = $token[1];
-            $this->line = isset($token[2]) ? $token[2] : null;
+            $this->line    = isset($token[2]) ? $token[2] : null;
         } else {
             $this->isArray = false;
             $this->content = $token;
@@ -203,7 +203,7 @@ class Token
         static $keywords = null;
 
         if (null === $keywords) {
-            $keywords = array();
+            $keywords        = array();
             $keywordsStrings = array('T_ABSTRACT', 'T_ARRAY', 'T_AS', 'T_BREAK', 'T_CALLABLE', 'T_CASE',
                 'T_CATCH', 'T_CLASS', 'T_CLONE', 'T_CONST', 'T_CONTINUE', 'T_DECLARE', 'T_DEFAULT', 'T_DO',
                 'T_ECHO', 'T_ELSE', 'T_ELSEIF', 'T_EMPTY', 'T_ENDDECLARE', 'T_ENDFOR', 'T_ENDFOREACH',
@@ -218,7 +218,7 @@ class Token
 
             foreach ($keywordsStrings as $keywordName) {
                 if (defined($keywordName)) {
-                    $keyword = constant($keywordName);
+                    $keyword            = constant($keywordName);
                     $keywords[$keyword] = $keyword;
                 }
             }
@@ -367,17 +367,17 @@ class Token
     {
         if (is_array($prototype)) {
             $this->isArray = true;
-            $this->id = $prototype[0];
+            $this->id      = $prototype[0];
             $this->content = $prototype[1];
-            $this->line = isset($prototype[2]) ? $prototype[2] : null;
+            $this->line    = isset($prototype[2]) ? $prototype[2] : null;
 
             return;
         }
 
         $this->isArray = false;
-        $this->id = null;
+        $this->id      = null;
         $this->content = $prototype;
-        $this->line = null;
+        $this->line    = null;
     }
 
     /**
