@@ -27,11 +27,11 @@ class StrictFixer extends AbstractFixer
     {
         static $map = array(
             T_IS_EQUAL => array(
-                'id' => T_IS_IDENTICAL,
+                'id'      => T_IS_IDENTICAL,
                 'content' => '===',
             ),
             T_IS_NOT_EQUAL => array(
-                'id' => T_IS_NOT_IDENTICAL,
+                'id'      => T_IS_NOT_IDENTICAL,
                 'content' => '!==',
             ),
         );

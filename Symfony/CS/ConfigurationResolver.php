@@ -24,8 +24,8 @@ class ConfigurationResolver
     protected $config;
     protected $fixers = array();
     protected $options = array(
-        'fixers' => null,
-        'level'  => null,
+        'fixers'   => null,
+        'level'    => null,
         'progress' => null,
     );
 

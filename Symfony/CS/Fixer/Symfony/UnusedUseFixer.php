@@ -83,9 +83,9 @@ class UnusedUseFixer extends AbstractFixer
             $declarationEndIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
 
             $namespaces[] = array(
-                'content' => trim($tokens->generatePartialCode($index + 1, $declarationEndIndex - 1)),
+                'content'          => trim($tokens->generatePartialCode($index + 1, $declarationEndIndex - 1)),
                 'declarationStart' => $index,
-                'declarationEnd' => $declarationEndIndex,
+                'declarationEnd'   => $declarationEndIndex,
             );
         }
 
@@ -123,11 +123,11 @@ class UnusedUseFixer extends AbstractFixer
             $shortName = trim($shortName);
 
             $uses[$shortName] = array(
-                'shortName' => $shortName,
-                'fullName' => trim($fullName),
-                'aliased' => $aliased,
+                'shortName'        => $shortName,
+                'fullName'         => trim($fullName),
+                'aliased'          => $aliased,
                 'declarationStart' => $index,
-                'declarationEnd' => $declarationEndIndex,
+                'declarationEnd'   => $declarationEndIndex,
             );
         }
 

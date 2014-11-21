@@ -90,12 +90,12 @@ class VisibilityFixer extends AbstractFixer
     private function grabAttribsBeforeMethodToken(Tokens $tokens, $index)
     {
         static $tokenAttribsMap = array(
-            T_PRIVATE => 'visibility',
+            T_PRIVATE   => 'visibility',
             T_PROTECTED => 'visibility',
-            T_PUBLIC => 'visibility',
-            T_ABSTRACT => 'abstract',
-            T_FINAL => 'final',
-            T_STATIC => 'static',
+            T_PUBLIC    => 'visibility',
+            T_ABSTRACT  => 'abstract',
+            T_FINAL     => 'final',
+            T_STATIC    => 'static',
         );
 
         return $this->grabAttribsBeforeToken(
@@ -124,11 +124,11 @@ class VisibilityFixer extends AbstractFixer
     private function grabAttribsBeforePropertyToken(Tokens $token, $index)
     {
         static $tokenAttribsMap = array(
-            T_VAR => null, // destroy T_VAR token!
-            T_PRIVATE => 'visibility',
+            T_VAR       => null, // destroy T_VAR token!
+            T_PRIVATE   => 'visibility',
             T_PROTECTED => 'visibility',
-            T_PUBLIC => 'visibility',
-            T_STATIC => 'static',
+            T_PUBLIC    => 'visibility',
+            T_STATIC    => 'static',
         );
 
         return $this->grabAttribsBeforeToken(

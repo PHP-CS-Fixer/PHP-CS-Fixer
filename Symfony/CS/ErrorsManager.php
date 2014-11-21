@@ -58,9 +58,9 @@ class ErrorsManager
     public function report($type, $filepath, $message)
     {
         $this->errors[] = array(
-            'type' => $type,
+            'type'     => $type,
             'filepath' => $filepath,
-            'message' => $message,
+            'message'  => $message,
         );
     }
 }

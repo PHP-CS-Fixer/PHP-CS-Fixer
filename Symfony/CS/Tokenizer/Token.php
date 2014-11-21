@@ -393,10 +393,10 @@ class Token
     public function toArray()
     {
         return array(
-            'id' => $this->id,
-            'name' => $this->getName(),
+            'id'      => $this->id,
+            'name'    => $this->getName(),
             'content' => $this->content,
-            'line' => $this->line,
+            'line'    => $this->line,
             'isArray' => $this->isArray,
         );
     }
