@@ -135,6 +135,15 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
+                $data = [
+                    "foo"  => "Bar",
+                    "main" => [["baz" => "Test", "example" => "Hello"]],
+                    "bar"  => [],
+                ];
+                ',
+            ),
+            array(
+                '<?php
                 $arr = array(
                 $a    => 1,
                 $bbbb => \'
