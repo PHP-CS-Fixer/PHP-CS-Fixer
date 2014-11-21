@@ -1,0 +1,45 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-17T22:48:00Z
+
+I'm also experinencing issues with foreach loops:
+
+```php
+$var = [];
+foreach ($foo as $i => $bar) {
+    $var[] = [$i => $bar];
+}
+```
+ends up as:
+```php
+$var = [];
+foreach ($foo as $i => $bar) {
+    $var[] = [$i    => $bar];
+}
+```
+
+I don't know if this fixes that. Might be useful to add to the test suite.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-17T23:22:57Z
+
+btw please remember to rebase on master ;)
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-17T23:23:53Z
+
+well remembered!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-20T16:09:47Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-21T04:13:01Z
+
+Ready to merge into 1.2@dev
