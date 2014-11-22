@@ -791,9 +791,6 @@ class Tokens extends \SplFixedArray
      */
     public function isArrayMultiLine($index)
     {
-        $isMultiline = false;
-        $bracesLevel = 0;
-
         // Skip only when its an array, for short arrays we need the brace for correct
         // level counting
         if ($this[$index]->isGivenKind(T_ARRAY)) {
@@ -815,12 +812,11 @@ class Tokens extends \SplFixedArray
             }
 
             if ($token->isGivenKind(T_WHITESPACE) && false !== strpos($token->getContent(), "\n")) {
-                $isMultiline = true;
-                break;
+                return true;
             }
         }
 
-        return $isMultiline;
+        return false;
     }
 
     /**

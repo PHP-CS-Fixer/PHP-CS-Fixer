@@ -39,7 +39,7 @@ class FileCacheManager
     {
         $this->isEnabled = $isEnabled;
         $this->dir = null !== $dir ? $dir.DIRECTORY_SEPARATOR : '';
-        $this->fixers = array_map(function ($f) {
+        $this->fixers = array_map(function (FixerInterface $f) {
             return $f->getName();
         }, $fixers);
         sort($this->fixers);
