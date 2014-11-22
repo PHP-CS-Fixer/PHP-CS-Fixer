@@ -27,7 +27,7 @@ class MultipleUseFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
-        $uses = array_reverse($tokens->getNamespaceUseIndexes());
+        $uses = array_reverse($tokens->getImportUseIndexes());
 
         foreach ($uses as $index) {
             $endIndex = $tokens->getNextTokenOfKind($index, array(';'));

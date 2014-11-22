@@ -33,7 +33,7 @@ class RemoveLinesBetweenUsesFixer extends AbstractFixer
 
     private function removeLineBreaksBetweenUseStatements(Tokens $tokens)
     {
-        $namespacesImports = $tokens->getNamespaceUseIndexes(true);
+        $namespacesImports = $tokens->getImportUseIndexes(true);
 
         if (!count($namespacesImports)) {
             return;

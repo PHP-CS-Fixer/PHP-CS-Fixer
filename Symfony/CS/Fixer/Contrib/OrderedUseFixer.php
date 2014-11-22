@@ -27,7 +27,7 @@ class OrderedUseFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        $namespacesImports = $tokens->getNamespaceUseIndexes(true);
+        $namespacesImports = $tokens->getImportUseIndexes(true);
         $usesOrder = array();
 
         if (!count($namespacesImports)) {
