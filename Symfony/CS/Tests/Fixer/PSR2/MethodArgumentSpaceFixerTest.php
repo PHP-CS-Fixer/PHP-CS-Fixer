@@ -29,20 +29,25 @@ class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
     public function testFixProvider()
     {
         return array(
-           // test method arguments
-           array(
+            // test method arguments
+            array(
                 '<?php function xyz($a=10, $b=20, $c=30) {',
                 '<?php function xyz($a=10,$b=20,$c=30) {',
             ),
-           // test method call
-           array(
+            // test method call
+            array(
                 '<?php xyz($a=10, $b=20, $c=30);',
                 '<?php xyz($a=10 ,$b=20,$c=30);',
             ),
-           // test method call
-           array(
+            // test method call
+            array(
                 '<?php xyz($a=10, $b=20, $this->foo(), $c=30);',
                 '<?php xyz($a=10,$b=20 ,$this->foo() ,$c=30);',
+            ),
+            // test receiving data in list context with omitted values
+            array(
+                '<?php list($a, $b, , , $c) = foo();',
+                '<?php list($a, $b,, ,$c) = foo();',
             ),
             // skip array
             array(
