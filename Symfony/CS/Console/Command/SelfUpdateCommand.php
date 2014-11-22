@@ -54,10 +54,8 @@ EOT
             return 1;
         }
 
-        $localVersion = $this->getApplication()->getVersion();
-
         if (false !== $remoteVersion = @file_get_contents('http://get.sensiolabs.org/php-cs-fixer.version')) {
-            if ($localVersion === $remoteVersion) {
+            if ($this->getApplication()->getVersion() === $remoteVersion) {
                 $output->writeln('<info>php-cs-fixer is already up to date.</info>');
 
                 return;
@@ -67,6 +65,7 @@ EOT
         $remoteFilename = 'http://get.sensiolabs.org/php-cs-fixer.phar';
         $localFilename = $_SERVER['argv'][0];
         $tempFilename = basename($localFilename, '.phar').'-tmp.phar';
+
         if (false === @file_get_contents($remoteFilename)) {
             $output->writeln('<error>Unable to download new versions from the server.</error>');
 
@@ -88,6 +87,7 @@ EOT
             if (!$e instanceof \UnexpectedValueException && !$e instanceof \PharException) {
                 throw $e;
             }
+
             unlink($tempFilename);
             $output->writeln(sprintf('<error>The download is corrupt (%s).</error>', $e->getMessage()));
             $output->writeln('<error>Please re-run the self-update command to try again.</error>');
