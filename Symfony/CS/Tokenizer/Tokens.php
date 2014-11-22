@@ -797,28 +797,26 @@ class Tokens extends \SplFixedArray
         // Skip only when its an array, for short arrays we need the brace for correct
         // level counting
         if ($this[$index]->isGivenKind(T_ARRAY)) {
-            ++$index;
+            $index = $this->getNextMeaningfulToken($index);
         }
 
-        for ($c = $this->count(); $index < $c; ++$index) {
-            $token = $this[$index];
+        $endIndex = $this[$index]->equals('(')
+            ? $this->findBlockEnd(self::BLOCK_TYPE_PARENTHESIS_BRACE, $index)
+            : $this->findBlockEnd(self::BLOCK_TYPE_SQUARE_BRACE, $index)
+        ;
 
-            if ($token->equalsAny(array('(', '['))) {
-                ++$bracesLevel;
+        for (++$index; $index < $endIndex; ++$index) {
+            $token      = $this[$index];
+            $blockType  = $this->detectBlockType($token);
+
+            if ($blockType && $blockType['isStart']) {
+                $index = $this->findBlockEnd($blockType['type'], $index);
                 continue;
             }
 
-            if (1 === $bracesLevel && $token->isGivenKind(T_WHITESPACE) && false !== strpos($token->getContent(), "\n")) {
+            if ($token->isGivenKind(T_WHITESPACE) && false !== strpos($token->getContent(), "\n")) {
                 $isMultiline = true;
                 break;
-            }
-
-            if ($token->equalsAny(array(')', ']'))) {
-                --$bracesLevel;
-
-                if (0 === $bracesLevel) {
-                    break;
-                }
             }
         }
 

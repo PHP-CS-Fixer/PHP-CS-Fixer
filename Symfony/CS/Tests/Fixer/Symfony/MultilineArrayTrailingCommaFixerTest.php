@@ -135,6 +135,13 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
         )
     );",
             ),
+            array(
+                '<?php
+
+                $a = array("foo" => function ($b) {
+                    return "bar".$b;
+                });',
+            ),
 
             // short syntax tests
             array('<?php $x = array([]);'),
@@ -153,6 +160,13 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
         [
         ],
     ];',
+            ),
+            array(
+                '<?php
+
+                $a = ["foo" => function ($b) {
+                    return "bar".$b;
+                }];',
             ),
 
             // no array tests
