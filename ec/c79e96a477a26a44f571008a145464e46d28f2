@@ -1,0 +1,64 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-18T22:31:18Z
+
+Hm....
+ugly bug at PHP 5.3
+
+```php
+<?php
+
+$code = '<?php $x=1; __halt_compiler(); AFTER';
+$tokens = token_get_all($code);
+
+echo "TOTAL: " . count($tokens);
+var_dump($tokens);
+```
+
+[on 5.3.29](http://codepad.viper-7.com/RBv0q6)
+
+[on 5.4.33](http://codepad.viper-7.com/gC6JmW)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-20T19:35:17Z
+
+What a depressing silence ...
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-21T20:34:06Z
+
+really?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-21T20:37:26Z
+
+LGTM. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-21T20:37:51Z
+
+Don't know what we can do about that php 5.3 bug you mentioned though.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-21T20:43:42Z
+
+thx ;)
+
+Maybe just ignore that file and leave it alone? It looks better than throw code after __HALT_COMPILER out of the window?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-21T20:46:17Z
+
+Yeh.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-21T21:22:33Z
+
+Extracted PHP 5.3 bug into separate issue: #760
