@@ -1,0 +1,365 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-09T18:39:07Z
+
+Hm... wondering about level.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-09T18:39:55Z
+
+and I about sequence...
+
+I have the feeling it should be executed after other use fixers, what you think?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-09T18:54:34Z
+
+Good catch!
+
+For sure after `multiple_use` to fix:
+`use Foo, \Bar`;
+
+You may also set it to run after `unused_use` - just for speed care (no need to remove \ on statement that will be removed)
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-09T18:55:39Z
+
+Help me? I don't have clue on how to enforce this fixer to be after both of them. Any suggestions?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-09T18:57:52Z
+
+Please wait few secs ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-09T19:04:36Z
+
+It would be a good idea to add a test case to make sure trait use statements aren't modified.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-09T19:04:51Z
+
+Also, I think this should be better in the symfony level. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-09T19:06:00Z
+
+@dericofilho please see https://github.com/dericofilho/PHP-CS-Fixer/pull/3
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-10T11:26:44Z
+
+@keradus merged and rebase to remove merge commits.
+
+@GrahamCampbell I do not think I have authority to put this into symfony level - all in all, [Symfony's Coding Standards](http://symfony.com/doc/current/contributing/code/standards.html) mention PSR-{0,1,2} and few more guidelines but does not address explicitly the T_USE tokens. I defer such changes to official maintainers.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-10T12:28:53Z
+
+@fabpot is it fair to assume that symfony standards dictate that imports should looks like this:
+
+```php
+use Foo\Bar;
+```
+
+rather than:
+
+```php
+use \Foo\Bar;
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-10T13:12:30Z
+
+Symfony;s standards also said that one should follow code standards thats already used inside code itself.
+And Symfony do not use leading slash in T_USE statements.
+
+So yeah, please move this fixer into SYMFONY_LEVEL ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-10T13:24:46Z
+
+Please add test cases with T_USE for traits and T_USE for anon functions (like `function ($a) use ($b) {}`)
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-10T13:37:07Z
+
+@GrahamCampbell could you please help with more creative tests for traits? I covered only the basics at https://github.com/FriendsOfPHP/PHP-CS-Fixer/commit/6dc0ce4d6da1524f2af2e2deabc7aa6dfed4904e
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-10T15:10:58Z
+
+So I'd better not only test for this situation but also single namespace and multiple namespaces. Both with curly and no curly.
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-11-10T15:56:45Z
+
+You can use the https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Tokenizer/Tokens.php#L506 to find uses in all namespace without worrying about traits :+1:
+
+`$tokens->getNamespaceUseIndexes()` will give you the indexes of all uses (including braced namespace's).
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-10T16:23:11Z
+
+@sstok thanks for the tip. gonna use it.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-10T23:15:11Z
+
+@keradus @GrahamCampbell @sstok it should be OK in terms of behavior. But I suppose some extra review would be beneficial.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-10T23:17:41Z
+
+We still need those trait tests to check they're not modified.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-10T23:19:14Z
+
+@GrahamCampbell I added few trait tests, could you please elaborate how I could improve them?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-10T23:22:36Z
+
+No time right now, I will do though.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-11T00:01:57Z
+
+Please correct indent in test cases
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-11T10:58:16Z
+
+indent in test cases - done.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-11T20:05:58Z
+
+The traits tests are still wrong. What I meant was do this:
+
+```php
+<?php
+
+trait Foo {}
+
+class Bar {
+    use \Foo;
+}
+```
+
+And then check that this code was totally unmodified.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-11T20:28:49Z
+
+IMO it is covered by trait that used trait.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-11T20:43:04Z
+
+Added a test to cover specifically trait included in a class. But as expected, it passed with no changes.
+
+---------------------------------------------------------------------------
+
+by mdecaffmeyer at 2014-11-12T08:49:46Z
+
+If I change ```use \PDO;``` to ```use PDO;```
+
+I'll have a warning:
+
+**Warning: The use statement with non-compound name 'PDO' has no effect in C:\Data\packages\auth\tests\DbAuthenticatorTest.php on line 15**
+
+And I like to have a use statement for PDO, which allows me to easily see that a class is using PDO.
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-11-12T09:00:16Z
+
+Good catch, the leading slash should be kept for 'single' imports like `use \PDO`, `use \SomeClass;` **when the import is not in a namespace**.
+
+Because the Class has no namespace its already imported from the global-scope (or its part of the same global namespace to but in differently).
+
+http://stackoverflow.com/questions/4849279/importing-classes-and-namespaces-in-php-what-difference-does-a-leading-backslas
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-12T09:02:25Z
+
+I sort of said this few issues ago. The point is that to have a more accurate slash removal, we'd need to have a code map first. Pretty much like pfff.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-12T21:50:43Z
+
+What is a need for map?
+Can't we just keep `\` for class in global scope and remove `\` for class in namespace?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-12T22:09:39Z
+
+A leading slash isn't even needed on global level imports though???
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-12T22:12:20Z
+
+http://3v4l.org/dfLkG
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-12T22:18:29Z
+
+http://3v4l.org/8kcjq
+vs
+http://3v4l.org/uVdf1
+
+It seems the trick is only look for T_NAMESPACE. If the T_NAMESPACE it's there, the error message just goes away. Although I cannot affirm whether the behavior is the same.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-12T22:19:25Z
+
+Or better:
+http://3v4l.org/17s5l
+vs
+http://3v4l.org/leHXM
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-12T22:19:29Z
+
+Shouldn't this be handled by the unused use fixer?
+
+---------------------------------------------------------------------------
+
+by jian-wu at 2014-11-12T22:42:54Z
+
+I agree with @GrahamCampbell.
+
+The leading ```\``` was never necessary in procedural PHP code.  If you came through the procedural PHP age like I did, have you ever used the leading ```\``` in your code?  Say, ```<?php $db = new PDO($dns, $user, $pass);```.
+
+In namespaced classes, the leading ```\``` is not needed in the use statement for classes from any scope.  However, it is required if there is no use statement for it.  For instance,
+```
+<?php
+namespace NS;
+
+throw new \Exception("I failed!");
+```
+IMHO, the leading ```\``` should always be removed in the use statement.  Also, the use statement does nothing for global scoped classes in procedural PHP code and that use statement should be removed by the unused use fixer.
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-11-13T08:04:28Z
+
+@jian-wu I would agree with that, but fixers should be atomic, its unlikely that someone does not want to run the unused use fixer, but still it should be atomic.
+
+>  Can't we just keep \ for class in global scope and remove \ for class in namespace?
+
+Yep :+1:
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-13T09:19:50Z
+
+I have changed, so it tests for the presence of T_NAMESPACE before actually taking action of removing any T_NS_SEPARATOR. However, I bet there is a more elegant implementation to what I did.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-15T14:00:45Z
+
+@keradus this should be ready to merge, but an extra round of code review could be beneficial.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-15T14:03:44Z
+
+Just rebase against #739 changes.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T14:11:36Z
+
+Yeah, it seems that fabbot have some updates today ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T14:12:14Z
+
+@stof @sstok @GrahamCampbell could you help with final review please? :)
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-15T14:12:45Z
+
+Good days, bad days... but I like it, fabbot is a nice fellow. :smile:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-15T14:14:01Z
+
+I am looking forward for full integration of PHP CS Fixer, Insight and fabbot ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-22T13:50:24Z
+
+Please squash d0020fe3f1a9ac03395eca659c8db44b21850f45 with c22c7747d3f1e81f05e040b125c8974d6049a6aa .
+When there is one author for PR I can squash all commits myself, whene there are many autors it must be done manually.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-22T14:03:47Z
+
+I don't mind if you get rid of my authorship, and just squash the lot.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-22T14:10:37Z
+
+I just can't do the squashing during merging if there are multiple authors ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-22T14:11:17Z
+
+Then, ready to merge?
+
+ping @stof @sstok @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-22T14:11:48Z
+
+Not in front of computer right now. Gonna squash it asap.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-22T15:01:20Z
+
+@keradus squashed in a single commit.
