@@ -18,6 +18,8 @@ use Symfony\CS\Tokenizer\Tokens;
  * Transform `class` class' constant from T_CLASS into CT_CLASS_CONSTANT.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 class ClassConstant extends AbstractTransformer
 {

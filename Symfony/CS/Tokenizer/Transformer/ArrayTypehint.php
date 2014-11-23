@@ -18,6 +18,8 @@ use Symfony\CS\Tokenizer\Tokens;
  * Transform `array` typehint from T_ARRAY into T_ARRAY_TYPEHINT.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 class ArrayTypehint extends AbstractTransformer
 {

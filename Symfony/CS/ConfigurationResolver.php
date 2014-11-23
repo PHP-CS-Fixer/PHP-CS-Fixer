@@ -17,6 +17,8 @@ namespace Symfony\CS;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 class ConfigurationResolver
 {

@@ -19,6 +19,8 @@ use Symfony\CS\Utils;
  * It provides unified registerCustomTokens method.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 abstract class AbstractTransformer implements TransformerInterface
 {

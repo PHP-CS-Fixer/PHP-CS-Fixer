@@ -18,6 +18,8 @@ use Symfony\CS\Tokenizer\Tokens;
  * Transform closing `}` for T_CURLY_OPEN into CT_CURLY_CLOSE.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 class CurlyClose extends AbstractTransformer
 {
