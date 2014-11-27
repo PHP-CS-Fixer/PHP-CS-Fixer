@@ -338,7 +338,8 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
                             6     => 7,
                             8     => 9,
                         ],
-                        3    => 4,
+                        3       => 4,
+                        10      => 11,
                     )),
                 );',
                 '<?php
@@ -350,6 +351,7 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
                             8     => 9,
                         ],
                         3    => 4,
+                        10      => 11,
                     )),
                 );',
             ),
