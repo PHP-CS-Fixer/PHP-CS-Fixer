@@ -1,0 +1,218 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-21T21:47:46Z
+
+Failing tests from master: https://github.com/dericofilho/PHP-CS-Fixer/pull/5 (please cherry-pick, not merge)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-23T19:57:41Z
+
+I think this should be last thing going into v1.2 .
+So @dericofilho , it depends on you now ;)
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-23T19:59:05Z
+
+Delay this further to another release. I will need bit of more time to have it fixed properly.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-23T20:01:13Z
+
+Very well, thanks for feedback!
+Could we help you somehow ?
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-23T20:02:22Z
+
+I need to find a way to tell apart () from array()...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-23T20:03:06Z
+
+Can you not just check the token immediately before it?
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-23T20:03:49Z
+
+I can. But is it the idiomatic way?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-23T20:05:55Z
+
+If I understand you correctly - try use `Tokens::isArray` ?
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-23T22:24:45Z
+
+No... I needed to tell apart when I was digging down a array or just a pair of parentheses. Now it seems fine, except the columnated arrays.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-23T22:56:21Z
+
+btw, if PR contains only one author you don't need to squash/amend commits. I can do it during merging. Then the reviewers won't need to read all code to find what has changed since last push
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-27T19:11:00Z
+
+Any news on that @dericofilho ? ;)
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-27T19:45:37Z
+
+@keradus AFAIK, all tests are passing. This should be ready to merge.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-27T19:53:17Z
+
+Isn't it becouse not all tests we provided was added?
+
+```php
+            array(
+                '<?php
+    $array = array(
+        "bazab" => b(array(
+            1 => 2,
+            5 => [
+                6 => 7,
+                8 => 9,
+            ],
+            3 => 4,
+        )),
+    );',
+                '<?php
+    $array = array(
+        "bazab" => b(array(
+            1 => 2,
+            5   => [
+                6 => 7,
+                8     => 9,
+            ],
+            3     => 4,
+        )),
+    );',
+            ),
+```
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-27T19:58:18Z
+
+IMO this is a bad test, because it mixes the content of other fixer. It is aligning to the left as if the space between the integers and double arrows were removed. Which is not in the scope of this fixer.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-27T20:02:15Z
+
+Moreover, this test is very similar to tests 1 through 5.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-27T20:09:15Z
+
+Then just take the following code as example:
+```php
+<?php
+    $array = array(
+        "bazab" => b(array(
+            1 => 2,
+            5   => [
+                6 => 7,
+                8     => 9,
+            ],
+            3     => 4,
+        )),
+    );
+```
+
+Please - first say should it be changed, and if yes - into what? Then write it down.
+Next - run the fixer on it and see what happen.
+We could agree that `=>` should be placed one way or another - but what happens currently is very ugly.
+
+Yes, it is a complex test that contains mixed content. And yes, it is a real world case, which will occurs. But the fixer must not destroy it. And currently it does. It may be similar to 1-5 tests, but it is a little different and prove that fixer sometimes go wrong - it is one more buggy case that should be handled - anyhow.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-27T20:09:56Z
+
+> It is aligning to the left as if the space between the integers and double arrows were removed.
+
+What do you mean by that?
+```php
+$a = [
+    1   => 2,
+    3 => 4,
+];
+```
+is currently fixed into
+```php
+$a = [
+    1   => 2,
+    3   => 4,
+];
+
+```
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-27T20:12:45Z
+
+> What do you mean by that?
+> is currently fixed into
+
+As far you've told me before, Fixers are atomic. This fixer will only align to rightmost T_DOUBLE_ARROW. Space adjustments meaning
+
+```
+$a = [
+    1234 => 2,
+    3               => 4,
+];
+```
+to this:
+```
+$a = [
+    1234 => 2,
+    3 => 4,
+];
+```
+and then this:
+```
+$a = [
+    1234 => 2,
+    3       => 4,
+];
+```
+is the combination of two fixers.
+
+Edit: I can't make this GH thing to align code properly... Switch to the source code of the comment and you'll understand.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-27T20:16:16Z
+
+I committed the extra test as requested.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-27T20:51:16Z
+
+Cool work @dericofilho ! Thanks for discussion and your time!
+I am changing this PR back to v1.2 !
+Ready for merge!
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-27T20:51:42Z
+
+hooray!!
