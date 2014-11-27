@@ -45,8 +45,8 @@ class JoinFunctionFixerTest extends AbstractFixerTestBase
 
             // cases to fix
             array(
-                '<?php implode($a);',
-                '<?php join($a);',
+                '<?php implode($a, $b);',
+                '<?php join($a, $b);',
             ),
             array(
                 '<?php implode
@@ -57,6 +57,10 @@ class JoinFunctionFixerTest extends AbstractFixerTestBase
             array(
                 '<?php /* foo */ implode /** bar */ ($a);',
                 '<?php /* foo */ join /** bar */ ($a);',
+            ),
+            array(
+                '<?php a(implode());',
+                '<?php a(join());',
             ),
         );
     }
