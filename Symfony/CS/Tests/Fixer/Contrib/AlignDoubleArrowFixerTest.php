@@ -329,6 +329,30 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
                         self::STATUS_INVALID    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
                     );',
             ),
+            array(
+                '<?php
+                $array = array(
+                    "bazab" => b(array(
+                        1   => 2,
+                        5   => [
+                            6     => 7,
+                            8     => 9,
+                        ],
+                        3    => 4,
+                    )),
+                );',
+                '<?php
+                $array = array(
+                    "bazab" => b(array(
+                        1 => 2,
+                        5   => [
+                            6 => 7,
+                            8     => 9,
+                        ],
+                        3    => 4,
+                    )),
+                );',
+            ),
         );
     }
 }
