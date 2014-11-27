@@ -333,8 +333,8 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
                 '<?php
                 $array = array(
                     "bazab" => b(array(
-                        1   => 2,
-                        5   => [
+                        1     => 2,
+                        5     => [
                             6     => 7,
                             8     => 9,
                         ],
@@ -345,7 +345,7 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
                 $array = array(
                     "bazab" => b(array(
                         1 => 2,
-                        5   => [
+                        5     => [
                             6 => 7,
                             8     => 9,
                         ],
