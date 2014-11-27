@@ -37,7 +37,7 @@ class JoinFunctionFixer extends AbstractFixer
             }
 
             $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
-            if ($nextToken->isGivenKind(array(T_DOUBLE_COLON))) {
+            if ($nextToken->isGivenKind(array(T_DOUBLE_COLON, T_NS_SEPARATOR))) {
                 continue;
             }
 
