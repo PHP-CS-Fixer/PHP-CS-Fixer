@@ -268,6 +268,9 @@ Choose from the list of available fixers:
                 path should not be placed under
                 brackets.
 
+* **join_function** [symfony] Implode function should be
+                used instead of join function.
+
 * **multiline_array_trailing_comma** [symfony] PHP multi-line arrays should
                 have a trailing comma.
 
