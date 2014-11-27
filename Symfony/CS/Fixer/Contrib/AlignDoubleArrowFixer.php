@@ -26,45 +26,101 @@ class AlignDoubleArrowFixer extends AbstractFixer
     const NEW_LINE = "\n";
 
     /**
+     * Level counter of the current nest level.
+     * So one level alignments are not mixed with
+     * other level ones.
+     *
+     * @var int
+     */
+    private $currentLevel;
+
+    /**
+     * Keep track of the deepest level ever achieved while
+     * parsing the code. Used later to replace alignment
+     * placeholders with spaces.
+     *
+     * @var int
+     */
+    private $deepestLevel;
+
+    /**
      * {@inheritdoc}
      */
     public function fix(\SplFileInfo $file, $content)
     {
-        list($tmpCode, $contextCounter) = $this->injectAlignmentPlaceholders($content);
+        $this->currentLevel = 0;
+        $this->deepestLevel = -1;
+        $tokens = Tokens::fromCode($content);
 
-        return $this->replacePlaceholder($tmpCode, $contextCounter);
+        $this->injectAlignmentPlaceholders($tokens);
+
+        return $this->replacePlaceholder($tokens);
     }
 
     /**
      * Inject into the text placeholders of candidates of vertical alignment.
      *
-     * @param  string       $content
+     * @param array $tokens
+     * @param int   $startAt
+     * @param int   $endAt
+     *
      * @return array($code, $context_counter)
      */
-    private function injectAlignmentPlaceholders($content)
+    private function injectAlignmentPlaceholders($tokens, $startAt = null, $endAt = null)
     {
-        $contextCounter = 0;
-        $tokens = Tokens::fromCode($content);
-        $countTokens = count($tokens);
+        if (empty($startAt)) {
+            $startAt = 0;
+        }
 
-        for ($index = 0; $index < $countTokens; ++$index) {
+        if (empty($endAt)) {
+            $endAt = count($tokens);
+        }
+
+        for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_FOREACH)) {
+            if ($token->isGivenKind(array(T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH, T_CASE))) {
                 $index = $tokens->getNextMeaningfulToken($index);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
                 continue;
             }
 
+            if ($token->isGivenKind(T_ARRAY)) {
+                $from = $tokens->getNextMeaningfulToken($index);
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $from);
+                $index = $until;
+
+                ++$this->deepestLevel;
+                ++$this->currentLevel;
+                $this->injectAlignmentPlaceholders($tokens, $from, $until);
+                --$this->currentLevel;
+                continue;
+            }
+
+            if ($token->equals('[')) {
+                $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+                if ($prevToken->isGivenKind(array(T_STRING, T_VARIABLE))) {
+                    continue;
+                }
+
+                $from = $index;
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $from);
+                $index = $until;
+
+                ++$this->deepestLevel;
+                ++$this->currentLevel;
+                $this->injectAlignmentPlaceholders($tokens, $from + 1, $until - 1);
+                --$this->currentLevel;
+                continue;
+            }
+
             if ($token->isGivenKind(T_DOUBLE_ARROW)) {
-                $tokenContent = sprintf(self::ALIGNABLE_DOUBLEARROW, $contextCounter).$token->getContent();
+                $tokenContent = sprintf(self::ALIGNABLE_DOUBLEARROW, $this->currentLevel).$token->getContent();
 
                 $nextToken = $tokens[$index + 1];
                 if (!$nextToken->isWhitespace()) {
-                    // if there is no whitespaces after T_DOUBLE_ARROW add it
                     $tokenContent .= ' ';
                 } elseif ($nextToken->isWhitespace(array('whitespaces' => " \t"))) {
-                    // if there is single line whitespaces after T_DOUBLE_ARROW normalize it with single space
                     $nextToken->setContent(' ');
                 }
 
@@ -72,41 +128,33 @@ class AlignDoubleArrowFixer extends AbstractFixer
                 continue;
             }
 
-            if ($token->equals(';') || $token->isGivenKind(T_ARRAY)) {
-                ++$contextCounter;
+            if ($token->equals(';')) {
+                ++$this->deepestLevel;
+                ++$this->currentLevel;
                 continue;
             }
 
-            if ($token->equals('[')) {
-                $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
-
-                if ($prevToken->isGivenKind(T_DOUBLE_ARROW)) {
-                    ++$contextCounter;
-                }
-            }
-
             if ($token->equals(',')) {
-                $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
-
-                if ($prevToken->equals(']')) {
-                    ++$contextCounter;
-                }
+                do {
+                    ++$index;
+                    $token = $tokens[$index];
+                } while (false === strpos($token->getContent(), self::NEW_LINE));
             }
         }
-
-        return array($tokens->generateCode(), $contextCounter);
     }
 
     /**
      * Look for group of placeholders, and provide vertical alignment.
      *
-     * @param  string $tmpCode
-     * @param  int    $contextCounter
+     * @param string $tokens
+     *
      * @return string
      */
-    private function replacePlaceholder($tmpCode, $contextCounter)
+    private function replacePlaceholder($tokens)
     {
-        for ($j = 0; $j <= $contextCounter; ++$j) {
+        $tmpCode = $tokens->generateCode();
+
+        for ($j = 0; $j <= $this->deepestLevel; ++$j) {
             $placeholder = sprintf(self::ALIGNABLE_DOUBLEARROW, $j);
 
             if (false === strpos($tmpCode, $placeholder)) {
