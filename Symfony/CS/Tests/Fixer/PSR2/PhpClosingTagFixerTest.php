@@ -110,6 +110,7 @@ if (true) {
 <p><? echo \'this is a template\'; ?></p>
 <? echo \'Foo\'; ?>',
             ),
+            array('<?= "somestring"; ?> <?= "anotherstring"; ?>'),
         );
     }
 }
