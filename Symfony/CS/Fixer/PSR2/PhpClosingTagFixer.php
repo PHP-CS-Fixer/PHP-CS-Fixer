@@ -29,12 +29,12 @@ class PhpClosingTagFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        $kinds = $tokens->findGivenKind(array(T_OPEN_TAG, T_CLOSE_TAG, T_INLINE_HTML));
+        $kinds = $tokens->findGivenKind(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_CLOSE_TAG, T_INLINE_HTML));
 
         // leave code intact if there is:
         // - any T_INLINE_HTML code
         // - several opening tags
-        if (count($kinds[T_INLINE_HTML]) || count($kinds[T_OPEN_TAG]) > 1) {
+        if (count($kinds[T_INLINE_HTML]) || (count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO])) > 1) {
             return $content;
         }
 
