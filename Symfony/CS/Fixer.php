@@ -158,7 +158,7 @@ class Fixer
 
         return $changed;
     }
-    
+
     protected function getCacheManager(ConfigInterface $config)
     {
         return new FileCacheManager($config->usingCache(), $config->getDir(), $config->getFixers());
