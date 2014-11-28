@@ -26,11 +26,18 @@ class OldStyleConstructorFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
+        // As of PHP 5.3.3, methods with the same name as the last element of a namespaced class name will no longer be treated as constructor.
+        // This change doesn't affect non-namespaced classes.
+        $classHasNamespace = $tokens->findGivenKind(T_NAMESPACE);
+        if (!empty($classHasNamespace)) {
+            return $content;
+        }
+
         foreach ($tokens->findGivenKind(T_CLASS) as $index => $classToken) {
             $classOpen = $tokens->getNextTokenOfKind($index, array('{'));
             $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
 
-            if ($this->hasMethodNamed($tokens, "__construct", $classOpen, $classEnd)) {
+            if ($this->hasMethodNamed($tokens, '__construct', $classOpen, $classEnd)) {
                 continue;
             }
 
@@ -40,7 +47,7 @@ class OldStyleConstructorFixer extends AbstractFixer
             }
 
             $constructorIndex = $this->getMethodByName($tokens, $className, $classOpen, $classEnd);
-            $tokens[$tokens->getNextNonWhitespace($constructorIndex)]->setContent("__construct");
+            $tokens[$tokens->getNextNonWhitespace($constructorIndex)]->setContent('__construct');
         }
 
         return $tokens->generateCode();
@@ -56,7 +63,7 @@ class OldStyleConstructorFixer extends AbstractFixer
      *
      * @return bool
      */
-    protected function hasMethodNamed(Tokens $tokens, $name, $start, $end)
+    private function hasMethodNamed(Tokens $tokens, $name, $start, $end)
     {
         return $this->getMethodByName($tokens, $name, $start, $end) !== null;
     }
@@ -71,14 +78,14 @@ class OldStyleConstructorFixer extends AbstractFixer
      *
      * @return int|null
      */
-    protected function getMethodByName(Tokens $tokens, $name, $start, $end)
+    private function getMethodByName(Tokens $tokens, $name, $start, $end)
     {
-        for ($i = $start;$i <= $end; $i++) {
+        for ($i = $start; $i <= $end; ++$i) {
             if (!$tokens[$i]->isGivenKind(T_FUNCTION)) {
                 continue;
             }
 
-            $methodName = $tokens->getNextNonWhitespace($i);
+            $methodName = $tokens->getNextMeaningfulToken($i);
             if ($tokens[$methodName]->getContent() === $name) {
                 return $i;
             }
@@ -90,15 +97,6 @@ class OldStyleConstructorFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'An old PHP style constructors fixer.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // should be run after PSR2\VisibilityFixer
-        return -10;
+        return 'Fixer converts old style constructors to __construct.';
     }
 }

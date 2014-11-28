@@ -15,7 +15,65 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 class OldStyleConstructorFixerTest extends AbstractFixerTestBase
 {
-    public function testFix()
+    public function testClassWithAnonymous()
+    {
+        $input = <<<'EOF'
+<?php
+
+class Foo {
+
+    public function foo()
+    {
+        $bar = function () {};
+    }
+}
+
+EOF;
+        $this->makeTest($input);
+    }
+
+    public function classWithComments()
+    {
+        $input = <<<'EOF'
+<?php
+
+class /* test */ Foo {
+    public function /* test */ Foo($param) {
+
+    }
+}
+EOF;
+
+        $expected = <<<'EOF'
+<?php
+
+class /* test */ Foo {
+    public function /* test */ __construct($param) {
+
+    }
+}
+EOF;
+        $this->makeTest($input, $expected);
+    }
+
+    public function testWithNamespace()
+    {
+        $input = <<<'EOF'
+<?php
+namespace Testing;
+
+class SomeOldClass
+{
+    public function SomeOldClass($foo)
+    {
+    }
+}
+EOF;
+
+        $this->makeTest($input);
+    }
+
+    public function testConstuctorFix()
     {
         $expected = <<<'EOF'
 <?php
@@ -59,6 +117,6 @@ class SomeNewClass
 }
 EOF;
 
-        $this->makeTest($input, $input);
+        $this->makeTest($input);
     }
 }
