@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.6",
+        "php": ">=5.3.3",
         "symfony/console": "~2.1",
         "symfony/event-dispatcher" : "~2.1",
         "symfony/filesystem": "~2.1",

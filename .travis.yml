@@ -1,6 +1,7 @@
 language: php
 
 php:
+  - 5.3.3
   - 5.3
   - 5.4
   - 5.5
@@ -11,5 +12,5 @@ install:
   - travis_retry composer install --no-interaction --prefer-source
 
 script:
-  - phpunit --verbose
+  - phpunit --stop-on-error --stop-on-failure
   - php php-cs-fixer --diff --dry-run -v fix

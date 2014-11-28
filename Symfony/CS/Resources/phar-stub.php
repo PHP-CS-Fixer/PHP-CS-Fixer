@@ -10,8 +10,8 @@
  * with this source code in the file LICENSE.
  */
 
-if (version_compare(phpversion(), '5.3.6', '<')) {
-    fwrite(STDERR, "PHP needs to be a minimum version of PHP 5.3.6\n");
+if (version_compare(phpversion(), '5.3.3', '<')) {
+    fwrite(STDERR, "PHP needs to be a minimum version of PHP 5.3.3\n");
     exit(1);
 }
 
