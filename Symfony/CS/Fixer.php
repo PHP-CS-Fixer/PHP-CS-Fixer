@@ -134,8 +134,6 @@ class Fixer
             $this->stopwatch->openSection();
         }
 
-        $fileCacheManager = new FileCacheManager($config->usingCache(), $config->getDir(), $config->getFixers());
-
         foreach ($config->getFinder() as $file) {
             if ($file->isDir()) {
                 continue;
@@ -145,7 +143,7 @@ class Fixer
                 $this->stopwatch->start($this->getFileRelativePathname($file));
             }
 
-            if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff, $fileCacheManager)) {
+            if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff, $this->getCacheManager($config))) {
                 $changed[$this->getFileRelativePathname($file)] = $fixInfo;
             }
 
@@ -159,6 +157,11 @@ class Fixer
         }
 
         return $changed;
+    }
+
+    protected function getCacheManager(ConfigInterface $config)
+    {
+        return new FileCacheManager($config->usingCache(), $config->getDir(), $config->getFixers());
     }
 
     public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff, FileCacheManager $fileCacheManager)
