@@ -44,7 +44,7 @@ interface ConfigInterface
     /**
      * Returns the level to run.
      *
-     * @return integer A level
+     * @return int A level
      */
     public function getLevel();
 
