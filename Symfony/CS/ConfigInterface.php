@@ -70,6 +70,13 @@ interface ConfigInterface
     public function getDir();
 
     /**
+     * Returns the cache directory of the project.
+     *
+     * @return string The project cache directory
+     */
+    public function getCacheDir();
+
+    /**
      * Adds an instance of a custom fixer.
      *
      * @param FixerInterface $fixer
