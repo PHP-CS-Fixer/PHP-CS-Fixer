@@ -53,7 +53,7 @@ class Config implements ConfigInterface
     {
         $this->dir = $dir;
 
-        if (!$this->dir) {
+        if (!$this->cacheDir) {
             $this->cacheDir = $dir;
         }
     }
