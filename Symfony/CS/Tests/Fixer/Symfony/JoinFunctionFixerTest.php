@@ -42,6 +42,8 @@ class JoinFunctionFixerTest extends AbstractFixerTestBase
             array('<?php \join($a);'),
             array('<?php "INSERT ... join($a) ...";'),
             array('<?php "INSERT ... JOIN($a) ...";'),
+            array("<?php 'please'.'join' . 'me';"),
+            array('<?php "please" . "join"."me";'),
 
             // cases to fix
             array(
