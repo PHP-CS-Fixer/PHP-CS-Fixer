@@ -1,0 +1,92 @@
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-27T21:11:39Z
+
+LGTM
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-27T21:13:53Z
+
+Shouldn't we add tests for the function when we're passing 2 parameters too?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-27T21:41:01Z
+
+What for? We don't care if there is any argument at all ;)
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-27T21:42:36Z
+
+@GrahamCampbell Do you mean `a(join())`?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-27T21:46:55Z
+
+No, I mean `join(a, b)` to make sure its being converted correctly.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-27T21:47:28Z
+
+@GrahamCampbell I tend to agree with @keradus .
+
+The replacement is done at T_STRING token, so it really does not matter what comes after in the parameters.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-27T21:48:41Z
+
+@GrahamCampbell I see no point in it but also have no strong argue against it. it costs nothing, added.
+
+@dericofilho btw nice case, added
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-27T21:49:56Z
+
+This looks pretty simple, and good to go. Any chance this will make it into 1.2?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-27T21:55:46Z
+
+I hope for see release 1.2 soon. Already asked @fabien for it.
+
+I don't want to add new features on `@dev` that would be immediately spread into `@stable`.
+New features on `@dev` should have time to be tested by dev-users before releasing as `@stable`.
+We are relying here on `T_STRING` and there could be a lot of fancy cases...
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-27T21:56:15Z
+
+And, we still didn't decided about the level (See #769)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-27T22:31:23Z
+
+Sure.
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-11-28T07:30:28Z
+
+The coronate operator `.` does not seem to be tested.
+`'join'.'me'`
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-30T13:31:24Z
+
+added, thanks!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-30T13:32:20Z
+
+rebased
