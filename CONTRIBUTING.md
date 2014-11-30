@@ -21,6 +21,12 @@ You can do some things to increase the chance that your pull request is accepted
  * Remember about tests and documentation.
  * Don't bump version.
 
+## Making new fixers
+
+There is a [cookbook](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/COOKBOOK-FIXERS.md) with basic instructions on how to build a new fixer. Consider reading it
+before opening a PR.
+
+
 ## Project's standards:
 
  * [PSR-0: Autoloading Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md)
