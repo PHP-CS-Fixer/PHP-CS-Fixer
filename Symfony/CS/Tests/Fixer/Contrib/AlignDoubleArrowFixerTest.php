@@ -31,6 +31,14 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
         return array(
             array(
                 '<?php
+                switch ($a) {
+                    case "prod":
+                        break;
+                }
+                ',
+            ),
+            array(
+                '<?php
                 $data = [
                     "foo"  => "Bar",
                     "main" => array(
