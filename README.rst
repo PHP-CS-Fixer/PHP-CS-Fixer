@@ -337,6 +337,10 @@ Choose from the list of available fixers:
 
 * **ordered_use** [contrib] Ordering use statements.
 
+* **phpdoc_indent** [contrib] Docblocks should have the
+                same indentation as the documented
+                subject.
+
 * **short_array_syntax** [contrib] PHP array's should use the
                 PHP 5.4 short-syntax.
 
