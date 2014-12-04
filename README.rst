@@ -289,6 +289,10 @@ Choose from the list of available fixers:
 * **operators_spaces** [symfony] Operators should be arounded
                 by at least one space.
 
+* **phpdoc_indent** [symfony] Docblocks should have the
+                same indentation as the documented
+                subject.
+
 * **phpdoc_params** [symfony] All items of the @param
                 phpdoc tags must be aligned
                 vertically.
