@@ -60,14 +60,15 @@ class PhpdocIndentFixer extends AbstractFixer
      *
      * @param  string $content Docblock contents
      * @param  string $indent  Indentation to apply
+     *
      * @return string Dockblock contents including correct indentation
      */
     private function fixDocBlock($content, $indent)
     {
         $lines = explode("\n", str_replace(array("\r\n", "\r"), "\n", $content));
 
-        for ($i = 1, $l = count($lines); $i < $l; $i++) {
-            $lines[$i] = $indent." ".ltrim($lines[$i], " ");
+        for ($i = 1, $l = count($lines); $i < $l; ++$i) {
+            $lines[$i] = $indent.' '.ltrim($lines[$i], ' ');
         }
 
         return implode("\n", $lines);
@@ -78,11 +79,12 @@ class PhpdocIndentFixer extends AbstractFixer
      *
      * @param  string $content Whitespace before Docblock
      * @param  string $indent  Indentation of the subject
+     *
      * @return bool
      */
     private function hasMatchingIndent($content, $indent)
     {
-        return rtrim($content, " ").$indent === $content;
+        return rtrim($content, ' ').$indent === $content;
     }
 
     /**
@@ -90,17 +92,19 @@ class PhpdocIndentFixer extends AbstractFixer
      *
      * @param  string $content Whitespace before Docblock
      * @param  string $indent  Indentation of the documented subject
+     *
      * @return string Whitespace including correct indentation for Dockblock after this whitespace
      */
     private function fixWhitespaceBefore($content, $indent)
     {
-        return rtrim($content, " ").$indent;
+        return rtrim($content, ' ').$indent;
     }
 
     /**
      * Calculate used indentation from the whitespace before documented subject
      *
      * @param  string      $content Whitespace before documented subject
+     *
      * @return string|null
      */
     private function calculateIndent($content)
