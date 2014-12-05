@@ -228,6 +228,16 @@ final class DocBlocks
  */
 $variable = true;
 
+/**
+ * Partial docblock fix
+ */
+$partialFix = true;
+
+    /**
+     * Other partial docblock fix
+     */
+    $otherPartial = true;
+
     /** Single line */
     $single = true;
 
@@ -259,6 +269,16 @@ $variable = true;
      * Variable
      */
 $variable = true;
+
+/**
+ * Partial docblock fix
+ */
+$partialFix = true;
+
+    /**
+    * Other partial docblock fix
+    */
+    $otherPartial = true;
 
 /** Single line */
     $single = true;

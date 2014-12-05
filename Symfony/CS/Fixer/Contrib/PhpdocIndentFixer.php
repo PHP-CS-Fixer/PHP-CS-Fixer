@@ -35,9 +35,6 @@ class PhpdocIndentFixer extends AbstractFixer
             $indent = $this->calculateIndent($tokens[$next - 1]->getContent());
 
             $prevToken = $tokens[$index - 1];
-            if ($this->hasMatchingIndent($prevToken->getContent(), $indent)) {
-                continue;
-            }
 
             $prevToken->setContent($this->fixWhitespaceBefore($prevToken->getContent(), $indent));
 
@@ -93,19 +90,6 @@ class PhpdocIndentFixer extends AbstractFixer
         }
 
         return $type;
-    }
-
-    /**
-     * Check if Dockblock uses same indentation as the documented subject
-     *
-     * @param string $content Whitespace before Docblock
-     * @param string $indent  Indentation of the subject
-     *
-     * @return bool
-     */
-    private function hasMatchingIndent($content, $indent)
-    {
-        return rtrim($content, ' ').$indent === $content;
     }
 
     /**
