@@ -33,9 +33,6 @@ class PhpdocIndentFixer extends AbstractFixer
             }
 
             $indent = $this->calculateIndent($tokens[$next - 1]->getContent());
-            if (!$indent) {
-                continue;
-            }
 
             $prevToken = $tokens[$index - 1];
             if ($this->hasMatchingIndent($prevToken->getContent(), $indent)) {
