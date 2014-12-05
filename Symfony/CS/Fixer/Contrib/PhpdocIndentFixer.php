@@ -58,8 +58,8 @@ class PhpdocIndentFixer extends AbstractFixer
     /**
      * Fix indentation of Docblock
      *
-     * @param  string $content Docblock contents
-     * @param  string $indent  Indentation to apply
+     * @param string $content Docblock contents
+     * @param string $indent  Indentation to apply
      *
      * @return string Dockblock contents including correct indentation
      */
@@ -77,8 +77,8 @@ class PhpdocIndentFixer extends AbstractFixer
     /**
      * Check if Dockblock uses same indentation as the documented subject
      *
-     * @param  string $content Whitespace before Docblock
-     * @param  string $indent  Indentation of the subject
+     * @param string $content Whitespace before Docblock
+     * @param string $indent  Indentation of the subject
      *
      * @return bool
      */
@@ -90,8 +90,8 @@ class PhpdocIndentFixer extends AbstractFixer
     /**
      * Fix whitespace before the Docblock
      *
-     * @param  string $content Whitespace before Docblock
-     * @param  string $indent  Indentation of the documented subject
+     * @param string $content Whitespace before Docblock
+     * @param string $indent  Indentation of the documented subject
      *
      * @return string Whitespace including correct indentation for Dockblock after this whitespace
      */
@@ -103,7 +103,7 @@ class PhpdocIndentFixer extends AbstractFixer
     /**
      * Calculate used indentation from the whitespace before documented subject
      *
-     * @param  string      $content Whitespace before documented subject
+     * @param string $content Whitespace before documented subject
      *
      * @return string|null
      */

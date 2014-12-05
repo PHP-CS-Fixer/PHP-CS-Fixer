@@ -239,7 +239,7 @@ $variable = true;
         /**
          * Inside functions
          */
-        return null;
+        return;
     }
 
     /**
@@ -271,7 +271,7 @@ $variable = true;
 /**
  * Inside functions
  */
-        return null;
+        return;
     }
 
 /**
