@@ -220,6 +220,74 @@ final class DocBlocks
     }',
         );
 
+        $cases[] = array(
+            '
+<?php
+/**
+ * Variable
+ */
+$variable = true;
+
+    /** Single line */
+    $single = true;
+
+    /**
+     * Function
+     */
+    function something()
+    {
+        /**
+         * Inside functions
+         */
+        return null;
+    }
+
+    /**
+     * function call
+     */
+    something();
+
+    /**
+     * Control structure
+     * @var \Sqlite3 $sqlite
+     */
+    foreach($connections as $sqlite) {
+        $sqlite->open();
+    }',          '
+<?php
+    /**
+     * Variable
+     */
+$variable = true;
+
+/** Single line */
+    $single = true;
+
+/**
+ * Function
+ */
+    function something()
+    {
+/**
+ * Inside functions
+ */
+        return null;
+    }
+
+/**
+ * function call
+ */
+    something();
+
+/**
+ * Control structure
+ * @var \Sqlite3 $sqlite
+ */
+    foreach($connections as $sqlite) {
+        $sqlite->open();
+    }',
+        );
+
         return $cases;
     }
 }
