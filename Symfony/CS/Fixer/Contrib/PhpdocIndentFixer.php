@@ -62,34 +62,7 @@ class PhpdocIndentFixer extends AbstractFixer
      */
     private function fixDocBlock($content, $indent)
     {
-        $newLine = $this->detectNewLine($content);
-
-        $lines = explode($newLine, $content);
-
-        for ($i = 1, $l = count($lines); $i < $l; ++$i) {
-            $lines[$i] = $indent.' '.ltrim($lines[$i], ' ');
-        }
-
-        return implode($newLine, $lines);
-    }
-
-    /**
-     * Detect the type of newlines in docblock
-     *
-     * @param string $content Docblock contents
-     *
-     * @return string newline
-     */
-    private function detectNewLine($content)
-    {
-        $types = array("\r\n", "\r", "\n");
-        foreach ($types as $type) {
-            if (strpos($content, $type) !== false) {
-                return $type;
-            }
-        }
-
-        return $type;
+        return ltrim(preg_replace('/^[ \t]*/m', $indent.' ', $content));
     }
 
     /**
