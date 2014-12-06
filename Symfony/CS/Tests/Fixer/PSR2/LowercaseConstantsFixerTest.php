@@ -19,14 +19,23 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 class LowercaseConstantsFixerTest extends AbstractFixerTestBase
 {
     /**
-     * @dataProvider provideExamples
+     * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
 
-    public function provideExamples()
+    /**
+     * @dataProvider provide54Cases
+     * @requires PHP 5.4
+     */
+    public function test54($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideCases()
     {
         return array(
             array('<?php $x = true;'),
@@ -87,8 +96,14 @@ class LowercaseConstantsFixerTest extends AbstractFixerTestBase
             array('<?php class Foo implements False {}'),
             array('<?php Class Null { use True; }'),
             array('<?php interface True {}'),
-            array('<?php trait False {}'),
             array('<?php $foo instanceof True; $foo instanceof False; $foo instanceof Null;'),
+        );
+    }
+
+    public function provide54Cases()
+    {
+        return array(
+            array('<?php trait False {}'),
             array(
                 '<?php
     class Null {
