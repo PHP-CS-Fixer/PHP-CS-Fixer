@@ -150,8 +150,8 @@ fixer does not change what is not supposed to change. Thus:
     {
     	return array(
     		array(
-    			'<?php echo "This should not be changed"; ', // This is expected output
-    			'<?php echo "This should not be changed"; /* Comment */', // This is input
+    			'<?php echo "This should be changed"; ', // This is expected output
+    			'<?php echo "This should be changed"; /* Comment */', // This is input
     		)
     	);
     }
