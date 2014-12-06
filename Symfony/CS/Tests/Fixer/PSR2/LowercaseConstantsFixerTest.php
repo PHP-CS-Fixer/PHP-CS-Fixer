@@ -50,6 +50,55 @@ class LowercaseConstantsFixerTest extends AbstractFixerTestBase
             array('<?php namespace Foo\Null;'),
             array('<?php use Foo\Null;'),
             array('<?php use Foo\Null as Null;'),
+            array(
+                '<?php if (true) if (false) if (null) {}',
+                '<?php if (TRUE) if (FALSE) if (NULL) {}',
+            ),
+            array(
+                '<?php if (!true) if (!false) if (!null) {}',
+                '<?php if (!TRUE) if (!FALSE) if (!NULL) {}',
+            ),
+            array(
+                '<?php if ($a == true) if ($a == false) if ($a == null) {}',
+                '<?php if ($a == TRUE) if ($a == FALSE) if ($a == NULL) {}',
+            ),
+            array(
+                '<?php if ($a === true) if ($a === false) if ($a === null) {}',
+                '<?php if ($a === TRUE) if ($a === FALSE) if ($a === NULL) {}',
+            ),
+            array(
+                '<?php if ($a != true) if ($a != false) if ($a != null) {}',
+                '<?php if ($a != TRUE) if ($a != FALSE) if ($a != NULL) {}',
+            ),
+            array(
+                '<?php if ($a !== true) if ($a !== false) if ($a !== null) {}',
+                '<?php if ($a !== TRUE) if ($a !== FALSE) if ($a !== NULL) {}',
+            ),
+            array(
+                '<?php if (true && true and true AND true || false or false OR false xor null XOR null) {}',
+                '<?php if (TRUE && TRUE and TRUE AND TRUE || FALSE or FALSE OR FALSE xor NULL XOR NULL) {}',
+            ),
+            array(
+                '<?php /* foo */ true; /** bar */ false;',
+                '<?php /* foo */ TRUE; /** bar */ FALSE;',
+            ),
+            array('<?php class True {} class False {}, class Null {}'),
+            array('<?php class Foo extends True {}'),
+            array('<?php class Foo implements False {}'),
+            array('<?php Class Null { use True; }'),
+            array('<?php interface True {}'),
+            array('<?php trait False {}'),
+            array('<?php $foo instanceof True; $foo instanceof False; $foo instanceof Null;'),
+            array(
+                '<?php
+    class Null {
+        use True, False {
+            False::bar insteadof True;
+            True::baz insteadof False;
+            False::baz as Null;
+        }
+    }',
+            ),
         );
     }
 }
