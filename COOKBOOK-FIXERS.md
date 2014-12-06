@@ -3,7 +3,6 @@ Cookbook - Making a new Fixer for PHP-CS-Fixer
 
 You want to make a new fixer to PHP-CS-Fixer and do not know how to start. Follow this document and you will be able to do it.
 
-
 ## Background
 In order to be able to create a new fixer, you need some background. PHP-CS-Fixer is a transcompiler which takes valid PHP code and pretty print valid PHP code. It does all transformations in multiple passes, a.k.a., multi-pass compiler.
 
@@ -11,24 +10,23 @@ Therefore, a new fixer is meant to be ideally [idempotent](http://en.wikipedia.o
 
 All contributions goes through a code review process. Do not feel discouraged - it is meant only to give more people more chance to contribute, and to detect bugs ([Linus' Law](http://en.wikipedia.org/wiki/Linus%27s_Law)).
 
-If possible, try to get acquainted with the public interface for Symfony/CS/Tokenizer/Tokens.php and Symfony/CS/Tokenizer/Token.php classes.
+If possible, try to get acquainted with the public interface for [Symfony/CS/Tokenizer/Tokens.php](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Tokenizer/Tokens.php) and [Symfony/CS/Tokenizer/Token.php](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Tokenizer/Token.php) classes.
 
 ## Assumptions
-1 - You know how to code PHP.
-2 - You know how to work with Github.
-3 - You know how to rebase your changes.
-4 - You have downloaded PHP-CS-Fixer and have executed `php composer.phar install`.
-5 - You have notions of Test Driven Development.
-6 - You have forked FriendsOfPHP/PHP-CS-Fixer into your own Github Account.
+* You are familiar with Test Driven Development.
+* Forked FriendsOfPHP/PHP-CS-Fixer into your own Github Account.
+* Cloned your forked repository locally.
+* Downloaded PHP-CS-Fixer and have executed `php composer.phar install`.
+* You have read [`CONTRIBUTING.md`](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/CONTRIBUTING.md)
 
 ## Step by step
 
 For this step-by-step, we are going to create a simple Fixer that removes all comments of the code that are preceded by ';' (semi-colon).
 
-We are calling it "RemoveComments".
+We are calling it `remove_comments` (code name), or, `RemoveCommentsFixer` (class name).
 
 ### Step 1 - Creating files
-Create a new file in `PHP-CS-Fixer/Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php` .
+Create a new file in `PHP-CS-Fixer/Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`.
 Put this content inside:
 ```php
 <?php
@@ -54,7 +52,8 @@ class RemoveCommentsFixer extends AbstractFixer
 }
 ```
 
-Note how the class and file name match. Also keep in mind that all Fixers must inherit from `AbstractFixer`.
+Note how the class and file name match. Also keep in mind that all Fixers must implement `FixerInterface`. In this case,
+the fixer is inheriting from `AbstractFixer`, which fulfills the interface with some default behavior.
 
 Now let us create the test file at `Symfony/CS/Tests/Fixer/Contrib/RemoveCommentsFixerTest.php` . Put this content inside:
 
@@ -84,6 +83,7 @@ class RemoveCommentsFixerTest extends AbstractFixerTestBase
     {
         $this->makeTest($expected, $input);
     }
+
     public function provideFixCases()
     {
     	return array();
@@ -97,7 +97,7 @@ The files are created, one thing is still missing though: we need to update the 
 
 ### Step 2 - Using tests to define fixers behavior
 
-Now that the files are created, you can start writing test to define the behavior of the fixer. You can do it in two ways, either ensure that fixer does not change what is not supposed to change, or ensure the fixer changes what it should be changing. Thus:
+Now that the files are created, you can start writing test to define the behavior of the fixer. You have to do it in two ways: first, ensuring the fixer changes what it should be changing; second, ensuring that fixer does not change what is not supposed to change. Thus:
 
 #### Keeping things as they are:
 `Symfony/CS/Tests/Fixer/Contrib/RemoveCommentsFixerTest.php`@provideFixCases:
@@ -156,6 +156,7 @@ class RemoveCommentsFixerTest extends AbstractFixerTestBase
     {
         $this->makeTest($expected, $input);
     }
+
     public function provideFixCases()
     {
         return array(
@@ -220,10 +221,12 @@ In our case, we want to find all comments, and foreach (pun intended) one of the
 
 Now you need to do some reading, because all these symbols obey a list defined by PHP compiler. It is the ["List of Parser Tokens"](http://php.net/manual/en/tokens.php).
 
-So we can get to move forward, humor me in believing that comments all have one symbol name: `T_COMMENT`.
+Internally, PHP-CS-Fixer transform some of PHP native tokens into custom tokens through the use of [Transfomers](https://github.com/FriendsOfPHP/PHP-CS-Fixer/tree/master/Symfony/CS/Tokenizer/Transformer), they aim to help you reason about the changes you may want to do in the fixers.
+
+So we can get to move forward, humor me in believing that comments have one symbol name: `T_COMMENT`.
 
 ### Step 3 - Implement your solution - continuation.
-We do not want all symbols to be analysed. Only T_COMMENT. So let us iterator only them.
+We do not want all symbols to be analysed. Only `T_COMMENT`. So let us iterator only them.
 `Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
 ```php
 class RemoveCommentsFixer extends AbstractFixer
@@ -245,7 +248,7 @@ class RemoveCommentsFixer extends AbstractFixer
 }
 ```
 
-OK, now for each T_COMMENT, all we need to do is check if the previous token is ';'.
+OK, now for each `T_COMMENT`, all we need to do is check if the previous token is ';'.
 `Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
 ```php
 class RemoveCommentsFixer extends AbstractFixer
@@ -265,7 +268,6 @@ class RemoveCommentsFixer extends AbstractFixer
             if($prevToken->equals(';')){
                 $token->clear();
             }
-
         }
 
         return $tokens->generateCode();
@@ -308,11 +310,11 @@ class RemoveCommentsFixer extends AbstractFixer {
             if ($prevToken->equals(';')) {
                 $token->clear();
             }
-
         }
 
         return $tokens->generateCode();
     }
+
     /**
      * {@inheritdoc}
      */
@@ -335,13 +337,13 @@ Now, go to Github and open a Pull Request.
 
 
 ### Step 5 - Peer review: it is all about code and community building.
-Congratulations, you have made your first fixer. Be proud. Your work will be reviewed carefully by PHP-CS-Fixer team.
+Congratulations, you have made your first fixer. Be proud. Your work will be reviewed carefully by PHP-CS-Fixer community.
 
 The review usually flows like this:
 
 * 1 - People will check your code for common mistakes and logical caveats. Usually, the person building a fixer is blind about some behavior mistakes of fixers. Expect to write few more tests to cater for the reviews.
 * 2 - People will discuss the relevance of your fixer. If it is something that goes along with Symfony style standards, or PSR-1/PSR-2 standards, they will ask you to move from Symfony/CS/Fixers/Contrib to Symfony/CS/Fixers/{Symfony, PSR2, etc}.
-* 3 - People will also discuss whether your fixer is idempotent or not. If they understand that your fixer must always run before or after a certain fixer, they will ask you to create and change a method named `getPriority()`. Do not be afraid of asking the reviewer for help on how to do it.
+* 3 - People will also discuss whether your fixer is idempotent or not. If they understand that your fixer must always run before or after a certain fixer, they will ask you to override a method named `getPriority()`. Do not be afraid of asking the reviewer for help on how to do it.
 * 4 - People may ask you to rebase your code to unify commits or to get rid of merge commits.
 * Go to 1 until no actions are needed anymore.
 
@@ -373,10 +375,10 @@ If you make your contribution directly at PSR2_LEVEL, eventually the relevance d
 
 #### I have been told in peer review to use `getPrevMeaningfulToken()` instead of `getPrevNonWhitespace()`. Why?
 
-The main difference is that `getPrevMeaningfulToken()` ignores comments. And usually that is what you want. For example:
+The main difference is that `getPrevNonWhitespace()` ignores only whitespaces (`T_WHITESPACE`), while `getPrevMeaningfulToken()` ignores whitespaces and comments. And usually that is what you want. For example:
 
 ```php
 $a->/*comment*/func();
 ```
 
-If you are inspecting `func()`, and you want to check whether this is part of an object, if you use `getPrevNonWhitespace()` you are going to get `/*comment*/`, which might belie your test. On the other hand, if you use `getPrevMeaningfulToken()`, no matter if you have got a comment or a whitespace, the returned token will always be '->'.
+If you are inspecting `func()`, and you want to check whether this is part of an object, if you use `getPrevNonWhitespace()` you are going to get `/*comment*/`, which might belie your test. On the other hand, if you use `getPrevMeaningfulToken()`, no matter if you have got a comment or a whitespace, the returned token will always be `->.
