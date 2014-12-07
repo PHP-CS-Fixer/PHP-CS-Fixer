@@ -36,7 +36,7 @@ class DollarCloseCurlyBracesTest extends AbstractTransformerTestBase
     {
         return array(
             array(
-                '<?php echo "This is ${great}"',
+                '<?php echo "This is ${great}";',
                 array(
                     5 => 'T_DOLLAR_OPEN_CURLY_BRACES',
                     7 => 'CT_DOLLAR_CLOSE_CURLY_BRACES',
