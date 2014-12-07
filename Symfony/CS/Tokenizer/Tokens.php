@@ -971,4 +971,43 @@ class Tokens extends \SplFixedArray
             $this[$key] = clone $val;
         }
     }
+
+    public static function detectIndent(Tokens $tokens, $index)
+    {
+        static $goBackTokens = array(T_ABSTRACT, T_FINAL, T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC);
+
+        $token = $tokens[$index];
+
+        if ($token->isGivenKind($goBackTokens) || $token->isClassy() || $token->isGivenKind(T_FUNCTION)) {
+            $prevIndex = $tokens->getPrevNonWhitespace($index);
+            $prevToken = $tokens[$prevIndex];
+
+            if ($prevToken->isGivenKind($goBackTokens)) {
+                return self::detectIndent($tokens, $prevIndex);
+            }
+        }
+
+        $prevIndex = $index - 1;
+        $prevToken = $tokens[$prevIndex];
+
+        if ($prevToken->equals('}')) {
+            return self::detectIndent($tokens, $prevIndex);
+        }
+
+        // if can not detect indent:
+        if (!$prevToken->isWhitespace()) {
+            return '';
+        }
+
+        $explodedContent = explode("\n", $prevToken->getContent());
+
+        // proper decect indent for code: `    } else {`
+        if (1 === count($explodedContent)) {
+            if ($tokens[$index - 2]->equals('}')) {
+                return self::detectIndent($tokens, $index - 2);
+            }
+        }
+
+        return end($explodedContent);
+    }
 }

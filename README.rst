@@ -239,6 +239,9 @@ Choose from the list of available fixers:
                 omitted from files containing only
                 PHP.
 
+* **switch_case** [PSR-2] The body of switch should be
+                properly indented.
+
 * **trailing_spaces** [PSR-2] Remove trailing whitespace at
                 the end of non-blank lines.
 
