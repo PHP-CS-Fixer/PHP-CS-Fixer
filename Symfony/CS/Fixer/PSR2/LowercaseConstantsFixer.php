@@ -29,20 +29,60 @@ class LowercaseConstantsFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens as $index => $token) {
-            if ($token->isNativeConstant()) {
-                if (
-                    $tokens[$tokens->getPrevNonWhitespace($index)]->isArray()
-                    ||
-                    $tokens[$tokens->getNextNonWhitespace($index)]->isArray()
-                ) {
-                    continue;
-                }
+            if (!$token->isNativeConstant()) {
+                continue;
+            }
 
+            if (
+                $this->isNeighbourAccepted($tokens, $tokens->getPrevNonWhitespace($index))
+                &&
+                $this->isNeighbourAccepted($tokens, $tokens->getNextNonWhitespace($index))
+            ) {
                 $token->setContent(strtolower($token->getContent()));
             }
         }
 
         return $tokens->generateCode();
+    }
+
+    private function isNeighbourAccepted(Tokens $tokens, $index)
+    {
+        static $forbiddenTokens = null;
+
+        if (null === $forbiddenTokens) {
+            $forbiddenTokens = array(
+                T_AS,
+                T_CLASS,
+                T_EXTENDS,
+                T_IMPLEMENTS,
+                T_INSTANCEOF,
+                T_INTERFACE,
+                T_NEW,
+                T_NS_SEPARATOR,
+                T_PAAMAYIM_NEKUDOTAYIM,
+                T_USE,
+            );
+
+            if (defined('T_TRAIT')) {
+                $forbiddenTokens[] = T_TRAIT;
+            }
+
+            if (defined('T_INSTEADOF')) {
+                $forbiddenTokens[] = T_INSTEADOF;
+            }
+        }
+
+        if (null === $index) {
+            return true;
+        }
+
+        $token = $tokens[$index];
+
+        if ($token->equalsAny(array('{', '}'))) {
+            return false;
+        }
+
+        return !$token->isGivenKind($forbiddenTokens);
     }
 
     /**
