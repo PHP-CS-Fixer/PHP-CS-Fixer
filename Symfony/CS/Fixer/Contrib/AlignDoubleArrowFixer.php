@@ -79,7 +79,7 @@ class AlignDoubleArrowFixer extends AbstractFixer
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(array(T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH, T_CASE))) {
+            if ($token->isGivenKind(array(T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH))) {
                 $index = $tokens->getNextMeaningfulToken($index);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
                 continue;
