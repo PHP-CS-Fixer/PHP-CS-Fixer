@@ -28,7 +28,7 @@ class PhpdocIndentFixer extends AbstractFixer
 
         foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
             $next = $tokens->getNextMeaningfulToken($index);
-            if ($next === null) {
+            if (null === $next) {
                 continue;
             }
 
