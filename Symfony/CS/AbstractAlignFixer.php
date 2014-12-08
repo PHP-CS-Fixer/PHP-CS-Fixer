@@ -16,6 +16,9 @@ namespace Symfony\CS;
  */
 abstract class AbstractAlignFixer extends AbstractFixer
 {
+    /**
+     * @const Placeholder used as anchor for right alignment.
+     */
     const ALIGNABLE_PLACEHOLDER = "\x2 ALIGNABLE%d \x3";
 
     /**
