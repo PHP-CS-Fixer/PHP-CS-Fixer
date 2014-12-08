@@ -12,7 +12,7 @@
 
 namespace Symfony\CS\Fixer\Contrib;
 
-use Symfony\CS\AbstractFixer;
+use Symfony\CS\AbstractAlignFixer;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -20,11 +20,8 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
  */
-class AlignDoubleArrowFixer extends AbstractFixer
+class AlignDoubleArrowFixer extends AbstractAlignFixer
 {
-    const ALIGNABLE_DOUBLEARROW = "\x2 DOUBLEARROW%d \x3";
-    const NEW_LINE = "\n";
-
     /**
      * Level counter of the current nest level.
      * So one level alignments are not mixed with
@@ -54,7 +51,7 @@ class AlignDoubleArrowFixer extends AbstractFixer
 
         $this->injectAlignmentPlaceholders($tokens);
 
-        return $this->replacePlaceholder($tokens);
+        return $this->replacePlaceholder($tokens, $this->deepestLevel);
     }
 
     /**
@@ -115,7 +112,7 @@ class AlignDoubleArrowFixer extends AbstractFixer
             }
 
             if ($token->isGivenKind(T_DOUBLE_ARROW)) {
-                $tokenContent = sprintf(self::ALIGNABLE_DOUBLEARROW, $this->currentLevel).$token->getContent();
+                $tokenContent = sprintf(self::ALIGNABLE_PLACEHOLDER, $this->currentLevel).$token->getContent();
 
                 $nextToken = $tokens[$index + 1];
                 if (!$nextToken->isWhitespace()) {
@@ -138,72 +135,9 @@ class AlignDoubleArrowFixer extends AbstractFixer
                 do {
                     ++$index;
                     $token = $tokens[$index];
-                } while (false === strpos($token->getContent(), self::NEW_LINE));
+                } while (false === strpos($token->getContent(), "\n"));
             }
         }
-    }
-
-    /**
-     * Look for group of placeholders, and provide vertical alignment.
-     *
-     * @param string $tokens
-     *
-     * @return string
-     */
-    private function replacePlaceholder($tokens)
-    {
-        $tmpCode = $tokens->generateCode();
-
-        for ($j = 0; $j <= $this->deepestLevel; ++$j) {
-            $placeholder = sprintf(self::ALIGNABLE_DOUBLEARROW, $j);
-
-            if (false === strpos($tmpCode, $placeholder)) {
-                continue;
-            }
-
-            $lines = explode(self::NEW_LINE, $tmpCode);
-            $linesWithPlaceholder = array();
-            $blockSize = 0;
-
-            $linesWithPlaceholder[$blockSize] = array();
-
-            foreach ($lines as $index => $line) {
-                if (substr_count($line, $placeholder) > 0) {
-                    $linesWithPlaceholder[$blockSize][] = $index;
-                } else {
-                    ++$blockSize;
-                    $linesWithPlaceholder[$blockSize] = array();
-                }
-            }
-
-            $i = 0;
-            foreach ($linesWithPlaceholder as $group) {
-                if (1 === sizeof($group)) {
-                    continue;
-                }
-                ++$i;
-                $rightmostSymbol = 0;
-
-                foreach ($group as $index) {
-                    $rightmostSymbol = max($rightmostSymbol, strpos($lines[$index], $placeholder));
-                }
-
-                foreach ($group as $index) {
-                    $line = $lines[$index];
-                    $currentSymbol = strpos($line, $placeholder);
-                    $delta = abs($rightmostSymbol - $currentSymbol);
-
-                    if ($delta > 0) {
-                        $line = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
-                        $lines[$index] = $line;
-                    }
-                }
-            }
-
-            $tmpCode = str_replace($placeholder, '', implode(self::NEW_LINE, $lines));
-        }
-
-        return $tmpCode;
     }
 
     /**
