@@ -12,7 +12,7 @@
 
 namespace Symfony\CS\Fixer\Contrib;
 
-use Symfony\CS\AbstractFixer;
+use Symfony\CS\AbstractAlignFixer;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -20,7 +20,7 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
  */
-class AlignDoubleArrowFixer extends AbstractFixer
+class AlignDoubleArrowFixer extends AbstractAlignFixer
 {
     /**
      * Level counter of the current nest level.

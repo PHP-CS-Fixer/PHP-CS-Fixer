@@ -12,14 +12,14 @@
 
 namespace Symfony\CS\Fixer\Contrib;
 
-use Symfony\CS\AbstractFixer;
+use Symfony\CS\AbstractAlignFixer;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
  */
-class AlignEqualsFixer extends AbstractFixer
+class AlignEqualsFixer extends AbstractAlignFixer
 {
     /**
      * {@inheritdoc}
