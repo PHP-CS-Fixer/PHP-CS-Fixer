@@ -87,8 +87,6 @@ class PhpdocIndentFixer extends AbstractFixer
      */
     private function calculateIndent($content)
     {
-        $lines = explode("\n", str_replace(array("\r\n", "\r"), "\n", $content));
-
-        return end($lines);
+        return ltrim(strrchr(str_replace(array("\r\n", "\r"), "\n", $content), 10), "\n");
     }
 }
