@@ -53,7 +53,7 @@ class PhpdocIndentFixer extends AbstractFixer
     }
 
     /**
-     * Fix indentation of Docblock
+     * Fix indentation of Docblock.
      *
      * @param string $content Docblock contents
      * @param string $indent  Indentation to apply
@@ -66,7 +66,7 @@ class PhpdocIndentFixer extends AbstractFixer
     }
 
     /**
-     * Fix whitespace before the Docblock
+     * Fix whitespace before the Docblock.
      *
      * @param string $content Whitespace before Docblock
      * @param string $indent  Indentation of the documented subject
@@ -79,11 +79,11 @@ class PhpdocIndentFixer extends AbstractFixer
     }
 
     /**
-     * Calculate used indentation from the whitespace before documented subject
+     * Calculate used indentation from the whitespace before documented subject.
      *
      * @param string $content Whitespace before documented subject
      *
-     * @return string|null
+     * @return string
      */
     private function calculateIndent($content)
     {
