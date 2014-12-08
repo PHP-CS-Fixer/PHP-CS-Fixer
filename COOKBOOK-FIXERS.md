@@ -15,12 +15,12 @@ Therefore, a new fixer is meant to be ideally
 [idempotent](http://en.wikipedia.org/wiki/Idempotence#Computer_science_meaning),
 or at least atomic in its actions. More on this later.
 
-All contributions goes through a code review process. Do not feel
+All contributions go through a code review process. Do not feel
 discouraged - it is meant only to give more people more chance to
 contribute, and to detect bugs ([Linus'
 Law](http://en.wikipedia.org/wiki/Linus%27s_Law)).
 
-If possible, try to get acquainted with the public interface for
+If possible, try to get acquainted with the public interface for the
 [Symfony/CS/Tokenizer/Tokens.php](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Tokenizer/Tokens.php)
 and
 [Symfony/CS/Tokenizer/Token.php](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Tokenizer/Token.php)
@@ -52,7 +52,7 @@ Put this content inside:
 ```php
 <?php
 /*
- * This file is part of the Symfony CS utility.
+ * This file is part of the PHP CS utility.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -118,7 +118,7 @@ class RemoveCommentsFixerTest extends AbstractFixerTestBase
 
 The files are created, one thing is still missing though: we need to
 update the README.md. Fortunately, PHP-CS-Fixer can help you here.
-Execute on your command shell:
+Execute the following command in your command shell:
 
 `# php php-cs-fixer readme > README.rst`
 
@@ -206,7 +206,7 @@ class RemoveCommentsFixerTest extends AbstractFixerTestBase
 You have defined the behavior of your fixer in tests. Now it is time to
 implement it.
 
-We need first to create one method to describe what this fixer do:
+We need first to create one method to describe what this fixer does:
 `Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
 ```php
 class RemoveCommentsFixer extends AbstractFixer
@@ -245,19 +245,20 @@ Run `vendor/bin/phpunit`. You are going to see that the tests fails.
 Now we have pretty much a cradle to work with. A file with a failing
 test, and the fixer, that for now does not do anything.
 
-How do fixers work? In PHP-CS-Fixer, they work by iterating through
-piece of codes (Token), and inspecting what exists before and after that
+How do fixers work? In the PHP CS Fixer, they work by iterating through
+pieces of codes (Token), and inspecting what exists before and after that
 bit and making a decision, usually:
 
- * Modifying the code.
- * Deleting the code.
- * Ignoring the code.
+ * Adding code.
+ * Modifying code.
+ * Deleting code.
+ * Ignoring code.
 
 In our case, we want to find all comments, and foreach (pun intended)
-one of them check if they are preceded by ";" symbol.
+one of them check if they are preceded by a semi-colon symbol.
 
 Now you need to do some reading, because all these symbols obey a list
-defined by PHP compiler. It is the ["List of Parser
+defined by the PHP compiler. It is the ["List of Parser
 Tokens"](http://php.net/manual/en/tokens.php).
 
 Internally, PHP-CS-Fixer transform some of PHP native tokens into custom
@@ -326,7 +327,7 @@ So the fixer in the end looks like this:
 ```php
 <?php
 /*
- * This file is part of the Symfony CS utility.
+ * This file is part of the PHP CS utility.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
