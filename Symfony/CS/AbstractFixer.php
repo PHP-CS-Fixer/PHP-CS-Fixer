@@ -16,6 +16,8 @@ namespace Symfony\CS;
  */
 abstract class AbstractFixer implements FixerInterface
 {
+    const ALIGNABLE_PLACEHOLDER = "\x2 ALIGNABLE%d \x3";
+
     /**
      * {@inheritdoc}
      */
@@ -63,5 +65,69 @@ abstract class AbstractFixer implements FixerInterface
     public function supports(\SplFileInfo $file)
     {
         return true;
+    }
+
+    /**
+     * Look for group of placeholders, and provide vertical alignment.
+     *
+     * @param string $tokens
+     * @param int    $deepestLevel
+     *
+     * @return string
+     */
+    protected function replacePlaceholder($tokens, $deepestLevel)
+    {
+        $tmpCode = $tokens->generateCode();
+
+        for ($j = 0; $j <= $deepestLevel; ++$j) {
+            $placeholder = sprintf(self::ALIGNABLE_PLACEHOLDER, $j);
+
+            if (false === strpos($tmpCode, $placeholder)) {
+                continue;
+            }
+
+            $lines = explode("\n", $tmpCode);
+            $linesWithPlaceholder = array();
+            $blockSize = 0;
+
+            $linesWithPlaceholder[$blockSize] = array();
+
+            foreach ($lines as $index => $line) {
+                if (substr_count($line, $placeholder) > 0) {
+                    $linesWithPlaceholder[$blockSize][] = $index;
+                } else {
+                    ++$blockSize;
+                    $linesWithPlaceholder[$blockSize] = array();
+                }
+            }
+
+            $i = 0;
+            foreach ($linesWithPlaceholder as $group) {
+                if (1 === sizeof($group)) {
+                    continue;
+                }
+                ++$i;
+                $rightmostSymbol = 0;
+
+                foreach ($group as $index) {
+                    $rightmostSymbol = max($rightmostSymbol, strpos($lines[$index], $placeholder));
+                }
+
+                foreach ($group as $index) {
+                    $line = $lines[$index];
+                    $currentSymbol = strpos($line, $placeholder);
+                    $delta = abs($rightmostSymbol - $currentSymbol);
+
+                    if ($delta > 0) {
+                        $line = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
+                        $lines[$index] = $line;
+                    }
+                }
+            }
+
+            $tmpCode = str_replace($placeholder, '', implode("\n", $lines));
+        }
+
+        return $tmpCode;
     }
 }
