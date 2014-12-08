@@ -246,8 +246,8 @@ Now we have pretty much a cradle to work with. A file with a failing
 test, and the fixer, that for now does not do anything.
 
 How do fixers work? In the PHP CS Fixer, they work by iterating through
-pieces of codes (Token), and inspecting what exists before and after that
-bit and making a decision, usually:
+pieces of codes (each being a Token), and inspecting what exists before
+and after that bit and making a decision, usually:
 
  * Adding code.
  * Modifying code.
