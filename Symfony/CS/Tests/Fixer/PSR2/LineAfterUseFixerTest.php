@@ -37,20 +37,26 @@ use D;
 
 class C {}
 ',
+                '<?php
+namespace A\B;
+
+use D;
+class C {}
+',
             ),
             array(
                 '<?php
-namespace A\B;
+    namespace A\B;
 
-use D;
+    use D;
 
-class C {}
+    class C {}
 ',
                 '<?php
-namespace A\B;
+    namespace A\B;
 
-use D;
-class C {}
+    use D;
+    class C {}
 ',
             ),
             array(
@@ -84,6 +90,36 @@ namespace A\B;
 use D; class C {}
 ',
             ),
+            array(
+                '<?php
+namespace A\B;
+use D; use E;
+
+{
+    class C {}
+}',
+                '<?php
+namespace A\B;
+use D; use E; {
+    class C {}
+}',
+            ),
+            array(
+                '<?php
+namespace A\B;
+use D;
+use E;
+
+{
+    class C {}
+}',
+                '<?php
+namespace A\B;
+use D;
+use E; {
+    class C {}
+}',
+            )
         );
     }
 }
