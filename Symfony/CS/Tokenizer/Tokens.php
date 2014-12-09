@@ -511,7 +511,6 @@ class Tokens extends \SplFixedArray
         $bracesLevel = 0;
         $namespaceIndex = 0;
 
-        //foreach ($this as $index => $token) {
         for ($index = 0, $limit = $this->count(); $index < $limit; ++$index) {
             $token = $this[$index];
 
