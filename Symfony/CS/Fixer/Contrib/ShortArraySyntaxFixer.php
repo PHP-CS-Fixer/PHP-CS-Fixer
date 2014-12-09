@@ -28,10 +28,6 @@ class ShortArraySyntaxFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens->findGivenKind(T_ARRAY) as $index => $token) {
-            if (!$tokens[$tokens->getNextNonWhitespace($index)]->equals('(')) {
-                continue;
-            }
-
             $openIndex = $tokens->getNextTokenOfKind($index, array('('));
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
