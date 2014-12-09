@@ -289,6 +289,10 @@ Choose from the list of available fixers:
 * **operators_spaces** [symfony] Operators should be arounded
                 by at least one space.
 
+* **phpdoc_indent** [symfony] Docblocks should have the
+                same indentation as the documented
+                subject.
+
 * **phpdoc_params** [symfony] All items of the @param
                 phpdoc tags must be aligned
                 vertically.
@@ -336,10 +340,6 @@ Choose from the list of available fixers:
                 closing semicolon are prohibited.
 
 * **ordered_use** [contrib] Ordering use statements.
-
-* **phpdoc_indent** [contrib] Docblocks should have the
-                same indentation as the documented
-                subject.
 
 * **short_array_syntax** [contrib] PHP array's should use the
                 PHP 5.4 short-syntax.
