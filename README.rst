@@ -375,7 +375,7 @@ fixed but without actually modifying them:
 Instead of using command line options to customize the fixer, you can save the
 configuration in a ``.php_cs`` file in the root directory of
 your project. The file must return an instance of
-`Symfony\CS\ConfigInterface`, which lets you configure the fixers, the level, the files,
+``Symfony\CS\ConfigInterface``, which lets you configure the fixers, the level, the files,
 and directories that need to be analyzed. The example below will add two contrib fixers
 to the default list of symfony-level fixers:
 
@@ -411,7 +411,7 @@ then specify all fixers to be used:
     ;
 
 You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
-The following example shows how to use all ``symfony`` Fixers but the `psr0` fixer.
+The following example shows how to use all ``symfony`` Fixers but the ``psr0`` fixer.
 Note the additional ``-`` in front of the Fixer name.
 
 .. code-block:: php
