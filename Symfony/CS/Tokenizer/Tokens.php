@@ -201,23 +201,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Check whether passed method name is one of magic methods.
-     *
-     * @param string $name name of method
-     *
-     * @return bool is method a magical
-     */
-    public static function isMethodNameIsMagic($name)
-    {
-        static $magicMethods = array(
-            '__construct', '__destruct', '__call', '__callStatic', '__get', '__set', '__isset', '__unset',
-            '__sleep', '__wakeup', '__toString', '__invoke', '__set_state', '__clone',
-        );
-
-        return in_array($name, $magicMethods, true);
-    }
-
-    /**
      * Set cache item.
      *
      * @param string $key   item key
