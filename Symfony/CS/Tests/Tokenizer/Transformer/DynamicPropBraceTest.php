@@ -36,7 +36,7 @@ class DynamicPropBraceTest extends AbstractTransformerTestBase
     {
         return array(
             array(
-                '<?php $foo->{$bar}',
+                '<?php $foo->{$bar};',
                 array(
                     3 => 'CT_DYNAMIC_PROP_BRACE_OPEN',
                     5 => 'CT_DYNAMIC_PROP_BRACE_CLOSE',
