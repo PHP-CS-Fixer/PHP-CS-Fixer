@@ -1,0 +1,357 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-04T17:53:11Z
+
+Why do not fix docblocks for classes, interfaces, traits, functions, consts, and even variables?
+They all can have a docblock!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-04T17:54:34Z
+
+BTW, nice idea of fixer!
+
+I would move it to `SYMFONY_LEVEL`. How do you think folks?
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-04T19:00:11Z
+
+@keradus
+
+- Sure it can/should be expanded for more types.
+- Symfony level is possible, although i did not intend to use it on Symfony applications ;)
+
+Will respond inline to the other comments
+
+NB can i find you anywhere on freenode?
+
+---------------------------------------------------------------------------
+
+by jian-wu at 2014-12-04T21:53:24Z
+
+@ceeram, first, thank you for writing this fixer.  Nice job!
+
+I have a question.  Do you intend to incorporate any alignment fixes in this fixer?  Please see my example below.
+```
+/**
+ * @param int    $a   Description of $a
+ * @param string $bar Description of $bar
+ */
+```
+Thanks again.
+
+---------------------------------------------------------------------------
+
+by jian-wu at 2014-12-04T21:54:37Z
+
+Another question is if this fixer will/can fix the order of the variable type and the variable.  For instance,
+```@param $a int``` vs. ```@param int $a``` where the latter is the proper one.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-04T21:55:19Z
+
+No, afaik there already is a fixer for that: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Fixer/Symfony/PhpdocParamsFixer.php#L63
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-04T21:55:54Z
+
+This fixer is only about indenting docblocks, not about the contents of them.
+
+---------------------------------------------------------------------------
+
+by jian-wu at 2014-12-04T21:55:57Z
+
+Ah, thanks.  I think I missed it.  Perfect.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-05T01:01:24Z
+
+Updated the fixer and tests.
+
+I should now indent any docblock it finds to match the documented subject indenting.
+Except for lambda's as @GrahamCampbell asked for although i think the following could be handled by the fixer as well:
+
+```
+<?php
+
+$example =
+/**
+ * Documented the lamdba
+ */
+    function () use ($message) {
+        var_dump($message);
+    };
+```
+
+Let me know if you think i missed something
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-05T07:09:05Z
+
+@ceeram nope, I does not use freenode
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-05T07:11:03Z
+
+> Another question is if this fixer will/can fix the order of the variable type and the variable. For instance,
+> @param $a int vs. @param int $a where the latter is the proper one.
+
+@jian-wu fixer should be atomic, what you said is nice, but it should be new, separate fixer
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-05T07:15:23Z
+
+Still waiting for full docblock support. Do not search for method/property, just fix all `T_DOC_COMMENT`.
+
+Please indent all test cases to prove that the fixer is not setting the indent as 4 spaces, but is adding 4 spaces to current intendation.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-05T07:49:36Z
+
+```
+Still waiting for full docblock support. Do not search for method/property, just fix all T_DOC_COMMENT.
+
+Please indent all test cases to prove that the fixer is not setting the indent as 4 spaces, but is adding 4 spaces to current intendation.
+```
+
+I dont understand what you mean? have you checked the testcases?
+In fact it does not just add 4 spaces, it uses the actual indent from whatever it documents.
+This way it also fixes docblocks that are too much indented, like in  the example you gave.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-05T08:27:21Z
+
+Removed check for given kinds, indenting every found docblock at the same level as documented subject.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-05T10:49:06Z
+
+I think everything @keradus commented is taken care of, except the handling of windows newlines, which i think it does not matter. Also the same approach is used in other fixers.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-05T12:32:12Z
+
+It should not been used in other fixers. If other fixers add a new line then indeed, they add linux style new line. But here you are not adding a new line - so keep current new lines intact!
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-05T12:41:20Z
+
+I am open for suggestions how to split the lines of the docblocks without replacing newlines
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-05T12:54:49Z
+
+>> Please indent all test cases to prove that the fixer is not setting the indent as 4 spaces, but is adding 4 spaces to current intendation.
+>
+> I dont understand what you mean? have you checked the testcases?
+> In fact it does not just add 4 spaces, it uses the actual indent from whatever it documents.
+> This way it also fixes docblocks that are too much indented, like in the example you gave.
+
+But test cases does not show it. We are using TDD here.
+Imagine that after some time sb will refactor this Fixer. Then he may brok it not to add spaces but simply set 4 spaces and tests will pass. If the fixer actually do it in right way - it is cool, but proving it in tests are even cooler!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-05T12:57:40Z
+
+> I am open for suggestions how to split the lines of the docblocks without replacing newlines
+
+eg. `preg_split`
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-05T13:33:39Z
+
+What are you missing in the test exactly?
+
+Isnt this what you mean:
+
+https://github.com/ceeram/PHP-CS-Fixer/blob/51cdac84888427d558b2cb36361f7bce39c99801/Symfony/CS/Tests/Fixer/Contrib/PhpdocIndentFixerTest.php#L193-L220
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-05T13:53:34Z
+
+Also it should not enforce 4 spaces, as said in other comment, people might use only this fixer and not use PSR2 and/or different number of spaces for indent.
+It now just indents exactly like the subject itself, no matter what the indent is.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-05T13:55:23Z
+
+> What are you missing in the test exactly?
+> Isnt this what you mean: (...)
+
+Yeah, it is. Cool! But it proves only for class methods/properties. It won't prove every single case, eg function / variable.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-05T13:56:51Z
+
+About 4 spaces - yes, but there are now good way of defecting indent used in user's file.
+If one use one kind of new line - let keep it intact.
+If we need to add 1 level of indent - we don't know what indent we should add, so we simply add good (in meaning of PSR) one.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-05T14:04:17Z
+
+- But it proves only for class methods/properties. It won't prove every single case, eg function / variable.
+
+That no longer matters, it will do this for any docblock found, no matter what it is for. I removed all that.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-05T14:05:18Z
+
+Aside from the newline handling, im not sure if you are happy with the way indeting is taken care of, or not. I could not understand that from your response.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-05T14:06:51Z
+
+I know what you mean with testcases now, sorry. Will add more tests.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-05T14:06:55Z
+
+Let's take same TDD into action.
+So... let see if there are any test for it... no?
+Then great the code does it, but there are no proof that it does and and does it correctly.
+All cases should be covered by tests.
+When changing anything in project and see if tests pass - we assumed that everything is ok. Here we can't, because tests won't check it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-05T14:08:10Z
+
+> Aside from the newline handling, im not sure if you are happy with the way indeting is taken care of, or not. I could not understand that from your response.
+
+yes, I am
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-05T14:11:35Z
+
+As long as there is only one author in PR you don't need to squash commits.
+When you don't do it it is cleaner to look at every next change
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-05T14:47:38Z
+
+I agree newlines should be handled differently. As i said earlier, would be nice to have some convenience methods to better handle things around newlines.
+
+This can also be used in cases where only first line of docblocks are indented correct.
+Instead of adding newline handling in this fixer only, i will open a RFC around newline handling in Tokenizer, with some things i have in mind, so it can be reused by any fixer.
+
+Currently the fixer does not do much wrongs, it only might miss some occasions, which i think can be hanlded easier with newline handling.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-05T16:47:13Z
+
+Fixed the whitespace replacements and ensured all lines of docblocks are fixed, when some of them are correctly indented
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-08T22:06:01Z
+
+:+1:
+Please move it into `SYMFONY_LEVEL`.
+
+ping @sstok @stof @GrahamCampbell @dericofilho, any opinions?
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-12-08T22:22:30Z
+
+>:+1:
+Please move it into SYMFONY_LEVEL.
+
+>ping @sstok @stof @GrahamCampbell @dericofilho, any opinions?
+
+There is one detail regarding exploding string in order to detect indentation level. I'd like to see a bit more of debate on that before I give :+1:
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-08T22:29:07Z
+
+I never used Symfony myself and i don't understand how this is Symfony specific?
+What is the difference betweem symfony and contrib level exactly?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-08T22:57:15Z
+
+1. Symfony does use this "standard". There were few cases that needed to be fixed
+(see https://github.com/symfony/symfony/pull/12887 and https://github.com/symfony/symfony/pull/12905)
+
+2. This tool grow up as Symfony tool, therefore the default level is `SYMFONY_LEVEL`.
+It contains all PSR0/PSR1/PSR2 fixers too!
+If a rule fixed by fixer is generally considered as a good practice and Symfony actually uses it - fixer should go into `SYMFONY_LEVEL`.
+Does it mean one who is not using Symfony should use `PSR2_LEVEL`? No! Symfony add a great deal of good rules for every PHP project and you can consider it as expansion to PSR rules.
+One exception is concatenation case - where one use spaces around dot, and one use not. Therefore we have two fixers for it, one at `SYMFONY_LEVEL` and one at `CONTRIB_LEVEL`.
+
+3. `CONTRIB_LEVEL` contains less generic rules that may not concern all projects, and one may want to use it, one may doesn't want to use it, and one doesn't mind to force it one way or another. For example aligning `=`.
+
+---------------------------------------------------------------------------
+
+by AD7six at 2014-12-09T09:12:37Z
+
+> This tool grow up as Symfony tool, therefore the default level is SYMFONY_LEVEL.
+
+Since the project isn't part of symfony, the history of it shouldn't really be a factor. Would probably be a good idea to reconsider this since "Friends of php" "default symfony" is somewhat confusing to anyone who doesn't use symfony, after all, php !== symfony. As is, it suggests anyone can and should submit their own permutation of the fixer (i.e. creating `Fixer/MyFavoriteFramework`) - which surely is not what is wanted.
+
+Just renaming this to DEFAULT_LEVEL or similar would much more clearly express the intent; of course that change would need to wait for the next major release.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-09T09:15:20Z
+
+Created separate issue on default level: https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/805
+
+---------------------------------------------------------------------------
+
+by stof at 2014-12-09T09:22:59Z
+
+@AD7six DEFAULT_LEVEL is not a good name for the level (especially if we change the default level being run)
+
+---------------------------------------------------------------------------
+
+by AD7six at 2014-12-09T09:27:00Z
+
+@stof please clarify/explain/discuss in #805. My main point is that SYMFONY_LEVEL is quite confusing (and a snowflake).
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-12-09T10:17:18Z
+
+:+1: for this fixer and SYMFONY_LEVEL
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-09T10:19:40Z
+
+Ill move this fixer to symfony level, @sstok  care to comment on #805 as well?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-09T15:15:09Z
+
+:+1:
+great work @ceeram !
