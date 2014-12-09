@@ -15,6 +15,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Luis Cordova <cordoval@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class RemoveLinesBetweenUsesFixerTest extends AbstractFixerTestBase
 {
@@ -64,5 +65,20 @@ EOF
         ;
 
         $this->makeTest($expected, $input);
+    }
+
+    public function testWithoutUses()
+    {
+        $expected = <<<'EOF'
+<?php
+
+$c = 1;
+
+$a = new Baz();
+$a = new Qux();
+EOF
+        ;
+
+        $this->makeTest($expected);
     }
 }
