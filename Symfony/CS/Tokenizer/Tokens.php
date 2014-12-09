@@ -804,7 +804,7 @@ class Tokens extends \SplFixedArray
 
         for (++$index; $index < $endIndex; ++$index) {
             $token      = $this[$index];
-            $blockType  = $this->detectBlockType($token);
+            $blockType  = static::detectBlockType($token);
 
             if ($blockType && $blockType['isStart']) {
                 $index = $this->findBlockEnd($blockType['type'], $index);
