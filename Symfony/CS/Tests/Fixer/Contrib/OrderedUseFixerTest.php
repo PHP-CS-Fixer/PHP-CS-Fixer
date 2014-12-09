@@ -532,4 +532,16 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
+
+    public function testWithoutUses()
+    {
+        $expected = <<<'EOF'
+<?php
+
+$c = 1;
+EOF
+        ;
+
+        $this->makeTest($expected);
+    }
 }

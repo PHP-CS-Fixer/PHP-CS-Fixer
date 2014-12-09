@@ -25,6 +25,10 @@ class ElseifFixerTest extends AbstractFixerTestBase
     public function testThatInvalidElseIfIsFixed()
     {
         $this->makeTest(
+            '<?php if ($some) { $test = true; } else { $test = false; }'
+        );
+
+        $this->makeTest(
             '<?php if ($some) { $test = true; } elseif ($some !== "test") { $test = false; }',
             '<?php if ($some) { $test = true; } else if ($some !== "test") { $test = false; }'
         );

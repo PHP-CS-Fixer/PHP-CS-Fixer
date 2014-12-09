@@ -59,6 +59,10 @@ $a = 3;
                 "<?php\r\$a = 1;\n",
                 "<?php\r\$a = 1;\r",
             ),
+            array(
+                // test for not adding an empty line in empty file
+                '',
+            ),
         );
     }
 }

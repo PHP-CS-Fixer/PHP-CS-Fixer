@@ -30,6 +30,8 @@ class PhpdocIndentFixerTest extends AbstractFixerTestBase
     {
         $cases = array();
 
+        $cases[] = array('<?php /** foo */');
+
         $cases[] = array(
             '
 <?php
