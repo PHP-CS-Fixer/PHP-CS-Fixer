@@ -12,26 +12,23 @@
 
 namespace Symfony\CS\Fixer\Contrib;
 
-use Symfony\CS\AbstractFixer;
+use Symfony\CS\AbstractAlignFixer;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
  */
-class AlignEqualsFixer extends AbstractFixer
+class AlignEqualsFixer extends AbstractAlignFixer
 {
-    const ALIGNABLE_EQUAL = "\x2 EQUAL%d \x3";
-    const NEW_LINE = "\n";
-
     /**
      * {@inheritdoc}
      */
     public function fix(\SplFileInfo $file, $content)
     {
-        list($tmpCode, $contextCounter) = $this->injectAlignmentPlaceholders($content);
+        list($tokens, $deepestLevel) = $this->injectAlignmentPlaceholders($content);
 
-        return $this->replacePlaceholder($tmpCode, $contextCounter);
+        return $this->replacePlaceholder($tokens, $deepestLevel);
     }
 
     /**
@@ -39,14 +36,13 @@ class AlignEqualsFixer extends AbstractFixer
      *
      * @param string $content
      *
-     * @return array($code, $context_counter)
+     * @return array($code, $deepestLevel)
      */
     private function injectAlignmentPlaceholders($content)
     {
-        $contextCounter = 0;
+        $deepestLevel = 0;
         $parenCount = 0;
         $bracketCount = 0;
-        $code = '';
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens as $token) {
@@ -54,12 +50,12 @@ class AlignEqualsFixer extends AbstractFixer
 
             if ($token->equals('=')
                 && 0 === $parenCount && 0 === $bracketCount) {
-                $code .= sprintf(self::ALIGNABLE_EQUAL, $contextCounter).$tokenContent;
+                $token->setContent(sprintf(self::ALIGNABLE_PLACEHOLDER, $deepestLevel).$tokenContent);
                 continue;
             }
 
             if ($token->isGivenKind(T_FUNCTION)) {
-                ++$contextCounter;
+                ++$deepestLevel;
             } elseif ($token->equals('(')) {
                 ++$parenCount;
             } elseif ($token->equals(')')) {
@@ -69,73 +65,9 @@ class AlignEqualsFixer extends AbstractFixer
             } elseif ($token->equals(']')) {
                 --$bracketCount;
             }
-
-            $code .= $tokenContent;
         }
 
-        return array($code, $contextCounter);
-    }
-
-    /**
-     * Look for group of placeholders, and provide vertical alignment.
-     *
-     * @param string $tmpCode
-     * @param int    $contextCounter
-     *
-     * @return string
-     */
-    private function replacePlaceholder($tmpCode, $contextCounter)
-    {
-        for ($j = 0; $j <= $contextCounter; ++$j) {
-            $placeholder = sprintf(self::ALIGNABLE_EQUAL, $j);
-
-            if (false === strpos($tmpCode, $placeholder)) {
-                continue;
-            }
-
-            $lines = explode(self::NEW_LINE, $tmpCode);
-            $linesWithPlaceholder = array();
-            $blockSize = 0;
-
-            $linesWithPlaceholder[$blockSize] = array();
-
-            foreach ($lines as $index => $line) {
-                if (substr_count($line, $placeholder) > 0) {
-                    $linesWithPlaceholder[$blockSize][] = $index;
-                } else {
-                    ++$blockSize;
-                    $linesWithPlaceholder[$blockSize] = array();
-                }
-            }
-
-            $i = 0;
-            foreach ($linesWithPlaceholder as $group) {
-                if (1 === sizeof($group)) {
-                    continue;
-                }
-
-                ++$i;
-                $rightmostSymbol = 0;
-
-                foreach ($group as $index) {
-                    $rightmostSymbol = max($rightmostSymbol, strpos($lines[$index], $placeholder));
-                }
-
-                foreach ($group as $index) {
-                    $line = $lines[$index];
-                    $currentSymbol = strpos($line, $placeholder);
-                    $delta = abs($rightmostSymbol - $currentSymbol);
-                    if ($delta > 0) {
-                        $line = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
-                        $lines[$index] = $line;
-                    }
-                }
-            }
-
-            $tmpCode = str_replace($placeholder, '', implode(self::NEW_LINE, $lines));
-        }
-
-        return $tmpCode;
+        return array($tokens, $deepestLevel);
     }
 
     /**
