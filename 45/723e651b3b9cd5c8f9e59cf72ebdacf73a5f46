@@ -1,0 +1,56 @@
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-12-08T18:45:49Z
+
+Addresses #801
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-08T18:48:08Z
+
+AbstractFixer is a base for all fixers. And only two need what you moved to it.
+It shouldn't be done that way.
+
+Sadly, we can't use traits here (we support 5.3).
+Please consider to create a middle-level abstract class as a base for only that 2 fixers or make that code some kind of helpers.
+I think the second option is better, but don't have strong arguments for that
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-08T20:43:25Z
+
+See no place for helper like that. Maybe create sth like `AbstractAlignFixer extends AbstractFixer` ?
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-12-08T21:58:07Z
+
+done.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-08T22:03:26Z
+
+Because of `registerBuiltInFixers` :/
+ok
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-12-08T22:05:21Z
+
+ > Because of registerBuiltInFixers :/
+ok
+
+sorry :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-08T22:07:31Z
+
+It would be cool to have one place for all Fixer about stuff, and one place for all Fixers, but namespace like `Symfony\CS\Fixer\Fixers\PSR2` won't be good :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-08T23:00:52Z
+
+:+1:
