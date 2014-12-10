@@ -1,0 +1,104 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-30T16:34:21Z
+
+Wow! I am very happy to see this!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-30T16:53:49Z
+
+It would be cool to point `CONTRIBUTING.md` somewhere
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-30T17:10:05Z
+
+Cool story written down @dericofilho !
+Great work!
+
+I have made some comments, but I believe that this cookbook is worth to make few iterations of review, writing down other thoughs ect by few folks.
+
+ping @fabpot @stof @sstok @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-11-30T17:11:05Z
+
+Cool. No problem. I will wait for more feedback before editing it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-30T17:15:19Z
+
+First iteration of my review done. I will do it again for sure after changes you will made.
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-11-30T17:59:14Z
+
+Try limiting lines to 72 chars max so they wrap nicely ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-02T17:48:01Z
+
+I would add a link to coocbook in CONTRIBUTING file
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-12-06T16:19:16Z
+
+@sstok I will wordwrap after last review, OK?
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-12-06T16:20:26Z
+
+@keradus I will update CONTRIBUTING.md with a link to cookbook after last review, OK?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-06T19:51:47Z
+
+Yeah, go ahead !
+
+I am really happy seeing your great work here!
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-12-06T20:18:00Z
+
+ping @fabpot @stof @sstok @GrahamCampbell
+
+Please, second round of review.
+
+Keep in mind that word wrapping and linking in CONTRIBUTING.md will be done in the end.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-06T21:35:16Z
+
+> linking in CONTRIBUTING.md will be done in the end
+
+actually this can be done now ;P
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-12-06T22:04:07Z
+
+Done!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-07T18:30:35Z
+
+:+1: great work!
+
+ping @stof @sstok @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-09T18:35:59Z
+
+:+1:
