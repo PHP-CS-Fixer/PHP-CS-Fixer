@@ -1,0 +1,72 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-21T20:32:37Z
+
+I've done this on most of my php projects too. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-21T20:33:28Z
+
+We may encounter some problems with hhvm. Let us see
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-21T20:35:41Z
+
+I don't see why? I've only seen issues with hhvm-nightly with this config setting.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-21T20:47:39Z
+
+good point ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-21T21:17:59Z
+
+How massive is this travis queue? We've been waiting for ages!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-21T21:18:46Z
+
+Yeah, it is terrible!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-21T21:54:08Z
+
+All green ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-21T21:55:07Z
+
+Whoop whoop. I think we need to travis to give an official statement on what this does before merging though.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-09T19:55:19Z
+
+Anyone know is there an official statement for this ?
+
+---------------------------------------------------------------------------
+
+by stof at 2014-12-10T08:47:11Z
+
+http://docs.travis-ci.com/user/workers/container-based-infrastructure/
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-10T13:25:42Z
+
+Great, thanks!
+Then it is ready to merge!
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-10T13:26:15Z
+
+:+1:
