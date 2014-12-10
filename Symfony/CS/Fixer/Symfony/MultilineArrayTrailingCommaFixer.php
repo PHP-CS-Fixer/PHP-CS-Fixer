@@ -67,9 +67,9 @@ class MultilineArrayTrailingCommaFixer extends AbstractFixer
         if ($startIndex !== $beforeEndIndex && !$beforeEndToken->equalsAny(array(',', array(T_END_HEREDOC)))) {
             $tokens->insertAt($beforeEndIndex + 1, new Token(','));
 
-            if ($tokens[$endIndex]->isComment()) {
-                $tokens->ensureWhitespaceAtIndex($endIndex, 1, "\n");
-            } elseif (!$tokens[$endIndex]->isWhitespace()) {
+            $endToken = $tokens[$endIndex];
+
+            if (!$endToken->isComment() && !$endToken->isWhitespace()) {
                 $tokens->ensureWhitespaceAtIndex($endIndex, 1, ' ');
             }
         }
