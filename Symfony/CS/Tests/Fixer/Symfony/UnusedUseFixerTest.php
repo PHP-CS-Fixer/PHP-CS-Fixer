@@ -150,6 +150,22 @@ $d = new Bbb();
 EOF;
 
         $this->makeTest($expected, $input);
+
+        // the fixer doesn't support file with multiple namespace - test if we don't remove imports in that case
+        $expected = <<<'EOF'
+<?php
+
+namespace Foooooooo;
+namespace Foo;
+
+use Foo\Bar;
+use Foo\Baz;
+
+$a = new Bar();
+$b = new Baz();
+EOF;
+
+        $this->makeTest($expected);
     }
 
     public function testMultipleUseStatements()
