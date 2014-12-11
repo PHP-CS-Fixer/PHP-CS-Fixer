@@ -22,6 +22,9 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class MethodArgumentSpaceFixer extends AbstractFixer
 {
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
@@ -50,11 +53,10 @@ class MethodArgumentSpaceFixer extends AbstractFixer
     }
 
     /**
-     * Method to insert space after comma and remove space before comma
+     * Method to insert space after comma and remove space before comma.
+     *
      * @param Tokens $tokens tokens to handle
      * @param int    $index  index of token
-     *
-     * @return none
      */
     public function fixSpace(Tokens $tokens, $index)
     {
