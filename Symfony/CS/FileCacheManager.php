@@ -86,7 +86,7 @@ class FileCacheManager
         return crc32($content);
     }
 
-    private function isCacheAvailable()
+    protected function isCacheAvailable()
     {
         static $result;
 
