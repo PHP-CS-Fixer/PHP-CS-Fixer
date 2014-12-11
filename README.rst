@@ -213,6 +213,9 @@ Choose from the list of available fixers:
 * **line_after_namespace** [PSR-2] There MUST be one blank line
                 after the namespace declaration.
 
+* **line_after_use** [PSR-2] There MUST be one blank line
+                after the use statement.
+
 * **linefeed** [PSR-2] All PHP files must use the
                 Unix LF (linefeed) line ending.
 
