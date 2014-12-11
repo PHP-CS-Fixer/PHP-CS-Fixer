@@ -97,6 +97,15 @@ class LowercaseConstantsFixerTest extends AbstractFixerTestBase
             array('<?php Class Null { use True; }'),
             array('<?php interface True {}'),
             array('<?php $foo instanceof True; $foo instanceof False; $foo instanceof Null;'),
+            array(
+                '<?php
+    class Foo
+    {
+        const TRUE;
+        const FALSE;
+        const NULL;
+    }',
+            ),
         );
     }
 

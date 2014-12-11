@@ -53,6 +53,7 @@ class LowercaseConstantsFixer extends AbstractFixer
             $forbiddenTokens = array(
                 T_AS,
                 T_CLASS,
+                T_CONST,
                 T_EXTENDS,
                 T_IMPLEMENTS,
                 T_INSTANCEOF,
