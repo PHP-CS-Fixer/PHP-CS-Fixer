@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-11T10:31:23Z
+
+Looks good to me, as it was suggested as well in other threads to make such improvements to the fixers. However this is slower then the original code. The original code foreaches over all tokens, the improvement foreaches the result of findGivenKind() which itself foreaches over all tokens. Thoughts @keradus ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-11T10:40:30Z
+
+@ceeram See https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/742.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-11T10:43:54Z
+
+Yeah i know about @keradus preference to do it like this, hence my LGTM. I am just questioning if readability(if that is the reason behind this improvement?) is prefered over performance. I am trying to find out what the thought behind this idea is in general.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-11T12:14:36Z
+
+first case - readability is better
+second case - readability in both cases are the same, but new form is better in performance aspect
+
+:+1:
