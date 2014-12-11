@@ -59,8 +59,6 @@ class FunctionCallSpaceFixer extends AbstractFixer
      *
      * @param Tokens $tokens tokens to handle
      * @param int    $index  index of token
-     *
-     * @return none
      */
     private function fixFunctionCall(Tokens $tokens, $index)
     {
