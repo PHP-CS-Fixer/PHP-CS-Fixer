@@ -44,11 +44,7 @@ class PhpdocParamsFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
-
+        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
             $tokens[$index]->setContent($this->fixDocBlock($token->getContent()));
         }
 
@@ -67,7 +63,7 @@ class PhpdocParamsFixer extends AbstractFixer
     {
         $lines = explode("\n", str_replace(array("\r\n", "\r"), "\n", $content));
 
-        for ($i = 0, $l = count($lines); $i < $l; $i++) {
+        for ($i = 0, $l = count($lines); $i < $l; ++$i) {
             $items = array();
 
             if ($matches = $this->getMatches($lines[$i])) {
