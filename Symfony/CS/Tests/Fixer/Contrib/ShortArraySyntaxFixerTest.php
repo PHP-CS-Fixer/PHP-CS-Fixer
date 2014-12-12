@@ -42,6 +42,8 @@ class ShortArraySyntaxFixerTest extends AbstractFixerTestBase
             array('<?php $x = [[[]]];', '<?php $x = array(array(array()));'),
             array('<?php $x = [[[]]]; $y = [[[]]];', '<?php $x = array(array(array())); $y = array(array(array()));'),
             array('<?php function(array $foo = [] {}', '<?php function(array $foo = array() {}'),
+            array('<?php function(array $foo) {}'),
+            array('<?php function(array $foo = []) {}', '<?php function(array $foo = array()) {}'),
         );
     }
 }
