@@ -64,6 +64,16 @@ class JoinFunctionFixerTest extends AbstractFixerTestBase
                 '<?php a(implode());',
                 '<?php a(join());',
             ),
+            array(
+                '<?php
+class Joining
+{
+    public function join(QueryBuilder $qb, $join)
+    {
+        //definition
+    }
+}',
+            ),
         );
     }
 }
