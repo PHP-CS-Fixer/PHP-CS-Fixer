@@ -32,10 +32,13 @@ class PhpdocIndentFixer extends AbstractFixer
                 continue;
             }
 
-            $indent = $this->calculateIndent($tokens[$next - 1]->getContent());
-
             $prevToken = $tokens[$index - 1];
+            if (($prevToken->isWhitespace(array('whitespaces' => " \t")) && !$tokens[$index - 2]->isGivenKind(T_OPEN_TAG)) || $prevToken->equalsAny(array(';', '{'))) {
+                //ignore inline docblocks
+                continue;
+            }
 
+            $indent = $this->calculateIndent($tokens[$next - 1]->getContent());
             $prevToken->setContent($this->fixWhitespaceBefore($prevToken->getContent(), $indent));
 
             $token->setContent($this->fixDocBlock($token->getContent(), $indent));
