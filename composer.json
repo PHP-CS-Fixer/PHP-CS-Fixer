@@ -23,6 +23,9 @@
         "symfony/stopwatch": "~2.5",
         "sebastian/diff": "~1.1"
     },
+    "require-dev": {
+        "satooshi/php-coveralls": "dev-master"
+    },
     "autoload": {
         "psr-4": { "Symfony\\CS\\": "Symfony/CS/" }
     },

@@ -1,17 +1,20 @@
 language: php
 
 php:
-  - 5.3
-  - 5.4
-  - 5.5
-  - 5.6
-  - hhvm
+    - 5.3
+    - 5.4
+    - 5.5
+    - 5.6
+    - hhvm
 
 sudo: false
 
 install:
-  - travis_retry composer install --no-interaction --prefer-source
+    - travis_retry composer install --no-interaction --prefer-source
 
 script:
-  - phpunit --verbose
-  - php php-cs-fixer --diff --dry-run -v fix
+    - phpunit --verbose --coverage-clover build/logs/clover.xml
+    - php php-cs-fixer --diff --dry-run -v fix
+
+after_script:
+    - php vendor/bin/coveralls -v
