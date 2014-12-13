@@ -290,61 +290,27 @@ EOF
             }
         }
 
-        $config = null;
+        $resolver = new ConfigurationResolver();
+        $resolver
+            ->setCwd(getcwd())
+            ->setDefaultConfig($this->defaultConfig)
+            ->setAllFixers($this->fixer->getFixers())
+            ->setOptions(array(
+                'config'        => $input->getOption('config'),
+                'config-file'   => $input->getOption('config-file'),
+                'isStdIn'       => $stdin,
+                'level'         => $input->getOption('level'),
+                'fixers'        => $input->getOption('fixers'),
+                'path'          => $path,
+                'progress'      => $output->isVerbose(),
+            ))
+            ->resolve();
 
-        if ($input->getOption('config')) {
-            foreach ($this->fixer->getConfigs() as $c) {
-                if ($c->getName() === $input->getOption('config')) {
-                    $config = $c;
-                    break;
-                }
-            }
+        $config     = $resolver->getConfig();
+        $configFile = $resolver->getConfigFile();
 
-            if (null === $config) {
-                throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined', $input->getOption('config')));
-            }
-        } else {
-            $configFile = $input->getOption('config-file');
-            if (null !== $configFile) {
-                $configFiles = array($configFile);
-            } else {
-                if (is_file($path) && $dirName = pathinfo($path, PATHINFO_DIRNAME)) {
-                    $configDir = $dirName;
-                } elseif ($stdin || null === $path) {
-                    $configDir = getcwd();
-                    // path is directory
-                } else {
-                    $configDir = $path;
-                }
-                $configFiles = array(
-                    $configDir.DIRECTORY_SEPARATOR.'.php_cs',
-                    $configDir.DIRECTORY_SEPARATOR.'.php_cs.dist',
-                );
-            }
-
-            foreach ($configFiles as $configFile) {
-                if (file_exists($configFile)) {
-                    $config = include $configFile;
-
-                    // verify that the config has an instance of Config
-                    if (!$config instanceof Config) {
-                        throw new \UnexpectedValueException(sprintf('The config file "%s" does not return an instance of Symfony\CS\Config\Config', $configFile));
-                    }
-
-                    if ('txt' === $input->getOption('format')) {
-                        $output->writeln(sprintf('Loaded config from "%s"', $configFile));
-                    }
-                    break;
-                }
-            }
-
-            if (null === $config) {
-                $config = $this->defaultConfig;
-            }
-        }
-
-        if ($config->usingLinter()) {
-            $this->fixer->setLintManager(new LintManager());
+        if ($configFile && 'txt' === $input->getOption('format')) {
+            $output->writeln(sprintf('Loaded config from "%s"', $configFile));
         }
 
         if (is_file($path)) {
@@ -355,21 +321,14 @@ EOF
             $config->setDir($path);
         }
 
+        $config->fixers($resolver->getFixers());
+
         // register custom fixers from config
         $this->fixer->registerCustomFixers($config->getCustomFixers());
+        if ($config->usingLinter()) {
+            $this->fixer->setLintManager(new LintManager());
+        }
 
-        $resolver = new ConfigurationResolver();
-        $resolver
-            ->setAllFixers($this->fixer->getFixers())
-            ->setConfig($config)
-            ->setOptions(array(
-                'level'     => $input->getOption('level'),
-                'fixers'    => $input->getOption('fixers'),
-                'progress'  => $output->isVerbose() && 'txt' === $input->getOption('format'),
-            ))
-            ->resolve();
-
-        $config->fixers($resolver->getFixers());
         $showProgress = $resolver->getProgress();
 
         if ($showProgress) {

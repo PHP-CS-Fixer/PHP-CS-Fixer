@@ -50,7 +50,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->resolver = new ConfigurationResolver();
         $this->resolver
             ->setAllFixers($fixer->getFixers())
-            ->setConfig($this->config);
+            ->setDefaultConfig($this->config);
     }
 
     protected function makeFixersTest($expectedFixers, $resolvedFixers)
@@ -234,7 +234,9 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function testResolveProgressWithPositiveConfigAndPositiveOption()
     {
         $this->config->hideProgress(true);
-        $this->resolver->setOption('progress', true);
+        $this->resolver
+            ->setOption('progress', true)
+            ->resolve();
 
         $this->assertFalse($this->resolver->getProgress());
     }
@@ -242,7 +244,9 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function testResolveProgressWithPositiveConfigAndNegativeOption()
     {
         $this->config->hideProgress(true);
-        $this->resolver->setOption('progress', false);
+        $this->resolver
+            ->setOption('progress', false)
+            ->resolve();
 
         $this->assertFalse($this->resolver->getProgress());
     }
@@ -250,7 +254,9 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function testResolveProgressWithNegativeConfigAndPositiveOption()
     {
         $this->config->hideProgress(false);
-        $this->resolver->setOption('progress', true);
+        $this->resolver
+            ->setOption('progress', true)
+            ->resolve();
 
         $this->assertTrue($this->resolver->getProgress());
     }
@@ -258,7 +264,9 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function testResolveProgressWithNegativeConfigAndNegativeOption()
     {
         $this->config->hideProgress(false);
-        $this->resolver->setOption('progress', false);
+        $this->resolver
+            ->setOption('progress', false)
+            ->resolve();
 
         $this->assertFalse($this->resolver->getProgress());
     }

@@ -11,6 +11,8 @@
 
 namespace Symfony\CS;
 
+use Symfony\CS\Config\Config;
+
 /**
  * The resolver that resolves configuration to use by command line options and config.
  *
@@ -24,11 +26,18 @@ class ConfigurationResolver
 {
     protected $allFixers;
     protected $config;
+    protected $configFile;
+    protected $cwd;
+    protected $defaultConfig;
     protected $fixers = array();
     protected $options = array(
-        'fixers'   => null,
-        'level'    => null,
-        'progress' => null,
+        'config'        => null,
+        'config-file'   => null,
+        'isStdIn'       => null,
+        'fixers'        => null,
+        'level'         => null,
+        'path'          => null,
+        'progress'      => null,
     );
 
     public function setAllFixers(array $allFixers)
@@ -38,9 +47,16 @@ class ConfigurationResolver
         return $this;
     }
 
-    public function setConfig(ConfigInterface $config)
+    public function setCwd($cwd)
     {
-        $this->config = $config;
+        $this->cwd = $cwd;
+
+        return $this;
+    }
+
+    public function setDefaultConfig($config)
+    {
+        $this->defaultConfig = $config;
 
         return $this;
     }
@@ -68,10 +84,21 @@ class ConfigurationResolver
      */
     public function resolve()
     {
-        $this->resolveByLevel();
-        $this->resolveByNames();
+        $this->resolveConfig();
+        $this->resolveFixersByLevel();
+        $this->resolveFixersByNames();
 
         return $this;
+    }
+
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    public function getConfigFile()
+    {
+        return $this->configFile;
     }
 
     /**
@@ -89,7 +116,68 @@ class ConfigurationResolver
         return $this->options['progress'] && !$this->config->getHideProgress();
     }
 
-    protected function resolveByLevel()
+    protected function computeConfigFiles()
+    {
+        $configFile = $this->options['config-file'];
+        $path = $this->options['path'];
+
+        if (null !== $configFile) {
+            return array($configFile);
+        }
+
+        if (is_file($path) && $dirName = pathinfo($path, PATHINFO_DIRNAME)) {
+            $configDir = $dirName;
+        } elseif ($this->options['isStdIn'] || null === $path) {
+            $configDir = $this->cwd;
+            // path is directory
+        } else {
+            $configDir = $path;
+        }
+
+        return array(
+            $configDir.DIRECTORY_SEPARATOR.'.php_cs',
+            $configDir.DIRECTORY_SEPARATOR.'.php_cs.dist',
+        );
+    }
+
+    protected function resolveConfig()
+    {
+        $configOption = $this->options['config'];
+
+        if ($configOption) {
+            foreach ($this->fixer->getConfigs() as $c) {
+                if ($c->getName() === $configOption) {
+                    $this->config = $c;
+
+                    return;
+                }
+            }
+
+            if (null === $config) {
+                throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined', $configOption));
+            }
+        }
+
+        foreach ($this->computeConfigFiles() as $configFile) {
+            if (file_exists($configFile)) {
+                $config = include $configFile;
+
+                // verify that the config has an instance of Config
+                if (!$config instanceof Config) {
+                    throw new \UnexpectedValueException(sprintf('The config file "%s" does not return an instance of Symfony\CS\Config\Config', $configFile));
+                }
+
+                $this->config     = $config;
+                $this->configFile = $configFile;
+
+                return;
+            }
+        }
+
+        $this->config = $this->defaultConfig;
+    }
+
+    protected function resolveFixersByLevel()
     {
         $level = $this->parseLevel();
 
@@ -108,7 +196,7 @@ class ConfigurationResolver
         $this->fixers = $fixers;
     }
 
-    protected function resolveByNames()
+    protected function resolveFixersByNames()
     {
         $names = $this->parseFixers();
 
