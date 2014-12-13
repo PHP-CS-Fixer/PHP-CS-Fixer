@@ -430,11 +430,13 @@ fixed but without actually modifying them:
     php php-cs-fixer.phar fix /path/to/code --dry-run
 
 Instead of using command line options to customize the fixer, you can save the
-configuration in a ``.php_cs`` file in the root directory of
-your project. The file must return an instance of
-``Symfony\CS\ConfigInterface``, which lets you configure the fixers, the level, the files,
-and directories that need to be analyzed. The example below will add two contrib fixers
-to the default list of PSR2-level fixers:
+project configuration in a ``.php_cs.dist`` file in the root directory
+of your project. The file must return an instance of ``Symfony\CS\ConfigInterface``,
+which lets you configure the fixers, the level, the files, and directories that
+need to be analyzed. You may also create ``.php_cs`` file, which is
+the local configuration that will be used instead of the project configuration, it
+is a good practice to add that file into your ``.gitignore`` file.
+The example below will add two contrib fixers to the default list of PSR2-level fixers:
 
 .. code-block:: php
 
