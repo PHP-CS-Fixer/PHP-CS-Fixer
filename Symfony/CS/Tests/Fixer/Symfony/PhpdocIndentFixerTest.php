@@ -33,8 +33,7 @@ class PhpdocIndentFixerTest extends AbstractFixerTestBase
         $cases[] = array('<?php /** foo */');
 
         $cases[] = array(
-            '
-<?php
+            '<?php
 /**
  * Do not indent
  */
@@ -53,8 +52,8 @@ class DocBlocks
      * Test that method docblocks are indented.
      */
     public function test() {}
-}',          '
-<?php
+}',
+            '<?php
 /**
  * Do not indent
  */
@@ -77,8 +76,7 @@ class DocBlocks
         );
 
         $cases[] = array(
-            '
-<?php
+            '<?php
 class DocBlocks
 {
     /**
@@ -114,8 +112,8 @@ class DocBlocks
      * Test no keywords
      */
     function test() {}
-}',          '
-<?php
+}',
+            '<?php
 class DocBlocks
 {
 /**
@@ -155,8 +153,7 @@ class DocBlocks
         );
 
         $cases[] = array(
-            '
-<?php
+            '<?php
 /**
  * Final class should also not be indented
  */
@@ -171,8 +168,8 @@ final class DocBlocks
      * Test with var keyword
      */
     var $oldStyle = false;
-}',          '
-<?php
+}',
+            '<?php
 /**
  * Final class should also not be indented
  */
@@ -191,8 +188,7 @@ final class DocBlocks
         );
 
         $cases[] = array(
-            '
-<?php
+            '<?php
     if (1) {
         class Foo {
             /**
@@ -205,8 +201,8 @@ final class DocBlocks
              */
             function bar() {}
         }
-    }',          '
-<?php
+    }',
+            '<?php
     if (1) {
         class Foo {
 /**
@@ -223,8 +219,7 @@ final class DocBlocks
         );
 
         $cases[] = array(
-            '
-<?php
+            '<?php
 /**
  * Variable
  */
@@ -265,8 +260,8 @@ $partialFix = true;
      */
     foreach($connections as $sqlite) {
         $sqlite->open();
-    }',          '
-<?php
+    }',
+            '<?php
     /**
      * Variable
      */
