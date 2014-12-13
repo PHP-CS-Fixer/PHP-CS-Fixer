@@ -57,7 +57,7 @@ class UnusedUseFixer extends AbstractFixer
             $allowToAppend = true;
 
             foreach ($partials as $partial) {
-                if ($partial['declarationStart'] <= $index && $index <= $partial['declarationEnd']) {
+                if ($partial['start'] <= $index && $index <= $partial['end']) {
                     $allowToAppend = false;
                     break;
                 }
@@ -83,9 +83,9 @@ class UnusedUseFixer extends AbstractFixer
             $declarationEndIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
 
             $namespaces[] = array(
-                'content'          => trim($tokens->generatePartialCode($index + 1, $declarationEndIndex - 1)),
-                'declarationStart' => $index,
-                'declarationEnd'   => $declarationEndIndex,
+                'end'   => $declarationEndIndex,
+                'name'  => trim($tokens->generatePartialCode($index + 1, $declarationEndIndex - 1)),
+                'start' => $index,
             );
         }
 
@@ -123,11 +123,11 @@ class UnusedUseFixer extends AbstractFixer
             $shortName = trim($shortName);
 
             $uses[$shortName] = array(
-                'shortName'        => $shortName,
-                'fullName'         => trim($fullName),
-                'aliased'          => $aliased,
-                'declarationStart' => $index,
-                'declarationEnd'   => $declarationEndIndex,
+                'aliased'   => $aliased,
+                'end'       => $declarationEndIndex,
+                'fullName'  => trim($fullName),
+                'shortName' => $shortName,
+                'start'     => $index,
             );
         }
 
@@ -145,21 +145,21 @@ class UnusedUseFixer extends AbstractFixer
 
     private function removeUseDeclaration(Tokens $tokens, array $useDeclaration)
     {
-        for ($index = $useDeclaration['declarationStart']; $index <= $useDeclaration['declarationEnd']; ++$index) {
+        for ($index = $useDeclaration['start']; $index <= $useDeclaration['end']; ++$index) {
             $tokens[$index]->clear();
         }
 
-        $token = $tokens[$useDeclaration['declarationStart'] - 1];
+        $token = $tokens[$useDeclaration['start'] - 1];
 
         if ($token->isWhitespace()) {
             $token->setContent(rtrim($token->getContent(), " \t"));
         }
 
-        if (!isset($tokens[$useDeclaration['declarationEnd'] + 1])) {
+        if (!isset($tokens[$useDeclaration['end'] + 1])) {
             return;
         }
 
-        $token = $tokens[$useDeclaration['declarationEnd'] + 1];
+        $token = $tokens[$useDeclaration['end'] + 1];
 
         if ($token->isWhitespace()) {
             $content = ltrim($token->getContent(), " \t");
@@ -183,7 +183,7 @@ class UnusedUseFixer extends AbstractFixer
             return;
         }
 
-        $namespace = $namespaceDeclarations[0]['content'];
+        $namespace = $namespaceDeclarations[0]['name'];
         $nsLength = strlen($namespace.'\\');
 
         foreach ($useDeclarations as $useDeclaration) {
