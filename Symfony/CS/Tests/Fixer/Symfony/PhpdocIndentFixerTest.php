@@ -305,6 +305,18 @@ $partialFix = true;
     }',
         );
 
+        $cases[] = array(
+            '<?php
+    $user = $event->getForm()->getData();  /** @var User $user */
+    echo "Success";',
+        );
+
+        $cases[] = array(
+            '<?php
+    $user = $event->getForm()->getData();/** @var User $user */
+    echo "Success";',
+        );
+
         return $cases;
     }
 }
