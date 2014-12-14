@@ -52,8 +52,6 @@ class TokensAnalyzer
                 return array('type' => $type, 'isStart' => false);
             }
         }
-
-        return;
     }
 
     /**
