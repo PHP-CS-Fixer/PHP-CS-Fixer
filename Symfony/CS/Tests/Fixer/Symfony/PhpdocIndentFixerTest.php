@@ -346,6 +346,25 @@ class DocBlocks
 }",
         );
 
+        $cases[] = array(
+            '<?php
+/**
+ * Used to write a value to a session key.
+ *
+ * ...
+ */
+public function write($name) {}
+',
+            "<?php
+\t/**
+ * Used to write a value to a session key.
+ *
+ * ...
+ */
+public function write(\$name) {}
+",
+        );
+
         return $cases;
     }
 }
