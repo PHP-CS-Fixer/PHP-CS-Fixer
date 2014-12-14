@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class PhpdocParamsFixer extends AbstractFixer
+class PhpdocAlignFixer extends AbstractFixer
 {
     private $regex;
     private $regexCommentLine;

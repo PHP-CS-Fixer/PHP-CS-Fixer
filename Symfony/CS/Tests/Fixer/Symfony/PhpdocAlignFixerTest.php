@@ -13,7 +13,7 @@ namespace Symfony\CS\Tests\Fixer\Symfony;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class PhpdocParamsFixerTest extends AbstractFixerTestBase
+class PhpdocAlignFixerTest extends AbstractFixerTestBase
 {
     public function testFix()
     {
