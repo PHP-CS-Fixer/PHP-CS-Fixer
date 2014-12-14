@@ -117,7 +117,7 @@ problems as possible on a given file or directory:
     <info>php %command.full_name% /path/to/dir</info>
     <info>php %command.full_name% /path/to/file</info>
 
-The <comment>--verbose</comment> option displays progress notification and show applied fixers.
+The <comment>--verbose</comment> option show applied fixers. When using ``txt`` format (default one) it will also displays progress notification.
 
 The <comment>--level</comment> option limits the fixers to apply on the
 project:
