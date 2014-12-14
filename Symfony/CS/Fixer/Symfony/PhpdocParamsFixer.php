@@ -158,4 +158,15 @@ class PhpdocParamsFixer extends AbstractFixer
             return $matches;
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run after the PhpdocIndentFixer
+        // this is because this fixer currently only deals with docblocks that
+        // are correctly indented, and skips those that are not
+        return -10;
+    }
 }
