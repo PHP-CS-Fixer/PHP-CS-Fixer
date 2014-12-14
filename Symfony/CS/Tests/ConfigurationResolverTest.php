@@ -49,8 +49,8 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->config = new Config();
         $this->resolver = new ConfigurationResolver();
         $this->resolver
-            ->setAllFixers($fixer->getFixers())
-            ->setDefaultConfig($this->config);
+            ->setDefaultConfig($this->config)
+            ->setFixer($fixer);
     }
 
     protected function makeFixersTest($expectedFixers, $resolvedFixers)
@@ -269,5 +269,37 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->resolve();
 
         $this->assertFalse($this->resolver->getProgress());
+    }
+
+    /**
+     * @dataProvider provideResolveConfigByNameCases
+     */
+    public function testResolveConfigByName($expected, $name)
+    {
+        $this->resolver
+            ->setOption('config', $name)
+            ->resolve();
+
+        $this->assertInstanceOf($expected, $this->resolver->getConfig());
+    }
+
+    public function provideResolveConfigByNameCases()
+    {
+        return array(
+            array("\\Symfony\\CS\\Config\\Config", 'default'),
+            array("\\Symfony\\CS\\Config\\MagentoConfig", 'magento'),
+            array("\\Symfony\\CS\\Config\\Symfony23Config", 'sf23'),
+        );
+    }
+
+    /**
+     * @expectedException               InvalidArgumentException
+     * @expectedExceptionMessageRegExp  /The configuration "\w+" is not defined/
+     */
+    public function testResolveConfigByNameThatDoesntExists()
+    {
+        $this->resolver
+            ->setOption('config', 'NON_EXISTING_CONFIG')
+            ->resolve();
     }
 }

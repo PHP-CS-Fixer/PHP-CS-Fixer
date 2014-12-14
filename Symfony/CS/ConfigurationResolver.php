@@ -29,6 +29,7 @@ class ConfigurationResolver
     protected $configFile;
     protected $cwd;
     protected $defaultConfig;
+    protected $fixer;
     protected $fixers = array();
     protected $options = array(
         'config'        => null,
@@ -40,13 +41,6 @@ class ConfigurationResolver
         'progress'      => null,
     );
 
-    public function setAllFixers(array $allFixers)
-    {
-        $this->allFixers = $allFixers;
-
-        return $this;
-    }
-
     public function setCwd($cwd)
     {
         $this->cwd = $cwd;
@@ -57,6 +51,14 @@ class ConfigurationResolver
     public function setDefaultConfig($config)
     {
         $this->defaultConfig = $config;
+
+        return $this;
+    }
+
+    public function setFixer($fixer)
+    {
+        $this->fixer     = $fixer;
+        $this->allFixers = $fixer->getFixers();
 
         return $this;
     }
@@ -153,7 +155,7 @@ class ConfigurationResolver
                 }
             }
 
-            if (null === $config) {
+            if (null === $this->config) {
                 throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined', $configOption));
             }
         }

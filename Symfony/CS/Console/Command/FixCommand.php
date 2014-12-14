@@ -294,7 +294,7 @@ EOF
         $resolver
             ->setCwd(getcwd())
             ->setDefaultConfig($this->defaultConfig)
-            ->setAllFixers($this->fixer->getFixers())
+            ->setFixer($this->fixer)
             ->setOptions(array(
                 'config'        => $input->getOption('config'),
                 'config-file'   => $input->getOption('config-file'),
