@@ -27,20 +27,24 @@ class PhpdocIndentFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
-            $next = $tokens->getNextMeaningfulToken($index);
-            if (null === $next) {
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
+            if (null === $nextIndex) {
                 continue;
             }
 
             $prevToken = $tokens[$index - 1];
-            if (($prevToken->isWhitespace(array('whitespaces' => " \t")) && !$tokens[$index - 2]->isGivenKind(T_OPEN_TAG)) || $prevToken->equalsAny(array(';', '{'))) {
-                //ignore inline docblocks
+
+            //ignore inline docblocks
+            if (
+                ($prevToken->isWhitespace(array('whitespaces' => " \t")) && !$tokens[$index - 2]->isGivenKind(T_OPEN_TAG))
+                || $prevToken->equalsAny(array(';', '{'))
+            ) {
                 continue;
             }
 
-            $indent = $this->calculateIndent($tokens[$next - 1]->getContent());
-            $prevToken->setContent($this->fixWhitespaceBefore($prevToken->getContent(), $indent));
+            $indent = $this->calculateIndent($tokens[$nextIndex - 1]->getContent());
 
+            $prevToken->setContent($this->fixWhitespaceBefore($prevToken->getContent(), $indent));
             $token->setContent($this->fixDocBlock($token->getContent(), $indent));
         }
 
