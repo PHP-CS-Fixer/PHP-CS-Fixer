@@ -1,0 +1,77 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-13T11:13:37Z
+
+Please rebase on master
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-13T13:49:11Z
+
+Rebased
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-13T13:51:13Z
+
+[![Coverage Status](https://coveralls.io/builds/1606580/badge)](https://coveralls.io/builds/1606580)
+
+Coverage increased (+0.01%) when pulling **e5e5b25ddcd24b1a396e2e8cd5f99c0043dd5566 on ceeram:bug-819** into **0f7876b362b6f30ba7a525eb1ddf154de8220ba7 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-13T13:54:13Z
+
+Found another case that would currently fail. will fix later
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-13T14:27:15Z
+
+[![Coverage Status](https://coveralls.io/builds/1606657/badge)](https://coveralls.io/builds/1606657)
+
+Coverage increased (+0.03%) when pulling **ae1881ae020abf47645686e889868de28842c687 on ceeram:bug-819** into **0f7876b362b6f30ba7a525eb1ddf154de8220ba7 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-13T14:27:24Z
+
+Done
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-13T22:19:48Z
+
+[![Coverage Status](https://coveralls.io/builds/1607705/badge)](https://coveralls.io/builds/1607705)
+
+Coverage increased (+0.01%) when pulling **20458813dff99749fdc7b586cdd4587d65b30026 on ceeram:bug-819** into **0f7876b362b6f30ba7a525eb1ddf154de8220ba7 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-13T22:23:54Z
+
+[![Coverage Status](https://coveralls.io/builds/1607712/badge)](https://coveralls.io/builds/1607712)
+
+Coverage increased (+0.01%) when pulling **525580a8de6c681e076d2f82b177ff5ab326a5cc on ceeram:bug-819** into **0f7876b362b6f30ba7a525eb1ddf154de8220ba7 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T07:44:41Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-14T11:32:06Z
+
+[![Coverage Status](https://coveralls.io/builds/1608859/badge)](https://coveralls.io/builds/1608859)
+
+Coverage increased (+0.01%) when pulling **76f9397695114d403a4f7211fc12805e02244daf on ceeram:bug-819** into **0f7876b362b6f30ba7a525eb1ddf154de8220ba7 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-14T11:38:54Z
+
+[![Coverage Status](https://coveralls.io/builds/1608868/badge)](https://coveralls.io/builds/1608868)
+
+Coverage increased (+0.01%) when pulling **2ce74d3363841be07e204e15cf12e4bee96b5075 on ceeram:bug-819** into **0f7876b362b6f30ba7a525eb1ddf154de8220ba7 on FriendsOfPHP:master**.
