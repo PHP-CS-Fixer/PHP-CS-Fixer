@@ -22,7 +22,7 @@ class PhpdocParamsFixerTest extends AbstractFixerTestBase
     /**
      * @param EngineInterface $templating
      * @param string          $format
-     * @param integer         $code       An HTTP response status code
+     * @param int             $code       An HTTP response status code
      * @param bool            $debug
      * @param mixed           &$reference A parameter passed by reference
      */
@@ -34,7 +34,7 @@ EOF;
     /**
      * @param  EngineInterface $templating
      * @param string      $format
-     * @param  integer  $code       An HTTP response status code
+     * @param  int  $code       An HTTP response status code
      * @param    bool         $debug
      * @param  mixed    &$reference     A parameter passed by reference
      */
@@ -51,7 +51,7 @@ EOF;
     /**
      * @param EngineInterface $templating
      * @param string          $format
-     * @param integer         $code       An HTTP response status code
+     * @param int             $code       An HTTP response status code
      *                                    See constants
      * @param bool            $debug
      * @param bool            $debug      See constants
@@ -66,7 +66,7 @@ EOF;
     /**
      * @param  EngineInterface $templating
      * @param string      $format
-     * @param  integer  $code       An HTTP response status code
+     * @param  int  $code       An HTTP response status code
      *                              See constants
      * @param    bool         $debug
      * @param    bool         $debug See constants
@@ -86,7 +86,7 @@ EOF;
     /**
      * @param EngineInterface $templating
      * @param string          $format
-     * @param integer         $code       An HTTP response status code
+     * @param int             $code       An HTTP response status code
      *                                    See constants
      * @param bool            $debug
      * @param bool            $debug      See constants
@@ -106,7 +106,7 @@ EOF;
     /**
      * @param  EngineInterface $templating
      * @param string      $format
-     * @param  integer  $code       An HTTP response status code
+     * @param  int  $code       An HTTP response status code
      *                              See constants
      * @param    bool         $debug
      * @param    bool         $debug See constants
@@ -242,6 +242,115 @@ EOF;
     /**
      * @return string
      *  @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixWithVar()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @var Type
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @var   Type
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixWithType()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @type Type
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @type   Type
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixWithVarAndDescription()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * This is a variable.
+     *
+     * @var Type
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * This is a variable.
+     *
+     * @var   Type
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixWithVarAndInlineDescription()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @var Type This is a variable.
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @var   Type   This is a variable.
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixWithTypeAndInlineDescription()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @type Type This is a variable.
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @type   Type   This is a variable.
      */
 
 EOF;

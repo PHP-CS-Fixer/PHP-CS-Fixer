@@ -29,11 +29,11 @@ class PhpdocParamsFixer extends AbstractFixer
         // e.g. @param <hint> <$var>
         $paramTag = '(?P<tag>param)\s+(?P<hint>[^$]+?)\s+(?P<var>&?\$[^\s]+)';
         // e.g. @return <hint>
-        $returnThrowsTag = '(?P<tag2>return|throws)\s+(?P<hint2>[^\s]+?)';
+        $otherTags = '(?P<tag2>return|throws|var|type)\s+(?P<hint2>[^\s]+?)';
         // optional <desc>
         $desc = '(?:\s+(?P<desc>.*)|\s*)';
 
-        $this->regex = '/^ {5}\* @(?:'.$paramTag.'|'.$returnThrowsTag.')'.$desc.'$/';
+        $this->regex = '/^ {5}\* @(?:'.$paramTag.'|'.$otherTags.')'.$desc.'$/';
         $this->regexCommentLine = '/^ {5}\*(?:\s+(?P<desc>.+))$/';
     }
 
@@ -56,7 +56,7 @@ class PhpdocParamsFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'All items of the @param phpdoc tags must be aligned vertically.';
+        return 'All items of the @param, @throws, @return, @var, and @type phpdoc tags must be aligned vertically.';
     }
 
     private function fixDocBlock($content)
@@ -157,5 +157,16 @@ class PhpdocParamsFixer extends AbstractFixer
 
             return $matches;
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run after the PhpdocIndentFixer
+        // this is because this fixer currently only deals with docblocks that
+        // are correctly indented, and skips those that are not
+        return -10;
     }
 }

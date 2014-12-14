@@ -119,7 +119,7 @@ problems as possible on a given file or directory:
     <info>php %command.full_name% /path/to/dir</info>
     <info>php %command.full_name% /path/to/file</info>
 
-The <comment>--verbose</comment> option displays progress notification and show applied fixers.
+The <comment>--verbose</comment> option show applied fixers. When using ``txt`` format (default one) it will also displays progress notification.
 
 The <comment>--level</comment> option limits the fixers to apply on the
 project:
@@ -320,7 +320,9 @@ EOF
             // verify that the config has an instance of Config
             if (!$config instanceof Config) {
                 throw new \UnexpectedValueException(sprintf('The config file "%s" does not return an instance of Symfony\CS\Config\Config', $configFile));
-            } else {
+            }
+
+            if ('txt' === $input->getOption('format')) {
                 $output->writeln(sprintf('Loaded config from "%s"', $configFile));
             }
         } else {
@@ -349,7 +351,7 @@ EOF
             ->setOptions(array(
                 'level'     => $input->getOption('level'),
                 'fixers'    => $input->getOption('fixers'),
-                'progress'  => $output->isVerbose(),
+                'progress'  => $output->isVerbose() && 'txt' === $input->getOption('format'),
             ))
             ->resolve();
 
