@@ -317,6 +317,35 @@ $partialFix = true;
     echo "Success";',
         );
 
+        $cases[] = array(
+            "<?php
+class DocBlocks
+{
+\t/**
+\t *Test that attribute docblocks are indented
+\t */
+\tprotected \$indent = false;
+
+\t/**
+\t * Test that method docblocks are indented.
+\t */
+\tpublic function test() {}
+}",
+            "<?php
+class DocBlocks
+{
+/**
+ *Test that attribute docblocks are indented
+ */
+\tprotected \$indent = false;
+
+/**
+ * Test that method docblocks are indented.
+ */
+\tpublic function test() {}
+}",
+        );
+
         return $cases;
     }
 }
