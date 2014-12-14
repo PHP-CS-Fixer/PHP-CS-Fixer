@@ -29,10 +29,5 @@
     "autoload": {
         "psr-4": { "Symfony\\CS\\": "Symfony/CS/" }
     },
-    "bin": ["php-cs-fixer"],
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.4-dev"
-        }
-    }
+    "bin": ["php-cs-fixer"]
 }
