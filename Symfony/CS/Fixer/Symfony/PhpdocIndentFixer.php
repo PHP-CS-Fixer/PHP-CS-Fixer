@@ -82,7 +82,7 @@ class PhpdocIndentFixer extends AbstractFixer
      */
     private function fixWhitespaceBefore($content, $indent)
     {
-        return rtrim($content, ' ').$indent;
+        return rtrim($content, " \t").$indent;
     }
 
     /**
