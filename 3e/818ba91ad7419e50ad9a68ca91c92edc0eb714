@@ -1,0 +1,69 @@
+---------------------------------------------------------------------------
+
+by stof at 2014-12-10T09:01:51Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-10T09:34:10Z
+
+This might be useful at somepoint?
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-10T11:16:12Z
+
+Unused !== not usefull
+
+Also people might be using this method currently in a customFixer
+
+If this method should be removed regardless, then deprecate now and remove
+in next major version seems a better solution to me.
+Op 10 dec. 2014 10:34 schreef "Graham Campbell" <notifications@github.com>:
+
+> This might be useful at somepoint?
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/807#issuecomment-66425365>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-10T13:43:55Z
+
+Agreed, this is BC break. Add a label.
+
+IMO we should not support not used code, which may or may not be used by someone.
+It this will be usefull for us we simply add it. It is really simple method.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-10T13:54:29Z
+
+Yeah, just pointed out the BC break when removing it in minor version.
+
+Often public api methods are not used internally. There is not much wrong
+in having public methods that are not used internally IMO but i am
+indifferent if unused code can be present or not, fine either way.
+
+2014-12-10 14:43 GMT+01:00 Dariusz Rumiński <notifications@github.com>:
+
+> Agreed, this is BC break. Add a label.
+>
+> IMO we should not support not used code, which may or may not be used by
+> someone.
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/807#issuecomment-66452797>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-10T15:25:46Z
+
+Assigned to milestone v2.0
