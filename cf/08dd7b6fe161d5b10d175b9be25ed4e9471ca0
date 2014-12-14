@@ -1,0 +1,58 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-14T20:47:21Z
+
+[![Coverage Status](https://coveralls.io/builds/1610053/badge)](https://coveralls.io/builds/1610053)
+
+Coverage increased (+0.01%) when pulling **f71a834acb8be34677927890f851c1cbd3fad55a on GrahamCampbell:align-var** into **35e1999cc9fadff38270d9226c088fc2ca52dffe on FriendsOfPHP:1.x**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T20:56:12Z
+
+Could you provide a better Fixer descr?
+It is totally outdated now.
+
+And, if you could, please send a PR with changing name for 2.x line.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T21:05:00Z
+
+I will move the other tests to another pull so we can get this through asap.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-14T21:07:28Z
+
+[![Coverage Status](https://coveralls.io/builds/1610128/badge)](https://coveralls.io/builds/1610128)
+
+Coverage increased (+0.01%) when pulling **037adbf0bd2ca3a18a962d3379d9926ba8eb766a on GrahamCampbell:align-var** into **35e1999cc9fadff38270d9226c088fc2ca52dffe on FriendsOfPHP:1.x**.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-14T21:13:40Z
+
+[![Coverage Status](https://coveralls.io/builds/1610142/badge)](https://coveralls.io/builds/1610142)
+
+Coverage remained the same when pulling **0c844a72c6e85da8fef8831b576c3a7ca7685ab8 on GrahamCampbell:align-var** into **35e1999cc9fadff38270d9226c088fc2ca52dffe on FriendsOfPHP:1.x**.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-14T21:58:43Z
+
+[![Coverage Status](https://coveralls.io/builds/1610287/badge)](https://coveralls.io/builds/1610287)
+
+Coverage remained the same when pulling **79e7300d950bc3f2e68810d9b0d636547825cab8 on GrahamCampbell:align-var** into **94f13e5a1c4b55b2e80b89d5780e57c01aa3be78 on FriendsOfPHP:1.x**.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T21:59:29Z
+
+@keradus Ready for review now. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T22:08:07Z
+
+:+1:
