@@ -14,7 +14,7 @@ namespace Symfony\CS\Tokenizer;
 /**
  * Analyzer of Tokens collection.
  *
- * It's role is to provide the ability to analyze collection.
+ * Its role is to provide the ability to analyze collection.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
