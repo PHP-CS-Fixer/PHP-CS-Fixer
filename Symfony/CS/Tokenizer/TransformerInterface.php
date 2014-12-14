@@ -20,6 +20,8 @@ namespace Symfony\CS\Tokenizer;
  * For example T_ARRAY is a token for both creating new array and typehinting a parameter. This two meaning should have two token types.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 interface TransformerInterface
 {

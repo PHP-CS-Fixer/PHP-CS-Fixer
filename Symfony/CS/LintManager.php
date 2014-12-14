@@ -18,6 +18,8 @@ use Symfony\Component\Process\ProcessUtils;
  * Handle PHP code linting process.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 class LintManager
 {

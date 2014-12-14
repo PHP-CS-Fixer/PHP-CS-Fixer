@@ -13,6 +13,8 @@ namespace Symfony\CS;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 class Utils
 {

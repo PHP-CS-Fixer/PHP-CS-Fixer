@@ -32,6 +32,8 @@ use Symfony\CS\Utils;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @internal
  */
 class FixCommand extends Command
 {

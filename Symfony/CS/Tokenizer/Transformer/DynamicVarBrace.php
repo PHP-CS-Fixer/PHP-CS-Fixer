@@ -18,6 +18,8 @@ use Symfony\CS\Tokenizer\Tokens;
  * Transform curly braces in `${$foo}` into CT_DYNAMIC_VAR_BRACE_OPEN and CT_DYNAMIC_VAR_BRACE_CLOSE.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 class DynamicVarBrace extends AbstractTransformer
 {
