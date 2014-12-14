@@ -1,0 +1,131 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-14T02:02:51Z
+
+[![Coverage Status](https://coveralls.io/builds/1608156/badge)](https://coveralls.io/builds/1608156)
+
+Coverage remained the same when pulling **33e07998dbbb6ecca64f40eb90aa5620eeb44a1a on ceeram:bug-833** into **0f7876b362b6f30ba7a525eb1ddf154de8220ba7 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by dereuromark at 2014-12-14T12:48:36Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T18:53:38Z
+
+Please rebase on master, we can't marge it.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-14T19:08:04Z
+
+@keradus ill wait with that untill you decide to actually merge
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T19:32:25Z
+
+Fix is good - now it fixes tabs too.
+:+1:
+
+Btw, it doesn't fix case from 833:
+```php
+    /**
+ * Used to write a value to a session key.
+ *
+ * ...
+ */
+public function write($name) {}
+```
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-14T19:39:56Z
+
+@keradus It does fix 833, he was using tabs, which was the cause.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-14T19:40:02Z
+
+Also rebased
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-14T19:40:44Z
+
+[![Coverage Status](https://coveralls.io/builds/1609884/badge)](https://coveralls.io/builds/1609884)
+
+Coverage remained the same when pulling **59c1d265ed17783966e01c8edfe60ae731a00051 on ceeram:bug-833** into **fcc27f078b668cb03f95abbbcc47f9e5441c83c9 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T19:44:34Z
+
+> It does fix 833, he was using tabs, which was the cause.
+
+Great! Then please add
+```php
+    /**
+ * Used to write a value to a session key.
+ *
+ * ...
+ */
+public function write($name) {}
+```
+
+to tests and prove this will be changed into
+```php
+/**
+ * Used to write a value to a session key.
+ *
+ * ...
+ */
+public function write($name) {}
+```
+
+all cases should be covered by tests to not be broken in the future.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-14T19:46:09Z
+
+His issue was the other way around, it was adding too much indentation on first line.
+I will add a testcase anyway for your suggestion
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-14T19:49:50Z
+
+Testcase added
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-14T19:51:09Z
+
+Perhaps i should duplicate all testcase that test against 4 spaces for tabs as well, that would be the only way to really test all cases
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-14T19:52:26Z
+
+[![Coverage Status](https://coveralls.io/builds/1609912/badge)](https://coveralls.io/builds/1609912)
+
+Coverage remained the same when pulling **73ffa038e59314a2f225e80403cbcdbd21fa03e1 on ceeram:bug-833** into **fcc27f078b668cb03f95abbbcc47f9e5441c83c9 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T19:52:41Z
+
+Can't see point of it. Didn't you added crucial ones?
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-14T19:58:56Z
+
+You are right, i thought this one was also already covered with spaces, but seems it doesnt. Its fine now
