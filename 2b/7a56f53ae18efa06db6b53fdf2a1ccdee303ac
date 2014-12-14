@@ -1,0 +1,125 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-14T22:27:32Z
+
+[![Coverage Status](https://coveralls.io/builds/1610362/badge)](https://coveralls.io/builds/1610362)
+
+Coverage remained the same when pulling **442b7b7675c2ac97336f025738a38aa5444c4a8d on GrahamCampbell:patch-1** into **cf08dd7b6fe161d5b10d175b9be25ed4e9471ca0 on FriendsOfPHP:1.x**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T22:32:44Z
+
+Why is that alias bad ?
+
+(I am not saying it's good, just asking)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T22:37:54Z
+
+It might confuse people looking at that file as to what the master branch currently represents.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T22:46:17Z
+
+And how would composer/packagist know it is `1.4-dev` or `1.5-dev` ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T22:48:19Z
+
+Well, that alias is telling packagist the master branch is `1.4-dev`, which is wrong...
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T23:11:35Z
+
+Hell yeah! Then instead of removing it it should be fixed into "dev-1.x": "1.4-dev", isn't it ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T23:12:36Z
+
+No. Composer is reading the branch name as `1.x` That's what aliasing is there for. To pretend the branch is named differently. That's why i suggested naming it `1.4` in the first place. Then we don't need any aliases.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T23:18:52Z
+
+still can't see anything wrong with
+```
+"dev-1.x": "1.4-dev"
+```
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T23:19:31Z
+
+You're saying that 1.x-dev == 1.4.x-dev. That's totally wrong.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T23:21:57Z
+
+That same as saying that master == 2.0.x-dev
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T23:23:25Z
+
+It's not the same at all. Packagist has auto-recognised the `1.x` branch as being `1.x-dev` without you doing anything, therefore you should not apply any aliasing. I have no idea if it even will allow you to.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T23:24:31Z
+
+But if we want the 1.x branch to be recognized as 1.4.x-dev, isn't that what aliases are for ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T23:25:38Z
+
+No, aliases are there for when we cannot name the branch how it should be named, like the master branch, or if someone wanted a "legacy" branch, for example.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T23:32:49Z
+
+Sorry, maybe it's a matter of hour, but can't see why
+```
+"dev-1.x": "1.4-dev"
+```
+won't work
+:(
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T23:33:35Z
+
+You may treat 1.x branch as legacy branch actually ;)
+For whole 1.x line
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T23:52:34Z
+
+I just saw a cheeky force push there, lol. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T23:53:11Z
+
+I know when I should admit to the error.
+Aliasing seems not to working for branch named like version (start from number?)
+
+This PR will be accepted, and then the branch will be renamed.
+
+Thanks for discussion, nice to learn something new ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T23:53:19Z
+
+yep, just test something ;)
