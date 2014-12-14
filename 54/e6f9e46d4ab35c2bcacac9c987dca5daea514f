@@ -1,0 +1,231 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-23T17:54:57Z
+
+Shouldn't they be separated, like in symfony?
+
+```php
+ /**
+  * Class description.
+  *
+  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+  *
+  * @internal
+  */
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-23T17:56:05Z
+
+Why not
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-23T18:05:06Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-23T18:06:14Z
+
+It still feels odd to have the tests in essentially the `src` folder, making them in the public domain.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-23T18:09:50Z
+
+Not related.
+See #670
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-23T18:10:35Z
+
+It's related in the way that - should the tests also be supporting the internal annotation?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-23T19:51:06Z
+
+And that's why I strongly recommend `@api` and not `@internal`...
+We will need `@internal` in almost every file... `@api` in only just few of them...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-23T20:00:57Z
+
+I still think we should move the tests out, and autoload them with `autoload-dev`, then they don't need annotations.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-23T20:03:45Z
+
+As you have seen in mentioned #670 i think so too
+it is always a matter of compromise
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-23T20:07:45Z
+
+How about we just leave the tests alone totally for now, and propose a directory structure change before 2.0.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-23T20:12:46Z
+
+Why not. But I doubt arguments will change in future.
+But for now there are no plans for 2.0 yet. Just no upcoming BC breaking changes...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-23T20:46:51Z
+
+Yeh, sure.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-23T21:15:22Z
+
+I wondering...
+Should we mark all fixers as `@internal` ?
+
+Why would someone use it ?
+It may be nice to allow to move fixer from one to second namespace (contrib->symfony) without breaking BC
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-23T21:49:13Z
+
+It feels like everything is marked as internal. I'm already using a load of "Internal" classes in https://github.com/GrahamCampbell/Laravel-Fixer/blob/master/src/Analyser.php.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-23T21:51:34Z
+
+You could just run tool itself ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-23T21:53:39Z
+
+Yeh, maybe. I was doing more stuff before, then I remove a lot of that code. I'm now using git in another wrapper class to get the diff rather than relying on php-cs-fixer. Don't want to run out of memory on large code bases. (different repo btw - https://github.com/GrahamCampbell/StyleCI)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-23T21:57:28Z
+
+Use cache ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-11-23T22:01:39Z
+
+No, I was meaning if there are lots of fixes to be made, loading the entire diff into memory is not viable.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-09T18:56:25Z
+
+So, a second approach.
+
+Let's talk a little what should be exposed as `@api` (yeah, we will use `@internal`).
+
+All interfaces for sure. Then all `Configs` and `Finders`. Finally Fixer, Token and Tokens.
+We need to expose anything else?
+
+It would be great to set that `@internals` before 1.3 release
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-09T19:04:59Z
+
+I don't think fixers need to be marked as internal since most of their methods are private anyway.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-09T19:05:23Z
+
+:+1: for merging this in its current state, actually. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-09T19:06:29Z
+
+Actually, can we make the `AbstractFixer` public rather than internal? That's the class people are relying on to write custom fixers.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-09T19:06:37Z
+
+> I don't think fixers need to be marked as internal since most of their methods are private anyway.
+
+There is a lot of logic in public `fix` method
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-09T19:09:05Z
+
+AbstractFixer::getLevel and AbstractFixer::getName rely on project directory structure and fixer classes naming convention. They should be internal.
+
+So what left is AbstractFixer::getPriority (return 0) and AbstractFixer::supports (return true).
+That 2 methods could be exposed, but... nothing to gain here IMO
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-09T19:11:25Z
+
+> There is a lot of logic in public fix method
+
+True, but what is a bc break in this case though? We can't change the signature of these methods?
+
+> AbstractFixer::getLevel and AbstractFixer::getName rely on project directory structure and fixer classes naming convention. They should be internal.
+
+Fair enough then.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-09T19:14:44Z
+
+> We can't change the signature of these methods?
+
+You can't hide that code as internal by setting them private and on the other hand call it by `Symfony\CS\Fixer`
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-09T19:18:06Z
+
+Setting them as internal isn't the same as physically changing the function visibility?
+
+I'm not really against changing the fixers to internal tbh. It does make sense - it just requires modifying a lot of files (and updating that cookbook pull request).
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-09T19:32:48Z
+
+It's not the same. We can't hide them by setting fix method to be private, we can hide them from users by setting them internal. Going back few steps:
+> I don't think fixers need to be marked as internal since most of their methods are private anyway.
+
+Then you suggest to make fixers exposed. I am not against it - the public interfaces (implements because of FixerInterface) should be available. But implementation itself should be hidden - all non-interface methods should be private.
+(btw - just like the current state of this PR) ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-10T15:24:15Z
+
+Does everyone agreed with proposed internal and exposed division?
+
+pin @sstok @stof
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-12-10T15:25:32Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-10T15:25:54Z
+
+Assigned to milestone v2.0
