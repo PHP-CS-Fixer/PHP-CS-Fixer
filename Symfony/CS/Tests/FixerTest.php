@@ -182,6 +182,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['standardize_not_equal'], $fixers['strict']),
             array($fixers['double_arrow_multiline_whitespaces'], $fixers['multiline_array_trailing_comma']),
             array($fixers['double_arrow_multiline_whitespaces'], $fixers['align_double_arrow']),
+            array($fixers['phpdoc_indent'], $fixers['phpdoc_params']),
         );
     }
 
