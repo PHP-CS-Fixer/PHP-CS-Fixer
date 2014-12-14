@@ -22,7 +22,7 @@ class PhpdocParamsFixerTest extends AbstractFixerTestBase
     /**
      * @param EngineInterface $templating
      * @param string          $format
-     * @param integer         $code       An HTTP response status code
+     * @param int             $code       An HTTP response status code
      * @param bool            $debug
      * @param mixed           &$reference A parameter passed by reference
      */
@@ -34,7 +34,7 @@ EOF;
     /**
      * @param  EngineInterface $templating
      * @param string      $format
-     * @param  integer  $code       An HTTP response status code
+     * @param  int  $code       An HTTP response status code
      * @param    bool         $debug
      * @param  mixed    &$reference     A parameter passed by reference
      */
@@ -51,7 +51,7 @@ EOF;
     /**
      * @param EngineInterface $templating
      * @param string          $format
-     * @param integer         $code       An HTTP response status code
+     * @param int             $code       An HTTP response status code
      *                                    See constants
      * @param bool            $debug
      * @param bool            $debug      See constants
@@ -66,7 +66,7 @@ EOF;
     /**
      * @param  EngineInterface $templating
      * @param string      $format
-     * @param  integer  $code       An HTTP response status code
+     * @param  int  $code       An HTTP response status code
      *                              See constants
      * @param    bool         $debug
      * @param    bool         $debug See constants
@@ -86,7 +86,7 @@ EOF;
     /**
      * @param EngineInterface $templating
      * @param string          $format
-     * @param integer         $code       An HTTP response status code
+     * @param int             $code       An HTTP response status code
      *                                    See constants
      * @param bool            $debug
      * @param bool            $debug      See constants
@@ -106,7 +106,7 @@ EOF;
     /**
      * @param  EngineInterface $templating
      * @param string      $format
-     * @param  integer  $code       An HTTP response status code
+     * @param  int  $code       An HTTP response status code
      *                              See constants
      * @param    bool         $debug
      * @param    bool         $debug See constants
