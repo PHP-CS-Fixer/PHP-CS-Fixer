@@ -1,0 +1,37 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-14T20:15:39Z
+
+[![Coverage Status](https://coveralls.io/builds/1609961/badge)](https://coveralls.io/builds/1609961)
+
+Coverage decreased (-0.05%) when pulling **283e64c94b7f5abc4c2d47c9c6e728bd34bcc555 on keradus:show_progress_only_on_txt_output** into **fcc27f078b668cb03f95abbbcc47f9e5441c83c9 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T20:16:51Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-14T20:17:17Z
+
+Looks good to me, perhaps mention in docs that --verbose option is ignored for other output formats?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T20:19:26Z
+
+Why not, could you send PR to be merged into this PR ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T22:30:31Z
+
+Anyone can chack it? (commited readme changes)
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-14T22:33:56Z
+
+:+1:
