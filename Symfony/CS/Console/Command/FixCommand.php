@@ -318,7 +318,9 @@ EOF
             // verify that the config has an instance of Config
             if (!$config instanceof Config) {
                 throw new \UnexpectedValueException(sprintf('The config file "%s" does not return an instance of Symfony\CS\Config\Config', $configFile));
-            } else {
+            }
+
+            if ('txt' === $input->getOption('format')) {
                 $output->writeln(sprintf('Loaded config from "%s"', $configFile));
             }
         } else {
@@ -347,7 +349,7 @@ EOF
             ->setOptions(array(
                 'level'     => $input->getOption('level'),
                 'fixers'    => $input->getOption('fixers'),
-                'progress'  => $output->isVerbose(),
+                'progress'  => $output->isVerbose() && 'txt' === $input->getOption('format'),
             ))
             ->resolve();
 
