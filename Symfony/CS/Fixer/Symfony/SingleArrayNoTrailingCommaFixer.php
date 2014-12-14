@@ -13,6 +13,7 @@ namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -26,9 +27,10 @@ class SingleArrayNoTrailingCommaFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {
-            if ($tokens->isArray($index)) {
+            if ($tokensAnalyzer->isArray($index)) {
                 $this->fixArray($tokens, $index);
             }
         }
@@ -46,7 +48,9 @@ class SingleArrayNoTrailingCommaFixer extends AbstractFixer
 
     private function fixArray(Tokens $tokens, $index)
     {
-        if ($tokens->isArrayMultiLine($index)) {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        if ($tokensAnalyzer->isArrayMultiLine($index)) {
             return;
         }
 
