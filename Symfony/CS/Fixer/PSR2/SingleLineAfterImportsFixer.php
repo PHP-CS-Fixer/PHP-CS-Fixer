@@ -14,6 +14,7 @@ namespace Symfony\CS\Fixer\PSR2;
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * Fixer for rules defined in PSR2 ¶3.
@@ -28,8 +29,9 @@ class SingleLineAfterImportsFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        foreach ($tokens->getImportUseIndexes() as $index) {
+        foreach ($tokensAnalyzer->getImportUseIndexes() as $index) {
             // if previous line ends with comment and current line starts with whitespace, use current indent
             if ($tokens[$index - 1]->isWhitespace(array('whitespaces' => " \t")) && $tokens[$index - 2]->isGivenKind(T_COMMENT)) {
                 $indent = $tokens[$index - 1]->getContent();

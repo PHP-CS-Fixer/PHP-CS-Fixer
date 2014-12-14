@@ -14,6 +14,7 @@ namespace Symfony\CS\Fixer\PSR2;
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * Fixer for rules defined in PSR2 ¶4.3, ¶4.5.
@@ -28,7 +29,8 @@ class VisibilityFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
-        $elements = $tokens->getClassyElements();
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $elements = $tokensAnalyzer->getClassyElements();
 
         foreach (array_reverse($elements, true) as $index => $element) {
             if ('method' === $element['type']) {
