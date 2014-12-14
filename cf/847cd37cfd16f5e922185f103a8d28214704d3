@@ -1,0 +1,100 @@
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-14T21:41:32Z
+
+Please mark as break.
+
+@GrahamCampbell looks like the readme command did something strange here?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T21:41:43Z
+
+Please remember about readme regeneration ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T21:43:20Z
+
+The readme was regenerated. I assume I must have messed the line endings or something...
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T21:44:11Z
+
+Wow, readme shows: `Binary file not shown` :D
+That's why I didn't saw it first time
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T21:56:46Z
+
+Wow. It turned out both the line endings and the encoding had changed. Well done windows...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T21:57:25Z
+
+NB. fabbot.io is still failing until my integer fixes are merged into the master from 1.x.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T22:01:19Z
+
+I am working on Win and have no problems, don't know what had you done wrong :(
+
+I will merge it in few moments, just merging what I can into 1.x ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T22:17:56Z
+
+@keradus I always work on windows, I still complain about it lol. I'll just have to remember to check the encoding next time. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T22:42:16Z
+
+1.x merged into master
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T22:42:48Z
+
+Great. Will rebase this...
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-14T22:54:05Z
+
+[![Coverage Status](https://coveralls.io/builds/1610419/badge)](https://coveralls.io/builds/1610419)
+
+Coverage remained the same when pulling **940c9b66f65b08a30bf82ed8c85c9cbed09a8c83 on GrahamCampbell:phpdoc_align** into **0aaa3e3a93169290e25c882239f2538951fbeb2d on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T22:56:35Z
+
+@keradus Done, and tests are passing. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T23:00:23Z
+
+Just wondering about fabbot :(
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T23:07:12Z
+
+![](http://i.imgur.com/B0XhIDv.png)
+
+?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T23:08:09Z
+
+My bad, when not refreshing page the new commits and comments shows, but hooks status not. after refresh everything is good.
+
+:+1:
