@@ -293,7 +293,8 @@ Choose from the list of available fixers:
                 same indentation as the documented
                 subject.
 
-* **phpdoc_params** [symfony] All items of the @param
+* **phpdoc_params** [symfony] All items of the @param,
+                @throws, @return, @var, and @type
                 phpdoc tags must be aligned
                 vertically.
 

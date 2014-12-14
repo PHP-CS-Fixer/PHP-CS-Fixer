@@ -248,4 +248,113 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
+
+    public function testFixWithVar()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @var Type
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @var   Type
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixWithType()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @type Type
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @type   Type
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixWithVarAndDescription()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * This is a variable.
+     *
+     * @var Type
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * This is a variable.
+     *
+     * @var   Type
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixWithVarAndInlineDescription()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @var Type This is a variable.
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @var   Type   This is a variable.
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixWithTypeAndInlineDescription()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @type Type This is a variable.
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @type   Type   This is a variable.
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
 }
