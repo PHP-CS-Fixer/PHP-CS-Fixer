@@ -1,7 +1,9 @@
 <?php
 
 return Symfony\CS\Config\Config::create()
-    // use default SYMFONY_LEVEL and extra fixers:
+    // use SYMFONY_LEVEL:
+    ->level(Symfony\CS\FixerInterface::SYMFONY_LEVEL)
+    // and extra fixers:
     ->fixers(array(
         'ordered_use',
         'strict',
