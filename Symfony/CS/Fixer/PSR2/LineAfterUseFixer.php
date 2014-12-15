@@ -31,23 +31,39 @@ class LineAfterUseFixer extends AbstractFixer
         $uses = $tokens->getImportUseIndexes();
 
         foreach ($uses as $index) {
-            $semicolonIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
-
-            $afterSemicolon = $tokens->getNextMeaningfulToken($semicolonIndex);
-            $whitespace = "\n\n";
-            if ($tokens[$afterSemicolon]->isGivenKind(T_USE)) {
-                $whitespace = "\n";
+            //if previous line ends with comment and current line starts with whitespace, use current indent
+            if ($tokens[$index - 1]->isWhitespace(array('whitespaces' => " \t")) && $tokens[$index - 2]->isGivenKind(T_COMMENT)) {
+                $indent = $tokens[$index - 1]->getContent();
+            } else {
+                $indent = $this->calculateIndent($tokens[$index - 1]->getContent());
             }
 
+            $newline = "\n";
+
+            $semicolonIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
             $insertIndex = $semicolonIndex + 1;
             if ($tokens[$insertIndex]->isWhitespace(array('whitespaces' => " \t")) && $tokens[$insertIndex + 1]->isComment()) {
-                //if there is a comment or docblock, handle differently
+                $insertIndex++;
             }
-            //if (!$tokens[$insertIndex]->isComment()) {
-                $whitespace .= $this->calculateIndent($tokens[$index - 1]->getContent());
+            if ($tokens[$insertIndex]->isGivenKind(T_COMMENT)) {
+                $newline = "";
+            }
+            if ($tokens[$insertIndex]->isComment()) {
+                $insertIndex++;
+            }
+
+            $afterSemicolon = $tokens->getNextMeaningfulToken($semicolonIndex);
+            if (!$tokens[$afterSemicolon]->isGivenKind(T_USE)) {
+                $newline .= "\n";
+            }
+
+            $whitespace = $newline.$indent;
+            if ($tokens[$insertIndex]->isWhitespace()) {
                 $nextToken = $tokens[$insertIndex];
                 $nextToken->setContent($whitespace.ltrim($nextToken->getContent()));
-            //}
+            } else {
+                $tokens->insertAt($insertIndex, new Token(array(T_WHITESPACE, $whitespace)));
+            }
         }
 
         return $tokens->generateCode();
