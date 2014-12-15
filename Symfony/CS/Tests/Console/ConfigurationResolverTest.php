@@ -508,4 +508,62 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->resolver->isDryRun());
     }
+
+    public function testResolveUsingCacheWithPositiveConfigAndPositiveOption()
+    {
+        $this->config->setUsingCache(true);
+        $this->resolver
+            ->setOption('using-cache', 'yes')
+            ->resolve();
+
+        $this->assertTrue($this->config->usingCache());
+    }
+
+    public function testResolveUsingCacheWithPositiveConfigAndNegativeOption()
+    {
+        $this->config->setUsingCache(true);
+        $this->resolver
+            ->setOption('using-cache', 'no')
+            ->resolve();
+
+        $this->assertFalse($this->config->usingCache());
+    }
+
+    public function testResolveUsingCacheWithNegativeConfigAndPositiveOption()
+    {
+        $this->config->setUsingCache(false);
+        $this->resolver
+            ->setOption('using-cache', 'yes')
+            ->resolve();
+
+        $this->assertTrue($this->config->usingCache());
+    }
+
+    public function testResolveUsingCacheWithNegativeConfigAndNegativeOption()
+    {
+        $this->config->setUsingCache(false);
+        $this->resolver
+            ->setOption('using-cache', 'no')
+            ->resolve();
+
+        $this->assertFalse($this->config->usingCache());
+    }
+
+    public function testResolveUsingCacheWithPositiveConfigAndNoOption()
+    {
+        $this->config->setUsingCache(true);
+        $this->resolver
+            ->resolve();
+
+        $this->assertTrue($this->config->usingCache());
+    }
+
+    public function testResolveUsingCacheWithNegativeConfigAndNoOption()
+    {
+        $this->config->setUsingCache(false);
+        $this->resolver
+            ->resolve();
+
+        $this->assertFalse($this->config->usingCache());
+    }
 }

@@ -46,9 +46,11 @@ class ConfigurationResolver
         'level' => null,
         'path' => null,
         'progress' => null,
+        'using-cache' => null,
     );
     private $path;
     private $progress;
+    private $usingCache;
 
     /**
      * Returns config instance.
@@ -128,8 +130,10 @@ class ConfigurationResolver
         $this->resolveFixersByNames();
 
         $this->resolveProgress();
+        $this->resolveUsingCache();
 
         $this->config->fixers($this->getFixers());
+        $this->config->setUsingCache($this->usingCache);
 
         return $this;
     }
@@ -453,5 +457,19 @@ class ConfigurationResolver
     private function resolveProgress()
     {
         $this->progress = $this->options['progress'] && !$this->config->getHideProgress();
+    }
+
+    /**
+     * Resolve using cache.
+     */
+    private function resolveUsingCache()
+    {
+        if (null !== $this->options['using-cache']) {
+            $this->usingCache = 'yes' === $this->options['using-cache'];
+
+            return;
+        }
+
+        $this->usingCache = $this->config->usingCache();
     }
 }

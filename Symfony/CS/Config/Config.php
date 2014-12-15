@@ -29,7 +29,7 @@ class Config implements ConfigInterface
     protected $fixers;
     protected $dir;
     protected $customFixers;
-    protected $usingCache = false;
+    protected $usingCache = true;
     protected $usingLinter = true;
     protected $hideProgress = false;
 
