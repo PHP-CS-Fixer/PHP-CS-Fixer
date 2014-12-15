@@ -218,6 +218,23 @@ use B2;
 class C1 {}
 ',
             ),
+            array(
+                '<?php
+    namespace A1;
+    use B1; // need to import this !
+    use B2;
+
+    class C1 {}
+',
+                '<?php
+    namespace A1;
+    use B1; // need to import this !
+
+    use B2;
+
+    class C1 {}
+',
+            ),
         );
     }
 }
