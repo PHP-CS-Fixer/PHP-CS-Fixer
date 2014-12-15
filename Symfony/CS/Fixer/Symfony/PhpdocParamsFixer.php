@@ -13,6 +13,7 @@ namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Utils;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -61,9 +62,11 @@ class PhpdocParamsFixer extends AbstractFixer
 
     private function fixDocBlock($content)
     {
-        $lines = explode("\n", str_replace(array("\r\n", "\r"), "\n", $content));
+        $lines = Utils::splitLines($content);
 
-        for ($i = 0, $l = count($lines); $i < $l; ++$i) {
+        $l = count($lines);
+
+        for ($i = 0; $i < $l; ++$i) {
             $items = array();
 
             if ($matches = $this->getMatches($lines[$i])) {
@@ -95,13 +98,13 @@ class PhpdocParamsFixer extends AbstractFixer
                 foreach ($items as $j => $item) {
                     if (null === $item['tag']) {
                         if ($item['desc'][0] === '@') {
-                            $lines[$current + $j] = '     * '.$item['desc'];
+                            $lines[$current + $j] = '     * '.$item['desc']."\n";
                             continue;
                         }
                         $line =
                             '     *  '
                             .str_repeat(' ', ($tagMax + $hintMax + $varMax + ('param' === $currTag ? 3 : 2)))
-                            .$item['desc'];
+                            .$item['desc']."\n";
 
                         $lines[$current + $j] = $line;
 
@@ -123,12 +126,14 @@ class PhpdocParamsFixer extends AbstractFixer
                             .$item['var']
                             .(
                                 !empty($item['desc'])
-                                ? str_repeat(' ', $varMax - strlen($item['var']) + 1).$item['desc']
-                                : ''
+                                ? str_repeat(' ', $varMax - strlen($item['var']) + 1).$item['desc']."\n"
+                                : "\n"
                             )
                         ;
                     } elseif (!empty($item['desc'])) {
-                        $line .= str_repeat(' ', $hintMax - strlen($item['hint']) + 1).$item['desc'];
+                        $line .= str_repeat(' ', $hintMax - strlen($item['hint']) + 1).$item['desc']."\n";
+                    } else {
+                        $line .= "\n";
                     }
 
                     $lines[$current + $j] = $line;
@@ -136,7 +141,7 @@ class PhpdocParamsFixer extends AbstractFixer
             }
         }
 
-        return implode("\n", $lines);
+        return implode($lines);
     }
 
     private function getMatches($line, $matchCommentOnly = false)
