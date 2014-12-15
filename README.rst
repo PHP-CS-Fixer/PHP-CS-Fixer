@@ -282,6 +282,9 @@ Choose from the list of available fixers:
                 new keyword must be followed by
                 braces.
 
+* **no_empty_lines_after_phpdocs** [symfony] There should be no empty
+                lines following phpdocs.
+
 * **object_operator** [symfony] There should not be space
                 before or after object
                 T_OBJECT_OPERATOR.
