@@ -43,7 +43,7 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideCmpIntCases
      */
-    public function testcmpInt($expected, $left, $right)
+    public function testCmpInt($expected, $left, $right)
     {
         $this->assertSame($expected, Utils::cmpInt($left, $right));
     }
@@ -57,6 +57,36 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
             array(-1, -20, -10),
             array(1,   20,  10),
             array(1,  -10, -20),
+        );
+    }
+
+    /**
+     * @dataProvider provideSplitLinesCases
+     */
+    public function testSplitLines(array $expected, $input)
+    {
+        $this->assertSame($expected, Utils::splitLines($input));
+    }
+
+    public function provideSplitLinesCases()
+    {
+        return array(
+            array(
+                array("\t aaa\n", " bbb\n", "\t"),
+                "\t aaa\n bbb\n\t",
+            ),
+            array(
+                array("aaa\r\n", " bbb\r\n"),
+                "aaa\r\n bbb\r\n",
+            ),
+            array(
+                array("aaa\r\n", " bbb\n"),
+                "aaa\r\n bbb\n",
+            ),
+            array(
+                array("aaa\r\n\n\n\r\n", " bbb\n"),
+                "aaa\r\n\n\n\r\n bbb\n",
+            ),
         );
     }
 }

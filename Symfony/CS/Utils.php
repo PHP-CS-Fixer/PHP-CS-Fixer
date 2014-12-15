@@ -35,4 +35,11 @@ class Utils
 
         return $a < $b ? -1 : 1;
     }
+
+    public static function splitLines($content)
+    {
+        preg_match_all("/[^\n\r]+[\r\n]*/", $content, $matches);
+
+        return $matches[0];
+    }
 }
