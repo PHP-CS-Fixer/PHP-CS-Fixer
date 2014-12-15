@@ -124,7 +124,7 @@ problems as possible on a given file or directory:
     php php-cs-fixer.phar fix /path/to/dir
     php php-cs-fixer.phar fix /path/to/file
 
-The ``--verbose`` option displays progress notification and show applied fixers.
+The ``--verbose`` option show applied fixers. When using ``txt`` format (default one) it will also displays progress notification.
 
 The ``--level`` option limits the fixers to apply on the
 project:
@@ -294,13 +294,14 @@ Choose from the list of available fixers:
 * **operators_spaces** [symfony] Operators should be arounded
                 by at least one space.
 
+* **phpdoc_align** [symfony] All items of the @param,
+                @throws, @return, @var, and @type
+                phpdoc tags must be aligned
+                vertically.
+
 * **phpdoc_indent** [symfony] Docblocks should have the
                 same indentation as the documented
                 subject.
-
-* **phpdoc_params** [symfony] All items of the @param
-                phpdoc tags must be aligned
-                vertically.
 
 * **remove_leading_slash_use** [symfony] Remove leading slashes in
                 use clauses.

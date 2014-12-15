@@ -13,6 +13,8 @@ namespace Symfony\CS;
 
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
+ *
+ * @internal
  */
 abstract class AbstractAlignFixer extends AbstractFixer
 {

@@ -31,6 +31,21 @@ class LineAfterUseFixerTest extends AbstractFixerTestBase
         return array(
             array(
                 '<?php
+namespace A\B;
+
+use D;
+
+class C {}
+',
+                '<?php
+namespace A\B;
+
+use D;
+class C {}
+',
+            ),
+            array(
+                '<?php
     namespace A\B;
 
     use D;
@@ -162,6 +177,59 @@ class C {
                 '<?php
     namespace A1;
     use B1;// need to import this !
+    use B2;
+
+    class C1 {}
+',
+            ),
+            array(
+                '<?php
+namespace A1;
+use B1; // need to import this !
+use B2;
+
+class C1 {}
+',
+            ),
+            array(
+                '<?php
+namespace A1;
+use B1;// need to import this !
+use B2;
+
+class C1 {}
+',
+            ),
+            array(
+                '<?php
+namespace A1;
+use B1; /** need to import this !*/
+use B2;
+
+class C1 {}
+',
+            ),
+            array(
+                '<?php
+namespace A1;
+use B1;// need to import this !
+use B2;
+
+class C1 {}
+',
+            ),
+            array(
+                '<?php
+    namespace A1;
+    use B1; // need to import this !
+    use B2;
+
+    class C1 {}
+',
+                '<?php
+    namespace A1;
+    use B1; // need to import this !
+
     use B2;
 
     class C1 {}

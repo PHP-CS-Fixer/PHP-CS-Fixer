@@ -24,6 +24,8 @@ namespace Symfony\CS;
  *  - file changed.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 class FileCacheManager
 {

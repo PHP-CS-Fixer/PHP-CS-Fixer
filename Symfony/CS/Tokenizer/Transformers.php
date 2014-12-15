@@ -18,6 +18,8 @@ use Symfony\CS\Utils;
  * Collection of Transformer classes.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 class Transformers
 {

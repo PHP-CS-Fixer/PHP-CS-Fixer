@@ -17,6 +17,8 @@ use Symfony\Component\EventDispatcher\Event;
  * Event that is fired when file was processed by Fixer.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 class FixerFileProcessedEvent extends Event
 {

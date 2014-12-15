@@ -38,15 +38,16 @@ class LineAfterUseFixer extends AbstractFixer
             if ($tokens[$afterSemicolon]->isGivenKind(T_USE)) {
                 $whitespace = "\n";
             }
-            $whitespace .= $this->calculateIndent($tokens[$index - 1]->getContent());
 
-            $nextToken = $tokens[$semicolonIndex + 1];
-            if (!$nextToken->isWhitespace()) {
-                $tokens->insertAt($semicolonIndex + 1, new Token(array(T_WHITESPACE, $whitespace)));
-                continue;
+            $insertIndex = $semicolonIndex + 1;
+            if ($tokens[$insertIndex]->isWhitespace(array('whitespaces' => " \t")) && $tokens[$insertIndex + 1]->isComment()) {
+                //if there is a comment or docblock, handle differently
             }
-
-            $nextToken->setContent($whitespace.ltrim($nextToken->getContent()));
+            //if (!$tokens[$insertIndex]->isComment()) {
+                $whitespace .= $this->calculateIndent($tokens[$index - 1]->getContent());
+                $nextToken = $tokens[$insertIndex];
+                $nextToken->setContent($whitespace.ltrim($nextToken->getContent()));
+            //}
         }
 
         return $tokens->generateCode();

@@ -48,8 +48,7 @@ class AlignEqualsFixer extends AbstractAlignFixer
         foreach ($tokens as $token) {
             $tokenContent = $token->getContent();
 
-            if ($token->equals('=')
-                && 0 === $parenCount && 0 === $bracketCount) {
+            if ($token->equals('=') && 0 === $parenCount && 0 === $bracketCount) {
                 $token->setContent(sprintf(self::ALIGNABLE_PLACEHOLDER, $deepestLevel).$tokenContent);
                 continue;
             }

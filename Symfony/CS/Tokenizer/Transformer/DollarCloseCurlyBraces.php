@@ -18,6 +18,8 @@ use Symfony\CS\Tokenizer\Tokens;
  * Transform closing `}` for T_DOLLAR_OPEN_CURLY_BRACES into CT_DOLLAR_CLOSE_CURLY_BRACES.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 class DollarCloseCurlyBraces extends AbstractTransformer
 {

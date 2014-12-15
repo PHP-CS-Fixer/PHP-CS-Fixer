@@ -54,83 +54,96 @@ class IndentationFixerTest extends AbstractFixerTestBase
     {
         $cases = array();
 
-        $cases[] = array('
-<?php
-        echo ALPHA;', "
-<?php
-\t\techo ALPHA;");
+        $cases[] = array(
+            '<?php
+        echo ALPHA;',
+            "<?php
+\t\techo ALPHA;",
+        );
 
-        $cases[] = array('
-<?php
-        echo BRAVO;', "
-<?php
-\t\techo BRAVO;");
+        $cases[] = array(
+            '<?php
+        echo BRAVO;',
+            "<?php
+\t\techo BRAVO;",
+        );
 
-        $cases[] = array('
-<?php
-        echo CHARLIE;', "
-<?php
- \t\techo CHARLIE;");
+        $cases[] = array(
+            '<?php
+        echo CHARLIE;',
+            "<?php
+ \t\techo CHARLIE;",
+        );
 
-        $cases[] = array('
-<?php
-        echo DELTA;', "
-<?php
-  \t\techo DELTA;");
+        $cases[] = array(
+            '<?php
+        echo DELTA;',
+            "<?php
+  \t\techo DELTA;",
+        );
 
-        $cases[] = array('
-<?php
-        echo ECHO;', "
-<?php
-   \t\techo ECHO;");
+        $cases[] = array(
+            '<?php
+        echo ECHO;',
+            "<?php
+   \t\techo ECHO;",
+        );
 
-        $cases[] = array('
-<?php
-        echo FOXTROT;', "
-<?php
-\t \techo FOXTROT;");
+        $cases[] = array(
+            '<?php
+        echo FOXTROT;',
+            "<?php
+\t \techo FOXTROT;",
+        );
 
-        $cases[] = array('
-<?php
-        echo GOLF;', "
-<?php
-\t  \techo GOLF;");
+        $cases[] = array(
+            '<?php
+        echo GOLF;',
+            "<?php
+\t  \techo GOLF;",
+        );
 
-        $cases[] = array('
-<?php
-        echo HOTEL;', "
-<?php
-\t   \techo HOTEL;");
+        $cases[] = array(
+            '<?php
+        echo HOTEL;',
+            "<?php
+\t   \techo HOTEL;",
+        );
 
-        $cases[] = array('
-<?php
-        echo INDIA;', "
-<?php
-\t    echo INDIA;");
+        $cases[] = array(
+            '<?php
+        echo INDIA;',
+            "<?php
+\t    echo INDIA;",
+        );
 
-        $cases[] = array('
-<?php
-        echo JULIET;', "
-<?php
- \t   \techo JULIET;");
+        $cases[] = array(
+            '<?php
+        echo JULIET;',
+            "<?php
+ \t   \techo JULIET;",
+        );
 
-        $cases[] = array('
-<?php
-        echo KILO;', "
-<?php
-  \t  \techo KILO;");
+        $cases[] = array(
+            '<?php
+        echo KILO;',
+            "<?php
+  \t  \techo KILO;",
+        );
 
-        $cases[] = array('
-<?php
-        echo MIKE;', "
-<?php
-   \t \techo MIKE;");
+        $cases[] = array(
+            '<?php
+        echo MIKE;',
+            "<?php
+   \t \techo MIKE;",
+        );
 
-        $cases[] = array('
-<?php
-        echo NOVEMBER;', "
-<?php
-    \techo NOVEMBER;");
+        $cases[] = array(
+            '<?php
+        echo NOVEMBER;',
+            "<?php
+    \techo NOVEMBER;",
+        );
 
         return $cases;
     }
@@ -139,23 +152,26 @@ class IndentationFixerTest extends AbstractFixerTestBase
     {
         $cases = array();
 
-        $cases[] = array('
-<?php
-         echo OSCAR;', "
-<?php
-\t \t echo OSCAR;");
+        $cases[] = array(
+            '<?php
+         echo OSCAR;',
+            "<?php
+\t \t echo OSCAR;",
+        );
 
-        $cases[] = array('
-<?php
-          echo PAPA;', "
-<?php
-\t \t  echo PAPA;");
+        $cases[] = array(
+            '<?php
+          echo PAPA;',
+            "<?php
+\t \t  echo PAPA;",
+        );
 
-        $cases[] = array('
-<?php
-           echo QUEBEC;', "
-<?php
-\t \t   echo QUEBEC;");
+        $cases[] = array(
+            '<?php
+           echo QUEBEC;',
+            "<?php
+\t \t   echo QUEBEC;",
+        );
 
         return $cases;
     }
@@ -181,8 +197,7 @@ class IndentationFixerTest extends AbstractFixerTestBase
         $cases = array();
 
         $cases[] = array(
-            '
-<?php
+            '<?php
     /**
      * Test that tabs in docblocks are converted to spaces.
      *
@@ -190,8 +205,7 @@ class IndentationFixerTest extends AbstractFixerTestBase
      *
      * @return
      */',
-            "
-<?php
+            "<?php
 \t/**
 \t * Test that tabs in docblocks are converted to spaces.
 \t *
@@ -202,40 +216,34 @@ class IndentationFixerTest extends AbstractFixerTestBase
         );
 
         $cases[] = array(
-            '
-<?php
+            '<?php
         /**
          * Test that tabs in docblocks are converted to spaces.
          */',
-            "
-<?php
+            "<?php
 \t\t/**
 \t\t * Test that tabs in docblocks are converted to spaces.
 \t\t */",
         );
 
         $cases[] = array(
-            '
-<?php
+            '<?php
     /*
      | Test that tabs in comments are converted to spaces.
      */',
-            "
-<?php
+            "<?php
 \t/*
 \t | Test that tabs in comments are converted to spaces.
 \t */",
         );
 
         $cases[] = array(
-            "
-<?php
+            "<?php
     /**
      * This variable
      * should not be '\t', really!
      */",
-            "
-<?php
+            "<?php
 \t/**
 \t * This variable
 \t * should not be '\t', really!

@@ -15,6 +15,8 @@ namespace Symfony\CS;
  * Obtain information about using version of tool.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 class ToolInfo
 {
