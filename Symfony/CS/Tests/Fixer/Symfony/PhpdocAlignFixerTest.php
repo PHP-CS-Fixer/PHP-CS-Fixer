@@ -357,4 +357,10 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
+
+    public function testRetainsNewLineCharacters()
+    {
+        // when we're not modifying a docblock, then line endings shouldn't change
+        $this->makeTest("<?php\r    /**\r     * @param Example Hello there!\r     */\r");
+    }
 }
