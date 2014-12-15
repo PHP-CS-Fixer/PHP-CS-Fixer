@@ -136,7 +136,7 @@ project:
     php php-cs-fixer.phar fix /path/to/project --level=psr2
     php php-cs-fixer.phar fix /path/to/project --level=symfony
 
-By default, all PSR-2 fixers and some additional ones are run. The "contrib
+By default, all PSR fixers are run. The "contrib
 level" fixers cannot be enabled via this option; you should instead set them
 manually by their name via the ``--fixers`` option.
 
@@ -382,7 +382,7 @@ configuration in a ``.php_cs`` file in the root directory of
 your project. The file must return an instance of
 ``Symfony\CS\ConfigInterface``, which lets you configure the fixers, the level, the files,
 and directories that need to be analyzed. The example below will add two contrib fixers
-to the default list of symfony-level fixers:
+to the default list of PSR2-level fixers:
 
 .. code-block:: php
 
@@ -433,19 +433,19 @@ Note the additional ``-`` in front of the Fixer name.
         ->finder($finder)
     ;
 
-The ``symfony`` level is set by default, you can also change the default level:
+The ``psr2`` level is set by default, you can also change the default level:
 
 .. code-block:: php
 
     <?php
 
     return Symfony\CS\Config\Config::create()
-        ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
+        ->level(Symfony\CS\FixerInterface::SYMFONY_LEVEL)
     ;
 
 In combination with these config and command line options, you can choose various usage.
 
-For example, default level is ``symfony``, but if you also don't want to use
+For example, default level is ``psr2``, but if you also don't want to use
 the ``psr0`` fixer, you can specify the ``--fixers="-psr0"`` option.
 
 But if you use the ``--fixers`` option with only exact fixers,
