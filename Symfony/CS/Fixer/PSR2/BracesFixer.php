@@ -310,6 +310,11 @@ class BracesFixer extends AbstractFixer
             // insert closing brace
             $tokens->insertAt($statementEndIndex + 1, array(new Token(array(T_WHITESPACE, ' ')), new Token('}')));
 
+            // insert missing `;` if needed
+            if (!$tokens[$statementEndIndex]->equalsAny(array(';', '}'))) {
+                $tokens->insertAt($statementEndIndex + 1, new Token(';'));
+            }
+
             // insert opening brace
             $tokens->removeTrailingWhitespace($parenthesisEndIndex);
             $tokens->insertAt($parenthesisEndIndex + 1, new Token('{'));
@@ -430,11 +435,15 @@ class BracesFixer extends AbstractFixer
             $token = $tokens[++$index];
 
             if ($token->equals(';')) {
-                break;
+                return $index;
+            }
+
+            if ($token->isGivenKind(T_CLOSE_TAG)) {
+                return $tokens->getPrevNonWhitespace($index);
             }
         }
 
-        return $index;
+        throw new \RuntimeExpcetion('Statement end not found');
     }
 
     private function getClassyTokens()

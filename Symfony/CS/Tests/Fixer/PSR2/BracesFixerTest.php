@@ -578,6 +578,12 @@ function mixedComplex()
         }
     }',
             ),
+            array(
+                '<?php if (true) {
+    echo "s";
+} ?>x',
+                '<?php if (true) echo "s" ?>x',
+            ),
         );
     }
 
