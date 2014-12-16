@@ -230,7 +230,7 @@ class BracesFixer extends AbstractFixer
             // fix indent near opening brace
             if (isset($tokens[$startBraceIndex + 2]) && $tokens[$startBraceIndex + 2]->equals('}')) {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent);
-            } else {
+            } elseif (!$tokens[$index]->isClassy()) {
                 $nextToken = $tokens[$startBraceIndex + 1];
                 $nextNonWhitespaceToken = $tokens[$tokens->getNextNonWhitespace($startBraceIndex)];
 
@@ -239,6 +239,11 @@ class BracesFixer extends AbstractFixer
                     !$nextNonWhitespaceToken->isComment()
                     || !($nextToken->isWhitespace() && $nextToken->isWhitespace(array('whitespaces' => " \t")))
                 ) {
+                    $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
+                }
+            } else {
+                $nextToken = $tokens[$startBraceIndex + 1];
+                if ($nextToken->isWhitespace(array('whitespaces' => " \t")) || !$nextToken->isWhitespace()) {
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
                 }
             }
