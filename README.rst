@@ -239,6 +239,11 @@ Choose from the list of available fixers:
                 omitted from files containing only
                 PHP.
 
+* **single_line_after_imports** [PSR-2] Each namespace use MUST go on
+                its own line and there MUST be one
+                blank line after the use statements
+                block.
+
 * **trailing_spaces** [PSR-2] Remove trailing whitespace at
                 the end of non-blank lines.
 
