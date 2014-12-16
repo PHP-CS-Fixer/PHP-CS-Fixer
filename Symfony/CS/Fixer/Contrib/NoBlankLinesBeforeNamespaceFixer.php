@@ -33,20 +33,20 @@ class NoBlankLinesBeforeNamespaceFixer extends AbstractFixer
     }
 
     /**
-     * @param  Tokens $tokens
+     * @param Tokens $tokens
+     *
      * @return bool
      */
     private function needsToBeFixed(Tokens $tokens)
     {
         $firstTokenIsOpenTag = $this->isOpenTag($tokens[0]);
-
         $indexOfFirstNamespaceToken = $this->getIndexOfFirstNamespaceToken($tokens);
-
+        $thereIsANamespaceToken = $indexOfFirstNamespaceToken !== null;
         $onlyNewlinesInBetween = $this->onlyNewlinesBetweenIndices($tokens, 1, $indexOfFirstNamespaceToken);
 
         return
             $firstTokenIsOpenTag &&
-            $indexOfFirstNamespaceToken !== null &&
+            $thereIsANamespaceToken &&
             $onlyNewlinesInBetween;
     }
 
@@ -63,7 +63,8 @@ class NoBlankLinesBeforeNamespaceFixer extends AbstractFixer
     }
 
     /**
-     * @param  Tokens   $tokens
+     * @param Tokens $tokens
+     *
      * @return int|null
      */
     private function getIndexOfFirstNamespaceToken(Tokens $tokens)
@@ -78,7 +79,8 @@ class NoBlankLinesBeforeNamespaceFixer extends AbstractFixer
     }
 
     /**
-     * @param  Token $token
+     * @param Token $token
+     *
      * @return bool
      */
     private function isOpenTag(Token $token)
@@ -87,9 +89,10 @@ class NoBlankLinesBeforeNamespaceFixer extends AbstractFixer
     }
 
     /**
-     * @param  Tokens $tokens
-     * @param  int    $startIndex
-     * @param  int    $endIndex
+     * @param Tokens $tokens
+     * @param int    $startIndex
+     * @param int    $endIndex
+     *
      * @return bool
      */
     private function onlyNewlinesBetweenIndices(Tokens $tokens, $startIndex, $endIndex)
