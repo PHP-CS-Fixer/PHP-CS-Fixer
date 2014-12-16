@@ -69,7 +69,6 @@ class StdinFileInfo extends \SplFileInfo
          * The idea to use STDIN is to parse PHP-only files, so we can
          * assume that there will be always a PHP file out there.
          */
-
         return 'stdin.php';
     }
 
