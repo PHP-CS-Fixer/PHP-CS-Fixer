@@ -13,6 +13,7 @@ namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Utils;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
@@ -42,7 +43,7 @@ class PhpdocIndentFixer extends AbstractFixer
                 continue;
             }
 
-            $indent = $this->calculateIndent($tokens[$nextIndex - 1]->getContent());
+            $indent = Utils::calculateIndent($tokens[$nextIndex - 1]->getContent());
 
             $prevToken->setContent($this->fixWhitespaceBefore($prevToken->getContent(), $indent));
             $token->setContent($this->fixDocBlock($token->getContent(), $indent));
@@ -83,17 +84,5 @@ class PhpdocIndentFixer extends AbstractFixer
     private function fixWhitespaceBefore($content, $indent)
     {
         return rtrim($content, " \t").$indent;
-    }
-
-    /**
-     * Calculate used indentation from the whitespace before documented subject.
-     *
-     * @param string $content Whitespace before documented subject
-     *
-     * @return string
-     */
-    private function calculateIndent($content)
-    {
-        return ltrim(strrchr(str_replace(array("\r\n", "\r"), "\n", $content), 10), "\n");
     }
 }
