@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Ceeram <ceeram@cakephp.org>
  */
-class LineAfterUseFixerTest extends AbstractFixerTestBase
+class SingleLineAfterImportsFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

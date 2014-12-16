@@ -19,8 +19,9 @@ use Symfony\CS\Tokenizer\Tokens;
  * Fixer for rules defined in PSR2 ¶3.
  *
  * @author Ceeram <ceeram@cakephp.org>
+ * @author Graham Campbell <graham@mineuk.com>
  */
-class LineAfterUseFixer extends AbstractFixer
+class SingleLineAfterImportsFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -28,9 +29,8 @@ class LineAfterUseFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
-        $uses = $tokens->getImportUseIndexes();
 
-        foreach ($uses as $index) {
+        foreach ($tokens->getImportUseIndexes() as $index) {
             // if previous line ends with comment and current line starts with whitespace, use current indent
             if ($tokens[$index - 1]->isWhitespace(array('whitespaces' => " \t")) && $tokens[$index - 2]->isGivenKind(T_COMMENT)) {
                 $indent = $tokens[$index - 1]->getContent();
