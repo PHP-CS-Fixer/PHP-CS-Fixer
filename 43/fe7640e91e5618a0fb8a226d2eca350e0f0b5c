@@ -1,0 +1,150 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-16T00:03:40Z
+
+[![Coverage Status](https://coveralls.io/builds/1616179/badge)](https://coveralls.io/builds/1616179)
+
+Coverage increased (+0.03%) when pulling **47b0d5f9b3cd6e969548f385a723abae266d6fd1 on ceeram:bug-567** into **0dc9c1272a414d754d30a160fe58eac1ee8cceb6 on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-16T00:05:42Z
+
+Travis fail looks like packagist didnt respond in time. not related to this PR
+
+Please restart the build
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T07:55:54Z
+
+Please recommit latest commit to restart the build.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T07:56:44Z
+
+You have removed one functionallity.
+It should be added as separate fixer.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-16T08:11:10Z
+
+Yes i know that. We have discussed that in the bugthread already. I know
+its desired by symfony but the prs2 fixer must not remove it. I didnt
+remove desired psr2 funtionality. You can restart travis easily without me
+needing to repush.
+Op 16 dec. 2014 08:56 schreef "Dariusz Rumiński" <notifications@github.com>:
+
+> You have removed one functionallity.
+> It should be added as separate fixer.
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/874#issuecomment-67124201>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T08:27:37Z
+
+And I said that this won't be merge until that removed functionallity will be added in separated fixer.
+
+About restarting - indeed, some time ago I didn't have that rights for this project ;)
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-16T08:43:28Z
+
+If you rather keep existing bugs fine. Too busy atm to work on new fixer.
+Op 16 dec. 2014 09:27 schreef "Dariusz Rumiński" <notifications@github.com>:
+
+> And I said that this won't be merge until that removed functionallity in
+> separated fixer.
+>
+> About restarting - indeed, some time ago I didn't have that rights for
+> this project ;)
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/874#issuecomment-67126738>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T09:08:02Z
+
+I just don't want to remove functionallity. Splitting is cool.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-16T09:18:21Z
+
+Current funtionality is wrong and should be removed to not break psr2 valid
+code. If symfony wants this then symfony level  should get a new fixer
+indeed but the current implementation is wrong for psr2. Removing it wont
+break symfony code as it wont add newlines in correct code, it just no
+longer removes newlines where it used to do that.
+Op 16 dec. 2014 10:08 schreef "Dariusz Rumiński" <notifications@github.com>:
+
+> I just don't want to remove functionallity. Splitting is cool.
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/874#issuecomment-67130533>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T09:19:39Z
+
+I didn't say anywhere it is a bad change!
+It is cool change!
+Just missing functionallity is sad.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T09:22:23Z
+
+Yeh, need to be moved to a symfony fixer. Maybe that part can go into another pull since this one is addressing a bug in that a fixer at psr-2 level doesn't conform totally to psr-2.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T09:55:50Z
+
+ok, we can merge it separately, but still need to do write it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T10:07:09Z
+
+Can we make a "todo" issue so we don't forget about it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T20:10:34Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T20:15:54Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T22:09:17Z
+
+OK, I will create an issue for that removed behavior.
+This one is good to go then !
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T22:11:40Z
+
+Mergy mergy! (might use that more often - second time usage just now) :P
