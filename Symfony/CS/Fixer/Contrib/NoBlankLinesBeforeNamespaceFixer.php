@@ -13,8 +13,8 @@ namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\FixerInterface;
-use Symfony\CS\Tokenizer\Tokens;
 use Symfony\CS\Tokenizer\Token;
+use Symfony\CS\Tokenizer\Tokens;
 
 class NoBlankLinesBeforeNamespaceFixer extends AbstractFixer
 {
@@ -25,7 +25,7 @@ class NoBlankLinesBeforeNamespaceFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        if ($this->needsToBeFixed($tokens)){
+        if ($this->needsToBeFixed($tokens)) {
             $this->fixTokens($tokens);
         }
 
@@ -33,7 +33,7 @@ class NoBlankLinesBeforeNamespaceFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
+     * @param  Tokens $tokens
      * @return bool
      */
     private function needsToBeFixed(Tokens $tokens)
@@ -63,7 +63,7 @@ class NoBlankLinesBeforeNamespaceFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
+     * @param  Tokens   $tokens
      * @return int|null
      */
     private function getIndexOfFirstNamespaceToken(Tokens $tokens)
@@ -73,11 +73,12 @@ class NoBlankLinesBeforeNamespaceFixer extends AbstractFixer
                 return $tokenNumber;
             }
         }
-        return null;
+
+        return;
     }
 
     /**
-     * @param Token $token
+     * @param  Token $token
      * @return bool
      */
     private function isOpenTag(Token $token)
@@ -86,13 +87,13 @@ class NoBlankLinesBeforeNamespaceFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
+     * @param  Tokens $tokens
+     * @param  int    $startIndex
+     * @param  int    $endIndex
      * @return bool
      */
-    private function onlyNewlinesBetweenIndices(Tokens $tokens, $startIndex, $endIndex) {
-
+    private function onlyNewlinesBetweenIndices(Tokens $tokens, $startIndex, $endIndex)
+    {
         for ($tokenIndex = $startIndex; $tokenIndex < $endIndex; ++$tokenIndex) {
             if (!preg_match('/^[\n\r]+$/', $tokens[$tokenIndex]->getContent())) {
                 return false;
