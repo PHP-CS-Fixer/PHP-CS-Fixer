@@ -15,6 +15,7 @@ use Symfony\CS\Utils;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Graham Campbell <graham@mineuk.com>
  */
 class UtilsTest extends \PHPUnit_Framework_TestCase
 {
@@ -87,6 +88,23 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
                 array("aaa\r\n\n\n\r\n", " bbb\n"),
                 "aaa\r\n\n\n\r\n bbb\n",
             ),
+        );
+    }
+
+    /**
+     * @dataProvider provideCountNewLinesCases
+     */
+    public function testCountNewLines($count, $input)
+    {
+        $this->assertSame($count, Utils::countNewLines($input));
+    }
+
+    public function provideCountNewLinesCases()
+    {
+        return array(
+            array(2, "\t aaa\n vcvxc\n\t"),
+            array(4, " \n \r asd\r asd  \n"),
+            array(7, "aaa\r\n\nxcv\n\r\n bbb\n"),
         );
     }
 }
