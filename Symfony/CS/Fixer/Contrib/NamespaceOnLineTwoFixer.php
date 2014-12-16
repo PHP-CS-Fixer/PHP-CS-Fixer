@@ -26,7 +26,7 @@ class NamespaceOnLineTwoFixer extends AbstractFixer
 
         if (
             $tokens[0]->isGivenKind(T_OPEN_TAG) &&
-            $tokens[1]->getContent() == "\n" &&
+            $tokens[1]->getContent() === "\n" &&
             $tokens[2]->isGivenKind(T_NAMESPACE)
         ) {
             $tokens[1]->setContent('');
