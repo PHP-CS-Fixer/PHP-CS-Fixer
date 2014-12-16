@@ -13,7 +13,7 @@ namespace Symfony\CS\Tests\Fixer\Contrib;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class NamespaceOnLineTwoFixerTest extends AbstractFixerTestBase
+class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideExamples

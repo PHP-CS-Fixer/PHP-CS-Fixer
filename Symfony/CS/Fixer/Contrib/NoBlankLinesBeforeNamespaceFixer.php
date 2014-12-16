@@ -15,7 +15,7 @@ use Symfony\CS\AbstractFixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Tokenizer\Tokens;
 
-class NamespaceOnLineTwoFixer extends AbstractFixer
+class NoBlankLinesBeforeNamespaceFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -40,7 +40,7 @@ class NamespaceOnLineTwoFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Namespace on line 2 - i.e. remove a blank line between open tag and namespace';
+        return 'No blank lines before namespace - i.e. remove a blank line between open tag and namespace';
     }
 
     /**

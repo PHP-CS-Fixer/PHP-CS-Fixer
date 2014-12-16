@@ -340,9 +340,9 @@ Choose from the list of available fixers:
 * **multiline_spaces_before_semicolon** [contrib] Multi-line whitespace before
                 closing semicolon are prohibited.
 
-* **namespace_on_line_two** [contrib] Namespace on line 2 - i.e.
-                remove a blank line between open tag
-                and namespace
+* **no_blank_lines_before_namespace** [contrib] No blank lines before
+                namespace - i.e. remove a blank line
+                between open tag and namespace
 
 * **ordered_use** [contrib] Ordering use statements.
 
