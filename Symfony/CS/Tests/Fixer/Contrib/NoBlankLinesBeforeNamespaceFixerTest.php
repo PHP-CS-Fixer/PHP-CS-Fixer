@@ -17,18 +17,33 @@ class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideExamples
+     *
+     * @param string      $expected
+     * @param string|null $input
      */
     public function testFix($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
 
+    /**
+     * @return array
+     */
     public function provideExamples()
     {
         return array(
+
+            // 'Happy path'
             array("<?php\nnamespace X;", "<?php\n\nnamespace X;"),
+
+            // Multiple newlines
             array("<?php\nnamespace X;", "<?php\n\n\n\nnamespace X;"),
+
+            // Windows-style newlines
             array("<?php\nnamespace X;", "<?php\n\rnamespace X;"),
+
+            // No namespace
+            array("<?php\nsome_code();\nsome_more_code();", "<?php\nsome_code();\nsome_more_code();"),
 
             // Don't change if there is a copyright notice
             array($this->getExampleWithComment(), $this->getExampleWithComment()),
@@ -36,6 +51,9 @@ class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestBase
         );
     }
 
+    /**
+     * @return string
+     */
     private function getExampleWithComment()
     {
         return <<<EOF
@@ -52,6 +70,5 @@ class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestBase
 
 namespace Symfony\CS\Fixer\Contrib;
 EOF;
-
     }
 }
