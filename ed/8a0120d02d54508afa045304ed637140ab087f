@@ -1,0 +1,147 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-15T17:53:33Z
+
+Just tested this: https://github.com/thephpleague/climate/pull/42. Pretty decent results. Note that the move of the use statement was a manual fix made by me in the first file there.
+
+Also, just tested this on symfony 2.3 - symfony/symfony#12993.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-15T19:10:59Z
+
+Don't like the idea of that kinds you supported here.
+No support of constants for example.
+
+Is it really needed to remove whiteline not after docs as you wroted in descr, but between docs and tokens of accepted kinds?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-15T19:11:21Z
+
+> No support of constants for example.
+
+They should be? I'll update docs, and add tests for them too.
+
+> Is it really needed to remove whiteline not after docs as you wroted in descr, but between docs and tokens of accepted kinds?
+
+It is a symfony coding standard though?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-15T19:20:21Z
+
+I thought the standard is to not put empty line after docs - whetever next token is.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-15T19:23:40Z
+
+Hmmmm. Not sure, maybe you're right actually. I'll modify it to do that, and run it again on symfony, and see what the results are.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-15T19:47:22Z
+
+@keradus You seem to be right. I'll change this.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-15T20:20:21Z
+
+@keradus Ready for review now. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-15T20:30:59Z
+
+I assume this will make it into 1.4? It's had pretty good testing - run on symfony and another repo.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-15T20:55:56Z
+
+Yes, it is already assigned into 1.4.
+I just want no new PR addressed 1.4 except bug fixes - then we will be able to release 1.4
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-15T21:08:24Z
+
+[![Coverage Status](https://coveralls.io/builds/1615141/badge)](https://coveralls.io/builds/1615141)
+
+Coverage remained the same when pulling **188ef4252ba504812023f54d99253dadeddbeea4 on GrahamCampbell:1.4-no-line-after-phpdoc** into **8be2ab142c1a2512fbe71b8962dbb51d95cf18fa on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-15T21:20:56Z
+
+[![Coverage Status](https://coveralls.io/builds/1615235/badge)](https://coveralls.io/builds/1615235)
+
+Coverage remained the same when pulling **2f4503fea895cf4209d636be678c9022a24592d1 on GrahamCampbell:1.4-no-line-after-phpdoc** into **8be2ab142c1a2512fbe71b8962dbb51d95cf18fa on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-15T21:30:41Z
+
+[![Coverage Status](https://coveralls.io/builds/1615295/badge)](https://coveralls.io/builds/1615295)
+
+Coverage increased (+0.09%) when pulling **c42e87ebc6081d3a40ab26bc81d3f273ace71d4c on GrahamCampbell:1.4-no-line-after-phpdoc** into **43dcac52a7db74faed433659b9539cbacdf51be9 on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-15T21:30:42Z
+
+[![Coverage Status](https://coveralls.io/builds/1615295/badge)](https://coveralls.io/builds/1615295)
+
+Coverage increased (+0.09%) when pulling **c42e87ebc6081d3a40ab26bc81d3f273ace71d4c on GrahamCampbell:1.4-no-line-after-phpdoc** into **43dcac52a7db74faed433659b9539cbacdf51be9 on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-15T21:32:37Z
+
+@keradus Done. It worked on symfony, and travis is happy.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-15T21:43:48Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-16T16:25:16Z
+
+[![Coverage Status](https://coveralls.io/builds/1619713/badge)](https://coveralls.io/builds/1619713)
+
+Coverage increased (+0.09%) when pulling **acf81a53f4840f2c8959496fe1a65324c4f0b2e9 on GrahamForks:1.4-no-line-after-phpdoc** into **0dc9c1272a414d754d30a160fe58eac1ee8cceb6 on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T16:28:26Z
+
+Just rebased to check the tests are still passing. No changes made otherwise.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T19:23:29Z
+
+So, ready to go ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T19:24:05Z
+
+Absolutely, yeh. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T19:25:59Z
+
+Mergy mergy?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T19:41:59Z
+
+Very well. Then it just need to pass my tests.
