@@ -29,6 +29,29 @@ class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestBase
             array("<?php\nnamespace X;", "<?php\n\nnamespace X;"),
             array("<?php\nnamespace X;", "<?php\n\n\n\nnamespace X;"),
             array("<?php\nnamespace X;", "<?php\n\rnamespace X;"),
+
+            // Don't change if there is a copyright notice
+            array($this->getExampleWithComment(), $this->getExampleWithComment()),
+
         );
+    }
+
+    private function getExampleWithComment()
+    {
+        return <<<EOF
+<?php
+
+/*
+ * This file is part of the PHP CS utility.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace Symfony\CS\Fixer\Contrib;
+EOF;
+
     }
 }
