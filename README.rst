@@ -340,6 +340,9 @@ Choose from the list of available fixers:
 * **multiline_spaces_before_semicolon** [contrib] Multi-line whitespace before
                 closing semicolon are prohibited.
 
+* **no_blank_lines_before_namespace** [contrib] There should be no blank
+                lines before a namespace declaration.
+
 * **ordered_use** [contrib] Ordering use statements.
 
 * **short_array_syntax** [contrib] PHP array's should use the
