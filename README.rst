@@ -298,6 +298,13 @@ Choose from the list of available fixers:
                 phpdoc tags must be aligned
                 vertically.
 
+* **phpdoc_separation** [symfony] Annotations in phpdocs
+                should be grouped together so that
+                annotations of the same type
+                immediately follow each other, and
+                annotations of a different type are
+                separated by a single blank line.
+
 * **remove_leading_slash_use** [symfony] Remove leading slashes in
                 use clauses.
 
