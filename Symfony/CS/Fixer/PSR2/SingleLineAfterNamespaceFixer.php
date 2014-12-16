@@ -20,7 +20,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class LineAfterNamespaceFixer extends AbstractFixer
+class SingleLineAfterNamespaceFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
