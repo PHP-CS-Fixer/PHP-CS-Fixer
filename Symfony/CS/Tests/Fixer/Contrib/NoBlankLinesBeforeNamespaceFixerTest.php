@@ -27,6 +27,8 @@ class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestBase
     {
         return array(
             array("<?php\nnamespace X;", "<?php\n\nnamespace X;"),
+            array("<?php\nnamespace X;", "<?php\n\n\n\nnamespace X;"),
+            array("<?php\nnamespace X;", "<?php\n\rnamespace X;"),
         );
     }
 }

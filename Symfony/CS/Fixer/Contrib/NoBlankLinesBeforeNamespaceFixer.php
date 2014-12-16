@@ -14,6 +14,7 @@ namespace Symfony\CS\Fixer\Contrib;
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\Token;
 
 class NoBlankLinesBeforeNamespaceFixer extends AbstractFixer
 {
@@ -24,15 +25,81 @@ class NoBlankLinesBeforeNamespaceFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        if (
-            $tokens[0]->isGivenKind(T_OPEN_TAG) &&
-            $tokens[1]->getContent() === "\n" &&
-            $tokens[2]->isGivenKind(T_NAMESPACE)
-        ) {
-            $tokens[1]->setContent('');
+        if ($this->needsToBeFixed($tokens)){
+            $this->fixTokens($tokens);
         }
 
         return $tokens->generateCode();
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @return bool
+     */
+    private function needsToBeFixed(Tokens $tokens)
+    {
+        $firstTokenIsOpenTag = $this->isOpenTag($tokens[0]);
+
+        $indexOfFirstNamespaceToken = $this->getIndexOfFirstNamespaceToken($tokens);
+
+        $onlyNewlinesInBetween = $this->onlyNewlinesBetweenIndices($tokens, 1, $indexOfFirstNamespaceToken);
+
+        return
+            $firstTokenIsOpenTag &&
+            $indexOfFirstNamespaceToken !== null &&
+            $onlyNewlinesInBetween;
+    }
+
+    /**
+     * @param Tokens $tokens
+     */
+    private function fixTokens(Tokens $tokens)
+    {
+        $indexOfFirstNamespaceToken = $this->getIndexOfFirstNamespaceToken($tokens);
+
+        for ($tokenIndex = 1; $tokenIndex < $indexOfFirstNamespaceToken; ++$tokenIndex) {
+            $tokens[$tokenIndex]->setContent('');
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @return int|null
+     */
+    private function getIndexOfFirstNamespaceToken(Tokens $tokens)
+    {
+        foreach ($tokens as $tokenNumber => $token) {
+            if ($token->isGivenKind(T_NAMESPACE)) {
+                return $tokenNumber;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param Token $token
+     * @return bool
+     */
+    private function isOpenTag(Token $token)
+    {
+        return $token->isGivenKind(T_OPEN_TAG);
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $startIndex
+     * @param int    $endIndex
+     * @return bool
+     */
+    private function onlyNewlinesBetweenIndices(Tokens $tokens, $startIndex, $endIndex) {
+
+        for ($tokenIndex = $startIndex; $tokenIndex < $endIndex; ++$tokenIndex) {
+            if (!preg_match('/^[\n\r]+$/', $tokens[$tokenIndex]->getContent())) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
