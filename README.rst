@@ -210,9 +210,6 @@ Choose from the list of available fixers:
                 spaces, and MUST NOT use tabs for
                 indenting.
 
-* **line_after_namespace** [PSR-2] There MUST be one blank line
-                after the namespace declaration.
-
 * **linefeed** [PSR-2] All PHP files must use the
                 Unix LF (linefeed) line ending.
 
@@ -238,6 +235,9 @@ Choose from the list of available fixers:
 * **php_closing_tag** [PSR-2] The closing ?> tag MUST be
                 omitted from files containing only
                 PHP.
+
+* **single_line_after_namespace** [PSR-2] There MUST be one blank line
+                after the namespace declaration.
 
 * **trailing_spaces** [PSR-2] Remove trailing whitespace at
                 the end of non-blank lines.

@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class LineAfterNamespaceFixerTest extends AbstractFixerTestBase
+class SingleLineAfterNamespaceFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
