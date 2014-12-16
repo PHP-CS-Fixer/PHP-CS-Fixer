@@ -111,7 +111,7 @@ class NoBlankLinesBeforeNamespaceFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'No blank lines before namespace - i.e. remove a blank line between open tag and namespace';
+        return 'There should be no blank lines before a namespace declaration.';
     }
 
     /**

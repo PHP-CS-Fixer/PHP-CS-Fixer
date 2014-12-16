@@ -340,9 +340,8 @@ Choose from the list of available fixers:
 * **multiline_spaces_before_semicolon** [contrib] Multi-line whitespace before
                 closing semicolon are prohibited.
 
-* **no_blank_lines_before_namespace** [contrib] No blank lines before
-                namespace - i.e. remove a blank line
-                between open tag and namespace
+* **no_blank_lines_before_namespace** [contrib] There should be no blank
+                lines before a namespace declaration.
 
 * **ordered_use** [contrib] Ordering use statements.
 
