@@ -13,6 +13,7 @@ namespace Symfony\CS\Console;
 
 use Symfony\CS\Config\Config;
 use Symfony\CS\FixerInterface;
+use Symfony\CS\StdinFileInfo;
 
 /**
  * The resolver that resolves configuration to use by command line options and config.
@@ -81,13 +82,15 @@ class ConfigurationResolver
     }
 
     /**
-     * Resolves fixers.
+     * Resolve configuration.
      *
      * @return ConfigurationResolver
      */
     public function resolve()
     {
         $this->resolveConfig();
+        $this->resolveConfigPath();
+
         $this->resolveFixersByLevel();
         $this->resolveFixersByNames();
 
@@ -178,6 +181,20 @@ class ConfigurationResolver
         }
 
         $this->config = $this->defaultConfig;
+    }
+
+    protected function resolveConfigPath()
+    {
+        $path = $this->options['path'];
+        $isStdIn = $this->options['isStdIn'];
+
+        if (is_file($path)) {
+            $this->config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
+        } elseif ($isStdIn) {
+            $this->config->finder(new \ArrayIterator(array(new StdinFileInfo())));
+        } elseif (null !== $path) {
+            $this->config->setDir($path);
+        }
     }
 
     protected function resolveFixersByLevel()

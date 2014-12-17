@@ -27,7 +27,6 @@ use Symfony\CS\Fixer;
 use Symfony\CS\FixerFileProcessedEvent;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\LintManager;
-use Symfony\CS\StdinFileInfo;
 use Symfony\CS\Utils;
 
 /**
@@ -311,14 +310,6 @@ EOF
 
         if ($configFile && 'txt' === $input->getOption('format')) {
             $output->writeln(sprintf('Loaded config from "%s"', $configFile));
-        }
-
-        if (is_file($path)) {
-            $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
-        } elseif ($stdin) {
-            $config->finder(new \ArrayIterator(array(new StdinFileInfo())));
-        } elseif (null !== $path) {
-            $config->setDir($path);
         }
 
         $config->fixers($resolver->getFixers());
