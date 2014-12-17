@@ -16,6 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Graham Campbell <graham@mineuk.com>
  */
 class DoubleArrowMultilineWhitespacesFixerTest extends AbstractFixerTestBase
 {
@@ -65,6 +66,42 @@ class DoubleArrowMultilineWhitespacesFixerTest extends AbstractFixerTestBase
             array(),
         "hh"      =>
             [],
+    );',
+            ),
+            array(
+                '<?php
+    $z = [
+        \'hello\' =>    "b",
+        "c" => \'d\',
+    ];',
+                '<?php
+    $z = [
+        \'hello\'=>    "b",
+        "c" =>\'d\',
+    ];',
+            ),
+            array(
+                '<?php
+    $hello = array(
+        "foo" =>
+        // hello there
+        "value",
+        "key"  =>
+        /**
+         * Description.
+         */
+        array()
+    );',
+                '<?php
+    $hello = array(
+        "foo"=>
+        // hello there
+        "value",
+        "key"  =>
+        /**
+         * Description.
+         */
+        array()
     );',
             ),
         );
