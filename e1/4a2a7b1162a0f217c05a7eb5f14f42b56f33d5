@@ -1,0 +1,758 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-15T12:35:47Z
+
+[![Coverage Status](https://coveralls.io/builds/1612555/badge)](https://coveralls.io/builds/1612555)
+
+Coverage increased (+0.22%) when pulling **cc0f8c1a21a7bcaf8ab666446507e17a4d322341 on ceeram:1.4-feature-153** into **2b7a56f53ae18efa06db6b53fdf2a1ccdee303ac on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-15T21:16:58Z
+
+why is this not added to 1.4 milestone? afaik no work is left to do here? or did i miss anything?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-15T21:18:44Z
+
+We're lacking a test to check for only one line after.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-15T21:19:25Z
+
+milestone set
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-15T21:24:29Z
+
+@GrahamCampbell do you have an example? im not sure what you mean, im happy to add anything i missed
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-15T21:25:43Z
+
+```php
+<?php
+
+namespace Foo;
+
+use Bar;
+use Baz;
+
+class Hello {}
+```
+
+One of the lines should be removed before the start of the class.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-15T21:31:11Z
+
+ahh, ok, will add, but i know for sure it will pass, as it replaces the whitespace token entirely with the correct one
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-15T21:33:01Z
+
+Good. :)
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-15T21:34:36Z
+
+Done
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-15T21:36:27Z
+
+I can't see any trait import tests to check they are not modified?
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-15T21:37:29Z
+
+[![Coverage Status](https://coveralls.io/builds/1615337/badge)](https://coveralls.io/builds/1615337)
+
+Coverage increased (+0.21%) when pulling **ebc0e00ef59bdde03effa1cba1d4530f1bed4385 on ceeram:1.4-feature-153** into **43dcac52a7db74faed433659b9539cbacdf51be9 on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-15T21:43:13Z
+
+Good one, forgot about adding tests for that
+
+$uses = $tokens->getImportUseIndexes();
+
+that does not include use trait statements, so it wont modify them, just
+missing tests indeed.
+
+Will add tests in an hour or so
+
+2014-12-15 22:37 GMT+01:00 Coveralls <notifications@github.com>:
+>
+> [image: Coverage Status] <https://coveralls.io/builds/1615337>
+>
+> Coverage increased (+0.21%) when pulling *ebc0e00
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/commit/ebc0e00ef59bdde03effa1cba1d4530f1bed4385>
+> on ceeram:1.4-feature-153* into *43dcac5
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/commit/43dcac52a7db74faed433659b9539cbacdf51be9>
+> on FriendsOfPHP:1.4*.
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/860#issuecomment-67070444>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-15T21:43:37Z
+
+:beers:
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-15T22:41:04Z
+
+[![Coverage Status](https://coveralls.io/builds/1615742/badge)](https://coveralls.io/builds/1615742)
+
+Coverage increased (+0.21%) when pulling **9972626b344c645cd546d3b7b50ed65a6b7e1a65 on ceeram:1.4-feature-153** into **43dcac52a7db74faed433659b9539cbacdf51be9 on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-15T22:43:04Z
+
+Added testcase for use traits
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-15T22:45:14Z
+
+[![Coverage Status](https://coveralls.io/builds/1615758/badge)](https://coveralls.io/builds/1615758)
+
+Coverage increased (+0.21%) when pulling **e4e902361cee71e59f4b5f3915d8dd1b40e0fe15 on ceeram:1.4-feature-153** into **43dcac52a7db74faed433659b9539cbacdf51be9 on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-15T23:40:58Z
+
+Updated
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-15T23:44:14Z
+
+[![Coverage Status](https://coveralls.io/builds/1616056/badge)](https://coveralls.io/builds/1616056)
+
+Coverage increased (+0.21%) when pulling **c2cfd3aff593c584d167b40d501ba7adbc7cccf5 on ceeram:1.4-feature-153** into **0dc9c1272a414d754d30a160fe58eac1ee8cceb6 on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-16T00:05:50Z
+
+[![Coverage Status](https://coveralls.io/builds/1616185/badge)](https://coveralls.io/builds/1616185)
+
+Coverage increased (+0.21%) when pulling **d0a7136f88dc49df3f3de71873375bb46b095480 on ceeram:1.4-feature-153** into **0dc9c1272a414d754d30a160fe58eac1ee8cceb6 on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T09:24:14Z
+
+Maybe `single_empty_line_after_use` is a better name, or just `single_line_after_use`, because the current name implies there must be one or more lines, but your fixer forces exactly one empty line?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T09:56:58Z
+
+:+1: for `single_empty_line_after_use` / `single_line_after_use`
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-16T10:11:47Z
+
+The fixer ensures a single newline after use block as defined in psr2.
+
+I dont understand why the name change was never suggested untill now. This
+pr already had many iterations.
+
+Here is yet another time i get the feeling discussions here are more
+against people as against what they try to contribute. This has happened
+several times already and i would like to share something about that.
+
+I am just trying to help build a great tool. A tool i don't even use/need
+myself, as i own a wholesale company in carparts and just code for fun, and
+so far my contributions to many open source projects have been received
+very differently then they do in this project.
+
+Behavior of some developers on this tool don't make new contributors very
+welcome. Arguments often are based on finding reasons reject stuff or
+request for useless changes or even find non-reasons just to not agree,
+instead of having arguments that really contribute to building a solid tool.
+
+I am open to any discussion which i think is a good thing. Both sides can
+learn from each other and in the end a well thought decision can be made. I
+find many discussions tend to turn out into fights. When having a
+discussion you don't always have to agree with each other bit surely
+disagreements are nothing personal.
+
+I am not trying to pick a fight here or accuse any person. Just describing
+what impression i get when trying to help build a great tool and hope to
+make people aware of how to have better conversations around this projects.
+In the end we are all spending free time here, wouldn't it be so much more
+fun to try not to piss off people and not be pissed off so easily ourselves?
+
+Is this contributing on this project about lifting our own egos and kicking
+down others or is this about building something cool?
+
+Just my 2 cents and maybe a bit more.
+Op 16 dec. 2014 10:24 schreef "Graham Campbell" <notifications@github.com>:
+
+> Maybe single_empty_line_after_use is a better name, or just
+> single_line_after_use, because the current name implies there must be one
+> or more lines, but your fixer forces exactly one empty line?
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/860#issuecomment-67132132>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-16T10:13:13Z
+
+Perhaps also rename LineAfterNamespace then?
+
+2014-12-16 11:11 GMT+01:00 Ceeram <c33ram@gmail.com>:
+>
+> The fixer ensures a single newline after use block as defined in psr2.
+>
+> I dont understand why the name change was never suggested untill now. This
+> pr already had many iterations.
+>
+> Here is yet another time i get the feeling discussions here are more
+> against people as against what they try to contribute. This has happened
+> several times already and i would like to share something about that.
+>
+> I am just trying to help build a great tool. A tool i don't even use/need
+> myself, as i own a wholesale company in carparts and just code for fun, and
+> so far my contributions to many open source projects have been received
+> very differently then they do in this project.
+>
+> Behavior of some developers on this tool don't make new contributors very
+> welcome. Arguments often are based on finding reasons reject stuff or
+> request for useless changes or even find non-reasons just to not agree,
+> instead of having arguments that really contribute to building a solid tool.
+>
+> I am open to any discussion which i think is a good thing. Both sides can
+> learn from each other and in the end a well thought decision can be made. I
+> find many discussions tend to turn out into fights. When having a
+> discussion you don't always have to agree with each other bit surely
+> disagreements are nothing personal.
+>
+> I am not trying to pick a fight here or accuse any person. Just describing
+> what impression i get when trying to help build a great tool and hope to
+> make people aware of how to have better conversations around this projects.
+> In the end we are all spending free time here, wouldn't it be so much more
+> fun to try not to piss off people and not be pissed off so easily ourselves?
+>
+> Is this contributing on this project about lifting our own egos and
+> kicking down others or is this about building something cool?
+>
+> Just my 2 cents and maybe a bit more.
+> Op 16 dec. 2014 10:24 schreef "Graham Campbell" <notifications@github.com
+> >:
+>
+>> Maybe single_empty_line_after_use is a better name, or just
+>> single_line_after_use, because the current name implies there must be
+>> one or more lines, but your fixer forces exactly one empty line?
+>>
+>> —
+>> Reply to this email directly or view it on GitHub
+>> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/860#issuecomment-67132132>
+>> .
+>>
+>
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T10:15:30Z
+
+> I dont understand why the name change was never suggested untill now. This
+pr already had many iterations.
+
+Because nobody noticed. Better to notice now than never. And yes, as this implementation nears completion, the reviews get more nick picky - that's a good sign - your implementation is good. :)
+
+> Perhaps also rename LineAfterNamespace then?
+
+Yes, good idea. Will need to be done in 2.0.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T10:16:22Z
+
+I think `single_line_after_imports` is actually the best name for this fixer. Then this can't be confused with traits. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T19:24:23Z
+
+> Perhaps also rename LineAfterNamespace then?
+
+Maybe we should review all names of fixers for 2.0 ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T19:25:26Z
+
+Yeh. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T19:31:03Z
+
+Could you take care of that? I just don't want to discourage other contributors, I like them all.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T19:32:42Z
+
+Yeh, of course. I'm not trying to be a pain, I just want to make sure we do things right, and catch things early. We're all grateful for all contributions. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T19:44:34Z
+
+This can be closed now. Replaced by #880.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T19:47:54Z
+
+I disagree.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T19:49:12Z
+
+`use` are indeed for importing classes and using traits.
+
+@ceeram please, could you rename fixer - to not introduce consternation which `use` are fixing here?
+
+Then this PR will be merged.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T19:50:48Z
+
+> @ceeram please, could you rename fixer
+
+Yeh, great. Didn't mean to tread on your toes - just trying to make things easy for you.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-16T22:43:28Z
+
+Will do
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T23:03:32Z
+
+This is the last PR to be merged into 1.4 ;)
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-16T23:09:06Z
+
+[![Coverage Status](https://coveralls.io/builds/1621826/badge)](https://coveralls.io/builds/1621826)
+
+Coverage increased (+1.27%) when pulling **36e66e4d3a4577e906277b89611f0bdd2c4a73a4 on ceeram:1.4-feature-153** into **ed8a0120d02d54508afa045304ed637140ab087f on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T23:15:55Z
+
+Awesome! :+1: :ship: :shipit: :beers:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T23:16:35Z
+
+> This is the last PR to be merged into 1.4 ;)
+
+Can we get my utils thing in too please?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T23:18:48Z
+
+@GrahamCampbell , there are no need for them at 1.4 version, and there aren't even finished yet.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T23:19:48Z
+
+I can see a case for them in this fixer too. The indentation calculation is duplicated code.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T23:24:16Z
+
+And still, there aren't finish yet... I can't do magic...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T23:25:08Z
+
+> there aren't finish yet
+
+I don't see what's still to do there???
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T23:29:36Z
+
+1. Do not shout
+2. This is not a thread for that utils. The PR should improve something or add functionallity. The function from PR you mentioned isn't used anywhere - that PR should use it in this code or this PR should us that function. Bug again - wrong thread, and I really want to write something important for this PR now.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T23:30:09Z
+
+@ceeram, my regression failed :(
+
+Please, could you fix that case:
+https://github.com/ceeram/PHP-CS-Fixer/pull/2
+?
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-16T23:35:52Z
+
+[![Coverage Status](https://coveralls.io/builds/1621965/badge)](https://coveralls.io/builds/1621965)
+
+Coverage increased (+1.27%) when pulling **ba2a3d77234628618f0fde143eafc931eb5df04e on ceeram:1.4-feature-153** into **ed8a0120d02d54508afa045304ed637140ab087f on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T23:38:35Z
+
+> function from PR you mentioned isn't used anywhere
+
+Yes it is?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T23:39:24Z
+
+wrong thread
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T23:39:45Z
+
+sorry
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T23:40:54Z
+
+I think it is more important to fix that ugly case for last fixer in 1.4 than debating about refactoring, which can safety goes into 1.5
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T23:42:36Z
+
+I see you're point. Are wanting to release 1.4 tonight?
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-16T23:44:47Z
+
+Not sure if you read my message on the pr to my fork, but the failing test is because of a bug in Tokens::getImportUseIndexes() which returned the trait use, which it should not.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T23:46:22Z
+
+Oh dear. :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T23:48:20Z
+
+@GrahamCampbell willing to release it as soon as possible
+
+@ceeram I don't say it's a bug done by you, but your fixer simply can't be merged while that bug exists - it would simply break people code :(
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-16T23:48:39Z
+
+[![Coverage Status](https://coveralls.io/builds/1622021/badge)](https://coveralls.io/builds/1622021)
+
+Coverage increased (+1.27%) when pulling **9d1eaa5f9009783c9c8470d0a5d294c8d2e18809 on ceeram:1.4-feature-153** into **ed8a0120d02d54508afa045304ed637140ab087f on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-16T23:48:50Z
+
+I had it merged and then reverted, as it would now break the test, while the fixer itself isnt responsible for that.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-16T23:50:16Z
+
+I can add breaking tests to any existing fixer then using this method, imo it would not be a reason not to merge something that by itself is not wrong, all existig fixers using this, would also make the same mistake
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-17T00:03:23Z
+
+I disagree.
+
+Yes, this may occur in other fixers. But maybe not. It is a case of how the other fixers are dealing with result of that buggy function.
+
+I want to make a new stable release.
+To do so I perform regression test while merging new fixer. Regression here is to run the tool on Symfony repo.
+Currently the regression test passes. At this PR the regression test crush.
+I don't want to merge anything that will break regression.
+In any continuous deployment system if the regression failed then the project won't be deployed.
+
+Yes, I do understand that the bug was not introduced by you. But your new cool fixer will reveal it.
+And I don't want to stable version of PHP CS Fixer beeing considered as buggy.
+
+Even if the bug won't be fixed by you - we lose nothing in waiting few days and then merging new fixer.
+So please, could you restore that case?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-17T00:17:16Z
+
+Might this have to wait until 1.5 then?
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T00:21:23Z
+
+1.5 is fine, i am in no hurry to get things merged in, i will also try to
+hunt down the cause :)
+
+2014-12-17 1:17 GMT+01:00 Graham Campbell <notifications@github.com>:
+>
+> Might this have to wait until 1.5 then?
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/860#issuecomment-67257507>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-17T00:23:02Z
+
+Awesome. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-17T00:23:17Z
+
+Very well.
+Then move to 1.5 milestone. No need to reopen a PR against 1.5 branch ;)
+
+Please, could you restore that buggy case @ceeram ?
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T00:27:10Z
+
+lets see, not sure how to do that really, as i merged your pr, reverted it,
+then squashed and amended.
+Im not that git hero to revive it again, i guess cherry-pick it from your
+fork would be easiest i guess?
+
+2014-12-17 1:23 GMT+01:00 Dariusz Rumiński <notifications@github.com>:
+>
+> Very well.
+> Then move to 1.5 milestone. No need to reopen a PR against 1.5 branch ;)
+>
+> Please, could you restore that buggy case @ceeram
+> <https://github.com/ceeram> ?
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/860#issuecomment-67258102>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T00:32:43Z
+
+@keradus migght be caused by duplicate <?php open tag in your test?
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T00:33:48Z
+
+Nope, removed it and still happens :(
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T00:34:03Z
+
+https://github.com/keradus/PHP-CS-Fixer/blob/0e1ee7c0e2314cf6e4c21f2668f1ae1027ea6194/Symfony/CS/Tests/Fixer/PSR2/SingleLineAfterImportsFixerTest.php#L267-L268
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T00:35:17Z
+
+And boo for not having any test at all for Tokens? :(
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T01:30:35Z
+
+Added back the addiotional testcase and fixed bug in Tokens
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-17T01:32:50Z
+
+[![Coverage Status](https://coveralls.io/builds/1622424/badge)](https://coveralls.io/builds/1622424)
+
+Coverage increased (+0.23%) when pulling **a6111f311c6c1a9daa648cdb58240fb6c658169a on ceeram:1.4-feature-153** into **1f855f89541d05bd16c9e998a651278acf2669e6 on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-17T01:35:48Z
+
+[![Coverage Status](https://coveralls.io/builds/1622434/badge)](https://coveralls.io/builds/1622434)
+
+Coverage increased (+0.23%) when pulling **df170a17b76ca61d172805821c362e3c57610a9e on ceeram:1.4-feature-153** into **1f855f89541d05bd16c9e998a651278acf2669e6 on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-17T13:58:49Z
+
+We're missing tests with windows newlines too. We should be allowed 2 windows style newline characters as well as unix style.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T16:06:19Z
+
+@GrahamCampbell will add tests for that.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-17T16:06:48Z
+
+Awesome.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-17T20:07:20Z
+
+> Added back the addiotional testcase and fixed bug in Tokens
+
+great work @ceeram  !
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-17T20:37:34Z
+
+Based on your fix of imports detection I made little `Tokens::getImportUseIndexes` refactoring.
+Please take a look: https://github.com/ceeram/PHP-CS-Fixer/pull/3
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T20:45:27Z
+
+again, very nice!
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-17T20:47:54Z
+
+[![Coverage Status](https://coveralls.io/builds/1626889/badge)](https://coveralls.io/builds/1626889)
+
+Coverage increased (+0.17%) when pulling **5e60a1e8c12e3a72d70264b25b6d30b56824009a on ceeram:1.4-feature-153** into **1f855f89541d05bd16c9e998a651278acf2669e6 on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-17T21:15:32Z
+
+Please, could you do the following before merging this PR?
+- remove merge commit, eg by rebasing on parent branch (1.4)
+- squash 93451af9a0bc06e99ad028ddaf996d8467323dd3 and df170a17b76ca61d172805821c362e3c57610a9e. eg by rebasing interactively or cherry-picking
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T21:24:58Z
+
+Done
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-17T21:27:19Z
+
+[![Coverage Status](https://coveralls.io/builds/1627119/badge)](https://coveralls.io/builds/1627119)
+
+Coverage increased (+0.23%) when pulling **0af1d37c03b29bbe72e5efce696b019fb8876553 on ceeram:1.4-feature-153** into **1f855f89541d05bd16c9e998a651278acf2669e6 on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-17T21:37:30Z
+
+Oh no, you revert my commit
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T21:42:06Z
+
+I did as you described
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-17T21:48:55Z
+
+Rebase would not remove my commit, just merge commit, leaving my commit as is.
+Then in this PR should be 2 commits - one with your work, one with mine, and no merge commit. But ok, everything is fine. I will merge it separately in that case ;)
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T21:50:02Z
+
+like said in irc, im a dumbass, i didnt pull in the merged pr first, can
+you restore the branch on your fork so i can cherry pick it
+
+2014-12-17 22:48 GMT+01:00 Dariusz Rumiński <notifications@github.com>:
+>
+> Rebase would not remove my commit, just merge commit, leaving my commit as
+> is.
+> Then in this PR should be 2 commits - one with your work, one with mine,
+> and no merge commit. But ok, everything is fine. I will merge it separately
+> in that case ;)
+>
+> [image: :+1:]
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/860#issuecomment-67400850>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-17T21:51:02Z
+
+no problem with that, it was only refactoring.
+I already merging this PR ;)
