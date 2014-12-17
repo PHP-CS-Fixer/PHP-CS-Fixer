@@ -31,17 +31,54 @@ class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens->findGivenKind(T_DOUBLE_ARROW) as $index => $token) {
-            $this->fixWhitespace($tokens[$index - 1]);
-            $this->fixWhitespace($tokens[$index + 1]);
+            $this->fixWhitespaceBefore($tokens[$index - 1]);
+
+            // do not move anything about if there is a comment following the whitespace
+            if (false === $tokens[$index + 2]->isGivenKind(array(T_COMMENT, T_DOC_COMMENT))) {
+                $this->fixWhitespaceAfter($tokens[$index + 1]);
+            }
         }
 
         return $tokens->generateCode();
     }
 
-    private function fixWhitespace(Token $token)
+    /**
+     * Does the given token need fixing?
+     *
+     * @param \Symfony\CS\Tokenizer\Token $token
+     *
+     * @return bool
+     */
+    private static function needsFixing(Token $token)
     {
-        if ($token->isWhitespace() && !$token->isWhitespace(array('whitespaces' => " \t"))) {
+        return false === $token->isWhitespace(array('whitespaces' => " \t"));
+    }
+
+    /**
+     * Fix whitespace before the double arrow.
+     *
+     * @param \Symfony\CS\Tokenizer\Token $token
+     *
+     * @return void
+     */
+    private function fixWhitespaceBefore(Token $token)
+    {
+        if (self::needsFixing($token)) {
             $token->setContent(rtrim($token->getContent()).' ');
+        }
+    }
+
+    /**
+     * Fix whitespace after the double arrow.
+     *
+     * @param \Symfony\CS\Tokenizer\Token $token
+     *
+     * @return void
+     */
+    private function fixWhitespaceAfter(Token $token)
+    {
+        if (self::needsFixing($token)) {
+            $token->setContent(' '.ltrim($token->getContent()));
         }
     }
 

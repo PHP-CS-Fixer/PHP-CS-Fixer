@@ -67,6 +67,42 @@ class DoubleArrowMultilineWhitespacesFixerTest extends AbstractFixerTestBase
             [],
     );',
             ),
+            array(
+                '<?php
+    $z = [
+        \'hello\' =>    "b",
+        "c" => \'d\',
+    ];',
+                '<?php
+    $z = [
+        \'hello\'=>    "b",
+        "c" =>\'d\',
+    ];',
+            ),
+            array(
+                '<?php
+    $hello = array(
+        "foo" =>
+        // hello there
+        "value",
+        "key"  =>
+        /**
+         * Description.
+         */
+        array()
+    );',
+                '<?php
+    $hello = array(
+        "foo"=>
+        // hello there
+        "value",
+        "key"  =>
+        /**
+         * Description.
+         */
+        array()
+    );',
+            ),
         );
     }
 }
