@@ -19,6 +19,7 @@ use Symfony\CS\Utils;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
+ * @author Graham Campbell <graham@mineuk.com>
  */
 class PhpdocAlignFixer extends AbstractFixer
 {

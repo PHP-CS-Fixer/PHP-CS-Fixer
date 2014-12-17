@@ -493,6 +493,7 @@ class Tokens extends \SplFixedArray
         $uses = array();
         $bracesLevel = 0;
         $namespaceIndex = 0;
+        $inClass = false;
 
         for ($index = 0, $limit = $this->count(); $index < $limit; ++$index) {
             $token = $this[$index];
@@ -512,17 +513,27 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
+            if (!$inClass) {
+                $inClass = $token->isClassy();
+            }
+
             if ($token->equals('{')) {
                 ++$bracesLevel;
+
                 continue;
             }
 
             if ($token->equals('}')) {
                 --$bracesLevel;
+
+                if (0 === $bracesLevel) {
+                    $inClass = false;
+                }
+
                 continue;
             }
 
-            if (T_USE !== $token->getId() || 0 < $bracesLevel) {
+            if ($inClass || T_USE !== $token->getId() || 0 < $bracesLevel) {
                 continue;
             }
 
@@ -531,10 +542,6 @@ class Tokens extends \SplFixedArray
             // ignore function () use ($foo) {}
             if ($nextToken->equals('(')) {
                 continue;
-            }
-
-            if (!isset($usesInNamespace[$namespaceIndex])) {
-                $usesInNamespace[$namespaceIndex] = array();
             }
 
             $uses[$namespaceIndex][] = $index;
