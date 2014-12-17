@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests;
+namespace Symfony\CS\Tests\Console;
 
 use Symfony\CS\Config\Config;
-use Symfony\CS\ConfigurationResolver;
+use Symfony\CS\Console\ConfigurationResolver;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 

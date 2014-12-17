@@ -21,7 +21,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
-use Symfony\CS\ConfigurationResolver;
+use Symfony\CS\Console\ConfigurationResolver;
 use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerFileProcessedEvent;

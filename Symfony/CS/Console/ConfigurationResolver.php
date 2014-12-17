@@ -9,9 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS;
+namespace Symfony\CS\Console;
 
 use Symfony\CS\Config\Config;
+use Symfony\CS\FixerInterface;
 
 /**
  * The resolver that resolves configuration to use by command line options and config.
