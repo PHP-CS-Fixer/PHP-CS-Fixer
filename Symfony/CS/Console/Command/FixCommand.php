@@ -296,13 +296,13 @@ EOF
             ->setDefaultConfig($this->defaultConfig)
             ->setFixer($this->fixer)
             ->setOptions(array(
-                'config'        => $input->getOption('config'),
-                'config-file'   => $input->getOption('config-file'),
-                'isStdIn'       => $stdin,
-                'level'         => $input->getOption('level'),
-                'fixers'        => $input->getOption('fixers'),
-                'path'          => $path,
-                'progress'      => $output->isVerbose(),
+                'config' => $input->getOption('config'),
+                'config-file' => $input->getOption('config-file'),
+                'isStdIn' => $stdin,
+                'level' => $input->getOption('level'),
+                'fixers' => $input->getOption('fixers'),
+                'path' => $path,
+                'progress' => $output->isVerbose(),
             ))
             ->resolve();
 
