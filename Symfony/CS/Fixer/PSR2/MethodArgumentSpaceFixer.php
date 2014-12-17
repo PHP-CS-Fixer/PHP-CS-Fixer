@@ -69,10 +69,35 @@ class MethodArgumentSpaceFixer extends AbstractFixer
             }
         }
 
-        // add space after comma if not exist
-        if (!$tokens[$index + 1]->isWhitespace()) {
+        $nextToken = $tokens[$index + 1];
+
+        // Two cases for fix space after comma (exclude multiline comments)
+        //  1) multiple spaces after comma
+        //  2) no space after comma
+        if ($nextToken->isWhitespace() && !$this->isCommentLastLineToken($tokens, $index + 2)) {
+            $newContent = ltrim($nextToken->getContent(), " \t");
+            if ('' === $newContent) {
+                $newContent = ' ';
+            }
+            if ($newContent !== $nextToken->getContent()) {
+                $nextToken->setContent($newContent);
+            }
+        } elseif (!$nextToken->isWhitespace() && !$this->isCommentLastLineToken($tokens, $index + 1)) {
             $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
         }
+    }
+
+    /**
+     * Check if last item of current line is a comment
+     *
+     * @param Tokens $tokens tokens to handle
+     * @param int    $index  index of token
+     *
+     * @return bool
+     */
+    private function isCommentLastLineToken(Tokens $tokens, $index)
+    {
+        return $tokens[$index]->isComment() && 1 === mb_substr_count($tokens[$index]->getContent(), "\n");
     }
 
     /**
