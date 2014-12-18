@@ -187,6 +187,18 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @expectedException               InvalidArgumentException
+     * @expectedExceptionMessageRegExp  /The level "foo" is not defined./
+     */
+    public function testResolveFixersWithInvalidLevelOption()
+    {
+        $this->resolver
+            ->setOption('level', 'foo')
+            ->resolve()
+        ;
+    }
+
     public function testResolveFixersWithLevelOption()
     {
         $this->resolver
