@@ -54,6 +54,55 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         ;
     }
 
+    public function testSetOption()
+    {
+        $this->resolver->setOption('path', '.');
+
+        $classReflection = new \ReflectionClass($this->resolver);
+        $propertyReflection = $classReflection->getProperty('options');
+        $propertyReflection->setAccessible(true);
+        $property = $propertyReflection->getValue($this->resolver);
+
+        $this->assertSame('.', $property['path']);
+    }
+
+    /**
+     * @expectedException               OutOfBoundsException
+     * @expectedExceptionMessageRegExp  /Unknown option name: foo/
+     */
+    public function testSetOptionWithUndefinedOption()
+    {
+        $this->resolver->setOption('foo', 'bar');
+    }
+
+    public function testSetOptions()
+    {
+        $this->resolver->setOptions(array(
+            'path' => '.',
+            'config-file' => 'config.php_cs',
+        ));
+
+        $classReflection = new \ReflectionClass($this->resolver);
+        $propertyReflection = $classReflection->getProperty('options');
+        $propertyReflection->setAccessible(true);
+        $property = $propertyReflection->getValue($this->resolver);
+
+        $this->assertSame('.', $property['path']);
+        $this->assertSame('config.php_cs', $property['config-file']);
+    }
+
+    public function testCwd()
+    {
+        $this->resolver->setCwd("foo");
+
+        $classReflection = new \ReflectionClass($this->resolver);
+        $propertyReflection = $classReflection->getProperty('cwd');
+        $propertyReflection->setAccessible(true);
+        $property = $propertyReflection->getValue($this->resolver);
+
+        $this->assertSame("foo", $property);
+    }
+
     protected function makeFixersTest($expectedFixers, $resolvedFixers)
     {
         $this->assertCount(count($expectedFixers), $resolvedFixers);
