@@ -67,6 +67,10 @@ class ConfigurationResolver
 
     public function setOption($name, $value)
     {
+        if (!array_key_exists($name, $this->options)) {
+            throw new \OutOfBoundsException('Unknown option name: '.$name);
+        }
+
         $this->options[$name] = $value;
 
         return $this;
