@@ -54,6 +54,15 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         ;
     }
 
+    protected function tearDown()
+    {
+        unset(
+            $this->fixersMap,
+            $this->config,
+            $this->resolver
+        );
+    }
+
     public function testSetOption()
     {
         $this->resolver->setOption('path', '.');
