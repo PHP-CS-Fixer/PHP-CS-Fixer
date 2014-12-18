@@ -312,8 +312,6 @@ EOF
             $output->writeln(sprintf('Loaded config from "%s"', $configFile));
         }
 
-        $config->fixers($resolver->getFixers());
-
         // register custom fixers from config
         $this->fixer->registerCustomFixers($config->getCustomFixers());
         if ($config->usingLinter()) {

@@ -94,6 +94,8 @@ class ConfigurationResolver
         $this->resolveFixersByLevel();
         $this->resolveFixersByNames();
 
+        $this->config->fixers($this->getFixers());
+
         return $this;
     }
 
