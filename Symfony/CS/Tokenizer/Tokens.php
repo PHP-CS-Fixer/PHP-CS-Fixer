@@ -508,14 +508,12 @@ class Tokens extends \SplFixedArray
         $this->rewind();
 
         $uses = array();
-        $bracesLevel = 0;
         $namespaceIndex = 0;
-        $inClass = false;
 
         for ($index = 0, $limit = $this->count(); $index < $limit; ++$index) {
             $token = $this[$index];
 
-            if (T_NAMESPACE === $token->getId()) {
+            if ($token->isGivenKind(T_NAMESPACE)) {
                 $nextTokenIndex = $this->getNextTokenOfKind($index, array(';', '{'));
                 $nextToken = $this[$nextTokenIndex];
 
@@ -530,31 +528,19 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            if (!$inClass) {
-                $inClass = $token->isClassy();
-            }
-
+            // Skip whole class braces content.
+            // The only { that interest us is the one directly after T_NAMESPACE and is handled above
+            // That way we can skip for example whole tokens in class declaration, therefore skip `T_USE` for traits.
             if ($token->equals('{')) {
-                ++$bracesLevel;
-
+                $index = $this->findBlockEnd(self::BLOCK_TYPE_CURLY_BRACE, $index);
                 continue;
             }
 
-            if ($token->equals('}')) {
-                --$bracesLevel;
-
-                if (0 === $bracesLevel) {
-                    $inClass = false;
-                }
-
+            if (!$token->isGivenKind(T_USE)) {
                 continue;
             }
 
-            if ($inClass || T_USE !== $token->getId() || 0 < $bracesLevel) {
-                continue;
-            }
-
-            $nextToken = $this[$this->getNextNonWhitespace($index)];
+            $nextToken = $this[$this->getNextMeaningfulToken($index)];
 
             // ignore function () use ($foo) {}
             if ($nextToken->equals('(')) {
