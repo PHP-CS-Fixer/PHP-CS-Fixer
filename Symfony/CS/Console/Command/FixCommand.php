@@ -303,7 +303,8 @@ EOF
                 'path' => $path,
                 'progress' => $output->isVerbose(),
             ))
-            ->resolve();
+            ->resolve()
+        ;
 
         $config     = $resolver->getConfig();
         $configFile = $resolver->getConfigFile();

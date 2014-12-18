@@ -50,7 +50,8 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->resolver = new ConfigurationResolver();
         $this->resolver
             ->setDefaultConfig($this->config)
-            ->setFixer($fixer);
+            ->setFixer($fixer)
+        ;
     }
 
     protected function makeFixersTest($expectedFixers, $resolvedFixers)
@@ -132,7 +133,8 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     {
         $this->resolver
             ->setOption('level', 'psr1')
-            ->resolve();
+            ->resolve()
+        ;
 
         $this->makeFixersTest(
             array_merge($this->fixersMap[FixerInterface::PSR0_LEVEL], $this->fixersMap[FixerInterface::PSR1_LEVEL]),
@@ -144,10 +146,12 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     {
         $this->config
             ->level(FixerInterface::PSR2_LEVEL)
-            ->fixers(array('strict'));
+            ->fixers(array('strict'))
+        ;
         $this->resolver
             ->setOption('level', 'psr1')
-            ->resolve();
+            ->resolve()
+        ;
 
         $this->makeFixersTest(
             array_merge($this->fixersMap[FixerInterface::PSR0_LEVEL], $this->fixersMap[FixerInterface::PSR1_LEVEL]),
@@ -159,10 +163,12 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     {
         $this->config
             ->level(FixerInterface::PSR2_LEVEL)
-            ->fixers(array('strict'));
+            ->fixers(array('strict'))
+        ;
         $this->resolver
             ->setOption('fixers', 'psr0')
-            ->resolve();
+            ->resolve()
+        ;
 
         $this->makeFixersTest(
             array($this->fixersMap[FixerInterface::PSR0_LEVEL]['psr0']),
@@ -174,10 +180,12 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     {
         $this->config
             ->level(FixerInterface::SYMFONY_LEVEL)
-            ->fixers(array('strict'));
+            ->fixers(array('strict'))
+        ;
         $this->resolver
             ->setOption('fixers', 'strict, -include,strict_param ')
-            ->resolve();
+            ->resolve()
+        ;
 
         $expectedFixers = array_merge(
             $this->fixersMap[FixerInterface::PSR0_LEVEL],
@@ -204,11 +212,13 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     {
         $this->config
             ->level(FixerInterface::PSR2_LEVEL)
-            ->fixers(array('concat_with_spaces'));
+            ->fixers(array('concat_with_spaces'))
+        ;
         $this->resolver
             ->setOption('level', 'symfony')
             ->setOption('fixers', 'strict, -include,strict_param ')
-            ->resolve();
+            ->resolve()
+        ;
 
         $expectedFixers = array_merge(
             $this->fixersMap[FixerInterface::PSR0_LEVEL],
@@ -236,7 +246,8 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->config->hideProgress(true);
         $this->resolver
             ->setOption('progress', true)
-            ->resolve();
+            ->resolve()
+        ;
 
         $this->assertFalse($this->resolver->getProgress());
     }
@@ -246,7 +257,8 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->config->hideProgress(true);
         $this->resolver
             ->setOption('progress', false)
-            ->resolve();
+            ->resolve()
+        ;
 
         $this->assertFalse($this->resolver->getProgress());
     }
@@ -256,7 +268,8 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->config->hideProgress(false);
         $this->resolver
             ->setOption('progress', true)
-            ->resolve();
+            ->resolve()
+        ;
 
         $this->assertTrue($this->resolver->getProgress());
     }
@@ -266,7 +279,8 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->config->hideProgress(false);
         $this->resolver
             ->setOption('progress', false)
-            ->resolve();
+            ->resolve()
+        ;
 
         $this->assertFalse($this->resolver->getProgress());
     }
@@ -278,7 +292,8 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     {
         $this->resolver
             ->setOption('config', $name)
-            ->resolve();
+            ->resolve()
+        ;
 
         $this->assertInstanceOf($expected, $this->resolver->getConfig());
     }
@@ -300,6 +315,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     {
         $this->resolver
             ->setOption('config', 'NON_EXISTING_CONFIG')
-            ->resolve();
+            ->resolve()
+        ;
     }
 }
