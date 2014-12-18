@@ -166,7 +166,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         );
 
         foreach ($expectedFixers as $key => $fixer) {
-            if ($fixer->getName() === 'include') {
+            if ('include' === $fixer->getName()) {
                 unset($expectedFixers[$key]);
                 break;
             }
