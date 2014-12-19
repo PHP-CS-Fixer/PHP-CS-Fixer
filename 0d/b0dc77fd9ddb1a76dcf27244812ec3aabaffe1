@@ -1,0 +1,91 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-17T18:36:39Z
+
+[![Coverage Status](https://coveralls.io/builds/1626221/badge)](https://coveralls.io/builds/1626221)
+
+Coverage increased (+0.01%) when pulling **0743574ff42ccd752133c3bd94b092e6a494e276 on marcaube:preserve-blank-line** into **1f855f89541d05bd16c9e998a651278acf2669e6 on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-18T00:33:10Z
+
+[![Coverage Status](https://coveralls.io/builds/1628092/badge)](https://coveralls.io/builds/1628092)
+
+Coverage increased (+0.01%) when pulling **af77c0340bc75356a8b8bf81be7e78c30269c3b5 on marcaube:preserve-blank-line** into **1f855f89541d05bd16c9e998a651278acf2669e6 on FriendsOfPHP:1.4**.
+
+---------------------------------------------------------------------------
+
+by marcaube at 2014-12-18T00:34:34Z
+
+I added support for Windows-style newlines but I could not use the Util method from #879 as is.
+
+I'm looking for two **consecutive** newlines i.e. `\n\n` or `\r\r` but the `countLines()` method returns the total number of newlines in a string, not necessarily consecutive.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-18T06:58:00Z
+
+Windows style isn't `\r\r` but `\r\n`
+
+---------------------------------------------------------------------------
+
+by marcaube at 2014-12-19T00:17:30Z
+
+@keradus So the Windows style equivalent of `\n\n` would be `\r\n\r\n`?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T00:21:02Z
+
+I take back what I said. Simply counting the number of `\n` is sufficient for both platforms.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T00:21:24Z
+
+You don't need that helper. I will fix my other pull, and remove that helper since it doesn't work. Sorry guys.
+
+---------------------------------------------------------------------------
+
+by marcaube at 2014-12-19T00:42:22Z
+
+I applied the change and squashed the last few commits
+
+---------------------------------------------------------------------------
+
+by marcaube at 2014-12-19T01:58:55Z
+
+fabbot complains about the CRLF. Maybe I'm the only one, but each time I saved the file my IDE reverted to LF line endings. I had to add the CRLF back with vi after every changes.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T02:06:58Z
+
+No no no, I don't think I've explained this well. Please look at the other tests that deal with this.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T02:08:57Z
+
+Look at my tests in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/879. See how I physically wrote the newlines.
+
+---------------------------------------------------------------------------
+
+by marcaube at 2014-12-19T02:18:04Z
+
+Alright, let's try that again ...
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-19T19:56:43Z
+
+is this ready to merge then ?
+
+//cc @marcaube @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T20:07:39Z
+
+Yeh, looks good to me. :)
