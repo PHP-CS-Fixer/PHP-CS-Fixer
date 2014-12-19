@@ -1075,6 +1075,12 @@ if (true) {
     // if body
 }',
             ),
+            array(
+                "<?php
+if (true) {\r\n\r\n
+    // CRLF newline
+}",
+            ),
         );
     }
 }
