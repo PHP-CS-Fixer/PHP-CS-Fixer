@@ -1051,4 +1051,36 @@ while (true) {
             ),
         );
     }
+
+    /**
+     * @dataProvider providePreserveLineAfterControlBrace
+     */
+    public function testPreserveLineAfterControlBrace($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function providePreserveLineAfterControlBrace()
+    {
+        return array(
+            array(
+                '<?php
+if (true) {
+
+    //  The blank line helps with legibility in nested control structures
+    if (true) {
+        // if body
+    }
+
+    // if body
+}',
+            ),
+            array(
+                "<?php
+if (true) {\r\n\r\n
+    // CRLF newline
+}",
+            ),
+        );
+    }
 }

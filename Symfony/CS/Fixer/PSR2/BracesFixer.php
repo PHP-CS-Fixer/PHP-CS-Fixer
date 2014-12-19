@@ -238,6 +238,7 @@ class BracesFixer extends AbstractFixer
                 if (
                     !$nextNonWhitespaceToken->isComment()
                     || !($nextToken->isWhitespace() && $nextToken->isWhitespace(array('whitespaces' => " \t")))
+                    && substr_count($nextToken->getContent(), "\n") === 1 // preserve blank lines
                 ) {
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
                 }
