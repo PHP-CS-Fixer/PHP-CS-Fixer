@@ -13,6 +13,8 @@ namespace Symfony\CS\Console;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\CS\Config\Config;
+use Symfony\CS\ConfigInterface;
+use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\StdinFileInfo;
 
@@ -48,11 +50,21 @@ class ConfigurationResolver
     private $path;
     private $progress;
 
+    /**
+     * Returns config instance.
+     *
+     * @return ConfigInterface
+     */
     public function getConfig()
     {
         return $this->config;
     }
 
+    /**
+     * Returns config file path.
+     *
+     * @return string
+     */
     public function getConfigFile()
     {
         return $this->configFile;
@@ -68,16 +80,31 @@ class ConfigurationResolver
         return $this->fixers;
     }
 
+    /**
+     * Returns path.
+     *
+     * @return string
+     */
     public function getPath()
     {
         return $this->path;
     }
 
+    /**
+     * Returns progress flag.
+     *
+     * @return bool
+     */
     public function getProgress()
     {
         return $this->progress;
     }
 
+    /**
+     * Returns dry-run flag.
+     *
+     * @return bool
+     */
     public function isDryRun()
     {
         return $this->isDryRun;
@@ -107,6 +134,13 @@ class ConfigurationResolver
         return $this;
     }
 
+    /**
+     * Set current working directory.
+     *
+     * @param string $cwd
+     *
+     * @return FixersResolver
+     */
     public function setCwd($cwd)
     {
         $this->cwd = $cwd;
@@ -114,14 +148,28 @@ class ConfigurationResolver
         return $this;
     }
 
-    public function setDefaultConfig($config)
+    /**
+     * Set default config instance.
+     *
+     * @param ConfigInterface $config
+     *
+     * @return FixersResolver
+     */
+    public function setDefaultConfig(ConfigInterface $config)
     {
         $this->defaultConfig = $config;
 
         return $this;
     }
 
-    public function setFixer($fixer)
+    /**
+     * Set fixer instance.
+     *
+     * @param Fixer $config
+     *
+     * @return FixersResolver
+     */
+    public function setFixer(Fixer $fixer)
     {
         $this->fixer     = $fixer;
         $this->allFixers = $fixer->getFixers();
@@ -129,6 +177,14 @@ class ConfigurationResolver
         return $this;
     }
 
+    /**
+     * Set option that will be resolved.
+     *
+     * @param string $name
+     * @param misc   $value1
+     *
+     * @return FixersResolver
+     */
     public function setOption($name, $value)
     {
         if (!array_key_exists($name, $this->options)) {
@@ -140,6 +196,13 @@ class ConfigurationResolver
         return $this;
     }
 
+    /**
+     * Set options that will be resolved.
+     *
+     * @param array $options
+     *
+     * @return FixersResolver
+     */
     public function setOptions(array $options)
     {
         foreach ($options as $name => $value) {
@@ -149,6 +212,11 @@ class ConfigurationResolver
         return $this;
     }
 
+    /**
+     * Compute file candidates for config file.
+     *
+     * @return string[]
+     */
     private function computeConfigFiles()
     {
         $configFile = $this->options['config-file'];
@@ -173,6 +241,11 @@ class ConfigurationResolver
         );
     }
 
+    /**
+     * Compute fixers.
+     *
+     * @return string[]|null
+     */
     private function parseFixers()
     {
         if (null !== $this->options['fixers']) {
@@ -186,6 +259,11 @@ class ConfigurationResolver
         return;
     }
 
+    /**
+     * Compute level.
+     *
+     * @return string|null
+     */
     private function parseLevel()
     {
         static $levelMap = array(
@@ -219,6 +297,9 @@ class ConfigurationResolver
         return;
     }
 
+    /**
+     * Resolve config based on options: config, config-file.
+     */
     private function resolveConfig()
     {
         $configOption = $this->options['config'];
@@ -256,6 +337,9 @@ class ConfigurationResolver
         $this->config = $this->defaultConfig;
     }
 
+    /**
+     * Apply path on config instance.
+     */
     private function resolveConfigPath()
     {
         if (is_file($this->path)) {
@@ -267,6 +351,9 @@ class ConfigurationResolver
         }
     }
 
+    /**
+     * Resolve fixers to run based on level.
+     */
     private function resolveFixersByLevel()
     {
         $level = $this->parseLevel();
@@ -286,6 +373,9 @@ class ConfigurationResolver
         $this->fixers = $fixers;
     }
 
+    /**
+     * Resolve fixers to run based on names.
+     */
     private function resolveFixersByNames()
     {
         $names = $this->parseFixers();
@@ -317,6 +407,9 @@ class ConfigurationResolver
         }
     }
 
+    /**
+     * Resolve isDryRun based on isStdIn property and dry-run option.
+     */
     private function resolveIsDryRun()
     {
         // Can't write to STDIN
@@ -329,11 +422,17 @@ class ConfigurationResolver
         $this->isDryRun = $this->options['dry-run'];
     }
 
+    /**
+     * Resolve isStdIn based on path option.
+     */
     private function resolveIsStdIn()
     {
         $this->isStdIn = '-' === $this->options['path'];
     }
 
+    /**
+     * Resolve path based on path option.
+     */
     private function resolvePath()
     {
         $path = $this->options['path'];
@@ -348,6 +447,9 @@ class ConfigurationResolver
         $this->path = $path;
     }
 
+    /**
+     * Resolve progress based on progress option and config instance.
+     */
     private function resolveProgress()
     {
         $this->progress = $this->options['progress'] && !$this->config->getHideProgress();
