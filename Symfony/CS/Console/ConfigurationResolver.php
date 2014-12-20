@@ -67,6 +67,11 @@ class ConfigurationResolver
         return $this->fixers;
     }
 
+    public function getPath()
+    {
+        return $this->path;
+    }
+
     public function getProgress()
     {
         return $this->options['progress'] && !$this->config->getHideProgress();
@@ -323,7 +328,7 @@ class ConfigurationResolver
 
     protected function resolveIsStdIn()
     {
-        $this->isStdIn = '-' === $this->path;
+        $this->isStdIn = '-' === $this->options['path'];
     }
 
     protected function resolvePath()

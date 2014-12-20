@@ -388,4 +388,124 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->resolve()
         ;
     }
+
+    public function testResolveConfigFileDefault()
+    {
+        $this->resolver
+            ->resolve();
+
+        $this->assertNull($this->resolver->getConfigFile());
+        $this->assertInstanceOf("\\Symfony\\CS\\Config\\Config", $this->resolver->getConfig());
+    }
+
+    public function testResolveConfigFileByPathOfFile()
+    {
+        $dir = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_1';
+
+        $this->resolver
+            ->setOption('path', $dir.DIRECTORY_SEPARATOR.'foo.php')
+            ->resolve();
+
+        $this->assertSame($dir.DIRECTORY_SEPARATOR.'.php_cs.dist', $this->resolver->getConfigFile());
+        $this->assertInstanceOf("\\Symfony\\CS\\Config\\MagentoConfig", $this->resolver->getConfig());
+    }
+
+    public function testResolveConfigFileSpecified()
+    {
+        $file = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_4/my.php_cs';
+
+        $this->resolver
+            ->setOption('config-file', $file)
+            ->resolve();
+
+        $this->assertSame($file, $this->resolver->getConfigFile());
+        $this->assertInstanceOf("\\Symfony\\CS\\Config\\MagentoConfig", $this->resolver->getConfig());
+    }
+
+    /**
+     * @dataProvider provideResolveConfigFileDefaultCases
+     */
+    public function testResolveConfigFileChooseFile($expectedFile, $expectedClass, $path)
+    {
+        $this->resolver
+            ->setOption('path', $path)
+            ->resolve();
+
+        $this->assertSame($expectedFile, $this->resolver->getConfigFile());
+        $this->assertInstanceOf($expectedClass, $this->resolver->getConfig());
+    }
+
+    public function provideResolveConfigFileDefaultCases()
+    {
+        $dirBase = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR;
+
+        return array(
+            array(
+                $dirBase.'case_1'.DIRECTORY_SEPARATOR.'.php_cs.dist',
+                "\\Symfony\\CS\\Config\\MagentoConfig",
+                $dirBase.'case_1',
+            ),
+            array(
+                $dirBase.'case_2'.DIRECTORY_SEPARATOR.'.php_cs',
+                "\\Symfony\\CS\\Config\\MagentoConfig",
+                $dirBase.'case_2',
+            ),
+            array(
+                $dirBase.'case_3'.DIRECTORY_SEPARATOR.'.php_cs',
+                "\\Symfony\\CS\\Config\\MagentoConfig",
+                $dirBase.'case_3',
+            ),
+        );
+    }
+
+    /**
+     * @expectedException               UnexpectedValueException
+     * @expectedExceptionMessageRegExp  /The config file ".*" does not return an instance of Symfony\\CS\\Config\\Config/
+     */
+    public function testResolveConfigFileChooseFileWithInvalidFile()
+    {
+        $dirBase = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR;
+
+        $this->resolver
+            ->setOption('path', $dirBase.'case_5')
+            ->resolve();
+    }
+
+    public function testResolvePathRelative()
+    {
+        $this->resolver
+            ->setCwd(__DIR__)
+            ->setOption('path', 'Foo\Bar')
+            ->resolve();
+
+        $this->assertSame(__DIR__.'\Foo\Bar', $this->resolver->getPath());
+    }
+
+    public function testResolveIsDryRunViaStdIn()
+    {
+        $this->resolver
+            ->setOption('path', '-')
+            ->setOption('dry-run', false)
+            ->resolve();
+
+        $this->assertTrue($this->resolver->isDryRun());
+    }
+
+    public function testResolveIsDryRunViaNegativeOption()
+    {
+        $this->resolver
+            ->setOption('dry-run', false)
+            ->resolve();
+
+        $this->assertFalse($this->resolver->isDryRun());
+    }
+
+    public function testResolveIsDryRunViaPositiveOption()
+    {
+        $this->resolver
+            ->setOption('dry-run', true)
+            ->resolve();
+
+        $this->assertTrue($this->resolver->isDryRun());
+    }
 }
