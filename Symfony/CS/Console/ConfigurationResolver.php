@@ -11,10 +11,10 @@
 
 namespace Symfony\CS\Console;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\CS\Config\Config;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\StdinFileInfo;
-use Symfony\Component\Filesystem\Filesystem;;
 
 /**
  * The resolver that resolves configuration to use by command line options and config.
@@ -47,9 +47,56 @@ class ConfigurationResolver
     );
     protected $path;
 
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    public function getConfigFile()
+    {
+        return $this->configFile;
+    }
+
+    /**
+     * Returns fixers.
+     *
+     * @return FixerInterface[] An array of FixerInterface
+     */
+    public function getFixers()
+    {
+        return $this->fixers;
+    }
+
+    public function getProgress()
+    {
+        return $this->options['progress'] && !$this->config->getHideProgress();
+    }
+
     public function isDryRun()
     {
         return $this->isDryRun;
+    }
+
+    /**
+     * Resolve configuration.
+     *
+     * @return ConfigurationResolver
+     */
+    public function resolve()
+    {
+        $this->resolvePath();
+        $this->resolveIsStdIn();
+        $this->resolveIsDryRun();
+
+        $this->resolveConfig();
+        $this->resolveConfigPath();
+
+        $this->resolveFixersByLevel();
+        $this->resolveFixersByNames();
+
+        $this->config->fixers($this->getFixers());
+
+        return $this;
     }
 
     public function setCwd($cwd)
@@ -94,84 +141,6 @@ class ConfigurationResolver
         return $this;
     }
 
-    /**
-     * Resolve configuration.
-     *
-     * @return ConfigurationResolver
-     */
-    public function resolve()
-    {
-        $this->resolvePath();
-        $this->resolveIsStdIn();
-        $this->resolveIsDryRun();
-
-        $this->resolveConfig();
-        $this->resolveConfigPath();
-
-        $this->resolveFixersByLevel();
-        $this->resolveFixersByNames();
-
-        $this->config->fixers($this->getFixers());
-
-        return $this;
-    }
-
-    protected function resolveIsStdIn()
-    {
-        $this->isStdIn = '-' === $this->path;
-    }
-
-    protected function resolveIsDryRun()
-    {
-        // Can't write to STDIN
-        if ($this->isStdIn) {
-            $this->isDryRun = true;
-
-            return;
-        }
-
-        $this->isDryRun = $this->options['dry-run'];
-    }
-
-    protected function resolvePath()
-    {
-        $path = $this->options['path'];
-
-        if (null !== $path) {
-            $filesystem = new Filesystem();
-            if (!$filesystem->isAbsolutePath($path)) {
-                $path = $this->cwd.DIRECTORY_SEPARATOR.$path;
-            }
-        }
-
-        $this->path = $path;
-    }
-
-    public function getConfig()
-    {
-        return $this->config;
-    }
-
-    public function getConfigFile()
-    {
-        return $this->configFile;
-    }
-
-    /**
-     * Returns fixers.
-     *
-     * @return FixerInterface[] An array of FixerInterface
-     */
-    public function getFixers()
-    {
-        return $this->fixers;
-    }
-
-    public function getProgress()
-    {
-        return $this->options['progress'] && !$this->config->getHideProgress();
-    }
-
     protected function computeConfigFiles()
     {
         $configFile = $this->options['config-file'];
@@ -194,6 +163,52 @@ class ConfigurationResolver
             $configDir.DIRECTORY_SEPARATOR.'.php_cs',
             $configDir.DIRECTORY_SEPARATOR.'.php_cs.dist',
         );
+    }
+
+    protected function parseFixers()
+    {
+        if (null !== $this->options['fixers']) {
+            return array_map('trim', explode(',', $this->options['fixers']));
+        }
+
+        if (null === $this->options['level']) {
+            return $this->config->getFixers();
+        }
+
+        return;
+    }
+
+    protected function parseLevel()
+    {
+        static $levelMap = array(
+            'none'    => FixerInterface::NONE_LEVEL,
+            'psr0'    => FixerInterface::PSR0_LEVEL,
+            'psr1'    => FixerInterface::PSR1_LEVEL,
+            'psr2'    => FixerInterface::PSR2_LEVEL,
+            'symfony' => FixerInterface::SYMFONY_LEVEL,
+        );
+
+        $levelOption = $this->options['level'];
+
+        if (null !== $levelOption) {
+            if (!isset($levelMap[$levelOption])) {
+                throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $levelOption));
+            }
+
+            return $levelMap[$levelOption];
+        }
+
+        if (null === $this->options['fixers']) {
+            return $this->config->getLevel();
+        }
+
+        foreach ($this->parseFixers() as $fixer) {
+            if (0 === strpos($fixer, '-')) {
+                return $this->config->getLevel();
+            }
+        }
+
+        return;
     }
 
     protected function resolveConfig()
@@ -294,49 +309,34 @@ class ConfigurationResolver
         }
     }
 
-    protected function parseLevel()
+    protected function resolveIsDryRun()
     {
-        static $levelMap = array(
-            'none'    => FixerInterface::NONE_LEVEL,
-            'psr0'    => FixerInterface::PSR0_LEVEL,
-            'psr1'    => FixerInterface::PSR1_LEVEL,
-            'psr2'    => FixerInterface::PSR2_LEVEL,
-            'symfony' => FixerInterface::SYMFONY_LEVEL,
-        );
+        // Can't write to STDIN
+        if ($this->isStdIn) {
+            $this->isDryRun = true;
 
-        $levelOption = $this->options['level'];
-
-        if (null !== $levelOption) {
-            if (!isset($levelMap[$levelOption])) {
-                throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $levelOption));
-            }
-
-            return $levelMap[$levelOption];
+            return;
         }
 
-        if (null === $this->options['fixers']) {
-            return $this->config->getLevel();
-        }
-
-        foreach ($this->parseFixers() as $fixer) {
-            if (0 === strpos($fixer, '-')) {
-                return $this->config->getLevel();
-            }
-        }
-
-        return;
+        $this->isDryRun = $this->options['dry-run'];
     }
 
-    protected function parseFixers()
+    protected function resolveIsStdIn()
     {
-        if (null !== $this->options['fixers']) {
-            return array_map('trim', explode(',', $this->options['fixers']));
+        $this->isStdIn = '-' === $this->path;
+    }
+
+    protected function resolvePath()
+    {
+        $path = $this->options['path'];
+
+        if (null !== $path) {
+            $filesystem = new Filesystem();
+            if (!$filesystem->isAbsolutePath($path)) {
+                $path = $this->cwd.DIRECTORY_SEPARATOR.$path;
+            }
         }
 
-        if (null === $this->options['level']) {
-            return $this->config->getFixers();
-        }
-
-        return;
+        $this->path = $path;
     }
 }
