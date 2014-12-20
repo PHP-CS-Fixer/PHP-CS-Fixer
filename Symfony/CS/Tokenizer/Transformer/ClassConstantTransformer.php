@@ -33,7 +33,7 @@ class ClassConstantTransformer extends AbstractTransformer
             $prevToken = $tokens[$prevIndex];
 
             if ($prevToken->isGivenKind(T_DOUBLE_COLON)) {
-                $token->override(array(CT_CLASS_CONSTANT, $token->getContent(), $token->getLine()));
+                $token->override(array(CT_CLASS_CONSTANT, $token->getContent()));
             }
         }
     }

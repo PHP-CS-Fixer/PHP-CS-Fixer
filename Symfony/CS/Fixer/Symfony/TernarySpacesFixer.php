@@ -82,7 +82,7 @@ class TernarySpacesFixer extends AbstractFixer
             return;
         }
 
-        $tokens->insertAt($index + $indexChange, new Token(array(T_WHITESPACE, ' ', $token->getLine())));
+        $tokens->insertAt($index + $indexChange, new Token(array(T_WHITESPACE, ' ')));
     }
 
     /**

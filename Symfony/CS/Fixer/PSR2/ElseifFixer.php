@@ -44,7 +44,7 @@ class ElseifFixer extends AbstractFixer
             $tokens[$index + 1]->clear();
 
             // 2. change token from T_ELSE into T_ELSEIF
-            $token->override(array(T_ELSEIF, 'elseif', $token->getLine()));
+            $token->override(array(T_ELSEIF, 'elseif'));
 
             // 3. clear succeeding T_IF
             $nextToken->clear();

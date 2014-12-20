@@ -47,7 +47,7 @@ class CurlyCloseTransformer extends AbstractTransformer
                 }
             }
 
-            $tokens[$nestIndex]->override(array(CT_CURLY_CLOSE, '}', $tokens[$nestIndex]->getLine()));
+            $tokens[$nestIndex]->override(array(CT_CURLY_CLOSE, '}'));
         }
     }
 
