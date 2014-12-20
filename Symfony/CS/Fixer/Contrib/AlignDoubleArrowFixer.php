@@ -51,7 +51,7 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
 
         $this->injectAlignmentPlaceholders($tokens);
 
-        return $this->replacePlaceholder($tokens, $this->deepestLevel);
+        return $this->replacePlaceholder($tokens->generateCode(), $this->deepestLevel);
     }
 
     /**
