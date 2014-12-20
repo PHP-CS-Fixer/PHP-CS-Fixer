@@ -27,16 +27,16 @@ use Symfony\CS\StdinFileInfo;
  */
 class ConfigurationResolver
 {
-    protected $allFixers;
-    protected $config;
-    protected $configFile;
-    protected $cwd;
-    protected $defaultConfig;
-    protected $isStdIn;
-    protected $isDryRun;
-    protected $fixer;
-    protected $fixers = array();
-    protected $options = array(
+    private $allFixers;
+    private $config;
+    private $configFile;
+    private $cwd;
+    private $defaultConfig;
+    private $isStdIn;
+    private $isDryRun;
+    private $fixer;
+    private $fixers = array();
+    private $options = array(
         'config' => null,
         'config-file' => null,
         'dry-run' => null,
@@ -45,8 +45,8 @@ class ConfigurationResolver
         'path' => null,
         'progress' => null,
     );
-    protected $path;
-    protected $progress;
+    private $path;
+    private $progress;
 
     public function getConfig()
     {
@@ -149,7 +149,7 @@ class ConfigurationResolver
         return $this;
     }
 
-    protected function computeConfigFiles()
+    private function computeConfigFiles()
     {
         $configFile = $this->options['config-file'];
         $path = $this->path;
@@ -173,7 +173,7 @@ class ConfigurationResolver
         );
     }
 
-    protected function parseFixers()
+    private function parseFixers()
     {
         if (null !== $this->options['fixers']) {
             return array_map('trim', explode(',', $this->options['fixers']));
@@ -186,7 +186,7 @@ class ConfigurationResolver
         return;
     }
 
-    protected function parseLevel()
+    private function parseLevel()
     {
         static $levelMap = array(
             'none'    => FixerInterface::NONE_LEVEL,
@@ -219,7 +219,7 @@ class ConfigurationResolver
         return;
     }
 
-    protected function resolveConfig()
+    private function resolveConfig()
     {
         $configOption = $this->options['config'];
 
@@ -256,7 +256,7 @@ class ConfigurationResolver
         $this->config = $this->defaultConfig;
     }
 
-    protected function resolveConfigPath()
+    private function resolveConfigPath()
     {
         if (is_file($this->path)) {
             $this->config->finder(new \ArrayIterator(array(new \SplFileInfo($this->path))));
@@ -267,7 +267,7 @@ class ConfigurationResolver
         }
     }
 
-    protected function resolveFixersByLevel()
+    private function resolveFixersByLevel()
     {
         $level = $this->parseLevel();
 
@@ -286,7 +286,7 @@ class ConfigurationResolver
         $this->fixers = $fixers;
     }
 
-    protected function resolveFixersByNames()
+    private function resolveFixersByNames()
     {
         $names = $this->parseFixers();
 
@@ -317,7 +317,7 @@ class ConfigurationResolver
         }
     }
 
-    protected function resolveIsDryRun()
+    private function resolveIsDryRun()
     {
         // Can't write to STDIN
         if ($this->isStdIn) {
@@ -329,12 +329,12 @@ class ConfigurationResolver
         $this->isDryRun = $this->options['dry-run'];
     }
 
-    protected function resolveIsStdIn()
+    private function resolveIsStdIn()
     {
         $this->isStdIn = '-' === $this->options['path'];
     }
 
-    protected function resolvePath()
+    private function resolvePath()
     {
         $path = $this->options['path'];
 
@@ -348,7 +348,7 @@ class ConfigurationResolver
         $this->path = $path;
     }
 
-    protected function resolveProgress()
+    private function resolveProgress()
     {
         $this->progress = $this->options['progress'] && !$this->config->getHideProgress();
     }
