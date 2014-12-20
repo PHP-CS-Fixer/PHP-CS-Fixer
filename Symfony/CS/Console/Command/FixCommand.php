@@ -17,7 +17,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
@@ -271,24 +270,6 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $input->getArgument('path');
-
-        $stdin = false;
-
-        if ('-' === $path) {
-            $stdin = true;
-
-            // Can't write to STDIN
-            $input->setOption('dry-run', true);
-        }
-
-        if (null !== $path) {
-            $filesystem = new Filesystem();
-            if (!$filesystem->isAbsolutePath($path)) {
-                $path = getcwd().DIRECTORY_SEPARATOR.$path;
-            }
-        }
-
         $resolver = new ConfigurationResolver();
         $resolver
             ->setCwd(getcwd())
@@ -297,11 +278,11 @@ EOF
             ->setOptions(array(
                 'config' => $input->getOption('config'),
                 'config-file' => $input->getOption('config-file'),
-                'isStdIn' => $stdin,
+                'dry-run' => $input->getOption('dry-run'),
                 'level' => $input->getOption('level'),
                 'fixers' => $input->getOption('fixers'),
-                'path' => $path,
-                'progress' => $output->isVerbose(),
+                'path' => $input->getArgument('path'),
+                'progress' => $output->isVerbose() && 'txt' === $input->getOption('format'),
             ))
             ->resolve()
         ;
@@ -331,7 +312,7 @@ EOF
         }
 
         $this->stopwatch->start('fixFiles');
-        $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
+        $changed = $this->fixer->fix($config, $resolver->isDryRun(), $input->getOption('diff'));
         $this->stopwatch->stop('fixFiles');
 
         if ($showProgress) {

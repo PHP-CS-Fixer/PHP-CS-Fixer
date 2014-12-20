@@ -14,6 +14,7 @@ namespace Symfony\CS\Console;
 use Symfony\CS\Config\Config;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\StdinFileInfo;
+use Symfony\Component\Filesystem\Filesystem;;
 
 /**
  * The resolver that resolves configuration to use by command line options and config.
@@ -31,17 +32,25 @@ class ConfigurationResolver
     protected $configFile;
     protected $cwd;
     protected $defaultConfig;
+    protected $isStdIn;
+    protected $isDryRun;
     protected $fixer;
     protected $fixers = array();
     protected $options = array(
         'config' => null,
         'config-file' => null,
-        'isStdIn' => null,
+        'dry-run' => null,
         'fixers' => null,
         'level' => null,
         'path' => null,
         'progress' => null,
     );
+    protected $path;
+
+    public function isDryRun()
+    {
+        return $this->isDryRun;
+    }
 
     public function setCwd($cwd)
     {
@@ -92,6 +101,10 @@ class ConfigurationResolver
      */
     public function resolve()
     {
+        $this->resolvePath();
+        $this->resolveIsStdIn();
+        $this->resolveIsDryRun();
+
         $this->resolveConfig();
         $this->resolveConfigPath();
 
@@ -101,6 +114,37 @@ class ConfigurationResolver
         $this->config->fixers($this->getFixers());
 
         return $this;
+    }
+
+    protected function resolveIsStdIn()
+    {
+        $this->isStdIn = '-' === $this->path;
+    }
+
+    protected function resolveIsDryRun()
+    {
+        // Can't write to STDIN
+        if ($this->isStdIn) {
+            $this->isDryRun = true;
+
+            return;
+        }
+
+        $this->isDryRun = $this->options['dry-run'];
+    }
+
+    protected function resolvePath()
+    {
+        $path = $this->options['path'];
+
+        if (null !== $path) {
+            $filesystem = new Filesystem();
+            if (!$filesystem->isAbsolutePath($path)) {
+                $path = $this->cwd.DIRECTORY_SEPARATOR.$path;
+            }
+        }
+
+        $this->path = $path;
     }
 
     public function getConfig()
@@ -131,7 +175,7 @@ class ConfigurationResolver
     protected function computeConfigFiles()
     {
         $configFile = $this->options['config-file'];
-        $path = $this->options['path'];
+        $path = $this->path;
 
         if (null !== $configFile) {
             return array($configFile);
@@ -139,7 +183,7 @@ class ConfigurationResolver
 
         if (is_file($path) && $dirName = pathinfo($path, PATHINFO_DIRNAME)) {
             $configDir = $dirName;
-        } elseif ($this->options['isStdIn'] || null === $path) {
+        } elseif ($this->isStdIn || null === $path) {
             $configDir = $this->cwd;
             // path is directory
         } else {
@@ -191,15 +235,12 @@ class ConfigurationResolver
 
     protected function resolveConfigPath()
     {
-        $path = $this->options['path'];
-        $isStdIn = $this->options['isStdIn'];
-
-        if (is_file($path)) {
-            $this->config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
-        } elseif ($isStdIn) {
+        if (is_file($this->path)) {
+            $this->config->finder(new \ArrayIterator(array(new \SplFileInfo($this->path))));
+        } elseif ($this->isStdIn) {
             $this->config->finder(new \ArrayIterator(array(new StdinFileInfo())));
-        } elseif (null !== $path) {
-            $this->config->setDir($path);
+        } elseif (null !== $this->path) {
+            $this->config->setDir($this->path);
         }
     }
 
