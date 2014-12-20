@@ -46,6 +46,7 @@ class ConfigurationResolver
         'progress' => null,
     );
     protected $path;
+    protected $progress;
 
     public function getConfig()
     {
@@ -74,7 +75,7 @@ class ConfigurationResolver
 
     public function getProgress()
     {
-        return $this->options['progress'] && !$this->config->getHideProgress();
+        return $this->progress;
     }
 
     public function isDryRun()
@@ -98,6 +99,8 @@ class ConfigurationResolver
 
         $this->resolveFixersByLevel();
         $this->resolveFixersByNames();
+
+        $this->resolveProgress();
 
         $this->config->fixers($this->getFixers());
 
@@ -343,5 +346,10 @@ class ConfigurationResolver
         }
 
         $this->path = $path;
+    }
+
+    protected function resolveProgress()
+    {
+        $this->progress = $this->options['progress'] && !$this->config->getHideProgress();
     }
 }
