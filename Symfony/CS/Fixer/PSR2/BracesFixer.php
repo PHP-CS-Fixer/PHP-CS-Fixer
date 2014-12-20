@@ -238,6 +238,7 @@ class BracesFixer extends AbstractFixer
                 if (
                     !$nextNonWhitespaceToken->isComment()
                     || !($nextToken->isWhitespace() && $nextToken->isWhitespace(array('whitespaces' => " \t")))
+                    && substr_count($nextToken->getContent(), "\n") === 1 // preserve blank lines
                 ) {
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
                 }
@@ -438,6 +439,12 @@ class BracesFixer extends AbstractFixer
 
         while (true) {
             $token = $tokens[++$index];
+
+            // if there is some block in statement (eg lambda function) we need to skip it
+            if ($token->equals('{')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                continue;
+            }
 
             if ($token->equals(';')) {
                 return $index;

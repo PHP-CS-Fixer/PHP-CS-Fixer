@@ -203,4 +203,13 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
+
+    public function testFixesWindowsStyle()
+    {
+        $expected = "<?php\r\n    /**     * Constant!     */\n    \$foo = 123;";
+
+        $input = "<?php\r\n    /**     * Constant!     */\r\n\r\n\r\n    \$foo = 123;";
+
+        $this->makeTest($expected, $input);
+    }
 }

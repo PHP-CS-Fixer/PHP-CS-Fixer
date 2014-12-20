@@ -588,6 +588,37 @@ function mixedComplex()
 } ?>x',
                 '<?php if (true) echo "s" ?>x',
             ),
+            array(
+                '<?php
+    class Foo
+    {
+        public function getFaxNumbers()
+        {
+            if (1) {
+                return $this->phoneNumbers->filter(function ($phone) {
+                    $a = 1;
+                    $b = 1;
+                    $c = 1;
+                    return ($phone->getType() === 1) ? true : false;
+                });
+            }
+        }
+    }',
+                '<?php
+    class Foo
+    {
+        public function getFaxNumbers()
+        {
+            if (1)
+                return $this->phoneNumbers->filter(function ($phone) {
+                    $a = 1;
+                    $b = 1;
+                    $c = 1;
+                    return ($phone->getType() === 1) ? true : false;
+                });
+        }
+    }',
+            ),
         );
     }
 
@@ -850,28 +881,28 @@ function foo()
                 '<?php
 class Foo
 {
-    public function testA()
+    public function AAAA()
     {
     }
 
-    public function testB()
+    public function BBBB()
     {
     }
 
-    public function testC()
+    public function CCCC()
     {
     }
 }',
                 '<?php
 class Foo
 {
-    public function testA(){
+    public function AAAA(){
     }
 
-    public function testB()   {
+    public function BBBB()   {
     }
 
-    public function testC()
+    public function CCCC()
     {
     }
 }',
@@ -911,6 +942,15 @@ class Foo
     usort($this->fixers, function ($a, $b) use ($selfName) {
         return 1;
     });',
+            ),
+            array(
+                '<?php
+    usort(
+        $this->fixers,
+        function ($a, $b) use ($selfName) {
+            return 1;
+        }
+    );',
             ),
         );
     }
@@ -1048,6 +1088,35 @@ while (true) {
     finally     {
         echo "finish!";
     }',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider providePreserveLineAfterControlBrace
+     */
+    public function testPreserveLineAfterControlBrace($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function providePreserveLineAfterControlBrace()
+    {
+        return array(
+            array(
+                '<?php
+if (true) {
+
+    //  The blank line helps with legibility in nested control structures
+    if (true) {
+        // if body
+    }
+
+    // if body
+}',
+            ),
+            array(
+                "<?php if (true) {\r\n\r\n// CRLF newline\r\n}",
             ),
         );
     }
