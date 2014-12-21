@@ -115,8 +115,10 @@ class CurlyBraceTransformer extends AbstractTransformer
         return array(
             'CT_CURLY_CLOSE',
             'CT_DOLLAR_CLOSE_CURLY_BRACES',
-            'CT_DYNAMIC_PROP_BRACE_OPEN', 'CT_DYNAMIC_PROP_BRACE_CLOSE',
-            'CT_DYNAMIC_VAR_BRACE_OPEN', 'CT_DYNAMIC_VAR_BRACE_CLOSE',
+            'CT_DYNAMIC_PROP_BRACE_OPEN',
+            'CT_DYNAMIC_PROP_BRACE_CLOSE',
+            'CT_DYNAMIC_VAR_BRACE_OPEN',
+            'CT_DYNAMIC_VAR_BRACE_CLOSE',
         );
     }
 }
