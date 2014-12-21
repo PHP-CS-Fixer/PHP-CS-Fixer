@@ -48,8 +48,8 @@ class DynamicVarBraceTransformer extends AbstractTransformer
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
             $closeToken = $tokens[$closeIndex];
 
-            $openToken->override(array(CT_DYNAMIC_VAR_BRACE_OPEN, '{', $openToken->getLine()));
-            $closeToken->override(array(CT_DYNAMIC_VAR_BRACE_CLOSE, '}', $closeToken->getLine()));
+            $openToken->override(array(CT_DYNAMIC_VAR_BRACE_OPEN, '{'));
+            $closeToken->override(array(CT_DYNAMIC_VAR_BRACE_CLOSE, '}'));
         }
     }
 

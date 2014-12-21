@@ -35,7 +35,7 @@ class TokenTest extends \PHPUnit_Framework_TestCase
 
     public function getForeachTokenPrototype()
     {
-        static $prototype = array(T_FOREACH, 'foreach', 123);
+        static $prototype = array(T_FOREACH, 'foreach');
 
         return $prototype;
     }
@@ -47,7 +47,6 @@ class TokenTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame('', $token->getContent());
         $this->assertNull($token->getId());
-        $this->assertNull($token->getLine());
         $this->assertFalse($token->isArray());
     }
 
@@ -226,7 +225,6 @@ class TokenTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($prototype[0], $token->getId());
         $this->assertSame($prototype[1], $token->getContent());
-        $this->assertSame($prototype[2], $token->getLine());
         $this->assertTrue($token->isArray());
     }
 
@@ -237,7 +235,6 @@ class TokenTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($prototype, $token->getContent());
         $this->assertNull($token->getId());
-        $this->assertNull($token->getLine());
         $this->assertFalse($token->isArray());
     }
 }

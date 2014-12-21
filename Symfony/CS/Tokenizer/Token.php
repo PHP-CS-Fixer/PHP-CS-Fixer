@@ -41,13 +41,6 @@ class Token
     private $isArray;
 
     /**
-     * Line of token prototype occurrence, if available.
-     *
-     * @var int|null
-     */
-    private $line;
-
-    /**
      * Constructor.
      *
      * @param string|array $token token prototype
@@ -58,7 +51,6 @@ class Token
             $this->isArray = true;
             $this->id = $token[0];
             $this->content = $token[1];
-            $this->line = isset($token[2]) ? $token[2] : null;
         } else {
             $this->isArray = false;
             $this->content = $token;
@@ -139,7 +131,6 @@ class Token
         return array(
             $this->id,
             $this->content,
-            $this->line,
         );
     }
 
@@ -369,7 +360,6 @@ class Token
             $this->isArray = true;
             $this->id = $prototype[0];
             $this->content = $prototype[1];
-            $this->line = isset($prototype[2]) ? $prototype[2] : null;
 
             return;
         }
@@ -377,7 +367,6 @@ class Token
         $this->isArray = false;
         $this->id = null;
         $this->content = $prototype;
-        $this->line = null;
     }
 
     /**
@@ -396,7 +385,6 @@ class Token
             'id'      => $this->id,
             'name'    => $this->getName(),
             'content' => $this->content,
-            'line'    => $this->line,
             'isArray' => $this->isArray,
         );
     }
