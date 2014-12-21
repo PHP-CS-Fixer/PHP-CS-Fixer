@@ -101,13 +101,13 @@ class CurlyBraceTransformer extends AbstractTransformer
                 ++$nestIndex;
 
                 // we count all kind of {
-                if ('{' === $tokens[$nestIndex]->getContent()) {
+                if ($tokens[$nestIndex]->equals('{')) {
                     ++$level;
                     continue;
                 }
 
                 // we count all kind of }
-                if ('}' === $tokens[$nestIndex]->getContent()) {
+                if ($tokens[$nestIndex]->equals('}')) {
                     --$level;
                 }
             }
