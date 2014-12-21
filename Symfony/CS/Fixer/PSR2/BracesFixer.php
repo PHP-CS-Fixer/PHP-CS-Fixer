@@ -335,7 +335,7 @@ class BracesFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind($controlTokens) || $token->isGivenKind(T_USE)) {
+            if ($token->isGivenKind($controlTokens) || $token->isGivenKind(CT_USE_LAMBDA)) {
                 $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($index);
 
                 if (!$tokens[$nextNonWhitespaceIndex]->equals(':')) {

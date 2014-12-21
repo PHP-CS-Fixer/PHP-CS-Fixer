@@ -26,19 +26,21 @@ class RemoveLeadingSlashUseFixerTest extends AbstractFixerTestBase
         $this->makeTest($expected, $input);
     }
 
+    /**
+     * @dataProvider provideFix54Cases
+     * @requires PHP 5.4
+     */
+    public function testFix54($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
     public function provideFixCases()
     {
         return array(
             array(
                 '<?php
                 use \A\B;
-                ',
-            ),
-            array(
-                '<?php
-                trait SomeTrait {
-                    use \A;
-                }
                 ',
             ),
             array(
@@ -73,38 +75,6 @@ class RemoveLeadingSlashUseFixerTest extends AbstractFixerTestBase
                 }
                 namespace NS2{
                     use \C\D;
-                }
-                ',
-            ),
-            array(
-                '<?php
-                namespace NS{
-                    use A\B;
-                    trait Tr8A{
-                        use \B, \C;
-                    }
-                }
-                namespace NS2{
-                    use C\D;
-                }
-                ',
-                '<?php
-                namespace NS{
-                    use \A\B;
-                    trait Tr8A{
-                        use \B, \C;
-                    }
-                }
-                namespace NS2{
-                    use \C\D;
-                }
-                ',
-            ),
-            array(
-                '<?php
-                trait Foo {}
-                class Bar {
-                    use \Foo;
                 }
                 ',
             ),
@@ -156,6 +126,51 @@ class RemoveLeadingSlashUseFixerTest extends AbstractFixerTestBase
                 namespace Foo\Bar
                 use \Baz;
                 class Foo implements Baz {}
+                ',
+            ),
+        );
+    }
+
+    public function provideFix54Cases()
+    {
+        return array(
+            array(
+                '<?php
+                trait SomeTrait {
+                    use \A;
+                }
+                ',
+            ),
+            array(
+                '<?php
+                namespace NS{
+                    use A\B;
+                    trait Tr8A{
+                        use \B, \C;
+                    }
+                }
+                namespace NS2{
+                    use C\D;
+                }
+                ',
+                '<?php
+                namespace NS{
+                    use \A\B;
+                    trait Tr8A{
+                        use \B, \C;
+                    }
+                }
+                namespace NS2{
+                    use \C\D;
+                }
+                ',
+            ),
+            array(
+                '<?php
+                trait Foo {}
+                class Bar {
+                    use \Foo;
+                }
                 ',
             ),
         );

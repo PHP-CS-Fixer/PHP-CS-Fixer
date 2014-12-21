@@ -511,26 +511,9 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            // Skip whole class braces content.
-            // The only { that interest us is the one directly after T_NAMESPACE and is handled above
-            // That way we can skip for example whole tokens in class declaration, therefore skip `T_USE` for traits.
-            if ($token->equals('{')) {
-                $index = $this->findBlockEnd(self::BLOCK_TYPE_CURLY_BRACE, $index);
-                continue;
+            if ($token->isGivenKind(T_USE)) {
+                $uses[$namespaceIndex][] = $index;
             }
-
-            if (!$token->isGivenKind(T_USE)) {
-                continue;
-            }
-
-            $nextToken = $this[$this->getNextMeaningfulToken($index)];
-
-            // ignore function () use ($foo) {}
-            if ($nextToken->equals('(')) {
-                continue;
-            }
-
-            $uses[$namespaceIndex][] = $index;
         }
 
         if (!$perNamespace && isset($uses[$namespaceIndex])) {
@@ -821,7 +804,7 @@ class Tokens extends \SplFixedArray
         $nextIndex = $this->getNextNonWhitespace($endParenthesisIndex);
         $nextToken = $this[$nextIndex];
 
-        if (!$nextToken->equalsAny(array('{', array(T_USE)))) {
+        if (!$nextToken->equalsAny(array('{', array(CT_USE_LAMBDA)))) {
             return false;
         }
 
