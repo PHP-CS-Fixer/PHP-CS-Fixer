@@ -15,7 +15,9 @@ use Symfony\CS\Tokenizer\AbstractTransformer;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
- * Transform curly braces:
+ * Transform discriminate overloaded curly braces tokens.
+ *
+ * Performed transformations:
  * - closing `}` for T_CURLY_OPEN into CT_CURLY_CLOSE,
  * - closing `}` for T_DOLLAR_OPEN_CURLY_BRACES into CT_DOLLAR_CLOSE_CURLY_BRACES
  * - in `$foo->{$bar}` into CT_DYNAMIC_PROP_BRACE_OPEN and CT_DYNAMIC_PROP_BRACE_CLOSE,
