@@ -30,7 +30,33 @@ class ArraySquareBraceTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens)
     {
-        // TODO
+        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+            if (!$this->isShortArray($tokens, $index)) {
+                continue;
+            }
+
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $index);
+
+            $tokens[$index]->override(array(CT_ARRAY_SQUARE_BRACE_OPEN, '['));
+            $tokens[$endIndex]->override(array(CT_ARRAY_SQUARE_BRACE_CLOSE, ']'));
+        }
+    }
+
+    private function isShortArray(Tokens $tokens, $index)
+    {
+        $token = $tokens[$index];
+
+        if (!$token->equals('[')) {
+            return false;
+        }
+
+        $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+
+        if ($prevToken->equalsAny(array(array(T_DOUBLE_ARROW), '=', '+', '(', '['))) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
