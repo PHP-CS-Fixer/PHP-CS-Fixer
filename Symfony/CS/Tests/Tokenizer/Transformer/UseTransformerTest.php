@@ -35,6 +35,13 @@ class UseTransformerTest extends AbstractTransformerTestBase
                     1 => 'T_USE',
                 ),
             ),
+            /*
+            array(
+                '<?php function foo() use ($bar) {}',
+                array(
+                    7 => 'CT_USE_LAMBDA',
+                ),
+            ),
             array(
                 '<?php class Foo { use Bar; }',
                 array(
@@ -42,11 +49,14 @@ class UseTransformerTest extends AbstractTransformerTestBase
                 ),
             ),
             array(
-                '<?php function foo() use ($bar) {}',
+                '<?php namespace Aaa; use Bbb; class Foo { use Bar; function baz() { $a=1; return function () use ($a) {}; } }',
                 array(
-                    7 => 'CT_USE_LAMBDA',
+                    7 => 'T_USE',
+                    18 => 'CT_USE_TRAIT',
+                    43 => 'CT_USE_LAMBDA',
                 ),
             ),
+            */
         );
     }
 }

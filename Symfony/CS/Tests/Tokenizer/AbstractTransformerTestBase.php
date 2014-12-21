@@ -31,8 +31,8 @@ abstract class AbstractTransformerTestBase extends \PHPUnit_Framework_TestCase
         );
 
         foreach ($expectedTokens as $index => $name) {
-            $this->assertSame(constant($name), $tokens[$index]->getId());
             $this->assertSame($name, $tokens[$index]->getName());
+            $this->assertSame(constant($name), $tokens[$index]->getId());
         }
     }
 }

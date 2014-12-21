@@ -30,7 +30,36 @@ class UseTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens)
     {
-        // TODO
+        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+            $token = $tokens[$index];
+
+            // Skip whole class braces content.
+            // That way we can skip whole tokens in class declaration, therefore skip `T_USE` for traits.
+            if ($token->isClassy()) {
+                $index = $tokens->getNextTokenOfKind($index, array('{'));
+                $innerLimit = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+
+                while ($index < $innerLimit) {
+                    $token = $tokens[++$index];
+
+                    if (!$token->isGivenKind(T_USE)) {
+                        continue;
+                    }
+
+                    if ($this->isUseForLambda($tokens, $index)) {
+                        $token->override(array(CT_USE_LAMBDA, $token->getContent()));
+                    } else {
+                        $token->override(array(CT_USE_TRAIT, $token->getContent()));
+                    }
+                }
+
+                continue;
+            }
+
+            if ($token->isGivenKind(T_USE) && $this->isUseForLambda($tokens, $index)) {
+                $token->override(array(CT_USE_LAMBDA, $token->getContent()));
+            }
+        }
     }
 
     /**
@@ -39,5 +68,23 @@ class UseTransformer extends AbstractTransformer
     public function getCustomTokenNames()
     {
         return array('CT_USE_TRAIT', 'CT_USE_LAMBDA');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // TODO: insert name of `curly` Transformer
+        // should be run after the
+        return -20;
+    }
+
+    private function isUseForLambda(Tokens $tokens, $index)
+    {
+        $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
+
+        // test `function () use ($foo) {}` case
+        return $nextToken->equals('(');
     }
 }
