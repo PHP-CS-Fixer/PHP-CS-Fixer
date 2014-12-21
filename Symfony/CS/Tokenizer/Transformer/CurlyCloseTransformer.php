@@ -21,7 +21,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @internal
  */
-class CurlyClose extends AbstractTransformer
+class CurlyCloseTransformer extends AbstractTransformer
 {
     /**
      * {@inheritdoc}

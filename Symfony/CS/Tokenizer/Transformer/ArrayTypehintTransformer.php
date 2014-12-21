@@ -15,25 +15,25 @@ use Symfony\CS\Tokenizer\AbstractTransformer;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
- * Transform `class` class' constant from T_CLASS into CT_CLASS_CONSTANT.
+ * Transform `array` typehint from T_ARRAY into T_ARRAY_TYPEHINT.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-class ClassConstant extends AbstractTransformer
+class ArrayTypehintTransformer extends AbstractTransformer
 {
     /**
      * {@inheritdoc}
      */
     public function process(Tokens $tokens)
     {
-        foreach ($tokens->findGivenKind(T_CLASS) as $index => $token) {
-            $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            $prevToken = $tokens[$prevIndex];
+        foreach ($tokens->findGivenKind(T_ARRAY) as $index => $token) {
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
+            $nextToken = $tokens[$nextIndex];
 
-            if ($prevToken->isGivenKind(T_DOUBLE_COLON)) {
-                $token->override(array(CT_CLASS_CONSTANT, $token->getContent(), $token->getLine()));
+            if (!$nextToken->equals('(')) {
+                $token->override(array(CT_ARRAY_TYPEHINT, $token->getContent(), $token->getLine()));
             }
         }
     }
@@ -43,6 +43,6 @@ class ClassConstant extends AbstractTransformer
      */
     public function getCustomTokenNames()
     {
-        return array('CT_CLASS_CONSTANT');
+        return array('CT_ARRAY_TYPEHINT');
     }
 }

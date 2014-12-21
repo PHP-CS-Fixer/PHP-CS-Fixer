@@ -21,7 +21,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @internal
  */
-class DynamicVarBrace extends AbstractTransformer
+class DynamicVarBraceTransformer extends AbstractTransformer
 {
     /**
      * {@inheritdoc}
