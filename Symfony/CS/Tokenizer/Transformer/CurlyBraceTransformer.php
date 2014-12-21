@@ -32,7 +32,59 @@ class CurlyBraceTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens)
     {
-        foreach ($tokens->findGivenKind(T_CURLY_OPEN) as $index => $token) {
+        $this->processCurlyClose($tokens);
+
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind(T_DOLLAR_OPEN_CURLY_BRACES)) {
+                $nextIndex = $tokens->getNextTokenOfKind($index, array('}'));
+                $tokens[$nextIndex]->override(array(CT_DOLLAR_CLOSE_CURLY_BRACES, '}'));
+
+                continue;
+            }
+        
+            if ($token->isGivenKind(T_OBJECT_OPERATOR)) {
+                if (!$tokens[$index + 1]->equals('{')) {
+                    continue;
+                }
+
+                $openIndex = $index + 1;
+                $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
+
+                $tokens[$openIndex]->override(array(CT_DYNAMIC_PROP_BRACE_OPEN, '{'));
+                $tokens[$closeIndex]->override(array(CT_DYNAMIC_PROP_BRACE_CLOSE, '}'));
+
+                continue;
+            }
+
+            if ($token->equals('$')) {
+                $openIndex = $tokens->getNextMeaningfulToken($index);
+
+                if (null === $openIndex) {
+                    continue;
+                }
+
+                $openToken = $tokens[$openIndex];
+
+                if (!$openToken->equals('{')) {
+                    continue;
+                }
+
+                $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
+                $closeToken = $tokens[$closeIndex];
+
+                $openToken->override(array(CT_DYNAMIC_VAR_BRACE_OPEN, '{'));
+                $closeToken->override(array(CT_DYNAMIC_VAR_BRACE_CLOSE, '}'));
+            }
+        }
+    }
+
+    private function processCurlyClose(Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_CURLY_OPEN)) {
+                continue;
+            }
+        
             $level = 1;
             $nestIndex = $index;
 
@@ -60,6 +112,11 @@ class CurlyBraceTransformer extends AbstractTransformer
      */
     public function getCustomTokenNames()
     {
-        return array('CT_CURLY_CLOSE');
+        return array(
+            'CT_CURLY_CLOSE',
+            'CT_DOLLAR_CLOSE_CURLY_BRACES',
+            'CT_DYNAMIC_PROP_BRACE_OPEN', 'CT_DYNAMIC_PROP_BRACE_CLOSE',
+            'CT_DYNAMIC_VAR_BRACE_OPEN', 'CT_DYNAMIC_VAR_BRACE_CLOSE'
+        );
     }
 }
