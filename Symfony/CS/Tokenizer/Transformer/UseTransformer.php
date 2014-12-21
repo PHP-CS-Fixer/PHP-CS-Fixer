@@ -75,8 +75,7 @@ class UseTransformer extends AbstractTransformer
      */
     public function getPriority()
     {
-        // TODO: insert name of `curly` Transformer
-        // should be run after the
+        // should be run after the CurlyCloseTransformer
         return -20;
     }
 
