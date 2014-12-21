@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Tokenizer\AbstractTransformerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ClassConstantTest extends AbstractTransformerTestBase
+class ArrayTypehintTransformerTest extends AbstractTransformerTestBase
 {
     /**
      * @dataProvider provideProcessCases
@@ -30,9 +30,14 @@ class ClassConstantTest extends AbstractTransformerTestBase
     {
         return array(
             array(
-                '<?php echo X::class',
+                '<?php
+$a = array(1, 2, 3);
+function foo (array /** @type array */ $bar)
+{
+}',
                 array(
-                    5 => 'CT_CLASS_CONSTANT',
+                    5  => 'T_ARRAY',
+                    22 => 'CT_ARRAY_TYPEHINT',
                 ),
             ),
         );
