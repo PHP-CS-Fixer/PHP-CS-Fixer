@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class DollarCloseCurlyBracesTest extends AbstractTransformerTestBase
+class DollarCloseCurlyBraceTest extends AbstractTransformerTestBase
 {
     /**
      * @dataProvider provideProcessCases
