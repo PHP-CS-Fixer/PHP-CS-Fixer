@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T01:04:43Z
+
+Yet, seems fine. The other option is to append an underscore to the class name like phpparser does. I'd prefer just suffixing with transformer though, as you suggested.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-21T01:07:08Z
+
+Underscore in class name is extra ugly for me... Maybe because `_` emulates namespaces one day
