@@ -12,7 +12,11 @@
 namespace Symfony\CS;
 
 /**
+ * This abstract fixer provides the replacePlaceholder method used by both the
+ * align equals fixer and the align double arrow fixer.
+ *
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
+ * @author Graham Campbell <graham@mineuk.com>
  */
 abstract class AbstractAlignFixer extends AbstractFixer
 {
@@ -24,23 +28,21 @@ abstract class AbstractAlignFixer extends AbstractFixer
     /**
      * Look for group of placeholders, and provide vertical alignment.
      *
-     * @param string $tokens
+     * @param string $code
      * @param int    $deepestLevel
      *
      * @return string
      */
-    protected function replacePlaceholder($tokens, $deepestLevel)
+    protected function replacePlaceholder($code, $deepestLevel)
     {
-        $tmpCode = $tokens->generateCode();
-
         for ($j = 0; $j <= $deepestLevel; ++$j) {
             $placeholder = sprintf(self::ALIGNABLE_PLACEHOLDER, $j);
 
-            if (false === strpos($tmpCode, $placeholder)) {
+            if (false === strpos($code, $placeholder)) {
                 continue;
             }
 
-            $lines = explode("\n", $tmpCode);
+            $lines = explode("\n", $code);
             $linesWithPlaceholder = array();
             $blockSize = 0;
 
@@ -79,9 +81,9 @@ abstract class AbstractAlignFixer extends AbstractFixer
                 }
             }
 
-            $tmpCode = str_replace($placeholder, '', implode("\n", $lines));
+            $code = str_replace($placeholder, '', implode("\n", $lines));
         }
 
-        return $tmpCode;
+        return $code;
     }
 }

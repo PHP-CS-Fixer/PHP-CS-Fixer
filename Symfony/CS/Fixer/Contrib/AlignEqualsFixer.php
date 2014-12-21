@@ -28,7 +28,7 @@ class AlignEqualsFixer extends AbstractAlignFixer
     {
         list($tokens, $deepestLevel) = $this->injectAlignmentPlaceholders($content);
 
-        return $this->replacePlaceholder($tokens, $deepestLevel);
+        return $this->replacePlaceholder($tokens->generateCode(), $deepestLevel);
     }
 
     /**
