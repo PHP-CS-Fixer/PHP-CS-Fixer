@@ -94,14 +94,14 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
                 continue;
             }
 
-            if ($token->equals('[')) {
+            if ($token->isGivenKind(CT_ARRAY_SQUARE_BRACE_OPEN)) {
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
                 if ($prevToken->isGivenKind(array(T_STRING, T_VARIABLE))) {
                     continue;
                 }
 
                 $from = $index;
-                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $from);
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $from);
                 $index = $until;
 
                 ++$this->deepestLevel;

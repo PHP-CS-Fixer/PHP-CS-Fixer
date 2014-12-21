@@ -74,8 +74,8 @@ class StrictParamFixer extends AbstractFixer
                 continue;
             }
 
-            if ($token->equals('[')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $index);
+            if ($token->isGivenKind(CT_ARRAY_SQUARE_BRACE_OPEN)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
                 continue;
             }
 

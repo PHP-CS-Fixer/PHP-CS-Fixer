@@ -21,8 +21,9 @@ class Tokens extends \SplFixedArray
 {
     const BLOCK_TYPE_PARENTHESIS_BRACE = 1;
     const BLOCK_TYPE_CURLY_BRACE = 2;
-    const BLOCK_TYPE_SQUARE_BRACE = 3;
-    const BLOCK_TYPE_DYNAMIC_PROP_BRACE = 4;
+    const BLOCK_TYPE_INDEX_SQUARE_BRACE = 3;
+    const BLOCK_TYPE_ARRAY_SQUARE_BRACE = 4;
+    const BLOCK_TYPE_DYNAMIC_PROP_BRACE = 5;
 
     /**
      * Static class cache.
@@ -161,9 +162,13 @@ class Tokens extends \SplFixedArray
                 'start' => '(',
                 'end'   => ')',
             ),
-            self::BLOCK_TYPE_SQUARE_BRACE => array(
+            self::BLOCK_TYPE_INDEX_SQUARE_BRACE => array(
                 'start' => '[',
                 'end'   => ']',
+            ),
+            self::BLOCK_TYPE_ARRAY_SQUARE_BRACE => array(
+                'start' => array(CT_ARRAY_SQUARE_BRACE_OPEN, '['),
+                'end'   => array(CT_ARRAY_SQUARE_BRACE_CLOSE, ']'),
             ),
             self::BLOCK_TYPE_DYNAMIC_PROP_BRACE => array(
                 'start' => array(CT_DYNAMIC_PROP_BRACE_OPEN, '{'),
@@ -752,7 +757,7 @@ class Tokens extends \SplFixedArray
      */
     public function isArray($index)
     {
-        return $this[$index]->isGivenKind(T_ARRAY) || $this->isShortArray($index);
+        return $this[$index]->isGivenKind(array(T_ARRAY, CT_ARRAY_SQUARE_BRACE_OPEN));
     }
 
     /**
@@ -774,7 +779,7 @@ class Tokens extends \SplFixedArray
 
         $endIndex = $this[$index]->equals('(')
             ? $this->findBlockEnd(self::BLOCK_TYPE_PARENTHESIS_BRACE, $index)
-            : $this->findBlockEnd(self::BLOCK_TYPE_SQUARE_BRACE, $index)
+            : $this->findBlockEnd(self::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index)
         ;
 
         for (++$index; $index < $endIndex; ++$index) {
@@ -826,30 +831,6 @@ class Tokens extends \SplFixedArray
         }
 
         return true;
-    }
-
-    /**
-     * Check if the array at index uses the short-syntax.
-     *
-     * @param int $index
-     *
-     * @return bool
-     */
-    public function isShortArray($index)
-    {
-        $token = $this[$index];
-
-        if (!$token->equals('[')) {
-            return false;
-        }
-
-        $prevToken = $this[$this->getPrevNonWhitespace($index)];
-
-        if ($prevToken->equalsAny(array(array(T_DOUBLE_ARROW), '=', '+', '(', '['))) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
