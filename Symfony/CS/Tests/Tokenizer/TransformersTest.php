@@ -66,7 +66,7 @@ class TransformersTest extends \PHPUnit_Framework_TestCase
         }
 
         return array(
-            array($transformers['curly_close'], $transformers['dollar_close_curly_braces']),
+            array($transformers['curly_close'], $transformers['dollar_close_curly_brace']),
             array($transformers['curly_close'], $transformers['dynamic_prop_brace']),
             array($transformers['curly_close'], $transformers['dynamic_var_brace']),
         );

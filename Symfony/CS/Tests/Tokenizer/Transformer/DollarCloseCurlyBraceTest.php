@@ -12,24 +12,18 @@
 namespace Symfony\CS\Tests\Tokenizer\Transformer;
 
 use Symfony\CS\Tests\Tokenizer\AbstractTransformerTestBase;
-use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class DollarCloseCurlyBracesTest extends AbstractTransformerTestBase
+class DollarCloseCurlyBraceTest extends AbstractTransformerTestBase
 {
     /**
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source, array $expectedTokens)
+    public function testProcess($source, array $expectedTokens = array())
     {
-        $tokens = Tokens::fromCode($source);
-
-        foreach ($expectedTokens as $index => $name) {
-            $this->assertSame(constant($name), $tokens[$index]->getId());
-            $this->assertSame($name, $tokens[$index]->getName());
-        }
+        $this->makeTest($source, $expectedTokens);
     }
 
     public function provideProcessCases()

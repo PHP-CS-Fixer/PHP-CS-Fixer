@@ -11,49 +11,28 @@
 
 namespace Symfony\CS\Tests\Tokenizer;
 
-use Symfony\CS\Tokenizer\Transformers;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 abstract class AbstractTransformerTestBase extends \PHPUnit_Framework_TestCase
 {
-    protected static $transformer;
-    protected static $transformers;
-
-    public static function setUpBeforeClass()
+    protected function makeTest($source, array $expectedTokens = array())
     {
-        static::$transformers = static::getTransformers();
-        static::$transformer = static::getTransformer();
-    }
+        $tokens = Tokens::fromCode($source);
 
-    public static function tearDownAfterClass()
-    {
-        static::$transformer = null;
-        static::$transformers = null;
-    }
+        $this->assertSame(
+            count($expectedTokens),
+            array_sum(array_map(
+                function ($item) { return count($item); },
+                $tokens->findGivenKind(array_map(function ($name) { return constant($name); }, $expectedTokens))
+            ))
+        );
 
-    protected static function getTransformer()
-    {
-        $transformerClass = 'Symfony\CS\Tokenizer'.substr(get_called_class(), strlen(__NAMESPACE__), -strlen('Test'));
-
-        $transformersReflection = new \ReflectionClass(static::$transformers);
-        $propertyReflection = $transformersReflection->getProperty('items');
-        $propertyReflection->setAccessible(true);
-
-        $items = $propertyReflection->getValue(static::$transformers);
-
-        foreach ($items as $item) {
-            if ($item instanceof $transformerClass) {
-                return $item;
-            }
+        foreach ($expectedTokens as $index => $name) {
+            $this->assertSame(constant($name), $tokens[$index]->getId());
+            $this->assertSame($name, $tokens[$index]->getName());
         }
-
-        throw new \RuntimeException("Transformer $transformerClass not found.");
-    }
-
-    protected static function getTransformers()
-    {
-        return Transformers::create();
     }
 }
