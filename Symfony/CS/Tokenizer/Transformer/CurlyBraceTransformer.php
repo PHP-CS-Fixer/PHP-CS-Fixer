@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * Performed transformations:
  * - closing `}` for T_CURLY_OPEN into CT_CURLY_CLOSE,
- * - closing `}` for T_DOLLAR_OPEN_CURLY_BRACES into CT_DOLLAR_CLOSE_CURLY_BRACES
+ * - closing `}` for T_DOLLAR_OPEN_CURLY_BRACES into CT_DOLLAR_CLOSE_CURLY_BRACES,
  * - in `$foo->{$bar}` into CT_DYNAMIC_PROP_BRACE_OPEN and CT_DYNAMIC_PROP_BRACE_CLOSE,
  * - in `${$foo}` into CT_DYNAMIC_VAR_BRACE_OPEN and CT_DYNAMIC_VAR_BRACE_CLOSE.
  *
@@ -34,7 +34,7 @@ class CurlyBraceTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens)
     {
-        $this->processCurlyClose($tokens);
+        $this->transformIntoCurlyClose($tokens);
 
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_DOLLAR_OPEN_CURLY_BRACES)) {
@@ -80,7 +80,7 @@ class CurlyBraceTransformer extends AbstractTransformer
         }
     }
 
-    private function processCurlyClose(Tokens $tokens)
+    private function transformIntoCurlyClose(Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_CURLY_OPEN)) {
