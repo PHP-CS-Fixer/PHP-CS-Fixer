@@ -41,7 +41,7 @@ class CurlyBraceTransformer extends AbstractTransformer
 
                 continue;
             }
-        
+
             if ($token->isGivenKind(T_OBJECT_OPERATOR)) {
                 if (!$tokens[$index + 1]->equals('{')) {
                     continue;
@@ -84,7 +84,7 @@ class CurlyBraceTransformer extends AbstractTransformer
             if (!$token->isGivenKind(T_CURLY_OPEN)) {
                 continue;
             }
-        
+
             $level = 1;
             $nestIndex = $index;
 
@@ -116,7 +116,7 @@ class CurlyBraceTransformer extends AbstractTransformer
             'CT_CURLY_CLOSE',
             'CT_DOLLAR_CLOSE_CURLY_BRACES',
             'CT_DYNAMIC_PROP_BRACE_OPEN', 'CT_DYNAMIC_PROP_BRACE_CLOSE',
-            'CT_DYNAMIC_VAR_BRACE_OPEN', 'CT_DYNAMIC_VAR_BRACE_CLOSE'
+            'CT_DYNAMIC_VAR_BRACE_OPEN', 'CT_DYNAMIC_VAR_BRACE_CLOSE',
         );
     }
 }
