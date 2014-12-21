@@ -50,6 +50,44 @@ class CurlyBraceTransformerTest extends AbstractTransformerTestBase
                     12 => 'CT_CURLY_CLOSE',
                 ),
             ),
+
+            array(
+                '<?php echo "This is ${great}";',
+                array(
+                    5 => 'T_DOLLAR_OPEN_CURLY_BRACES',
+                    7 => 'CT_DOLLAR_CLOSE_CURLY_BRACES',
+                ),
+            ),
+
+            array(
+                '<?php $foo->{$bar};',
+                array(
+                    3 => 'CT_DYNAMIC_PROP_BRACE_OPEN',
+                    5 => 'CT_DYNAMIC_PROP_BRACE_CLOSE',
+                ),
+            ),
+
+            array(
+                '<?php ${$bar};',
+                array(
+                    2 => 'CT_DYNAMIC_VAR_BRACE_OPEN',
+                    4 => 'CT_DYNAMIC_VAR_BRACE_CLOSE',
+                ),
+            ),
+            // tests from CurlyCloseTest
+            array(
+                '<?php
+                    echo "This is {$great}";
+                    $a = "a{$b->c()}d";
+                    echo "I\'d like an {${beers::$ale}}\n";
+                ',
+            ),
+            // tests from DollarCloseCurlyBracesTest
+            array('<?php echo "This is ${great}";'),
+            // tests from DynamicPropBraceTest
+            array('<?php $foo->{$bar};'),
+            // extra tests
+            array('<?php if (1) {} class Foo{ } function bar{ }'),
         );
     }
 }
