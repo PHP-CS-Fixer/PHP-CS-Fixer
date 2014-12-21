@@ -80,6 +80,13 @@ class CurlyBraceTransformer extends AbstractTransformer
         }
     }
 
+    /**
+     * Transform closing `}` for T_CURLY_OPEN into CT_CURLY_CLOSE.
+     *
+     * This should be done at very beginning of curly braces transformations.
+     *
+     * @param Tokens $tokens
+     */
     private function transformIntoCurlyClose(Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
