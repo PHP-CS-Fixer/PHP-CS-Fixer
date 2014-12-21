@@ -35,7 +35,7 @@ class ArraySquareBraceTransformer extends AbstractTransformer
                 continue;
             }
 
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $index);
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
 
             $tokens[$index]->override(array(CT_ARRAY_SQUARE_BRACE_OPEN, '['));
             $tokens[$endIndex]->override(array(CT_ARRAY_SQUARE_BRACE_CLOSE, ']'));
@@ -52,7 +52,17 @@ class ArraySquareBraceTransformer extends AbstractTransformer
 
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        if ($prevToken->equalsAny(array(array(T_DOUBLE_ARROW), '=', '+', '(', '['))) {
+        if ($prevToken->equalsAny(
+            array(
+                array(T_DOUBLE_ARROW),
+                array(CT_ARRAY_SQUARE_BRACE_OPEN),
+                '=',
+                '+',
+                ',',
+                '(',
+                '[',
+            )
+        )) {
             return true;
         }
 

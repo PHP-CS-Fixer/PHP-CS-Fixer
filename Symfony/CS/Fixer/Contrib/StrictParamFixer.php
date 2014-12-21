@@ -61,9 +61,14 @@ class StrictParamFixer extends AbstractFixer
         $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startBraceIndex);
         $commaCounter = 0;
         $sawParameter = false;
-
+//var_dump('=================');
         for ($index = $startBraceIndex + 1; $index < $endBraceIndex; ++$index) {
             $token = $tokens[$index];
+//echo ($token->toJSON());
+
+        if ($token->getContent() === '[') {
+            //var_dump($token);
+        }
 
             if (!$token->isWhitespace() && !$token->isComment()) {
                 $sawParameter = true;
@@ -74,8 +79,10 @@ class StrictParamFixer extends AbstractFixer
                 continue;
             }
 
-            if ($token->equals('[')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $index);
+            if ($token->isGivenKind(CT_ARRAY_SQUARE_BRACE_OPEN)) {
+//var_dump("ARRAY");
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+//VAR_DUMP("ARRAY: " . $index);
                 continue;
             }
 
