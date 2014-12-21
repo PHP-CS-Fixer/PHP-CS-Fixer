@@ -13,9 +13,11 @@ namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Utils;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
+ * @author Graham Campbell <graham@mineuk.com>
  */
 class PhpdocIndentFixer extends AbstractFixer
 {
@@ -28,13 +30,14 @@ class PhpdocIndentFixer extends AbstractFixer
 
         foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
             $nextIndex = $tokens->getNextMeaningfulToken($index);
+
             if (null === $nextIndex) {
                 continue;
             }
 
             $prevToken = $tokens[$index - 1];
 
-            //ignore inline docblocks
+            // ignore inline docblocks
             if (
                 ($prevToken->isWhitespace(array('whitespaces' => " \t")) && !$tokens[$index - 2]->isGivenKind(T_OPEN_TAG))
                 || $prevToken->equalsAny(array(';', '{'))
@@ -42,21 +45,13 @@ class PhpdocIndentFixer extends AbstractFixer
                 continue;
             }
 
-            $indent = $this->calculateIndent($tokens[$nextIndex - 1]->getContent());
+            $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$nextIndex - 1]);
 
             $prevToken->setContent($this->fixWhitespaceBefore($prevToken->getContent(), $indent));
             $token->setContent($this->fixDocBlock($token->getContent(), $indent));
         }
 
         return $tokens->generateCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Docblocks should have the same indentation as the documented subject.';
     }
 
     /**
@@ -86,14 +81,10 @@ class PhpdocIndentFixer extends AbstractFixer
     }
 
     /**
-     * Calculate used indentation from the whitespace before documented subject.
-     *
-     * @param string $content Whitespace before documented subject
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    private function calculateIndent($content)
+    public function getDescription()
     {
-        return ltrim(strrchr(str_replace(array("\r\n", "\r"), "\n", $content), 10), "\n");
+        return 'Docblocks should have the same indentation as the documented subject.';
     }
 }

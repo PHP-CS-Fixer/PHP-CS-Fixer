@@ -14,11 +14,13 @@ namespace Symfony\CS\Fixer\PSR2;
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Utils;
 
 /**
  * Fixer for rules defined in PSR2 ¶3.
  *
  * @author Ceeram <ceeram@cakephp.org>
+ * @author Graham Campbell <graham@mineuk.com>
  */
 class SingleLineAfterImportsFixer extends AbstractFixer
 {
@@ -33,8 +35,10 @@ class SingleLineAfterImportsFixer extends AbstractFixer
             // if previous line ends with comment and current line starts with whitespace, use current indent
             if ($tokens[$index - 1]->isWhitespace(array('whitespaces' => " \t")) && $tokens[$index - 2]->isGivenKind(T_COMMENT)) {
                 $indent = $tokens[$index - 1]->getContent();
+            } elseif ($tokens[$index - 1]->isWhitespace()) {
+                $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$index - 1]);
             } else {
-                $indent = $this->calculateIndent($tokens[$index - 1]->getContent());
+                $indent = '';
             }
 
             $newline = "\n";
@@ -48,7 +52,7 @@ class SingleLineAfterImportsFixer extends AbstractFixer
 
             // Do not add newline after inline T_COMMENT as it is part of T_COMMENT already
             if ($tokens[$insertIndex]->isGivenKind(T_COMMENT)) {
-                $newline = "";
+                $newline = '';
             }
 
             // Increment insert index for inline T_COMMENT or T_DOC_COMMENT
@@ -78,17 +82,5 @@ class SingleLineAfterImportsFixer extends AbstractFixer
     public function getDescription()
     {
         return 'Each namespace use MUST go on its own line and there MUST be one blank line after the use statements block.';
-    }
-
-    /**
-     * Calculate used indentation in whitespace.
-     *
-     * @param string $content Whitespace
-     *
-     * @return string
-     */
-    private function calculateIndent($content)
-    {
-        return ltrim(strrchr(str_replace(array("\r\n", "\r"), "\n", $content), 10), "\n");
     }
 }
