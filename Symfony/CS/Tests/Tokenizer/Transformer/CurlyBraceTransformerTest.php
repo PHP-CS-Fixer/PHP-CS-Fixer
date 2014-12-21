@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Tokenizer\AbstractTransformerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class DynamicVarBraceTransformerTest extends AbstractTransformerTestBase
+class CurlyBraceTransformerTest extends AbstractTransformerTestBase
 {
     /**
      * @dataProvider provideProcessCases
@@ -29,6 +29,44 @@ class DynamicVarBraceTransformerTest extends AbstractTransformerTestBase
     public function provideProcessCases()
     {
         return array(
+            array(
+                '<?php echo "This is {$great}";',
+                array(
+                    5 => 'T_CURLY_OPEN',
+                    7 => 'CT_CURLY_CLOSE',
+                ),
+            ),
+            array(
+                '<?php $a = "a{$b->c()}d";',
+                array(
+                    7  => 'T_CURLY_OPEN',
+                    13 => 'CT_CURLY_CLOSE',
+                ),
+            ),
+            array(
+                '<?php echo "I\'d like an {${beers::$ale}}\n";',
+                array(
+                    5  => 'T_CURLY_OPEN',
+                    12 => 'CT_CURLY_CLOSE',
+                ),
+            ),
+
+            array(
+                '<?php echo "This is ${great}";',
+                array(
+                    5 => 'T_DOLLAR_OPEN_CURLY_BRACES',
+                    7 => 'CT_DOLLAR_CLOSE_CURLY_BRACES',
+                ),
+            ),
+
+            array(
+                '<?php $foo->{$bar};',
+                array(
+                    3 => 'CT_DYNAMIC_PROP_BRACE_OPEN',
+                    5 => 'CT_DYNAMIC_PROP_BRACE_CLOSE',
+                ),
+            ),
+
             array(
                 '<?php ${$bar};',
                 array(
