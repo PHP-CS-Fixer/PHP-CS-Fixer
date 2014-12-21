@@ -1,0 +1,51 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T01:16:43Z
+
+Alright, this is done, and ready for review. // cc @keradus @ceeram
+
+@ceeram Your input last time was really helpful - thank you!
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T13:35:12Z
+
+@keradus Your whitespace idea doesn't work at all, because that's not how we're actually using the function. :/
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T13:37:44Z
+
+```
+1) Symfony\CS\Tests\Fixer\PSR2\SingleLineAfterImportsFixerTest::testFix with data set #12 ('<?php\nnamespace A1;\nuse B1; /...C1 {}\n')
+InvalidArgumentException: The given token must be whitespace.
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/Symfony/CS/Utils.php:90
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/Symfony/CS/Fixer/PSR2/SingleLineAfterImportsFixer.php:38
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/Symfony/CS/Tests/Fixer/AbstractFixerTestBase.php:46
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/Symfony/CS/Tests/Fixer/PSR2/SingleLineAfterImportsFixerTest.php:26
+
+2) Symfony\CS\Tests\Fixer\PSR2\SingleLineAfterImportsFixerTest::testFix with data set #13 ('<?php\nnamespace A1;\nuse B1;//...C1 {}\n')
+InvalidArgumentException: The given token must be whitespace.
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/Symfony/CS/Utils.php:90
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/Symfony/CS/Fixer/PSR2/SingleLineAfterImportsFixer.php:38
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/Symfony/CS/Tests/Fixer/AbstractFixerTestBase.php:46
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/Symfony/CS/Tests/Fixer/PSR2/SingleLineAfterImportsFixerTest.php:26
+```
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T13:38:39Z
+
+@keradus Do you want me to change the singlelineafterimports fixer to pass the whitespace token only?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T13:48:17Z
+
+@keradus Done. All passing now.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-20T13:47:42Z
+
+:+1:
