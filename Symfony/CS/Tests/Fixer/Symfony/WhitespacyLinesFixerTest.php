@@ -41,6 +41,12 @@ class WhitespacyLinesFixerTest extends AbstractFixerTestBase
                 "<?php\n\n\n\$b = 1;",
                 "<?php\n                \n	\n\$b = 1;",
             ),
+            array(
+                "<?php\nclass X\n{\n    \$string='Indentation should not break';\n}",
+            ),
+            array(
+                "<?php\n\$sql = 'SELECT * FROM products WHERE description = \"This product\n   \nis nice\";",
+            ),
         );
     }
 }
