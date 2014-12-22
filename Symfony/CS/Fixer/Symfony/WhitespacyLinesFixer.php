@@ -27,7 +27,7 @@ class WhitespacyLinesFixer extends AbstractFixer
         $contentAfterRegex = preg_replace('/^\h+$/m', '', $content);
 
         $originalTokens = Tokens::fromCode($content);
-        $newTokens      = Tokens::fromCode($contentAfterRegex);
+        $newTokens = Tokens::fromCode($contentAfterRegex);
 
         foreach ($newTokens as $tokenIndex => $newToken) {
             if (in_array($newToken->getId(), array(T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING), true)) {
