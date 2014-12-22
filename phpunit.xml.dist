@@ -32,6 +32,7 @@
         <whitelist>
             <directory>./Symfony/CS</directory>
             <exclude>
+                <directory>./Symfony/CS/Resources</directory>
                 <directory>./Symfony/CS/Tests</directory>
             </exclude>
         </whitelist>
