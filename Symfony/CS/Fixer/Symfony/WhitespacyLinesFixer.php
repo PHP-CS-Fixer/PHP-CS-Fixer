@@ -13,6 +13,7 @@ namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\Token;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -30,7 +31,7 @@ class WhitespacyLinesFixer extends AbstractFixer
         $newTokens = Tokens::fromCode($contentAfterRegex);
 
         foreach ($newTokens as $tokenIndex => $newToken) {
-            if (in_array($newToken->getId(), array(T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING), true)) {
+            if ($newToken->isGivenKind(array(T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING))) {
                 $tokenBeforeRegex = $originalTokens[$tokenIndex];
                 $newToken->setContent($tokenBeforeRegex->getContent());
             }

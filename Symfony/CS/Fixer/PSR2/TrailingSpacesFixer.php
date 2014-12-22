@@ -33,7 +33,7 @@ class TrailingSpacesFixer extends AbstractFixer
         $newTokens = Tokens::fromCode($contentAfterRegex);
 
         foreach ($newTokens as $tokenIndex => $newToken) {
-            if (in_array($newToken->getId(), array(T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING), true)) {
+            if ($newToken->isGivenKind(array(T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING))) {
                 $tokenBeforeRegex = $originalTokens[$tokenIndex];
                 $newToken->setContent($tokenBeforeRegex->getContent());
             }
