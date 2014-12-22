@@ -13,7 +13,6 @@ namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
-use Symfony\CS\Tokenizer\Token;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
