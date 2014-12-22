@@ -66,6 +66,9 @@ rassit et la posa sur ses genoux.
 EOT;
 ",
             ),
+            array(
+                "<?php\n\$string = 'x  \ny';\necho (strlen(\$string) === 5);"
+            ),
         );
     }
 }
