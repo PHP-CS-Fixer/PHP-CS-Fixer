@@ -342,6 +342,10 @@ Choose from the list of available fixers:
                 PHP single-line arrays should not have
                 trailing comma.
 
+* **single_blank_line_before_namespace** [symfony]
+                There should be exactly one blank line
+                before a namespace declaration.
+
 * **spaces_before_semicolon** [symfony]
                 Single-line whitespace before closing
                 semicolon are prohibited.
@@ -379,6 +383,10 @@ Choose from the list of available fixers:
 * **multiline_spaces_before_semicolon** [contrib]
                 Multi-line whitespace before closing
                 semicolon are prohibited.
+
+* **no_blank_lines_before_namespace** [contrib]
+                There should be no blank lines before
+                a namespace declaration.
 
 * **ordered_use** [contrib]
                 Ordering use statements.
