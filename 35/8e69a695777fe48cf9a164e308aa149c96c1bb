@@ -1,0 +1,276 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-16T19:17:45Z
+
+[![Coverage Status](https://coveralls.io/builds/1620561/badge)](https://coveralls.io/builds/1620561)
+
+Coverage increased (+0.1%) when pulling **cc1ffd67452ce6204b7ca6878f188726b1b36592 on GrahamForks:1.5-namespace** into **c7349adcd69182864cab1d8156d4e4ce4fd72dca on FriendsOfPHP:1.5**.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-16T19:19:42Z
+
+[![Coverage Status](https://coveralls.io/builds/1620573/badge)](https://coveralls.io/builds/1620573)
+
+Coverage increased (+0.1%) when pulling **cc1ffd67452ce6204b7ca6878f188726b1b36592 on GrahamForks:1.5-namespace** into **c7349adcd69182864cab1d8156d4e4ce4fd72dca on FriendsOfPHP:1.5**.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-16T23:44:35Z
+
+[![Coverage Status](https://coveralls.io/builds/1621999/badge)](https://coveralls.io/builds/1621999)
+
+Coverage increased (+0.23%) when pulling **fee6818cfdc6bea1d75ed94df6efd7c7984d12d2 on GrahamForks:1.5-namespace** into **c7349adcd69182864cab1d8156d4e4ce4fd72dca on FriendsOfPHP:1.5**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T23:45:09Z
+
+Please, try rebase on 1.5 now
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-16T23:47:25Z
+
+Sidenote: rename OneBlankLinesBeforeNamespaceFixer to
+SingleBlankLineBeforeNamespaceFixer
+
+one blanks is also incorrect english
+
+2014-12-17 0:45 GMT+01:00 Dariusz Rumiński <notifications@github.com>:
+>
+> Please, try rebase on 1.5 now
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/879#issuecomment-67254187>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T23:48:36Z
+
+I went for single because of `single_array_no_trailing_comma` already existing. Nice and consistent.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-16T23:54:10Z
+
+[![Coverage Status](https://coveralls.io/builds/1622043/badge)](https://coveralls.io/builds/1622043)
+
+Coverage increased (+0.11%) when pulling **5d4c22769c904d6e7472a8b1e654fdb72d00bb07 on GrahamForks:1.5-namespace** into **10a42d06273b5ba92924f9ba46062405852a4469 on FriendsOfPHP:1.5**.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-16T23:54:25Z
+
+Or perhaps we should rethink, we have single_line_after_  etc and we have
+one_blank_etc/no_blank_etc
+
+I think using the word blank everywhere would make most sense
+
+2014-12-17 0:47 GMT+01:00 Ceeram <c33ram@gmail.com>:
+>
+> Sidenote: rename OneBlankLinesBeforeNamespaceFixer to
+> SingleBlankLineBeforeNamespaceFixer
+>
+> one blanks is also incorrect english
+>
+> 2014-12-17 0:45 GMT+01:00 Dariusz Rumiński <notifications@github.com>:
+>>
+>> Please, try rebase on 1.5 now
+>>
+>> —
+>> Reply to this email directly or view it on GitHub
+>> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/879#issuecomment-67254187>
+>> .
+>>
+>
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-16T23:56:47Z
+
+Oops. the title should say `SingleBlankLineBeforeNamespaceFixer`. That's what I intended.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T00:17:33Z
+
+im fine with single, but was also refering to line/blank and even forgot
+blankline, which you just mentioned.
+
+I would suggest the following namig when blanklines are involved in fixer
+name:
+
+single_blank_line_etc
+no_blank_line_etc
+
+how does that sound?
+
+2014-12-17 0:56 GMT+01:00 Graham Campbell <notifications@github.com>:
+>
+> Oops. the title should say SingleBlankLineBeforeNamespaceFixer. That's
+> what I intended.
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/879#issuecomment-67255421>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-17T00:23:48Z
+
+[![Coverage Status](https://coveralls.io/builds/1622186/badge)](https://coveralls.io/builds/1622186)
+
+Coverage increased (+0.11%) when pulling **dbfc0cf3b70ecc26a1a13b265b209b739563c315 on GrahamForks:1.5-namespace** into **10a42d06273b5ba92924f9ba46062405852a4469 on FriendsOfPHP:1.5**.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T00:25:34Z
+
+Also noticed a fixer name: NoEmptyLinesAfterPhpdocs
+
+I guess ill open an issue for 2.0 milestone to review all fixer names to make them more consistent
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-17T00:26:39Z
+
+Refs: #881
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-17T00:27:06Z
+
+Yeh. I'll close #881, and we can all discuss names on a dedicated issue.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T00:29:20Z
+
+Why close? this is targeted at 1.5, but the existing fixers cannot be renamed in 1.x, that will have to wait for 2.0 anyway.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-17T00:32:59Z
+
+ I haven't closed this, just my pull to 2.0 for reasons discussed on there.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-17T11:00:10Z
+
+[![Coverage Status](https://coveralls.io/builds/1623938/badge)](https://coveralls.io/builds/1623938)
+
+Coverage increased (+0.11%) when pulling **3054d481b3cb7d83f6582935c2bf3c0108f19ca8 on GrahamForks:1.5-namespace** into **10a42d06273b5ba92924f9ba46062405852a4469 on FriendsOfPHP:1.5**.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-17T11:26:58Z
+
+[![Coverage Status](https://coveralls.io/builds/1624076/badge)](https://coveralls.io/builds/1624076)
+
+Coverage increased (+0.14%) when pulling **652ed0bf5fdd5967d476f8a05ec079840f3828c3 on GrahamForks:1.5-namespace** into **10a42d06273b5ba92924f9ba46062405852a4469 on FriendsOfPHP:1.5**.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-17T11:28:33Z
+
+[![Coverage Status](https://coveralls.io/builds/1624087/badge)](https://coveralls.io/builds/1624087)
+
+Coverage increased (+0.14%) when pulling **3171ba7171c2e7affceb59d3c20a38bd7354c2c2 on GrahamForks:1.5-namespace** into **10a42d06273b5ba92924f9ba46062405852a4469 on FriendsOfPHP:1.5**.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-17T13:42:43Z
+
+NB, new fixer names issue can be found here: #889.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T23:02:08Z
+
+Your latest commit? that only contain removal of calculateIndent() ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-17T23:05:01Z
+
+And the addition of comments. I can't rename the function - it's already in 1.4.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2014-12-17T23:05:40Z
+
+[![Coverage Status](https://coveralls.io/builds/1627680/badge)](https://coveralls.io/builds/1627680)
+
+Coverage increased (+0.13%) when pulling **9fc01e64ce74d1acc5c9aa8b22c242bfdbd3524d on GrahamForks:1.5-namespace** into **398178373331d5a9ca4a1e913b376badb82e0ec5 on FriendsOfPHP:1.5**.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T01:18:28Z
+
+Alright, this is done, and ready for review. // cc @keradus @ceeram
+
+@ceeram Your input last time was really helpful - thank you!
+
+NB, the utils changes were moved since they are now totally independent of this pull.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T16:05:03Z
+
+// cc @Sam-Burns.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-20T12:14:11Z
+
+Is anyone able to review this?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-20T13:48:50Z
+
+btw, please rebase
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-20T13:56:45Z
+
+Rebased.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-22T11:20:31Z
+
+Except that one minor...
+:+1:
+
+name for consistency could be as proposed, we need to rethink all names (see #889)
+
+have you done any regression of this PR ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-22T11:27:12Z
+
+> have you done any regression of this PR ?
+
+Yeh, I tested it on all my repos, and on symfony at the same time I regression tested that other psr2 pull request. I found no problems. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-22T14:41:08Z
+
+@keradus Rebased, and fixed that issue. Mergy mergy?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-22T14:51:20Z
+
+Yeah, I was waiting for that one minor to be fixed ;)
