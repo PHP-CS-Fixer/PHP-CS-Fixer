@@ -61,6 +61,26 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Detect type of block.
+     *
+     * @param Token $token token
+     *
+     * @return null|array array with 'type' and 'isStart' keys or null if not found
+     */
+    public static function detectBlockType(Token $token)
+    {
+        foreach (self::getBlockEdgeDefinitions() as $type => $definition) {
+            if ($token->equals($definition['start'])) {
+                return array('type' => $type, 'isStart' => true);
+            }
+
+            if ($token->equals($definition['end'])) {
+                return array('type' => $type, 'isStart' => false);
+            }
+        }
+    }
+
+    /**
      * Create token collection from array.
      *
      * @param array $array       the array to import

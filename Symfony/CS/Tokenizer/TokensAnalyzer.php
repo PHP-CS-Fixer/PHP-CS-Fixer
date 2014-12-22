@@ -35,26 +35,6 @@ class TokensAnalyzer
     }
 
     /**
-     * Detect type of block.
-     *
-     * @param Token $token token
-     *
-     * @return null|array array with 'type' and 'isStart' keys or null if not found
-     */
-    public static function detectBlockType(Token $token)
-    {
-        foreach (Tokens::getBlockEdgeDefinitions() as $type => $definition) {
-            if ($token->equals($definition['start'])) {
-                return array('type' => $type, 'isStart' => true);
-            }
-
-            if ($token->equals($definition['end'])) {
-                return array('type' => $type, 'isStart' => false);
-            }
-        }
-    }
-
-    /**
      * Get indexes of methods and properties in classy code (classes, interfaces and traits).
      *
      * @return array
@@ -206,7 +186,7 @@ class TokensAnalyzer
 
         for (++$index; $index < $endIndex; ++$index) {
             $token      = $tokens[$index];
-            $blockType  = static::detectBlockType($token);
+            $blockType  = Tokens::detectBlockType($token);
 
             if ($blockType && $blockType['isStart']) {
                 $index = $tokens->findBlockEnd($blockType['type'], $index);
