@@ -67,7 +67,7 @@ EOT;
 ",
             ),
             array(
-                "<?php\n\$string = 'x  \ny';\necho (strlen(\$string) === 5);"
+                "<?php\n\$string = 'x  \ny';\necho (strlen(\$string) === 5);",
             ),
         );
     }
