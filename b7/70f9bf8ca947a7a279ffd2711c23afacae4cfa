@@ -1,0 +1,45 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-21T22:42:06Z
+
+ready to review
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T22:51:50Z
+
+How does this compare performance wise? I imagine its slightly quicker?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-21T23:01:21Z
+
+When running on valid code with PSR2 level only few %.
+Every little helps...
+
+The balance will be restored by adding few new transormers like `[` (index vs short array syntax) or `T_USE`
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T23:01:53Z
+
+Yeh.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T23:15:29Z
+
+:+1: This is a really nice change. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-21T23:27:09Z
+
+Thanks ;)
+Some groomings added
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T23:28:19Z
+
+:+1:
