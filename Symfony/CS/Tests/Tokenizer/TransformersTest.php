@@ -11,7 +11,6 @@
 
 namespace Symfony\CS\Tests\Tokenizer;
 
-use Symfony\CS\Tokenizer\TransformerInterface;
 use Symfony\CS\Tokenizer\Transformers;
 
 /**
@@ -46,29 +45,5 @@ class TransformersTest extends \PHPUnit_Framework_TestCase
         }
 
         return $cases;
-    }
-
-    /**
-     * @dataProvider getPriorityCases
-     */
-    public function testPriority(TransformerInterface $first, TransformerInterface $second)
-    {
-        $this->assertLessThan($first->getPriority(), $second->getPriority());
-    }
-
-    public function getPriorityCases()
-    {
-        $transformersObject = Transformers::create();
-        $transformers = array();
-
-        foreach ($transformersObject->getTransformers() as $transformer) {
-            $transformers[$transformer->getName()] = $transformer;
-        }
-
-        return array(
-            array($transformers['curly_close'], $transformers['dollar_close_curly_brace']),
-            array($transformers['curly_close'], $transformers['dynamic_prop_brace']),
-            array($transformers['curly_close'], $transformers['dynamic_var_brace']),
-        );
     }
 }
