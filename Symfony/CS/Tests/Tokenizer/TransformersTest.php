@@ -11,6 +11,7 @@
 
 namespace Symfony\CS\Tests\Tokenizer;
 
+use Symfony\CS\Tokenizer\TransformerInterface;
 use Symfony\CS\Tokenizer\Transformers;
 
 /**
