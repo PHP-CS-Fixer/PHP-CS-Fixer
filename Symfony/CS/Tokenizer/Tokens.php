@@ -757,7 +757,7 @@ class Tokens extends \SplFixedArray
      */
     public function isArray($index)
     {
-        return $this[$index]->isGivenKind(T_ARRAY) || $this->isShortArray($index);
+        return $this[$index]->isGivenKind(array(T_ARRAY, CT_ARRAY_SQUARE_BRACE_OPEN));
     }
 
     /**
@@ -831,18 +831,6 @@ class Tokens extends \SplFixedArray
         }
 
         return true;
-    }
-
-    /**
-     * Check if the array at index uses the short-syntax.
-     *
-     * @param int $index
-     *
-     * @return bool
-     */
-    public function isShortArray($index)
-    {
-        return $this[$index]->isGivenKind(CT_ARRAY_SQUARE_BRACE_OPEN);
     }
 
     /**
