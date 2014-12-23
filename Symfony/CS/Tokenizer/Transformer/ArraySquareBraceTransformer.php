@@ -15,7 +15,9 @@ use Symfony\CS\Tokenizer\AbstractTransformer;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
- * Transform short array braces into:
+ * Transform discriminate overloaded square braces tokens.
+ *
+ * Performed transformations:
  * - CT_ARRAY_SQUARE_BRACE_OPEN for [,
  * - CT_ARRAY_SQUARE_BRACE_CLOSE for ].
  *
