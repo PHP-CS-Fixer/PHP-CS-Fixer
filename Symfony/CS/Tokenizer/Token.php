@@ -155,16 +155,6 @@ class Token
     }
 
     /**
-     * Get token's line.
-     *
-     * @return int
-     */
-    public function getLine()
-    {
-        return $this->line;
-    }
-
-    /**
      * Get token name.
      *
      * @return null|string token name
