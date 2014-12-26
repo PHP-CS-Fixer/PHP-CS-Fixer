@@ -172,10 +172,14 @@ fixed but without actually modifying them:
     <info>php %command.full_name% /path/to/code --dry-run</info>
 
 Instead of using command line options to customize the fixer, you can save the
-configuration in a <comment>.php_cs</comment> file in the root directory of
-your project. The file must return an instance of
-``Symfony\CS\ConfigInterface``, which lets you configure the fixers, the level, the files,
-and directories that need to be analyzed. The example below will add two contrib fixers
+project configuration in a <comment>.php_cs.dist</comment> file in the root directory
+of your project. The file must return an instance of ``Symfony\CS\ConfigInterface``,
+which lets you configure the fixers, the level, the files, and directories that
+need to be analyzed. You may also create <comment>.php_cs</comment> file, which is
+the local configuration that will be used instead of the project configuration.
+
+
+The example below will add two contrib fixers
 to the default list of PSR2-level fixers:
 
     <?php
