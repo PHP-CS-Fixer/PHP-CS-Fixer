@@ -583,6 +583,27 @@ function mixedComplex()
     }',
             ),
             array(
+                '<?php
+    if (true) {
+        // foo
+        /* bar */
+        if (true) {
+            print("foo");
+            print("bar");
+        }
+    }',
+                '<?php
+    if (true)
+        // foo
+        /* bar */{
+        if (true)
+        {
+            print("foo");
+            print("bar");
+        }
+    }',
+            ),
+            array(
                 '<?php if (true) {
     echo "s";
 } ?>x',
@@ -1116,7 +1137,7 @@ if (true) {
 }',
             ),
             array(
-                "<?php if (true) {\r\n\r\n// CRLF newline\r\n}",
+                "<?php if (true) {\r\n\r\n// CRLF newline\n}",
             ),
         );
     }

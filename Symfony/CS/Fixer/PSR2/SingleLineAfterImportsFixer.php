@@ -52,11 +52,6 @@ class SingleLineAfterImportsFixer extends AbstractFixer
                 ++$insertIndex;
             }
 
-            // Do not add newline after inline T_COMMENT as it is part of T_COMMENT already
-            if ($tokens[$insertIndex]->isGivenKind(T_COMMENT)) {
-                $newline = '';
-            }
-
             // Increment insert index for inline T_COMMENT or T_DOC_COMMENT
             if ($tokens[$insertIndex]->isComment()) {
                 ++$insertIndex;
