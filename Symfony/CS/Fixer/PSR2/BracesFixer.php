@@ -68,13 +68,14 @@ class BracesFixer extends AbstractFixer
             }
 
             $tokenTmp = $tokens[$afterCommentIndex];
-            $tokens[$afterCommentIndex - 1]->setContent(rtrim($tokens[$afterCommentIndex - 1]->getContent()));
+            $tokens[$afterCommentIndex - 1]->setContent(rtrim($tokens[$afterCommentIndex - 1]->getContent(), " \t"));
 
             for ($i = $afterCommentIndex; $i > $afterParenthesisIndex; --$i) {
                 $tokens[$i] = $tokens[$i - 1];
             }
 
             $tokens[$afterParenthesisIndex] = $tokenTmp;
+            $tokens->insertAt($afterParenthesisIndex + 1, new Token(array(T_WHITESPACE, "\n")));
         }
     }
 

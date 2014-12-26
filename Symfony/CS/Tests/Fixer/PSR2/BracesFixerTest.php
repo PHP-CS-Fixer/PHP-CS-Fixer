@@ -583,6 +583,27 @@ function mixedComplex()
     }',
             ),
             array(
+                '<?php
+    if (true) {
+        // foo
+        /* bar */
+        if (true) {
+            print("foo");
+            print("bar");
+        }
+    }',
+                '<?php
+    if (true)
+        // foo
+        /* bar */{
+        if (true)
+        {
+            print("foo");
+            print("bar");
+        }
+    }',
+            ),
+            array(
                 '<?php if (true) {
     echo "s";
 } ?>x',
