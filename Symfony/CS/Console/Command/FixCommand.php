@@ -176,7 +176,7 @@ project configuration in a <comment>.php_cs.dist</comment> file in the root dire
 of your project. The file must return an instance of ``Symfony\CS\ConfigInterface``,
 which lets you configure the fixers, the level, the files, and directories that
 need to be analyzed. You may also create <comment>.php_cs</comment> file, which is
-the local configuration that will be used instead of the project configuration.
+the local configuration that will be used instead of the project configuration, it is a good practice to add that file into your <comment>.gitignore</comment> file.
 
 
 The example below will add two contrib fixers
