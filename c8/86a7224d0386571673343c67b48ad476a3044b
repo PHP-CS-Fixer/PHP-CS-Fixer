@@ -1,0 +1,48 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T18:51:01Z
+
+@keradus Can we format it like this please: http://keepachangelog.com/.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T18:51:35Z
+
+> CHANGELOG of PHP CS Fixer
+
+Should be **for`` PHP CS FIXER.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T18:52:14Z
+
+TBH, I think just `CHANGE LOG` would be a better title.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-21T18:57:42Z
+
+If any changelog format then this: https://github.com/symfony/symfony/blob/2.7/CHANGELOG-2.3.md .
+Just flatten it a bit - we don't have patch releases.
+
+:-1: for a changelog like http://keepachangelog.com
+
+Remember that we don't have many commits per PR - there are only 1 commit with self-sufficient name (PR title)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-21T18:58:43Z
+
+of->for changed, thx.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T19:06:27Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by chriseskow at 2014-12-28T07:35:59Z
+
+:+1: Looks good!
