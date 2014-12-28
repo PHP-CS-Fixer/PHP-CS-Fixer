@@ -44,6 +44,14 @@ class ArraySquareBraceTransformer extends AbstractTransformer
         }
     }
 
+    /**
+     * Check if token under given index is short array opening.
+     *
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return bool
+     */
     private function isShortArray(Tokens $tokens, $index)
     {
         $token = $tokens[$index];
