@@ -79,6 +79,14 @@ class UseTransformer extends AbstractTransformer
         return -20;
     }
 
+    /**
+     * Check if token under given index is `use` statement for lambda function.
+     *
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return bool
+     */
     private function isUseForLambda(Tokens $tokens, $index)
     {
         $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
