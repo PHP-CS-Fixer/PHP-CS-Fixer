@@ -57,17 +57,17 @@ class FunctionDeclarationFixer extends AbstractFixer
             $afterParenthesisIndex = $tokens->getNextNonWhitespace($endParenthesisIndex);
             $afterParenthesisToken = $tokens[$afterParenthesisIndex];
 
-            if ($afterParenthesisToken->isGivenKind(T_USE)) {
+            if ($afterParenthesisToken->isGivenKind(CT_USE_LAMBDA)) {
                 $useStartParenthesisIndex = $tokens->getNextTokenOfKind($afterParenthesisIndex, array('('));
                 $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $useStartParenthesisIndex);
 
-                // fix whitespace after T_USE
+                // fix whitespace after CT_USE_LAMBDA
                 $tokens->ensureWhitespaceAtIndex($afterParenthesisIndex + 1, 0, ' ');
 
                 // remove single-line edge whitespaces inside use parentheses
                 $this->fixParenthesisInnerEdge($tokens, $useStartParenthesisIndex, $useEndParenthesisIndex);
 
-                // fix whitespace before T_USE
+                // fix whitespace before CT_USE_LAMBDA
                 $tokens->ensureWhitespaceAtIndex($afterParenthesisIndex - 1, 1, ' ');
             }
 
