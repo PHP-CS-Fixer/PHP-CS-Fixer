@@ -1,0 +1,85 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T01:02:04Z
+
+Unrelated(ish), but in addition to this, we need a good way to get all imports per namespace. I noticed you were working on this in a  pull to the unused import fixer. Such a functionality would be useful to reuse if I were to add a fixer to convert fqcns in docblocks to use the short equivalent, if already imported.
+
+It's one thing getting the tokens, but actually working out what they mean takes more lines of code.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-21T01:05:35Z
+
+are you talking about `Tokens::getImportUseIndexes(true)` ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T11:19:15Z
+
+@keradus I know `Tokens::getImportUseIndexes(true)` exists, but it's not useful at all. I need something that actually gives the class names, and alias names of all the imports, instead of a list of token indexes.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T11:19:59Z
+
+Both fixers would be duplicating that code, which is why we need a dedicated class or something to deal with that.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-21T11:43:47Z
+
+So I simply can't see how is this related to that Transformer.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T11:44:50Z
+
+> So I simply can't see how is this related to that Transformer.
+
+No it's not related. It just reminded me that it needs doing. Shall I create a new issue for that?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-21T11:45:56Z
+
+Yeah, to not mix subjects.
+Please add some examples too.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-21T13:13:48Z
+
+Looks done now.
+Could anyone make a review, please?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-23T10:46:19Z
+
+(rebase on master)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-28T18:07:13Z
+
+Looks good then. :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-28T18:08:23Z
+
+Thanks!
+
+any thoughts about `CT_USE_TRAIT` and `CT_USE_LAMBDA` names?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-28T18:10:27Z
+
+Yeh, they're probably fine.
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-12-29T09:13:24Z
+
+:+1:
