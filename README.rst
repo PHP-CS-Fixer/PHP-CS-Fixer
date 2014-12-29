@@ -306,6 +306,10 @@ Choose from the list of available fixers:
                 All instances created with new keyword
                 must be followed by braces.
 
+* **no_blank_lines_after_class_opening** [symfony]
+                There should be no empty lines after
+                class opening brace.
+
 * **no_empty_lines_after_phpdocs** [symfony]
                 There should be no empty lines
                 following phpdocs.
