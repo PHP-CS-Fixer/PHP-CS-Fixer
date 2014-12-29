@@ -32,7 +32,7 @@ class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
             // get the next non-whitespace token inc comments, provided
             // that there is whitespace between it and the current token
             $next = $tokens->getNextNonWhitespace($index);
-            if ($index + 2 === $next && false === $tokens[$next]->isGivenKind(array(T_DOC_COMMENT, T_COMMENT, T_WHITESPACE))) {
+            if ($index + 2 === $next) {
                 $this->fixWhitespace($tokens[$index + 1]);
             }
         }
