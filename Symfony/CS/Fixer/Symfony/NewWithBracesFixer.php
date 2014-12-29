@@ -30,16 +30,19 @@ class NewWithBracesFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (T_NEW !== $token->getId()) {
+            if (!$token->isGivenKind(T_NEW)) {
                 continue;
             }
 
-            $nextIndex = $tokens->getNextTokenOfKind($index, array(';', ',', '(', ')', '[', ']', ':'));
+            $nextIndex = $tokens->getNextTokenOfKind(
+                $index,
+                array(':', ';', ',', '(', ')', '[', ']', array(CT_ARRAY_SQUARE_BRACE_OPEN), array(CT_ARRAY_SQUARE_BRACE_CLOSE))
+            );
             $nextToken = $tokens[$nextIndex];
 
             // entrance into array index syntax - need to look for exit
             if ($nextToken->equals('[')) {
-                $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $nextIndex) + 1;
+                $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $nextIndex) + 1;
                 $nextToken = $tokens[$nextIndex];
             }
 
