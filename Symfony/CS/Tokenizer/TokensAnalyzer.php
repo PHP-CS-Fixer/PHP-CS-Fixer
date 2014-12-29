@@ -235,29 +235,4 @@ class TokensAnalyzer
 
         return true;
     }
-
-    /**
-     * Check if the array at index uses the short-syntax.
-     *
-     * @param int $index
-     *
-     * @return bool
-     */
-    public function isShortArray($index)
-    {
-        $tokens = $this->tokens;
-        $token = $tokens[$index];
-
-        if (!$token->equals('[')) {
-            return false;
-        }
-
-        $prevToken = $tokens[$tokens->getPrevNonWhitespace($index)];
-
-        if ($prevToken->equalsAny(array(array(T_DOUBLE_ARROW), '=', '+', '(', '['))) {
-            return true;
-        }
-
-        return false;
-    }
 }
