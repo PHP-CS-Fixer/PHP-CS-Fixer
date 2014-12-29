@@ -307,8 +307,9 @@ Choose from the list of available fixers:
                 must be followed by braces.
 
 * **no_empty_lines_after_phpdocs** [symfony]
-                There should be no empty lines
-                following phpdocs.
+                There should not be blank lines
+                between docblock and the documented
+                element.
 
 * **object_operator** [symfony]
                 There should not be space before or
