@@ -1,0 +1,120 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-09T20:27:24Z
+
+Cool idea.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-09T20:33:37Z
+
+Thanks ;)
+I am wondering about right class few methods, eg `getTokenOfKindSibling`, `findBlockEnd` or `removeLeadingWhitespace`. More as TODO in code.
+They are not class analysis nor collection management.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-09T20:36:00Z
+
+Hmmm, don't know. I'm never brilliant at naming things. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-09T20:37:30Z
+
+Yeah, me too ;)
+
+But this is actually a matter of single responsibility across classes.
+Where to place method, now how to name it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-09T20:43:13Z
+
+Yeh, we need another class. But I don't know a good name for it. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-09T20:44:05Z
+
+That said, what we have now, as it is, is still an improvement on the front of single responsibility.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-09T20:49:07Z
+
+Maybe sth like:
+- Tokens - overload for token_get_all - exposed?
+- TokensAnalyzer - for things like isLambda - internal?
+- TokensWalker - for things like getNext..., findBlockEnd - exposed?
+- TokensManipulator - for things like removeLeadingWhitespace - internal?
+
+What is sad is that TokensAnalizer will need not only Tokens, but an instance of TokensWalker too :(
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-09T20:50:57Z
+
+Maybe we need a factory class to deal with all of this too?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-09T20:59:23Z
+
+I was thinking about it too. But weren't this problematic when deciding about internal/exposed?
+And it is not a simple aggregation (TokensFoo aggregates Tokens), but we have a cases like TokensFoo need to have TokensBar sometimes.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-12-09T21:38:15Z
+
+"All problems in computer science can be solved by another level of indirection, except of course for the problem of too many indirections" - David Wheeler.
+
+I think the benefits of scattering functionality around will not outweigh the problems it will create. The only refactor I think it is valid is removing from `Token` and `Tokens` all seldom used calls to help newcomers to grok their mind around their basic interface (`findGivenTokens`, `isGivenToken`, `NextMeaningful` etc)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T21:03:54Z
+
+Ready for review ! ;)
+
+edit: go in way suggested by @dericofilho ;)
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2014-12-14T21:15:36Z
+
+Except by what I see as a minor modelling problem. SGTM.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T22:10:04Z
+
+It's a problem about whole one method. And I think we can manage it somehow to place it in best possible place.
+Feel free to help ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-22T12:55:47Z
+
+detectBlockType moved back to `Tokens`.
+
+It looks ready now ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-28T17:58:11Z
+
+This looks good. :+1:
+
+---------------------------------------------------------------------------
+
+by stof at 2014-12-29T14:10:38Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-29T17:39:17Z
+
+(rebased on master)
