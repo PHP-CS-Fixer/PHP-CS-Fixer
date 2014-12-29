@@ -13,6 +13,7 @@ namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Luis Cordova <cordoval@gmail.com>
@@ -33,7 +34,9 @@ class RemoveLinesBetweenUsesFixer extends AbstractFixer
 
     private function removeLineBreaksBetweenUseStatements(Tokens $tokens)
     {
-        $namespacesImports = $tokens->getImportUseIndexes(true);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        $namespacesImports = $tokensAnalyzer->getImportUseIndexes(true);
 
         if (!count($namespacesImports)) {
             return;

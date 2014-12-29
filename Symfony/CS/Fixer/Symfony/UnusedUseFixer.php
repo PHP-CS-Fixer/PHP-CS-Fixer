@@ -13,6 +13,7 @@ namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -25,9 +26,10 @@ class UnusedUseFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         $namespaceDeclarations = $this->getNamespaceDeclarations($tokens);
-        $useDeclarationsIndexes = $tokens->getImportUseIndexes();
+        $useDeclarationsIndexes = $tokensAnalyzer->getImportUseIndexes();
         $useDeclarations = $this->getNamespaceUseDeclarations($tokens, $useDeclarationsIndexes);
         $contentWithoutUseDeclarations = $this->generateCodeWithoutPartials($tokens, array_merge($namespaceDeclarations, $useDeclarations));
         $useUsages = $this->detectUseUsages($contentWithoutUseDeclarations, $useDeclarations);

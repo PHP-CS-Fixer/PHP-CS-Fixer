@@ -14,6 +14,7 @@ namespace Symfony\CS\Fixer\Contrib;
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -26,8 +27,9 @@ class OrderedUseFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        $namespacesImports = $tokens->getImportUseIndexes(true);
+        $namespacesImports = $tokensAnalyzer->getImportUseIndexes(true);
         $usesOrder = array();
 
         if (!count($namespacesImports)) {

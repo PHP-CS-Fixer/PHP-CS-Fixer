@@ -14,6 +14,7 @@ namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
@@ -32,9 +33,10 @@ class RemoveLeadingSlashUseFixer extends AbstractFixer
             return $content;
         }
 
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
         $firstNamespaceIdx = key($foundNamespace);
 
-        $usesIdxs = $tokens->getImportUseIndexes();
+        $usesIdxs = $tokensAnalyzer->getImportUseIndexes();
 
         foreach ($usesIdxs as $idx) {
             if ($idx < $firstNamespaceIdx) {

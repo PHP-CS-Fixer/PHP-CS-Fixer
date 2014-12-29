@@ -14,6 +14,7 @@ namespace Symfony\CS\Fixer\PSR2;
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * Fixer for rules defined in PSR2 ¶4.1, ¶4.4, ¶5.
@@ -133,6 +134,7 @@ class BracesFixer extends AbstractFixer
                 return T_SWITCH !== $item;
             }
         );
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = 0, $limit = count($tokens); $index < $limit; ++$index) {
             $token = $tokens[$index];
@@ -143,7 +145,7 @@ class BracesFixer extends AbstractFixer
             }
 
             // do not change indent for lambda functions
-            if ($token->isGivenKind(T_FUNCTION) && $tokens->isLambda($index)) {
+            if ($token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($index)) {
                 continue;
             }
 
@@ -271,10 +273,12 @@ class BracesFixer extends AbstractFixer
 
     private function fixLambdas(Tokens $tokens)
     {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_FUNCTION) || !$tokens->isLambda($index)) {
+            if (!$token->isGivenKind(T_FUNCTION) || !$tokensAnalyzer->isLambda($index)) {
                 continue;
             }
 
