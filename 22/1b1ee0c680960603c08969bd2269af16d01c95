@@ -1,0 +1,52 @@
+---------------------------------------------------------------------------
+
+by stof at 2014-12-30T14:05:24Z
+
+:+1: (this should even be done in 1.4 IMO)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T14:07:11Z
+
+nah, 1.4 is meant to be locked, and was meant to have been released a week ago. We're still waiting for @fabpot to make the release.
+
+---------------------------------------------------------------------------
+
+by stof at 2014-12-30T14:12:01Z
+
+maybe the release process should be altered to allow @keradus to do the release himself, given that @fabpot is not really the maintainer of this repo anymore
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T14:49:58Z
+
+Yeh, we discussed this before. @keradus needs to be given admin access to this repo.
+
+---------------------------------------------------------------------------
+
+by stof at 2014-12-30T14:51:32Z
+
+You don't need admin access to be able to create tags and upload release assets. Push access is enough.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T14:54:21Z
+
+Yeh, I know. There was some other reason. Also, the main issue is that only @fabpot can upload the phars to the website.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T17:28:46Z
+
+I think 1.5 was the correct branch for this.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-30T19:15:02Z
+
+Lack of admin rights is just an inconvenience.
+Can't make a release due to fact that I can not release new phar to sensio server.
+
+1.4 is open only for bugs. The whole regression was already done, no need to break that by merging some refactoring into 1.4.
+
+All other should go into 1.5 or 2.x line.
