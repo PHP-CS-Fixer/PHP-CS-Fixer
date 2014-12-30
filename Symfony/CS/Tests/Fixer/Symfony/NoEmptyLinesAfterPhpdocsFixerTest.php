@@ -91,10 +91,13 @@ final class Bar
 
     /**
      * This is the first docblock
+     *
+     * Not removing blank line here.
+     * No element is being documented
      */
 
     /**
-     * Another docblock, do we really not want to remove newline after first docblock?
+     * Another docblock
      */
     public function silly() {}
 }
