@@ -38,21 +38,24 @@ class WhitespacyCommentTransformerTest extends AbstractTransformerTestBase
     {
         return array(
             array(
-                '<?php
-    // foo
-    $a = 1;',
+                "<?php // foo\n    \$a = 1;",
                 array(
-                    2 => array(T_COMMENT, '// foo'),
-                    3 => array(T_WHITESPACE, "\n    "),
+                    1 => array(T_COMMENT, '// foo'),
+                    2 => array(T_WHITESPACE, "\n    "),
                 ),
             ),
             array(
-                '<?php
-    // foo
-',
+                "<?php // foo\n\n ",
                 array(
-                    2 => array(T_COMMENT, '// foo'),
-                    3 => array(T_WHITESPACE, "\n"),
+                    1 => array(T_COMMENT, '// foo'),
+                    2 => array(T_WHITESPACE, "\n\n "),
+                ),
+            ),
+            array(
+                "<?php // foo \r\n ",
+                array(
+                    1 => array(T_COMMENT, '// foo'),
+                    2 => array(T_WHITESPACE, " \r\n "),
                 ),
             ),
         );
