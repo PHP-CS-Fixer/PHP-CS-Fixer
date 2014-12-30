@@ -197,4 +197,26 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array(FixerInterface::CONTRIB_LEVEL, 'contrib'),
         );
     }
+
+    /**
+     * @dataProvider provideFixersDescriptionConsistencyCases
+     */
+    public function testFixersDescriptionConsistency(FixerInterface $fixer)
+    {
+        $this->assertRegExp('/^[A-Z].*\.$/', $fixer->getDescription(), 'Description must start with capital letter and end with dot.');
+    }
+
+    public function provideFixersDescriptionConsistencyCases()
+    {
+        $fixer = new Fixer();
+        $fixer->registerBuiltInFixers();
+        $fixers = $fixer->getFixers();
+        $cases = array();
+
+        foreach ($fixers as $fixer) {
+            $cases[] = array($fixer);
+        }
+
+        return $cases;
+    }
 }
