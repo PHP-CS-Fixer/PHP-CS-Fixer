@@ -137,6 +137,10 @@ class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
                     $c=30
                     )',
             ),
+            // ignore commas inside call argument
+            array(
+                '<?php fnc(1, array(2, 3 ,4), 5);',
+            ),
             // skip multi line array
             array(
                 '<?php
