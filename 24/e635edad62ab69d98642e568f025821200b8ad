@@ -1,0 +1,98 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T00:00:28Z
+
+Hmm, this isn't true after that other transformers thing has gone through into 2.0 though.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T00:01:16Z
+
+Also, it still possible for a doc comment to be followed by a normal comment, although there are no test cases for this.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T00:01:38Z
+
+// cc @keradus
+
+---------------------------------------------------------------------------
+
+by stof at 2014-12-30T12:59:31Z
+
+hmm, it indeed cannot be a whitespace (because we get the next non whitespace token), but the removal of comment checks is wrong
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-30T13:17:09Z
+
+Ah, i was being silly by mixing up non-whitespace and meaningful tokens, which include the comments, right only whitespace should be removed, and testcases for comments are missing
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T13:51:07Z
+
+> hmm, it indeed cannot be a whitespace (because we get the next non whitespace token)
+
+That's not true actually. Look at the code. We're getting the index + 2. And T_DOC_COMMENT doesn't absorb whitespace like T_COMMENT.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-30T13:54:29Z
+
+Was looking at the code:
+`$next = $tokens->getNextNonWhitespace($index);`
+
+how can that be a whitespace token?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T14:08:21Z
+
+Oh yeh. I misread that quite badly...
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-30T14:13:34Z
+
+Added a failing testcase for T_DOC_COMMENT after another.
+
+Ofcourse its silly to do so, but why would we want to skip newline removal here?
+Which is what will happen if i add back the other types as well
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-30T14:17:44Z
+
+And added back the check for comment/docblocks in next commit
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T14:50:59Z
+
+Looks good now.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T17:28:13Z
+
+NB, this shouldn't be merged into 1.4 because it's not a bug fix, it just adds another test case, and removes a tiny bit of unneeded code. @keradus was quite clear that small "refactoring" like this should go into 1.5.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-30T20:43:04Z
+
+No big deal @GrahamCampbell , i will merge it into 1.5.
+BTW, milestone set.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T22:11:27Z
+
+:+1: This is much better now. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-30T22:13:38Z
+
+:+1:
