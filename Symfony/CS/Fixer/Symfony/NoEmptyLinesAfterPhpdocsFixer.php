@@ -61,6 +61,6 @@ class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'There should be no empty lines following phpdocs.';
+        return 'There should not be blank lines between docblock and the documented element.';
     }
 }
