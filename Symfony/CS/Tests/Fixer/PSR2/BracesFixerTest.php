@@ -1137,7 +1137,7 @@ if (true) {
 }',
             ),
             array(
-                "<?php if (true) {\r\n\r\n// CRLF newline\r\n}",
+                "<?php if (true) {\r\n\r\n// CRLF newline\n}",
             ),
         );
     }

@@ -36,14 +36,22 @@ class WhitespacyCommentTransformer extends AbstractTransformer
                 continue;
             }
 
-            if (preg_match("/^(.*)([ \t\r\n]+)$/", $token->getContent(), $matches)) {
-                $token->setContent($matches[1]);
+            $content = $token->getContent();
+            $trimmedContent = rtrim($content);
 
-                if (isset($tokens[$index + 1]) && $tokens[$index + 1]->isGivenKind(T_WHITESPACE)) {
-                    $tokens[$index + 1]->setContent($matches[2].$tokens[$index + 1]->getContent());
-                } else {
-                    $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, $matches[2])));
-                }
+            // nothing trimmed, nothing to do
+            if ($content === $trimmedContent) {
+                continue;
+            }
+
+            $whitespaces = substr($content, strlen($trimmedContent));
+
+            $token->setContent($trimmedContent);
+
+            if (isset($tokens[$index + 1]) && $tokens[$index + 1]->isGivenKind(T_WHITESPACE)) {
+                $tokens[$index + 1]->setContent($whitespaces.$tokens[$index + 1]->getContent());
+            } else {
+                $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, $whitespaces)));
             }
         }
     }
