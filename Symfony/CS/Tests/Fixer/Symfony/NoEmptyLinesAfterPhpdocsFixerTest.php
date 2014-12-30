@@ -71,7 +71,9 @@ final class Bar
     static private function bar() {}
 
     /*
-     * This should not be moved.
+     * This T_COMMENT should not be moved
+     *
+     * Only T_DOC_COMMENT should be moved
      */
     final protected
     // mixin' it up a bit
@@ -80,10 +82,24 @@ final class Bar
 
 
     /*
-     * This should not be moved.
+     * This T_COMMENT should not be moved
+     *
+     * Only T_DOC_COMMENT should be moved
      */
 
     public function cool() {}
+
+    /**
+     * This is the first docblock
+     *
+     * Not removing blank line here.
+     * No element is being documented
+     */
+
+    /**
+     * Another docblock
+     */
+    public function silly() {}
 }
 
 EOF;
