@@ -11,10 +11,12 @@
 
 namespace Symfony\CS\Tests;
 
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Utils;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Graham Campbell <graham@mineuk.com>
  */
 class UtilsTest extends \PHPUnit_Framework_TestCase
 {
@@ -88,5 +90,38 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
                 "aaa\r\n\n\n\r\n bbb\n",
             ),
         );
+    }
+
+    /**
+     * @dataProvider provideCalculateTrailingWhitespaceIndentCases
+     */
+    public function testCalculateTrailingWhitespaceIndent($spaces, $input)
+    {
+        $token = new Token(array(T_WHITESPACE, $input));
+
+        $this->assertSame($spaces, Utils::calculateTrailingWhitespaceIndent($token));
+    }
+
+    public function provideCalculateTrailingWhitespaceIndentCases()
+    {
+        return array(
+            array('    ', "\n\n    "),
+            array(' ', "\r\n\r\r\r "),
+            array("\t", "\r\n\t"),
+            array('', "\t\n\r"),
+            array('', "\n"),
+            array('', ''),
+        );
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage The given token must be whitespace.
+     */
+    public function testCalculateTrailingWhitespaceIndentFail()
+    {
+        $token = new Token(array(T_STRING, 'foo'));
+
+        Utils::calculateTrailingWhitespaceIndent($token);
     }
 }

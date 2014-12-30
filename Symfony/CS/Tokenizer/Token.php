@@ -276,7 +276,7 @@ class Token
     /**
      * Check if token is one of given kind.
      *
-     * @param int|array $possibleKind kind or array of kinds
+     * @param int|int[] $possibleKind kind or array of kinds
      *
      * @return bool
      */

@@ -32,7 +32,7 @@ class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
             // get the next non-whitespace token inc comments, provided
             // that there is whitespace between it and the current token
             $next = $tokens->getNextNonWhitespace($index);
-            if ($index + 2 === $next && false === $tokens[$next]->isGivenKind(array(T_DOC_COMMENT, T_COMMENT, T_WHITESPACE))) {
+            if ($index + 2 === $next && false === $tokens[$next]->isGivenKind(array(T_DOC_COMMENT, T_COMMENT))) {
                 $this->fixWhitespace($tokens[$index + 1]);
             }
         }
@@ -61,6 +61,6 @@ class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'There should be no empty lines following phpdocs.';
+        return 'There should not be blank lines between docblock and the documented element.';
     }
 }
