@@ -28,10 +28,8 @@ class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         for ($index = count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
@@ -63,8 +61,6 @@ class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
                 $beforeNamespace->setContent(substr($beforeNamespace->getContent(), 0, $lastNewline + 1));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

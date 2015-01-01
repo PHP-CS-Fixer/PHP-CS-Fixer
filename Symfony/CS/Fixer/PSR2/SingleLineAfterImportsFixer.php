@@ -28,9 +28,8 @@ class SingleLineAfterImportsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokensAnalyzer->getImportUseIndexes() as $index) {
@@ -65,12 +64,10 @@ class SingleLineAfterImportsFixer extends AbstractFixer
             if ($tokens[$insertIndex]->isWhitespace()) {
                 $nextToken = $tokens[$insertIndex];
                 $nextToken->setContent($newline.$indent.ltrim($nextToken->getContent()));
-            } else {
+            } elseif ($newline && $indent) {
                 $tokens->insertAt($insertIndex, new Token(array(T_WHITESPACE, $newline.$indent)));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

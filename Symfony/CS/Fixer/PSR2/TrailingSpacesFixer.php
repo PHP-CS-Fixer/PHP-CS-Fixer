@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\PSR2;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * Fixer for rules defined in PSR2 ¶2.3.
@@ -23,10 +24,10 @@ class TrailingSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         // [Structure] Don't add trailing spaces at the end of non-blank lines
-        return preg_replace('/(?<=\S)[ \t]+$/m', '', $content);
+        $tokens->setCode(preg_replace('/(?<=\S)[ \t]+$/m', '', $tokens->generateCode()));
     }
 
     /**

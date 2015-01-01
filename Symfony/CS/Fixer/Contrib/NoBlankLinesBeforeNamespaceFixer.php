@@ -22,15 +22,11 @@ class NoBlankLinesBeforeNamespaceFixer extends AbstractLinesBeforeNamespaceFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach (array_keys($tokens->findGivenKind(T_NAMESPACE)) as $index) {
             $this->fixLinesBeforeNamespace($tokens, $index, 1);
         }
-
-        return $tokens->generateCode();
     }
 
     /**

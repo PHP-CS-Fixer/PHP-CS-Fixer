@@ -22,17 +22,13 @@ class StandardizeNotEqualFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_IS_NOT_EQUAL)) {
                 $tokens[$index]->setContent('!=');
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

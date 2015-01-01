@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -21,9 +22,9 @@ class WhitespacyLinesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        return preg_replace('/^\h+$/m', '', $content);
+        $tokens->setCode(preg_replace('/^\h+$/m', '', $tokens->generateCode()));
     }
 
     /**

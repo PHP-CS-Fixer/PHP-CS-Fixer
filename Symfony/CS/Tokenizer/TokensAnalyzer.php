@@ -217,20 +217,20 @@ class TokensAnalyzer
             throw new \LogicException('No T_FUNCTION at given index');
         }
 
-        $nextIndex = $tokens->getNextMeaningfulToken($index);
-        $nextToken = $tokens[$nextIndex];
+        $startParenthesisIndex = $tokens->getNextMeaningfulToken($index);
+        $startParenthesisToken = $tokens[$startParenthesisIndex];
 
         // skip & for `function & () {}` syntax
-        if ($nextToken->equals('&')) {
-            $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
-            $nextToken = $tokens[$nextIndex];
+        if ($startParenthesisToken->equals('&')) {
+            $startParenthesisIndex = $tokens->getNextMeaningfulToken($startParenthesisIndex);
+            $startParenthesisToken = $tokens[$startParenthesisIndex];
         }
 
-        if (!$nextToken->equals('(')) {
+        if (!$startParenthesisToken->equals('(')) {
             return false;
         }
 
-        $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
+        $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
 
         $nextIndex = $tokens->getNextMeaningfulToken($endParenthesisIndex);
         $nextToken = $tokens[$nextIndex];
@@ -240,5 +240,41 @@ class TokensAnalyzer
         }
 
         return true;
+    }
+
+    /**
+     * Check if Token at given index is `T_WHILE` token for `do { ... } while ();` syntax
+     * and not `while () { ...}`.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isWhilePartOfDoWhile($index)
+    {
+        $tokens = $this->tokens;
+        $token  = $tokens[$index];
+
+        if (!$token->isGivenKind(T_WHILE)) {
+            throw new \LogicException('No T_WHILE at given index');
+        }
+
+        $startParenthesisIndex = $tokens->getNextMeaningfulToken($index);
+        $startParenthesisToken = $tokens[$startParenthesisIndex];
+
+        if (!$startParenthesisToken->equals('(')) {
+            return false;
+        }
+
+        $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
+
+        $nextIndex = $tokens->getNextMeaningfulToken($endParenthesisIndex);
+        $nextToken = $tokens[$nextIndex];
+
+        if ($nextToken->equals(';')) {
+            return true;
+        }
+
+        return false;
     }
 }

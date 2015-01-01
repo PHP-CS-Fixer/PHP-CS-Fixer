@@ -23,10 +23,8 @@ class ReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
@@ -58,8 +56,6 @@ class ReturnFixer extends AbstractFixer
                 ++$limit;
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

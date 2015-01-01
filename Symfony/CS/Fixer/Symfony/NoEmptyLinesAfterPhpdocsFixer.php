@@ -24,10 +24,8 @@ class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
             // get the next non-whitespace token inc comments, provided
             // that there is whitespace between it and the current token
@@ -36,8 +34,6 @@ class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
                 $this->fixWhitespace($tokens[$index + 1]);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

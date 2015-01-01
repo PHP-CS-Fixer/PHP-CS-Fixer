@@ -23,11 +23,9 @@ class UnusedUseFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-
         $namespaceDeclarations = $this->getNamespaceDeclarations($tokens);
         $useDeclarationsIndexes = $tokensAnalyzer->getImportUseIndexes();
         $useDeclarations = $this->getNamespaceUseDeclarations($tokens, $useDeclarationsIndexes);
@@ -36,8 +34,6 @@ class UnusedUseFixer extends AbstractFixer
 
         $this->removeUnusedUseDeclarations($tokens, $useDeclarations, $useUsages);
         $this->removeUsesInSameNamespace($tokens, $useDeclarations, $namespaceDeclarations);
-
-        return $tokens->generateCode();
     }
 
     private function detectUseUsages($content, array $useDeclarations)

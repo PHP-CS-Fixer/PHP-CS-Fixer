@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\PSR2;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * Fixer for rules defined in PSR2 ¶2.2.
@@ -23,10 +24,10 @@ class LinefeedFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         // [Structure] Use the linefeed character (0x0A) to end lines
-        return str_replace("\r\n", "\n", $content);
+        $tokens->setCode(str_replace("\r\n", "\n", $tokens->generateCode()));
     }
 
     /**

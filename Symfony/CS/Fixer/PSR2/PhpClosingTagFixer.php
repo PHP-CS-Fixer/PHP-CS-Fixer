@@ -25,17 +25,15 @@ class PhpClosingTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         $kinds = $tokens->findGivenKind(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_CLOSE_TAG, T_INLINE_HTML));
 
         // leave code intact if there is:
         // - any T_INLINE_HTML code
         // - several opening tags
         if (count($kinds[T_INLINE_HTML]) || (count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO])) > 1) {
-            return $content;
+            return;
         }
 
         foreach (array_reverse($kinds[T_CLOSE_TAG], true) as $index => $token) {
@@ -49,8 +47,6 @@ class PhpClosingTagFixer extends AbstractFixer
                 $tokens->insertAt($prevIndex + 1, new Token(';'));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

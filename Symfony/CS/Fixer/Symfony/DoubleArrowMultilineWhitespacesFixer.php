@@ -26,10 +26,8 @@ class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens->findGivenKind(T_DOUBLE_ARROW) as $index => $token) {
             $this->fixWhitespace($tokens[$index - 1]);
             // do not move anything about if there is a comment following the whitespace
@@ -37,8 +35,6 @@ class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
                 $this->fixWhitespace($tokens[$index + 1]);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     private function fixWhitespace(Token $token)

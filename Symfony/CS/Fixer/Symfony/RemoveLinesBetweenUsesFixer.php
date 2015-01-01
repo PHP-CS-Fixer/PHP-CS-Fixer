@@ -23,13 +23,9 @@ class RemoveLinesBetweenUsesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         $this->removeLineBreaksBetweenUseStatements($tokens);
-
-        return $tokens->generateCode();
     }
 
     private function removeLineBreaksBetweenUseStatements(Tokens $tokens)

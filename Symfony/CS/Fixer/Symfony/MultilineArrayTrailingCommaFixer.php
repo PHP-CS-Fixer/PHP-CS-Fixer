@@ -25,9 +25,8 @@ class MultilineArrayTrailingCommaFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
@@ -35,8 +34,6 @@ class MultilineArrayTrailingCommaFixer extends AbstractFixer
                 $this->fixArray($tokens, $index);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

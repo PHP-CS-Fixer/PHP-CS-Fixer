@@ -22,10 +22,8 @@ class JoinFunctionFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
             if ('join' !== $token->getContent()) {
                 continue;
@@ -43,8 +41,6 @@ class JoinFunctionFixer extends AbstractFixer
 
             $token->setContent('implode');
         }
-
-        return $tokens->generateCode();
     }
 
     /**

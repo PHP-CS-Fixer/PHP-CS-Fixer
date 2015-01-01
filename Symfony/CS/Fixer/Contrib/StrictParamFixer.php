@@ -23,7 +23,7 @@ class StrictParamFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         static $map = null;
 
@@ -42,8 +42,6 @@ class StrictParamFixer extends AbstractFixer
             );
         }
 
-        $tokens = Tokens::fromCode($content);
-
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
@@ -51,8 +49,6 @@ class StrictParamFixer extends AbstractFixer
                 $this->fixFunction($tokens, $index, $map[$token->getContent()]);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     private function fixFunction(Tokens $tokens, $functionIndex, array $functionParams)

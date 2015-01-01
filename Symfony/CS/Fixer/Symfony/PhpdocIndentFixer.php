@@ -24,10 +24,8 @@ class PhpdocIndentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
             $nextIndex = $tokens->getNextMeaningfulToken($index);
 
@@ -51,8 +49,6 @@ class PhpdocIndentFixer extends AbstractFixer
             $prevToken->setContent($this->fixWhitespaceBefore($prevToken->getContent(), $indent));
             $token->setContent($this->fixDocBlock($token->getContent(), $indent));
         }
-
-        return $tokens->generateCode();
     }
 
     /**

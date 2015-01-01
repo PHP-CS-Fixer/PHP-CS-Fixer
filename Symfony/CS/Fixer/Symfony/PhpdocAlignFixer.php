@@ -42,15 +42,11 @@ class PhpdocAlignFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
             $tokens[$index]->setContent($this->fixDocBlock($token->getContent()));
         }
-
-        return $tokens->generateCode();
     }
 
     /**

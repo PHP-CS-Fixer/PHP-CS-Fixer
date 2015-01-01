@@ -23,10 +23,8 @@ class OperatorsSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
@@ -42,8 +40,6 @@ class OperatorsSpacesFixer extends AbstractFixer
                 $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     private function isOperator(Token $token)
