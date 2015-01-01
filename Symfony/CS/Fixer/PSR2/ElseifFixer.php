@@ -26,10 +26,8 @@ class ElseifFixer extends AbstractFixer
      *
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens->findGivenKind(T_ELSE) as $index => $token) {
             $nextIndex = $tokens->getNextNonWhitespace($index);
             $nextToken = $tokens[$nextIndex];
@@ -49,8 +47,6 @@ class ElseifFixer extends AbstractFixer
             // 3. clear succeeding T_IF
             $nextToken->clear();
         }
-
-        return $tokens->generateCode();
     }
 
     /**

@@ -24,14 +24,10 @@ class IncludeFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         $includies = $this->findIncludies($tokens);
         $this->clearIncludies($tokens, $includies);
-
-        return $tokens->generateCode();
     }
 
     private function clearIncludies(Tokens $tokens, array $includies)

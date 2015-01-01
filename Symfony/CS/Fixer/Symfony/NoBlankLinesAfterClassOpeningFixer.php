@@ -24,10 +24,8 @@ class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens as $index => $token) {
             if (!$token->isClassy()) {
                 continue;
@@ -40,8 +38,6 @@ class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer
 
             $this->fixWhitespace($tokens[$startBraceIndex + 1]);
         }
-
-        return $tokens->generateCode();
     }
 
     /**

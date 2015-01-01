@@ -23,10 +23,9 @@ class TernarySpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $ternaryLevel = 0;
-        $tokens = Tokens::fromCode($content);
 
         foreach ($tokens as $index => $token) {
             if ($token->isArray()) {
@@ -69,8 +68,6 @@ class TernarySpacesFixer extends AbstractFixer
                 --$ternaryLevel;
             }
         }
-
-        return $tokens->generateCode();
     }
 
     private function ensureWhitespaceExistance(Tokens $tokens, $index, $after)

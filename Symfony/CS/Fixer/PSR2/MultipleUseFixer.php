@@ -25,9 +25,8 @@ class MultipleUseFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $uses = array_reverse($tokensAnalyzer->getImportUseIndexes());
 
@@ -55,11 +54,10 @@ class MultipleUseFixer extends AbstractFixer
 
             $declarationTokens = Tokens::fromCode('<?php '.$declarationContent);
             $declarationTokens[0]->clear();
+            $declarationTokens->clearEmptyTokens();
 
             $tokens->insertAt($index, $declarationTokens);
         }
-
-        return $tokens->generateCode();
     }
 
     private function detectIndent(Tokens $tokens, $index)

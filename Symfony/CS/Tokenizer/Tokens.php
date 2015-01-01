@@ -43,6 +43,62 @@ class Tokens extends \SplFixedArray
     private $codeHash;
 
     /**
+     * TODO: docs
+     *
+     * @var bool
+     */
+    private $changed = false;
+
+    // TODO: docs
+    public function setSize(/*int*/ $size)
+    {
+        if ($this->getSize() !== $size) {
+            $this->changed = true;
+            parent::setSize($size);
+        }
+    }
+
+    // TODO: docs
+    public function offsetUnset(/*int*/ $index)
+    {
+        $this->changed = true;
+        parent::offsetUnset($index);
+    }
+
+    // TODO: docs
+    public function offsetSet(/*int*/ $index, /*Token */$newval)
+    {
+        $this->changed = true;
+        parent::offsetSet($index, $newval);
+    }
+
+    // TODO: docs
+    public function isChanged()
+    {
+        if ($this->changed) {
+            return true;
+        }
+
+        foreach ($this as $token) {
+            if ($token->isChanged()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // TODO: docs
+    public function clearChanged()
+    {
+        $this->changed = false;
+
+        foreach ($this as $token) {
+            $token->clearChanged();
+        }
+    }
+
+    /**
      * Clear cache - one position or all of them.
      *
      * @param string|null $key position to clear, when null clear all
@@ -128,6 +184,7 @@ class Tokens extends \SplFixedArray
 
             if ($codeHash === $tokens->codeHash) {
                 $tokens->clearEmptyTokens();
+                $tokens->clearChanged();
 
                 return $tokens;
             }
@@ -143,6 +200,7 @@ class Tokens extends \SplFixedArray
         $transformers = Transformers::create();
         $transformers->transform($collection);
         $collection->changeCodeHash($codeHash);
+        $collection->clearChanged();
 
         return $collection;
     }
@@ -613,8 +671,13 @@ class Tokens extends \SplFixedArray
     {
         $items = is_array($items) || $items instanceof self ? $items : array($items);
         $itemsCnt = count($items);
-        $oldSize = count($this);
 
+        if (0 === $itemsCnt) {
+            return;
+        }
+
+        $oldSize = count($this);
+        $this->changed = true;
         $this->setSize($oldSize + $itemsCnt);
 
         for ($i = $oldSize + $itemsCnt - 1; $i >= $index; --$i) {
@@ -622,7 +685,60 @@ class Tokens extends \SplFixedArray
         }
 
         for ($i = 0; $i < $itemsCnt; ++$i) {
+            if ('' === $items[$i]->getContent()) {
+                throw new \InvalidArgumentException('Must not add empty item to collection');
+            }
+
             $this[$i + $index] = $items[$i];
+        }
+    }
+
+    /**
+     * Override tokens at given range.
+     *
+     * @param int            $indexStart start overriding index
+     * @param int            $indexEnd   end overriding index
+     * @param Tokens|Token[] $items      tokens to insert
+     */
+    public function overrideRange($indexStart, $indexEnd, $items)
+    {
+        $oldCode = $this->generatePartialCode($indexStart, $indexEnd);
+
+        $newCode = '';
+        foreach ($items as $item) {
+            $newCode .= $item->getContent();
+        }
+
+        // no changes, return
+        if ($oldCode === $newCode) {
+            return;
+        }
+
+        $indexToChange = $indexEnd - $indexStart + 1;
+        $itemsCount = count($items);
+
+        // If we want to add more items than passed range contains we need to
+        // add placeholders for overhead items.
+        if ($itemsCount > $indexToChange) {
+            $placeholders = array();
+            while ($itemsCount > $indexToChange) {
+                $placeholders[] = new Token('__PLACEHOLDER__');
+                ++$indexToChange;
+            }
+            $this->insertAt($indexEnd + 1, $placeholders);
+        }
+
+        // Override each items.
+        foreach ($items as $itemIndex => $item) {
+            $this[$indexStart + $itemIndex]->override($item);
+        }
+
+        // If we want to add less tokens than passed range contains then clear
+        // not needed tokens.
+        if ($itemsCount < $indexToChange) {
+            for ($i = $indexStart + $itemsCount; $i <= $indexEnd; ++$i) {
+                $this[$i]->clear();
+            }
         }
     }
 
@@ -674,6 +790,12 @@ class Tokens extends \SplFixedArray
      */
     public function setCode($code)
     {
+        // No need to work when the code is the same.
+        // That is how we avoid a lot of work and setting changed flag.
+        if ($code === $this->generateCode()) {
+            return;
+        }
+
         // clear memory
         $this->setSize(0);
 
@@ -689,6 +811,7 @@ class Tokens extends \SplFixedArray
 
         $this->rewind();
         $this->changeCodeHash(crc32($code));
+        $this->changed = true;
     }
 
     public function toJSON()

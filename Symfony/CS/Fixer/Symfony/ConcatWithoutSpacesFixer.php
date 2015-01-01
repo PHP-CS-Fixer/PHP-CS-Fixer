@@ -22,9 +22,8 @@ class ConcatWithoutSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
         $whitespaces = array('whitespaces' => " \t");
 
         foreach ($tokens as $index => $token) {
@@ -38,8 +37,6 @@ class ConcatWithoutSpacesFixer extends AbstractFixer
                 }
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

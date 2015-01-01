@@ -13,6 +13,7 @@ namespace Symfony\CS\Fixer\PSR2;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * Fixer for rules defined in PSR2 generally (¶1 and ¶6).
@@ -26,9 +27,9 @@ class FunctionDeclarationFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
@@ -74,18 +75,18 @@ class FunctionDeclarationFixer extends AbstractFixer
             // remove single-line edge whitespaces inside parameters list parentheses
             $this->fixParenthesisInnerEdge($tokens, $startParenthesisIndex, $endParenthesisIndex);
 
-            // remove whitespace before (
-            // eg: `function foo () {}` => `function foo() {}`
-            if ($tokens[$startParenthesisIndex - 1]->isWhitespace()) {
-                $tokens[$startParenthesisIndex - 1]->clear();
+            if (!$tokensAnalyzer->isLambda($index)) {
+                // remove whitespace before (
+                // eg: `function foo () {}` => `function foo() {}`
+                if ($tokens[$startParenthesisIndex - 1]->isWhitespace()) {
+                    $tokens[$startParenthesisIndex - 1]->clear();
+                }
             }
 
             // fix whitespace after T_FUNCTION
             // eg: `function     foo() {}` => `function foo() {}`
             $tokens->ensureWhitespaceAtIndex($index + 1, 0, ' ');
         }
-
-        return $tokens->generateCode();
     }
 
     private function fixParenthesisInnerEdge(Tokens $tokens, $start, $end)

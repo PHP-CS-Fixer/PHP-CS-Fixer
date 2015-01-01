@@ -23,7 +23,7 @@ class SpacesCastFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         static $insideCastSpaceReplaceMap = array(
             ' '    => '',
@@ -33,8 +33,6 @@ class SpacesCastFixer extends AbstractFixer
             "\0"   => '',
             "\x0B" => '',
         );
-
-        $tokens = Tokens::fromCode($content);
 
         foreach ($tokens as $index => $token) {
             if ($token->isCast()) {
@@ -50,8 +48,6 @@ class SpacesCastFixer extends AbstractFixer
                 }
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

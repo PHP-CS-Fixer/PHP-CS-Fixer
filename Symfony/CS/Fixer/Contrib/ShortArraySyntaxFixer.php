@@ -23,10 +23,8 @@ class ShortArraySyntaxFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens->findGivenKind(T_ARRAY) as $index => $token) {
             $openIndex = $tokens->getNextTokenOfKind($index, array('('));
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
@@ -35,8 +33,6 @@ class ShortArraySyntaxFixer extends AbstractFixer
             $tokens[$openIndex]->override(array(CT_ARRAY_SQUARE_BRACE_OPEN, '['));
             $tokens[$closeIndex]->override(array(CT_ARRAY_SQUARE_BRACE_CLOSE, ']'));
         }
-
-        return $tokens->generateCode();
     }
 
     /**

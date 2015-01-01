@@ -26,18 +26,26 @@ abstract class AbstractAlignFixer extends AbstractFixer
     const ALIGNABLE_PLACEHOLDER = "\x2 ALIGNABLE%d \x3";
 
     /**
+     * Keep track of the deepest level ever achieved while
+     * parsing the code. Used later to replace alignment
+     * placeholders with spaces.
+     *
+     * @var int
+     */
+    protected $deepestLevel;
+
+    /**
      * Look for group of placeholders, and provide vertical alignment.
      *
      * @param Tokens $tokens
-     * @param int    $deepestLevel
      *
      * @return string
      */
-    protected function replacePlaceholder(Tokens $tokens, $deepestLevel)
+    protected function replacePlaceholder(Tokens $tokens)
     {
         $tmpCode = $tokens->generateCode();
 
-        for ($j = 0; $j <= $deepestLevel; ++$j) {
+        for ($j = 0; $j <= $this->deepestLevel; ++$j) {
             $placeholder = sprintf(self::ALIGNABLE_PLACEHOLDER, $j);
 
             if (false === strpos($tmpCode, $placeholder)) {

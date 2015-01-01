@@ -12,26 +12,29 @@
 namespace Symfony\CS\Fixer\PSR2;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
+ * A file must always end with a linefeed character.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class EofEndingFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        // [Structure] A file must always end with a linefeed character
+        $count = $tokens->count();
 
-        $content = rtrim($content);
-
-        if (strlen($content)) {
-            return $content."\n";
+        if (0 === $count) {
+            return;
         }
 
-        return $content;
+        $token = $tokens[$count - 1];
+        $token->setContent(rtrim($token->getContent())."\n");
     }
 
     /**

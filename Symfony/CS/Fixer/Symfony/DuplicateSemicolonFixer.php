@@ -22,10 +22,8 @@ class DuplicateSemicolonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
@@ -42,8 +40,6 @@ class DuplicateSemicolonFixer extends AbstractFixer
             $tokens->removeLeadingWhitespace($index);
             $token->clear();
         }
-
-        return $tokens->generateCode();
     }
 
     /**
