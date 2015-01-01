@@ -1,0 +1,101 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-26T22:00:45Z
+
+anyone can help why this failed on HHVM ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-27T00:04:10Z
+
+http://3v4l.org/QsKlp
+
+Look at difference in size of array returned by `token_get_all` under php and hhvm.
+Next bug in hhvm implementation of `token_get_all` ?
+
+// cc @Nyholm
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-29T17:42:08Z
+
+Shouldn't we just continue anyway, and report this to the hhvm team to fix. The behaviour is clearly incorrect on hhvm.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-29T17:45:34Z
+
+Already reported here: https://github.com/facebook/hhvm/issues/4536
+
+no, if our software are currently working (even with that bug in hhvm) and after changes our software will be broken then the changes should not be merged "as is".
+We could wait few days, maybe it will be fixed quick, or disable that case on hhvm, or handle it another way.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-29T17:50:10Z
+
+Probably best to "skip" that test case on hhvm for now.
+
+---------------------------------------------------------------------------
+
+by sgolemon at 2014-12-29T21:10:24Z
+
+Commented on the hhvm issue, def a bug on our side.  I'll have a fix up for ya soon. :D
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-29T21:33:18Z
+
+@sgolemon Awesome. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T20:27:33Z
+
+@keradus Could you skip that test on hhvm please, because it will be a while before we get hhvm 3.5.0 on travis, and we can't use hhvm-nightly because it doesn't work on the container architecture.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-30T20:29:59Z
+
+Not sure what happened but green on hhvm
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T20:34:26Z
+
+@keradus It's because you deleted the `\r`. hhvm works fine with `\n` but not with `\r\n`.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-30T20:34:49Z
+
+Oh, I know, after fix suggested by @stof one of fixer fix that whitespace to be correct new line, which was `\n` and not `\r\n`, what we are doing in a lot of places. and one case failing on travis was changed in our project ;)
+
+BTW... https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/910#issuecomment-68395392
+
+---------------------------------------------------------------------------
+
+by stof at 2014-12-31T07:58:08Z
+
+> we can't use hhvm-nightly because it doesn't work on the container architecture
+
+That's not true anymore. They fixed it
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-01T18:42:22Z
+
+Oh good. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-01T18:43:15Z
+
+rebased, ready to merge
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-01T19:00:11Z
+
+:+1:
