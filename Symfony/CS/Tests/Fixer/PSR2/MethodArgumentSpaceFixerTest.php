@@ -90,6 +90,7 @@ class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
             array(
                 '<?php list($path, $mode, ) = foo();',
                 '<?php list($path, $mode,) = foo();',
+            ),
             //inline comments with spaces
             array(
                 '<?php xyz($a=10, /*comment1*/ $b=2000, /*comment2*/ $c=30);',
@@ -108,6 +109,18 @@ class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
                 '<?php function xyz(
                     $a=10,  //comment1
                     $b=2000,//comment2
+                    $c=30) {
+                }',
+            ),
+            //multiline comments also must be ignored
+            array(
+                '<?php function xyz(
+                    $a=10,  /* comment1a
+                               comment1b
+                            */
+                    $b=2000,/* comment2a
+                        comment 2b
+                        comment 2c */
                     $c=30) {
                 }',
             ),
@@ -136,6 +149,11 @@ class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
                     $b=20,
                     $c=30
                     )',
+            ),
+            // skip arrays but replace arg methods
+            array(
+                '<?php fnc(1, array(2, func2(6, 7) ,4), 5);',
+                '<?php fnc(1,array(2, func2(6,    7) ,4),    5);',
             ),
             // ignore commas inside call argument
             array(

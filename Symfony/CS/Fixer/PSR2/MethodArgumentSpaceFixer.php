@@ -29,27 +29,43 @@ class MethodArgumentSpaceFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            // looking for start of brace and skip array
-            if (!$token->equals('(') || $tokens[$index - 1]->isGivenKind(T_ARRAY)) {
-                continue;
-            }
-
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-
-            // fix for method argument and method call
-            for ($i = $endIndex - 1; $i > $index; --$i) {
-                if (!$tokens[$i]->equals(',')) {
-                    continue;
-                }
-
-                $this->fixSpace($tokens, $i);
+            if ($token->equals('(') && !$tokens[$index - 1]->isGivenKind(T_ARRAY)) {
+                $this->fixFunction($tokens, $index);
             }
         }
 
         return $tokens->generateCode();
+    }
+
+    /**
+     * Fix arguments spacing for given function
+     *
+     * @param Tokens $tokens             Tokens to handle
+     * @param int    $startFunctionIndex Start parenthesis position
+     */
+    private function fixFunction(Tokens $tokens, $startFunctionIndex)
+    {
+        $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
+        for ($index = $startFunctionIndex + 1; $index < $endFunctionIndex; ++$index) {
+            $token = $tokens[$index];
+
+            if ($token->equals('(')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                continue;
+            }
+
+            if ($token->isGivenKind(CT_ARRAY_SQUARE_BRACE_OPEN)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+                continue;
+            }
+
+            if ($token->equals(',')) {
+                $this->fixSpace($tokens, $index);
+            }
+        }
     }
 
     /**
@@ -105,7 +121,7 @@ class MethodArgumentSpaceFixer extends AbstractFixer
      */
     private function isCommentLastLineToken(Tokens $tokens, $index)
     {
-        return $tokens[$index]->isComment() && 1 === substr_count($tokens[$index]->getContent(), "\n");
+        return $tokens[$index]->isComment() && 1 === substr_count($tokens[$index + 1]->getContent(), "\n");
     }
 
     /**
