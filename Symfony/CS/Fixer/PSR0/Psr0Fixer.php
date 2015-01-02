@@ -67,7 +67,6 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
             $normNamespace = strtr($namespace, '\\', '/');
             $path = strtr($file->getRealPath(), '\\', '/');
             $dir = dirname($path);
-            $filename = basename($path, '.php');
 
             if ($this->config) {
                 $dir = substr($dir, strlen(realpath($this->config->getDir())) + 1);
