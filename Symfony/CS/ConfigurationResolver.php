@@ -64,7 +64,7 @@ class ConfigurationResolver
     /**
      * Resolves fixers.
      *
-     * @return FixersResolver
+     * @return ConfigurationResolver
      */
     public function resolve()
     {
