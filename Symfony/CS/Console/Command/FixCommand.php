@@ -17,17 +17,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
-use Symfony\CS\ConfigurationResolver;
+use Symfony\CS\Console\ConfigurationResolver;
 use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerFileProcessedEvent;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\LintManager;
-use Symfony\CS\StdinFileInfo;
 use Symfony\CS\Utils;
 
 /**
@@ -174,11 +172,13 @@ fixed but without actually modifying them:
     <info>php %command.full_name% /path/to/code --dry-run</info>
 
 Instead of using command line options to customize the fixer, you can save the
-configuration in a <comment>.php_cs</comment> file in the root directory of
-your project. The file must return an instance of
-``Symfony\CS\ConfigInterface``, which lets you configure the fixers, the level, the files,
-and directories that need to be analyzed. The example below will add two contrib fixers
-to the default list of PSR2-level fixers:
+project configuration in a <comment>.php_cs.dist</comment> file in the root directory
+of your project. The file must return an instance of ``Symfony\CS\ConfigInterface``,
+which lets you configure the fixers, the level, the files, and directories that
+need to be analyzed. You may also create <comment>.php_cs</comment> file, which is
+the local configuration that will be used instead of the project configuration, it
+is a good practice to add that file into your <comment>.gitignore</comment> file.
+The example below will add two contrib fixers to the default list of PSR2-level fixers:
 
     <?php
 
@@ -272,90 +272,36 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $input->getArgument('path');
+        $resolver = new ConfigurationResolver();
+        $resolver
+            ->setCwd(getcwd())
+            ->setDefaultConfig($this->defaultConfig)
+            ->setFixer($this->fixer)
+            ->setOptions(array(
+                'config' => $input->getOption('config'),
+                'config-file' => $input->getOption('config-file'),
+                'dry-run' => $input->getOption('dry-run'),
+                'level' => $input->getOption('level'),
+                'fixers' => $input->getOption('fixers'),
+                'path' => $input->getArgument('path'),
+                'progress' => $output->isVerbose() && 'txt' === $input->getOption('format'),
+            ))
+            ->resolve()
+        ;
 
-        $stdin = false;
+        $config     = $resolver->getConfig();
+        $configFile = $resolver->getConfigFile();
 
-        if ('-' === $path) {
-            $stdin = true;
-
-            // Can't write to STDIN
-            $input->setOption('dry-run', true);
-        }
-
-        if (null !== $path) {
-            $filesystem = new Filesystem();
-            if (!$filesystem->isAbsolutePath($path)) {
-                $path = getcwd().DIRECTORY_SEPARATOR.$path;
-            }
-        }
-
-        $configFile = $input->getOption('config-file');
-        if (null === $configFile) {
-            if (is_file($path) && $dirName = pathinfo($path, PATHINFO_DIRNAME)) {
-                $configDir = $dirName;
-            } elseif ($stdin || null === $path) {
-                $configDir = getcwd();
-                // path is directory
-            } else {
-                $configDir = $path;
-            }
-            $configFile = $configDir.DIRECTORY_SEPARATOR.'.php_cs';
-        }
-
-        if ($input->getOption('config')) {
-            $config = null;
-            foreach ($this->fixer->getConfigs() as $c) {
-                if ($c->getName() === $input->getOption('config')) {
-                    $config = $c;
-                    break;
-                }
-            }
-
-            if (null === $config) {
-                throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined', $input->getOption('config')));
-            }
-        } elseif (file_exists($configFile)) {
-            $config = include $configFile;
-            // verify that the config has an instance of Config
-            if (!$config instanceof Config) {
-                throw new \UnexpectedValueException(sprintf('The config file "%s" does not return an instance of Symfony\CS\Config\Config', $configFile));
-            }
-
-            if ('txt' === $input->getOption('format')) {
-                $output->writeln(sprintf('Loaded config from "%s"', $configFile));
-            }
-        } else {
-            $config = $this->defaultConfig;
-        }
-
-        if ($config->usingLinter()) {
-            $this->fixer->setLintManager(new LintManager());
-        }
-
-        if (is_file($path)) {
-            $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
-        } elseif ($stdin) {
-            $config->finder(new \ArrayIterator(array(new StdinFileInfo())));
-        } elseif (null !== $path) {
-            $config->setDir($path);
+        if ($configFile && 'txt' === $input->getOption('format')) {
+            $output->writeln(sprintf('Loaded config from "%s"', $configFile));
         }
 
         // register custom fixers from config
         $this->fixer->registerCustomFixers($config->getCustomFixers());
+        if ($config->usingLinter()) {
+            $this->fixer->setLintManager(new LintManager());
+        }
 
-        $resolver = new ConfigurationResolver();
-        $resolver
-            ->setAllFixers($this->fixer->getFixers())
-            ->setConfig($config)
-            ->setOptions(array(
-                'level'     => $input->getOption('level'),
-                'fixers'    => $input->getOption('fixers'),
-                'progress'  => $output->isVerbose() && 'txt' === $input->getOption('format'),
-            ))
-            ->resolve();
-
-        $config->fixers($resolver->getFixers());
         $showProgress = $resolver->getProgress();
 
         if ($showProgress) {
@@ -368,7 +314,7 @@ EOF
         }
 
         $this->stopwatch->start('fixFiles');
-        $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
+        $changed = $this->fixer->fix($config, $resolver->isDryRun(), $input->getOption('diff'));
         $this->stopwatch->stop('fixFiles');
 
         if ($showProgress) {
