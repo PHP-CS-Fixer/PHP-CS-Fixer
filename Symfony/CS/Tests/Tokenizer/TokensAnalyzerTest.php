@@ -47,4 +47,49 @@ PHP;
             $this->assertSame('method', $element['type']);
         }
     }
+
+    /**
+     * @dataProvider provideIsLambdaCases
+     */
+    public function testIsLambda($source, array $expected)
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $expected) {
+            $this->assertSame($expected, $tokensAnalyzer->isLambda($index));
+        }
+    }
+
+    public function provideIsLambdaCases()
+    {
+        return array(
+            array(
+                '<?php function foo () {}',
+                array(1 => false),
+            ),
+            array(
+                '<?php function /** foo */ foo () {}',
+                array(1 => false),
+            ),
+            array(
+                '<?php $foo = function () {}',
+                array(5 => true),
+            ),
+            array(
+                '<?php $foo = function /** foo */ () {}',
+                array(5 => true),
+            ),
+            array(
+                '<?php
+preg_replace_callback(
+    "/(^|[a-z])/",
+    function (array $matches) {
+        return "a";
+    },
+    $string
+);',
+                array(7 => true),
+            ),
+        );
+    }
 }

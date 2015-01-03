@@ -281,7 +281,7 @@ class Tokens extends \SplFixedArray
 
         if ($token->isWhitespace()) {
             $removeLastCommentLine($this[$index - 1], $indexOffset);
-            $token->setContent($whitespace);
+            $token->override(array(T_WHITESPACE, $whitespace));
 
             return false;
         }

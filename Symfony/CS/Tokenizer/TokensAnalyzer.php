@@ -217,7 +217,7 @@ class TokensAnalyzer
             throw new \LogicException('No T_FUNCTION at given index');
         }
 
-        $nextIndex = $tokens->getNextNonWhitespace($index);
+        $nextIndex = $tokens->getNextMeaningfulToken($index);
         $nextToken = $tokens[$nextIndex];
 
         if (!$nextToken->equals('(')) {
@@ -226,7 +226,7 @@ class TokensAnalyzer
 
         $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
 
-        $nextIndex = $tokens->getNextNonWhitespace($endParenthesisIndex);
+        $nextIndex = $tokens->getNextMeaningfulToken($endParenthesisIndex);
         $nextToken = $tokens[$nextIndex];
 
         if (!$nextToken->equalsAny(array('{', array(CT_USE_LAMBDA)))) {
