@@ -104,6 +104,7 @@ class FixCommand extends Command
                     new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
                     new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or symfony (formerly all))', null),
+                    new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no)', null),
                     new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
@@ -250,16 +251,23 @@ only those exact fixers are enabled whether or not level is set.
 With the <comment>--config-file</comment> option you can specify the path to the
 <comment>.php_cs</comment> file.
 
+By using ``--using-cache`` option you can set if caching
+mechanism should be used.
+
 Caching
 -------
 
-You can enable caching by returning a custom config with caching enabled. This will
-speed up further runs.
+The caching mechanism is enabled by default. This will speed up further runs by
+fixing only files that were modified. Tool will fix all files if tool version
+changed or fixers list changed.
+Cache is supported only for tool downloaded as phar file or installed via
+composer.
+Cache can be disabled via ``--using-cache`` option or config file:
 
     <?php
 
     return Symfony\CS\Config\Config::create()
-        ->setUsingCache(true)
+        ->setUsingCache(false)
     ;
 
     ?>
@@ -285,6 +293,7 @@ EOF
                 'fixers' => $input->getOption('fixers'),
                 'path' => $input->getArgument('path'),
                 'progress' => $output->isVerbose() && 'txt' === $input->getOption('format'),
+                'using-cache' => $input->getOption('using-cache'),
             ))
             ->resolve()
         ;

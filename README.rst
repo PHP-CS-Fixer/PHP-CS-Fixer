@@ -508,18 +508,25 @@ only those exact fixers are enabled whether or not level is set.
 With the ``--config-file`` option you can specify the path to the
 ``.php_cs`` file.
 
+By using ``--using-cache`` option you can set if caching
+mechanism should be used.
+
 Caching
 -------
 
-You can enable caching by returning a custom config with caching enabled. This will
-speed up further runs.
+The caching mechanism is enabled by default. This will speed up further runs by
+fixing only files that were modified. Tool will fix all files if tool version
+changed or fixers list changed.
+Cache is supported only for tool downloaded as phar file or installed via
+composer.
+Cache can be disabled via ``--using-cache`` option or config file:
 
 .. code-block:: php
 
     <?php
 
     return Symfony\CS\Config\Config::create()
-        ->setUsingCache(true)
+        ->setUsingCache(false)
     ;
 
 Helpers
