@@ -292,7 +292,7 @@ class Tokens extends \SplFixedArray
 
         if ($token->isWhitespace()) {
             $removeLastCommentLine($this[$index - 1], $indexOffset);
-            $token->setContent($whitespace);
+            $token->override(array(T_WHITESPACE, $whitespace, $token->getLine()));
 
             return false;
         }
@@ -833,7 +833,7 @@ class Tokens extends \SplFixedArray
             throw new \LogicException('No T_FUNCTION at given index');
         }
 
-        $nextIndex = $this->getNextNonWhitespace($index);
+        $nextIndex = $this->getNextMeaningfulToken($index);
         $nextToken = $this[$nextIndex];
 
         if (!$nextToken->equals('(')) {
@@ -842,7 +842,7 @@ class Tokens extends \SplFixedArray
 
         $endParenthesisIndex = $this->findBlockEnd(self::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
 
-        $nextIndex = $this->getNextNonWhitespace($endParenthesisIndex);
+        $nextIndex = $this->getNextMeaningfulToken($endParenthesisIndex);
         $nextToken = $this[$nextIndex];
 
         if (!$nextToken->equalsAny(array('{', array(T_USE)))) {
