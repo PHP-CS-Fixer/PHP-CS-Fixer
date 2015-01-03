@@ -543,7 +543,7 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            $nextToken = $this[$this->getNextNonWhitespace($index)];
+            $nextToken = $this[$this->getNextMeaningfulToken($index)];
 
             // ignore function () use ($foo) {}
             if ($nextToken->equals('(')) {
