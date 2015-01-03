@@ -455,7 +455,7 @@ class BracesFixer extends AbstractFixer
             }
         }
 
-        throw new \RuntimeExpcetion('Statement end not found');
+        throw new \RuntimeException('Statement end not found');
     }
 
     private function getClassyTokens()

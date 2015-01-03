@@ -7,6 +7,7 @@ Changelog for v1.4
 ------------------
 
 * feature #841 PhpdocParamsFixer: added aligning var/type annotations (GrahamCampbell)
+* bug #946 BracesFixer - fix typo in exception name (keradus)
 * bug #940 Tokens::setCode - apply missing transformation (keradus)
 * bug #908 BracesFixer - fix invalide inserting brace for control structure without brace and lambda inside of it (keradus)
 * bug #903 NoEmptyLinesAfterPhpdocsFixer - fix bug with Windows style lines (GrahamCampbell)
