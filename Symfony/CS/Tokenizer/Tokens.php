@@ -680,6 +680,9 @@ class Tokens extends \SplFixedArray
             $this[$index] = new Token($token);
         }
 
+        $transformers = Transformers::create();
+        $transformers->transform($this);
+
         $this->rewind();
         $this->changeCodeHash(crc32($code));
     }

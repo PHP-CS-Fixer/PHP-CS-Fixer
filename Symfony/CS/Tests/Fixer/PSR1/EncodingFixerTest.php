@@ -29,8 +29,8 @@ class EncodingFixerTest extends AbstractFixerTestBase
     public function provideExamples()
     {
         return array(
-            $this->prepareTestCase('test-utf8.php'),
-            $this->prepareTestCase('test-utf8.php', 'test-utf8-bom.php'),
+            $this->prepareTestCase('test-utf8.case1.php', 'test-utf8.case1-bom.php'),
+            $this->prepareTestCase('test-utf8.case2.php', 'test-utf8.case2-bom.php'),
         );
     }
 
