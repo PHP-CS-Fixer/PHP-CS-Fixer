@@ -7,6 +7,7 @@ Changelog for v1.4
 ------------------
 
 * feature #841 PhpdocParamsFixer: added aligning var/type annotations (GrahamCampbell)
+* bug #950 Tokens::isLambda - fix detection near comments (keradus)
 * bug #951 Tokens::getImportUseIndexes - fix detection near comments (keradus)
 * bug #949 Tokens::isShortArray - fix detection near comments (keradus)
 * bug #948 NewWithBracesFixer - fix case with multidimensional array (keradus)
