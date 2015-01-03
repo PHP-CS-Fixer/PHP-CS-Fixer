@@ -1,0 +1,253 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-13T11:36:58Z
+
+the README file need to be changed still
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-13T12:05:24Z
+
+Nice :clap:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-13T12:16:45Z
+
+Move responsibility of resolving `config` into `ConfigurationResolver`, so we can add tests for it now ;)
+
+---------------------------------------------------------------------------
+
+by dereuromark at 2014-12-13T20:23:36Z
+
+Refs https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/804
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T20:46:44Z
+
+Maybe this would be better targeted at 2.0?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T20:49:05Z
+
+Is this breaks BC?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-14T21:17:06Z
+
+It is an unexpected change in behaviour, and breaks things still marked as "api" in 1.x.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-14T21:30:27Z
+
+ow, right, I have changed ConfigurationResolver public interface!
+Thanks, marked as BC break !
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-16T18:13:45Z
+
+Due to referred discussion - I have added a todo in first post:
+> allow to disable cache by CLI option
+
+---------------------------------------------------------------------------
+
+by bobthecow at 2014-12-16T19:06:08Z
+
+> Due to referred discussion - I have added a todo in first post:
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-17T23:02:23Z
+
+Actually,moving that one into #873
+
+---------------------------------------------------------------------------
+
+by dereuromark at 2014-12-18T21:20:43Z
+
+I would remove the coverage reports. It is just unnecessary and useless noise.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-18T21:25:11Z
+
+Refs: #848
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-18T21:50:04Z
+
+implementation ready ;)
+more tests needed...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-18T21:50:57Z
+
+Awesome.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-20T19:33:54Z
+
+ConfigurationResolver now resolves path, isDryRun and isStdIn
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-20T20:47:42Z
+
+Tests done.
+
+Dont know why phpunit show [this line](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/829/files#diff-5d7e38c00b425a2261d717220b240457R235) as not coveraged :(
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-20T20:50:51Z
+
+It's not covered because `$configOption` is always thuthy I assume.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-20T21:04:29Z
+
+The lines after that line are covered, so `$configOption` isn't always `true`.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-20T21:06:03Z
+
+Tests run locally, fail on Travis.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-20T21:09:05Z
+
+I'll pull this down and see what happens on my machine.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-20T21:11:50Z
+
+Thanks ;)
+I run it on Windows. Maybe it is a matter of OS.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-20T21:12:12Z
+
+Same here.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-20T21:12:29Z
+
+![image](https://cloud.githubusercontent.com/assets/2829600/5516301/e5aec6f4-888c-11e4-9c3b-51a417ddbb18.png)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-20T21:19:29Z
+
+fixtures was missing due to my .gitignore....
+mea culpa :(
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-20T21:22:54Z
+
+Ahh. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-20T21:23:07Z
+
+Travis is happy now ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-20T21:23:44Z
+
+:ship: lol
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-26T11:30:33Z
+
+Done.
+Could anyone make a review, please?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-28T14:32:25Z
+
+quite a big change, it would be cool if anyone could make a review ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-28T18:03:18Z
+
+This looks good apart from the very odd text wrapping the the readme. That needs to be reviewed.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-28T18:07:44Z
+
+>  That needs to be reviewed.
+
+changes applied. please check it now ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-29T15:17:47Z
+
+:+1: :ship: :shipit: :rocket:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-29T17:51:30Z
+
+Mergy mergy?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-30T21:18:09Z
+
+No @GrahamCampbell
+It is quite big change and there is only one positive opinion so far. Waiting for more.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T22:17:29Z
+
+lol, ok. I'm just really looking forward to getting the new caching stuff in, and you said that you would deal with that after getting this in.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-30T22:48:05Z
+
+deal with *what* after *what* ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T23:01:15Z
+
+What I was meaning is this is a prerequisite for #873, which is a prerequisite for something I need.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-30T23:09:03Z
+
+Now I understand ;)
+What about merging #829 (this PR) and #873 at friday ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-31T00:07:59Z
+
+Yeh, that would be fine. I'm not massively rushed for them. :)
