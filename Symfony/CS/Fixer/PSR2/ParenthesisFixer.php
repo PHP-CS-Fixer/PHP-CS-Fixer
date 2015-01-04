@@ -35,7 +35,7 @@ class ParenthesisFixer extends AbstractFixer
                 continue;
             }
 
-            $prevIndex = $tokens->getPrevNonWhitespace($index);
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
             // ignore parenthesis for T_ARRAY
             if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_ARRAY)) {
@@ -44,8 +44,13 @@ class ParenthesisFixer extends AbstractFixer
 
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
+            // remove space after opening `(`
             $this->removeSpaceAroundToken($tokens, $index, 1);
-            $this->removeSpaceAroundToken($tokens, $endIndex, -1);
+
+            // remove space after closing `)` if it is not `list($a, $b, )` case
+            if (!$tokens[$tokens->getPrevMeaningfulToken($endIndex)]->equals(',')) {
+                $this->removeSpaceAroundToken($tokens, $endIndex, -1);
+            }
         }
 
         return $tokens->generateCode();
