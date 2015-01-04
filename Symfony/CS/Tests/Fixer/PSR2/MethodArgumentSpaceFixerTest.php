@@ -53,6 +53,11 @@ class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
             array(
                 '<?php array(10 , 20 ,30);',
             ),
+            // list call with trailing comma
+            array(
+                '<?php list($path, $mode, ) = foo();',
+                '<?php list($path, $mode,) = foo();',
+            ),
             // multi line testing method arguments
             array(
                 '<?php function xyz(

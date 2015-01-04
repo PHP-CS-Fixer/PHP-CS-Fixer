@@ -46,7 +46,7 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $this->currentLevel = 0;
-        $this->deepestLevel = -1;
+        $this->deepestLevel = 0;
         $tokens = Tokens::fromCode($content);
 
         $this->injectAlignmentPlaceholders($tokens);

@@ -53,6 +53,10 @@ EOF;
     {
         return array(
             array(
+                '<?php foo();',
+                '<?php foo( );',
+            ),
+            array(
                 '<?php
 if (true) {
     // if body
@@ -99,6 +103,13 @@ $var = array( 1, 2, 3 );
                 '<?php
 $var = [ 1, 2, 3 ];
 ',
+            ),
+            // list call with trailing comma - need to leave alone
+            array(
+                '<?php list($path, $mode, ) = foo();',
+            ),
+            array(
+                '<?php list($path, $mode,) = foo();',
             ),
         );
     }
