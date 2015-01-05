@@ -66,7 +66,7 @@ class MethodArgumentSpaceFixer extends AbstractFixer
      * @param Tokens $tokens
      * @param int    $index
      */
-    private function fixSpace(Tokens $tokens, $index)
+    public function fixSpace(Tokens $tokens, $index)
     {
         // remove space before comma if exist
         if ($tokens[$index - 1]->isWhitespace()) {
