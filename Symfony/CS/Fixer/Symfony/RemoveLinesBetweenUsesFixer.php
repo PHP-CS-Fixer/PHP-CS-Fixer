@@ -63,7 +63,7 @@ class RemoveLinesBetweenUsesFixer extends AbstractFixer
     }
 
     /**
-     * Fix the line brakes per group.
+     * Fix the line breaks per group.
      *
      * For each use token reach the nearest ; and ensure every
      * token after has one \n before next non empty token (next line).
