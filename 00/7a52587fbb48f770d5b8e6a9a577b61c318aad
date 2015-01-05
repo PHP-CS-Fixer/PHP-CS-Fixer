@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-03T18:07:30Z
+
+:+1: but only for 1.5. Seems pointless to merge into 1.4. NB, 1.4 will not be maintained after it is tagged.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-03T18:09:29Z
+
+:+1:
+I would also merge it into 1.5
+
+---------------------------------------------------------------------------
+
+by stof at 2015-01-05T13:30:58Z
+
+@keradus Can you switch it when merging or do I need to send a new PR ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-05T13:43:51Z
+
+Yes, I will switch it
