@@ -55,6 +55,14 @@ class PhpdocIndentFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Docblocks should have the same indentation as the documented subject.';
+    }
+
+    /**
      * Fix indentation of Docblock.
      *
      * @param string $content Docblock contents
@@ -78,13 +86,5 @@ class PhpdocIndentFixer extends AbstractFixer
     private function fixWhitespaceBefore($content, $indent)
     {
         return rtrim($content, " \t").$indent;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Docblocks should have the same indentation as the documented subject.';
     }
 }

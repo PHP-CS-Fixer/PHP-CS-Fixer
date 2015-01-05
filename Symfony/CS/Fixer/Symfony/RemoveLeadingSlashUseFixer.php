@@ -55,17 +55,17 @@ class RemoveLeadingSlashUseFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Remove leading slashes in use clauses.';
+        // should be run after the MultipleUseFixer (for fix separated use statements as well) and UnusedUseFixer (just for save performance)
+        return -20;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getDescription()
     {
-        // should be run after the MultipleUseFixer (for fix separated use statements as well) and UnusedUseFixer (just for save performance)
-        return -20;
+        return 'Remove leading slashes in use clauses.';
     }
 }

@@ -57,6 +57,14 @@ class ParenthesisFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.';
+    }
+
+    /**
      * Remove spaces on one side of the token at a given index.
      *
      * @param Tokens $tokens A collection of code tokens
@@ -81,13 +89,5 @@ class ParenthesisFixer extends AbstractFixer
 
             $token->clear();
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.';
     }
 }
