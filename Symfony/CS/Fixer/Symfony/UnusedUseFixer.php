@@ -206,6 +206,14 @@ class UnusedUseFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDescription()
+    {
+        return 'Unused use statements must be removed.';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run after the MultipleUseFixer
@@ -223,13 +231,5 @@ class UnusedUseFixer extends AbstractFixer
         }
 
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Unused use statements must be removed.';
     }
 }

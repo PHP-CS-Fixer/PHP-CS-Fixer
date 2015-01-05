@@ -32,16 +32,16 @@ class TrailingSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getDescription()
     {
-        return 20;
+        return 'Remove trailing whitespace at the end of non-blank lines.';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Remove trailing whitespace at the end of non-blank lines.';
+        return 20;
     }
 }

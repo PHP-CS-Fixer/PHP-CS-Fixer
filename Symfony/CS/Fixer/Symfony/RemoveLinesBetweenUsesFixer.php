@@ -70,17 +70,17 @@ class RemoveLinesBetweenUsesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getDescription()
     {
-        // should be run before OrderedUseFixer
-        return -5;
+        return 'Removes line breaks between use statements.';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Removes line breaks between use statements.';
+        // should be run before OrderedUseFixer
+        return -5;
     }
 }

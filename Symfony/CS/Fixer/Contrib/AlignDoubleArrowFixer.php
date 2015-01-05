@@ -55,6 +55,14 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Align double arrow symbols in consecutive lines.';
+    }
+
+    /**
      * Inject into the text placeholders of candidates of vertical alignment.
      *
      * @param array $tokens
@@ -138,13 +146,5 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
                 } while (false === strpos($token->getContent(), "\n"));
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Align double arrow symbols in consecutive lines.';
     }
 }
