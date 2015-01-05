@@ -9,8 +9,12 @@ php:
 
 sudo: false
 
+cache:
+    directories:
+        - $HOME/.composer/cache
+
 install:
-    - travis_retry composer install --no-interaction --prefer-source
+    - travis_retry composer install --no-interaction
 
 script:
     - phpunit --verbose --coverage-clover build/logs/clover.xml
