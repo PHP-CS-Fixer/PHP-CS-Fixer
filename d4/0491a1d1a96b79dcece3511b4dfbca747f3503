@@ -1,0 +1,99 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-29T23:21:27Z
+
+Perhaps we should include some test cases with things we don't want changed too, like spaces after braces that are part of if statements.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-29T23:21:50Z
+
+Also, what about interfaces and traits? Are we supporting them here too?
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-29T23:22:23Z
+
+yes also traits and interfaces, ill add some tests for those too
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-29T23:24:18Z
+
+Cool. :)
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-30T21:33:40Z
+
+All should be good now, next round of reviews?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-30T21:47:33Z
+
+Code itself looks good for me.
+
+Need to do some regression tests on codebase.
+
+So, now is the fun case when PR have multiple authors. Please:
+- squash all your commits
+- rebase on parent branch to remove that merge commit (so ee53cf277d9b82e78fd2e84a5141581525acdfd9 should be intact, it add content, but 58c6dddeec43ea6a9cc4afe7d7d093cd235b4d1b give us nothing, so we want to get rid of it)
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-30T22:59:11Z
+
+Done
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T23:00:15Z
+
+lol - we don't have multiple authors anymore...
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-30T23:01:16Z
+
+Ow. Did i mess up again?
+Op 31 dec. 2014 00:00 schreef "Graham Campbell" <notifications@github.com>:
+
+> lol - we don't have multiple authors anymore...
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/932#issuecomment-68408307>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-30T23:03:13Z
+
+You have squashed my ee53cf277d9b82e78fd2e84a5141581525acdfd9 into your commit.
+No big deal here ;) Good for me.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-03T13:09:59Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-03T18:08:40Z
+
+Mergy mergy?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-03T18:11:18Z
+
+Just one :+1:, waiting for more.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-03T18:13:09Z
+
+:+1: lol
