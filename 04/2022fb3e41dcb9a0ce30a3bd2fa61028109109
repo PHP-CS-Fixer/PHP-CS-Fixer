@@ -1,0 +1,59 @@
+---------------------------------------------------------------------------
+
+by stof at 2015-01-05T13:52:28Z
+
+@keradus updated
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-05T14:02:43Z
+
+:+1: but i'd prefer this to go into 1.5. It's not a bug fix, and is excluded from the actual release downloads.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-01-05T14:05:37Z
+
+@GrahamCampbell The goal is to have it for people reading the online doc in the right way, i.e. for the same version than the code they are using.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-05T14:09:04Z
+
+@stof The 1.4 branch will be deleted shortly.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-05T14:09:30Z
+
+There will never be a 1.4.1 release. Only 1.4.0 and 1.5.0.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-01-05T14:14:48Z
+
+@GrahamCampbell this does not prevent people from reading the doc for the 1.4.0 tag
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-05T14:50:15Z
+
+Yeh, but 1.4 is meant to be closed for cosmetic changes like this.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-05T14:50:50Z
+
+Infact, most people will fall into the trap of reading the master branch and think it applies to 1.3...
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-05T19:07:35Z
+
+If there were some bug etc in docs - yeah, merge it into 1.4.
+Here - it... may be consider as bug, currently one switch to old version (tagged or not), and have a link for files at master.
+
+It's not a feature or refactoring, just fixing docs, no regression needed.
+Set milestone as 1.4
+
+:+1:
