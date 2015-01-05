@@ -32,16 +32,16 @@ class LinefeedFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getDescription()
     {
-        return 50;
+        return 'All PHP files must use the Unix LF (linefeed) line ending.';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'All PHP files must use the Unix LF (linefeed) line ending.';
+        return 50;
     }
 }
