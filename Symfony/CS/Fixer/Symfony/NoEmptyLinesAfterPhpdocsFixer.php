@@ -41,6 +41,14 @@ class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'There should not be blank lines between docblock and the documented element.';
+    }
+
+    /**
      * Cleanup a whitespace token.
      *
      * @param Token $token
@@ -54,13 +62,5 @@ class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
             $lines = Utils::splitLines($content);
             $token->setContent("\n".end($lines));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'There should not be blank lines between docblock and the documented element.';
     }
 }

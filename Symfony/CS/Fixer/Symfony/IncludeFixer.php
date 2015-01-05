@@ -34,6 +34,14 @@ class IncludeFixer extends AbstractFixer
         return $tokens->generateCode();
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Include and file path should be divided with a single space. File path should not be placed under brackets.';
+    }
+
     private function clearIncludies(Tokens $tokens, array $includies)
     {
         foreach (array_reverse($includies) as $includy) {
@@ -105,13 +113,5 @@ class IncludeFixer extends AbstractFixer
         }
 
         return $includies;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Include and file path should be divided with a single space. File path should not be placed under brackets.';
     }
 }
