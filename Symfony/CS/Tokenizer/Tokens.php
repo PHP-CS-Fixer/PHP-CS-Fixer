@@ -483,6 +483,16 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Get hash of code.
+     *
+     * @return string
+     */
+    public function getCodeHash()
+    {
+        return $this->codeHash;
+    }
+
+    /**
      * Get index for closest next token which is non whitespace.
      *
      * This method is shorthand for getNonWhitespaceSibling method.

@@ -199,6 +199,7 @@ class Fixer
         Tokens::clearCache();
 
         $tokens = Tokens::fromCode($old);
+        $newHash = $oldHash = $tokens->getCodeHash();
 
         try {
             foreach ($fixers as $fixer) {
@@ -233,7 +234,14 @@ class Fixer
 
         if (!empty($appliedFixers)) {
             $new = $tokens->generateCode();
+            $newHash = $tokens->getCodeHash();
+        }
 
+        // We need to check if content was changed and then applied changes.
+        // But we can't simple check $appliedFixers, because one fixer may revert
+        // work of other and both of them will mark collection as changed.
+        // Therefore we need to check if code hashes changed.
+        if ($oldHash !== $newHash) {
             if ($this->lintManager) {
                 $lintProcess = $this->lintManager->createProcessForSource($new);
 
