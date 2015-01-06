@@ -21,9 +21,8 @@ contribute, and to detect bugs ([Linus'
 Law](http://en.wikipedia.org/wiki/Linus%27s_Law)).
 
 If possible, try to get acquainted with the public interface for the
-[Symfony/CS/Tokenizer/Tokens.php](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Tokenizer/Tokens.php)
-and
-[Symfony/CS/Tokenizer/Token.php](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Tokenizer/Token.php)
+[Symfony/CS/Tokenizer/Tokens.php](Symfony/CS/Tokenizer/Tokens.php)
+and [Symfony/CS/Tokenizer/Token.php](Symfony/CS/Tokenizer/Token.php)
 classes.
 
 ## Assumptions
@@ -33,12 +32,11 @@ classes.
 * Cloned your forked repository locally.
 * Downloaded PHP CS Fixer and have executed `php composer.phar
 install`.
-* You have read
-[`CONTRIBUTING.md`](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/CONTRIBUTING.md)
+* You have read [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
 ## Step by step
 
-For this step-by-step, we are going to create a simple Fixer that
+For this step-by-step, we are going to create a simple fixer that
 removes all comments of the code that are preceded by ';' (semicolon).
 
 We are calling it `remove_comments` (code name), or,
@@ -74,7 +72,7 @@ class RemoveCommentsFixer extends AbstractFixer
 ```
 
 Note how the class and file name match. Also keep in mind that all
-Fixers must implement `FixerInterface`. In this case, the fixer is
+fixers must implement `FixerInterface`. In this case, the fixer is
 inheriting from `AbstractFixer`, which fulfills the interface with some
 default behavior.
 
@@ -262,8 +260,7 @@ defined by the PHP compiler. It is the ["List of Parser
 Tokens"](http://php.net/manual/en/tokens.php).
 
 Internally, PHP CS Fixer transforms some of PHP native tokens into custom
-tokens through the use of
-[Transfomers](https://github.com/FriendsOfPHP/PHP-CS-Fixer/tree/master/Symfony/CS/Tokenizer/Transformer),
+tokens through the use of [Transfomers](Symfony/CS/Tokenizer/Transformer),
 they aim to help you reason about the changes you may want to do in the
 fixers.
 

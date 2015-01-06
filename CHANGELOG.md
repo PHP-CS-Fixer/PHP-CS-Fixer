@@ -7,6 +7,7 @@ Changelog for v1.4
 ------------------
 
 * feature #841 PhpdocParamsFixer: added aligning var/type annotations (GrahamCampbell)
+* bug #960 IncludeFixer - fix bug when include is part of condition statement (keradus)
 * bug #954 AlignDoubleArrowFixer - fix new buggy case (keradus)
 * bug #955 ParenthesisFixer - fix case with list call with trailing comma (keradus)
 * bug #950 Tokens::isLambda - fix detection near comments (keradus)
@@ -30,6 +31,7 @@ Changelog for v1.4
 * bug #813 MultilineArrayTrailingCommaFixer - do not move array end to new line (keradus)
 * bug #817 LowercaseConstantsFixer - ignore class' constants TRUE/FALSE/NULL (keradus)
 * bug #821 JoinFunctionFixer - stop changing declaration method name (ceeram)
+* minor #943 Improve the cookbook to use relative links (stof)
 * minor #921 Add changelog file (keradus)
 * minor #909 BracesFixerTest - no \n line in \r\n test (keradus)
 * minor #864 Added NoEmptyLinesAfterPhpdocsFixer (GrahamCampbell)

@@ -688,6 +688,10 @@ class Tokens extends \SplFixedArray
 
             $token = $this[$index];
 
+            if ($token->isEmpty()) {
+                continue;
+            }
+
             if ($token->equalsAny($tokens)) {
                 continue;
             }
