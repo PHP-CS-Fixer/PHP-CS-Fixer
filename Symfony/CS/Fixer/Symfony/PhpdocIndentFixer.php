@@ -30,10 +30,7 @@ class PhpdocIndentFixer extends AbstractFixer
             $nextIndex = $tokens->getNextMeaningfulToken($index);
 
             // skip if there is no next token or if next token is block end `}`
-            if (
-                null === $nextIndex ||
-                $tokens[$nextIndex]->equals('}')
-            ) {
+            if (null === $nextIndex || $tokens[$nextIndex]->equals('}')) {
                 continue;
             }
 
