@@ -7,6 +7,8 @@ Changelog for v1.4
 ------------------
 
 * feature #841 PhpdocParamsFixer: added aligning var/type annotations (GrahamCampbell)
+* bug #962 PhpdocIndentFixer - fix bug when documentation is on the end of braces block (keradus)
+* bug #961 Fixer - fix handling of empty file (keradus)
 * bug #960 IncludeFixer - fix bug when include is part of condition statement (keradus)
 * bug #954 AlignDoubleArrowFixer - fix new buggy case (keradus)
 * bug #955 ParenthesisFixer - fix case with list call with trailing comma (keradus)
