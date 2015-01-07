@@ -242,7 +242,14 @@ class TokensAnalyzer
         return true;
     }
 
-    // TODO: docs
+    /**
+     * Check if Token at given index is `T_WHILE` token for `do { ... } while ();` syntax
+     * and not `while () { ...}`.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
     public function isWhilePartOfDoWhile($index)
     {
         $tokens = $this->tokens;

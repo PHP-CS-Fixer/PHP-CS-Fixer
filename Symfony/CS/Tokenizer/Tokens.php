@@ -43,60 +43,13 @@ class Tokens extends \SplFixedArray
     private $codeHash;
 
     /**
-     * TODO: docs
+     * Flag is collection was changed.
+     *
+     * It doesn't know about change of collection's items. To check it run `isChanged` method.
      *
      * @var bool
      */
     private $changed = false;
-
-    // TODO: docs
-    public function setSize(/*int*/ $size)
-    {
-        if ($this->getSize() !== $size) {
-            $this->changed = true;
-            parent::setSize($size);
-        }
-    }
-
-    // TODO: docs
-    public function offsetUnset(/*int*/ $index)
-    {
-        $this->changed = true;
-        parent::offsetUnset($index);
-    }
-
-    // TODO: docs
-    public function offsetSet(/*int*/ $index, /*Token */$newval)
-    {
-        $this->changed = true;
-        parent::offsetSet($index, $newval);
-    }
-
-    // TODO: docs
-    public function isChanged()
-    {
-        if ($this->changed) {
-            return true;
-        }
-
-        foreach ($this as $token) {
-            if ($token->isChanged()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    // TODO: docs
-    public function clearChanged()
-    {
-        $this->changed = false;
-
-        foreach ($this as $token) {
-            $token->clearChanged();
-        }
-    }
 
     /**
      * Clear cache - one position or all of them.
@@ -276,6 +229,46 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Set new size of collection.
+     *
+     * @param int $size
+     */
+    public function setSize($size)
+    {
+        if ($this->getSize() !== $size) {
+            $this->changed = true;
+            parent::setSize($size);
+        }
+    }
+
+    /**
+     * Unset collection item.
+     *
+     * @param int $index
+     */
+    public function offsetUnset($index)
+    {
+        $this->changed = true;
+        parent::offsetUnset($index);
+    }
+
+    /**
+     * Set collection item.
+     *
+     * Warning! `$newval` must not be typehinted to be compatible with `ArrayAccess::offsetSet` method.
+     *
+     * @param int   $index
+     * @param Token $newval
+     *
+     * @warning
+     */
+    public function offsetSet($index, $newval)
+    {
+        $this->changed = true;
+        parent::offsetSet($index, $newval);
+    }
+
+    /**
      * Change code hash.
      *
      * Remove old cache and set new one.
@@ -293,9 +286,21 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Clear internal flag if collection was changed and flag for all collection's items.
+     */
+    public function clearChanged()
+    {
+        $this->changed = false;
+
+        foreach ($this as $token) {
+            $token->clearChanged();
+        }
+    }
+
+    /**
      * Clear empty tokens.
      *
-     * Empty tokens can occur e.g. after calling clear on element of collection.
+     * Empty tokens can occur e.g. after calling clear on item of collection.
      */
     public function clearEmptyTokens()
     {
@@ -691,6 +696,26 @@ class Tokens extends \SplFixedArray
 
             $this[$i + $index] = $items[$i];
         }
+    }
+
+    /**
+     * Check if collection was change: collection itself (like insert new tokens) or any of collection's elements.
+     *
+     * @return bool
+     */
+    public function isChanged()
+    {
+        if ($this->changed) {
+            return true;
+        }
+
+        foreach ($this as $token) {
+            if ($token->isChanged()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -47,18 +47,6 @@ class Token
      */
     private $changed = false;
 
-    // TODO: docs
-    public function isChanged()
-    {
-        return $this->changed;
-    }
-
-    // TODO: docs
-    public function clearChanged()
-    {
-        $this->changed = false;
-    }
-
     /**
      * Constructor.
      *
@@ -84,6 +72,14 @@ class Token
     public function clear()
     {
         $this->override('');
+    }
+
+    /**
+     * Clear internal flag if token was changed.
+     */
+    public function clearChanged()
+    {
+        $this->changed = false;
     }
 
     /*
@@ -248,6 +244,16 @@ class Token
         static $castTokens = array(T_ARRAY_CAST, T_BOOL_CAST, T_DOUBLE_CAST, T_INT_CAST, T_OBJECT_CAST, T_STRING_CAST, T_UNSET_CAST);
 
         return $this->isGivenKind($castTokens);
+    }
+
+    /**
+     * Check if token was changed.
+     *
+     * @return bool
+     */
+    public function isChanged()
+    {
+        return $this->changed;
     }
 
     /**

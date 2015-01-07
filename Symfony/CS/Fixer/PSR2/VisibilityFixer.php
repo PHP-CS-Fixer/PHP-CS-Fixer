@@ -58,8 +58,7 @@ class VisibilityFixer extends AbstractFixer
      *
      * @param Tokens $tokens      Tokens collection
      * @param int    $memberIndex token index
-     *                            // TODO: correct $attribs structure
-     * @param array  $attribs     array of token attributes
+     * @param array  $attribs     map of grabbed attributes, key is attribute name and value is array of index and clone of Token
      */
     private function overrideAttribs(Tokens $tokens, $memberIndex, array $attribs)
     {
@@ -94,8 +93,7 @@ class VisibilityFixer extends AbstractFixer
      * @param Tokens $tokens Tokens collection
      * @param int    $index  token index
      *
-     * // TODO: interface changed! need to describe it!
-     * @return array array of grabbed attributes
+     * @return array map of grabbed attributes, key is attribute name and value is array of index and clone of Token
      */
     private function grabAttribsBeforeMethodToken(Tokens $tokens, $index)
     {
@@ -129,8 +127,7 @@ class VisibilityFixer extends AbstractFixer
      * @param Tokens $tokens Tokens collection
      * @param int    $index  token index
      *
-     * // TODO: interface changed! need to describe it!
-     * @return array array of grabbed attributes
+     * @return array map of grabbed attributes, key is attribute name and value is array of index and clone of Token
      */
     private function grabAttribsBeforePropertyToken(Tokens $token, $index)
     {
@@ -154,18 +151,14 @@ class VisibilityFixer extends AbstractFixer
     }
 
     /**
-     * Grab attributes before token at gixen index.
-     *
-     * TODO: no, it does not now !
-     * Grabbed attributes are cleared by overriding them with empty string and should be manually applied with applyTokenAttribs method.
+     * Grab info about attributes before token at gixen index.
      *
      * @param Tokens $tokens          Tokens collection
      * @param int    $index           token index
      * @param array  $tokenAttribsMap token to attribute name map
      * @param array  $attribs         array of token attributes
      *
-     * // TODO: interface changed! need to describe it!
-     * @return array array of grabbed attributes
+     * @return array map of grabbed attributes, key is attribute name and value is array of index and clone of Token
      */
     private function grabAttribsBeforeToken(Tokens $tokens, $index, array $tokenAttribsMap, array $attribs)
     {
