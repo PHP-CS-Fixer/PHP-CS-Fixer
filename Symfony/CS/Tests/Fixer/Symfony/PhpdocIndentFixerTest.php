@@ -365,6 +365,19 @@ public function write(\$name) {}
 ",
         );
 
+        $cases[] = array(
+            '<?php
+    class Foo
+    {
+        public function bar()
+        {
+            /**
+             * baz
+             */
+        }
+    }',
+        );
+
         return $cases;
     }
 }
