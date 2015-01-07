@@ -1,0 +1,31 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-06T23:56:49Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-06T23:57:17Z
+
+What about the new line at eof fixer?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-06T23:57:37Z
+
+BTW, found on #902 regression
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-06T23:59:57Z
+
+> What about the new line at eof fixer?
+
+We add a new lines only for non-empty files
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-07T00:00:31Z
+
+See https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Tests/Fixer/PSR2/EofEndingFixerTest.php#L63
