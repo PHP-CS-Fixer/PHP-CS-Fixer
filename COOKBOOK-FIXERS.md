@@ -228,11 +228,9 @@ class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
-        return $tokens->generateCode();
+        // no action
     }
 }
 ```
@@ -278,16 +276,13 @@ class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         $foundComments = $tokens->findGivenKind(T_COMMENT);
+
         foreach($foundComments as $index => $token){
-
+            // need to figure out what to do here!
         }
-
-        return $tokens->generateCode();
     }
 }
 ```
@@ -301,11 +296,10 @@ class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         $foundComments = $tokens->findGivenKind(T_COMMENT);
+
         foreach($foundComments as $index => $token){
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevTokenIndex];
@@ -314,8 +308,6 @@ class RemoveCommentsFixer extends AbstractFixer
                 $token->clear();
             }
         }
-
-        return $tokens->generateCode();
     }
 }
 ```
@@ -344,10 +336,9 @@ class RemoveCommentsFixer extends AbstractFixer {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content) {
-        $tokens = Tokens::fromCode($content);
-
+    public function fix(\SplFileInfo $file, Tokens $tokens) {
         $foundComments = $tokens->findGivenKind(T_COMMENT);
+
         foreach ($foundComments as $index => $token) {
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevTokenIndex];
@@ -356,8 +347,6 @@ class RemoveCommentsFixer extends AbstractFixer {
                 $token->clear();
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
