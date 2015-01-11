@@ -105,6 +105,10 @@ preg_replace_callback(
 );',
                 array(7 => true),
             ),
+            array(
+                '<?php $foo = function &() {}',
+                array(5 => true),
+            ),
         );
     }
 }
