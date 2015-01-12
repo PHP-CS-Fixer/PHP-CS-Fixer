@@ -499,7 +499,7 @@ function bar()
             array(
                 '<?php
 
-function lambda()
+function & lambda()
 {
     return function () {};
 }',
@@ -939,7 +939,7 @@ class Foo
             ),
             array(
                 '<?php
-    usort($this->fixers, function ($a, $b) use ($selfName) {
+    usort($this->fixers, function &($a, $b) use ($selfName) {
         return 1;
     });',
             ),
@@ -947,7 +947,7 @@ class Foo
                 '<?php
     usort(
         $this->fixers,
-        function ($a, $b) use ($selfName) {
+        function &($a, $b) use ($selfName) {
             return 1;
         }
     );',
@@ -1028,9 +1028,9 @@ class Foo
             ),
             array(
                 '<?php
-    $foo = function () use ($bar) {}',
+    $foo = function& () use ($bar) {}',
                 '<?php
-    $foo = function ()use($bar){}',
+    $foo = function& ()use($bar){}',
             ),
             array(
                 '<?php

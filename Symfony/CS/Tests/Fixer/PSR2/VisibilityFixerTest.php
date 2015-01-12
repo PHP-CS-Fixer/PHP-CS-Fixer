@@ -73,8 +73,8 @@ EOF;
         $expected = <<<'EOF'
 <?php
 abstract class Foo {
-    public function foo1() {}
-    public function foo2() {}
+    public function& foo1() {}
+    public function &foo2() {}
     protected function foo3() {}
     abstract protected function foo4() {};
     private function foo5() {}
@@ -97,8 +97,8 @@ EOF;
         $input = <<<'EOF'
 <?php
 abstract class Foo {
-    public function foo1() {}
-    function foo2() {}
+    public function& foo1() {}
+    function &foo2() {}
     protected function foo3() {}
     protected
     abstract function foo4() {};
