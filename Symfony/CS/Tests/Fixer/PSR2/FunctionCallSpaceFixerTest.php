@@ -54,7 +54,10 @@ class FunctionCallSpaceFixerTest extends AbstractFixerTestBase
     echo("hello");
     array("hello");
     list($a, $b) = $c;
-    eval("a");',
+    eval("a");
+    foo();
+    $foo = &ref();
+    ',
                 '<?php
     include ("something.php");
     include_once ("something.php");
@@ -68,7 +71,10 @@ class FunctionCallSpaceFixerTest extends AbstractFixerTestBase
     echo ("hello");
     array ("hello");
     list ($a, $b) = $c;
-    eval ("a");',
+    eval ("a");
+    foo ();
+    $foo = &ref ();
+    ',
             ),
             // skip other language constructs
             array(

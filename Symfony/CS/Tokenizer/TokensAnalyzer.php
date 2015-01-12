@@ -220,6 +220,12 @@ class TokensAnalyzer
         $nextIndex = $tokens->getNextMeaningfulToken($index);
         $nextToken = $tokens[$nextIndex];
 
+        // skip & for `function & () {}` syntax
+        if ($nextToken->equals('&')) {
+            $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+            $nextToken = $tokens[$nextIndex];
+        }
+
         if (!$nextToken->equals('(')) {
             return false;
         }

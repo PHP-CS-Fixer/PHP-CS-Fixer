@@ -51,6 +51,10 @@ class JoinFunctionFixerTest extends AbstractFixerTestBase
                 '<?php join($a, $b);',
             ),
             array(
+                '<?php $a = &implode($a, $b);',
+                '<?php $a = &join($a, $b);',
+            ),
+            array(
                 '<?php implode
                             ($a);',
                 '<?php join

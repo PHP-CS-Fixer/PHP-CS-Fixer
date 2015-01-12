@@ -7,6 +7,7 @@ Changelog for v1.4
 ------------------
 
 * feature #841 PhpdocParamsFixer: added aligning var/type annotations (GrahamCampbell)
+* bug #965 Fix detection of lambda function that returns a reference (keradus)
 * bug #962 PhpdocIndentFixer - fix bug when documentation is on the end of braces block (keradus)
 * bug #961 Fixer - fix handling of empty file (keradus)
 * bug #960 IncludeFixer - fix bug when include is part of condition statement (keradus)
@@ -33,6 +34,7 @@ Changelog for v1.4
 * bug #813 MultilineArrayTrailingCommaFixer - do not move array end to new line (keradus)
 * bug #817 LowercaseConstantsFixer - ignore class' constants TRUE/FALSE/NULL (keradus)
 * bug #821 JoinFunctionFixer - stop changing declaration method name (ceeram)
+* minor #963 State the minimum version of PHPUnit in CONTRIBUTING.md (SpacePossum)
 * minor #943 Improve the cookbook to use relative links (stof)
 * minor #921 Add changelog file (keradus)
 * minor #909 BracesFixerTest - no \n line in \r\n test (keradus)

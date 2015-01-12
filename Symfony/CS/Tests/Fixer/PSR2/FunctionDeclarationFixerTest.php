@@ -76,8 +76,8 @@ foo () {}',
                 '<?php function ($a) use ($b)     {}',
             ),
             array(
-                '<?php function foo($a) {}',
-                '<?php function foo( $a ) {}',
+                '<?php function &foo($a) {}',
+                '<?php function &foo( $a ) {}',
             ),
             array(
                 '<?php function foo($a)
@@ -113,8 +113,8 @@ foo () {}',
                 '<?php function ($a) use ( $b ) {}',
             ),
             array(
-                '<?php function ($a) use ($b) {}',
-                '<?php function (  $a   ) use (   $b      ) {}',
+                '<?php function &($a) use ($b) {}',
+                '<?php function &(  $a   ) use (   $b      ) {}',
             ),
             array(
                 '<?php
