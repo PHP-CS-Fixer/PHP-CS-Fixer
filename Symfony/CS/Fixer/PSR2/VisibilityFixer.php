@@ -36,7 +36,10 @@ class VisibilityFixer extends AbstractFixer
                 $this->overrideAttribs($tokens, $index, $this->grabAttribsBeforeMethodToken($tokens, $index));
 
                 // force whitespace between function keyword and function name to be single space char
-                $tokens[++$index]->setContent(' ');
+                $afterToken = $tokens[++$index];
+                if ($afterToken->isWhitespace()) {
+                    $afterToken->setContent(' ');
+                }
             } elseif ('property' === $element['type']) {
                 $prevIndex = $tokens->getPrevTokenOfKind($index, array(';', ','));
                 $nextIndex = $tokens->getNextTokenOfKind($index, array(';', ','));
