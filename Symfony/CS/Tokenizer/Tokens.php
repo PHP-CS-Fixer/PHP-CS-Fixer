@@ -833,6 +833,12 @@ class Tokens extends \SplFixedArray
         $nextIndex = $this->getNextMeaningfulToken($index);
         $nextToken = $this[$nextIndex];
 
+        // skip & for `function & () {}` syntax
+        if ($nextToken->equals('&')) {
+            $nextIndex = $this->getNextMeaningfulToken($nextIndex);
+            $nextToken = $this[$nextIndex];
+        }
+
         if (!$nextToken->equals('(')) {
             return false;
         }

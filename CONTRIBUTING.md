@@ -1,15 +1,16 @@
 # Contributions are welcome!
 
-## Quick guide:
+## Quick guide
 
  * Fork the repo.
+ * Checkout the branch you want to make changes on.
  * Install dependencies: `composer install`.
- * Create branch, e.g. feature-foo or bugfix-bar.
+ * Create branch, e.g. `feature-foo` or `bugfix-bar`.
  * Make changes.
  * If you are adding functionality or fixing a bug - add a test!
  * Fix project itself: `php php-cs-fixer fix`.
- * Regenerate readme: `php php-cs-fixer readme > README.rst`. Do not modify README.rst manually!
- * Check if tests pass: `phpunit`.
+ * Regenerate readme: `php php-cs-fixer readme > README.rst`. Do not modify `README.rst` manually!
+ * Check if tests pass: `phpunit` [(4.*)](https://phpunit.de/manual/current/en/installation.html)
 
 ## Opening a pull request
 
@@ -26,8 +27,7 @@ You can do some things to increase the chance that your pull request is accepted
 There is a [cookbook](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/COOKBOOK-FIXERS.md) with basic instructions on how to build a new fixer. Consider reading it
 before opening a PR.
 
-
-## Project's standards:
+## Project's standards
 
  * [PSR-0: Autoloading Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md)
  * [PSR-1: Basic Coding Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md)
