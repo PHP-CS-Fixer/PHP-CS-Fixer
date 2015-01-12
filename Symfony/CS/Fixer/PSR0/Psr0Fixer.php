@@ -134,6 +134,14 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
     /**
      * {@inheritdoc}
      */
+    public function getDescription()
+    {
+        return 'Classes must be in a path that matches their namespace, be at least one namespace deep, and the class name should match the file name.';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function supports(\SplFileInfo $file)
     {
         if ('php' !== pathinfo($file->getFilename(), PATHINFO_EXTENSION)) {
@@ -142,13 +150,5 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
 
         // ignore stubs/fixtures, since they are typically containing invalid files for various reasons
         return !preg_match('{[/\\\\](stub|fixture)s?[/\\\\]}i', $file->getRealPath());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Classes must be in a path that matches their namespace, be at least one namespace deep, and the class name should match the file name.';
     }
 }

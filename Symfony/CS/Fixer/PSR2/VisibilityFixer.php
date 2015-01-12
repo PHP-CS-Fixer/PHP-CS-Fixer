@@ -53,6 +53,14 @@ class VisibilityFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Visibility MUST be declared on all properties and methods; abstract and final MUST be declared before the visibility; static MUST be declared after the visibility.';
+    }
+
+    /**
      * Apply token attributes.
      *
      * Token at given index is prepended by attributes.
@@ -189,13 +197,5 @@ class VisibilityFixer extends AbstractFixer
         }
 
         return $attribs;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Visibility MUST be declared on all properties and methods; abstract and final MUST be declared before the visibility; static MUST be declared after the visibility.';
     }
 }
