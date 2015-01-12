@@ -34,6 +34,7 @@ Changelog for v1.4
 * bug #813 MultilineArrayTrailingCommaFixer - do not move array end to new line (keradus)
 * bug #817 LowercaseConstantsFixer - ignore class' constants TRUE/FALSE/NULL (keradus)
 * bug #821 JoinFunctionFixer - stop changing declaration method name (ceeram)
+* minor #963 State the minimum version of PHPUnit in CONTRIBUTING.md (SpacePossum)
 * minor #943 Improve the cookbook to use relative links (stof)
 * minor #921 Add changelog file (keradus)
 * minor #909 BracesFixerTest - no \n line in \r\n test (keradus)
