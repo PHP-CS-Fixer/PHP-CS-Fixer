@@ -396,6 +396,10 @@ Choose from the list of available fixers:
 * **ordered_use** [contrib]
                 Ordering use statements.
 
+* **phpdoc_to_comment** [contrib]
+                Docblocks should only be used on
+                structural elements.
+
 * **short_array_syntax** [contrib]
                 PHP array's should use the PHP 5.4
                 short-syntax.
