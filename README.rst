@@ -400,6 +400,11 @@ Choose from the list of available fixers:
 * **ordered_use** [contrib]
                 Ordering use statements.
 
+* **php4_constructor** [contrib]
+                Convert PHP4-style constructors to
+                __construct. Warning! This could
+                change code behavior.
+
 * **short_array_syntax** [contrib]
                 PHP array's should use the PHP 5.4
                 short-syntax.
