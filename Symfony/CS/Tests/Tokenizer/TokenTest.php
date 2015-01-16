@@ -240,4 +240,110 @@ class TokenTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($token->getLine());
         $this->assertFalse($token->isArray());
     }
+
+    public function testEqualsDefaultIsCaseSensitive()
+    {
+        $token = new Token(array(T_FUNCTION, 'function', 1));
+
+        $this->assertTrue($token->equals(array(T_FUNCTION, 'function')));
+        $this->assertFalse($token->equals(array(T_FUNCTION, 'Function')));
+    }
+
+    /**
+     * @dataProvider provideEquals
+     */
+    public function testEquals(Token $token, $equals, $other, $caseSensitive = true)
+    {
+        $this->assertSame($equals, $token->equals($other, $caseSensitive));
+    }
+
+    public function provideEquals()
+    {
+        $brace = $this->getBraceToken();
+        $function = new Token(array(T_FUNCTION, 'function', 1));
+
+        return array(
+            array($brace, false, '!'),
+            array($brace, false, '!', false),
+            array($brace, true, '('),
+            array($brace, true, '(', false),
+            array($function, false, '('),
+            array($function, false, '(', false),
+            array($function, false, array(T_NAMESPACE)),
+            array($function, false, array(T_NAMESPACE), false),
+            array($function, false, array(T_VARIABLE, 'function')),
+            array($function, false, array(T_VARIABLE, 'function'), false),
+            array($function, false, array(T_VARIABLE, 'Function')),
+            array($function, false, array(T_VARIABLE, 'Function'), false),
+            array($function, true, array(T_FUNCTION)),
+            array($function, true, array(T_FUNCTION), false),
+            array($function, true, array(T_FUNCTION, 'function')),
+            array($function, true, array(T_FUNCTION, 'function'), false),
+            array($function, false, array(T_FUNCTION, 'Function')),
+            array($function, true, array(T_FUNCTION, 'Function'), false),
+            array($function, false, array(T_FUNCTION, 'junction'), false),
+
+            // Line number is checked too, as well as any additional field, if it is an array
+            array($function, true, new Token(array(T_FUNCTION, 'function', 1))),
+            array($function, true, new Token(array(T_FUNCTION, 'Function', 1)), false),
+            array($function, false, new Token(array(T_FUNCTION, 'function', 10))),
+            array($function, false, new Token(array(T_FUNCTION, 'function', 10)), false),
+            array($function, true, array(T_FUNCTION, 'function', 1)),
+            array($function, true, array(T_FUNCTION, 'Function', 1), false),
+            array($function, false, array(T_FUNCTION, 'function', 10)),
+            array($function, false, array(T_FUNCTION, 'function', 10), false),
+            array($function, false, array(T_FUNCTION, 'function', 1, 'unexpected')),
+        );
+    }
+
+    public function testEqualsAnyDefaultIsCaseSensitive()
+    {
+        $token = new Token(array(T_FUNCTION, 'function', 1));
+
+        $this->assertTrue($token->equalsAny(array(array(T_FUNCTION, 'function'))));
+        $this->assertFalse($token->equalsAny(array(array(T_FUNCTION, 'Function'))));
+    }
+
+    /**
+     * @dataProvider provideEqualsAny
+     */
+    public function testEqualsAny($equalsAny, $other, $caseSensitive = true)
+    {
+        $token = new Token(array(T_FUNCTION, 'function', 1));
+
+        $this->assertSame($equalsAny, $token->equalsAny($other, $caseSensitive));
+    }
+
+    public function provideEqualsAny()
+    {
+        $brace = $this->getBraceToken();
+        $foreach = $this->getForeachToken();
+
+        return array(
+            array(false, array()),
+            array(false, array($brace)),
+            array(false, array($brace, $foreach)),
+            array(true, array($brace, $foreach, array(T_FUNCTION))),
+            array(true, array($brace, $foreach, array(T_FUNCTION, 'function'))),
+            array(false, array($brace, $foreach, array(T_FUNCTION, 'Function'))),
+            array(true, array($brace, $foreach, array(T_FUNCTION, 'Function')), false),
+            array(false, array($brace, $foreach, array(T_FUNCTION, 'Function')), array()),
+            array(false, array($brace, $foreach, array(T_FUNCTION, 'Function')), array(false)),
+            array(false, array($brace, $foreach, array(T_FUNCTION, 'Function')), array(false, false)),
+            array(true, array($brace, $foreach, array(T_FUNCTION, 'Function')), array(false, false, false)),
+
+            array(true, array(array(T_FUNCTION, 'Function'), array(T_FUNCTION, 'function')), array(true, true)),
+            array(true, array(array(T_FUNCTION, 'Function'), array(T_FUNCTION, 'function')), array(true)),
+            array(true, array(array(T_FUNCTION, 'Function'), array(T_FUNCTION, 'function')), array(false, false)),
+            array(true, array(array(T_FUNCTION, 'Function'), array(T_FUNCTION, 'function')), array(false)),
+
+            array(false, array(array(T_FUNCTION, 'Function'), array(T_VARIABLE, 'function')), array(true, false)),
+            array(false, array(array(T_FUNCTION, 'Function'), array(T_VARIABLE, 'function')), array(true, true)),
+
+            array(true, array(',', '}', array(T_FUNCTION, 'Function')), array(2 => false)),
+            array(true, array('a' => ',', 'b' => '}', 'c' => array(T_FUNCTION, 'Function')), array('c' => false)),
+
+            array(false, array(array(T_VARIABLE, 'junction'), array(T_FUNCTION, 'junction')), false),
+        );
+    }
 }

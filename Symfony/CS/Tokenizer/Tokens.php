@@ -577,14 +577,17 @@ class Tokens extends \SplFixedArray
      *
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param int   $index  token index
-     * @param array $tokens possible tokens
+     * @param int         $index         token index
+     * @param array       $tokens        possible tokens
+     * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
+     *                                   the ones used in $others. If any is missing, the default case-sensitive
+     *                                   comparison is used.
      *
      * @return int|null
      */
-    public function getNextTokenOfKind($index, array $tokens = array())
+    public function getNextTokenOfKind($index, array $tokens = array(), $caseSensitive = true)
     {
-        return $this->getTokenOfKindSibling($index, 1, $tokens);
+        return $this->getTokenOfKindSibling($index, 1, $tokens, $caseSensitive);
     }
 
     /**
@@ -632,26 +635,32 @@ class Tokens extends \SplFixedArray
      * Get index for closest previous token of given kind.
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param int   $index  token index
-     * @param array $tokens possible tokens
+     * @param int         $index         token index
+     * @param array       $tokens        possible tokens
+     * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
+     *                                   the ones used in $others. If any is missing, the default case-sensitive
+     *                                   comparison is used.
      *
      * @return int|null
      */
-    public function getPrevTokenOfKind($index, array $tokens = array())
+    public function getPrevTokenOfKind($index, array $tokens = array(), $caseSensitive = true)
     {
-        return $this->getTokenOfKindSibling($index, -1, $tokens);
+        return $this->getTokenOfKindSibling($index, -1, $tokens, $caseSensitive);
     }
 
     /**
      * Get index for closest sibling token of given kind.
      *
-     * @param int   $index     token index
-     * @param int   $direction direction for looking, +1 or -1
-     * @param array $tokens    possible tokens
+     * @param int         $index         token index
+     * @param int         $direction     direction for looking, +1 or -1
+     * @param array       $tokens        possible tokens
+     * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
+     *                                   the ones used in $others. If any is missing, the default case-sensitive
+     *                                   comparison is used.
      *
      * @return int|null
      */
-    public function getTokenOfKindSibling($index, $direction, array $tokens = array())
+    public function getTokenOfKindSibling($index, $direction, array $tokens = array(), $caseSensitive = true)
     {
         while (true) {
             $index += $direction;
@@ -662,7 +671,7 @@ class Tokens extends \SplFixedArray
 
             $token = $this[$index];
 
-            if ($token->equalsAny($tokens)) {
+            if ($token->equalsAny($tokens, $caseSensitive)) {
                 return $index;
             }
         }
