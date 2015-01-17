@@ -24,13 +24,11 @@ class RemoveLeadingSlashUseFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         $foundNamespace = $tokens->findGivenKind(T_NAMESPACE);
         if (empty($foundNamespace)) {
-            return $content;
+            return;
         }
 
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -50,8 +48,6 @@ class RemoveLeadingSlashUseFixer extends AbstractFixer
                 $nextToken->clear();
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

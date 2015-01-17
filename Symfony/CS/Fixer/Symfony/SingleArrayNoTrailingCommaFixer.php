@@ -24,9 +24,8 @@ class SingleArrayNoTrailingCommaFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {
@@ -34,8 +33,6 @@ class SingleArrayNoTrailingCommaFixer extends AbstractFixer
                 $this->fixArray($tokens, $index);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

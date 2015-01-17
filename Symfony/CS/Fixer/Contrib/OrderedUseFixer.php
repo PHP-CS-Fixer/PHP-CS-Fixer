@@ -24,16 +24,14 @@ class OrderedUseFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-
         $namespacesImports = $tokensAnalyzer->getImportUseIndexes(true);
         $usesOrder = array();
 
         if (!count($namespacesImports)) {
-            return $content;
+            return;
         }
 
         foreach ($namespacesImports as $uses) {
@@ -41,15 +39,12 @@ class OrderedUseFixer extends AbstractFixer
             $usesOrder = array_replace($usesOrder, $this->getNewOrder($uses, $tokens));
         }
 
-        // First clean the old content
-        // This must be done first as the indexes can be scattered
-        foreach ($usesOrder as $use) {
-            for ($i = $use[1]; $i <= $use[2]; ++$i) {
-                $tokens[$i]->clear();
-            }
-        }
-
         $usesOrder = array_reverse($usesOrder, true);
+        $mapStartToEnd = array();
+
+        foreach ($usesOrder as $use) {
+            $mapStartToEnd[$use[1]] = $use[2];
+        }
 
         // Now insert the new tokens, starting from the end
         foreach ($usesOrder as $index => $use) {
@@ -58,11 +53,10 @@ class OrderedUseFixer extends AbstractFixer
             $declarationTokens[1]->clear(); // clear `use`
             $declarationTokens[2]->clear(); // clear `space`
             $declarationTokens[count($declarationTokens) - 1]->clear(); // clear `;`
+            $declarationTokens->clearEmptyTokens();
 
-            $tokens->insertAt($index, $declarationTokens);
+            $tokens->overrideRange($index, $mapStartToEnd[$index], $declarationTokens);
         }
-
-        return $tokens->generateCode();
     }
 
     private function getNewOrder(array $uses, Tokens $tokens)

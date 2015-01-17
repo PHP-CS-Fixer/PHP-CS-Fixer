@@ -25,10 +25,8 @@ class MethodArgumentSpaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
@@ -48,8 +46,6 @@ class MethodArgumentSpaceFixer extends AbstractFixer
                 $this->fixSpace($tokens, $i);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

@@ -41,6 +41,13 @@ class Token
     private $isArray;
 
     /**
+     * Flag is token was changed.
+     *
+     * @var bool
+     */
+    private $changed = false;
+
+    /**
      * Constructor.
      *
      * @param string|array $token token prototype
@@ -65,6 +72,14 @@ class Token
     public function clear()
     {
         $this->override('');
+    }
+
+    /**
+     * Clear internal flag if token was changed.
+     */
+    public function clearChanged()
+    {
+        $this->changed = false;
     }
 
     /*
@@ -232,6 +247,16 @@ class Token
     }
 
     /**
+     * Check if token was changed.
+     *
+     * @return bool
+     */
+    public function isChanged()
+    {
+        return $this->changed;
+    }
+
+    /**
      * Check if token is one of classy tokens: T_CLASS, T_INTERFACE or T_TRAIT.
      *
      * @return bool
@@ -343,10 +368,18 @@ class Token
     /**
      * Override token.
      *
-     * @param string|array $prototype token prototype
+     * @param Token|array|string $other token prototype
      */
-    public function override($prototype)
+    public function override($other)
     {
+        $prototype = $other instanceof Token ? $other->getPrototype() : $other;
+
+        if ($this->equals($prototype)) {
+            return;
+        }
+
+        $this->changed = true;
+
         if (is_array($prototype)) {
             $this->isArray = true;
             $this->id = $prototype[0];
@@ -367,6 +400,11 @@ class Token
      */
     public function setContent($content)
     {
+        if ($this->content === $content) {
+            return;
+        }
+
+        $this->changed = true;
         $this->content = $content;
     }
 
@@ -377,6 +415,7 @@ class Token
             'name'    => $this->getName(),
             'content' => $this->content,
             'isArray' => $this->isArray,
+            'changed' => $this->changed,
         );
     }
 

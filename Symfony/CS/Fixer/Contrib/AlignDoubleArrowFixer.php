@@ -32,26 +32,25 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
     private $currentLevel;
 
     /**
-     * Keep track of the deepest level ever achieved while
-     * parsing the code. Used later to replace alignment
-     * placeholders with spaces.
-     *
-     * @var int
-     */
-    private $deepestLevel;
-
-    /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $this->currentLevel = 0;
         $this->deepestLevel = 0;
-        $tokens = Tokens::fromCode($content);
 
-        $this->injectAlignmentPlaceholders($tokens);
+        // This fixer works partially on Tokens and partially on string representation of code.
+        // During the process of fixing internal state of single Token may be affected by injecting ALIGNABLE_PLACEHOLDER to its content.
+        // The placeholder will be resolved by `replacePlaceholder` method by removing placeholder or changing it into spaces.
+        // That way of fixing the code causes disturbances in marking Token as changed - if code is perfectly valid then placeholder
+        // still be injected and removed, which will cause the `changed` flag to be set.
+        // To handle that unwanted behavior we work on clone of Tokens collection and then override original collection with fixed collection.
+        $tokensClone = clone $tokens;
 
-        return $this->replacePlaceholder($tokens, $this->deepestLevel);
+        $this->injectAlignmentPlaceholders($tokensClone);
+        $content = $this->replacePlaceholder($tokensClone);
+
+        $tokens->setCode($content);
     }
 
     /**
@@ -60,8 +59,6 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
      * @param Tokens $tokens
      * @param int    $startAt
      * @param int    $endAt
-     *
-     * @return array($code, $context_counter)
      */
     private function injectAlignmentPlaceholders(Tokens $tokens, $startAt = null, $endAt = null)
     {

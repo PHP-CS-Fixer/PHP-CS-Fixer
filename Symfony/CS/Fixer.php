@@ -192,10 +192,14 @@ class Fixer
             return;
         }
 
+        $old = file_get_contents($file->getRealpath());
         $appliedFixers = array();
 
         // we do not need Tokens to still caching previously fixed file - so clear the cache
         Tokens::clearCache();
+
+        $tokens = Tokens::fromCode($old);
+        $newHash = $oldHash = $tokens->getCodeHash();
 
         try {
             foreach ($fixers as $fixer) {
@@ -203,11 +207,13 @@ class Fixer
                     continue;
                 }
 
-                $newest = $fixer->fix($file, $new);
-                if ($newest !== $new) {
+                $fixer->fix($file, $tokens);
+
+                if ($tokens->isChanged()) {
+                    $tokens->clearEmptyTokens();
+                    $tokens->clearChanged();
                     $appliedFixers[] = $fixer->getName();
                 }
-                $new = $newest;
             }
         } catch (\Exception $e) {
             if ($this->eventDispatcher) {
@@ -226,7 +232,16 @@ class Fixer
 
         $fixInfo = null;
 
-        if ($new !== $old) {
+        if (!empty($appliedFixers)) {
+            $new = $tokens->generateCode();
+            $newHash = $tokens->getCodeHash();
+        }
+
+        // We need to check if content was changed and then applied changes.
+        // But we can't simple check $appliedFixers, because one fixer may revert
+        // work of other and both of them will mark collection as changed.
+        // Therefore we need to check if code hashes changed.
+        if ($oldHash !== $newHash) {
             if ($this->lintManager) {
                 $lintProcess = $this->lintManager->createProcessForSource($new);
 
@@ -254,6 +269,10 @@ class Fixer
 
             if ($diff) {
                 $fixInfo['diff'] = $this->stringDiff($old, $new);
+            }
+
+            if (!$dryRun) {
+                file_put_contents($file->getRealpath(), $new);
             }
         }
 

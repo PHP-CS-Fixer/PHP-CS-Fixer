@@ -26,10 +26,8 @@ class BracesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         $this->fixCommentBeforeBrace($tokens);
         $this->fixMissingControlBraces($tokens);
         $this->fixIndents($tokens);
@@ -37,8 +35,6 @@ class BracesFixer extends AbstractFixer
         $this->fixSpaceAroundToken($tokens);
         $this->fixDoWhile($tokens);
         $this->fixLambdas($tokens);
-
-        return $tokens->generateCode();
     }
 
     private function fixCommentBeforeBrace(Tokens $tokens)
@@ -150,6 +146,11 @@ class BracesFixer extends AbstractFixer
                 continue;
             }
 
+            // do not change indent for `while` in `do ... while ...`
+            if ($token->isGivenKind(T_WHILE) && $tokensAnalyzer->isWhilePartOfDoWhile($index)) {
+                continue;
+            }
+
             if ($token->isGivenKind($classyAndFunctionTokens)) {
                 $startBraceIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
                 $startBraceToken = $tokens[$startBraceIndex];
@@ -184,7 +185,8 @@ class BracesFixer extends AbstractFixer
                 }
 
                 if (1 === $nestLevel && $nestToken->equalsAny(array(';', '}'))) {
-                    $nextNonWhitespaceNestToken = $tokens[$tokens->getNextNonWhitespace($nestIndex)];
+                    $nextNonWhitespaceNestIndex = $tokens->getNextNonWhitespace($nestIndex);
+                    $nextNonWhitespaceNestToken = $tokens[$nextNonWhitespaceNestIndex];
 
                     if (
                         // next Token is not a comment
@@ -194,7 +196,13 @@ class BracesFixer extends AbstractFixer
                         // and it is not a `${"a"}->...` and `${"b{$foo}"}->...` situation
                         !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(array('"', "'", array(T_CONSTANT_ENCAPSED_STRING))))
                     ) {
-                        if ($nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens())) {
+                        if (
+                            $nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens()) ||
+                            (
+                                $nextNonWhitespaceNestToken->isGivenKind(T_WHILE) &&
+                                $tokensAnalyzer->isWhilePartOfDoWhile($nextNonWhitespaceNestIndex)
+                            )
+                        ) {
                             $whitespace = ' ';
                         } else {
                             $nextToken = $tokens[$nestIndex + 1];

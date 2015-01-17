@@ -23,7 +23,7 @@ class StrictFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         static $map = array(
             T_IS_EQUAL => array(
@@ -36,8 +36,6 @@ class StrictFixer extends AbstractFixer
             ),
         );
 
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens as $token) {
             $tokenId = $token->getId();
 
@@ -45,8 +43,6 @@ class StrictFixer extends AbstractFixer
                 $token->override(array($map[$tokenId]['id'], $map[$tokenId]['content']));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
