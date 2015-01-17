@@ -1,0 +1,118 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-19T01:12:03Z
+
+Test may run actually slower - there are so much things now in `AbstractFixerTestBase::makeTest`... so the performance must be tested on fixing some project, not running tests. Hope it wasn't needed to mention that ;)
+
+Performance must be check after fixing tests. Tests failed due to incorrect way of detecting if fixer modify code or not (related not to Tokens itself, but way of writting few fixers... some of them was already rewritten a little). And if `Fixer::fixFile` detect that code was changed then it do much more things. And we must not take them into consideration during performance tests.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-19T13:53:47Z
+
+Running with same configuration (some Fixers that won't work yet on my PR were excluded):
+```php
+<?php
+
+return Symfony\CS\Config\Config::create()
+    ->setUsingCache(false)
+    ->setUsingLinter(false)
+    ->level(Symfony\CS\FixerInterface::SYMFONY_LEVEL)
+    ->fixers(array(
+        '-function_declaration',
+        '-braces',
+    ))
+    ->finder(
+        Symfony\CS\Finder\DefaultFinder::create()
+            ->exclude('Symfony/CS/Tests/Fixtures')
+            ->notName('ShortTagFixerTest.php')
+            ->in(__DIR__)
+    )
+;
+```
+
+Running on PHP CS Fixer itself (so no changes will be made!), averaged results:
+> master : 23.557 seconds, 5.5 MB
+> PR: 18,723 seconds, 5.5 MB (~20% faster)
+
+Running on Symfony 2.3 (so some changes will be made!), averaged results:
+> master : 481.661 seconds, 13.500 MB
+> PR: 375.887 seconds, 11.500 MB (~22% faster and ~15% less memory needed)
+
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-19T14:01:11Z
+
+Numbers looking good, similar to what i found taking the road of passing around Tokens. Sounds like a plan to get this into next version :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-19T14:34:20Z
+
+IMO we can finish that PR and merge it, it looks really faster.
+Please take a look about idea itself, test it yourself and share your thoughts!
+
+// cc @fabpot @stof @sstok @GrahamCampbell @dericofilho
+
+If the idea will be accepted we will finish this PR.
+
+PS the next step may be a try to change
+`public function fix(\SplFileInfo $file, Tokens $tokens)`
+into simply
+`public function fix(Tokens $tokens)`
+but it will only simplify interface, no performance boost
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-01T18:46:09Z
+
+Looks like working. Any opinion?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-02T22:11:33Z
+
+Thanks for short review @stof !
+How about idea itself? Worth finishing that PR ?
+
+---------------------------------------------------------------------------
+
+by stof at 2015-01-02T22:17:27Z
+
+@keradus I haven't tried it to compare the performance, but the idea looks really interesting. IMO, it is worth finishing yes (unless it makes it a lot slower, but you said it looks faster)
+
+---------------------------------------------------------------------------
+
+by stof at 2015-01-02T22:18:42Z
+
+btw, it would be good to rebase it. It would allow to see which things have actually already been fixed in older branches and which are specific here (I guess most logic fixes detecting thanks to the new logic should actually be backported to the older branch)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-02T22:31:34Z
+
+> @keradus I haven't tried it to compare the performance, but the idea looks really interesting. IMO, it is worth finishing yes (unless it makes it a lot slower, but you said it looks faster)
+
+It works faser for me, but you know, I am the author of this, maybe I didn't see something... That's why I asked for second opinion ;)
+It need hell lot of work.
+
+BTW, rebased on current master
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-03T22:14:44Z
+
+(squashed and rebased on master)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-07T01:03:11Z
+
+OK, then... IMO it is done.
+
+The biggest codebase for regress was zf2 (develop) with SYMFONY_LEVEL.
+PHP CS Fixer works quite well on Symfony2, therefore I decided for other big repo.
+
+Few issues was detected, some of them at current dev version and appropriate PR was send into 1.x line, some of them on this PR and was fixed here.
+
+Please, share your opinion and, if you can, do some review ;)
