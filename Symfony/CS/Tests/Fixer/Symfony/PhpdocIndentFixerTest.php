@@ -378,6 +378,24 @@ public function write(\$name) {}
     }',
         );
 
+        $cases[] = array(
+            '<?php
+/**
+ * docs
+ */
+// comment
+$foo = $bar;
+',
+            '<?php
+/**
+ * docs
+ */
+
+// comment
+$foo = $bar;
+',
+        );
+
         return $cases;
     }
 }
