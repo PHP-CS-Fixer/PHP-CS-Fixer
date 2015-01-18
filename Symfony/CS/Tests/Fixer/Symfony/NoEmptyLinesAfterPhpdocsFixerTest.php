@@ -212,4 +212,26 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
+
+    // empty line between typehinting docs and return statement should be preserved
+    public function testInlineTypehintingDocsBeforeReturn()
+    {
+        $expected = <<<'EOF'
+<?php
+
+function parseTag($tag)
+{
+    $tagClass = get_class($tag);
+
+    if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
+        /** @var DocBlock\Tag\VarTag $tag */
+
+        return $tag->getDescription();
+    }
+}
+
+EOF;
+
+        $this->makeTest($expected);
+    }
 }
