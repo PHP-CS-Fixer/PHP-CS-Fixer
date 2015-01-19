@@ -12,6 +12,7 @@
 namespace Symfony\CS;
 
 /**
+ * @codeCoverageIgnore
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
 interface ConfigAwareInterface
