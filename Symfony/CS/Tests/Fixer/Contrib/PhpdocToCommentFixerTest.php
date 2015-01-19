@@ -106,6 +106,18 @@ interface DocBlocks
 
         $cases[] = array(
             '<?php
+namespace NS;
+
+/**
+ * Do not
+ */
+final class Foo
+{
+}',
+        );
+
+        $cases[] = array(
+            '<?php
 /**
  * Do not convert this
  */
