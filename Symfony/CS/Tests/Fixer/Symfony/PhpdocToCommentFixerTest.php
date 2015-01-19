@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace Symfony\CS\Tests\Fixer\Symfony;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
@@ -106,6 +106,18 @@ interface DocBlocks
 
         $cases[] = array(
             '<?php
+namespace NS;
+
+/**
+ * Do not
+ */
+final class Foo
+{
+}',
+        );
+
+        $cases[] = array(
+            '<?php
 /**
  * Do not convert this
  */
@@ -163,7 +175,7 @@ $local = true;
 /** @var \Sqlite3 $sqlite */
 foreach($connections as $sqlite) {
     $sqlite->open($path);
- }',
+}',
         );
 
         $cases[] = array(
@@ -171,7 +183,7 @@ foreach($connections as $sqlite) {
 /** @var \Sqlite3 $sqlite */
 foreach($connections as $key => $sqlite) {
     $sqlite->open($path);
- }',
+}',
         );
 
         $cases[] = array(
@@ -179,7 +191,7 @@ foreach($connections as $key => $sqlite) {
 /** @var int $key */
 foreach($connections as $key => $sqlite) {
     $sqlite->open($path);
- }',
+}',
         );
 
         $cases[] = array(
@@ -189,14 +201,14 @@ $first = true;
 /* This should not be a docblock */
 foreach($connections as $key => $sqlite) {
     $sqlite->open($path);
- }',
+}',
             '<?php
 $first = true;
 
 /** This should not be a docblock */
 foreach($connections as $key => $sqlite) {
     $sqlite->open($path);
- }',
+}',
         );
 
         $cases[] = array(

@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Contrib;
+namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Token;
@@ -17,6 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
+ * @author Dariusz Rumiñski <dariusz.ruminski@gmail.com>
  */
 class PhpdocToCommentFixer extends AbstractFixer
 {
@@ -29,29 +30,30 @@ class PhpdocToCommentFixer extends AbstractFixer
 
         foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
             $nextIndex = $tokens->getNextMeaningfulToken($index);
+            $nextToken = null !== $nextIndex ? $tokens[$nextIndex] : null;
 
-            if (null === $nextIndex || $tokens[$nextIndex]->equals('}')) {
+            if (null === $nextToken || $nextToken->equals('}')) {
                 $token->override(array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*'), $token->getLine()));
                 continue;
             }
 
-            if ($this->isStructuralElement($tokens[$nextIndex])) {
+            if ($this->isStructuralElement($nextToken)) {
                 continue;
             }
 
-            if ($tokens[$nextIndex]->isGivenkind(T_FOREACH) && $this->isValidForeach($tokens, $index)) {
+            if ($nextToken->isGivenkind(T_FOREACH) && $this->isValidForeach($tokens, $token, $nextIndex)) {
                 continue;
             }
 
-            if ($tokens[$nextIndex]->isGivenkind(T_VARIABLE) && $this->isValidVariable($tokens, $index)) {
+            if ($nextToken->isGivenkind(T_VARIABLE) && $this->isValidVariable($tokens, $token, $nextIndex)) {
                 continue;
             }
 
-            if ($tokens[$nextIndex]->isGivenkind(T_LIST) && $this->isValidList($tokens, $index)) {
+            if ($nextToken->isGivenkind(T_LIST) && $this->isValidList($tokens, $token, $nextIndex)) {
                 continue;
             }
 
-            //first docblock after open tag can be file-level docblock, so its left as is.
+            // First docblock after open tag can be file-level docblock, so its left as is.
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
             if ($tokens[$prevIndex]->isGivenKind(T_OPEN_TAG)) {
                 continue;
@@ -78,13 +80,13 @@ class PhpdocToCommentFixer extends AbstractFixer
     {
         /*
          * Should be run before the PhpdocIndentFixer, PhpdocParamsFixer and NoEmptyLinesAfterPhpdocsFixer
-         * so that these fixers don't touch doc comments which are meant to be converted to regular comments
+         * so that these fixers don't touch doc comments which are meant to be converted to regular comments.
          */
         return 5;
     }
 
     /**
-     * Check if token is a structural element
+     * Check if token is a structural element.
      *
      * @see http://www.phpdoc.org/docs/latest/glossary.html#term-structural-elements
      *
@@ -116,38 +118,23 @@ class PhpdocToCommentFixer extends AbstractFixer
      * Checks foreach statements for correct docblock usage.
      *
      * @param Tokens $tokens
-     * @param int    $index
+     * @param Token  $docsToken    docs Token
+     * @param int    $foreachIndex index of foreach Token
      *
      * @return bool
      */
-    private function isValidForeach(Tokens $tokens, $index)
+    private function isValidForeach(Tokens $tokens, Token $docsToken, $foreachIndex)
     {
-        $startIndex = $index;
-        while (!$tokens[$startIndex]->isGivenkind(T_AS)) {
-            ++$startIndex;
-        }
+        $index = $tokens->getNextMeaningfulToken($foreachIndex);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+        $docsContent = $docsToken->getContent();
 
-        $endIndex = $startIndex;
-        $end = false;
-        $i = 0;
-        while (!$end) {
-            ++$endIndex;
-            if ($tokens[$endIndex]->equals('(')) {
-                ++$i;
-                continue;
-            } elseif ($tokens[$endIndex]->equals(')')) {
-                --$i;
-            }
-            $end = $i < 0;
-        }
-
-        while ($startIndex < $endIndex) {
-            ++$startIndex;
-            $nextMeaningful = $tokens->getNextMeaningfulToken($startIndex);
+        for ($index = $index + 1; $index < $endIndex; ++$index) {
+            $token = $tokens[$index];
 
             if (
-                $tokens[$nextMeaningful]->isGivenkind(T_VARIABLE) &&
-                strpos($tokens[$index]->getContent(), $tokens[$nextMeaningful]->getContent()) !== false
+                $token->isGivenkind(T_VARIABLE) &&
+                false !== strpos($docsContent, $token->getContent())
             ) {
                 return true;
             }
@@ -160,40 +147,43 @@ class PhpdocToCommentFixer extends AbstractFixer
      * Checks variable assignments for correct docblock usage.
      *
      * @param Tokens $tokens
-     * @param int    $index
+     * @param Token  $docsToken     docs Token
+     * @param int    $variableIndex index of variable Token
      *
      * @return bool
      */
-    private function isValidVariable(Tokens $tokens, $index)
+    private function isValidVariable(Tokens $tokens, Token $docsToken, $variableIndex)
     {
-        $variable = $tokens->getNextMeaningfulToken($index);
-        $nextIndex = $tokens->getNextMeaningfulToken($variable);
+        $nextIndex = $tokens->getNextMeaningfulToken($variableIndex);
+
         if (!$tokens[$nextIndex]->equals('=')) {
             return false;
         }
 
-        return false !== strpos($tokens[$index]->getContent(), $tokens[$variable]->getContent());
+        return false !== strpos($docsToken->getContent(), $tokens[$variableIndex]->getContent());
     }
 
     /**
      * Checks variable assignments through `list()` calls for correct docblock usage.
      *
      * @param Tokens $tokens
-     * @param int    $index
+     * @param Token  $docsToken docs Token
+     * @param int    $listIndex index of variable Token
      *
      * @return bool
      */
-    private function isValidList(Tokens $tokens, $index)
+    private function isValidList(Tokens $tokens, Token $docsToken, $listIndex)
     {
-        $startIndex = $index;
-        $endIndex = $tokens->getNextTokenOfKind($startIndex, array(')'));
-        while ($startIndex < $endIndex) {
-            ++$startIndex;
-            if (!$tokens[$startIndex]->isGivenkind(T_VARIABLE)) {
-                continue;
-            }
+        $endIndex = $tokens->getNextTokenOfKind($listIndex, array(')'));
+        $docsContent = $docsToken->getContent();
 
-            if (false !== strpos($tokens[$index]->getContent(), $tokens[$startIndex]->getContent())) {
+        for ($index = $listIndex + 1; $index < $endIndex; ++$index) {
+            $token = $tokens[$index];
+
+            if (
+                $token->isGivenkind(T_VARIABLE)
+                && false !== strpos($docsContent, $token->getContent())
+            ) {
                 return true;
             }
         }
