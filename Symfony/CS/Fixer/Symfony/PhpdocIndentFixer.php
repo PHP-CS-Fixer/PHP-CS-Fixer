@@ -46,7 +46,10 @@ class PhpdocIndentFixer extends AbstractFixer
                 continue;
             }
 
-            $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$nextIndex - 1]);
+            $indent = '';
+            if ($tokens[$nextIndex - 1]->isWhitespace()) {
+                $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$nextIndex - 1]);
+            }
 
             $prevToken->setContent($this->fixWhitespaceBefore($prevToken->getContent(), $indent));
             $token->setContent($this->fixDocBlock($token->getContent(), $indent));
