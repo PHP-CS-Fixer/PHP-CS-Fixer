@@ -383,13 +383,6 @@ public function write(\$name) {}
 /**
  * docs
  */
-// comment
-$foo = $bar;
-',
-            '<?php
-/**
- * docs
- */
 
 // comment
 $foo = $bar;
