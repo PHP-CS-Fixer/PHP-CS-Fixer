@@ -12,6 +12,7 @@
 namespace Symfony\CS;
 
 /**
+ * @codeCoverageIgnore
  * @author Fabien Potencier <fabien@symfony.com>
  */
 interface ConfigInterface
