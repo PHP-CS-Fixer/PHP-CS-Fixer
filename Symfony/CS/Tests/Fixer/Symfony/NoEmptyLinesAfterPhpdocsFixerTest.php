@@ -213,12 +213,22 @@ EOF;
         $this->makeTest($expected, $input);
     }
 
-    // empty line between typehinting docs and return statement should be preserved
-    public function testInlineTypehintingDocsBeforeReturn()
+    /**
+     * Empty line between typehinting docs and return statement should be preserved.
+     *
+     * @dataProvider provideInlineTypehintingDocsBeforeFlowBreakCases
+     */
+    public function testInlineTypehintingDocsBeforeFlowBreak($expected, $input = null)
     {
-        $expected = <<<'EOF'
-<?php
+        $this->makeTest($expected, $input);
+    }
 
+    public function provideInlineTypehintingDocsBeforeFlowBreakCases()
+    {
+        $cases = array();
+
+        $cases[] = array(<<<'EOF'
+<?php
 function parseTag($tag)
 {
     $tagClass = get_class($tag);
@@ -229,9 +239,73 @@ function parseTag($tag)
         return $tag->getDescription();
     }
 }
+EOF
+);
 
-EOF;
+        $cases[] = array(<<<'EOF'
+<?php
+function parseTag($tag)
+{
+    $tagClass = get_class($tag);
 
-        $this->makeTest($expected);
+    if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
+        /** @var DocBlock\Tag\VarTag $tag */
+
+        throw new Exception($tag->getDescription());
+    }
+}
+EOF
+);
+
+        $cases[] = array(<<<'EOF'
+<?php
+function parseTag($tag)
+{
+    $tagClass = get_class($tag);
+
+    if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
+        /** @var DocBlock\Tag\VarTag $tag */
+
+        goto FOO;
+    }
+}
+EOF
+);
+
+        $cases[] = array(<<<'EOF'
+<?php
+function parseTag($tag)
+{
+    while (true) {
+        $tagClass = get_class($tag);
+
+        if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
+            /** @var DocBlock\Tag\VarTag $tag */
+
+            continue;
+        }
+    }
+}
+EOF
+);
+
+        $cases[] = array(<<<'EOF'
+<?php
+function parseTag($tag)
+{
+    while (true) {
+        $tagClass = get_class($tag);
+
+        if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
+            /** @var DocBlock\Tag\VarTag $tag */
+
+            break;
+        }
+    }
+}
+EOF
+);
+
+        return $cases;
     }
 }
