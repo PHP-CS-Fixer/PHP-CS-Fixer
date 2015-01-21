@@ -501,7 +501,8 @@ function bar()
 
 function & lambda()
 {
-    return function () {};
+    return function () {
+    };
 }',
             ),
             array(
@@ -610,12 +611,12 @@ function mixedComplex()
         public function getFaxNumbers()
         {
             if (1)
-                return $this->phoneNumbers->filter(function ($phone) {
+            return $this->phoneNumbers->filter(function ($phone) {
                     $a = 1;
-                    $b = 1;
-                    $c = 1;
-                    return ($phone->getType() === 1) ? true : false;
-                });
+            $b = 1;
+                $c = 1;
+                return ($phone->getType() === 1) ? true : false;
+            });
         }
     }',
             ),
@@ -916,14 +917,16 @@ class Foo
             ),
             array(
                 '<?php
-    filter(function   ($a) {});',
+    filter(function   ($a) {
+    });',
                 '<?php
     filter(function   ($a)
     {});',
             ),
             array(
                 '<?php
-    filter(function   ($b) {});',
+    filter(function   ($b) {
+    });',
                 '<?php
     filter(function   ($b){});',
             ),
@@ -1028,7 +1031,8 @@ class Foo
             ),
             array(
                 '<?php
-    $foo = function& () use ($bar) {}',
+    $foo = function& () use ($bar) {
+    }',
                 '<?php
     $foo = function& ()use($bar){}',
             ),
