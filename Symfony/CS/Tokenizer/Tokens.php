@@ -307,7 +307,7 @@ class Tokens extends \SplFixedArray
         $limit = $this->count();
         $index = 0;
 
-        for ($index = 0; $index < $limit; ++$index) {
+        for (; $index < $limit; ++$index) {
             if ($this[$index]->isEmpty()) {
                 break;
             }
