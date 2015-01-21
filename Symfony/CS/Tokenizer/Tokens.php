@@ -304,9 +304,23 @@ class Tokens extends \SplFixedArray
      */
     public function clearEmptyTokens()
     {
-        $count = 0;
+        $limit = $this->count();
+        $index = 0;
 
-        foreach ($this as $token) {
+        for ($index = 0; $index < $limit; ++$index) {
+            if ($this[$index]->isEmpty()) {
+                break;
+            }
+        }
+
+        // no empty token found, therefore there is no need to override collection
+        if ($limit === $index) {
+            return;
+        }
+
+        for ($count = $index; $index < $limit; ++$index) {
+            $token = $this[$index];
+
             if (!$token->isEmpty()) {
                 $this[$count++] = $token;
             }
