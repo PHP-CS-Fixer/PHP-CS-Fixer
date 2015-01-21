@@ -142,11 +142,6 @@ class BracesFixer extends AbstractFixer
                 continue;
             }
 
-            // do not change indent for lambda functions
-            if ($token->isGivenKind(T_FUNCTION) && $tokens->isLambda($index)) {
-                continue;
-            }
-
             if ($token->isGivenKind($classyAndFunctionTokens)) {
                 $startBraceIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
                 $startBraceToken = $tokens[$startBraceIndex];
@@ -163,7 +158,28 @@ class BracesFixer extends AbstractFixer
 
             $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startBraceIndex);
 
-            $indent = $this->detectIndent($tokens, $index);
+            $indent = '';
+
+            // if token is lambda functions then calc indent for lambda content
+            if ($token->isGivenKind(T_FUNCTION) && $tokens->isLambda($index)) {
+                $lambdaIndentStartIndex = $tokens->getPrevTokenOfKind($index, array(';', ',', '{', '[', array(T_OPEN_TAG)));
+
+                // detect and ignore `usort($foo, function ($a, $b) { return 1; })` case
+                if (
+                    $tokens[$lambdaIndentStartIndex]->equals(',')
+                    && $tokens[$lambdaIndentStartIndex + 1]->isWhitespace()
+                    && $tokens[$lambdaIndentStartIndex + 1]->isWhitespace(array('whitespaces' => " \t"))
+                ) {
+                    $lambdaIndentStartIndex = $tokens->getPrevTokenOfKind($index, array(';', '{', '[', array(T_OPEN_TAG)));
+                }
+
+                $indent = $this->detectIndent(
+                    $tokens,
+                    $tokens->getNextNonWhitespace($lambdaIndentStartIndex)
+                );
+            } else {
+                $indent = $this->detectIndent($tokens, $index);
+            }
 
             // fix indent near closing brace
             $tokens->ensureWhitespaceAtIndex($endBraceIndex - 1, 1, "\n".$indent);
@@ -357,7 +373,7 @@ class BracesFixer extends AbstractFixer
 
         $token = $tokens[$index];
 
-        if ($token->isGivenKind($goBackTokens) || $token->isClassy() || $token->isGivenKind(T_FUNCTION)) {
+        if ($token->isGivenKind($goBackTokens) || $token->isClassy() || $token->isGivenKind(array(T_FUNCTION, T_DOUBLE_ARROW))) {
             $prevIndex = $tokens->getPrevNonWhitespace($index);
             $prevToken = $tokens[$prevIndex];
 
