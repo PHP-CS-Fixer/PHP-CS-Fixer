@@ -620,6 +620,37 @@ function mixedComplex()
         }
     }',
             ),
+            array(
+                '<?php
+    $this
+        ->filter(
+            function (\SplFileInfo $file) use ($files) {
+                return !in_array($file->getRelativePathname(), $files, true);
+            }
+        );',
+            ),
+            array(
+                '<?php
+    $this->assertSame(
+        count($expectedTokens),
+        array_sum(array_map(
+            function ($item) {
+                return count($item);
+            },
+            $tokens->findGivenKind(array_map(function ($name) {
+                return constant($name);
+            }, $expectedTokens))
+        ))
+    );',
+                '<?php
+    $this->assertSame(
+        count($expectedTokens),
+        array_sum(array_map(
+            function ($item) { return count($item); },
+            $tokens->findGivenKind(array_map(function ($name) { return constant($name); }, $expectedTokens))
+        ))
+    );',
+            ),
         );
     }
 
