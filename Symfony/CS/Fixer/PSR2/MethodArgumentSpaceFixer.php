@@ -112,7 +112,7 @@ class MethodArgumentSpaceFixer extends AbstractFixer
     }
 
     /**
-     * Check if last item of current line is a comment
+     * Check if last item of current line is a comment.
      *
      * @param Tokens $tokens tokens to handle
      * @param int    $index  index of token
@@ -121,7 +121,19 @@ class MethodArgumentSpaceFixer extends AbstractFixer
      */
     private function isCommentLastLineToken(Tokens $tokens, $index)
     {
-        return $tokens[$index]->isComment() && 1 === substr_count($tokens[$index + 1]->getContent(), "\n");
+        if (!$tokens[$index]->isComment()) {
+            return false;
+        }
+
+        $nextToken = $tokens[$index + 1];
+
+        if (!$nextToken->isWhitespace()) {
+            return false;
+        }
+
+        $content = $nextToken->getContent();
+
+        return $content !== ltrim($content, "\r\n");
     }
 
     /**
