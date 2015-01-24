@@ -277,9 +277,11 @@ class RemoveCommentsFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $foundComments = $tokens->findGivenKind(T_COMMENT);
+        foreach($tokens as $index => $token){
+            if (!$token->isGivenKind(T_COMMENT)) {
+                continue;
+            }
 
-        foreach($foundComments as $index => $token){
             // need to figure out what to do here!
         }
     }
@@ -297,9 +299,11 @@ class RemoveCommentsFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $foundComments = $tokens->findGivenKind(T_COMMENT);
+        foreach($tokens as $index => $token){
+            if (!$token->isGivenKind(T_COMMENT)) {
+                continue;
+            }
 
-        foreach($foundComments as $index => $token){
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevTokenIndex];
 
@@ -336,9 +340,11 @@ class RemoveCommentsFixer extends AbstractFixer {
      * {@inheritdoc}
      */
     public function fix(\SplFileInfo $file, Tokens $tokens) {
-        $foundComments = $tokens->findGivenKind(T_COMMENT);
+        foreach($tokens as $index => $token){
+            if (!$token->isGivenKind(T_COMMENT)) {
+                continue;
+            }
 
-        foreach ($foundComments as $index => $token) {
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevTokenIndex];
 

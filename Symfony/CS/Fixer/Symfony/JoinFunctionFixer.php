@@ -24,7 +24,11 @@ class JoinFunctionFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_STRING)) {
+                continue;
+            }
+
             if ('join' !== $token->getContent()) {
                 continue;
             }

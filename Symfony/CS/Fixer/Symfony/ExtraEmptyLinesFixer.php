@@ -24,7 +24,11 @@ class ExtraEmptyLinesFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens->findGivenKind(T_WHITESPACE) as $token) {
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_WHITESPACE)) {
+                continue;
+            }
+
             $content = '';
             $count = 0;
             $parts = explode("\n", $token->getContent());

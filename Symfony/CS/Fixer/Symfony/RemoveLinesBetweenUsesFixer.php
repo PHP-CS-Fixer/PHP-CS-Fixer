@@ -25,7 +25,18 @@ class RemoveLinesBetweenUsesFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $this->removeLineBreaksBetweenUseStatements($tokens);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        $namespacesImports = $tokensAnalyzer->getImportUseIndexes(true);
+
+        if (!count($namespacesImports)) {
+            return;
+        }
+
+        foreach ($namespacesImports as $uses) {
+            $uses = array_reverse($uses);
+            $this->fixLineBreaksPerImportGroup($tokens, $uses);
+        }
     }
 
     /**
@@ -43,22 +54,6 @@ class RemoveLinesBetweenUsesFixer extends AbstractFixer
     public function getDescription()
     {
         return 'Removes line breaks between use statements.';
-    }
-
-    private function removeLineBreaksBetweenUseStatements(Tokens $tokens)
-    {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        $namespacesImports = $tokensAnalyzer->getImportUseIndexes(true);
-
-        if (!count($namespacesImports)) {
-            return;
-        }
-
-        foreach ($namespacesImports as $uses) {
-            $uses = array_reverse($uses);
-            $this->fixLineBreaksPerImportGroup($tokens, $uses);
-        }
     }
 
     /**

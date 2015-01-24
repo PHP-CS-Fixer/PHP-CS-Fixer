@@ -27,10 +27,15 @@ class PhpdocSeparationFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
             $doc = new DocBlock($token->getContent());
             $this->fixDescription($doc);
             $this->fixAnnotations($doc);
+
             $token->setContent($doc->getContent());
         }
     }

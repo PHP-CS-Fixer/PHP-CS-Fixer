@@ -30,21 +30,23 @@ class LineAfterNamespaceFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (T_NAMESPACE === $token->getId()) {
-                $semicolonIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
-                $semicolonToken = $tokens[$semicolonIndex];
+            if (!$token->isGivenKind(T_NAMESPACE)) {
+                continue;
+            }
 
-                if (!$semicolonToken->equals(';') || !isset($tokens[$semicolonIndex + 1])) {
-                    continue;
-                }
+            $semicolonIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
+            $semicolonToken = $tokens[$semicolonIndex];
 
-                $nextToken = $tokens[$semicolonIndex + 1];
+            if (!$semicolonToken->equals(';') || !isset($tokens[$semicolonIndex + 1])) {
+                continue;
+            }
 
-                if (!$nextToken->isWhitespace()) {
-                    $tokens->insertAt($semicolonIndex + 1, new Token(array(T_WHITESPACE, "\n\n")));
-                } else {
-                    $nextToken->setContent("\n\n".ltrim($nextToken->getContent()));
-                }
+            $nextToken = $tokens[$semicolonIndex + 1];
+
+            if (!$nextToken->isWhitespace()) {
+                $tokens->insertAt($semicolonIndex + 1, new Token(array(T_WHITESPACE, "\n\n")));
+            } else {
+                $nextToken->setContent("\n\n".ltrim($nextToken->getContent()));
             }
         }
     }

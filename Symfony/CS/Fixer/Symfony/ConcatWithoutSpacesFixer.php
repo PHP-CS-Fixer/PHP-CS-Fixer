@@ -27,14 +27,16 @@ class ConcatWithoutSpacesFixer extends AbstractFixer
         $whitespaces = array('whitespaces' => " \t");
 
         foreach ($tokens as $index => $token) {
-            if ($token->equals('.')) {
-                if (!$tokens[$tokens->getPrevNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
-                    $tokens->removeLeadingWhitespace($index, $whitespaces);
-                }
+            if (!$token->equals('.')) {
+                continue;
+            }
 
-                if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
-                    $tokens->removeTrailingWhitespace($index, $whitespaces);
-                }
+            if (!$tokens[$tokens->getPrevNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
+                $tokens->removeLeadingWhitespace($index, $whitespaces);
+            }
+
+            if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
+                $tokens->removeTrailingWhitespace($index, $whitespaces);
             }
         }
     }

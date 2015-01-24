@@ -28,7 +28,11 @@ class ElseifFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens->findGivenKind(T_ELSE) as $index => $token) {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_ELSE)) {
+                continue;
+            }
+
             $nextIndex = $tokens->getNextNonWhitespace($index);
             $nextToken = $tokens[$nextIndex];
 
