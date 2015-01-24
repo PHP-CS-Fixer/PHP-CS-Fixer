@@ -45,6 +45,31 @@ class MethodArgumentSpaceFixer extends AbstractFixer
     }
 
     /**
+     * Check if last item of current line is a comment.
+     *
+     * @param Tokens $tokens tokens to handle
+     * @param int    $index  index of token
+     *
+     * @return bool
+     */
+    private function isCommentLastLineToken(Tokens $tokens, $index)
+    {
+        if (!$tokens[$index]->isComment()) {
+            return false;
+        }
+
+        $nextToken = $tokens[$index + 1];
+
+        if (!$nextToken->isWhitespace()) {
+            return false;
+        }
+
+        $content = $nextToken->getContent();
+
+        return $content !== ltrim($content, "\r\n");
+    }
+
+    /**
      * Fix arguments spacing for given function
      *
      * @param Tokens $tokens             Tokens to handle
@@ -113,18 +138,5 @@ class MethodArgumentSpaceFixer extends AbstractFixer
         if (!$this->isCommentLastLineToken($tokens, $index + 1)) {
             $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
         }
-    }
-
-    /**
-     * Check if last item of current line is a comment
-     *
-     * @param Tokens $tokens tokens to handle
-     * @param int    $index  index of token
-     *
-     * @return bool
-     */
-    private function isCommentLastLineToken(Tokens $tokens, $index)
-    {
-        return $tokens[$index]->isComment() && 1 === substr_count($tokens[$index + 1]->getContent(), "\n");
     }
 }

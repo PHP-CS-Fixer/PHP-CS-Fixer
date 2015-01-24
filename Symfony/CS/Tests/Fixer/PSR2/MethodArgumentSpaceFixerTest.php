@@ -124,6 +124,29 @@ class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
                     $c=30) {
                 }',
             ),
+            // multiline comments also must be ignored
+            array(
+                '<?php
+                    function xyz(
+                        $a=10, /* multiline comment
+                                 not at the end of line
+                                */ $b=2000,
+                        $a2=10 /* multiline comment
+                                 not at the end of line
+                                */, $b2=2000,
+                        $c=30) {
+                    }',
+                '<?php
+                    function xyz(
+                        $a=10, /* multiline comment
+                                 not at the end of line
+                                */ $b=2000,
+                        $a2=10 /* multiline comment
+                                 not at the end of line
+                                */ ,$b2=2000,
+                        $c=30) {
+                    }',
+            ),
             // multi line testing method arguments
             array(
                 '<?php function xyz(
@@ -172,7 +195,7 @@ class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     $foo = ["a"=>"apple", "b"=>"bed" ,"c"=>"car"];
-    $foo = ["a" ,"b" ,"c"];
+    $bar = ["a" ,"b" ,"c"];
     ',
             ),
             // don't change HEREDOC and NOWDOC
