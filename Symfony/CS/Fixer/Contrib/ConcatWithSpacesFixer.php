@@ -43,17 +43,17 @@ class ConcatWithSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getDescription()
     {
-        // should be run after the ConcatWithoutSpacesFixer
-        return -10;
+        return 'Concatenation should be used with at least one whitespace around.';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Concatenation should be used with at least one whitespace around.';
+        // should be run after the ConcatWithoutSpacesFixer
+        return -10;
     }
 }

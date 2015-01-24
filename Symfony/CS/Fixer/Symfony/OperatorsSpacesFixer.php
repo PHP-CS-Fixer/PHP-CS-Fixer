@@ -42,6 +42,14 @@ class OperatorsSpacesFixer extends AbstractFixer
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Operators should be arounded by at least one space.';
+    }
+
     private function isOperator(Token $token)
     {
         static $arrayOperators = array(
@@ -77,13 +85,5 @@ class OperatorsSpacesFixer extends AbstractFixer
         );
 
         return $token->isArray() ? isset($arrayOperators[$token->getId()]) : isset($nonArrayOperators[$token->getContent()]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Operators should be arounded by at least one space.';
     }
 }

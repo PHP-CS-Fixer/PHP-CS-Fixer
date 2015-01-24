@@ -43,6 +43,14 @@ class AlignEqualsFixer extends AbstractAlignFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Align equals symbols in consecutive lines.';
+    }
+
+    /**
      * Inject into the text placeholders of candidates of vertical alignment.
      *
      * @param Tokens $tokens
@@ -82,13 +90,5 @@ class AlignEqualsFixer extends AbstractAlignFixer
         }
 
         $this->deepestLevel = $deepestLevel;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Align equals symbols in consecutive lines.';
     }
 }

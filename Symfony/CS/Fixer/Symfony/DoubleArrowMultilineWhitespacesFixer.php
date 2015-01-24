@@ -37,13 +37,6 @@ class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
         }
     }
 
-    private function fixWhitespace(Token $token)
-    {
-        if ($token->isWhitespace() && !$token->isWhitespace(array('whitespaces' => " \t"))) {
-            $token->setContent(rtrim($token->getContent()).' ');
-        }
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -59,5 +52,12 @@ class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
     {
         // should be run before the MultilineArrayTrailingCommaFixer and AlignDoubleArrowFixer
         return 1;
+    }
+
+    private function fixWhitespace(Token $token)
+    {
+        if ($token->isWhitespace() && !$token->isWhitespace(array('whitespaces' => " \t"))) {
+            $token->setContent(rtrim($token->getContent()).' ');
+        }
     }
 }

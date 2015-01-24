@@ -89,6 +89,14 @@ class FunctionDeclarationFixer extends AbstractFixer
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Spaces should be properly placed in a function declaration.';
+    }
+
     private function fixParenthesisInnerEdge(Tokens $tokens, $start, $end)
     {
         // remove single-line whitespace before )
@@ -100,13 +108,5 @@ class FunctionDeclarationFixer extends AbstractFixer
         if ($tokens[$start + 1]->isWhitespace($this->singleLineWhitespaceOptions)) {
             $tokens[$start + 1]->clear();
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Spaces should be properly placed in a function declaration.';
     }
 }

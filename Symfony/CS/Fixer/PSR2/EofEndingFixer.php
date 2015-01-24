@@ -40,17 +40,17 @@ class EofEndingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getDescription()
     {
-        // must run last to be sure the file is properly formatted before it runs
-        return -50;
+        return 'A file must always end with an empty line feed.';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'A file must always end with an empty line feed.';
+        // must run last to be sure the file is properly formatted before it runs
+        return -50;
     }
 }

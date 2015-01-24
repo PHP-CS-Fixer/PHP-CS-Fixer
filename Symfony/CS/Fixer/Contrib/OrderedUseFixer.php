@@ -59,6 +59,39 @@ class OrderedUseFixer extends AbstractFixer
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Ordering use statements.';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run after the MultipleUseFixer
+        return -10;
+    }
+
+    /**
+     * This method is used for sorting the uses in a namespace.
+     *
+     * @param string[] $first
+     * @param string[] $second
+     *
+     * @internal
+     */
+    public static function sortingCallBack(array $first, array $second)
+    {
+        $a = trim(preg_replace('%/\*(.*)\*/%s', '', $first[0]));
+        $b = trim(preg_replace('%/\*(.*)\*/%s', '', $second[0]));
+
+        return strcasecmp($a, $b);
+    }
+
     private function getNewOrder(array $uses, Tokens $tokens)
     {
         $uses = array_reverse($uses);
@@ -104,36 +137,5 @@ class OrderedUseFixer extends AbstractFixer
         }
 
         return $usesOrder;
-    }
-
-    /**
-     * This method is used for sorting the uses in a namespace
-     * and is only meant for internal usage.
-     *
-     * @internal
-     */
-    public static function sortingCallBack(array $first, array $second)
-    {
-        $a = trim(preg_replace('%/\*(.*)\*/%s', '', $first[0]));
-        $b = trim(preg_replace('%/\*(.*)\*/%s', '', $second[0]));
-
-        return strcasecmp($a, $b);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // should be run after the MultipleUseFixer
-        return -10;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Ordering use statements.';
     }
 }

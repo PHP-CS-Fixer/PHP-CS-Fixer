@@ -70,6 +70,14 @@ class TernarySpacesFixer extends AbstractFixer
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Standardize spaces around ternary operator.';
+    }
+
     private function ensureWhitespaceExistance(Tokens $tokens, $index, $after)
     {
         $indexChange = $after ? 0 : 1;
@@ -80,13 +88,5 @@ class TernarySpacesFixer extends AbstractFixer
         }
 
         $tokens->insertAt($index + $indexChange, new Token(array(T_WHITESPACE, ' ')));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Standardize spaces around ternary operator.';
     }
 }

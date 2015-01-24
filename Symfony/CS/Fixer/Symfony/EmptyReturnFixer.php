@@ -32,6 +32,14 @@ class EmptyReturnFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'A return statement wishing to return nothing should be simply "return".';
+    }
+
+    /**
      * Does the return statement located at a given index need fixing?
      *
      * @param Tokens $tokens
@@ -94,13 +102,5 @@ class EmptyReturnFixer extends AbstractFixer
         }
 
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'A return statement wishing to return nothing should be simply "return".';
     }
 }

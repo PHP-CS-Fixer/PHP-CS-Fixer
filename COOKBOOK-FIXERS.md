@@ -414,7 +414,7 @@ channel on composer.
 Other possibility is that reviewers are giving time to other members of
 PHP CS Fixer community to partake on the review debates of your fixer.
 
-In any case, we are a lot about what you do and we want to see it being
+In any case, we care a lot about what you do and we want to see it being
 part of the application as soon as possible.
 
 #### May I use short arrays (`$a = []`)?

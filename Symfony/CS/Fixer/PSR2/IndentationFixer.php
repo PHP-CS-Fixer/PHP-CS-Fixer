@@ -48,16 +48,16 @@ class IndentationFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getDescription()
     {
-        return 50;
+        return 'Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting.';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting.';
+        return 50;
     }
 }

@@ -41,6 +41,14 @@ class LowercaseConstantsFixer extends AbstractFixer
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'The PHP constants true, false, and null MUST be in lower case.';
+    }
+
     private function isNeighbourAccepted(Tokens $tokens, $index)
     {
         static $forbiddenTokens = null;
@@ -82,13 +90,5 @@ class LowercaseConstantsFixer extends AbstractFixer
         }
 
         return !$token->isGivenKind($forbiddenTokens);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'The PHP constants true, false, and null MUST be in lower case.';
     }
 }

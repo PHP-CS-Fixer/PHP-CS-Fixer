@@ -37,6 +37,23 @@ class BracesFixer extends AbstractFixer
         $this->fixLambdas($tokens);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run after the ElseIfFixer and DuplicateSemicolonFixer
+        return -25;
+    }
+
     private function fixCommentBeforeBrace(Tokens $tokens)
     {
         $controlTokens = $this->getControlTokens();
@@ -530,22 +547,5 @@ class BracesFixer extends AbstractFixer
         }
 
         return $tokens;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // should be run after the ElseIfFixer and DuplicateSemicolonFixer
-        return -25;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.';
     }
 }

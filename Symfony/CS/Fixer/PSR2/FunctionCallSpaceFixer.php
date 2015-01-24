@@ -51,6 +51,14 @@ class FunctionCallSpaceFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.';
+    }
+
+    /**
      * Fixes whitespaces around braces of a function(y) call.
      *
      * @param Tokens $tokens tokens to handle
@@ -95,13 +103,5 @@ class FunctionCallSpaceFixer extends AbstractFixer
         }
 
         return $tokens;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.';
     }
 }

@@ -20,11 +20,6 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
 {
-    private static function endsWithWhitespace($str)
-    {
-        return strlen($str) > 0 && ctype_space(substr($str, -1));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -69,5 +64,10 @@ class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
     public function getDescription()
     {
         return 'The namespace declaration line shouldn\'t contain leading whitespace.';
+    }
+
+    private static function endsWithWhitespace($str)
+    {
+        return strlen($str) > 0 && ctype_space(substr($str, -1));
     }
 }

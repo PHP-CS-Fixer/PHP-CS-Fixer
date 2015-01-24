@@ -60,6 +60,14 @@ class MultipleUseFixer extends AbstractFixer
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'There MUST be one use keyword per declaration.';
+    }
+
     private function detectIndent(Tokens $tokens, $index)
     {
         $prevIndex = $index - 1;
@@ -73,13 +81,5 @@ class MultipleUseFixer extends AbstractFixer
         $explodedContent = explode("\n", $prevToken->getContent());
 
         return end($explodedContent);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'There MUST be one use keyword per declaration.';
     }
 }

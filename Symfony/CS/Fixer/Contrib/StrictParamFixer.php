@@ -51,6 +51,14 @@ class StrictParamFixer extends AbstractFixer
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Functions should be used with $strict param. Warning! This could change code behavior.';
+    }
+
     private function fixFunction(Tokens $tokens, $functionIndex, array $functionParams)
     {
         $startBraceIndex = $tokens->getNextTokenOfKind($functionIndex, array('('));
@@ -110,13 +118,5 @@ class StrictParamFixer extends AbstractFixer
 
         $beforeEndBraceIndex = $tokens->getPrevNonWhitespace($endBraceIndex, array());
         $tokens->insertAt($beforeEndBraceIndex + 1, $tokensToInsert);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Functions should be used with $strict param. Warning! This could change code behavior.';
     }
 }

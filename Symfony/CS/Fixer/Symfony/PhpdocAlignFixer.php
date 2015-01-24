@@ -52,6 +52,17 @@ class PhpdocAlignFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // should be run after the PhpdocIndentFixer
+        // this is because this fixer currently only deals with docblocks that
+        // are correctly indented, and skips those that are not
+        return -10;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'All items of the @param, @throws, @return, @var, and @type phpdoc tags must be aligned vertically.';
@@ -159,16 +170,5 @@ class PhpdocAlignFixer extends AbstractFixer
 
             return $matches;
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // should be run after the PhpdocIndentFixer
-        // this is because this fixer currently only deals with docblocks that
-        // are correctly indented, and skips those that are not
-        return -10;
     }
 }

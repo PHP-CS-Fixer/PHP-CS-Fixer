@@ -49,10 +49,18 @@ class MethodArgumentSpaceFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma.';
+    }
+
+    /**
      * Method to insert space after comma and remove space before comma.
      *
-     * @param Tokens $tokens tokens to handle
-     * @param int    $index  index of token
+     * @param Tokens $tokens
+     * @param int    $index
      */
     public function fixSpace(Tokens $tokens, $index)
     {
@@ -69,13 +77,5 @@ class MethodArgumentSpaceFixer extends AbstractFixer
         if (!$tokens[$index + 1]->isWhitespace()) {
             $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma.';
     }
 }

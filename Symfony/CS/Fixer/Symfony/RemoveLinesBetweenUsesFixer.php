@@ -28,6 +28,23 @@ class RemoveLinesBetweenUsesFixer extends AbstractFixer
         $this->removeLineBreaksBetweenUseStatements($tokens);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run before OrderedUseFixer
+        return -5;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Removes line breaks between use statements.';
+    }
+
     private function removeLineBreaksBetweenUseStatements(Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -45,13 +62,18 @@ class RemoveLinesBetweenUsesFixer extends AbstractFixer
     }
 
     /**
+     * Fix the line breaks per group.
+     *
      * For each use token reach the nearest ; and ensure every
      * token after has one \n before next non empty token (next line).
      * It skips the first pass from the bottom.
+     *
+     * @param Tokens $tokens
+     * @param array  $uses
      */
     private function fixLineBreaksPerImportGroup(Tokens $tokens, array $uses)
     {
-        foreach ($uses as $key => $index) {
+        foreach ($uses as $index) {
             $endIndex = $tokens->getNextTokenOfKind($index, array(';'));
             $afterSemicolonIndex = $tokens->getNextNonWhitespace($endIndex);
 
@@ -64,22 +86,5 @@ class RemoveLinesBetweenUsesFixer extends AbstractFixer
                 $nextToken->setContent(preg_replace('/\n{2,}/', "\n", $nextToken->getContent()));
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // should be run before OrderedUseFixer
-        return -5;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Removes line breaks between use statements.';
     }
 }
