@@ -1,0 +1,41 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-22T13:55:10Z
+
+First thing - thanks for that !
+
+And now - I work on Windows and want to test it. What do I do? Connect via ssh to my server, fork the repo, install deps, locally merge this PR, run `. benchmark.sh`. Then... My ssh terminal (putty) is closed.
+What am I doing wrong ?
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2015-01-22T14:49:11Z
+
+@keradus configure putty to not close your session so you can trap the error message that's killing your shell.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-22T15:14:10Z
+
+ > cannot find php
+
+I have `php56-cli` aliased to `php`
+But `which` won't work with alias :/
+
+(btw, `which php56-cli` gave mi `/usr/local/bin/php56-cli`.)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-22T17:57:42Z
+
+Nice job!
+
+:+1:
+
+it looks ok for me, please squash commits
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2015-01-22T18:55:14Z
+
+done!
