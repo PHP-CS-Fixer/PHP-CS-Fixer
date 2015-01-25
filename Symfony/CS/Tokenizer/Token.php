@@ -87,11 +87,12 @@ class Token
      *
      * If tokens are arrays, then only keys defined in parameter token are checked.
      *
-     * @param Token|array|string $other token or it's prototype
+     * @param Token|array|string $other         token or it's prototype
+     * @param bool               $caseSensitive perform a case sensitive comparison
      *
      * @return bool
      */
-    public function equals($other)
+    public function equals($other, $caseSensitive = true)
     {
         $otherPrototype = $other instanceof Token ? $other->getPrototype() : $other;
 
@@ -106,8 +107,21 @@ class Token
         $selfPrototype = $this->getPrototype();
 
         foreach ($otherPrototype as $key => $val) {
-            if ($selfPrototype[$key] !== $val) {
+            // make sure the token has such key
+            if (!isset($selfPrototype[$key])) {
                 return false;
+            }
+
+            if (1 === $key && !$caseSensitive) {
+                // case-insensitive comparison only applies to the content (key 1)
+                if (0 !== strcasecmp($val, $selfPrototype[1])) {
+                    return false;
+                }
+            } else {
+                // regular comparison
+                if ($selfPrototype[$key] !== $val) {
+                    return false;
+                }
             }
         }
 
@@ -117,14 +131,23 @@ class Token
     /**
      * Check if token is equals to one of given.
      *
-     * @param array $others array of tokens or token prototypes
+     * @param array       $others        array of tokens or token prototypes
+     * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
+     *                                   the ones used in $others. If any is missing, the default case-sensitive
+     *                                   comparison is used.
      *
      * @return bool
      */
-    public function equalsAny(array $others)
+    public function equalsAny(array $others, $caseSensitive = true)
     {
-        foreach ($others as $other) {
-            if ($this->equals($other)) {
+        foreach ($others as $key => $other) {
+            if (is_array($caseSensitive)) {
+                $cs = isset($caseSensitive[$key]) ? $caseSensitive[$key] : true;
+            } else {
+                $cs = $caseSensitive;
+            }
+
+            if ($this->equals($other, $cs)) {
                 return true;
             }
         }
