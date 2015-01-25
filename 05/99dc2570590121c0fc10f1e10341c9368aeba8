@@ -1,0 +1,56 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-17T10:22:00Z
+
+PR should be atomic. You have said that you add a `insensitive` option. But you have add 2nd change here - removing comparision of lines.
+Below my comment only for removing comparing the lines.
+
+- `Token::equal` currently may check the line or not - depending on the input parameter. Now you have remove it and line will never be compared. It is a BC break that won't be merged into 1.x.
+- If you wan't to change this it should be merged into 2.x, but wait! `Token::line` is already removed in 2.x line!
+
+---------------------------------------------------------------------------
+
+by mbeccati at 2015-01-17T14:17:45Z
+
+Fixed equals to match 1.5
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-20T19:28:07Z
+
+Any thoughts about functionality itself?
+
+ping @stof @sstok @GrahamCampbell @ceeram
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-20T19:47:31Z
+
+btw, please rebase on current 1.5
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-21T09:55:17Z
+
+Please see https://github.com/mbeccati/PHP-CS-Fixer/pull/1
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-24T20:38:05Z
+
+Just few minors.
+
+Except that...
+:+1:
+
+---------------------------------------------------------------------------
+
+by sstok at 2015-01-25T10:14:15Z
+
+:+1: for this feature
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-25T11:51:54Z
+
+:+1:
