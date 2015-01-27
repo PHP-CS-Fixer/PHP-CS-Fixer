@@ -1,0 +1,95 @@
+---------------------------------------------------------------------------
+
+by ceeram at 2015-01-18T21:33:19Z
+
+Will take a look at it later when i am behind a computer again
+Op 18 jan. 2015 22:30 schreef "Dariusz Rumiński" <notifications@github.com>:
+
+> Bug when between docs and documented code is a comment.
+>
+> Could you take care of that @ceeram <https://github.com/ceeram> , please?
+> ------------------------------
+> You can view, comment on, or merge this pull request online at:
+>
+>   https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/976
+> Commit Summary
+>
+>    - PhpdocIndentFixer - add new test
+>
+> File Changes
+>
+>    - *M* Symfony/CS/Tests/Fixer/Symfony/PhpdocIndentFixerTest.php
+>    <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/976/files#diff-0>
+>    (18)
+>
+> Patch Links:
+>
+>    - https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/976.patch
+>    - https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/976.diff
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/976>.
+>
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-18T21:33:31Z
+
+Thanks !
+
+---------------------------------------------------------------------------
+
+by ceeram at 2015-01-19T09:34:55Z
+
+Why do you expect a newline to be removed here? this fixer is about indentation of docblocks, not removing newlines after them?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-19T17:47:04Z
+
+OK, then simply fix [this](https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/47458340#L193)
+
+---------------------------------------------------------------------------
+
+by ceeram at 2015-01-19T21:45:05Z
+
+That is because T_COMMENT swallows the whitespace, will fix it here. Is there plans to split up T_COMMENT and newline char?
+
+---------------------------------------------------------------------------
+
+by ceeram at 2015-01-19T21:53:45Z
+
+See: https://github.com/keradus/PHP-CS-Fixer/pull/6
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-19T21:56:07Z
+
+> That is because T_COMMENT swallows the whitespace, will fix it here. Is there plans to split up T_COMMENT and newline char?
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Tokenizer/Transformer/WhitespacyCommentTransformer.php
+
+---------------------------------------------------------------------------
+
+by ceeram at 2015-01-19T21:58:57Z
+
+Thats 2.x right? so no help here
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-19T22:00:11Z
+
+Yeah, but you asked about plans for it, so here you go ;)
+
+---------------------------------------------------------------------------
+
+by ceeram at 2015-01-19T22:01:29Z
+
+So i did, so thanks for the heads up :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-21T09:00:02Z
+
+Ready to merge?
