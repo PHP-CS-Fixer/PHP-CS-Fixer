@@ -1,0 +1,100 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-18T21:30:01Z
+
+Ooops. This one should be easy to fix. We can just check if the docblock contains exactly one line or not.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-18T21:31:23Z
+
+Wait, isn't 1.4 already released? Will there be a 1.4.1?
+
+---------------------------------------------------------------------------
+
+by ceeram at 2015-01-18T21:32:07Z
+
+Single or multiline should not matter. If next line is a return it should
+always leave the empty line
+Op 18 jan. 2015 22:31 schreef "Graham Campbell" <notifications@github.com>:
+
+> Will fix it now...
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/975#issuecomment-70426998>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-18T21:32:20Z
+
+Hmm, also I've misread this. You don't want the line removing in this case. Hmmm.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-18T21:33:35Z
+
+I disagree with this fix actually. Docblocks should document things and should not be used otherwise. The docblock you've provided does not document anything so should be removed.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2015-01-18T21:35:02Z
+
+It is indeed incorrect usage of a docblock. Nevertheless it should leave
+the empty line as is.
+Op 18 jan. 2015 22:33 schreef "Graham Campbell" <notifications@github.com>:
+
+> I disagree with this fix actually. Docblocks should document things and
+> should not be used otherwise. The docblock you've provided does not
+> document anything so should be removed.
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/975#issuecomment-70427133>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-18T21:35:47Z
+
+> It is indeed incorrect usage of a docblock.
+
+It's not really an incorrect usage as such. We check the type of a variable, then we force document it, but I don't like that.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-18T21:41:26Z
+
+> Wait, isn't 1.4 already released? Will there be a 1.4.1?
+
+We will see. after each release there is some spike of using the tool - and new bugs are detected.
+1.5 will be big release thanks to #887, so the regression will be quite long.
+If there will be errors that could be fixed fast and reelase as 1.4.1 without waiting week for 1.5 release - why not.
+But when 1.5 will be released 1.4 won't be maintained anymore
+
+---------------------------------------------------------------------------
+
+by ceeram at 2015-01-19T09:30:32Z
+
+Imo the removal of the newline is expected behavior, having newline before return is anotehr rule, and this fixer should not care about that.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-19T19:50:25Z
+
+I'm unlikely to have time to look into this this week btw, so if anyone else has some free time, feel free to jump in and fix this before me.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-20T00:16:51Z
+
+Proposition of fix was send.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-21T09:00:17Z
+
+Ready to merge?
