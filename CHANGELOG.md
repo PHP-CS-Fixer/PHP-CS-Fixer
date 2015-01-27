@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.4.1
+------------------
+
+* bug #990 MultilineArrayTrailingCommaFixer - fix case with short array on return (keradus)
+* bug #975 NoEmptyLinesAfterPhpdocsFixer - fix only when documentation documents sth (keradus)
+* bug #976 PhpdocIndentFixer - fix error when there is a comment between docblock and next meaningful token (keradus, ceeram)
+
 Changelog for v1.4
 ------------------
 

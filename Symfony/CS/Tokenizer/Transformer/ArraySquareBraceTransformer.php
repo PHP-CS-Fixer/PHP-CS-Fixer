@@ -56,6 +56,7 @@ class ArraySquareBraceTransformer extends AbstractTransformer
     {
         static $allowedPrevTokens = array(
             array(T_DOUBLE_ARROW),
+            array(T_RETURN),
             array(CT_ARRAY_SQUARE_BRACE_OPEN),
             '=',
             '+',
