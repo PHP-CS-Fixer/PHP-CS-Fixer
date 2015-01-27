@@ -881,7 +881,7 @@ class Tokens extends \SplFixedArray
 
         $prevToken = $this[$this->getPrevMeaningfulToken($index)];
 
-        if ($prevToken->equalsAny(array(array(T_DOUBLE_ARROW), '=', '+', '(', '['))) {
+        if ($prevToken->equalsAny(array(array(T_RETURN), array(T_DOUBLE_ARROW), '=', '+', '(', '['))) {
             return true;
         }
 

@@ -26,13 +26,24 @@ class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, $content)
     {
+        static $forbiddenSuccessors = array(
+            T_DOC_COMMENT,
+            T_COMMENT,
+            T_WHITESPACE,
+            T_RETURN,
+            T_THROW,
+            T_GOTO,
+            T_CONTINUE,
+            T_BREAK,
+        );
+
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
             // get the next non-whitespace token inc comments, provided
             // that there is whitespace between it and the current token
             $next = $tokens->getNextNonWhitespace($index);
-            if ($index + 2 === $next && false === $tokens[$next]->isGivenKind(array(T_DOC_COMMENT, T_COMMENT))) {
+            if ($index + 2 === $next && false === $tokens[$next]->isGivenKind($forbiddenSuccessors)) {
                 $this->fixWhitespace($tokens[$index + 1]);
             }
         }
