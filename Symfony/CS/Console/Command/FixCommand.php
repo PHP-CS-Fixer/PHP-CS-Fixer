@@ -136,8 +136,8 @@ apply (the fixer names must be separated by a comma):
 
     <info>php %command.full_name% /path/to/dir --fixers=linefeed,short_tag,indentation</info>
 
-You can also blacklist the fixers you don't want if this is more convenient,
-using <comment>-name</comment>:
+You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
+using <comment>-name_of_fixer</comment>:
 
     <info>php %command.full_name% /path/to/dir --fixers=-short_tag,-indentation</info>
 
