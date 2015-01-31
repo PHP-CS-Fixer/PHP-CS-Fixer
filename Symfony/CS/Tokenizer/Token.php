@@ -104,25 +104,24 @@ class Token
             return $this->content === $otherPrototype;
         }
 
-        $selfPrototype = $this->getPrototype();
+        if (array_key_exists(0, $otherPrototype) && $this->getId() !== $otherPrototype[0]) {
+            return false;
+        }
 
-        foreach ($otherPrototype as $key => $val) {
-            // make sure the token has such key
-            if (!isset($selfPrototype[$key])) {
+        if (array_key_exists(1, $otherPrototype)) {
+            if ($caseSensitive) {
+                if ($this->getContent() !== $otherPrototype[1]) {
+                    return false;
+                }
+            } elseif (0 !== strcasecmp($this->getContent(), $otherPrototype[1])) {
                 return false;
             }
+        }
 
-            if (1 === $key && !$caseSensitive) {
-                // case-insensitive comparison only applies to the content (key 1)
-                if (0 !== strcasecmp($val, $selfPrototype[1])) {
-                    return false;
-                }
-            } else {
-                // regular comparison
-                if ($selfPrototype[$key] !== $val) {
-                    return false;
-                }
-            }
+        // detect unknown keys
+        unset($otherPrototype[0], $otherPrototype[1]);
+        if (count($otherPrototype)) {
+            return false;
         }
 
         return true;
