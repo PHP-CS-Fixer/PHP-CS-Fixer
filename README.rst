@@ -124,7 +124,9 @@ problems as possible on a given file or directory:
     php php-cs-fixer.phar fix /path/to/dir
     php php-cs-fixer.phar fix /path/to/file
 
-The ``--verbose`` option show applied fixers. When using ``txt`` format (default one) it will also displays progress notification.
+The ``--format`` option can be used to set the output format of the results; ``txt`` format (default one), ``xml`` or ``json``.
+
+The ``--verbose`` option show applied fixers. When using ``txt`` format it will also displays progress notification.
 
 The ``--level`` option limits the fixers to apply on the
 project:
