@@ -104,7 +104,7 @@ class FixCommand extends Command
                     new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
                     new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or symfony (formerly all))', null),
-                    new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no)', null),
+                    new InputOption('using-cache', '', InputOption::VALUE_OPTIONAL, 'Set cache should be used (can be yes or no)', 'yes'),
                     new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
@@ -251,8 +251,8 @@ only those exact fixers are enabled whether or not level is set.
 With the <comment>--config-file</comment> option you can specify the path to the
 <comment>.php_cs</comment> file.
 
-By using ``--using-cache`` option you can set if caching
-mechanism should be used.
+By using ``--using-cache`` option with ``yes`` or ``no`` you can set if caching
+mechanism should be used (enabled by default).
 
 Caching
 -------
@@ -262,7 +262,7 @@ fixing only files that were modified. Tool will fix all files if tool version
 changed or fixers list changed.
 Cache is supported only for tool downloaded as phar file or installed via
 composer.
-Cache can be disabled via ``--using-cache`` option or config file:
+Cache can be disabled via ``--using-cache`` option using ``no`` or config file:
 
     <?php
 
@@ -298,7 +298,7 @@ EOF
             ->resolve()
         ;
 
-        $config     = $resolver->getConfig();
+        $config = $resolver->getConfig();
         $configFile = $resolver->getConfigFile();
 
         if ($configFile && 'txt' === $input->getOption('format')) {

@@ -465,7 +465,7 @@ class ConfigurationResolver
     private function resolveUsingCache()
     {
         if (null !== $this->options['using-cache']) {
-            $this->usingCache = 'yes' === $this->options['using-cache'];
+            $this->usingCache = 0 === strcasecmp('yes', $this->options['using-cache']);
 
             return;
         }

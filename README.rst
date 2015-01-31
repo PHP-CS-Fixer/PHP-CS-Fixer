@@ -516,8 +516,8 @@ only those exact fixers are enabled whether or not level is set.
 With the ``--config-file`` option you can specify the path to the
 ``.php_cs`` file.
 
-By using ``--using-cache`` option you can set if caching
-mechanism should be used.
+By using ``--using-cache`` option with ``yes`` or ``no`` you can set if caching
+mechanism should be used (enabled by default).
 
 Caching
 -------
@@ -527,7 +527,7 @@ fixing only files that were modified. Tool will fix all files if tool version
 changed or fixers list changed.
 Cache is supported only for tool downloaded as phar file or installed via
 composer.
-Cache can be disabled via ``--using-cache`` option or config file:
+Cache can be disabled via ``--using-cache`` option using ``no`` or config file:
 
 .. code-block:: php
 
