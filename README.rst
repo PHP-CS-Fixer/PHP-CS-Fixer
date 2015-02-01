@@ -147,8 +147,8 @@ apply (the fixer names must be separated by a comma):
 
     php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,short_tag,indentation
 
-You can also blacklist the fixers you don't want if this is more convenient,
-using ``-name``:
+You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
+using ``-name_of_fixer``:
 
 .. code-block:: bash
 
@@ -331,6 +331,10 @@ Choose from the list of available fixers:
 * **phpdoc_indent** [symfony]
                 Docblocks should have the same
                 indentation as the documented subject.
+
+* **phpdoc_to_comment** [symfony]
+                Docblocks should only be used on
+                structural elements.
 
 * **remove_leading_slash_use** [symfony]
                 Remove leading slashes in use clauses.

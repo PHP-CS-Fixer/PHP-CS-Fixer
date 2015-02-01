@@ -184,6 +184,9 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['double_arrow_multiline_whitespaces'], $fixers['multiline_array_trailing_comma']),
             array($fixers['double_arrow_multiline_whitespaces'], $fixers['align_double_arrow']),
             array($fixers['phpdoc_indent'], $fixers['phpdoc_align']),
+            array($fixers['phpdoc_to_comment'], $fixers['phpdoc_align']),
+            array($fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']),
+            array($fixers['phpdoc_to_comment'], $fixers['no_empty_lines_after_phpdocs']),
         );
     }
 
