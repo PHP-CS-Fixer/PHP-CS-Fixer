@@ -332,6 +332,10 @@ Choose from the list of available fixers:
                 @return, @var, and @type phpdoc tags
                 must be aligned vertically.
 
+* **phpdoc_to_comment** [symfony]
+                Docblocks should only be used on
+                structural elements.
+
 * **remove_leading_slash_use** [symfony]
                 Remove leading slashes in use clauses.
 
