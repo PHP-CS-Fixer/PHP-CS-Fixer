@@ -149,13 +149,8 @@ apply (the fixer names must be separated by a comma):
 
     php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,short_tag,indentation
 
-<<<<<<< HEAD
 You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
 using ``-name_of_fixer``:
-=======
-You can also blacklist the fixers you don't want when this is more convenient,
-using ``-name``:
->>>>>>> fix cache default setting, fix some docs (minor)
 
 .. code-block:: bash
 
