@@ -134,7 +134,7 @@ class ConfigurationResolver
 
         $names = array();
         foreach ($this->getFixers() as $fixer) {
-        	$names[] = $fixer->getName();
+            $names[] = $fixer->getName();
         }
 
         $this->config->fixers($names);

@@ -575,7 +575,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
                 ->setOption('using-cache', $option)
                 ->resolve();
 
-        	$this->assertTrue($this->config->usingCache());
+            $this->assertTrue($this->config->usingCache());
     	}
     }
 
