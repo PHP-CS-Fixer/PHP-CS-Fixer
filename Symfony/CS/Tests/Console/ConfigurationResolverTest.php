@@ -566,4 +566,17 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->config->usingCache());
     }
+
+    public function testResolveUsingCacheCaseInsensitiveOptionConfig()
+    {
+        foreach (array('Yes', 'YES', 'YEs', 'yEs') as $option) {
+            $this->config->setUsingCache(false);
+            $this->resolver
+                ->setOption('using-cache', $option)
+                ->resolve();
+
+        	$this->assertTrue($this->config->usingCache());
+    	}
+    }
+
 }
