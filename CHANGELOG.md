@@ -3,8 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.4.2
+--------------------
+
+* bug #994 Fix detecting of short arrays (keradus)
+* bug #995 DuplicateSemicolonFixer - ignore duplicated semicolons inside T_FOR (keradus)
+
 Changelog for v1.4.1
-------------------
+--------------------
 
 * bug #990 MultilineArrayTrailingCommaFixer - fix case with short array on return (keradus)
 * bug #975 NoEmptyLinesAfterPhpdocsFixer - fix only when documentation documents sth (keradus)
