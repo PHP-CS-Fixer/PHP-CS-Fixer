@@ -24,8 +24,17 @@ class DuplicateSemicolonFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+        $limit = $tokens->count();
+
+        for ($index = 0; $index < $limit; ++$index) {
             $token = $tokens[$index];
+
+            // skip T_FOR parenthesis to ignore duplicated `;` like `for ($i = 1; ; ++$i) {...}`
+            if ($token->isGivenKind(T_FOR)) {
+                $index = $tokens->getNextMeaningfulToken($index);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                continue;
+            }
 
             if (!$token->equals(';')) {
                 continue;

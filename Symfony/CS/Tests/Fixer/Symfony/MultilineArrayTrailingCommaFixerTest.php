@@ -275,4 +275,55 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
             ),
         );
     }
+
+    /**
+     * @dataProvider provideExamples55
+     * @requires PHP 5.5
+     */
+    public function testFix55($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideExamples55()
+    {
+        return array(
+            array(
+                '<?php
+function a()
+{
+    yield array(
+        "a" => 1,
+        "b" => 2,
+    );
+}',
+                '<?php
+function a()
+{
+    yield array(
+        "a" => 1,
+        "b" => 2
+    );
+}',
+            ),
+            array(
+                '<?php
+function a()
+{
+    yield [
+        "a" => 1,
+        "b" => 2,
+    ];
+}',
+                '<?php
+function a()
+{
+    yield [
+        "a" => 1,
+        "b" => 2
+    ];
+}',
+            ),
+        );
+    }
 }

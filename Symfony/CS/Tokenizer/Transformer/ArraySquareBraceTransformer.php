@@ -54,15 +54,13 @@ class ArraySquareBraceTransformer extends AbstractTransformer
      */
     private function isShortArray(Tokens $tokens, $index)
     {
-        static $allowedPrevTokens = array(
-            array(T_DOUBLE_ARROW),
-            array(T_RETURN),
-            array(CT_ARRAY_SQUARE_BRACE_OPEN),
-            '=',
-            '+',
-            ',',
-            '(',
-            '[',
+        static $disallowedPrevTokens = array(
+            ')',
+            ']',
+            '}',
+            array(T_ARRAY_CAST),
+            array(T_STRING),
+            array(T_VARIABLE),
         );
 
         $token = $tokens[$index];
@@ -73,7 +71,7 @@ class ArraySquareBraceTransformer extends AbstractTransformer
 
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        if ($prevToken->equalsAny($allowedPrevTokens)) {
+        if (!$prevToken->equalsAny($disallowedPrevTokens)) {
             return true;
         }
 
