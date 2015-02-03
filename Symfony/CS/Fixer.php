@@ -24,7 +24,7 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class Fixer
 {
-    const VERSION = '1.4.1';
+    const VERSION = '1.4.2-DEV';
 
     protected $fixers = array();
     protected $configs = array();
