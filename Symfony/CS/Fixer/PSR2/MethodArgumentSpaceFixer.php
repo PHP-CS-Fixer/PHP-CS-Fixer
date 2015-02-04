@@ -78,16 +78,17 @@ class MethodArgumentSpaceFixer extends AbstractFixer
     private function fixFunction(Tokens $tokens, $startFunctionIndex)
     {
         $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
-        for ($index = $startFunctionIndex + 1; $index < $endFunctionIndex; ++$index) {
+
+        for ($index = $endFunctionIndex - 1; $index > $startFunctionIndex; --$index) {
             $token = $tokens[$index];
 
-            if ($token->equals('(')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+            if ($token->equals(')')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false);
                 continue;
             }
 
-            if ($token->isGivenKind(CT_ARRAY_SQUARE_BRACE_OPEN)) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+            if ($token->isGivenKind(CT_ARRAY_SQUARE_BRACE_CLOSE)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index, false);
                 continue;
             }
 
