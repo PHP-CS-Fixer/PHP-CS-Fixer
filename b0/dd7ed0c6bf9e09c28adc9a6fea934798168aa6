@@ -1,0 +1,65 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-17T10:27:12Z
+
+I can see a lot of chanes from PR changing `Token::eqauls` and don't know what `findSequence` will do. No example, no tests.
+
+---------------------------------------------------------------------------
+
+by mbeccati at 2015-01-17T14:25:26Z
+
+Rebased from PR #971 after the equals fix. Added tests.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-01-17T16:10:48Z
+
+Half of my comments actually concern https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/972 (this is the issue when you build a PR on top of another one without mentionning it in the description). So please update the other PR based on comments done here (I think it is not worth repeating them on the other PR)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-25T12:14:35Z
+
+Please rebase on parent
+
+---------------------------------------------------------------------------
+
+by mbeccati at 2015-01-25T12:38:20Z
+
+@keradus rebased on current 1.5
+
+---------------------------------------------------------------------------
+
+by mbeccati at 2015-01-28T09:58:41Z
+
+@keradus any better?
+
+---------------------------------------------------------------------------
+
+by mbeccati at 2015-02-01T10:13:23Z
+
+@keradus be gone foul tests and casts! I'm not going to add validation, but at least we don't tell people that objects are true now.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-01T20:19:53Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by mbeccati at 2015-02-02T09:04:59Z
+
+Rebased and squashed
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-04T11:50:34Z
+
+Very well, if no further comments will be made I will merge this PR tonight
+
+---------------------------------------------------------------------------
+
+by mbeccati at 2015-02-04T11:55:39Z
+
+@keradus thanks
