@@ -134,11 +134,7 @@ class Token
     public function equalsAny(array $others, $caseSensitive = true)
     {
         foreach ($others as $key => $other) {
-            if (is_array($caseSensitive)) {
-                $cs = isset($caseSensitive[$key]) ? $caseSensitive[$key] : true;
-            } else {
-                $cs = $caseSensitive;
-            }
+            $cs = self::isKeyCaseSensitive($caseSensitive, $key);
 
             if ($this->equals($other, $cs)) {
                 return true;
@@ -146,6 +142,25 @@ class Token
         }
 
         return false;
+    }
+
+    /**
+     * A helper method used to find out whether or not a certain input token has to be case-sensitively matched.
+     *
+     * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
+     *                                   the ones used in $others. If any is missing, the default case-sensitive
+     *                                   comparison is used.
+     * @param int         $key           the key of the token that has to be looked up
+     *
+     * @return bool
+     */
+    public static function isKeyCaseSensitive($caseSensitive, $key)
+    {
+        if (is_array($caseSensitive)) {
+            return isset($caseSensitive[$key]) ? $caseSensitive[$key] : true;
+        }
+
+        return $caseSensitive;
     }
 
     /**
