@@ -32,6 +32,7 @@ class Config implements ConfigInterface
     protected $usingCache = false;
     protected $usingLinter = true;
     protected $hideProgress = false;
+    protected $header = '';
 
     public function __construct($name = 'default', $description = 'A default configuration')
     {
@@ -154,5 +155,17 @@ class Config implements ConfigInterface
     public function usingLinter()
     {
         return $this->usingLinter;
+    }
+
+    public function getHeader()
+    {
+        return $this->header;
+    }
+
+    public function setHeader($header)
+    {
+        $this->header = (string) $header;
+
+        return $this;
     }
 }

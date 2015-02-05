@@ -82,4 +82,11 @@ interface ConfigInterface
      * @return FixerInterface[]
      */
     public function getCustomFixers();
+
+    /**
+     * Returns the header text
+     *
+     * @return string
+     */
+    public function getHeader();
 }
