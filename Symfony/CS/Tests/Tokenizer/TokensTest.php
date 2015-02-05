@@ -326,4 +326,130 @@ preg_replace_callback(
             )),
         );
     }
+
+    public function testClearRange()
+    {
+        $source = <<<'PHP'
+<?php
+class FooBar
+{
+    public function foo()
+    {
+        return 'bar';
+    }
+
+    public function bar()
+    {
+        return 'foo';
+    }
+}
+PHP;
+
+        $tokens = Tokens::fromCode($source);
+        $publicIndexes = array_keys($tokens->findGivenKind(T_PUBLIC));
+        $fooIndex = $publicIndexes[0];
+        $barIndex = $publicIndexes[1];
+
+        $tokens->clearRange($fooIndex, $barIndex - 1);
+
+        $newPublicIndexes = array_keys($tokens->findGivenKind(T_PUBLIC));
+        $this->assertEquals($barIndex, reset($newPublicIndexes));
+
+        for ($i = $fooIndex; $i < $barIndex; $i++) {
+            $this->assertTrue($tokens[$i]->isWhiteSpace());
+        }
+    }
+
+    /**
+     * @dataProvider provideMonolithicPhpDetection
+     * @param string $source
+     * @param bool   $monolitic
+     */
+    public function testMonolithicPhpDetection($source, $monolitic)
+    {
+        $tokens = Tokens::fromCode($source);
+        $this->assertSame($monolitic, $tokens->isMonolithicPhp());
+    }
+
+    public function provideMonolithicPhpDetection()
+    {
+        return array(
+            array("<?php\n", true),
+            array("<?php\n?>", true),
+            array("", false),
+            array(" ", false),
+            array("#!/usr/bin/env php\n<?php\n", false),
+            array(" <?php\n", false),
+            array("<?php\n?> ", false),
+            array("<?php\n?><?php\n", false),
+        );
+    }
+
+    /**
+     * @dataProvider provideShortOpenTagMonolithicPhpDetection
+     * @param string $source
+     * @param bool   $monolitic
+     */
+    public function testShortOpenTagMonolithicPhpDetection($source, $monolitic)
+    {
+        /*
+         * short_open_tag setting is ignored by HHVM
+         * @see https://github.com/facebook/hhvm/issues/4758
+         */
+        if (!ini_get('short_open_tag') && !defined('HHVM_VERSION')) {
+            // Short open tag is parsed as T_INLINE_HTML
+            $monolitic = false;
+        }
+
+        $tokens = Tokens::fromCode($source);
+        $this->assertSame($monolitic, $tokens->isMonolithicPhp());
+    }
+
+    public function provideShortOpenTagMonolithicPhpDetection()
+    {
+        return array(
+            array("<?\n", true),
+            array("<?\n?>", true),
+            array(" <?\n", false),
+            array("<?\n?> ", false),
+            array("<?\n?><?\n", false),
+            array("<?\n?><?php\n", false),
+            array("<?\n?><?=' ';\n", false),
+            array("<?php\n?><?\n", false),
+            array("<?=' '\n?><?\n", false),
+        );
+    }
+
+    /**
+     * @dataProvider provideShortOpenTagEchoMonolithicPhpDetection
+     * @param string $source
+     * @param bool   $monolitic
+     */
+    public function testShortOpenTagEchoMonolithicPhpDetection($source, $monolitic)
+    {
+        /*
+         * short_open_tag setting is ignored by HHVM
+         * @see https://github.com/facebook/hhvm/issues/4758
+         */
+        if (!ini_get('short_open_tag') && 50400 > PHP_VERSION_ID && !defined('HHVM_VERSION')) {
+            // Short open tag echo is parsed as T_INLINE_HTML
+            $monolitic = false;
+        }
+
+        $tokens = Tokens::fromCode($source);
+        $this->assertSame($monolitic, $tokens->isMonolithicPhp());
+    }
+
+    public function provideShortOpenTagEchoMonolithicPhpDetection()
+    {
+        return array(
+            array("<?=' ';\n", true),
+            array("<?=' '?>", true),
+            array(" <?=' ';\n", false),
+            array("<?=' '?> ", false),
+            array("<?php\n?><?=' ';\n", false),
+            array("<?=' '\n?><?php\n", false),
+            array("<?=' '\n?><?=' ';\n", false),
+        );
+    }
 }
