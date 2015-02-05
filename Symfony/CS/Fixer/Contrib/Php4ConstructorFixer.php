@@ -102,7 +102,7 @@ class Php4ConstructorFixer extends AbstractFixer
 
         $p5 = $this->findFunction($tokens, '__construct', $classStart, $classEnd);
 
-        if (null == $p5) {
+        if (null === $p5) {
             // no PHP5-constructor, we can rename the old one to __construct
             $tokens[$p4['nameIdx']]->setContent('__construct');
 
