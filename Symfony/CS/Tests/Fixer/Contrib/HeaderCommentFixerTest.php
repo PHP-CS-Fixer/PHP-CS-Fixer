@@ -11,10 +11,34 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
+use Symfony\CS\Fixer\Contrib\HeaderCommentFixer;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 class HeaderCommentFixerTest extends AbstractFixerTestBase
 {
+    protected static $savedHeader;
+    protected static $testHeader = <<<EOH
+This file is part of the PHP CS utility.
+
+(c) Fabien Potencier <fabien@symfony.com>
+
+This source file is subject to the MIT license that is bundled
+with this source code in the file LICENSE.
+EOH;
+
+    protected function setUp()
+    {
+        parent::setUp();
+        self::$savedHeader = HeaderCommentFixer::getHeader();
+        HeaderCommentFixer::setHeader(self::$testHeader);
+    }
+
+    protected function tearDown()
+    {
+        HeaderCommentFixer::setHeader(self::$savedHeader);
+        parent::tearDown();
+    }
+
     public function testFixWithPreviousHeader()
     {
         $expected = <<<'EOH'
@@ -108,22 +132,30 @@ EOH;
         $this->makeTest($expected, $input);
     }
 
-    protected function getFixer()
+    public function testFixRemovePreviousHeader()
     {
-        $header = <<<'EOH'
-This file is part of the PHP CS utility.
+        HeaderCommentFixer::setHeader('');
+        $expected = <<<'EOH'
+<?php
 
-(c) Fabien Potencier <fabien@symfony.com>
-
-This source file is subject to the MIT license that is bundled
-with this source code in the file LICENSE.
+phpinfo();
 EOH;
 
-        $fixer = parent::getFixer();
-        $config = $this->getMock('Symfony\CS\ConfigInterface');
-        $config->expects($this->any())->method('getHeader')->will($this->returnValue($header));
-        $fixer->setConfig($config);
+        $input = <<<'EOH'
+<?php
 
-        return $fixer;
+/*
+ * This file is part of the PHP CS utility.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+phpinfo();
+EOH;
+
+        $this->makeTest($expected, $input);
     }
 }

@@ -12,35 +12,58 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
-use Symfony\CS\ConfigAwareInterface;
-use Symfony\CS\ConfigInterface;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Antonio J. García Lagar <aj@garcialagar.es>
  */
-class HeaderCommentFixer extends AbstractFixer implements ConfigAwareInterface
+class HeaderCommentFixer extends AbstractFixer
 {
-    private $config;
-    private $header;
+    private static $header = '';
+    private static $headerComment = '';
 
+    /**
+     * Sets the desired header text
+     *
+     * The given text will be trimmed and enclosed into a multiline comment.
+     * If the text is empty, when a file get fixed, the header comment will be
+     * erased.
+     *
+     * @param string $header
+     */
+    public static function setHeader($header)
+    {
+        self::$header = trim((string) $header);
+
+        if (strlen(self::$header) !== 0) {
+            self::$headerComment = self::encloseTextInComment(self::$header);
+        } else {
+            self::$headerComment = '';
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public static function getHeader()
+    {
+        return self::$header;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
-        $header = $this->getHeader();
-        if ('' === $header) {
-            throw new \RuntimeException("The config must have a header text set.");
-        }
-
         $tokens = Tokens::fromCode($content);
 
-        if (!count($tokens) || $tokens[0]->getId() !== T_OPEN_TAG || '' === $header) {
+        if (!count($tokens) || $tokens[0]->getId() !== T_OPEN_TAG) {
             return $content;
         }
 
         $newContent  = $tokens[0]->getContent();
         $newContent .= PHP_EOL;
-        $newContent .= $header;
-        $newContent .= PHP_EOL;
+        $newContent .= strlen(self::$headerComment)>0 ? self::$headerComment.PHP_EOL : '';
 
         if (null !== $firstNonWhitespace = $tokens->getNextNonWhitespace(0)) {
             $indexStart = $firstNonWhitespace;
@@ -56,11 +79,17 @@ class HeaderCommentFixer extends AbstractFixer implements ConfigAwareInterface
         return $newContent;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'Add or replace header comment.';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(\SplFileInfo $file)
     {
         if ('php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION)) {
@@ -70,26 +99,11 @@ class HeaderCommentFixer extends AbstractFixer implements ConfigAwareInterface
         return false;
     }
 
-    public function setConfig(ConfigInterface $config)
-    {
-        $this->config = $config;
-    }
-
-    private function getHeader()
-    {
-        if ($this->header === null) {
-            $trimmedHeader = trim($this->config->getHeader());
-            if (strlen($trimmedHeader) === 0) {
-                $this->header = '';
-            } else {
-                $this->header = $this->encloseTextInComment($this->config->getHeader());
-            }
-        }
-
-        return $this->header;
-    }
-
-    private function encloseTextInComment($header)
+    /**
+     * @param  string $header
+     * @return string
+     */
+    private static function encloseTextInComment($header)
     {
         $comment = '/*'.PHP_EOL;
         $lines = explode("\n", str_replace("\r", '', $header));

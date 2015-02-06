@@ -18,11 +18,6 @@ use Symfony\CS\Finder\MagentoFinder;
  */
 class MagentoConfig extends Config
 {
-    protected $header = <<< EOH
-Copyright © 2015 Magento. All rights reserved.
-See COPYING.txt for license details.
-EOH;
-
     public function __construct()
     {
         parent::__construct();
