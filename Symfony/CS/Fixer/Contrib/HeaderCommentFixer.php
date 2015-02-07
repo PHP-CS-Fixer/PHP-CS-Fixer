@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -35,7 +36,7 @@ class HeaderCommentFixer extends AbstractFixer
     {
         self::$header = trim((string) $header);
 
-        if (strlen(self::$header) !== 0) {
+        if (strlen(self::$header)) {
             self::$headerComment = self::encloseTextInComment(self::$header);
         } else {
             self::$headerComment = '';
@@ -61,22 +62,12 @@ class HeaderCommentFixer extends AbstractFixer
             return $content;
         }
 
-        $newContent  = $tokens[0]->getContent();
-        $newContent .= PHP_EOL;
-        $newContent .= strlen(self::$headerComment)>0 ? self::$headerComment.PHP_EOL : '';
+        $this->removeHeaderComment($tokens);
+        $insertionIndex = $this->findHeaderCommentInsertionIndex($tokens);
+        $this->clearRange($tokens, 1, $insertionIndex-1);
+        $this->insertHeaderComment($tokens, $insertionIndex);
 
-        if (null !== $firstNonWhitespace = $tokens->getNextNonWhitespace(0)) {
-            $indexStart = $firstNonWhitespace;
-            if ($tokens[$firstNonWhitespace]->getId() === T_COMMENT) {
-                $indexStart = $tokens->getNextNonWhitespace($firstNonWhitespace);
-            }
-        }
-
-        if (null !== $indexStart) {
-            $newContent .= $tokens->generatePartialCode($indexStart, $tokens->getSize()-1);
-        }
-
-        return $newContent;
+        return $tokens->generateCode();
     }
 
     /**
@@ -84,7 +75,7 @@ class HeaderCommentFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Add or replace header comment.';
+        return 'Add, replace or remove header comment.';
     }
 
     /**
@@ -100,18 +91,85 @@ class HeaderCommentFixer extends AbstractFixer
     }
 
     /**
+     * Encloses the given text in a comment block
+     *
      * @param  string $header
      * @return string
      */
     private static function encloseTextInComment($header)
     {
-        $comment = '/*'.PHP_EOL;
+        $comment = "/*\n";
         $lines = explode("\n", str_replace("\r", '', $header));
         foreach ($lines as $line) {
-            $comment .= rtrim(' * '.$line).PHP_EOL;
+            $comment .= rtrim(' * '.$line)."\n";
         }
-        $comment .= ' */'.PHP_EOL;
+        $comment .= " */\n";
 
         return $comment;
+    }
+
+    /**
+     * Removes the header comment, if any
+     *
+     * @param Tokens $tokens
+     */
+    private function removeHeaderComment(Tokens $tokens)
+    {
+        if (null !== $index = $tokens->getNextNonWhitespace(0)) {
+            if ($tokens[$index]->getId() === T_COMMENT) {
+                $tokens[$index]->override(array(T_WHITESPACE, ''));
+            }
+        }
+    }
+
+    /**
+     * Finds the index where the header comment must be inserted
+     *
+     * @param  Tokens $tokens
+     * @return int
+     */
+    private function findHeaderCommentInsertionIndex(Tokens $tokens)
+    {
+        $index = $tokens->getNextNonWhitespace(0);
+
+        if (null === $index) {
+            //Empty file, insert at the end
+            $index = $tokens->getSize();
+        }
+
+        return $index;
+    }
+
+    /**
+     * Clear tokens in the given range
+     *
+     * @param Tokens $tokens
+     * @param int    $indexStart
+     * @param int    $indexEnd
+     */
+    private function clearRange(Tokens $tokens, $indexStart, $indexEnd)
+    {
+        for ($i = $indexStart; $i <= $indexEnd; $i++) {
+            $tokens[$i]->clear();
+        }
+    }
+
+    /**
+     * Inserts the header comment at the given index
+     *
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function insertHeaderComment(Tokens $tokens, $index)
+    {
+        $headCommentTokens = Tokens::fromArray(
+            array(
+                new Token(array(T_WHITESPACE, "\n")),
+                new Token(array(T_COMMENT, self::$headerComment)),
+                new Token(array(T_WHITESPACE, strlen(self::$headerComment) ? "\n" : '')),
+            )
+        );
+
+        $tokens->insertAt($index, $headCommentTokens);
     }
 }

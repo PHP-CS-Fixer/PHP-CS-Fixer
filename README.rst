@@ -396,7 +396,7 @@ Choose from the list of available fixers:
                 behavior.
                 
 * **header_comment** [contrib]
-                Add or replace header comment.                
+                Add, replace or remove header comment.
 
 * **multiline_spaces_before_semicolon** [contrib]
                 Multi-line whitespace before closing

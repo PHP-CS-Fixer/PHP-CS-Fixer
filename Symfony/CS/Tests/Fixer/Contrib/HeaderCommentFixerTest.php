@@ -114,9 +114,9 @@ EOH;
 /**
  * @author Antonio J. García Lagar <aj@garcialagar.es>
  */
- class Foo()
- {
- }
+class Foo()
+{
+}
 EOH;
 
         $input = <<<'EOH'
@@ -124,9 +124,9 @@ EOH;
 /**
  * @author Antonio J. García Lagar <aj@garcialagar.es>
  */
- class Foo()
- {
- }
+class Foo()
+{
+}
 EOH;
 
         $this->makeTest($expected, $input);
@@ -156,6 +156,27 @@ EOH;
 phpinfo();
 EOH;
 
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixAddHeaderToEmptyFile()
+    {
+        $expected = <<<'EOH'
+<?php
+
+/*
+ * This file is part of the PHP CS utility.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+
+EOH;
+
+        $input = "<?php\n";
         $this->makeTest($expected, $input);
     }
 }
