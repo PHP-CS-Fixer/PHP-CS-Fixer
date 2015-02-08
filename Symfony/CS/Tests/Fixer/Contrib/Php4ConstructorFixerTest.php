@@ -357,7 +357,9 @@ class Foo
 {
 
     /**
-     * PHP-4 Constructor
+     * PHP-4 Constructor.
+     *
+     * This is the real constructor. It's the one that most likely contains any meaningful info in the docblock.
      */
     private function __construct($bar)
     {
@@ -377,7 +379,9 @@ EOF;
 class Foo
 {
     /**
-     * PHP-5 Constructor
+     * PHP-5 Constructor.
+     *
+     * This docblock is removed, along with the entire wrapper method.
      */
     protected function __construct($bar)
     {
@@ -386,7 +390,9 @@ class Foo
     }
 
     /**
-     * PHP-4 Constructor
+     * PHP-4 Constructor.
+     *
+     * This is the real constructor. It's the one that most likely contains any meaningful info in the docblock.
      */
     private function Foo($bar)
     {
