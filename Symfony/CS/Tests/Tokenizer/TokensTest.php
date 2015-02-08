@@ -374,16 +374,27 @@ PHP;
     public function provideMonolithicPhpDetection()
     {
         return array(
-            array('<?\n', true),
-            array('<?php\n', true),
-            array('<?\n?>', true),
-            array('<?php\n?>', true),
-            array(' <?\n', false),
-            array(' <?php\n', false),
-            array('<?\n?> ', false),
-            array('<?php\n?> ', false),
-            array('<?\n?><?', false),
-            array('<?php\n?><?php', false),
+            array("<?\n", true),
+            array("<?php\n", true),
+            array("<?=' ';\n", true),
+            array("<?\n?>", true),
+            array("<?php\n?>", true),
+            array("<?=' '?>", true),
+            array(" <?\n", false),
+            array(" <?php\n", false),
+            array(" <?=' ';\n", false),
+            array("<?\n?> ", false),
+            array("<?php\n?> ", false),
+            array("<?=' '?> ", false),
+            array("<?\n?><?\n", false),
+            array("<?\n?><?php\n", false),
+            array("<?\n?><?=' ';\n", false),
+            array("<?php\n?><?\n", false),
+            array("<?php\n?><?php\n", false),
+            array("<?php\n?><?=' ';\n", false),
+            array("<?=' '\n?><?\n", false),
+            array("<?=' '\n?><?php\n", false),
+            array("<?=' '\n?><?=' ';\n", false),
         );
     }
 }
