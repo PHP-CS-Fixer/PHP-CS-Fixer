@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-04T20:38:29Z
+
+Fixed by using backward iteration approach when inserting new token inside loop.
+
+//cc @trilopin
