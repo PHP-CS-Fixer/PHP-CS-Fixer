@@ -20,6 +20,26 @@ use Symfony\CS\Tokenizer\Token;
 class Utils
 {
     /**
+     * Calculate a bitmask for given constant names.
+     *
+     * @param string[] $options constant names
+     *
+     * @return int
+     */
+    public static function calculateBitmask(array $options)
+    {
+        $bitmask = 0;
+
+        foreach ($options as $optionName) {
+            if (defined($optionName)) {
+                $bitmask |= constant($optionName);
+            }
+        }
+
+        return $bitmask;
+    }
+
+    /**
      * Converts a camel cased string to an snake cased string.
      *
      * @param string $string
