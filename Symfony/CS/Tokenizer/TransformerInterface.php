@@ -26,11 +26,13 @@ namespace Symfony\CS\Tokenizer;
 interface TransformerInterface
 {
     /**
-     * Process Tokens collection to transform tokens into custom tokens when needed.
+     * Process Token to transform it into custom token when needed.
      *
-     * @param Tokens $tokens Tokens collection
+     * @param Tokens $tokens
+     * @param Token  $token
+     * @param int    $index
      */
-    public function process(Tokens $tokens);
+    public function process(Tokens $tokens, Token $token, $index);
 
     /**
      * Register constants for custom tokens created by Transformer.
@@ -52,13 +54,4 @@ interface TransformerInterface
      * @return string The name of the fixer
      */
     public function getName();
-
-    /**
-     * Returns the priority of the Transformer.
-     *
-     * The default priority is 0 and higher priorities are executed first.
-     *
-     * @return int
-     */
-    public function getPriority();
 }

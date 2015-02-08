@@ -12,6 +12,7 @@
 namespace Symfony\CS\Tokenizer\Transformer;
 
 use Symfony\CS\Tokenizer\AbstractTransformer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -26,23 +27,25 @@ class ArrayTypehintTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens)
+    public function getCustomTokenNames()
     {
-        foreach ($tokens->findGivenKind(T_ARRAY) as $index => $token) {
-            $nextIndex = $tokens->getNextMeaningfulToken($index);
-            $nextToken = $tokens[$nextIndex];
-
-            if (!$nextToken->equals('(')) {
-                $token->override(array(CT_ARRAY_TYPEHINT, $token->getContent()));
-            }
-        }
+        return array('CT_ARRAY_TYPEHINT');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function process(Tokens $tokens, Token $token, $index)
     {
-        return array('CT_ARRAY_TYPEHINT');
+        if (!$token->isGivenKind(T_ARRAY)) {
+            return;
+        }
+
+        $nextIndex = $tokens->getNextMeaningfulToken($index);
+        $nextToken = $tokens[$nextIndex];
+
+        if (!$nextToken->equals('(')) {
+            $token->override(array(CT_ARRAY_TYPEHINT, $token->getContent()));
+        }
     }
 }

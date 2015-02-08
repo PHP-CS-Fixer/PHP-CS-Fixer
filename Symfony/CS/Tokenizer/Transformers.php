@@ -12,7 +12,6 @@
 namespace Symfony\CS\Tokenizer;
 
 use Symfony\Component\Finder\Finder;
-use Symfony\CS\Utils;
 
 /**
  * Collection of Transformer classes.
@@ -79,8 +78,6 @@ class Transformers
 
     public function getTransformers()
     {
-        $this->sortTransformers();
-
         return $this->items;
     }
 
@@ -119,8 +116,10 @@ class Transformers
      */
     public function transform(Tokens $tokens)
     {
-        foreach ($this->getTransformers() as $transformer) {
-            $transformer->process($tokens);
+        foreach ($tokens as $index => $token) {
+            foreach ($this->items as $transformer) {
+                $transformer->process($tokens, $token, $index);
+            }
         }
     }
 
@@ -157,15 +156,5 @@ class Transformers
             $class = __NAMESPACE__.'\\Transformer\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
             $this->registerTransformer(new $class());
         }
-    }
-
-    /**
-     * Sort registered Transformers.
-     */
-    private function sortTransformers()
-    {
-        usort($this->items, function (TransformerInterface $a, TransformerInterface $b) {
-            return Utils::cmpInt($b->getPriority(), $a->getPriority());
-        });
     }
 }

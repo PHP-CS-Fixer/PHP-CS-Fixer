@@ -27,40 +27,36 @@ class WhitespacyCommentTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens)
+    public function getCustomTokenNames()
     {
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isComment()) {
-                continue;
-            }
-
-            $content = $token->getContent();
-            $trimmedContent = rtrim($content);
-
-            // nothing trimmed, nothing to do
-            if ($content === $trimmedContent) {
-                continue;
-            }
-
-            $whitespaces = substr($content, strlen($trimmedContent));
-
-            $token->setContent($trimmedContent);
-
-            if (isset($tokens[$index + 1]) && $tokens[$index + 1]->isGivenKind(T_WHITESPACE)) {
-                $tokens[$index + 1]->setContent($whitespaces.$tokens[$index + 1]->getContent());
-            } else {
-                $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, $whitespaces)));
-            }
-        }
+        return array();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function process(Tokens $tokens, Token $token, $index)
     {
-        return array();
+        if (!$token->isComment()) {
+            return;
+        }
+
+        $content = $token->getContent();
+        $trimmedContent = rtrim($content);
+
+        // nothing trimmed, nothing to do
+        if ($content === $trimmedContent) {
+            return;
+        }
+
+        $whitespaces = substr($content, strlen($trimmedContent));
+
+        $token->setContent($trimmedContent);
+
+        if (isset($tokens[$index + 1]) && $tokens[$index + 1]->isGivenKind(T_WHITESPACE)) {
+            $tokens[$index + 1]->setContent($whitespaces.$tokens[$index + 1]->getContent());
+        } else {
+            $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, $whitespaces)));
+        }
     }
 }
