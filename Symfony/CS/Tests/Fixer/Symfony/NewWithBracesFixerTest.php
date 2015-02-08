@@ -44,6 +44,7 @@ class NewWithBracesFixerTest extends AbstractFixerTestBase
             array('<?php $baz = new {$bar->baz}();', '<?php $baz = new {$bar->baz};'),
             array('<?php $xyz = new X(new Y(new Z()));', '<?php $xyz = new X(new Y(new Z));'),
             array('<?php $foo = (new $bar())->foo;', '<?php $foo = (new $bar)->foo;'),
+            array('<?php $foo = (new $bar((new Foo())->bar))->foo', '<?php $foo = (new $bar((new Foo)->bar))->foo'),
             array('<?php $self = new self();', '<?php $self = new self;'),
             array('<?php $static = new static();', '<?php $static = new static;'),
             array('<?php $magic = new __CLASS__();', '<?php $magic = new __CLASS__;'),
