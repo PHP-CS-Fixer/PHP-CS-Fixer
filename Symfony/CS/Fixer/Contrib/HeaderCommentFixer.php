@@ -115,10 +115,9 @@ class HeaderCommentFixer extends AbstractFixer
      */
     private function removeHeaderComment(Tokens $tokens)
     {
-        if (null !== $index = $tokens->getNextNonWhitespace(0)) {
-            if ($tokens[$index]->getId() === T_COMMENT) {
-                $tokens[$index]->override(array(T_WHITESPACE, ''));
-            }
+        $index = $tokens->getNextNonWhitespace(0);
+        if (null !== $index && $tokens[$index]->isGivenKind(T_COMMENT)) {
+            $tokens[$index]->clear();
         }
     }
 
