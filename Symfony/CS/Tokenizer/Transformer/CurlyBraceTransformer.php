@@ -52,9 +52,6 @@ class CurlyBraceTransformer extends AbstractTransformer
     {
         foreach ($tokens as $index => $token) {
             $this->transformIntoCurlyCloseBrace($tokens, $token, $index);
-        }
-
-        foreach ($tokens as $index => $token) {
             $this->transformIntoDollarCloseBrace($tokens, $token, $index);
             $this->transformIntoDynamicPropBraces($tokens, $token, $index);
             $this->transformIntoDynamicVarBraces($tokens, $token, $index);
