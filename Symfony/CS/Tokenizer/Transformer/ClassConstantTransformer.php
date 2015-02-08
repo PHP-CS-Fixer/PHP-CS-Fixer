@@ -12,6 +12,7 @@
 namespace Symfony\CS\Tokenizer\Transformer;
 
 use Symfony\CS\Tokenizer\AbstractTransformer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -28,13 +29,8 @@ class ClassConstantTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens)
     {
-        foreach ($tokens->findGivenKind(T_CLASS) as $index => $token) {
-            $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            $prevToken = $tokens[$prevIndex];
-
-            if ($prevToken->isGivenKind(T_DOUBLE_COLON)) {
-                $token->override(array(CT_CLASS_CONSTANT, $token->getContent()));
-            }
+        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+            $this->processStep($tokens, $tokens[$index], $index);
         }
     }
 
@@ -44,5 +40,19 @@ class ClassConstantTransformer extends AbstractTransformer
     public function getCustomTokenNames()
     {
         return array('CT_CLASS_CONSTANT');
+    }
+
+    private function processStep(Tokens $tokens, Token $token, $index)
+    {
+        if (!$token->isGivenKind(T_CLASS)) {
+            return;
+        }
+
+        $prevIndex = $tokens->getPrevMeaningfulToken($index);
+        $prevToken = $tokens[$prevIndex];
+
+        if ($prevToken->isGivenKind(T_DOUBLE_COLON)) {
+            $token->override(array(CT_CLASS_CONSTANT, $token->getContent()));
+        }
     }
 }

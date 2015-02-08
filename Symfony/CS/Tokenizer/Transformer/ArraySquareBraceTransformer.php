@@ -12,6 +12,7 @@
 namespace Symfony\CS\Tokenizer\Transformer;
 
 use Symfony\CS\Tokenizer\AbstractTransformer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -33,14 +34,7 @@ class ArraySquareBraceTransformer extends AbstractTransformer
     public function process(Tokens $tokens)
     {
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            if (!$this->isShortArray($tokens, $index)) {
-                continue;
-            }
-
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
-
-            $tokens[$index]->override(array(CT_ARRAY_SQUARE_BRACE_OPEN, '['));
-            $tokens[$endIndex]->override(array(CT_ARRAY_SQUARE_BRACE_CLOSE, ']'));
+            $this->processStep($tokens, $tokens[$index], $index);
         }
     }
 
@@ -84,5 +78,17 @@ class ArraySquareBraceTransformer extends AbstractTransformer
     public function getCustomTokenNames()
     {
         return array('CT_ARRAY_SQUARE_BRACE_OPEN', 'CT_ARRAY_SQUARE_BRACE_CLOSE');
+    }
+
+    private function processStep(Tokens $tokens, Token $token, $index)
+    {
+        if (!$this->isShortArray($tokens, $index)) {
+            return;
+        }
+
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
+
+        $token->override(array(CT_ARRAY_SQUARE_BRACE_OPEN, '['));
+        $tokens[$endIndex]->override(array(CT_ARRAY_SQUARE_BRACE_CLOSE, ']'));
     }
 }

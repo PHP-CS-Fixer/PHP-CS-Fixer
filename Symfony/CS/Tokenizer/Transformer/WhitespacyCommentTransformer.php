@@ -30,29 +30,7 @@ class WhitespacyCommentTransformer extends AbstractTransformer
     public function process(Tokens $tokens)
     {
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isComment()) {
-                continue;
-            }
-
-            $content = $token->getContent();
-            $trimmedContent = rtrim($content);
-
-            // nothing trimmed, nothing to do
-            if ($content === $trimmedContent) {
-                continue;
-            }
-
-            $whitespaces = substr($content, strlen($trimmedContent));
-
-            $token->setContent($trimmedContent);
-
-            if (isset($tokens[$index + 1]) && $tokens[$index + 1]->isGivenKind(T_WHITESPACE)) {
-                $tokens[$index + 1]->setContent($whitespaces.$tokens[$index + 1]->getContent());
-            } else {
-                $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, $whitespaces)));
-            }
+            $this->processStep($tokens, $tokens[$index], $index);
         }
     }
 
@@ -62,5 +40,30 @@ class WhitespacyCommentTransformer extends AbstractTransformer
     public function getCustomTokenNames()
     {
         return array();
+    }
+
+    private function processStep(Tokens $tokens, Token $token, $index)
+    {
+        if (!$token->isComment()) {
+            return;
+        }
+
+        $content = $token->getContent();
+        $trimmedContent = rtrim($content);
+
+        // nothing trimmed, nothing to do
+        if ($content === $trimmedContent) {
+            return;
+        }
+
+        $whitespaces = substr($content, strlen($trimmedContent));
+
+        $token->setContent($trimmedContent);
+
+        if (isset($tokens[$index + 1]) && $tokens[$index + 1]->isGivenKind(T_WHITESPACE)) {
+            $tokens[$index + 1]->setContent($whitespaces.$tokens[$index + 1]->getContent());
+        } else {
+            $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, $whitespaces)));
+        }
     }
 }

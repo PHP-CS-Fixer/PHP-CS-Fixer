@@ -12,6 +12,7 @@
 namespace Symfony\CS\Tokenizer\Transformer;
 
 use Symfony\CS\Tokenizer\AbstractTransformer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -31,36 +32,7 @@ class UseTransformer extends AbstractTransformer
     public function process(Tokens $tokens)
     {
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $token = $tokens[$index];
-            $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
-            $prevToken = $prevTokenIndex === null ? null : $tokens[$prevTokenIndex];
-
-            // Skip whole class braces content.
-            // That way we can skip whole tokens in class declaration, therefore skip `T_USE` for traits.
-            if ($token->isClassy() && !$prevToken->isGivenKind(T_DOUBLE_COLON)) {
-                $index = $tokens->getNextTokenOfKind($index, array('{'));
-                $innerLimit = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
-
-                while ($index < $innerLimit) {
-                    $token = $tokens[++$index];
-
-                    if (!$token->isGivenKind(T_USE)) {
-                        continue;
-                    }
-
-                    if ($this->isUseForLambda($tokens, $index)) {
-                        $token->override(array(CT_USE_LAMBDA, $token->getContent()));
-                    } else {
-                        $token->override(array(CT_USE_TRAIT, $token->getContent()));
-                    }
-                }
-
-                continue;
-            }
-
-            if ($token->isGivenKind(T_USE) && $this->isUseForLambda($tokens, $index)) {
-                $token->override(array(CT_USE_LAMBDA, $token->getContent()));
-            }
+            $this->processStep($tokens, $tokens[$index], $index);
         }
     }
 
@@ -86,5 +58,38 @@ class UseTransformer extends AbstractTransformer
 
         // test `function () use ($foo) {}` case
         return $nextToken->equals('(');
+    }
+
+    private function processStep(Tokens $tokens, Token $token, $index)
+    {
+        $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
+        $prevToken = $prevTokenIndex === null ? null : $tokens[$prevTokenIndex];
+
+        // Skip whole class braces content.
+        // That way we can skip whole tokens in class declaration, therefore skip `T_USE` for traits.
+        if ($token->isClassy() && !$prevToken->isGivenKind(T_DOUBLE_COLON)) {
+            $index = $tokens->getNextTokenOfKind($index, array('{'));
+            $innerLimit = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+
+            while ($index < $innerLimit) {
+                $token = $tokens[++$index];
+
+                if (!$token->isGivenKind(T_USE)) {
+                    continue;
+                }
+
+                if ($this->isUseForLambda($tokens, $index)) {
+                    $token->override(array(CT_USE_LAMBDA, $token->getContent()));
+                } else {
+                    $token->override(array(CT_USE_TRAIT, $token->getContent()));
+                }
+            }
+
+            return;
+        }
+
+        if ($token->isGivenKind(T_USE) && $this->isUseForLambda($tokens, $index)) {
+            $token->override(array(CT_USE_LAMBDA, $token->getContent()));
+        }
     }
 }
