@@ -159,6 +159,24 @@ EOH;
         $this->makeTest($expected, $input);
     }
 
+    public function testFixDoNotTouchFilesWithSeveralOpenTags()
+    {
+        $input = "<?php\nphpinfo();\n?>\n<?";
+        $this->makeTest($input);
+    }
+
+    public function testFixDoNotTouchFilesNotStartingWithOpenTag()
+    {
+        $input = " <?php\nphpinfo();\n";
+        $this->makeTest($input);
+    }
+
+    public function testFixDoNotTouchFilesWithInlineHtml()
+    {
+        $input = "<?php\nphpinfo();\n?><hr/>";
+        $this->makeTest($input);
+    }
+
     public function testFixAddHeaderToEmptyFile()
     {
         $expected = <<<'EOH'

@@ -58,7 +58,12 @@ class HeaderCommentFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        if (!count($tokens) || $tokens[0]->getId() !== T_OPEN_TAG) {
+        $kinds = $tokens->findGivenKind(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_CLOSE_TAG, T_INLINE_HTML));
+
+        // leave code intact if there is:
+        // - any T_INLINE_HTML code
+        // - several opening tags
+        if (count($kinds[T_INLINE_HTML]) || (count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO])) > 1) {
             return $content;
         }
 
@@ -76,18 +81,6 @@ class HeaderCommentFixer extends AbstractFixer
     public function getDescription()
     {
         return 'Add, replace or remove header comment.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(\SplFileInfo $file)
-    {
-        if ('php' === pathinfo($file->getFilename(), PATHINFO_EXTENSION)) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
