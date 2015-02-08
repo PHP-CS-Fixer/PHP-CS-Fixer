@@ -64,7 +64,7 @@ class HeaderCommentFixer extends AbstractFixer
 
         $this->removeHeaderComment($tokens);
         $insertionIndex = $this->findHeaderCommentInsertionIndex($tokens);
-        $this->clearRange($tokens, 1, $insertionIndex-1);
+        $tokens->clearRange(1, $insertionIndex-1);
         $this->insertHeaderComment($tokens, $insertionIndex);
 
         return $tokens->generateCode();
@@ -138,20 +138,6 @@ class HeaderCommentFixer extends AbstractFixer
         }
 
         return $index;
-    }
-
-    /**
-     * Clear tokens in the given range
-     *
-     * @param Tokens $tokens
-     * @param int    $indexStart
-     * @param int    $indexEnd
-     */
-    private function clearRange(Tokens $tokens, $indexStart, $indexEnd)
-    {
-        for ($i = $indexStart; $i <= $indexEnd; $i++) {
-            $tokens[$i]->clear();
-        }
     }
 
     /**

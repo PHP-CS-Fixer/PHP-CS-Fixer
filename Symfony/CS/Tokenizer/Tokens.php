@@ -1071,4 +1071,17 @@ class Tokens extends \SplFixedArray
             $this[$key] = clone $val;
         }
     }
+
+    /**
+     * Clear tokens in the given range
+     *
+     * @param int $indexStart
+     * @param int $indexEnd
+     */
+    public function clearRange($indexStart, $indexEnd)
+    {
+        for ($i = $indexStart; $i <= $indexEnd; $i++) {
+            $this[$i]->clear();
+        }
+    }
 }

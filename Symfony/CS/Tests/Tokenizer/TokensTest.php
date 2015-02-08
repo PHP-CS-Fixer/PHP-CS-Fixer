@@ -326,4 +326,37 @@ preg_replace_callback(
             )),
         );
     }
+
+    public function testClearRange()
+    {
+        $source = <<<'PHP'
+<?php
+class FooBar
+{
+    public function foo()
+    {
+        return 'bar';
+    }
+
+    public function bar()
+    {
+        return 'foo';
+    }
+}
+PHP;
+
+        $tokens = Tokens::fromCode($source);
+        $publicIndexes = array_keys($tokens->findGivenKind(T_PUBLIC));
+        $fooIndex = $publicIndexes[0];
+        $barIndex = $publicIndexes[1];
+
+        $tokens->clearRange($fooIndex, $barIndex - 1);
+
+        $newPublicIndexes = array_keys($tokens->findGivenKind(T_PUBLIC));
+        $this->assertEquals($barIndex, reset($newPublicIndexes));
+
+        for ($i = $fooIndex; $i < $barIndex; $i++) {
+            $this->assertTrue($tokens[$i]->isWhiteSpace());
+        }
+    }
 }
