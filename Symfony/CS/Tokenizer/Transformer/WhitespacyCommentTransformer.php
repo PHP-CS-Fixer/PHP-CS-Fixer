@@ -27,19 +27,19 @@ class WhitespacyCommentTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens)
+    public function getCustomTokenNames()
     {
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $this->processStep($tokens, $tokens[$index], $index);
-        }
+        return array();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function process(Tokens $tokens)
     {
-        return array();
+        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+            $this->processStep($tokens, $tokens[$index], $index);
+        }
     }
 
     private function processStep(Tokens $tokens, Token $token, $index)

@@ -31,6 +31,14 @@ class ArraySquareBraceTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function getCustomTokenNames()
+    {
+        return array('CT_ARRAY_SQUARE_BRACE_OPEN', 'CT_ARRAY_SQUARE_BRACE_CLOSE');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function process(Tokens $tokens)
     {
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
@@ -70,14 +78,6 @@ class ArraySquareBraceTransformer extends AbstractTransformer
         }
 
         return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCustomTokenNames()
-    {
-        return array('CT_ARRAY_SQUARE_BRACE_OPEN', 'CT_ARRAY_SQUARE_BRACE_CLOSE');
     }
 
     private function processStep(Tokens $tokens, Token $token, $index)

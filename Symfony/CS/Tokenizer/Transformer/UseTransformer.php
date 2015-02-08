@@ -29,19 +29,19 @@ class UseTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens)
+    public function getCustomTokenNames()
     {
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $this->processStep($tokens, $tokens[$index], $index);
-        }
+        return array('CT_USE_TRAIT', 'CT_USE_LAMBDA');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function process(Tokens $tokens)
     {
-        return array('CT_USE_TRAIT', 'CT_USE_LAMBDA');
+        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+            $this->processStep($tokens, $tokens[$index], $index);
+        }
     }
 
     /**
