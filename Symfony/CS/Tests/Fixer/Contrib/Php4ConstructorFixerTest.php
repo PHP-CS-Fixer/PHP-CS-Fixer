@@ -119,6 +119,39 @@ EOF;
         $this->makeTest($expected, $input);
     }
 
+    public function testNamespaceGlobal()
+    {
+        $expected = <<<'EOF'
+<?php
+
+namespace {
+    class Foo
+    {
+        function __construct($bar)
+        {
+            var_dump(1);
+        }
+    }
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+namespace {
+    class Foo
+    {
+        function Foo($bar)
+        {
+            var_dump(1);
+        }
+    }
+}
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
     public function testPhp5Only()
     {
         $expected = <<<'EOF'

@@ -35,24 +35,31 @@ class Php4ConstructorFixer extends AbstractFixer
 
             // is it inside a namespace?
             $nspIndex = $tokens->getPrevTokenOfKind($index, array(array(T_NAMESPACE, 'namespace')));
-            if ($nspIndex) {
-                $nspName = $tokens->getNextMeaningfulToken($nspIndex); // name
-                $nspBrace = $tokens->getNextMeaningfulToken($nspName); // { or ;
+            if (null !== $nspIndex) {
+                $nspIndex = $tokens->getNextMeaningfulToken($nspIndex);
 
-                if ($tokens[$nspBrace]->equals(';')) {
-                    // the class is inside a (non-block) namespace, no PHP4-code should be in there
-                    break;
-                }
+                // make sure it's not the global namespace, as PHP4 constructors are allowed in there
+                if (!$tokens[$nspIndex]->equals('{')) {
+                    // unless it's the global namespace, the index currently points to the name
+                    $nspIndex = $tokens->getNextMeaningfulToken($nspIndex);
 
-                $nspEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nspBrace);
-                if ($index < $nspEnd) {
-                    // the class is inside a block namespace, skip other classes that might be in it
-                    for ($j = $i + 1; $j < $numClasses; ++$j) {
-                        if ($classes[$j] < $nspEnd) {
-                            ++$i;
-                        }
+                    if ($tokens[$nspIndex]->equals(';')) {
+                        // the class is inside a (non-block) namespace, no PHP4-code should be in there
+                        break;
                     }
-                    continue;
+
+                    // the index points to the { of a block-namespace
+                    $nspEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nspIndex);
+                    if ($index < $nspEnd) {
+                        // the class is inside a block namespace, skip other classes that might be in it
+                        for ($j = $i + 1; $j < $numClasses; ++$j) {
+                            if ($classes[$j] < $nspEnd) {
+                                ++$i;
+                            }
+                        }
+                        // and continue checking the classes that might follow
+                        continue;
+                    }
                 }
             }
 
