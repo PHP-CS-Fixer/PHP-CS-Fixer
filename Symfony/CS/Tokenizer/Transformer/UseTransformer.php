@@ -32,10 +32,12 @@ class UseTransformer extends AbstractTransformer
     {
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
             $token = $tokens[$index];
+            $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
+            $prevToken = $prevTokenIndex === null ? null : $tokens[$prevTokenIndex];
 
             // Skip whole class braces content.
             // That way we can skip whole tokens in class declaration, therefore skip `T_USE` for traits.
-            if ($token->isClassy()) {
+            if ($token->isClassy() && !$prevToken->isGivenKind(T_DOUBLE_COLON)) {
                 $index = $tokens->getNextTokenOfKind($index, array('{'));
                 $innerLimit = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
 
@@ -68,15 +70,6 @@ class UseTransformer extends AbstractTransformer
     public function getCustomTokenNames()
     {
         return array('CT_USE_TRAIT', 'CT_USE_LAMBDA');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // should be run after the CurlyCloseTransformer
-        return -20;
     }
 
     /**

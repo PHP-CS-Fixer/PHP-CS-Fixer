@@ -51,6 +51,7 @@ class TransformersTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getPriorityCases
      */
+/*
     public function testPriority(TransformerInterface $first, TransformerInterface $second)
     {
         $this->assertLessThan($first->getPriority(), $second->getPriority());
@@ -66,7 +67,7 @@ class TransformersTest extends \PHPUnit_Framework_TestCase
         }
 
         return array(
-            array($transformers['curly_brace'], $transformers['use']),
         );
     }
+*/
 }
