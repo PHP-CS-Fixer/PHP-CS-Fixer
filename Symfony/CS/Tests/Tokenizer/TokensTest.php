@@ -359,4 +359,31 @@ PHP;
             $this->assertTrue($tokens[$i]->isWhiteSpace());
         }
     }
+
+    /**
+     * @dataProvider provideMonolithicPhpDetection
+     * @param string $source
+     * @param bool   $monolitic
+     */
+    public function testMonolithicPhpDetection($source, $monolitic)
+    {
+        $tokens = Tokens::fromCode($source);
+        $this->assertSame($monolitic, $tokens->isMonolithicPhp());
+    }
+
+    public function provideMonolithicPhpDetection()
+    {
+        return array(
+            array('<?\n', true),
+            array('<?php\n', true),
+            array('<?\n?>', true),
+            array('<?php\n?>', true),
+            array(' <?\n', false),
+            array(' <?php\n', false),
+            array('<?\n?> ', false),
+            array('<?php\n?> ', false),
+            array('<?\n?><?', false),
+            array('<?php\n?><?php', false),
+        );
+    }
 }

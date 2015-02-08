@@ -1084,4 +1084,16 @@ class Tokens extends \SplFixedArray
             $this[$i]->clear();
         }
     }
+
+    /**
+     * Checks there is no multiple PHP open tags nor any T_INLINE_HTML
+     *
+     * @return bool
+     */
+    public function isMonolithicPhp()
+    {
+        $kinds = $this->findGivenKind(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_CLOSE_TAG, T_INLINE_HTML));
+
+        return !(count($kinds[T_INLINE_HTML]) || (count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO])) > 1);
+    }
 }
