@@ -29,7 +29,7 @@ class WhitespacyCommentTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens)
     {
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
             if (!$token->isComment()) {
