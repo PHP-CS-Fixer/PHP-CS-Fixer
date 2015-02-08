@@ -1043,7 +1043,7 @@ class Tokens extends \SplFixedArray
         $this->changeCodeHash(crc32($code));
     }
 
-    public function toJSON()
+    public function toJson()
     {
         static $options = null;
 

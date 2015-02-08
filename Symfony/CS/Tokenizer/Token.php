@@ -441,7 +441,7 @@ class Token
         );
     }
 
-    public function toJSON()
+    public function toJson()
     {
         static $options = null;
 
