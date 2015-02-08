@@ -61,6 +61,14 @@ namespace Baz
             var_dump(2);
         }
     }
+
+    class Bar
+    {
+        public function Bar()
+        {
+            var_dump(3);
+        }
+    }
 }
 
 class Foo
@@ -87,6 +95,14 @@ namespace Baz
         public function Foo($bar)
         {
             var_dump(2);
+        }
+    }
+
+    class Bar
+    {
+        public function Bar()
+        {
+            var_dump(3);
         }
     }
 }
@@ -845,7 +861,7 @@ EOF;
 
 abstract class Foo
 {
-    abstract function Foo();
+    abstract public function Foo();
 
     public function bar()
     {
@@ -863,7 +879,24 @@ EOF;
         $this->makeTest($expected);
     }
 
-    public function testRevive1()
+    public function testStatic()
+    {
+        $expected = <<<'EOF'
+<?php
+
+static class Foo
+{
+    static function Foo()
+    {
+        // Do stuff
+    }
+}
+EOF;
+
+        $this->makeTest($expected);
+    }
+
+    public function testParentMultipleClasses()
     {
         $expected = <<<'EOF'
 <?php
