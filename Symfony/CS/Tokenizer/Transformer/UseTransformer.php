@@ -37,30 +37,7 @@ class UseTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens)
-    {
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $this->processStep($tokens, $tokens[$index], $index);
-        }
-    }
-
-    /**
-     * Check if token under given index is `use` statement for lambda function.
-     *
-     * @param Tokens $tokens
-     * @param int    $index
-     *
-     * @return bool
-     */
-    private function isUseForLambda(Tokens $tokens, $index)
-    {
-        $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
-
-        // test `function () use ($foo) {}` case
-        return $nextToken->equals('(');
-    }
-
-    private function processStep(Tokens $tokens, Token $token, $index)
+    public function process(Tokens $tokens, Token $token, $index)
     {
         $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
         $prevToken = $prevTokenIndex === null ? null : $tokens[$prevTokenIndex];
@@ -91,5 +68,21 @@ class UseTransformer extends AbstractTransformer
         if ($token->isGivenKind(T_USE) && $this->isUseForLambda($tokens, $index)) {
             $token->override(array(CT_USE_LAMBDA, $token->getContent()));
         }
+    }
+
+    /**
+     * Check if token under given index is `use` statement for lambda function.
+     *
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return bool
+     */
+    private function isUseForLambda(Tokens $tokens, $index)
+    {
+        $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
+
+        // test `function () use ($foo) {}` case
+        return $nextToken->equals('(');
     }
 }

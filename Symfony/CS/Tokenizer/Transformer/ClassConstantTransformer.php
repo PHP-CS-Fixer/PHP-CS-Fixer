@@ -35,14 +35,7 @@ class ClassConstantTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens)
-    {
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $this->processStep($tokens, $tokens[$index], $index);
-        }
-    }
-
-    private function processStep(Tokens $tokens, Token $token, $index)
+    public function process(Tokens $tokens, Token $token, $index)
     {
         if (!$token->isGivenKind(T_CLASS)) {
             return;

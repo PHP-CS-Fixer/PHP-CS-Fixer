@@ -48,14 +48,12 @@ class CurlyBraceTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens)
+    public function process(Tokens $tokens, Token $token, $index)
     {
-        foreach ($tokens as $index => $token) {
-            $this->transformIntoCurlyCloseBrace($tokens, $token, $index);
-            $this->transformIntoDollarCloseBrace($tokens, $token, $index);
-            $this->transformIntoDynamicPropBraces($tokens, $token, $index);
-            $this->transformIntoDynamicVarBraces($tokens, $token, $index);
-        }
+        $this->transformIntoCurlyCloseBrace($tokens, $token, $index);
+        $this->transformIntoDollarCloseBrace($tokens, $token, $index);
+        $this->transformIntoDynamicPropBraces($tokens, $token, $index);
+        $this->transformIntoDynamicVarBraces($tokens, $token, $index);
     }
 
     /**
@@ -140,9 +138,5 @@ class CurlyBraceTransformer extends AbstractTransformer
 
         $openToken->override(array(CT_DYNAMIC_VAR_BRACE_OPEN, '{'));
         $closeToken->override(array(CT_DYNAMIC_VAR_BRACE_CLOSE, '}'));
-    }
-
-    private function processStep(Tokens $tokens, Token $token, $index)
-    {
     }
 }

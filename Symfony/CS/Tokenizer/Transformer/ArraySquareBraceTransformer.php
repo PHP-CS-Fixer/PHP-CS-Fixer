@@ -39,11 +39,16 @@ class ArraySquareBraceTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens)
+    public function process(Tokens $tokens, Token $token, $index)
     {
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $this->processStep($tokens, $tokens[$index], $index);
+        if (!$this->isShortArray($tokens, $index)) {
+            return;
         }
+
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
+
+        $token->override(array(CT_ARRAY_SQUARE_BRACE_OPEN, '['));
+        $tokens[$endIndex]->override(array(CT_ARRAY_SQUARE_BRACE_CLOSE, ']'));
     }
 
     /**
@@ -78,17 +83,5 @@ class ArraySquareBraceTransformer extends AbstractTransformer
         }
 
         return false;
-    }
-
-    private function processStep(Tokens $tokens, Token $token, $index)
-    {
-        if (!$this->isShortArray($tokens, $index)) {
-            return;
-        }
-
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
-
-        $token->override(array(CT_ARRAY_SQUARE_BRACE_OPEN, '['));
-        $tokens[$endIndex]->override(array(CT_ARRAY_SQUARE_BRACE_CLOSE, ']'));
     }
 }
