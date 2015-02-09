@@ -50,6 +50,14 @@ class ElseifFixer extends AbstractFixer
             $nextToken->clear();
         }
 
+        # handle `T_ELSE T_WHITESPACE T_IF` treated as single `T_ELSEIF` by HHVM
+        # see https://github.com/facebook/hhvm/issues/4796
+        if (defined('HHVM_VERSION')) {
+            foreach ($tokens->findGivenKind(T_ELSEIF) as $token) {
+                $token->setContent('elseif');
+            }
+        }
+
         return $tokens->generateCode();
     }
 
