@@ -34,7 +34,7 @@ class NewWithBracesFixer extends AbstractFixer
 
             $nextIndex = $tokens->getNextTokenOfKind(
                 $index,
-                array(':', ';', ',', '(', ')', '[', ']', array(CT_ARRAY_SQUARE_BRACE_OPEN), array(CT_ARRAY_SQUARE_BRACE_CLOSE))
+                array(':', ';', ',', '(', ')', '[', ']', array(CT_ARRAY_SQUARE_BRACE_OPEN), array(CT_ARRAY_SQUARE_BRACE_CLOSE), array(CT_BRACE_CLASS_INSTANTIATION_OPEN), array(CT_BRACE_CLASS_INSTANTIATION_CLOSE))
             );
             $nextToken = $tokens[$nextIndex];
 
