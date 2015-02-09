@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
- * @author Dariusz Rumiñski <dariusz.ruminski@gmail.com>
+ * @author Dariusz RumiÅ„ski <dariusz.ruminski@gmail.com>
  */
 class PhpdocToCommentFixer extends AbstractFixer
 {
