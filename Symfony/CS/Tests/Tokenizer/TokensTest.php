@@ -390,9 +390,8 @@ PHP;
     public function testShortOpenTagMonolithicPhpDetection($source, $monolitic)
     {
         if (!ini_get('short_open_tag')) {
-            $this->markTestSkipped('PHP short open tags are not enabled.');
-
-            return;
+            // Short open tag is parsed as T_INLINE_HTML
+            $monolitic = false;
         }
 
         $tokens = Tokens::fromCode($source);
@@ -422,9 +421,8 @@ PHP;
     public function testShortOpenTagEchoMonolithicPhpDetection($source, $monolitic)
     {
         if (!ini_get('short_open_tag') && 50400 > PHP_VERSION_ID) {
-            $this->markTestSkipped('PHP short open tags are not enabled.');
-
-            return;
+            // Short open tag echo is parsed as T_INLINE_HTML
+            $monolitic = false;
         }
 
         $tokens = Tokens::fromCode($source);
