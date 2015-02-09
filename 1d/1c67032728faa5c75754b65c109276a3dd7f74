@@ -1,0 +1,91 @@
+---------------------------------------------------------------------------
+
+by TazeTSchnitzel at 2015-01-15T16:48:00Z
+
+Are you sure this detects all parent calls? Old code would often do `$this->foo();` to call constructor (if inheriting from `Foo`). At least, I've seen some php-src tests do this.
+
+---------------------------------------------------------------------------
+
+by mbeccati at 2015-01-15T16:50:21Z
+
+@TazeTSchnitzel Good point. I'll check and fix.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-15T17:19:17Z
+
+Idea is great (see #768), nice to see it again ;)
+
+---------------------------------------------------------------------------
+
+by mbeccati at 2015-01-15T17:22:30Z
+
+Oops, I obviously didn't know about that...
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-15T17:42:30Z
+
+btw, it is always great to reply to review-comment when one is done ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-15T18:03:59Z
+
+I have done a little review. Just some minors.
+Great work so far @mbeccati !
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-15T19:04:48Z
+
+Before further review - please make fabbot and travis happy ;)
+
+---------------------------------------------------------------------------
+
+by mbeccati at 2015-01-15T19:32:59Z
+
+And they are happy now.
+
+---------------------------------------------------------------------------
+
+by mbeccati at 2015-01-16T15:02:11Z
+
+I think I've fixed most of the code review comments. I've dialed back the aggressiveness as well by making sure that constructors are removed if and only if the only thing they do is calling the alternate version.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-04T20:26:13Z
+
+Please rebase
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-05T19:55:14Z
+
+Travis is not happy ;(
+
+---------------------------------------------------------------------------
+
+by mbeccati at 2015-02-05T19:58:14Z
+
+I thought I had checked, but apparently I didn't...
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-07T21:33:14Z
+
+What about https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/970#issuecomment-70123117 ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-07T22:31:56Z
+
+a little review from me
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-08T18:26:11Z
+
+Great work!
+:+1:
