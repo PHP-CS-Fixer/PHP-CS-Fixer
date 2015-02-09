@@ -132,7 +132,12 @@ class ConfigurationResolver
         $this->resolveProgress();
         $this->resolveUsingCache();
 
-        $this->config->fixers($this->getFixers());
+        $names = array();
+        foreach ($this->getFixers() as $fixer) {
+            $names[] = $fixer->getName();
+        }
+
+        $this->config->fixers($names);
         $this->config->setUsingCache($this->usingCache);
 
         return $this;
@@ -175,7 +180,7 @@ class ConfigurationResolver
      */
     public function setFixer(Fixer $fixer)
     {
-        $this->fixer     = $fixer;
+        $this->fixer = $fixer;
         $this->allFixers = $fixer->getFixers();
 
         return $this;
@@ -331,7 +336,7 @@ class ConfigurationResolver
                     throw new \UnexpectedValueException(sprintf('The config file "%s" does not return an instance of Symfony\CS\Config\Config', $configFile));
                 }
 
-                $this->config     = $config;
+                $this->config = $config;
                 $this->configFile = $configFile;
 
                 return;
@@ -465,7 +470,7 @@ class ConfigurationResolver
     private function resolveUsingCache()
     {
         if (null !== $this->options['using-cache']) {
-            $this->usingCache = 'yes' === $this->options['using-cache'];
+            $this->usingCache = 0 === strcasecmp('yes', $this->options['using-cache']);
 
             return;
         }
