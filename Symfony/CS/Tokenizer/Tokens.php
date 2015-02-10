@@ -1080,7 +1080,7 @@ class Tokens extends \SplFixedArray
      */
     public function clearRange($indexStart, $indexEnd)
     {
-        for ($i = $indexStart; $i <= $indexEnd; $i++) {
+        for ($i = $indexStart; $i <= $indexEnd; ++$i) {
             $this[$i]->clear();
         }
     }
@@ -1111,7 +1111,7 @@ class Tokens extends \SplFixedArray
              */
             $hhvmEchoes = $this->findGivenKind(T_ECHO);
             foreach ($hhvmEchoes as $token) {
-                if (strpos($token->getContent(), '<?=') === 0) {
+                if (0 === strpos($token->getContent(), '<?=')) {
                     $hhvmOpenTagsWithEcho[] = $token;
                 }
             }
