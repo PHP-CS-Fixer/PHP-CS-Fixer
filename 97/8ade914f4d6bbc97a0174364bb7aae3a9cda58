@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by stof at 2015-01-17T15:37:55Z
+
+Why is there a commit in this PR claiming to fix #971 while the ticket has been closed by @keradus saying it is not a bug ?
+
+---------------------------------------------------------------------------
+
+by mbeccati at 2015-01-17T15:40:34Z
+
+@stof This PR is based off of other PRs. Some comments do not belong to th Ereg fixer and have possibly been fixed (but not merged/rebased yet) in the parent PRs.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-01-17T15:44:57Z
+
+yeah, I saw the other PR after this one
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-21T12:19:56Z
+
+I find we should come back to this PR after it's dependencies will be closed (#972, #973).
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-04T20:26:07Z
+
+Please rebase
+
+---------------------------------------------------------------------------
+
+by mbeccati at 2015-02-05T08:41:53Z
+
+@keradus rebased
