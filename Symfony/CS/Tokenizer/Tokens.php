@@ -1071,4 +1071,65 @@ class Tokens extends \SplFixedArray
             $this[$key] = clone $val;
         }
     }
+
+    /**
+     * Clear tokens in the given range
+     *
+     * @param int $indexStart
+     * @param int $indexEnd
+     */
+    public function clearRange($indexStart, $indexEnd)
+    {
+        for ($i = $indexStart; $i <= $indexEnd; ++$i) {
+            $this[$i]->clear();
+        }
+    }
+
+    /**
+     * Checks for monolithic PHP code
+     *
+     * Checks that the code is pure PHP code, in a single code block, starting
+     * with an open tag.
+     *
+     * @return bool
+     */
+    public function isMonolithicPhp()
+    {
+        $kinds = $this->findGivenKind(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_CLOSE_TAG, T_INLINE_HTML));
+
+        /*
+         * Fix HHVM incompatibilities
+         */
+        $hhvmOpenTagsWithEcho = array();
+        $hhvmHashBangs = array();
+
+        if (defined('HHVM_VERSION')) {
+            /*
+             * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
+             *
+             * @see https://github.com/facebook/hhvm/issues/4809
+             */
+            $hhvmEchoes = $this->findGivenKind(T_ECHO);
+            foreach ($hhvmEchoes as $token) {
+                if (0 === strpos($token->getContent(), '<?=')) {
+                    $hhvmOpenTagsWithEcho[] = $token;
+                }
+            }
+
+            /*
+             * HHVM parses "#!/usr/bin/env php\n" as T_HASHBANG (not defined in
+             * PHP and T_HASHBANG. Moreover, HHVM does not define T_HASHBANG
+             * as a constant
+             *
+             * @see https://github.com/facebook/hhvm/issues/4810
+             */
+            $tokens = Tokens::fromCode("#!/usr/bin/env php\n");
+            if (!$tokens[0]->isGivenKind(T_INLINE_HTML)) {
+                $hashBangId = $tokens[0]->getId();
+                $hhvmHashBangs = $this->findGivenKind($hashBangId);
+            }
+        }
+
+        return 0 === count($kinds[T_INLINE_HTML]) + count($hhvmHashBangs) && 1 === count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO]) + count($hhvmOpenTagsWithEcho);
+    }
 }
