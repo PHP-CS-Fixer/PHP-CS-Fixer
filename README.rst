@@ -389,6 +389,15 @@ Choose from the list of available fixers:
                 Concatenation should be used with at
                 least one whitespace around.
 
+* **ereg_to_preg** [contrib]
+                Replace deprecated ereg regular
+                expression functions with preg.
+                Warning! This could change code
+                behavior.
+
+* **header_comment** [contrib]
+                Add, replace or remove header comment.
+
 * **multiline_spaces_before_semicolon** [contrib]
                 Multi-line whitespace before closing
                 semicolon are prohibited.
@@ -399,6 +408,11 @@ Choose from the list of available fixers:
 
 * **ordered_use** [contrib]
                 Ordering use statements.
+
+* **php4_constructor** [contrib]
+                Convert PHP4-style constructors to
+                __construct. Warning! This could
+                change code behavior.
 
 * **short_array_syntax** [contrib]
                 PHP array's should use the PHP 5.4

@@ -27,16 +27,13 @@ class PhpClosingTagFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $kinds = $tokens->findGivenKind(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_CLOSE_TAG, T_INLINE_HTML));
-
-        // leave code intact if there is:
-        // - any T_INLINE_HTML code
-        // - several opening tags
-        if (count($kinds[T_INLINE_HTML]) || (count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO])) > 1) {
+        if (!$tokens->isMonolithicPhp()) {
             return;
         }
 
-        foreach (array_reverse($kinds[T_CLOSE_TAG], true) as $index => $token) {
+        $closeTags = $tokens->findGivenKind(T_CLOSE_TAG);
+
+        foreach (array_reverse($closeTags, true) as $index => $token) {
             $tokens->removeLeadingWhitespace($index);
             $token->clear();
 

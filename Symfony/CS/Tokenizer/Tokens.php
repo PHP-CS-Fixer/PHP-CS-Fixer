@@ -11,6 +11,8 @@
 
 namespace Symfony\CS\Tokenizer;
 
+use Symfony\CS\Utils;
+
 /**
  * Collection of code tokens.
  *
@@ -700,6 +702,94 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Find a sequence of meaningful tokens and returns the array of their locations.
+     *
+     * @param array      $sequence      an array of tokens (same format used by getNextTokenOfKind)
+     * @param int        $start         start index, defaulting to the start of the file
+     * @param int        $end           end index, defaulting to the end of the file
+     * @param bool|array $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
+     *                                  the ones used in $others. If any is missing, the default case-sensitive
+     *                                  comparison is used.
+     *
+     * @return array|null an array containing the tokens matching the sequence elements, indexed by their position
+     */
+    public function findSequence(array $sequence, $start = 0, $end = null, $caseSensitive = true)
+    {
+        // $end defaults to the end of the collection
+        if (null === $end) {
+            $end = count($this) - 1;
+        }
+
+        if (!count($sequence)) {
+            throw new \InvalidArgumentException('Invalid sequence');
+        }
+
+        // make sure the sequence content is "meaningful"
+        foreach ($sequence as $key => $token) {
+            // if not a Token instance already, we convert it to verify the meaningfulness
+            if (!$token instanceof Token) {
+                if (is_array($token) && !isset($token[1])) {
+                    // fake some content as it is required by the Token constructor,
+                    // although optional for search purposes
+                    $token[1] = '';
+                }
+                $token = new Token($token);
+            }
+            if ($token->isWhitespace() || $token->isComment() || $token->isEmpty()) {
+                throw new \InvalidArgumentException('Non-meaningful token at position: '.$key);
+            }
+        }
+
+        // remove the first token from the sequence, so we can freely iterate through the sequence after a match to
+        // the first one is found
+        $key = key($sequence);
+        $firstCs = Token::isKeyCaseSensitive($caseSensitive, $key);
+        $firstToken = $sequence[$key];
+        unset($sequence[$key]);
+
+        // begin searching for the first token in the sequence (start included)
+        $index = $start - 1;
+        while (null !== $index && $index <= $end) {
+            $index = $this->getNextTokenOfKind($index, array($firstToken), $firstCs);
+
+            // ensure we found a match and didn't get past the end index
+            if (null === $index || $index > $end) {
+                return;
+            }
+
+            // initialise the result array with the current index
+            $result = array($index => $this[$index]);
+
+            // advance cursor to the current position
+            $currIdx = $index;
+
+            // iterate through the remaining tokens in the sequence
+            foreach ($sequence as $key => $token) {
+                $currIdx = $this->getNextMeaningfulToken($currIdx);
+
+                // ensure we didn't go too far
+                if (null === $currIdx || $currIdx > $end) {
+                    return;
+                }
+
+                if (!$this[$currIdx]->equals($token, Token::isKeyCaseSensitive($caseSensitive, $key))) {
+                    // not a match, restart the outer loop
+                    continue 2;
+                }
+
+                // append index to the result array
+                $result[$currIdx] = $this[$currIdx];
+            }
+
+            // do we have a complete match?
+            // hint: $result is bigger than $sequence since the first token has been removed from the latter
+            if (count($sequence) < count($result)) {
+                return $result;
+            }
+        }
+    }
+
+    /**
      * Insert instances of Token inside collection.
      *
      * @param int                  $index start inserting index
@@ -872,9 +962,13 @@ class Tokens extends \SplFixedArray
         $this->changed = true;
     }
 
-    public function toJSON()
+    public function toJson()
     {
-        static $optNames = array('JSON_PRETTY_PRINT', 'JSON_NUMERIC_CHECK');
+        static $options = null;
+
+        if (null === $options) {
+            $options = Utils::calculateBitmask(array('JSON_PRETTY_PRINT', 'JSON_NUMERIC_CHECK'));
+        }
 
         $output = new \SplFixedArray(count($this));
 
@@ -883,14 +977,6 @@ class Tokens extends \SplFixedArray
         }
 
         $this->rewind();
-
-        $options = 0;
-
-        foreach ($optNames as $optName) {
-            if (defined($optName)) {
-                $options |= constant($optName);
-            }
-        }
 
         return json_encode($output, $options);
     }
@@ -903,5 +989,66 @@ class Tokens extends \SplFixedArray
         foreach ($this as $key => $val) {
             $this[$key] = clone $val;
         }
+    }
+
+    /**
+     * Clear tokens in the given range
+     *
+     * @param int $indexStart
+     * @param int $indexEnd
+     */
+    public function clearRange($indexStart, $indexEnd)
+    {
+        for ($i = $indexStart; $i <= $indexEnd; ++$i) {
+            $this[$i]->clear();
+        }
+    }
+
+    /**
+     * Checks for monolithic PHP code
+     *
+     * Checks that the code is pure PHP code, in a single code block, starting
+     * with an open tag.
+     *
+     * @return bool
+     */
+    public function isMonolithicPhp()
+    {
+        $kinds = $this->findGivenKind(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_CLOSE_TAG, T_INLINE_HTML));
+
+        /*
+         * Fix HHVM incompatibilities
+         */
+        $hhvmOpenTagsWithEcho = array();
+        $hhvmHashBangs = array();
+
+        if (defined('HHVM_VERSION')) {
+            /*
+             * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
+             *
+             * @see https://github.com/facebook/hhvm/issues/4809
+             */
+            $hhvmEchoes = $this->findGivenKind(T_ECHO);
+            foreach ($hhvmEchoes as $token) {
+                if (0 === strpos($token->getContent(), '<?=')) {
+                    $hhvmOpenTagsWithEcho[] = $token;
+                }
+            }
+
+            /*
+             * HHVM parses "#!/usr/bin/env php\n" as T_HASHBANG (not defined in
+             * PHP and T_HASHBANG. Moreover, HHVM does not define T_HASHBANG
+             * as a constant
+             *
+             * @see https://github.com/facebook/hhvm/issues/4810
+             */
+            $tokens = Tokens::fromCode("#!/usr/bin/env php\n");
+            if (!$tokens[0]->isGivenKind(T_INLINE_HTML)) {
+                $hashBangId = $tokens[0]->getId();
+                $hhvmHashBangs = $this->findGivenKind($hashBangId);
+            }
+        }
+
+        return 0 === count($kinds[T_INLINE_HTML]) + count($hhvmHashBangs) && 1 === count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO]) + count($hhvmOpenTagsWithEcho);
     }
 }

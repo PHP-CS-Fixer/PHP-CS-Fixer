@@ -335,9 +335,35 @@ class TokenTest extends \PHPUnit_Framework_TestCase
             array(false, array(array(T_FUNCTION, 'Function'), array(T_VARIABLE, 'function')), array(true, true)),
 
             array(true, array(',', '}', array(T_FUNCTION, 'Function')), array(2 => false)),
-            array(true, array('a' => ',', 'b' => '}', 'c' => array(T_FUNCTION, 'Function')), array('c' => false)),
 
             array(false, array(array(T_VARIABLE, 'junction'), array(T_FUNCTION, 'junction')), false),
+        );
+    }
+
+    /**
+     * @dataProvider provideIsKeyCaseSensitive
+     */
+    public function testIsKeyCaseSensitive($isKeyCaseSensitive, $caseSensitive, $key)
+    {
+        $this->assertSame($isKeyCaseSensitive, Token::isKeyCaseSensitive($caseSensitive, $key));
+    }
+
+    public function provideIsKeyCaseSensitive()
+    {
+        return array(
+            array(true, true, 0),
+            array(true, true, 1),
+            array(true, array(), 0),
+            array(true, array(true), 0),
+            array(true, array(false, true), 1),
+            array(true, array(false, true, false), 1),
+            array(true, array(false), 10),
+
+            array(false, false, 10),
+            array(false, array(false), 0),
+            array(false, array(true, false), 1),
+            array(false, array(true, false, true), 1),
+            array(false, array(1 => false), 1),
         );
     }
 }
