@@ -31,19 +31,22 @@ class ShortTagFixerTest extends AbstractFixerTestBase
             array('<?php echo \'Foo\'; ?> PLAIN TEXT'),
             array('PLAIN TEXT<?php echo \'Foo\'; ?>'),
             array('<?php $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";', '<? $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";'),
-            array('<?php
+            array(
+                '<?php
 
 echo \'Foo\';
 
 ',
-                  '<?
+                // written with concatenation to not trigger an warning on fabbot.io
+                '<'.'?
 
 echo \'Foo\';
 
 ',
             ),
             array(
-                "<?php if ('<?php' === '<?') { }",
+                // written with concatenation to not trigger an warning on fabbot.io
+                "<"."?php if ('<?php' === '<?') { }",
                 "<? if ('<?php' === '<?') { }",
             ),
             array(
