@@ -1094,6 +1094,19 @@ class Tokens extends \SplFixedArray
     {
         $kinds = $this->findGivenKind(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_CLOSE_TAG, T_INLINE_HTML));
 
-        return !(count($kinds[T_INLINE_HTML]) || (count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO])) > 1);
+        $hhvmOpenTagsWithEcho = array();
+        if (defined('HHVM_VERSION')) {
+            /*
+             * HHVM parses '<?=' as 'T_ECHO' insteadof 'T_OPEN_TAG_WITH_ECHO'
+             */
+            $hhvmEchoes = $this->findGivenKind(T_ECHO);
+            foreach ($hhvmEchoes as $token) {
+                if (strpos($token->getContent(), '<?=') === 0) {
+                    $hhvmOpenTagsWithEcho[] = $token;
+                }
+            }
+        }
+
+        return !(count($kinds[T_INLINE_HTML]) || (count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO]) + count($hhvmOpenTagsWithEcho)) > 1);
     }
 }
