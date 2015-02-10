@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-02-10T20:37:26Z
+
+fabbot.io isn't happy with ShortTagFixerTest.php. Not sure what we can do about this. Both are false positives.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-10T20:45:40Z
+
+wow, how? it works here: #1015
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-02-10T20:52:15Z
+
+fabbot.io only analyses changed files I assume. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-10T20:54:42Z
+
+yeah, indeed, forgot that ;)
