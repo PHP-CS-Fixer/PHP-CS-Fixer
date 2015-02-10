@@ -1,0 +1,178 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-02-06T19:39:13Z
+
+Cool idea. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-06T20:28:25Z
+
+Interesting fixer indeed @ajgarlag
+
+I will need to have a deeper look. I plan some major interface changes at 2.0 line and don't want to break interface twice in short period of time. Yes, currently you won't break it, but I need to think more of this fixer.
+
+---------------------------------------------------------------------------
+
+by sstok at 2015-02-08T08:54:36Z
+
+Cool, we actually have something similar in Gush :)
+https://github.com/gushphp/gush/blob/master/src/Command/Util/MetaHeaderCommand.php
+
+But its not using a Tokenizer (because we support multiple file-types), and it only works when you have configured at least one adapter for repository operations (need to look into that).
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-09T17:17:52Z
+
+```php
+array("<?\n", true),
+```
+
+You test this with short_open_tag enabled, but you should elso test `<?\n` returns false when short_open_tag is disabled.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-09T18:20:44Z
+
+Please fix Travis' jobs (ignoring hhvm)
+
+---------------------------------------------------------------------------
+
+by ajgarlag at 2015-02-09T18:27:54Z
+
+I've rebased 1.5
+When you think that the PR is ready to be merged, please, notify me to squash it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-09T19:21:32Z
+
+I don't like that matrix configuration. Yes, it is not our bug, but with it we will ignore it, don't see any other errors on hhvm and... forget about it.
+
+Nevertheless PR looks good for me.
+You have set WIP flag in title, do you want add something more here?
+
+> please, notify me to squash it.
+
+You don't need to squash it ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-09T19:46:29Z
+
+> I don't like that matrix configuration. Yes, it is not our bug, but with it we will ignore it, don't see any other errors on hhvm and... forget about it.
+
+Yeah, that what I was talking about. HHVM decided to work differently than PHP and break compatibility. We must hande it by ourself. Please remove that matrix in place of #1011
+
+---------------------------------------------------------------------------
+
+by ajgarlag at 2015-02-09T20:04:44Z
+
+Matrix removed. Work finished for me.
+
+I'm not very happy with the static method to set the header text, but it looks our best option without breaking BC. Hope we can fix it in 2.0.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-09T20:13:22Z
+
+Yes, exactly that I have in my mind ([comment](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1002#issuecomment-73306653)).
+Just need to bump the major to break the BC.
+The static method is a temporary solution.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-09T20:32:22Z
+
+Please make Travis happy.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-09T20:35:24Z
+
+BTW, please don't ping user in commit logs.
+When you do that they got notification every time you do the rebase.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-10T08:02:04Z
+
+ping @ajgarlag
+
+---------------------------------------------------------------------------
+
+by ajgarlag at 2015-02-10T08:27:08Z
+
+At first, sorry for the ping on rebase, my fault :(
+I'm working on fixing the HHVM bugs. You can see the progress at https://github.com/ajgarlag/PHP-CS-Fixer/tree/feature/header-fixer-hhvm and https://travis-ci.org/ajgarlag/PHP-CS-Fixer/builds
+
+I've found two bugs:
+
+1. In HHVM [short_open_tag always Off but ignored](https://github.com/facebook/hhvm/issues/4758), this can be solved ignoring the short_open_tag value when `HHVM_VERSION` is defined.
+2. The token `<?=` is parsed by HHVM as `T_ECHO`. I'm working on a solution.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-10T08:57:55Z
+
+> The token `<?=` is parsed by HHVM as `T_ECHO`. I'm working on a solution.
+
+Could you report it to hhvm repo ? (like https://github.com/facebook/hhvm/issues/4796) ?
+Maybe they will handle it...
+
+---------------------------------------------------------------------------
+
+by ajgarlag at 2015-02-10T09:02:03Z
+
+@keradus Is there one last bug: HHVM parses `#!/usr/bin/env php` as [`T_HASHBANG`](https://travis-ci.org/ajgarlag/PHP-CS-Fixer/jobs/50170618#L192) so the `phar-stub.php` file is detected as monolithic PHP. We have two options here:
+
+1. Allow this file to be detected as monolithic PHP, modify the `HeaderCommentFixer` so it does not assume that the `T_OPEN_TAG` is at index `0` and HHVM will rewrite comment headers in php files with hashbang.
+2. Detect this token when testing if the code is monolithic and return false.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-10T09:11:06Z
+
+Could you post it firstly as a second bug on hhvm please?
+
+---------------------------------------------------------------------------
+
+by ajgarlag at 2015-02-10T09:19:54Z
+
+The two bugs has been submitted to HHVM:
+
+1. https://github.com/facebook/hhvm/issues/4809
+2. https://github.com/facebook/hhvm/issues/4810
+
+Which solution do you prefer? I like the first one, but I think we should go with the second one for consistency.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-10T10:17:44Z
+
+I dislike both tbh...
+
+Let us wait a bit for response from hhvm...
+
+---------------------------------------------------------------------------
+
+by ajgarlag at 2015-02-10T11:15:28Z
+
+But if we ignore HHVM the code with the hashbang is detected as not monolithic, so I think the second is the way to go.
+
+You can see the final code for `Tokens::isMonolithicPhp` implementing the second option at https://github.com/ajgarlag/PHP-CS-Fixer/blob/ecace3cec45878b8c1793d79e9043f68f4339435/Symfony/CS/Tokenizer/Tokens.php#L1093
+
+---------------------------------------------------------------------------
+
+by ajgarlag at 2015-02-10T18:40:03Z
+
+@keradus finally I've implemented the function solving HHVM incompatibilities. Now, it works consistently.
+
+I think the code could be merged. If the HHVM bugs are solved, we can review the HHVM conditionals later.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-10T20:38:23Z
+
+btw please rebase ;) I wanna merge it and can't
