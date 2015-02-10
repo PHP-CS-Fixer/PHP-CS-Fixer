@@ -376,6 +376,9 @@ PHP;
         return array(
             array("<?php\n", true),
             array("<?php\n?>", true),
+            array("", false),
+            array(" ", false),
+            array("#!/usr/bin/env php\n<?php\n", false),
             array(" <?php\n", false),
             array("<?php\n?> ", false),
             array("<?php\n?><?php\n", false),
