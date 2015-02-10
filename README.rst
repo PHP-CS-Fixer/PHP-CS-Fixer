@@ -394,7 +394,7 @@ Choose from the list of available fixers:
                 expression functions with preg.
                 Warning! This could change code
                 behavior.
-                
+
 * **header_comment** [contrib]
                 Add, replace or remove header comment.
 
