@@ -1,0 +1,59 @@
+---------------------------------------------------------------------------
+
+by dericofilho at 2015-02-08T19:41:18Z
+
+Except by the broken test at HHVM, LGTM.
+
+One loop only through the tokens is an enormous improvement.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-08T19:43:41Z
+
+> One loop only through the tokens is an enormous improvement.
+
+I'm still a bit sad about that loop over all Transformers ;(
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2015-02-08T19:46:20Z
+
+> I'm still a bit sad about that loop over all Transformers ;(
+
+That's what I tried to avoid in my implementation but I know I did not managed it. You are already early exiting them, so I believe there is little to improve on that - the two options left are (a) to come with a more complex algorithm that transforms everything at once; or (b) loop unrolling.
+
+Loop unrolling comes with a price, though. You will have to abdicate from dynamic loading of Transformers.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-08T20:29:51Z
+
+IMO both solutions isn't worth it as they (especially creating one god-like Transformer) make it harder to maintain.
+
+Thank you for your assistance !
+
+---------------------------------------------------------------------------
+
+by sstok at 2015-02-09T08:27:43Z
+
+How about code generation? You collect all the custom tokens and content of each process from all the files store this in a big class with no loop what so ever. The transformers are still in there own class, but are collected once for better speed.
+
+You can choose to keep the generated class in the repository, system temp-folder, and for the phar version keep it with the archive.
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2015-02-09T08:29:17Z
+
+@sstok that's what I implicitly suggested by loop unrolling.
+
+---------------------------------------------------------------------------
+
+by sstok at 2015-02-09T09:13:52Z
+
+Hihi, I never heard of that word :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-09T09:54:09Z
+
+To be honest I don't like generating code and have no experience with it :(
