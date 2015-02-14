@@ -12,6 +12,7 @@
 namespace Symfony\CS\Tokenizer\Transformer;
 
 use Symfony\CS\Tokenizer\AbstractTransformer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -27,26 +28,27 @@ class BraceClassInstantiationTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens)
+    public function getCustomTokenNames()
     {
-        foreach ($tokens as $index => $token) {
-            if ($tokens[$index]->equals('(') && $tokens[$tokens->getNextMeaningfulToken($index)]->equals(array(T_NEW))) {
-                $openIndex = $index;
-                $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
-
-                if ($tokens[$tokens->getNextMeaningfulToken($closeIndex)]->equalsAny(array(array(T_OBJECT_OPERATOR), array(T_DOUBLE_COLON)))) {
-                    $tokens[$openIndex]->override(array(CT_BRACE_CLASS_INSTANTIATION_OPEN, '('));
-                    $tokens[$closeIndex]->override(array(CT_BRACE_CLASS_INSTANTIATION_CLOSE, ')'));
-                }
-            }
-        }
+        return array('CT_BRACE_CLASS_INSTANTIATION_OPEN', 'CT_BRACE_CLASS_INSTANTIATION_CLOSE');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function process(Tokens $tokens, Token $token, $index)
     {
-        return array('CT_BRACE_CLASS_INSTANTIATION_OPEN', 'CT_BRACE_CLASS_INSTANTIATION_CLOSE');
+        if (!$tokens[$index]->equals('(') || !$tokens[$tokens->getNextMeaningfulToken($index)]->equals(array(T_NEW))) {
+            return;
+        }
+
+        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+
+        if (!$tokens[$tokens->getNextMeaningfulToken($closeIndex)]->isGivenKind(array(T_OBJECT_OPERATOR, T_DOUBLE_COLON))) {
+            return;
+        }
+
+        $tokens[$index]->override(array(CT_BRACE_CLASS_INSTANTIATION_OPEN, '('));
+        $tokens[$closeIndex]->override(array(CT_BRACE_CLASS_INSTANTIATION_CLOSE, ')'));
     }
 }

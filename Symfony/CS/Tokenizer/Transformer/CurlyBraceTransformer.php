@@ -12,6 +12,7 @@
 namespace Symfony\CS\Tokenizer\Transformer;
 
 use Symfony\CS\Tokenizer\AbstractTransformer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -32,93 +33,6 @@ class CurlyBraceTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens)
-    {
-        $this->transformIntoCurlyClose($tokens);
-
-        foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_DOLLAR_OPEN_CURLY_BRACES)) {
-                $nextIndex = $tokens->getNextTokenOfKind($index, array('}'));
-                $tokens[$nextIndex]->override(array(CT_DOLLAR_CLOSE_CURLY_BRACES, '}'));
-
-                continue;
-            }
-
-            if ($token->isGivenKind(T_OBJECT_OPERATOR)) {
-                if (!$tokens[$index + 1]->equals('{')) {
-                    continue;
-                }
-
-                $openIndex = $index + 1;
-                $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
-
-                $tokens[$openIndex]->override(array(CT_DYNAMIC_PROP_BRACE_OPEN, '{'));
-                $tokens[$closeIndex]->override(array(CT_DYNAMIC_PROP_BRACE_CLOSE, '}'));
-
-                continue;
-            }
-
-            if ($token->equals('$')) {
-                $openIndex = $tokens->getNextMeaningfulToken($index);
-
-                if (null === $openIndex) {
-                    continue;
-                }
-
-                $openToken = $tokens[$openIndex];
-
-                if (!$openToken->equals('{')) {
-                    continue;
-                }
-
-                $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
-                $closeToken = $tokens[$closeIndex];
-
-                $openToken->override(array(CT_DYNAMIC_VAR_BRACE_OPEN, '{'));
-                $closeToken->override(array(CT_DYNAMIC_VAR_BRACE_CLOSE, '}'));
-            }
-        }
-    }
-
-    /**
-     * Transform closing `}` for T_CURLY_OPEN into CT_CURLY_CLOSE.
-     *
-     * This should be done at very beginning of curly braces transformations.
-     *
-     * @param Tokens $tokens
-     */
-    private function transformIntoCurlyClose(Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_CURLY_OPEN)) {
-                continue;
-            }
-
-            $level = 1;
-            $nestIndex = $index;
-
-            while (0 < $level) {
-                ++$nestIndex;
-
-                // we count all kind of {
-                if ($tokens[$nestIndex]->equals('{')) {
-                    ++$level;
-                    continue;
-                }
-
-                // we count all kind of }
-                if ($tokens[$nestIndex]->equals('}')) {
-                    --$level;
-                }
-            }
-
-            $tokens[$nestIndex]->override(array(CT_CURLY_CLOSE, '}'));
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomTokenNames()
     {
         return array(
@@ -129,5 +43,102 @@ class CurlyBraceTransformer extends AbstractTransformer
             'CT_DYNAMIC_VAR_BRACE_OPEN',
             'CT_DYNAMIC_VAR_BRACE_CLOSE',
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function process(Tokens $tokens, Token $token, $index)
+    {
+        $this->transformIntoCurlyCloseBrace($tokens, $token, $index);
+        $this->transformIntoDollarCloseBrace($tokens, $token, $index);
+        $this->transformIntoDynamicPropBraces($tokens, $token, $index);
+        $this->transformIntoDynamicVarBraces($tokens, $token, $index);
+    }
+
+    /**
+     * Transform closing `}` for T_CURLY_OPEN into CT_CURLY_CLOSE.
+     *
+     * This should be done at very beginning of curly braces transformations.
+     *
+     * @param Tokens $tokens
+     * @param Token  $token
+     * @param int    $index
+     */
+    private function transformIntoCurlyCloseBrace(Tokens $tokens, Token $token, $index)
+    {
+        if (!$token->isGivenKind(T_CURLY_OPEN)) {
+            return;
+        }
+
+        $level = 1;
+        $nestIndex = $index;
+
+        while (0 < $level) {
+            ++$nestIndex;
+
+            // we count all kind of {
+            if ($tokens[$nestIndex]->equals('{')) {
+                ++$level;
+                continue;
+            }
+
+            // we count all kind of }
+            if ($tokens[$nestIndex]->equals('}')) {
+                --$level;
+            }
+        }
+
+        $tokens[$nestIndex]->override(array(CT_CURLY_CLOSE, '}'));
+    }
+
+    private function transformIntoDollarCloseBrace(Tokens $tokens, Token $token, $index)
+    {
+        if ($token->isGivenKind(T_DOLLAR_OPEN_CURLY_BRACES)) {
+            $nextIndex = $tokens->getNextTokenOfKind($index, array('}'));
+            $tokens[$nextIndex]->override(array(CT_DOLLAR_CLOSE_CURLY_BRACES, '}'));
+        }
+    }
+
+    private function transformIntoDynamicPropBraces(Tokens $tokens, Token $token, $index)
+    {
+        if (!$token->isGivenKind(T_OBJECT_OPERATOR)) {
+            return;
+        }
+
+        if (!$tokens[$index + 1]->equals('{')) {
+            return;
+        }
+
+        $openIndex = $index + 1;
+        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
+
+        $tokens[$openIndex]->override(array(CT_DYNAMIC_PROP_BRACE_OPEN, '{'));
+        $tokens[$closeIndex]->override(array(CT_DYNAMIC_PROP_BRACE_CLOSE, '}'));
+    }
+
+    private function transformIntoDynamicVarBraces(Tokens $tokens, Token $token, $index)
+    {
+        if (!$token->equals('$')) {
+            return;
+        }
+
+        $openIndex = $tokens->getNextMeaningfulToken($index);
+
+        if (null === $openIndex) {
+            return;
+        }
+
+        $openToken = $tokens[$openIndex];
+
+        if (!$openToken->equals('{')) {
+            return;
+        }
+
+        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
+        $closeToken = $tokens[$closeIndex];
+
+        $openToken->override(array(CT_DYNAMIC_VAR_BRACE_OPEN, '{'));
+        $closeToken->override(array(CT_DYNAMIC_VAR_BRACE_CLOSE, '}'));
     }
 }
