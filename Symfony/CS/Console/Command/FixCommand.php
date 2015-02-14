@@ -120,7 +120,7 @@ problems as possible on a given file or files in a given directory and its subdi
 
 The <comment>--format</comment> option can be used to set the output format of the results; ``txt`` (default one), ``xml`` or ``json``.
 
-The <comment>--verbose</comment> option will show the applied fixers. When using ``txt`` format it will also displays progress notifications.
+The <comment>--verbose</comment> option will show the applied fixers. When using the ``txt`` format it will also displays progress notifications.
 
 The <comment>--level</comment> option limits the fixers to apply on the
 project:
@@ -253,7 +253,7 @@ only those exact fixers are enabled whether or not level is set.
 With the <comment>--config-file</comment> option you can specify the path to the
 <comment>.php_cs</comment> file.
 
-By using ``--using-cache`` option with ``yes`` or ``no`` you can set if caching
+By using the ``--using-cache`` option with ``yes`` or ``no`` you can set if caching
 mechanism should be used. This is enabled by default.
 
 Caching
