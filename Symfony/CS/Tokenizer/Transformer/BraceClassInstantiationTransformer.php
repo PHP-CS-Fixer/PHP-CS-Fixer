@@ -27,6 +27,14 @@ class BraceClassInstantiationTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function getCustomTokenNames()
+    {
+        return array('CT_BRACE_CLASS_INSTANTIATION_OPEN', 'CT_BRACE_CLASS_INSTANTIATION_CLOSE');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function process(Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
@@ -40,13 +48,5 @@ class BraceClassInstantiationTransformer extends AbstractTransformer
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCustomTokenNames()
-    {
-        return array('CT_BRACE_CLASS_INSTANTIATION_OPEN', 'CT_BRACE_CLASS_INSTANTIATION_CLOSE');
     }
 }
