@@ -174,13 +174,28 @@ fixed but without actually modifying them:
 
     <info>php %command.full_name% /path/to/code --dry-run</info>
 
+By using the <comment>--using-cache</comment> option with ``yes`` or ``no`` you
+can set if caching mechanism should be used. Using caching will speed up further
+runs by fixing only files that were modified since the last run. The tool will
+fix all files if the tool version has changed or the list of fixers has changed.
+The tool will generate ```.php_cs.cache``` files for caching.
+Caching is only supported when the tool is downloaded as phar file or installed via
+composer.
+
+Configuration file
+-------
+
 Instead of using command line options to customize the fixer, you can save the
 project configuration in a <comment>.php_cs.dist</comment> file in the root directory
-of your project. The file must return an instance of ``Symfony\CS\ConfigInterface``,
-which lets you configure the fixers, the level, the files, and directories that
+of your project.
+The file must return an instance of ``Symfony\CS\ConfigInterface``,
+which lets you configure the fixers, the level, the files and directories that
 need to be analyzed. You may also create <comment>.php_cs</comment> file, which is
-the local configuration that will be used instead of the project configuration, it
+the local configuration that will be used instead of the project configuration. It
 is a good practice to add that file into your <comment>.gitignore</comment> file.
+With the <comment>--config-file</comment> option you can specify the path to such a
+<comment>.php_cs</comment> file.
+
 The example below will add two contrib fixers to the default list of PSR2-level fixers:
 
     <?php
@@ -250,21 +265,8 @@ the ``psr0`` fixer, you can specify the ``--fixers="-psr0"`` option.
 But if you use the ``--fixers`` option with only exact fixers,
 only those exact fixers are enabled whether or not level is set.
 
-With the <comment>--config-file</comment> option you can specify the path to the
-<comment>.php_cs</comment> file.
-
-By using the ``--using-cache`` option with ``yes`` or ``no`` you can set if caching
-mechanism should be used. This is enabled by default.
-
-Caching
--------
-
-The caching mechanism is enabled by default. This will speed up further runs by
-fixing only files that were modified since the last run. The tool will fix all files if the
-tool version has changed or the list of fixers has changed.
-Cache is only supported when the tool is downloaded as phar file or installed via
-composer.
-Cache can be disabled via ``--using-cache`` option using ``no`` or by config file:
+When using a configuration file the caching mechanism is enabled by default.
+Cache can be disabled using config file:
 
     <?php
 

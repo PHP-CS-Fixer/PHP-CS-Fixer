@@ -4,8 +4,7 @@ PHP Coding Standards Fixer
 The PHP Coding Standards Fixer tool fixes *most* issues in your code when you
 want to follow the PHP coding standards as defined in the PSR-1 and PSR-2
 documents.
-
-If you are already using ``PHP_CodeSniffer`` to identify coding standards
+If you are already using [``PHP_CodeSniffer``](http://pear.php.net/package/PHP_CodeSniffer) to identify coding standards
 problems in your code, you know that fixing them by hand is tedious, especially
 on large projects. This tool does the job for you.
 
@@ -126,7 +125,7 @@ problems as possible on a given file or files in a given directory and its subdi
 
 The ``--format`` option can be used to set the output format of the results; ``txt`` (default one), ``xml`` or ``json``.
 
-The ``--verbose`` option will show the applied fixers. When using ``txt`` format it will also displays progress notifications.
+The ``--verbose`` option will show the applied fixers. When using the ``txt`` format it will also displays progress notifications.
 
 The ``--level`` option limits the fixers to apply on the
 project:
@@ -439,13 +438,28 @@ fixed but without actually modifying them:
 
     php php-cs-fixer.phar fix /path/to/code --dry-run
 
+By using the ``--using-cache`` option with ``yes`` or ``no`` you
+can set if caching mechanism should be used. Using caching will speed up further
+runs by fixing only files that were modified since the last run. The tool will
+fix all files if the tool version has changed or the list of fixers has changed.
+The tool will generate ```.php_cs.cache``` files for caching.
+Caching is only supported when the tool is downloaded as phar file or installed via
+composer.
+
+Configuration file
+-------
+
 Instead of using command line options to customize the fixer, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory
-of your project. The file must return an instance of ``Symfony\CS\ConfigInterface``,
-which lets you configure the fixers, the level, the files, and directories that
+of your project.
+The file must return an instance of ``Symfony\CS\ConfigInterface``,
+which lets you configure the fixers, the level, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
-the local configuration that will be used instead of the project configuration, it
+the local configuration that will be used instead of the project configuration. It
 is a good practice to add that file into your ``.gitignore`` file.
+With the ``--config-file`` option you can specify the path to such a
+``.php_cs`` file.
+
 The example below will add two contrib fixers to the default list of PSR2-level fixers:
 
 .. code-block:: php
@@ -515,21 +529,8 @@ the ``psr0`` fixer, you can specify the ``--fixers="-psr0"`` option.
 But if you use the ``--fixers`` option with only exact fixers,
 only those exact fixers are enabled whether or not level is set.
 
-With the ``--config-file`` option you can specify the path to the
-``.php_cs`` file.
-
-By using ``--using-cache`` option with ``yes`` or ``no`` you can set if caching
-mechanism should be used. This is enabled by default.
-
-Caching
--------
-
-The caching mechanism is enabled by default. This will speed up further runs by
-fixing only files that were modified since the last run. The tool will fix all files if the
-tool version has changed or the list of fixers has changed.
-Cache is only supported when the tool is downloaded as phar file or installed via
-composer.
-Cache can be disabled via ``--using-cache`` option using ``no`` or by config file:
+When using a configuration file the caching mechanism is enabled by default.
+Cache can be disabled using config file:
 
 .. code-block:: php
 
