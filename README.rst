@@ -439,7 +439,7 @@ fixed but without actually modifying them:
     php php-cs-fixer.phar fix /path/to/code --dry-run
 
 By using the ``--using-cache`` option with ``yes`` or ``no`` you
-can set if caching mechanism should be used. Using caching will speed up further
+can set if the caching mechanism should be used. Using caching will speed up further
 runs by fixing only files that were modified since the last run. The tool will
 fix all files if the tool version has changed or the list of fixers has changed.
 The tool will generate ```.php_cs.cache``` files for caching.
@@ -530,7 +530,7 @@ But if you use the ``--fixers`` option with only exact fixers,
 only those exact fixers are enabled whether or not level is set.
 
 When using a configuration file the caching mechanism is enabled by default.
-Cache can be disabled using config file:
+Caching can be disabled when using a config file using:
 
 .. code-block:: php
 
