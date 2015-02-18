@@ -438,7 +438,7 @@ class BracesFixer extends AbstractFixer
 
             $endIndex = $this->findStatementEnd($tokens, $parenthesisEndIndex);
 
-            if ($nextToken->isGivenKind([T_IF, T_TRY])) {
+            if ($nextToken->isGivenKind(array(T_IF, T_TRY))) {
                 $openingTokenKind = $nextToken->getId();
 
                 while (true) {
