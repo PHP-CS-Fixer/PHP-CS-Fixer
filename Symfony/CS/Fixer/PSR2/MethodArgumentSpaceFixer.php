@@ -70,7 +70,7 @@ class MethodArgumentSpaceFixer extends AbstractFixer
     }
 
     /**
-     * Fix arguments spacing for given function
+     * Fix arguments spacing for given function.
      *
      * @param Tokens $tokens             Tokens to handle
      * @param int    $startFunctionIndex Start parenthesis position
