@@ -992,7 +992,7 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Clear tokens in the given range
+     * Clear tokens in the given range.
      *
      * @param int $indexStart
      * @param int $indexEnd
@@ -1005,7 +1005,7 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Checks for monolithic PHP code
+     * Checks for monolithic PHP code.
      *
      * Checks that the code is pure PHP code, in a single code block, starting
      * with an open tag.

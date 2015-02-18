@@ -167,7 +167,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             $fixers[$fixer->getName()] = $fixer;
         }
 
-        return array(
+        $cases = array(
             array($fixers['php_closing_tag'], $fixers['short_tag']),
             array($fixers['unused_use'], $fixers['extra_empty_lines']),
             array($fixers['multiple_use'], $fixers['unused_use']),
@@ -183,11 +183,44 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['standardize_not_equal'], $fixers['strict']),
             array($fixers['double_arrow_multiline_whitespaces'], $fixers['multiline_array_trailing_comma']),
             array($fixers['double_arrow_multiline_whitespaces'], $fixers['align_double_arrow']),
-            array($fixers['phpdoc_indent'], $fixers['phpdoc_align']),
-            array($fixers['phpdoc_to_comment'], $fixers['phpdoc_align']),
-            array($fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']),
-            array($fixers['phpdoc_to_comment'], $fixers['no_empty_lines_after_phpdocs']),
+            array($fixers['indentation'], $fixers['phpdoc_indent']),
+            array($fixers['phpdoc_order'], $fixers['phpdoc_separation']),
+            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_separation']),
+            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_order']),
+            array($fixers['phpdoc_no_package'], $fixers['phpdoc_separation']),
+            array($fixers['phpdoc_no_package'], $fixers['phpdoc_order']),
+            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_trim']),
+            array($fixers['phpdoc_no_package'], $fixers['phpdoc_trim']),
+            array($fixers['phpdoc_separation'], $fixers['phpdoc_trim']),
+            array($fixers['phpdoc_short_description'], $fixers['phpdoc_trim']),
+            array($fixers['phpdoc_var_without_name'], $fixers['phpdoc_trim']),
+            array($fixers['phpdoc_order'], $fixers['phpdoc_trim']),
         );
+
+        $docFixerNames = array_filter(
+            array_keys($fixers),
+            function ($name) {
+                return false !== strpos($name, 'phpdoc');
+            }
+        );
+
+        // prepare bulk tests for phpdoc fixers to test if:
+        // * `phpdoc_to_comment` is first
+        // * `phpdoc_indent` is second
+        // * `phpdoc_align` is last
+        $cases[] = array($fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']);
+        foreach ($docFixerNames as $docFixerName) {
+            if (!in_array($docFixerName, array('phpdoc_to_comment', 'phpdoc_indent'), true)) {
+                $cases[] = array($fixers['phpdoc_to_comment'], $fixers[$docFixerName]);
+                $cases[] = array($fixers['phpdoc_indent'], $fixers[$docFixerName]);
+            }
+
+            if ('phpdoc_align' !== $docFixerName) {
+                $cases[] = array($fixers[$docFixerName], $fixers['phpdoc_align']);
+            }
+        }
+
+        return $cases;
     }
 
     public static function getFixerLevels()
@@ -207,7 +240,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
      */
     public function testFixersDescriptionConsistency(FixerInterface $fixer)
     {
-        $this->assertRegExp('/^[A-Z].*\.$/', $fixer->getDescription(), 'Description must start with capital letter and end with dot.');
+        $this->assertRegExp('/^[A-Z@].*\.$/', $fixer->getDescription(), 'Description must start with capital letter or an @ and end with dot.');
     }
 
     public function provideFixersDescriptionConsistencyCases()

@@ -332,9 +332,44 @@ Choose from the list of available fixers:
                 Docblocks should have the same
                 indentation as the documented subject.
 
+* **phpdoc_no_empty_return** [symfony]
+                @return void and @return null
+                annotations should be omitted from
+                phpdocs.
+
+* **phpdoc_no_package** [symfony]
+                @package and @subpackage annotations
+                should be omitted from phpdocs.
+
+* **phpdoc_separation** [symfony]
+                Annotations in phpdocs should be
+                grouped together so that annotations
+                of the same type immediately follow
+                each other, and annotations of a
+                different type are separated by a
+                single blank line.
+
+* **phpdoc_short_description** [symfony]
+                Phpdocs short descriptions should end
+                in either a full stop, exclamation
+                mark, or question mark.
+
 * **phpdoc_to_comment** [symfony]
                 Docblocks should only be used on
                 structural elements.
+
+* **phpdoc_trim** [symfony]
+                Phpdocs should start and end with
+                content, excluding the very fist and
+                last line of the docblocks.
+
+* **phpdoc_type_to_var** [symfony]
+                @type should always be written as
+                @var.
+
+* **phpdoc_var_without_name** [symfony]
+                @var and @type annotations should not
+                contain the variable name.
 
 * **remove_leading_slash_use** [symfony]
                 Remove leading slashes in use clauses.
@@ -413,6 +448,16 @@ Choose from the list of available fixers:
                 Convert PHP4-style constructors to
                 __construct. Warning! This could
                 change code behavior.
+
+* **phpdoc_order** [contrib]
+                Annotations in phpdocs should be
+                ordered so that param annotations come
+                first, then throws annotations, then
+                return annotations.
+
+* **phpdoc_var_to_type** [contrib]
+                @var should always be written as
+                @type.
 
 * **short_array_syntax** [contrib]
                 PHP array's should use the PHP 5.4

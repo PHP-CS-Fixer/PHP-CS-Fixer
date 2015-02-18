@@ -35,10 +35,11 @@ class PhpdocToCommentFixer extends AbstractFixer
     public function getPriority()
     {
         /*
-         * Should be run before the PhpdocIndentFixer, PhpdocParamsFixer and NoEmptyLinesAfterPhpdocsFixer
-         * so that these fixers don't touch doc comments which are meant to be converted to regular comments.
+         * Should be run before all other docblock fixers so that these fixers
+         * don't touch doc comments which are meant to be converted to regular
+         * comments.
          */
-        return 5;
+        return 25;
     }
 
     /**

@@ -22,7 +22,7 @@ use Symfony\CS\Tokenizer\Tokens;
 class ElseifFixer extends AbstractFixer
 {
     /**
-     * Replace all `else if` (T_ELSE T_IF) with `elseif` (T_ELSEIF)
+     * Replace all `else if` (T_ELSE T_IF) with `elseif` (T_ELSEIF).
      *
      * {@inheritdoc}
      */

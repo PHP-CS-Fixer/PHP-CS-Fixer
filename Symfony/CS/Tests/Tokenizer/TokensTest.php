@@ -284,6 +284,7 @@ PHP;
 
     /**
      * @dataProvider provideMonolithicPhpDetection
+     *
      * @param string $source
      * @param bool   $monolitic
      */
@@ -309,6 +310,7 @@ PHP;
 
     /**
      * @dataProvider provideShortOpenTagMonolithicPhpDetection
+     *
      * @param string $source
      * @param bool   $monolitic
      */
@@ -344,6 +346,7 @@ PHP;
 
     /**
      * @dataProvider provideShortOpenTagEchoMonolithicPhpDetection
+     *
      * @param string $source
      * @param bool   $monolitic
      */

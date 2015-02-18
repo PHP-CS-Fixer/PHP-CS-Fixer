@@ -84,7 +84,8 @@ class HeaderCommentFixer extends AbstractFixer
     /**
      * Enclose the given text in a comment block.
      *
-     * @param  string $header
+     * @param string $header
+     *
      * @return string
      */
     private static function encloseTextInComment($header)
@@ -118,7 +119,8 @@ class HeaderCommentFixer extends AbstractFixer
     /**
      * Find the index where the header comment must be inserted.
      *
-     * @param  Tokens $tokens
+     * @param Tokens $tokens
+     *
      * @return int
      */
     private function findHeaderCommentInsertionIndex(Tokens $tokens)

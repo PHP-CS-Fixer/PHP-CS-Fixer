@@ -374,7 +374,7 @@ class Token
     }
 
     /**
-     * Check if token is one of structure alternative end syntax (T_END...)
+     * Check if token is one of structure alternative end syntax (T_END...).
      *
      * @return bool
      */
