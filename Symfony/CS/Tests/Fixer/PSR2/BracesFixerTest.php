@@ -619,6 +619,80 @@ function mixedComplex()
         }
     }',
             ),
+            array(
+                '<?php
+if (true) {
+    if (true) {
+        echo 1;
+    } elseif (true) {
+        echo 2;
+    } else {
+        echo 3;
+    }
+}
+',
+                '<?php
+if(true)
+    if(true)
+        echo 1;
+    elseif(true)
+        echo 2;
+    else
+        echo 3;
+',
+            ),
+            array(
+                '<?php
+if (true) {
+    if (true) {
+        echo 1;
+    } elseif (true) {
+        echo 2;
+    } else {
+        echo 3;
+    }
+}
+echo 4;
+',
+                '<?php
+if(true)
+    if(true)
+        echo 1;
+    elseif(true)
+        echo 2;
+    else
+        echo 3;
+echo 4;
+',
+            ),
+            array(
+                '<?php
+if (true) {
+    if (true) {
+        echo 1;
+    } elseif (true) {
+        echo 2;
+    } else {
+        echo 3;
+    }
+}',
+                '<?php
+if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
+            ),
+            array(
+                '<?php
+if (true) {
+    if (true) {
+        echo 1;
+    } else {
+        echo 2;
+    }
+} else {
+    echo 3;
+}',
+                '<?php
+if(true) if(true) echo 1; else echo 2; else echo 3;',
+            ),
         );
     }
 

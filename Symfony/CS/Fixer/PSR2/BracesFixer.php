@@ -439,14 +439,20 @@ class BracesFixer extends AbstractFixer
             $endIndex = $this->findStatementEnd($tokens, $parenthesisEndIndex);
 
             if ($nextToken->isGivenKind(T_IF)) {
-                $nextIndex = $tokens->getNextNonWhitespace($endIndex);
-                $nextToken = $tokens[$nextIndex];
+                do {
+                    $nextIndex = $tokens->getNextNonWhitespace($endIndex);
+                    $nextToken = $tokens[$nextIndex];
 
-                if ($nextToken && $nextToken->isGivenKind($this->getControlContinuationTokens())) {
-                    $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $nextIndex);
+                    if ($nextToken && $nextToken->isGivenKind($this->getControlContinuationTokens())) {
+                        $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $nextIndex);
 
-                    return $this->findStatementEnd($tokens, $parenthesisEndIndex);
-                }
+                        $endIndex = $this->findStatementEnd($tokens, $parenthesisEndIndex);
+
+                        if ($nextToken->isGivenKind($this->getFinalControlContinuationTokens())) {
+                            return $endIndex;
+                        }
+                    }
+                } while ($nextToken);
             }
 
             return $endIndex;
@@ -526,6 +532,23 @@ class BracesFixer extends AbstractFixer
                 T_ELSE,
                 T_ELSEIF,
                 T_CATCH,
+            );
+
+            if (defined('T_FINALLY')) {
+                $tokens[] = T_FINALLY;
+            }
+        }
+
+        return $tokens;
+    }
+
+    private function getFinalControlContinuationTokens()
+    {
+        static $tokens = null;
+
+        if (null === $tokens) {
+            $tokens = array(
+                T_ELSE,
             );
 
             if (defined('T_FINALLY')) {
