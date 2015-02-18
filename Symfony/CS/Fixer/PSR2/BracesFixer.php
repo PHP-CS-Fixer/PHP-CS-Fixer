@@ -438,21 +438,24 @@ class BracesFixer extends AbstractFixer
 
             $endIndex = $this->findStatementEnd($tokens, $parenthesisEndIndex);
 
-            if ($nextToken->isGivenKind(T_IF)) {
-                do {
+            if ($nextToken->isGivenKind([T_IF, T_TRY])) {
+                $openingTokenKind = $nextToken->getId();
+
+                while (true) {
                     $nextIndex = $tokens->getNextNonWhitespace($endIndex);
                     $nextToken = $tokens[$nextIndex];
-
-                    if ($nextToken && $nextToken->isGivenKind($this->getControlContinuationTokens())) {
+                    if ($nextToken && $nextToken->isGivenKind($this->getControlContinuationTokensForOpeningToken($openingTokenKind))) {
                         $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $nextIndex);
 
                         $endIndex = $this->findStatementEnd($tokens, $parenthesisEndIndex);
 
-                        if ($nextToken->isGivenKind($this->getFinalControlContinuationTokens())) {
+                        if ($nextToken->isGivenKind($this->getFinalControlContinuationTokensForOpeningToken($openingTokenKind))) {
                             return $endIndex;
                         }
+                    } else {
+                        break;
                     }
-                } while ($nextToken);
+                }
             }
 
             return $endIndex;
@@ -542,20 +545,37 @@ class BracesFixer extends AbstractFixer
         return $tokens;
     }
 
-    private function getFinalControlContinuationTokens()
+    private function getControlContinuationTokensForOpeningToken($openingTokenKind)
     {
-        static $tokens = null;
-
-        if (null === $tokens) {
-            $tokens = array(
+        if ($openingTokenKind === T_IF) {
+            return array(
                 T_ELSE,
+                T_ELSEIF,
             );
+        }
 
+        if ($openingTokenKind === T_TRY) {
+            $tokens = array(T_CATCH);
             if (defined('T_FINALLY')) {
                 $tokens[] = T_FINALLY;
             }
+
+            return $tokens;
         }
 
-        return $tokens;
+        return array();
+    }
+
+    private function getFinalControlContinuationTokensForOpeningToken($openingTokenKind)
+    {
+        if ($openingTokenKind === T_IF) {
+            return [T_ELSE];
+        }
+
+        if ($openingTokenKind === T_TRY && defined('T_FINALLY')) {
+            return [T_FINALLY];
+        }
+
+        return [];
     }
 }
