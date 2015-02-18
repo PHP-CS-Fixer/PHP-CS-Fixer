@@ -46,22 +46,11 @@ class PhpdocParamsFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
-            $tokens[$index]->setContent($this->fixDocBlock($token->getContent()));
+        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
+            $token->setContent($this->fixDocBlock($token->getContent()));
         }
 
         return $tokens->generateCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // should be run after the PhpdocIndentFixer
-        // this is because this fixer currently only deals with docblocks that
-        // are correctly indented, and skips those that are not
-        return -10;
     }
 
     /**
@@ -72,6 +61,26 @@ class PhpdocParamsFixer extends AbstractFixer
         return 'All items of the @param, @throws, @return, @var, and @type phpdoc tags must be aligned vertically.';
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        /*
+         * Should be run after all other docblock fixers. This because they
+         * modify other annotations to change their type and or separation
+         * which totally change the behavior of this fixer. It's important that
+         * annotations are of the correct type, and are grouped correctly
+         * before running this fixer.
+         */
+        return -10;
+    }
+
+    /**
+     * Fix a given docblock.
+     *
+     * @param string $content
+     */
     private function fixDocBlock($content)
     {
         $lines = Utils::splitLines($content);
@@ -156,6 +165,14 @@ class PhpdocParamsFixer extends AbstractFixer
         return implode($lines);
     }
 
+    /**
+     * Get all matches.
+     *
+     * @param string $line
+     * @param bool   $matchCommentOnly
+     *
+     * @return string[]|null
+     */
     private function getMatches($line, $matchCommentOnly = false)
     {
         if (preg_match($this->regex, $line, $matches)) {

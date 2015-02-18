@@ -1,0 +1,99 @@
+<?php
+
+/*
+ * This file is part of the PHP CS utility.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace Symfony\CS\Tests\Fixer\Symfony;
+
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+
+/**
+ * @author Graham Campbell <graham@mineuk.com>
+ */
+class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestBase
+{
+    public function testFixVar()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @var string Hello!
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @var string $foo Hello!
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixType()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @var int|null
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @var int|null $bar
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testDoNothing()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @var Foo\Bar This is a variable.
+     */
+
+EOF;
+
+        $this->makeTest($expected);
+    }
+
+    public function testSingleLine()
+    {
+        $expected = <<<'EOF'
+<?php
+    /** @var Foo\Bar $bar */
+    $bar;
+EOF;
+
+        $this->makeTest($expected);
+    }
+
+    public function testEmpty()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     *
+     */
+
+EOF;
+
+        $this->makeTest($expected);
+    }
+}

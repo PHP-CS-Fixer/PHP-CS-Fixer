@@ -113,7 +113,7 @@ class EregToPregFixer extends AbstractFixer
     }
 
     /**
-     * Check the validity of a PCRE
+     * Check the validity of a PCRE.
      *
      * @param string $pattern the regular expression
      *

@@ -24,7 +24,7 @@ class HeaderCommentFixer extends AbstractFixer
     private static $headerComment = '';
 
     /**
-     * Sets the desired header text
+     * Sets the desired header text.
      *
      * The given text will be trimmed and enclosed into a multiline comment.
      * If the text is empty, when a file get fixed, the header comment will be
@@ -79,9 +79,10 @@ class HeaderCommentFixer extends AbstractFixer
     }
 
     /**
-     * Encloses the given text in a comment block
+     * Encloses the given text in a comment block.
      *
-     * @param  string $header
+     * @param string $header
+     *
      * @return string
      */
     private static function encloseTextInComment($header)
@@ -97,7 +98,7 @@ class HeaderCommentFixer extends AbstractFixer
     }
 
     /**
-     * Removes the header comment, if any
+     * Removes the header comment, if any.
      *
      * @param Tokens $tokens
      */
@@ -110,9 +111,10 @@ class HeaderCommentFixer extends AbstractFixer
     }
 
     /**
-     * Finds the index where the header comment must be inserted
+     * Finds the index where the header comment must be inserted.
      *
-     * @param  Tokens $tokens
+     * @param Tokens $tokens
+     *
      * @return int
      */
     private function findHeaderCommentInsertionIndex(Tokens $tokens)
@@ -128,7 +130,7 @@ class HeaderCommentFixer extends AbstractFixer
     }
 
     /**
-     * Inserts the header comment at the given index
+     * Inserts the header comment at the given index.
      *
      * @param Tokens $tokens
      * @param int    $index
