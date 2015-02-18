@@ -1,0 +1,885 @@
+---------------------------------------------------------------------------
+
+by ceeram at 2014-12-17T01:06:01Z
+
+phpdoc_group_tags_fixer as name perhaps? i think its more clear then phpdoc
+separate, as that could mean separate phpdocs from code around it as well,
+also it does not really separate tags, but its more correctly grouping tags
+
+2014-12-17 1:29 GMT+01:00 Coveralls <notifications@github.com>:
+>
+> [image: Coverage Status] <https://coveralls.io/builds/1622212>
+>
+> Coverage increased (+0.49%) when pulling *4ca6c6c
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/commit/4ca6c6c16abb2ef3facf28e7f296f9da75c675ee>
+> on GrahamForks:1.5-phpdoc-separation* into *10a42d0
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/commit/10a42d06273b5ba92924f9ba46062405852a4469>
+> on FriendsOfPHP:1.5*.
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/887#issuecomment-67258647>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-18T14:45:20Z
+
+Flysystem regression testing: https://github.com/thephpleague/flysystem/pull/351.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-18T16:22:16Z
+
+Running on symfony revealed a few issues:
+
+---
+
+1) The order of the throws statements should not change, but the move of the returns annotation was correct.
+![image](https://cloud.githubusercontent.com/assets/2829600/5491300/e016bc10-86cf-11e4-8c90-28c582c963ce.png)
+
+**EDIT: FIXED**
+
+---
+
+2) The separation fixer should not totally remove docblocks. This was caused by the forward and backward passes we made to look for blank lines before the real docblock content. We need to be careful not to delete everything if there is no content.
+
+Before:
+```php
+
+    /**
+     *
+     */
+```
+
+After:
+```php
+
+```
+
+Also, note how the end result also has unwanted whitespace.
+
+**EDIT: FIXED**
+
+---
+
+3) Issues with deleted content. This happens when we're looking for the next annotation, but the description from the previous annotation has been separated. We need to improve how we detect the annotation description has finished. A blank line of docblock is not sufficient.
+![image](https://cloud.githubusercontent.com/assets/2829600/5491469/4e1ba4ea-86d1-11e4-8471-d0de729247a8.png)
+
+**EDIT: FIXED**
+
+---
+
+4) Ok, this is odd...
+![image](https://cloud.githubusercontent.com/assets/2829600/5491508/ab0f3090-86d1-11e4-80e0-b47a1f9b214c.png)
+
+**EDIT: FIXED**
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-19T20:05:50Z
+
+Oh my... huge progress from last time I see this PR !
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T20:11:11Z
+
+:)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-19T20:21:08Z
+
+Could you explain (in code ;) ) why the used fixers order are needed? What do we gain by it ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T20:22:37Z
+
+I thought I had. Err, well. The trim fixer needs to run quite late because the return void fixer can leave behind blank docblock lines if someone has separated it from the param annotations for example.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T20:23:05Z
+
+There are loads of cases here - difficult to write them all down.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-19T20:24:39Z
+
+Somehow you decided about that and not other order. Just please, write it down. If not then somebody in future may don't understand it and remove it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T20:27:19Z
+
+> Somehow you decided about that and not other order. Just please, write it down. If not then somebody in future may don't understand it and remove it.
+
+I'll add that to the todo as the order might change again after more testing on different repos.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-19T20:28:16Z
+
+great !
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T21:09:27Z
+
+Second round of testing on symfony:
+
+![image](https://cloud.githubusercontent.com/assets/2829600/5511247/20b61682-87c3-11e4-983c-d8a2ce2fa080.png)
+
+Note how these lines are missing a space after the `*`. That's causing us to process them incorrectly.
+
+This also brings to my attention that the behaviour with that annotation is undefined anyway since I've got no tests for it. Need to sort this...
+
+**EDIT: FIXED**
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T21:11:46Z
+
+Symfony seems to like to keep `@see` and `@author` separated. I need to change the way I deal with this. Probably need a tag comparator class or something.
+
+![image](https://cloud.githubusercontent.com/assets/2829600/5511295/a1ca79d4-87c3-11e4-946c-c422968737d1.png)
+
+**EDIT: FIXED**
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-19T23:38:02Z
+
+@keradus Alright - where I'm at now - This is essentially feature complete, and current code coverage is 100%. I've still got some more unit tests to write for the docblocks classes in isolation, but we should be nearing completion.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-20T12:40:14Z
+
+All the tests are done now. Now we need to discuss fixer names.
+
+The following are new fixers introduced by this pull:
+
+**phpdoc_no_return_void**
+```
+@return void and @return null annotations should be omitted from phpdocs.
+```
+
+**phpdoc_separation**
+```
+Annotations in phpdocs should be grouped together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single blank line.
+```
+
+**phpdoc_trim**
+```
+Phpdocs should start and end with content, excluding the very fist and last line of the docblocks.
+```
+
+**phpdoc_var**
+```
+@var and @type annotations should not contain the variable name.
+```
+
+**phpdoc_order**
+```
+Annotations in phpdocs should be ordered so that param annotations come first, then throws annotations, then return annotations.
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-20T12:52:27Z
+
+`phpdoc_no_return_void`
+so no void? in descr I see null too. maybe `phpdoc_no_empty_return` ?
+
+Other names are good for me
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-20T12:53:02Z
+
+`phpdoc_var`
+what about fixer that standardize `@var` vs `@type`
+?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-20T12:58:27Z
+
+`phpdoc_var` currently removes the variable name from the annotation. If we were to add a fixer to change `@type` -> `@var`, then I guess they both need better names.
+
+I've renamed that other fixer.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-20T13:22:16Z
+
+Renaming `phpdoc_var` to `phpdoc_var_without_name`.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-20T13:50:12Z
+
+Just added `phpdoc_type_to_var` and `phpdoc_var_to_type`.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T13:10:25Z
+
+Just updated the todo list with another fixer. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T15:13:55Z
+
+Done.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-21T15:27:34Z
+
+Please, stop amending the commit.
+So many work was done, so large diff. And after any smallest change I anyone who want to see it must read entire diff again and search what's changed...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T15:31:33Z
+
+@keradus I only amended it the once because the rebase against the readme changes in every commit took me 15 mins, and I really can't arsed with that again.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-21T15:32:38Z
+
+I see. thanks !
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-12-21T15:54:49Z
+
+Two additional fixers:
+
+* inheritdoc normalizer `{@inheritdoc}` and not `@{inheritdoc}` or `{@inheritDoc}`
+* Line wrapper for `@param` and `@return`, description is more a more a challenge because it could contain actual code examples.
+
+Great work :+1: :clap:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T16:05:23Z
+
+@sstok
+
+Regarding the line wrapper - I'm not going to do this. It would be an issue for guzzle for example. Some people even contain code samples in `@param` annotation descriptions. I took a great deal of care to ensure to correct detect multline annotation descriptions, even those that contain blank lines in them.
+
+Regarding the `{@inheritdoc}` normaliser, that's a good idea. I've added it to the todo list.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T16:07:18Z
+
+Also, I'm going to add a fixer to ensure that all annotations as defined in the proposed psr docblock spec are lowercase.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-21T17:41:05Z
+
+See https://github.com/symfony/symfony/pull/13066.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-22T10:09:54Z
+
+From todo:
+> Add a integer->int and boolean->bool fixer
+
+The standard this fixer will implement is:
+> For type-hinting in PHPDocs and casting, use bool (instead of boolean or Boolean), int (instead of integer), float (instead of double or real);
+
+please add missing cases ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-22T11:01:27Z
+
+@keradus I cannot change `Boolean` to `bool`. because `Boolean` might be a class the user has.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-22T11:04:51Z
+
+but `double` and `real` can be changed into `float` ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-22T11:05:53Z
+
+Yes, they can. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-22T11:07:16Z
+
+Shouldn't all `DocBlock\*` classes be internal ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-22T11:22:13Z
+
+> Shouldn't all DocBlock\* classes be internal ?
+
+Maybe change this in 2.0 since that's where you first added internal tags.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-22T11:24:36Z
+
+Added internal at 2.0 because we can't make internal at 1.x anything that is already part of api.
+But this isn't merged into 1.x yet, so we can, and should, make it internal now. No benefits from waiting for 2.x
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-22T11:29:49Z
+
+Oh no. You removed the "pos" from the line class. I need that. :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-22T11:31:10Z
+
+Line shouldn't know that... collection element should know nothing about collection container.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-22T11:32:54Z
+
+@keradus If I don't do that, then this annotation refactor is going to be messy, because an annotation needs to know where it is the docblock, which means its lines need to know where they are. If they don't, I can't fix their order...
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-22T11:34:20Z
+
+Why the Annotation need to know it's position in DocBlock?
+Shouldn't this knowledge be reverted - the DocBLock should know Annotations and their posiotions ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-22T11:35:33Z
+
+Because that's how my order fixer works. I can't see a better way of doing this.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-22T11:35:45Z
+
+Tell me what you think after I push my refactor.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-22T11:40:46Z
+
+Actually, I think I can do this your way, but there is a tiny hack involved...
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-22T11:42:42Z
+
+Don't know what you have on your mind, so cant give an opinion...
+Relax, I can wait for new commit.
+
+BTW, the collection knowing it's elements and elements knowing their collection was my second attempt of changing FixerInterface... horrible mess and performance lose.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-22T11:47:23Z
+
+Yeh, sure. I just need to work out why the tests are failing, then I'll push it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-22T11:59:49Z
+
+Yey. Passing! Time to push...
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-22T12:13:57Z
+
+> Yey. Passing! Time to push...
+
+looks nice ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-22T12:45:14Z
+
+In tests `$input` must not duplicate `$expected`, see https://github.com/GrahamForks/PHP-CS-Fixer/pull/3
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-22T13:44:53Z
+
+Before further work please rebase your branch (due to #922).
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-22T14:11:06Z
+
+Please see https://github.com/GrahamForks/PHP-CS-Fixer/pull/4
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-29T17:32:57Z
+
+Grr. How do we stop fabot.io from failing on our tests?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-29T17:33:10Z
+
+TBH, can we just disable fabbot.io?
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-29T17:38:42Z
+
+@fabien , there seems to be an error in fabbot that trying to fix docs (integer->int etc) inside string, not T_DOC_COMMENT. Fixers in this PR will do it. Any chances to switch fabbot to detect that using PHP CS Fixer, which will not lead into this error ?
+
+---------------------------------------------------------------------------
+
+by sstok at 2014-12-30T08:51:30Z
+
+@keradus its `@fabPot` (with a p :wink: `@fabbot` is the fabbot.io account :dancer: )
+And `@fabien` is someone else ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-30T17:22:18Z
+
+Just rebased. Sorry we had to lose some of the commits.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-30T22:09:19Z
+
+> > @fabien , there seems to be an error in fabbot that trying to fix docs (integer->int etc) inside string, not T_DOC_COMMENT. Fixers in this PR will do it. Any chances to switch fabbot to detect that using PHP CS Fixer, which will not lead into this error ?
+>
+> sstok commented 13 hours ago
+> @keradus its @fabPot (with a p :wink: @fabbot is the fabbot.io account :dancer: )
+And @fabien is someone else ;)
+
+Yeah @sstok , when I mentioned fabbot I meant fabbot.io, so that is cool.
+Don't really know why pinging `@fabien` instead of @fabpot ;)
+
+What is more, `@fabbot` account isn't for fabbot.io:
+https://github.com/fabbot/symphony/issues/1
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-31T11:45:20Z
+
+@keradus If I were to remove the scalar fixer (currently a mess) and the inheritdoc fixer (not started yet), from this pull, could we have this through by friday do you think?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-31T11:45:51Z
+
+Removing the scalar fixer would also keep fabbot.io passing for now. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-31T14:18:34Z
+
+I doubt that. It will for sure brings the merge closer, but there are so much points on todo list, eg a full review, which wasn't done yet. This PR adds 4k lines, so it won't be small review
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-31T14:20:44Z
+
+I'll adjust the todo list to reflect what currently needs doing...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-31T14:35:29Z
+
+@keradus Your description tests don't work correctly.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-31T14:41:37Z
+
+Because statement begins with `@package` etc, which is not a real word
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-31T14:43:33Z
+
+Ow... my commits were lost
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-31T14:56:56Z
+
+Yeh, this was totally impossible to rebase, so I squashed the lot first. Sorry. :/
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2014-12-31T14:57:36Z
+
+> Because statement begins with @package etc, which is not a real word
+
+Teh, I know. I'm saying that should be allowed, so the test is incorrect.
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-12-31T17:19:45Z
+
+Test is now wrong, it is cool for current codebase. If you want you can enhance it, but I would simply enhance the description of fixer.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-01-02T22:38:36Z
+
+@GrahamCampbell can you work on the removal of the scalar fixer (extracting it to a separate branch to be reviewed and merged separately ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-02T22:48:54Z
+
+I've removed it already, and it's on a separate branch for now. I'll create a pull request once we've all happy with this one.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-05T00:48:14Z
+
+What else needs doing here besides me fixing the fixer names and rebasing again?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-05T09:42:03Z
+
+- from todo: `Document why the fixer orders are as they are`
+- some of review issues are still waiting, they should be done before final review
+- fix travis
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-05T11:33:09Z
+
+There are so many comments here, I have no idea which ones need looking at I thought I'd addressed them all now.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-05T12:22:31Z
+
+Maybe just look at non outdated comments?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-05T12:34:55Z
+
+> Maybe just look at non outdated comments?
+
+Not very helpful because some of them are outdated but github hasn't hidden them because the code to fix them was on a different line.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-05T12:35:08Z
+
+Also, just rebased this.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-05T19:28:08Z
+
+> > Maybe just look at non outdated comments?
+>
+> Not very helpful because some of them are outdated but github hasn't hidden them because the code to fix them was on a different line.
+
+They are in great minority. In such a cases I do always comment them as "done", and there's no problem...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-05T19:36:48Z
+
+> They are in great minority
+
+Yeh, they're better now. The more code I update, the more of the comments disappear, even if my changes were unrelated. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-05T19:40:49Z
+
+> Yeh, they're better now. The more code I update, the more of the comments disappear, even if my changes were unrelated. :)
+
+Nothing to happy about. Then that issue may be raised again on second review, or, what worse, not find again...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-05T19:58:39Z
+
+@keradus You're misunderstanding. Those issues that are disappearing were already dealt with. The wrong line was commented on, so the comments didn't disappear after I fixed the issues.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-05T20:11:42Z
+
+Oh, OK. Then "done" solution is great for them ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-14T00:22:35Z
+
+So... the review.
+Old ones that aren't done yet and new ones:
+- [ ] Don't know why it was removed from todo list... why one fixer should be run before/after other one? In comment there is only that "it must", but without "why" part.
+- [x] https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/887/files#r22460018
+- [x] https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/887/files#r22906795
+- [x] https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/887/files#r22299268
+- [x] https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/887/files#r22530672
+- [x] https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/887/files#r22907480
+- [x] https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/887/files#r22907529
+- [ ] https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/887/files#r22907770
+
+Some of issues were fixed at once: https://github.com/GrahamForks/PHP-CS-Fixer/pull/5
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-14T20:47:27Z
+
+@keradus Thanks for going through this again. I'll try and get to this on Saturday. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-14T20:53:17Z
+
+Cool ! :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-16T20:17:54Z
+
+Which issues are fixed by your pull btw @keradus?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-16T20:30:34Z
+
+Also, just rebased.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-16T22:10:03Z
+
+> Which issues are fixed by your pull btw @keradus?
+
+All issues fixed by my PR were commented and were not included in my [list](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/887#issuecomment-69848441)
+
+> Also, just rebased.
+
+I can't see my commit after that :( I hope you didn't lose the changes
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-16T22:20:01Z
+
+k, all changes where kept.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-18T21:30:45Z
+
+Sorry, I haven't had time to look at this again yet. :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-18T21:46:39Z
+
+:(
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-24T23:53:26Z
+
+ping @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-24T23:56:07Z
+
+Hello @keradus. It's 5 to midnight here. I'll have a look at this tomorrow. I've got a totally free day. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-25T00:05:45Z
+
+I'm glad to hear that.
+I really want to ship it soon!
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-25T12:36:37Z
+
+@keradus We've got a failing test here. I assume that's because ¡ and ¿ need the multibyte string functions. How should I proceed?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-25T13:13:35Z
+
+> @keradus We've got a failing test here. I assume that's because ¡ and ¿ need the multibyte string functions. How should I proceed?
+
+I'll try to handle it tomorrow
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-25T16:33:15Z
+
+@GrahamCampbell, maybe sth like
+
+```php
+    private function isCorrectlyFormatted($content)
+    {
+        if (false !== strpos(strtolower($content), '{@inheritdoc}')) {
+            return true;
+        }
+
+        return $content !== rtrim($content, '.!?¡¿');
+    }
+```
+
+?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-25T16:34:51Z
+
+@keradus I don't think it will. The `rtrim` function doesn't support multibyte strings. :(
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-01-25T16:35:04Z
+
+See http://php.net/manual/en/ref.mbstring.php#87047.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-25T16:55:08Z
+
+Not so sure about that `mb_trim` you refefred. Especially things like `'\\\\\\0'`...
+
+Yes, rtrim doesn't support multibyte string, it split `¡` into two bytes and then trim that two bytes at the end. It does the trick. Try it yourself ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-01-29T21:21:29Z
+
+What is left:
+
+PhpdocTrimFixer
+- [ ] https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/887/files#r22907529
+- [ ] https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/887/files#r23802612
+
+PhpdocIndentFixer
+- [ ] https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/887/files#r23802437
+- [ ] https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/887/files#r22907770
+
+PhpdocParamsFixer
+- [ ] https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/887#discussion_r23802548
+- [ ] https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/887#discussion_r23802581
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-03T07:55:48Z
+
+ping @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-06T20:29:13Z
+
+anything @GrahamCampbell ? this is the last thing before release 1.5 and it would be really cool to see you here !
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-02-06T20:34:50Z
+
+@keradus Is there any chance you could finish this off for me. I don't think I'll be able to do anything here in the next 24 hours. Sorry.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-06T20:41:05Z
+
+@GrahamCampbell you know that when I could help I do it, I send PRs into yours few times, event into this one.
+The problem here is that you set some priorities that I don't understand. And without answering my questions about them I simply can't help, even when I want to.
+The questions are collected in my [comment](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/887#issuecomment-72106480).
+When you will answer the questions about priority then I could help it in one or another way. Not before :(
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-02-08T19:20:30Z
+
+Just rebased.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-10T20:20:40Z
+
+ping @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-02-10T20:33:02Z
+
+I'll rebase again, look into the failing tests, then address those remaining issues.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-10T20:36:33Z
+
+cool, any chances to see you on gitter ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-12T20:21:46Z
+
+ping @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-17T19:56:45Z
+
+Please see https://github.com/GrahamForks/PHP-CS-Fixer/pull/6
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-02-17T20:05:30Z
+
+Awesome @keradus. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-17T20:35:03Z
+
+Please rebaser to get rid of that merge commit and squash your commits into one, there should be one commit per one author.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-18T17:43:52Z
+
+ping @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-02-18T17:44:52Z
+
+@keradus Will do very shortly. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-02-18T17:49:56Z
+
+@keradus Done!
