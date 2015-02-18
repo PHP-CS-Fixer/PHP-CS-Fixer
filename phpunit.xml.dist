@@ -26,6 +26,9 @@
         <testsuite name="tokenizer">
             <directory>./Symfony/CS/Tests/Tokenizer/</directory>
         </testsuite>
+        <testsuite name="docblock">
+            <directory>./Symfony/CS/Tests/DocBlock/</directory>
+        </testsuite>
     </testsuites>
 
     <filter>

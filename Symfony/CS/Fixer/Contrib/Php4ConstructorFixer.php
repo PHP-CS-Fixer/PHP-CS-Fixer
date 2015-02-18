@@ -262,15 +262,14 @@ class Php4ConstructorFixer extends AbstractFixer
      * @param int    $startIndex the search start index
      * @param int    $endIndex   the search end index
      *
-     * @return array|null {
-     *                    The function/method data, if a match is found.
+     * @return array|null An associative array, if a match is found:
      *
-     *      @var int   $nameIndex  the index of the function/method name
-     *      @var int   $startIndex the index of the function/method start
-     *      @var int   $endIndex   the index of the function/method end
-     *      @var int   $bodyIndex  the index of the function/method body
-     *      @var array $modifiers  the modifiers as array keys and their index as value, e.g. array(T_PUBLIC => 10)
-     * }
+     *     - nameIndex (int): The index of the function/method name.
+     *     - startIndex (int): The index of the function/method start.
+     *     - endIndex (int): The index of the function/method end.
+     *     - bodyIndex (int): The index of the function/method body.
+     *     - modifiers (array): The modifiers as array keys and their index as
+     *       the values, e.g. array(T_PUBLIC => 10).
      */
     private function findFunction(Tokens $tokens, $name, $startIndex, $endIndex)
     {

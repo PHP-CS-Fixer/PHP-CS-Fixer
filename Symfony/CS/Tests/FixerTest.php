@@ -182,6 +182,15 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['standardize_not_equal'], $fixers['strict']),
             array($fixers['double_arrow_multiline_whitespaces'], $fixers['multiline_array_trailing_comma']),
             array($fixers['double_arrow_multiline_whitespaces'], $fixers['align_double_arrow']),
+            array($fixers['indentation'], $fixers['phpdoc_indent']),
+            array($fixers['phpdoc_order'], $fixers['phpdoc_separation']),
+            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_separation']),
+            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_order']),
+            array($fixers['phpdoc_no_package'], $fixers['phpdoc_separation']),
+            array($fixers['phpdoc_no_package'], $fixers['phpdoc_order']),
+            array($fixers['phpdoc_trim'], $fixers['phpdoc_params']),
+            array($fixers['phpdoc_order'], $fixers['phpdoc_params']),
+            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_params']),
             array($fixers['phpdoc_indent'], $fixers['phpdoc_params']),
             array($fixers['phpdoc_to_comment'], $fixers['phpdoc_params']),
             array($fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']),
@@ -206,7 +215,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
      */
     public function testFixersDescriptionConsistency(FixerInterface $fixer)
     {
-        $this->assertRegExp('/^[A-Z].*\.$/', $fixer->getDescription(), 'Description must start with capital letter and end with dot.');
+        $this->assertRegExp('/^[A-Z@].*\.$/', $fixer->getDescription(), 'Description must start with capital letter or an @ and end with dot.');
     }
 
     public function provideFixersDescriptionConsistencyCases()
