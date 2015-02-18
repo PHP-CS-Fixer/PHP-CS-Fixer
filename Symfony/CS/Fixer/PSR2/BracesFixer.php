@@ -569,13 +569,13 @@ class BracesFixer extends AbstractFixer
     private function getFinalControlContinuationTokensForOpeningToken($openingTokenKind)
     {
         if ($openingTokenKind === T_IF) {
-            return [T_ELSE];
+            return array(T_ELSE);
         }
 
         if ($openingTokenKind === T_TRY && defined('T_FINALLY')) {
-            return [T_FINALLY];
+            return array(T_FINALLY);
         }
 
-        return [];
+        return array();
     }
 }
