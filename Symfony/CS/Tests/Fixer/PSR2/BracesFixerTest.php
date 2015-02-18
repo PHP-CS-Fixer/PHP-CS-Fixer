@@ -619,6 +619,104 @@ function mixedComplex()
         }
     }',
             ),
+            array(
+                '<?php
+if (true) {
+    if (true) {
+        echo 1;
+    } elseif (true) {
+        echo 2;
+    } else {
+        echo 3;
+    }
+}
+',
+                '<?php
+if(true)
+    if(true)
+        echo 1;
+    elseif(true)
+        echo 2;
+    else
+        echo 3;
+',
+            ),
+            array(
+                '<?php
+if (true) {
+    if (true) {
+        echo 1;
+    } elseif (true) {
+        echo 2;
+    } else {
+        echo 3;
+    }
+}
+echo 4;
+',
+                '<?php
+if(true)
+    if(true)
+        echo 1;
+    elseif(true)
+        echo 2;
+    else
+        echo 3;
+echo 4;
+',
+            ),
+            array(
+                '<?php
+if (true) {
+    if (true) {
+        echo 1;
+    } elseif (true) {
+        echo 2;
+    } else {
+        echo 3;
+    }
+}',
+                '<?php
+if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
+            ),
+            array(
+                '<?php
+if (true) {
+    if (true) {
+        echo 1;
+    } else {
+        echo 2;
+    }
+} else {
+    echo 3;
+}',
+                '<?php
+if(true) if(true) echo 1; else echo 2; else echo 3;',
+            ),
+            array(
+                '<?php
+if (true) {
+    try {
+        echo 1;
+    } catch (Exception $e) {
+        echo 2;
+    } catch (Exception $e) {
+        echo 3;
+    }
+} else {
+    echo 4;
+}',
+                '<?php
+if (true)
+    try
+        echo 1;
+    catch(Exception $e)
+        echo 2;
+    catch(Exception $e)
+        echo 3;
+else
+    echo 4;',
+            ),
         );
     }
 
@@ -1088,6 +1186,34 @@ while (true) {
     finally     {
         echo "finish!";
     }',
+            ),
+            array(
+                '<?php
+try {
+    try {
+        echo 1;
+    } catch (Exception $e) {
+        echo 2;
+    } catch (Exception $e) {
+        echo 3;
+    } finally {
+        echo 4;
+    }
+} catch (Exception $e) {
+    echo 5;
+}',
+                '<?php
+try
+    try
+        echo 1;
+    catch(Exception $e)
+        echo 2;
+    catch(Exception $e)
+        echo 3;
+    finally
+        echo 4;
+catch(Exception $e)
+    echo 5;',
             ),
         );
     }
