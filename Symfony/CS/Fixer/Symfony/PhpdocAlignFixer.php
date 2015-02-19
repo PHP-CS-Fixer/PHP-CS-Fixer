@@ -44,8 +44,10 @@ class PhpdocAlignFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
-            $token->setContent($this->fixDocBlock($token->getContent()));
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind(T_DOC_COMMENT)) {
+                $tokens[$index]->setContent($this->fixDocBlock($token->getContent()));
+            }
         }
     }
 

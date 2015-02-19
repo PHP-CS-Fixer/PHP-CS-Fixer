@@ -25,7 +25,11 @@ class PhpdocOrderFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
             $content = $token->getContent();
             // move param to start, return to end, leave throws in the middle
             $content = $this->moveParamAnnotations($content);

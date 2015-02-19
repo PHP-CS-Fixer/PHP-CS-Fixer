@@ -24,7 +24,11 @@ class EmptyReturnFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens->findGivenKind(T_RETURN) as $index => $token) {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_RETURN)) {
+                continue;
+            }
+
             if ($this->needFixing($tokens, $index)) {
                 $this->clear($tokens, $index);
             }

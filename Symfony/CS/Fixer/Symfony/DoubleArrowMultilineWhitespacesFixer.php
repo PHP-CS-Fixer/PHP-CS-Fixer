@@ -27,7 +27,11 @@ class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens->findGivenKind(T_DOUBLE_ARROW) as $index => $token) {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOUBLE_ARROW)) {
+                continue;
+            }
+
             $this->fixWhitespace($tokens[$index - 1]);
             // do not move anything about if there is a comment following the whitespace
             if (!$tokens[$index + 2]->isComment()) {

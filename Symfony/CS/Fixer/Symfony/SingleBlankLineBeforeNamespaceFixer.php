@@ -24,8 +24,12 @@ class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNamespaceFi
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach (array_keys($tokens->findGivenKind(T_NAMESPACE)) as $index) {
-            $this->fixLinesBeforeNamespace($tokens, $index, 2);
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            $token = $tokens[$index];
+
+            if ($token->isGivenKind(T_NAMESPACE)) {
+                $this->fixLinesBeforeNamespace($tokens, $index, 2);
+            }
         }
     }
 

@@ -47,7 +47,11 @@ class PhpdocToCommentFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
             $nextIndex = $tokens->getNextMeaningfulToken($index);
             $nextToken = null !== $nextIndex ? $tokens[$nextIndex] : null;
 

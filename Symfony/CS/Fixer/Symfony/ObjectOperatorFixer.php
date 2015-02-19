@@ -26,7 +26,11 @@ class ObjectOperatorFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         // [Structure] there should not be space before or after T_OBJECT_OPERATOR
-        foreach ($tokens->findGivenKind(T_OBJECT_OPERATOR) as $index => $token) {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_OBJECT_OPERATOR)) {
+                continue;
+            }
+
             // clear whitespace before ->
             if ($tokens[$index - 1]->isWhitespace(array('whitespaces' => " \t")) && !$tokens[$index - 2]->isComment()) {
                 $tokens[$index - 1]->clear();
