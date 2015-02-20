@@ -129,7 +129,7 @@ class VisibilityFixer extends AbstractFixer
      *
      * @return array array of grabbed attributes
      */
-    private function grabAttribsBeforePropertyToken(Tokens $token, $index)
+    private function grabAttribsBeforePropertyToken(Tokens $tokens, $index)
     {
         static $tokenAttribsMap = array(
             T_VAR       => null, // destroy T_VAR token!
@@ -140,7 +140,7 @@ class VisibilityFixer extends AbstractFixer
         );
 
         return $this->grabAttribsBeforeToken(
-            $token,
+            $tokens,
             $index,
             $tokenAttribsMap,
             array(

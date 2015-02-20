@@ -64,13 +64,13 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
     /**
      * Inject into the text placeholders of candidates of vertical alignment.
      *
-     * @param array $tokens
-     * @param int   $startAt
-     * @param int   $endAt
+     * @param Tokens $tokens
+     * @param int    $startAt
+     * @param int    $endAt
      *
      * @return array($code, $context_counter)
      */
-    private function injectAlignmentPlaceholders($tokens, $startAt = null, $endAt = null)
+    private function injectAlignmentPlaceholders(Tokens $tokens, $startAt = null, $endAt = null)
     {
         if (empty($startAt)) {
             $startAt = 0;

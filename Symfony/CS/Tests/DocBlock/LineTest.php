@@ -200,7 +200,6 @@ class LineTest extends \PHPUnit_Framework_TestCase
 
     public function testSetContent()
     {
-        $doc = new DocBlock('');
         $line = new Line("     * @param \$foo Hi!\n");
 
         $this->assertSame("     * @param \$foo Hi!\n", $line->getContent());
