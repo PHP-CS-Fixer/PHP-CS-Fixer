@@ -11,6 +11,8 @@
 
 namespace Symfony\CS;
 
+use Symfony\CS\Tokenizer\Tokens;
+
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  */
@@ -24,12 +26,12 @@ abstract class AbstractAlignFixer extends AbstractFixer
     /**
      * Look for group of placeholders, and provide vertical alignment.
      *
-     * @param string $tokens
+     * @param Tokens $tokens
      * @param int    $deepestLevel
      *
      * @return string
      */
-    protected function replacePlaceholder($tokens, $deepestLevel)
+    protected function replacePlaceholder(Tokens $tokens, $deepestLevel)
     {
         $tmpCode = $tokens->generateCode();
 
@@ -57,7 +59,7 @@ abstract class AbstractAlignFixer extends AbstractFixer
 
             $i = 0;
             foreach ($linesWithPlaceholder as $group) {
-                if (1 === sizeof($group)) {
+                if (1 === count($group)) {
                     continue;
                 }
                 ++$i;
