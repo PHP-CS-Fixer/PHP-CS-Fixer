@@ -40,6 +40,30 @@ EOF;
 EOF;
 
         $this->makeTest($expected, $input);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param string $name
+     *
+     * @access public
+     *
+     * @return string
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param string $name
+     * @access public
+     * @return string
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
     }
 
     public function testFixMoreTags()
