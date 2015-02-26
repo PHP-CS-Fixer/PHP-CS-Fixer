@@ -143,7 +143,7 @@ class ConfigurationResolver
      *
      * @param string $cwd
      *
-     * @return FixersResolver
+     * @return ConfigurationResolver
      */
     public function setCwd($cwd)
     {
@@ -157,7 +157,7 @@ class ConfigurationResolver
      *
      * @param ConfigInterface $config
      *
-     * @return FixersResolver
+     * @return ConfigurationResolver
      */
     public function setDefaultConfig(ConfigInterface $config)
     {
@@ -171,7 +171,7 @@ class ConfigurationResolver
      *
      * @param Fixer $config
      *
-     * @return FixersResolver
+     * @return ConfigurationResolver
      */
     public function setFixer(Fixer $fixer)
     {
@@ -187,7 +187,7 @@ class ConfigurationResolver
      * @param string $name
      * @param misc   $value1
      *
-     * @return FixersResolver
+     * @return ConfigurationResolver
      */
     public function setOption($name, $value)
     {
@@ -205,7 +205,7 @@ class ConfigurationResolver
      *
      * @param array $options
      *
-     * @return FixersResolver
+     * @return ConfigurationResolver
      */
     public function setOptions(array $options)
     {

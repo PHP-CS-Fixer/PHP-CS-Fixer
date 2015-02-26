@@ -3,6 +3,44 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.5
+------------------
+
+* feature #887 Added More Phpdoc Fixers (GrahamCampbell, keradus)
+* feature #1002 Add HeaderCommentFixer (ajgarlag)
+* feature #974 Add EregToPregFixer (mbeccati)
+* feature #970 Added Php4ConstructorFixer (mbeccati)
+* feature #997 Add PhpdocToCommentFixer (ceeram, keradus)
+* feature #932 Add NoBlankLinesAfterClassOpeningFixer (ceeram)
+* feature #879 Add SingleBlankLineBeforeNamespaceFixer and NoBlankLinesBeforeNamespaceFixer (GrahamCampbell)
+* feature #860 Add single_line_after_imports fixer (ceeram)
+* minor #1014 Fixed a few file headers (GrahamCampbell)
+* minor #1011 Fix HHVM as it works different than PHP (keradus)
+* minor #1010 Fix invalid UTF-8 char in docs (ajgarlag)
+* minor #1003 Fix header comment in php files (ajgarlag)
+* minor #1005 Add Utils::calculateBitmask method (keradus)
+* minor #973 Add Tokens::findSequence (mbeccati)
+* minor #991 Longer explanation of how to use blacklist (bmitch, networkscraper)
+* minor #972 Add case sensitive option to the tokenizer (mbeccati)
+* minor #986 Add benchmark script (dericofilho)
+* minor #985 Fix typo in COOKBOOK-FIXERS.md (mattleff)
+* minor #978 Token - fix docs (keradus)
+* minor #957 Fix Fixers methods order (GrahamCampbell)
+* minor #944 Enable caching of composer downloads on Travis (stof)
+* minor #941 EncodingFixer - enhance tests (keradus)
+* minor #938 Psr0Fixer - remove unneded assignment (keradus)
+* minor #936 FixerTest - test description consistency (keradus)
+* minor #933 NoEmptyLinesAfterPhpdocsFixer - remove unneeded code, clarify description (ceeram)
+* minor #934 StdinFileInfo::getFilename - Replace phpdoc with normal comment and add back empty line before return (ceeram)
+* minor #927 Exclude the resources folder from coverage reports (GrahamCampbell)
+* minor #926 Update Token::isGivenKind phpdoc (GrahamCampbell)
+* minor #925 Improved AbstractFixerTestBase (GrahamCampbell)
+* minor #922 AbstractFixerTestBase::makeTest - test if input is different than expected (keradus)
+* minor #904 Refactoring Utils (GrahamCampbell)
+* minor #901 Improved Readme Formatting (GrahamCampbell)
+* minor #898 Tokens::getImportUseIndexes - simplify function (keradus)
+* minor #897 phpunit.xml.dist - split testsuite (keradus)
+
 Changelog for v1.4.2
 --------------------
 

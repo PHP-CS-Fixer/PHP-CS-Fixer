@@ -66,6 +66,8 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
      * @param Tokens $tokens
      * @param int    $startAt
      * @param int    $endAt
+     *
+     * @return array($code, $context_counter)
      */
     private function injectAlignmentPlaceholders(Tokens $tokens, $startAt = null, $endAt = null)
     {

@@ -69,7 +69,7 @@ abstract class AbstractAlignFixer extends AbstractFixer
 
             $i = 0;
             foreach ($linesWithPlaceholder as $group) {
-                if (1 === sizeof($group)) {
+                if (1 === count($group)) {
                     continue;
                 }
                 ++$i;
