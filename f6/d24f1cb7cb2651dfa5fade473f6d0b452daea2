@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by tommygnr at 2015-02-24T22:31:17Z
+
+I'm not sure whether I need to recompile the readme. I haven't but can easily update the PR to do so.
+
+---------------------------------------------------------------------------
+
+by sstok at 2015-02-25T08:15:55Z
+
+If the description is changed you need recompile the readme :)
+This is also pointed-out by Travis https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/52056529#L178
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-02-25T08:38:21Z
+
+Or by [CONTRIBUTING.md](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.5/CONTRIBUTING.md).
+Please do it.
