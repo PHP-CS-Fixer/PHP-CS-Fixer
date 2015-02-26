@@ -460,7 +460,7 @@ Choose from the list of available fixers:
                 @type.
 
 * **short_array_syntax** [contrib]
-                PHP array's should use the PHP 5.4
+                PHP arrays should use the PHP 5.4
                 short-syntax.
 
 * **strict** [contrib]
