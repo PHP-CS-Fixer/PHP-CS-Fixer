@@ -294,6 +294,10 @@ Choose from the list of available fixers:
                 Implode function should be used
                 instead of join function.
 
+* **list_commas** [symfony]
+                Remove trailing commas in list
+                function calls.
+
 * **multiline_array_trailing_comma** [symfony]
                 PHP multi-line arrays should have a
                 trailing comma.
