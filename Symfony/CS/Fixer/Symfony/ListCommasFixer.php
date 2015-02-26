@@ -34,6 +34,31 @@ class ListCommasFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            $token = $tokens[$index];
+
+            if (!$token->isGivenKind(T_LIST)) {
+                continue;
+            }
+
+            $openIndex = $tokens->getNextMeaningfulToken($index);
+            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+            $markIndex = null;
+            $prevIndex = $tokens->getPrevNonWhitespace($closeIndex);
+
+            while ($tokens[$prevIndex]->equals(',')) {
+                $markIndex = $prevIndex;
+                $prevIndex = $tokens->getPrevNonWhitespace($prevIndex);
+            }
+
+            if (null !== $markIndex) {
+                $tokens->clearRange(
+                    $tokens->getPrevNonWhitespace($markIndex) + 1,
+                    $closeIndex - 1
+                );
+            }
+        }
+
         return $tokens->generateCode();
     }
 }
