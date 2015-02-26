@@ -37,7 +37,7 @@ class Annotation
     /**
      * Create a new line instance.
      *
-     * @param Lines[] $lines
+     * @param Line[] $lines
      */
     public function __construct(array $lines)
     {
