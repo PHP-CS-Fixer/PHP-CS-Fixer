@@ -267,6 +267,11 @@ Choose from the list of available fixers:
                 visibility; static MUST be declared
                 after the visibility.
 
+* **blankline_after_open_tag** [symfony]
+                Ensure there is no code on the same
+                line as the PHP open tag and it is
+                followed by a blankline.
+
 * **concat_without_spaces** [symfony]
                 Concatenation should be used without
                 spaces.
@@ -419,11 +424,6 @@ Choose from the list of available fixers:
 * **align_equals** [contrib]
                 Align equals symbols in consecutive
                 lines.
-
-* **blankline_after_open_tag** [contrib]
-                Ensure there is no code on the same
-                line as the PHP open tag and it is
-                followed by a blankline.
 
 * **concat_with_spaces** [contrib]
                 Concatenation should be used with at
