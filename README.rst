@@ -420,6 +420,11 @@ Choose from the list of available fixers:
                 Align equals symbols in consecutive
                 lines.
 
+* **blankline_after_open_tag** [contrib]
+                Ensure there is no code on the same
+                line as the PHP open tag and it is
+                followed by a blankline.
+
 * **concat_with_spaces** [contrib]
                 Concatenation should be used with at
                 least one whitespace around.
