@@ -306,10 +306,6 @@ Choose from the list of available fixers:
                 All instances created with new keyword
                 must be followed by braces.
 
-* **newline_after_open_tag** [symfony]
-                Ensure there is no code on the same
-                line as the PHP open tag.
-
 * **no_blank_lines_after_class_opening** [symfony]
                 There should be no empty lines after
                 class opening brace.
@@ -440,6 +436,10 @@ Choose from the list of available fixers:
 * **multiline_spaces_before_semicolon** [contrib]
                 Multi-line whitespace before closing
                 semicolon are prohibited.
+
+* **newline_after_open_tag** [contrib]
+                Ensure there is no code on the same
+                line as the PHP open tag.
 
 * **no_blank_lines_before_namespace** [contrib]
                 There should be no blank lines before
