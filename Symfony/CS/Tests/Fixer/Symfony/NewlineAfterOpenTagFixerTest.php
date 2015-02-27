@@ -26,6 +26,15 @@ class NewlineAfterOpenTagFixerTest extends AbstractFixerTestBase
         $this->makeTest($expected, $input);
     }
 
+    /**
+     * @requires PHP 5.4
+     * @dataProvider provideCases54
+     */
+    public function testFix54($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
     public function provideCases()
     {
         return array(
@@ -48,6 +57,24 @@ $bar = false;
 ?>',
                 '<?php $foo = true;
 $bar = false;
+?>',
+            ),
+            array(
+                '<?php
+$foo = true;
+?>
+Html here
+<?php $bar = false; ?>',
+            ),
+        );
+    }
+
+    public function provideCases54()
+    {
+        return array(
+            array(
+                '<?= $bar;
+$foo = $bar;
 ?>',
             ),
         );
