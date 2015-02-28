@@ -110,6 +110,7 @@ class PhpdocToCommentFixer extends AbstractFixer
             T_INCLUDE,
             T_INCLUDE_ONCE,
             T_FINAL,
+            T_STATIC,
         );
 
         return $token->isClassy() || $token->isGivenKind($skip);
