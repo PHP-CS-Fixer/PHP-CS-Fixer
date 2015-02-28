@@ -297,6 +297,13 @@ echo "Some string";
 ',
         );
 
+        $cases[] = array(
+            '<?php
+/** @var \NumberFormatter $formatter */
+static $formatter;
+',
+        );
+
         return $cases;
     }
 
