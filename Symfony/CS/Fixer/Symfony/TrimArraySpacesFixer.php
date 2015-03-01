@@ -40,7 +40,7 @@ class TrimArraySpacesFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Single line arrays should be formatted like function/method arguments, without leading or trailing space.';
+        return 'Arrays should be formatted like function/method arguments, without leading or trailing single line space.';
     }
 
     /**
@@ -51,9 +51,7 @@ class TrimArraySpacesFixer extends AbstractFixer
      */
     private static function fixArray(Tokens $tokens, $index)
     {
-        if ($tokens->isArrayMultiLine($index)) {
-            return;
-        }
+        static $whitespaceOptions = array('whitespaces' => " \t");
 
         $startIndex = $index;
 
@@ -66,14 +64,14 @@ class TrimArraySpacesFixer extends AbstractFixer
 
         $tokenAfterOpenArray = $tokens[$startIndex + 1];
 
-        if ($tokenAfterOpenArray->isWhitespace()) {
+        if ($tokenAfterOpenArray->isWhitespace($whitespaceOptions)) {
             $tokenAfterOpenArray->clear();
         }
 
         $tokenBeforeCloseArray = $tokens[$endIndex - 1];
 
         if (
-            $tokenBeforeCloseArray->isWhitespace()
+            $tokenBeforeCloseArray->isWhitespace($whitespaceOptions)
             && !$tokens[$endIndex - 2]->equals(',')
         ) {
             $tokenBeforeCloseArray->clear();
