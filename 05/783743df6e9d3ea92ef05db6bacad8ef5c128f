@@ -1,0 +1,14 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-01T19:11:52Z
+
+I was looking for it quite ago but it wasn't ready for Travis. Glad to see it! Thanks!
+I will merge it, maybe we allow to fail it in the future if incompatibilites will be too big.
+
+Wow, so fast...
+
+---------------------------------------------------------------------------
+
+by fonsecas72 at 2015-03-01T20:03:47Z
+
+Yeah, I though that we might wanted to known when it fails but ok, we sure don't want a red build when PHP7 is failing.
