@@ -323,6 +323,69 @@ for($i = 0, $size = count($people); $i < $size; ++$i) {
 
         $cases[] = array(
             '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/* @var int $wrong */
+foreach ($foo->getPairs($c->bar(), $bar) as $index => list($a, $b)) [
+    // Do something with $index, $a and $b
+}
+
+/* @var \Closure $notValue */
+if (!$value = $this->getValue()) {
+    return false;
+}
+
+/* @var string $notName */
+switch ($name = $this->getName()) {
+    case "John":
+        return false;
+    case "Jane":
+        return true;
+}
+
+/* @var string $notContent */
+while ($content = $this->getContent()) {
+    $name .= $content;
+}
+
+/* @var int $notSize */
+for($i = 0, $size = count($people); $i < $size; ++$i) {
+    $people[$i][\'salt\'] = mt_rand(000000, 999999);
+}',
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** @var int $wrong */
+foreach ($foo->getPairs($c->bar(), $bar) as $index => list($a, $b)) [
+    // Do something with $index, $a and $b
+}
+
+/** @var \Closure $notValue */
+if (!$value = $this->getValue()) {
+    return false;
+}
+
+/** @var string $notName */
+switch ($name = $this->getName()) {
+    case "John":
+        return false;
+    case "Jane":
+        return true;
+}
+
+/** @var string $notContent */
+while ($content = $this->getContent()) {
+    $name .= $content;
+}
+
+/** @var int $notSize */
+for($i = 0, $size = count($people); $i < $size; ++$i) {
+    $people[$i][\'salt\'] = mt_rand(000000, 999999);
+}',
+        );
+
+        $cases[] = array(
+            '<?php
 /* This should be a comment */
 ',
             '<?php
