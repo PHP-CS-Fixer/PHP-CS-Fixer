@@ -472,6 +472,11 @@ Choose from the list of available fixers:
                 param. Warning! This could change code
                 behavior.
 
+* **variable_property_case** [contrib]
+                Convert all underscore variables and
+                properties (some_var) to camel case
+                ones (someVar).
+
 
 The ``--config`` option customizes the files to analyse, based
 on some well-known directory structures:
