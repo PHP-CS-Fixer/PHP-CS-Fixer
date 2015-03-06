@@ -446,7 +446,13 @@ Choose from the list of available fixers:
                 a namespace declaration.
 
 * **ordered_use** [contrib]
-                Ordering use statements.
+                Ordering use statements
+                alphabetically.
+
+* **ordered_use_length** [contrib]
+                Ordering use statements by length,
+                then alphabetically for those of the
+                same length.
 
 * **php4_constructor** [contrib]
                 Convert PHP4-style constructors to
