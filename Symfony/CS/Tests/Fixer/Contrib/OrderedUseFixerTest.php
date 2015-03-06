@@ -544,4 +544,39 @@ EOF
 
         $this->makeTest($expected);
     }
+
+    public function testOrderWithTrailingDigit()
+    {
+        $expected = <<<'EOF'
+<?php
+
+use abc\Bar;
+use abc2\Bar;
+use xyz\abc\Bar;
+use xyz\abc2\Bar;
+use xyz\xyz\Bar;
+use xyz\xyz\Bar2;
+
+class Test
+{
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use abc2\Bar;
+use abc\Bar;
+use xyz\abc2\Bar;
+use xyz\abc\Bar;
+use xyz\xyz\Bar2;
+use xyz\xyz\Bar;
+
+class Test
+{
+}
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
 }
