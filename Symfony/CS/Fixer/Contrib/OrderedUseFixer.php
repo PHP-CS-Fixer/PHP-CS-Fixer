@@ -89,6 +89,10 @@ class OrderedUseFixer extends AbstractFixer
         $a = trim(preg_replace('%/\*(.*)\*/%s', '', $first[0]));
         $b = trim(preg_replace('%/\*(.*)\*/%s', '', $second[0]));
 
+        // Replace backslashes by spaces before sorting for correct sort order
+        $a = str_replace('\\', ' ', $a);
+        $b = str_replace('\\', ' ', $b);
+
         return strcasecmp($a, $b);
     }
 
