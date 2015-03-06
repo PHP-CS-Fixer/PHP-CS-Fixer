@@ -48,6 +48,7 @@ class PhpdocToCommentFixer extends AbstractFixer
                 T_WHILE,
                 T_FOR,
             );
+
             if ($nextToken->isGivenkind($controlStructures) && $this->isValidControl($tokens, $token, $nextIndex)) {
                 continue;
             }
