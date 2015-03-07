@@ -475,7 +475,9 @@ Choose from the list of available fixers:
 * **variable_property_case** [contrib]
                 Convert all underscore variables and
                 properties (some_var) to camel case
-                ones (someVar).
+                ones (someVar). Warning! Any code
+                directly referring to the modified
+                properties will need adjusting.
 
 
 The ``--config`` option customizes the files to analyse, based
