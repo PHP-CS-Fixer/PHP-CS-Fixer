@@ -30,59 +30,97 @@ class VariablePropertyCaseFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
-                '<?php class foo_bar {}',
+                '<?php
+
+                class foo_bar
+                {
+
+                }',
             ),
             array(
-                '<?php public function do_something() {}',
+                '<?php
+
+                class foo_bar
+                {
+                    public function do_something() {}
+                }',
             ),
             array(
-                '<?php $this->some_function();',
+                '<?php
+
+                class foo_bar
+                {
+                    public function do_something()
+                    {
+                        $this->some_function();
+                    }
+                }',
             ),
             array(
-                '<?php private $someVar = "foo";',
-                '<?php private $some_var = "foo";',
+                '<?php
+
+                class FooBar
+                {
+                    private $someVar = "foo";
+
+                    public function doSomething($aParameter)
+                    {
+                        $aVariable = $aParameter;
+                        $oneMore = "This is $aVariable in a string";
+                        $usingThis = "This is also {$this->someVar} in a string";
+
+                        return $aVariable;
+                    }
+                }',
+                '<?php
+
+                class FooBar
+                {
+                    private $some_var = "foo";
+
+                    public function doSomething($a_parameter)
+                    {
+                        $a_variable = $a_parameter;
+                        $one_more = "This is $a_variable in a string";
+                        $using_this = "This is also {$this->some_var} in a string";
+
+                        return $a_variable;
+                    }
+                }',
             ),
             array(
-                '<?php public function doSomething($aParameter) {}',
-                '<?php public function doSomething($a_parameter) {}',
-            ),
-            array(
-                '<?php $aVariable = $aParameter;',
-                '<?php $a_variable = $a_parameter;',
-            ),
-            array(
-                '<?php $oneMore = "This is $aVariable in a string";',
-                '<?php $one_more = "This is $a_variable in a string";',
-            ),
-            array(
-                '<?php $usingThis = "This is also {$this->someVar} in a string";',
-                '<?php $using_this = "This is also {$this->some_var} in a string";',
-            ),
-            array(
-                '<?php $greatVar = "this example";',
-                '<?php $great_var = "this example";',
-            ),
-            array(
-                '<?php echo "In ${greatVar} the variable is in the middle of the string";',
-                '<?php echo "In ${great_var} the variable is in the middle of the string";',
-            ),
-            array(
-                '<?php echo "$greatVar uses a variable";',
-                '<?php echo "$great_var uses a variable";',
-            ),
-            array(
-                '<?php echo "\$great_var does not use a variable";',
-            ),
-            array(
-                '<?php echo "\${great_var} does not use a variable either";',
+                '<?php
+
+                class FooBar
+                {
+                    public function doSomething($aParameter)
+                    {
+                        $greatVar = "this example";
+
+                        echo "In ${greatVar} the variable is in the middle of the string";
+                        echo "$greatVar uses a variable";
+                        echo "\$great_var does not";
+                        echo "\${great_var} does not use a variable either";
+                    }
+                }',
+                '<?php
+
+                class FooBar
+                {
+                    public function doSomething($a_parameter)
+                    {
+                        $great_var = "this example";
+
+                        echo "In ${great_var} the variable is in the middle of the string";
+                        echo "$great_var uses a variable";
+                        echo "\$great_var does not use a variable";
+                        echo "\${great_var} does not use a variable either";
+                    }
+                }',
             ),
             array(
                 '<?php echo "${fooBar} is not the same as ${ foo_bar }";',
                 '<?php echo "${foo_bar} is not the same as ${ foo_bar }";',
-            ),
-            array(
-                '<?php return $aVariable;',
-                '<?php return $a_variable;',
             ),
         );
     }

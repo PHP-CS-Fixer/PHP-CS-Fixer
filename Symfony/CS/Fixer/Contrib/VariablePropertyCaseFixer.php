@@ -98,7 +98,9 @@ class VariablePropertyCaseFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Convert all underscore variables and properties (some_var) to camel case ones (someVar).';
+        return 'Convert all underscore variables and properties (some_var) ' .
+               'to camel case ones (someVar). Warning! Any code directly ' .
+               'referring to the modified properties will need adjusting.';
     }
 
     /**
