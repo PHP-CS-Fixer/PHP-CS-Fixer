@@ -99,7 +99,7 @@ class VariablePropertyCaseFixerTest extends AbstractFixerTestBase
 
                         echo "In ${greatVar} the variable is in the middle of the string";
                         echo "$greatVar uses a variable";
-                        echo "\$great_var does not";
+                        echo "\$great_var does not use a variable";
                         echo "\${great_var} does not use a variable either";
                     }
                 }',
