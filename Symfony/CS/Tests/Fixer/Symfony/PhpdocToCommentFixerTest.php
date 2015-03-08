@@ -80,6 +80,8 @@ class DocBlocks
 
         $cases[] = array(
             '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
 /**
  * Do not convert this
  */
@@ -95,6 +97,8 @@ abstract class DocBlocks
 
         $cases[] = array(
             '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
 /**
  * Do not convert this
  */
@@ -118,6 +122,8 @@ final class Foo
 
         $cases[] = array(
             '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
 /**
  * Do not convert this
  */
@@ -142,6 +148,8 @@ include_once "include_once.php";
 
         $cases[] = array(
             '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
 /**
  * Do not convert this
  *
@@ -153,7 +161,7 @@ $local = true;
 
         $cases[] = array(
             '<?php
-$first = true;
+$first = true;// needed because by default first docblock is never fixed.
 
 /*
  * This should be a normal comment
@@ -161,7 +169,7 @@ $first = true;
 $local = true;
 ',
             '<?php
-$first = true;
+$first = true;// needed because by default first docblock is never fixed.
 
 /**
  * This should be a normal comment
@@ -172,6 +180,8 @@ $local = true;
 
         $cases[] = array(
             '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
 /** @var \Sqlite3 $sqlite */
 foreach($connections as $sqlite) {
     $sqlite->open($path);
@@ -180,6 +190,8 @@ foreach($connections as $sqlite) {
 
         $cases[] = array(
             '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
 /** @var \Sqlite3 $sqlite */
 foreach($connections as $key => $sqlite) {
     $sqlite->open($path);
@@ -188,6 +200,8 @@ foreach($connections as $key => $sqlite) {
 
         $cases[] = array(
             '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
 /** @var int $key */
 foreach($connections as $key => $sqlite) {
     $sqlite->open($path);
@@ -196,14 +210,14 @@ foreach($connections as $key => $sqlite) {
 
         $cases[] = array(
             '<?php
-$first = true;
+$first = true;// needed because by default first docblock is never fixed.
 
 /* This should not be a docblock */
 foreach($connections as $key => $sqlite) {
     $sqlite->open($path);
 }',
             '<?php
-$first = true;
+$first = true;// needed because by default first docblock is never fixed.
 
 /** This should not be a docblock */
 foreach($connections as $key => $sqlite) {
@@ -213,13 +227,13 @@ foreach($connections as $key => $sqlite) {
 
         $cases[] = array(
             '<?php
-$first = true;
+$first = true;// needed because by default first docblock is never fixed.
 
 /* there should be no docblock here */
 $sqlite1->open($path);
 }',
             '<?php
-$first = true;
+$first = true;// needed because by default first docblock is never fixed.
 
 /** there should be no docblock here */
 $sqlite1->open($path);
@@ -228,13 +242,13 @@ $sqlite1->open($path);
 
         $cases[] = array(
             '<?php
-$first = true;
+$first = true;// needed because by default first docblock is never fixed.
 
 /* there should be no docblock here */
 $i++;
 }',
             '<?php
-$first = true;
+$first = true;// needed because by default first docblock is never fixed.
 
 /** there should be no docblock here */
 $i++;
@@ -243,6 +257,8 @@ $i++;
 
         $cases[] = array(
             '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
 /** @var int $index */
 $index = $a[\'number\'];
 ',
@@ -250,6 +266,8 @@ $index = $a[\'number\'];
 
         $cases[] = array(
             '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
 /** @var string $two */
 list($one, $two) = explode("," , $csvLines);
 ',
@@ -257,13 +275,13 @@ list($one, $two) = explode("," , $csvLines);
 
         $cases[] = array(
             '<?php
-$first = true;
+$first = true;// needed because by default first docblock is never fixed.
 
 /* This should be a comment */
 list($one, $two) = explode("," , $csvLines);
 ',
             '<?php
-$first = true;
+$first = true;// needed because by default first docblock is never fixed.
 
 /** This should be a comment */
 list($one, $two) = explode("," , $csvLines);
@@ -272,9 +290,97 @@ list($one, $two) = explode("," , $csvLines);
 
         $cases[] = array(
             '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
 /** @var int $index */
 foreach ($foo->getPairs($c->bar(), $bar) as $index => list($a, $b)) [
     // Do something with $index, $a and $b
+}
+
+/** @var \Closure $value */
+if (!$value = $this->getValue()) {
+    return false;
+}
+
+/** @var string $name */
+switch ($name = $this->getName()) {
+    case "John":
+        return false;
+    case "Jane":
+        return true;
+}
+
+/** @var string $content */
+while ($content = $this->getContent()) {
+    $name .= $content;
+}
+
+/** @var int $size */
+for($i = 0, $size = count($people); $i < $size; ++$i) {
+    $people[$i][\'salt\'] = mt_rand(000000, 999999);
+}',
+        );
+
+        $cases[] = array(
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/* @var int $wrong */
+foreach ($foo->getPairs($c->bar(), $bar) as $index => list($a, $b)) [
+    // Do something with $index, $a and $b
+}
+
+/* @var \Closure $notValue */
+if (!$value = $this->getValue()) {
+    return false;
+}
+
+/* @var string $notName */
+switch ($name = $this->getName()) {
+    case "John":
+        return false;
+    case "Jane":
+        return true;
+}
+
+/* @var string $notContent */
+while ($content = $this->getContent()) {
+    $name .= $content;
+}
+
+/* @var int $notSize */
+for($i = 0, $size = count($people); $i < $size; ++$i) {
+    $people[$i][\'salt\'] = mt_rand(000000, 999999);
+}',
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** @var int $wrong */
+foreach ($foo->getPairs($c->bar(), $bar) as $index => list($a, $b)) [
+    // Do something with $index, $a and $b
+}
+
+/** @var \Closure $notValue */
+if (!$value = $this->getValue()) {
+    return false;
+}
+
+/** @var string $notName */
+switch ($name = $this->getName()) {
+    case "John":
+        return false;
+    case "Jane":
+        return true;
+}
+
+/** @var string $notContent */
+while ($content = $this->getContent()) {
+    $name .= $content;
+}
+
+/** @var int $notSize */
+for($i = 0, $size = count($people); $i < $size; ++$i) {
+    $people[$i][\'salt\'] = mt_rand(000000, 999999);
 }',
         );
 
@@ -299,6 +405,8 @@ echo "Some string";
 
         $cases[] = array(
             '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
 /** @var \NumberFormatter $formatter */
 static $formatter;
 ',
@@ -306,6 +414,8 @@ static $formatter;
 
         $cases[] = array(
             '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
 function getNumberFormatter()
 {
     /** @var \NumberFormatter $formatter */
@@ -322,6 +432,8 @@ function getNumberFormatter()
         return array(
             array(
                 '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
 /**
  * Do not convert this
  */
