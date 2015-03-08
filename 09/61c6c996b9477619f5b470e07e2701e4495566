@@ -1,0 +1,128 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-02-28T16:48:08Z
+
+Note that fabbot.io is incorrectly fixing our test case even though the cases are inside strings.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-02-28T17:57:50Z
+
+Alright. I'm done now. :)
+
+---------------------------------------------------------------------------
+
+by joecohens at 2015-02-28T18:19:53Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-01T20:35:45Z
+
+There is a bug on fabbot.io that try to fix docs inside string content like our tests.
+// cc @fabpot
+
+@GrahamCampbell , please add a case like that to prove our implementation doesn't have same bug.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-01T20:46:29Z
+
+> please add a case like that to prove our implementation doesn't have same bug.
+
+Sure, though we know it doesn't :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-01T20:48:54Z
+
+> Sure, though we know it doesn't :)
+
+Yes, for now we know - I see it from implementation too. But hey, you know what? We don't know how this fixer will be change in the future, so it would be cool to prevent that bug to happen ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-01T21:22:02Z
+
+@keradus Done. :)
+
+---------------------------------------------------------------------------
+
+by stof at 2015-03-06T22:57:54Z
+
+Regarding the priority, this fixer should come before the phpdoc alignment fixer, because it changes the length of types, and so changes the needed alignment.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-06T23:21:46Z
+
+> phpdoc alignment fixer
+
+That changes the alignment of the entire docblock rather than aligning the annotations within it, so we don't need to do that.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-06T23:22:16Z
+
+@stof The fixer you're thinking of is called phpdoc_param. Badly named, yeh...
+
+---------------------------------------------------------------------------
+
+by stof at 2015-03-06T23:47:14Z
+
+@GrahamCampbell indeed
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-08T20:18:40Z
+
+So, should the order be changed ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-08T20:20:32Z
+
+nope, phpdoc_params is already ensured to be last fixer touching phpdoc
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-08T20:21:12Z
+
+Looks good to me.
+
+Could you squash 1st and 3nd commit ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-08T20:22:59Z
+
+> Could you squash 1st and 3nd commit ?
+
+I guess, yeh.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-08T20:30:09Z
+
+Done.
+
+---------------------------------------------------------------------------
+
+by Anahkiasen at 2015-03-08T20:32:18Z
+
+There should maybe be an option to unify it the other way around (int => integer)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-08T20:33:53Z
+
+> There should maybe be an option to unify it the other way around (int => integer)
+
+I don't think there should. This normalizes them. For example, there are 3 versions of "float".
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-08T20:34:19Z
+
+Our other fixers don't have the reverse, like, we don't have a "let's break the indentation fixer".
