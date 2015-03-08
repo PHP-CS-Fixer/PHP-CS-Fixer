@@ -43,14 +43,31 @@ class PhpdocScalarFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDescription()
+    {
+        return 'Scalar types should always be written in the same form. "int", not "integer"; "bool", not "boolean"; "float", not "real" or "double".';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
-            $doc = new DocBlock($token->getContent());
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
 
-            foreach ($doc->getAnnotationsOfType(self::$tags) as $annotation) {
+            $doc = new DocBlock($token->getContent());
+            $annotations = $doc->getAnnotationsOfType(self::$tags);
+
+            if (empty($annotations)) {
+                continue;
+            }
+
+            foreach ($annotations as $annotation) {
                 $this->fixScalars($doc->getLine($annotation->getStart()), $annotation->getTag()->getName());
             }
 
@@ -96,7 +113,7 @@ class PhpdocScalarFixer extends AbstractFixer
      *
      * @return string[]
      */
-    private static function normalizeTypes($types)
+    private static function normalizeTypes(array $types)
     {
         foreach ($types as $index => $type) {
             $types[$index] = self::normalizeType($type);
@@ -115,17 +132,9 @@ class PhpdocScalarFixer extends AbstractFixer
     private static function normalizeType($type)
     {
         if (array_key_exists($type, self::$types)) {
-            return preg_replace('/'.$type.'/', self::$types[$type], $type);
+            return self::$types[$type];
         }
 
         return $type;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Scalar types should always be written in the same form. "int", not "integer"; "bool", not "boolean"; "float", not "real" or "double".';
     }
 }
