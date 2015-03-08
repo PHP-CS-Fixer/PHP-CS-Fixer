@@ -47,6 +47,14 @@ class PhpdocToCommentFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
+        static $controlStructures = array(
+            T_FOREACH,
+            T_IF,
+            T_SWITCH,
+            T_WHILE,
+            T_FOR,
+        );
+
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
@@ -64,7 +72,7 @@ class PhpdocToCommentFixer extends AbstractFixer
                 continue;
             }
 
-            if ($nextToken->isGivenkind(T_FOREACH) && $this->isValidForeach($tokens, $token, $nextIndex)) {
+            if ($nextToken->isGivenkind($controlStructures) && $this->isValidControl($tokens, $token, $nextIndex)) {
                 continue;
             }
 
@@ -110,23 +118,24 @@ class PhpdocToCommentFixer extends AbstractFixer
             T_INCLUDE,
             T_INCLUDE_ONCE,
             T_FINAL,
+            T_STATIC,
         );
 
         return $token->isClassy() || $token->isGivenKind($skip);
     }
 
     /**
-     * Checks foreach statements for correct docblock usage.
+     * Checks control structures (while, if, foreach, switch) for correct docblock usage.
      *
      * @param Tokens $tokens
      * @param Token  $docsToken    docs Token
-     * @param int    $foreachIndex index of foreach Token
+     * @param int    $controlIndex index of control structure Token
      *
      * @return bool
      */
-    private function isValidForeach(Tokens $tokens, Token $docsToken, $foreachIndex)
+    private function isValidControl(Tokens $tokens, Token $docsToken, $controlIndex)
     {
-        $index = $tokens->getNextMeaningfulToken($foreachIndex);
+        $index = $tokens->getNextMeaningfulToken($controlIndex);
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
         $docsContent = $docsToken->getContent();
 

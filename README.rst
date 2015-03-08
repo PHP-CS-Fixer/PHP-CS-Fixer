@@ -294,6 +294,10 @@ Choose from the list of available fixers:
                 Implode function should be used
                 instead of join function.
 
+* **list_commas** [symfony]
+                Remove trailing commas in list
+                function calls.
+
 * **multiline_array_trailing_comma** [symfony]
                 PHP multi-line arrays should have a
                 trailing comma.
@@ -340,6 +344,12 @@ Choose from the list of available fixers:
 * **phpdoc_no_package** [symfony]
                 @package and @subpackage annotations
                 should be omitted from phpdocs.
+
+* **phpdoc_scalar** [symfony]
+                Scalar types should always be written
+                in the same form. "int", not
+                "integer"; "bool", not "boolean";
+                "float", not "real" or "double".
 
 * **phpdoc_separation** [symfony]
                 Annotations in phpdocs should be
