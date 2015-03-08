@@ -26,6 +26,14 @@ class PhpdocToCommentFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, $content)
     {
+        static $controlStructures = array(
+            T_FOREACH,
+            T_IF,
+            T_SWITCH,
+            T_WHILE,
+            T_FOR,
+        );
+
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
@@ -40,14 +48,6 @@ class PhpdocToCommentFixer extends AbstractFixer
             if ($this->isStructuralElement($nextToken)) {
                 continue;
             }
-
-            static $controlStructures = array(
-                T_FOREACH,
-                T_IF,
-                T_SWITCH,
-                T_WHILE,
-                T_FOR,
-            );
 
             if ($nextToken->isGivenkind($controlStructures) && $this->isValidControl($tokens, $token, $nextIndex)) {
                 continue;
