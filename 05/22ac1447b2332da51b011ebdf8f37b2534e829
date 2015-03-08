@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-06T19:50:04Z
+
+Imports should never have leading slashes in them.
+
+---------------------------------------------------------------------------
+
+by rusitschka at 2015-03-06T20:56:40Z
+
+Backslashes you mean? If so, that is not the issue. I'm talking about the examples given in the new test case I've written:
+
+    use abc\Bar;
+    use abc2\Bar;
+    use xyz\abc\Bar;
+    use xyz\abc2\Bar;
+    use xyz\xyz\Bar;
+    use xyz\xyz\Bar2;
+
+Without my patch those were sorted wrong, i.e.
+
+    use abc2\Bar;
+    use abc\Bar;
+    use xyz\abc2\Bar;
+    use xyz\abc\Bar;
+    use xyz\xyz\Bar2;
+    use xyz\xyz\Bar;
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-06T21:01:41Z
+
+Oh, my bad. I see what you mean now.
