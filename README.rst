@@ -345,6 +345,12 @@ Choose from the list of available fixers:
                 @return, @var, and @type phpdoc tags
                 must be aligned vertically.
 
+* **phpdoc_scalar** [symfony]
+                Scalar types should always be written
+                in the same form. "int", not
+                "integer"; "bool", not "boolean";
+                "float", not "real" or "double".
+
 * **phpdoc_separation** [symfony]
                 Annotations in phpdocs should be
                 grouped together so that annotations
