@@ -906,7 +906,11 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            if ($token->isGivenKind(T_WHITESPACE) && false !== strpos($token->getContent(), "\n")) {
+            if (
+                $token->isGivenKind(T_WHITESPACE) &&
+                false !== strpos($token->getContent(), "\n") &&
+                !$this[$index - 1]->isGivenKind(T_END_HEREDOC)
+            ) {
                 return true;
             }
         }
