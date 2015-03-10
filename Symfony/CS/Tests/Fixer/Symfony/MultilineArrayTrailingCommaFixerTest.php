@@ -154,6 +154,24 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
         "b" => 2
     );',
             ),
+            array(
+                '<?php
+    $test = array("foo", <<<TWIG
+        foo
+        bar
+        baz
+TWIG
+        , $twig);',
+            ),
+            array(
+                '<?php
+    $test = array("foo", <<<\'TWIG\'
+        foo
+        bar
+        baz
+TWIG
+        , $twig);',
+            ),
 
             // short syntax tests
             array('<?php $x = array([]);'),
@@ -191,6 +209,24 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
         "a" => 1,
         "b" => 2
     ];',
+            ),
+            array(
+                '<?php
+    $test = ["foo", <<<TWIG
+        foo
+        bar
+        baz
+TWIG
+        , $twig];',
+            ),
+            array(
+                '<?php
+    $test = ["foo", <<<\'TWIG\'
+        foo
+        bar
+        baz
+TWIG
+        , $twig];',
             ),
 
             // no array tests
