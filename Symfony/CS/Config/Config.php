@@ -51,6 +51,8 @@ class Config implements ConfigInterface
     public function setDir($dir)
     {
         $this->dir = $dir;
+
+        return $this;
     }
 
     public function setUsingCache($usingCache)

@@ -59,6 +59,8 @@ interface ConfigInterface
      * Sets the root directory of the project.
      *
      * @param string $dir The project root directory
+     *
+     * @return ConfigInterface The same instance
      */
     public function setDir($dir);
 
