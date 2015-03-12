@@ -405,4 +405,88 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
+
+    public function testFixesVarDeclarationWhereValueIsArrayWithOneValue()
+    {
+        $expected = <<<'EOF'
+<?php
+class Foo
+{
+  public $foo = array('foo');
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+class Foo
+{
+  var $foo = array('foo');
+}
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixesVarDeclarationWhereValueIsArrayWithMoreThanOneValue()
+    {
+        $expected = <<<'EOF'
+<?php
+class Foo
+{
+  public $foo = array('foo', 'bar');
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+class Foo
+{
+  var $foo = array('foo', 'bar');
+}
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixesVarDeclarationWhereValueIsShortArrayWithOneValue()
+    {
+        $expected = <<<'EOF'
+<?php
+class Foo
+{
+  public $foo = ['foo'];
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+class Foo
+{
+  var $foo = array('foo');
+}
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixesVarDeclarationWhereValueIsShortArrayWithMoreThanOneValue()
+    {
+        $expected = <<<'EOF'
+<?php
+class Foo
+{
+  public $foo = ['foo', 'bar'];
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+class Foo
+{
+  var $foo = ['foo', 'bar'];
+}
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
 }
