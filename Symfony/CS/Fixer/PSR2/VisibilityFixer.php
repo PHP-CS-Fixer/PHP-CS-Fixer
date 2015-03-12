@@ -38,7 +38,7 @@ class VisibilityFixer extends AbstractFixer
                 $tokens[++$index]->setContent(' ');
             } elseif ('property' === $element['type']) {
                 $prevIndex = $tokens->getPrevTokenOfKind($index, array(';', ','));
-                $nextIndex = $tokens->getNextTokenOfKind($index, array(';', ','));
+                $nextIndex = $tokens->getNextTokenOfKind($index, array(';', ',', '='));
 
                 if (
                     (!$prevIndex || !$tokens[$prevIndex]->equals(',')) &&

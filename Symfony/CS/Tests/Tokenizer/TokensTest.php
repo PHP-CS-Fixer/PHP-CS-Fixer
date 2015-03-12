@@ -26,26 +26,33 @@ class TokensTest extends \PHPUnit_Framework_TestCase
 <?php
 class Foo
 {
-    public function bar()
+    public $prop0;
+    protected $prop1;
+    private $prop2 = 1;
+    var $prop3 = array(1,2,3);
+
+    public function bar4()
     {
         $a = 5;
 
         return " ({$a})";
     }
-    public function baz($data)
+    public function bar5($data)
     {
     }
 }
 PHP;
 
         $tokens = Tokens::fromCode($source);
-        $elements = $tokens->getClassyElements();
+        $elements = array_values($tokens->getClassyElements());
 
-        $this->assertCount(2, $elements);
-
-        foreach ($elements as $element) {
-            $this->assertSame('method', $element['type']);
-        }
+        $this->assertCount(6, $elements);
+        $this->assertSame('property', $elements[0]['type']);
+        $this->assertSame('property', $elements[1]['type']);
+        $this->assertSame('property', $elements[2]['type']);
+        $this->assertSame('property', $elements[3]['type']);
+        $this->assertSame('method', $elements[4]['type']);
+        $this->assertSame('method', $elements[5]['type']);
     }
 
     public function testReadFromCacheAfterClearing()
