@@ -32,6 +32,7 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
         if (null !== $input) {
             $this->assertSame($expected, Utils::camelCaseToUnderscore($input));
         }
+
         $this->assertSame($expected, Utils::camelCaseToUnderscore($expected));
     }
 
