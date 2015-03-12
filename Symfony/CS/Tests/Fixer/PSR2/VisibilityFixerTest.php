@@ -407,4 +407,27 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
+
+    public function testFixesVarDeclarationWhereValueIsArrayWithMoreThanOneValue()
+    {
+        $expected = <<<'EOF'
+<?php
+class Foo
+{
+  public $foo = array('foo');
+  public $bar = array('bar', 'baz');
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+class Foo
+{
+  var $foo = array('foo');
+  var $bar = array('bar', 'baz');
+}
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
 }
