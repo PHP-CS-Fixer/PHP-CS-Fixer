@@ -17,11 +17,15 @@ use Symfony\CS\Utils;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
+ * @author Odín del Río <odin.drp@gmail.com>
  */
 class UtilsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider provideCamelCaseToUnderscoreCases
+     *
+     * @param string $expected Camel case string.
+     * @param string $input    Input string.
      */
     public function testCamelCaseToUnderscore($expected, $input = null)
     {
@@ -32,6 +36,9 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, Utils::camelCaseToUnderscore($expected));
     }
 
+    /**
+     * @return array
+     */
     public function provideCamelCaseToUnderscoreCases()
     {
         return array(
@@ -39,6 +46,18 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
                 'dollar_close_curly_braces',
                 'DollarCloseCurlyBraces',
             ),
+            array(
+                'utf8_encoder_fixer',
+                'utf8EncoderFixer',
+            ),
+            array(
+                'terminated_with_number10',
+                'TerminatedWithNumber10',
+            ),
+            array(
+                'utf8_encoder_fixer',
+            ),
+
         );
     }
 
