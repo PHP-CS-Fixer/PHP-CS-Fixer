@@ -16,6 +16,7 @@ use Symfony\CS\Tokenizer\Token;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
+ * @author Odín del Río <odin.drp@gmail.com>
  *
  * @internal
  */
