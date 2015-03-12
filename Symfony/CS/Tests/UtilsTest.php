@@ -27,9 +27,12 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
      * @param string $expected Camel case string.
      * @param string $input    Input string.
      */
-    public function testCamelCaseToUnderscore($expected, $input)
+    public function testCamelCaseToUnderscore($expected, $input = null)
     {
-        $this->assertSame($expected, Utils::camelCaseToUnderscore($input));
+        if (null !== $input) {
+            $this->assertSame($expected, Utils::camelCaseToUnderscore($input));
+        }
+        $this->assertSame($expected, Utils::camelCaseToUnderscore($expected));
     }
 
     /**
@@ -47,13 +50,13 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
                 'utf8EncoderFixer',
             ),
             array(
-                'utf8_encoder_fixer',
-                'utf8_encoder_fixer',
-            ),
-            array(
                 'terminated_with_number10',
                 'TerminatedWithNumber10',
             ),
+            array(
+                'utf8_encoder_fixer',
+            ),
+
         );
     }
 
