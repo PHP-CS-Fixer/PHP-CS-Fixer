@@ -16,6 +16,7 @@ use Symfony\CS\Tokenizer\Token;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
+ * @author Odín del Río <odin.drp@gmail.com>
  */
 class Utils
 {
@@ -49,7 +50,7 @@ class Utils
     public static function camelCaseToUnderscore($string)
     {
         return preg_replace_callback(
-            '/(^|[a-z])([A-Z])/',
+            '/(^|[a-z0-9])([A-Z])/',
             function (array $matches) {
                 return strtolower(strlen($matches[1]) ? $matches[1].'_'.$matches[2] : $matches[2]);
             },
