@@ -18,6 +18,7 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class OrderedUseFixer extends AbstractFixer
 {
@@ -49,9 +50,7 @@ class OrderedUseFixer extends AbstractFixer
         // Now insert the new tokens, starting from the end
         foreach ($usesOrder as $index => $use) {
             $declarationTokens = Tokens::fromCode('<?php use '.$use[0].';');
-            $declarationTokens[0]->clear(); // clear `<?php`
-            $declarationTokens[1]->clear(); // clear `use`
-            $declarationTokens[2]->clear(); // clear `space`
+            $declarationTokens->clearRange(0, 2); // clear `<?php use `
             $declarationTokens[count($declarationTokens) - 1]->clear(); // clear `;`
             $declarationTokens->clearEmptyTokens();
 
