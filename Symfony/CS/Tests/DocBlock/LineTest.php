@@ -60,7 +60,7 @@ class LineTest extends \PHPUnit_Framework_TestCase
         "     * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb\n",
         "     *\n",
         "     * @return void\n",
-        "     */",
+        '     */',
     );
 
     /**
