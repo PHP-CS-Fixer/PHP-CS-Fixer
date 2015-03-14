@@ -389,6 +389,7 @@ class Foo
     private $foo2;
     protected $bar1, $bar2;
     public $baz1 = null, $baz2, $baz3 = false;
+    public $foo, $bar;
 }
 EOF;
 
@@ -400,6 +401,7 @@ class Foo
     private $foo2;
     protected $bar1, $bar2;
     public $baz1 = null, $baz2, $baz3 = false;
+    var $foo, $bar;
 }
 EOF;
 
