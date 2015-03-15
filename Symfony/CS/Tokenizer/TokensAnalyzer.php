@@ -193,7 +193,11 @@ class TokensAnalyzer
                 continue;
             }
 
-            if ($token->isGivenKind(T_WHITESPACE) && false !== strpos($token->getContent(), "\n")) {
+            if (
+                $token->isGivenKind(T_WHITESPACE) &&
+                false !== strpos($token->getContent(), "\n") &&
+                !$tokens[$index - 1]->isGivenKind(T_END_HEREDOC)
+            ) {
                 return true;
             }
         }

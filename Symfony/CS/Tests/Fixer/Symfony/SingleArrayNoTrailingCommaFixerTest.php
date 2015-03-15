@@ -37,6 +37,46 @@ class SingleArrayNoTrailingCommaFixerTest extends AbstractFixerTestBase
             array("<?php \$x = array('foo', \n);"),
             array("<?php \$x = array(array('foo'), \n);", "<?php \$x = array(array('foo',), \n);"),
             array("<?php \$x = array(array('foo',\n), \n);"),
+            array(
+                '<?php
+    $test = array("foo", <<<TWIG
+        foo
+TWIG
+        , $twig);',
+                '<?php
+    $test = array("foo", <<<TWIG
+        foo
+TWIG
+        , $twig, );',
+            ),
+            array(
+                '<?php
+    $test = array(
+        "foo", <<<TWIG
+        foo
+TWIG
+        , $twig, );',
+            ),
+            array(
+                '<?php
+    $test = array("foo", <<<\'TWIG\'
+        foo
+TWIG
+        , $twig);',
+                '<?php
+    $test = array("foo", <<<\'TWIG\'
+        foo
+TWIG
+        , $twig, );',
+            ),
+            array(
+                '<?php
+    $test = array(
+        "foo", <<<\'TWIG\'
+        foo
+TWIG
+        , $twig, );',
+            ),
 
             // Short syntax
             array('<?php $x = array([]);'),
@@ -48,6 +88,46 @@ class SingleArrayNoTrailingCommaFixerTest extends AbstractFixerTestBase
             array('<?php $x = array([]);', '<?php $x = array([],);'),
             array('<?php $x = [[]];', '<?php $x = [[],];'),
             array('<?php $x = [$y[]];', '<?php $x = [$y[],];'),
+            array(
+                '<?php
+    $test = ["foo", <<<TWIG
+        foo
+TWIG
+        , $twig];',
+                '<?php
+    $test = ["foo", <<<TWIG
+        foo
+TWIG
+        , $twig, ];',
+            ),
+            array(
+                '<?php
+    $test = [
+        "foo", <<<TWIG
+        foo
+TWIG
+        , $twig, ];',
+            ),
+            array(
+                '<?php
+    $test = ["foo", <<<\'TWIG\'
+        foo
+TWIG
+        , $twig];',
+                '<?php
+    $test = ["foo", <<<\'TWIG\'
+        foo
+TWIG
+        , $twig, ];',
+            ),
+            array(
+                '<?php
+    $test = [
+        "foo", <<<\'TWIG\'
+        foo
+TWIG
+        , $twig, ];',
+            ),
         );
     }
 }

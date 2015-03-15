@@ -12,7 +12,6 @@
 namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
-use Symfony\CS\DocBlock\Annotation;
 use Symfony\CS\DocBlock\DocBlock;
 use Symfony\CS\Tokenizer\Tokens;
 

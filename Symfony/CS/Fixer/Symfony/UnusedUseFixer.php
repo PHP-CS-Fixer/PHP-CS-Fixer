@@ -71,7 +71,7 @@ class UnusedUseFixer extends AbstractFixer
         $usages = array();
 
         foreach ($useDeclarations as $shortName => $useDeclaration) {
-            $usages[$shortName] = (bool) preg_match('/\b'.preg_quote($shortName).'\b/i', $content);
+            $usages[$shortName] = (bool) preg_match('/(?<!\$)\b'.preg_quote($shortName).'\b/i', $content);
         }
 
         return $usages;

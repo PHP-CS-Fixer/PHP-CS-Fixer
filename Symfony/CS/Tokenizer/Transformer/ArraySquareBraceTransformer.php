@@ -65,9 +65,13 @@ class ArraySquareBraceTransformer extends AbstractTransformer
             ')',
             ']',
             '}',
-            array(T_ARRAY_CAST),
+            '"',
+            array(T_CONSTANT_ENCAPSED_STRING),
             array(T_STRING),
             array(T_VARIABLE),
+            array(CT_ARRAY_SQUARE_BRACE_CLOSE),
+            array(CT_DYNAMIC_PROP_BRACE_CLOSE),
+            array(CT_DYNAMIC_VAR_BRACE_CLOSE),
         );
 
         $token = $tokens[$index];

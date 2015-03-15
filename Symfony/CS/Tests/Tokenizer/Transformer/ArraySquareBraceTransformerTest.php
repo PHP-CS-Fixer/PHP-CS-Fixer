@@ -46,6 +46,82 @@ class ArraySquareBraceTransformerTest extends AbstractTransformerTestBase
                     13 => 'CT_ARRAY_SQUARE_BRACE_CLOSE',
                 ),
             ),
+            array(
+                '<?php [];',
+                array(
+                    1 => 'CT_ARRAY_SQUARE_BRACE_OPEN',
+                    2 => 'CT_ARRAY_SQUARE_BRACE_CLOSE',
+                ),
+            ),
+            array(
+                '<?php [1, "foo"];',
+                array(
+                    1 => 'CT_ARRAY_SQUARE_BRACE_OPEN',
+                    6 => 'CT_ARRAY_SQUARE_BRACE_CLOSE',
+                ),
+            ),
+            array(
+                '<?php [[]];',
+                array(
+                    1 => 'CT_ARRAY_SQUARE_BRACE_OPEN',
+                    2 => 'CT_ARRAY_SQUARE_BRACE_OPEN',
+                    3 => 'CT_ARRAY_SQUARE_BRACE_CLOSE',
+                    4 => 'CT_ARRAY_SQUARE_BRACE_CLOSE',
+                ),
+            ),
+            array(
+                '<?php ["foo", ["bar", "baz"]];',
+                array(
+                    1 => 'CT_ARRAY_SQUARE_BRACE_OPEN',
+                    5 => 'CT_ARRAY_SQUARE_BRACE_OPEN',
+                    10 => 'CT_ARRAY_SQUARE_BRACE_CLOSE',
+                    11 => 'CT_ARRAY_SQUARE_BRACE_CLOSE',
+                ),
+            ),
+            array(
+                '<?php (array) [1, 2];',
+                array(
+                    3 => 'CT_ARRAY_SQUARE_BRACE_OPEN',
+                    8 => 'CT_ARRAY_SQUARE_BRACE_CLOSE',
+                ),
+            ),
+            array(
+                '<?php [1,2][$x];',
+                array(
+                    1 => 'CT_ARRAY_SQUARE_BRACE_OPEN',
+                    5 => 'CT_ARRAY_SQUARE_BRACE_CLOSE',
+                ),
+            ),
+            array(
+                '<?php array();',
+            ),
+            array(
+                '<?php $x[] = 1;',
+            ),
+            array(
+                '<?php $x[1];',
+            ),
+            array(
+                '<?php $x [ 1 ];',
+            ),
+            array(
+                '<?php ${"x"}[1];',
+            ),
+            array(
+                '<?php FOO[1];',
+            ),
+            array(
+                '<?php array("foo")[1];',
+            ),
+            array(
+                '<?php foo()[1];',
+            ),
+            array(
+                '<?php \'foo\'[1];',
+            ),
+            array(
+                '<?php "foo$bar"[1];',
+            ),
         );
     }
 }
