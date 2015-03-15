@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by gharlan at 2015-03-15T14:26:20Z
+
+In 2.0 the `$disallowedPrefTokens` in `ArraySquareBraceTransformer` have to be adjusted the same way:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Tokenizer/Transformer/ArraySquareBraceTransformer.php#L64-L71
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-15T19:56:26Z
+
+Nice catch!
+Just some minors and ready to go!
