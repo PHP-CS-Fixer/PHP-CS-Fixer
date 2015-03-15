@@ -443,6 +443,9 @@ Choose from the list of available fixers:
 * **header_comment** [contrib]
                 Add, replace or remove header comment.
 
+* **long_array_syntax** [contrib]
+                Arrays should use the long syntax.
+
 * **multiline_spaces_before_semicolon** [contrib]
                 Multi-line whitespace before closing
                 semicolon are prohibited.
