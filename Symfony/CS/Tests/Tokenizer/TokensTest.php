@@ -121,6 +121,88 @@ preg_replace_callback(
     }
 
     /**
+     * @dataProvider provideIsShortArrayCases
+     */
+    public function testIsShortArray($source, array $expected)
+    {
+        $tokens = Tokens::fromCode($source);
+
+        foreach ($expected as $index => $expected) {
+            $this->assertSame($expected, $tokens->isShortArray($index));
+        }
+    }
+
+    public function provideIsShortArrayCases()
+    {
+        return array(
+            array(
+                '<?php [];',
+                array(1 => true),
+            ),
+            array(
+                '<?php [1, "foo"];',
+                array(1 => true),
+            ),
+            array(
+                '<?php [[]];',
+                array(1 => true, 2 => true),
+            ),
+            array(
+                '<?php ["foo", ["bar", "baz"]];',
+                array(1 => true, 5 => true),
+            ),
+            array(
+                '<?php (array) [1, 2];',
+                array(3 => true),
+            ),
+            array(
+                '<?php [1,2][$x];',
+                array(1 => true, 6 => false),
+            ),
+            array(
+                '<?php array();',
+                array(1 => false),
+            ),
+            array(
+                '<?php $x[] = 1;',
+                array(2 => false),
+            ),
+            array(
+                '<?php $x[1];',
+                array(2 => false),
+            ),
+            array(
+                '<?php $x [ 1 ];',
+                array(3 => false),
+            ),
+            array(
+                '<?php ${"x"}[1];',
+                array(5 => false),
+            ),
+            array(
+                '<?php FOO[1];',
+                array(2 => false),
+            ),
+            array(
+                '<?php array("foo")[1];',
+                array(5 => false),
+            ),
+            array(
+                '<?php foo()[1];',
+                array(4 => false),
+            ),
+            array(
+                '<?php \'foo\'[1];',
+                array(2 => false),
+            ),
+            array(
+                '<?php "foo$bar"[1];',
+                array(5 => false),
+            ),
+        );
+    }
+
+    /**
      * @dataProvider provideFindSequence
      */
     public function testFindSequence($source, $expected, array $params)
