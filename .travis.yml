@@ -24,7 +24,6 @@ install:
 
 script:
     - phpunit --verbose --coverage-clover build/logs/clover.xml
-    - php php-cs-fixer --diff --dry-run -v fix
 
 after_script:
     - php vendor/bin/coveralls -v
