@@ -26,26 +26,33 @@ class TokensTest extends \PHPUnit_Framework_TestCase
 <?php
 class Foo
 {
-    public function bar()
+    public $prop0;
+    protected $prop1;
+    private $prop2 = 1;
+    var $prop3 = array(1,2,3);
+
+    public function bar4()
     {
         $a = 5;
 
         return " ({$a})";
     }
-    public function baz($data)
+    public function bar5($data)
     {
     }
 }
 PHP;
 
         $tokens = Tokens::fromCode($source);
-        $elements = $tokens->getClassyElements();
+        $elements = array_values($tokens->getClassyElements());
 
-        $this->assertCount(2, $elements);
-
-        foreach ($elements as $element) {
-            $this->assertSame('method', $element['type']);
-        }
+        $this->assertCount(6, $elements);
+        $this->assertSame('property', $elements[0]['type']);
+        $this->assertSame('property', $elements[1]['type']);
+        $this->assertSame('property', $elements[2]['type']);
+        $this->assertSame('property', $elements[3]['type']);
+        $this->assertSame('method', $elements[4]['type']);
+        $this->assertSame('method', $elements[5]['type']);
     }
 
     public function testReadFromCacheAfterClearing()
@@ -109,6 +116,88 @@ preg_replace_callback(
             array(
                 '<?php $foo = function &() {}',
                 array(5 => true),
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideIsShortArrayCases
+     */
+    public function testIsShortArray($source, array $expected)
+    {
+        $tokens = Tokens::fromCode($source);
+
+        foreach ($expected as $index => $expected) {
+            $this->assertSame($expected, $tokens->isShortArray($index));
+        }
+    }
+
+    public function provideIsShortArrayCases()
+    {
+        return array(
+            array(
+                '<?php [];',
+                array(1 => true),
+            ),
+            array(
+                '<?php [1, "foo"];',
+                array(1 => true),
+            ),
+            array(
+                '<?php [[]];',
+                array(1 => true, 2 => true),
+            ),
+            array(
+                '<?php ["foo", ["bar", "baz"]];',
+                array(1 => true, 5 => true),
+            ),
+            array(
+                '<?php (array) [1, 2];',
+                array(3 => true),
+            ),
+            array(
+                '<?php [1,2][$x];',
+                array(1 => true, 6 => false),
+            ),
+            array(
+                '<?php array();',
+                array(1 => false),
+            ),
+            array(
+                '<?php $x[] = 1;',
+                array(2 => false),
+            ),
+            array(
+                '<?php $x[1];',
+                array(2 => false),
+            ),
+            array(
+                '<?php $x [ 1 ];',
+                array(3 => false),
+            ),
+            array(
+                '<?php ${"x"}[1];',
+                array(5 => false),
+            ),
+            array(
+                '<?php FOO[1];',
+                array(2 => false),
+            ),
+            array(
+                '<?php array("foo")[1];',
+                array(5 => false),
+            ),
+            array(
+                '<?php foo()[1];',
+                array(4 => false),
+            ),
+            array(
+                '<?php \'foo\'[1];',
+                array(2 => false),
+            ),
+            array(
+                '<?php "foo$bar"[1];',
+                array(5 => false),
             ),
         );
     }

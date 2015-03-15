@@ -906,7 +906,11 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            if ($token->isGivenKind(T_WHITESPACE) && false !== strpos($token->getContent(), "\n")) {
+            if (
+                $token->isGivenKind(T_WHITESPACE) &&
+                false !== strpos($token->getContent(), "\n") &&
+                !$this[$index - 1]->isGivenKind(T_END_HEREDOC)
+            ) {
                 return true;
             }
         }
@@ -963,6 +967,18 @@ class Tokens extends \SplFixedArray
      */
     public function isShortArray($index)
     {
+        static $disallowedPrevTokens = array(
+            ']',
+            '}',
+            ')',
+            '"',
+            array(T_CONSTANT_ENCAPSED_STRING),
+            array(T_STRING),
+            array(T_VARIABLE),
+            array(CT_DYNAMIC_PROP_BRACE_CLOSE),
+            array(CT_DYNAMIC_VAR_BRACE_CLOSE),
+        );
+
         $token = $this[$index];
 
         if (!$token->equals('[')) {
@@ -971,7 +987,7 @@ class Tokens extends \SplFixedArray
 
         $prevToken = $this[$this->getPrevMeaningfulToken($index)];
 
-        if (!$prevToken->equalsAny(array(']', '}', ')', array(T_STRING), array(T_VARIABLE), array(T_ARRAY_CAST)))) {
+        if (!$prevToken->equalsAny($disallowedPrevTokens)) {
             return true;
         }
 
