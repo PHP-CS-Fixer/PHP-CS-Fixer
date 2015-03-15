@@ -63,7 +63,7 @@ class HeaderCommentFixer extends AbstractFixer
 
         $this->removeHeaderComment($tokens);
         $insertionIndex = $this->findHeaderCommentInsertionIndex($tokens);
-        $tokens->clearRange(1, $insertionIndex-1);
+        $tokens->clearRange(1, $insertionIndex - 1);
         $this->insertHeaderComment($tokens, $insertionIndex);
 
         return $tokens->generateCode();

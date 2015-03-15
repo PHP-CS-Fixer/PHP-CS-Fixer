@@ -329,8 +329,8 @@ Choose from the list of available fixers:
                 after object T_OBJECT_OPERATOR.
 
 * **operators_spaces** [symfony]
-                Operators should be arounded by at
-                least one space.
+                Binary operators should be arounded by
+                at least one space.
 
 * **phpdoc_indent** [symfony]
                 Docblocks should have the same
@@ -428,6 +428,10 @@ Choose from the list of available fixers:
                 Arrays should be formatted like
                 function/method arguments, without
                 leading or trailing single line space.
+
+* **unary_operators_spaces** [symfony]
+                Unary operators should be placed
+                adjacent to their operands.
 
 * **unused_use** [symfony]
                 Unused use statements must be removed.
