@@ -97,6 +97,14 @@ namespace A\B {
 class C {}\r",
                 "<?php\rnamespace A\B;\r\r\r\r\r\rclass C {}\r",
             ),
+            array(
+                '<?php
+namespace A\B;
+
+namespace\C\func();
+foo();
+',
+            ),
         );
     }
 }
