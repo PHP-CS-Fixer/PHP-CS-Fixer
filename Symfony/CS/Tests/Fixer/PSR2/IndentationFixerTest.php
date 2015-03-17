@@ -173,6 +173,27 @@ class IndentationFixerTest extends AbstractFixerTestBase
 \t \t   echo QUEBEC;",
         );
 
+        $cases[] = array(
+'<?php
+
+class Foo
+{
+    const FOO = \'foo\';
+    const BAR = \'bar\';
+
+    protected $bar;
+}',
+'<?php
+
+class Foo
+{
+  const FOO = \'foo\';
+  const BAR = \'bar\';
+
+  protected $bar;
+}',
+        );
+
         return $cases;
     }
 
