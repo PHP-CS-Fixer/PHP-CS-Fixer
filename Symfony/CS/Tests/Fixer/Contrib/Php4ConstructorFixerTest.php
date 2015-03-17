@@ -981,4 +981,51 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
+
+    public function testInfiniteRecursion()
+    {
+        $expected = <<<'EOF'
+<?php
+    class Parent1
+    {
+        function __construct()
+        {
+            echo "foobar";
+        }
+    }
+
+    class Class1 extends Parent1
+    {
+        function __construct($foo)
+        {
+            parent::__construct();
+            echo "something";
+        }
+    }
+?>
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    class Parent1
+    {
+        function __construct()
+        {
+            echo "foobar";
+        }
+    }
+
+    class Class1 extends Parent1
+    {
+        function Class1($foo)
+        {
+            $this->__construct();
+            echo "something";
+        }
+    }
+?>
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
 }
