@@ -1178,21 +1178,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * If $index is below zero, we know that it does not exist.
-     *
-     * This was added to be compatible with HHVM 3.2.0.
-     * Note that HHVM 3.3.0 no longer requires this work around.
-     *
-     * @param int $index
-     *
-     * @return bool
-     */
-    public function offsetExists($index)
-    {
-        return $index >= 0 && parent::offsetExists($index);
-    }
-
-    /**
      * Removes all the leading whitespace.
      *
      * @param int   $index
