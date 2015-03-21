@@ -149,14 +149,9 @@ EOF;
         $expected = <<<'EOF'
 <?php
 namespace Aaa;
-class Foo {}
-EOF;
-        $input = <<<'EOF'
-<?php
-namespace Aaa;
 class Bar {}
 EOF;
 
-        $this->makeTest($expected, $input, $file);
+        $this->makeTest($expected, $expected, $file);
     }
 }
