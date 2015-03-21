@@ -28,6 +28,7 @@ class Config implements ConfigInterface
     protected $level;
     protected $fixers;
     protected $dir;
+    protected $cacheDir;
     protected $customFixers;
     protected $usingCache = false;
     protected $usingLinter = true;
@@ -53,6 +54,13 @@ class Config implements ConfigInterface
         $this->dir = $dir;
     }
 
+    public function setCacheDir($cacheDir)
+    {
+        $this->cacheDir = $cacheDir;
+
+        return $this;
+    }
+
     public function setUsingCache($usingCache)
     {
         $this->usingCache = $usingCache;
@@ -69,6 +77,15 @@ class Config implements ConfigInterface
 
     public function getDir()
     {
+        return $this->dir;
+    }
+
+    public function getCacheDir()
+    {
+        if (null !== $this->cacheDir) {
+            return $this->cacheDir;
+        }
+
         return $this->dir;
     }
 

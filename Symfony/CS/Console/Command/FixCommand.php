@@ -261,6 +261,17 @@ speed up further runs.
     ;
 
     ?>
+
+In addition, you can optionally specify a cache directory.
+
+    <?php
+
+    return Symfony\CS\Config\Config::create()
+        ->setUsingCache(true)
+        ->setCacheDir(__DIR__ . '/.cache')
+    ;
+
+    ?>
 EOF
             );
     }
