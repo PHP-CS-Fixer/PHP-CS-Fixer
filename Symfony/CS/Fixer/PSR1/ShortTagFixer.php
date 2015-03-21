@@ -27,7 +27,11 @@ class ShortTagFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         // replace all <? with <?php to replace all short open tags even without short_open_tag option enabled
-        $newContent = preg_replace('/<\?(\s|$)/', '<?php$1', $content);
+        $newContent = preg_replace('/<\?(\s|$)/', '<?php$1', $content, -1, $count);
+
+        if (!$count) {
+            return $content;
+        }
 
         /* the following code is magic to revert previous replacements which should NOT be replaced, for example incorrectly replacing
          * > echo '<? ';
