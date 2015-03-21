@@ -600,6 +600,17 @@ speed up further runs.
         ->setUsingCache(true)
     ;
 
+In addition, you can optionally specify a cache directory.
+
+.. code-block:: php
+
+    <?php
+
+    return Symfony\CS\Config\Config::create()
+        ->setUsingCache(true)
+        ->setCacheDir(__DIR__.'/.cache')
+    ;
+
 Helpers
 -------
 
