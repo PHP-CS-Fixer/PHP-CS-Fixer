@@ -37,13 +37,9 @@ class VisibilityFixer extends AbstractFixer
                 // force whitespace between function keyword and function name to be single space char
                 $tokens[++$index]->setContent(' ');
             } elseif ('property' === $element['type']) {
-                $prevIndex = $tokens->getPrevTokenOfKind($index, array(';', ','));
-                $nextIndex = $tokens->getNextTokenOfKind($index, array(';', ',', '='));
+                $prevIndex = $tokens->getPrevTokenOfKind($index, array(';', ',', '{'));
 
-                if (
-                    (!$prevIndex || !$tokens[$prevIndex]->equals(',')) &&
-                    (!$nextIndex || !$tokens[$nextIndex]->equals(','))
-                ) {
+                if (!$prevIndex || !$tokens[$prevIndex]->equals(',')) {
                     $this->applyAttribs($tokens, $index, $this->grabAttribsBeforePropertyToken($tokens, $index));
                 }
             }
