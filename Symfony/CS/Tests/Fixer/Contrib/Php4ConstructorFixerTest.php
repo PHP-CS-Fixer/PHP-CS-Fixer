@@ -677,6 +677,53 @@ EOF;
         $this->makeTest($expected, $input);
     }
 
+    public function testParentOther2()
+    {
+        $expected = <<<'EOF'
+<?php
+
+class Foo extends FooParent
+{
+    /**
+     * Constructor
+     */
+    function __construct($bar)
+    {
+        parent::__construct(1);
+        var_dump(9);
+    }
+
+    function bar()
+    {
+        var_dump(3);
+    }
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+class Foo extends FooParent
+{
+    /**
+     * Constructor
+     */
+    function Foo($bar)
+    {
+        FooParent::FooParent(1);
+        var_dump(9);
+    }
+
+    function bar()
+    {
+        var_dump(3);
+    }
+}
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
     public function testClassWithAnonymous()
     {
         $expected = <<<'EOF'

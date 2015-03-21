@@ -159,20 +159,24 @@ class Php4ConstructorFixer extends AbstractFixer
             $parentIndex = $tokens->getNextMeaningfulToken($index);
             $parentClass = $tokens[$parentIndex]->getContent();
 
-            // using parent::ParentClassName()
+            // using parent::ParentClassName() or ParentClassName::ParentClassName()
             $parentSeq = $tokens->findSequence(array(
-                array(T_STRING, 'parent'),
+                array(T_STRING),
                 array(T_DOUBLE_COLON),
                 array(T_STRING, $parentClass),
                 '(',
-            ), $classStart, $classEnd, array(false, true, false, true));
+            ), $classStart, $classEnd, array(2 => false));
 
             if (null !== $parentSeq) {
                 // we only need indexes
                 $parentSeq = array_keys($parentSeq);
 
-                // replace method name with __construct
-                $tokens[$parentSeq[2]]->setContent('__construct');
+                // match either of the possibilities
+                if ($tokens[$parentSeq[0]]->equalsAny(array(array(T_STRING, 'parent'), array(T_STRING, $parentClass)), false)) {
+                    // replace with parent::__construct
+                    $tokens[$parentSeq[0]]->setContent('parent');
+                    $tokens[$parentSeq[2]]->setContent('__construct');
+                }
             }
 
             // using $this->ParentClassName()
