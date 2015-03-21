@@ -14,10 +14,11 @@ Symfony\CS\Fixer\Contrib\HeaderCommentFixer::setHeader($header);
 return Symfony\CS\Config\Config::create()
     // use default SYMFONY_LEVEL and extra fixers:
     ->fixers(array(
+        'header_comment',
+        'long_array_syntax',
         'ordered_use',
         'strict',
         'strict_param',
-        'header_comment',
     ))
     ->finder(
         Symfony\CS\Finder\DefaultFinder::create()
