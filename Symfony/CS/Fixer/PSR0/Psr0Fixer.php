@@ -83,7 +83,9 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
             if (false === $dir) {
                 $dir = '';
             }
-            $filename = basename($path, '.php');
+
+            $filenameParts = explode('.', $file->getBasename(), 2);
+            $filename = array_shift($filenameParts);
 
             if ($classyName !== $filename) {
                 $tokens[$classyIndex]->setContent($filename);
