@@ -29,15 +29,14 @@ class TrimArraySpacesFixerTest extends AbstractFixerTestBase
     public function provideFixCases()
     {
         return array(
-
             array(
-                "<?php \$foo = array('foo');",
-                "<?php \$foo = array( 'foo' );",
+                '<?php $foo = array("foo");',
+                '<?php $foo = array( "foo" );',
             ),
 
             array(
-                "<?php \$foo = ['foo'];",
-                "<?php \$foo = [ 'foo' ];",
+                '<?php $foo = ["foo"];',
+                '<?php $foo = [ "foo" ];',
             ),
 
             array(
@@ -51,18 +50,18 @@ class TrimArraySpacesFixerTest extends AbstractFixerTestBase
             ),
 
             array(
-                "<?php \$foo = array('foo', 'bar');",
-                "<?php \$foo = array( 'foo', 'bar' );",
+                '<?php $foo = array("foo", "bar");',
+                '<?php $foo = array( "foo", "bar" );',
             ),
 
             array(
-                "<?php \$foo = array('foo', 'bar', );",
-                "<?php \$foo = array( 'foo', 'bar', );",
+                '<?php $foo = array("foo", "bar", );',
+                '<?php $foo = array( "foo", "bar", );',
             ),
 
             array(
-                "<?php \$foo = ['foo', 'bar', ];",
-                "<?php \$foo = [ 'foo', 'bar', ];",
+                '<?php $foo = ["foo", "bar", ];',
+                '<?php $foo = [ "foo", "bar", ];',
             ),
 
             array(
@@ -76,18 +75,18 @@ class TrimArraySpacesFixerTest extends AbstractFixerTestBase
             ),
 
             array(
-                "<?php \$foo = array('foo', 'bar');",
-                "<?php \$foo = array(    'foo', 'bar'   );",
+                '<?php $foo = array("foo", "bar");',
+                '<?php $foo = array(    "foo", "bar"   );',
             ),
 
             array(
-                "<?php \$foo = ['foo', 'bar'];",
-                "<?php \$foo = [ 'foo', 'bar' ];",
+                '<?php $foo = ["foo", "bar"];',
+                '<?php $foo = [ "foo", "bar" ];',
             ),
 
             array(
-                "<?php \$foo = ['foo', 'bar'];",
-                "<?php \$foo = [     'foo', 'bar'   ];",
+                '<?php $foo = ["foo", "bar"];',
+                '<?php $foo = [     "foo", "bar"   ];',
             ),
 
             array(
@@ -101,73 +100,73 @@ class TrimArraySpacesFixerTest extends AbstractFixerTestBase
             ),
 
             array(
-                "<?php \$foo = array('foo', 'bar'); \$bar = array('foo', 'bar');",
-                "<?php \$foo = array( 'foo', 'bar' ); \$bar = array( 'foo', 'bar' );",
+                '<?php $foo = array("foo", "bar"); $bar = array("foo", "bar");',
+                '<?php $foo = array( "foo", "bar" ); $bar = array( "foo", "bar" );',
             ),
 
             array(
-                "<?php \$foo = ['foo', 'bar']; \$bar = ['foo', 'bar'];",
-                "<?php \$foo = [ 'foo', 'bar' ]; \$bar = [ 'foo', 'bar' ];",
+                '<?php $foo = ["foo", "bar"]; $bar = ["foo", "bar"];',
+                '<?php $foo = [ "foo", "bar" ]; $bar = [ "foo", "bar" ];',
             ),
 
             array(
-                "<?php \$foo = array('foo' => 'bar');",
-                "<?php \$foo = array( 'foo' => 'bar' );",
+                '<?php $foo = array("foo" => "bar");',
+                '<?php $foo = array( "foo" => "bar" );',
             ),
 
             array(
-                "<?php \$foo = ['foo' => 'bar'];",
-                "<?php \$foo = [ 'foo' => 'bar' ];",
+                '<?php $foo = ["foo" => "bar"];',
+                '<?php $foo = [ "foo" => "bar" ];',
             ),
 
             array(
-                "<?php \$foo = array('foo');",
-                "<?php \$foo = array( 'foo' );",
+                '<?php $foo = array("foo");',
+                '<?php $foo = array( "foo" );',
             ),
 
             array(
-                "<?php \$foo = ['foo'];",
-                "<?php \$foo = [ 'foo' ];",
+                '<?php $foo = ["foo"];',
+                '<?php $foo = [ "foo" ];',
             ),
 
             array(
-                "<?php \$foo = array(\$y ? true : false);",
-                "<?php \$foo = array( \$y ? true : false );",
+                '<?php $foo = array($y ? true : false);',
+                '<?php $foo = array( $y ? true : false );',
             ),
 
             array(
-                "<?php \$foo = [\$y ? true : false];",
-                "<?php \$foo = [ \$y ? true : false ];",
+                '<?php $foo = [$y ? true : false];',
+                '<?php $foo = [ $y ? true : false ];',
             ),
 
             array(
-                "<?php \$foo = array(array('foo'), array('bar'));",
-                "<?php \$foo = array( array( 'foo' ), array( 'bar' ) );",
+                '<?php $foo = array(array("foo"), array("bar"));',
+                '<?php $foo = array( array( "foo" ), array( "bar" ) );',
             ),
 
             array(
-                "<?php \$foo = [['foo'], ['bar']];",
-                "<?php \$foo = [ [ 'foo' ], [ 'bar' ] ];",
+                '<?php $foo = [["foo"], ["bar"]];',
+                '<?php $foo = [ [ "foo" ], [ "bar" ] ];',
             ),
 
             array(
-                "<?php function(array \$foo = array('bar')) {}",
-                "<?php function(array \$foo = array( 'bar' )) {}",
+                '<?php function(array $foo = array("bar")) {}',
+                '<?php function(array $foo = array( "bar" )) {}',
             ),
 
             array(
-                "<?php function(array \$foo = ['bar']) {}",
-                "<?php function(array \$foo = [ 'bar' ]) {}",
+                '<?php function(array $foo = ["bar"]) {}',
+                '<?php function(array $foo = [ "bar" ]) {}',
             ),
 
             array(
-                "<?php \$foo = array(function() {return 'foo';});",
-                "<?php \$foo = array( function() {return 'foo';} );",
+                '<?php $foo = array(function() {return "foo";});',
+                '<?php $foo = array( function() {return "foo";} );',
             ),
 
             array(
-                "<?php \$foo = [function() {return 'foo';}];",
-                "<?php \$foo = [ function() {return 'foo';} ];",
+                '<?php $foo = [function() {return "foo";}];',
+                '<?php $foo = [ function() {return "foo";} ];',
             ),
 
             array(
@@ -191,13 +190,13 @@ class TrimArraySpacesFixerTest extends AbstractFixerTestBase
             ),
 
             array(
-                "<?php \$foo = array(\$bar->method(), Foo::doSomething());",
-                "<?php \$foo = array( \$bar->method(), Foo::doSomething() );",
+                '<?php $foo = array($bar->method(), Foo::doSomething());',
+                '<?php $foo = array( $bar->method(), Foo::doSomething() );',
             ),
 
             array(
-                "<?php \$foo = [\$bar->method(), Foo::doSomething()];",
-                "<?php \$foo = [ \$bar->method(), Foo::doSomething() ];",
+                '<?php $foo = [$bar->method(), Foo::doSomething()];',
+                '<?php $foo = [ $bar->method(), Foo::doSomething() ];',
             ),
 
             array(
@@ -211,67 +210,67 @@ class TrimArraySpacesFixerTest extends AbstractFixerTestBase
             ),
 
             array(
-                "<?php \$foo = array(array('foo'), array('bar'));",
-                "<?php \$foo = array( array('foo'), array('bar') );",
+                '<?php $foo = array(array("foo"), array("bar"));',
+                '<?php $foo = array( array("foo"), array("bar") );',
             ),
 
             array(
-                "<?php \$foo = [['foo'], ['bar']];",
-                "<?php \$foo = [ ['foo'], ['bar'] ];",
+                '<?php $foo = [["foo"], ["bar"]];',
+                '<?php $foo = [ ["foo"], ["bar"] ];',
             ),
 
             array(
-                "<?php \$foo = array(array('foo'), array('bar'));",
-                "<?php \$foo = array(array( 'foo' ), array( 'bar' ));",
+                '<?php $foo = array(array("foo"), array("bar"));',
+                '<?php $foo = array(array( "foo" ), array( "bar" ));',
             ),
 
             array(
-                "<?php \$foo = [['foo'], ['bar']];",
-                "<?php \$foo = [[ 'foo' ], [ 'bar' ]];",
+                '<?php $foo = [["foo"], ["bar"]];',
+                '<?php $foo = [[ "foo" ], [ "bar" ]];',
             ),
 
             array(
-                "<?php \$foo = array(array('foo'), array('bar'));",
-                "<?php \$foo = array( array( 'foo' ), array( 'bar' ) );",
+                '<?php $foo = array(array("foo"), array("bar"));',
+                '<?php $foo = array( array( "foo" ), array( "bar" ) );',
             ),
 
             array(
-                "<?php \$foo = [['foo'], ['bar']];",
-                "<?php \$foo = [ [ 'foo' ], [ 'bar' ] ];",
+                '<?php $foo = [["foo"], ["bar"]];',
+                '<?php $foo = [ [ "foo" ], [ "bar" ] ];',
             ),
 
             array(
-                "<?php \$foo = array(array('foo'), array('bar'));",
+                '<?php $foo = array(array("foo"), array("bar"));',
             ),
 
             array(
-                "<?php \$foo = [['foo'], ['bar']];",
+                '<?php $foo = [["foo"], ["bar"]];',
             ),
 
             array(
-                "<?php \$foo = array(/* empty array */);",
-                "<?php \$foo = array( /* empty array */ );",
+                '<?php $foo = array(/* empty array */);',
+                '<?php $foo = array( /* empty array */ );',
             ),
 
             array(
-                "<?php \$foo = [/* empty array */];",
-                "<?php \$foo = [ /* empty array */ ];",
+                '<?php $foo = [/* empty array */];',
+                '<?php $foo = [ /* empty array */ ];',
             ),
 
             array(
-                "<?php someFunc(array(/* empty array */));",
-                "<?php someFunc(array( /* empty array */ ));",
+                '<?php someFunc(array(/* empty array */));',
+                '<?php someFunc(array( /* empty array */ ));',
             ),
 
             array(
-                "<?php someFunc([/* empty array */]);",
-                "<?php someFunc([ /* empty array */ ]);",
+                '<?php someFunc([/* empty array */]);',
+                '<?php someFunc([ /* empty array */ ]);',
             ),
 
             // don't fix array syntax within comments
             array(
-                "<?php someFunc([/* array( 'foo', 'bar', [ 'foo' ] ) */]);",
-                "<?php someFunc([ /* array( 'foo', 'bar', [ 'foo' ] ) */ ]);",
+                '<?php someFunc([/* array( "foo", "bar", [ "foo" ] ) */]);',
+                '<?php someFunc([ /* array( "foo", "bar", [ "foo" ] ) */ ]);',
             ),
 
             array(
@@ -288,20 +287,38 @@ class TrimArraySpacesFixerTest extends AbstractFixerTestBase
                 '<?php // array( "foo", "bar" );',
             ),
 
-            array(
-                "<?php \$foo = array(\$x ? 1 : 2);",
-                "<?php \$foo = array( \$x ? 1 : 2 );",
-            ),
-
             // multiple single line nested arrays on one line
             array(
-                "<?php \$foo = array('foo', 'bar', [1, 2, array(3)]); \$baz = ['hash', 1, array('test')];",
-                "<?php \$foo = array( 'foo', 'bar', [ 1, 2, array( 3 )] ); \$baz = [ 'hash', 1, array( 'test') ];",
+                '<?php $foo = array("foo", "bar", [1, 2, array(3)]); $baz = ["hash", 1, array("test")];',
+                '<?php $foo = array( "foo", "bar", [ 1, 2, array( 3 )] ); $baz = [ "hash", 1, array( "test") ];',
             ),
 
-            // leave multi-line arrays alone
             array(
-                "<?php \$foo = [ \n'bar'\n ]",
+                "<?php \$foo = array( \n'bar'\n );",
+            ),
+
+            array(
+                "<?php \$foo = [ \n'bar'\n ];",
+            ),
+
+            array(
+                "<?php \$foo = array( \n'a', 'b',\n'c');",
+                "<?php \$foo = array( \n'a', 'b',\n'c' );",
+            ),
+
+            array(
+                "<?php \$foo = [ \n'a', 'b',\n'c'];",
+                "<?php \$foo = [ \n'a', 'b',\n'c' ];",
+            ),
+
+            array(
+                "<?php \$foo = array('a', 'b',\n'c'\n);",
+                "<?php \$foo = array( 'a', 'b',\n'c'\n);",
+            ),
+
+            array(
+                "<?php \$foo = ['a', 'b',\n'c'\n];",
+                "<?php \$foo = [ 'a', 'b',\n'c'\n];",
             ),
 
             // dont fix array syntax within string
@@ -320,6 +337,14 @@ class TrimArraySpacesFixerTest extends AbstractFixerTestBase
             array(
                 '<?php $a = [array("foo", "bar ", [1, 4, function($x = ["foobar", 2]) {}, [/* array( 1) */]]), array("foo", [$y[ 3]()], \'bar\')];',
                 '<?php $a = [ array("foo", "bar ", [ 1, 4, function($x = [ "foobar", 2 ]) {}, [/* array( 1) */] ] ), array("foo", [ $y[ 3]() ], \'bar\') ];',
+            ),
+
+            array(
+                '<?php
+    $foo = array(
+        1 => 2, // comment
+    );
+',
             ),
         );
     }

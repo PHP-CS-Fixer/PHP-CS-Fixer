@@ -420,9 +420,9 @@ Choose from the list of available fixers:
                 operator.
 
 * **trim_array_spaces** [symfony]
-                Single line arrays should be formatted
-                like function/method arguments,
-                without leading or trailing space.
+                Arrays should be formatted like
+                function/method arguments, without
+                leading or trailing single line space.
 
 * **unused_use** [symfony]
                 Unused use statements must be removed.

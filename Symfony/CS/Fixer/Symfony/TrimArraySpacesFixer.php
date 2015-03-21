@@ -40,7 +40,7 @@ class TrimArraySpacesFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Single line arrays should be formatted like function/method arguments, without leading or trailing space.';
+        return 'Arrays should be formatted like function/method arguments, without leading or trailing single line space.';
     }
 
     /**
@@ -51,9 +51,7 @@ class TrimArraySpacesFixer extends AbstractFixer
      */
     private static function fixArray(Tokens $tokens, $index)
     {
-        if ($tokens->isArrayMultiLine($index)) {
-            return;
-        }
+        static $whitespaceOptions = array('whitespaces' => " \t");
 
         $startIndex = $index;
 
@@ -64,19 +62,22 @@ class TrimArraySpacesFixer extends AbstractFixer
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $startIndex);
         }
 
-        $tokenAfterOpenArray = $tokens[$startIndex + 1];
+        $nextToken = $tokens[$startIndex + 1];
 
-        if ($tokenAfterOpenArray->isWhitespace()) {
-            $tokenAfterOpenArray->clear();
+        if ($nextToken->isWhitespace($whitespaceOptions)) {
+            $nextToken->clear();
         }
 
-        $tokenBeforeCloseArray = $tokens[$endIndex - 1];
+        $prevToken = $tokens[$endIndex - 1];
+        $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($endIndex)];
 
         if (
-            $tokenBeforeCloseArray->isWhitespace()
-            && !$tokens[$endIndex - 2]->equals(',')
+            $prevToken->isWhitespace($whitespaceOptions)
+            && !$prevNonWhitespaceToken->equals(',')
+            // TODO: following condition should be removed on 2.0 line thanks to WhitespacyCommentTransformer
+            && !($prevNonWhitespaceToken->isComment() && $prevNonWhitespaceToken->getContent() !== rtrim($prevNonWhitespaceToken->getContent()))
         ) {
-            $tokenBeforeCloseArray->clear();
+            $prevToken->clear();
         }
     }
 }
