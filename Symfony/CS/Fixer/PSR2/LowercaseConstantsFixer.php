@@ -24,10 +24,8 @@ class LowercaseConstantsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens as $index => $token) {
             if (!$token->isNativeConstant()) {
                 continue;
@@ -41,8 +39,6 @@ class LowercaseConstantsFixer extends AbstractFixer
                 $token->setContent(strtolower($token->getContent()));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -70,6 +66,8 @@ class LowercaseConstantsFixer extends AbstractFixer
                 T_NS_SEPARATOR,
                 T_PAAMAYIM_NEKUDOTAYIM,
                 T_USE,
+                CT_USE_TRAIT,
+                CT_USE_LAMBDA,
             );
 
             if (defined('T_TRAIT')) {

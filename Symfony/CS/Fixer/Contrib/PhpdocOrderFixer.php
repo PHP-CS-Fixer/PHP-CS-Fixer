@@ -23,11 +23,13 @@ class PhpdocOrderFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
 
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
             $content = $token->getContent();
             // move param to start, return to end, leave throws in the middle
             $content = $this->moveParamAnnotations($content);
@@ -37,8 +39,6 @@ class PhpdocOrderFixer extends AbstractFixer
             // persist the content at the end
             $token->setContent($content);
         }
-
-        return $tokens->generateCode();
     }
 
     /**

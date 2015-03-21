@@ -13,6 +13,7 @@ namespace Symfony\CS\Fixer\PSR2;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * Fixer for rules defined in PSR2 ¶3.
@@ -24,10 +25,10 @@ class MultipleUseFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-        $uses = array_reverse($tokens->getImportUseIndexes());
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $uses = array_reverse($tokensAnalyzer->getImportUseIndexes());
 
         foreach ($uses as $index) {
             $endIndex = $tokens->getNextTokenOfKind($index, array(';'));
@@ -53,11 +54,10 @@ class MultipleUseFixer extends AbstractFixer
 
             $declarationTokens = Tokens::fromCode('<?php '.$declarationContent);
             $declarationTokens[0]->clear();
+            $declarationTokens->clearEmptyTokens();
 
             $tokens->insertAt($index, $declarationTokens);
         }
-
-        return $tokens->generateCode();
     }
 
     /**

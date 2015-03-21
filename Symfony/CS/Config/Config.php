@@ -29,7 +29,7 @@ class Config implements ConfigInterface
     protected $fixers;
     protected $dir;
     protected $customFixers;
-    protected $usingCache = false;
+    protected $usingCache = true;
     protected $usingLinter = true;
     protected $hideProgress = false;
 
@@ -37,7 +37,7 @@ class Config implements ConfigInterface
     {
         $this->name = $name;
         $this->description = $description;
-        $this->level = FixerInterface::SYMFONY_LEVEL;
+        $this->level = FixerInterface::PSR2_LEVEL;
         $this->fixers = array();
         $this->finder = new DefaultFinder();
         $this->customFixers = array();
@@ -51,6 +51,8 @@ class Config implements ConfigInterface
     public function setDir($dir)
     {
         $this->dir = $dir;
+
+        return $this;
     }
 
     public function setUsingCache($usingCache)

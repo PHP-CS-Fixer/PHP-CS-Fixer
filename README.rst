@@ -136,7 +136,7 @@ project:
     php php-cs-fixer.phar fix /path/to/project --level=psr2
     php php-cs-fixer.phar fix /path/to/project --level=symfony
 
-By default, all PSR-2 fixers and some additional ones are run. The "contrib
+By default, all PSR fixers are run. The "contrib
 level" fixers cannot be enabled via this option; you should instead set them
 manually by their name via the ``--fixers`` option.
 
@@ -327,6 +327,11 @@ Choose from the list of available fixers:
                 Operators should be arounded by at
                 least one space.
 
+* **phpdoc_align** [symfony]
+                All items of the @param, @throws,
+                @return, @var, and @type phpdoc tags
+                must be aligned vertically.
+
 * **phpdoc_indent** [symfony]
                 Docblocks should have the same
                 indentation as the documented subject.
@@ -339,11 +344,6 @@ Choose from the list of available fixers:
 * **phpdoc_no_package** [symfony]
                 @package and @subpackage annotations
                 should be omitted from phpdocs.
-
-* **phpdoc_params** [symfony]
-                All items of the @param, @throws,
-                @return, @var, and @type phpdoc tags
-                must be aligned vertically.
 
 * **phpdoc_scalar** [symfony]
                 Scalar types should always be written
@@ -414,6 +414,11 @@ Choose from the list of available fixers:
 * **ternary_spaces** [symfony]
                 Standardize spaces around ternary
                 operator.
+
+* **trim_array_spaces** [symfony]
+                Arrays should be formatted like
+                function/method arguments, without
+                leading or trailing single line space.
 
 * **unused_use** [symfony]
                 Unused use statements must be removed.
@@ -510,11 +515,13 @@ fixed but without actually modifying them:
     php php-cs-fixer.phar fix /path/to/code --dry-run
 
 Instead of using command line options to customize the fixer, you can save the
-configuration in a ``.php_cs`` file in the root directory of
-your project. The file must return an instance of
-``Symfony\CS\ConfigInterface``, which lets you configure the fixers, the level, the files,
-and directories that need to be analyzed. The example below will add two contrib fixers
-to the default list of symfony-level fixers:
+project configuration in a ``.php_cs.dist`` file in the root directory
+of your project. The file must return an instance of ``Symfony\CS\ConfigInterface``,
+which lets you configure the fixers, the level, the files, and directories that
+need to be analyzed. You may also create ``.php_cs`` file, which is
+the local configuration that will be used instead of the project configuration, it
+is a good practice to add that file into your ``.gitignore`` file.
+The example below will add two contrib fixers to the default list of PSR2-level fixers:
 
 .. code-block:: php
 
@@ -565,19 +572,19 @@ Note the additional ``-`` in front of the Fixer name.
         ->finder($finder)
     ;
 
-The ``symfony`` level is set by default, you can also change the default level:
+The ``psr2`` level is set by default, you can also change the default level:
 
 .. code-block:: php
 
     <?php
 
     return Symfony\CS\Config\Config::create()
-        ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
+        ->level(Symfony\CS\FixerInterface::SYMFONY_LEVEL)
     ;
 
 In combination with these config and command line options, you can choose various usage.
 
-For example, default level is ``symfony``, but if you also don't want to use
+For example, default level is ``psr2``, but if you also don't want to use
 the ``psr0`` fixer, you can specify the ``--fixers="-psr0"`` option.
 
 But if you use the ``--fixers`` option with only exact fixers,
@@ -586,18 +593,25 @@ only those exact fixers are enabled whether or not level is set.
 With the ``--config-file`` option you can specify the path to the
 ``.php_cs`` file.
 
+By using ``--using-cache`` option you can set if caching
+mechanism should be used.
+
 Caching
 -------
 
-You can enable caching by returning a custom config with caching enabled. This will
-speed up further runs.
+The caching mechanism is enabled by default. This will speed up further runs by
+fixing only files that were modified. Tool will fix all files if tool version
+changed or fixers list changed.
+Cache is supported only for tool downloaded as phar file or installed via
+composer.
+Cache can be disabled via ``--using-cache`` option or config file:
 
 .. code-block:: php
 
     <?php
 
     return Symfony\CS\Config\Config::create()
-        ->setUsingCache(true)
+        ->setUsingCache(false)
     ;
 
 Helpers

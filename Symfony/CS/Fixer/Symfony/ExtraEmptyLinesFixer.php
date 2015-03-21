@@ -22,11 +22,13 @@ class ExtraEmptyLinesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_WHITESPACE)) {
+                continue;
+            }
 
-        foreach ($tokens->findGivenKind(T_WHITESPACE) as $token) {
             $content = '';
             $count = 0;
             $parts = explode("\n", $token->getContent());
@@ -47,8 +49,6 @@ class ExtraEmptyLinesFixer extends AbstractFixer
 
             $token->setContent($content);
         }
-
-        return $tokens->generateCode();
     }
 
     /**

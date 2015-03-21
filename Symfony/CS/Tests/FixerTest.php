@@ -115,6 +115,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
 
         $config = Config::create()->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'));
         $config->fixers($fixer->getFixers());
+        $config->setUsingCache(false);
 
         $changed = $fixer->fix($config, true, true);
         $pathToInvalidFile = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'somefile.php';
@@ -206,7 +207,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         // prepare bulk tests for phpdoc fixers to test if:
         // * `phpdoc_to_comment` is first
         // * `phpdoc_indent` is second
-        // * `phpdoc_params` is last
+        // * `phpdoc_align` is last
         $cases[] = array($fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']);
         foreach ($docFixerNames as $docFixerName) {
             if (!in_array($docFixerName, array('phpdoc_to_comment', 'phpdoc_indent'), true)) {
@@ -214,8 +215,8 @@ class FixerTest extends \PHPUnit_Framework_TestCase
                 $cases[] = array($fixers['phpdoc_indent'], $fixers[$docFixerName]);
             }
 
-            if ('phpdoc_params' !== $docFixerName) {
-                $cases[] = array($fixers[$docFixerName], $fixers['phpdoc_params']);
+            if ('phpdoc_align' !== $docFixerName) {
+                $cases[] = array($fixers[$docFixerName], $fixers['phpdoc_align']);
             }
         }
 

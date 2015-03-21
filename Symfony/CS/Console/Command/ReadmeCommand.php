@@ -17,6 +17,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @internal
  */
 class ReadmeCommand extends Command
 {

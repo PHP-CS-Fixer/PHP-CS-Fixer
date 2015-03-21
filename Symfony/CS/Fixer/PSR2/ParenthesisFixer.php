@@ -26,10 +26,8 @@ class ParenthesisFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens as $index => $token) {
             if (!$token->equals('(')) {
                 continue;
@@ -52,8 +50,6 @@ class ParenthesisFixer extends AbstractFixer
                 $this->removeSpaceAroundToken($tokens, $endIndex, -1);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

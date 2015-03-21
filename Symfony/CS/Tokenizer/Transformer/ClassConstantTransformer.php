@@ -12,35 +12,40 @@
 namespace Symfony\CS\Tokenizer\Transformer;
 
 use Symfony\CS\Tokenizer\AbstractTransformer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * Transform `class` class' constant from T_CLASS into CT_CLASS_CONSTANT.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
-class ClassConstant extends AbstractTransformer
+class ClassConstantTransformer extends AbstractTransformer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function process(Tokens $tokens)
-    {
-        foreach ($tokens->findGivenKind(T_CLASS) as $index => $token) {
-            $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            $prevToken = $tokens[$prevIndex];
-
-            if ($prevToken->isGivenKind(T_DOUBLE_COLON)) {
-                $token->override(array(CT_CLASS_CONSTANT, $token->getContent(), $token->getLine()));
-            }
-        }
-    }
-
     /**
      * {@inheritdoc}
      */
     public function getCustomTokenNames()
     {
         return array('CT_CLASS_CONSTANT');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function process(Tokens $tokens, Token $token, $index)
+    {
+        if (!$token->isGivenKind(T_CLASS)) {
+            return;
+        }
+
+        $prevIndex = $tokens->getPrevMeaningfulToken($index);
+        $prevToken = $tokens[$prevIndex];
+
+        if ($prevToken->isGivenKind(T_DOUBLE_COLON)) {
+            $token->override(array(CT_CLASS_CONSTANT, $token->getContent()));
+        }
     }
 }

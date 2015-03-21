@@ -23,10 +23,8 @@ class Php4ConstructorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         $classes = array_keys($tokens->findGivenKind(T_CLASS));
         $numClasses = count($classes);
 
@@ -71,8 +69,6 @@ class Php4ConstructorFixer extends AbstractFixer
             $this->fixConstructor($tokens, $className, $classStart, $classEnd);
             $this->fixParent($tokens, $classStart, $classEnd);
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -191,12 +187,10 @@ class Php4ConstructorFixer extends AbstractFixer
                 $tokens[$parentSeq[0]] = new Token(array(
                     T_STRING,
                     'parent',
-                    $tokens[$parentSeq[0]]->getLine(),
                 ));
                 $tokens[$parentSeq[1]] = new Token(array(
                     T_DOUBLE_COLON,
                     '::',
-                    $tokens[$parentSeq[1]]->getLine(),
                 ));
                 $tokens[$parentSeq[2]]->setContent('__construct');
             }

@@ -26,17 +26,13 @@ class LowercaseKeywordsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens as $token) {
             if ($token->isKeyword() && !$token->isGivenKind(self::$excludedTokens)) {
                 $token->setContent(strtolower($token->getContent()));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

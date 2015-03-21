@@ -19,6 +19,8 @@ use Symfony\CS\Utils;
  * It provides unified registerCustomTokens method.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 abstract class AbstractTransformer implements TransformerInterface
 {
@@ -35,7 +37,7 @@ abstract class AbstractTransformer implements TransformerInterface
     public function getName()
     {
         $nameParts = explode('\\', get_called_class());
-        $name = end($nameParts);
+        $name = substr(end($nameParts), 0, -strlen('Transformer'));
 
         return Utils::camelCaseToUnderscore($name);
     }

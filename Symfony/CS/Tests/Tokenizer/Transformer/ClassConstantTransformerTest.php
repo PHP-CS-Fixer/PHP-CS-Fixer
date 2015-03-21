@@ -12,38 +12,27 @@
 namespace Symfony\CS\Tests\Tokenizer\Transformer;
 
 use Symfony\CS\Tests\Tokenizer\AbstractTransformerTestBase;
-use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ArrayTypehintTest extends AbstractTransformerTestBase
+class ClassConstantTransformerTest extends AbstractTransformerTestBase
 {
     /**
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source, array $expectedTokens)
+    public function testProcess($source, array $expectedTokens = array())
     {
-        $tokens = Tokens::fromCode($source);
-
-        foreach ($expectedTokens as $index => $name) {
-            $this->assertSame(constant($name), $tokens[$index]->getId());
-            $this->assertSame($name, $tokens[$index]->getName());
-        }
+        $this->makeTest($source, $expectedTokens);
     }
 
     public function provideProcessCases()
     {
         return array(
             array(
-                '<?php
-$a = array(1, 2, 3);
-function foo (array /** @type array */ $bar)
-{
-}',
+                '<?php echo X::class',
                 array(
-                    5  => 'T_ARRAY',
-                    22 => 'CT_ARRAY_TYPEHINT',
+                    5 => 'CT_CLASS_CONSTANT',
                 ),
             ),
         );

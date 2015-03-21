@@ -14,6 +14,7 @@ namespace Symfony\CS\Fixer\Symfony;
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -24,17 +25,15 @@ class MultilineArrayTrailingCommaFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if ($tokens->isArray($index)) {
+            if ($tokensAnalyzer->isArray($index)) {
                 $this->fixArray($tokens, $index);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -47,7 +46,9 @@ class MultilineArrayTrailingCommaFixer extends AbstractFixer
 
     private function fixArray(Tokens $tokens, $index)
     {
-        if (!$tokens->isArrayMultiLine($index)) {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        if (!$tokensAnalyzer->isArrayMultiLine($index)) {
             return;
         }
 
@@ -57,7 +58,7 @@ class MultilineArrayTrailingCommaFixer extends AbstractFixer
             $startIndex = $tokens->getNextTokenOfKind($startIndex, array('('));
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
         } else {
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $startIndex);
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
         }
 
         $beforeEndIndex = $tokens->getPrevMeaningfulToken($endIndex);

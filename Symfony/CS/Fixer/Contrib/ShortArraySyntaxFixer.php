@@ -23,20 +23,20 @@ class ShortArraySyntaxFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_ARRAY)) {
+                continue;
+            }
 
-        foreach ($tokens->findGivenKind(T_ARRAY) as $index => $token) {
             $openIndex = $tokens->getNextTokenOfKind($index, array('('));
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
             $token->clear();
-            $tokens[$openIndex]->setContent('[');
-            $tokens[$closeIndex]->setContent(']');
+            $tokens[$openIndex]->override(array(CT_ARRAY_SQUARE_BRACE_OPEN, '['));
+            $tokens[$closeIndex]->override(array(CT_ARRAY_SQUARE_BRACE_CLOSE, ']'));
         }
-
-        return $tokens->generateCode();
     }
 
     /**

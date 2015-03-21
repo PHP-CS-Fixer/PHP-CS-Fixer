@@ -24,8 +24,10 @@ class ShortTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokensOrg)
     {
+        $content = $tokensOrg->generateCode();
+
         // replace all <? with <?php to replace all short open tags even without short_open_tag option enabled
         $newContent = preg_replace('/<\?(\s|$)/', '<?php$1', $content);
 
@@ -35,6 +37,7 @@ class ShortTagFixer extends AbstractFixer
          * > echo '<?php ';
         */
         $tokens = Tokens::fromCode($newContent);
+
         $tokensOldContent = '';
         $tokensOldContentLength = 0;
 
@@ -79,7 +82,15 @@ class ShortTagFixer extends AbstractFixer
             $tokensOldContentLength += strlen($token->getContent());
         }
 
-        return $tokens->generateCode();
+        $tokensOrg->setSize($tokens->count());
+
+        foreach ($tokens as $index => $token) {
+            if (isset($tokensOrg[$index])) {
+                $tokensOrg[$index]->override($token);
+            } else {
+                $tokensOrg[$index] = $token;
+            }
+        }
     }
 
     /**

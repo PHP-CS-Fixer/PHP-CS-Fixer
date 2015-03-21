@@ -15,6 +15,8 @@ namespace Symfony\CS;
  * Manager of errors that occur during fixing.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 class ErrorsManager
 {

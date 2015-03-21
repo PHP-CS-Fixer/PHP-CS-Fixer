@@ -16,45 +16,9 @@ use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Max Voloshin <voloshin.dp@gmail.com>
  */
 class TokensTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetClassyElements()
-    {
-        $source = <<<'PHP'
-<?php
-class Foo
-{
-    public $prop0;
-    protected $prop1;
-    private $prop2 = 1;
-    var $prop3 = array(1,2,3);
-
-    public function bar4()
-    {
-        $a = 5;
-
-        return " ({$a})";
-    }
-    public function bar5($data)
-    {
-    }
-}
-PHP;
-
-        $tokens = Tokens::fromCode($source);
-        $elements = array_values($tokens->getClassyElements());
-
-        $this->assertCount(6, $elements);
-        $this->assertSame('property', $elements[0]['type']);
-        $this->assertSame('property', $elements[1]['type']);
-        $this->assertSame('property', $elements[2]['type']);
-        $this->assertSame('property', $elements[3]['type']);
-        $this->assertSame('method', $elements[4]['type']);
-        $this->assertSame('method', $elements[5]['type']);
-    }
-
     public function testReadFromCacheAfterClearing()
     {
         $code = '<?php echo 1;';
@@ -69,137 +33,6 @@ PHP;
         $tokens = Tokens::fromCode($code);
 
         $this->assertSame($countBefore, $tokens->count());
-    }
-
-    /**
-     * @dataProvider provideIsLambdaCases
-     */
-    public function testIsLambda($source, array $expected)
-    {
-        $tokens = Tokens::fromCode($source);
-
-        foreach ($expected as $index => $expected) {
-            $this->assertSame($expected, $tokens->isLambda($index));
-        }
-    }
-
-    public function provideIsLambdaCases()
-    {
-        return array(
-            array(
-                '<?php function foo () {}',
-                array(1 => false),
-            ),
-            array(
-                '<?php function /** foo */ foo () {}',
-                array(1 => false),
-            ),
-            array(
-                '<?php $foo = function () {}',
-                array(5 => true),
-            ),
-            array(
-                '<?php $foo = function /** foo */ () {}',
-                array(5 => true),
-            ),
-            array(
-                '<?php
-preg_replace_callback(
-    "/(^|[a-z])/",
-    function (array $matches) {
-        return "a";
-    },
-    $string
-);',
-                array(7 => true),
-            ),
-            array(
-                '<?php $foo = function &() {}',
-                array(5 => true),
-            ),
-        );
-    }
-
-    /**
-     * @dataProvider provideIsShortArrayCases
-     */
-    public function testIsShortArray($source, array $expected)
-    {
-        $tokens = Tokens::fromCode($source);
-
-        foreach ($expected as $index => $expected) {
-            $this->assertSame($expected, $tokens->isShortArray($index));
-        }
-    }
-
-    public function provideIsShortArrayCases()
-    {
-        return array(
-            array(
-                '<?php [];',
-                array(1 => true),
-            ),
-            array(
-                '<?php [1, "foo"];',
-                array(1 => true),
-            ),
-            array(
-                '<?php [[]];',
-                array(1 => true, 2 => true),
-            ),
-            array(
-                '<?php ["foo", ["bar", "baz"]];',
-                array(1 => true, 5 => true),
-            ),
-            array(
-                '<?php (array) [1, 2];',
-                array(3 => true),
-            ),
-            array(
-                '<?php [1,2][$x];',
-                array(1 => true, 6 => false),
-            ),
-            array(
-                '<?php array();',
-                array(1 => false),
-            ),
-            array(
-                '<?php $x[] = 1;',
-                array(2 => false),
-            ),
-            array(
-                '<?php $x[1];',
-                array(2 => false),
-            ),
-            array(
-                '<?php $x [ 1 ];',
-                array(3 => false),
-            ),
-            array(
-                '<?php ${"x"}[1];',
-                array(5 => false),
-            ),
-            array(
-                '<?php FOO[1];',
-                array(2 => false),
-            ),
-            array(
-                '<?php array("foo")[1];',
-                array(5 => false),
-            ),
-            array(
-                '<?php foo()[1];',
-                array(4 => false),
-            ),
-            array(
-                '<?php \'foo\'[1];',
-                array(2 => false),
-            ),
-            array(
-                '<?php "foo$bar"[1];',
-                array(5 => false),
-            ),
-        );
     }
 
     /**
@@ -227,8 +60,8 @@ preg_replace_callback(
             array(
                 '<?php $x = 1;',
                 array(
-                    0 => new Token(array(T_OPEN_TAG, '<?php ', 1)),
-                    1 => new Token(array(T_VARIABLE, '$x', 1)),
+                    0 => new Token(array(T_OPEN_TAG, '<?php ')),
+                    1 => new Token(array(T_VARIABLE, '$x')),
                 ),
                 array(array(
                     array(T_OPEN_TAG),
@@ -240,7 +73,7 @@ preg_replace_callback(
                 '<?php $x = 1;',
                 array(
                     3 => new Token('='),
-                    5 => new Token(array(T_LNUMBER, '1', 1)),
+                    5 => new Token(array(T_LNUMBER, '1')),
                     6 => new Token(';'),
                 ),
                 array(array(
@@ -253,8 +86,8 @@ preg_replace_callback(
             array(
                 '<?php $x = 1;',
                 array(
-                    0 => new Token(array(T_OPEN_TAG, '<?php ', 1)),
-                    1 => new Token(array(T_VARIABLE, '$x', 1)),
+                    0 => new Token(array(T_OPEN_TAG, '<?php ')),
+                    1 => new Token(array(T_VARIABLE, '$x')),
                 ),
                 array(array(
                     array(T_OPEN_TAG),
@@ -275,7 +108,7 @@ preg_replace_callback(
                 '<?php $x = 1;',
                 array(
                     3 => new Token('='),
-                    5 => new Token(array(T_LNUMBER, '1', 1)),
+                    5 => new Token(array(T_LNUMBER, '1')),
                     6 => new Token(';'),
                 ),
                 array(array(
@@ -308,8 +141,8 @@ preg_replace_callback(
             array(
                 '<?php $x = 1;',
                 array(
-                    0 => new Token(array(T_OPEN_TAG, '<?php ', 1)),
-                    1 => new Token(array(T_VARIABLE, '$x', 1)),
+                    0 => new Token(array(T_OPEN_TAG, '<?php ')),
+                    1 => new Token(array(T_VARIABLE, '$x')),
                 ),
                 array(array(
                     array(T_OPEN_TAG),
@@ -338,8 +171,8 @@ preg_replace_callback(
             array(
                 '<?php $x = 1;',
                 array(
-                    0 => new Token(array(T_OPEN_TAG, '<?php ', 1)),
-                    1 => new Token(array(T_VARIABLE, '$x', 1)),
+                    0 => new Token(array(T_OPEN_TAG, '<?php ')),
+                    1 => new Token(array(T_VARIABLE, '$x')),
                 ),
                 array(array(
                     array(T_OPEN_TAG),
@@ -350,8 +183,8 @@ preg_replace_callback(
             array(
                 '<?php $x = 1;',
                 array(
-                    0 => new Token(array(T_OPEN_TAG, '<?php ', 1)),
-                    1 => new Token(array(T_VARIABLE, '$x', 1)),
+                    0 => new Token(array(T_OPEN_TAG, '<?php ')),
+                    1 => new Token(array(T_VARIABLE, '$x')),
                 ),
                 array(array(
                     array(T_OPEN_TAG),
@@ -362,8 +195,8 @@ preg_replace_callback(
             array(
                 '<?php $x = 1;',
                 array(
-                    0 => new Token(array(T_OPEN_TAG, '<?php ', 1)),
-                    1 => new Token(array(T_VARIABLE, '$x', 1)),
+                    0 => new Token(array(T_OPEN_TAG, '<?php ')),
+                    1 => new Token(array(T_VARIABLE, '$x')),
                 ),
                 array(array(
                     array(T_OPEN_TAG),

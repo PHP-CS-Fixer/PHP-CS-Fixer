@@ -21,7 +21,7 @@ use Symfony\CS\Utils;
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocParamsFixer extends AbstractFixer
+class PhpdocAlignFixer extends AbstractFixer
 {
     private $regex;
     private $regexCommentLine;
@@ -42,15 +42,13 @@ class PhpdocParamsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
-            $token->setContent($this->fixDocBlock($token->getContent()));
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind(T_DOC_COMMENT)) {
+                $tokens[$index]->setContent($this->fixDocBlock($token->getContent()));
+            }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

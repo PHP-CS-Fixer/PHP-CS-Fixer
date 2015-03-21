@@ -17,21 +17,21 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
-use Symfony\CS\ConfigurationResolver;
+use Symfony\CS\Console\ConfigurationResolver;
 use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerFileProcessedEvent;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\LintManager;
-use Symfony\CS\StdinFileInfo;
 use Symfony\CS\Utils;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @internal
  */
 class FixCommand extends Command
 {
@@ -104,6 +104,7 @@ class FixCommand extends Command
                     new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
                     new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or symfony (formerly all))', null),
+                    new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no)', null),
                     new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
@@ -127,7 +128,7 @@ project:
     <info>php %command.full_name% /path/to/project --level=psr2</info>
     <info>php %command.full_name% /path/to/project --level=symfony</info>
 
-By default, all PSR-2 fixers and some additional ones are run. The "contrib
+By default, all PSR fixers are run. The "contrib
 level" fixers cannot be enabled via this option; you should instead set them
 manually by their name via the <comment>--fixers</comment> option.
 
@@ -172,11 +173,13 @@ fixed but without actually modifying them:
     <info>php %command.full_name% /path/to/code --dry-run</info>
 
 Instead of using command line options to customize the fixer, you can save the
-configuration in a <comment>.php_cs</comment> file in the root directory of
-your project. The file must return an instance of
-``Symfony\CS\ConfigInterface``, which lets you configure the fixers, the level, the files,
-and directories that need to be analyzed. The example below will add two contrib fixers
-to the default list of symfony-level fixers:
+project configuration in a <comment>.php_cs.dist</comment> file in the root directory
+of your project. The file must return an instance of ``Symfony\CS\ConfigInterface``,
+which lets you configure the fixers, the level, the files, and directories that
+need to be analyzed. You may also create <comment>.php_cs</comment> file, which is
+the local configuration that will be used instead of the project configuration, it
+is a good practice to add that file into your <comment>.gitignore</comment> file.
+The example below will add two contrib fixers to the default list of PSR2-level fixers:
 
     <?php
 
@@ -227,19 +230,19 @@ Note the additional <comment>-</comment> in front of the Fixer name.
 
     ?>
 
-The ``symfony`` level is set by default, you can also change the default level:
+The ``psr2`` level is set by default, you can also change the default level:
 
     <?php
 
     return Symfony\CS\Config\Config::create()
-        ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
+        ->level(Symfony\CS\FixerInterface::SYMFONY_LEVEL)
     ;
 
     ?>
 
 In combination with these config and command line options, you can choose various usage.
 
-For example, default level is ``symfony``, but if you also don't want to use
+For example, default level is ``psr2``, but if you also don't want to use
 the ``psr0`` fixer, you can specify the ``--fixers="-psr0"`` option.
 
 But if you use the ``--fixers`` option with only exact fixers,
@@ -248,16 +251,23 @@ only those exact fixers are enabled whether or not level is set.
 With the <comment>--config-file</comment> option you can specify the path to the
 <comment>.php_cs</comment> file.
 
+By using ``--using-cache`` option you can set if caching
+mechanism should be used.
+
 Caching
 -------
 
-You can enable caching by returning a custom config with caching enabled. This will
-speed up further runs.
+The caching mechanism is enabled by default. This will speed up further runs by
+fixing only files that were modified. Tool will fix all files if tool version
+changed or fixers list changed.
+Cache is supported only for tool downloaded as phar file or installed via
+composer.
+Cache can be disabled via ``--using-cache`` option or config file:
 
     <?php
 
     return Symfony\CS\Config\Config::create()
-        ->setUsingCache(true)
+        ->setUsingCache(false)
     ;
 
     ?>
@@ -270,90 +280,37 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $input->getArgument('path');
+        $resolver = new ConfigurationResolver();
+        $resolver
+            ->setCwd(getcwd())
+            ->setDefaultConfig($this->defaultConfig)
+            ->setFixer($this->fixer)
+            ->setOptions(array(
+                'config' => $input->getOption('config'),
+                'config-file' => $input->getOption('config-file'),
+                'dry-run' => $input->getOption('dry-run'),
+                'level' => $input->getOption('level'),
+                'fixers' => $input->getOption('fixers'),
+                'path' => $input->getArgument('path'),
+                'progress' => $output->isVerbose() && 'txt' === $input->getOption('format'),
+                'using-cache' => $input->getOption('using-cache'),
+            ))
+            ->resolve()
+        ;
 
-        $stdin = false;
+        $config     = $resolver->getConfig();
+        $configFile = $resolver->getConfigFile();
 
-        if ('-' === $path) {
-            $stdin = true;
-
-            // Can't write to STDIN
-            $input->setOption('dry-run', true);
-        }
-
-        if (null !== $path) {
-            $filesystem = new Filesystem();
-            if (!$filesystem->isAbsolutePath($path)) {
-                $path = getcwd().DIRECTORY_SEPARATOR.$path;
-            }
-        }
-
-        $configFile = $input->getOption('config-file');
-        if (null === $configFile) {
-            if (is_file($path) && $dirName = pathinfo($path, PATHINFO_DIRNAME)) {
-                $configDir = $dirName;
-            } elseif ($stdin || null === $path) {
-                $configDir = getcwd();
-                // path is directory
-            } else {
-                $configDir = $path;
-            }
-            $configFile = $configDir.DIRECTORY_SEPARATOR.'.php_cs';
-        }
-
-        if ($input->getOption('config')) {
-            $config = null;
-            foreach ($this->fixer->getConfigs() as $c) {
-                if ($c->getName() === $input->getOption('config')) {
-                    $config = $c;
-                    break;
-                }
-            }
-
-            if (null === $config) {
-                throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined', $input->getOption('config')));
-            }
-        } elseif (file_exists($configFile)) {
-            $config = include $configFile;
-            // verify that the config has an instance of Config
-            if (!$config instanceof Config) {
-                throw new \UnexpectedValueException(sprintf('The config file "%s" does not return an instance of Symfony\CS\Config\Config', $configFile));
-            }
-
-            if ('txt' === $input->getOption('format')) {
-                $output->writeln(sprintf('Loaded config from "%s"', $configFile));
-            }
-        } else {
-            $config = $this->defaultConfig;
-        }
-
-        if ($config->usingLinter()) {
-            $this->fixer->setLintManager(new LintManager());
-        }
-
-        if (is_file($path)) {
-            $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
-        } elseif ($stdin) {
-            $config->finder(new \ArrayIterator(array(new StdinFileInfo())));
-        } elseif (null !== $path) {
-            $config->setDir($path);
+        if ($configFile && 'txt' === $input->getOption('format')) {
+            $output->writeln(sprintf('Loaded config from "%s"', $configFile));
         }
 
         // register custom fixers from config
         $this->fixer->registerCustomFixers($config->getCustomFixers());
+        if ($config->usingLinter()) {
+            $this->fixer->setLintManager(new LintManager());
+        }
 
-        $resolver = new ConfigurationResolver();
-        $resolver
-            ->setAllFixers($this->fixer->getFixers())
-            ->setConfig($config)
-            ->setOptions(array(
-                'level'     => $input->getOption('level'),
-                'fixers'    => $input->getOption('fixers'),
-                'progress'  => $output->isVerbose() && 'txt' === $input->getOption('format'),
-            ))
-            ->resolve();
-
-        $config->fixers($resolver->getFixers());
         $showProgress = $resolver->getProgress();
 
         if ($showProgress) {
@@ -366,7 +323,7 @@ EOF
         }
 
         $this->stopwatch->start('fixFiles');
-        $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
+        $changed = $this->fixer->fix($config, $resolver->isDryRun(), $input->getOption('diff'));
         $this->stopwatch->stop('fixFiles');
 
         if ($showProgress) {

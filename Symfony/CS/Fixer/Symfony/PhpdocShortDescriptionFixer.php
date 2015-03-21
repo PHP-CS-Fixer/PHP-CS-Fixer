@@ -23,11 +23,13 @@ class PhpdocShortDescriptionFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
 
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
             $doc = new DocBlock($token->getContent());
             $end = $this->findShortDescriptionEnd($doc->getLines());
 
@@ -41,8 +43,6 @@ class PhpdocShortDescriptionFixer extends AbstractFixer
                 }
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

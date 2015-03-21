@@ -12,37 +12,61 @@
 namespace Symfony\CS\Tests\Tokenizer\Transformer;
 
 use Symfony\CS\Tests\Tokenizer\AbstractTransformerTestBase;
-use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class DynamicVarBraceTest extends AbstractTransformerTestBase
+class CurlyBraceTransformerTest extends AbstractTransformerTestBase
 {
     /**
      * @dataProvider provideProcessCases
      */
     public function testProcess($source, array $expectedTokens = array())
     {
-        $tokens = Tokens::fromCode($source);
-
-        $this->assertSame(
-            count($expectedTokens),
-            array_sum(array_map(
-                function ($item) { return count($item); },
-                $tokens->findGivenKind(array_map(function ($name) { return constant($name); }, $expectedTokens))
-            ))
-        );
-
-        foreach ($expectedTokens as $index => $name) {
-            $this->assertSame(constant($name), $tokens[$index]->getId());
-            $this->assertSame($name, $tokens[$index]->getName());
-        }
+        $this->makeTest($source, $expectedTokens);
     }
 
     public function provideProcessCases()
     {
         return array(
+            array(
+                '<?php echo "This is {$great}";',
+                array(
+                    5 => 'T_CURLY_OPEN',
+                    7 => 'CT_CURLY_CLOSE',
+                ),
+            ),
+            array(
+                '<?php $a = "a{$b->c()}d";',
+                array(
+                    7  => 'T_CURLY_OPEN',
+                    13 => 'CT_CURLY_CLOSE',
+                ),
+            ),
+            array(
+                '<?php echo "I\'d like an {${beers::$ale}}\n";',
+                array(
+                    5  => 'T_CURLY_OPEN',
+                    12 => 'CT_CURLY_CLOSE',
+                ),
+            ),
+
+            array(
+                '<?php echo "This is ${great}";',
+                array(
+                    5 => 'T_DOLLAR_OPEN_CURLY_BRACES',
+                    7 => 'CT_DOLLAR_CLOSE_CURLY_BRACES',
+                ),
+            ),
+
+            array(
+                '<?php $foo->{$bar};',
+                array(
+                    3 => 'CT_DYNAMIC_PROP_BRACE_OPEN',
+                    5 => 'CT_DYNAMIC_PROP_BRACE_CLOSE',
+                ),
+            ),
+
             array(
                 '<?php ${$bar};',
                 array(

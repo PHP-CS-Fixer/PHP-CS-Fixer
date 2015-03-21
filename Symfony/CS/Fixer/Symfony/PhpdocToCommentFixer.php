@@ -24,7 +24,28 @@ class PhpdocToCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function getDescription()
+    {
+        return 'Docblocks should only be used on structural elements.';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        /*
+         * Should be run before all other docblock fixers so that these fixers
+         * don't touch doc comments which are meant to be converted to regular
+         * comments.
+         */
+        return 25;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         static $controlStructures = array(
             T_FOREACH,
@@ -34,14 +55,16 @@ class PhpdocToCommentFixer extends AbstractFixer
             T_FOR,
         );
 
-        $tokens = Tokens::fromCode($content);
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
 
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
             $nextIndex = $tokens->getNextMeaningfulToken($index);
             $nextToken = null !== $nextIndex ? $tokens[$nextIndex] : null;
 
             if (null === $nextToken || $nextToken->equals('}')) {
-                $token->override(array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*'), $token->getLine()));
+                $token->override(array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
                 continue;
             }
 
@@ -67,31 +90,8 @@ class PhpdocToCommentFixer extends AbstractFixer
                 continue;
             }
 
-            $token->override(array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*'), $token->getLine()));
+            $token->override(array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
         }
-
-        return $tokens->generateCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Docblocks should only be used on structural elements.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        /*
-         * Should be run before all other docblock fixers so that these fixers
-         * don't touch doc comments which are meant to be converted to regular
-         * comments.
-         */
-        return 25;
     }
 
     /**
@@ -154,26 +154,6 @@ class PhpdocToCommentFixer extends AbstractFixer
     }
 
     /**
-     * Checks variable assignments for correct docblock usage.
-     *
-     * @param Tokens $tokens
-     * @param Token  $docsToken     docs Token
-     * @param int    $variableIndex index of variable Token
-     *
-     * @return bool
-     */
-    private function isValidVariable(Tokens $tokens, Token $docsToken, $variableIndex)
-    {
-        $nextIndex = $tokens->getNextMeaningfulToken($variableIndex);
-
-        if (!$tokens[$nextIndex]->equals('=')) {
-            return false;
-        }
-
-        return false !== strpos($docsToken->getContent(), $tokens[$variableIndex]->getContent());
-    }
-
-    /**
      * Checks variable assignments through `list()` calls for correct docblock usage.
      *
      * @param Tokens $tokens
@@ -199,5 +179,25 @@ class PhpdocToCommentFixer extends AbstractFixer
         }
 
         return false;
+    }
+
+    /**
+     * Checks variable assignments for correct docblock usage.
+     *
+     * @param Tokens $tokens
+     * @param Token  $docsToken     docs Token
+     * @param int    $variableIndex index of variable Token
+     *
+     * @return bool
+     */
+    private function isValidVariable(Tokens $tokens, Token $docsToken, $variableIndex)
+    {
+        $nextIndex = $tokens->getNextMeaningfulToken($variableIndex);
+
+        if (!$tokens[$nextIndex]->equals('=')) {
+            return false;
+        }
+
+        return false !== strpos($docsToken->getContent(), $tokens[$variableIndex]->getContent());
     }
 }

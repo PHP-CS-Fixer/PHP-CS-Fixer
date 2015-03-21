@@ -24,6 +24,8 @@ namespace Symfony\CS;
  *  - file changed.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 class FileCacheManager
 {
@@ -118,11 +120,6 @@ class FileCacheManager
 
         $content = file_get_contents($this->dir.self::CACHE_FILE);
         $data = unserialize($content);
-
-        // BC for old cache without fixers list
-        if (!isset($data['fixers'])) {
-            $data['fixers'] = null;
-        }
 
         // Set hashes only if the cache is fresh, otherwise we need to parse all files
         if (!$this->isCacheStale($data['version'], $data['fixers'])) {

@@ -22,17 +22,17 @@ class EmptyReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_RETURN)) {
+                continue;
+            }
 
-        foreach ($tokens->findGivenKind(T_RETURN) as $index => $token) {
             if ($this->needFixing($tokens, $index)) {
                 $this->clear($tokens, $index);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

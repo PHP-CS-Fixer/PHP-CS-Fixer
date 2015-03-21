@@ -24,7 +24,7 @@ class HeaderCommentFixer extends AbstractFixer
     private static $headerComment = '';
 
     /**
-     * Sets the desired header text.
+     * Set the desired header text.
      *
      * The given text will be trimmed and enclosed into a multiline comment.
      * If the text is empty, when a file get fixed, the header comment will be
@@ -54,20 +54,23 @@ class HeaderCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         if (!$tokens->isMonolithicPhp()) {
-            return $content;
+            return;
         }
 
-        $this->removeHeaderComment($tokens);
-        $insertionIndex = $this->findHeaderCommentInsertionIndex($tokens);
-        $tokens->clearRange(1, $insertionIndex-1);
-        $this->insertHeaderComment($tokens, $insertionIndex);
+        $oldHeaderIndex = $this->findHeaderCommentIndex($tokens);
+        $newHeaderIndex = $this->findHeaderCommentInsertionIndex($tokens);
 
-        return $tokens->generateCode();
+        if (
+            $oldHeaderIndex === $newHeaderIndex
+            && self::$headerComment === $tokens[$oldHeaderIndex]->getContent()
+        ) {
+            return;
+        }
+
+        $this->replaceHeaderComment($tokens, $oldHeaderIndex);
     }
 
     /**
@@ -79,7 +82,7 @@ class HeaderCommentFixer extends AbstractFixer
     }
 
     /**
-     * Encloses the given text in a comment block.
+     * Enclose the given text in a comment block.
      *
      * @param string $header
      *
@@ -92,26 +95,29 @@ class HeaderCommentFixer extends AbstractFixer
         foreach ($lines as $line) {
             $comment .= rtrim(' * '.$line)."\n";
         }
-        $comment .= " */\n";
+        $comment .= " */";
 
         return $comment;
     }
 
     /**
-     * Removes the header comment, if any.
+     * Find the header comment index.
      *
      * @param Tokens $tokens
+     *
+     * @return int|null
      */
-    private function removeHeaderComment(Tokens $tokens)
+    private function findHeaderCommentIndex(Tokens $tokens)
     {
         $index = $tokens->getNextNonWhitespace(0);
+
         if (null !== $index && $tokens[$index]->isGivenKind(T_COMMENT)) {
-            $tokens[$index]->clear();
+            return $index;
         }
     }
 
     /**
-     * Finds the index where the header comment must be inserted.
+     * Find the index where the header comment must be inserted.
      *
      * @param Tokens $tokens
      *
@@ -122,7 +128,7 @@ class HeaderCommentFixer extends AbstractFixer
         $index = $tokens->getNextNonWhitespace(0);
 
         if (null === $index) {
-            //Empty file, insert at the end
+            // empty file, insert at the end
             $index = $tokens->getSize();
         }
 
@@ -130,21 +136,32 @@ class HeaderCommentFixer extends AbstractFixer
     }
 
     /**
-     * Inserts the header comment at the given index.
+     * Replace the header comment at the given index.
      *
      * @param Tokens $tokens
-     * @param int    $index
+     * @param int    $oldHeaderIndex
      */
-    private function insertHeaderComment(Tokens $tokens, $index)
+    private function replaceHeaderComment(Tokens $tokens, $oldHeaderIndex)
     {
-        $headCommentTokens = Tokens::fromArray(
-            array(
-                new Token(array(T_WHITESPACE, "\n")),
-                new Token(array(T_COMMENT, self::$headerComment)),
-                new Token(array(T_WHITESPACE, strlen(self::$headerComment) ? "\n" : '')),
-            )
+        if (!strlen(self::$headerComment)) {
+            if ($oldHeaderIndex) {
+                $tokens->clearRange($oldHeaderIndex, $oldHeaderIndex + 1);
+            }
+
+            return;
+        }
+
+        $headCommentTokens = array(
+            new Token(array(T_WHITESPACE, "\n")),
+            new Token(array(T_COMMENT, self::$headerComment)),
+            new Token(array(T_WHITESPACE, "\n\n")),
         );
 
-        $tokens->insertAt($index, $headCommentTokens);
+        $newHeaderIndex = null !== $oldHeaderIndex
+            ? $oldHeaderIndex + 1
+            : $this->findHeaderCommentInsertionIndex($tokens) - 1
+        ;
+
+        $tokens->overrideRange(1, $newHeaderIndex, $headCommentTokens);
     }
 }

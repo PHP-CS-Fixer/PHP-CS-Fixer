@@ -12,33 +12,35 @@
 namespace Symfony\CS\Tests\Tokenizer\Transformer;
 
 use Symfony\CS\Tests\Tokenizer\AbstractTransformerTestBase;
-use Symfony\CS\Tokenizer\Tokens;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Sebastiaans Stok <s.stok@rollerscapes.net>
  */
-class ClassConstantTest extends AbstractTransformerTestBase
+class BraceClassInstantiationTransformerTest extends AbstractTransformerTestBase
 {
     /**
      * @dataProvider provideProcessCases
      */
     public function testProcess($source, array $expectedTokens)
     {
-        $tokens = Tokens::fromCode($source);
-
-        foreach ($expectedTokens as $index => $name) {
-            $this->assertSame(constant($name), $tokens[$index]->getId());
-            $this->assertSame($name, $tokens[$index]->getName());
-        }
+        $this->makeTest($source, $expectedTokens);
     }
 
     public function provideProcessCases()
     {
         return array(
             array(
-                '<?php echo X::class',
+                '<?php echo (new Process())->getOutput();',
                 array(
-                    5 => 'CT_CLASS_CONSTANT',
+                    3 => 'CT_BRACE_CLASS_INSTANTIATION_OPEN',
+                    9 => 'CT_BRACE_CLASS_INSTANTIATION_CLOSE',
+                ),
+            ),
+            array(
+                '<?php echo (new Process())::getOutput();',
+                array(
+                    3 => 'CT_BRACE_CLASS_INSTANTIATION_OPEN',
+                    9 => 'CT_BRACE_CLASS_INSTANTIATION_CLOSE',
                 ),
             ),
         );

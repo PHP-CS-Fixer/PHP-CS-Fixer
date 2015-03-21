@@ -23,11 +23,13 @@ class PhpdocTrimFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
 
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
             $content = $token->getContent();
             $content = $this->fixStart($content);
             // we need re-parse the docblock after fixing the start before
@@ -35,8 +37,6 @@ class PhpdocTrimFixer extends AbstractFixer
             $content = $this->fixEnd($content);
             $token->setContent($content);
         }
-
-        return $tokens->generateCode();
     }
 
     /**

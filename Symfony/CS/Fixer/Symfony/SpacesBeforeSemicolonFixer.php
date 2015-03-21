@@ -22,10 +22,8 @@ class SpacesBeforeSemicolonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens as $index => $token) {
             if (!$token->equals(';')) {
                 continue;
@@ -37,8 +35,6 @@ class SpacesBeforeSemicolonFixer extends AbstractFixer
                 $previous->clear();
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

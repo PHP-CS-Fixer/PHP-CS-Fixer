@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\PSR1;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * Fixer for rules defined in PSR1 ¶2.2.
@@ -30,13 +31,14 @@ class EncodingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        if (0 === strncmp($content, $this->BOM, 3)) {
-            return substr($content, 3);
-        }
+        $token = $tokens[0];
+        $content = $token->getContent();
 
-        return $content;
+        if (0 === strncmp($content, $this->BOM, 3)) {
+            $token->setContent(substr($content, 3));
+        }
     }
 
     /**

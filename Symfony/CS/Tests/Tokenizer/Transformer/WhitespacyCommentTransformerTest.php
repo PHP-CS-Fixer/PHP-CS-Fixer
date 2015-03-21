@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class CurlyCloseTest extends AbstractTransformerTestBase
+class WhitespacyCommentTransformerTest extends AbstractTransformerTestBase
 {
     /**
      * @dataProvider provideProcessCases
@@ -26,9 +26,11 @@ class CurlyCloseTest extends AbstractTransformerTestBase
     {
         $tokens = Tokens::fromCode($source);
 
-        foreach ($expectedTokens as $index => $name) {
-            $this->assertSame(constant($name), $tokens[$index]->getId());
-            $this->assertSame($name, $tokens[$index]->getName());
+        foreach ($expectedTokens as $index => $expectedToken) {
+            $token = $tokens[$index];
+
+            $this->assertSame($expectedToken[1], $token->getContent());
+            $this->assertSame($expectedToken[0], $token->getId());
         }
     }
 
@@ -36,24 +38,24 @@ class CurlyCloseTest extends AbstractTransformerTestBase
     {
         return array(
             array(
-                '<?php echo "This is {$great}";',
+                "<?php // foo\n    \$a = 1;",
                 array(
-                    5 => 'T_CURLY_OPEN',
-                    7 => 'CT_CURLY_CLOSE',
+                    1 => array(T_COMMENT, '// foo'),
+                    2 => array(T_WHITESPACE, "\n    "),
                 ),
             ),
             array(
-                '<?php $a = "a{$b->c()}d";',
+                "<?php // foo\n\n ",
                 array(
-                    7  => 'T_CURLY_OPEN',
-                    13 => 'CT_CURLY_CLOSE',
+                    1 => array(T_COMMENT, '// foo'),
+                    2 => array(T_WHITESPACE, "\n\n "),
                 ),
             ),
             array(
-                '<?php echo "I\'d like an {${beers::$ale}}\n";',
+                "<?php // foo \r\n ",
                 array(
-                    5  => 'T_CURLY_OPEN',
-                    12 => 'CT_CURLY_CLOSE',
+                    1 => array(T_COMMENT, '// foo'),
+                    2 => array(T_WHITESPACE, " \r\n "),
                 ),
             ),
         );
