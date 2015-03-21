@@ -147,7 +147,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
     {
         $filenameParts = explode('.', $file->getBasename(), 2);
 
-        if ('php' !== $filenameParts[1]) {
+        if (!isset($filenameParts[1]) || 'php' !== $filenameParts[1]) {
             return false;
         }
 
