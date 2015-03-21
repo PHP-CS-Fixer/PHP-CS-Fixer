@@ -84,4 +84,11 @@ interface ConfigInterface
      * @return FixerInterface[]
      */
     public function getCustomFixers();
+
+    /**
+     * Returns true if caching should be enabled.
+     *
+     * @return bool
+     */
+    public function usingCache();
 }
