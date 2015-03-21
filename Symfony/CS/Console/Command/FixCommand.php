@@ -501,7 +501,7 @@ EOF
             }
         }
 
-        return empty($changed) ? 0 : 1;
+        return !$resolver->isDryRun() || empty($changed) ? 0 : 3;
     }
 
     protected function getFixersHelp()
