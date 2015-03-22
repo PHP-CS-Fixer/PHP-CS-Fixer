@@ -379,16 +379,17 @@ EOF;
     /**
      * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
      */
-    public function testLeaveCommaSeparatedPropertyAlone()
+    public function testFixCommaSeparatedProperty()
     {
         $expected = <<<'EOF'
 <?php
 class Foo
 {
-    public $foo;
+    public $foo1;
     private $foo2;
     protected $bar1, $bar2;
     public $baz1 = null, $baz2, $baz3 = false;
+    public $foo, $bar;
 }
 EOF;
 
@@ -396,10 +397,11 @@ EOF;
 <?php
 class Foo
 {
-    $foo;
+    $foo1;
     private $foo2;
     protected $bar1, $bar2;
     public $baz1 = null, $baz2, $baz3 = false;
+    var $foo, $bar;
 }
 EOF;
 
