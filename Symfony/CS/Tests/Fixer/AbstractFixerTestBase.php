@@ -42,11 +42,12 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
 
         $fixer = $this->getFixer();
         $file = $file ?: $this->getTestFile();
+        $fileIsSupported = $fixer->supports($file);
 
         if (null !== $input) {
-            $this->assertSame($expected, $fixer->fix($file, $input));
+            $this->assertSame($expected, $fileIsSupported ? $fixer->fix($file, $input) : $input);
         }
 
-        $this->assertSame($expected, $fixer->fix($file, $expected));
+        $this->assertSame($expected, $fileIsSupported ? $fixer->fix($file, $expected) : $expected);
     }
 }

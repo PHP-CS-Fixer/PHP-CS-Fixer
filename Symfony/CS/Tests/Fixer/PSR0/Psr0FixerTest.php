@@ -141,4 +141,17 @@ EOF;
 
         $this->assertSame($expected, $fixer->fix($file, $input));
     }
+
+    public function testIgnoreLongExtension()
+    {
+        $file = $this->getTestFile('Foo.class.php');
+
+        $expected = <<<'EOF'
+<?php
+namespace Aaa;
+class Bar {}
+EOF;
+
+        $this->makeTest($expected, null, $file);
+    }
 }

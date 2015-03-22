@@ -3,6 +3,18 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.5.2
+--------------------
+
+* bug #1025 Fixer - ignore symlinks (kix)
+* bug #1071 Psr0Fixer - fix bug for fixing file with long extension like .class.php (keradus)
+* bug #1080 ShortTagFixer - fix false positive (gharlan)
+* bug #1066 Php4ConstructorFixer - fix causing infinite recursion (mbeccati)
+* bug #1056 VisibilityFixer - fix T_VAR with multiple props (localheinz, keradus)
+* bug #1065 Php4ConstructorFixer - fix detection of a PHP4 parent constructor variant (mbeccati)
+* bug #1060 Tokens::isShortArray: tests and bugfixes (gharlan)
+* bug #1057 unused_use: fix false positive when name is only used as variable name (gharlan)
+
 Changelog for v1.5.1
 --------------------
 

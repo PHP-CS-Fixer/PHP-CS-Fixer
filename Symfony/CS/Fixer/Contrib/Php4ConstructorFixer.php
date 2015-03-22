@@ -119,6 +119,9 @@ class Php4ConstructorFixer extends AbstractFixer
             // no PHP5-constructor, we can rename the old one to __construct
             $tokens[$php4['nameIndex']]->setContent('__construct');
 
+            // in some (rare) cases we might have just created an infinite recursion issue
+            $this->fixInfiniteRecursion($tokens, $php4['bodyIndex'], $php4['endIndex']);
+
             return;
         }
 
@@ -159,20 +162,24 @@ class Php4ConstructorFixer extends AbstractFixer
             $parentIndex = $tokens->getNextMeaningfulToken($index);
             $parentClass = $tokens[$parentIndex]->getContent();
 
-            // using parent::ParentClassName()
+            // using parent::ParentClassName() or ParentClassName::ParentClassName()
             $parentSeq = $tokens->findSequence(array(
-                array(T_STRING, 'parent'),
+                array(T_STRING),
                 array(T_DOUBLE_COLON),
                 array(T_STRING, $parentClass),
                 '(',
-            ), $classStart, $classEnd, array(false, true, false, true));
+            ), $classStart, $classEnd, array(2 => false));
 
             if (null !== $parentSeq) {
                 // we only need indexes
                 $parentSeq = array_keys($parentSeq);
 
-                // replace method name with __construct
-                $tokens[$parentSeq[2]]->setContent('__construct');
+                // match either of the possibilities
+                if ($tokens[$parentSeq[0]]->equalsAny(array(array(T_STRING, 'parent'), array(T_STRING, $parentClass)), false)) {
+                    // replace with parent::__construct
+                    $tokens[$parentSeq[0]]->setContent('parent');
+                    $tokens[$parentSeq[2]]->setContent('__construct');
+                }
             }
 
             // using $this->ParentClassName()
@@ -200,6 +207,44 @@ class Php4ConstructorFixer extends AbstractFixer
                 ));
                 $tokens[$parentSeq[2]]->setContent('__construct');
             }
+        }
+    }
+
+    /**
+     * Fix a particular infinite recursion issue happening when the parent class has __construct and the child has only
+     * a PHP4 constructor that calls the parent constructor as $this->__construct().
+     *
+     * @param Tokens $tokens the Tokens instance
+     * @param int    $start  the PHP4 constructor body start
+     * @param int    $end    the PHP4 constructor body end
+     */
+    private function fixInfiniteRecursion(Tokens $tokens, $start, $end)
+    {
+        $seq = array(
+            array(T_VARIABLE, '$this'),
+            array(T_OBJECT_OPERATOR),
+            array(T_STRING, '__construct'),
+        );
+
+        while (true) {
+            $callSeq = $tokens->findSequence($seq,  $start, $end, array(2 => false));
+
+            if (null === $callSeq) {
+                return;
+            }
+
+            $callSeq = array_keys($callSeq);
+
+            $tokens[$callSeq[0]] = new Token(array(
+                T_STRING,
+                'parent',
+                $tokens[$callSeq[0]]->getLine(),
+            ));
+            $tokens[$callSeq[1]] = new Token(array(
+                T_DOUBLE_COLON,
+                '::',
+                $tokens[$callSeq[1]]->getLine(),
+            ));
         }
     }
 

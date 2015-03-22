@@ -137,7 +137,7 @@ class Fixer
         $fileCacheManager = new FileCacheManager($config->usingCache(), $config->getDir(), $config->getFixers());
 
         foreach ($config->getFinder() as $file) {
-            if ($file->isDir()) {
+            if ($file->isDir() || $file->isLink()) {
                 continue;
             }
 
