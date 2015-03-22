@@ -54,7 +54,7 @@ class AliasFunctionsFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
-            $tokenContent = $token->getContent();
+            $tokenContent = strtolower($token->getContent());
             if (!array_key_exists($tokenContent, self::$aliases)) {
                 continue;
             }
