@@ -28,6 +28,27 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('somefile.php', $iterator->current()->getFilename());
     }
 
+    public function testGetCacheDirDefaultsToDir()
+    {
+        $dir = 'foo';
+
+        $config = new Config();
+        $config->setDir($dir);
+
+        $this->assertSame($dir, $config->getDir());
+        $this->assertSame($dir, $config->getCacheDir());
+    }
+
+    public function testCanSetCacheDir()
+    {
+        $cacheDir = 'foo';
+
+        $config = new Config();
+        $config->setCacheDir($cacheDir);
+
+        $this->assertSame($cacheDir, $config->getCacheDir());
+    }
+
     public function testThatCustomDefaultFinderWorks()
     {
         $finder = DefaultFinder::create();
