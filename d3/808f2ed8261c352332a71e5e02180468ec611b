@@ -1,0 +1,198 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-21T12:34:19Z
+
+ping @dzgrief
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-21T12:43:34Z
+
+We shouldn't allow .class.php. That is a violation of psr0...
+
+---------------------------------------------------------------------------
+
+by ceeram at 2015-03-21T12:44:53Z
+
+How does such a filename even get loaded with psr0?
+
+2015-03-21 13:34 GMT+01:00 Dariusz Rumiński <notifications@github.com>:
+
+> ping @dzgrief <https://github.com/dzgrief>
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1071#issuecomment-84329528>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-21T12:46:22Z
+
+> How does such a filename even get loaded with psr0?
+
+Exactly, it doesn't.
+
+I'm massively :-1: on this. We can't brand something that's not psr0 under psr0...
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-21T12:49:18Z
+
+Yes, I hate `.class.php` too.
+
+But have a deeper look. For now we have that file `Foo.class.php`, which contains:
+`<?php class Foo {}`.
+
+And our current stable release changes the code into:
+`<?php class Foo.class {}`.
+which is illegal, and either crash (when using linter), either create illegal code (without linter)
+
+---------------------------------------------------------------------------
+
+by ceeram at 2015-03-21T12:52:00Z
+
+Then the fixer is handling it incorrect. Still .class.php filenames are not
+psr0 autoloading compliant.
+
+2015-03-21 13:50 GMT+01:00 Dariusz Rumiński <notifications@github.com>:
+
+> Yes, I hate .class.php too.
+>
+> But have a deeper look. For now we have that file Foo.class.php, which
+> contains:
+> <?php class Foo {}.
+>
+> And our current stable release changes the code into:
+> <?php class Foo.class {}.
+> which is illegal, and either crash (when using linter), either create
+> illegal code (without linter)
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1071#issuecomment-84331781>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-21T12:53:22Z
+
+Any constructive criticism?
+Leaving the crash alone is not an option.
+
+---------------------------------------------------------------------------
+
+by ceeram at 2015-03-21T12:56:28Z
+
+Only constructive criticism allowed in this project? I was just mentioning
+something that seemed to go by unnoticed, which imo was too important to
+not criticize.
+
+2015-03-21 13:53 GMT+01:00 Dariusz Rumiński <notifications@github.com>:
+
+> Any constructive criticism?
+> Leaving the crash alone is not an option.
+>
+> —
+> Reply to this email directly or view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1071#issuecomment-84331980>
+> .
+>
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-21T13:22:22Z
+
+@keradus, @ceeram and I are basically saying that your fix is incorrect. You are fixing the code to violate psr0.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-21T13:26:23Z
+
+Hey guys.
+No, not only constructive criticism is allowed.
+But indeed, there is no point to say "it is a bad solution" over and over again, the first one was enought.
+Instead of saying same thing few more time it would be cool to also bring something new into subject.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-21T13:26:58Z
+
+Rewritten to change `supports` method. Now files like `Foo.class.php` will be ignored by that fixer.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-21T13:33:59Z
+
+@keradus That implementation is still wrong. We are calling this a psr0 fixer. This is not fixing to psr0, so it's totally wrong.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-21T13:34:44Z
+
+Our psr0 fixer is wrong anyway imo.
+
+We should be renaming files to match the class names, and should be renaming `Foo.class.php` to `Foo.php`.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-21T13:49:50Z
+
+> That implementation is still wrong. We are calling this a psr0 fixer. This is not fixing to psr0, so it's totally wrong.
+
+Then don't know about what you are talking about.
+Current Psr0Fixer cashes on `Foo.class.php` file. It already ignores non .php file, but does not ignore .class.php files. After this PR it will and stop crushing. Nothing more.
+If you have any thoughts about incorrect way of fixing files itself then this is an different issue and please send separate PR.
+
+> We should be renaming files to match the class names, and should be renaming Foo.class.php to Foo.php.
+
+Nope, we do not rename files.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-21T14:16:08Z
+
+> Nope, we do not rename files.
+
+I know, but I think we should be. That's what I'm saying. Could we rewrite this fixer in 2.0?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-21T14:39:45Z
+
+It is another problem that need to be discussed separately.
+Probably with setting risky for it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-21T14:42:47Z
+
+The current fixer is more risky though. It's changing the code.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-21T14:44:55Z
+
+Just like I said...
+
+---------------------------------------------------------------------------
+
+by ceeram at 2015-03-21T14:51:46Z
+
+This issue exactly points out why filenames should be adapted to match the classnames. PSR0 autloaders also work with classnames and then know what the filename must be to match the classname.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-21T17:06:15Z
+
+@ceeram I agree.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-03-21T22:46:06Z
+
+> It is another problem that need to be discussed separately.
+
+-> #117
