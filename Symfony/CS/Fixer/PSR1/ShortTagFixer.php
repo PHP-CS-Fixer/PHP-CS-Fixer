@@ -54,7 +54,7 @@ class ShortTagFixer extends AbstractFixer
             if ($token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT, T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_STRING))) {
                 $tokenContent = '';
                 $tokenContentLength = 0;
-                $parts = explode('<?php ', $token->getContent());
+                $parts = explode('<?php', $token->getContent());
                 $iLast = count($parts) - 1;
 
                 foreach ($parts as $i => $part) {
@@ -63,11 +63,11 @@ class ShortTagFixer extends AbstractFixer
 
                     if ($i !== $iLast) {
                         if ('<?php' === substr($content, $tokensOldContentLength + $tokenContentLength, 5)) {
-                            $tokenContent .= '<?php ';
-                            $tokenContentLength += 6;
+                            $tokenContent .= '<?php';
+                            $tokenContentLength += 5;
                         } else {
-                            $tokenContent .= '<? ';
-                            $tokenContentLength += 3;
+                            $tokenContent .= '<?';
+                            $tokenContentLength += 2;
                         }
                     }
                 }
