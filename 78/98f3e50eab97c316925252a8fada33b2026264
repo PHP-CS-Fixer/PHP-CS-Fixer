@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by stof at 2015-03-16T17:33:09Z
+
+``namespace`` is a reserved work, so it cannot be used as the name of a namespace itself: http://3v4l.org/3hgMW
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-03-16T17:51:41Z
+
+Did you click on the first link? `namespace` can be an operator for the current namespace.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-21T13:56:26Z
+
+:+1:
