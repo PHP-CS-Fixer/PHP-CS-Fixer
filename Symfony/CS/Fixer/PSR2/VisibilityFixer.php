@@ -100,7 +100,7 @@ class VisibilityFixer extends AbstractFixer
      * @param Tokens $tokens Tokens collection
      * @param int    $index  token index
      *
-     * @return array map of grabbed attributes, key is attribute name and value is array of index and clone of Token
+     * @return array
      */
     private function grabAttribsBeforeMethodToken(Tokens $tokens, $index)
     {
@@ -134,7 +134,7 @@ class VisibilityFixer extends AbstractFixer
      * @param Tokens $tokens Tokens collection
      * @param int    $index  token index
      *
-     * @return array map of grabbed attributes, key is attribute name and value is array of index and clone of Token
+     * @return array
      */
     private function grabAttribsBeforePropertyToken(Tokens $tokens, $index)
     {
@@ -165,7 +165,7 @@ class VisibilityFixer extends AbstractFixer
      * @param array  $tokenAttribsMap token to attribute name map
      * @param array  $attribs         array of token attributes
      *
-     * @return array map of grabbed attributes, key is attribute name and value is array of index and clone of Token
+     * @return array
      */
     private function grabAttribsBeforeToken(Tokens $tokens, $index, array $tokenAttribsMap, array $attribs)
     {

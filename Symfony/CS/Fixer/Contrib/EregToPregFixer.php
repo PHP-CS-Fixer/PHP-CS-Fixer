@@ -122,7 +122,7 @@ class EregToPregFixer extends AbstractFixer
      *
      * @param string $pattern the regular expression
      *
-     * @return string the preg delimiter
+     * @return string
      */
     private function getBestDelimiter($pattern)
     {
