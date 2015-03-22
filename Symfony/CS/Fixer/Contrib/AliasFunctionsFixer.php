@@ -55,7 +55,7 @@ class AliasFunctionsFixer extends AbstractFixer
 
         foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
             $tokenContent = $token->getContent();
-            if (!array_key_exists($tokenContent, static::$aliases)) {
+            if (!array_key_exists($tokenContent, self::$aliases)) {
                 continue;
             }
 
@@ -69,7 +69,7 @@ class AliasFunctionsFixer extends AbstractFixer
                 continue;
             }
 
-            $token->setContent(static::$aliases[$tokenContent]);
+            $token->setContent(self::$aliases[$tokenContent]);
         }
 
         return $tokens->generateCode();
