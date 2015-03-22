@@ -58,19 +58,19 @@ class AliasFunctionsFixerTest extends AbstractFixerTestBase
         $validCases = array();
         $fixCases = array();
         foreach (static::$aliases as $alias => $master) {
-            $validCases [] = array('<?php $smth->'.$alias.'($a);');
-            $validCases [] = array('<?php '.$alias.'Smth($a);');
-            $validCases [] = array('<?php smth_'.$alias.'($a);');
-            $validCases [] = array('<?php new '.$alias.'($a);');
-            $validCases [] = array('<?php Smth::'.$alias.'($a);');
-            $validCases [] = array('<?php new '.$alias.'\smth($a);');
-            $validCases [] = array('<?php '.$alias.'::smth($a);');
-            $validCases [] = array('<?php '.$alias.'\smth($a);');
-            $validCases [] = array('<?php "SELECT ... '.$alias.'($a) ...";');
-            $validCases [] = array('<?php "SELECT ... '.strtoupper($alias).'($a) ...";');
-            $validCases [] = array("<?php 'test'.'".$alias."' . 'in concatenation';");
-            $validCases [] = array('<?php "test" . "'.$alias.'"."in concatenation";');
-            $validCases [] = array(
+            $validCases[] = array('<?php $smth->'.$alias.'($a);');
+            $validCases[] = array('<?php '.$alias.'Smth($a);');
+            $validCases[] = array('<?php smth_'.$alias.'($a);');
+            $validCases[] = array('<?php new '.$alias.'($a);');
+            $validCases[] = array('<?php Smth::'.$alias.'($a);');
+            $validCases[] = array('<?php new '.$alias.'\smth($a);');
+            $validCases[] = array('<?php '.$alias.'::smth($a);');
+            $validCases[] = array('<?php '.$alias.'\smth($a);');
+            $validCases[] = array('<?php "SELECT ... '.$alias.'($a) ...";');
+            $validCases[] = array('<?php "SELECT ... '.strtoupper($alias).'($a) ...";');
+            $validCases[] = array("<?php 'test'.'".$alias."' . 'in concatenation';");
+            $validCases[] = array('<?php "test" . "'.$alias.'"."in concatenation";');
+            $validCases[] = array(
                 '<?php
 class '.ucfirst($alias).'ing
 {
@@ -81,25 +81,25 @@ class '.ucfirst($alias).'ing
 }',
             );
 
-            $fixCases [] = array(
+            $fixCases[] = array(
                 '<?php '.$master.'($a);',
                 '<?php '.$alias.'($a);',
             );
-            $fixCases [] = array(
+            $fixCases[] = array(
                 '<?php $a = &'.$master.'($a);',
                 '<?php $a = &'.$alias.'($a);',
             );
-            $fixCases [] = array(
+            $fixCases[] = array(
                 '<?php '.$master.'
                             ($a);',
                 '<?php '.$alias.'
                             ($a);',
             );
-            $fixCases [] = array(
+            $fixCases[] = array(
                 '<?php /* foo */ '.$master.' /** bar */ ($a);',
                 '<?php /* foo */ '.$alias.' /** bar */ ($a);',
             );
-            $fixCases [] = array(
+            $fixCases[] = array(
                 '<?php a('.$master.'());',
                 '<?php a('.$alias.'());',
             );
