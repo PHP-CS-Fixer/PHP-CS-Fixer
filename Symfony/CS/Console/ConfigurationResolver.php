@@ -33,7 +33,6 @@ class ConfigurationResolver
     private $config;
     private $configFile;
     private $cwd;
-    private $home;
     private $defaultConfig;
     private $isStdIn;
     private $isDryRun;
@@ -154,20 +153,6 @@ class ConfigurationResolver
     }
 
     /**
-     * Set home directory.
-     *
-     * @param string $home
-     *
-     * @return ConfigurationResolver
-     */
-    public function setHome($home)
-    {
-        $this->home = $home;
-
-        return $this;
-    }
-
-    /**
      * Set default config instance.
      *
      * @param ConfigInterface $config
@@ -258,10 +243,6 @@ class ConfigurationResolver
 
         $candidates[] = $this->cwd.DIRECTORY_SEPARATOR.'.php_cs';
         $candidates[] = $this->cwd.DIRECTORY_SEPARATOR.'.php_cs.dist';
-
-        if (null !== $this->home) {
-            $candidates[] = $this->home.DIRECTORY_SEPARATOR.'.php_cs';
-        }
 
         return $candidates;
     }

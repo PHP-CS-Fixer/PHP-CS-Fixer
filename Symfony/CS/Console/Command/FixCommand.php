@@ -283,7 +283,6 @@ EOF
         $resolver = new ConfigurationResolver();
         $resolver
             ->setCwd(getcwd())
-            ->setHome(getenv('HOME'))
             ->setDefaultConfig($this->defaultConfig)
             ->setFixer($this->fixer)
             ->setOptions(array(
