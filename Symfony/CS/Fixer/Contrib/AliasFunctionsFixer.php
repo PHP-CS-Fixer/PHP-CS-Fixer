@@ -22,7 +22,7 @@ use Symfony\CS\Tokenizer\Tokens;
 class AliasFunctionsFixer extends AbstractFixer
 {
     /**
-     * @var array|string[]
+     * @var string[]
      */
     private static $aliases = array(
         'is_double' => 'is_float',

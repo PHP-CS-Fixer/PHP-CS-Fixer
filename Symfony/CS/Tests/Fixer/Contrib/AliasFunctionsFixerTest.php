@@ -21,7 +21,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 class AliasFunctionsFixerTest extends AbstractFixerTestBase
 {
     /**
-     * @var array|string[]
+     * @var string[]
      */
     private static $aliases = array(
         'is_double' => 'is_float',
