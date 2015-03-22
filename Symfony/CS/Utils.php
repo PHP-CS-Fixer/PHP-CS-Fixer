@@ -58,6 +58,24 @@ class Utils
     }
 
     /**
+     * Converts a snake cased string to a camel cased string.
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    public static function underscoreToCamelCase($string)
+    {
+        return preg_replace_callback(
+            '/_(.?)/',
+            function (array $matches) {
+                return strtoupper($matches[1]);
+            },
+            $string
+        );
+    }
+
+    /**
      * Compare two integers for equality.
      *
      * We'll return 0 if they're equal, 1 if the first is bigger than the
