@@ -152,6 +152,6 @@ namespace Aaa;
 class Bar {}
 EOF;
 
-        $this->makeTest($expected, $expected, $file);
+        $this->makeTest($expected, null, $file);
     }
 }
