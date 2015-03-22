@@ -72,6 +72,13 @@ interface ConfigInterface
     public function getDir();
 
     /**
+     * Returns true if progress should be hidden.
+     *
+     * @return bool
+     */
+    public function getHideProgress();
+
+    /**
      * Adds an instance of a custom fixer.
      *
      * @param FixerInterface $fixer
@@ -91,4 +98,11 @@ interface ConfigInterface
      * @return bool
      */
     public function usingCache();
+
+    /**
+     * Returns true if linter should be enabled.
+     *
+     * @return bool
+     */
+    public function usingLinter();
 }
