@@ -51,6 +51,11 @@ echo \'Foo\';
                 'foo <?  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
             ),
             array(
+                "<?php
+'<?
+';",
+            ),
+            array(
                 '<?php
 // Replace all <? with <?php !',
             ),

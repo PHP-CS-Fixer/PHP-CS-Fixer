@@ -81,6 +81,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
             if (false === $dir) {
                 $dir = '';
             }
+
             $filename = basename($path, '.php');
 
             if ($classyName !== $filename) {
@@ -141,7 +142,9 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
      */
     public function supports(\SplFileInfo $file)
     {
-        if ('php' !== pathinfo($file->getFilename(), PATHINFO_EXTENSION)) {
+        $filenameParts = explode('.', $file->getBasename(), 2);
+
+        if (!isset($filenameParts[1]) || 'php' !== $filenameParts[1]) {
             return false;
         }
 

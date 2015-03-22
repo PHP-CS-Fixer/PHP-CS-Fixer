@@ -41,13 +41,9 @@ class VisibilityFixer extends AbstractFixer
                     $afterToken->setContent(' ');
                 }
             } elseif ('property' === $element['type']) {
-                $prevIndex = $tokens->getPrevTokenOfKind($index, array(';', ','));
-                $nextIndex = $tokens->getNextTokenOfKind($index, array(';', ',', '='));
+                $prevIndex = $tokens->getPrevTokenOfKind($index, array(';', ',', '{'));
 
-                if (
-                    (!$prevIndex || !$tokens[$prevIndex]->equals(',')) &&
-                    (!$nextIndex || !$tokens[$nextIndex]->equals(','))
-                ) {
+                if (!$prevIndex || !$tokens[$prevIndex]->equals(',')) {
                     $this->overrideAttribs($tokens, $index, $this->grabAttribsBeforePropertyToken($tokens, $index));
                 }
             }

@@ -45,14 +45,17 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
 
         $fixer = $fixer ?: $this->getFixer();
         $file = $file ?: $this->getTestFile();
+        $fileIsSupported = $fixer->supports($file);
 
         if (null !== $input) {
             Tokens::clearCache();
             $tokens = Tokens::fromCode($input);
 
-            $fixResult = $fixer->fix($file, $tokens);
+            if ($fileIsSupported) {
+                $fixResult = $fixer->fix($file, $tokens);
+                $this->assertNull($fixResult, '->fix method should return null.');
+            }
 
-            $this->assertNull($fixResult, '->fix method should return null.');
             $this->assertSame($expected, $tokens->generateCode(), 'Code build on input code must match expected code.');
             $this->assertTrue($tokens->isChanged(), 'Tokens collection built on input code should be marked as changed after fixing.');
         }
@@ -60,9 +63,11 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
         Tokens::clearCache();
         $tokens = Tokens::fromCode($expected);
 
-        $fixResult = $fixer->fix($file, $tokens);
+        if ($fileIsSupported) {
+            $fixResult = $fixer->fix($file, $tokens);
+            $this->assertNull($fixResult, '->fix method should return null.');
+        }
 
-        $this->assertNull($fixResult, '->fix method should return null.');
         $this->assertSame($expected, $tokens->generateCode(), 'Code build on expected code must not change.');
         $this->assertFalse($tokens->isChanged(), 'Tokens collection built on expected code should not be marked as changed after fixing.');
     }

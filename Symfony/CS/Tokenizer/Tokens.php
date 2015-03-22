@@ -1014,7 +1014,7 @@ class Tokens extends \SplFixedArray
      */
     public function isMonolithicPhp()
     {
-        $kinds = $this->findGivenKind(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_CLOSE_TAG, T_INLINE_HTML));
+        $kinds = $this->findGivenKind(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_INLINE_HTML));
 
         /*
          * Fix HHVM incompatibilities

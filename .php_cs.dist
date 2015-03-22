@@ -16,15 +16,15 @@ return Symfony\CS\Config\Config::create()
     ->level(Symfony\CS\FixerInterface::SYMFONY_LEVEL)
     // and extra fixers:
     ->fixers(array(
+        'header_comment',
+        'long_array_syntax',
         'ordered_use',
         'strict',
         'strict_param',
-        'header_comment',
     ))
     ->finder(
         Symfony\CS\Finder\DefaultFinder::create()
             ->exclude('Symfony/CS/Tests/Fixtures')
-            ->notName('ShortTagFixerTest.php')
             ->in(__DIR__)
     )
 ;
