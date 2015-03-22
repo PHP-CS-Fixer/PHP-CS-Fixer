@@ -29,18 +29,16 @@ namespace Symfony\CS;
  */
 class FileCacheManager
 {
-    const CACHE_FILE = '.php_cs.cache';
-
-    private $dir;
+    private $cacheFile;
     private $isEnabled;
     private $fixers;
     private $newHashes = array();
     private $oldHashes = array();
 
-    public function __construct($isEnabled, $dir, array $fixers)
+    public function __construct($isEnabled, $cacheFile, array $fixers)
     {
         $this->isEnabled = $isEnabled;
-        $this->dir = null !== $dir ? $dir.DIRECTORY_SEPARATOR : '';
+        $this->cacheFile = $cacheFile;
         $this->fixers = array_map(function (FixerInterface $f) {
             return $f->getName();
         }, $fixers);
@@ -114,11 +112,11 @@ class FileCacheManager
             return;
         }
 
-        if (!file_exists($this->dir.self::CACHE_FILE)) {
+        if (!file_exists($this->cacheFile)) {
             return;
         }
 
-        $content = file_get_contents($this->dir.self::CACHE_FILE);
+        $content = file_get_contents($this->cacheFile);
         $data = unserialize($content);
 
         // Set hashes only if the cache is fresh, otherwise we need to parse all files
@@ -141,6 +139,6 @@ class FileCacheManager
             )
         );
 
-        file_put_contents($this->dir.self::CACHE_FILE, $data, LOCK_EX);
+        file_put_contents($this->cacheFile, $data, LOCK_EX);
     }
 }

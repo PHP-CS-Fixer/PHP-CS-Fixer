@@ -52,4 +52,28 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $iterator->rewind();
         $this->assertSame('somefile.php', $iterator->current()->getFilename());
     }
+
+    public function testThatCacheFileHasDefaultValue()
+    {
+        $config = new Config();
+
+        $this->assertSame('.php_cs.cache', $config->getCacheFile());
+    }
+
+    public function testThatCacheFileCanBeMutated()
+    {
+        $cacheFile = 'some-directory/some.file';
+
+        $config = new Config();
+        $config->setCacheFile($cacheFile);
+
+        $this->assertSame($cacheFile, $config->getCacheFile());
+    }
+
+    public function testThatMutatorHasFluentInterface()
+    {
+        $config = new Config();
+
+        $this->assertSame($config, $config->setCacheFile('some-directory/some.file'));
+    }
 }

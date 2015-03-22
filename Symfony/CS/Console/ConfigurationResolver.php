@@ -47,10 +47,12 @@ class ConfigurationResolver
         'path' => null,
         'progress' => null,
         'using-cache' => null,
+        'cache-file' => null,
     );
     private $path;
     private $progress;
     private $usingCache;
+    private $cacheFile;
 
     /**
      * Returns config instance.
@@ -131,9 +133,11 @@ class ConfigurationResolver
 
         $this->resolveProgress();
         $this->resolveUsingCache();
+        $this->resolveCacheFile();
 
         $this->config->fixers($this->getFixers());
         $this->config->setUsingCache($this->usingCache);
+        $this->config->setCacheFile($this->cacheFile);
 
         return $this;
     }
@@ -471,5 +475,19 @@ class ConfigurationResolver
         }
 
         $this->usingCache = $this->config->usingCache();
+    }
+
+    /**
+     * Resolves cache file.
+     */
+    private function resolveCacheFile()
+    {
+        if (null !== $this->options['cache-file']) {
+            $this->cacheFile = $this->options['cache-file'];
+
+            return;
+        }
+
+        $this->cacheFile = $this->config->getCacheFile();
     }
 }

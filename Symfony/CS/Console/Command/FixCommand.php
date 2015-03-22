@@ -105,6 +105,7 @@ class FixCommand extends Command
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
                     new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or symfony (formerly all))', null),
                     new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no)', null),
+                    new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file'),
                     new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
@@ -271,6 +272,42 @@ Cache can be disabled via ``--using-cache`` option or config file:
     ;
 
     ?>
+
+Cache file can be specified via ``--cache-file`` option or config file:
+
+    <?php
+
+    return Symfony\CS\Config\Config::create()
+        ->setCacheFile(__DIR__.'/.php_cs.cache')
+    ;
+
+    ?>
+
+Using PHP CS Fixer on Travis
+----------------------------
+
+Require ``fabpot/php-cs-fixer`` as a `dev`` dependency:
+
+    $ ./composer.phar require --dev fabpot/php-cs-fixer
+
+Create a build file to run ``php-cs-fixer`` on Travis. It's advisable to create a dedicated directory
+for PHP CS Fixer cache files and have Travis cache it between builds.
+
+    language: php
+    php:
+        - 5.5
+    sudo: false
+    cache:
+        directories:
+            - "\$HOME/.composer/cache"
+            - "\$HOME/.php-cs-fixer"
+    before_script:
+        - mkdir -p "\$HOME/.php-cs-fixer"
+    script:
+        - vendor/bin/php-cs-fixer fix --cache-file "\$HOME/.php-cs-fixer/.php_cs.cache" --dry-run --diff --verbose
+
+Note: This will only trigger a build if you have a subscription for Travis
+or are using their free open source plan.
 EOF
             );
     }
@@ -294,6 +331,7 @@ EOF
                 'path' => $input->getArgument('path'),
                 'progress' => $output->isVerbose() && 'txt' === $input->getOption('format'),
                 'using-cache' => $input->getOption('using-cache'),
+                'cache-file' => $input->getOption('cache-file'),
             ))
             ->resolve()
         ;

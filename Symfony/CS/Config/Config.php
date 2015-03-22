@@ -32,6 +32,7 @@ class Config implements ConfigInterface
     protected $usingCache = true;
     protected $usingLinter = true;
     protected $hideProgress = false;
+    protected $cacheFile = '.php_cs.cache';
 
     public function __construct($name = 'default', $description = 'A default configuration')
     {
@@ -156,5 +157,23 @@ class Config implements ConfigInterface
     public function usingLinter()
     {
         return $this->usingLinter;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCacheFile($cacheFile)
+    {
+        $this->cacheFile = $cacheFile;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCacheFile()
+    {
+        return $this->cacheFile;
     }
 }
