@@ -33,6 +33,7 @@ class ConfigurationResolver
     private $config;
     private $configFile;
     private $cwd;
+    private $home;
     private $defaultConfig;
     private $isStdIn;
     private $isDryRun;
@@ -153,6 +154,20 @@ class ConfigurationResolver
     }
 
     /**
+     * Set home directory.
+     *
+     * @param string $home
+     *
+     * @return ConfigurationResolver
+     */
+    public function setHome($home)
+    {
+        $this->home = $home;
+
+        return $this;
+    }
+
+    /**
      * Set default config instance.
      *
      * @param ConfigInterface $config
@@ -230,19 +245,25 @@ class ConfigurationResolver
             return array($configFile);
         }
 
-        if (is_file($path) && $dirName = pathinfo($path, PATHINFO_DIRNAME)) {
-            $configDir = $dirName;
-        } elseif ($this->isStdIn || null === $path) {
-            $configDir = $this->cwd;
-            // path is directory
-        } else {
-            $configDir = $path;
+        $candidates = array();
+        if (null !== $path) {
+            if (is_file($path) && $dirName = pathinfo($path, PATHINFO_DIRNAME)) {
+                $configDir = $dirName;
+            } else {
+                $configDir = $path;
+            }
+            $candidates[] = $configDir.DIRECTORY_SEPARATOR.'.php_cs';
+            $candidates[] = $configDir.DIRECTORY_SEPARATOR.'.php_cs.dist';
         }
 
-        return array(
-            $configDir.DIRECTORY_SEPARATOR.'.php_cs',
-            $configDir.DIRECTORY_SEPARATOR.'.php_cs.dist',
-        );
+        $candidates[] = $this->cwd.DIRECTORY_SEPARATOR.'.php_cs';
+        $candidates[] = $this->cwd.DIRECTORY_SEPARATOR.'.php_cs.dist';
+
+        if (null !== $this->home) {
+            $candidates[] = $this->home.DIRECTORY_SEPARATOR.'.php_cs';
+        }
+
+        return $candidates;
     }
 
     /**
