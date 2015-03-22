@@ -256,4 +256,25 @@ class FixerTest extends \PHPUnit_Framework_TestCase
 
         return $cases;
     }
+
+    public function testCanFixWithConfigInterfaceImplementation()
+    {
+        $config = $this->getMockBuilder('Symfony\CS\ConfigInterface')->getMock();
+
+        $config
+            ->expects($this->any())
+            ->method('getFixers')
+            ->willReturn(array())
+        ;
+
+        $config
+            ->expects($this->any())
+            ->method('getFinder')
+            ->willReturn(array())
+        ;
+
+        $fixer = new Fixer();
+
+        $fixer->fix($config);
+    }
 }
