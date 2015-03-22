@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by stof at 2015-02-28T11:48:12Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by stof at 2015-02-28T11:48:31Z
+
+@keradus please merge this in 1.5 as it is a bugfix
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-01T19:15:11Z
+
+@kix please provide a test for this bugfix
+
+---------------------------------------------------------------------------
+
+by kix at 2015-03-02T09:03:40Z
+
+@keradus, hmm, I can't really figure how do I simulate a symlink in the tests.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-03-06T22:58:51Z
+
+@kix create one in the test (and skip the test in case you cannot create one on this system)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-08T20:02:07Z
+
+remember to remove it on finish
