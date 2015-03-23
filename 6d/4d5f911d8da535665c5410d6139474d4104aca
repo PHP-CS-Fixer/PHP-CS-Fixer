@@ -1,0 +1,49 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-14T23:16:36Z
+
+We need way more test cases.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-03-14T23:46:39Z
+
+Ok, can you give me some advices which kind of test cases I should add?
+
+Should I add more code around the `T_CONSTANT_ENCAPSED_STRING`s or should I only add more variations of `T_CONSTANT_ENCAPSED_STRING`s (the fixer is only looking for these tokens)?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-14T23:51:08Z
+
+We need tests to check string with more interesting content are dealt with correctly.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-21T13:57:51Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-22T16:56:15Z
+
+Please move it into Symfony level (https://github.com/symfony/symfony/pull/14005) and ready to go!
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-03-22T17:17:48Z
+
+done
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-22T17:19:15Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by stof at 2015-03-22T19:41:06Z
+
+:+1:
