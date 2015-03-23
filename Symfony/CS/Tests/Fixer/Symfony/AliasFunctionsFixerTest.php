@@ -31,7 +31,7 @@ class AliasFunctionsFixerTest extends AbstractFixerTestBase
     public function provideCases()
     {
         $cases = array();
-        foreach (AliasFunctionsFixer::getAliases() as $alias => $master) {
+        foreach (AliasFunctionsFixer::$aliases as $alias => $master) {
             /* valid cases */
             $cases[] = array('<?php $smth->'.$alias.'($a);');
             $cases[] = array('<?php '.$alias.'Smth($a);');

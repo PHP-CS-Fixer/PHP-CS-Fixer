@@ -21,36 +21,28 @@ use Symfony\CS\Tokenizer\Tokens;
 class AliasFunctionsFixer extends AbstractFixer
 {
     /**
-     * @var string[]
+     * @var string[] stores alias (key) - master (value) functions mapping
      */
-    private static $aliases = array(
+    public static $aliases = array(
+        'chop' => 'rtrim',
+        'close' => 'closedir',
+        'doubleval' => 'floatval',
+        'fputs' => 'fwrite',
+        'join' => 'implode',
+        'ini_alter' => 'ini_set',
         'is_double' => 'is_float',
         'is_integer' => 'is_int',
         'is_long' => 'is_int',
         'is_real' => 'is_float',
-        'sizeof' => 'count',
-        'doubleval' => 'floatval',
-        'fputs' => 'fwrite',
-        'join' => 'implode',
-        'key_exists' => 'array_key_exists',
-        'chop' => 'rtrim',
-        'close' => 'closedir',
-        'ini_alter' => 'ini_set',
         'is_writeable' => 'is_writable',
+        'key_exists' => 'array_key_exists',
         'magic_quotes_runtime' => 'set_magic_quotes_runtime',
         'pos' => 'current',
         'rewind' => 'rewinddir',
         'show_source' => 'highlight_file',
+        'sizeof' => 'count',
         'strchr' => 'strstr',
     );
-
-    /**
-     * @return string[]
-     */
-    public static function getAliases()
-    {
-        return self::$aliases;
-    }
 
     /**
      * {@inheritdoc}
@@ -58,8 +50,8 @@ class AliasFunctionsFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
-            $tokenContent = strtolower($token->getContent());
-            if (!array_key_exists($tokenContent, self::$aliases)) {
+            $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
+            if (!$nextToken->equals('(')) {
                 continue;
             }
 
@@ -68,8 +60,8 @@ class AliasFunctionsFixer extends AbstractFixer
                 continue;
             }
 
-            $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
-            if (!$nextToken->equals('(')) {
+            $tokenContent = strtolower($token->getContent());
+            if (!isset(self::$aliases[$tokenContent])) {
                 continue;
             }
 
