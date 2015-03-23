@@ -11,40 +11,18 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
+use Symfony\CS\Fixer\Contrib\AliasFunctionsFixer;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
- * @author Vladimir Reznichenko <kalessil@gmail.com>
+ * Fixes AliasFunctionsUsageInspection inspection warnings from Php Inspections (EA Extended).
+ * This fixer is based on JoinFunctionFixer code from Dariusz Rumiński.
  *
- * Fixes AliasFunctionsUsageInspection warnings from Php Inspections (EA Extended)
+ * @author Vladimir Reznichenko <kalessil@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class AliasFunctionsFixerTest extends AbstractFixerTestBase
 {
-    /**
-     * @var string[]
-     */
-    private static $aliases = array(
-        'is_double' => 'is_float',
-        'is_integer' => 'is_int',
-        'is_long' => 'is_int',
-        'is_real' => 'is_float',
-        'sizeof' => 'count',
-        'doubleval' => 'floatval',
-        'fputs' => 'fwrite',
-        'join' => 'implode',
-        'key_exists' => 'array_key_exists',
-
-        'chop' => 'rtrim',
-        'close' => 'closedir',
-        'ini_alter' => 'ini_set',
-        'is_writeable' => 'is_writable',
-        'magic_quotes_runtime' => 'set_magic_quotes_runtime',
-        'pos' => 'current',
-        'rewind' => 'rewinddir',
-        'show_source' => 'highlight_file',
-        'strchr' => 'strstr',
-        );
-
     /**
      * @dataProvider provideCases
      */
@@ -55,56 +33,67 @@ class AliasFunctionsFixerTest extends AbstractFixerTestBase
 
     public function provideCases()
     {
-        $validCases = array();
-        $fixCases = array();
-        foreach (self::$aliases as $alias => $master) {
-            $validCases[] = array('<?php $smth->'.$alias.'($a);');
-            $validCases[] = array('<?php '.$alias.'Smth($a);');
-            $validCases[] = array('<?php smth_'.$alias.'($a);');
-            $validCases[] = array('<?php new '.$alias.'($a);');
-            $validCases[] = array('<?php Smth::'.$alias.'($a);');
-            $validCases[] = array('<?php new '.$alias.'\smth($a);');
-            $validCases[] = array('<?php '.$alias.'::smth($a);');
-            $validCases[] = array('<?php '.$alias.'\smth($a);');
-            $validCases[] = array('<?php "SELECT ... '.$alias.'($a) ...";');
-            $validCases[] = array('<?php "SELECT ... '.strtoupper($alias).'($a) ...";');
-            $validCases[] = array("<?php 'test'.'".$alias."' . 'in concatenation';");
-            $validCases[] = array('<?php "test" . "'.$alias.'"."in concatenation";');
-            $validCases[] = array(
+        $cases = array();
+        foreach (AliasFunctionsFixer::getAliases() as $alias => $master) {
+            /* valid cases */
+            $cases[] = array('<?php $smth->'.$alias.'($a);');
+            $cases[] = array('<?php '.$alias.'Smth($a);');
+            $cases[] = array('<?php smth_'.$alias.'($a);');
+            $cases[] = array('<?php new '.$alias.'($a);');
+            $cases[] = array('<?php new Smth\\'.$alias.'($a);');
+            $cases[] = array('<?php Smth::'.$alias.'($a);');
+            $cases[] = array('<?php new '.$alias.'\smth($a);');
+            $cases[] = array('<?php '.$alias.'::smth($a);');
+            $cases[] = array('<?php '.$alias.'\smth($a);');
+            $cases[] = array('<?php \\'.$alias.'($a);');
+            $cases[] = array('<?php "SELECT ... '.$alias.'($a) ...";');
+            $cases[] = array('<?php "SELECT ... '.strtoupper($alias).'($a) ...";');
+            $cases[] = array("<?php 'test'.'".$alias."' . 'in concatenation';");
+            $cases[] = array('<?php "test" . "'.$alias.'"."in concatenation";');
+            $cases[] = array(
                 '<?php
 class '.ucfirst($alias).'ing
 {
     public function '.$alias.'($'.$alias.')
     {
-        //expressions here
+        if (!defined(\''.$alias.'\') || $'.$alias.' instanceof '.$alias.') {
+            const '.$alias.' = 1;
+        }
+        echo '.$alias.';
     }
-}',
+}
+
+class '.$alias.' extends '.ucfirst($alias).'ing{
+    const '.$alias.' = \''.$alias.'\'
+}
+',
             );
 
-            $fixCases[] = array(
+            /* cases to be fixed */
+            $cases[] = array(
                 '<?php '.$master.'($a);',
                 '<?php '.$alias.'($a);',
             );
-            $fixCases[] = array(
+            $cases[] = array(
                 '<?php $a = &'.$master.'($a);',
                 '<?php $a = &'.$alias.'($a);',
             );
-            $fixCases[] = array(
+            $cases[] = array(
                 '<?php '.$master.'
                             ($a);',
                 '<?php '.$alias.'
                             ($a);',
             );
-            $fixCases[] = array(
+            $cases[] = array(
                 '<?php /* foo */ '.$master.' /** bar */ ($a);',
                 '<?php /* foo */ '.$alias.' /** bar */ ($a);',
             );
-            $fixCases[] = array(
+            $cases[] = array(
                 '<?php a('.$master.'());',
                 '<?php a('.$alias.'());',
             );
         }
 
-        return array_merge($validCases, $fixCases);
+        return $cases;
     }
 }

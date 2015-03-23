@@ -15,9 +15,11 @@ use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
- * @author Vladimir Reznichenko <kalessil@gmail.com>
+ * Fixes AliasFunctionsUsageInspection inspection warnings from Php Inspections (EA Extended).
+ * This fixer is based on JoinFunctionFixer code from Dariusz Rumiński.
  *
- * Fixes AliasFunctionsUsageInspection inspection warnings from Php Inspections (EA Extended)
+ * @author Vladimir Reznichenko <kalessil@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class AliasFunctionsFixer extends AbstractFixer
 {
@@ -34,7 +36,6 @@ class AliasFunctionsFixer extends AbstractFixer
         'fputs' => 'fwrite',
         'join' => 'implode',
         'key_exists' => 'array_key_exists',
-
         'chop' => 'rtrim',
         'close' => 'closedir',
         'ini_alter' => 'ini_set',
@@ -45,6 +46,14 @@ class AliasFunctionsFixer extends AbstractFixer
         'show_source' => 'highlight_file',
         'strchr' => 'strstr',
     );
+
+    /**
+     * @return string[]
+     */
+    public static function getAliases()
+    {
+        return self::$aliases;
+    }
 
     /**
      * {@inheritdoc}
@@ -65,7 +74,7 @@ class AliasFunctionsFixer extends AbstractFixer
             }
 
             $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
-            if ($nextToken->isGivenKind(array(T_DOUBLE_COLON, T_NS_SEPARATOR))) {
+            if (!$nextToken->equals('(')) {
                 continue;
             }
 
