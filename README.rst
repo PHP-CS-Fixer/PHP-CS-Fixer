@@ -400,6 +400,10 @@ Choose from the list of available fixers:
                 There should be exactly one blank line
                 before a namespace declaration.
 
+* **single_quote** [symfony]
+                Convert double quotes to single quotes
+                for simple strings.
+
 * **spaces_before_semicolon** [symfony]
                 Single-line whitespace before closing
                 semicolon are prohibited.

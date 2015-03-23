@@ -403,14 +403,14 @@ preg_replace_callback(
         $emptyToken->clear();
 
         return array(
-            array("Invalid sequence", array()),
-            array("Non-meaningful token at position: 0", array(
-                array(T_WHITESPACE, "   "),
+            array('Invalid sequence', array()),
+            array('Non-meaningful token at position: 0', array(
+                array(T_WHITESPACE, '   '),
             )),
-            array("Non-meaningful token at position: 1", array(
-                '{', array(T_COMMENT, "// Foo"), '}',
+            array('Non-meaningful token at position: 1', array(
+                '{', array(T_COMMENT, '// Foo'), '}',
             )),
-            array("Non-meaningful token at position: 2", array(
+            array('Non-meaningful token at position: 2', array(
                 '{', '!', $emptyToken, '}',
             )),
         );
@@ -466,8 +466,8 @@ PHP;
         return array(
             array("<?php\n", true),
             array("<?php\n?>", true),
-            array("", false),
-            array(" ", false),
+            array('', false),
+            array(' ', false),
             array("#!/usr/bin/env php\n<?php\n", false),
             array(" <?php\n", false),
             array("<?php\n?> ", false),
