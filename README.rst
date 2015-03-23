@@ -494,6 +494,10 @@ Choose from the list of available fixers:
                 @var should always be written as
                 @type.
 
+* **pre_increment** [contrib]
+                Pre incrementation/decrementation
+                should be used if possible.
+
 * **short_array_syntax** [contrib]
                 PHP arrays should use the PHP 5.4
                 short-syntax.
