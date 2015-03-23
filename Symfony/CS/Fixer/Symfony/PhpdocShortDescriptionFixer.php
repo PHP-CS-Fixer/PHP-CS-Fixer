@@ -98,6 +98,6 @@ class PhpdocShortDescriptionFixer extends AbstractFixer
             return true;
         }
 
-        return $content !== rtrim($content, '.!?¡¿');
+        return $content !== rtrim($content, '.!?¡¿:');
     }
 }
