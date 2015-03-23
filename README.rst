@@ -454,6 +454,10 @@ Choose from the list of available fixers:
                 Multi-line whitespace before closing
                 semicolon are prohibited.
 
+* **newline_after_open_tag** [contrib]
+                Ensure there is no code on the same
+                line as the PHP open tag.
+
 * **no_blank_lines_before_namespace** [contrib]
                 There should be no blank lines before
                 a namespace declaration.
