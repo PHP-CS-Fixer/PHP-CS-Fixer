@@ -426,6 +426,10 @@ Choose from the list of available fixers:
                 Remove trailing whitespace at the end
                 of blank lines.
 
+* **alias_functions** [contrib]
+                Master functions shall be used instead
+                of aliases.
+
 * **align_double_arrow** [contrib]
                 Align double arrow symbols in
                 consecutive lines.
