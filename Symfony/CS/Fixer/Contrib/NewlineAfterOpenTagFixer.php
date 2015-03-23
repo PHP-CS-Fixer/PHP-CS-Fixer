@@ -25,29 +25,32 @@ class NewlineAfterOpenTagFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
-        foreach ($tokens as $token) {
-            if (!$token->isGivenKind(T_OPEN_TAG)) {
-                break;
-            }
 
-            if (false !== strpos($token->getContent(), "\n")) {
-                break;
-            }
-
-            $newlines = 0;
-            $whitespaceTokens = $tokens->findGivenKind(T_WHITESPACE);
-            foreach ($whitespaceTokens as $whitespaceToken) {
-                if ($whitespaceToken->isWhitespace(array('whitespaces' => "\n"))) {
-                    ++$newlines;
-                }
-            }
-            if (0 === $newlines) {
-                break;
-            }
-
-            $token->setContent(rtrim($token->getContent())."\n");
-            break;
+        // ignore non-monolithic files
+        if (!$tokens->isMonolithicPhp()) {
+            return $content;
         }
+
+        // ignore files with short open tag
+        if (!$tokens[0]->isGivenKind(T_OPEN_TAG)) {
+            return $content;
+        }
+
+        $newlineFound = false;
+        foreach ($tokens as $token) {
+            if ($token->isWhitespace(array('whitespaces' => "\n"))) {
+                $newlineFound = true;
+                break;
+            }
+        }
+
+        // ignore one-line files
+        if (!$newlineFound) {
+            return $content;
+        }
+
+        $token = $tokens[0];
+        $token->setContent(rtrim($token->getContent())."\n");
 
         return $tokens->generateCode();
     }

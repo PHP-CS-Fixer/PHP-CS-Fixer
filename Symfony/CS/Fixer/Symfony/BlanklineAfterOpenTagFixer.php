@@ -26,30 +26,38 @@ class BlanklineAfterOpenTagFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_OPEN_TAG)) {
+
+        // ignore non-monolithic files
+        if (!$tokens->isMonolithicPhp()) {
+            return $content;
+        }
+
+        // ignore files with short open tag
+        if (!$tokens[0]->isGivenKind(T_OPEN_TAG)) {
+            return $content;
+        }
+
+        $newlineFound = false;
+        foreach ($tokens as $token) {
+            if ($token->isWhitespace(array('whitespaces' => "\n"))) {
+                $newlineFound = true;
                 break;
             }
+        }
 
-            $newlines = 0;
-            $whitespaceTokens = $tokens->findGivenKind(T_WHITESPACE);
-            foreach ($whitespaceTokens as $whitespaceToken) {
-                if ($whitespaceToken->isWhitespace(array('whitespaces' => "\n"))) {
-                    ++$newlines;
-                }
-            }
-            if (0 === $newlines) {
-                break;
-            }
+        // ignore one-line files
+        if (!$newlineFound) {
+            return $content;
+        }
 
-            if (false === strpos($token->getContent(), "\n")) {
-                $token->setContent(rtrim($token->getContent())."\n");
-            }
+        $token = $tokens[0];
 
-            if (!$tokens[$index + 1]->isWhitespace(array('whitespaces' => "\n"))) {
-                $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, "\n")));
-            }
-            break;
+        if (false === strpos($token->getContent(), "\n")) {
+            $token->setContent(rtrim($token->getContent())."\n");
+        }
+
+        if (!$tokens[1]->isWhitespace(array('whitespaces' => "\n"))) {
+            $tokens->insertAt(1, new Token(array(T_WHITESPACE, "\n")));
         }
 
         return $tokens->generateCode();

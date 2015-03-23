@@ -15,6 +15,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class BlanklineAfterOpenTagFixerTest extends AbstractFixerTestBase
 {
@@ -38,7 +39,6 @@ class BlanklineAfterOpenTagFixerTest extends AbstractFixerTestBase
     public function provideCases()
     {
         return array(
-
             array(
                 '<?php $foo = true; ?>',
             ),
@@ -80,13 +80,6 @@ Html here
 <?php $bar = false;',
             ),
             array(
-                '<?php
-
-$foo = true;
-?>
-Html here
-<?php $bar = false;
-',
                 '<?php
 $foo = true;
 ?>

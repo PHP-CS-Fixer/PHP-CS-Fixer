@@ -15,6 +15,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class NewlineAfterOpenTagFixerTest extends AbstractFixerTestBase
 {
@@ -47,6 +48,8 @@ class NewlineAfterOpenTagFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
+
+
 $foo = true;
 ?>',
             ),
@@ -60,9 +63,7 @@ $bar = false;
 ?>',
             ),
             array(
-                '<?php
-$foo = true;
-?>
+                '<?php $foo = true; ?>
 Html here
 <?php $bar = false; ?>',
             ),
