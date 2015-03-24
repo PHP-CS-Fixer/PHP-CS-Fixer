@@ -267,6 +267,11 @@ Choose from the list of available fixers:
                 visibility; static MUST be declared
                 after the visibility.
 
+* **blankline_after_open_tag** [symfony]
+                Ensure there is no code on the same
+                line as the PHP open tag and it is
+                followed by a blankline.
+
 * **concat_without_spaces** [symfony]
                 Concatenation should be used without
                 spaces.
@@ -458,6 +463,10 @@ Choose from the list of available fixers:
 * **multiline_spaces_before_semicolon** [contrib]
                 Multi-line whitespace before closing
                 semicolon are prohibited.
+
+* **newline_after_open_tag** [contrib]
+                Ensure there is no code on the same
+                line as the PHP open tag.
 
 * **no_blank_lines_before_namespace** [contrib]
                 There should be no blank lines before
