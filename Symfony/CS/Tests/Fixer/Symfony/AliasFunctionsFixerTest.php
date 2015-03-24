@@ -11,7 +11,6 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Fixer\Symfony\AliasFunctionsFixer;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
@@ -30,8 +29,11 @@ class AliasFunctionsFixerTest extends AbstractFixerTestBase
 
     public function provideCases()
     {
+        /** @var $aliases string[] */
+        $aliases = static::getStaticAttribute('\Symfony\CS\Fixer\Symfony\AliasFunctionsFixer', 'aliases');
+
         $cases = array();
-        foreach (AliasFunctionsFixer::$aliases as $alias => $master) {
+        foreach ($aliases as $alias => $master) {
             /* valid cases */
             $cases[] = array('<?php $smth->'.$alias.'($a);');
             $cases[] = array('<?php '.$alias.'Smth($a);');

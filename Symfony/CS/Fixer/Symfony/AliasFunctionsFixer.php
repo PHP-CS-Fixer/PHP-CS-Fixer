@@ -23,7 +23,7 @@ class AliasFunctionsFixer extends AbstractFixer
     /**
      * @var string[] stores alias (key) - master (value) functions mapping
      */
-    public static $aliases = array(
+    private static $aliases = array(
         'chop' => 'rtrim',
         'close' => 'closedir',
         'doubleval' => 'floatval',
