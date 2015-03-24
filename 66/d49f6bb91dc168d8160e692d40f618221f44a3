@@ -1,0 +1,36 @@
+---------------------------------------------------------------------------
+
+by jaredh159 at 2015-03-23T19:47:32Z
+
+thanks. I was having trouble sorting out the mess I made.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-23T19:48:26Z
+
+no problem, glad to be helpful
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-23T19:53:31Z
+
+Travis failing due to bad cs in php-cs-fixer, lol. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-23T20:31:27Z
+
+fixing itself show error of this new fixer, new testcase have been already added.
+And this is extra cool that Travis show it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-23T20:41:06Z
+
+fixed
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-23T21:15:56Z
+
+:+1:
