@@ -34,12 +34,13 @@ class AliasFunctionsFixerTest extends AbstractFixerTestBase
 
         $cases = array();
         foreach ($aliases as $alias => $master) {
-            /* valid cases */
+            // valid cases
             $cases[] = array("<?php \$smth->$alias(\$a);");
             $cases[] = array("<?php {$alias}Smth(\$a);");
             $cases[] = array("<?php smth_$alias(\$a);");
             $cases[] = array("<?php new $alias(\$a);");
             $cases[] = array("<?php new Smth\\$alias(\$a);");
+            $cases[] = array("<?php Smth\\$alias(\$a);");
             $cases[] = array("<?php Smth::$alias(\$a);");
             $cases[] = array("<?php new $alias\\smth(\$a);");
             $cases[] = array("<?php $alias::smth(\$a);");
@@ -67,7 +68,7 @@ class '.$alias.' extends '.ucfirst($alias).'ing{
 ',
             );
 
-            /* cases to be fixed */
+            // cases to be fixed
             $cases[] = array(
                 "<?php $master(\$a);",
                 "<?php $alias(\$a);",
@@ -104,7 +105,7 @@ class '.$alias.' extends '.ucfirst($alias).'ing{
             );
         }
 
-        /* static case to fix - in case previous generation is broken */
+        // static case to fix - in case previous generation is broken
         $cases[] = array(
             '<?php is_int($a);',
             '<?php is_integer($a);',

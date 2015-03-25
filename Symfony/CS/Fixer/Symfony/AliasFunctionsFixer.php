@@ -51,20 +51,20 @@ class AliasFunctionsFixer extends AbstractFixer
     {
         /** @var $token \Symfony\CS\Tokenizer\Token */
         foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
-            /* skip expressions without parameters list */
+            // skip expressions without parameters list
             $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
             if (!$nextToken->equals('(')) {
                 continue;
             }
 
-            /* skip expressions which are not function reference */
+            // skip expressions which are not function reference
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevTokenIndex];
             if ($prevToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION))) {
                 continue;
             }
 
-            /* handle function reference with namespaces */
+            // handle function reference with namespaces
             if ($prevToken->isGivenKind(array(T_NS_SEPARATOR))) {
                 $twicePrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
                 $twicePrevToken = $tokens[$twicePrevTokenIndex];
@@ -73,7 +73,7 @@ class AliasFunctionsFixer extends AbstractFixer
                 }
             }
 
-            /* check mapping hit */
+            // check mapping hit
             $tokenContent = strtolower($token->getContent());
             if (!isset(self::$aliases[$tokenContent])) {
                 continue;
