@@ -44,7 +44,6 @@ class AliasFunctionsFixerTest extends AbstractFixerTestBase
             $cases[] = array("<?php new $alias\\smth(\$a);");
             $cases[] = array("<?php $alias::smth(\$a);");
             $cases[] = array("<?php $alias\\smth(\$a);");
-            $cases[] = array("<?php \\$alias(\$a);");
             $cases[] = array('<?php "SELECT ... '.$alias.'(\$a) ...";');
             $cases[] = array('<?php "SELECT ... '.strtoupper($alias).'($a) ...";');
             $cases[] = array("<?php 'test'.'$alias' . 'in concatenation';");
@@ -55,7 +54,7 @@ class '.ucfirst($alias).'ing
 {
     public function '.$alias.'($'.$alias.')
     {
-        if (!defined(\''.$alias.'\') || $'.$alias.' instanceof '.$alias.') {
+        if (!defined("'.$alias.'") || $'.$alias.' instanceof '.$alias.') {
             const '.$alias.' = 1;
         }
         echo '.$alias.';
@@ -63,7 +62,7 @@ class '.ucfirst($alias).'ing
 }
 
 class '.$alias.' extends '.ucfirst($alias).'ing{
-    const '.$alias.' = \''.$alias.'\'
+    const '.$alias.' = "'.$alias.'"
 }
 ',
             );
@@ -74,8 +73,16 @@ class '.$alias.' extends '.ucfirst($alias).'ing{
                 "<?php $alias(\$a);",
             );
             $cases[] = array(
+                "<?php \\$master(\$a);",
+                "<?php \\$alias(\$a);",
+            );
+            $cases[] = array(
                 "<?php \$a = &$master(\$a);",
                 "<?php \$a = &$alias(\$a);",
+            );
+            $cases[] = array(
+                "<?php \$a = &\\$master(\$a);",
+                "<?php \$a = &\\$alias(\$a);",
             );
             $cases[] = array(
                 "<?php $master
@@ -91,7 +98,17 @@ class '.$alias.' extends '.ucfirst($alias).'ing{
                 "<?php a($master());",
                 "<?php a($alias());",
             );
+            $cases[] = array(
+                "<?php a(\\$master());",
+                "<?php a(\\$alias());",
+            );
         }
+
+        /* static case to fix - in case previous generation is broken */
+        $cases[] = array(
+            '<?php is_int($a);',
+            '<?php is_integer($a);',
+        );
 
         return $cases;
     }

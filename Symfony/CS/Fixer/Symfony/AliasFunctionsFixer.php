@@ -49,17 +49,31 @@ class AliasFunctionsFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
+        /** @var $token \Symfony\CS\Tokenizer\Token */
         foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
+            /* skip expressions without parameters list */
             $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
             if (!$nextToken->equals('(')) {
                 continue;
             }
 
-            $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
-            if ($prevToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_NS_SEPARATOR, T_OBJECT_OPERATOR, T_FUNCTION))) {
+            /* skip expressions which are not function reference */
+            $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
+            $prevToken = $tokens[$prevTokenIndex];
+            if ($prevToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION))) {
                 continue;
             }
 
+            /* handle function reference with namespaces */
+            if ($prevToken->isGivenKind(array(T_NS_SEPARATOR))) {
+                $twicePrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
+                $twicePrevToken = $tokens[$twicePrevTokenIndex];
+                if ($twicePrevToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, T_STRING))) {
+                    continue;
+                }
+            }
+
+            /* check mapping hit */
             $tokenContent = strtolower($token->getContent());
             if (!isset(self::$aliases[$tokenContent])) {
                 continue;
