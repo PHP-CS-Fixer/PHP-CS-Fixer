@@ -1050,6 +1050,28 @@ class Foo
         }
     );',
             ),
+            array(
+                '<?php
+class Something
+{
+public function some()
+{
+    $this->optionen = null; // default: kein Gutscheinkonto, Kreditrahmen nicht nutzen
+    $this->user_id = 0;
+}
+}',
+            ),
+            array(
+                "<?php
+class Something
+{
+public function some()
+{
+\t\$this->optionen = null; // default: kein Gutscheinkonto, Kreditrahmen nicht nutzen
+\t\$this->user_id = 0;
+}
+}",
+            ),
         );
     }
 
