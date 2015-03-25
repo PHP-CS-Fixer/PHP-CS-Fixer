@@ -339,6 +339,8 @@ EOF
             $config->setDir($path);
         }
 
+        $verbosity = $output->getVerbosity();
+
         // register custom fixers from config
         $this->fixer->registerCustomFixers($config->getCustomFixers());
 
@@ -349,7 +351,7 @@ EOF
             ->setOptions(array(
                 'level'     => $input->getOption('level'),
                 'fixers'    => $input->getOption('fixers'),
-                'progress'  => $output->isVerbose() && 'txt' === $input->getOption('format'),
+                'progress'  => (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) && 'txt' === $input->getOption('format'),
             ))
             ->resolve();
 
@@ -384,7 +386,6 @@ EOF
             $output->writeln('Legend: '.implode(', ', array_unique($legend)));
         }
 
-        $verbosity = $output->getVerbosity();
         $i = 1;
 
         switch ($input->getOption('format')) {
