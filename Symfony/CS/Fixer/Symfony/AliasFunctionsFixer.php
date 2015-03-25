@@ -20,9 +20,7 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class AliasFunctionsFixer extends AbstractFixer
 {
-    /**
-     * @var string[] stores alias (key) - master (value) functions mapping
-     */
+    /** @var string[] stores alias (key) - master (value) functions mapping */
     private static $aliases = array(
         'chop' => 'rtrim',
         'close' => 'closedir',
