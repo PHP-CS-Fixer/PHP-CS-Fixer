@@ -41,6 +41,7 @@ class AliasFunctionsFixerTest extends AbstractFixerTestBase
             $cases[] = array("<?php new $alias(\$a);");
             $cases[] = array("<?php new Smth\\$alias(\$a);");
             $cases[] = array("<?php Smth\\$alias(\$a);");
+            $cases[] = array("<?php namespace\\$alias(\$a);");
             $cases[] = array("<?php Smth::$alias(\$a);");
             $cases[] = array("<?php new $alias\\smth(\$a);");
             $cases[] = array("<?php $alias::smth(\$a);");
