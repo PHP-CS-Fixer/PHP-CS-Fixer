@@ -293,6 +293,8 @@ Require ``fabpot/php-cs-fixer`` as a `dev`` dependency:
 Create a build file to run ``php-cs-fixer`` on Travis. It's advisable to create a dedicated directory
 for PHP CS Fixer cache files and have Travis cache it between builds.
 
+    <?yml
+
     language: php
     php:
         - 5.5
@@ -305,6 +307,8 @@ for PHP CS Fixer cache files and have Travis cache it between builds.
         - mkdir -p "\$HOME/.php-cs-fixer"
     script:
         - vendor/bin/php-cs-fixer fix --cache-file "\$HOME/.php-cs-fixer/.php_cs.cache" --dry-run --diff --verbose
+
+    ?>
 
 Note: This will only trigger a build if you have a subscription for Travis
 or are using their free open source plan.
