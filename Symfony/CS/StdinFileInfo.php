@@ -60,7 +60,7 @@ class StdinFileInfo extends \SplFileInfo
 
     public function getFileInfo($class_name = null)
     {
-        throw new \RuntimeException("Not implemented");
+        throw new \RuntimeException('Not implemented');
     }
 
     public function getFilename()
@@ -107,7 +107,7 @@ class StdinFileInfo extends \SplFileInfo
 
     public function getPathInfo($class_name = null)
     {
-        throw new \RuntimeException("Not implemented");
+        throw new \RuntimeException('Not implemented');
     }
 
     public function getPathname()
@@ -162,7 +162,7 @@ class StdinFileInfo extends \SplFileInfo
 
     public function openFile($open_mode = 'r', $use_include_path = false, $context = null)
     {
-        throw new \RuntimeException("Not implemented");
+        throw new \RuntimeException('Not implemented');
     }
 
     public function setFileClass($class_name = null)

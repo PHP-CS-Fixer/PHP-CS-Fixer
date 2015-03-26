@@ -96,16 +96,16 @@ class IncludeFixerTest extends AbstractFixerTestBase
                 "<?php require_once '\".__DIR__.\"/../bootstrap.php';",
             ),
             array(
-                "// require foo",
+                '// require foo',
             ),
             array(
-                "<?php // require foo",
+                '<?php // require foo',
             ),
             array(
-                "* require foo",
+                '* require foo',
             ),
             array(
-                "<?php /* require foo */",
+                '<?php /* require foo */',
             ),
             array(
                 'exit(\'POST must include "file"\');',

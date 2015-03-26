@@ -267,6 +267,11 @@ Choose from the list of available fixers:
                 visibility; static MUST be declared
                 after the visibility.
 
+* **blankline_after_open_tag** [symfony]
+                Ensure there is no code on the same
+                line as the PHP open tag and it is
+                followed by a blankline.
+
 * **concat_without_spaces** [symfony]
                 Concatenation should be used without
                 spaces.
@@ -400,6 +405,10 @@ Choose from the list of available fixers:
                 There should be exactly one blank line
                 before a namespace declaration.
 
+* **single_quote** [symfony]
+                Convert double quotes to single quotes
+                for simple strings.
+
 * **spaces_before_semicolon** [symfony]
                 Single-line whitespace before closing
                 semicolon are prohibited.
@@ -414,6 +423,11 @@ Choose from the list of available fixers:
 * **ternary_spaces** [symfony]
                 Standardize spaces around ternary
                 operator.
+
+* **trim_array_spaces** [symfony]
+                Arrays should be formatted like
+                function/method arguments, without
+                leading or trailing single line space.
 
 * **unused_use** [symfony]
                 Unused use statements must be removed.
@@ -449,6 +463,10 @@ Choose from the list of available fixers:
 * **multiline_spaces_before_semicolon** [contrib]
                 Multi-line whitespace before closing
                 semicolon are prohibited.
+
+* **newline_after_open_tag** [contrib]
+                Ensure there is no code on the same
+                line as the PHP open tag.
 
 * **no_blank_lines_before_namespace** [contrib]
                 There should be no blank lines before
