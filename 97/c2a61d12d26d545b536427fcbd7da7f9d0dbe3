@@ -1,0 +1,145 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-25T11:13:13Z
+
+:-1: Just because our minimum dependencies mean that everything doesn't work, it doesn't mean we should force new ones. People can still want to require php-cs-fixer and not use it's cli interface.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-25T11:14:00Z
+
+For example, laravel and symfony don't require all dependencies to make everything work, but they have additional dev dependencies to deal with that.
+
+---------------------------------------------------------------------------
+
+by boekkooi at 2015-03-25T11:27:10Z
+
+@GrahamCampbell If that is the case why are these dependencies not in the ["require-dev"](https://getcomposer.org/doc/04-schema.md#require-dev) and added to the ["suggest"](https://getcomposer.org/doc/04-schema.md#suggest)?
+Also not testing if your requirements are correct is just bad form why not just do require `*` for everything?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-25T12:04:33Z
+
+> Also not testing if your requirements are correct is just bad form why not just do require * for everything?
+
+You're not understanding my point. I'm saying, we want to require the dependencies that mean **most**, but not **all** things works, for maximum compatibility, then users can, themselves, impose extra version constraints. That's how symfony works. They don't require "proxy manager" for example, so their tests would fail without it, but that's ok.
+
+---------------------------------------------------------------------------
+
+by boekkooi at 2015-03-25T12:18:10Z
+
+@GrahamCampbell and your not understanding my point. I'm fine with not requiring all dependencies that why there is a `suggest` and `require-dev` section in the composer.json. But I'm not fine with not testing with the lowest dependencies since this can break stuff if someone it using newer methods that don't exist in the lowest dependencies.
+So since "symfony/console" is in the `require` part it must be the correct lowest supported version to avoid breaking builds on related projects/libraries/packages. (aka to avoid throwing a `PHP Fatal error:  Call to undefined method Symfony\Component\Console\Output\ConsoleOutput::isVerbose()` when trying to run it at the moment see https://travis-ci.org/Tourmanage/Xoip-Components/jobs/55771162)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-25T12:20:28Z
+
+@boekkooi Would a better solution not be to check if that method exists, thus avoiding the errors, and staying compatible?
+
+---------------------------------------------------------------------------
+
+by boekkooi at 2015-03-25T12:29:45Z
+
+@GrahamCampbell that is one option in this case I would go for updating the dependency and making sure it won't happen in the future but if disagree with that then create a PR based on not updating the dependency version.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-25T12:45:20Z
+
+:+1: for testing lowest versions, we do not add partial support like "if you have .1 we give you this, and on .4 we give you that"
+
+---------------------------------------------------------------------------
+
+by boekkooi at 2015-03-25T12:50:57Z
+
+@keradus Are you ok with the version bump for `symfony/console` or would you rather have that I find all bugs related to version `2.1` and that I try to fix those?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-25T12:55:26Z
+
+It would be great if we could stuck with 2.1, but if it would require some workarounds then 2.4 is good
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-25T13:00:11Z
+
+Since the work arounds are minimal, we should patch this in 1.5, then remove the work around and bump the min version in 2.0. Otherwise, we'd be breaking bc.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-25T13:02:54Z
+
+disagree with BC breaking part. What you are saying is sth like update min php version to 5.5 would be BC break... it is not interface change, it change of environment to run a tool.
+
+---------------------------------------------------------------------------
+
+by boekkooi at 2015-03-25T13:16:14Z
+
+@keradus Ok so for version 2.1 we would need to remove/replace `OutputInterface::VERBOSITY_DEBUG`, `$output->isVerbose()` usages in `Console/Command/FixCommand.php` and remove `Symfony\Component\Console\Output\BufferedOutput` usage in `Tests/ReadmeTest`.
+
+If we bump the version to 2.3 we would only need to replace `$output->isVerbose()` and `BufferedOutput`.
+
+Or we can just use `2.4` and have nothing to replace/re-implement.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-25T13:20:21Z
+
+> Or we can just use 2.4 and have nothing to replace/re-implement.
+
+We don't have to re-implement it. Just not support it if it's not available.
+
+---------------------------------------------------------------------------
+
+by boekkooi at 2015-03-25T13:24:43Z
+
+@GrahamCampbell It is not a BC break `2.1` is not supported since
+762f03cf02ab1834e3c961917f4237b491ba48e9 and 833d8dfa47a8e7b07d8e225d8a8e8bc69a8dad2d
+I vote for bump version to `2.3` and skip the buffered test if the class is not there.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-25T13:25:25Z
+
+> I vote for bump version to 2.3 and skip the buffered test if the class is not there.
+
+That would be good actually, yeh. :+1: for that.
+
+---------------------------------------------------------------------------
+
+by boekkooi at 2015-03-25T13:34:40Z
+
+Updated PR.
+This bumps symfony/console to version 2.3 and skips the ReadmeTest for version 2.3.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-25T13:38:10Z
+
+This looks much better now. :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-25T14:13:17Z
+
+what about bumping to 2.4 in our 2.x line and revert that changes (skip test, isVerbose) ?
+
+And, in 2.x thinking... This is tool, most cases are CLI stand-alone usage, not using it as dependency. Do we really need to using possible lowest versions?
+
+---------------------------------------------------------------------------
+
+by boekkooi at 2015-03-25T14:22:05Z
+
+@keradus In my opinion `--prefer-lowest` needs to be in every project/package/etc. that is not committing it's `composer.lock` file.
+Regarding the bump to 2.4 in the 2.x branch I agree, but one could make a case that a tool with this much usage should use a LTS version.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-25T14:25:57Z
+
+> Regarding the bump to 2.4 in the 2.x branch I agree, but one could make a case that a tool with this much usage should use a LTS version.
+
+It's entirely possible that symfony 2.7 will be released by then, lol.
