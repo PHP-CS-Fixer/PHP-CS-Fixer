@@ -3,6 +3,21 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.6
+------------------
+
+* feature #1089 Added NewlineAfterOpenTagFixer and BlanklineAfterOpenTagFixer (ceeram, keradus)
+* feature #1090 Added TrimArraySpacesFixer (jaredh159, keradus)
+* feature #1058 Added SingleQuoteFixer (gharlan)
+* feature #1059 Added LongArraySyntaxFixer (gharlan)
+* feature #1037 Added PhpdocScalarFixer (GrahamCampbell, keradus)
+* feature #1028 Add ListCommasFixer (keradus)
+* minor #1073 ShortTagFixer enhancement (gharlan)
+* minor #1079 Use LongArraySyntaxFixer for this repo (gharlan)
+* minor #1070 Tokens::isMonolithicPhp - remove unused T_CLOSE_TAG search (keradus)
+* minor #1049 OrderedUseFixer - grooming (keradus)
+* bug #1047 Utils::camelCaseToUnderscore - fix regexp (odin-delrio)
+
 Changelog for v1.5.2
 --------------------
 
