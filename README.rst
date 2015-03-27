@@ -3,11 +3,11 @@ PHP Coding Standards Fixer
 
 The PHP Coding Standards Fixer tool fixes *most* issues in your code when you
 want to follow the PHP coding standards as defined in the PSR-1 and PSR-2
-documents.
+documents and many more.
 
-If you are already using ``PHP_CodeSniffer`` to identify coding standards
-problems in your code, you know that fixing them by hand is tedious, especially
-on large projects. This tool does the job for you.
+If you are already using a linter to identify coding standards problems in your
+code, you know that fixing them by hand is tedious, especially on large
+projects. This tool does not only detect them, but also fixes them for you.
 
 Requirements
 ------------
@@ -56,7 +56,7 @@ To install PHP-CS-Fixer, install Composer and issue the following command:
 
     $ ./composer.phar global require fabpot/php-cs-fixer
 
-Then, make sure you have ``~/.composer/vendor/bin`` in your ``PATH``, and
+Then make sure you have ``~/.composer/vendor/bin`` in your ``PATH`` and
 you're good to go:
 
 .. code-block:: bash
@@ -117,14 +117,16 @@ Usage
 -----
 
 The ``fix`` command tries to fix as much coding standards
-problems as possible on a given file or directory:
+problems as possible on a given file or files in a given directory and its subdirectories:
 
 .. code-block:: bash
 
     php php-cs-fixer.phar fix /path/to/dir
     php php-cs-fixer.phar fix /path/to/file
 
-The ``--verbose`` option show applied fixers. When using ``txt`` format (default one) it will also displays progress notification.
+The ``--format`` option can be used to set the output format of the results; ``txt`` (default one), ``xml`` or ``json``.
+
+The ``--verbose`` option will show the applied fixers. When using the ``txt`` format it will also displays progress notifications.
 
 The ``--level`` option limits the fixers to apply on the
 project:
@@ -154,14 +156,14 @@ using ``-name_of_fixer``:
 
     php php-cs-fixer.phar fix /path/to/dir --fixers=-short_tag,-indentation
 
-When using combination with exact and blacklist fixers, apply exact fixers along with above blacklisted result:
+When using combinations of exact and blacklist fixers, applying exact fixers along with above blacklisted results:
 
 .. code-block:: bash
 
     php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,-short_tag
 
 A combination of ``--dry-run`` and ``--diff`` will
-display summary of proposed fixes, leaving your files unchanged.
+display a summary of proposed fixes, leaving your files unchanged.
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
@@ -175,7 +177,7 @@ Choose from the list of available fixers:
 * **psr0** [PSR-0]
                 Classes must be in a path that matches
                 their namespace, be at least one
-                namespace deep, and the class name
+                namespace deep and the class name
                 should match the file name.
 
 * **encoding** [PSR-1]
@@ -530,10 +532,13 @@ fixed but without actually modifying them:
 Instead of using command line options to customize the fixer, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory
 of your project. The file must return an instance of ``Symfony\CS\ConfigInterface``,
-which lets you configure the fixers, the level, the files, and directories that
+which lets you configure the fixers, the level, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
-the local configuration that will be used instead of the project configuration, it
+the local configuration that will be used instead of the project configuration. It
 is a good practice to add that file into your ``.gitignore`` file.
+With the ``--config-file`` option you can specify the path to the
+``.php_cs`` file.
+
 The example below will add two contrib fixers to the default list of PSR2-level fixers:
 
 .. code-block:: php
@@ -550,7 +555,7 @@ The example below will add two contrib fixers to the default list of PSR2-level 
         ->finder($finder)
     ;
 
-If you want complete control over which fixers you use, you may use the empty level and
+If you want complete control over which fixers you use, you can use the empty level and
 then specify all fixers to be used:
 
 .. code-block:: php
@@ -597,26 +602,24 @@ The ``psr2`` level is set by default, you can also change the default level:
 
 In combination with these config and command line options, you can choose various usage.
 
-For example, default level is ``psr2``, but if you also don't want to use
+For example, the default level is ``psr2``, but if you don't want to use
 the ``psr0`` fixer, you can specify the ``--fixers="-psr0"`` option.
 
 But if you use the ``--fixers`` option with only exact fixers,
 only those exact fixers are enabled whether or not level is set.
 
-With the ``--config-file`` option you can specify the path to the
-``.php_cs`` file.
-
-By using ``--using-cache`` option you can set if caching
+By using ``--using-cache`` option with yes or no you can set if the caching
 mechanism should be used.
 
 Caching
 -------
 
 The caching mechanism is enabled by default. This will speed up further runs by
-fixing only files that were modified. Tool will fix all files if tool version
-changed or fixers list changed.
+fixing only files that were modified since the last run. The tool will fix all
+files if the tool version has changed or the list of fixers has changed.
 Cache is supported only for tool downloaded as phar file or installed via
 composer.
+
 Cache can be disabled via ``--using-cache`` option or config file:
 
 .. code-block:: php
