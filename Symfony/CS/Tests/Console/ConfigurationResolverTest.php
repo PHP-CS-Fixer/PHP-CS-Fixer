@@ -102,14 +102,14 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testCwd()
     {
-        $this->resolver->setCwd("foo");
+        $this->resolver->setCwd('foo');
 
         $classReflection = new \ReflectionClass($this->resolver);
         $propertyReflection = $classReflection->getProperty('cwd');
         $propertyReflection->setAccessible(true);
         $property = $propertyReflection->getValue($this->resolver);
 
-        $this->assertSame("foo", $property);
+        $this->assertSame('foo', $property);
     }
 
     protected function makeFixersTest($expectedFixers, $resolvedFixers)

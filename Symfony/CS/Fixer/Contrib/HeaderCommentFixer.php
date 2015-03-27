@@ -95,7 +95,7 @@ class HeaderCommentFixer extends AbstractFixer
         foreach ($lines as $line) {
             $comment .= rtrim(' * '.$line)."\n";
         }
-        $comment .= " */";
+        $comment .= ' */';
 
         return $comment;
     }
