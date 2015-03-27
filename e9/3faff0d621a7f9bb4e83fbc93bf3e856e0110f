@@ -1,0 +1,185 @@
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-21T20:56:03Z
+
+@GrahamCampbell
+
+Not sure I understood what you wanted, is that it?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-21T21:18:56Z
+
+Yep, this depends on your other pull, so if it gets merged, you can rebase this one. and the tests should pass again. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-22T09:46:39Z
+
+> https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1074#issuecomment-84409888
+
+Could you share a quick how-to for that in this PR too? (I mean in the readme file ;) )
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-22T09:49:11Z
+
+IMO:
+- set a file instead of dir, then one could set `__DIR__./.php_cs.cache.$BRANCH`
+- allow to set cache location via console's option (which overrides Config's option)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-22T10:42:34Z
+
+@keradus
+
+Have a look, I hope you like it!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-22T18:26:30Z
+
+@keradus @GrahamCampbell @gharlan
+
+Cleaned this up a bit, thank you for reviewing this so far!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-23T06:06:50Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1076#issuecomment-84575679
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-23T15:50:19Z
+
+@keradus
+
+Updated the `README` with an example, do you like it? :smile:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-23T17:13:33Z
+
+> Updated the README with an example, do you like it? :smile:
+
+Cool story about speeding up Travis !
+It would be extra cool to generalize it - how to set up Travis for checking CS, not only how to set cache for PHP CS Fixer.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-23T17:21:36Z
+
+@keradus
+
+Made the suggested changes, please have a look!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-23T17:31:42Z
+
+@keradus
+
+Made more changes and added a section for Travis, please have a look!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-23T18:02:50Z
+
+Nice @localheinz !
+What do you think about joining it all together to give user one best `.travis` file and then some description of it (like description of caching) ?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-24T11:19:08Z
+
+@keradus
+
+I think that's it now, isn't it? :sweat_smile:
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-24T20:43:13Z
+
+@keradus
+
+All good?
+
+Except for this, maybe: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1076#discussion_r27021363.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-24T20:46:40Z
+
+It looks great @localheinz !
+Except one thing you mentioned, need a deeper look
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-25T13:15:40Z
+
+@keradus
+
+How about this:
+
+* this gets merged
+* I create an issue for the documentation thingy
+
+:question:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-25T14:14:14Z
+
+On the evening I will take a look on that last docs thing, then we decide.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-26T11:41:03Z
+
+@keradus
+
+https://www.youtube.com/watch?v=vWD7k6TrJ-g :wink:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-26T22:30:00Z
+
+https://github.com/localheinz/PHP-CS-Fixer/pull/3
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-27T18:46:32Z
+
+@keradus
+
+As far as I can see, the build failure is unrelated to any changes made in this PR.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-27T18:51:03Z
+
+@keradus
+
+See https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1101.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-27T20:22:02Z
+
+Build is green.
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-27T20:23:46Z
+
+:ship:
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-27T20:33:17Z
+
+:rocket:
