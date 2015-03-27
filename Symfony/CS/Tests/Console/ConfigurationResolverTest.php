@@ -566,4 +566,49 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->config->usingCache());
     }
+
+    public function testResolveCacheFileWithoutConfigAndOption()
+    {
+        $default = $this->config->getCacheFile();
+
+        $this->resolver->resolve();
+
+        $this->assertSame($default, $this->config->getCacheFile());
+    }
+
+    public function testResolveCacheFileWithConfig()
+    {
+        $cacheFile = 'foo/bar.baz';
+
+        $this->config->setCacheFile($cacheFile);
+
+        $this->resolver->resolve();
+
+        $this->assertSame($cacheFile, $this->config->getCacheFile());
+    }
+
+    public function testResolveCacheFileWithOption()
+    {
+        $cacheFile = 'bar.baz';
+
+        $this->config->setCacheFile($cacheFile);
+        $this->resolver->setOption('cache-file', $cacheFile);
+
+        $this->resolver->resolve();
+
+        $this->assertSame($cacheFile, $this->config->getCacheFile());
+    }
+
+    public function testResolveCacheFileWithConfigAndOption()
+    {
+        $configCacheFile = 'foo/bar.baz';
+        $optionCacheFile = 'bar.baz';
+
+        $this->config->setCacheFile($configCacheFile);
+        $this->resolver->setOption('cache-file', $optionCacheFile);
+
+        $this->resolver->resolve();
+
+        $this->assertSame($optionCacheFile, $this->config->getCacheFile());
+    }
 }

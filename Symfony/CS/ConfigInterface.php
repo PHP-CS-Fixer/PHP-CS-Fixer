@@ -105,4 +105,20 @@ interface ConfigInterface
      * @return bool
      */
     public function usingLinter();
+
+    /**
+     * Sets the path to the cache file.
+     *
+     * @param string $cacheFile
+     *
+     * @return ConfigInterface
+     */
+    public function setCacheFile($cacheFile);
+
+    /**
+     * Returns the path to the cache file.
+     *
+     * @return string
+     */
+    public function getCacheFile();
 }
