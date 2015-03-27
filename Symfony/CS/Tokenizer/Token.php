@@ -249,7 +249,7 @@ class Token
                 'T_NAMESPACE', 'T_NEW', 'T_PRINT', 'T_PRIVATE', 'T_PROTECTED', 'T_PUBLIC', 'T_REQUIRE',
                 'T_REQUIRE_ONCE', 'T_RETURN', 'T_STATIC', 'T_SWITCH', 'T_THROW', 'T_TRAIT', 'T_TRY',
                 'T_UNSET', 'T_USE', 'T_VAR', 'T_WHILE', 'T_YIELD',
-                'CT_USE_TRAIT', 'CT_USE_LAMBDA',
+                'CT_ARRAY_TYPEHINT', 'CT_CLASS_CONSTANT', 'CT_NAMESPACE_OPERATOR', 'CT_USE_TRAIT', 'CT_USE_LAMBDA',
             );
 
             foreach ($keywordsStrings as $keywordName) {
