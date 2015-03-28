@@ -26,7 +26,7 @@ class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNamespaceFi
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach (array_keys($tokens->findGivenKind(T_NAMESPACE)) as $index) {
+        foreach ($tokens->findGivenKind(T_NAMESPACE) as $index => $token) {
             $this->fixLinesBeforeNamespace($tokens, $index, 2);
         }
 

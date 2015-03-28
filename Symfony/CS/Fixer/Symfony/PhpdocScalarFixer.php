@@ -115,9 +115,11 @@ class PhpdocScalarFixer extends AbstractFixer
      */
     private static function normalizeTypes(array $types)
     {
-        foreach ($types as $index => $type) {
-            $types[$index] = self::normalizeType($type);
+        foreach ($types as $index => &$type) {
+            $type = self::normalizeType($type);
         }
+        // unset scope to keep scope clear
+        unset($type);
 
         return $types;
     }
