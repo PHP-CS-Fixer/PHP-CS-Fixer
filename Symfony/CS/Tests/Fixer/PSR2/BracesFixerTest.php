@@ -1080,6 +1080,12 @@ class Foo
         }
     );',
             ),
+            array(
+                '<?php
+    use function Foo\bar;
+    if (true) {
+    }',
+            ),
         );
     }
 
