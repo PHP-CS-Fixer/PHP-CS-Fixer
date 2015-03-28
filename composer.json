@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": ">=5.3.6",
-        "symfony/console": "~2.1",
+        "symfony/console": "~2.3",
         "symfony/event-dispatcher" : "~2.1",
         "symfony/filesystem": "~2.1",
         "symfony/finder": "~2.1",

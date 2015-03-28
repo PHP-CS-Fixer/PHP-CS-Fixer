@@ -10,6 +10,9 @@ php:
 
 matrix:
     fast_finish: true
+    include:
+        - php: 5.3
+          env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
     allow_failures:
         - php: 7.0
 
@@ -20,7 +23,7 @@ cache:
         - $HOME/.composer/cache
 
 install:
-    - travis_retry composer install --no-interaction
+    - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction
 
 script:
     - phpunit --verbose --coverage-clover build/logs/clover.xml
