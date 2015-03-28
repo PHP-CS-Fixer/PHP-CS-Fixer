@@ -321,6 +321,7 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $verbosity = $output->getVerbosity();
         $resolver = new ConfigurationResolver();
         $resolver
             ->setCwd(getcwd())
@@ -333,7 +334,7 @@ EOF
                 'level' => $input->getOption('level'),
                 'fixers' => $input->getOption('fixers'),
                 'path' => $input->getArgument('path'),
-                'progress' => $output->isVerbose() && 'txt' === $input->getOption('format'),
+                'progress'  => (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) && 'txt' === $input->getOption('format'),
                 'using-cache' => $input->getOption('using-cache'),
                 'cache-file' => $input->getOption('cache-file'),
             ))
@@ -383,7 +384,6 @@ EOF
             $output->writeln('Legend: '.implode(', ', array_unique($legend)));
         }
 
-        $verbosity = $output->getVerbosity();
         $i = 1;
 
         switch ($input->getOption('format')) {
