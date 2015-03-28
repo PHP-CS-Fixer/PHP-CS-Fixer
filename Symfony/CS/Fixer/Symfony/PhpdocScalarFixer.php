@@ -118,7 +118,7 @@ class PhpdocScalarFixer extends AbstractFixer
         foreach ($types as $index => &$type) {
             $type = self::normalizeType($type);
         }
-        // unset scope to keep scope clear
+        // unset reference to keep scope clear
         unset($type);
 
         return $types;

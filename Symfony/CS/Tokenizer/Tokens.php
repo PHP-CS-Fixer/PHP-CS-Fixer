@@ -138,7 +138,7 @@ class Tokens extends \SplFixedArray
         foreach ($tokens as $index => &$tokenPrototype) {
             $tokenPrototype = new Token($tokenPrototype);
         }
-        // unset scope to keep scope clear
+        // unset reference to keep scope clear
         unset($tokenPrototype);
 
         $collection = self::fromArray($tokens);
@@ -1088,7 +1088,7 @@ class Tokens extends \SplFixedArray
         foreach ($this as $key => &$val) {
             $val = clone $val;
         }
-        // unset scope to keep scope clear
+        // unset reference to keep scope clear
         unset($val);
     }
 
