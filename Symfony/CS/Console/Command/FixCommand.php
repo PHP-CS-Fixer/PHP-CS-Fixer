@@ -291,6 +291,7 @@ EOF
         $configFile = $input->getOption('config-file');
         if (null === $configFile) {
             $configDir = $path;
+
             if (is_file($path) && $dirName = pathinfo($path, PATHINFO_DIRNAME)) {
                 $configDir = $dirName;
             } elseif ($stdin || null === $path) {

@@ -32,8 +32,9 @@ class SingleLineAfterImportsFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens->getImportUseIndexes() as $index) {
-            // if previous line ends with comment and current line starts with whitespace, use current indent
             $indent = '';
+
+            // if previous line ends with comment and current line starts with whitespace, use current indent
             if ($tokens[$index - 1]->isWhitespace(array('whitespaces' => " \t")) && $tokens[$index - 2]->isGivenKind(T_COMMENT)) {
                 $indent = $tokens[$index - 1]->getContent();
             } elseif ($tokens[$index - 1]->isWhitespace()) {
