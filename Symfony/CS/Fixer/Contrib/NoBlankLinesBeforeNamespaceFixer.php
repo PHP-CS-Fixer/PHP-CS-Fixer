@@ -26,8 +26,10 @@ class NoBlankLinesBeforeNamespaceFixer extends AbstractLinesBeforeNamespaceFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach (array_keys($tokens->findGivenKind(T_NAMESPACE)) as $index) {
-            $this->fixLinesBeforeNamespace($tokens, $index, 1);
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind(T_NAMESPACE)) {
+                $this->fixLinesBeforeNamespace($tokens, $index, 1);
+            }
         }
 
         return $tokens->generateCode();

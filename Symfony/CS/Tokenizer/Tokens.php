@@ -135,9 +135,11 @@ class Tokens extends \SplFixedArray
 
         $tokens = token_get_all($code);
 
-        foreach ($tokens as $index => $tokenPrototype) {
-            $tokens[$index] = new Token($tokenPrototype);
+        foreach ($tokens as $index => &$tokenPrototype) {
+            $tokenPrototype = new Token($tokenPrototype);
         }
+        // unset reference to keep scope clear
+        unset($tokenPrototype);
 
         $collection = self::fromArray($tokens);
         $transformers = Transformers::create();
@@ -385,7 +387,7 @@ class Tokens extends \SplFixedArray
         $this->rewind();
 
         $elements = array();
-        $possibleKinds = is_array($possibleKind) ? $possibleKind : array($possibleKind);
+        $possibleKinds = (array) $possibleKind;
 
         foreach ($possibleKinds as $kind) {
             $elements[$kind] = array();
@@ -485,7 +487,7 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            if (T_VARIABLE === $token->getId() && 0 === $bracesLevel) {
+            if (0 === $bracesLevel && T_VARIABLE === $token->getId()) {
                 $elements[$index] = array('token' => $token, 'type' => 'property');
                 continue;
             }
@@ -908,8 +910,8 @@ class Tokens extends \SplFixedArray
 
             if (
                 $token->isGivenKind(T_WHITESPACE) &&
-                false !== strpos($token->getContent(), "\n") &&
-                !$this[$index - 1]->isGivenKind(T_END_HEREDOC)
+                !$this[$index - 1]->isGivenKind(T_END_HEREDOC) &&
+                false !== strpos($token->getContent(), "\n")
             ) {
                 return true;
             }
@@ -1083,9 +1085,11 @@ class Tokens extends \SplFixedArray
      */
     public function __clone()
     {
-        foreach ($this as $key => $val) {
-            $this[$key] = clone $val;
+        foreach ($this as $key => &$val) {
+            $val = clone $val;
         }
+        // unset reference to keep scope clear
+        unset($val);
     }
 
     /**
