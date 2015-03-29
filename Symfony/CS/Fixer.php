@@ -65,7 +65,7 @@ class Fixer
     /**
      * Stopwatch instance.
      *
-     * @var Stopwatch|null
+     * @var Stopwatch
      */
     protected $stopwatch;
 
@@ -74,6 +74,7 @@ class Fixer
         $this->diff = new Differ();
         $this->errorsManager = new ErrorsManager();
         $this->lintManager = new NullLintManager();
+        $this->stopwatch = new Stopwatch();
     }
 
     public function registerBuiltInFixers()
@@ -134,6 +135,16 @@ class Fixer
     }
 
     /**
+     * Get Stopwatch instance.
+     *
+     * @return Stopwatch
+     */
+    public function getStopwatch()
+    {
+        return $this->stopwatch;
+    }
+
+    /**
      * Fixes all files for the given finder.
      *
      * @param ConfigInterface $config A ConfigInterface instance
@@ -147,9 +158,7 @@ class Fixer
         $fixers = $this->prepareFixers($config);
         $changed = array();
 
-        if ($this->stopwatch) {
-            $this->stopwatch->openSection();
-        }
+        $this->stopwatch->openSection();
 
         $fileCacheManager = new FileCacheManager(
             $config->usingCache(),
@@ -162,22 +171,16 @@ class Fixer
                 continue;
             }
 
-            if ($this->stopwatch) {
-                $this->stopwatch->start($this->getFileRelativePathname($file));
-            }
+            $this->stopwatch->start($this->getFileRelativePathname($file));
 
             if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff, $fileCacheManager)) {
                 $changed[$this->getFileRelativePathname($file)] = $fixInfo;
             }
 
-            if ($this->stopwatch) {
-                $this->stopwatch->stop($this->getFileRelativePathname($file));
-            }
+            $this->stopwatch->stop($this->getFileRelativePathname($file));
         }
 
-        if ($this->stopwatch) {
-            $this->stopwatch->stopSection('fixFile');
-        }
+        $this->stopwatch->stopSection('fixFile');
 
         return $changed;
     }
@@ -394,16 +397,6 @@ class Fixer
     public function setLintManager(LintManagerInterface $lintManager)
     {
         $this->lintManager = $lintManager;
-    }
-
-    /**
-     * Set Stopwatch instance.
-     *
-     * @param Stopwatch|null $stopwatch
-     */
-    public function setStopwatch(Stopwatch $stopwatch = null)
-    {
-        $this->stopwatch = $stopwatch;
     }
 
     /**

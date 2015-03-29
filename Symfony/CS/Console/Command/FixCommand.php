@@ -78,14 +78,13 @@ class FixCommand extends Command
     {
         $this->defaultConfig = $config ?: new Config();
         $this->eventDispatcher = new EventDispatcher();
-        $this->stopwatch = new Stopwatch();
 
         $this->fixer = $fixer ?: new Fixer();
         $this->fixer->registerBuiltInFixers();
         $this->fixer->registerBuiltInConfigs();
-        $this->fixer->setStopwatch($this->stopwatch);
 
         $this->errorsManager = $this->fixer->getErrorsManager();
+        $this->stopwatch = $this->fixer->getStopwatch();
 
         parent::__construct();
     }
