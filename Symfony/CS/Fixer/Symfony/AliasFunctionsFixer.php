@@ -36,7 +36,6 @@ class AliasFunctionsFixer extends AbstractFixer
         'key_exists' => 'array_key_exists',
         'magic_quotes_runtime' => 'set_magic_quotes_runtime',
         'pos' => 'current',
-        'rewind' => 'rewinddir',
         'show_source' => 'highlight_file',
         'sizeof' => 'count',
         'strchr' => 'strstr',
