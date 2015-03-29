@@ -173,7 +173,7 @@ class ConfigurationResolver
     /**
      * Set fixer instance.
      *
-     * @param Fixer $config
+     * @param Fixer $fixer
      *
      * @return ConfigurationResolver
      */
@@ -189,7 +189,7 @@ class ConfigurationResolver
      * Set option that will be resolved.
      *
      * @param string $name
-     * @param misc   $value1
+     * @param misc   $value
      *
      * @return ConfigurationResolver
      */

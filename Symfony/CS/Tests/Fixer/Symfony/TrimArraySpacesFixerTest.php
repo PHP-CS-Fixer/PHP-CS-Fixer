@@ -321,7 +321,7 @@ class TrimArraySpacesFixerTest extends AbstractFixerTestBase
                 "<?php \$foo = [ 'a', 'b',\n'c'\n];",
             ),
 
-            // dont fix array syntax within string
+            // don't fix array syntax within string
             array(
                 '<?php $foo = [\'$bar = array( "foo" );\', array(1, 5)];',
                 '<?php $foo = [ \'$bar = array( "foo" );\', array(1, 5 ) ];',

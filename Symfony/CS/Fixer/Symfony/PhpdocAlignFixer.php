@@ -78,6 +78,8 @@ class PhpdocAlignFixer extends AbstractFixer
      * Fix a given docblock.
      *
      * @param string $content
+     *
+     * @return string
      */
     private function fixDocBlock($content)
     {
