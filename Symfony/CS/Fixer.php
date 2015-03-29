@@ -16,6 +16,10 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\CS\LintManager\LintException;
+use Symfony\CS\LintManager\LintManager;
+use Symfony\CS\LintManager\LintManagerInterface;
+use Symfony\CS\LintManager\NullLintManager;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -51,11 +55,11 @@ class Fixer
     protected $errorsManager;
 
     /**
-     * LintManager instance.
+     * Lint manager instance.
      *
-     * @var LintManager|null
+     * @var LintManagerInterface
      */
-    protected $lintManager;
+    protected $lintManager = new NullLintManager();
 
     /**
      * Stopwatch instance.
@@ -185,7 +189,9 @@ class Fixer
             return;
         }
 
-        if ($this->lintManager && !$this->lintManager->createProcessForFile($file->getRealpath())->isSuccessful()) {
+        try {
+            $this->lintManager->lintFile($file->getRealpath());
+        } catch (LintException $e) {
             if ($this->eventDispatcher) {
                 $this->eventDispatcher->dispatch(
                     FixerFileProcessedEvent::NAME,
@@ -246,23 +252,21 @@ class Fixer
         // work of other and both of them will mark collection as changed.
         // Therefore we need to check if code hashes changed.
         if ($oldHash !== $newHash) {
-            if ($this->lintManager) {
-                $lintProcess = $this->lintManager->createProcessForSource($new);
-
-                if (!$lintProcess->isSuccessful()) {
-                    if ($this->eventDispatcher) {
-                        $this->eventDispatcher->dispatch(
-                            FixerFileProcessedEvent::NAME,
-                            FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
-                        );
-                    }
-
-                    if ($this->errorsManager) {
-                        $this->errorsManager->report(ErrorsManager::ERROR_TYPE_LINT, $this->getFileRelativePathname($file), $lintProcess->getOutput());
-                    }
-
-                    return;
+            try {
+                $this->lintManager->lintSource($new);
+            } catch (LintException $e) {
+                if ($this->eventDispatcher) {
+                    $this->eventDispatcher->dispatch(
+                        FixerFileProcessedEvent::NAME,
+                        FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
+                    );
                 }
+
+                if ($this->errorsManager) {
+                    $this->errorsManager->report(ErrorsManager::ERROR_TYPE_LINT, $this->getFileRelativePathname($file), $e->getMessage());
+                }
+
+                return;
             }
 
             if (!$dryRun) {
@@ -394,11 +398,11 @@ class Fixer
     }
 
     /**
-     * Set LintManager instance.
+     * Set lint manager instance.
      *
-     * @param LintManager|null $lintManager
+     * @param LintManagerInterface $lintManager
      */
-    public function setLintManager(LintManager $lintManager = null)
+    public function setLintManager(LintManagerInterface $lintManager)
     {
         $this->lintManager = $lintManager;
     }

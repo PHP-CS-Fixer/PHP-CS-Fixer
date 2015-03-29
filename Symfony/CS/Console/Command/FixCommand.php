@@ -25,7 +25,7 @@ use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerFileProcessedEvent;
 use Symfony\CS\FixerInterface;
-use Symfony\CS\LintManager;
+use Symfony\CS\LintManager\LintManager;
 use Symfony\CS\Utils;
 
 /**
