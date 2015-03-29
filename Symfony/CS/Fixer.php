@@ -51,7 +51,7 @@ class Fixer
     /**
      * ErrorsManager instance.
      *
-     * @var ErrorsManager|null
+     * @var ErrorsManager
      */
     protected $errorsManager;
 
@@ -72,6 +72,7 @@ class Fixer
     public function __construct()
     {
         $this->diff = new Differ();
+        $this->errorsManager = new ErrorsManager();
         $this->lintManager = new NullLintManager();
     }
 
@@ -120,6 +121,16 @@ class Fixer
     public function getConfigs()
     {
         return $this->configs;
+    }
+
+    /**
+     * Get ErrorsManager instance.
+     *
+     * @return ErrorsManager
+     */
+    public function getErrorsManager()
+    {
+        return $this->errorsManager;
     }
 
     /**
@@ -229,9 +240,7 @@ class Fixer
                 FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)
             );
 
-            if ($this->errorsManager) {
-                $this->errorsManager->report(ErrorsManager::ERROR_TYPE_EXCEPTION, $this->getFileRelativePathname($file), $e->__toString());
-            }
+            $this->errorsManager->report(ErrorsManager::ERROR_TYPE_EXCEPTION, $this->getFileRelativePathname($file), $e->__toString());
 
             return;
         }
@@ -256,9 +265,7 @@ class Fixer
                     FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
                 );
 
-                if ($this->errorsManager) {
-                    $this->errorsManager->report(ErrorsManager::ERROR_TYPE_LINT, $this->getFileRelativePathname($file), $e->getMessage());
-                }
+                $this->errorsManager->report(ErrorsManager::ERROR_TYPE_LINT, $this->getFileRelativePathname($file), $e->getMessage());
 
                 return;
             }
@@ -377,16 +384,6 @@ class Fixer
     public function setEventDispatcher(EventDispatcher $eventDispatcher = null)
     {
         $this->eventDispatcher = $eventDispatcher;
-    }
-
-    /**
-     * Set ErrorsManager instance.
-     *
-     * @param ErrorsManager|null $errorsManager
-     */
-    public function setErrorsManager(ErrorsManager $errorsManager = null)
-    {
-        $this->errorsManager = $errorsManager;
     }
 
     /**
