@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-27T21:48:35Z
+
+:+1:
+
+any other thoughts?
+
+// cc @stof @localheinz @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-27T21:58:03Z
+
+@keradus We need to conform to windows error codes I guess: https://msdn.microsoft.com/en-us/library/windows/desktop/ms681381%28v=vs.85%29.aspx.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-27T22:16:13Z
+
+never heard of php app that follow them, maybe becouse they are system codes, not program ones
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-27T23:09:01Z
+
+Right. I've never followed them before either, lol.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-27T23:09:08Z
+
+LGTM :ship:
