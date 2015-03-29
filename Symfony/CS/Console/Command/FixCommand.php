@@ -25,7 +25,7 @@ use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerFileProcessedEvent;
 use Symfony\CS\FixerInterface;
-use Symfony\CS\LintManager;
+use Symfony\CS\Linter\Linter;
 use Symfony\CS\Utils;
 
 /**
@@ -78,14 +78,13 @@ class FixCommand extends Command
     {
         $this->defaultConfig = $config ?: new Config();
         $this->eventDispatcher = new EventDispatcher();
-        $this->errorsManager = new ErrorsManager();
-        $this->stopwatch = new Stopwatch();
 
         $this->fixer = $fixer ?: new Fixer();
         $this->fixer->registerBuiltInFixers();
         $this->fixer->registerBuiltInConfigs();
-        $this->fixer->setStopwatch($this->stopwatch);
-        $this->fixer->setErrorsManager($this->errorsManager);
+
+        $this->errorsManager = $this->fixer->getErrorsManager();
+        $this->stopwatch = $this->fixer->getStopwatch();
 
         parent::__construct();
     }
@@ -354,7 +353,7 @@ EOF
         // register custom fixers from config
         $this->fixer->registerCustomFixers($config->getCustomFixers());
         if ($config->usingLinter()) {
-            $this->fixer->setLintManager(new LintManager());
+            $this->fixer->setLinter(new Linter());
         }
 
         $showProgress = $resolver->getProgress();

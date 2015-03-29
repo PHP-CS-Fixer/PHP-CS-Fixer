@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS;
+namespace Symfony\CS\Linter;
 
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
@@ -21,7 +21,7 @@ use Symfony\Component\Process\ProcessUtils;
  *
  * @internal
  */
-class LintManager
+class Linter implements LinterInterface
 {
     /**
      * Temporary file for code linting.
@@ -44,7 +44,7 @@ class LintManager
      *
      * @return Process
      */
-    public function createProcessForFile($path)
+    private function createProcessForFile($path)
     {
         // in case php://stdin
         if (!is_file($path)) {
@@ -65,7 +65,7 @@ class LintManager
      *
      * @return Process
      */
-    public function createProcessForSource($source)
+    private function createProcessForSource($source)
     {
         if (!$this->temporaryFile) {
             $this->temporaryFile = tempnam('.', 'tmp');
@@ -75,5 +75,33 @@ class LintManager
         $process = $this->createProcessForFile($this->temporaryFile);
 
         return $process;
+    }
+
+    /**
+     * Check if linting process was successful and raise LintingException if not.
+     *
+     * @param Process $process
+     */
+    private function checkProcess(Process $process)
+    {
+        if (!$process->isSuccessful()) {
+            throw new LintingException($process->getOutput(), $process->getExitCode());
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function lintFile($path)
+    {
+        $this->checkProcess($this->createProcessForFile($path));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function lintSource($source)
+    {
+        $this->checkProcess($this->createProcessForSource($source));
     }
 }
