@@ -44,8 +44,8 @@ class Tag
      */
     public function __construct($content)
     {
-        preg_match_all('/@[a-zA-Z0-9_]+/', $content, $matches);
         $this->name = 'other';
+        preg_match_all('/@[a-zA-Z0-9_]+/', $content, $matches);
 
         if (isset($matches[0][0])) {
             $this->name = strtolower(ltrim($matches[0][0], '@'));
