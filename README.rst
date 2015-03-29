@@ -267,6 +267,10 @@ Choose from the list of available fixers:
                 visibility; static MUST be declared
                 after the visibility.
 
+* **alias_functions** [symfony]
+                Master functions shall be used instead
+                of aliases.
+
 * **blankline_after_open_tag** [symfony]
                 Ensure there is no code on the same
                 line as the PHP open tag and it is
@@ -294,10 +298,6 @@ Choose from the list of available fixers:
                 Include and file path should be
                 divided with a single space. File path
                 should not be placed under brackets.
-
-* **join_function** [symfony]
-                Implode function should be used
-                instead of join function.
 
 * **list_commas** [symfony]
                 Remove trailing commas in list
