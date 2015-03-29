@@ -12,6 +12,7 @@
 namespace Symfony\CS;
 
 use SebastianBergmann\Diff\Differ;
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
@@ -59,7 +60,7 @@ class Fixer
      *
      * @var LintManagerInterface
      */
-    protected $lintManager = new NullLintManager();
+    protected $lintManager;
 
     /**
      * Stopwatch instance.
@@ -71,6 +72,7 @@ class Fixer
     public function __construct()
     {
         $this->diff = new Differ();
+        $this->lintManager = new NullLintManager();
     }
 
     public function registerBuiltInFixers()
@@ -179,12 +181,10 @@ class Fixer
             // PHP 5.3 has a broken implementation of token_get_all when the file uses __halt_compiler() starting in 5.3.6
             || (PHP_VERSION_ID >= 50306 && PHP_VERSION_ID < 50400 && false !== stripos($old, '__halt_compiler()'))
         ) {
-            if ($this->eventDispatcher) {
-                $this->eventDispatcher->dispatch(
-                    FixerFileProcessedEvent::NAME,
-                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_SKIPPED)
-                );
-            }
+            $this->dispatchEvent(
+                FixerFileProcessedEvent::NAME,
+                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_SKIPPED)
+            );
 
             return;
         }
@@ -192,12 +192,10 @@ class Fixer
         try {
             $this->lintManager->lintFile($file->getRealpath());
         } catch (LintException $e) {
-            if ($this->eventDispatcher) {
-                $this->eventDispatcher->dispatch(
-                    FixerFileProcessedEvent::NAME,
-                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
-                );
-            }
+            $this->dispatchEvent(
+                FixerFileProcessedEvent::NAME,
+                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
+            );
 
             return;
         }
@@ -226,12 +224,10 @@ class Fixer
                 }
             }
         } catch (\Exception $e) {
-            if ($this->eventDispatcher) {
-                $this->eventDispatcher->dispatch(
-                    FixerFileProcessedEvent::NAME,
-                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)
-                );
-            }
+            $this->dispatchEvent(
+                FixerFileProcessedEvent::NAME,
+                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)
+            );
 
             if ($this->errorsManager) {
                 $this->errorsManager->report(ErrorsManager::ERROR_TYPE_EXCEPTION, $this->getFileRelativePathname($file), $e->__toString());
@@ -255,12 +251,10 @@ class Fixer
             try {
                 $this->lintManager->lintSource($new);
             } catch (LintException $e) {
-                if ($this->eventDispatcher) {
-                    $this->eventDispatcher->dispatch(
-                        FixerFileProcessedEvent::NAME,
-                        FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
-                    );
-                }
+                $this->dispatchEvent(
+                    FixerFileProcessedEvent::NAME,
+                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
+                );
 
                 if ($this->errorsManager) {
                     $this->errorsManager->report(ErrorsManager::ERROR_TYPE_LINT, $this->getFileRelativePathname($file), $e->getMessage());
@@ -286,12 +280,10 @@ class Fixer
 
         $fileCacheManager->setFile($this->getFileRelativePathname($file), $new);
 
-        if ($this->eventDispatcher) {
-            $this->eventDispatcher->dispatch(
-                FixerFileProcessedEvent::NAME,
-                FixerFileProcessedEvent::create()->setStatus($fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES)
-            );
-        }
+        $this->dispatchEvent(
+            FixerFileProcessedEvent::NAME,
+            FixerFileProcessedEvent::create()->setStatus($fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES)
+        );
 
         return $fixInfo;
     }
@@ -415,5 +407,20 @@ class Fixer
     public function setStopwatch(Stopwatch $stopwatch = null)
     {
         $this->stopwatch = $stopwatch;
+    }
+
+    /**
+     * Dispatch event.
+     *
+     * @param string $name
+     * @param Event  $event
+     */
+    private function dispatchEvent($name, Event $event)
+    {
+        if (null === $this->eventDispatcher) {
+            return;
+        }
+
+        $this->eventDispatcher->dispatch($name, $event);
     }
 }
