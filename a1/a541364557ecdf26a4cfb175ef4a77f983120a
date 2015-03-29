@@ -1,0 +1,90 @@
+---------------------------------------------------------------------------
+
+by kalessil at 2015-03-23T16:13:33Z
+
+My only concern is backward compatibility :
+probably a empty JoinFunctionFixer class extending AliasFunctionsFixer shall be provided.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-23T16:25:03Z
+
+:-1: for the bc. We're changing a load of the fixer names anyway in 2.0.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-23T16:39:44Z
+
+> My only concern is backward compatibility
+
+One has no need to keep BC when changing major version.
+
+---------------------------------------------------------------------------
+
+by kalessil at 2015-03-23T16:39:55Z
+
+Ok, sounds good for me.
+
+---------------------------------------------------------------------------
+
+by kalessil at 2015-03-23T18:36:29Z
+
+Status update: UT to be updated, fresh head needed ^_^
+
+---------------------------------------------------------------------------
+
+by kalessil at 2015-03-25T17:32:24Z
+
+@gharlan @GrahamCampbell @keradus : \alias support implemented, I also extended UTs to cover more cases and be more reliable.
+
+---------------------------------------------------------------------------
+
+by kalessil at 2015-03-26T20:26:03Z
+
+Is anything else left to be updated here?
+
+---------------------------------------------------------------------------
+
+by kalessil at 2015-03-29T06:41:44Z
+
+@keradus , @gharlan :
+I plan to contribute 2 more fixers is_null -> null ===/!==, dirname(__FILE__) -> __DIR__ fixers.
+What is more relevant?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-29T08:35:50Z
+
+`is_null`
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-29T09:36:17Z
+
+Please rebase.
+
+---------------------------------------------------------------------------
+
+by kalessil at 2015-03-29T09:37:10Z
+
+Done
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-29T10:30:18Z
+
+No. Please **rebase**, not merge with master.
+
+---------------------------------------------------------------------------
+
+by kalessil at 2015-03-29T11:22:43Z
+
+@keradus : sorry for that, I'm still not on the same wave (hopefully adaptation will not take much time).
+
+Rebased this time.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-29T12:23:35Z
+
+:+1:
