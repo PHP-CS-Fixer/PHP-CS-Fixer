@@ -14,9 +14,7 @@ namespace Symfony\CS\LintManager;
 /**
  * Linting exception.
  *
- * @author Dariusz Rumiñski <dariusz.ruminski@gmail.com>
- *
- * @internal
+ * @author Dariusz RumiÅ„ski <dariusz.ruminski@gmail.com>
  */
 class LintException extends \RuntimeException
 {

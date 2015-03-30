@@ -49,7 +49,7 @@ class Fixer
     protected $eventDispatcher;
 
     /**
-     * ErrorsManager instance.
+     * Errors manager instance.
      *
      * @var ErrorsManager
      */
@@ -125,7 +125,7 @@ class Fixer
     }
 
     /**
-     * Get ErrorsManager instance.
+     * Get the errors manager instance.
      *
      * @return ErrorsManager
      */
@@ -135,7 +135,7 @@ class Fixer
     }
 
     /**
-     * Get Stopwatch instance.
+     * Get stopwatch instance.
      *
      * @return Stopwatch
      */

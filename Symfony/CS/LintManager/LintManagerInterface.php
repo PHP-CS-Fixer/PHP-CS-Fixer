@@ -17,8 +17,6 @@ use Symfony\Component\Process\Process;
  * Interface for PHP code linting process manager.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
  */
 interface LintManagerInterface
 {
