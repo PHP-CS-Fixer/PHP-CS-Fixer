@@ -363,4 +363,17 @@ EOF;
         // when we're not modifying a docblock, then line endings shouldn't change
         $this->makeTest("<?php\r    /**\r     * @param Example Hello there!\r     */\r");
     }
+
+    public function testMalformedDocBlock()
+    {
+        $input = <<<'EOF'
+<?php
+    /**
+     * @return string
+     * */
+
+EOF;
+
+        $this->makeTest($input);
+    }
 }
