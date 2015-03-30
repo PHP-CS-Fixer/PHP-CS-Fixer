@@ -44,11 +44,11 @@ PHP Coding Standards Fixer
 
 The PHP Coding Standards Fixer tool fixes *most* issues in your code when you
 want to follow the PHP coding standards as defined in the PSR-1 and PSR-2
-documents.
+documents and many more.
 
-If you are already using ``PHP_CodeSniffer`` to identify coding standards
-problems in your code, you know that fixing them by hand is tedious, especially
-on large projects. This tool does the job for you.
+If you are already using a linter to identify coding standards problems in your
+code, you know that fixing them by hand is tedious, especially on large
+projects. This tool does not only detect them, but also fixes them for you.
 
 Requirements
 ------------
@@ -97,7 +97,7 @@ To install PHP-CS-Fixer, install Composer and issue the following command:
 
     $ ./composer.phar global require fabpot/php-cs-fixer
 
-Then, make sure you have ``~/.composer/vendor/bin`` in your ``PATH``, and
+Then make sure you have ``~/.composer/vendor/bin`` in your ``PATH`` and
 you're good to go:
 
 .. code-block:: bash
