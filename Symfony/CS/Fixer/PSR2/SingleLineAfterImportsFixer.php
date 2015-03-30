@@ -33,13 +33,13 @@ class SingleLineAfterImportsFixer extends AbstractFixer
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokensAnalyzer->getImportUseIndexes() as $index) {
+            $indent = '';
+
             // if previous line ends with comment and current line starts with whitespace, use current indent
             if ($tokens[$index - 1]->isWhitespace(array('whitespaces' => " \t")) && $tokens[$index - 2]->isGivenKind(T_COMMENT)) {
                 $indent = $tokens[$index - 1]->getContent();
             } elseif ($tokens[$index - 1]->isWhitespace()) {
                 $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$index - 1]);
-            } else {
-                $indent = '';
             }
 
             $newline = "\n";

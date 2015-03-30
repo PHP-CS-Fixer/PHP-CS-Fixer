@@ -37,7 +37,7 @@ class LineAfterNamespaceFixer extends AbstractFixer
             $semicolonIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
             $semicolonToken = $tokens[$semicolonIndex];
 
-            if (!$semicolonToken->equals(';') || !isset($tokens[$semicolonIndex + 1])) {
+            if (!isset($tokens[$semicolonIndex + 1]) || !$semicolonToken->equals(';')) {
                 continue;
             }
 

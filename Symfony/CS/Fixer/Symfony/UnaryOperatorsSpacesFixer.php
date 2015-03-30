@@ -12,14 +12,13 @@
 namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
-use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Gregor Harlan <gharlan@web.de>
  */
-class OperatorsSpacesFixer extends AbstractFixer
+class UnaryOperatorsSpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -29,16 +28,14 @@ class OperatorsSpacesFixer extends AbstractFixer
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if (!$tokensAnalyzer->isBinaryOperator($index)) {
+            if ($tokensAnalyzer->isUnarySuccessorOperator($index)) {
+                $tokens->removeLeadingWhitespace($index);
                 continue;
             }
 
-            if (!$tokens[$index + 1]->isWhitespace()) {
-                $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
-            }
-
-            if (!$tokens[$index - 1]->isWhitespace()) {
-                $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
+            if ($tokensAnalyzer->isUnaryPredecessorOperator($index)) {
+                $tokens->removeTrailingWhitespace($index);
+                continue;
             }
         }
     }
@@ -48,6 +45,6 @@ class OperatorsSpacesFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Binary operators should be arounded by at least one space.';
+        return 'Unary operators should be placed adjacent to their operands.';
     }
 }

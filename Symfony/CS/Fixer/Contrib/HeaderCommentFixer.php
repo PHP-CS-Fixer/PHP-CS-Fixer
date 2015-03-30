@@ -35,11 +35,10 @@ class HeaderCommentFixer extends AbstractFixer
     public static function setHeader($header)
     {
         self::$header = trim((string) $header);
+        self::$headerComment = '';
 
-        if (strlen(self::$header)) {
+        if ('' !== self::$header) {
             self::$headerComment = self::encloseTextInComment(self::$header);
-        } else {
-            self::$headerComment = '';
         }
     }
 

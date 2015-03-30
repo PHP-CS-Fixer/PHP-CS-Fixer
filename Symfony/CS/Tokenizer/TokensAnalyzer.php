@@ -17,6 +17,7 @@ namespace Symfony\CS\Tokenizer;
  * Its role is to provide the ability to analyze collection.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
  */
@@ -89,7 +90,7 @@ class TokensAnalyzer
                 continue;
             }
 
-            if (T_VARIABLE === $token->getId() && 0 === $bracesLevel) {
+            if (0 === $bracesLevel && T_VARIABLE === $token->getId()) {
                 $elements[$index] = array('token' => $token, 'type' => 'property');
                 continue;
             }
@@ -195,8 +196,8 @@ class TokensAnalyzer
 
             if (
                 $token->isGivenKind(T_WHITESPACE) &&
-                false !== strpos($token->getContent(), "\n") &&
-                !$tokens[$index - 1]->isGivenKind(T_END_HEREDOC)
+                !$tokens[$index - 1]->isGivenKind(T_END_HEREDOC) &&
+                false !== strpos($token->getContent(), "\n")
             ) {
                 return true;
             }
@@ -244,6 +245,192 @@ class TokensAnalyzer
         }
 
         return true;
+    }
+
+    /**
+     * Checks if there is an unary successor operator under given index.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isUnarySuccessorOperator($index)
+    {
+        static $allowedPrevToken = array(
+            ']',
+            array(T_STRING),
+            array(T_VARIABLE),
+            array(CT_DYNAMIC_PROP_BRACE_CLOSE),
+            array(CT_DYNAMIC_VAR_BRACE_CLOSE),
+        );
+
+        $tokens = $this->tokens;
+        $token = $tokens[$index];
+
+        if (!$token->isGivenKind(array(T_INC, T_DEC))) {
+            return false;
+        }
+
+        $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+
+        return $prevToken->equalsAny($allowedPrevToken);
+    }
+
+    /**
+     * Checks if there is an unary predecessor operator under given index.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isUnaryPredecessorOperator($index)
+    {
+        static $potentialSuccessorOperator = array(T_INC, T_DEC);
+
+        static $potentialBinaryOperator = array('+', '-', '&');
+
+        static $otherOperators;
+        if (null === $otherOperators) {
+            $otherOperators = array('!', '~', '@');
+            if (defined('T_ELLIPSIS')) {
+                $otherOperators[] = array(T_ELLIPSIS);
+            }
+        }
+
+        static $disallowedPrevTokens;
+        if (null === $disallowedPrevTokens) {
+            $disallowedPrevTokens = array(
+                ']',
+                '}',
+                ')',
+                '"',
+                '`',
+                array(CT_ARRAY_SQUARE_BRACE_CLOSE),
+                array(CT_DYNAMIC_PROP_BRACE_CLOSE),
+                array(CT_DYNAMIC_VAR_BRACE_CLOSE),
+                array(T_CLASS_C),
+                array(T_CONSTANT_ENCAPSED_STRING),
+                array(T_DEC),
+                array(T_DIR),
+                array(T_DNUMBER),
+                array(T_FILE),
+                array(T_FUNC_C),
+                array(T_INC),
+                array(T_LINE),
+                array(T_LNUMBER),
+                array(T_METHOD_C),
+                array(T_NS_C),
+                array(T_STRING),
+                array(T_VARIABLE),
+            );
+            if (defined('T_TRAIT_C')) {
+                $disallowedPrevTokens[] = array(T_TRAIT_C);
+            }
+        }
+
+        $tokens = $this->tokens;
+        $token = $tokens[$index];
+
+        if ($token->isGivenKind($potentialSuccessorOperator)) {
+            return !$this->isUnarySuccessorOperator($index);
+        }
+
+        if ($token->equalsAny($otherOperators)) {
+            return true;
+        }
+
+        if (!$token->equalsAny($potentialBinaryOperator)) {
+            return false;
+        }
+
+        $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+
+        return !$prevToken->equalsAny($disallowedPrevTokens);
+    }
+
+    /**
+     * Checks if there is a binary operator under given index.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isBinaryOperator($index)
+    {
+        static $nonArrayOperators = array(
+            '=' => true,
+            '*' => true,
+            '/' => true,
+            '%' => true,
+            '<' => true,
+            '>' => true,
+            '|' => true,
+            '^' => true,
+        );
+
+        static $potentialUnaryNonArrayOperators = array(
+            '+' => true,
+            '-' => true,
+            '&' => true,
+        );
+
+        static $arrayOperators;
+        if (null === $arrayOperators) {
+            $arrayOperators = array(
+                T_AND_EQUAL             => true,    // &=
+                T_BOOLEAN_AND           => true,    // &&
+                T_BOOLEAN_OR            => true,    // ||
+                T_CONCAT_EQUAL          => true,    // .=
+                T_DIV_EQUAL             => true,    // /=
+                T_DOUBLE_ARROW          => true,    // =>
+                T_IS_EQUAL              => true,    // ==
+                T_IS_GREATER_OR_EQUAL   => true,    // >=
+                T_IS_IDENTICAL          => true,    // ===
+                T_IS_NOT_EQUAL          => true,    // !=, <>
+                T_IS_NOT_IDENTICAL      => true,    // !==
+                T_IS_SMALLER_OR_EQUAL   => true,    // <=
+                T_LOGICAL_AND           => true,    // and
+                T_LOGICAL_OR            => true,    // or
+                T_LOGICAL_XOR           => true,    // xor
+                T_MINUS_EQUAL           => true,    // -=
+                T_MOD_EQUAL             => true,    // %=
+                T_MUL_EQUAL             => true,    // *=
+                T_OR_EQUAL              => true,    // |=
+                T_PLUS_EQUAL            => true,    // +=
+                T_SL                    => true,    // <<
+                T_SL_EQUAL              => true,    // <<=
+                T_SR                    => true,    // >>
+                T_SR_EQUAL              => true,    // >>=
+                T_XOR_EQUAL             => true,    // ^=
+            );
+            if (defined('T_POW')) {
+                $arrayOperators[T_POW]       = true;    // **
+                $arrayOperators[T_POW_EQUAL] = true;    // **=
+            }
+            if (defined('T_SPACESHIP')) {
+                $arrayOperators[T_SPACESHIP] = true;    // <=>
+            }
+            if (defined('T_COALESCE')) {
+                $arrayOperators[T_COALESCE] = true;     // ??
+            }
+        }
+
+        $tokens = $this->tokens;
+        $token = $tokens[$index];
+
+        if ($token->isArray()) {
+            return isset($arrayOperators[$token->getId()]);
+        }
+
+        if (isset($nonArrayOperators[$token->getContent()])) {
+            return true;
+        }
+
+        if (isset($potentialUnaryNonArrayOperators[$token->getContent()])) {
+            return !$this->isUnaryPredecessorOperator($index);
+        }
+
+        return false;
     }
 
     /**

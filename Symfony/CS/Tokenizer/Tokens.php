@@ -147,9 +147,11 @@ class Tokens extends \SplFixedArray
 
         $tokens = token_get_all($code);
 
-        foreach ($tokens as $index => $tokenPrototype) {
-            $tokens[$index] = new Token($tokenPrototype);
+        foreach ($tokens as $index => &$tokenPrototype) {
+            $tokenPrototype = new Token($tokenPrototype);
         }
+        // unset reference to keep scope clear
+        unset($tokenPrototype);
 
         $collection = self::fromArray($tokens);
         $transformers = Transformers::create();
@@ -451,7 +453,7 @@ class Tokens extends \SplFixedArray
         $this->rewind();
 
         $elements = array();
-        $possibleKinds = is_array($possibleKind) ? $possibleKind : array($possibleKind);
+        $possibleKinds = (array) $possibleKind;
 
         foreach ($possibleKinds as $kind) {
             $elements[$kind] = array();

@@ -197,7 +197,7 @@ class TokenTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideIsWhitespaceCases
      */
-    public function testIsWhitespace($token, $isWhitespace, $opts = array())
+    public function testIsWhitespace($token, $isWhitespace, array $opts = array())
     {
         $this->assertSame($isWhitespace, $token->isWhitespace($opts));
     }

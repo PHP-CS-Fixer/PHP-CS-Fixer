@@ -110,7 +110,7 @@ class OrderedUseFixer extends AbstractFixer
 
             while ($index <= $endIndex) {
                 $token = $tokens[$index];
-                if ($token->equals(',') || $index === $endIndex) {
+                if ($index === $endIndex || $token->equals(',')) {
                     $indexes[$startIndex] = array($namespace, $startIndex, $index - 1);
                     $originalIndexes[] = $startIndex;
 
