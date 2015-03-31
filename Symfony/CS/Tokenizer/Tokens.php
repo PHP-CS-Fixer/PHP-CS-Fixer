@@ -1268,11 +1268,9 @@ class Tokens extends \SplFixedArray
      */
     public function __clone()
     {
-        foreach ($this as $key => &$val) {
-            $val = clone $val;
+        foreach ($this as $key => $val) {
+            $this[$key] = clone $val;
         }
-        // unset reference to keep scope clear
-        unset($val);
     }
 
     /**
