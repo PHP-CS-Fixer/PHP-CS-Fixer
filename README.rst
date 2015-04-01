@@ -74,6 +74,30 @@ already have it.
 
     $ brew install homebrew/php/php-cs-fixer
 
+Globally (Windows)
+~~~~~~~~~~~~~~~~~~
+Globally installing the PHAR involves the same procedure as manually `installing PHPUnit on Windows`_:
+
+1. Create a directory for PHP binaries; e.g., ``C:\bin``
+2. Append ``;C:\bin`` to your ``PATH`` environment variable
+3. Download `php-cs-fixer.phar`_ and save the file as ``C:\bin\php-cs-fixer.phar``
+4. Open a command line (e.g., press **Windows+R** » type ``**cmd**`` » **ENTER**)
+5. Create a wrapping batch script (results in ``C:\bin\php-cs-fixer.cmd``):
+
+.. code-block:: bash
+
+    C:\Users\username> cd C:\bin
+    C:\bin> echo @php "%~dp0php-cs-fixer.phar" %* > php-cs-fixer.cmd
+    C:\bin> exit
+
+6. Open a new command line and confirm that you can execute PHP-CS-Fixer from any path:
+
+.. code-block:: bash
+
+    C:\Users\username> php-cs-fixer --version
+
+For Cygwin and/or MingW32 (e.g., TortoiseGit) shell environments, you may skip step 5. above, simply save the file as php-cs-fixer (without .phar extension), and make it executable via chmod 775 php-cs-fixer.
+
 Update
 ------
 
@@ -658,3 +682,4 @@ projects for instance).
 .. _NetBeans:          http://plugins.netbeans.org/plugin/49042/php-cs-fixer
 .. _PhpStorm:          http://arnolog.net/post/92715936483/use-fabpots-php-cs-fixer-tool-in-phpstorm-in-2-steps
 .. _contribute:        https://github.com/FriendsOfPhp/php-cs-fixer/blob/master/CONTRIBUTING.md
+.. _installing PHPUnit on Windows: https://phpunit.de/manual/current/en/installation.html#installation.phar.windows
