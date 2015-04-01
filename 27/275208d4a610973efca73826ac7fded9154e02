@@ -1,0 +1,101 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-29T21:59:50Z
+
+This looks quite nice.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-29T22:05:58Z
+
+Is LintManager the best name for that namespace?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-29T22:07:30Z
+
+Also, how does this compare performance wise? A bit faster I assume? What about if we're not using linting? Is it a bit slower in that case now?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-30T19:38:46Z
+
+> Is LintManager the best name for that namespace?
+
+I can't see a better one, but I'm open for any suggestions.
+
+> Also, how does this compare performance wise? A bit faster I assume? What about if we're not using linting? Is it a bit slower in that case now?
+
+It does not. No reason to be faster or slower.
+The behavior is same as the one on master branch.
+If you are not using linter then indeed, the process of fixing goes faster - but it is already possible on master, this PR does not introduce any changes to that.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-30T19:39:08Z
+
+Issues from review were applied.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-30T19:45:57Z
+
+> No reason to be faster or slower.
+
+Those if statements used to require extra cpu cycles.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-30T20:02:47Z
+
+It's compensated by implementing new interface and move one of that if into helper method (for event dispatching) ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-01T07:09:41Z
+
+IMO ready for merge.
+Any propositions for better namespace name ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-01T11:02:35Z
+
+`Linting` `Lint` `Linter`
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-01T11:16:32Z
+
+what about
+```
+Symfony/CS/Linter/LintException.php
+Symfony/CS/Linter/Linter.php
+Symfony/CS/Linter/LinterInterface.php
+Symfony/CS/Linter/NullLinter.php
+```
+?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-01T11:21:50Z
+
+Yeh. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-01T11:22:05Z
+
+Maybe LintingException?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-01T18:27:16Z
+
+done ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-01T18:31:17Z
+
+:+1: :ship: :rocket:
