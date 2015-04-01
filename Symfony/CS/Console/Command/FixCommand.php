@@ -25,7 +25,7 @@ use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerFileProcessedEvent;
 use Symfony\CS\FixerInterface;
-use Symfony\CS\LintManager\LintManager;
+use Symfony\CS\Linter\Linter;
 use Symfony\CS\Utils;
 
 /**
@@ -353,7 +353,7 @@ EOF
         // register custom fixers from config
         $this->fixer->registerCustomFixers($config->getCustomFixers());
         if ($config->usingLinter()) {
-            $this->fixer->setLintManager(new LintManager());
+            $this->fixer->setLinter(new Linter());
         }
 
         $showProgress = $resolver->getProgress();

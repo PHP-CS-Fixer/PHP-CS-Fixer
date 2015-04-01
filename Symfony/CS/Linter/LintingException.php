@@ -9,13 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\LintManager;
+namespace Symfony\CS\Linter;
 
 /**
  * Linting exception.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class LintException extends \RuntimeException
+class LintingException extends \RuntimeException
 {
 }

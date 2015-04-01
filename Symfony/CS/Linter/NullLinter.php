@@ -9,16 +9,16 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\LintManager;
+namespace Symfony\CS\Linter;
 
 /**
- * Dummy LintManager. No linting is performed. No error is raised.
+ * Dummy linter. No linting is performed. No error is raised.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-class NullLintManager implements LintManagerInterface
+class NullLinter implements LinterInterface
 {
     /**
      * {@inheritdoc}

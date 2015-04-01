@@ -17,10 +17,9 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
-use Symfony\CS\LintManager\LintException;
-use Symfony\CS\LintManager\LintManager;
-use Symfony\CS\LintManager\LintManagerInterface;
-use Symfony\CS\LintManager\NullLintManager;
+use Symfony\CS\Linter\LinterInterface;
+use Symfony\CS\Linter\LintingException;
+use Symfony\CS\Linter\NullLinter;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -56,11 +55,11 @@ class Fixer
     protected $errorsManager;
 
     /**
-     * Lint manager instance.
+     * Linter instance.
      *
-     * @var LintManagerInterface
+     * @var LinterInterface
      */
-    protected $lintManager;
+    protected $linter;
 
     /**
      * Stopwatch instance.
@@ -73,7 +72,7 @@ class Fixer
     {
         $this->diff = new Differ();
         $this->errorsManager = new ErrorsManager();
-        $this->lintManager = new NullLintManager();
+        $this->linter = new NullLinter();
         $this->stopwatch = new Stopwatch();
     }
 
@@ -204,8 +203,8 @@ class Fixer
         }
 
         try {
-            $this->lintManager->lintFile($file->getRealpath());
-        } catch (LintException $e) {
+            $this->linter->lintFile($file->getRealpath());
+        } catch (LintingException $e) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
                 FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
@@ -261,8 +260,8 @@ class Fixer
         // Therefore we need to check if code hashes changed.
         if ($oldHash !== $newHash) {
             try {
-                $this->lintManager->lintSource($new);
-            } catch (LintException $e) {
+                $this->linter->lintSource($new);
+            } catch (LintingException $e) {
                 $this->dispatchEvent(
                     FixerFileProcessedEvent::NAME,
                     FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
@@ -390,13 +389,13 @@ class Fixer
     }
 
     /**
-     * Set lint manager instance.
+     * Set linter instance.
      *
-     * @param LintManagerInterface $lintManager
+     * @param LinterInterface $linter
      */
-    public function setLintManager(LintManagerInterface $lintManager)
+    public function setLinter(LinterInterface $linter)
     {
-        $this->lintManager = $lintManager;
+        $this->linter = $linter;
     }
 
     /**

@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\LintManager;
+namespace Symfony\CS\Linter;
 
 use Symfony\Component\Process\Process;
 
@@ -18,7 +18,7 @@ use Symfony\Component\Process\Process;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-interface LintManagerInterface
+interface LinterInterface
 {
     /**
      * Lint PHP file.

@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\LintManager;
+namespace Symfony\CS\Linter;
 
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
@@ -21,7 +21,7 @@ use Symfony\Component\Process\ProcessUtils;
  *
  * @internal
  */
-class LintManager implements LintManagerInterface
+class Linter implements LinterInterface
 {
     /**
      * Temporary file for code linting.
@@ -78,14 +78,14 @@ class LintManager implements LintManagerInterface
     }
 
     /**
-     * Check if linting process was successful and raise LintException if not.
+     * Check if linting process was successful and raise LintingException if not.
      *
      * @param Process $process
      */
     private function checkProcess(Process $process)
     {
         if (!$process->isSuccessful()) {
-            throw new LintException($process->getOutput(), $process->getExitCode());
+            throw new LintingException($process->getOutput(), $process->getExitCode());
         }
     }
 
