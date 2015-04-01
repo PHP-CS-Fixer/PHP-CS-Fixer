@@ -71,7 +71,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
             if ($this->config) {
                 $dir = substr($dir, strlen(realpath($this->config->getDir())) + 1);
                 if (strlen($normNamespace) > strlen($dir)) {
-                    if (strlen($dir)) {
+                    if ('' !== $dir) {
                         $normNamespace = substr($normNamespace, -strlen($dir));
                     } else {
                         $normNamespace = '';
