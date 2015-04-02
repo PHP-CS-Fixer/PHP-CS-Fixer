@@ -448,8 +448,8 @@ EOF;
         $expected = <<<'EOF'
 <?php
     /**
-     * @excpectedException Exception
-     * @excpectedExceptionMessage Oh Noes!
+     * @expectedException Exception
+     * @expectedExceptionMessage Oh Noes!
      * Something when wrong!
      *
      *
@@ -464,8 +464,8 @@ EOF;
         $input = <<<'EOF'
 <?php
     /**
-     * @excpectedException Exception
-     * @excpectedExceptionMessage Oh Noes!
+     * @expectedException Exception
+     * @expectedExceptionMessage Oh Noes!
      * Something when wrong!
      *
      *

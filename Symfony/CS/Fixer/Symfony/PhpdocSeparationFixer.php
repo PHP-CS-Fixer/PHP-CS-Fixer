@@ -75,6 +75,8 @@ class PhpdocSeparationFixer extends AbstractFixer
      * Make sure the annotations are correctly separated.
      *
      * @param DocBlock $doc
+     *
+     * @return string
      */
     private function fixAnnotations(DocBlock $doc)
     {
