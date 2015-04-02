@@ -113,12 +113,12 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $fixer->addFixer(new \Symfony\CS\Fixer\PSR2\VisibilityFixer());
         $fixer->addFixer(new \Symfony\CS\Fixer\PSR0\Psr0Fixer()); //will be ignored cause of test keyword in namespace
 
-        $config = Config::create()->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'));
+        $config = Config::create()->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'));
         $config->fixers($fixer->getFixers());
         $config->setUsingCache(false);
 
         $changed = $fixer->fix($config, true, true);
-        $pathToInvalidFile = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'somefile.php';
+        $pathToInvalidFile = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'.DIRECTORY_SEPARATOR.'somefile.php';
 
         $this->assertCount(1, $changed);
         $this->assertCount(2, $changed[$pathToInvalidFile]);
