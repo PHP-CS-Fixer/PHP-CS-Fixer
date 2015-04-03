@@ -57,7 +57,7 @@ class PhpdocShortDescriptionFixer extends AbstractFixer
      * Find the line number of the line containing the end of the short
      * description, if present.
      *
-     * @param Line[] $lines
+     * @param array $lines
      *
      * @return int|null
      */

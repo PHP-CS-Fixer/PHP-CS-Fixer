@@ -115,7 +115,7 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The given token must be whitespace.
      */
     public function testCalculateTrailingWhitespaceIndentFail()
