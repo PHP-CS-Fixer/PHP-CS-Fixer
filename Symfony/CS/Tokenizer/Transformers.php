@@ -24,7 +24,7 @@ class Transformers
     /**
      * Array of registered Transformer classes.
      *
-     * @var Transformer[]
+     * @var array
      */
     private $items = array();
 

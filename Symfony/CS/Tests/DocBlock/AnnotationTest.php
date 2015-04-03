@@ -11,7 +11,6 @@
 
 namespace Symfony\CS\Tests\DocBlock;
 
-use Symfony\CS\DocBlock\Annotation;
 use Symfony\CS\DocBlock\DocBlock;
 
 /**

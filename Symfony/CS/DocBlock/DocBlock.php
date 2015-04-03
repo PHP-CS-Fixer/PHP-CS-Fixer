@@ -147,7 +147,7 @@ class DocBlock
      *
      * @param string|string[] $types
      *
-     * @return Annotations[]
+     * @return array A list of Annotation objects
      */
     public function getAnnotationsOfType($types)
     {

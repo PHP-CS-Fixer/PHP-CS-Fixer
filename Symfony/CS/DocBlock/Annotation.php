@@ -23,7 +23,7 @@ class Annotation
      *
      * Note that the array indexes represent the position in the docblock.
      *
-     * @var Lines[]
+     * @var array
      */
     private $lines;
 
@@ -37,7 +37,7 @@ class Annotation
     /**
      * Create a new line instance.
      *
-     * @param Line[] $lines
+     * @param array $lines
      */
     public function __construct(array $lines)
     {
