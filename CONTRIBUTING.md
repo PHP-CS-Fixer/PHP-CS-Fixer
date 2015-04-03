@@ -3,7 +3,9 @@
 ## Quick guide
 
  * Fork the repo.
- * Checkout the branch you want to make changes on.
+ * Checkout the branch you want to make changes on:
+  * 1.6, if you are fixing a bug for an existing feature (or 1.7 if the feature you are fixing was introduced in that version);
+  * 1.7, if you are adding a new feature 
  * Install dependencies: `composer install`.
  * Create branch, e.g. `feature-foo` or `bugfix-bar`.
  * Make changes.
