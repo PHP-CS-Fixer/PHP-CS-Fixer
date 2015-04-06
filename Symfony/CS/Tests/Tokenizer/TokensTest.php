@@ -817,7 +817,7 @@ PHP;
          * short_open_tag setting is ignored by HHVM
          * @see https://github.com/facebook/hhvm/issues/4758
          */
-        if (!defined('HHVM_VERSION') && !ini_get('short_open_tag')) {
+        if (!ini_get('short_open_tag') && !defined('HHVM_VERSION')) {
             // Short open tag is parsed as T_INLINE_HTML
             $monolitic = false;
         }
@@ -853,7 +853,7 @@ PHP;
          * short_open_tag setting is ignored by HHVM
          * @see https://github.com/facebook/hhvm/issues/4758
          */
-        if (50400 > PHP_VERSION_ID && !defined('HHVM_VERSION') && !ini_get('short_open_tag')) {
+        if (!ini_get('short_open_tag') && 50400 > PHP_VERSION_ID && !defined('HHVM_VERSION')) {
             // Short open tag echo is parsed as T_INLINE_HTML
             $monolitic = false;
         }
