@@ -388,14 +388,15 @@ class Token
     /**
      * Check if token is a whitespace.
      *
-     * @param array  $opts                array of extra options
-     * @param string $opts['whitespaces'] string determining whitespaces chars, default is " \t\n\r\0\x0B"
+     * @param null|string $whitespaces whitespaces characters, default is " \t\n\r\0\x0B"
      *
      * @return bool
      */
-    public function isWhitespace(array $opts = array())
+    public function isWhitespace($whitespaces = " \t\n\r\0\x0B")
     {
-        $whitespaces = isset($opts['whitespaces']) ? $opts['whitespaces'] : " \t\n\r\0\x0B";
+        if (null === $whitespaces) {
+            $whitespaces = " \t\n\r\0\x0B";
+        }
 
         if ($this->isArray && !$this->isGivenKind(T_WHITESPACE)) {
             return false;
