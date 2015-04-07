@@ -27,7 +27,7 @@ class EofEndingFixer extends AbstractFixer
 
         $content = rtrim($content);
 
-        if (strlen($content)) {
+        if ('' !== $content) {
             return $content."\n";
         }
 
