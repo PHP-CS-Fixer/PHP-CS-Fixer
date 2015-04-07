@@ -17,7 +17,7 @@ namespace Symfony\CS\Tests;
 class AbstractFixerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException        LogicException
+     * @expectedException        \LogicException
      * @expectedExceptionMessage Can not determine Fixer level
      */
     public function testLevelThatNotExists()
