@@ -47,6 +47,17 @@ class SingleQuoteFixerTest extends AbstractFixerTestBase
                 '<?php $a = \'foo\'.\'bar\'."$baz";',
                 '<?php $a = \'foo\'."bar"."$baz";',
             ),
+            array(
+                '<?php $a = \'foo "bar"\';',
+                '<?php $a = "foo \"bar\"";',
+            ),
+            array(<<<'EOF'
+<?php $a = '\\foo\\bar\\\\';
+EOF
+                , <<<'EOF'
+<?php $a = "\\foo\\bar\\\\";
+EOF
+            ),
 
             array('<?php $a = \'foo bar\';'),
             array('<?php $a = \'foo "bar"\';'),
@@ -54,6 +65,10 @@ class SingleQuoteFixerTest extends AbstractFixerTestBase
             array('<?php $a = "foo $bar";'),
             array('<?php $a = "foo ${bar}";'),
             array('<?php $a = "foo\n bar";'),
+            array(<<<'EOF'
+<?php $a = "\\\n";
+EOF
+            ),
         );
     }
 }
