@@ -371,9 +371,9 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function provideResolveConfigByNameCases()
     {
         return array(
-            array("\\Symfony\\CS\\Config\\Config", 'default'),
-            array("\\Symfony\\CS\\Config\\MagentoConfig", 'magento'),
-            array("\\Symfony\\CS\\Config\\Symfony23Config", 'sf23'),
+            array('\\Symfony\\CS\\Config\\Config', 'default'),
+            array('\\Symfony\\CS\\Config\\MagentoConfig', 'magento'),
+            array('\\Symfony\\CS\\Config\\Symfony23Config', 'sf23'),
         );
     }
 
@@ -395,7 +395,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->resolve();
 
         $this->assertNull($this->resolver->getConfigFile());
-        $this->assertInstanceOf("\\Symfony\\CS\\Config\\Config", $this->resolver->getConfig());
+        $this->assertInstanceOf('\\Symfony\\CS\\Config\\Config', $this->resolver->getConfig());
     }
 
     public function testResolveConfigFileByPathOfFile()
@@ -407,7 +407,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->resolve();
 
         $this->assertSame($dir.DIRECTORY_SEPARATOR.'.php_cs.dist', $this->resolver->getConfigFile());
-        $this->assertInstanceOf("\\Symfony\\CS\\Config\\MagentoConfig", $this->resolver->getConfig());
+        $this->assertInstanceOf('\\Symfony\\CS\\Config\\MagentoConfig', $this->resolver->getConfig());
     }
 
     public function testResolveConfigFileSpecified()
@@ -419,7 +419,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->resolve();
 
         $this->assertSame($file, $this->resolver->getConfigFile());
-        $this->assertInstanceOf("\\Symfony\\CS\\Config\\MagentoConfig", $this->resolver->getConfig());
+        $this->assertInstanceOf('\\Symfony\\CS\\Config\\MagentoConfig', $this->resolver->getConfig());
     }
 
     /**
@@ -442,17 +442,17 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 $dirBase.'case_1'.DIRECTORY_SEPARATOR.'.php_cs.dist',
-                "\\Symfony\\CS\\Config\\MagentoConfig",
+                '\\Symfony\\CS\\Config\\MagentoConfig',
                 $dirBase.'case_1',
             ),
             array(
                 $dirBase.'case_2'.DIRECTORY_SEPARATOR.'.php_cs',
-                "\\Symfony\\CS\\Config\\MagentoConfig",
+                '\\Symfony\\CS\\Config\\MagentoConfig',
                 $dirBase.'case_2',
             ),
             array(
                 $dirBase.'case_3'.DIRECTORY_SEPARATOR.'.php_cs',
-                "\\Symfony\\CS\\Config\\MagentoConfig",
+                '\\Symfony\\CS\\Config\\MagentoConfig',
                 $dirBase.'case_3',
             ),
         );
