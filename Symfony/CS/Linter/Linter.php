@@ -38,6 +38,34 @@ class Linter implements LinterInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function lintFile($path)
+    {
+        $this->checkProcess($this->createProcessForFile($path));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function lintSource($source)
+    {
+        $this->checkProcess($this->createProcessForSource($source));
+    }
+
+    /**
+     * Check if linting process was successful and raise LintingException if not.
+     *
+     * @param Process $process
+     */
+    private function checkProcess(Process $process)
+    {
+        if (!$process->isSuccessful()) {
+            throw new LintingException($process->getOutput(), $process->getExitCode());
+        }
+    }
+
+    /**
      * Create process that lint PHP file.
      *
      * @param string $path path to file
@@ -75,33 +103,5 @@ class Linter implements LinterInterface
         $process = $this->createProcessForFile($this->temporaryFile);
 
         return $process;
-    }
-
-    /**
-     * Check if linting process was successful and raise LintingException if not.
-     *
-     * @param Process $process
-     */
-    private function checkProcess(Process $process)
-    {
-        if (!$process->isSuccessful()) {
-            throw new LintingException($process->getOutput(), $process->getExitCode());
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function lintFile($path)
-    {
-        $this->checkProcess($this->createProcessForFile($path));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function lintSource($source)
-    {
-        $this->checkProcess($this->createProcessForSource($source));
     }
 }
