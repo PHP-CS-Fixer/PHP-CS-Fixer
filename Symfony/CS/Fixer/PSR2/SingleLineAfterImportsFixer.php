@@ -36,7 +36,7 @@ class SingleLineAfterImportsFixer extends AbstractFixer
             $indent = '';
 
             // if previous line ends with comment and current line starts with whitespace, use current indent
-            if ($tokens[$index - 1]->isWhitespace(array('whitespaces' => " \t")) && $tokens[$index - 2]->isGivenKind(T_COMMENT)) {
+            if ($tokens[$index - 1]->isWhitespace(" \t") && $tokens[$index - 2]->isGivenKind(T_COMMENT)) {
                 $indent = $tokens[$index - 1]->getContent();
             } elseif ($tokens[$index - 1]->isWhitespace()) {
                 $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$index - 1]);
@@ -47,7 +47,7 @@ class SingleLineAfterImportsFixer extends AbstractFixer
             // Handle insert index for inline T_COMMENT with whitespace after semicolon
             $semicolonIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
             $insertIndex = $semicolonIndex + 1;
-            if ($tokens[$insertIndex]->isWhitespace(array('whitespaces' => " \t")) && $tokens[$insertIndex + 1]->isComment()) {
+            if ($tokens[$insertIndex]->isWhitespace(" \t") && $tokens[$insertIndex + 1]->isComment()) {
                 ++$insertIndex;
             }
 

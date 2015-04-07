@@ -22,7 +22,7 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
  */
 class FunctionDeclarationFixer extends AbstractFixer
 {
-    private $singleLineWhitespaceOptions = array('whitespaces' => " \t");
+    private $singleLineWhitespaceOptions = " \t";
 
     /**
      * {@inheritdoc}
