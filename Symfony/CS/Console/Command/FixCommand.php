@@ -21,9 +21,9 @@ use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\Console\ConfigurationResolver;
+use Symfony\CS\Console\Output\ProcessOutput;
 use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
-use Symfony\CS\FixerFileProcessedEvent;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Linter\Linter;
 use Symfony\CS\Utils;
@@ -343,7 +343,7 @@ EOF
             ->resolve()
         ;
 
-        $config     = $resolver->getConfig();
+        $config = $resolver->getConfig();
         $configFile = $resolver->getConfigFile();
 
         if ($configFile && 'txt' === $input->getOption('format')) {
@@ -359,12 +359,8 @@ EOF
         $showProgress = $resolver->getProgress();
 
         if ($showProgress) {
-            $fileProcessedEventListener = function (FixerFileProcessedEvent $event) use ($output) {
-                $output->write($event->getStatusAsString());
-            };
-
             $this->fixer->setEventDispatcher($this->eventDispatcher);
-            $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
+            $progressOutput = new ProcessOutput($this->eventDispatcher);
         }
 
         $this->stopwatch->start('fixFiles');
@@ -372,18 +368,8 @@ EOF
         $this->stopwatch->stop('fixFiles');
 
         if ($showProgress) {
+            $progressOutput->printLegend();
             $this->fixer->setEventDispatcher(null);
-            $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
-            $output->writeln('');
-
-            $legend = array();
-            foreach (FixerFileProcessedEvent::getStatusMap() as $status) {
-                if ($status['symbol'] && $status['description']) {
-                    $legend[] = $status['symbol'].'-'.$status['description'];
-                }
-            }
-
-            $output->writeln('Legend: '.implode(', ', array_unique($legend)));
         }
 
         $i = 1;
