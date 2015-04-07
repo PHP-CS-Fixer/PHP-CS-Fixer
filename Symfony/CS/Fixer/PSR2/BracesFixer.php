@@ -265,14 +265,14 @@ class BracesFixer extends AbstractFixer
                 // set indent only if it is not a case, when comment is following { in same line
                 if (
                     !$nextNonWhitespaceToken->isComment()
-                    || !($nextToken->isWhitespace() && $nextToken->isWhitespace(array('whitespaces' => " \t")))
+                    || !($nextToken->isWhitespace() && $nextToken->isWhitespace(" \t"))
                     && substr_count($nextToken->getContent(), "\n") === 1 // preserve blank lines
                 ) {
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
                 }
             } else {
                 $nextToken = $tokens[$startBraceIndex + 1];
-                if ($nextToken->isWhitespace(array('whitespaces' => " \t")) || !$nextToken->isWhitespace()) {
+                if ($nextToken->isWhitespace(" \t") || !$nextToken->isWhitespace()) {
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
                 }
             }

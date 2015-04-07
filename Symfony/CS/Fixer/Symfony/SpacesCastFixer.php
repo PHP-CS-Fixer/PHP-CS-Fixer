@@ -39,7 +39,7 @@ class SpacesCastFixer extends AbstractFixer
                 $token->setContent(strtr($token->getContent(), $insideCastSpaceReplaceMap));
 
                 // force single whitespace after cast token:
-                if ($tokens[$index + 1]->isWhitespace(array('whitespaces' => " \t"))) {
+                if ($tokens[$index + 1]->isWhitespace(" \t")) {
                     // - if next token is whitespaces that contains only spaces and tabs - override next token with single space
                     $tokens[$index + 1]->setContent(' ');
                 } elseif (!$tokens[$index + 1]->isWhitespace()) {
