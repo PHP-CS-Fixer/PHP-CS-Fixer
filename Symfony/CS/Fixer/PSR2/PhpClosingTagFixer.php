@@ -40,7 +40,6 @@ class PhpClosingTagFixer extends AbstractFixer
         }
 
         list($index, $token) = each($closeTags);
-        $token = $tokens[$index];
 
         $tokens->removeLeadingWhitespace($index);
         $token->clear();
