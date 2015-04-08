@@ -234,19 +234,21 @@ class ConfigurationResolver
             return array($configFile);
         }
 
-        if (is_file($path) && $dirName = pathinfo($path, PATHINFO_DIRNAME)) {
-            $configDir = $dirName;
-        } elseif ($this->isStdIn || null === $path) {
-            $configDir = $this->cwd;
-            // path is directory
-        } else {
-            $configDir = $path;
+        $candidates = array();
+        if (null !== $path) {
+            if (is_file($path) && $dirName = pathinfo($path, PATHINFO_DIRNAME)) {
+                $configDir = $dirName;
+            } else {
+                $configDir = $path;
+            }
+            $candidates[] = $configDir.DIRECTORY_SEPARATOR.'.php_cs';
+            $candidates[] = $configDir.DIRECTORY_SEPARATOR.'.php_cs.dist';
         }
 
-        return array(
-            $configDir.DIRECTORY_SEPARATOR.'.php_cs',
-            $configDir.DIRECTORY_SEPARATOR.'.php_cs.dist',
-        );
+        $candidates[] = $this->cwd.DIRECTORY_SEPARATOR.'.php_cs';
+        $candidates[] = $this->cwd.DIRECTORY_SEPARATOR.'.php_cs.dist';
+
+        return $candidates;
     }
 
     /**
