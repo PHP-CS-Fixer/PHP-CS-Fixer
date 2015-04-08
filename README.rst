@@ -375,7 +375,7 @@ Choose from the list of available fixers:
 
 * **phpdoc_trim** [symfony]
                 Phpdocs should start and end with
-                content, excluding the very fist and
+                content, excluding the very first and
                 last line of the docblocks.
 
 * **phpdoc_type_to_var** [symfony]
