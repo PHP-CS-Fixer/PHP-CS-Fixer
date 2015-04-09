@@ -4,9 +4,9 @@
 
  * Fork the repo.
  * Checkout the branch you want to make changes on:
-  * Previous release branch if you are fixing a bug for an existing feature (or the current release branch if the feature you are fixing was introduced in that version)
-  * Current release branch if you are adding a new feature
-  * Master if you are adding a new feature or make changes to the code that are not backward compatible
+  * Master if you make changes to the code that are not backward compatible.
+  * Default branch when adding new features.
+  * Branch before the default if you are fixing a bug for an existing feature (or the default/master branch if the feature was introduced in that version).
  * Install dependencies: `composer install`.
  * Create branch, e.g. `feature-foo` or `bugfix-bar`.
  * Make changes.
