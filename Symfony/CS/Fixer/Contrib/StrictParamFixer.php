@@ -23,6 +23,14 @@ class StrictParamFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         static $map = null;

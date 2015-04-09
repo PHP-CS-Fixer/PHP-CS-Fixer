@@ -23,6 +23,14 @@ class UnalignDoubleArrowFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOUBLE_ARROW);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'Unalign double arrow symbols.';

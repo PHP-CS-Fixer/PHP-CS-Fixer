@@ -23,6 +23,14 @@ class Php4ConstructorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_CLASS);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $classes = array_keys($tokens->findGivenKind(T_CLASS));

@@ -23,6 +23,14 @@ class ReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_RETURN);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {

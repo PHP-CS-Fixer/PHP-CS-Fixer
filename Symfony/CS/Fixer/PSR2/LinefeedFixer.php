@@ -24,6 +24,14 @@ class LinefeedFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         // [Structure] Use the linefeed character (0x0A) to end lines

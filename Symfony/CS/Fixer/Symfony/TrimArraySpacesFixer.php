@@ -22,6 +22,14 @@ class TrimArraySpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array(T_ARRAY, CT_ARRAY_SQUARE_BRACE_OPEN));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {

@@ -55,6 +55,17 @@ class Tokens extends \SplFixedArray
     private $changed = false;
 
     /**
+     * Set of found token kinds.
+     *
+     * When the token kind is present in this set it means that given token kind
+     * was ever seen inside the collection (but may not be part of it any longer).
+     * The key is token kind and the value is always true.
+     *
+     * @var bool[]
+     */
+    private $foundTokenKinds;
+
+    /**
      * Clear cache - one position or all of them.
      *
      * @param string|null $key position to clear, when null clear all
@@ -130,7 +141,7 @@ class Tokens extends \SplFixedArray
      */
     public static function fromCode($code)
     {
-        $codeHash = crc32($code);
+        $codeHash = self::calculateCodeHash($code);
 
         if (self::hasCache($codeHash)) {
             $tokens = self::getCache($codeHash);
@@ -146,19 +157,11 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        $tokens = token_get_all($code);
+        $tokens = new self();
+        $tokens->setCode($code);
+        $tokens->clearChanged();
 
-        foreach ($tokens as $index => $tokenPrototype) {
-            $tokens[$index] = new Token($tokenPrototype);
-        }
-
-        $collection = self::fromArray($tokens);
-        $transformers = Transformers::create();
-        $transformers->transform($collection);
-        $collection->changeCodeHash($codeHash);
-        $collection->clearChanged();
-
-        return $collection;
+        return $tokens;
     }
 
     /**
@@ -194,6 +197,18 @@ class Tokens extends \SplFixedArray
                 'end' => array(CT_DYNAMIC_VAR_BRACE_CLOSE, '}'),
             ),
         );
+    }
+
+    /**
+     * Calculate hash for code.
+     *
+     * @param string $code
+     *
+     * @return string
+     */
+    private static function calculateCodeHash($code)
+    {
+        return crc32($code);
     }
 
     /**
@@ -266,30 +281,12 @@ class Tokens extends \SplFixedArray
      *
      * @param int   $index
      * @param Token $newval
-     *
-     * @warning
      */
     public function offsetSet($index, $newval)
     {
         $this->changed = true;
+        $this->registerFoundToken($newval);
         parent::offsetSet($index, $newval);
-    }
-
-    /**
-     * Change code hash.
-     *
-     * Remove old cache and set new one.
-     *
-     * @param string $codeHash new code hash
-     */
-    private function changeCodeHash($codeHash)
-    {
-        if (null !== $this->codeHash) {
-            self::clearCache($this->codeHash);
-        }
-
-        $this->codeHash = $codeHash;
-        self::setCache($this->codeHash, $this);
     }
 
     /**
@@ -477,7 +474,7 @@ class Tokens extends \SplFixedArray
     public function generateCode()
     {
         $code = $this->generatePartialCode(0, count($this) - 1);
-        $this->changeCodeHash(crc32($code));
+        $this->changeCodeHash(self::calculateCodeHash($code));
 
         return $code;
     }
@@ -845,6 +842,17 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Override token at given index and register it.
+     *
+     * @param Token|array|string $token token prototype
+     */
+    public function overrideAt($index, $token)
+    {
+        $this[$index]->override($token);
+        $this->registerFoundToken($token);
+    }
+
+    /**
      * Override tokens at given range.
      *
      * @param int            $indexStart start overriding index
@@ -881,7 +889,7 @@ class Tokens extends \SplFixedArray
 
         // Override each items.
         foreach ($items as $itemIndex => $item) {
-            $this[$indexStart + $itemIndex]->override($item);
+            $this->overrideAt($indexStart + $itemIndex, $item);
         }
 
         // If we want to add less tokens than passed range contains then clear
@@ -891,16 +899,6 @@ class Tokens extends \SplFixedArray
                 $this[$i]->clear();
             }
         }
-    }
-
-    /*
-     * Override token at given index and register it.
-     *
-     * @param Token|array|string $token token prototype
-     */
-    public function overrideAt($index, $token)
-    {
-        $this[$index]->override($token);
     }
 
     /**
@@ -956,8 +954,13 @@ class Tokens extends \SplFixedArray
         $transformers = Transformers::create();
         $transformers->transform($this);
 
+        $this->foundTokenKinds = array();
+        foreach ($this as $index => $token) {
+            $this->registerFoundToken($token);
+        }
+
         $this->rewind();
-        $this->changeCodeHash(crc32($code));
+        $this->changeCodeHash(self::calculateCodeHash($code));
         $this->changed = true;
     }
 
@@ -978,6 +981,54 @@ class Tokens extends \SplFixedArray
         $this->rewind();
 
         return json_encode($output, $options);
+    }
+
+    /**
+     * Check if all token kinds given as argument are found.
+     *
+     * @param array
+     *
+     * @return bool
+     */
+    public function isAllTokenKindsFound(array $tokenKinds)
+    {
+        foreach ($tokenKinds as $tokenKind) {
+            if (!array_key_exists($tokenKind, $this->foundTokenKinds)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if any token kind given as argument is found.
+     *
+     * @param array
+     *
+     * @return bool
+     */
+    public function isAnyTokenKindsFound(array $tokenKinds)
+    {
+        foreach ($tokenKinds as $tokenKind) {
+            if (array_key_exists($tokenKind, $this->foundTokenKinds)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if token kind given as argument is found.
+     *
+     * @param array
+     *
+     * @return bool
+     */
+    public function isTokenKindFound($tokenKind)
+    {
+        return array_key_exists($tokenKind, $this->foundTokenKinds);
     }
 
     /**
@@ -1049,5 +1100,37 @@ class Tokens extends \SplFixedArray
         }
 
         return 0 === count($kinds[T_INLINE_HTML]) + count($hhvmHashBangs) && 1 === count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO]) + count($hhvmOpenTagsWithEcho);
+    }
+
+    /**
+     * Change code hash.
+     *
+     * Remove old cache and set new one.
+     *
+     * @param string $codeHash new code hash
+     */
+    private function changeCodeHash($codeHash)
+    {
+        if (null !== $this->codeHash) {
+            self::clearCache($this->codeHash);
+        }
+
+        $this->codeHash = $codeHash;
+        self::setCache($this->codeHash, $this);
+    }
+
+    /**
+     * Register token as found.
+     *
+     * @param Token|array|string $token token prototype
+     */
+    private function registerFoundToken($token)
+    {
+        $tokenKind = $token instanceof Token
+            ? ($token->isArray() ? $token->getId() : $token->getContent())
+            : (is_array($token) ? $token[0] : $token)
+        ;
+
+        $this->foundTokenKinds[$tokenKind] = true;
     }
 }

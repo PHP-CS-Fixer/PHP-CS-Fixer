@@ -23,6 +23,14 @@ class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_NAMESPACE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = count($tokens) - 1; 0 <= $index; --$index) {

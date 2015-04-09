@@ -23,6 +23,14 @@ class LongArraySyntaxFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(CT_ARRAY_SQUARE_BRACE_OPEN);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {

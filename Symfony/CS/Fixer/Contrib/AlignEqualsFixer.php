@@ -23,6 +23,14 @@ class AlignEqualsFixer extends AbstractAlignFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound('=');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $this->deepestLevel = 0;

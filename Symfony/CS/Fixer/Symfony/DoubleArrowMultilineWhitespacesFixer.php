@@ -25,6 +25,14 @@ class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOUBLE_ARROW);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {

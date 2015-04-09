@@ -50,6 +50,38 @@ class Token
     private $changed = false;
 
     /**
+     * Get cast token kinds.
+     *
+     * @return int[]
+     */
+    public static function getCastTokenKinds()
+    {
+        static $castTokens = array(T_ARRAY_CAST, T_BOOL_CAST, T_DOUBLE_CAST, T_INT_CAST, T_OBJECT_CAST, T_STRING_CAST, T_UNSET_CAST);
+
+        return $castTokens;
+    }
+
+    /**
+     * Get classy tokens kinds: T_CLASS, T_INTERFACE and T_TRAIT (if defined).
+     *
+     * @return int[]
+     */
+    public static function getClassyTokenKinds()
+    {
+        static $classTokens = null;
+
+        if (null === $classTokens) {
+            $classTokens = array(T_CLASS, T_INTERFACE);
+
+            if (defined('T_TRAIT')) {
+                $classTokens[] = T_TRAIT;
+            }
+        }
+
+        return $classTokens;
+    }
+
+    /**
      * Constructor.
      *
      * @param string|array $token token prototype
@@ -280,9 +312,7 @@ class Token
      */
     public function isCast()
     {
-        static $castTokens = array(T_ARRAY_CAST, T_BOOL_CAST, T_DOUBLE_CAST, T_INT_CAST, T_OBJECT_CAST, T_STRING_CAST, T_UNSET_CAST);
-
-        return $this->isGivenKind($castTokens);
+        return $this->isGivenKind(self::getCastTokenKinds());
     }
 
     /**
@@ -302,17 +332,7 @@ class Token
      */
     public function isClassy()
     {
-        static $classTokens = null;
-
-        if (null === $classTokens) {
-            $classTokens = array(T_CLASS, T_INTERFACE);
-
-            if (defined('T_TRAIT')) {
-                $classTokens[] = constant('T_TRAIT');
-            }
-        }
-
-        return $this->isGivenKind($classTokens);
+        return $this->isGivenKind(self::getClassyTokenKinds());
     }
 
     /**
