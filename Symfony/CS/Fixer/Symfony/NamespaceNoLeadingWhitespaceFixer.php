@@ -72,6 +72,10 @@ class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
 
     private static function endsWithWhitespace($str)
     {
-        return '' !== $str && ctype_space(substr($str, -1));
+        if ('' === $str) {
+            return false;
+        }
+
+        return '' === trim(substr($str, -1));
     }
 }
