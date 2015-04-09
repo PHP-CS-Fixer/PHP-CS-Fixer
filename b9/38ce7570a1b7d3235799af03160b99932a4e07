@@ -1,0 +1,57 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-30T11:31:54Z
+
+We need a test for cases when we're using the php 5.5 class name constant on itself too. :)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-03-30T15:11:54Z
+
+It will pass because I don't look behind `::`. But of course, test case for that is good, I will add it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-30T15:27:57Z
+
+:)
+
+---------------------------------------------------------------------------
+
+by stof at 2015-03-30T17:50:01Z
+
+please add a test with an interface, and a test (running only on 5.4+) with a trait
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-03-30T18:09:41Z
+
+@GrahamCampbell done
+@stof done
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-03-30T23:40:42Z
+
+symfony pr -> https://github.com/symfony/symfony/pull/14123
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-06T20:18:41Z
+
+Merged, please move to SYMFONY level.
+
+:+1:
+Any other thoughts ?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-04-07T17:22:30Z
+
+done
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-08T20:39:40Z
+
+:+1:
