@@ -38,14 +38,21 @@ class Linter implements LinterInterface
      */
     private $executable;
 
-    public function __construct()
+    /**
+     * @param string|null $phpExecutable PHP executable, null for autodetection
+     */
+    public function __construct($phpExecutable = null)
     {
-        $executableFinder = new PhpExecutableFinder();
-        $this->executable = $executableFinder->find();
+        if (null === $phpExecutable) {
+            $executableFinder = new PhpExecutableFinder();
+            $executable = $executableFinder->find();
+        }
 
-        if (false === $this->executable) {
+        if (empty($executable)) {
             throw new UnavailableLinterException();
         }
+
+        $this->executable = $executable;
     }
 
     public function __destruct()

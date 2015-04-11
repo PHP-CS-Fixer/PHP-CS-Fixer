@@ -355,7 +355,7 @@ EOF
         $this->fixer->registerCustomFixers($config->getCustomFixers());
         if ($config->usingLinter()) {
             try {
-                $this->fixer->setLinter(new Linter());
+                $this->fixer->setLinter(new Linter($config->getPhpExecutable()));
             } catch (UnavailableLinterException $e) {
                 if ($configFile && 'txt' === $input->getOption('format')) {
                     $output->writeln('Unable to use linter, can not find PHP executable');

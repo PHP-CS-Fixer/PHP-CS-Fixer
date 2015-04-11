@@ -121,4 +121,11 @@ interface ConfigInterface
      * @return string
      */
     public function getCacheFile();
+
+    /**
+     * Get configured PHP executable, if any.
+     *
+     * @return string|null
+     */
+    public function getPhpExecutable();
 }
