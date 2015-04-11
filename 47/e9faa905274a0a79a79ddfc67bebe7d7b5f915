@@ -1,0 +1,182 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-20T17:04:29Z
+
+Maybe we should still include this work around, but just do a comparison on the hhvm version?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-20T17:05:38Z
+
+Looks like it'll be ages until this gets into the next hhvm lts release. We'll have to wait until 3.9 is released for that.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-20T17:07:09Z
+
+No need to merge it now, as I said we can wait a bit.
+
+I hate any hacks for hhvm bugs, when they fix it we will remove it. We do not support multiple hhvm versions.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-20T17:12:57Z
+
+> No need to merge it now, as I said we can wait a bit.
+
+I'm suggesting we modify it to instead do a comparison of the hhvm version. It would be incorrect for us to apply this patch to hhvm 3.7+.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-20T17:44:53Z
+
+Yes, I do understand you, just not agree with it.
+We do not support hhvm like 3.6, 3.7 etc. Just the latest stable.
+This is not our bug that we should fix - it's hhvm's bug that they should fix. And they do.
+We should not create a workaround for every bug that hhvm has have.
+
+We are already super cool that we have removed hhvm from our allow_failures matrix ;)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-03-20T18:14:26Z
+
+I'm with @keradus, supporting the latest stable hhvm is enough.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-03-22T19:24:38Z
+
+@keradus HHVM 3.3 is an LTS version, so it should be supported too
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-22T19:25:47Z
+
+> HHVM 3.3 is an LTS version, so it should be supported too
+
+That's what I said. Also, so is HHVM 3.6, and only HHVM 3.7+ has the fix.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-22T19:26:25Z
+
+Or, rather, 3.7+ has all the fixes, earlier versions had other stuff fixed.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-23T05:51:14Z
+
+> @keradus HHVM 3.3 is an LTS version, so it should be supported too
+
+then the bug fixes should go there, don't they?
+
+---------------------------------------------------------------------------
+
+by stof at 2015-03-23T10:57:48Z
+
+> then the bug fixes should go there, don't they?
+
+They don't backport all bug fixes, no. See http://hhvm.com/blog/6083/hhvm-long-term-support for their description of what goes in the LTS.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-23T11:15:36Z
+
+> then the bug fixes should go there, don't they?
+
+No, only security fixes.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-23T17:04:32Z
+
+I really do not want to support bunch of hhvm versions.
+Personally I would throw hhvm support away, but I won't, due to fact some of us want to use it. It was hard enough to remove hhvm from our failure matrix.
+Fb had already shown few times that they don't care to be compatible with PHP's tokenizer.
+Therefore, IMO, it is enough to keep support for latest stable.
+We could even terminate tool on unsupported version like we do with old PHP.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-23T17:15:52Z
+
+> I really do not want to support bunch of hhvm versions.
+
+I agree.
+
+> Personally I would throw hhvm support away
+
+I think we should still try to support HHVM though, even if we support the latest versions only.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-03-23T18:55:02Z
+
+> We could even terminate tool on unsupported version like we do with old PHP.
+
+if we terminate clearly (with an explanation), I agree about such change
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-23T19:22:32Z
+
+Then decided.
+To be honest I don't know how to properly detect version of hhvm - anyone willing to create such PR ?
+
+---------------------------------------------------------------------------
+
+by stof at 2015-03-23T19:31:33Z
+
+@keradus they have a ``HHVM_VERSION`` constant. You already use the fact that the constant is defined to detect HHVM. Just use the value of the constant to get the version :smile:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-23T19:37:12Z
+
+![](http://my350z.com/forum/images/smilies/facepalm42550987.gif "facepalm")
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-01T20:46:49Z
+
+HHVM version check added
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-01T21:17:35Z
+
+btw, this started to work on hhvm-nightly ;)
+
+---------------------------------------------------------------------------
+
+by stof at 2015-04-02T08:38:54Z
+
+@keradus looks like 3.5.0 is not actually the lowest version for which the current hacks are not necessary anymore
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-02T15:04:34Z
+
+Yeah, we will need to bump it when current dev will become current stable, just don't know what the number will be.
+One way or another it won't be merged until then, so we just need to wait a bit longer.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-02T15:10:54Z
+
+> Yeah, we will need to bump it when current dev will become current stable, just don't know what the number will be.
+
+Yes we do. The master hhvm branch will be the next minor version, guaranteed.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-11T13:57:00Z
+
+good to go
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-11T14:36:37Z
+
+:+1:
