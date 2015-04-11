@@ -197,9 +197,13 @@ class TokenTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideIsWhitespaceCases
      */
-    public function testIsWhitespace($token, $isWhitespace, array $opts = array())
+    public function testIsWhitespace($token, $isWhitespace, $whitespaces = null)
     {
-        $this->assertSame($isWhitespace, $token->isWhitespace($opts));
+        if (null !== $whitespaces) {
+            $this->assertSame($isWhitespace, $token->isWhitespace($whitespaces));
+        } else {
+            $this->assertSame($isWhitespace, $token->isWhitespace());
+        }
     }
 
     public function provideIsWhitespaceCases()
@@ -209,12 +213,12 @@ class TokenTest extends \PHPUnit_Framework_TestCase
             array($this->getForeachToken(), false),
             array(new Token(' '), true),
             array(new Token("\t "), true),
-            array(new Token("\t "), false, array('whitespaces' => ' ')),
+            array(new Token("\t "), false, ' '),
             array(new Token(array(T_WHITESPACE, "\r", 1)), true),
             array(new Token(array(T_WHITESPACE, "\0", 1)), true),
             array(new Token(array(T_WHITESPACE, "\x0B", 1)), true),
             array(new Token(array(T_WHITESPACE, "\n", 1)), true),
-            array(new Token(array(T_WHITESPACE, "\n", 1)), false, array('whitespaces' => " \t")),
+            array(new Token(array(T_WHITESPACE, "\n", 1)), false, " \t"),
         );
     }
 

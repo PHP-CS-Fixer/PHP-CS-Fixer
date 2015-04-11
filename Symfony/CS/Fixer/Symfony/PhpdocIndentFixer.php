@@ -42,7 +42,7 @@ class PhpdocIndentFixer extends AbstractFixer
 
             // ignore inline docblocks
             if (
-                ($prevToken->isWhitespace(array('whitespaces' => " \t")) && !$tokens[$index - 2]->isGivenKind(T_OPEN_TAG))
+                ($prevToken->isWhitespace(" \t") && !$tokens[$index - 2]->isGivenKind(T_OPEN_TAG))
                 || $prevToken->equalsAny(array(';', '{'))
             ) {
                 continue;

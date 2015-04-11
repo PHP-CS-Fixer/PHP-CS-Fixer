@@ -513,14 +513,14 @@ class Tokens extends \SplFixedArray
      *
      * This method is shorthand for getNonWhitespaceSibling method.
      *
-     * @param int   $index token index
-     * @param array $opts  array of extra options for isWhitespace method
+     * @param int         $index       token index
+     * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
      *
      * @return int|null
      */
-    public function getNextNonWhitespace($index, array $opts = array())
+    public function getNextNonWhitespace($index, $whitespaces = null)
     {
-        return $this->getNonWhitespaceSibling($index, 1, $opts);
+        return $this->getNonWhitespaceSibling($index, 1, $whitespaces);
     }
 
     /**
@@ -544,13 +544,13 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token which is non whitespace.
      *
-     * @param int   $index     token index
-     * @param int   $direction direction for looking, +1 or -1
-     * @param array $opts      array of extra options for isWhitespace method
+     * @param int         $index       token index
+     * @param int         $direction   direction for looking, +1 or -1
+     * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
      *
      * @return int|null
      */
-    public function getNonWhitespaceSibling($index, $direction, array $opts = array())
+    public function getNonWhitespaceSibling($index, $direction, $whitespaces = null)
     {
         while (true) {
             $index += $direction;
@@ -561,7 +561,7 @@ class Tokens extends \SplFixedArray
 
             $token = $this[$index];
 
-            if (!$token->isWhitespace($opts)) {
+            if (!$token->isWhitespace($whitespaces)) {
                 return $index;
             }
         }
@@ -572,14 +572,14 @@ class Tokens extends \SplFixedArray
      *
      * This method is shorthand for getNonWhitespaceSibling method.
      *
-     * @param int   $index token index
-     * @param array $opts  array of extra options for isWhitespace method
+     * @param int         $index       token index
+     * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
      *
      * @return int|null
      */
-    public function getPrevNonWhitespace($index, array $opts = array())
+    public function getPrevNonWhitespace($index, $whitespaces = null)
     {
-        return $this->getNonWhitespaceSibling($index, -1, $opts);
+        return $this->getNonWhitespaceSibling($index, -1, $whitespaces);
     }
 
     /**
@@ -908,12 +908,12 @@ class Tokens extends \SplFixedArray
     /**
      * Removes all the leading whitespace.
      *
-     * @param int   $index
-     * @param array $opts  optional array of extra options for Token::isWhitespace method
+     * @param int         $index
+     * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
      */
-    public function removeLeadingWhitespace($index, array $opts = array())
+    public function removeLeadingWhitespace($index, $whitespaces = null)
     {
-        if (isset($this[$index - 1]) && $this[$index - 1]->isWhitespace($opts)) {
+        if (isset($this[$index - 1]) && $this[$index - 1]->isWhitespace($whitespaces)) {
             $this[$index - 1]->clear();
         }
     }
@@ -921,12 +921,13 @@ class Tokens extends \SplFixedArray
     /**
      * Removes all the trailing whitespace.
      *
-     * @param int   $index
-     * @param array $opts  optional array of extra options for Token::isWhitespace method
+     * @param int         $index
+     * @param array       $opts        optional array of extra options for Token::isWhitespace method
+     * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
      */
-    public function removeTrailingWhitespace($index, array $opts = array())
+    public function removeTrailingWhitespace($index, $whitespaces = null)
     {
-        if (isset($this[$index + 1]) && $this[$index + 1]->isWhitespace($opts)) {
+        if (isset($this[$index + 1]) && $this[$index + 1]->isWhitespace($whitespaces)) {
             $this[$index + 1]->clear();
         }
     }

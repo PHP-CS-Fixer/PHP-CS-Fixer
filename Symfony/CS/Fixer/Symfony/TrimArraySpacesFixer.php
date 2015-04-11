@@ -47,8 +47,6 @@ class TrimArraySpacesFixer extends AbstractFixer
      */
     private static function fixArray(Tokens $tokens, $index)
     {
-        static $whitespaceOptions = array('whitespaces' => " \t");
-
         $startIndex = $index;
 
         if ($tokens[$startIndex]->isGivenKind(T_ARRAY)) {
@@ -60,7 +58,7 @@ class TrimArraySpacesFixer extends AbstractFixer
 
         $nextToken = $tokens[$startIndex + 1];
 
-        if ($nextToken->isWhitespace($whitespaceOptions)) {
+        if ($nextToken->isWhitespace(" \t")) {
             $nextToken->clear();
         }
 
@@ -68,7 +66,7 @@ class TrimArraySpacesFixer extends AbstractFixer
         $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($endIndex)];
 
         if (
-            $prevToken->isWhitespace($whitespaceOptions)
+            $prevToken->isWhitespace(" \t")
             && !$prevNonWhitespaceToken->equals(',')
         ) {
             $prevToken->clear();
