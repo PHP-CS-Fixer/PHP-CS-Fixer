@@ -1,0 +1,45 @@
+---------------------------------------------------------------------------
+
+by kalessil at 2015-03-29T06:26:35Z
+
+More cases for transformation (Code style: prefixed increment/decrement equivalent):
+
+$a += 1;
+$a = 1 + $a;
+$a = $a + 1;
+$a -= 1;
+$a = $a - 1;
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-03-29T10:05:20Z
+
+> More cases for transformation (Code style: prefixed increment/decrement equivalent):
+>
+> $a += 1;
+> $a = 1 + $a;
+> $a = $a + 1;
+> $a -= 1;
+> $a = $a - 1;
+
+Should this fixer handle them? If yes should we rename the fixer? Maybe just `IncrementationFixer`?
+
+//cc @keradus @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-29T10:39:58Z
+
+No it should not. Please remember that `--` is different operator than `-=` and it can (eg one yes, one no) be differently overriden for objects (using override of native objects or custom override using PECL operator extension)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-03-30T23:23:48Z
+
+Let's look if this is merged to symfony: https://github.com/symfony/symfony/pull/14121
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-11T16:51:25Z
+
+Very well, no need to wait longer. Will be merged on CONTRIB level as is. If that Symfony's PR will be merged please send here a new PR to change level of this fixer.
