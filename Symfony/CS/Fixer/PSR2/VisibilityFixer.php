@@ -82,7 +82,7 @@ class VisibilityFixer extends AbstractFixer
     }
 
     /**
-     * Grab attributes before method token at gixen index.
+     * Grab attributes before method token at given index.
      *
      * It's a shorthand for grabAttribsBeforeToken method.
      *
@@ -116,7 +116,7 @@ class VisibilityFixer extends AbstractFixer
     }
 
     /**
-     * Grab attributes before property token at gixen index.
+     * Grab attributes before property token at given index.
      *
      * It's a shorthand for grabAttribsBeforeToken method.
      *
@@ -147,7 +147,7 @@ class VisibilityFixer extends AbstractFixer
     }
 
     /**
-     * Grab attributes before token at gixen index.
+     * Grab attributes before token at given index.
      *
      * Grabbed attributes are cleared by overriding them with empty string and should be manually applied with applyTokenAttribs method.
      *

@@ -382,8 +382,9 @@ class Token
     /**
      * Check if token is a whitespace.
      *
-     * @param array  $opts                array of extra options
-     * @param string $opts['whitespaces'] string determining whitespaces chars, default is " \t\n\r\0\x0B"
+     * @param array $opts Extra options, $opts['whitespaces'] string
+     *                    determining whitespaces chars,
+     *                    default is " \t\n\r\0\x0B"
      *
      * @return bool
      */

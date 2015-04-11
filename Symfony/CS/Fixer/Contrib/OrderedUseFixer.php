@@ -83,6 +83,8 @@ class OrderedUseFixer extends AbstractFixer
      * @param string[] $first
      * @param string[] $second
      *
+     * @return int
+     *
      * @internal
      */
     public static function sortingCallBack(array $first, array $second)
