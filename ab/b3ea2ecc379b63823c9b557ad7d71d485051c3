@@ -1,0 +1,71 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-09T17:36:47Z
+
+@SpacePossum  please fix the project itself and we are good to go !
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-04-09T20:52:51Z
+
+Done and squashed
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-09T20:53:53Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-10T06:32:34Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by sstok at 2015-04-10T13:55:16Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-10T14:37:03Z
+
+We need to remove those extra leading slashes since we don't use FQCNs anywhere else in our phpdoc.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-04-10T15:48:51Z
+
+Maybe we should fix those as well. These phpdocs are as much for developers as for test software and therefor should be as complete and explicit as possible IMO.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-10T15:53:11Z
+
+> These phpdocs are as much for developers as for test software and therefor should be as complete and explicit as possible IMO.
+
+We'd have to changed everything then. None of our docs use FQCNs.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-04-10T16:10:17Z
+
+>We'd have to changed everything then. None of our docs use FQCNs.
+
+I suggested the ones that are of value `for test software` as well; with that scope you end up with about 8 places (`@expectedException`).
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-10T16:46:44Z
+
+> We'd have to changed everything then. None of our docs use FQCNs.
+
+on the other hand we don't import `LogicException` etc
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-10T17:42:15Z
+
+Hmm, good point. Meh. Fine as it is I guess then. Mergy mergy?
