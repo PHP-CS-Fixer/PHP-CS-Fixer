@@ -24,8 +24,6 @@ abstract class AbstractAnnotationRemovalFixer extends AbstractFixer
      *
      * @param Tokens   $tokens
      * @param string[] $type
-     *
-     * @return void
      */
     protected function removeAnnotations(Tokens $tokens, array $type)
     {
