@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocNoPackageFixer extends AbstractAnnotationRemovalFixer
+class PhpdocNoAccessFixer extends AbstractAnnotationRemovalFixer
 {
     /**
      * {@inheritdoc}
@@ -26,7 +26,7 @@ class PhpdocNoPackageFixer extends AbstractAnnotationRemovalFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        $this->removeAnnotations($tokens, array('package', 'subpackage'));
+        $this->removeAnnotations($tokens, array('access'));
 
         return $tokens->generateCode();
     }
@@ -36,6 +36,6 @@ class PhpdocNoPackageFixer extends AbstractAnnotationRemovalFixer
      */
     public function getDescription()
     {
-        return '@package and @subpackage annotations should be omitted from phpdocs.';
+        return '@access annotations should be omitted from phpdocs.';
     }
 }
