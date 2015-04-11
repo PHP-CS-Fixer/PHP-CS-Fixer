@@ -26,7 +26,8 @@ interface FixerInterface
     /**
      * Fixes a file.
      *
-     * @param string $content The file content
+     * @param \SplFileInfo $file    A \SplFileInfo instance
+     * @param string       $content The file content
      *
      * @return string The fixed file content
      */
