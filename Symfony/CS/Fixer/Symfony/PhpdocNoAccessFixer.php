@@ -38,13 +38,4 @@ class PhpdocNoAccessFixer extends AbstractAnnotationRemovalFixer
     {
         return '@access annotations should be omitted from phpdocs.';
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // must be run before the PhpdocSeparationFixer and PhpdocOrderFixer
-        return 10;
-    }
 }

@@ -20,6 +20,16 @@ use Symfony\CS\Tokenizer\Tokens;
 abstract class AbstractAnnotationRemovalFixer extends AbstractFixer
 {
     /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must be run before the PhpdocSeparationFixer, PhpdocOrderFixer, and
+        // PhpdocTrimFixer
+        return 10;
+    }
+
+    /**
      * Make sure the expected number of new lines prefix a namespace.
      *
      * @param Tokens   $tokens

@@ -38,13 +38,4 @@ class PhpdocNoPackageFixer extends AbstractAnnotationRemovalFixer
     {
         return '@package and @subpackage annotations should be omitted from phpdocs.';
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // must be run before the PhpdocSeparationFixer and PhpdocOrderFixer
-        return 10;
-    }
 }
