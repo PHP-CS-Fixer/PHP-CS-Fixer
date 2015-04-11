@@ -59,7 +59,7 @@ class PhpdocNoPackageFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // must be run before the PhpdocSeperationFixer and PhpdocOrderFixer
+        // must be run before the PhpdocSeparationFixer and PhpdocOrderFixer
         return 10;
     }
 }

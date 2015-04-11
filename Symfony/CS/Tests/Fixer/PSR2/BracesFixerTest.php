@@ -47,7 +47,7 @@ class BracesFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     try {
-        throw new \Exeption();
+        throw new \Exception();
     } catch (\LogicException $e) {
         // do nothing
     } catch (\Exception $e) {
@@ -55,7 +55,7 @@ class BracesFixerTest extends AbstractFixerTestBase
     }',
                 '<?php
     try {
-        throw new \Exeption();
+        throw new \Exception();
     }catch (\LogicException $e) {
         // do nothing
     }
@@ -485,7 +485,7 @@ if (1) {
                 '<?php
     while ($true) {
         try {
-            throw new \Exeption();
+            throw new \Exception();
         } catch (\Exception $e) {
             // do nothing
         }
@@ -1185,14 +1185,6 @@ while (true) {
      */
     public function test55($expected, $input = null)
     {
-        // if T_FINALLY does not exist then skip test
-        // may occur on hhvm, see: https://github.com/facebook/hhvm/issues/3703
-        if (!defined('T_FINALLY')) {
-            $this->markTestSkipped('Lack of T_FINALLY token.');
-
-            return;
-        }
-
         $this->makeTest($expected, $input);
     }
 
@@ -1202,7 +1194,7 @@ while (true) {
             array(
                 '<?php
     try {
-        throw new \Exeption();
+        throw new \Exception();
     } catch (\LogicException $e) {
         // do nothing
     } catch (\Exception $e) {
@@ -1212,7 +1204,7 @@ while (true) {
     }',
                 '<?php
     try {
-        throw new \Exeption();
+        throw new \Exception();
     }catch (\LogicException $e) {
         // do nothing
     }

@@ -23,7 +23,7 @@ class Annotation
      *
      * Note that the array indexes represent the position in the docblock.
      *
-     * @var Lines[]
+     * @var Line[]
      */
     private $lines;
 
