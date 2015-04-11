@@ -343,6 +343,10 @@ Choose from the list of available fixers:
                 Docblocks should have the same
                 indentation as the documented subject.
 
+* **phpdoc_no_access** [symfony]
+                @access annotations should be omitted
+                from phpdocs.
+
 * **phpdoc_no_empty_return** [symfony]
                 @return void and @return null
                 annotations should be omitted from
