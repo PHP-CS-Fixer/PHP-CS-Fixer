@@ -27,7 +27,11 @@ abstract class AbstractAnnotationRemovalFixer extends AbstractFixer
      */
     protected function removeAnnotations(Tokens $tokens, array $type)
     {
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
             $doc = new DocBlock($token->getContent());
             $annotations = $doc->getAnnotationsOfType($type);
 
