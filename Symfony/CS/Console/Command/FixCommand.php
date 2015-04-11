@@ -26,6 +26,7 @@ use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Linter\Linter;
+use Symfony\CS\Linter\UnavailableLinterException;
 use Symfony\CS\Utils;
 
 /**
@@ -353,7 +354,13 @@ EOF
         // register custom fixers from config
         $this->fixer->registerCustomFixers($config->getCustomFixers());
         if ($config->usingLinter()) {
-            $this->fixer->setLinter(new Linter());
+            try {
+                $this->fixer->setLinter(new Linter($config->getPhpExecutable()));
+            } catch (UnavailableLinterException $e) {
+                if ($configFile && 'txt' === $input->getOption('format')) {
+                    $output->writeln('Unable to use linter, can not find PHP executable');
+                }
+            }
         }
 
         $showProgress = $resolver->getProgress();
