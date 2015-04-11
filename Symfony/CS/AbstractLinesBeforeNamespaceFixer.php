@@ -27,8 +27,6 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer
      * @param Tokens $tokens
      * @param int    $index
      * @param int    $expected
-     *
-     * @return string
      */
     protected function fixLinesBeforeNamespace(Tokens $tokens, $index, $expected)
     {
