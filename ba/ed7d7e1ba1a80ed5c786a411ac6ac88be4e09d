@@ -1,0 +1,36 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-03T14:37:25Z
+
+No point in this. This will only get outdated. The 1.5 branch would have been deleted if it weren't for the fact that github won't let us because there are pulls targeted at it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-03T16:18:00Z
+
+@SpacePossum It's not up to me to reject this. You should leave this for @keradus to decide.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-04-03T17:12:38Z
+
+ah ok :+1: thanks!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-06T19:10:42Z
+
+Don't like putting version exactly... they will change after each minor releases...
+current default branch for features, previous branch for bugfixes, master branch for BC breakers
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-11T11:13:03Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-04-11T11:20:55Z
+
+:+1:
