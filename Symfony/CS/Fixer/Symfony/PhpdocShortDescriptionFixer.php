@@ -13,6 +13,7 @@ namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\DocBlock\DocBlock;
+use Symfony\CS\DocBlock\Line;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
