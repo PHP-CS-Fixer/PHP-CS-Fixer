@@ -399,6 +399,10 @@ Choose from the list of available fixers:
                 An empty line feed should precede a
                 return statement.
 
+* **self_accessor** [symfony]
+                Inside a classy element "self" should
+                be preferred to the class name itself.
+
 * **single_array_no_trailing_comma** [symfony]
                 PHP single-line arrays should not have
                 trailing comma.

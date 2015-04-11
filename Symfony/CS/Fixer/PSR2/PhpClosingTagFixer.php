@@ -33,16 +33,20 @@ class PhpClosingTagFixer extends AbstractFixer
 
         $closeTags = $tokens->findGivenKind(T_CLOSE_TAG);
 
-        foreach (array_reverse($closeTags, true) as $index => $token) {
-            $tokens->removeLeadingWhitespace($index);
-            $token->clear();
+        if (empty($closeTags)) {
+            return;
+        }
 
-            $prevIndex = $tokens->getPrevNonWhitespace($index);
-            $prevToken = $tokens[$prevIndex];
+        list($index, $token) = each($closeTags);
 
-            if (!$prevToken->equalsAny(array(';', '}'))) {
-                $tokens->insertAt($prevIndex + 1, new Token(';'));
-            }
+        $tokens->removeLeadingWhitespace($index);
+        $token->clear();
+
+        $prevIndex = $tokens->getPrevNonWhitespace($index);
+        $prevToken = $tokens[$prevIndex];
+
+        if (!$prevToken->equalsAny(array(';', '}'))) {
+            $tokens->insertAt($prevIndex + 1, new Token(';'));
         }
     }
 

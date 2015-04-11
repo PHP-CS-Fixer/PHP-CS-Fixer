@@ -96,7 +96,7 @@ class Token
      */
     public function equals($other, $caseSensitive = true)
     {
-        $otherPrototype = $other instanceof Token ? $other->getPrototype() : $other;
+        $otherPrototype = $other instanceof self ? $other->getPrototype() : $other;
 
         if ($this->isArray() !== is_array($otherPrototype)) {
             return false;
@@ -399,7 +399,7 @@ class Token
      */
     public function override($other)
     {
-        $prototype = $other instanceof Token ? $other->getPrototype() : $other;
+        $prototype = $other instanceof self ? $other->getPrototype() : $other;
 
         if ($this->equals($prototype)) {
             return;

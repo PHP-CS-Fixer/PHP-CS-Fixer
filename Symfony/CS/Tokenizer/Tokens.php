@@ -101,7 +101,7 @@ class Tokens extends \SplFixedArray
      */
     public static function fromArray($array, $saveIndexes = null)
     {
-        $tokens = new Tokens(count($array));
+        $tokens = new self(count($array));
 
         if (null === $saveIndexes || $saveIndexes) {
             foreach ($array as $key => $val) {
@@ -1042,7 +1042,7 @@ class Tokens extends \SplFixedArray
              *
              * @see https://github.com/facebook/hhvm/issues/4810
              */
-            $tokens = Tokens::fromCode("#!/usr/bin/env php\n");
+            $tokens = self::fromCode("#!/usr/bin/env php\n");
             if (!$tokens[0]->isGivenKind(T_INLINE_HTML)) {
                 $hashBangId = $tokens[0]->getId();
                 $hhvmHashBangs = $this->findGivenKind($hashBangId);
