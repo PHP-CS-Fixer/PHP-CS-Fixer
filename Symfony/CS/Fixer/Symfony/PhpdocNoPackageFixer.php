@@ -11,14 +11,13 @@
 
 namespace Symfony\CS\Fixer\Symfony;
 
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\DocBlock\DocBlock;
+use Symfony\CS\AbstractAnnotationRemovalFixer;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocNoPackageFixer extends AbstractFixer
+class PhpdocNoPackageFixer extends AbstractAnnotationRemovalFixer
 {
     /**
      * {@inheritdoc}
@@ -27,21 +26,7 @@ class PhpdocNoPackageFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
-            $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType(array('package', 'subpackage'));
-
-            // nothing to do if there are no annotations
-            if (empty($annotations)) {
-                continue;
-            }
-
-            foreach ($annotations as $annotation) {
-                $annotation->remove();
-            }
-
-            $token->setContent($doc->getContent());
-        }
+        $this->removeAnnotations($tokens, array('package', 'subpackage'));
 
         return $tokens->generateCode();
     }
