@@ -427,6 +427,13 @@ class Token
      */
     public function setContent($content)
     {
+        // setting empty content is clearing the token
+        if ('' === $content) {
+            $this->clear();
+
+            return;
+        }
+
         $this->content = $content;
     }
 
