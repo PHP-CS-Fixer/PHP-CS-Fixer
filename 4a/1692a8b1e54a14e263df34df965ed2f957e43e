@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-12T13:21:54Z
+
+We really need to add tests that run with multiple fixers. Maybe we need some tests that check the results for entire levels?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-12T13:31:14Z
+
+I agree it would be really great to have it. Sadly, I won't have time to make them.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-12T13:35:17Z
+
+I'll make an issue. If nobody has time to do it, I definitely will have time in the summer to do it. :)
