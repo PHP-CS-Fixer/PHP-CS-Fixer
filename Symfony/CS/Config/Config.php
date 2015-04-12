@@ -33,6 +33,7 @@ class Config implements ConfigInterface
     protected $usingLinter = true;
     protected $hideProgress = false;
     protected $cacheFile = '.php_cs.cache';
+    protected $phpExecutable;
 
     public function __construct($name = 'default', $description = 'A default configuration')
     {
@@ -175,5 +176,27 @@ class Config implements ConfigInterface
     public function getCacheFile()
     {
         return $this->cacheFile;
+    }
+
+    /**
+     * Set PHP executable.
+     *
+     * @param string|null $phpExecutable
+     *
+     * @return Config
+     */
+    public function setPhpExecutable($phpExecutable)
+    {
+        $this->phpExecutable = $phpExecutable;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPhpExecutable()
+    {
+        return $this->phpExecutable;
     }
 }

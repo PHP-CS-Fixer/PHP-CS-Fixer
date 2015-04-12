@@ -11,6 +11,7 @@
 
 namespace Symfony\CS\Linter;
 
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
 
@@ -29,6 +30,30 @@ class Linter implements LinterInterface
      * @var string|null
      */
     private $temporaryFile;
+
+    /**
+     * PHP executable.
+     *
+     * @var string
+     */
+    private $executable;
+
+    /**
+     * @param string|null $phpExecutable PHP executable, null for autodetection
+     */
+    public function __construct($phpExecutable = null)
+    {
+        if (null === $phpExecutable) {
+            $executableFinder = new PhpExecutableFinder();
+            $executable = $executableFinder->find();
+        }
+
+        if (empty($executable)) {
+            throw new UnavailableLinterException();
+        }
+
+        $this->executable = $executable;
+    }
 
     public function __destruct()
     {
@@ -79,7 +104,7 @@ class Linter implements LinterInterface
             return $this->createProcessForSource(file_get_contents($path));
         }
 
-        $process = new Process('php -l '.ProcessUtils::escapeArgument($path));
+        $process = new Process(sprintf('%s -l %s', $this->executable, ProcessUtils::escapeArgument($path)));
         $process->setTimeout(null);
         $process->run();
 
