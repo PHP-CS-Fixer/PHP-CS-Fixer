@@ -37,7 +37,12 @@ class BracesFixer extends AbstractFixer
         $this->fixDoWhile($tokens);
         $this->fixLambdas($tokens);
 
-        return $tokens->generateCode();
+        // Set code to itself to redo tokenizer work, that will guard as against token collection corruption.
+        // TODO: This MUST be removed on 2.0-dev version, where we add more transformers (and lack of them causes corruption on 1.x line).
+        $code = $tokens->generateCode();
+        $tokens->setCode($code);
+
+        return $code;
     }
 
     /**
