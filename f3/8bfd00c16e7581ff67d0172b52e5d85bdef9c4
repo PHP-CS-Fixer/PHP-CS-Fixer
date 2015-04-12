@@ -1,0 +1,56 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-11T15:54:43Z
+
+Should we allow the php executable to use to be overwritten with an optional constructor param?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-11T16:05:55Z
+
+This PR does not provide any new functionality.
+It just protect us from situations, where there is no standard PHP executable (eg `php54-cli`).
+
+If we want to add a feature to set php executable then it will be also nice to allow to specify it in config
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-11T16:07:23Z
+
+I was mainly thinking from the perspective of making the code reusable, rather than actually writing the whole config deal, though, I agree that might actually be a good idea.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-11T16:10:44Z
+
+It's cool when thinking about using PHP CS Fixer as library, but we also need to focus on using as a tool.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-11T16:12:29Z
+
+:)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-11T16:12:59Z
+
+It's a really awesome library. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-11T16:15:27Z
+
+Yeah, there are even such a great services built on it ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-11T16:33:05Z
+
+How about that?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-11T17:48:02Z
+
+Looks good, yeh.
