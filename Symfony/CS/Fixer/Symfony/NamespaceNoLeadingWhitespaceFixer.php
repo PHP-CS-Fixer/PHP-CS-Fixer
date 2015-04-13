@@ -50,7 +50,7 @@ class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
                 $beforeBeforeNamespace = $tokens[$index - 2];
 
                 if (self::endsWithWhitespace($beforeBeforeNamespace->getContent())) {
-                    $beforeNamespace->setContent('');
+                    $beforeNamespace->clear();
                 } else {
                     $beforeNamespace->setContent(' ');
                 }
