@@ -64,7 +64,7 @@ class DefaultFinder extends Finder implements FinderInterface
      *
      * This is mainly useful for fixtures in unit tests.
      *
-     * @return array
+     * @return string[]
      */
     protected function getFilesToExclude()
     {
