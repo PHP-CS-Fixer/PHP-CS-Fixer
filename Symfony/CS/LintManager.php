@@ -30,7 +30,7 @@ class LintManager
 
     public function __destruct()
     {
-        if (null === $this->temporaryFile) {
+        if (null !== $this->temporaryFile) {
             unlink($this->temporaryFile);
         }
     }
@@ -65,7 +65,7 @@ class LintManager
      */
     public function createProcessForSource($source)
     {
-        if (null !== $this->temporaryFile) {
+        if (null === $this->temporaryFile) {
             $this->temporaryFile = tempnam('.', 'tmp');
         }
 
