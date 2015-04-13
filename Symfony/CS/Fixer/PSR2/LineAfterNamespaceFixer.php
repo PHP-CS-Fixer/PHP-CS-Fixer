@@ -60,4 +60,13 @@ class LineAfterNamespaceFixer extends AbstractFixer
     {
         return 'There MUST be one blank line after the namespace declaration.';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run after the UnusedUseFixer
+        return -20;
+    }
 }
