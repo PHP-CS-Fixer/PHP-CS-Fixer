@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\PSR2;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -34,7 +35,12 @@ class EofEndingFixer extends AbstractFixer
         }
 
         $token = $tokens[$count - 1];
-        $token->setContent(rtrim($token->getContent())."\n");
+
+        if ($token->isWhitespace() || $token->isGivenKind(T_INLINE_HTML)) {
+            $token->setContent(rtrim($token->getContent())."\n");
+        } else {
+            $tokens->insertAt($count, new Token(array(T_WHITESPACE, "\n")));
+        }
     }
 
     /**
