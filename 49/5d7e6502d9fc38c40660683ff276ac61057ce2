@@ -1,0 +1,69 @@
+---------------------------------------------------------------------------
+
+by stof at 2015-04-13T20:52:07Z
+
+The remaining test failure seems to be related to the fact that WhitespacyCommentTransformer is not part of the 1.7 codebase.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-04-13T20:54:57Z
+
+@keradus we have a warning in the testsuite related to the LintManager here.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-13T21:10:55Z
+
+> @keradus we have a warning in the testsuite related to the LintManager here.
+
+ref #1152
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-13T21:43:49Z
+
+:+1:
+
+Please, get rid of that merge commits, eg by rebasing.
+Also, there are multiple authors, could you do the squashing manually?
+
+This will be a problem on our 2.0 line. After this PR will be merged I will merge 1.7 into master, then disable that new tests, and then send a PR for master with enabling the tests again, this way the 2.0 won't be always broken on Travis and we will have a PR to work on fixing token collection corruption on 2.0.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-04-13T22:57:11Z
+
+@keradus should we really squash commits refactoring the different fixers ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-13T23:17:07Z
+
+Why not? If they where all yours then they will be squashed automatically during gh merge command.
+After squashing we will have case that is already often - one person send a commit that proves bug and the other one send a commit that fixes it.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-04-13T23:19:11Z
+
+done
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-14T05:48:43Z
+
+Do you plan to do sth more in this PR ?
+I am asking in WIP flag context.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-04-14T07:50:58Z
+
+@keradus no. Given that tests are passing, this is not WIP anymore. I removed the flag
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-14T08:38:08Z
+
+Great. Thank you!
+Your PR brings an fantastic idea!
