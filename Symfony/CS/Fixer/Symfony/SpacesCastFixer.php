@@ -46,7 +46,7 @@ class SpacesCastFixer extends AbstractFixer
                     $tokens[$index + 1]->setContent(' ');
                 } elseif (!$tokens[$index + 1]->isWhitespace()) {
                     // - if next token is not whitespaces that contains spaces, tabs and new lines - append single space to current token
-                    $tokens->insertAt($index + 1, new Token(' '));
+                    $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
                 }
             }
         }

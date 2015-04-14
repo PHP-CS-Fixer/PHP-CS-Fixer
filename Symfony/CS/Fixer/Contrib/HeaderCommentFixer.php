@@ -91,7 +91,7 @@ class HeaderCommentFixer extends AbstractFixer
         foreach ($lines as $line) {
             $comment .= rtrim(' * '.$line)."\n";
         }
-        $comment .= " */\n";
+        $comment .= ' */';
 
         return $comment;
     }
@@ -136,13 +136,14 @@ class HeaderCommentFixer extends AbstractFixer
      */
     private function insertHeaderComment(Tokens $tokens, $index)
     {
-        $headCommentTokens = Tokens::fromArray(
-            array(
-                new Token(array(T_WHITESPACE, "\n")),
-                new Token(array(T_COMMENT, self::$headerComment)),
-                new Token(array(T_WHITESPACE, strlen(self::$headerComment) ? "\n" : '')),
-            )
+        $headCommentTokens = array(
+            new Token(array(T_WHITESPACE, "\n")),
         );
+
+        if ('' !== self::$headerComment) {
+            $headCommentTokens[] = new Token(array(T_COMMENT, self::$headerComment));
+            $headCommentTokens[] = new Token(array(T_WHITESPACE, "\n\n"));
+        }
 
         $tokens->insertAt($index, $headCommentTokens);
     }
