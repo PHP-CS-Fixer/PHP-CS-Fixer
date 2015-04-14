@@ -12,7 +12,7 @@
 namespace Symfony\CS\Console\Output;
 
 use Symfony\Component\Console\Output\StreamOutput;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\CS\FixerFileProcessedEvent;
 
 /**
@@ -40,7 +40,7 @@ class ProcessOutput
     /**
      * Event dispatcher instance.
      *
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     private $eventDispatcher;
 
@@ -58,7 +58,7 @@ class ProcessOutput
      */
     private $stdErr;
 
-    public function __construct(EventDispatcher $dispatcher)
+    public function __construct(EventDispatcherInterface $dispatcher)
     {
         $this->stdErr = fopen('php://stderr', 'w');
         $this->output = new StreamOutput($this->stdErr);
