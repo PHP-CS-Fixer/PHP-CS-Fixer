@@ -123,7 +123,7 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
                 $nextToken = $tokens[$index + 1];
                 if (!$nextToken->isWhitespace()) {
                     $tokenContent .= ' ';
-                } elseif ($nextToken->isWhitespace(array('whitespaces' => " \t"))) {
+                } elseif ($nextToken->isWhitespace(" \t")) {
                     $nextToken->setContent(' ');
                 }
 

@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.6.1
+--------------------
+
+* bug #1108 UnusedUseFixer - fix false positive when name is used as part of another namespace (gharlan)
+* bug #1114 Fixed PhpdocParamsFixer with malformed doc block (gharlan)
+* minor #1135 PhpdocTrimFixer - fix doc typo (localheinz)
+* minor #1093 Travis - test lowest dependencies (boekkooi)
+
 Changelog for v1.6
 ------------------
 
@@ -12,11 +20,11 @@ Changelog for v1.6
 * feature #1059 Added LongArraySyntaxFixer (gharlan)
 * feature #1037 Added PhpdocScalarFixer (GrahamCampbell, keradus)
 * feature #1028 Add ListCommasFixer (keradus)
+* bug #1047 Utils::camelCaseToUnderscore - fix regexp (odin-delrio)
 * minor #1073 ShortTagFixer enhancement (gharlan)
 * minor #1079 Use LongArraySyntaxFixer for this repo (gharlan)
 * minor #1070 Tokens::isMonolithicPhp - remove unused T_CLOSE_TAG search (keradus)
 * minor #1049 OrderedUseFixer - grooming (keradus)
-* bug #1047 Utils::camelCaseToUnderscore - fix regexp (odin-delrio)
 
 Changelog for v1.5.2
 --------------------

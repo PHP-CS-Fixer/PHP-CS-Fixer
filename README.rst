@@ -343,6 +343,10 @@ Choose from the list of available fixers:
                 Docblocks should have the same
                 indentation as the documented subject.
 
+* **phpdoc_no_access** [symfony]
+                @access annotations should be omitted
+                from phpdocs.
+
 * **phpdoc_no_empty_return** [symfony]
                 @return void and @return null
                 annotations should be omitted from
@@ -377,7 +381,7 @@ Choose from the list of available fixers:
 
 * **phpdoc_trim** [symfony]
                 Phpdocs should start and end with
-                content, excluding the very fist and
+                content, excluding the very first and
                 last line of the docblocks.
 
 * **phpdoc_type_to_var** [symfony]
@@ -398,6 +402,10 @@ Choose from the list of available fixers:
 * **return** [symfony]
                 An empty line feed should precede a
                 return statement.
+
+* **self_accessor** [symfony]
+                Inside a classy element "self" should
+                be preferred to the class name itself.
 
 * **single_array_no_trailing_comma** [symfony]
                 PHP single-line arrays should not have
@@ -495,6 +503,10 @@ Choose from the list of available fixers:
 * **phpdoc_var_to_type** [contrib]
                 @var should always be written as
                 @type.
+
+* **pre_increment** [contrib]
+                Pre incrementation/decrementation
+                should be used if possible.
 
 * **short_array_syntax** [contrib]
                 PHP arrays should use the PHP 5.4

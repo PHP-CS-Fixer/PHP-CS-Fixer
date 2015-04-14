@@ -10,7 +10,12 @@
  * with this source code in the file LICENSE.
  */
 
-if (version_compare(phpversion(), '5.3.6', '<')) {
+if (defined('HHVM_VERSION_ID')) {
+    if (HHVM_VERSION_ID < 30500) {
+        fwrite(STDERR, "HHVM needs to be a minimum version of HHVM 3.5.0\n");
+        exit(1);
+    }
+} elseif (!defined('PHP_VERSION_ID') || PHP_VERSION_ID < 50306) {
     fwrite(STDERR, "PHP needs to be a minimum version of PHP 5.3.6\n");
     exit(1);
 }

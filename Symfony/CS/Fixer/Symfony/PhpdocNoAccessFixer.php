@@ -17,14 +17,14 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocNoPackageFixer extends AbstractAnnotationRemovalFixer
+class PhpdocNoAccessFixer extends AbstractAnnotationRemovalFixer
 {
     /**
      * {@inheritdoc}
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $this->removeAnnotations($tokens, array('package', 'subpackage'));
+        $this->removeAnnotations($tokens, array('access'));
     }
 
     /**
@@ -32,6 +32,6 @@ class PhpdocNoPackageFixer extends AbstractAnnotationRemovalFixer
      */
     public function getDescription()
     {
-        return '@package and @subpackage annotations should be omitted from phpdocs.';
+        return '@access annotations should be omitted from phpdocs.';
     }
 }

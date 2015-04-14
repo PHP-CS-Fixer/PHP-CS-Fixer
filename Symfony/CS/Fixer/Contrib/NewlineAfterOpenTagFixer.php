@@ -36,7 +36,7 @@ class NewlineAfterOpenTagFixer extends AbstractFixer
 
         $newlineFound = false;
         foreach ($tokens as $token) {
-            if ($token->isWhitespace(array('whitespaces' => "\n"))) {
+            if ($token->isWhitespace("\n")) {
                 $newlineFound = true;
                 break;
             }

@@ -96,7 +96,7 @@ class Token
      */
     public function equals($other, $caseSensitive = true)
     {
-        $otherPrototype = $other instanceof Token ? $other->getPrototype() : $other;
+        $otherPrototype = $other instanceof self ? $other->getPrototype() : $other;
 
         if ($this->isArray() !== is_array($otherPrototype)) {
             return false;
@@ -374,28 +374,17 @@ class Token
     }
 
     /**
-     * Check if token is one of structure alternative end syntax (T_END...).
-     *
-     * @return bool
-     */
-    public function isStructureAlternativeEnd()
-    {
-        static $tokens = array(T_ENDDECLARE, T_ENDFOR, T_ENDFOREACH, T_ENDIF, T_ENDSWITCH, T_ENDWHILE, T_END_HEREDOC);
-
-        return $this->isGivenKind($tokens);
-    }
-
-    /**
      * Check if token is a whitespace.
      *
-     * @param array  $opts                array of extra options
-     * @param string $opts['whitespaces'] string determining whitespaces chars, default is " \t\n\r\0\x0B"
+     * @param null|string $whitespaces whitespaces characters, default is " \t\n\r\0\x0B"
      *
      * @return bool
      */
-    public function isWhitespace(array $opts = array())
+    public function isWhitespace($whitespaces = " \t\n\r\0\x0B")
     {
-        $whitespaces = isset($opts['whitespaces']) ? $opts['whitespaces'] : " \t\n\r\0\x0B";
+        if (null === $whitespaces) {
+            $whitespaces = " \t\n\r\0\x0B";
+        }
 
         if ($this->isArray && !$this->isGivenKind(T_WHITESPACE)) {
             return false;
@@ -411,7 +400,7 @@ class Token
      */
     public function override($other)
     {
-        $prototype = $other instanceof Token ? $other->getPrototype() : $other;
+        $prototype = $other instanceof self ? $other->getPrototype() : $other;
 
         if ($this->equals($prototype)) {
             return;

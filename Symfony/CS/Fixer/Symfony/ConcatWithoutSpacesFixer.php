@@ -24,19 +24,17 @@ class ConcatWithoutSpacesFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $whitespaces = array('whitespaces' => " \t");
-
         foreach ($tokens as $index => $token) {
             if (!$token->equals('.')) {
                 continue;
             }
 
             if (!$tokens[$tokens->getPrevNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
-                $tokens->removeLeadingWhitespace($index, $whitespaces);
+                $tokens->removeLeadingWhitespace($index, " \t");
             }
 
             if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
-                $tokens->removeTrailingWhitespace($index, $whitespaces);
+                $tokens->removeTrailingWhitespace($index, " \t");
             }
         }
     }

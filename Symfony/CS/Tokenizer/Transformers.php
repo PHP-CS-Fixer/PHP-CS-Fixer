@@ -23,9 +23,9 @@ use Symfony\Component\Finder\Finder;
 class Transformers
 {
     /**
-     * Array of registered Transformer classes.
+     * The registered transformers.
      *
-     * @var Transformer[]
+     * @var TransformerInterface[]
      */
     private $items = array();
 

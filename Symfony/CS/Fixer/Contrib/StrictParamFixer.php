@@ -116,7 +116,7 @@ class StrictParamFixer extends AbstractFixer
             }
         }
 
-        $beforeEndBraceIndex = $tokens->getPrevNonWhitespace($endBraceIndex, array());
+        $beforeEndBraceIndex = $tokens->getPrevNonWhitespace($endBraceIndex);
         $tokens->insertAt($beforeEndBraceIndex + 1, $tokensToInsert);
     }
 }

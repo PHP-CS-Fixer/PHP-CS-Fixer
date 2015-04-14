@@ -59,7 +59,7 @@ class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
 
     private function fixWhitespace(Token $token)
     {
-        if ($token->isWhitespace() && !$token->isWhitespace(array('whitespaces' => " \t"))) {
+        if ($token->isWhitespace() && !$token->isWhitespace(" \t")) {
             $token->setContent(rtrim($token->getContent()).' ');
         }
     }

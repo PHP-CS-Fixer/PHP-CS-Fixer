@@ -29,6 +29,7 @@ class Tokens extends \SplFixedArray
     const BLOCK_TYPE_INDEX_SQUARE_BRACE = 3;
     const BLOCK_TYPE_ARRAY_SQUARE_BRACE = 4;
     const BLOCK_TYPE_DYNAMIC_PROP_BRACE = 5;
+    const BLOCK_TYPE_DYNAMIC_VAR_BRACE = 6;
 
     /**
      * Static class cache.
@@ -101,7 +102,7 @@ class Tokens extends \SplFixedArray
      */
     public static function fromArray($array, $saveIndexes = null)
     {
-        $tokens = new Tokens(count($array));
+        $tokens = new self(count($array));
 
         if (null === $saveIndexes || $saveIndexes) {
             foreach ($array as $key => $val) {
@@ -147,11 +148,9 @@ class Tokens extends \SplFixedArray
 
         $tokens = token_get_all($code);
 
-        foreach ($tokens as $index => &$tokenPrototype) {
-            $tokenPrototype = new Token($tokenPrototype);
+        foreach ($tokens as $index => $tokenPrototype) {
+            $tokens[$index] = new Token($tokenPrototype);
         }
-        // unset reference to keep scope clear
-        unset($tokenPrototype);
 
         $collection = self::fromArray($tokens);
         $transformers = Transformers::create();
@@ -189,6 +188,10 @@ class Tokens extends \SplFixedArray
             self::BLOCK_TYPE_DYNAMIC_PROP_BRACE => array(
                 'start' => array(CT_DYNAMIC_PROP_BRACE_OPEN, '{'),
                 'end' => array(CT_DYNAMIC_PROP_BRACE_CLOSE, '}'),
+            ),
+            self::BLOCK_TYPE_DYNAMIC_VAR_BRACE => array(
+                'start' => array(CT_DYNAMIC_VAR_BRACE_OPEN, '{'),
+                'end' => array(CT_DYNAMIC_VAR_BRACE_CLOSE, '}'),
             ),
         );
     }
@@ -515,14 +518,14 @@ class Tokens extends \SplFixedArray
      *
      * This method is shorthand for getNonWhitespaceSibling method.
      *
-     * @param int   $index token index
-     * @param array $opts  array of extra options for isWhitespace method
+     * @param int         $index       token index
+     * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
      *
      * @return int|null
      */
-    public function getNextNonWhitespace($index, array $opts = array())
+    public function getNextNonWhitespace($index, $whitespaces = null)
     {
-        return $this->getNonWhitespaceSibling($index, 1, $opts);
+        return $this->getNonWhitespaceSibling($index, 1, $whitespaces);
     }
 
     /**
@@ -546,13 +549,13 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token which is non whitespace.
      *
-     * @param int   $index     token index
-     * @param int   $direction direction for looking, +1 or -1
-     * @param array $opts      array of extra options for isWhitespace method
+     * @param int         $index       token index
+     * @param int         $direction   direction for looking, +1 or -1
+     * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
      *
      * @return int|null
      */
-    public function getNonWhitespaceSibling($index, $direction, array $opts = array())
+    public function getNonWhitespaceSibling($index, $direction, $whitespaces = null)
     {
         while (true) {
             $index += $direction;
@@ -563,7 +566,7 @@ class Tokens extends \SplFixedArray
 
             $token = $this[$index];
 
-            if (!$token->isWhitespace($opts)) {
+            if (!$token->isWhitespace($whitespaces)) {
                 return $index;
             }
         }
@@ -574,14 +577,14 @@ class Tokens extends \SplFixedArray
      *
      * This method is shorthand for getNonWhitespaceSibling method.
      *
-     * @param int   $index token index
-     * @param array $opts  array of extra options for isWhitespace method
+     * @param int         $index       token index
+     * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
      *
      * @return int|null
      */
-    public function getPrevNonWhitespace($index, array $opts = array())
+    public function getPrevNonWhitespace($index, $whitespaces = null)
     {
-        return $this->getNonWhitespaceSibling($index, -1, $opts);
+        return $this->getNonWhitespaceSibling($index, -1, $whitespaces);
     }
 
     /**
@@ -893,29 +896,14 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * If $index is below zero, we know that it does not exist.
-     *
-     * This was added to be compatible with HHVM 3.2.0.
-     * Note that HHVM 3.3.0 no longer requires this work around.
-     *
-     * @param int $index
-     *
-     * @return bool
-     */
-    public function offsetExists($index)
-    {
-        return $index >= 0 && parent::offsetExists($index);
-    }
-
-    /**
      * Removes all the leading whitespace.
      *
-     * @param int   $index
-     * @param array $opts  optional array of extra options for Token::isWhitespace method
+     * @param int         $index
+     * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
      */
-    public function removeLeadingWhitespace($index, array $opts = array())
+    public function removeLeadingWhitespace($index, $whitespaces = null)
     {
-        if (isset($this[$index - 1]) && $this[$index - 1]->isWhitespace($opts)) {
+        if (isset($this[$index - 1]) && $this[$index - 1]->isWhitespace($whitespaces)) {
             $this[$index - 1]->clear();
         }
     }
@@ -923,12 +911,13 @@ class Tokens extends \SplFixedArray
     /**
      * Removes all the trailing whitespace.
      *
-     * @param int   $index
-     * @param array $opts  optional array of extra options for Token::isWhitespace method
+     * @param int         $index
+     * @param array       $opts        optional array of extra options for Token::isWhitespace method
+     * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
      */
-    public function removeTrailingWhitespace($index, array $opts = array())
+    public function removeTrailingWhitespace($index, $whitespaces = null)
     {
-        if (isset($this[$index + 1]) && $this[$index + 1]->isWhitespace($opts)) {
+        if (isset($this[$index + 1]) && $this[$index + 1]->isWhitespace($whitespaces)) {
             $this[$index + 1]->clear();
         }
     }
@@ -1044,7 +1033,7 @@ class Tokens extends \SplFixedArray
              *
              * @see https://github.com/facebook/hhvm/issues/4810
              */
-            $tokens = Tokens::fromCode("#!/usr/bin/env php\n");
+            $tokens = self::fromCode("#!/usr/bin/env php\n");
             if (!$tokens[0]->isGivenKind(T_INLINE_HTML)) {
                 $hashBangId = $tokens[0]->getId();
                 $hhvmHashBangs = $this->findGivenKind($hashBangId);
