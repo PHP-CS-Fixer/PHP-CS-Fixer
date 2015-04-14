@@ -28,10 +28,8 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         $namespace = false;
         $namespaceIndex = 0;
         $namespaceEndIndex = 0;
@@ -42,7 +40,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_NAMESPACE)) {
                 if (false !== $namespace) {
-                    return $content;
+                    return;
                 }
 
                 $namespaceIndex = $tokens->getNextNonWhitespace($index);
@@ -51,7 +49,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                 $namespace = trim($tokens->generatePartialCode($namespaceIndex, $namespaceEndIndex - 1));
             } elseif ($token->isClassy()) {
                 if (null !== $classyName) {
-                    return $content;
+                    return;
                 }
 
                 $classyIndex = $tokens->getNextNonWhitespace($index);
@@ -60,7 +58,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
         }
 
         if (null === $classyName) {
-            return $content;
+            return;
         }
 
         if (false !== $namespace) {
@@ -100,6 +98,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                 $newNamespace[0]->clear();
                 $newNamespace[1]->clear();
                 $newNamespace[2]->clear();
+                $newNamespace->clearEmptyTokens();
 
                 $tokens->insertAt($namespaceIndex, $newNamespace);
             }
@@ -112,8 +111,6 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                 $tokens[$classyIndex]->setContent(strtr($filename, '/', '_'));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -137,7 +134,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
      */
     public function getDescription()
     {
-        return 'Classes must be in a path that matches their namespace, be at least one namespace deep, and the class name should match the file name.';
+        return 'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.';
     }
 
     /**

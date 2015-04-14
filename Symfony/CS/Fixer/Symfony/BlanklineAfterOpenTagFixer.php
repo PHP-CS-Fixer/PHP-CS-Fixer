@@ -23,23 +23,21 @@ class BlanklineAfterOpenTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         // ignore non-monolithic files
         if (!$tokens->isMonolithicPhp()) {
-            return $content;
+            return;
         }
 
         // ignore files with short open tag
         if (!$tokens[0]->isGivenKind(T_OPEN_TAG)) {
-            return $content;
+            return;
         }
 
         $newlineFound = false;
         foreach ($tokens as $token) {
-            if ($token->isWhitespace(array('whitespaces' => "\n"))) {
+            if ($token->isWhitespace("\n")) {
                 $newlineFound = true;
                 break;
             }
@@ -47,7 +45,7 @@ class BlanklineAfterOpenTagFixer extends AbstractFixer
 
         // ignore one-line files
         if (!$newlineFound) {
-            return $content;
+            return;
         }
 
         $token = $tokens[0];
@@ -56,11 +54,9 @@ class BlanklineAfterOpenTagFixer extends AbstractFixer
             $token->setContent(rtrim($token->getContent())."\n");
         }
 
-        if (!$tokens[1]->isWhitespace(array('whitespaces' => "\n"))) {
+        if (!$tokens[1]->isWhitespace("\n")) {
             $tokens->insertAt(1, new Token(array(T_WHITESPACE, "\n")));
         }
-
-        return $tokens->generateCode();
     }
 
     /**

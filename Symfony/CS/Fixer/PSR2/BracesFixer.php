@@ -14,6 +14,7 @@ namespace Symfony\CS\Fixer\PSR2;
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * Fixer for rules defined in PSR2 ¶4.1, ¶4.4, ¶5.
@@ -25,10 +26,8 @@ class BracesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         $this->fixCommentBeforeBrace($tokens);
         $this->fixMissingControlBraces($tokens);
         $this->fixIndents($tokens);
@@ -36,13 +35,6 @@ class BracesFixer extends AbstractFixer
         $this->fixSpaceAroundToken($tokens);
         $this->fixDoWhile($tokens);
         $this->fixLambdas($tokens);
-
-        // Set code to itself to redo tokenizer work, that will guard as against token collection corruption.
-        // TODO: This MUST be removed on 2.0-dev version, where we add more transformers (and lack of them causes corruption on 1.x line).
-        $code = $tokens->generateCode();
-        $tokens->setCode($code);
-
-        return $code;
     }
 
     /**
@@ -89,13 +81,24 @@ class BracesFixer extends AbstractFixer
             }
 
             $tokenTmp = $tokens[$afterCommentIndex];
-            $tokens[$afterCommentIndex - 1]->setContent(rtrim($tokens[$afterCommentIndex - 1]->getContent()));
+            $tokens[$afterCommentIndex - 1]->setContent(rtrim($tokens[$afterCommentIndex - 1]->getContent(), " \t"));
 
             for ($i = $afterCommentIndex; $i > $afterParenthesisIndex; --$i) {
                 $tokens[$i] = $tokens[$i - 1];
             }
 
             $tokens[$afterParenthesisIndex] = $tokenTmp;
+            $tokens->insertAt($afterParenthesisIndex + 1, new Token(array(T_WHITESPACE, "\n")));
+
+            // Collapse whitespace tokens if the last moved token is a whitespace and the next token is one too.
+            // + 1 is needed to get the last moved token because of the inserted token.
+            $lastMovedToken = $tokens[$afterCommentIndex + 1];
+            $followingToken = $tokens[$afterCommentIndex + 2];
+
+            if ($lastMovedToken->isWhitespace() && $followingToken->isWhitespace()) {
+                $followingToken->setContent($lastMovedToken->getContent().$followingToken->getContent());
+                $lastMovedToken->clear();
+            }
         }
     }
 
@@ -155,6 +158,7 @@ class BracesFixer extends AbstractFixer
                 return T_SWITCH !== $item;
             }
         );
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = 0, $limit = count($tokens); $index < $limit; ++$index) {
             $token = $tokens[$index];
@@ -165,7 +169,12 @@ class BracesFixer extends AbstractFixer
             }
 
             // do not change indent for lambda functions
-            if ($token->isGivenKind(T_FUNCTION) && $tokens->isLambda($index)) {
+            if ($token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($index)) {
+                continue;
+            }
+
+            // do not change indent for `while` in `do ... while ...`
+            if ($token->isGivenKind(T_WHILE) && $tokensAnalyzer->isWhilePartOfDoWhile($index)) {
                 continue;
             }
 
@@ -203,17 +212,24 @@ class BracesFixer extends AbstractFixer
                 }
 
                 if (1 === $nestLevel && $nestToken->equalsAny(array(';', '}'))) {
-                    $nextNonWhitespaceNestToken = $tokens[$tokens->getNextNonWhitespace($nestIndex)];
+                    $nextNonWhitespaceNestIndex = $tokens->getNextNonWhitespace($nestIndex);
+                    $nextNonWhitespaceNestToken = $tokens[$nextNonWhitespaceNestIndex];
 
                     if (
                         // next Token is not a comment
                         !$nextNonWhitespaceNestToken->isComment() &&
                         // and it is not a `$foo = function () {};` situation
-                        !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equalsAny(array(';', ',', ']'))) &&
+                        !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equalsAny(array(';', ',', ']', array(CT_ARRAY_SQUARE_BRACE_CLOSE)))) &&
                         // and it is not a `${"a"}->...` and `${"b{$foo}"}->...` situation
                         !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(array('"', "'", array(T_CONSTANT_ENCAPSED_STRING))))
                     ) {
-                        if ($nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens())) {
+                        if (
+                            $nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens()) ||
+                            (
+                                $nextNonWhitespaceNestToken->isGivenKind(T_WHILE) &&
+                                $tokensAnalyzer->isWhilePartOfDoWhile($nextNonWhitespaceNestIndex)
+                            )
+                        ) {
                             $whitespace = ' ';
                         } else {
                             $nextToken = $tokens[$nestIndex + 1];
@@ -259,14 +275,14 @@ class BracesFixer extends AbstractFixer
                 // set indent only if it is not a case, when comment is following { in same line
                 if (
                     !$nextNonWhitespaceToken->isComment()
-                    || !($nextToken->isWhitespace() && $nextToken->isWhitespace(array('whitespaces' => " \t")))
+                    || !($nextToken->isWhitespace() && $nextToken->isWhitespace(" \t"))
                     && substr_count($nextToken->getContent(), "\n") === 1 // preserve blank lines
                 ) {
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
                 }
             } else {
                 $nextToken = $tokens[$startBraceIndex + 1];
-                if ($nextToken->isWhitespace(array('whitespaces' => " \t")) || !$nextToken->isWhitespace()) {
+                if ($nextToken->isWhitespace(" \t") || !$nextToken->isWhitespace()) {
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
                 }
             }
@@ -293,10 +309,12 @@ class BracesFixer extends AbstractFixer
 
     private function fixLambdas(Tokens $tokens)
     {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_FUNCTION) || !$tokens->isLambda($index)) {
+            if (!$token->isGivenKind(T_FUNCTION) || !$tokensAnalyzer->isLambda($index)) {
                 continue;
             }
 
@@ -357,7 +375,7 @@ class BracesFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind($controlTokens) || $token->isGivenKind(T_USE)) {
+            if ($token->isGivenKind($controlTokens) || $token->isGivenKind(CT_USE_LAMBDA)) {
                 $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($index);
 
                 if (!$tokens[$nextNonWhitespaceIndex]->equals(':')) {

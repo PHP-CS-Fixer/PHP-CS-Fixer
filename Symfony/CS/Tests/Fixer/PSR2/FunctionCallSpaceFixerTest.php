@@ -82,4 +82,22 @@ class FunctionCallSpaceFixerTest extends AbstractFixerTestBase
             ),
         );
     }
+
+    /**
+     * @dataProvider testFixProvider
+     * @requires PHP 5.4
+     */
+    public function test54($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provide54Cases()
+    {
+        return array(
+           array(
+                '<?php echo (new Process())->getOutput();',
+            ),
+        );
+    }
 }

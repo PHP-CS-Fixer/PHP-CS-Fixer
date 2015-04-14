@@ -29,15 +29,17 @@ class Config implements ConfigInterface
     protected $fixers;
     protected $dir;
     protected $customFixers;
-    protected $usingCache = false;
+    protected $usingCache = true;
     protected $usingLinter = true;
     protected $hideProgress = false;
+    protected $cacheFile = '.php_cs.cache';
+    protected $phpExecutable;
 
     public function __construct($name = 'default', $description = 'A default configuration')
     {
         $this->name = $name;
         $this->description = $description;
-        $this->level = FixerInterface::SYMFONY_LEVEL;
+        $this->level = FixerInterface::PSR2_LEVEL;
         $this->fixers = array();
         $this->finder = new DefaultFinder();
         $this->customFixers = array();
@@ -51,6 +53,8 @@ class Config implements ConfigInterface
     public function setDir($dir)
     {
         $this->dir = $dir;
+
+        return $this;
     }
 
     public function setUsingCache($usingCache)
@@ -154,5 +158,45 @@ class Config implements ConfigInterface
     public function usingLinter()
     {
         return $this->usingLinter;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCacheFile($cacheFile)
+    {
+        $this->cacheFile = $cacheFile;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCacheFile()
+    {
+        return $this->cacheFile;
+    }
+
+    /**
+     * Set PHP executable.
+     *
+     * @param string|null $phpExecutable
+     *
+     * @return Config
+     */
+    public function setPhpExecutable($phpExecutable)
+    {
+        $this->phpExecutable = $phpExecutable;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPhpExecutable()
+    {
+        return $this->phpExecutable;
     }
 }

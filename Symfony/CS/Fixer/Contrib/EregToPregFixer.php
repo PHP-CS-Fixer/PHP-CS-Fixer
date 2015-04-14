@@ -41,13 +41,8 @@ class EregToPregFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        if (!$this->cursoryMatch($content)) {
-            return $content;
-        }
-
-        $tokens = Tokens::fromCode($content);
         $end = $tokens->count() - 1;
 
         foreach (self::$functions as $map) {
@@ -100,8 +95,6 @@ class EregToPregFixer extends AbstractFixer
                 $tokens[$match[0]]->setContent($map[1]);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -153,18 +146,5 @@ class EregToPregFixer extends AbstractFixer
         });
 
         return key($delimiters);
-    }
-
-    /**
-     * Perform a quick search to see if any ext/ereg functions are used.
-     *
-     * @param string $content the content itself
-     *
-     * @return bool
-     */
-    private function cursoryMatch($content)
-    {
-        // just searching for "ereg" or "split" will do, since all the function names start with either of them
-        return false !== stripos($content, 'ereg') || false !== stripos($content, 'split');
     }
 }

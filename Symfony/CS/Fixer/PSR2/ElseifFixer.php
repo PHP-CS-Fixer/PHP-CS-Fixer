@@ -26,11 +26,13 @@ class ElseifFixer extends AbstractFixer
      *
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_ELSE)) {
+                continue;
+            }
 
-        foreach ($tokens->findGivenKind(T_ELSE) as $index => $token) {
             $nextIndex = $tokens->getNextNonWhitespace($index);
             $nextToken = $tokens[$nextIndex];
 
@@ -44,7 +46,7 @@ class ElseifFixer extends AbstractFixer
             $tokens[$index + 1]->clear();
 
             // 2. change token from T_ELSE into T_ELSEIF
-            $token->override(array(T_ELSEIF, 'elseif', $token->getLine()));
+            $token->override(array(T_ELSEIF, 'elseif'));
 
             // 3. clear succeeding T_IF
             $nextToken->clear();
@@ -57,8 +59,6 @@ class ElseifFixer extends AbstractFixer
                 $token->setContent('elseif');
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -66,6 +66,6 @@ class ElseifFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'The keyword elseif should be used instead of else if so that all control keywords looks like single words.';
+        return 'The keyword elseif should be used instead of else if so that all control keywords look like single words.';
     }
 }

@@ -13,6 +13,7 @@ namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -23,15 +24,14 @@ class OrderedUseFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
-        $namespacesImports = $tokens->getImportUseIndexes(true);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $namespacesImports = $tokensAnalyzer->getImportUseIndexes(true);
         $usesOrder = array();
 
         if (!count($namespacesImports)) {
-            return $content;
+            return;
         }
 
         foreach ($namespacesImports as $uses) {
@@ -39,13 +39,12 @@ class OrderedUseFixer extends AbstractFixer
             $usesOrder = array_replace($usesOrder, $this->getNewOrder($uses, $tokens));
         }
 
-        // First clean the old content
-        // This must be done first as the indexes can be scattered
-        foreach ($usesOrder as $use) {
-            $tokens->clearRange($use[1], $use[2]);
-        }
-
         $usesOrder = array_reverse($usesOrder, true);
+        $mapStartToEnd = array();
+
+        foreach ($usesOrder as $use) {
+            $mapStartToEnd[$use[1]] = $use[2];
+        }
 
         // Now insert the new tokens, starting from the end
         foreach ($usesOrder as $index => $use) {
@@ -54,10 +53,8 @@ class OrderedUseFixer extends AbstractFixer
             $declarationTokens[count($declarationTokens) - 1]->clear(); // clear `;`
             $declarationTokens->clearEmptyTokens();
 
-            $tokens->insertAt($index, $declarationTokens);
+            $tokens->overrideRange($index, $mapStartToEnd[$index], $declarationTokens);
         }
-
-        return $tokens->generateCode();
     }
 
     /**

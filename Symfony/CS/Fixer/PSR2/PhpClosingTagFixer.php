@@ -25,18 +25,16 @@ class PhpClosingTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         if (!$tokens->isMonolithicPhp()) {
-            return $content;
+            return;
         }
 
         $closeTags = $tokens->findGivenKind(T_CLOSE_TAG);
 
         if (empty($closeTags)) {
-            return $content;
+            return;
         }
 
         list($index, $token) = each($closeTags);
@@ -50,8 +48,6 @@ class PhpClosingTagFixer extends AbstractFixer
         if (!$prevToken->equalsAny(array(';', '}'))) {
             $tokens->insertAt($prevIndex + 1, new Token(';'));
         }
-
-        return $tokens->generateCode();
     }
 
     /**

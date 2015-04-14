@@ -22,10 +22,8 @@ class SingleQuoteFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens as $token) {
             if (!$token->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
                 continue;
@@ -43,8 +41,6 @@ class SingleQuoteFixer extends AbstractFixer
                 $token->setContent("'".$content."'");
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

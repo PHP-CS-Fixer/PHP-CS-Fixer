@@ -13,6 +13,7 @@ namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
@@ -22,22 +23,21 @@ class UnaryOperatorsSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if ($tokens->isUnarySuccessorOperator($index)) {
+            if ($tokensAnalyzer->isUnarySuccessorOperator($index)) {
                 $tokens->removeLeadingWhitespace($index);
                 continue;
             }
-            if ($tokens->isUnaryPredecessorOperator($index)) {
+
+            if ($tokensAnalyzer->isUnaryPredecessorOperator($index)) {
                 $tokens->removeTrailingWhitespace($index);
                 continue;
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

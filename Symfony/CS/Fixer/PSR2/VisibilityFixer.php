@@ -14,6 +14,7 @@ namespace Symfony\CS\Fixer\PSR2;
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * Fixer for rules defined in PSR2 ¶4.3, ¶4.5.
@@ -25,27 +26,28 @@ class VisibilityFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-        $elements = $tokens->getClassyElements();
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $elements = $tokensAnalyzer->getClassyElements();
 
         foreach (array_reverse($elements, true) as $index => $element) {
             if ('method' === $element['type']) {
-                $this->applyAttribs($tokens, $index, $this->grabAttribsBeforeMethodToken($tokens, $index));
+                $this->overrideAttribs($tokens, $index, $this->grabAttribsBeforeMethodToken($tokens, $index));
 
                 // force whitespace between function keyword and function name to be single space char
-                $tokens[++$index]->setContent(' ');
+                $afterToken = $tokens[++$index];
+                if ($afterToken->isWhitespace()) {
+                    $afterToken->setContent(' ');
+                }
             } elseif ('property' === $element['type']) {
                 $prevIndex = $tokens->getPrevTokenOfKind($index, array(';', ',', '{'));
 
                 if (!$prevIndex || !$tokens[$prevIndex]->equals(',')) {
-                    $this->applyAttribs($tokens, $index, $this->grabAttribsBeforePropertyToken($tokens, $index));
+                    $this->overrideAttribs($tokens, $index, $this->grabAttribsBeforePropertyToken($tokens, $index));
                 }
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -61,23 +63,32 @@ class VisibilityFixer extends AbstractFixer
      *
      * Token at given index is prepended by attributes.
      *
-     * @param Tokens $tokens  Tokens collection
-     * @param int    $index   token index
-     * @param array  $attribs array of token attributes
+     * @param Tokens $tokens      Tokens collection
+     * @param int    $memberIndex token index
+     * @param array  $attribs     map of grabbed attributes, key is attribute name and value is array of index and clone of Token
      */
-    private function applyAttribs(Tokens $tokens, $index, array $attribs)
+    private function overrideAttribs(Tokens $tokens, $memberIndex, array $attribs)
     {
-        $toInsert = array();
+        $toOverride = array();
+        $firstAttribIndex = $memberIndex;
 
         foreach ($attribs as $attrib) {
-            if (null !== $attrib && '' !== $attrib->getContent()) {
-                $toInsert[] = $attrib;
-                $toInsert[] = new Token(array(T_WHITESPACE, ' '));
+            if (null === $attrib) {
+                continue;
+            }
+
+            if (null !== $attrib['index']) {
+                $firstAttribIndex = min($firstAttribIndex, $attrib['index']);
+            }
+
+            if (!$attrib['token']->isGivenKind(T_VAR) && '' !== $attrib['token']->getContent()) {
+                $toOverride[] = $attrib['token'];
+                $toOverride[] = new Token(array(T_WHITESPACE, ' '));
             }
         }
 
-        if (!empty($toInsert)) {
-            $tokens->insertAt($index, $toInsert);
+        if (!empty($toOverride)) {
+            $tokens->overrideRange($firstAttribIndex, $memberIndex - 1, $toOverride);
         }
     }
 
@@ -89,7 +100,7 @@ class VisibilityFixer extends AbstractFixer
      * @param Tokens $tokens Tokens collection
      * @param int    $index  token index
      *
-     * @return array array of grabbed attributes
+     * @return array map of grabbed attributes, key is attribute name and value is array of index and clone of Token
      */
     private function grabAttribsBeforeMethodToken(Tokens $tokens, $index)
     {
@@ -109,7 +120,7 @@ class VisibilityFixer extends AbstractFixer
             array(
                 'abstract' => null,
                 'final' => null,
-                'visibility' => new Token(array(T_PUBLIC, 'public')),
+                'visibility' => array('index' => null, 'token' => new Token(array(T_PUBLIC, 'public'))),
                 'static' => null,
             )
         );
@@ -123,12 +134,12 @@ class VisibilityFixer extends AbstractFixer
      * @param Tokens $tokens Tokens collection
      * @param int    $index  token index
      *
-     * @return array array of grabbed attributes
+     * @return array map of grabbed attributes, key is attribute name and value is array of index and clone of Token
      */
     private function grabAttribsBeforePropertyToken(Tokens $tokens, $index)
     {
         static $tokenAttribsMap = array(
-            T_VAR       => null, // destroy T_VAR token!
+            T_VAR       => 'var',
             T_PRIVATE   => 'visibility',
             T_PROTECTED => 'visibility',
             T_PUBLIC    => 'visibility',
@@ -140,23 +151,21 @@ class VisibilityFixer extends AbstractFixer
             $index,
             $tokenAttribsMap,
             array(
-                'visibility' => new Token(array(T_PUBLIC, 'public')),
+                'visibility' => array('index' => null, 'token' => new Token(array(T_PUBLIC, 'public'))),
                 'static' => null,
             )
         );
     }
 
     /**
-     * Grab attributes before token at given index.
-     *
-     * Grabbed attributes are cleared by overriding them with empty string and should be manually applied with applyTokenAttribs method.
+     * Grab info about attributes before token at given index.
      *
      * @param Tokens $tokens          Tokens collection
      * @param int    $index           token index
      * @param array  $tokenAttribsMap token to attribute name map
      * @param array  $attribs         array of token attributes
      *
-     * @return array array of grabbed attributes
+     * @return array map of grabbed attributes, key is attribute name and value is array of index and clone of Token
      */
     private function grabAttribsBeforeToken(Tokens $tokens, $index, array $tokenAttribsMap, array $attribs)
     {
@@ -175,12 +184,11 @@ class VisibilityFixer extends AbstractFixer
             if (array_key_exists($token->getId(), $tokenAttribsMap)) {
                 // set token attribute if token map defines attribute name for token
                 if ($tokenAttribsMap[$token->getId()]) {
-                    $attribs[$tokenAttribsMap[$token->getId()]] = clone $token;
+                    $attribs[$tokenAttribsMap[$token->getId()]] = array(
+                        'token' => clone $token,
+                        'index' => $index,
+                    );
                 }
-
-                // clear the token and whitespaces after it
-                $tokens[$index]->clear();
-                $tokens[$index + 1]->clear();
 
                 continue;
             }

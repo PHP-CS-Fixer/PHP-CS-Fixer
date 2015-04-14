@@ -25,10 +25,8 @@ class FunctionCallSpaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         $functionyTokens = $this->getFunctionyTokens();
 
         foreach ($tokens as $index => $token) {
@@ -49,8 +47,6 @@ class FunctionCallSpaceFixer extends AbstractFixer
                 $this->fixFunctionCall($tokens, $index);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

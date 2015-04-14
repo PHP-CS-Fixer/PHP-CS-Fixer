@@ -13,6 +13,8 @@ namespace Symfony\CS;
 
 /**
  * @author Davi Koscianski Vidal <davividal@gmail.com>
+ *
+ * @internal
  */
 class StdinFileInfo extends \SplFileInfo
 {

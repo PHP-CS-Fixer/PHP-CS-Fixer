@@ -22,17 +22,13 @@ class TrimArraySpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {
-            if ($tokens->isArray($index)) {
+            if ($tokens[$index]->isGivenKind(array(T_ARRAY, CT_ARRAY_SQUARE_BRACE_OPEN))) {
                 self::fixArray($tokens, $index);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -51,20 +47,18 @@ class TrimArraySpacesFixer extends AbstractFixer
      */
     private static function fixArray(Tokens $tokens, $index)
     {
-        static $whitespaceOptions = array('whitespaces' => " \t");
-
         $startIndex = $index;
 
         if ($tokens[$startIndex]->isGivenKind(T_ARRAY)) {
             $startIndex = $tokens->getNextMeaningfulToken($startIndex);
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
         } else {
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $startIndex);
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
         }
 
         $nextToken = $tokens[$startIndex + 1];
 
-        if ($nextToken->isWhitespace($whitespaceOptions)) {
+        if ($nextToken->isWhitespace(" \t")) {
             $nextToken->clear();
         }
 
@@ -72,10 +66,8 @@ class TrimArraySpacesFixer extends AbstractFixer
         $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($endIndex)];
 
         if (
-            $prevToken->isWhitespace($whitespaceOptions)
+            $prevToken->isWhitespace(" \t")
             && !$prevNonWhitespaceToken->equals(',')
-            // TODO: following condition should be removed on 2.0 line thanks to WhitespacyCommentTransformer
-            && !($prevNonWhitespaceToken->isComment() && $prevNonWhitespaceToken->getContent() !== rtrim($prevNonWhitespaceToken->getContent()))
         ) {
             $prevToken->clear();
         }

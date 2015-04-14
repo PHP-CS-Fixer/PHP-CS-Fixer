@@ -23,7 +23,7 @@ class StrictParamFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         static $map = null;
 
@@ -42,8 +42,6 @@ class StrictParamFixer extends AbstractFixer
             );
         }
 
-        $tokens = Tokens::fromCode($content);
-
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
@@ -51,8 +49,6 @@ class StrictParamFixer extends AbstractFixer
                 $this->fixFunction($tokens, $index, $map[$token->getContent()]);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -82,8 +78,8 @@ class StrictParamFixer extends AbstractFixer
                 continue;
             }
 
-            if ($token->equals('[')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $index);
+            if ($token->isGivenKind(CT_ARRAY_SQUARE_BRACE_OPEN)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
                 continue;
             }
 
@@ -120,7 +116,7 @@ class StrictParamFixer extends AbstractFixer
             }
         }
 
-        $beforeEndBraceIndex = $tokens->getPrevNonWhitespace($endBraceIndex, array());
+        $beforeEndBraceIndex = $tokens->getPrevNonWhitespace($endBraceIndex);
         $tokens->insertAt($beforeEndBraceIndex + 1, $tokensToInsert);
     }
 }

@@ -22,17 +22,15 @@ class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNamespaceFi
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            $token = $tokens[$index];
 
-        foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_NAMESPACE)) {
                 $this->fixLinesBeforeNamespace($tokens, $index, 2);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

@@ -13,6 +13,7 @@ namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Luis Cordova <cordoval@gmail.com>
@@ -22,13 +23,20 @@ class RemoveLinesBetweenUsesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        $this->removeLineBreaksBetweenUseStatements($tokens);
+        $namespacesImports = $tokensAnalyzer->getImportUseIndexes(true);
 
-        return $tokens->generateCode();
+        if (!count($namespacesImports)) {
+            return;
+        }
+
+        foreach ($namespacesImports as $uses) {
+            $uses = array_reverse($uses);
+            $this->fixLineBreaksPerImportGroup($tokens, $uses);
+        }
     }
 
     /**
@@ -46,20 +54,6 @@ class RemoveLinesBetweenUsesFixer extends AbstractFixer
     public function getDescription()
     {
         return 'Removes line breaks between use statements.';
-    }
-
-    private function removeLineBreaksBetweenUseStatements(Tokens $tokens)
-    {
-        $namespacesImports = $tokens->getImportUseIndexes(true);
-
-        if (!count($namespacesImports)) {
-            return;
-        }
-
-        foreach ($namespacesImports as $uses) {
-            $uses = array_reverse($uses);
-            $this->fixLineBreaksPerImportGroup($tokens, $uses);
-        }
     }
 
     /**

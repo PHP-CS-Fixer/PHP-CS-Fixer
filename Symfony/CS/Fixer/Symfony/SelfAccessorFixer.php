@@ -13,6 +13,7 @@ namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
@@ -22,10 +23,8 @@ class SelfAccessorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         for ($i = 0, $c = $tokens->count(); $i < $c; ++$i) {
             if (!$tokens[$i]->isClassy()) {
                 continue;
@@ -42,8 +41,6 @@ class SelfAccessorFixer extends AbstractFixer
             // continue after the class declaration
             $i = $endIndex;
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -64,11 +61,13 @@ class SelfAccessorFixer extends AbstractFixer
      */
     private function replaceNameOccurrences(Tokens $tokens, $name, $startIndex, $endIndex)
     {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         for ($i = $startIndex; $i < $endIndex; ++$i) {
             $token = $tokens[$i];
 
             // skip lambda functions (PHP < 5.4 compatibility)
-            if ($token->isGivenKind(T_FUNCTION) && $tokens->isLambda($i)) {
+            if ($token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($i)) {
                 $i = $tokens->getNextTokenOfKind($i, array('{'));
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
                 continue;

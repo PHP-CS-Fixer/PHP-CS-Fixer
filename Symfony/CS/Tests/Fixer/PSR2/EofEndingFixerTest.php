@@ -60,6 +60,10 @@ $a = 3;
                 "<?php\r\$a = 1;\r",
             ),
             array(
+                "<?php\r\$a = 1;?>foo\n",
+                "<?php\r\$a = 1;?>foo",
+            ),
+            array(
                 // test for not adding an empty line in empty file
                 '',
             ),

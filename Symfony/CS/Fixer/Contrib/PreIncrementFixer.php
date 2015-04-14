@@ -13,6 +13,7 @@ namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
@@ -22,14 +23,14 @@ class PreIncrementFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(array(T_INC, T_DEC)) || !$tokens->isUnarySuccessorOperator($index)) {
+            if (!$token->isGivenKind(array(T_INC, T_DEC)) || !$tokensAnalyzer->isUnarySuccessorOperator($index)) {
                 continue;
             }
 
@@ -46,8 +47,6 @@ class PreIncrementFixer extends AbstractFixer
                 $token->clear();
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

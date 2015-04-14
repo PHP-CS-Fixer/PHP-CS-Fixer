@@ -11,6 +11,8 @@
 
 namespace Symfony\CS;
 
+use Symfony\CS\Tokenizer\Tokens;
+
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -26,12 +28,10 @@ interface FixerInterface
     /**
      * Fixes a file.
      *
-     * @param \SplFileInfo $file    A \SplFileInfo instance
-     * @param string       $content The file content
-     *
-     * @return string The fixed file content
+     * @param \SplFileInfo $file   A \SplFileInfo instance
+     * @param Tokens       $tokens Tokens collection
      */
-    public function fix(\SplFileInfo $file, $content);
+    public function fix(\SplFileInfo $file, Tokens $tokens);
 
     /**
      * Returns the description of the fixer.

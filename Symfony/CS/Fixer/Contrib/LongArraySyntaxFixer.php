@@ -23,23 +23,21 @@ class LongArraySyntaxFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            if (!$tokens->isShortArray($index)) {
+            $token = $tokens[$index];
+
+            if (!$token->isGivenKind(CT_ARRAY_SQUARE_BRACE_OPEN)) {
                 continue;
             }
 
-            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $index);
+            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
 
-            $tokens[$index]->setContent('(');
-            $tokens[$closeIndex]->setContent(')');
+            $token->override('(');
+            $tokens[$closeIndex]->override(')');
             $tokens->insertAt($index, new Token(array(T_ARRAY, 'array')));
         }
-
-        return $tokens->generateCode();
     }
 
     /**

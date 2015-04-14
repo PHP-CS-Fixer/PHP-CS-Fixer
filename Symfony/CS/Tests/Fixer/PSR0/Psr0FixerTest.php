@@ -125,7 +125,7 @@ namespace Foo\Bar\Baz\FIXER\PSR0;
 class Psr0Fixer {}
 EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, $input, $file, $fixer);
 
         $config->setDir(__DIR__.'/../../../Fixer/PSR0');
         $expected = <<<'EOF'
@@ -133,13 +133,8 @@ EOF;
 namespace Foo\Bar\Baz;
 class Psr0Fixer {}
 EOF;
-        $input = <<<'EOF'
-<?php
-namespace Foo\Bar\Baz;
-class Psr0Fixer {}
-EOF;
 
-        $this->assertSame($expected, $fixer->fix($file, $input));
+        $this->makeTest($expected, null, $file, $fixer);
     }
 
     public function testIgnoreLongExtension()

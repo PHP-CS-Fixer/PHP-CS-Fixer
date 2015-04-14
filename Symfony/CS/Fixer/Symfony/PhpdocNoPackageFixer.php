@@ -22,13 +22,9 @@ class PhpdocNoPackageFixer extends AbstractAnnotationRemovalFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         $this->removeAnnotations($tokens, array('package', 'subpackage'));
-
-        return $tokens->generateCode();
     }
 
     /**

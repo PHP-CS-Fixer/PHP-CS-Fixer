@@ -14,6 +14,7 @@ namespace Symfony\CS\Fixer\PSR2;
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 use Symfony\CS\Utils;
 
 /**
@@ -27,15 +28,15 @@ class SingleLineAfterImportsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        foreach ($tokens->getImportUseIndexes() as $index) {
+        foreach ($tokensAnalyzer->getImportUseIndexes() as $index) {
             $indent = '';
 
             // if previous line ends with comment and current line starts with whitespace, use current indent
-            if ($tokens[$index - 1]->isWhitespace(array('whitespaces' => " \t")) && $tokens[$index - 2]->isGivenKind(T_COMMENT)) {
+            if ($tokens[$index - 1]->isWhitespace(" \t") && $tokens[$index - 2]->isGivenKind(T_COMMENT)) {
                 $indent = $tokens[$index - 1]->getContent();
             } elseif ($tokens[$index - 1]->isWhitespace()) {
                 $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$index - 1]);
@@ -46,13 +47,8 @@ class SingleLineAfterImportsFixer extends AbstractFixer
             // Handle insert index for inline T_COMMENT with whitespace after semicolon
             $semicolonIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
             $insertIndex = $semicolonIndex + 1;
-            if ($tokens[$insertIndex]->isWhitespace(array('whitespaces' => " \t")) && $tokens[$insertIndex + 1]->isComment()) {
+            if ($tokens[$insertIndex]->isWhitespace(" \t") && $tokens[$insertIndex + 1]->isComment()) {
                 ++$insertIndex;
-            }
-
-            // Do not add newline after inline T_COMMENT as it is part of T_COMMENT already
-            if ($tokens[$insertIndex]->isGivenKind(T_COMMENT)) {
-                $newline = '';
             }
 
             // Increment insert index for inline T_COMMENT or T_DOC_COMMENT
@@ -68,12 +64,10 @@ class SingleLineAfterImportsFixer extends AbstractFixer
             if ($tokens[$insertIndex]->isWhitespace()) {
                 $nextToken = $tokens[$insertIndex];
                 $nextToken->setContent($newline.$indent.ltrim($nextToken->getContent()));
-            } else {
+            } elseif ($newline && $indent) {
                 $tokens->insertAt($insertIndex, new Token(array(T_WHITESPACE, $newline.$indent)));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

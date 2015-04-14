@@ -59,6 +59,8 @@ interface ConfigInterface
      * Sets the root directory of the project.
      *
      * @param string $dir The project root directory
+     *
+     * @return ConfigInterface The same instance
      */
     public function setDir($dir);
 
@@ -68,6 +70,13 @@ interface ConfigInterface
      * @return string The project root directory
      */
     public function getDir();
+
+    /**
+     * Returns true if progress should be hidden.
+     *
+     * @return bool
+     */
+    public function getHideProgress();
 
     /**
      * Adds an instance of a custom fixer.
@@ -82,4 +91,41 @@ interface ConfigInterface
      * @return FixerInterface[]
      */
     public function getCustomFixers();
+
+    /**
+     * Returns true if caching should be enabled.
+     *
+     * @return bool
+     */
+    public function usingCache();
+
+    /**
+     * Returns true if linter should be enabled.
+     *
+     * @return bool
+     */
+    public function usingLinter();
+
+    /**
+     * Sets the path to the cache file.
+     *
+     * @param string $cacheFile
+     *
+     * @return ConfigInterface
+     */
+    public function setCacheFile($cacheFile);
+
+    /**
+     * Returns the path to the cache file.
+     *
+     * @return string
+     */
+    public function getCacheFile();
+
+    /**
+     * Get configured PHP executable, if any.
+     *
+     * @return string|null
+     */
+    public function getPhpExecutable();
 }

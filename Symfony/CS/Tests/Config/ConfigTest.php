@@ -19,8 +19,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 {
     public function testThatDefaultFinderWorksWithDirSetOnConfig()
     {
-        $config = Config::create();
-        $config->setDir(__DIR__.'/../Fixtures/FinderDirectory');
+        $config = Config::create()->setDir(__DIR__.'/../Fixtures/FinderDirectory');
 
         $iterator = $config->getFinder()->getIterator();
         $this->assertEquals(1, count($iterator));
@@ -33,8 +32,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $finder = DefaultFinder::create();
         $finder->in(__DIR__.'/../Fixtures/FinderDirectory');
 
-        $config = Config::create();
-        $config->finder($finder);
+        $config = Config::create()->finder($finder);
 
         $iterator = $config->getFinder()->getIterator();
         $this->assertEquals(1, count($iterator));
@@ -47,12 +45,35 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $finder = Finder::create();
         $finder->in(__DIR__.'/../Fixtures/FinderDirectory');
 
-        $config = Config::create();
-        $config->finder($finder);
+        $config = Config::create()->finder($finder);
 
         $iterator = $config->getFinder()->getIterator();
         $this->assertEquals(1, count($iterator));
         $iterator->rewind();
         $this->assertSame('somefile.php', $iterator->current()->getFilename());
+    }
+
+    public function testThatCacheFileHasDefaultValue()
+    {
+        $config = new Config();
+
+        $this->assertSame('.php_cs.cache', $config->getCacheFile());
+    }
+
+    public function testThatCacheFileCanBeMutated()
+    {
+        $cacheFile = 'some-directory/some.file';
+
+        $config = new Config();
+        $config->setCacheFile($cacheFile);
+
+        $this->assertSame($cacheFile, $config->getCacheFile());
+    }
+
+    public function testThatMutatorHasFluentInterface()
+    {
+        $config = new Config();
+
+        $this->assertSame($config, $config->setCacheFile('some-directory/some.file'));
     }
 }

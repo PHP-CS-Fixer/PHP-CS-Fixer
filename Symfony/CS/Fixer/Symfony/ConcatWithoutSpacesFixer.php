@@ -22,24 +22,21 @@ class ConcatWithoutSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-        $whitespaces = array('whitespaces' => " \t");
-
         foreach ($tokens as $index => $token) {
-            if ($token->equals('.')) {
-                if (!$tokens[$tokens->getPrevNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
-                    $tokens->removeLeadingWhitespace($index, $whitespaces);
-                }
+            if (!$token->equals('.')) {
+                continue;
+            }
 
-                if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
-                    $tokens->removeTrailingWhitespace($index, $whitespaces);
-                }
+            if (!$tokens[$tokens->getPrevNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
+                $tokens->removeLeadingWhitespace($index, " \t");
+            }
+
+            if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
+                $tokens->removeTrailingWhitespace($index, " \t");
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
