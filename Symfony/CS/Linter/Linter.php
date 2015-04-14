@@ -57,7 +57,7 @@ class Linter implements LinterInterface
 
     public function __destruct()
     {
-        if ($this->temporaryFile) {
+        if (null !== $this->temporaryFile) {
             unlink($this->temporaryFile);
         }
     }
@@ -120,7 +120,7 @@ class Linter implements LinterInterface
      */
     private function createProcessForSource($source)
     {
-        if (!$this->temporaryFile) {
+        if (null === $this->temporaryFile) {
             $this->temporaryFile = tempnam('.', 'tmp');
         }
 

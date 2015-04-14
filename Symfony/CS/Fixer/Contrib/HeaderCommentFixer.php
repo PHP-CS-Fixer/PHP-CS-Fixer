@@ -142,7 +142,7 @@ class HeaderCommentFixer extends AbstractFixer
      */
     private function replaceHeaderComment(Tokens $tokens, $oldHeaderIndex)
     {
-        if (!strlen(self::$headerComment)) {
+        if ('' === self::$headerComment) {
             if ($oldHeaderIndex) {
                 $tokens->clearRange($oldHeaderIndex, $oldHeaderIndex + 1);
             }

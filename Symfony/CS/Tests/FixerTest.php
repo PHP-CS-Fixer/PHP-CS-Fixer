@@ -198,6 +198,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['phpdoc_short_description'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_var_without_name'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_order'], $fixers['phpdoc_trim']),
+            array($fixers['unused_use'], $fixers['line_after_namespace']),
         );
 
         $docFixerNames = array_filter(

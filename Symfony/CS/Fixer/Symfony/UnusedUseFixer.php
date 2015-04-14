@@ -177,26 +177,31 @@ class UnusedUseFixer extends AbstractFixer
             $tokens[$index]->clear();
         }
 
-        $token = $tokens[$useDeclaration['start'] - 1];
+        $prevToken = $tokens[$useDeclaration['start'] - 1];
 
-        if ($token->isWhitespace()) {
-            $token->setContent(rtrim($token->getContent(), " \t"));
+        if ($prevToken->isWhitespace()) {
+            $prevToken->setContent(rtrim($prevToken->getContent(), " \t"));
         }
 
         if (!isset($tokens[$useDeclaration['end'] + 1])) {
             return;
         }
 
-        $token = $tokens[$useDeclaration['end'] + 1];
+        $nextToken = $tokens[$useDeclaration['end'] + 1];
 
-        if ($token->isWhitespace()) {
-            $content = ltrim($token->getContent(), " \t");
+        if ($nextToken->isWhitespace()) {
+            $content = ltrim($nextToken->getContent(), " \t");
 
             if ($content && "\n" === $content[0]) {
                 $content = substr($content, 1);
             }
 
-            $token->setContent($content);
+            $nextToken->setContent($content);
+        }
+
+        if ($prevToken->isWhitespace() && $nextToken->isWhitespace()) {
+            $nextToken->setContent($prevToken->getContent().$nextToken->getContent());
+            $prevToken->clear();
         }
     }
 

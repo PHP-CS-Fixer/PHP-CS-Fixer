@@ -58,6 +58,10 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
 
             $this->assertSame($expected, $tokens->generateCode(), 'Code build on input code must match expected code.');
             $this->assertTrue($tokens->isChanged(), 'Tokens collection built on input code should be marked as changed after fixing.');
+
+            Tokens::clearCache();
+            // TODO: MUST be enbled on 2.0 line
+            // $this->assertTokens(Tokens::fromCode($expected), $tokens);
         }
 
         Tokens::clearCache();
@@ -70,5 +74,21 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($expected, $tokens->generateCode(), 'Code build on expected code must not change.');
         $this->assertFalse($tokens->isChanged(), 'Tokens collection built on expected code should not be marked as changed after fixing.');
+    }
+
+    private function assertTokens(Tokens $expectedTokens, Tokens $tokens)
+    {
+        foreach ($expectedTokens as $index => $expectedToken) {
+            $token = $tokens[$index];
+
+            $expectedPrototype = $expectedToken->getPrototype();
+            if (is_array($expectedPrototype)) {
+                unset($expectedPrototype[2]); // don't compare token lines as our token mutations don't deal with line numbers
+            }
+
+            $this->assertTrue($token->equals($expectedPrototype), sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype), $token->toJson()));
+        }
+
+        $this->assertEquals($expectedTokens->count(), $tokens->count(), 'The collection should have the same length than the expected one');
     }
 }
