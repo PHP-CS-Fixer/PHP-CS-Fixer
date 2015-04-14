@@ -66,6 +66,6 @@ class ElseifFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'The keyword elseif should be used instead of else if so that all control keywords looks like single words.';
+        return 'The keyword elseif should be used instead of else if so that all control keywords look like single words.';
     }
 }
