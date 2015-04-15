@@ -198,7 +198,7 @@ Choose from the list of available fixers:
 * **elseif** [PSR-2]
                 The keyword elseif should be used
                 instead of else if so that all control
-                keywords looks like single words.
+                keywords look like single words.
 
 * **eof_ending** [PSR-2]
                 A file must always end with an empty
