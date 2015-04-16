@@ -352,20 +352,20 @@ EOF
 
         switch ($input->getOption('format')) {
             case 'txt':
-                $fixerOutput = new TxtOutput($output, $config, $resolver->isDryRun(), $input->getOption('diff'));
+                $output = new TxtOutput($output, $config, $resolver->isDryRun(), $input->getOption('diff'));
                 break;
             case 'xml':
-                $fixerOutput = new XmlOutput($output, $config, $resolver->isDryRun(), $input->getOption('diff'));
+                $output = new XmlOutput($output, $config, $resolver->isDryRun(), $input->getOption('diff'));
                 break;
             case 'json':
-                $fixerOutput = new JsonOutput($output, $config, $resolver->isDryRun(), $input->getOption('diff'));
+                $output = new JsonOutput($output, $config, $resolver->isDryRun(), $input->getOption('diff'));
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('The format "%s" is not defined.', $input->getOption('format')));
         }
 
         if ($configFile) {
-            $fixerOutput->writeInfo(sprintf('Loaded config from "%s"', $configFile));
+            $output->writeInfo(sprintf('Loaded config from "%s"', $configFile));
         }
 
         // register custom fixers from config
@@ -374,7 +374,7 @@ EOF
             try {
                 $this->fixer->setLinter(new Linter($config->getPhpExecutable()));
             } catch (UnavailableLinterException $e) {
-                $fixerOutput->writeError('Unable to use linter, can not find PHP executable');
+                $this->errorsManager->report(ErrorsManager::ERROR_TYPE_LINT, '', 'Unable to use linter, can not find PHP executable');
             }
         }
 
@@ -382,7 +382,7 @@ EOF
 
         if ($showProgress) {
             $this->fixer->setEventDispatcher($this->eventDispatcher);
-            $progress = new ProcessOutput($this->eventDispatcher);
+            $process = new ProcessOutput($this->eventDispatcher);
         }
 
         $this->stopwatch->start('fixFiles');
@@ -390,17 +390,17 @@ EOF
         $this->stopwatch->stop('fixFiles');
 
         if ($showProgress) {
-            $progress->printLegend();
+            $process->printLegend();
             $this->fixer->setEventDispatcher(null);
         }
 
-        $fixerOutput->writeChanges($changed);
+        $output->writeChanges($changed);
 
         if (!$this->errorsManager->isEmpty()) {
-            $fixerOutput->writeErrors($this->errorsManager->getErrors());
+            $output->writeErrors($this->errorsManager->getErrors());
         }
 
-        $fixerOutput->writeTimings($this->stopwatch);
+        $output->writeTimings($this->stopwatch);
 
         return !$resolver->isDryRun() || empty($changed) ? 0 : 3;
     }

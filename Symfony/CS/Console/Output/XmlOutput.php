@@ -21,6 +21,9 @@ use Symfony\CS\ConfigInterface;
 class XmlOutput extends AbstractFixerOutput
 {
     private $dom;
+    private $errorsNode = null;
+    private $filesNode = null;
+    private $informationNode = null;
 
     public function __construct(OutputInterface $output, ConfigInterface $config, $isDryRun, $diff)
     {
@@ -28,50 +31,61 @@ class XmlOutput extends AbstractFixerOutput
         $this->dom = new \DOMDocument('1.0', 'UTF-8');
     }
 
-    public function writeChanges(array $changes)
+    protected function writeChange($file, array $fixResult)
     {
-        $filesXML = $this->dom->createElement('files');
-        $this->dom->appendChild($filesXML);
-        $i = 1;
+        if (null === $this->filesNode) {
+            $this->filesNode =  $this->dom->createElement('files');
+            $this->dom->appendChild($this->filesNode);
+        }
 
-        foreach ($changes as $file => $fixResult) {
-            $fileXML = $this->dom->createElement('file');
-            $fileXML->setAttribute('id', $i++);
-            $fileXML->setAttribute('name', $file);
-            $filesXML->appendChild($fileXML);
+        $fileXML = $this->dom->createElement('file');
+        $fileXML->setAttribute('id', $this->changeCount);
+        $fileXML->setAttribute('name', $file);
+        $this->filesNode->appendChild($fileXML);
 
-            if (OutputInterface::VERBOSITY_VERBOSE <= $this->verbosity) {
-                $appliedFixersXML = $this->dom->createElement('applied_fixers');
-                $fileXML->appendChild($appliedFixersXML);
+        if (OutputInterface::VERBOSITY_VERBOSE <= $this->verbosity) {
+            $appliedFixersXML = $this->dom->createElement('applied_fixers');
+            $fileXML->appendChild($appliedFixersXML);
 
-                foreach ($fixResult['appliedFixers'] as $appliedFixer) {
-                    $appliedFixerXML = $this->dom->createElement('applied_fixer');
-                    $appliedFixerXML->setAttribute('name', $appliedFixer);
-                    $appliedFixersXML->appendChild($appliedFixerXML);
-                }
+            foreach ($fixResult['appliedFixers'] as $appliedFixer) {
+                $appliedFixerXML = $this->dom->createElement('applied_fixer');
+                $appliedFixerXML->setAttribute('name', $appliedFixer);
+                $appliedFixersXML->appendChild($appliedFixerXML);
             }
+        }
 
-            if ($this->diff) {
-                $diffXML = $this->dom->createElement('diff');
-                $diffXML->appendChild($this->dom->createCDATASection($fixResult['diff']));
-                $fileXML->appendChild($diffXML);
-            }
+        if ($this->diff) {
+            $diffXML = $this->dom->createElement('diff');
+            $diffXML->appendChild($this->dom->createCDATASection($fixResult['diff']));
+            $fileXML->appendChild($diffXML);
         }
     }
 
-    public function writeErrors(array $errors)
+    protected function writeError($error)
     {
-        // TODO: Implement writeErrors() method.
-    }
+        if (null === $this->errorsNode) {
+            $this->errorsNode =  $this->dom->createElement('errors');
+            $this->dom->appendChild($this->errorsNode);
+        }
 
-    public function writeError($error)
-    {
-        // TODO: Implement writeError() method.
+        $errorXML = $this->dom->createElement('error');
+        $errorXML->setAttribute('name', 'error');
+        $errorXML->setAttribute('id', $this->errorCount);
+        $errorXML->appendChild($this->dom->createCDATASection($error));
+        $this->errorsNode->appendChild($errorXML);
     }
 
     public function writeInfo($info)
     {
-        // TODO: Implement writeInfo() method.
+        if (null === $this->informationNode) {
+            $this->informationNode =  $this->dom->createElement('information');
+            $this->dom->appendChild($this->informationNode);
+        }
+
+        $infoXML = $this->dom->createElement('info');
+        $infoXML->setAttribute('name', 'info');
+        $infoXML->appendChild($this->dom->createCDATASection($info));
+        $this->informationNode->appendChild($infoXML);
     }
 
     public function writeTimings(Stopwatch $stopwatch)
@@ -90,6 +104,24 @@ class XmlOutput extends AbstractFixerOutput
         $timeTotalXML = $this->dom->createElement('total');
         $timeTotalXML->setAttribute('value', round($fixEvent->getDuration() / 1000, 3));
         $timeXML->appendChild($timeTotalXML);
+
+        if (OutputInterface::VERBOSITY_DEBUG <= $this->verbosity) {
+            $timeFilesXML = $this->dom->createElement('files');
+            $timeXML->appendChild($timeFilesXML);
+            $eventCounter = 1;
+
+            foreach ($this->stopwatch->getSectionEvents('fixFile') as $file => $event) {
+                if ('__section__' === $file) {
+                    continue;
+                }
+
+                $timeFileXML = $this->dom->createElement('file');
+                $timeFilesXML->appendChild($timeFileXML);
+                $timeFileXML->setAttribute('id', $eventCounter++);
+                $timeFileXML->setAttribute('name', $file);
+                $timeFileXML->setAttribute('value', round($event->getDuration() / 1000, 3));
+            }
+        }
     }
 
     public function __destruct()
@@ -98,29 +130,3 @@ class XmlOutput extends AbstractFixerOutput
         $this->output->write($this->dom->saveXML());
     }
 }
-
-/*
-
-
-
-
-if (OutputInterface::VERBOSITY_DEBUG <= $verbosity) {
-    $timeFilesXML = $dom->createElement('files');
-    $timeXML->appendChild($timeFilesXML);
-    $eventCounter = 1;
-
-    foreach ($this->stopwatch->getSectionEvents('fixFile') as $file => $event) {
-        if ('__section__' === $file) {
-            continue;
-        }
-
-        $timeFileXML = $dom->createElement('file');
-        $timeFilesXML->appendChild($timeFileXML);
-        $timeFileXML->setAttribute('id', $eventCounter++);
-        $timeFileXML->setAttribute('name', $file);
-        $timeFileXML->setAttribute('value', round($event->getDuration() / 1000, 3));
-    }
-}
-
-
-*/

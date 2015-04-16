@@ -27,8 +27,6 @@ interface FixerOutputInterface
 
     public function writeChanges(array $changes);
 
-    public function writeError($error);
-
     public function writeErrors(array $errors);
 
     public function writeInfo($info);

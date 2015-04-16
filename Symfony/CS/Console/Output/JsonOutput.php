@@ -21,41 +21,28 @@ class JsonOutput extends AbstractFixerOutput
 {
     private $json = array();
 
-    public function writeChanges(array $changes)
+    protected function writeChange($file, array $fixResult)
     {
-        foreach ($changes as $file => $fixResult) {
-            $jFile = array('name' => $file);
+        $jFile = array('name' => $file);
 
-            if (OutputInterface::VERBOSITY_VERBOSE <= $this->verbosity) {
-                $jFile['appliedFixers'] = $fixResult['appliedFixers'];
-            }
-
-            if ($this->diff) {
-                $jFile['diff'] = $fixResult['diff'];
-            }
-
-            $this->json['files'] = $jFile;
+        if (OutputInterface::VERBOSITY_VERBOSE <= $this->verbosity) {
+            $jFile['appliedFixers'] = $fixResult['appliedFixers'];
         }
+
+        if ($this->diff) {
+            $jFile['diff'] = $fixResult['diff'];
+        }
+
+        $this->json['files'] = $jFile;
     }
 
-    public function writeErrors(array $errors)
+    protected function writeError($error)
     {
         if (!isset($this->json['errors'])) {
             $this->json['errors'] = array();
         }
 
-        foreach ($errors as $i => $error) {
-            $this->json['errors'][] = sprintf('%4d) %s', $i + 1, $error['filepath']);
-        }
-    }
-
-    public function writeError($error)
-    {
-        if (!isset($this->json['errors'])) {
-            $this->json['errors'] = array();
-        }
-
-        $this->json['errors'][] = $error;
+        $this->json['errors'][] = sprintf('%4d) %s', $this->errorCount, $error);
     }
 
     public function writeInfo($info)

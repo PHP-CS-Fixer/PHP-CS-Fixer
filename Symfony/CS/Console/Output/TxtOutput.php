@@ -19,59 +19,47 @@ use Symfony\Component\Stopwatch\Stopwatch;
  */
 class TxtOutput extends AbstractFixerOutput
 {
-    public function writeChanges(array $changes)
+    protected function writeChange($file, array $fixResult)
     {
         $format = $this->output->isDecorated() ? ' (<comment>%s</comment>)' : '%s';
-        $i = 1;
-        foreach ($changes as $file => $fixResult) {
-            $this->output->write(sprintf('%4d) %s', $i++, $file));
+        $this->output->write(sprintf('%4d) %s', $this->changeCount, $file));
 
-            if (OutputInterface::VERBOSITY_VERBOSE <= $this->verbosity) {
-                $this->output->write(sprintf($format, implode(', ', $fixResult['appliedFixers'])));
-            }
-
-            if ($this->diff) {
-                $this->output->writeln('');
-                if ($this->output->isDecorated()) {
-                    $this->output->writeln('<comment>      ---------- begin diff ----------</comment>');
-                } else {
-                    $this->output->writeln('      ---------- begin diff ----------');
-                }
-
-                $this->output->writeln($fixResult['diff']);
-                if ($this->output->isDecorated()) {
-                    $this->output->writeln('<comment>      ---------- end diff ----------</comment>');
-                } else {
-                    $this->output->writeln('      ---------- end diff ----------');
-                }
-            }
-
-            $this->output->writeln('');
+        if (OutputInterface::VERBOSITY_VERBOSE <= $this->verbosity) {
+            $this->output->write(sprintf($format, implode(', ', $fixResult['appliedFixers'])));
         }
+
+        if ($this->diff) {
+            $this->output->writeln('');
+            if ($this->output->isDecorated()) {
+                $this->output->writeln('<comment>      ---------- begin diff ----------</comment>');
+            } else {
+                $this->output->writeln('      ---------- begin diff ----------');
+            }
+
+            $this->output->writeln($fixResult['diff']);
+            if ($this->output->isDecorated()) {
+                $this->output->writeln('<comment>      ---------- end diff ----------</comment>');
+            } else {
+                $this->output->writeln('      ---------- end diff ----------');
+            }
+        }
+
+        $this->output->writeln('');
     }
 
     public function writeError($error)
     {
         if ($this->output->isDecorated()) {
-            $this->output->writeln(sprintf('<error>%s</error>', $error));
+            $this->output->writeln(sprintf('<error>%d</error> %s', $this->errorCount, $error));
         } else {
-            $this->output->writeln($error);
+            $this->output->writeln(sprintf('%d %s', $this->errorCount, $error));
         }
     }
 
-    public function writeErrors(array $errors)
-    {
-        $this->output->writeLn('');
-        if ($this->output->isDecorated()) {
+    /*
             $this->output->writeLn('<error>Files that were not fixed due to internal error:</error>');
-        } else {
             $this->output->writeLn('Files that were not fixed due to internal error:');
-        }
-
-        foreach ($errors as $i => $error) {
-            $this->output->writeLn(sprintf('%4d) %s', $i + 1, $error['filepath']));
-        }
-    }
+    */
 
     public function writeInfo($info)
     {

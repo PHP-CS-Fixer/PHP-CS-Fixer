@@ -54,6 +54,10 @@ abstract class AbstractFixerOutput implements FixerOutputInterface
      */
     protected $diff;
 
+    protected $errorCount = 0;
+
+    protected $changeCount = 0;
+
     public function __construct(OutputInterface $output, ConfigInterface $config, $isDryRun, $diff)
     {
         $this->output = $output;
@@ -61,5 +65,25 @@ abstract class AbstractFixerOutput implements FixerOutputInterface
         $this->isDryRun = $isDryRun;
         $this->diff = $diff;
         $this->verbosity = $output->getVerbosity();
+    }
+
+    abstract protected function writeChange($file, array $fixResult);
+
+    abstract protected function writeError($error);
+
+    public function writeChanges(array $changes)
+    {
+        foreach ($changes as $file => $fixResult) {
+            $this->changeCount++;
+            $this->writeChange($file, $fixResult);
+        }
+    }
+
+    public function writeErrors(array $errors)
+    {
+        foreach ($errors as $i => $error) {
+            $this->errorCount++;
+            $this->writeError($error['filePath']); // FIXME array access thing here
+        }
     }
 }
