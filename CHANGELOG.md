@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.6.2
+--------------------
+
+bug #1149 UnusedUseFixer - must be run before LineAfterNamespaceFixer, fix token collection corruption (keradus)
+minor #1145 AbstractLinesBeforeNamespaceFixer - fix docs for fixLinesBeforeNamespace (GrahamCampbell)
+
 Changelog for v1.6.1
 --------------------
 
