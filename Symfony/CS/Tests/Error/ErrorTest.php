@@ -24,16 +24,13 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
     {
         $type = 'foo';
         $filePath = 'foo.php';
-        $message = 'Can not unfoo';
 
         $error = new Error(
             $type,
-            $filePath,
-            $message
+            $filePath
         );
 
         $this->assertSame($type, $error->getType());
         $this->assertSame($filePath, $error->getFilePath());
-        $this->assertSame($message, $error->getMessage());
     }
 }

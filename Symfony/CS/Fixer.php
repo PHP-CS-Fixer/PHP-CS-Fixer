@@ -214,8 +214,7 @@ class Fixer
 
             $this->errorsManager->report(new Error(
                 Error::TYPE_LINTING,
-                $this->getFileRelativePathname($file),
-                $e->getMessage()
+                $this->getFileRelativePathname($file)
             ));
 
             return;
@@ -252,8 +251,7 @@ class Fixer
 
             $this->errorsManager->report(new Error(
                 Error::TYPE_FIXING,
-                $this->getFileRelativePathname($file),
-                $e->getMessage()
+                $this->getFileRelativePathname($file)
             ));
 
             return;
@@ -281,8 +279,7 @@ class Fixer
 
                 $this->errorsManager->report(new Error(
                     Error::TYPE_FIXING,
-                    $this->getFileRelativePathname($file),
-                    $e->getMessage()
+                    $this->getFileRelativePathname($file)
                 ));
 
                 return;

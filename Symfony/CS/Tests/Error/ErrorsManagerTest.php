@@ -20,8 +20,7 @@ class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
     {
         $error = new Error(
             Error::TYPE_LINTING,
-            'bar',
-            'baz'
+            'bar'
         );
 
         $errorsManager = new ErrorsManager();
@@ -43,8 +42,7 @@ class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
     {
         $error = new Error(
             Error::TYPE_FIXING,
-            'bar',
-            'baz'
+            'bar'
         );
 
         $errorsManager = new ErrorsManager();
