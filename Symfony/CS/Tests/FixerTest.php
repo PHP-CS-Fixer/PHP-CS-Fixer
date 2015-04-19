@@ -12,7 +12,7 @@
 namespace Symfony\CS\Tests;
 
 use Symfony\CS\Config\Config;
-use Symfony\CS\Error;
+use Symfony\CS\Error\Error;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Linter\Linter;
@@ -155,9 +155,9 @@ class FixerTest extends \PHPUnit_Framework_TestCase
 
         $error = $errors[0];
 
-        $this->assertInstanceOf('Symfony\CS\Error\ExternalError', $error);
+        $this->assertInstanceOf('Symfony\CS\Error\Error', $error);
 
-        $this->assertSame(Error\ExternalError::ERROR_TYPE_LINT, $error->getType());
+        $this->assertSame(Error::ERROR_TYPE_EXTERNAL, $error->getType());
         $this->assertSame($pathToInvalidFile, $error->getFilePath());
     }
 

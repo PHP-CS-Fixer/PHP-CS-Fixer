@@ -12,16 +12,16 @@
 namespace Symfony\CS\Error;
 
 /**
- * An abstraction of errors that can occur before and during fixing.
+ * An abstraction for errors that can occur before and during fixing.
  *
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
  */
-abstract class AbstractError
+class Error
 {
-    const ERROR_TYPE_EXCEPTION = 1;
-    const ERROR_TYPE_LINT = 2;
+    const ERROR_TYPE_INTERNAL = 1;
+    const ERROR_TYPE_EXTERNAL = 2;
 
     /**
      * @var string

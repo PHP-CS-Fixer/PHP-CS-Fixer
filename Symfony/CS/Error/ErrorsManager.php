@@ -23,31 +23,31 @@ class ErrorsManager
     /**
      * Errors.
      *
-     * @var AbstractError[]
+     * @var Error[]
      */
     private $errors = array();
 
     /**
      * Get all reported external errors.
      *
-     * @return ExternalError[]
+     * @return Error[]
      */
     public function getExternalErrors()
     {
-        return array_filter($this->errors, function (AbstractError $error) {
-            return $error instanceof ExternalError;
+        return array_filter($this->errors, function (Error $error) {
+            return $error->getType() === Error::ERROR_TYPE_EXTERNAL;
         });
     }
 
     /**
      * Get all reported internal errors.
      *
-     * @return InternalError[]
+     * @return Error[]
      */
     public function getInternalErrors()
     {
-        return array_filter($this->errors, function (AbstractError $error) {
-            return $error instanceof InternalError;
+        return array_filter($this->errors, function (Error $error) {
+            return $error->getType() === Error::ERROR_TYPE_INTERNAL;
         });
     }
 
@@ -64,9 +64,9 @@ class ErrorsManager
     /**
      * Report error.
      *
-     * @param AbstractError $error
+     * @param Error $error
      */
-    public function report(AbstractError $error)
+    public function report(Error $error)
     {
         $this->errors[] = $error;
     }

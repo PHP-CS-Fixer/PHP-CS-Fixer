@@ -11,14 +11,13 @@
 
 namespace Symfony\CS\Tests\Error;
 
-use Symfony\CS\Error\InternalError;
+use Symfony\CS\Error\Error;
 
-class InternalErrorTest extends \PHPUnit_Framework_TestCase
+class ErrorTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstants()
     {
-        $this->assertSame(1, InternalError::ERROR_TYPE_EXCEPTION);
-        $this->assertSame(2, InternalError::ERROR_TYPE_LINT);
+        $this->assertNotSame(Error::ERROR_TYPE_EXTERNAL, Error::ERROR_TYPE_INTERNAL);
     }
 
     public function testConstructorSetsValues()
@@ -27,14 +26,14 @@ class InternalErrorTest extends \PHPUnit_Framework_TestCase
         $filePath = 'foo.php';
         $message = 'Can not unfoo';
 
-        $internalError = new InternalError(
+        $error = new Error(
             $type,
             $filePath,
             $message
         );
 
-        $this->assertSame($type, $internalError->getType());
-        $this->assertSame($filePath, $internalError->getFilePath());
-        $this->assertSame($message, $internalError->getMessage());
+        $this->assertSame($type, $error->getType());
+        $this->assertSame($filePath, $error->getFilePath());
+        $this->assertSame($message, $error->getMessage());
     }
 }

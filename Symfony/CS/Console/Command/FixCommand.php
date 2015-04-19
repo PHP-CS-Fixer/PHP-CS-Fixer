@@ -22,7 +22,7 @@ use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\Console\ConfigurationResolver;
 use Symfony\CS\Console\Output\ProcessOutput;
-use Symfony\CS\Error\AbstractError;
+use Symfony\CS\Error\Error;
 use Symfony\CS\Error\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
@@ -546,7 +546,7 @@ EOF
     /**
      * @param OutputInterface $output
      * @param string          $type
-     * @param AbstractError[] $errors
+     * @param Error[]         $errors
      */
     private function listErrors(OutputInterface $output, $type, array $errors)
     {

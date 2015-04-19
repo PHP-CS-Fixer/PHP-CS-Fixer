@@ -11,15 +11,18 @@
 
 namespace Symfony\CS\Tests\Error;
 
+use Symfony\CS\Error\Error;
 use Symfony\CS\Error\ErrorsManager;
-use Symfony\CS\Error\ExternalError;
-use Symfony\CS\Error\InternalError;
 
 class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
 {
     public function testThatCanReportAndRetrieveExternalErrors()
     {
-        $error = new ExternalError('foo', 'bar', 'baz');
+        $error = new Error(
+            Error::ERROR_TYPE_EXTERNAL,
+            'bar',
+            'baz'
+        );
 
         $errorsManager = new ErrorsManager();
 
@@ -38,7 +41,11 @@ class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testThatCanReportAndRetrieveInternalErrors()
     {
-        $error = new InternalError('foo', 'bar', 'baz');
+        $error = new Error(
+            Error::ERROR_TYPE_INTERNAL,
+            'bar',
+            'baz'
+        );
 
         $errorsManager = new ErrorsManager();
 

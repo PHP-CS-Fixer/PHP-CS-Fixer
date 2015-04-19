@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\CS\Error\Error;
 use Symfony\CS\Error\ErrorsManager;
 use Symfony\CS\Linter\LinterInterface;
 use Symfony\CS\Linter\LintingException;
@@ -211,8 +212,8 @@ class Fixer
                 FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
             );
 
-            $this->errorsManager->report(new Error\ExternalError(
-                Error\ExternalError::ERROR_TYPE_LINT,
+            $this->errorsManager->report(new Error(
+                Error::ERROR_TYPE_EXTERNAL,
                 $this->getFileRelativePathname($file),
                 $e->getMessage()
             ));
@@ -249,9 +250,10 @@ class Fixer
                 FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)
             );
 
-            $this->errorsManager->report(new Error\InternalError(
-                Error\InternalError::ERROR_TYPE_EXCEPTION,
-                $this->getFileRelativePathname($file), $e->__toString()
+            $this->errorsManager->report(new Error(
+                Error::ERROR_TYPE_INTERNAL,
+                $this->getFileRelativePathname($file),
+                $e->__toString()
             ));
 
             return;
@@ -277,8 +279,8 @@ class Fixer
                     FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
                 );
 
-                $this->errorsManager->report(new Error\InternalError(
-                    Error\InternalError::ERROR_TYPE_LINT,
+                $this->errorsManager->report(new Error(
+                    Error::ERROR_TYPE_INTERNAL,
                     $this->getFileRelativePathname($file),
                     $e->getMessage()
                 ));
