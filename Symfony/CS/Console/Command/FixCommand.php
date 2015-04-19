@@ -22,6 +22,7 @@ use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\Console\ConfigurationResolver;
 use Symfony\CS\Console\Output\ProcessOutput;
+use Symfony\CS\Error;
 use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
@@ -529,16 +530,35 @@ EOF
                 throw new \InvalidArgumentException(sprintf('The format "%s" is not defined.', $input->getOption('format')));
         }
 
-        if (!$this->errorsManager->isEmpty()) {
-            $output->writeLn('');
-            $output->writeLn('Files that were not fixed due to internal error:');
+        $externalErrors = $this->errorsManager->getExternalErrors();
+        if (!empty($externalErrors)) {
+            $this->listErrors($output, 'external', $externalErrors);
+        }
 
-            foreach ($this->errorsManager->getInternalErrors() as $i => $error) {
-                $output->writeLn(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
-            }
+        $internalErrors = $this->errorsManager->getInternalErrors();
+        if (!empty($internalErrors)) {
+            $this->listErrors($output, 'internal', $internalErrors);
         }
 
         return !$resolver->isDryRun() || empty($changed) ? 0 : 3;
+    }
+
+    /**
+     * @param OutputInterface       $output
+     * @param string                $type
+     * @param Error\AbstractError[] $errors
+     */
+    private function listErrors(OutputInterface $output, $type, array $errors)
+    {
+        $output->writeLn('');
+        $output->writeLn(sprintf(
+            'Files that were not fixed due to %s error:',
+             $type
+        ));
+
+        foreach ($errors as $i => $error) {
+            $output->writeLn(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
+        }
     }
 
     protected function getFixersHelp()
