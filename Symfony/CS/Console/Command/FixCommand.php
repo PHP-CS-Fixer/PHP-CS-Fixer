@@ -22,7 +22,8 @@ use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\Console\ConfigurationResolver;
 use Symfony\CS\Console\Output\ProcessOutput;
-use Symfony\CS\ErrorsManager;
+use Symfony\CS\Error\Error;
+use Symfony\CS\Error\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Linter\Linter;
@@ -529,16 +530,40 @@ EOF
                 throw new \InvalidArgumentException(sprintf('The format "%s" is not defined.', $input->getOption('format')));
         }
 
-        if (!$this->errorsManager->isEmpty()) {
-            $output->writeLn('');
-            $output->writeLn('Files that were not fixed due to internal error:');
+        $invalidErrors = $this->errorsManager->getInvalidErrors();
+        if (!empty($invalidErrors)) {
+            $this->listErrors($output, 'linting before fixing', $invalidErrors);
+        }
 
-            foreach ($this->errorsManager->getErrors() as $i => $error) {
-                $output->writeLn(sprintf('%4d) %s', $i + 1, $error['filepath']));
-            }
+        $exceptionErrors = $this->errorsManager->getExceptionErrors();
+        if (!empty($exceptionErrors)) {
+            $this->listErrors($output, 'fixing', $exceptionErrors);
+        }
+
+        $lintErrors = $this->errorsManager->getLintErrors();
+        if (!empty($lintErrors)) {
+            $this->listErrors($output, 'linting after fixing', $lintErrors);
         }
 
         return !$resolver->isDryRun() || empty($changed) ? 0 : 3;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param string          $process
+     * @param Error[]         $errors
+     */
+    private function listErrors(OutputInterface $output, $process, array $errors)
+    {
+        $output->writeLn('');
+        $output->writeLn(sprintf(
+            'Files that were not fixed due to errors reported during %s:',
+             $process
+        ));
+
+        foreach ($errors as $i => $error) {
+            $output->writeLn(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
+        }
     }
 
     protected function getFixersHelp()

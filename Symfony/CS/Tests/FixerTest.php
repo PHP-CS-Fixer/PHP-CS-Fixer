@@ -12,8 +12,10 @@
 namespace Symfony\CS\Tests;
 
 use Symfony\CS\Config\Config;
+use Symfony\CS\Error\Error;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Linter\Linter;
 
 class FixerTest extends \PHPUnit_Framework_TestCase
 {
@@ -113,17 +115,50 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $fixer->addFixer(new \Symfony\CS\Fixer\PSR2\VisibilityFixer());
         $fixer->addFixer(new \Symfony\CS\Fixer\PSR0\Psr0Fixer()); //will be ignored cause of test keyword in namespace
 
-        $config = Config::create()->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'));
+        $config = Config::create()->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'));
         $config->fixers($fixer->getFixers());
         $config->setUsingCache(false);
 
         $changed = $fixer->fix($config, true, true);
-        $pathToInvalidFile = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'somefile.php';
+        $pathToInvalidFile = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'.DIRECTORY_SEPARATOR.'somefile.php';
 
         $this->assertCount(1, $changed);
         $this->assertCount(2, $changed[$pathToInvalidFile]);
         $this->assertSame(array('appliedFixers', 'diff'), array_keys($changed[$pathToInvalidFile]));
         $this->assertSame('visibility', $changed[$pathToInvalidFile]['appliedFixers'][0]);
+    }
+
+    /**
+     * @covers Symfony\CS\Fixer::fix
+     * @covers Symfony\CS\Fixer::fixFile
+     * @covers Symfony\CS\Fixer::prepareFixers
+     */
+    public function testThatFixInvalidFileReportsToErrorManager()
+    {
+        $fixer = new Fixer();
+        $fixer->addFixer(new \Symfony\CS\Fixer\PSR2\VisibilityFixer());
+        $fixer->addFixer(new \Symfony\CS\Fixer\PSR0\Psr0Fixer()); //will be ignored cause of test keyword in namespace
+        $fixer->setLinter(new Linter());
+
+        $config = Config::create()->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'));
+        $config->fixers($fixer->getFixers());
+        $config->setUsingCache(false);
+
+        $changed = $fixer->fix($config, true, true);
+        $pathToInvalidFile = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'.DIRECTORY_SEPARATOR.'somefile.php';
+
+        $this->assertCount(0, $changed);
+
+        $errors = $fixer->getErrorsManager()->getInvalidErrors();
+
+        $this->assertCount(1, $errors);
+
+        $error = $errors[0];
+
+        $this->assertInstanceOf('Symfony\CS\Error\Error', $error);
+
+        $this->assertSame(Error::TYPE_INVALID, $error->getType());
+        $this->assertSame($pathToInvalidFile, $error->getFilePath());
     }
 
     /**
