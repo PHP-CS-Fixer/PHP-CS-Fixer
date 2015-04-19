@@ -20,24 +20,35 @@ namespace Symfony\CS;
  */
 class ErrorsManager
 {
-    const ERROR_TYPE_EXCEPTION = 1;
-    const ERROR_TYPE_LINT = 2;
-
     /**
      * Errors.
      *
-     * @var array
+     * @var Error\AbstractError[]
      */
     private $errors = array();
 
     /**
-     * Get all reported errors.
+     * Get all reported external errors.
      *
-     * @return array
+     * @return Error\External[]
      */
-    public function getErrors()
+    public function getExternalErrors()
     {
-        return $this->errors;
+        return array_filter($this->errors, function (Error\AbstractError $error) {
+            return $error instanceof Error\External;
+        });
+    }
+
+    /**
+     * Get all reported internal errors.
+     *
+     * @return Error\Internal[]
+     */
+    public function getInternalErrors()
+    {
+        return array_filter($this->errors, function (Error\AbstractError $error) {
+            return $error instanceof Error\Internal;
+        });
     }
 
     /**
@@ -53,16 +64,10 @@ class ErrorsManager
     /**
      * Report error.
      *
-     * @param int    $type     error type
-     * @param string $filepath file, on which error occurs
-     * @param string $message  description of error
+     * @param Error\AbstractError $error
      */
-    public function report($type, $filepath, $message)
+    public function report(Error\AbstractError $error)
     {
-        $this->errors[] = array(
-            'type'     => $type,
-            'filepath' => $filepath,
-            'message'  => $message,
-        );
+        $this->errors[] = $error;
     }
 }
