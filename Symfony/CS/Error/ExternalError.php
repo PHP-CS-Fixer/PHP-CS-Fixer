@@ -11,6 +11,13 @@
 
 namespace Symfony\CS\Error;
 
+/**
+ * An error that occurred before fixing.
+ *
+ * @author Andreas Möller <am@localheinz.com>
+ *
+ * @internal
+ */
 class ExternalError extends AbstractError
 {
 }
