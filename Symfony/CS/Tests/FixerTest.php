@@ -155,9 +155,9 @@ class FixerTest extends \PHPUnit_Framework_TestCase
 
         $error = $errors[0];
 
-        $this->assertInstanceOf('Symfony\CS\Error\External', $error);
+        $this->assertInstanceOf('Symfony\CS\Error\ExternalError', $error);
 
-        $this->assertSame(Error\External::ERROR_TYPE_LINT, $error->getType());
+        $this->assertSame(Error\ExternalError::ERROR_TYPE_LINT, $error->getType());
         $this->assertSame($pathToInvalidFile, $error->getFilePath());
     }
 

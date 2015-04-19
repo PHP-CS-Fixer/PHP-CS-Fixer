@@ -211,8 +211,8 @@ class Fixer
                 FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
             );
 
-            $this->errorsManager->report(new Error\External(
-                Error\External::ERROR_TYPE_LINT,
+            $this->errorsManager->report(new Error\ExternalError(
+                Error\ExternalError::ERROR_TYPE_LINT,
                 $this->getFileRelativePathname($file),
                 $e->getMessage()
             ));
@@ -249,8 +249,8 @@ class Fixer
                 FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)
             );
 
-            $this->errorsManager->report(new Error\Internal(
-                Error\Internal::ERROR_TYPE_EXCEPTION,
+            $this->errorsManager->report(new Error\InternalError(
+                Error\InternalError::ERROR_TYPE_EXCEPTION,
                 $this->getFileRelativePathname($file), $e->__toString()
             ));
 
@@ -277,8 +277,8 @@ class Fixer
                     FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
                 );
 
-                $this->errorsManager->report(new Error\Internal(
-                    Error\Internal::ERROR_TYPE_LINT,
+                $this->errorsManager->report(new Error\InternalError(
+                    Error\InternalError::ERROR_TYPE_LINT,
                     $this->getFileRelativePathname($file),
                     $e->getMessage()
                 ));

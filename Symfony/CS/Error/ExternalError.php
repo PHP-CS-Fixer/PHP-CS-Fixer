@@ -11,6 +11,6 @@
 
 namespace Symfony\CS\Error;
 
-class Internal extends AbstractError
+class ExternalError extends AbstractError
 {
 }

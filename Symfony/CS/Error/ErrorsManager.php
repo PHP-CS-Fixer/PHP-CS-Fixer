@@ -30,24 +30,24 @@ class ErrorsManager
     /**
      * Get all reported external errors.
      *
-     * @return External[]
+     * @return ExternalError[]
      */
     public function getExternalErrors()
     {
         return array_filter($this->errors, function (AbstractError $error) {
-            return $error instanceof External;
+            return $error instanceof ExternalError;
         });
     }
 
     /**
      * Get all reported internal errors.
      *
-     * @return Internal[]
+     * @return InternalError[]
      */
     public function getInternalErrors()
     {
         return array_filter($this->errors, function (AbstractError $error) {
-            return $error instanceof Internal;
+            return $error instanceof InternalError;
         });
     }
 
