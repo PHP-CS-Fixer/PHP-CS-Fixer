@@ -210,6 +210,12 @@ class Fixer
                 FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
             );
 
+            $this->errorsManager->report(new Error\External(
+                Error\External::ERROR_TYPE_LINT,
+                $this->getFileRelativePathname($file),
+                $e->getMessage()
+            ));
+
             return;
         }
 
