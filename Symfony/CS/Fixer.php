@@ -253,7 +253,7 @@ class Fixer
             $this->errorsManager->report(new Error(
                 Error::TYPE_FIXING,
                 $this->getFileRelativePathname($file),
-                $e->__toString()
+                $e->getMessage()
             ));
 
             return;
