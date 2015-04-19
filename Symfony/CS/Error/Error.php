@@ -20,8 +20,8 @@ namespace Symfony\CS\Error;
  */
 class Error
 {
-    const ERROR_TYPE_INTERNAL = 1;
-    const ERROR_TYPE_EXTERNAL = 2;
+    const TYPE_LINTING = 1;
+    const TYPE_FIXING = 2;
 
     /**
      * @var string

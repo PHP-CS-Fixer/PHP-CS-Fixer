@@ -28,26 +28,26 @@ class ErrorsManager
     private $errors = array();
 
     /**
-     * Get all reported external errors.
+     * Returns errors reported during linting, prior to fixing.
      *
      * @return Error[]
      */
-    public function getExternalErrors()
+    public function getLintingErrors()
     {
         return array_filter($this->errors, function (Error $error) {
-            return $error->getType() === Error::ERROR_TYPE_EXTERNAL;
+            return $error->getType() === Error::TYPE_LINTING;
         });
     }
 
     /**
-     * Get all reported internal errors.
+     * Returns errors reported during fixing.
      *
      * @return Error[]
      */
-    public function getInternalErrors()
+    public function getFixingErrors()
     {
         return array_filter($this->errors, function (Error $error) {
-            return $error->getType() === Error::ERROR_TYPE_INTERNAL;
+            return $error->getType() === Error::TYPE_FIXING;
         });
     }
 

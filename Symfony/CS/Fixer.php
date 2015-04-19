@@ -213,7 +213,7 @@ class Fixer
             );
 
             $this->errorsManager->report(new Error(
-                Error::ERROR_TYPE_EXTERNAL,
+                Error::TYPE_LINTING,
                 $this->getFileRelativePathname($file),
                 $e->getMessage()
             ));
@@ -251,7 +251,7 @@ class Fixer
             );
 
             $this->errorsManager->report(new Error(
-                Error::ERROR_TYPE_INTERNAL,
+                Error::TYPE_FIXING,
                 $this->getFileRelativePathname($file),
                 $e->__toString()
             ));
@@ -280,7 +280,7 @@ class Fixer
                 );
 
                 $this->errorsManager->report(new Error(
-                    Error::ERROR_TYPE_INTERNAL,
+                    Error::TYPE_FIXING,
                     $this->getFileRelativePathname($file),
                     $e->getMessage()
                 ));

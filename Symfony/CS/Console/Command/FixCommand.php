@@ -530,14 +530,14 @@ EOF
                 throw new \InvalidArgumentException(sprintf('The format "%s" is not defined.', $input->getOption('format')));
         }
 
-        $externalErrors = $this->errorsManager->getExternalErrors();
-        if (!empty($externalErrors)) {
-            $this->listErrors($output, 'external', $externalErrors);
+        $lintErrors = $this->errorsManager->getLintingErrors();
+        if (!empty($lintErrors)) {
+            $this->listErrors($output, 'linting', $lintErrors);
         }
 
-        $internalErrors = $this->errorsManager->getInternalErrors();
-        if (!empty($internalErrors)) {
-            $this->listErrors($output, 'internal', $internalErrors);
+        $fixErrors = $this->errorsManager->getFixingErrors();
+        if (!empty($fixErrors)) {
+            $this->listErrors($output, 'fixing', $fixErrors);
         }
 
         return !$resolver->isDryRun() || empty($changed) ? 0 : 3;
@@ -545,15 +545,15 @@ EOF
 
     /**
      * @param OutputInterface $output
-     * @param string          $type
+     * @param string          $process
      * @param Error[]         $errors
      */
-    private function listErrors(OutputInterface $output, $type, array $errors)
+    private function listErrors(OutputInterface $output, $process, array $errors)
     {
         $output->writeLn('');
         $output->writeLn(sprintf(
-            'Files that were not fixed due to %s error:',
-             $type
+            'Files that were not fixed due to errors reported during %s:',
+             $process
         ));
 
         foreach ($errors as $i => $error) {

@@ -15,9 +15,9 @@ use Symfony\CS\Error\Error;
 
 class ErrorTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConstants()
+    public function testThatErrorTypeConstantValuesAreDifferent()
     {
-        $this->assertNotSame(Error::ERROR_TYPE_EXTERNAL, Error::ERROR_TYPE_INTERNAL);
+        $this->assertNotSame(Error::TYPE_LINTING, Error::TYPE_FIXING);
     }
 
     public function testConstructorSetsValues()

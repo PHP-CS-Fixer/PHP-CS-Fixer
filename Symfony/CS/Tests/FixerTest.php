@@ -149,7 +149,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(0, $changed);
 
-        $errors = $fixer->getErrorsManager()->getExternalErrors();
+        $errors = $fixer->getErrorsManager()->getLintingErrors();
 
         $this->assertCount(1, $errors);
 
@@ -157,7 +157,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Symfony\CS\Error\Error', $error);
 
-        $this->assertSame(Error::ERROR_TYPE_EXTERNAL, $error->getType());
+        $this->assertSame(Error::TYPE_LINTING, $error->getType());
         $this->assertSame($pathToInvalidFile, $error->getFilePath());
     }
 

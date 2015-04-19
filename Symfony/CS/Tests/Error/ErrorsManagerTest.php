@@ -16,10 +16,10 @@ use Symfony\CS\Error\ErrorsManager;
 
 class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testThatCanReportAndRetrieveExternalErrors()
+    public function testThatCanReportAndRetrieveLintingErrors()
     {
         $error = new Error(
-            Error::ERROR_TYPE_EXTERNAL,
+            Error::TYPE_LINTING,
             'bar',
             'baz'
         );
@@ -30,19 +30,19 @@ class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($errorsManager->isEmpty());
 
-        $externalErrors = $errorsManager->getExternalErrors();
+        $errors = $errorsManager->getLintingErrors();
 
-        $this->assertInternalType('array', $externalErrors);
-        $this->assertCount(1, $externalErrors);
-        $this->assertSame($error, array_shift($externalErrors));
+        $this->assertInternalType('array', $errors);
+        $this->assertCount(1, $errors);
+        $this->assertSame($error, array_shift($errors));
 
-        $this->assertCount(0, $errorsManager->getInternalErrors());
+        $this->assertCount(0, $errorsManager->getFixingErrors());
     }
 
     public function testThatCanReportAndRetrieveInternalErrors()
     {
         $error = new Error(
-            Error::ERROR_TYPE_INTERNAL,
+            Error::TYPE_FIXING,
             'bar',
             'baz'
         );
@@ -53,12 +53,12 @@ class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($errorsManager->isEmpty());
 
-        $internalErrors = $errorsManager->getInternalErrors();
+        $errors = $errorsManager->getFixingErrors();
 
-        $this->assertInternalType('array', $internalErrors);
-        $this->assertCount(1, $internalErrors);
-        $this->assertSame($error, array_shift($internalErrors));
+        $this->assertInternalType('array', $errors);
+        $this->assertCount(1, $errors);
+        $this->assertSame($error, array_shift($errors));
 
-        $this->assertCount(0, $errorsManager->getExternalErrors());
+        $this->assertCount(0, $errorsManager->getLintingErrors());
     }
 }
