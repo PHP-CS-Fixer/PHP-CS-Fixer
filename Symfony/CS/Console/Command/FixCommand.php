@@ -22,8 +22,8 @@ use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\Console\ConfigurationResolver;
 use Symfony\CS\Console\Output\ProcessOutput;
-use Symfony\CS\Error;
-use Symfony\CS\ErrorsManager;
+use Symfony\CS\Error\AbstractError;
+use Symfony\CS\Error\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Linter\Linter;
@@ -544,9 +544,9 @@ EOF
     }
 
     /**
-     * @param OutputInterface       $output
-     * @param string                $type
-     * @param Error\AbstractError[] $errors
+     * @param OutputInterface $output
+     * @param string          $type
+     * @param AbstractError[] $errors
      */
     private function listErrors(OutputInterface $output, $type, array $errors)
     {

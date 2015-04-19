@@ -9,16 +9,17 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests;
+namespace Symfony\CS\Tests\Error;
 
-use Symfony\CS\Error;
-use Symfony\CS\ErrorsManager;
+use Symfony\CS\Error\ErrorsManager;
+use Symfony\CS\Error\External;
+use Symfony\CS\Error\Internal;
 
 class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
 {
     public function testThatCanReportAndRetrieveExternalErrors()
     {
-        $error = new Error\External('foo', 'bar', 'baz');
+        $error = new External('foo', 'bar', 'baz');
 
         $errorsManager = new ErrorsManager();
 
@@ -37,7 +38,7 @@ class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testThatCanReportAndRetrieveInternalErrors()
     {
-        $error = new Error\Internal('foo', 'bar', 'baz');
+        $error = new Internal('foo', 'bar', 'baz');
 
         $errorsManager = new ErrorsManager();
 

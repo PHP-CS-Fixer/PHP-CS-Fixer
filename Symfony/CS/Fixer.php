@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\CS\Error\ErrorsManager;
 use Symfony\CS\Linter\LinterInterface;
 use Symfony\CS\Linter\LintingException;
 use Symfony\CS\Linter\NullLinter;

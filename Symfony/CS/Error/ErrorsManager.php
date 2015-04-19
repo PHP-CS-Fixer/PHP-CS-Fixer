@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS;
+namespace Symfony\CS\Error;
 
 /**
  * Manager of errors that occur during fixing.
@@ -23,31 +23,31 @@ class ErrorsManager
     /**
      * Errors.
      *
-     * @var Error\AbstractError[]
+     * @var AbstractError[]
      */
     private $errors = array();
 
     /**
      * Get all reported external errors.
      *
-     * @return Error\External[]
+     * @return External[]
      */
     public function getExternalErrors()
     {
-        return array_filter($this->errors, function (Error\AbstractError $error) {
-            return $error instanceof Error\External;
+        return array_filter($this->errors, function (AbstractError $error) {
+            return $error instanceof External;
         });
     }
 
     /**
      * Get all reported internal errors.
      *
-     * @return Error\Internal[]
+     * @return Internal[]
      */
     public function getInternalErrors()
     {
-        return array_filter($this->errors, function (Error\AbstractError $error) {
-            return $error instanceof Error\Internal;
+        return array_filter($this->errors, function (AbstractError $error) {
+            return $error instanceof Internal;
         });
     }
 
@@ -64,9 +64,9 @@ class ErrorsManager
     /**
      * Report error.
      *
-     * @param Error\AbstractError $error
+     * @param AbstractError $error
      */
-    public function report(Error\AbstractError $error)
+    public function report(AbstractError $error)
     {
         $this->errors[] = $error;
     }
