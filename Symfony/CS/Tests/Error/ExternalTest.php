@@ -17,7 +17,7 @@ class ExternalTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstants()
     {
-        $this->assertSame(2, Error\Internal::ERROR_TYPE_LINT);
+        $this->assertSame(2, Error\External::ERROR_TYPE_LINT);
     }
 
     public function testConstructorSetsValues()
