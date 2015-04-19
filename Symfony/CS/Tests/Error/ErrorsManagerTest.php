@@ -16,10 +16,10 @@ use Symfony\CS\Error\ErrorsManager;
 
 class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testThatCanReportAndRetrieveLintingErrors()
+    public function testThatCanReportAndRetrieveInvalidFileErrors()
     {
         $error = new Error(
-            Error::TYPE_LINTING,
+            Error::TYPE_INVALID,
             'bar'
         );
 
@@ -29,34 +29,46 @@ class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($errorsManager->isEmpty());
 
-        $errors = $errorsManager->getLintingErrors();
+        $errors = $errorsManager->getInvalidFileErrors();
 
         $this->assertInternalType('array', $errors);
         $this->assertCount(1, $errors);
         $this->assertSame($error, array_shift($errors));
 
-        $this->assertCount(0, $errorsManager->getFixingErrors());
+        $this->assertCount(0, $errorsManager->getUnableToFixFileErrors());
     }
 
-    public function testThatCanReportAndRetrieveInternalErrors()
+    /**
+     * @dataProvider providerThatCanReportAndRetrieveUnableToFixFileErrors
+     *
+     * @param Error $error
+     */
+    public function testThatCanReportAndRetrieveUnableToFixFileErrors(Error $error)
     {
-        $error = new Error(
-            Error::TYPE_FIXING,
-            'bar'
-        );
-
         $errorsManager = new ErrorsManager();
 
         $errorsManager->report($error);
 
         $this->assertFalse($errorsManager->isEmpty());
 
-        $errors = $errorsManager->getFixingErrors();
+        $errors = $errorsManager->getUnableToFixFileErrors();
 
         $this->assertInternalType('array', $errors);
         $this->assertCount(1, $errors);
         $this->assertSame($error, array_shift($errors));
 
-        $this->assertCount(0, $errorsManager->getLintingErrors());
+        $this->assertCount(0, $errorsManager->getInvalidFileErrors());
+    }
+
+    public function providerThatCanReportAndRetrieveUnableToFixFileErrors()
+    {
+        return array(
+            array(
+                new Error(Error::TYPE_EXCEPTION, 'bar'),
+            ),
+            array(
+                new Error(Error::TYPE_LINT, 'bar'),
+            ),
+        );
     }
 }

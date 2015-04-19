@@ -17,7 +17,8 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
 {
     public function testThatErrorTypeConstantValuesAreDifferent()
     {
-        $this->assertNotSame(Error::TYPE_LINTING, Error::TYPE_FIXING);
+        $this->assertNotSame(Error::TYPE_INVALID, Error::TYPE_EXCEPTION);
+        $this->assertNotSame(Error::TYPE_EXCEPTION, Error::TYPE_LINT);
     }
 
     public function testConstructorSetsValues()

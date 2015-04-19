@@ -28,26 +28,26 @@ class ErrorsManager
     private $errors = array();
 
     /**
-     * Returns errors reported during linting, prior to fixing.
+     * Returns errors reported during linting before fixing.
      *
      * @return Error[]
      */
-    public function getLintingErrors()
+    public function getInvalidFileErrors()
     {
         return array_filter($this->errors, function (Error $error) {
-            return $error->getType() === Error::TYPE_LINTING;
+            return $error->getType() === Error::TYPE_INVALID;
         });
     }
 
     /**
-     * Returns errors reported during fixing.
+     * Returns errors reported during fixing or linting after fixing.
      *
      * @return Error[]
      */
-    public function getFixingErrors()
+    public function getUnableToFixFileErrors()
     {
         return array_filter($this->errors, function (Error $error) {
-            return $error->getType() === Error::TYPE_FIXING;
+            return $error->getType() === Error::TYPE_EXCEPTION || $error->getType() === Error::TYPE_LINT;
         });
     }
 
