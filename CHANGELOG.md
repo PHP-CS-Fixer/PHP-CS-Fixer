@@ -3,6 +3,33 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.7
+------------------
+
+* feature #1113 Added PreIncrementFixer (gharlan)
+* feature #1144 Added PhpdocNoAccessFixer (GrahamCampbell)
+* feature #1116 Added SelfAccessorFixer (gharlan)
+* feature #1064 OperatorsSpacesFixer enhancements (gharlan)
+* bug #1151 Prevent token collection corruption by fixers (stof, keradus)
+* bug #1152 LintManager - fix handling of temporary file (keradus)
+* bug #1139 NamespaceNoLeadingWhitespaceFixer - remove need for ctype extension (keradus)
+* bug #1117 Tokens - fix iterator used with foreach by reference (keradus)
+* minor #1148 code grooming (keradus)
+* minor #1142 We are actually PSR-4, not PSR-0 (GrahamCampbell)
+* minor #1131 Phpdocs and typos (SpacePossum)
+* minor #1069 state min HHVM version (keradus)
+* minor #1129 [DX] Help developers choose the right branch (SpacePossum)
+* minor #1138 PhpClosingTagFixer - simplify flow, no need for loop (keradus)
+* minor #1123 Reference mismatches fixed, SCA (kalessil)
+* minor #1109 SingleQuoteFixer - made fixer more accurate (gharlan)
+* minor #1110 code grooming (kalessil)
+
+Changelog for v1.6.2
+--------------------
+
+* bug #1149 UnusedUseFixer - must be run before LineAfterNamespaceFixer, fix token collection corruption (keradus)
+* minor #1145 AbstractLinesBeforeNamespaceFixer - fix docs for fixLinesBeforeNamespace (GrahamCampbell)
+
 Changelog for v1.6.1
 --------------------
 
