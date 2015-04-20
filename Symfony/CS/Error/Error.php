@@ -20,8 +20,19 @@ namespace Symfony\CS\Error;
  */
 class Error
 {
+    /**
+     * Error which has occurred in linting phase, before applying any fixers.
+     */
     const TYPE_INVALID = 1;
+
+    /**
+     * Error which has occurred during fixing phase.
+     */
     const TYPE_EXCEPTION = 2;
+
+    /**
+     * Error which has occurred in linting phase, after applying any fixers.
+     */
     const TYPE_LINT = 3;
 
     /**
