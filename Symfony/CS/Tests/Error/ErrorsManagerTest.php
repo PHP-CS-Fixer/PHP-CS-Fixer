@@ -16,6 +16,15 @@ use Symfony\CS\Error\ErrorsManager;
 
 class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
 {
+    public function testDefaults()
+    {
+        $errorsManager = new ErrorsManager();
+
+        $this->assertTrue($errorsManager->isEmpty());
+        $this->assertEmpty($errorsManager->getInvalidFileErrors());
+        $this->assertEmpty($errorsManager->getUnableToFixFileErrors());
+    }
+
     public function testThatCanReportAndRetrieveInvalidFileErrors()
     {
         $error = new Error(
