@@ -149,7 +149,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(0, $changed);
 
-        $errors = $fixer->getErrorsManager()->getInvalidFileErrors();
+        $errors = $fixer->getErrorsManager()->getInvalidErrors();
 
         $this->assertCount(1, $errors);
 

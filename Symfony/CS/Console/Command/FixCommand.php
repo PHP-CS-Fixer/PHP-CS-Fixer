@@ -530,14 +530,19 @@ EOF
                 throw new \InvalidArgumentException(sprintf('The format "%s" is not defined.', $input->getOption('format')));
         }
 
-        $invalidFileErrors = $this->errorsManager->getInvalidFileErrors();
-        if (!empty($invalidFileErrors)) {
-            $this->listErrors($output, 'linting', $invalidFileErrors);
+        $invalidErrors = $this->errorsManager->getInvalidErrors();
+        if (!empty($invalidErrors)) {
+            $this->listErrors($output, 'linting before fixing', $invalidErrors);
         }
 
-        $unableToFixFileErrors = $this->errorsManager->getUnableToFixFileErrors();
-        if (!empty($unableToFixFileErrors)) {
-            $this->listErrors($output, 'fixing', $unableToFixFileErrors);
+        $exceptionErrors = $this->errorsManager->getExceptionErrors();
+        if (!empty($exceptionErrors)) {
+            $this->listErrors($output, 'fixing', $exceptionErrors);
+        }
+
+        $lintErrors = $this->errorsManager->getLintErrors();
+        if (!empty($lintErrors)) {
+            $this->listErrors($output, 'linting after fixing', $lintErrors);
         }
 
         return !$resolver->isDryRun() || empty($changed) ? 0 : 3;

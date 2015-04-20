@@ -21,15 +21,62 @@ class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
         $errorsManager = new ErrorsManager();
 
         $this->assertTrue($errorsManager->isEmpty());
-        $this->assertEmpty($errorsManager->getInvalidFileErrors());
-        $this->assertEmpty($errorsManager->getUnableToFixFileErrors());
+        $this->assertEmpty($errorsManager->getInvalidErrors());
+        $this->assertEmpty($errorsManager->getExceptionErrors());
+        $this->assertEmpty($errorsManager->getLintErrors());
+    }
+
+    public function testThatCanReportAndRetrieveInvalidErrors()
+    {
+        $error = new Error(
+            Error::TYPE_INVALID,
+            'foo.php'
+        );
+
+        $errorsManager = new ErrorsManager();
+
+        $errorsManager->report($error);
+
+        $this->assertFalse($errorsManager->isEmpty());
+
+        $errors = $errorsManager->getInvalidErrors();
+
+        $this->assertInternalType('array', $errors);
+        $this->assertCount(1, $errors);
+        $this->assertSame($error, array_shift($errors));
+
+        $this->assertCount(0, $errorsManager->getExceptionErrors());
+        $this->assertCount(0, $errorsManager->getLintErrors());
+    }
+
+    public function testThatCanReportAndRetrieveExceptionErrors()
+    {
+        $error = new Error(
+            Error::TYPE_EXCEPTION,
+            'foo.php'
+        );
+
+        $errorsManager = new ErrorsManager();
+
+        $errorsManager->report($error);
+
+        $this->assertFalse($errorsManager->isEmpty());
+
+        $errors = $errorsManager->getExceptionErrors();
+
+        $this->assertInternalType('array', $errors);
+        $this->assertCount(1, $errors);
+        $this->assertSame($error, array_shift($errors));
+
+        $this->assertCount(0, $errorsManager->getInvalidErrors());
+        $this->assertCount(0, $errorsManager->getLintErrors());
     }
 
     public function testThatCanReportAndRetrieveInvalidFileErrors()
     {
         $error = new Error(
-            Error::TYPE_INVALID,
-            'bar'
+            Error::TYPE_LINT,
+            'foo.php'
         );
 
         $errorsManager = new ErrorsManager();
@@ -38,46 +85,13 @@ class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($errorsManager->isEmpty());
 
-        $errors = $errorsManager->getInvalidFileErrors();
+        $errors = $errorsManager->getLintErrors();
 
         $this->assertInternalType('array', $errors);
         $this->assertCount(1, $errors);
         $this->assertSame($error, array_shift($errors));
 
-        $this->assertCount(0, $errorsManager->getUnableToFixFileErrors());
-    }
-
-    /**
-     * @dataProvider providerThatCanReportAndRetrieveUnableToFixFileErrors
-     *
-     * @param Error $error
-     */
-    public function testThatCanReportAndRetrieveUnableToFixFileErrors(Error $error)
-    {
-        $errorsManager = new ErrorsManager();
-
-        $errorsManager->report($error);
-
-        $this->assertFalse($errorsManager->isEmpty());
-
-        $errors = $errorsManager->getUnableToFixFileErrors();
-
-        $this->assertInternalType('array', $errors);
-        $this->assertCount(1, $errors);
-        $this->assertSame($error, array_shift($errors));
-
-        $this->assertCount(0, $errorsManager->getInvalidFileErrors());
-    }
-
-    public function providerThatCanReportAndRetrieveUnableToFixFileErrors()
-    {
-        return array(
-            array(
-                new Error(Error::TYPE_EXCEPTION, 'bar'),
-            ),
-            array(
-                new Error(Error::TYPE_LINT, 'bar'),
-            ),
-        );
+        $this->assertCount(0, $errorsManager->getInvalidErrors());
+        $this->assertCount(0, $errorsManager->getExceptionErrors());
     }
 }

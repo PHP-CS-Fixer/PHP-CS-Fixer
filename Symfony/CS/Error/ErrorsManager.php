@@ -32,7 +32,7 @@ class ErrorsManager
      *
      * @return Error[]
      */
-    public function getInvalidFileErrors()
+    public function getInvalidErrors()
     {
         return array_filter($this->errors, function (Error $error) {
             return $error->getType() === Error::TYPE_INVALID;
@@ -40,14 +40,26 @@ class ErrorsManager
     }
 
     /**
-     * Returns errors reported during fixing or linting after fixing.
+     * Returns errors reported during fixing.
      *
      * @return Error[]
      */
-    public function getUnableToFixFileErrors()
+    public function getExceptionErrors()
     {
         return array_filter($this->errors, function (Error $error) {
-            return $error->getType() === Error::TYPE_EXCEPTION || $error->getType() === Error::TYPE_LINT;
+            return $error->getType() === Error::TYPE_EXCEPTION;
+        });
+    }
+
+    /**
+     * Returns errors reported during linting after fixing.
+     *
+     * @return Error[]
+     */
+    public function getLintErrors()
+    {
+        return array_filter($this->errors, function (Error $error) {
+            return $error->getType() === Error::TYPE_LINT;
         });
     }
 
