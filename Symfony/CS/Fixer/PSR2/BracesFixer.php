@@ -344,7 +344,6 @@ class BracesFixer extends AbstractFixer
             }
 
             // insert opening brace
-            $tokens->removeTrailingWhitespace($parenthesisEndIndex);
             $tokens->insertAt($parenthesisEndIndex + 1, new Token('{'));
             $tokens->ensureWhitespaceAtIndex($parenthesisEndIndex + 1, 0, ' ');
         }
@@ -427,7 +426,7 @@ class BracesFixer extends AbstractFixer
 
     private function findStatementEnd(Tokens $tokens, $parenthesisEndIndex)
     {
-        $nextIndex = $tokens->getNextNonWhitespace($parenthesisEndIndex);
+        $nextIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
         $nextToken = $tokens[$nextIndex];
 
         if (!$nextToken) {
@@ -447,8 +446,8 @@ class BracesFixer extends AbstractFixer
                 $openingTokenKind = $nextToken->getId();
 
                 while (true) {
-                    $nextIndex = $tokens->getNextNonWhitespace($endIndex);
-                    $nextToken = $tokens[$nextIndex];
+                    $nextIndex = $tokens->getNextMeaningfulToken($endIndex);
+                    $nextToken = isset($nextIndex) ? $tokens[$nextIndex] : null;
                     if ($nextToken && $nextToken->isGivenKind($this->getControlContinuationTokensForOpeningToken($openingTokenKind))) {
                         $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $nextIndex);
 
