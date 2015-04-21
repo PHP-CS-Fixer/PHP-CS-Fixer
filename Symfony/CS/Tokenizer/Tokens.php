@@ -159,15 +159,15 @@ class Tokens extends \SplFixedArray
         return array(
             self::BLOCK_TYPE_CURLY_BRACE => array(
                 'start' => '{',
-                'end'   => '}',
+                'end' => '}',
             ),
             self::BLOCK_TYPE_PARENTHESIS_BRACE => array(
                 'start' => '(',
-                'end'   => ')',
+                'end' => ')',
             ),
             self::BLOCK_TYPE_SQUARE_BRACE => array(
                 'start' => '[',
-                'end'   => ']',
+                'end' => ']',
             ),
             self::BLOCK_TYPE_DYNAMIC_PROP_BRACE => array(
                 'start' => array(CT_DYNAMIC_PROP_BRACE_OPEN, '{'),
@@ -1127,31 +1127,31 @@ class Tokens extends \SplFixedArray
         static $arrayOperators;
         if (null === $arrayOperators) {
             $arrayOperators = array(
-                T_AND_EQUAL             => true,    // &=
-                T_BOOLEAN_AND           => true,    // &&
-                T_BOOLEAN_OR            => true,    // ||
-                T_CONCAT_EQUAL          => true,    // .=
-                T_DIV_EQUAL             => true,    // /=
-                T_DOUBLE_ARROW          => true,    // =>
-                T_IS_EQUAL              => true,    // ==
-                T_IS_GREATER_OR_EQUAL   => true,    // >=
-                T_IS_IDENTICAL          => true,    // ===
-                T_IS_NOT_EQUAL          => true,    // !=, <>
-                T_IS_NOT_IDENTICAL      => true,    // !==
-                T_IS_SMALLER_OR_EQUAL   => true,    // <=
-                T_LOGICAL_AND           => true,    // and
-                T_LOGICAL_OR            => true,    // or
-                T_LOGICAL_XOR           => true,    // xor
-                T_MINUS_EQUAL           => true,    // -=
-                T_MOD_EQUAL             => true,    // %=
-                T_MUL_EQUAL             => true,    // *=
-                T_OR_EQUAL              => true,    // |=
-                T_PLUS_EQUAL            => true,    // +=
-                T_SL                    => true,    // <<
-                T_SL_EQUAL              => true,    // <<=
-                T_SR                    => true,    // >>
-                T_SR_EQUAL              => true,    // >>=
-                T_XOR_EQUAL             => true,    // ^=
+                T_AND_EQUAL => true,            // &=
+                T_BOOLEAN_AND => true,          // &&
+                T_BOOLEAN_OR => true,           // ||
+                T_CONCAT_EQUAL => true,         // .=
+                T_DIV_EQUAL => true,            // /=
+                T_DOUBLE_ARROW => true,         // =>
+                T_IS_EQUAL => true,             // ==
+                T_IS_GREATER_OR_EQUAL => true,  // >=
+                T_IS_IDENTICAL => true,         // ===
+                T_IS_NOT_EQUAL => true,         // !=, <>
+                T_IS_NOT_IDENTICAL => true,     // !==
+                T_IS_SMALLER_OR_EQUAL => true,  // <=
+                T_LOGICAL_AND => true,          // and
+                T_LOGICAL_OR => true,           // or
+                T_LOGICAL_XOR => true,          // xor
+                T_MINUS_EQUAL => true,          // -=
+                T_MOD_EQUAL => true,            // %=
+                T_MUL_EQUAL => true,            // *=
+                T_OR_EQUAL => true,             // |=
+                T_PLUS_EQUAL => true,           // +=
+                T_SL => true,                   // <<
+                T_SL_EQUAL => true,             // <<=
+                T_SR => true,                   // >>
+                T_SR_EQUAL => true,             // >>=
+                T_XOR_EQUAL => true,            // ^=
             );
             if (defined('T_POW')) {
                 $arrayOperators[T_POW]       = true;    // **
