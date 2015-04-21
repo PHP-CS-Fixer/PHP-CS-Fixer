@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -38,8 +39,23 @@ class UnalignEqualsFixer extends AbstractFixer
             if (!$token->equals('=')) {
                 continue;
             }
+
+            $this->fixWhitespace($tokens[$index - 1]);
+            $this->fixWhitespace($tokens[$index + 1]);
         }
 
         return $tokens->generateCode();
+    }
+
+    /**
+     * If given token is a single line whitespace then fix it to be a single space.
+     *
+     * @param Token $token
+     */
+    private function fixWhitespace(Token $token)
+    {
+        if ($token->isWhitespace(array('whitespaces' => " \t"))) {
+            $token->setContent(' ');
+        }
     }
 }
