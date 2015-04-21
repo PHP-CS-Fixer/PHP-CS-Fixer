@@ -24,8 +24,8 @@ class ConfigurationResolver
     protected $config;
     protected $fixers = array();
     protected $options = array(
-        'fixers'   => null,
-        'level'    => null,
+        'fixers' => null,
+        'level' => null,
         'progress' => null,
     );
 
@@ -140,10 +140,10 @@ class ConfigurationResolver
     protected function parseLevel()
     {
         static $levelMap = array(
-            'none'    => FixerInterface::NONE_LEVEL,
-            'psr0'    => FixerInterface::PSR0_LEVEL,
-            'psr1'    => FixerInterface::PSR1_LEVEL,
-            'psr2'    => FixerInterface::PSR2_LEVEL,
+            'none' => FixerInterface::NONE_LEVEL,
+            'psr0' => FixerInterface::PSR0_LEVEL,
+            'psr1' => FixerInterface::PSR1_LEVEL,
+            'psr2' => FixerInterface::PSR2_LEVEL,
             'symfony' => FixerInterface::SYMFONY_LEVEL,
         );
 

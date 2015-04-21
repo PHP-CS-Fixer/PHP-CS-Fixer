@@ -9,14 +9,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace Symfony\CS\Tests\Fixer\Symfony;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
- * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
+class UnalignDoubleArrowFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideFixCases
@@ -31,13 +31,18 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
         return array(
             array(
                 '<?php
-                switch ($a) {
-                    case "prod":
-                        break;
-                }
-                ',
-            ),
-            array(
+    $data = [
+        "foo" => "Bar",
+        "main" => array(
+            [
+                "baz" => "Test",
+                "bazaa" => $a->{"Test"},
+                "bazaa" => $a["Test"],
+                "bazaaaa" => b("Test"),
+            ]
+        ),
+        "bar" => array(),
+    ];',
                 '<?php
     $data = [
         "foo"  => "Bar",
@@ -51,21 +56,23 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
         ),
         "bar"  => array(),
     ];',
-                '<?php
-    $data = [
-        "foo"  => "Bar",
-        "main" => array(
-            [
-                "baz" => "Test",
-                "bazaa" => $a->{"Test"},
-                "bazaa" => $a["Test"],
-                "bazaaaa" => b("Test"),
-            ]
-        ),
-        "bar"  => array(),
-    ];',
             ),
             array(
+                '<?php
+    $data = [
+        "foo" => "Bar",
+        "main" => [array("baz" => "Test")],
+        "bar" => array(),
+    ];
+    $data = array(
+        "foo" => "Bar",
+        "main" => array("baz" => "Test"),
+        "bar" => array(),
+    );
+    $var = [];
+    foreach ($foo as $i => $bar) {
+        $var[] = /* Comment */ [$i => $bar];
+    }',
                 '<?php
     $data = [
         "foo"  => "Bar",
@@ -85,6 +92,12 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     $data = [
+        "foo" => "Bar",
+        "main" => [array("baz" => "Test")],
+        "bar" => array(),
+    ];',
+                '<?php
+    $data = [
         "foo"  => "Bar",
         "main" => [array("baz" => "Test")],
         "bar"  => array(),
@@ -93,12 +106,24 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     $data = array(
+        "foo" => "Bar",
+        "main" => array("baz" => "Test"),
+        "bar" => array(),
+    );',
+                '<?php
+    $data = array(
         "foo"  => "Bar",
         "main" => array("baz" => "Test"),
         "bar"  => array(),
     );',
             ),
             array(
+                '<?php
+    $data = array(
+        "foo" => "Bar",
+        "main" => array(array("baz" => "Test")),
+        "bar" => array(),
+    );',
                 '<?php
     $data = array(
         "foo"  => "Bar",
@@ -111,6 +136,11 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
     $var = [];
     foreach ($foo as $i => $bar) {
         $var[] = /* Comment */ [$i => $bar];
+    }',
+                '<?php
+    $var = [];
+    foreach ($foo as $i  =>  $bar) {
+        $var[] = /* Comment */ [$i  =>  $bar];
     }',
             ),
             array(
@@ -139,12 +169,26 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
     $var = [];
     foreach ($foo as $bar) {
         $var[] = [
+            $i => $bar,
+            $iaaa => $bar,
+        ];
+    }',
+                '<?php
+    $var = [];
+    foreach ($foo as $bar) {
+        $var[] = [
             $i    => $bar,
             $iaaa => $bar,
         ];
     }',
             ),
             array(
+                '<?php
+    $data = [
+        "foo" => "Bar",
+        "main" => [["baz" => "Test", "bar" => "Test2"]],
+        "bar" => [],
+    ];',
                 '<?php
     $data = [
         "foo"  => "Bar",
@@ -154,22 +198,14 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-    $data = [
-        "foo"  => "Bar",
-        "main" => ["baz" => "Test"],
-        "bar"  => [],
-    ];',
-            ),
-            array(
-                '<?php
     $a = [
-        0              => 1,
+        0 => 1,
         10 /*Comment*/ => [
-            1  => 2,
+            1 => 2,
             22 => 3,
         ],
         100 => [
-            1  => 2,
+            1 => 2,
             22 => 3,
         ]
     ];',
@@ -187,6 +223,18 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
     ];',
             ),
             array(
+                '<?php
+    $a = array(
+        0 => 1,
+        10 => array(
+            1 => 2,
+            22 => 3,
+        ),
+        100 => array(
+            1 => 2,
+            22 => 3,
+        )
+    );',
                 '<?php
     $a = array(
         0  => 1,
@@ -203,14 +251,14 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     $arr = array(
-        $a    => 1,
+        $a => 1,
         $bbbb => \'
         $cccccccc = 3;
         \',
     );',
                 '<?php
     $arr = array(
-        $a => 1,
+        $a    => 1,
         $bbbb => \'
         $cccccccc = 3;
         \',
@@ -219,20 +267,29 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     $arr = [
-        $a    => 1,
+        $a => 1,
         $bbbb => \'
         $cccccccc = 3;
         \',
     ];',
                 '<?php
     $arr = [
-        $a => 1,
+        $a    => 1,
         $bbbb => \'
         $cccccccc = 3;
         \',
     ];',
             ),
             array(
+                '<?php
+    foreach($arr as $k => $v){
+        $arr = array($k => 1,
+            $a => 1,
+            $bbbb => \'
+            $cccccccc = 3;
+            \',
+        );
+    }',
                 '<?php
     foreach($arr as $k => $v){
         $arr = array($k => 1,
@@ -246,17 +303,17 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     $a = array(
-        10    => 11,
-        20    => 22,
-        30    => 33,
+        10 => 11,
+        20 => 22,
+        30=>33,
         40
             =>
                 44,
     );',
                 '<?php
     $a = array(
-        10    =>    11,
-        20  =>    22,
+        10    => 11,
+        20    => 22,
         30=>33,
         40
             =>
@@ -266,9 +323,9 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     return array(
-        " "    => "",    "\t"    => "",
-        "\n"   => "", "\r"   => "",
-        "\0"   => "", "\x0B"    => "",
+        " " => "",    "\t" => "",
+        "\n" => "", "\r" => "",
+        "\0" => "", "\x0B" => "",
     );',
                 '<?php
     return array(
@@ -284,10 +341,10 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
         $index,
         $tokenAttribsMap,
         array(
-            "abstract"   => null,
-            "final"      => null,
+            "abstract" => null,
+            "final" => null,
             "visibility" => new Token(array(T_PUBLIC, "public")),
-            "static"     => null,
+            "static" => null,
         )
     );',
                 '<?php
@@ -296,18 +353,18 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
         $index,
         $tokenAttribsMap,
         array(
-            "abstract" => null,
-            "final" => null,
+            "abstract"   => null,
+            "final"      => null,
             "visibility" => new Token(array(T_PUBLIC, "public")),
-            "static" => null,
+            "static"     => null,
         )
     );',
             ),
             array(
                 '<?php
     return array(
-        self::STATUS_UNKNOWN    => array("symbol" => "?", "description" => "unknown"),
-        self::STATUS_INVALID    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
+        self::STATUS_UNKNOWN => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
     );',
                 '<?php
     return array(
@@ -319,13 +376,13 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
                 '<?php
     $array = array(
         "bazab" => b(array(
-            1     => 2,
-            5     => [
-                6     => 7,
-                8     => 9,
+            1 => 2,
+            5 => [
+                6 => 7,
+                8 => 9,
             ],
-            3       => 4,
-            10      => 11,
+            3 => 4,
+            10 => 11,
         )),
     );',
                 '<?php
@@ -345,6 +402,12 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
                 '<?php
     Foo::new()->aaa(array(1 => 2))->bbb("a", "b");
 ',
+            ),
+            array(
+                '<?php
+    function foo() {
+        yield 1 => 2;
+    }',
             ),
         );
     }

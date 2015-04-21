@@ -36,8 +36,8 @@ class PhpdocScalarFixer extends AbstractFixer
     private static $types = array(
         'integer' => 'int',
         'boolean' => 'bool',
-        'real'    => 'float',
-        'double'  => 'float',
+        'real' => 'float',
+        'double' => 'float',
     );
 
     /**
