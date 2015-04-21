@@ -437,6 +437,9 @@ Choose from the list of available fixers:
                 function/method arguments, without
                 leading or trailing single line space.
 
+* **unalign_double_arrow** [symfony]
+                Unalign double arrow symbols.
+
 * **unary_operators_spaces** [symfony]
                 Unary operators should be placed
                 adjacent to their operands.
