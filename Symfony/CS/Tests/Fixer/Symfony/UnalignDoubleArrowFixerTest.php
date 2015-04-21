@@ -185,15 +185,15 @@ class UnalignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     $data = [
-        "foo"  => "Bar",
-        "main" => [["baz" => "Test", "bar" => "Test2"]],
-        "bar"  => [],
-    ];',
-                '<?php
-    $data = [
         "foo" => "Bar",
         "main" => [["baz" => "Test", "bar" => "Test2"]],
         "bar" => [],
+    ];',
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => [["baz" => "Test", "bar" => "Test2"]],
+        "bar"  => [],
     ];',
             ),
             array(
