@@ -425,7 +425,7 @@ EOF
                 $output->writeln(sprintf('Fixed all files in %.3f seconds, %.3f MB memory used', $fixEvent->getDuration() / 1000, $fixEvent->getMemory() / 1024 / 1024));
                 break;
             case 'xml':
-                $dom      = new \DOMDocument('1.0', 'UTF-8');
+                $dom = new \DOMDocument('1.0', 'UTF-8');
                 $filesXML = $dom->createElement('files');
                 $dom->appendChild($filesXML);
 
