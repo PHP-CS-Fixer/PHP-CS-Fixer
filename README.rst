@@ -440,6 +440,9 @@ Choose from the list of available fixers:
 * **unalign_double_arrow** [symfony]
                 Unalign double arrow symbols.
 
+* **unalign_equals** [symfony]
+                Unalign equals symbols.
+
 * **unary_operators_spaces** [symfony]
                 Unary operators should be placed
                 adjacent to their operands.
