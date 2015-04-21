@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -22,21 +23,39 @@ class UnalignDoubleArrowFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDescription()
+    {
+        return 'Unalign double arrow symbols.';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOUBLE_ARROW)) {
+                continue;
+            }
+
+            $this->fixWhitespace($tokens[$index - 1]);
+            $this->fixWhitespace($tokens[$index + 1]);
         }
 
         return $tokens->generateCode();
     }
 
     /**
-     * {@inheritdoc}
+     * If given token is a single line whitespace then fix it to be a single space.
+     *
+     * @param Token $token
      */
-    public function getDescription()
+    private function fixWhitespace(Token $token)
     {
-        return 'Unalign double arrow symbols.';
+        if ($token->isWhitespace(array('whitespaces' => " \t"))) {
+            $token->setContent(' ');
+        }
     }
 }
