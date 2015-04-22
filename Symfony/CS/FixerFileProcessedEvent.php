@@ -39,13 +39,13 @@ class FixerFileProcessedEvent extends Event
      * @var array
      */
     private static $statusMap = array(
-        self::STATUS_UNKNOWN    => array('symbol' => '?', 'description' => 'unknown'),
-        self::STATUS_INVALID    => array('symbol' => 'I', 'description' => 'invalid file syntax, file ignored'),
-        self::STATUS_SKIPPED    => array('symbol' => '',  'description' => ''),
+        self::STATUS_UNKNOWN => array('symbol' => '?', 'description' => 'unknown'),
+        self::STATUS_INVALID => array('symbol' => 'I', 'description' => 'invalid file syntax, file ignored'),
+        self::STATUS_SKIPPED => array('symbol' => '',  'description' => ''),
         self::STATUS_NO_CHANGES => array('symbol' => '.', 'description' => 'no changes'),
-        self::STATUS_FIXED      => array('symbol' => 'F', 'description' => 'fixed'),
-        self::STATUS_EXCEPTION  => array('symbol' => 'E', 'description' => 'error'),
-        self::STATUS_LINT       => array('symbol' => 'E', 'description' => 'error'),
+        self::STATUS_FIXED => array('symbol' => 'F', 'description' => 'fixed'),
+        self::STATUS_EXCEPTION => array('symbol' => 'E', 'description' => 'error'),
+        self::STATUS_LINT => array('symbol' => 'E', 'description' => 'error'),
     );
 
     /**
