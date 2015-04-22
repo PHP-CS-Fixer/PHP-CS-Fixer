@@ -403,6 +403,12 @@ class UnalignDoubleArrowFixerTest extends AbstractFixerTestBase
     Foo::new()->aaa(array(1 => 2))->bbb("a", "b");
 ',
             ),
+            array(
+                '<?php
+    function foo() {
+        yield 1 => 2;
+    }',
+            ),
         );
     }
 }
