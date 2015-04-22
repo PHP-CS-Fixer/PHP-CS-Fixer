@@ -64,7 +64,7 @@ class ErrorsManager
     }
 
     /**
-     * Check if no errors was reported.
+     * Returns true if no errors were reported.
      *
      * @return bool
      */
