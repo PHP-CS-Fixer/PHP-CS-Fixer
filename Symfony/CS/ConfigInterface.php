@@ -21,7 +21,7 @@ interface ConfigInterface
      *
      * The name must be all lowercase and without any spaces.
      *
-     * @return string The name of the configuration
+     * @return string
      */
     public function getName();
 
@@ -30,7 +30,7 @@ interface ConfigInterface
      *
      * A short one-line description for the configuration.
      *
-     * @return string The description of the configuration
+     * @return string
      */
     public function getDescription();
 
@@ -44,14 +44,14 @@ interface ConfigInterface
     /**
      * Returns the level to run.
      *
-     * @return int A level
+     * @return int
      */
     public function getLevel();
 
     /**
      * Returns the fixers to run.
      *
-     * @return array A list of fixer names
+     * @return array
      */
     public function getFixers();
 
@@ -60,14 +60,14 @@ interface ConfigInterface
      *
      * @param string $dir The project root directory
      *
-     * @return ConfigInterface The same instance
+     * @return ConfigInterface
      */
     public function setDir($dir);
 
     /**
      * Returns the root directory of the project.
      *
-     * @return string The project root directory
+     * @return string
      */
     public function getDir();
 

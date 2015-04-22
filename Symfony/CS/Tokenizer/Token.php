@@ -266,7 +266,7 @@ class Token
     /**
      * Check if token prototype is an array.
      *
-     * @return bool is array
+     * @return bool
      */
     public function isArray()
     {

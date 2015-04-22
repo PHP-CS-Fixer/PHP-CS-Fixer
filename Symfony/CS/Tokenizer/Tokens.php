@@ -346,7 +346,7 @@ class Tokens extends \SplFixedArray
      * @param int    $indexOffset index offset for Token insertion
      * @param string $whitespace  whitespace to set
      *
-     * @return bool if new Token was added
+     * @return bool
      */
     public function ensureWhitespaceAtIndex($index, $indexOffset, $whitespace)
     {
@@ -389,7 +389,7 @@ class Tokens extends \SplFixedArray
      * @param int  $searchIndex index of opening brace
      * @param bool $findEnd     if method should find block's end, default true, otherwise method find block's start
      *
-     * @return int index of closing brace
+     * @return int
      */
     public function findBlockEnd($type, $searchIndex, $findEnd = true)
     {
@@ -449,7 +449,7 @@ class Tokens extends \SplFixedArray
      *
      * @param int|array $possibleKind kind or array of kind
      *
-     * @return array array of tokens of given kinds or assoc array of arrays
+     * @return array
      */
     public function findGivenKind($possibleKind)
     {

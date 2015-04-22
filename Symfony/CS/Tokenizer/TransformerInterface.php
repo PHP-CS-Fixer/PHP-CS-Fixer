@@ -51,7 +51,7 @@ interface TransformerInterface
      *
      * The name must be all lowercase and without any spaces.
      *
-     * @return string The name of the fixer
+     * @return string
      */
     public function getName();
 }

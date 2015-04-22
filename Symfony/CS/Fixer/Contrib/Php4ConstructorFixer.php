@@ -243,7 +243,7 @@ class Php4ConstructorFixer extends AbstractFixer
      * @param int    $startIndex function/method start index
      * @param int    $bodyIndex  function/method body index
      *
-     * @return array an array containing the sequence and case sensitiveness [ 0 => $seq, 1 => $case ]
+     * @return array
      */
     private function getWrapperMethodSequence(Tokens $tokens, $method, $startIndex, $bodyIndex)
     {

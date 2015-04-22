@@ -38,7 +38,7 @@ interface FixerInterface
      *
      * A short one-line description of what the fixer does.
      *
-     * @return string The description of the fixer
+     * @return string
      */
     public function getDescription();
 
@@ -59,7 +59,7 @@ interface FixerInterface
      *
      * The name must be all lowercase and without any spaces.
      *
-     * @return string The name of the fixer
+     * @return string
      */
     public function getName();
 
@@ -75,7 +75,7 @@ interface FixerInterface
     /**
      * Returns true if the file is supported by this fixer.
      *
-     * @return bool true if the file is supported by this fixer, false otherwise
+     * @return bool
      */
     public function supports(\SplFileInfo $file);
 }
