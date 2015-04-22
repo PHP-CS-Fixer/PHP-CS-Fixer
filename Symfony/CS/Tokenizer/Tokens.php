@@ -904,8 +904,8 @@ class Tokens extends \SplFixedArray
         ;
 
         for (++$index; $index < $endIndex; ++$index) {
-            $token      = $this[$index];
-            $blockType  = static::detectBlockType($token);
+            $token = $this[$index];
+            $blockType = static::detectBlockType($token);
 
             if ($blockType && $blockType['isStart']) {
                 $index = $this->findBlockEnd($blockType['type'], $index);
@@ -1154,7 +1154,7 @@ class Tokens extends \SplFixedArray
                 T_XOR_EQUAL => true,            // ^=
             );
             if (defined('T_POW')) {
-                $arrayOperators[T_POW]       = true;    // **
+                $arrayOperators[T_POW] = true;          // **
                 $arrayOperators[T_POW_EQUAL] = true;    // **=
             }
             if (defined('T_SPACESHIP')) {

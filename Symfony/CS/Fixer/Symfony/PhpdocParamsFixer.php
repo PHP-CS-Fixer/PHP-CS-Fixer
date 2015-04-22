@@ -112,7 +112,7 @@ class PhpdocParamsFixer extends AbstractFixer
 
                     $tagMax = max($tagMax, strlen($item['tag']));
                     $hintMax = max($hintMax, strlen($item['hint']));
-                    $varMax  = max($varMax, strlen($item['var']));
+                    $varMax = max($varMax, strlen($item['var']));
                 }
 
                 $currTag = null;
