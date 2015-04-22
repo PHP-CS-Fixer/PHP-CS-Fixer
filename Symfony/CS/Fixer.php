@@ -17,6 +17,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\CS\Error\Error;
+use Symfony\CS\Error\ErrorsManager;
 use Symfony\CS\Linter\LinterInterface;
 use Symfony\CS\Linter\LintingException;
 use Symfony\CS\Linter\NullLinter;
@@ -210,6 +212,11 @@ class Fixer
                 FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
             );
 
+            $this->errorsManager->report(new Error(
+                Error::TYPE_INVALID,
+                $this->getFileRelativePathname($file)
+            ));
+
             return;
         }
 
@@ -242,7 +249,10 @@ class Fixer
                 FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)
             );
 
-            $this->errorsManager->report(ErrorsManager::ERROR_TYPE_EXCEPTION, $this->getFileRelativePathname($file), $e->__toString());
+            $this->errorsManager->report(new Error(
+                Error::TYPE_EXCEPTION,
+                $this->getFileRelativePathname($file)
+            ));
 
             return;
         }
@@ -267,7 +277,10 @@ class Fixer
                     FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
                 );
 
-                $this->errorsManager->report(ErrorsManager::ERROR_TYPE_LINT, $this->getFileRelativePathname($file), $e->getMessage());
+                $this->errorsManager->report(new Error(
+                    Error::TYPE_LINT,
+                    $this->getFileRelativePathname($file)
+                ));
 
                 return;
             }
