@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by sstok at 2015-04-22T08:42:13Z
+
+You need to run the fixer to fix the project itself ;)
+
+---------------------------------------------------------------------------
+
+by stof at 2015-04-22T08:45:51Z
+
+:+1:
+
+this should also be added in the list of conflicting fixers in #1033
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-04-22T08:53:38Z
+
+:+1:
+
+(there shouldn't be problems, but maybe add a test case for `yield $x => $y` syntax.)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-22T09:49:26Z
+
+List of conflicted fixers updated, thanks @stof ;)
