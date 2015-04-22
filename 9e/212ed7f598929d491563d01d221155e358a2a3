@@ -1,0 +1,421 @@
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-27T19:09:53Z
+
+@keradus
+
+"Works for me, uh, on my machine!"
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-27T19:14:29Z
+
+@keradus
+
+Build failures are fixed in #1101.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-28T10:24:48Z
+
+@keradus
+
+What do you think about cherry-picking 4ee0589?
+
+I find it quite useful to see which files had linting issues!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-28T12:55:51Z
+
+`ERROR_TYPE_LINT` stands for case when file was valid, we change it and now it is not valid.
+
+When file was originally not valid then it is not our failure
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-28T13:36:25Z
+
+Shall we have a different error then for cases where the file wasn't even valid from the start?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-28T17:00:20Z
+
+indeed
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-28T17:01:07Z
+
+@keradus
+
+:+1:
+
+Happy to sort this out, just name the error you would like to see for that!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-28T17:02:05Z
+
+Can't give you one right now. Also remember to have new symbol for showing progress
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-03-29T13:46:02Z
+
+@keradus
+
+Updated the PR, please have a look.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-01T20:18:02Z
+
+Please rebase
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-02T07:05:11Z
+
+@keradus
+
+Rebased, please have a look! Unsure about the build failures: :unamused:
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-02T14:48:43Z
+
+@keradus
+
+Build failures are related to coding standard issues:
+
+```diff
+diff -ru Symfony/CS/Tests/Fixtures/FixerTest/fix/somefile.php Symfony/CS/Tests/Fixtures/FixerTest/fix/somefile.php
+--- Symfony/CS/Tests/Fixtures/FixerTest/fix/somefile.php	2015-04-02 07:00:18.683998080 +0000
++++ Symfony/CS/Tests/Fixtures/FixerTest/fix/somefile.php	2015-04-02 07:00:21.879967640 +0000
+@@ -4,7 +4,7 @@
+
+ class test
+ {
+-    var $testA;
++    public $testA;
+     public $test_B;
+-        public $testC;
++    public $testC;
+ }
+```
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-04-02T14:58:03Z
+
+We use `.php_cs.dist` in master branch, but afaik this is a feature of 2.0, right?
+And I guess fabbot.io is using current stable version, so fabbot does not know that the fixtures folder should be ignored. But I don't know why the tests did not fail since renaming `.php_cs` to `.php_cs.dist`? Why just now?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-02T15:02:02Z
+
+@gharlan
+
+Only the CS checks failed.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-04-02T15:04:35Z
+
+Yeah I know. But the reported file should be ignored: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/.php_cs.dist#L27
+And I guess that fabbot does not use `.php_cs.dist` (only `.php_cs`).
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-02T15:08:55Z
+
+Yeah. fabbot.io uses lates stable, so `.php_cs` file.
+I will rename this file on master branch and add todo to rename it again before 2.0 release.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-02T15:10:36Z
+
+@keradus
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-02T20:07:22Z
+
+@keradus
+
+So, is this good to merge?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-06T19:28:25Z
+
+So...
+for now we may, due to change of files, introduce new syntax/lint error or general unknown exception - there are ours bugs that need to be fixer by ourselfs, they could be reported to us.
+
+After this PR - when someone has invalid file, the ERROR_TYPE_SYNTAX_ERROR will be reported and... we show message:
+`Files that were not fixed due to internal error`
+But hey, it is not our internal error, it must not be reported to us!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-07T16:47:36Z
+
+@keradus
+
+Sounds good to me!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-08T06:52:06Z
+
+@keradus
+
+Do you have a status for this?
+
+It would be very helpful for us as we're running `php-cs-fixer` on Travis, and we'd at least be able to see which files are messed up, so we can get around to fixing them!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-08T10:02:55Z
+
+That state is not a bug of PHP CS Fixer but the user's code itself, therefore it must be mentioned in different way.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-08T10:17:30Z
+
+Any suggestions?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-08T11:20:45Z
+
+Create separate list for issue that are not caused by PHP CS Fixer and should not be reported to it.
+It should be distinguishable on ErrorsManager level
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-11T15:15:11Z
+
+Just asking... Any news on that? That would be really cool to have ErrorsManager handle both internal and external errors ;)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-11T16:06:57Z
+
+@keradus
+
+Busy at the moment, but will have a look on Monday!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-11T16:11:59Z
+
+Glad to hear that, thank you!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-15T19:28:06Z
+
+ping @localheinz  ;)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-16T06:28:25Z
+
+@keradus
+
+Sorry for the delay, will definitely solve this at the weekend the latest!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-19T10:00:26Z
+
+@keradus
+
+This is up for a review again!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-04-19T14:34:48Z
+
+Can we transform PHP warnings in to errors as well? (not sure if this is within the scope of the PR). For example when a fixer triggers a PHP warning it will show on the output as a stack trace, but not in the errors list of the error manager.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-19T17:26:37Z
+
+@keradus
+
+Do you want to have a look again?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-20T06:09:05Z
+
+### Question
+
+I would love to see the command return a non-zero exit code when linting errors were reported **before** any fixers could be applied **during** a run with the `--dry-run` option.
+
+This will allow anyone using this in a continuous integration system to break the build if someone checks in invalid PHP code not covered by tests, which I believe is very useful!
+
+Does anyone have thoughts on this, objections?
+
+@keradus
+
+Asking the question here again so it doesn't relate to an out-dated diff anymore. :trollface:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-20T20:33:52Z
+
+Looks nice to me ;)
+
+Any opinions about question asked by @localheinz ?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-04-20T22:06:06Z
+
+> Any opinions about question asked by @localheinz ?
+
+no strong opinion but I tend to agree to @keradus that we should not change the exit code.
+Especially I don't see the point why we should differentiate between `--dry-run` or not, in this case.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-21T06:04:04Z
+
+@gharlan
+
+We also return with a non-zero exit code when a `--dry-run` detected that in an actual run changes would be applied. In this case, `php-cs-fixer` hasn't encountered an internal error either, so why do we return with non-zero, then?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-04-21T07:52:04Z
+
+Because there are files that should be fixed, but they aren't (because of `--dry-run`).
+
+But for linting errors I can not see a difference whether the `--dry-run` option is used or not. So IMO we should change exit code either for both modes or for none of them.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-21T09:28:46Z
+
+> Because there are files that should be fixed, but they aren't (because of --dry-run).
+
+So a file with a linting error should not be fixed?
+Even if `php-cs-fixer` can't fix a file with a linting error, wouldn't you like to know?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-21T09:53:13Z
+
+@keradus
+
+How about merging this, can still open a new PR for exiting with non-zero.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-21T10:41:33Z
+
+> So a file with a linting error should not be fixed?
+
+Yeah, file that has syntax on input are NOT fixed at all.
+
+> Even if php-cs-fixer can't fix a file with a linting error, wouldn't you like to know?
+
+If you really want to catch them you may use `-vv` and see the char `I` on progress bar.
+
+> How about merging this, can still open a new PR for exiting with non-zero.
+
+Why not, I will merge it when after few :+1:
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-21T11:05:16Z
+
+@keradus @gharlan
+
+For your pleasure, I've created a repository and opened a PR to demo the feature, please have a look:
+
+* https://github.com/localheinz/php-cs-fixer-demo/pull/1
+
+---------------------------------------------------------------------------
+
+by thecatontheflat at 2015-04-21T14:58:08Z
+
+:+1: :smile_cat:
+
+---------------------------------------------------------------------------
+
+by joeles at 2015-04-21T16:02:40Z
+
+:+1: Inclusion of invalid files **should** break the build.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-21T16:28:37Z
+
+Wow, new folks ;)
+
+If one want to have Travis build broken - then one may do it.
+This tool is not a linter but fixer, if input file is corrupted we simply ignore it, it is not a problem with tool itself.
+
+@localheinz , what about https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1102#issuecomment-94724531 ? you have changed the output code in this PR as well :( :-1:
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-21T16:30:03Z
+
+@keradus
+
+Just wanted to demo!
+
+But no problem, I can rebase and remove the commit, and then, well, let's open the discussion again some other time, if possible.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-21T16:31:13Z
+
+@keradus
+
+Removed https://github.com/localheinz/PHP-CS-Fixer/commit/f821194e41caed3167118f281de7266a541c810a, want to take a look again?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-21T16:34:03Z
+
+> Just wanted to demo!
+
+I see, you already have shown it here: https://github.com/localheinz/php-cs-fixer-demo/pull/1 ;)
+
+> But no problem, I can rebase and remove the commit, and then, well, let's open the discussion again some other time, if possible.
+
+Please, feel free to create such an issue/PR after this PR will be merged. Changing output code need to be discussed with more contributors, and there are no need to force work made so far to wait for that discussion.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-21T16:34:16Z
+
+:+1:, looks great to me !
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-04-21T16:34:52Z
+
+@keradus
+
+Thank you, will open a separate PR once this is merged!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-04-22T05:07:25Z
+
+:+1:  looking good :)
