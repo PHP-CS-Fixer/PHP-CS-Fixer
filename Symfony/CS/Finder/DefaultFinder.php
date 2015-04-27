@@ -23,8 +23,6 @@ class DefaultFinder extends Finder implements FinderInterface
     {
         parent::__construct();
 
-        $files = $this->getFilesToExclude();
-
         $this
             ->files()
             ->name('*.php')
@@ -34,12 +32,17 @@ class DefaultFinder extends Finder implements FinderInterface
             ->ignoreDotFiles(true)
             ->ignoreVCS(true)
             ->exclude('vendor')
-            ->filter(
+        ;
+
+        $files = $this->getFilesToExclude();
+
+        if (!empty($files)) {
+            $this->filter(
                 function (\SplFileInfo $file) use ($files) {
                     return !in_array($file->getRelativePathname(), $files, true);
                 }
-            )
-        ;
+            );
+        }
     }
 
     public function setDir($dir)
