@@ -1,0 +1,142 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-22T13:54:41Z
+
+It this would be an absolute path then the current code won't work with link. But it does.
+Please add more background when this fail, maybe provide some tests?
+
+---------------------------------------------------------------------------
+
+by ianmonge at 2015-04-22T14:39:58Z
+
+I have the problem in a project that installs php-cs-fixer using composer, and creates a link in the directory ```bin```. Then I use this link for use the php-cs-fixer, but never the cache is generated.
+
+The class ```ToolInfo``` is used mostly in ```FileCacheManager```. And if the method ```isCacheAvailable``` returns ```false```, it will work and you will not notice any error. But the cache will not be used; you will not find the file ```.php_cs.cache```.
+
+I don't know how to make a test with this, because it's a private static method, it's not currently a vendor and it's using functions that works directly with the file system.
+
+I have created a dirty script that you can run in local and see the results. It creates a file and a link in different directories, and later it prints the paths.
+
+```php
+<?php
+
+$destinationFilename = '/tmp/subdir/file.txt';
+$linkFilename = '/tmp/link.txt';
+
+@mkdir('/tmp/subdir');
+touch($destinationFilename);
+@symlink($destinationFilename, $linkFilename);
+
+if (!file_exists($destinationFilename)
+    || !file_exists($linkFilename)
+    || !is_link($linkFilename)) {
+    die('Context can not be generated');
+}
+
+echo 'WRONG: ' . dirname($linkFilename).'/'.readlink($linkFilename) . PHP_EOL;
+echo 'CORRECT: ' . readlink($linkFilename);
+```
+
+The output will be similar to this:
+```
+WRONG: /tmp//tmp/subdir/file.txt
+CORRECT: /tmp/subdir/file.txt
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-22T19:59:08Z
+
+Thanks for your description.
+I remember that one day I tested it on Windows 8 and some linux on shared hosting.
+What system are you using? This may be crucial.
+
+And, btw, can't one create a link using relative path?
+
+---------------------------------------------------------------------------
+
+by ianmonge at 2015-04-22T20:04:29Z
+
+I'm using Mac OS, but tomorrow I will try it on Ubuntu and I will give you more info.
+
+I don't know if we can create a link using relative path, but it's a link created by Composer.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-22T20:27:55Z
+
+yeah, I tested it on link created by composer in `vendor/bin` too ;)
+
+---------------------------------------------------------------------------
+
+by ianmonge at 2015-04-22T20:40:08Z
+
+Well, I have other directory for bin files, but I don't think this is a problem:
+```json
+    "config": {
+        "bin-dir": "bin"
+    }
+```
+
+---------------------------------------------------------------------------
+
+by ianmonge at 2015-04-22T20:41:05Z
+
+Can you check that the cache is working? Has it generated a new file ```.php_cs.cache```?
+
+---------------------------------------------------------------------------
+
+by ianmonge at 2015-04-23T12:55:00Z
+
+I think that I understand the problem. In MacOS, Composer creates the links in the ```bin```directory with absolute paths. And in Ubuntu, it creates the links with relative paths.
+
+**MacOs**
+```
+ianmonge@ironman /var/www/myproject$ ls -la bin
+total 56
+drwxr-xr-x   9 ianmonge  wheel  306 23 abr 14:24 .
+drwxr-xr-x  24 ianmonge  wheel  816 23 abr 14:43 ..
+lrwxr-xr-x   1 ianmonge  wheel   90 14 abr 13:51 doctrine-dbal -> /private/var/www/myproject/bin/../vendor/doctrine/dbal/bin/doctrine-dbal
+lrwxr-xr-x   1 ianmonge  wheel   88 20 abr 11:58 ocular -> /private/var/www/myproject/bin/../vendor/scrutinizer/ocular/bin/ocular
+lrwxr-xr-x   1 ianmonge  wheel   91 22 abr 15:55 php-cs-fixer -> /private/var/www/myproject/bin/../vendor/fabpot/php-cs-fixer/php-cs-fixer
+lrwxr-xr-x   1 ianmonge  wheel   80 20 abr 11:58 phpcov -> /private/var/www/myproject/bin/../vendor/phpunit/phpcov/phpcov
+lrwxr-xr-x   1 ianmonge  wheel   86 14 abr 13:51 phpspec -> /private/var/www/myproject/bin/../vendor/phpspec/phpspec/bin/phpspec
+lrwxr-xr-x   1 ianmonge  wheel   82 20 abr 12:04 phpunit -> /private/var/www/myproject/bin/../vendor/phpunit/phpunit/phpunit
+```
+
+**Ubuntu**
+```
+$ ls -la bin/
+total 4
+drwxrwxr-x  2 travis travis  122 Apr 23 12:42 .
+drwxrwxr-x 10 travis travis 4096 Apr 23 12:43 ..
+lrwxrwxrwx  1 travis travis   41 Apr 23 12:42 doctrine-dbal -> ../vendor/doctrine/dbal/bin/doctrine-dbal
+lrwxrwxrwx  1 travis travis   39 Apr 23 12:42 ocular -> ../vendor/scrutinizer/ocular/bin/ocular
+lrwxrwxrwx  1 travis travis   31 Apr 23 12:42 phpcov -> ../vendor/phpunit/phpcov/phpcov
+lrwxrwxrwx  1 travis travis   42 Apr 23 12:42 php-cs-fixer -> ../vendor/fabpot/php-cs-fixer/php-cs-fixer
+lrwxrwxrwx  1 travis travis   37 Apr 23 12:42 phpspec -> ../vendor/phpspec/phpspec/bin/phpspec
+lrwxrwxrwx  1 travis travis   33 Apr 23 12:42 phpunit -> ../vendor/phpunit/phpunit/phpunit
+```
+
+Then, when we arrive at the method ```ToolInfo::getScriptDir()```, we have three cases:
+* The executed script is the script, it's not a link
+* The executed script is a link, and its reference is an absolute path
+* The executed script is a link, and its reference is a relative path
+
+In the last case, it's necessary to concat the path of the executed script.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-23T19:55:45Z
+
+Great job!
+Another option is not to conditionally concatenate path but extend readlink's result to absolute path - always, whatever it is absolute path already or not.
+Could you take care of it in this PR please ?
+
+---------------------------------------------------------------------------
+
+by ianmonge at 2015-04-24T08:06:22Z
+
+@keradus I've updated the code, but I'm not sure if that is what you wanted.
+
+Otherwise, can you give more indications?
