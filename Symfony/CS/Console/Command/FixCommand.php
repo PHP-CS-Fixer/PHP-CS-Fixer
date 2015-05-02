@@ -37,6 +37,9 @@ use Symfony\CS\Utils;
  */
 class FixCommand extends Command
 {
+    const EXIT_STATUS_FLAG_HAS_INVALID_FILES = 4;
+    const EXIT_STATUS_FLAG_HAS_CHANGED_FILES = 8;
+
     /**
      * EventDispatcher instance.
      *
@@ -545,7 +548,19 @@ EOF
             $this->listErrors($output, 'linting after fixing', $lintErrors);
         }
 
-        return !$resolver->isDryRun() || empty($changed) ? 0 : 3;
+        $exitStatus = 0;
+
+        if ($resolver->isDryRun()) {
+            if (!empty($invalidErrors)) {
+                $exitStatus |= self::EXIT_STATUS_FLAG_HAS_INVALID_FILES;
+            }
+
+            if (!empty($changed)) {
+                $exitStatus |= self::EXIT_STATUS_FLAG_HAS_CHANGED_FILES;
+            }
+        }
+
+        return $exitStatus;
     }
 
     /**
