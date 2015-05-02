@@ -1,0 +1,14 @@
+<?php
+
+$config = Symfony\CS\Config\Config::create();
+
+$finder = $config->getFinder()->in(__DIR__);
+
+return $config
+    ->level(Symfony\CS\FixerInterface::NONE_LEVEL)
+    ->setUsingCache(false)
+    ->setUsingLinter(true)
+    ->fixers(array(
+        'psr0',
+    ))
+;
