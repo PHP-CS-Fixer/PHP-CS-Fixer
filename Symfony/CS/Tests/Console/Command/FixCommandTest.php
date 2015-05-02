@@ -135,7 +135,7 @@ class FixCommandTest extends \PHPUnit_Framework_TestCase
             new NullOutput()
         );
 
-        $this->assertSame(0, $exitCode);
+        $this->assertSame(3, $exitCode);
     }
 
     public function testExitCodeActualRunWithInvalidFiles()
@@ -160,7 +160,7 @@ class FixCommandTest extends \PHPUnit_Framework_TestCase
             new NullOutput()
         );
 
-        $this->assertSame(0, $exitCode);
+        $this->assertSame(3, $exitCode);
     }
 
     /**
