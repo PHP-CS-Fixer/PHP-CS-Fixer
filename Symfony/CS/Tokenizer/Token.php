@@ -402,6 +402,8 @@ class Token
     /**
      * Override token.
      *
+     * If called on Token inside Tokens collection please use `Tokens::overrideAt` instead.
+     *
      * @param string|array $prototype token prototype
      */
     public function override($prototype)

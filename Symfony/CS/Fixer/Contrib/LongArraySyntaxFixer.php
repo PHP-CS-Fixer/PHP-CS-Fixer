@@ -34,8 +34,9 @@ class LongArraySyntaxFixer extends AbstractFixer
 
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $index);
 
-            $tokens[$index]->setContent('(');
-            $tokens[$closeIndex]->setContent(')');
+            $tokens->overrideAt($index, '(');
+            $tokens->overrideAt($closeIndex, ')');
+
             $tokens->insertAt($index, new Token(array(T_ARRAY, 'array')));
         }
 

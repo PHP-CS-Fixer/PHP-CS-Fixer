@@ -37,11 +37,11 @@ class StrictFixer extends AbstractFixer
 
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             $tokenId = $token->getId();
 
             if (isset($map[$tokenId])) {
-                $token->override(array($map[$tokenId]['id'], $map[$tokenId]['content'], $token->getLine()));
+                $tokens->overrideAt($index, array($map[$tokenId]['id'], $map[$tokenId]['content'], $token->getLine()));
             }
         }
 
