@@ -446,8 +446,8 @@ class Token
     public function toArray()
     {
         return array(
-            'id'      => $this->id,
-            'name'    => $this->getName(),
+            'id' => $this->id,
+            'name' => $this->getName(),
             'content' => $this->content,
             'isArray' => $this->isArray,
             'changed' => $this->changed,

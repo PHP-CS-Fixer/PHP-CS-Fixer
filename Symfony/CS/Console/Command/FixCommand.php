@@ -338,7 +338,7 @@ EOF
                 'level' => $input->getOption('level'),
                 'fixers' => $input->getOption('fixers'),
                 'path' => $input->getArgument('path'),
-                'progress'  => (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) && 'txt' === $input->getOption('format'),
+                'progress' => (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) && 'txt' === $input->getOption('format'),
                 'using-cache' => $input->getOption('using-cache'),
                 'cache-file' => $input->getOption('cache-file'),
             ))
@@ -419,7 +419,7 @@ EOF
                 $output->writeln(sprintf('Fixed all files in %.3f seconds, %.3f MB memory used', $fixEvent->getDuration() / 1000, $fixEvent->getMemory() / 1024 / 1024));
                 break;
             case 'xml':
-                $dom      = new \DOMDocument('1.0', 'UTF-8');
+                $dom = new \DOMDocument('1.0', 'UTF-8');
                 $filesXML = $dom->createElement('files');
                 $dom->appendChild($filesXML);
 
@@ -503,9 +503,9 @@ EOF
                 $fixEvent = $this->stopwatch->getEvent('fixFiles');
 
                 $json = array(
-                    'files'  => $jFiles,
+                    'files' => $jFiles,
                     'memory' => round($fixEvent->getMemory() / 1024 / 1024, 3),
-                    'time'   => array(
+                    'time' => array(
                         'total' => round($fixEvent->getDuration() / 1000, 3),
                     ),
                 );

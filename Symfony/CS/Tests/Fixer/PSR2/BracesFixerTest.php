@@ -747,6 +747,39 @@ if (true)
 else
     echo 4;',
             ),
+            array(
+                '<?php
+foreach ($data as $val) {
+    // test val
+    if ($val === "errors") {
+        echo "!";
+    }
+}',
+                '<?php
+foreach ($data as $val)
+    // test val
+    if ($val === "errors") {
+        echo "!";
+    }',
+            ),
+            array(
+                '<?php
+if (1) {
+    foreach ($data as $val) {
+        // test val
+        if ($val === "errors") {
+            echo "!";
+        }
+    }
+}',
+                '<?php
+if (1)
+    foreach ($data as $val)
+        // test val
+        if ($val === "errors") {
+            echo "!";
+        }',
+            ),
         );
     }
 

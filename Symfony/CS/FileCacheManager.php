@@ -134,8 +134,8 @@ class FileCacheManager
         $data = serialize(
             array(
                 'version' => ToolInfo::getVersion(),
-                'fixers'  => $this->fixers,
-                'hashes'  => $this->newHashes,
+                'fixers' => $this->fixers,
+                'hashes' => $this->newHashes,
             )
         );
 

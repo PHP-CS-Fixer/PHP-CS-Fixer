@@ -53,7 +53,14 @@ class ToolInfo
             $script = $_SERVER['SCRIPT_NAME'];
 
             if (is_link($script)) {
-                $script = dirname($script).'/'.readlink($script);
+                $linkTarget = readlink($script);
+
+                // If the link target is relative to the link
+                if (false === realpath($linkTarget)) {
+                    $linkTarget = dirname($script).'/'.$linkTarget;
+                }
+
+                $script = $linkTarget;
             }
 
             $result = dirname($script);

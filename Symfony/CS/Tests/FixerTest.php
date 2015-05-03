@@ -27,9 +27,9 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $fixer = new Fixer();
 
         $fxPrototypes = array(
-            array('getPriority' =>   0),
+            array('getPriority' => 0),
             array('getPriority' => -10),
-            array('getPriority' =>  10),
+            array('getPriority' => 10),
             array('getPriority' => -10),
         );
 
