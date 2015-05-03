@@ -41,7 +41,7 @@ class PhpdocToCommentFixer extends AbstractFixer
             $nextToken = null !== $nextIndex ? $tokens[$nextIndex] : null;
 
             if (null === $nextToken || $nextToken->equals('}')) {
-                $token->override(array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*'), $token->getLine()));
+                $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*'), $token->getLine()));
                 continue;
             }
 
@@ -67,7 +67,7 @@ class PhpdocToCommentFixer extends AbstractFixer
                 continue;
             }
 
-            $token->override(array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*'), $token->getLine()));
+            $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*'), $token->getLine()));
         }
 
         return $tokens->generateCode();
