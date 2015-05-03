@@ -35,11 +35,11 @@ class StrictFixer extends AbstractFixer
             ),
         );
 
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             $tokenId = $token->getId();
 
             if (isset($map[$tokenId])) {
-                $token->override(array($map[$tokenId]['id'], $map[$tokenId]['content']));
+                $tokens->overrideAt($index, array($map[$tokenId]['id'], $map[$tokenId]['content']));
             }
         }
     }

@@ -34,8 +34,9 @@ class ShortArraySyntaxFixer extends AbstractFixer
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
             $token->clear();
-            $tokens[$openIndex]->override(array(CT_ARRAY_SQUARE_BRACE_OPEN, '['));
-            $tokens[$closeIndex]->override(array(CT_ARRAY_SQUARE_BRACE_CLOSE, ']'));
+
+            $tokens->overrideAt($openIndex, array(CT_ARRAY_SQUARE_BRACE_OPEN, '['));
+            $tokens->overrideAt($closeIndex, array(CT_ARRAY_SQUARE_BRACE_CLOSE, ']'));
         }
     }
 

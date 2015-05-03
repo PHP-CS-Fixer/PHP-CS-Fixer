@@ -361,16 +361,14 @@ class Tokens extends \SplFixedArray
             }
         };
 
-        $token = $this[$index];
-
-        if ($token->isWhitespace()) {
+        if ($this[$index]->isWhitespace()) {
             $removeLastCommentLine($this[$index - 1], $indexOffset);
-            $token->override(array(T_WHITESPACE, $whitespace));
+            $this->overrideAt($index, array(T_WHITESPACE, $whitespace));
 
             return false;
         }
 
-        $removeLastCommentLine($token, $indexOffset);
+        $removeLastCommentLine($this[$index], $indexOffset);
 
         $this->insertAt(
             $index + $indexOffset,
@@ -893,6 +891,16 @@ class Tokens extends \SplFixedArray
                 $this[$i]->clear();
             }
         }
+    }
+
+    /*
+     * Override token at given index and register it.
+     *
+     * @param Token|array|string $token token prototype
+     */
+    public function overrideAt($index, $token)
+    {
+        $this[$index]->override($token);
     }
 
     /**
