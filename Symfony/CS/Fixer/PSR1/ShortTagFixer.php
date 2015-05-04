@@ -24,6 +24,14 @@ class ShortTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokensOrg)
     {
         $content = $tokensOrg->generateCode();
@@ -86,15 +94,7 @@ class ShortTagFixer extends AbstractFixer
             $tokensOldContentLength += strlen($token->getContent());
         }
 
-        $tokensOrg->setSize($tokens->count());
-
-        foreach ($tokens as $index => $token) {
-            if (isset($tokensOrg[$index])) {
-                $tokensOrg[$index]->override($token);
-            } else {
-                $tokensOrg[$index] = $token;
-            }
-        }
+        $tokensOrg->overrideRange(0, $tokensOrg->count() - 1, $tokens);
     }
 
     /**

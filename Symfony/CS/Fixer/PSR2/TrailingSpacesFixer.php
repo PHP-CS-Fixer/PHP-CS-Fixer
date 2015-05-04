@@ -24,6 +24,14 @@ class TrailingSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         // [Structure] Don't add trailing spaces at the end of non-blank lines

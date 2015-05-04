@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 use Symfony\CS\Tokenizer\TokensAnalyzer;
 
@@ -20,6 +21,11 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
  */
 class SelfAccessorFixer extends AbstractFixer
 {
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+    }
+
     /**
      * {@inheritdoc}
      */

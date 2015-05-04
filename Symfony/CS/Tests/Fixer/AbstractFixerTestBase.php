@@ -52,6 +52,7 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
             $tokens = Tokens::fromCode($input);
 
             if ($fileIsSupported) {
+                $this->assertTrue($fixer->isCandidate($tokens), 'Fixer must be a candidate for input code.');
                 $fixResult = $fixer->fix($file, $tokens);
                 $this->assertNull($fixResult, '->fix method must return null.');
             }
@@ -60,8 +61,9 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
             $this->assertSame($expected, $tokens->generateCode(), 'Code build on input code must match expected code.');
 
             Tokens::clearCache();
+            $expectedTokens = Tokens::fromCode($expected);
             $tokens->clearEmptyTokens();
-            $this->assertTokens(Tokens::fromCode($expected), $tokens);
+            $this->assertTokens($expectedTokens, $tokens);
         }
 
         Tokens::clearCache();
@@ -88,5 +90,17 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals($expectedTokens->count(), $inputTokens->count(), 'The collection must have the same length than the expected one.');
+
+        $tokensReflection = new \ReflectionClass($expectedTokens);
+        $propertyReflection = $tokensReflection->getProperty('foundTokenKinds');
+        $propertyReflection->setAccessible(true);
+        $foundTokenKinds = array_keys($propertyReflection->getValue($expectedTokens));
+
+        foreach ($foundTokenKinds as $tokenKind) {
+            $this->assertTrue(
+                $inputTokens->isTokenKindFound($tokenKind),
+                sprintf('The token kind %s must be found in fixed tokens collection.', $tokenKind)
+            );
+        }
     }
 }

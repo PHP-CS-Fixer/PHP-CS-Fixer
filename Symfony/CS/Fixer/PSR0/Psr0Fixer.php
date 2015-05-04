@@ -14,6 +14,7 @@ namespace Symfony\CS\Fixer\PSR0;
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\ConfigAwareInterface;
 use Symfony\CS\ConfigInterface;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -24,6 +25,14 @@ use Symfony\CS\Tokenizer\Tokens;
 class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
 {
     protected $config;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+    }
 
     /**
      * {@inheritdoc}

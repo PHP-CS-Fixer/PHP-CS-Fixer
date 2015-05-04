@@ -23,6 +23,14 @@ use Symfony\CS\Utils;
  */
 class PhpdocAlignFixer extends AbstractFixer
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
     private $regex;
     private $regexCommentLine;
 
