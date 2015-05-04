@@ -1,0 +1,219 @@
+---------------------------------------------------------------------------
+
+by stof at 2015-03-27T15:58:22Z
+
+@vinkla next time you amend your commit, please also fix the ``Eco`` vs ``Echo`` typo in your commit message
+
+---------------------------------------------------------------------------
+
+by vinkla at 2015-03-27T16:00:38Z
+
+@stof done.
+
+---------------------------------------------------------------------------
+
+by vinkla at 2015-03-27T16:14:02Z
+
+I've simplified the code.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-03-27T17:00:21Z
+
+Looks like HHVM does not deal with T_OPEN_TAG_WITH_ECHO properly
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-27T18:04:44Z
+
+> Looks like HHVM does not deal with T_OPEN_TAG_WITH_ECHO properly
+
+We might not need to care about that if we drop support for hhvm.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-27T20:09:48Z
+
+@stof , maybe ping them: https://github.com/facebook/hhvm/issues/4809
+@GrahamCampbell never told I will drop it, just it would be cool for me if we do that ;) for now we do support latest stable of hhvm.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-27T20:14:53Z
+
+@keradus, yeh, that's why I said "might not" and "if". :)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-03-29T19:41:32Z
+
+I'm not sure if `ShortEchoTagFixer` is a good name. The `ShortArraySyntaxFixer` is transforming long array syntax to short syntax. So I would expect the same for `ShortEchoTagFixer`.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-29T19:43:59Z
+
+We need to rename most fixers on 2.0 branch
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-03-29T19:52:54Z
+
+> We need to rename most fixers on 2.0 branch
+
+When are we actually going to do that?
+
+Is there a release date for 2.0?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-03-29T19:56:01Z
+
+2 blockers for 2.0: #866, #910
+
+---------------------------------------------------------------------------
+
+by vinkla at 2015-03-29T20:53:42Z
+
+Pushed some changes and all tests except PHP 5.3 seem to pass. How do I make it pass for PHP 5.3?
+
+---------------------------------------------------------------------------
+
+by vinkla at 2015-03-30T06:44:28Z
+
+I've removed the whitespace check based on feedback by @gharlan and required PHP 5.4 on the tests.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-06T20:28:04Z
+
+It looks like one last thing to do is fix for buggy hhvm
+
+---------------------------------------------------------------------------
+
+by vinkla at 2015-04-06T20:44:45Z
+
+@keradus any ideas how?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-07T11:23:13Z
+
+Maybe take a look on short tag fixer.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-11T16:53:13Z
+
+Switching milestone to 1.8
+
+---------------------------------------------------------------------------
+
+by stof at 2015-04-14T21:50:46Z
+
+I suggest skipping the test on HHVM for now, until they fix the parsing of T_OPEN_TAG_WITH_ECHO
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-14T21:53:56Z
+
+shouldn't we then skip the fixer work too - if it won't work properly on hhvm we should not execute it
+
+---------------------------------------------------------------------------
+
+by stof at 2015-04-14T21:56:08Z
+
+@keradus it will be a noop on HHVM until the day they fix stuff, given that there won't be any ``T_OPEN_TAG_WITH_ECHO`` on HHVM.
+
+The other alternative is to have a look at all ``T_ECHO`` on HHVM, as done for ``T_ELSEIF``.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-04-14T21:58:05Z
+
+> I suggest skipping the test on HHVM for now, until they fix the parsing of T_OPEN_TAG_WITH_ECHO
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by vinkla at 2015-04-17T12:55:12Z
+
+What is the next step?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-17T12:56:10Z
+
+this one https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1097#issuecomment-93078519 ?
+
+---------------------------------------------------------------------------
+
+by vinkla at 2015-04-17T12:59:25Z
+
+@keradus Okay. How do we ignore it in the tests file?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-04-17T16:14:32Z
+
+As mentioned above I would still prefer to rename this fixer. Because maybe I will add a fixer for the reverse transformation (single `echo` statements between php tags to short echo tag). And I think that fixer should be named `ShortEchoTagFixer` then.
+
+Maybe `NoShortEchoTagFixer`?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-18T19:26:24Z
+
+@vinkla, sth like https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/83db6b371a8d28ff0e485d4557de92862c363e14/Symfony/CS/Tests/Tokenizer/TokensTest.php#L820 ?
+
+---------------------------------------------------------------------------
+
+by vinkla at 2015-04-20T07:35:44Z
+
+Okay, now all tests seem to pass.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-04T19:22:56Z
+
+:+1: for PR itself.
+
+Please, rebase this PR on current 1.7 branch (to remove that merge commit) and squash all commit of yours into single commit.
+If you don't know how don't hesitate to ask for help!
+
+---------------------------------------------------------------------------
+
+by vinkla at 2015-05-04T19:57:39Z
+
+Thanks! Rebased and squashed.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-04T20:03:13Z
+
+I see you have squashed my commit as well.
+Nevermind. IMO good to go!
+:+1:
+
+---------------------------------------------------------------------------
+
+by vinkla at 2015-05-04T20:23:31Z
+
+Whoops... sorry! I thought you wanted me too. I can redo it if you want to?
+
+Thanks! What version will it be merge into? 1.9?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-04T20:28:03Z
+
+No, no problem.
+
+Yes, 1.9
+
+---------------------------------------------------------------------------
+
+by vinkla at 2015-05-04T20:28:57Z
+
+Okay, cool. Can't wait :)
