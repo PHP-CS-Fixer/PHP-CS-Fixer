@@ -1290,7 +1290,6 @@ class Tokens extends \SplFixedArray
          * Fix HHVM incompatibilities
          */
         $hhvmOpenTagsWithEcho = array();
-        $hhvmHashBangs = array();
 
         if (defined('HHVM_VERSION')) {
             /*
@@ -1304,21 +1303,11 @@ class Tokens extends \SplFixedArray
                     $hhvmOpenTagsWithEcho[] = $token;
                 }
             }
-
-            /*
-             * HHVM parses "#!/usr/bin/env php\n" as T_HASHBANG (not defined in
-             * PHP and T_HASHBANG. Moreover, HHVM does not define T_HASHBANG
-             * as a constant
-             *
-             * @see https://github.com/facebook/hhvm/issues/4810
-             */
-            $tokens = self::fromCode("#!/usr/bin/env php\n");
-            if (!$tokens[0]->isGivenKind(T_INLINE_HTML)) {
-                $hashBangId = $tokens[0]->getId();
-                $hhvmHashBangs = $this->findGivenKind($hashBangId);
-            }
         }
 
-        return 0 === count($kinds[T_INLINE_HTML]) + count($hhvmHashBangs) && 1 === count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO]) + count($hhvmOpenTagsWithEcho);
+        return (
+            0 === count($kinds[T_INLINE_HTML]) &&
+            1 === (count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO]) + count($hhvmOpenTagsWithEcho))
+        );
     }
 }
