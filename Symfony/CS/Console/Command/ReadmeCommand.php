@@ -208,7 +208,7 @@ EOF;
         $help = preg_replace("#^\n( +)#m", "\n.. code-block:: bash\n\n$1", $help);
         $help = preg_replace("#^\.\. code-block:: bash\n\n( +<\?php)#m", ".. code-block:: php\n\n$1", $help);
         $help = preg_replace_callback(
-            "#<\?php.*?\?>#s",
+            "#^\s*<\?php.*?\?>#ms",
             function ($matches) {
                 return preg_replace("#\n\n +\?>#", '', preg_replace("#^\.\. code-block:: bash\n\n#m", '', $matches[0]));
             },
