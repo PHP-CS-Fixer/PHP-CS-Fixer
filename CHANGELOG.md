@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.7.1
+--------------------
+
+* bug #1165 BracesFixer - fix bug when comment is a first statement in control structure without braces (keradus)
+
 Changelog for v1.7
 ------------------
 
