@@ -518,6 +518,10 @@ Choose from the list of available fixers:
                 PHP arrays should use the PHP 5.4
                 short-syntax.
 
+* **short_echo_tag** [contrib]
+                Replace short-echo <?= with long
+                format <?php echo syntax.
+
 * **strict** [contrib]
                 Comparison should be strict. Warning!
                 This could change code behavior.

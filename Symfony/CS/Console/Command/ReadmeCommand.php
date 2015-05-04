@@ -210,7 +210,7 @@ EOF;
         $help = preg_replace("#^\n( +)#m", "\n.. code-block:: bash\n\n$1", $help);
         $help = preg_replace("#^\.\. code-block:: bash\n\n( +<\?(\w+))#m", ".. code-block:: $2\n\n$1", $help);
         $help = preg_replace_callback(
-            "#<\?(\w+).*?\?>#s",
+            "#^\s*<\?(\w+).*?\?>#ms",
             function ($matches) {
                 $result = preg_replace("#^\.\. code-block:: bash\n\n#m", '', $matches[0]);
 
