@@ -1,7 +1,7 @@
 {
     "name": "fabpot/php-cs-fixer",
     "type": "application",
-    "description": "A script to automatically fix Symfony Coding Standard",
+    "description": "A tool to automatically fix PHP code style",
     "license": "MIT",
     "authors": [
         {
