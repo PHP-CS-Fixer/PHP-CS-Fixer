@@ -3,6 +3,15 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.8
+------------------
+
+* feature #1168 Added UnalignEqualsFixer (keradus)
+* feature #1167 Added UnalignDoubleArrowFixer (keradus)
+* bug #1169 ToolInfo - Fix way to find script dir (sp-ian-monge)
+* minor #1181 composer.json - Update description (SpacePossum)
+* minor #1180 create Tokens::overrideAt method (keradus)
+
 Changelog for v1.7.1
 --------------------
 
