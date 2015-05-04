@@ -1,0 +1,158 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-09T19:00:49Z
+
+What sort of speed improvements does this give?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-09T19:01:22Z
+
+Also, this is broken on php 5.3 due to you asking for traits for example.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-09T19:05:39Z
+
+performance grately depends on testing codebase. In my worst cases I see no difference.
+Whole thing is to not doing loop over whole code if we know that there are no tokens we are looking for, and tokens that we saw in file are calculated once.
+Little more idea behind this in #984
+
+---------------------------------------------------------------------------
+
+by stof at 2015-04-13T22:27:15Z
+
+@keradus shouldn't we register the new token kind when inserting new tokens or overwriting tokens, to avoid missed candidates when a fixer performs a change ?
+
+---------------------------------------------------------------------------
+
+by stof at 2015-04-14T20:49:07Z
+
+@keradus please update the PreIncrementFixer so that tests can pass.
+
+Btw, should the AbstractFixer implement the method as ``return true`` to make it easier to implement new fixers (any fixer can do it and will still work, as it means you get the 1.x behavior. Making it more precise whenever possible is of course recommended as it helps improving performance)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-14T21:02:26Z
+
+Updated.
+I thought about that but it would be easy choice to not overriding that default `isCandidate: return true`, that is why I deliberately do not create that method in `AbstractFixer`
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-15T20:21:37Z
+
+Some tests...
+
+> > Tested codebase: PHP CS Fixer, master branch
+
+> Tested using: master
+> Fixed all files in 209.388 seconds, 8.000 MB memory used
+
+> Testing using: 2.0-candidates
+> Fixed all files in 205.798 seconds, 8.000 MB memory used
+
+-----------------
+
+> > Tested codebase: Symfony, 2.3 branch
+
+> Tested using: master
+> Fixed all files in 689.475 seconds, 12.750 MB memory used
+
+> Testing using: 2.0-candidates
+> Fixed all files in 582.838 seconds, 12.750 MB memory used
+
+------------------
+
+When using on ~complex code that uses a lot of possible syntax - almost no change.
+When file is simple and for example doesn't have all OOP stuff - it is BIG improvement.
+
+IMO it is worth to continue work on that PR.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-04-15T20:24:00Z
+
+> IMO it is worth to continue work on that PR.
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-18T19:24:25Z
+
+> 5.3 support
+
+done
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-18T19:28:08Z
+
+> @keradus shouldn't we register the new token kind when inserting new tokens or overwriting tokens, to avoid missed candidates when a fixer performs a change ?
+
+great point, done
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-18T19:50:30Z
+
+Docs fulfilled
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-18T20:07:22Z
+
+Cookbook updated
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-04-18T20:15:58Z
+
+:+1: :ship:
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-04-19T10:31:47Z
+
+Should we add a check to `AbstractFixerTestBase` that after fixing all found token kinds are registered?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-04-19T15:24:58Z
+
+tests enhanced
+
+---------------------------------------------------------------------------
+
+by stof at 2015-04-20T09:14:13Z
+
+@keradus should we introduce the ``overrideAt`` method in 1.8 to make the maintenance easier by making the code similar between the branches needing to be merged together ?
+
+---------------------------------------------------------------------------
+
+by stof at 2015-04-20T09:22:18Z
+
+@keradus you should add tests for ``Tokens::isAllTokenKindsFound`` and ``Tokens::isAnyTokenKindsFound`` in the tokenizer testsuite
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-03T19:44:05Z
+
+More tests added.
+`Tokens::overrideAt` method added: #1180
+
+IMO good to go.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-05-03T21:09:45Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by dericofilho at 2015-05-04T17:09:34Z
+
+:+1:
