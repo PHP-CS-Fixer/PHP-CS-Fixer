@@ -23,7 +23,6 @@ class MagentoFinder extends DefaultFinder
         $this
             ->name('*.php')
             ->name('*.phtml')
-            ->name('*.xml')
             ->exclude(
                 array(
                     'lib',
