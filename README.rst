@@ -492,6 +492,9 @@ Choose from the list of available fixers:
                 There should be no blank lines before
                 a namespace declaration.
 
+* **one_line_method_argument** [contrib]
+                Split method arguments in new lines.
+
 * **ordered_use** [contrib]
                 Ordering use statements.
 
