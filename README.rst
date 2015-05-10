@@ -424,6 +424,10 @@ Choose from the list of available rules:
 * **object_operator_without_whitespace** [@Symfony]
    | There should not be space before or after object T_OBJECT_OPERATOR.
 
+* **one_line_method_argument**
+   | Make sure method/function arguments are on a single line, or on each
+   | their own.
+
 * **ordered_class_elements**
    | Orders the elements of classes/interfaces/traits.
    | *Rule is: configurable.*
