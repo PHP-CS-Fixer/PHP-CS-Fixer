@@ -183,8 +183,6 @@ class FixCommandTest extends \PHPUnit_Framework_TestCase
                 if (array_key_exists($name, $arguments)) {
                     return $arguments[$name];
                 }
-
-                return;
             })
         ;
 
@@ -203,8 +201,6 @@ class FixCommandTest extends \PHPUnit_Framework_TestCase
                 if (array_key_exists($name, $options)) {
                     return $options[$name];
                 }
-
-                return;
             })
         ;
 
