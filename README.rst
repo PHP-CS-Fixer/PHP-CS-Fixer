@@ -243,6 +243,9 @@ Choose from the list of available fixers:
                 There MUST be one use keyword per
                 declaration.
 
+* **one_line_method_argument** [PSR-2]
+                Split method arguments in new lines.
+
 * **parenthesis** [PSR-2]
                 There MUST NOT be a space after the
                 opening parenthesis. There MUST NOT be
@@ -491,9 +494,6 @@ Choose from the list of available fixers:
 * **no_blank_lines_before_namespace** [contrib]
                 There should be no blank lines before
                 a namespace declaration.
-
-* **one_line_method_argument** [contrib]
-                Split method arguments in new lines.
 
 * **ordered_use** [contrib]
                 Ordering use statements.
