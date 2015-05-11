@@ -152,7 +152,7 @@ class FixCommandTest extends \PHPUnit_Framework_TestCase
         $command = new FixCommand($fixer);
 
         $input = $this->getInputMock(array(
-            'dry-run' => true,
+            'dry-run' => false,
         ));
 
         $exitCode = $command->run(
