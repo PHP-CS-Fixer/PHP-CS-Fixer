@@ -30,6 +30,9 @@ class EofEndingFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
+                "<?php\n",
+            ),
+            array(
                 '<?php
 $a = 1;
 ',
@@ -52,17 +55,49 @@ $a = 3;
 ',
             ),
             array(
-                "<?php\r\$a = 1;\n",
-                "<?php\r\$a = 1;",
+                "<?php\r\n\$a = 4;\n",
+                "<?php\r\n\$a = 4;",
             ),
             array(
-                "<?php\r\$a = 1;\n",
-                "<?php\r\$a = 1;\r",
+                // test not changing line break characters,
+                // this is not the responsibility of this fixer
+                "<?php\r\n\$a = 5;\r\n",
+                "<?php\r\n\$a = 5;\r\n    \r\n",
             ),
             array(
-                // test for not adding an empty line in empty file
-                '',
-            ),
+                '<?php
+$a = 6;
+
+//test
+
+?>
+  ', ),
+            array(
+                // test for not adding an empty line after PHP tag has been closed
+                '<?php
+$a = 7;
+
+//test
+
+?>', ),
+            array(
+                // test for not adding an empty line after PHP tag has been closed
+                '<?php
+$a = 8;
+//test
+?>
+Outside of PHP tags rendering
+
+', ),
+array(
+                // test for not adding an empty line after PHP tag has been closed
+                "<?php
+//test
+?>
+inline 1
+<?php
+
+?>Inline2\r\n", ),
         );
     }
 }
