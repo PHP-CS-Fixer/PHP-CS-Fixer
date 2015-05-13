@@ -63,6 +63,34 @@ $a = 3;
                 // test for not adding an empty line in empty file
                 '',
             ),
+            array(
+                '<?php
+$a = 4;
+
+//test
+
+?>
+  ', ),
+            array(
+                // test for not adding an empty line after PHP tag has been closed
+                '<?php
+$a = 5;
+
+//test
+
+?>', ),
+            array(
+                // test for not adding an empty line after PHP tag has been closed
+                '<?php
+$a = 6;
+
+//test
+
+?>
+Outside of PHP tags rendering
+
+
+', ),
         );
     }
 }

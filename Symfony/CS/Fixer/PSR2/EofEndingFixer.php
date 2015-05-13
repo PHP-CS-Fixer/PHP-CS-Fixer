@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\PSR2;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -25,13 +26,25 @@ class EofEndingFixer extends AbstractFixer
     {
         // [Structure] A file must always end with a linefeed character
 
-        $content = rtrim($content);
-
-        if ('' !== $content) {
-            return $content."\n";
+        if (empty($content)) {
+            return $content;
         }
 
-        return $content;
+        $tokens = Tokens::fromCode($content);
+        $count = $tokens->count();
+        if (0 === $count) {
+            return;
+        }
+
+        $token = $tokens[$count - 1];
+        switch ($token->getId()) {
+            case T_CLOSE_TAG:
+            case T_INLINE_HTML: {
+                return $content;
+            }
+        }
+
+        return rtrim($content)."\n";
     }
 
     /**
@@ -39,7 +52,7 @@ class EofEndingFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'A file must always end with an empty line feed.';
+        return 'A PHP file must always end with a single empty line feed.';
     }
 
     /**
