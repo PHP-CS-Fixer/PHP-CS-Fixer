@@ -22,7 +22,8 @@ use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\Console\ConfigurationResolver;
 use Symfony\CS\Console\Output\ProcessOutput;
-use Symfony\CS\ErrorsManager;
+use Symfony\CS\Error\Error;
+use Symfony\CS\Error\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Linter\Linter;
@@ -337,7 +338,7 @@ EOF
                 'level' => $input->getOption('level'),
                 'fixers' => $input->getOption('fixers'),
                 'path' => $input->getArgument('path'),
-                'progress'  => (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) && 'txt' === $input->getOption('format'),
+                'progress' => (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) && 'txt' === $input->getOption('format'),
                 'using-cache' => $input->getOption('using-cache'),
                 'cache-file' => $input->getOption('cache-file'),
             ))
@@ -418,7 +419,7 @@ EOF
                 $output->writeln(sprintf('Fixed all files in %.3f seconds, %.3f MB memory used', $fixEvent->getDuration() / 1000, $fixEvent->getMemory() / 1024 / 1024));
                 break;
             case 'xml':
-                $dom      = new \DOMDocument('1.0', 'UTF-8');
+                $dom = new \DOMDocument('1.0', 'UTF-8');
                 $filesXML = $dom->createElement('files');
                 $dom->appendChild($filesXML);
 
@@ -502,9 +503,9 @@ EOF
                 $fixEvent = $this->stopwatch->getEvent('fixFiles');
 
                 $json = array(
-                    'files'  => $jFiles,
+                    'files' => $jFiles,
                     'memory' => round($fixEvent->getMemory() / 1024 / 1024, 3),
-                    'time'   => array(
+                    'time' => array(
                         'total' => round($fixEvent->getDuration() / 1000, 3),
                     ),
                 );
@@ -529,16 +530,40 @@ EOF
                 throw new \InvalidArgumentException(sprintf('The format "%s" is not defined.', $input->getOption('format')));
         }
 
-        if (!$this->errorsManager->isEmpty()) {
-            $output->writeLn('');
-            $output->writeLn('Files that were not fixed due to internal error:');
+        $invalidErrors = $this->errorsManager->getInvalidErrors();
+        if (!empty($invalidErrors)) {
+            $this->listErrors($output, 'linting before fixing', $invalidErrors);
+        }
 
-            foreach ($this->errorsManager->getErrors() as $i => $error) {
-                $output->writeLn(sprintf('%4d) %s', $i + 1, $error['filepath']));
-            }
+        $exceptionErrors = $this->errorsManager->getExceptionErrors();
+        if (!empty($exceptionErrors)) {
+            $this->listErrors($output, 'fixing', $exceptionErrors);
+        }
+
+        $lintErrors = $this->errorsManager->getLintErrors();
+        if (!empty($lintErrors)) {
+            $this->listErrors($output, 'linting after fixing', $lintErrors);
         }
 
         return !$resolver->isDryRun() || empty($changed) ? 0 : 3;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param string          $process
+     * @param Error[]         $errors
+     */
+    private function listErrors(OutputInterface $output, $process, array $errors)
+    {
+        $output->writeLn('');
+        $output->writeLn(sprintf(
+            'Files that were not fixed due to errors reported during %s:',
+             $process
+        ));
+
+        foreach ($errors as $i => $error) {
+            $output->writeLn(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
+        }
     }
 
     protected function getFixersHelp()

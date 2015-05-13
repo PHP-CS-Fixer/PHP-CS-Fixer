@@ -25,6 +25,14 @@ class PhpdocSeparationFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $token) {
@@ -111,7 +119,7 @@ class PhpdocSeparationFixer extends AbstractFixer
         $pos = $first->getEnd();
         $final = $second->getStart();
 
-        for (++$pos; $pos < $final; ++$pos) {
+        for ($pos = $pos + 1; $pos < $final; ++$pos) {
             $doc->getLine($pos)->remove();
         }
     }
@@ -135,7 +143,7 @@ class PhpdocSeparationFixer extends AbstractFixer
             return;
         }
 
-        for (++$pos; $pos < $final; ++$pos) {
+        for ($pos = $pos + 1; $pos < $final; ++$pos) {
             $doc->getLine($pos)->remove();
         }
     }

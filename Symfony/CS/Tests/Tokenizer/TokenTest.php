@@ -139,7 +139,7 @@ class TokenTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($whitespaceToken->isEmpty());
 
         $whitespaceToken->setContent('');
-        $this->assertFalse($whitespaceToken->isEmpty());
+        $this->assertTrue($whitespaceToken->isEmpty());
 
         $whitespaceToken->override(array(null, ''));
         $this->assertTrue($whitespaceToken->isEmpty());

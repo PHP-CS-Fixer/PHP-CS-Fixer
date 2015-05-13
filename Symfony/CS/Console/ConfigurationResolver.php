@@ -179,7 +179,7 @@ class ConfigurationResolver
      */
     public function setFixer(Fixer $fixer)
     {
-        $this->fixer     = $fixer;
+        $this->fixer = $fixer;
         $this->allFixers = $fixer->getFixers();
 
         return $this;
@@ -275,10 +275,10 @@ class ConfigurationResolver
     private function parseLevel()
     {
         static $levelMap = array(
-            'none'    => FixerInterface::NONE_LEVEL,
-            'psr0'    => FixerInterface::PSR0_LEVEL,
-            'psr1'    => FixerInterface::PSR1_LEVEL,
-            'psr2'    => FixerInterface::PSR2_LEVEL,
+            'none' => FixerInterface::NONE_LEVEL,
+            'psr0' => FixerInterface::PSR0_LEVEL,
+            'psr1' => FixerInterface::PSR1_LEVEL,
+            'psr2' => FixerInterface::PSR2_LEVEL,
             'symfony' => FixerInterface::SYMFONY_LEVEL,
         );
 
@@ -335,7 +335,7 @@ class ConfigurationResolver
                     throw new \UnexpectedValueException(sprintf('The config file "%s" does not return an instance of Symfony\CS\Config\Config', $configFile));
                 }
 
-                $this->config     = $config;
+                $this->config = $config;
                 $this->configFile = $configFile;
 
                 return;

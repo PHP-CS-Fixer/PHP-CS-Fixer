@@ -23,6 +23,14 @@ class UnusedUseFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_USE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -111,8 +119,8 @@ class UnusedUseFixer extends AbstractFixer
             $declarationEndIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
 
             $namespaces[] = array(
-                'end'   => $declarationEndIndex,
-                'name'  => trim($tokens->generatePartialCode($index + 1, $declarationEndIndex - 1)),
+                'end' => $declarationEndIndex,
+                'name' => trim($tokens->generatePartialCode($index + 1, $declarationEndIndex - 1)),
                 'start' => $index,
             );
         }
@@ -151,11 +159,11 @@ class UnusedUseFixer extends AbstractFixer
             $shortName = trim($shortName);
 
             $uses[$shortName] = array(
-                'aliased'   => $aliased,
-                'end'       => $declarationEndIndex,
-                'fullName'  => trim($fullName),
+                'aliased' => $aliased,
+                'end' => $declarationEndIndex,
+                'fullName' => trim($fullName),
                 'shortName' => $shortName,
-                'start'     => $index,
+                'start' => $index,
             );
         }
 
@@ -177,26 +185,31 @@ class UnusedUseFixer extends AbstractFixer
             $tokens[$index]->clear();
         }
 
-        $token = $tokens[$useDeclaration['start'] - 1];
+        $prevToken = $tokens[$useDeclaration['start'] - 1];
 
-        if ($token->isWhitespace()) {
-            $token->setContent(rtrim($token->getContent(), " \t"));
+        if ($prevToken->isWhitespace()) {
+            $prevToken->setContent(rtrim($prevToken->getContent(), " \t"));
         }
 
         if (!isset($tokens[$useDeclaration['end'] + 1])) {
             return;
         }
 
-        $token = $tokens[$useDeclaration['end'] + 1];
+        $nextToken = $tokens[$useDeclaration['end'] + 1];
 
-        if ($token->isWhitespace()) {
-            $content = ltrim($token->getContent(), " \t");
+        if ($nextToken->isWhitespace()) {
+            $content = ltrim($nextToken->getContent(), " \t");
 
             if ($content && "\n" === $content[0]) {
                 $content = substr($content, 1);
             }
 
-            $token->setContent($content);
+            $nextToken->setContent($content);
+        }
+
+        if ($prevToken->isWhitespace() && $nextToken->isWhitespace()) {
+            $nextToken->setContent($prevToken->getContent().$nextToken->getContent());
+            $prevToken->clear();
         }
     }
 

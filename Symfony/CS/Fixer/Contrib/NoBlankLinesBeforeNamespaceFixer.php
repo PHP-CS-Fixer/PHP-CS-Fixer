@@ -22,6 +22,14 @@ class NoBlankLinesBeforeNamespaceFixer extends AbstractLinesBeforeNamespaceFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_NAMESPACE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {

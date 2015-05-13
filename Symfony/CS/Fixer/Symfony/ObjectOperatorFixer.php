@@ -23,6 +23,14 @@ class ObjectOperatorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_OBJECT_OPERATOR);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         // [Structure] there should not be space before or after T_OBJECT_OPERATOR

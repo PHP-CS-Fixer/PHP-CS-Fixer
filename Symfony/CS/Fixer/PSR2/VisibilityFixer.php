@@ -26,6 +26,14 @@ class VisibilityFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -105,12 +113,12 @@ class VisibilityFixer extends AbstractFixer
     private function grabAttribsBeforeMethodToken(Tokens $tokens, $index)
     {
         static $tokenAttribsMap = array(
-            T_PRIVATE   => 'visibility',
+            T_PRIVATE => 'visibility',
             T_PROTECTED => 'visibility',
-            T_PUBLIC    => 'visibility',
-            T_ABSTRACT  => 'abstract',
-            T_FINAL     => 'final',
-            T_STATIC    => 'static',
+            T_PUBLIC => 'visibility',
+            T_ABSTRACT => 'abstract',
+            T_FINAL => 'final',
+            T_STATIC => 'static',
         );
 
         return $this->grabAttribsBeforeToken(
@@ -139,11 +147,11 @@ class VisibilityFixer extends AbstractFixer
     private function grabAttribsBeforePropertyToken(Tokens $tokens, $index)
     {
         static $tokenAttribsMap = array(
-            T_VAR       => 'var',
-            T_PRIVATE   => 'visibility',
+            T_VAR => 'var',
+            T_PRIVATE => 'visibility',
             T_PROTECTED => 'visibility',
-            T_PUBLIC    => 'visibility',
-            T_STATIC    => 'static',
+            T_PUBLIC => 'visibility',
+            T_STATIC => 'static',
         );
 
         return $this->grabAttribsBeforeToken(

@@ -198,7 +198,7 @@ Choose from the list of available fixers:
 * **elseif** [PSR-2]
                 The keyword elseif should be used
                 instead of else if so that all control
-                keywords looks like single words.
+                keywords look like single words.
 
 * **eof_ending** [PSR-2]
                 A file must always end with an empty
@@ -439,6 +439,12 @@ Choose from the list of available fixers:
                 function/method arguments, without
                 leading or trailing single line space.
 
+* **unalign_double_arrow** [symfony]
+                Unalign double arrow symbols.
+
+* **unalign_equals** [symfony]
+                Unalign equals symbols.
+
 * **unary_operators_spaces** [symfony]
                 Unary operators should be placed
                 adjacent to their operands.
@@ -511,6 +517,10 @@ Choose from the list of available fixers:
 * **short_array_syntax** [contrib]
                 PHP arrays should use the PHP 5.4
                 short-syntax.
+
+* **short_echo_tag** [contrib]
+                Replace short-echo <?= with long
+                format <?php echo syntax.
 
 * **strict** [contrib]
                 Comparison should be strict. Warning!

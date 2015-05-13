@@ -53,6 +53,14 @@ class HeaderCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         if (!$tokens->isMonolithicPhp()) {
@@ -142,7 +150,7 @@ class HeaderCommentFixer extends AbstractFixer
      */
     private function replaceHeaderComment(Tokens $tokens, $oldHeaderIndex)
     {
-        if (!strlen(self::$headerComment)) {
+        if ('' === self::$headerComment) {
             if ($oldHeaderIndex) {
                 $tokens->clearRange($oldHeaderIndex, $oldHeaderIndex + 1);
             }

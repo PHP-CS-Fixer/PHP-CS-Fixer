@@ -23,6 +23,14 @@ class PreIncrementFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array(T_INC, T_DEC));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -57,6 +65,12 @@ class PreIncrementFixer extends AbstractFixer
         return 'Pre incrementation/decrementation should be used if possible.';
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return int
+     */
     private function findStart(Tokens $tokens, $index)
     {
         do {
@@ -64,7 +78,7 @@ class PreIncrementFixer extends AbstractFixer
             $token = $tokens[$index];
 
             $blockType = $tokens->detectBlockType($token);
-            if ($blockType && !$blockType['isStart']) {
+            if (null !== $blockType && !$blockType['isStart']) {
                 $index = $tokens->findBlockEnd($blockType['type'], $index, false);
                 $token = $tokens[$index];
             }

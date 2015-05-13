@@ -23,6 +23,14 @@ use Symfony\CS\Utils;
  */
 class PhpdocAlignFixer extends AbstractFixer
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
     private $regex;
     private $regexCommentLine;
 
@@ -110,7 +118,7 @@ class PhpdocAlignFixer extends AbstractFixer
 
                     $tagMax = max($tagMax, strlen($item['tag']));
                     $hintMax = max($hintMax, strlen($item['hint']));
-                    $varMax  = max($varMax, strlen($item['var']));
+                    $varMax = max($varMax, strlen($item['var']));
                 }
 
                 $currTag = null;

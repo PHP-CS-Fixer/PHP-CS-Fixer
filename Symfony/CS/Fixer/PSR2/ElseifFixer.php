@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\PSR2;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -21,6 +22,20 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class ElseifFixer extends AbstractFixer
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        # handle `T_ELSE T_WHITESPACE T_IF` treated as single `T_ELSEIF` by HHVM
+        # see https://github.com/facebook/hhvm/issues/4796
+        if (defined('HHVM_VERSION') && $tokens->isTokenKindFound(T_ELSEIF)) {
+            return true;
+        }
+
+        return $tokens->isAllTokenKindsFound(array(T_IF, T_ELSE));
+    }
+
     /**
      * Replace all `else if` (T_ELSE T_IF) with `elseif` (T_ELSEIF).
      *
@@ -46,7 +61,7 @@ class ElseifFixer extends AbstractFixer
             $tokens[$index + 1]->clear();
 
             // 2. change token from T_ELSE into T_ELSEIF
-            $token->override(array(T_ELSEIF, 'elseif'));
+            $tokens->overrideAt($index, array(T_ELSEIF, 'elseif'));
 
             // 3. clear succeeding T_IF
             $nextToken->clear();
@@ -66,6 +81,6 @@ class ElseifFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'The keyword elseif should be used instead of else if so that all control keywords looks like single words.';
+        return 'The keyword elseif should be used instead of else if so that all control keywords look like single words.';
     }
 }

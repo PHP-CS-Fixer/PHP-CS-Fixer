@@ -208,13 +208,28 @@ We need first to create one method to describe what this fixer does:
 ```php
 class RemoveCommentsFixer extends AbstractFixer
 {
-    ...
     /**
      * {@inheritdoc}
      */
     public function getDescription()
     {
         return 'Removes all comments of the code that are preceded by ";" (semicolon).'; // Trailing dot is important. We thrive to use English grammar properly.
+    }
+}
+```
+
+Next, we must filter what type of tokens we want to fix. Here, we are interested in code that contains `T_COMMENT` tokens:
+`Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
+```php
+class RemoveCommentsFixer extends AbstractFixer
+{
+    ...
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_COMMENT);
     }
 }
 ```
@@ -231,6 +246,7 @@ class RemoveCommentsFixer extends AbstractFixer
     {
         // no action
     }
+    ...
 }
 ```
 
@@ -285,6 +301,7 @@ class RemoveCommentsFixer extends AbstractFixer
             // need to figure out what to do here!
         }
     }
+    ...
 }
 ```
 
@@ -312,6 +329,7 @@ class RemoveCommentsFixer extends AbstractFixer
             }
         }
     }
+    ...
 }
 ```
 
@@ -359,6 +377,14 @@ class RemoveCommentsFixer extends AbstractFixer {
      */
     public function getDescription() {
         return 'Removes all comments of the code that are preceded by ";" (semicolon).';// Trailing dot is important. We thrive to use English grammar properly.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_COMMENT);
     }
 }
 ```

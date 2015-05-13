@@ -22,6 +22,14 @@ class ListCommasFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_LIST);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDescription()
     {
         return 'Remove trailing commas in list function calls.';

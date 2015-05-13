@@ -377,4 +377,37 @@ PHP;
             array("<?=' '\n?><?=' ';\n", false),
         );
     }
+
+    public function testTokenKindsFound()
+    {
+        $code = <<<'EOF'
+<?php
+
+class Foo
+{
+    public $foo;
+}
+
+if (!function_exists('bar')) {
+    function bar()
+    {
+        return 'bar';
+    }
+}
+EOF;
+
+        $tokens = Tokens::fromCode($code);
+
+        $this->assertTrue($tokens->isTokenKindFound(T_CLASS));
+        $this->assertTrue($tokens->isTokenKindFound(T_RETURN));
+        $this->assertFalse($tokens->isTokenKindFound(T_INTERFACE));
+        $this->assertFalse($tokens->isTokenKindFound(T_ARRAY));
+
+        $this->assertTrue($tokens->isAllTokenKindsFound(array(T_CLASS, T_RETURN)));
+        $this->assertFalse($tokens->isAllTokenKindsFound(array(T_CLASS, T_INTERFACE)));
+
+        $this->assertTrue($tokens->isAnyTokenKindsFound(array(T_CLASS, T_RETURN)));
+        $this->assertTrue($tokens->isAnyTokenKindsFound(array(T_CLASS, T_INTERFACE)));
+        $this->assertFalse($tokens->isAnyTokenKindsFound(array(T_INTERFACE, T_ARRAY)));
+    }
 }

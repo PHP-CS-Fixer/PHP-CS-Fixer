@@ -36,8 +36,8 @@ class PhpdocScalarFixer extends AbstractFixer
     private static $types = array(
         'integer' => 'int',
         'boolean' => 'bool',
-        'real'    => 'float',
-        'double'  => 'float',
+        'real' => 'float',
+        'double' => 'float',
     );
 
     /**
@@ -46,6 +46,14 @@ class PhpdocScalarFixer extends AbstractFixer
     public function getDescription()
     {
         return 'Scalar types should always be written in the same form. "int", not "integer"; "bool", not "boolean"; "float", not "real" or "double".';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
     /**

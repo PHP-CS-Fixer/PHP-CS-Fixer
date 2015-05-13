@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\PSR2;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -22,6 +23,14 @@ use Symfony\CS\Tokenizer\Tokens;
 class LowercaseKeywordsFixer extends AbstractFixer
 {
     private static $excludedTokens = array(T_HALT_COMPILER);
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(Token::getKeywords());
+    }
 
     /**
      * {@inheritdoc}

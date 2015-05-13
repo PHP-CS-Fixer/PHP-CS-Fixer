@@ -18,12 +18,27 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 interface FixerInterface
 {
-    const NONE_LEVEL    = 0;
-    const PSR0_LEVEL    = 1;
-    const PSR1_LEVEL    = 3;
-    const PSR2_LEVEL    = 7;
+    const NONE_LEVEL = 0;
+    const PSR0_LEVEL = 1;
+    const PSR1_LEVEL = 3;
+    const PSR2_LEVEL = 7;
     const SYMFONY_LEVEL = 15;
     const CONTRIB_LEVEL = 32;
+
+    /**
+     * Check if the fixer is a candidate for given Tokens collection.
+     *
+     * Fixer is a candidate when the collection contains tokens that may be fixed
+     * during fixer work. This could be considered as some kind of bloom filter.
+     * When this method returns true then to the Tokens collection may or may not
+     * need a fixing, but when this method returns false then the Tokens collection
+     * need no fixing for sure.
+     *
+     * @param Tokens $tokens
+     *
+     * @return bool
+     */
+    public function isCandidate(Tokens $tokens);
 
     /**
      * Fixes a file.

@@ -36,7 +36,7 @@ function foo (array /** @type array */ $bar)
 {
 }',
                 array(
-                    5  => 'T_ARRAY',
+                    5 => 'T_ARRAY',
                     22 => 'CT_ARRAY_TYPEHINT',
                 ),
             ),

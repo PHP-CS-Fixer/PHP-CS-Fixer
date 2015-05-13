@@ -52,12 +52,18 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
             $tokens = Tokens::fromCode($input);
 
             if ($fileIsSupported) {
+                $this->assertTrue($fixer->isCandidate($tokens), 'Fixer must be a candidate for input code.');
                 $fixResult = $fixer->fix($file, $tokens);
-                $this->assertNull($fixResult, '->fix method should return null.');
+                $this->assertNull($fixResult, '->fix method must return null.');
             }
 
+            $this->assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
             $this->assertSame($expected, $tokens->generateCode(), 'Code build on input code must match expected code.');
-            $this->assertTrue($tokens->isChanged(), 'Tokens collection built on input code should be marked as changed after fixing.');
+
+            Tokens::clearCache();
+            $expectedTokens = Tokens::fromCode($expected);
+            $tokens->clearEmptyTokens();
+            $this->assertTokens($expectedTokens, $tokens);
         }
 
         Tokens::clearCache();
@@ -65,10 +71,36 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
 
         if ($fileIsSupported) {
             $fixResult = $fixer->fix($file, $tokens);
-            $this->assertNull($fixResult, '->fix method should return null.');
+            $this->assertNull($fixResult, '->fix method must return null.');
         }
 
+        $this->assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
         $this->assertSame($expected, $tokens->generateCode(), 'Code build on expected code must not change.');
-        $this->assertFalse($tokens->isChanged(), 'Tokens collection built on expected code should not be marked as changed after fixing.');
+    }
+
+    private function assertTokens(Tokens $expectedTokens, Tokens $inputTokens)
+    {
+        foreach ($expectedTokens as $index => $expectedToken) {
+            $inputToken = $inputTokens[$index];
+
+            $this->assertTrue(
+                $expectedToken->equals($inputToken),
+                sprintf('The token at index %d must be %s, got %s', $index, $expectedToken->toJson(), $inputToken->toJson())
+            );
+        }
+
+        $this->assertEquals($expectedTokens->count(), $inputTokens->count(), 'The collection must have the same length than the expected one.');
+
+        $tokensReflection = new \ReflectionClass($expectedTokens);
+        $propertyReflection = $tokensReflection->getProperty('foundTokenKinds');
+        $propertyReflection->setAccessible(true);
+        $foundTokenKinds = array_keys($propertyReflection->getValue($expectedTokens));
+
+        foreach ($foundTokenKinds as $tokenKind) {
+            $this->assertTrue(
+                $inputTokens->isTokenKindFound($tokenKind),
+                sprintf('The token kind %s must be found in fixed tokens collection.', $tokenKind)
+            );
+        }
     }
 }

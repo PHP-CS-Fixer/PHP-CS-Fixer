@@ -22,24 +22,32 @@ class StrictFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array(T_IS_EQUAL, T_IS_NOT_EQUAL));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         static $map = array(
             T_IS_EQUAL => array(
-                'id'      => T_IS_IDENTICAL,
+                'id' => T_IS_IDENTICAL,
                 'content' => '===',
             ),
             T_IS_NOT_EQUAL => array(
-                'id'      => T_IS_NOT_IDENTICAL,
+                'id' => T_IS_NOT_IDENTICAL,
                 'content' => '!==',
             ),
         );
 
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             $tokenId = $token->getId();
 
             if (isset($map[$tokenId])) {
-                $token->override(array($map[$tokenId]['id'], $map[$tokenId]['content']));
+                $tokens->overrideAt($index, array($map[$tokenId]['id'], $map[$tokenId]['content']));
             }
         }
     }

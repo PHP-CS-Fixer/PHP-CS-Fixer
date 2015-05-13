@@ -32,6 +32,14 @@ class PhpdocToCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         /*
@@ -64,7 +72,7 @@ class PhpdocToCommentFixer extends AbstractFixer
             $nextToken = null !== $nextIndex ? $tokens[$nextIndex] : null;
 
             if (null === $nextToken || $nextToken->equals('}')) {
-                $token->override(array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
+                $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
                 continue;
             }
 
@@ -90,7 +98,7 @@ class PhpdocToCommentFixer extends AbstractFixer
                 continue;
             }
 
-            $token->override(array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
+            $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
         }
     }
 

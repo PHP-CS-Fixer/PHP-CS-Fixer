@@ -24,6 +24,14 @@ class IncludeFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array(T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $includies = $this->findIncludies($tokens);
@@ -85,9 +93,9 @@ class IncludeFixer extends AbstractFixer
         foreach ($tokens->findGivenKind($includyTokenKinds) as $includyTokens) {
             foreach ($includyTokens as $index => $token) {
                 $includy = array(
-                    'begin'  => $index,
+                    'begin' => $index,
                     'braces' => null,
-                    'end'    => $tokens->getNextTokenOfKind($index, array(';')),
+                    'end' => $tokens->getNextTokenOfKind($index, array(';')),
                 );
 
                 $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
@@ -100,7 +108,7 @@ class IncludeFixer extends AbstractFixer
 
                     if ($tokens[$tokens->getNextMeaningfulToken($braceCloseIndex)]->equals(';')) {
                         $includy['braces'] = array(
-                            'open'  => $nextTokenIndex,
+                            'open' => $nextTokenIndex,
                             'close' => $braceCloseIndex,
                         );
                     }

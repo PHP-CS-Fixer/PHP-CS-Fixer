@@ -13,6 +13,7 @@ namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\DocBlock\DocBlock;
+use Symfony\CS\DocBlock\Line;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -20,6 +21,14 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class PhpdocShortDescriptionFixer extends AbstractFixer
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
     /**
      * {@inheritdoc}
      */

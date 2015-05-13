@@ -23,6 +23,14 @@ class LongArraySyntaxFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(CT_ARRAY_SQUARE_BRACE_OPEN);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
@@ -34,8 +42,9 @@ class LongArraySyntaxFixer extends AbstractFixer
 
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
 
-            $token->setContent('(');
-            $tokens[$closeIndex]->setContent(')');
+            $tokens->overrideAt($index, '(');
+            $tokens->overrideAt($closeIndex, ')');
+
             $tokens->insertAt($index, new Token(array(T_ARRAY, 'array')));
         }
     }
