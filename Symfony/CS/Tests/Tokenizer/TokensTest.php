@@ -277,7 +277,7 @@ PHP;
         $newPublicIndexes = array_keys($tokens->findGivenKind(T_PUBLIC));
         $this->assertEquals($barIndex, reset($newPublicIndexes));
 
-        for ($i = $fooIndex; $i < $barIndex; $i++) {
+        for ($i = $fooIndex; $i < $barIndex; ++$i) {
             $this->assertTrue($tokens[$i]->isWhiteSpace());
         }
     }

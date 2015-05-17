@@ -392,6 +392,10 @@ Choose from the list of available fixers:
                 @var and @type annotations should not
                 contain the variable name.
 
+* **pre_increment** [symfony]
+                Pre incrementation/decrementation
+                should be used if possible.
+
 * **remove_leading_slash_use** [symfony]
                 Remove leading slashes in use clauses.
 
@@ -509,10 +513,6 @@ Choose from the list of available fixers:
 * **phpdoc_var_to_type** [contrib]
                 @var should always be written as
                 @type.
-
-* **pre_increment** [contrib]
-                Pre incrementation/decrementation
-                should be used if possible.
 
 * **short_array_syntax** [contrib]
                 PHP arrays should use the PHP 5.4
