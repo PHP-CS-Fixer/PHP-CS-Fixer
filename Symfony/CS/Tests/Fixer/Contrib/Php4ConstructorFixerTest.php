@@ -23,7 +23,7 @@ class Php4ConstructorFixerTest extends AbstractFixerTestBase
         $expected = <<<'EOF'
 <?php
 
-namespace Baz;
+namespace Baz\Qux;
 
 class Foo
 {
@@ -47,7 +47,7 @@ EOF;
         $expected = <<<'EOF'
 <?php
 
-namespace Baz
+namespace Baz\Qux
 {
     class Foo
     {
@@ -83,7 +83,7 @@ EOF;
         $input = <<<'EOF'
 <?php
 
-namespace Baz
+namespace Baz\Qux
 {
     class Foo
     {
