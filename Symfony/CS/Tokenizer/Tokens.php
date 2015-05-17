@@ -1093,7 +1093,25 @@ class Tokens extends \SplFixedArray
 
         $prevToken = $this[$this->getPrevMeaningfulToken($index)];
 
-        return !$prevToken->equalsAny($disallowedPrevTokens);
+        if (!$prevToken->equalsAny($disallowedPrevTokens)) {
+            return true;
+        }
+
+        if (!$token->equals('&') || !$prevToken->isGivenKind(T_STRING)) {
+            return false;
+        }
+
+        static $searchTokens = array(
+            ';',
+            '{',
+            '}',
+            array(T_FUNCTION),
+            array(T_OPEN_TAG),
+            array(T_OPEN_TAG_WITH_ECHO),
+        );
+        $prevToken = $this[$this->getPrevTokenOfKind($index, $searchTokens)];
+
+        return $prevToken->isGivenKind(T_FUNCTION);
     }
 
     /**
