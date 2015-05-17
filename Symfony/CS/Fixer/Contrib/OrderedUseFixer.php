@@ -132,7 +132,7 @@ class OrderedUseFixer extends AbstractFixer
             }
         }
 
-        uasort($indexes, 'self::sortingCallBack');
+        uasort($indexes, 'static::sortingCallBack');
 
         $i = -1;
 
