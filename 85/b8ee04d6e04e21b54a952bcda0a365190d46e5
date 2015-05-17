@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-15T22:47:44Z
+
+Please, could you also include a test case for `OperatorsSpacesFixer` itself to prove the fix works?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-05-15T22:56:08Z
+
+done
