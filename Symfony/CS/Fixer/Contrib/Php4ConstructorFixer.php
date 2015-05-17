@@ -41,7 +41,7 @@ class Php4ConstructorFixer extends AbstractFixer
                 // make sure it's not the global namespace, as PHP4 constructors are allowed in there
                 if (!$tokens[$nspIndex]->equals('{')) {
                     // unless it's the global namespace, the index currently points to the name
-                    $nspIndex = $tokens->getNextMeaningfulToken($nspIndex);
+                    $nspIndex = $tokens->getNextTokenOfKind($nspIndex, array(';', '{'));
 
                     if ($tokens[$nspIndex]->equals(';')) {
                         // the class is inside a (non-block) namespace, no PHP4-code should be in there
