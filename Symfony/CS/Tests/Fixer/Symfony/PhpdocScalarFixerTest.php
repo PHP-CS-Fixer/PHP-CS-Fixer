@@ -195,7 +195,7 @@ EOF;
         $this->makeTest($expected, $input);
     }
 
-    public function testComplexTag()
+    public function testDoNotModifyComplexTag()
     {
         $expected = <<<'EOF'
 <?php
