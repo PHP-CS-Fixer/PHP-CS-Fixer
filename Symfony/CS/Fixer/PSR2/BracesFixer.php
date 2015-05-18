@@ -157,7 +157,7 @@ class BracesFixer extends AbstractFixer
 
     private function fixIndents(Tokens $tokens)
     {
-        $classyTokens = $this->getClassyTokens();
+        $classyTokens = Token::getClassyTokenKinds();
         $classyAndFunctionTokens = array_merge(array(T_FUNCTION), $classyTokens);
         $controlTokens = $this->getControlTokens();
         $indentTokens = array_filter(
@@ -512,21 +512,6 @@ class BracesFixer extends AbstractFixer
         }
 
         throw new \RuntimeException('Statement end not found');
-    }
-
-    private function getClassyTokens()
-    {
-        static $tokens = null;
-
-        if (null === $tokens) {
-            $tokens = array(T_CLASS, T_INTERFACE);
-
-            if (defined('T_TRAIT')) {
-                $tokens[] = T_TRAIT;
-            }
-        }
-
-        return $tokens;
     }
 
     private function getControlTokens()
