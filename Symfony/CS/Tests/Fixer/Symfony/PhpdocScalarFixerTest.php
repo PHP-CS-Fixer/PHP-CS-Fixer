@@ -195,6 +195,18 @@ EOF;
         $this->makeTest($expected, $input);
     }
 
+    public function testComplexTag()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @Type("string")
+     */
+EOF;
+
+        $this->makeTest($expected);
+    }
+
     public function testDoNotModifyStrings()
     {
         $expected = <<<'EOF'
