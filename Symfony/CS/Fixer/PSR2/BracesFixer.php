@@ -266,9 +266,7 @@ class BracesFixer extends AbstractFixer
                 }
             } else {
                 $nextToken = $tokens[$startBraceIndex + 1];
-                if ($nextToken->isWhitespace(array('whitespaces' => " \t")) || !$nextToken->isWhitespace()) {
-                    $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
-                }
+                $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
             }
 
             if ($token->isGivenKind($classyTokens)) {
