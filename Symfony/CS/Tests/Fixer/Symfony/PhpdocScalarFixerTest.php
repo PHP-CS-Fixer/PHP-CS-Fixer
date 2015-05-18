@@ -200,7 +200,7 @@ EOF;
         $expected = <<<'EOF'
 <?php
     /**
-     * @Type("string")
+     * @Type("boolean")
      */
 EOF;
 
