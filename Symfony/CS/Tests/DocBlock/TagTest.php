@@ -37,6 +37,9 @@ class TagTest extends \PHPUnit_Framework_TestCase
             array('throwsss', "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"),
             array('other', ' *   @\Foo\Bar(baz = 123)'),
             array('expectedexception', '     * @expectedException Exception'),
+            array('method', ' * @method'),
+            array('method', ' * @method string getString()'),
+            array('other', ' * @method("GET")'),
         );
     }
 
@@ -56,6 +59,9 @@ class TagTest extends \PHPUnit_Framework_TestCase
             array(true, '     * @param Foo $foo'),
             array(true, '*   @return            false'),
             array(true, '*@thRoWs \Exception'),
+            array(true, ' * @method'),
+            array(true, ' * @method string getString()'),
+            array(false, ' * @method("GET")'),
             array(false, "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"),
             array(false, ' *   @\Foo\Bar(baz = 123)'),
             array(false, '     * @expectedException Exception'),

@@ -454,6 +454,7 @@ EOF;
      *
      *
      * @Hello\Test\Foo(asd)
+     * @Method("GET")
      *
      * @param string $expected
      * @param string $input
@@ -470,6 +471,7 @@ EOF;
      *
      *
      * @Hello\Test\Foo(asd)
+     * @Method("GET")
      *
      * @param string $expected
      *
