@@ -66,7 +66,7 @@ class FixCommand extends Command
     /**
      * Config instance.
      *
-     * @var Config
+     * @var ConfigInterface
      */
     protected $defaultConfig;
 
