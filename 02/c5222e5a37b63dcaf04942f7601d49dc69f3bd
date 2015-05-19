@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-05-18T20:50:21Z
+
+:+1: :ship: :rocket:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-18T21:01:29Z
+
+@fabpot please take a look at fabbot's status. It fails and tries to fix type notation inside strings like `integer` into `int`.
+Our PHP CS Fixer already done that by `PhpdocScalarFixer` that does not modify strings.
+Please, could you consider removing that part of fabbot in favor of that fixer? One bug less and it should be little faster (not doing same thing twice)
+
+---------------------------------------------------------------------------
+
+by fabpot at 2015-05-19T02:57:03Z
+
+Done... and your PR is now green :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-19T06:35:44Z
+
+Great to hear that, thank you @fabpot !
