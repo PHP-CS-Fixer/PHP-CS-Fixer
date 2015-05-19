@@ -53,7 +53,7 @@ class DefaultFinder extends Finder implements FinderInterface
      *
      * @param string $dir
      *
-     * @return array
+     * @return string[]
      */
     protected function getDirs($dir)
     {
