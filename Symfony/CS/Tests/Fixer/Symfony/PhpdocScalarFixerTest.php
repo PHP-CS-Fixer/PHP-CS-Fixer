@@ -195,6 +195,18 @@ EOF;
         $this->makeTest($expected, $input);
     }
 
+    public function testDoNotModifyComplexTag()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @Type("boolean")
+     */
+EOF;
+
+        $this->makeTest($expected);
+    }
+
     public function testDoNotModifyStrings()
     {
         $expected = <<<'EOF'
