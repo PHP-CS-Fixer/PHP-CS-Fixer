@@ -132,6 +132,9 @@ $b;',
                 '<?php `echo 1` + 1;',
                 '<?php `echo 1`+1;',
             ),
+            array(
+                '<?php function foo(&$a, array &$b, Bar &$c) {}',
+            ),
         );
     }
 

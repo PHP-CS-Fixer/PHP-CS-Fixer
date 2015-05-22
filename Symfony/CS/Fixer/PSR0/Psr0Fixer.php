@@ -98,7 +98,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
             }
 
             if ($normNamespace !== $dir && strtolower($normNamespace) === strtolower($dir)) {
-                for ($i = $namespaceIndex; $i <= $namespaceEndIndex; $i++) {
+                for ($i = $namespaceIndex; $i <= $namespaceEndIndex; ++$i) {
                     $tokens[$i]->clear();
                 }
                 $namespace = substr($namespace, 0, -strlen($dir)).strtr($dir, '/', '\\');

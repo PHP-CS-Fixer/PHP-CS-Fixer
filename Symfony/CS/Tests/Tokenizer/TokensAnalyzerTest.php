@@ -215,7 +215,10 @@ preg_replace_callback(
                 '<?php foo(+ $a, -$b);',
                 array(3 => true, 8 => true),
             ),
-
+            array(
+                '<?php function foo(&$a, array &$b, Bar &$c) {}',
+                array(5 => true, 11 => true, 17 => true),
+            ),
         );
     }
 
@@ -352,6 +355,10 @@ $b;',
             array(
                 '<?php $a++ + $b;',
                 array(2 => false, 4 => true),
+            ),
+            array(
+                '<?php $a = FOO & $bar;',
+                array(7 => true),
             ),
             array(
                 '<?php __LINE__ - 1;',

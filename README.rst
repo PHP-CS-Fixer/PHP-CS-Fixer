@@ -392,6 +392,10 @@ Choose from the list of available fixers:
                 @var and @type annotations should not
                 contain the variable name.
 
+* **pre_increment** [symfony]
+                Pre incrementation/decrementation
+                should be used if possible.
+
 * **remove_leading_slash_use** [symfony]
                 Remove leading slashes in use clauses.
 
@@ -509,10 +513,6 @@ Choose from the list of available fixers:
 * **phpdoc_var_to_type** [contrib]
                 @var should always be written as
                 @type.
-
-* **pre_increment** [contrib]
-                Pre incrementation/decrementation
-                should be used if possible.
 
 * **short_array_syntax** [contrib]
                 PHP arrays should use the PHP 5.4
@@ -701,10 +701,11 @@ Helpers
 
 Dedicated plugins exist for:
 
-* `Vim`_
-* `Sublime Text`_
+* `Atom`_
 * `NetBeans`_
 * `PhpStorm`_
+* `Sublime Text`_
+* `Vim`_
 
 Contribute
 ----------
@@ -727,8 +728,9 @@ projects that follow a well-known directory structures (like for Symfony
 projects for instance).
 
 .. _php-cs-fixer.phar: http://get.sensiolabs.org/php-cs-fixer.phar
-.. _Vim:               https://github.com/stephpy/vim-php-cs-fixer
-.. _Sublime Text:      https://github.com/benmatselby/sublime-phpcs
+.. _Atom:              https://github.com/Glavin001/atom-beautify
 .. _NetBeans:          http://plugins.netbeans.org/plugin/49042/php-cs-fixer
-.. _PhpStorm:          http://arnolog.net/post/92715936483/use-fabpots-php-cs-fixer-tool-in-phpstorm-in-2-steps
+.. _PhpStorm:          http://tzfrs.de/2015/01/automatically-format-code-to-match-psr-standards-with-phpstorm
+.. _Sublime Text:      https://github.com/benmatselby/sublime-phpcs
+.. _Vim:               https://github.com/stephpy/vim-php-cs-fixer
 .. _contribute:        https://github.com/FriendsOfPhp/php-cs-fixer/blob/master/CONTRIBUTING.md
