@@ -252,4 +252,23 @@ class IndentationFixerTest extends AbstractFixerTestBase
 
         return $cases;
     }
+
+    /**
+     * @dataProvider provideTabInInlineHTML
+     */
+    public function testTabInInlineHTML($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideTabInInlineHTML()
+    {
+        $cases = array(
+            array(
+                "<?php\necho 1;\n?>\r\n\t\$a = ellow;",
+            ),
+        );
+
+        return $cases;
+    }
 }
