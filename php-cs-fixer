@@ -12,6 +12,7 @@
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 
 if (defined('HHVM_VERSION_ID')) {
@@ -23,6 +24,10 @@ if (defined('HHVM_VERSION_ID')) {
     fwrite(STDERR, "PHP needs to be a minimum version of PHP 5.3.6\n");
     exit(1);
 }
+
+set_error_handler(function ($severity, $message, $file, $line) {
+    throw new ErrorException($message, 0, $severity, $file, $line);
+});
 
 // installed via composer?
 if (file_exists($a = __DIR__.'/../../autoload.php')) {
