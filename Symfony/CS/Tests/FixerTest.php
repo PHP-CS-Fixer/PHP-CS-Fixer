@@ -333,7 +333,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $cases = array();
 
         foreach ($fixers as $fixer) {
-            $cases[] = array(new ReflectionClass($fixer));
+            $cases[] = array(new \ReflectionClass($fixer));
         }
 
         return $cases;
