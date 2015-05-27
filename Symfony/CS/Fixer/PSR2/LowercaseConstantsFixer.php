@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class LowercaseConstantsFixer extends AbstractFixer
+final class LowercaseConstantsFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

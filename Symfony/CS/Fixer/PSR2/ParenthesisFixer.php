@@ -20,7 +20,7 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Marc Aubé
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ParenthesisFixer extends AbstractFixer
+final class ParenthesisFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

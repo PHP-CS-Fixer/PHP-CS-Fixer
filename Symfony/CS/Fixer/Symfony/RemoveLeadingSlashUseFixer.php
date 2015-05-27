@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  */
-class RemoveLeadingSlashUseFixer extends AbstractFixer
+final class RemoveLeadingSlashUseFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

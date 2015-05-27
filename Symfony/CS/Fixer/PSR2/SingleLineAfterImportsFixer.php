@@ -23,7 +23,7 @@ use Symfony\CS\Utils;
  * @author Ceeram <ceeram@cakephp.org>
  * @author Graham Campbell <graham@mineuk.com>
  */
-class SingleLineAfterImportsFixer extends AbstractFixer
+final class SingleLineAfterImportsFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

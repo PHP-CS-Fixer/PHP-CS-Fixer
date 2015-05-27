@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocTypeToVarFixer extends AbstractFixer
+final class PhpdocTypeToVarFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

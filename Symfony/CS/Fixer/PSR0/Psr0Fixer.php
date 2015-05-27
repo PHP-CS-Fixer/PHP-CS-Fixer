@@ -22,7 +22,7 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Bram Gotink <bram@gotink.me>
  */
-class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
+final class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
 {
     protected $config;
 

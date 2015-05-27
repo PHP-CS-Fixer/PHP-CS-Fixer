@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Vincent Klaiber <hello@vinkla.com>
  */
-class ShortEchoTagFixer extends AbstractFixer
+final class ShortEchoTagFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

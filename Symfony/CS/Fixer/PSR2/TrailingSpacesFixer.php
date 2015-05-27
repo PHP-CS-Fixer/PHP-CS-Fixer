@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TrailingSpacesFixer extends AbstractFixer
+final class TrailingSpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

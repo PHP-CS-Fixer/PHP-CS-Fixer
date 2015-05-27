@@ -21,7 +21,7 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class BracesFixer extends AbstractFixer
+final class BracesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Jared Henderson <jared@netrivet.com>
  */
-class TrimArraySpacesFixer extends AbstractFixer
+final class TrimArraySpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

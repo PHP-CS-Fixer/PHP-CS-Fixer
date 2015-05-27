@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ObjectOperatorFixer extends AbstractFixer
+final class ObjectOperatorFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

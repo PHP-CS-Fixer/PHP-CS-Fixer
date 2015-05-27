@@ -19,7 +19,7 @@ use Symfony\CS\Utils;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
+final class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class UnusedUseFixer extends AbstractFixer
+final class UnusedUseFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

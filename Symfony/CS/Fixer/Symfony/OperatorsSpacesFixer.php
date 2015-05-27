@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class OperatorsSpacesFixer extends AbstractFixer
+final class OperatorsSpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

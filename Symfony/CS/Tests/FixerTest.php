@@ -316,4 +316,26 @@ class FixerTest extends \PHPUnit_Framework_TestCase
 
         $fixer->fix($config);
     }
+
+    /**
+     * @dataProvider provideFixersForFinalCheckCases
+     */
+    public function testFixersAreFinal(\ReflectionClass $class)
+    {
+        $this->assertTrue($class->isFinal());
+    }
+
+    public function provideFixersForFinalCheckCases()
+    {
+        $fixer = new Fixer();
+        $fixer->registerBuiltInFixers();
+        $fixers = $fixer->getFixers();
+        $cases = array();
+
+        foreach ($fixers as $fixer) {
+            $cases[] = array(new \ReflectionClass($fixer));
+        }
+
+        return $cases;
+    }
 }

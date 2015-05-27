@@ -18,7 +18,7 @@ use Symfony\CS\Utils;
 /**
  * @author Matteo Beccati <matteo@beccati.com>
  */
-class EregToPregFixer extends AbstractFixer
+final class EregToPregFixer extends AbstractFixer
 {
     /**
      * @var array the list of the ext/ereg function names, their preg equivalent and the preg modifier(s), if any

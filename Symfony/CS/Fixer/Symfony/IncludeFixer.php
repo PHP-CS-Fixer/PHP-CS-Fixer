@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class IncludeFixer extends AbstractFixer
+final class IncludeFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

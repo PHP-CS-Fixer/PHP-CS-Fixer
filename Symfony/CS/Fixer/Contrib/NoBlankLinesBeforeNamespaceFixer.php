@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class NoBlankLinesBeforeNamespaceFixer extends AbstractLinesBeforeNamespaceFixer
+final class NoBlankLinesBeforeNamespaceFixer extends AbstractLinesBeforeNamespaceFixer
 {
     /**
      * {@inheritdoc}

@@ -20,7 +20,7 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class MultipleUseFixer extends AbstractFixer
+final class MultipleUseFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
