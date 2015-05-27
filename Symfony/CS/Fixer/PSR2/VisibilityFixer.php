@@ -21,7 +21,7 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class VisibilityFixer extends AbstractFixer
+final class VisibilityFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

@@ -20,7 +20,7 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Varga Bence <vbence@czentral.org>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class FunctionCallSpaceFixer extends AbstractFixer
+final class FunctionCallSpaceFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Gregor Harlan <gharlan@web.de>
  */
-class SingleQuoteFixer extends AbstractFixer
+final class SingleQuoteFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

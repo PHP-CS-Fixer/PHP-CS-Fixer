@@ -20,7 +20,7 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class FunctionDeclarationFixer extends AbstractFixer
+final class FunctionDeclarationFixer extends AbstractFixer
 {
     private $singleLineWhitespaceOptions = " \t";
 

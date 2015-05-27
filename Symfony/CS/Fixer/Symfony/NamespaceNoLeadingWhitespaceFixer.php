@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Bram Gotink <bram@gotink.me>
  */
-class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
+final class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

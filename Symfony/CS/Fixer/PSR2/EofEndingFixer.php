@@ -21,7 +21,7 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class EofEndingFixer extends AbstractFixer
+final class EofEndingFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

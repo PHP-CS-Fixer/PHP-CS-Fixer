@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
  */
-class AlignDoubleArrowFixer extends AbstractAlignFixer
+final class AlignDoubleArrowFixer extends AbstractAlignFixer
 {
     /**
      * {@inheritdoc}

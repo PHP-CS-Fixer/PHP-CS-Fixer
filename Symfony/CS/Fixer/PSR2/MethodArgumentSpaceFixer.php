@@ -20,7 +20,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @author Kuanhung Chen <ericj.tw@gmail.com>
  */
-class MethodArgumentSpaceFixer extends AbstractFixer
+final class MethodArgumentSpaceFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

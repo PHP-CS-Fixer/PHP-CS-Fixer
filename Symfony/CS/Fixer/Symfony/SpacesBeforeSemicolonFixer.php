@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class SpacesBeforeSemicolonFixer extends AbstractFixer
+final class SpacesBeforeSemicolonFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ShortTagFixer extends AbstractFixer
+final class ShortTagFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

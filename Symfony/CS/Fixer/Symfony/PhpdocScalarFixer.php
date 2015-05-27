@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocScalarFixer extends AbstractFixer
+final class PhpdocScalarFixer extends AbstractFixer
 {
     /**
      * The annotation tags search inside.

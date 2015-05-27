@@ -20,7 +20,7 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class MultilineArrayTrailingCommaFixer extends AbstractFixer
+final class MultilineArrayTrailingCommaFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class StrictFixer extends AbstractFixer
+final class StrictFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

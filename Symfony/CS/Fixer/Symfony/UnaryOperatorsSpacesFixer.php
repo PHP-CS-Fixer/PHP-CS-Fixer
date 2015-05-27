@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
 /**
  * @author Gregor Harlan <gharlan@web.de>
  */
-class UnaryOperatorsSpacesFixer extends AbstractFixer
+final class UnaryOperatorsSpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class WhitespacyLinesFixer extends AbstractFixer
+final class WhitespacyLinesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
