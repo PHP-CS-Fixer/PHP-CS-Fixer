@@ -15,7 +15,7 @@ use Symfony\CS\DocBlock\DocBlock;
 use Symfony\CS\DocBlock\Line;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@cachethq.io>
  */
 class LineTest extends \PHPUnit_Framework_TestCase
 {

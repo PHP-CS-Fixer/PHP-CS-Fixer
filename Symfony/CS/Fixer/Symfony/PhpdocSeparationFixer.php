@@ -18,7 +18,7 @@ use Symfony\CS\DocBlock\TagComparator;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@cachethq.io>
  */
 class PhpdocSeparationFixer extends AbstractFixer
 {

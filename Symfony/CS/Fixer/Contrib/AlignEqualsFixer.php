@@ -16,7 +16,7 @@ use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@cachethq.io>
  */
 class AlignEqualsFixer extends AbstractAlignFixer
 {

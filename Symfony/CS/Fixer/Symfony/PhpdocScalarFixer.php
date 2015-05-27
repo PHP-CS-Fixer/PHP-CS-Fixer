@@ -17,7 +17,7 @@ use Symfony\CS\DocBlock\Line;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@cachethq.io>
  */
 class PhpdocScalarFixer extends AbstractFixer
 {
