@@ -69,6 +69,9 @@ rassit et la posa sur ses genoux.
 EOT;
 ",
             ),
+            array(
+                "<?php\necho <<<'EOT'\nInline Il y eut un   \r\nrire éclatant    \n     \n   \r\nEOT;\n\n",
+            ),
         );
     }
 }
