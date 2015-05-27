@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Ceeram <ceeram@cakephp.org>
  */
-class NewlineAfterOpenTagFixer extends AbstractFixer
+final class NewlineAfterOpenTagFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

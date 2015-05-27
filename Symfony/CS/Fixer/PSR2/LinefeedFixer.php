@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class LinefeedFixer extends AbstractFixer
+final class LinefeedFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ExtraEmptyLinesFixer extends AbstractFixer
+final class ExtraEmptyLinesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
 /**
  * @author Gregor Harlan <gharlan@web.de>
  */
-class PreIncrementFixer extends AbstractFixer
+final class PreIncrementFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

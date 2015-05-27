@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ConcatWithSpacesFixer extends AbstractFixer
+final class ConcatWithSpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

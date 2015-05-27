@@ -19,7 +19,7 @@ use Symfony\CS\Utils;
 /**
  * @author Ceeram <ceeram@cakephp.org>
  */
-class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer
+final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

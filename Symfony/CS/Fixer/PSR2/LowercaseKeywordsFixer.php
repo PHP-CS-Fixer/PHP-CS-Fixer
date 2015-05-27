@@ -20,7 +20,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class LowercaseKeywordsFixer extends AbstractFixer
+final class LowercaseKeywordsFixer extends AbstractFixer
 {
     private static $excludedTokens = array(T_HALT_COMPILER);
 

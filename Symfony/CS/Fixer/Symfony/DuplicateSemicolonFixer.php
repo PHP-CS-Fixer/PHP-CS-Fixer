@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class DuplicateSemicolonFixer extends AbstractFixer
+final class DuplicateSemicolonFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

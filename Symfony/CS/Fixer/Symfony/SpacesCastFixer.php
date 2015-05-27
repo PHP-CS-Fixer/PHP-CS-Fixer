@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class SpacesCastFixer extends AbstractFixer
+final class SpacesCastFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

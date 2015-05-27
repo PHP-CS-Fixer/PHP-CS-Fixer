@@ -21,7 +21,7 @@ use Symfony\CS\Utils;
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocAlignFixer extends AbstractFixer
+final class PhpdocAlignFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

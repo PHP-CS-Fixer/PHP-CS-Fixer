@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocNoPackageFixer extends AbstractAnnotationRemovalFixer
+final class PhpdocNoPackageFixer extends AbstractAnnotationRemovalFixer
 {
     /**
      * {@inheritdoc}

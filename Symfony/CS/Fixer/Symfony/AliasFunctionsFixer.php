@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class AliasFunctionsFixer extends AbstractFixer
+final class AliasFunctionsFixer extends AbstractFixer
 {
     /** @var string[] stores alias (key) - master (value) functions mapping */
     private static $aliases = array(

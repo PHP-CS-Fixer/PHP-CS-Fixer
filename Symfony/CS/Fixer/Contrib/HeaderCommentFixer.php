@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Antonio J. García Lagar <aj@garcialagar.es>
  */
-class HeaderCommentFixer extends AbstractFixer
+final class HeaderCommentFixer extends AbstractFixer
 {
     private static $header = '';
     private static $headerComment = '';

@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
 /**
  * @author Luis Cordova <cordoval@gmail.com>
  */
-class RemoveLinesBetweenUsesFixer extends AbstractFixer
+final class RemoveLinesBetweenUsesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

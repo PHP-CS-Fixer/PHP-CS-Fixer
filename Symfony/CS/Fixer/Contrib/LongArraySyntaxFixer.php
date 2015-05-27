@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Gregor Harlan <gharlan@web.de>
  */
-class LongArraySyntaxFixer extends AbstractFixer
+final class LongArraySyntaxFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

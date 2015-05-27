@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocNoEmptyReturnFixer extends AbstractFixer
+final class PhpdocNoEmptyReturnFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

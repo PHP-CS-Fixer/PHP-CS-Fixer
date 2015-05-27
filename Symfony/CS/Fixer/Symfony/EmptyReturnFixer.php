@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class EmptyReturnFixer extends AbstractFixer
+final class EmptyReturnFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

@@ -20,7 +20,7 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
  */
-class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
+final class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

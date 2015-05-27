@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ListCommasFixer extends AbstractFixer
+final class ListCommasFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

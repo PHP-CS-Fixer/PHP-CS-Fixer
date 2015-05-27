@@ -20,7 +20,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ElseifFixer extends AbstractFixer
+final class ElseifFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

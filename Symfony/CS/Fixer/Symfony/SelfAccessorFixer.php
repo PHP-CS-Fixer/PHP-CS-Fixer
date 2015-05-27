@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
 /**
  * @author Gregor Harlan <gharlan@web.de>
  */
-class SelfAccessorFixer extends AbstractFixer
+final class SelfAccessorFixer extends AbstractFixer
 {
     public function isCandidate(Tokens $tokens)
     {

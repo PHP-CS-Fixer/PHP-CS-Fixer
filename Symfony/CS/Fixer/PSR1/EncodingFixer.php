@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class EncodingFixer extends AbstractFixer
+final class EncodingFixer extends AbstractFixer
 {
     private $BOM;
 
