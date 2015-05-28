@@ -250,6 +250,10 @@ class IndentationFixerTest extends AbstractFixerTestBase
 \t */",
         );
 
+        $cases[] = array(
+            "<?php\necho <<<HTML\n    data\n			added tabs\n    	\$ab\nHTML;",
+        );
+
         return $cases;
     }
 }

@@ -69,6 +69,12 @@ echo \'Foo\';
             array(
                 "<?php \$this->data = preg_replace('/<\?(?!xml|php)/s', '<?php ',       \$this->data);",
             ),
+            array(
+                '<?php
+echo <<<HTML
+    data <? a
+HTML;',
+            ),
         );
     }
 }
