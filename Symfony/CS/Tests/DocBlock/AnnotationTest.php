@@ -14,7 +14,7 @@ namespace Symfony\CS\Tests\DocBlock;
 use Symfony\CS\DocBlock\DocBlock;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@cachethq.io>
  */
 class AnnotationTest extends \PHPUnit_Framework_TestCase
 {
