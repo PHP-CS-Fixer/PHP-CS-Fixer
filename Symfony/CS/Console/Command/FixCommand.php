@@ -311,13 +311,13 @@ EOF
             }
 
             if (null === $config) {
-                throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined', $input->getOption('config')));
+                throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined.', $input->getOption('config')));
             }
         } elseif (file_exists($configFile)) {
             $config = include $configFile;
             // verify that the config has an instance of Config
             if (!$config instanceof Config) {
-                throw new \UnexpectedValueException(sprintf('The config file "%s" does not return an instance of Symfony\CS\Config\Config', $configFile));
+                throw new \UnexpectedValueException(sprintf('The config file "%s" does not return a "Symfony\CS\Config\Config" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
             }
 
             if ('txt' === $input->getOption('format')) {
