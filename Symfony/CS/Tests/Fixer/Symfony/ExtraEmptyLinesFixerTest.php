@@ -194,4 +194,32 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
+
+    public function testFixWithTrailingInlineBlock()
+    {
+        $expected =
+"<?php
+    echo 'ellow';
+?>
+
+\$a = 0;
+
+
+
+//a
+
+<?php
+
+\$a = 0;
+
+\$b = 1;
+
+//a
+?>
+
+
+
+";
+        $this->makeTest($expected);
+    }
 }
