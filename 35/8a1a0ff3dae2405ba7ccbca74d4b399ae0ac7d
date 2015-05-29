@@ -1,0 +1,93 @@
+---------------------------------------------------------------------------
+
+by tiemevanveen at 2015-05-13T10:02:22Z
+
+:+1: + 1
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-05-17T22:05:12Z
+
+What do we do if files contain other whitespace like spaces before the end. Do we need tests for those cases too?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-05-18T16:48:41Z
+
+>What do we do if files contain other whitespace like spaces before the end. Do we need tests for those cases too?
+
+Maybe; do you have example code in mind that needs to be added to the test? I'm happy to ad it.
+
+(PS. the code on master has been diverted in a way that this PR might not be merged upstream, I can work on a similar for master as well if this one is OK'ed)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-05-20T15:49:24Z
+
+Updated, I hope I got all the feedback right :)
+
+(will rebase & squash and come up with a fix for master if needed as this is PR is OK'ed so I won't loose the feedback from people till then)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-20T17:48:54Z
+
+> will rebase & squash
+
+you don't need to ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-22T16:31:47Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-05-22T17:27:44Z
+
+ready to be squashed?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-22T17:34:17Z
+
+Yes, there is one cool commit by @1emming ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-05-22T18:09:50Z
+
+oh lol, that is the result from doing open source stuff during office hours :P
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-05-26T04:50:59Z
+
+@GrahamCampbell could you review this (https://github.com/SpacePossum/PHP-CS-Fixer/commit/78f7c1cc41befa098ce9e4b683ba862dbd30f742) to see if this fixes the issue with Windows/Mac EOL you reported?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-26T19:33:00Z
+
+BTW, is this PR now fixes #1092 as well ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-05-26T19:54:55Z
+
+Yes, I hope so :)
+Waiting for @GrahamCampbell 's opinion.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-27T14:11:27Z
+
+ping @GrahamCampbell
+do you see any problems here ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-05-27T14:15:14Z
+
+Looks good to me. :)
