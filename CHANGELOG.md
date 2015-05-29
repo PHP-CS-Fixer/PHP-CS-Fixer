@@ -3,6 +3,18 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.8.1
+--------------------
+
+* bug #1193 EofEndingFixer - do not add an empty line at EOF if the PHP tags have been closed (SpacePossum)
+* bug #1209 PhpdocParamsFixer - fix corrupting following custom annotation (keradus)
+* bug #1205 BracesFixer - fix missing indentation fixes for class level (keradus)
+* bug #1204 Tag - fix treating complex tag as simple PhpDoc tag (keradus)
+* bug #1198 Tokens - fixed unary/binary operator check for type-hinted reference arguments (gharlan)
+* bug #1201 Php4ConstructorFixer - fix invalid handling of subnamespaces (gharlan)
+* minor #1221 Add more tests (SpacePossum)
+* minor #1216 Tokens - Add unit test for array detection (SpacePossum)
+
 Changelog for v1.8
 ------------------
 
