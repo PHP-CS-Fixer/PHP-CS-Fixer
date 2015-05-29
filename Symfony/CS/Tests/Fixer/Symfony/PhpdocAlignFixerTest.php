@@ -249,6 +249,28 @@ EOF;
         $this->makeTest($expected, $input);
     }
 
+    public function testCustomAnnotationsStayUntouched2()
+    {
+        $expected = <<<'EOF'
+<?php
+
+class X
+{
+    /**
+     * @var Collection<Value>|Value[]
+     * @ORM\ManyToMany(
+     *  targetEntity="\Dl\Component\DomainModel\Product\Value\AbstractValue",
+     *  inversedBy="externalAliases"
+     * )
+     */
+    private $values;
+}
+
+EOF;
+
+        $this->makeTest($expected);
+    }
+
     public function testFixWithVar()
     {
         $expected = <<<'EOF'

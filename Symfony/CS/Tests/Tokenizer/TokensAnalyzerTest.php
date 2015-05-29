@@ -339,7 +339,6 @@ $b;',
                 '<?php $a = array("b" => "c", );',
                 array(3 => true, 9 => true, 12 => false),
             ),
-
             array(
                 '<?php $a * -$b;',
                 array(3 => true, 5 => false),
@@ -444,5 +443,114 @@ $b;',
                 array(3 => true),
             ),
         );
+    }
+
+    /**
+     * @dataProvider provideIsArray
+     * @requires PHP 5.4
+     */
+    public function testIsArray($source, $tokenIndex, $isMultilineArray = false)
+    {
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $this->assertTrue($tokensAnalyzer->isArray($tokenIndex), 'Expected to be an array.');
+        $this->assertSame($isMultilineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), sprintf('Expected %sto be a multiline array', $isMultilineArray ? '' : 'not '));
+    }
+
+    public function provideIsArray()
+    {
+        $cases = array(
+            array(
+                '<?php
+                    array("a" => 1);
+                ',
+                2,
+            ),
+            array(
+                // short array PHP 5.4 single line
+                '<?php
+                    ["a" => 2];
+                ',
+                2, false,
+            ),
+            array(
+                '<?php
+                    array(
+                        "a" => 3
+                    );
+                ',
+                2, true,
+            ),
+            array(
+                // short array PHP 5.4 multi line
+                '<?php
+                    [
+                        "a" => 4
+                    ];
+                ',
+                2, true,
+            ),
+            array(
+                '<?php
+                    array(
+                        "a" => array(5, 6, 7),
+8 => new \Exception(\'Ellow\')
+                    );
+                ',
+                2, true,
+            ),
+            array(
+                // mix short array syntax
+                '<?php
+                    array(
+                        "a" => [9, 10, 11],
+12 => new \Exception(\'Ellow\')
+                    );
+                ',
+                2, true,
+            ),
+            // Windows/Max EOL testing
+            array(
+                "<?php\r\narray('a' => 13);\r\n",
+                1,
+            ),
+            array(
+                "<?php\r\n   array(\r\n       'a' => 14,\r\n       'b' =>  15\r\n   );\r\n",
+                2, true,
+            ),
+        );
+
+        return $cases;
+    }
+
+    /**
+     * @dataProvider provideArrayExceptions
+     */
+    public function testIsNotArray($source, $tokenIndex)
+    {
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $this->assertFalse($tokensAnalyzer->isArray($tokenIndex));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @dataProvider provideArrayExceptions
+     */
+    public function testIsMultiLineArrayException($source, $tokenIndex)
+    {
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $tokensAnalyzer->isArrayMultiLine($tokenIndex);
+    }
+
+    public function provideArrayExceptions()
+    {
+        $cases = array(
+            array('<?php $a;', 1),
+            array("<?php\n \$a = (0+1); // [0,1]", 4),
+        );
+
+        return $cases;
     }
 }

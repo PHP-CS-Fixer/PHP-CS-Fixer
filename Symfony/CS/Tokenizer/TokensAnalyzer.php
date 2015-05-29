@@ -172,6 +172,10 @@ class TokensAnalyzer
      */
     public function isArrayMultiLine($index)
     {
+        if (!$this->isArray($index)) {
+            throw new \InvalidArgumentException('Not an array at given index');
+        }
+
         $tokens = $this->tokens;
 
         // Skip only when its an array, for short arrays we need the brace for correct

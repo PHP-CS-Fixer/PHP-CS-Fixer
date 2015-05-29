@@ -1063,6 +1063,17 @@ class Tokens extends \SplFixedArray
      */
     public function isMonolithicPhp()
     {
+        $size = $this->count();
+
+        if (0 === $size) {
+            return false;
+        }
+
+        // If code is not monolithic there is a great chance that first or last token is `T_INLINE_HTML`:
+        if ($this[0]->isGivenKind(T_INLINE_HTML) || $this[$size - 1]->isGivenKind(T_INLINE_HTML)) {
+            return false;
+        }
+
         $kinds = $this->findGivenKind(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_INLINE_HTML));
 
         /*

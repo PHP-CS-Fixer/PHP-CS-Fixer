@@ -44,7 +44,7 @@ final class PhpdocAlignFixer extends AbstractFixer
         $desc = '(?:\s+(?P<desc>.*)|\s*)';
 
         $this->regex = '/^ {5}\* @(?:'.$paramTag.'|'.$otherTags.')'.$desc.'$/';
-        $this->regexCommentLine = '/^ {5}\*(?:\s+(?P<desc>.+))(?<!\*\/)$/';
+        $this->regexCommentLine = '/^ {5}\*(?! @)(?:\s+(?P<desc>.+))(?<!\*\/)$/';
     }
 
     /**
