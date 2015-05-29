@@ -390,11 +390,11 @@ class Token
      */
     public function isWhitespace(array $opts = array())
     {
-        $whitespaces = isset($opts['whitespaces']) ? $opts['whitespaces'] : " \t\n\r\0\x0B";
-
         if ($this->isArray && !$this->isGivenKind(T_WHITESPACE)) {
             return false;
         }
+
+        $whitespaces = isset($opts['whitespaces']) ? $opts['whitespaces'] : " \t\n\r\0\x0B";
 
         return '' === trim($this->content, $whitespaces);
     }
