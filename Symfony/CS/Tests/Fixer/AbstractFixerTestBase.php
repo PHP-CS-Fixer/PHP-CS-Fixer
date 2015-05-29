@@ -55,6 +55,8 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
             Tokens::clearCache();
             $expectedTokens = Tokens::fromCode($fixedCode); // Load the expected collection based on PHP parsing
             $this->assertTokens($expectedTokens, $tokens);
+
+            return;
         }
 
         $this->assertSame($expected, $fileIsSupported ? $fixer->fix($file, $expected) : $expected);
