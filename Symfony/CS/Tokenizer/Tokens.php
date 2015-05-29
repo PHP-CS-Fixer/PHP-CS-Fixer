@@ -905,7 +905,7 @@ class Tokens extends \SplFixedArray
      * Removes all the leading whitespace.
      *
      * @param int         $index
-     * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
+     * @param null|string $whitespaces optional whitespaces characters for Token::isWhitespace
      */
     public function removeLeadingWhitespace($index, $whitespaces = null)
     {
@@ -918,8 +918,7 @@ class Tokens extends \SplFixedArray
      * Removes all the trailing whitespace.
      *
      * @param int         $index
-     * @param array       $opts        optional array of extra options for Token::isWhitespace method
-     * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
+     * @param null|string $whitespaces optional whitespaces characters for Token::isWhitespace
      */
     public function removeTrailingWhitespace($index, $whitespaces = null)
     {
