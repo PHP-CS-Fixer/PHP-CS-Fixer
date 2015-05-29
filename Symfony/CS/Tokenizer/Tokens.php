@@ -890,6 +890,10 @@ class Tokens extends \SplFixedArray
      */
     public function isArrayMultiLine($index)
     {
+        if (!$this->isArray($index)) {
+            throw new \InvalidArgumentException('Not an array at given index');
+        }
+
         // Skip only when its an array, for short arrays we need the brace for correct
         // level counting
         if ($this[$index]->isGivenKind(T_ARRAY)) {
