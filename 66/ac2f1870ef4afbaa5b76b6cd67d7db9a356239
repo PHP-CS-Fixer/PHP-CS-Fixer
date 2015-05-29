@@ -1,0 +1,30 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-26T19:21:33Z
+
+Instead of returning false for all non-array tokens I would raise an exception for invalid input param.
+Sth like https://github.com/SpacePossum/PHP-CS-Fixer/pull/1
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-27T15:21:24Z
+
+Could you rebase/squash commits to get rid of that ugly merge commit? :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-05-27T15:46:32Z
+
+sorry @keradus I don't know what happend to your commit, I think I have rebase'd it out of the PR :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-27T15:56:31Z
+
+You just squashed that 3 lines into your commit, good for me (they are still part of this PR).
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-05-28T10:18:43Z
+
+@keradus I lost your comment about the naming of the variables in the test. Let me know what you think about the last version.
