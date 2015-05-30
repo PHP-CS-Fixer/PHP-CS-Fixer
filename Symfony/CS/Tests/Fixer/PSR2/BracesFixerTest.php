@@ -940,6 +940,46 @@ function foo()
     }
 
     /**
+     * @dataProvider provideFixCommentAfterBraceCases
+     */
+    public function testFixCommentAfterBrace($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideFixCommentAfterBraceCases()
+    {
+        return array(
+            array(
+                '<?php
+if ($this->foo()) {
+    $this->bar();
+    $this->baz();
+}',
+                '<?php
+if ($this->foo()) {
+  $this->bar();
+  $this->baz();
+}',
+            ),
+            array(
+                '<?php
+if ($this->foo()) {
+    // foo this
+    $this->bar();
+    $this->baz();
+}',
+                '<?php
+if ($this->foo()) {
+  // foo this
+  $this->bar();
+  $this->baz();
+}',
+            ),
+        );
+    }
+
+    /**
      * @dataProvider provideFixWhitespaceBeforeBraceCases
      */
     public function testFixWhitespaceBeforeBrace($expected, $input = null)
