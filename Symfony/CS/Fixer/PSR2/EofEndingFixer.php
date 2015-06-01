@@ -43,9 +43,13 @@ final class EofEndingFixer extends AbstractFixer
         }
 
         $token = $tokens[$count - 1];
+        if ($token->isGivenKind(array(T_INLINE_HTML, T_CLOSE_TAG, T_OPEN_TAG))) {
+            return;
+        }
 
-        if ($token->isWhitespace() || $token->isGivenKind(T_INLINE_HTML)) {
-            $token->setContent(rtrim($token->getContent())."\n");
+        if ($token->isWhitespace()) {
+            $lineBreak = false === strrpos($token->getContent(), "\r") ? "\n" : "\r\n";
+            $token->setContent($lineBreak);
         } else {
             $tokens->insertAt($count, new Token(array(T_WHITESPACE, "\n")));
         }
@@ -56,7 +60,7 @@ final class EofEndingFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'A file must always end with an empty line feed.';
+        return 'A file must always end with a single empty line feed.';
     }
 
     /**

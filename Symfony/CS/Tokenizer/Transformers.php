@@ -70,7 +70,7 @@ class Transformers
     public function getCustomToken($value)
     {
         if (!$this->hasCustomToken($value)) {
-            throw new \InvalidArgumentException("No custom token was found for $value");
+            throw new \InvalidArgumentException(sprintf('No custom token was found for: %s', $value));
         }
 
         return $this->customTokens[$value];
@@ -132,7 +132,12 @@ class Transformers
     private function addCustomToken($value, $name)
     {
         if ($this->hasCustomToken($value)) {
-            throw new \LogicException("Trying to register token $name ($value), token with this value was already defined: ".$this->getCustomToken($value));
+            throw new \LogicException(
+                sprintf(
+                    'Trying to register token %s (%s), token with this value was already defined: %s',
+                    $name, $value, $this->getCustomToken($value)
+                )
+            );
         }
 
         $this->customTokens[$value] = $name;

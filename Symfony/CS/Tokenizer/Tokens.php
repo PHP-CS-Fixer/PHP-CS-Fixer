@@ -221,7 +221,7 @@ class Tokens extends \SplFixedArray
     private static function getCache($key)
     {
         if (!self::hasCache($key)) {
-            throw new \OutOfBoundsException('Unknown cache key: '.$key);
+            throw new \OutOfBoundsException(sprintf('Unknown cache key: %s', $key));
         }
 
         return self::$cache[$key];
@@ -391,7 +391,7 @@ class Tokens extends \SplFixedArray
         $blockEdgeDefinitions = self::getBlockEdgeDefinitions();
 
         if (!isset($blockEdgeDefinitions[$type])) {
-            throw new \InvalidArgumentException('Invalid param $type');
+            throw new \InvalidArgumentException(sprintf('Invalid param type: %s', $type));
         }
 
         $startEdge = $blockEdgeDefinitions[$type]['start'];
@@ -736,7 +736,7 @@ class Tokens extends \SplFixedArray
                 $token = new Token($token);
             }
             if ($token->isWhitespace() || $token->isComment() || $token->isEmpty()) {
-                throw new \InvalidArgumentException('Non-meaningful token at position: '.$key);
+                throw new \InvalidArgumentException(sprintf('Non-meaningful token at position: %s', $key));
             }
         }
 

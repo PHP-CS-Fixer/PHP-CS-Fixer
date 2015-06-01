@@ -201,8 +201,8 @@ Choose from the list of available fixers:
                 keywords look like single words.
 
 * **eof_ending** [PSR-2]
-                A file must always end with an empty
-                line feed.
+                A file must always end with a single
+                empty line feed.
 
 * **function_call_space** [PSR-2]
                 When making a method or function call,
