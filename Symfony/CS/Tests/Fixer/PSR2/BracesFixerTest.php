@@ -953,18 +953,6 @@ function foo()
             array(
                 '<?php
 if ($this->foo()) {
-    $this->bar();
-    $this->baz();
-}',
-                '<?php
-if ($this->foo()) {
-  $this->bar();
-  $this->baz();
-}',
-            ),
-            array(
-                '<?php
-if ($this->foo()) {
     // foo this
     $this->bar();
     $this->baz();
