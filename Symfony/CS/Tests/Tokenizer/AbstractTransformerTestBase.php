@@ -49,7 +49,7 @@ abstract class AbstractTransformerTestBase extends \PHPUnit_Framework_TestCase
             }
         }
 
-        throw new \RuntimeException("Transformer $transformerClass not found.");
+        throw new \RuntimeException(sprintf('Transformer class "%s" not found.', $transformerClass));
     }
 
     protected static function getTransformers()
