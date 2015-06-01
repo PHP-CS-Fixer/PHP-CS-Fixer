@@ -48,13 +48,21 @@ $b = 1;',
 $b = 1;		',
             ),
             array(
-                '<?php
-$b = 1;',
-                '<?php
-$b = 1;   	   ',
+                "<?php \$b = 1;\n  ",
+                "<?php \$b = 1;		\n  ",
             ),
             array(
-                "<?php\n      \n	\n\$b = 1;",
+                "<?php \$b = 1;\n\$c = 1;",
+                "<?php \$b = 1;   	   \n\$c = 1;",
+            ),
+            array(
+                "<?php\necho 1;\n   \necho2;",
+            ),
+            array(
+                "<?php\n\$a=1;\n      \n\t\n\$b = 1;",
+            ),
+            array(
+                "<?php\necho 1;\n?>\n\n\n\n",
             ),
             array(
                 "<?php\n\techo 1;\n?>\n\n\t  a \r\n	b   \r\n",
