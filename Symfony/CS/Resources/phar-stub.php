@@ -21,7 +21,9 @@ if (defined('HHVM_VERSION_ID')) {
 }
 
 set_error_handler(function ($severity, $message, $file, $line) {
-    throw new ErrorException($message, 0, $severity, $file, $line);
+    if ($severity & error_reporting()) {
+        throw new ErrorException($message, 0, $severity, $file, $line);
+    }
 });
 
 Phar::mapPhar('php-cs-fixer.phar');
