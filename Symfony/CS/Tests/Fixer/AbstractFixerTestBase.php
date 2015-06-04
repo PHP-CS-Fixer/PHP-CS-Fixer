@@ -12,6 +12,7 @@
 namespace Symfony\CS\Tests\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Tests\AssertTokensTrait;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -19,6 +20,8 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
 {
+    use AssertTokensTrait;
+
     protected function getFixer()
     {
         $fixerName = 'Symfony\CS\Fixer'.substr(get_called_class(), strlen(__NAMESPACE__), -strlen('Test'));
@@ -76,31 +79,5 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
         $this->assertSame($expected, $tokens->generateCode(), 'Code build on expected code must not change.');
-    }
-
-    private function assertTokens(Tokens $expectedTokens, Tokens $inputTokens)
-    {
-        foreach ($expectedTokens as $index => $expectedToken) {
-            $inputToken = $inputTokens[$index];
-
-            $this->assertTrue(
-                $expectedToken->equals($inputToken),
-                sprintf('The token at index %d must be %s, got %s', $index, $expectedToken->toJson(), $inputToken->toJson())
-            );
-        }
-
-        $this->assertEquals($expectedTokens->count(), $inputTokens->count(), 'The collection must have the same length than the expected one.');
-
-        $tokensReflection = new \ReflectionClass($expectedTokens);
-        $propertyReflection = $tokensReflection->getProperty('foundTokenKinds');
-        $propertyReflection->setAccessible(true);
-        $foundTokenKinds = array_keys($propertyReflection->getValue($expectedTokens));
-
-        foreach ($foundTokenKinds as $tokenKind) {
-            $this->assertTrue(
-                $inputTokens->isTokenKindFound($tokenKind),
-                sprintf('The token kind %s must be found in fixed tokens collection.', $tokenKind)
-            );
-        }
     }
 }

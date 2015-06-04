@@ -58,10 +58,9 @@ final class ListCommasFixer extends AbstractFixer
             }
 
             if (null !== $markIndex) {
-                $tokens->clearRange(
-                    $tokens->getPrevNonWhitespace($markIndex) + 1,
-                    $closeIndex - 1
-                );
+                $startIndex = $tokens->getPrevNonWhitespace($markIndex) + 1;
+                $tokens->clearRange($startIndex, $closeIndex - 1);
+                $tokens->clearEmptyTokens($startIndex, $closeIndex);
             }
         }
     }

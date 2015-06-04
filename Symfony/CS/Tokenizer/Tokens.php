@@ -305,27 +305,38 @@ class Tokens extends \SplFixedArray
      * Clear empty tokens.
      *
      * Empty tokens can occur e.g. after calling clear on item of collection.
+     *
+     * @param int $startIndex optional start index, default 0.
+     * @param int $endIndex   optional end index, default the size of this.
      */
-    public function clearEmptyTokens()
+    public function clearEmptyTokens($startIndex = 0, $endIndex = null)
     {
-        $limit = $this->count();
-        $index = 0;
+        if (null === $endIndex) {
+            $endIndex = $this->getSize();
+        } elseif ($endIndex <= $startIndex || $endIndex > $this->getSize()) {
+            throw new \InvalidArgumentException('Invalid param $endIndex');
+        }
 
-        for (; $index < $limit; ++$index) {
-            if ($this[$index]->isEmpty()) {
+        if ($startIndex < 0 || $startIndex > $this->getSize()) {
+            throw new \InvalidArgumentException('Invalid param $startIndex - not a proper start');
+        }
+
+        for (; $startIndex < $endIndex; ++$startIndex) {
+            if ($this[$startIndex]->isEmpty()) {
                 break;
             }
         }
 
         // no empty token found, therefore there is no need to override collection
-        if ($limit === $index) {
+        if ($endIndex === $startIndex) {
             return;
         }
 
-        for ($count = $index; $index < $limit; ++$index) {
-            $token = $this[$index];
+        $limit = $this->getSize();
+        for ($count = $startIndex; $startIndex < $limit; ++$startIndex) {
+            $token = $this[$startIndex];
 
-            if (!$token->isEmpty()) {
+            if ($startIndex >= $endIndex || !$token->isEmpty()) {
                 $this[$count++] = $token;
             }
         }
@@ -705,8 +716,8 @@ class Tokens extends \SplFixedArray
      * Find a sequence of meaningful tokens and returns the array of their locations.
      *
      * @param array      $sequence      an array of tokens (same format used by getNextTokenOfKind)
-     * @param int        $start         start index, defaulting to the start of the file
-     * @param int        $end           end index, defaulting to the end of the file
+     * @param int        $start         start index, defaulting to the start of the tokens
+     * @param int        $end           end index, defaulting to the end of the tokens
      * @param bool|array $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
      *                                  the ones used in $others. If any is missing, the default case-sensitive
      *                                  comparison is used.
