@@ -173,7 +173,7 @@ class ConfigurationResolver
     /**
      * Set fixer instance.
      *
-     * @param Fixer $config
+     * @param Fixer $fixer
      *
      * @return ConfigurationResolver
      */
@@ -189,14 +189,14 @@ class ConfigurationResolver
      * Set option that will be resolved.
      *
      * @param string $name
-     * @param misc   $value1
+     * @param mixed  $value
      *
      * @return ConfigurationResolver
      */
     public function setOption($name, $value)
     {
         if (!array_key_exists($name, $this->options)) {
-            throw new \OutOfBoundsException('Unknown option name: '.$name);
+            throw new \OutOfBoundsException(sprintf('Unknown option name: "%s".', $name));
         }
 
         $this->options[$name] = $value;
@@ -322,7 +322,7 @@ class ConfigurationResolver
             }
 
             if (null === $this->config) {
-                throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined', $configOption));
+                throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined.', $configOption));
             }
         }
 
@@ -332,7 +332,7 @@ class ConfigurationResolver
 
                 // verify that the config has an instance of Config
                 if (!$config instanceof Config) {
-                    throw new \UnexpectedValueException(sprintf('The config file "%s" does not return an instance of Symfony\CS\Config\Config', $configFile));
+                    throw new \UnexpectedValueException(sprintf('The config file: "%s" does not return a "Symfony\CS\Config\Config" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
                 }
 
                 $this->config = $config;

@@ -64,8 +64,8 @@ PHP;
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
-        foreach ($expected as $index => $expected) {
-            $this->assertSame($expected, $tokensAnalyzer->isLambda($index));
+        foreach ($expected as $index => $isLambda) {
+            $this->assertSame($isLambda, $tokensAnalyzer->isLambda($index));
         }
     }
 
@@ -113,9 +113,9 @@ preg_replace_callback(
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
-        foreach ($expected as $index => $expected) {
-            $this->assertSame($expected, $tokensAnalyzer->isUnarySuccessorOperator($index));
-            if ($expected) {
+        foreach ($expected as $index => $isUnary) {
+            $this->assertSame($isUnary, $tokensAnalyzer->isUnarySuccessorOperator($index));
+            if ($isUnary) {
                 $this->assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
                 $this->assertFalse($tokensAnalyzer->isBinaryOperator($index));
             }
@@ -167,9 +167,9 @@ preg_replace_callback(
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
-        foreach ($expected as $index => $expected) {
-            $this->assertSame($expected, $tokensAnalyzer->isUnaryPredecessorOperator($index));
-            if ($expected) {
+        foreach ($expected as $index => $isUnary) {
+            $this->assertSame($isUnary, $tokensAnalyzer->isUnaryPredecessorOperator($index));
+            if ($isUnary) {
                 $this->assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
                 $this->assertFalse($tokensAnalyzer->isBinaryOperator($index));
             }
@@ -230,9 +230,9 @@ preg_replace_callback(
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
-        foreach ($expected as $index => $expected) {
-            $this->assertSame($expected, $tokensAnalyzer->isUnaryPredecessorOperator($index));
-            if ($expected) {
+        foreach ($expected as $index => $isUnary) {
+            $this->assertSame($isUnary, $tokensAnalyzer->isUnaryPredecessorOperator($index));
+            if ($isUnary) {
                 $this->assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
                 $this->assertFalse($tokensAnalyzer->isBinaryOperator($index));
             }
@@ -272,9 +272,9 @@ preg_replace_callback(
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
-        foreach ($expected as $index => $expected) {
-            $this->assertSame($expected, $tokensAnalyzer->isBinaryOperator($index));
-            if ($expected) {
+        foreach ($expected as $index => $isBinary) {
+            $this->assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            if ($isBinary) {
                 $this->assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
                 $this->assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
             }
@@ -391,9 +391,9 @@ $b;',
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
-        foreach ($expected as $index => $expected) {
-            $this->assertSame($expected, $tokensAnalyzer->isBinaryOperator($index));
-            if ($expected) {
+        foreach ($expected as $index => $isBinary) {
+            $this->assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            if ($isBinary) {
                 $this->assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
                 $this->assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
             }
@@ -422,9 +422,9 @@ $b;',
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
-        foreach ($expected as $index => $expected) {
-            $this->assertSame($expected, $tokensAnalyzer->isBinaryOperator($index));
-            if ($expected) {
+        foreach ($expected as $index => $isBinary) {
+            $this->assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            if ($isBinary) {
                 $this->assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
                 $this->assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
             }

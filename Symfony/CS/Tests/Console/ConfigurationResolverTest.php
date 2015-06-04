@@ -76,8 +76,8 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException               OutOfBoundsException
-     * @expectedExceptionMessageRegExp  /Unknown option name: foo/
+     * @expectedException              \OutOfBoundsException
+     * @expectedExceptionMessageRegExp /Unknown option name: "foo"/
      */
     public function testSetOptionWithUndefinedOption()
     {
@@ -188,8 +188,8 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException               InvalidArgumentException
-     * @expectedExceptionMessageRegExp  /The level "foo" is not defined./
+     * @expectedException              \InvalidArgumentException
+     * @expectedExceptionMessageRegExp /The level "foo" is not defined./
      */
     public function testResolveFixersWithInvalidLevelOption()
     {
@@ -378,8 +378,8 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException               InvalidArgumentException
-     * @expectedExceptionMessageRegExp  /The configuration "\w+" is not defined/
+     * @expectedException              \InvalidArgumentException
+     * @expectedExceptionMessageRegExp /The configuration "\w+" is not defined/
      */
     public function testResolveConfigByNameThatDoesntExists()
     {
@@ -459,15 +459,15 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException               UnexpectedValueException
-     * @expectedExceptionMessageRegExp  /The config file ".*" does not return an instance of Symfony\\CS\\Config\\Config/
+     * @expectedException              \UnexpectedValueException
+     * @expectedExceptionMessageRegExp /The config file: ".+\/Tests\/Fixtures\/ConfigurationResolverConfigFile\/case_5\/.php_cs.dist" does not return a "Symfony\\CS\\Config\\Config" instance. Got: "string"./
      */
     public function testResolveConfigFileChooseFileWithInvalidFile()
     {
         $dirBase = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR;
-
+        $dirBase = realpath($dirBase);
         $this->resolver
-            ->setOption('path', $dirBase.'case_5')
+            ->setOption('path', $dirBase.'/case_5')
             ->resolve();
     }
 
