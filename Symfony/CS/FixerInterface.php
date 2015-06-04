@@ -72,7 +72,7 @@ interface FixerInterface
     /**
      * Returns the name of the fixer.
      *
-     * The name must be all lowercase and without any spaces.
+     * The name is all lowercase and without any spaces.
      *
      * @return string The name of the fixer
      */
@@ -88,9 +88,7 @@ interface FixerInterface
     public function getPriority();
 
     /**
-     * Returns true if the file is supported by this fixer.
-     *
-     * @return bool true if the file is supported by this fixer, false otherwise
+     * @return bool true if the file is supported by this fixer, false otherwise.
      */
     public function supports(\SplFileInfo $file);
 }

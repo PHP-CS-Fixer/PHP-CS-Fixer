@@ -221,7 +221,7 @@ class Tokens extends \SplFixedArray
     private static function getCache($key)
     {
         if (!self::hasCache($key)) {
-            throw new \OutOfBoundsException(sprintf('Unknown cache key: %s', $key));
+            throw new \OutOfBoundsException(sprintf('Unknown cache key: "%s"', $key));
         }
 
         return self::$cache[$key];
@@ -844,6 +844,7 @@ class Tokens extends \SplFixedArray
     /**
      * Override token at given index and register it.
      *
+     * @param int                $index
      * @param Token|array|string $token token prototype
      */
     public function overrideAt($index, $token)
