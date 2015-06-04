@@ -59,7 +59,7 @@ final class OrderedUseFixer extends AbstractFixer
             $declarationTokens = Tokens::fromCode('<?php use '.$use[0].';');
             $declarationTokens->clearRange(0, 2); // clear `<?php use `
             $declarationTokens[count($declarationTokens) - 1]->clear(); // clear `;`
-            $declarationTokens->clearEmptyTokens();
+            $declarationTokens->clearEmptyTokens(0, count($declarationTokens));
 
             $tokens->overrideRange($index, $mapStartToEnd[$index], $declarationTokens);
         }

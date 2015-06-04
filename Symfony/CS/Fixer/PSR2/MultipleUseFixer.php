@@ -62,7 +62,7 @@ final class MultipleUseFixer extends AbstractFixer
 
             $declarationTokens = Tokens::fromCode('<?php '.$declarationContent);
             $declarationTokens[0]->clear();
-            $declarationTokens->clearEmptyTokens();
+            $declarationTokens->clearEmptyTokens(0, 1);
 
             $tokens->insertAt($index, $declarationTokens);
         }

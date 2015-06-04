@@ -11,6 +11,7 @@
 
 namespace Symfony\CS\Tests\Tokenizer;
 
+use Symfony\CS\Tests\AssertTokensTrait;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
@@ -19,6 +20,8 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class TokensTest extends \PHPUnit_Framework_TestCase
 {
+    use AssertTokensTrait;
+
     public function testReadFromCacheAfterClearing()
     {
         $code = '<?php echo 1;';
@@ -395,7 +398,6 @@ if (!function_exists('bar')) {
     }
 }
 EOF;
-
         $tokens = Tokens::fromCode($code);
 
         $this->assertTrue($tokens->isTokenKindFound(T_CLASS));
@@ -409,5 +411,69 @@ EOF;
         $this->assertTrue($tokens->isAnyTokenKindsFound(array(T_CLASS, T_RETURN)));
         $this->assertTrue($tokens->isAnyTokenKindsFound(array(T_CLASS, T_INTERFACE)));
         $this->assertFalse($tokens->isAnyTokenKindsFound(array(T_INTERFACE, T_ARRAY)));
+    }
+
+    /**
+     * @dataProvider provideClearEmptyTokens
+     */
+    public function testClearEmptyTokens(array $input, array $expected = null, $startIndex = 0, $endIndex = null)
+    {
+        $tokens = Tokens::fromArray($input);
+        $tokens->clearEmptyTokens($startIndex, $endIndex);
+        $this->assertTokens(null === $expected ? Tokens::fromArray($input) : Tokens::fromArray($expected), $tokens);
+    }
+
+    public function provideClearEmptyTokens()
+    {
+        $clearedToken = new Token('');
+        $clearedToken->clear();
+
+        return array(
+            array(
+                array(
+                    new Token(array(T_WHITESPACE, ' ')),
+                    $clearedToken,
+                    $clearedToken,
+                ),
+                array(
+                    new Token(array(T_WHITESPACE, ' ')),
+                ),
+            ),
+            array(
+                array(
+                    $clearedToken,
+                    new Token(array(T_WHITESPACE, ' ')),
+                    $clearedToken,
+                    $clearedToken,
+                    new Token(array(T_WHITESPACE, ' ')),
+                    $clearedToken,
+                ),
+                array(
+                    $clearedToken,
+                    new Token(array(T_WHITESPACE, ' ')),
+                    new Token(array(T_WHITESPACE, ' ')),
+                ),
+                1,
+            ),
+            array(
+                array(
+                    $clearedToken,
+                    new Token(array(T_WHITESPACE, ' ')),
+                    $clearedToken,
+                    $clearedToken,
+                ),
+                array(
+                    $clearedToken,
+                    new Token(array(T_WHITESPACE, ' ')),
+                    $clearedToken,
+                ),
+                1, 3,
+            ),
+            array(
+                array(
+                    new Token(array(T_WHITESPACE, ' ')),
+                ),
+            ),
+        );
     }
 }
