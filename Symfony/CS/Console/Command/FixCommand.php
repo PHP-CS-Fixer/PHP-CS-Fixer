@@ -359,9 +359,13 @@ EOF
                 $this->fixer->setLinter(new Linter($config->getPhpExecutable()));
             } catch (UnavailableLinterException $e) {
                 if ($configFile && 'txt' === $input->getOption('format')) {
-                    $output->writeln('Unable to use linter, can not find PHP executable');
+                    $output->writeln(sprintf('Unable to use linter, can not find PHP executable "%s".', $config->getPhpExecutable()));
                 }
             }
+        }
+
+        if (OutputInterface::VERBOSITY_VERY_VERBOSE <= $verbosity && extension_loaded('xdebug')) {
+            $output->writeln('<comment>xdebug is enabled</comment>, this might have a big impact on the performance of PHP-CS-Fixer.');
         }
 
         $showProgress = $resolver->getProgress();
@@ -416,7 +420,7 @@ EOF
                 }
 
                 $fixEvent = $this->stopwatch->getEvent('fixFiles');
-                $output->writeln(sprintf('Fixed all files in %.3f seconds, %.3f MB memory used', $fixEvent->getDuration() / 1000, $fixEvent->getMemory() / 1024 / 1024));
+                $output->writeln(sprintf('All files %s in %.3f seconds, %.3f MB memory used.', $resolver->isDryRun() ? 'checked' : 'fixed', $fixEvent->getDuration() / 1000, $fixEvent->getMemory() / 1024 / 1024));
                 break;
             case 'xml':
                 $dom = new \DOMDocument('1.0', 'UTF-8');
