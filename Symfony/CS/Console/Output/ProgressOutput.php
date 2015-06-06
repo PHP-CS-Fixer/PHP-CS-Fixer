@@ -11,16 +11,15 @@
 
 namespace Symfony\CS\Console\Output;
 
-use Symfony\Component\Console\Output\StreamOutput;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\CS\FixerFileProcessedEvent;
+use Symfony\CS\Events\FixerFileProcessedEvent;
+use Symfony\CS\Events\FixerFinishedEvent;
 
 /**
- * Output writer to show the process of a FixCommand.
+ * Output writer to show the progress of a FixCommand.
  *
  * @internal
  */
-class ProcessOutput
+class ProgressOutput extends AbstractOutput
 {
     /**
      * File statuses map.
@@ -37,42 +36,13 @@ class ProcessOutput
         FixerFileProcessedEvent::STATUS_LINT => array('symbol' => 'E', 'format' => '<bg=red>%s</bg=red>', 'description' => 'error'),
     );
 
-    /**
-     * Event dispatcher instance.
-     *
-     * @var EventDispatcher
-     */
-    private $eventDispatcher;
-
-    /**
-     * Stream output instance.
-     *
-     * @var StreamOutput
-     */
-    private $output;
-
-    /**
-     * File pointer of type stream.
-     *
-     * @var resource
-     */
-    private $stdErr;
-
-    public function __construct(EventDispatcher $dispatcher)
-    {
-        $this->stdErr = fopen('php://stderr', 'w');
-        $this->output = new StreamOutput($this->stdErr);
-        $this->eventDispatcher = $dispatcher;
-        $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, array($this, 'onFixerFileProcessed'));
-    }
-
     public function onFixerFileProcessed(FixerFileProcessedEvent $event)
     {
         $status = self::$eventStatusMap[$event->getStatus()];
         $this->output->write($this->output->isDecorated() ? sprintf($status['format'], $status['symbol']) : $status['symbol']);
     }
 
-    public function printLegend()
+    public function onFixerFinished(FixerFinishedEvent $event)
     {
         $symbols = array();
 
@@ -86,11 +56,14 @@ class ProcessOutput
         }
 
         $this->output->write(sprintf("\nLegend: %s\n", implode(', ', $symbols)));
+        $this->output->writeln('');
     }
 
-    public function __destruct()
+    public static function getSubscribedEvents()
     {
-        fclose($this->stdErr);
-        $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, array($this, 'onFixerFileProcessed'));
+        return array(
+            FixerFileProcessedEvent::NAME => 'onFixerFileProcessed',
+            FixerFinishedEvent::NAME => 'onFixerFinished',
+        );
     }
 }

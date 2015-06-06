@@ -15,15 +15,19 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\Console\ConfigurationResolver;
-use Symfony\CS\Console\Output\ProcessOutput;
+use Symfony\CS\Console\Output\ProgressOutput;
 use Symfony\CS\Error\Error;
 use Symfony\CS\Error\ErrorsManager;
+use Symfony\CS\Events\FixerConfigurationResolvedEvent;
+use Symfony\CS\Events\FixerFinishedEvent;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Linter\Linter;
@@ -334,9 +338,11 @@ EOF
             ->setOptions(array(
                 'config' => $input->getOption('config'),
                 'config-file' => $input->getOption('config-file'),
+                'diff' => $input->getOption('diff'),
                 'dry-run' => $input->getOption('dry-run'),
                 'level' => $input->getOption('level'),
                 'fixers' => $input->getOption('fixers'),
+                'format' => $input->getOption('format'),
                 'path' => $input->getArgument('path'),
                 'progress' => (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) && 'txt' === $input->getOption('format'),
                 'using-cache' => $input->getOption('using-cache'),
@@ -345,228 +351,64 @@ EOF
             ->resolve()
         ;
 
+        $this->fixer->setEventDispatcher($this->eventDispatcher);
+
         $config = $resolver->getConfig();
         $configFile = $resolver->getConfigFile();
 
-        if ($configFile && 'txt' === $input->getOption('format')) {
-            $output->writeln(sprintf('Loaded config from "%s"', $configFile));
+        $showProgress = $resolver->getProgress();
+        if ($showProgress) {
+            $progress = new ProgressOutput();
+            $stdErr = ($output instanceof ConsoleOutputInterface) ? $output->getErrorOutput() : new StreamOutput(fopen('php://stderr', 'w'), $verbosity, $output->isDecorated());
+            $progress->setOutput($stdErr)->setDiff($resolver->isDiff());
+            $this->eventDispatcher->addSubscriber($progress);
         }
+
+        $output = $config->getFixerOutput()->setOutput($output);
+        $this->eventDispatcher->addSubscriber($output);
 
         // register custom fixers from config
         $this->fixer->registerCustomFixers($config->getCustomFixers());
+
         if ($config->usingLinter()) {
             try {
+                // setup linter
                 $this->fixer->setLinter(new Linter($config->getPhpExecutable()));
             } catch (UnavailableLinterException $e) {
-                if ($configFile && 'txt' === $input->getOption('format')) {
-                    $output->writeln('Unable to use linter, can not find PHP executable');
-                }
+                $this->errorsManager->report(new Error(Error::TYPE_CONFIGURATION, $configFile, $e));
             }
         }
 
-        $showProgress = $resolver->getProgress();
-
-        if ($showProgress) {
-            $this->fixer->setEventDispatcher($this->eventDispatcher);
-            $progressOutput = new ProcessOutput($this->eventDispatcher);
-        }
+        // all setup'ed
+        $this->eventDispatcher->dispatch(FixerConfigurationResolvedEvent::NAME, new FixerConfigurationResolvedEvent($config, $configFile));
 
         $this->stopwatch->start('fixFiles');
-        $changed = $this->fixer->fix($config, $resolver->isDryRun(), $input->getOption('diff'));
+        $changed = $this->fixer->fix($config, $resolver->isDryRun(), $resolver->isDiff());
         $this->stopwatch->stop('fixFiles');
 
+        $this->eventDispatcher->dispatch(
+                                    FixerFinishedEvent::NAME,
+                                    new FixerFinishedEvent(
+                                            $changed,
+                                            $this->stopwatch,
+                                            $this->errorsManager,
+                                            $resolver->isDryRun(),
+                                            $resolver->isDiff()
+                                    )
+        );
+
+        $this->eventDispatcher->removeSubscriber($output);
+
         if ($showProgress) {
-            $progressOutput->printLegend();
-            $this->fixer->setEventDispatcher(null);
+            $this->eventDispatcher->removeSubscriber($progress);
         }
 
-        $i = 1;
-
-        switch ($input->getOption('format')) {
-            case 'txt':
-                foreach ($changed as $file => $fixResult) {
-                    $output->write(sprintf('%4d) %s', $i++, $file));
-
-                    if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
-                        $output->write(sprintf(' (<comment>%s</comment>)', implode(', ', $fixResult['appliedFixers'])));
-                    }
-
-                    if ($input->getOption('diff')) {
-                        $output->writeln('');
-                        $output->writeln('<comment>      ---------- begin diff ----------</comment>');
-                        $output->writeln($fixResult['diff']);
-                        $output->writeln('<comment>      ---------- end diff ----------</comment>');
-                    }
-
-                    $output->writeln('');
-                }
-
-                if (OutputInterface::VERBOSITY_DEBUG <= $verbosity) {
-                    $output->writeln('Fixing time per file:');
-
-                    foreach ($this->stopwatch->getSectionEvents('fixFile') as $file => $event) {
-                        if ('__section__' === $file) {
-                            continue;
-                        }
-
-                        $output->writeln(sprintf('[%.3f s] %s', $event->getDuration() / 1000, $file));
-                    }
-
-                    $output->writeln('');
-                }
-
-                $fixEvent = $this->stopwatch->getEvent('fixFiles');
-                $output->writeln(sprintf('Fixed all files in %.3f seconds, %.3f MB memory used', $fixEvent->getDuration() / 1000, $fixEvent->getMemory() / 1024 / 1024));
-                break;
-            case 'xml':
-                $dom = new \DOMDocument('1.0', 'UTF-8');
-                $filesXML = $dom->createElement('files');
-                $dom->appendChild($filesXML);
-
-                foreach ($changed as $file => $fixResult) {
-                    $fileXML = $dom->createElement('file');
-                    $fileXML->setAttribute('id', $i++);
-                    $fileXML->setAttribute('name', $file);
-                    $filesXML->appendChild($fileXML);
-
-                    if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
-                        $appliedFixersXML = $dom->createElement('applied_fixers');
-                        $fileXML->appendChild($appliedFixersXML);
-
-                        foreach ($fixResult['appliedFixers'] as $appliedFixer) {
-                            $appliedFixerXML = $dom->createElement('applied_fixer');
-                            $appliedFixerXML->setAttribute('name', $appliedFixer);
-                            $appliedFixersXML->appendChild($appliedFixerXML);
-                        }
-                    }
-
-                    if ($input->getOption('diff')) {
-                        $diffXML = $dom->createElement('diff');
-                        $diffXML->appendChild($dom->createCDATASection($fixResult['diff']));
-                        $fileXML->appendChild($diffXML);
-                    }
-                }
-
-                $fixEvent = $this->stopwatch->getEvent('fixFiles');
-
-                $timeXML = $dom->createElement('time');
-                $memoryXML = $dom->createElement('memory');
-                $dom->appendChild($timeXML);
-                $dom->appendChild($memoryXML);
-
-                $memoryXML->setAttribute('value', round($fixEvent->getMemory() / 1024 / 1024, 3));
-                $memoryXML->setAttribute('unit', 'MB');
-
-                $timeXML->setAttribute('unit', 's');
-                $timeTotalXML = $dom->createElement('total');
-                $timeTotalXML->setAttribute('value', round($fixEvent->getDuration() / 1000, 3));
-                $timeXML->appendChild($timeTotalXML);
-
-                if (OutputInterface::VERBOSITY_DEBUG <= $verbosity) {
-                    $timeFilesXML = $dom->createElement('files');
-                    $timeXML->appendChild($timeFilesXML);
-                    $eventCounter = 1;
-
-                    foreach ($this->stopwatch->getSectionEvents('fixFile') as $file => $event) {
-                        if ('__section__' === $file) {
-                            continue;
-                        }
-
-                        $timeFileXML = $dom->createElement('file');
-                        $timeFilesXML->appendChild($timeFileXML);
-                        $timeFileXML->setAttribute('id', $eventCounter++);
-                        $timeFileXML->setAttribute('name', $file);
-                        $timeFileXML->setAttribute('value', round($event->getDuration() / 1000, 3));
-                    }
-                }
-
-                $dom->formatOutput = true;
-                $output->write($dom->saveXML());
-                break;
-            case 'json':
-                $jFiles = array();
-
-                foreach ($changed as $file => $fixResult) {
-                    $jfile = array('name' => $file);
-
-                    if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
-                        $jfile['appliedFixers'] = $fixResult['appliedFixers'];
-                    }
-
-                    if ($input->getOption('diff')) {
-                        $jfile['diff'] = $fixResult['diff'];
-                    }
-
-                    $jFiles[] = $jfile;
-                }
-
-                $fixEvent = $this->stopwatch->getEvent('fixFiles');
-
-                $json = array(
-                    'files' => $jFiles,
-                    'memory' => round($fixEvent->getMemory() / 1024 / 1024, 3),
-                    'time' => array(
-                        'total' => round($fixEvent->getDuration() / 1000, 3),
-                    ),
-                );
-
-                if (OutputInterface::VERBOSITY_DEBUG <= $verbosity) {
-                    $jFileTime = array();
-
-                    foreach ($this->stopwatch->getSectionEvents('fixFile') as $file => $event) {
-                        if ('__section__' === $file) {
-                            continue;
-                        }
-
-                        $jFileTime[$file] = round($event->getDuration() / 1000, 3);
-                    }
-
-                    $json['time']['files'] = $jFileTime;
-                }
-
-                $output->write(json_encode($json));
-                break;
-            default:
-                throw new \InvalidArgumentException(sprintf('The format "%s" is not defined.', $input->getOption('format')));
-        }
-
-        $invalidErrors = $this->errorsManager->getInvalidErrors();
-        if (!empty($invalidErrors)) {
-            $this->listErrors($output, 'linting before fixing', $invalidErrors);
-        }
-
-        $exceptionErrors = $this->errorsManager->getExceptionErrors();
-        if (!empty($exceptionErrors)) {
-            $this->listErrors($output, 'fixing', $exceptionErrors);
-        }
-
-        $lintErrors = $this->errorsManager->getLintErrors();
-        if (!empty($lintErrors)) {
-            $this->listErrors($output, 'linting after fixing', $lintErrors);
-        }
+        $this->fixer->setEventDispatcher(null);
 
         return !$resolver->isDryRun() || empty($changed) ? 0 : 3;
     }
 
-    /**
-     * @param OutputInterface $output
-     * @param string          $process
-     * @param Error[]         $errors
-     */
-    private function listErrors(OutputInterface $output, $process, array $errors)
-    {
-        $output->writeLn('');
-        $output->writeLn(sprintf(
-            'Files that were not fixed due to errors reported during %s:',
-             $process
-        ));
-
-        foreach ($errors as $i => $error) {
-            $output->writeLn(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
-        }
-    }
-
-    protected function getFixersHelp()
+    private function getFixersHelp()
     {
         $help = '';
         $maxName = 0;
@@ -594,7 +436,7 @@ EOF
 
         $count = count($fixers) - 1;
         foreach ($fixers as $i => $fixer) {
-            $chunks = explode("\n", wordwrap(sprintf("[%s]\n%s", $this->fixer->getLevelAsString($fixer), $fixer->getDescription()), 72 - $maxName, "\n"));
+            $chunks = explode("\n", wordwrap(sprintf("[%s]\n%s", Fixer::getLevelAsString($fixer), $fixer->getDescription()), 72 - $maxName, "\n"));
             $help .= sprintf(" * <comment>%s</comment>%s %s\n", $fixer->getName(), str_repeat(' ', $maxName - strlen($fixer->getName())), array_shift($chunks));
             while ($c = array_shift($chunks)) {
                 $help .= str_repeat(' ', $maxName + 4).$c."\n";
@@ -608,7 +450,7 @@ EOF
         return $help;
     }
 
-    protected function getConfigsHelp()
+    private function getConfigsHelp()
     {
         $help = '';
         $maxName = 0;

@@ -11,6 +11,8 @@
 
 namespace Symfony\CS;
 
+use Symfony\CS\Console\Output\FixerOutputInterface;
+
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -42,7 +44,7 @@ interface ConfigInterface
     public function getFinder();
 
     /**
-     * Returns the level to run.
+     * Returns the level to run. {@see \Symfony\CS\FixerInterface}.
      *
      * @return int A level
      */
@@ -128,4 +130,13 @@ interface ConfigInterface
      * @return string|null
      */
     public function getPhpExecutable();
+
+    /**
+     * Returns an output instance.
+     *
+     * @return FixerOutputInterface
+     */
+    public function getFixerOutput();
+
+    public function setFixerOutput(FixerOutputInterface $output);
 }

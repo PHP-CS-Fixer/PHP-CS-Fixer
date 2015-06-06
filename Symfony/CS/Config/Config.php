@@ -12,6 +12,7 @@
 namespace Symfony\CS\Config;
 
 use Symfony\CS\ConfigInterface;
+use Symfony\CS\Console\Output\FixerOutputInterface;
 use Symfony\CS\Finder\DefaultFinder;
 use Symfony\CS\FinderInterface;
 use Symfony\CS\FixerInterface;
@@ -34,6 +35,7 @@ class Config implements ConfigInterface
     protected $hideProgress = false;
     protected $cacheFile = '.php_cs.cache';
     protected $phpExecutable;
+    protected $fixerOutput;
 
     public function __construct($name = 'default', $description = 'A default configuration')
     {
@@ -198,5 +200,20 @@ class Config implements ConfigInterface
     public function getPhpExecutable()
     {
         return $this->phpExecutable;
+    }
+
+    /**
+     * Returns an output instance.
+     *
+     * @return FixerOutputInterface
+     */
+    public function getFixerOutput()
+    {
+        return $this->fixerOutput;
+    }
+
+    public function setFixerOutput(FixerOutputInterface $output)
+    {
+        $this->fixerOutput = $output;
     }
 }

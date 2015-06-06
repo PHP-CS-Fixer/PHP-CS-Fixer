@@ -9,22 +9,17 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS;
+namespace Symfony\CS\Events;
 
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Event that is fired when file was processed by Fixer.
+ * Event that is fired when a file is processed by Fixer.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
  */
 class FixerFileProcessedEvent extends Event
 {
-    /**
-     * Event name.
-     */
     const NAME = 'fixer.file_processed';
 
     const STATUS_UNKNOWN = 0;

@@ -64,6 +64,18 @@ class ErrorsManager
     }
 
     /**
+     * Returns errors related to configuration reported before fixing.
+     *
+     * @return Error[]
+     */
+    public function getConfigurationErrors()
+    {
+        return array_filter($this->errors, function (Error $error) {
+            return $error->getType() === Error::TYPE_CONFIGURATION;
+        });
+    }
+
+    /**
      * Returns true if no errors were reported.
      *
      * @return bool
