@@ -100,7 +100,7 @@ class FixCommand extends Command
             ->setName('fix')
             ->setDefinition(
                 array(
-                    new InputArgument('path', InputArgument::OPTIONAL, 'The path', null),
+                    new InputArgument('path', InputArgument::IS_ARRAY, 'Paths to fix', null),
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The configuration name', null),
                     new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
@@ -337,7 +337,6 @@ EOF
                 'dry-run' => $input->getOption('dry-run'),
                 'level' => $input->getOption('level'),
                 'fixers' => $input->getOption('fixers'),
-                'path' => $input->getArgument('path'),
                 'progress' => (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) && 'txt' === $input->getOption('format'),
                 'using-cache' => $input->getOption('using-cache'),
                 'cache-file' => $input->getOption('cache-file'),
@@ -345,39 +344,11 @@ EOF
             ->resolve()
         ;
 
-        $config = $resolver->getConfig();
-        $configFile = $resolver->getConfigFile();
-
-        if ($configFile && 'txt' === $input->getOption('format')) {
-            $output->writeln(sprintf('Loaded config from "%s"', $configFile));
-        }
-
-        // register custom fixers from config
-        $this->fixer->registerCustomFixers($config->getCustomFixers());
-        if ($config->usingLinter()) {
-            try {
-                $this->fixer->setLinter(new Linter($config->getPhpExecutable()));
-            } catch (UnavailableLinterException $e) {
-                if ($configFile && 'txt' === $input->getOption('format')) {
-                    $output->writeln('Unable to use linter, can not find PHP executable');
-                }
-            }
-        }
-
-        $showProgress = $resolver->getProgress();
-
-        if ($showProgress) {
-            $this->fixer->setEventDispatcher($this->eventDispatcher);
-            $progressOutput = new ProcessOutput($this->eventDispatcher);
-        }
-
-        $this->stopwatch->start('fixFiles');
-        $changed = $this->fixer->fix($config, $resolver->isDryRun(), $input->getOption('diff'));
-        $this->stopwatch->stop('fixFiles');
-
-        if ($showProgress) {
-            $progressOutput->printLegend();
-            $this->fixer->setEventDispatcher(null);
+        $changed = array();
+        foreach ($input->getArgument('path') as $path) {
+            $output->writeln(sprintf('Fix for %s', $path));
+            $subChanged = $this->runFixer($input, $output, $resolver, $path);
+            $changed = array_merge($changed, $subChanged);
         }
 
         $i = 1;
@@ -546,6 +517,58 @@ EOF
         }
 
         return !$resolver->isDryRun() || empty($changed) ? 0 : 3;
+    }
+
+    /**
+     * @param InputInterface        $input
+     * @param OutputInterface       $output
+     * @param ConfigurationResolver $resolver
+     * @param string|null           $path
+     *
+     * @return array
+     */
+    private function runFixer(InputInterface $input, OutputInterface $output, ConfigurationResolver $resolver, $path = null)
+    {
+        if ($path) {
+            $resolver->setOption('path', $path);
+        }
+
+        $config = $resolver->getConfig();
+        $configFile = $resolver->getConfigFile();
+
+        if ($configFile && 'txt' === $input->getOption('format')) {
+            $output->writeln(sprintf('Loaded config from "%s"', $configFile));
+        }
+
+        // register custom fixers from config
+        $this->fixer->registerCustomFixers($config->getCustomFixers());
+        if ($config->usingLinter()) {
+            try {
+                $this->fixer->setLinter(new Linter($config->getPhpExecutable()));
+            } catch (UnavailableLinterException $e) {
+                if ($configFile && 'txt' === $input->getOption('format')) {
+                    $output->writeln('Unable to use linter, can not find PHP executable');
+                }
+            }
+        }
+
+        $showProgress = $resolver->getProgress();
+
+        if ($showProgress) {
+            $this->fixer->setEventDispatcher($this->eventDispatcher);
+            $progressOutput = new ProcessOutput($this->eventDispatcher);
+        }
+
+        $this->stopwatch->start('fixFiles');
+        $changed = $this->fixer->fix($config, $resolver->isDryRun(), $input->getOption('diff'));
+        $this->stopwatch->stop('fixFiles');
+
+        if ($showProgress) {
+            $progressOutput->printLegend();
+            $this->fixer->setEventDispatcher(null);
+        }
+
+        return $changed;
     }
 
     /**
