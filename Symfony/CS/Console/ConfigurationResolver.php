@@ -12,7 +12,6 @@
 namespace Symfony\CS\Console;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
@@ -30,7 +29,14 @@ use Symfony\CS\StdinFileInfo;
 class ConfigurationResolver
 {
     private $allFixers;
+
+    /**
+     * The config instance.
+     *
+     * @var ConfigInterface
+     */
     private $config;
+
     private $configFile;
     private $cwd;
     private $defaultConfig;
@@ -330,9 +336,9 @@ class ConfigurationResolver
             if (file_exists($configFile)) {
                 $config = include $configFile;
 
-                // verify that the config has an instance of Config
-                if (!$config instanceof Config) {
-                    throw new \UnexpectedValueException(sprintf('The config file: "%s" does not return a "Symfony\CS\Config\Config" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
+                // verify that the config has an instance of ConfigInterface
+                if (!$config instanceof ConfigInterface) {
+                    throw new \UnexpectedValueException(sprintf('The config file "%s" does not return an instance of Symfony\CS\ConfigInterface. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
                 }
 
                 $this->config = $config;

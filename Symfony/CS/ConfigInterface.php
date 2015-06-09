@@ -116,6 +116,15 @@ interface ConfigInterface
     public function setCacheFile($cacheFile);
 
     /**
+     * Sets if caching should be enabled.
+     *
+     * @param bool $usingCache
+     *
+     * @return ConfigInterface
+     */
+    public function setUsingCache($usingCache);
+
+    /**
      * Returns the path to the cache file.
      *
      * @return string
@@ -128,4 +137,13 @@ interface ConfigInterface
      * @return string|null
      */
     public function getPhpExecutable();
+
+    /**
+     * Set the fixers to be used.
+     *
+     * @param FixerInterface[] $fixers
+     *
+     * @return ConfigInterface
+     */
+    public function fixers(array $fixers);
 }
