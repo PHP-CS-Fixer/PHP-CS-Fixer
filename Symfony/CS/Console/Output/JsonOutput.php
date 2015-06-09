@@ -14,7 +14,7 @@ namespace Symfony\CS\Console\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\CS\Events\FixerFinishedEvent;
 
-class JsonOutput extends AbstractOutput
+final class JsonOutput extends AbstractOutput
 {
     public function onFixerFinished(FixerFinishedEvent $event)
     {

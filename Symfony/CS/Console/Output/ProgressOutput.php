@@ -19,7 +19,7 @@ use Symfony\CS\Events\FixerFinishedEvent;
  *
  * @internal
  */
-class ProgressOutput extends AbstractOutput
+final class ProgressOutput extends AbstractOutput
 {
     /**
      * File statuses map.
