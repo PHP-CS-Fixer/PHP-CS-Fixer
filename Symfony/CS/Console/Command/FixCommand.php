@@ -387,14 +387,14 @@ EOF
         $this->stopwatch->stop('fixFiles');
 
         $this->eventDispatcher->dispatch(
-                                    FixerFinishedEvent::NAME,
-                                    new FixerFinishedEvent(
-                                            $changed,
-                                            $this->stopwatch,
-                                            $this->errorsManager,
-                                            $resolver->isDryRun(),
-                                            $resolver->isDiff()
-                                    )
+            FixerFinishedEvent::NAME,
+            new FixerFinishedEvent(
+                $changed,
+                $this->stopwatch,
+                $this->errorsManager,
+                $resolver->isDryRun(),
+                $resolver->isDiff()
+            )
         );
 
         $this->eventDispatcher->removeSubscriber($output);

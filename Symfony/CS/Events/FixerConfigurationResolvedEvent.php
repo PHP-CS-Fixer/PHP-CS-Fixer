@@ -17,13 +17,18 @@ use Symfony\CS\ConfigInterface;
 /**
  * Event that is fired when the configuration of a Fixer has been resolved.
  */
-class FixerConfigurationResolvedEvent extends Event
+final class FixerConfigurationResolvedEvent extends Event
 {
     const NAME = 'fixer.configuration_resolved';
 
     private $config;
+
     private $configFile;
 
+    /**
+     * @param ConfigInterface $config
+     * @param string|null     $configFile Path to the configuration file.
+     */
     public function __construct(ConfigInterface $config, $configFile = null)
     {
         $this->config = $config;

@@ -15,7 +15,10 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Error\ErrorsManager;
 
-class FixerFinishedEvent extends Event
+/**
+ * Event that is fired when the Fixer is finished.
+ */
+final class FixerFinishedEvent extends Event
 {
     const NAME = 'fixer.finished';
 

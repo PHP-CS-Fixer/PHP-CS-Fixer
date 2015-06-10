@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\Event;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class FixerFileProcessedEvent extends Event
+final class FixerFileProcessedEvent extends Event
 {
     const NAME = 'fixer.file_processed';
 

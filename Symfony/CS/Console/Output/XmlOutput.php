@@ -14,6 +14,9 @@ namespace Symfony\CS\Console\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\CS\Events\FixerFinishedEvent;
 
+/**
+ * Writes Fixer output in XML format to the output.
+ */
 final class XmlOutput extends AbstractOutput
 {
     public function onFixerFinished(FixerFinishedEvent $event)

@@ -13,6 +13,9 @@ namespace Symfony\CS\Console\Output;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Abstract base class for output classes.
+ */
 abstract class AbstractOutput implements FixerOutputInterface
 {
     /**
@@ -29,11 +32,6 @@ abstract class AbstractOutput implements FixerOutputInterface
      */
     protected $output;
 
-    /**
-     * @param $diff bool
-     *
-     * @return FixerOutputInterface
-     */
     public function setDiff($diff)
     {
         $this->diff = $diff;

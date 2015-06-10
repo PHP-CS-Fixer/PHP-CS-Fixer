@@ -14,6 +14,9 @@ namespace Symfony\CS\Console\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Interface definition for output classes.
+ */
 interface FixerOutputInterface extends EventSubscriberInterface
 {
     /**

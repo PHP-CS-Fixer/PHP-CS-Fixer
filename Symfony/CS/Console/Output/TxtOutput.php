@@ -16,6 +16,9 @@ use Symfony\CS\Events\FixerConfigurationResolvedEvent;
 use Symfony\CS\Events\FixerFinishedEvent;
 use Symfony\CS\Fixer;
 
+/**
+ * Writes Fixer output in Txt format to the output.
+ */
 final class TxtOutput extends AbstractOutput
 {
     public function onFixerConfigurationResolved(FixerConfigurationResolvedEvent $event)

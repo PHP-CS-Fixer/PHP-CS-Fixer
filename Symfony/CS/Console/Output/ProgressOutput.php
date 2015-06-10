@@ -15,7 +15,7 @@ use Symfony\CS\Events\FixerFileProcessedEvent;
 use Symfony\CS\Events\FixerFinishedEvent;
 
 /**
- * Output writer to show the progress of a FixCommand.
+ * Output writer to show the progress of the Fixer.
  *
  * @internal
  */
