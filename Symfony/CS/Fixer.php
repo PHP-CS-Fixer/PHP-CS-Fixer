@@ -321,8 +321,16 @@ class Fixer
 
     public static function getLevelAsString(FixerInterface $fixer)
     {
-        $level = $fixer->getLevel();
+        return self::getLevelDescription($fixer->getLevel());
+    }
 
+    /**
+     * @param int $level
+     *
+     * @return string
+     */
+    public static function getLevelDescription($level)
+    {
         if (($level & FixerInterface::NONE_LEVEL) === $level) {
             return 'none';
         }

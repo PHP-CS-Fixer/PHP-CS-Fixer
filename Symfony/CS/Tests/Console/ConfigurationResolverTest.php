@@ -126,6 +126,27 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->makeFixersTest(array(), $this->resolver->getFixers());
     }
 
+    public function testResolveDefaultLevelAndFixers()
+    {
+        if (FixerInterface::PSR2_LEVEL !== $this->config->getLevel()) {
+            $configLevel = $this->config->getLevel();
+            $this->fail(sprintf('Expected level %s (%d), got %s (%d)', Fixer::getLevelDescription(FixerInterface::PSR2_LEVEL), FixerInterface::PSR2_LEVEL, Fixer::getLevelDescription($configLevel), $configLevel));
+        }
+
+        $this->resolver->resolve();
+        $config = $this->resolver->getConfig();
+
+        if (FixerInterface::PSR2_LEVEL !== $config->getLevel()) {
+            $configLevel = $config->getLevel();
+            $this->fail(sprintf('Expected level %s (%d), got %s (%d)', Fixer::getLevelDescription(FixerInterface::PSR2_LEVEL), FixerInterface::PSR2_LEVEL, Fixer::getLevelDescription($configLevel), $configLevel));
+        }
+
+        foreach ($config->getFixers() as $fixer) {
+            $this->assertTrue($fixer->getLevel() <= FixerInterface::PSR2_LEVEL);
+            $this->assertFalse($fixer->getLevel() === FixerInterface::PSR0_LEVEL);
+        }
+    }
+
     public function testResolveFixersWithLevelConfig()
     {
         $this->config->level(FixerInterface::PSR1_LEVEL);
