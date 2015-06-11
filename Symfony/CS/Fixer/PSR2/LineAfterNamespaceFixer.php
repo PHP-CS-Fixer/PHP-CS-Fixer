@@ -52,7 +52,7 @@ class LineAfterNamespaceFixer extends AbstractFixer
                     if (substr($nextToken->getContent(), 1, 1) === "\n") {
                         $linefeedsRequired--;
                     }
-                    $nextToken->setContent(str_repeat("\n", $linefeedsRequired) . ltrim($nextToken->getContent(), "\r "));
+                    $nextToken->setContent(str_repeat("\n", $linefeedsRequired).ltrim($nextToken->getContent(), "\r "));
                 }
             }
         }
