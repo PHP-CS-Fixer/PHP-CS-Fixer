@@ -45,7 +45,14 @@ class LineAfterNamespaceFixer extends AbstractFixer
                 if (!$nextToken->isWhitespace()) {
                     $tokens->insertAt($semicolonIndex + 1, new Token(array(T_WHITESPACE, "\n\n")));
                 } else {
-                    $nextToken->setContent("\n\n".ltrim($nextToken->getContent()));
+                    $linefeedsRequired = 2;
+                    if (substr($nextToken->getContent(), 0, 1) === "\n") {
+                        $linefeedsRequired--;
+                    }
+                    if (substr($nextToken->getContent(), 1, 1) === "\n") {
+                        $linefeedsRequired--;
+                    }
+                    $nextToken->setContent(str_repeat("\n", $linefeedsRequired) . ltrim($nextToken->getContent(), "\r "));
                 }
             }
         }
