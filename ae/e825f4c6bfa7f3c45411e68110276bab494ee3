@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-06-04T19:21:50Z
+
+Looks good, is there a way we could add test(s) to check this behaviour?
+
+---------------------------------------------------------------------------
+
+by stof at 2015-06-07T13:34:03Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by JanJakes at 2015-06-08T09:23:19Z
+
+@SpacePossum: I was not able to find a test of the current `set_error_handler` functionality that was added recently. That way I could just fix the test - writing a new one takes more time and I don't know when I will get to that.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-06-11T22:25:24Z
+
+very well, I've tried your fix and it works for me :)
+:+1:
