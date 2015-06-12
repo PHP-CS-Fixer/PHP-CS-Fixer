@@ -11,8 +11,6 @@
 
 namespace Symfony\CS\Linter;
 
-use Symfony\Component\Process\Process;
-
 /**
  * Interface for PHP code linting process manager.
  *

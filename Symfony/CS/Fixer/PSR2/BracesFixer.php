@@ -289,7 +289,6 @@ final class BracesFixer extends AbstractFixer
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
                 }
             } else {
-                $nextToken = $tokens[$startBraceIndex + 1];
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
             }
 
