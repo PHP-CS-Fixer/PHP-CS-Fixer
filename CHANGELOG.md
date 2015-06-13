@@ -3,6 +3,18 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.9
+------------------
+
+* feature #1097 Added ShortEchoTagFixer (vinkla)
+* minor #1238 Fixed error handler to respect current error_reporting (JanJakes)
+* minor #1234 Add class to exception message, use sprintf for exceptions (SpacePossum)
+* minor #1210 set custom error handler for application run (keradus)
+* minor #1214 Tokens::isMonolithicPhp - enhance performance (keradus)
+* minor #1207 Update code documentation (keradus)
+* minor #1202 Update IDE tool urls (keradus)
+* minor #1195 PreIncrementFixer - move to Symfony level (gharlan)
+
 Changelog for v1.8.1
 --------------------
 
