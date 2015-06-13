@@ -377,6 +377,100 @@ EOF;
         $this->makeTest($expected, $input);
     }
 
+    public function testStringValue()
+    {
+        $expected = <<<'EOF'
+<?php
+
+namespace Foo;
+
+
+echo 'bar';
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Bar;
+
+echo 'bar';
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testInComment()
+    {
+        $expected = <<<'EOF'
+<?php
+
+
+// info: some token
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use Symfony\CS\Tokenizer\Token;
+
+// info: some token
+EOF;
+
+        $this->makeTest($expected, $input);
+
+        $expected = <<<'EOF'
+<?php
+
+use Symfony\CS\Tokenizer\Token;
+
+// info: some Token
+EOF;
+
+        $this->makeTest($expected);
+    }
+
+    public function testInDocs()
+    {
+        $expected = <<<'EOF'
+<?php
+
+
+/**
+ * Interface for PHP code linting process manager.
+ */
+interface LinterInterface {}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use Symfony\Component\Process\Process;
+
+/**
+ * Interface for PHP code linting process manager.
+ */
+interface LinterInterface {}
+EOF;
+
+        $this->makeTest($expected, $input);
+
+        $expected = <<<'EOF'
+<?php
+
+use Symfony\Component\Process\Process;
+
+/**
+ * Use Process to do sth.
+ */
+interface Worker {}
+
+EOF;
+
+        $this->makeTest($expected);
+    }
+
     public function testNamespacePart()
     {
         $expected = <<<'EOF'
@@ -466,6 +560,58 @@ EOF;
 namespace Foo\Finder;
 
 use Bar\Finder;
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testStaticClass()
+    {
+        $expected = <<<'EOF'
+<?php
+
+use My\Aaa;
+use My\Bbb;
+use My\Ddd;
+
+Aaa::zzz();
+
+// @see Bbb::zzz()
+
+$b = 2;
+
+// @see \My\Ccc
+
+$c = 3;
+
+// @see Ddd
+
+$d = 4;
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use My\Aaa;
+use My\Bbb;
+use My\Ccc;
+use My\Ddd;
+
+Aaa::zzz();
+
+// @see Bbb::zzz()
+
+$b = 2;
+
+// @see \My\Ccc
+
+$c = 3;
+
+// @see Ddd
+
+$d = 4;
+
 EOF;
 
         $this->makeTest($expected, $input);
