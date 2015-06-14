@@ -20,7 +20,7 @@ use Symfony\CS\Tokenizer\Token;
  *
  * @internal
  */
-class Utils
+final class Utils
 {
     /**
      * Calculate a bitmask for given constant names.

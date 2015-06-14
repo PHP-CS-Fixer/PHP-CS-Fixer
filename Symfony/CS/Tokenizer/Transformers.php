@@ -20,7 +20,7 @@ use Symfony\Component\Finder\Finder;
  *
  * @internal
  */
-class Transformers
+final class Transformers
 {
     /**
      * The registered transformers.

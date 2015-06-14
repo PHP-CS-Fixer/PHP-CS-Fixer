@@ -16,7 +16,7 @@ namespace Symfony\CS;
  *
  * @internal
  */
-class StdinFileInfo extends \SplFileInfo
+final class StdinFileInfo extends \SplFileInfo
 {
     public function __construct()
     {
