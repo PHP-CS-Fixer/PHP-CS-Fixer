@@ -18,7 +18,7 @@ namespace Symfony\CS\Error;
  *
  * @internal
  */
-class Error
+final class Error
 {
     /**
      * Error which has occurred in linting phase, before applying any fixers.
