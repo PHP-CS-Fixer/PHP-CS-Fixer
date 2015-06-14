@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\Event;
  *
  * @internal
  */
-class FixerFileProcessedEvent extends Event
+final class FixerFileProcessedEvent extends Event
 {
     /**
      * Event name.

@@ -24,7 +24,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @internal
  */
-class UseTransformer extends AbstractTransformer
+final class UseTransformer extends AbstractTransformer
 {
     /**
      * {@inheritdoc}

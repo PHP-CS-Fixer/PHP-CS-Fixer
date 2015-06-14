@@ -18,7 +18,7 @@ namespace Symfony\CS\Error;
  *
  * @internal
  */
-class ErrorsManager
+final class ErrorsManager
 {
     /**
      * Errors.
