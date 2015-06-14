@@ -36,6 +36,11 @@ class Error
     const TYPE_LINT = 3;
 
     /**
+     * Error with the configuration, before applying any fixers.
+     */
+    const TYPE_CONFIGURATION = 4;
+
+    /**
      * @var string
      */
     private $type;
@@ -46,21 +51,20 @@ class Error
     private $filePath;
 
     /**
-     * @param string $type
-     * @param string $filePath
+     * @var \Exception
      */
-    public function __construct($type, $filePath)
+    private $source;
+
+    /**
+     * @param string     $type
+     * @param string     $filePath
+     * @param \Exception $source
+     */
+    public function __construct($type, $filePath, \Exception $source = null)
     {
         $this->type = $type;
         $this->filePath = $filePath;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
+        $this->source = $source;
     }
 
     /**
@@ -69,5 +73,21 @@ class Error
     public function getFilePath()
     {
         return $this->filePath;
+    }
+
+    /**
+     * @return \Exception
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

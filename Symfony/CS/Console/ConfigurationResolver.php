@@ -14,6 +14,8 @@ namespace Symfony\CS\Console;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
+use Symfony\CS\Console\Output\FixerOutputInterface;
+use Symfony\CS\Console\Output\TxtOutput;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\StdinFileInfo;
@@ -34,6 +36,7 @@ class ConfigurationResolver
     private $configFile;
     private $cwd;
     private $defaultConfig;
+    private $diff;
     private $isStdIn;
     private $isDryRun;
     private $fixer;
@@ -41,8 +44,10 @@ class ConfigurationResolver
     private $options = array(
         'config' => null,
         'config-file' => null,
+        'diff' => null,
         'dry-run' => null,
         'fixers' => null,
+        'format' => null,
         'level' => null,
         'path' => null,
         'progress' => null,
@@ -53,6 +58,7 @@ class ConfigurationResolver
     private $progress;
     private $usingCache;
     private $cacheFile;
+    private $format;
 
     /**
      * Returns config instance.
@@ -114,6 +120,11 @@ class ConfigurationResolver
         return $this->isDryRun;
     }
 
+    public function isDiff()
+    {
+        return $this->diff;
+    }
+
     /**
      * Resolve configuration.
      *
@@ -124,16 +135,15 @@ class ConfigurationResolver
         $this->resolvePath();
         $this->resolveIsStdIn();
         $this->resolveIsDryRun();
-
         $this->resolveConfig();
         $this->resolveConfigPath();
-
+        $this->resolveDiff();
         $this->resolveFixersByLevel();
         $this->resolveFixersByNames();
-
         $this->resolveProgress();
         $this->resolveUsingCache();
         $this->resolveCacheFile();
+        $this->resolveOutput();
 
         $this->config->fixers($this->getFixers());
         $this->config->setUsingCache($this->usingCache);
@@ -359,6 +369,11 @@ class ConfigurationResolver
         }
     }
 
+    private function resolveDiff()
+    {
+        $this->diff = !empty($this->options['diff']);
+    }
+
     /**
      * Resolve fixers to run based on level.
      */
@@ -489,5 +504,31 @@ class ConfigurationResolver
         }
 
         $this->cacheFile = $this->config->getCacheFile();
+    }
+
+    private function resolveOutput()
+    {
+        if (null !== $this->options['format']) {
+            $format = (string) $this->options['format'];
+            $class = sprintf('Symfony\CS\Console\Output\%sOutput', ucfirst($format));
+            if (false === class_exists($class)) {
+                throw new \InvalidArgumentException(sprintf('The format "%s" is not supported.', $this->options['format']));
+            }
+
+            $this->format = new $class();
+            $this->config->setFixerOutput($this->format);
+
+            return;
+        }
+
+        $this->format = $this->config->getFixerOutput();
+        if (null === $this->format) {
+            // missing format is acceptable -> default to txt
+            $this->format = new TxtOutput();
+        } elseif (!$this->format instanceof FixerOutputInterface) {
+            throw new \UnexpectedValueException(sprintf('The config does not return an instance of Symfony\CS\Console\Output\FixerOutputInterface. Got: "%s".', is_object($this->format) ? get_class($this->format) : gettype($this->format)));
+        }
+
+        $this->config->setFixerOutput($this->format);
     }
 }

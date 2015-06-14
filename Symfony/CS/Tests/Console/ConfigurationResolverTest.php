@@ -611,4 +611,61 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($optionCacheFile, $this->config->getCacheFile());
     }
+
+    /**
+     * @dataProvider provideResolveDefaultOutputFormats
+     */
+    public function testResolveDefaultOutputFormats($format)
+    {
+        $this->resolver
+            ->setOption('format', $format)
+            ->resolve();
+
+        $output = $this->config->getFixerOutput();
+        $this->assertInstanceOf('Symfony\\CS\\Console\\Output\\FixerOutputInterface', $output);
+    }
+
+    public function provideResolveDefaultOutputFormats()
+    {
+        return array(
+            array('txt'),
+            array('xml'),
+            array('json'),
+            array('Txt'),
+            array('xMl'),
+            array('JSON'),
+        );
+    }
+
+    /**
+     * @expectedException              \InvalidArgumentException
+     * @expectedExceptionMessageRegExp /The format "uTst" is not supported./
+     */
+    public function testResolveUnsupportedOutputFormat()
+    {
+        $this->resolver
+            ->setOption('format', 'uTst')
+            ->resolve();
+
+        $this->config->getFixerOutput();
+    }
+
+    public function testDefaultIsTxt()
+    {
+        $this->resolver->resolve();
+        $output = $this->config->getFixerOutput();
+        $this->assertInstanceOf('Symfony\\CS\\Console\\Output\\TxtOutput', $output);
+    }
+
+    /**
+     * @expectedException               UnexpectedValueException
+     * @expectedExceptionMessageRegExp  /The config does not return an instance of Symfony\\CS\\Console\\Output\\FixerOutputInterface/
+     */
+    public function testResolveConfigFileInvalidOutputClass()
+    {
+        $dirBase = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR;
+        $this->resolver
+            ->setOption('path', $dirBase.'case_6')
+            ->resolve();
+    }
 }

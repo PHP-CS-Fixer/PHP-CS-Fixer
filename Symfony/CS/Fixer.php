@@ -19,6 +19,7 @@ use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Error\Error;
 use Symfony\CS\Error\ErrorsManager;
+use Symfony\CS\Events\FixerFileProcessedEvent;
 use Symfony\CS\Linter\LinterInterface;
 use Symfony\CS\Linter\LintingException;
 use Symfony\CS\Linter\NullLinter;
@@ -214,7 +215,8 @@ class Fixer
 
             $this->errorsManager->report(new Error(
                 Error::TYPE_INVALID,
-                $this->getFileRelativePathname($file)
+                $this->getFileRelativePathname($file),
+                $e
             ));
 
             return;
@@ -251,7 +253,8 @@ class Fixer
 
             $this->errorsManager->report(new Error(
                 Error::TYPE_EXCEPTION,
-                $this->getFileRelativePathname($file)
+                $this->getFileRelativePathname($file),
+                $e
             ));
 
             return;
@@ -279,7 +282,8 @@ class Fixer
 
                 $this->errorsManager->report(new Error(
                     Error::TYPE_LINT,
-                    $this->getFileRelativePathname($file)
+                    $this->getFileRelativePathname($file),
+                    $e
                 ));
 
                 return;
@@ -321,8 +325,16 @@ class Fixer
 
     public static function getLevelAsString(FixerInterface $fixer)
     {
-        $level = $fixer->getLevel();
+        return self::getLevelDescription($fixer->getLevel());
+    }
 
+    /**
+     * @param int $level
+     *
+     * @return string
+     */
+    public static function getLevelDescription($level)
+    {
         if (($level & FixerInterface::NONE_LEVEL) === $level) {
             return 'none';
         }
@@ -348,27 +360,7 @@ class Fixer
 
     protected function stringDiff($old, $new)
     {
-        $diff = $this->diff->diff($old, $new);
-
-        $diff = implode(
-            PHP_EOL,
-            array_map(
-                function ($string) {
-                    $string = preg_replace('/^(\+){3}/', '<info>+++</info>', $string);
-                    $string = preg_replace('/^(\+){1}/', '<info>+</info>', $string);
-
-                    $string = preg_replace('/^(\-){3}/', '<error>---</error>', $string);
-                    $string = preg_replace('/^(\-){1}/', '<error>-</error>', $string);
-
-                    $string = str_repeat(' ', 6).$string;
-
-                    return $string;
-                },
-                explode(PHP_EOL, $diff)
-            )
-        );
-
-        return $diff;
+        return $this->diff->diff($old, $new);
     }
 
     private function sortFixers()
