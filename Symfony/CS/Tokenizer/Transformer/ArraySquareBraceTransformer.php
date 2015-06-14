@@ -26,7 +26,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @internal
  */
-class ArraySquareBraceTransformer extends AbstractTransformer
+final class ArraySquareBraceTransformer extends AbstractTransformer
 {
     /**
      * {@inheritdoc}

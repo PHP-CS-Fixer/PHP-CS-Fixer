@@ -22,7 +22,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @internal
  */
-class ClassConstantTransformer extends AbstractTransformer
+final class ClassConstantTransformer extends AbstractTransformer
 {
     /**
      * {@inheritdoc}

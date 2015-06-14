@@ -26,7 +26,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @internal
  */
-class ImportTransformer extends AbstractTransformer
+final class ImportTransformer extends AbstractTransformer
 {
     /**
      * {@inheritdoc}
