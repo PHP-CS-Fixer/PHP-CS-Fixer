@@ -27,7 +27,7 @@ namespace Symfony\CS;
  *
  * @internal
  */
-class FileCacheManager
+final class FileCacheManager
 {
     private $cacheFile;
     private $isEnabled;

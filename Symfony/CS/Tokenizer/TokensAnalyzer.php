@@ -21,7 +21,7 @@ namespace Symfony\CS\Tokenizer;
  *
  * @internal
  */
-class TokensAnalyzer
+final class TokensAnalyzer
 {
     /**
      * Tokens collection instance.
