@@ -18,7 +18,7 @@ namespace Symfony\CS\Linter;
  *
  * @internal
  */
-class NullLinter implements LinterInterface
+final class NullLinter implements LinterInterface
 {
     /**
      * {@inheritdoc}
