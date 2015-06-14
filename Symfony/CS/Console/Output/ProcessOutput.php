@@ -20,7 +20,7 @@ use Symfony\CS\FixerFileProcessedEvent;
  *
  * @internal
  */
-class ProcessOutput
+final class ProcessOutput
 {
     /**
      * File statuses map.

@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @internal
  */
-class ReadmeCommand extends Command
+final class ReadmeCommand extends Command
 {
     /**
      * @see Command

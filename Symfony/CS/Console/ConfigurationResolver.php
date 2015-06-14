@@ -27,7 +27,7 @@ use Symfony\CS\StdinFileInfo;
  *
  * @internal
  */
-class ConfigurationResolver
+final class ConfigurationResolver
 {
     private $allFixers;
     private $config;
