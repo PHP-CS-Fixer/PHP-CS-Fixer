@@ -22,7 +22,7 @@ use Symfony\Component\Process\ProcessUtils;
  *
  * @internal
  */
-class Linter implements LinterInterface
+final class Linter implements LinterInterface
 {
     /**
      * Temporary file for code linting.
