@@ -228,12 +228,16 @@ class ConfigurationResolver
     private function computeConfigFiles()
     {
         $configFile = $this->options['config-file'];
-        $path = $this->path;
 
         if (null !== $configFile) {
+            if (false === file_exists($configFile) || false === is_readable($configFile)) {
+                throw new \UnexpectedValueException(sprintf('Cannot read config file "%s".', $configFile));
+            }
+
             return array($configFile);
         }
 
+        $path = $this->path;
         if (is_file($path) && $dirName = pathinfo($path, PATHINFO_DIRNAME)) {
             $configDir = $dirName;
         } elseif ($this->isStdIn || null === $path) {

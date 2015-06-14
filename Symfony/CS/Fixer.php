@@ -14,6 +14,7 @@ namespace Symfony\CS;
 use SebastianBergmann\Diff\Differ;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -285,18 +286,18 @@ class Fixer
                 return;
             }
 
-            if (!$dryRun) {
-                file_put_contents($file->getRealpath(), $new);
+            if (!$dryRun && false === @file_put_contents($file->getRealpath(), $new)) {
+                $error = error_get_last();
+                if ($error) {
+                    throw new IOException(sprintf('Failed to write file "%s", "%s".', $file->getRealpath(), $error['message']), 0, null, $file->getRealpath());
+                }
+                throw new IOException(sprintf('Failed to write file "%s".', $file->getRealpath()), 0, null, $file->getRealpath());
             }
 
             $fixInfo = array('appliedFixers' => $appliedFixers);
 
             if ($diff) {
                 $fixInfo['diff'] = $this->stringDiff($old, $new);
-            }
-
-            if (!$dryRun) {
-                file_put_contents($file->getRealpath(), $new);
             }
         }
 
