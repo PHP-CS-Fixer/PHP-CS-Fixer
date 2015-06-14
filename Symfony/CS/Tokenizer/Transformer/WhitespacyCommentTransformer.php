@@ -22,7 +22,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @internal
  */
-class WhitespacyCommentTransformer extends AbstractTransformer
+final class WhitespacyCommentTransformer extends AbstractTransformer
 {
     /**
      * {@inheritdoc}

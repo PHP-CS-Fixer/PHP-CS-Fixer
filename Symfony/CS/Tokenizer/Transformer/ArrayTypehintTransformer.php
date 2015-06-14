@@ -22,7 +22,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @internal
  */
-class ArrayTypehintTransformer extends AbstractTransformer
+final class ArrayTypehintTransformer extends AbstractTransformer
 {
     /**
      * {@inheritdoc}
