@@ -35,7 +35,7 @@ use Symfony\CS\Utils;
  *
  * @internal
  */
-class FixCommand extends Command
+final class FixCommand extends Command
 {
     /**
      * EventDispatcher instance.

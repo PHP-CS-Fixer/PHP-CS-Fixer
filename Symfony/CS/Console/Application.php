@@ -22,7 +22,7 @@ use Symfony\CS\Fixer;
  *
  * @internal
  */
-class Application extends BaseApplication
+final class Application extends BaseApplication
 {
     /**
      * Constructor.

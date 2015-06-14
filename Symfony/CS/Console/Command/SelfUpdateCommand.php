@@ -23,7 +23,7 @@ use Symfony\CS\ToolInfo;
  *
  * @internal
  */
-class SelfUpdateCommand extends Command
+final class SelfUpdateCommand extends Command
 {
     /**
      * {@inheritdoc}
