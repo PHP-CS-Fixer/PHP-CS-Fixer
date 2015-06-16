@@ -211,7 +211,7 @@ class BracesFixer extends AbstractFixer
                         // and it is not a `$foo = function () {};` situation
                         !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equalsAny(array(';', ',', ']'))) &&
                         // and it is not a `${"a"}->...` and `${"b{$foo}"}->...` situation
-                        !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(array('"', "'", array(T_CONSTANT_ENCAPSED_STRING))))
+                        !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(array('"', '\'', array(T_CONSTANT_ENCAPSED_STRING))))
                     ) {
                         if ($nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens())) {
                             $whitespace = ' ';

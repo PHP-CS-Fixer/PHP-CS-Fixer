@@ -34,41 +34,52 @@ class SingleQuoteFixerTest extends AbstractFixerTestBase
                 '<?php $a = "";',
             ),
             array(
-                '<?php $a = \'foo bar\';',
-                '<?php $a = "foo bar";',
+                '<?php $a = \'foo bar0\';',
+                '<?php $a = "foo bar0";',
             ),
             array(
                 '<?php $a = \'foo
-                    bar\';',
+                    bar1\';',
                 '<?php $a = "foo
-                    bar";',
+                    bar1";',
             ),
             array(
-                '<?php $a = \'foo\'.\'bar\'."$baz";',
-                '<?php $a = \'foo\'."bar"."$baz";',
+                '<?php $a = \'foo\'.\'bar2\'."$baz";',
+                '<?php $a = \'foo\'."bar2"."$baz";',
             ),
             array(
-                '<?php $a = \'foo "bar"\';',
-                '<?php $a = "foo \"bar\"";',
+                '<?php $a = \'foo "bar3"\';',
+                '<?php $a = "foo \"bar3\"";',
             ),
             array(<<<'EOF'
-<?php $a = '\\foo\\bar\\\\';
+<?php $a = '\\foo\\bar4\\\\';
 EOF
                 , <<<'EOF'
-<?php $a = "\\foo\\bar\\\\";
+<?php $a = "\\foo\\bar4\\\\";
 EOF
             ),
-
-            array('<?php $a = \'foo bar\';'),
-            array('<?php $a = \'foo "bar"\';'),
-            array('<?php $a = "foo \'bar\'";'),
-            array('<?php $a = "foo $bar";'),
-            array('<?php $a = "foo ${bar}";'),
-            array('<?php $a = "foo\n bar";'),
+            array(
+                '<?php $a = \'foo \\\'bar5\';',
+                '<?php $a = "foo \'bar5";',
+            ),
+            array(
+                '<?php $a = \'foo "bar6\';',
+                '<?php $a = "foo \"bar6";',
+            ),
+            array(
+                '<?php $a = \'foo $bar7\';',
+                '<?php $a = "foo \$bar7";',
+            ),
+            array('<?php $a = \'foo bar8\';'),
+            array('<?php $a = \'foo "bar9"\';'),
+            array('<?php $a = "foo $bar10";'),
+            array('<?php $a = "foo ${bar11}";'),
+            array('<?php $a = "foo\n bar12";'),
             array(<<<'EOF'
 <?php $a = "\\\n";
 EOF
             ),
+            array('<?php $a = "foo \\" \\$$bar13";'),
         );
     }
 }

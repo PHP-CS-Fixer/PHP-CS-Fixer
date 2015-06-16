@@ -34,13 +34,14 @@ class SingleQuoteFixer extends AbstractFixer
             $content = $token->getContent();
             if (
                 '"' === $content[0] &&
-                false === strpos($content, "'") &&
-                // regex: odd number of backslashes, not followed by double quote
-                !preg_match('/(?<!\\\\)(?:\\\\{2})*\\\\(?!["\\\\])/', $content, $m)
+                // regex: odd number of backslashes, not followed by dollar or double quote
+                !preg_match('/(?<!\\\\)(?:\\\\{2})*\\\\(?![("|\$)\\\\])/', $content, $m)
             ) {
                 $content = substr($content, 1, -1);
                 $content = str_replace('\\"', '"', $content);
-                $token->setContent("'".$content."'");
+                $content = str_replace('\'', '\\\'', $content);
+                $content = str_replace('\\$', '$', $content);
+                $token->setContent('\''.$content.'\'');
             }
         }
 

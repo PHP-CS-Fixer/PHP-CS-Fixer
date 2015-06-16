@@ -198,11 +198,11 @@ EOF;
     public function testFixWithTrailingInlineBlock()
     {
         $expected =
-"<?php
-    echo 'ellow';
+'<?php
+    echo \'ellow\';
 ?>
 
-\$a = 0;
+$a = 0;
 
 
 
@@ -210,16 +210,16 @@ EOF;
 
 <?php
 
-\$a = 0;
+$a = 0;
 
-\$b = 1;
+$b = 1;
 
 //a
 ?>
 
 
 
-";
+';
         $this->makeTest($expected);
     }
 }

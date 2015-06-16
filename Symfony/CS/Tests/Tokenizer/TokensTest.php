@@ -874,9 +874,9 @@ PHP;
     {
         return array(
             array("<?=' ';\n", true),
-            array("<?=' '?>", true),
+            array('<?=\' \'?>', true),
             array(" <?=' ';\n", false),
-            array("<?=' '?> ", false),
+            array('<?=\' \'?> ', false),
             array("<?php\n?><?=' ';\n", false),
             array("<?=' '\n?><?php\n", false),
             array("<?=' '\n?><?=' ';\n", false),

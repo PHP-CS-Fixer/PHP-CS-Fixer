@@ -65,12 +65,12 @@ class TrimArraySpacesFixerTest extends AbstractFixerTestBase
             ),
 
             array(
-                "<?php \$foo = array('foo', 'bar');",
+                '<?php $foo = array(\'foo\', \'bar\');',
                 "<?php \$foo = array(\t'foo', 'bar'\t);",
             ),
 
             array(
-                "<?php \$foo = array('foo', 'bar');",
+                '<?php $foo = array(\'foo\', \'bar\');',
                 "<?php \$foo = array(  \t 'foo', 'bar'\t   );",
             ),
 
@@ -90,12 +90,12 @@ class TrimArraySpacesFixerTest extends AbstractFixerTestBase
             ),
 
             array(
-                "<?php \$foo = ['foo', 'bar'];",
+                '<?php $foo = [\'foo\', \'bar\'];',
                 "<?php \$foo = [\t'foo', 'bar'\t];",
             ),
 
             array(
-                "<?php \$foo = ['foo', 'bar'];",
+                '<?php $foo = [\'foo\', \'bar\'];',
                 "<?php \$foo = [ \t \t 'foo', 'bar'\t \t ];",
             ),
 
@@ -329,8 +329,8 @@ class TrimArraySpacesFixerTest extends AbstractFixerTestBase
 
             // crazy nested garbage pile #1
             array(
-                "<?php \$foo = array(/* comment \$bar = array([ ], array( 'foo' ) ) */, function(\$a = array('foo'), \$b = [/* comment [] */]) {}, array('foo' => 'bar', 'baz' => \$x[  4], 'hash' => array(1,2,3)));",
-                "<?php \$foo = array( /* comment \$bar = array([ ], array( 'foo' ) ) */, function(\$a = array( 'foo' ), \$b = [ /* comment [] */ ]) {}, array( 'foo' => 'bar', 'baz' => \$x[  4], 'hash' => array(1,2,3 )) );",
+                '<?php $foo = array(/* comment $bar = array([ ], array( \'foo\' ) ) */, function($a = array(\'foo\'), $b = [/* comment [] */]) {}, array(\'foo\' => \'bar\', \'baz\' => $x[  4], \'hash\' => array(1,2,3)));',
+                '<?php $foo = array( /* comment $bar = array([ ], array( \'foo\' ) ) */, function($a = array( \'foo\' ), $b = [ /* comment [] */ ]) {}, array( \'foo\' => \'bar\', \'baz\' => $x[  4], \'hash\' => array(1,2,3 )) );',
             ),
 
             // crazy nested garbage pile #2
