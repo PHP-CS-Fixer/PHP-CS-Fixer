@@ -43,17 +43,17 @@ echo \'Foo\';
 ',
             ),
             array(
-                '<?php if (\'<?php\' === \'<?\') { }',
-                '<? if (\'<?php\' === \'<?\') { }',
+                "<?php if ('<?php' === '<?') { }",
+                "<? if ('<?php' === '<?') { }",
             ),
             array(
                 'foo <?php  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
                 'foo <?  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
             ),
             array(
-                '<?php
-\'<?
-\';',
+                "<?php
+'<?
+';",
             ),
             array(
                 '<?php

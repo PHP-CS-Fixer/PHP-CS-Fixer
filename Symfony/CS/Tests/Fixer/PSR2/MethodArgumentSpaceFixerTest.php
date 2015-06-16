@@ -102,19 +102,19 @@ class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
             ),
             // don't change HEREDOC and NOWDOC
             array(
-                '<?php
-    $this->foo(
+                "<?php
+    \$this->foo(
         <<<EOTXTa
     heredoc
 EOTXTa
         ,
-        <<<\'EOTXTb\'
+        <<<'EOTXTb'
     nowdoc
 EOTXTb
         ,
-        \'foo\'
+        'foo'
     );
-',
+",
             ),
         );
     }

@@ -82,58 +82,58 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
     );',
             ),
             array(
-                '<?php
-    $x = array(
-        \'foo\',
-        \'bar\',
+                "<?php
+    \$x = array(
+        'foo',
+        'bar',
         array(
-            \'foo\',
-            \'bar\',
+            'foo',
+            'bar',
             array(
-                \'foo\',
-                \'bar\',
+                'foo',
+                'bar',
                 array(
-                    \'foo\',
-                    (\'bar\' ? true : !false),
-                    (\'bar\' ? array(true) : !(false)),
+                    'foo',
+                    ('bar' ? true : !false),
+                    ('bar' ? array(true) : !(false)),
                     array(
-                        \'foo\',
-                        \'bar\',
+                        'foo',
+                        'bar',
                         array(
-                            \'foo\',
-                            (\'bar\'),
+                            'foo',
+                            ('bar'),
                         ),
                     ),
                 ),
             ),
         ),
-    );',
-                '<?php
-    $x = array(
-        \'foo\',
-        \'bar\',
+    );",
+                "<?php
+    \$x = array(
+        'foo',
+        'bar',
         array(
-            \'foo\',
-            \'bar\',
+            'foo',
+            'bar',
             array(
-                \'foo\',
-                \'bar\',
+                'foo',
+                'bar',
                 array(
-                    \'foo\',
-                    (\'bar\' ? true : !false),
-                    (\'bar\' ? array(true) : !(false)),
+                    'foo',
+                    ('bar' ? true : !false),
+                    ('bar' ? array(true) : !(false)),
                     array(
-                        \'foo\',
-                        \'bar\',
+                        'foo',
+                        'bar',
                         array(
-                            \'foo\',
-                            (\'bar\'),
+                            'foo',
+                            ('bar'),
                         )
                     )
                 )
             )
         )
-    );',
+    );",
             ),
             array(
                 '<?php
@@ -231,40 +231,40 @@ TWIG
 
             // no array tests
             array(
-                '<?php
+                "<?php
     throw new BadMethodCallException(
         sprintf(
-            \'Method "%s" not implemented\',
+            'Method \"%s\" not implemented',
             __METHOD__
         )
-    );',
+    );",
             ),
             array(
-                '<?php
+                "<?php
     throw new BadMethodCallException(sprintf(
-        \'Method "%s" not implemented\',
+        'Method \"%s\" not implemented',
         __METHOD__
-    ));',
+    ));",
             ),
             array(
-                '<?php
+                "<?php
 
     namespace FOS\\RestBundle\\Controller;
 
     class ExceptionController extends ContainerAware
     {
-        public function showAction(Request $request, $exception, DebugLoggerInterface $logger = null, $format = \'html\')
+        public function showAction(Request \$request, \$exception, DebugLoggerInterface \$logger = null, \$format = 'html')
         {
-            if (!$exception instanceof DebugFlattenException && !$exception instanceof HttpFlattenException) {
+            if (!\$exception instanceof DebugFlattenException && !\$exception instanceof HttpFlattenException) {
                 throw new \\InvalidArgumentException(sprintf(
-                    \'ExceptionController::showAction can only accept some exceptions (%s, %s), "%s" given\',
-                    \'Symfony\\Component\\HttpKernel\\Exception\\FlattenException\',
-                    \'Symfony\\Component\\Debug\\Exception\\FlattenException\',
-                    get_class($exception)
+                    'ExceptionController::showAction can only accept some exceptions (%s, %s), \"%s\" given',
+                    'Symfony\\Component\\HttpKernel\\Exception\\FlattenException',
+                    'Symfony\\Component\\Debug\\Exception\\FlattenException',
+                    get_class(\$exception)
                 ));
             }
         }
-    }',
+    }",
             ),
             array(
                 '<?php

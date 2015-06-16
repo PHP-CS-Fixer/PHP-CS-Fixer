@@ -59,10 +59,6 @@ EOF
 EOF
             ),
             array(
-                '<?php $a = \'foo \\\'bar5\';',
-                '<?php $a = "foo \'bar5";',
-            ),
-            array(
                 '<?php $a = \'foo "bar6\';',
                 '<?php $a = "foo \"bar6";',
             ),

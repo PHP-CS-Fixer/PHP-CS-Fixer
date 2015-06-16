@@ -30,16 +30,16 @@ class IncludeFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
-                '<?php include \'foo.php\';',
-                '<?php include   \'foo.php\';',
+                "<?php include 'foo.php';",
+                "<?php include   'foo.php';",
             ),
             array(
-                '<?php include \'foo.php\';',
-                '<?php include   \'foo.php\'  ;',
+                "<?php include 'foo.php';",
+                "<?php include   'foo.php'  ;",
             ),
             array(
-                '<?php include \'foo.php\';',
-                '<?php include   (\'foo.php\')  ;',
+                "<?php include 'foo.php';",
+                "<?php include   ('foo.php')  ;",
             ),
             array(
                 '<?php include "Buzz/foo-Bar.php";',
@@ -54,12 +54,12 @@ class IncludeFixerTest extends AbstractFixerTestBase
                 '<?php include (  "{$buzz}/foo-Bar.php" );',
             ),
             array(
-                '<?php include \'foo.php\';',
-                '<?php include(\'foo.php\');',
+                "<?php include 'foo.php';",
+                "<?php include('foo.php');",
             ),
             array(
-                '<?php include_once \'foo.php\';',
-                '<?php include_once( \'foo.php\' );',
+                "<?php include_once 'foo.php';",
+                "<?php include_once( 'foo.php' );",
             ),
             array(
                 '<?php require $foo ? "foo.php" : "bar.php";',
@@ -70,30 +70,30 @@ class IncludeFixerTest extends AbstractFixerTestBase
                 '<?php require($foo  ?  "foo.php"  :  "bar.php");',
             ),
             array(
-                '<?php return require_once __DIR__.\'foo.php\';',
-                '<?php return require_once  __DIR__.\'foo.php\';',
+                "<?php return require_once __DIR__.'foo.php';",
+                "<?php return require_once  __DIR__.'foo.php';",
             ),
             array(
-                '<?php $foo = require_once __DIR__.(\'foo.php\');',
-                '<?php $foo = require_once  __DIR__.(\'foo.php\');',
+                "<?php \$foo = require_once __DIR__.('foo.php');",
+                "<?php \$foo = require_once  __DIR__.('foo.php');",
             ),
             array(
-                '<?php     require_once __DIR__.(\'foo.php\');',
-                '<?php     require_once  (__DIR__.(\'foo.php\'));',
+                "<?php     require_once __DIR__.('foo.php');",
+                "<?php     require_once  (__DIR__.('foo.php'));",
             ),
             array(
-                '<?php     require_once __DIR__ . (\'foo.php\');',
-                '<?php     require_once  (__DIR__ . (\'foo.php\'));',
+                "<?php     require_once __DIR__ . ('foo.php');",
+                "<?php     require_once  (__DIR__ . ('foo.php'));",
             ),
             array(
-                '<?php require_once dirname(__FILE__).\'foo.php\';',
-                '<?php require_once (dirname(__FILE__).\'foo.php\');',
+                "<?php require_once dirname(__FILE__).'foo.php';",
+                "<?php require_once (dirname(__FILE__).'foo.php');",
             ),
             array(
                 '<?php ClassCollectionLoader::load(include($this->getCacheDir().\'classes.map\'), $this->getCacheDir(), $name, $this->debug, false, $extension);',
             ),
             array(
-                '<?php require_once \'".__DIR__."/../bootstrap.php\';',
+                "<?php require_once '\".__DIR__.\"/../bootstrap.php';",
             ),
             array(
                 '// require foo',
