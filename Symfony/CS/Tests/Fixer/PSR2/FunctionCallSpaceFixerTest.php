@@ -80,6 +80,15 @@ class FunctionCallSpaceFixerTest extends AbstractFixerTestBase
             array(
                 '<?php $a = 2 * (1 + 1);',
             ),
+            array(
+                '<?php echo ($a == $b) ? "foo" : "bar";',
+            ),
+            array(
+                '<?php echo ($a == test($b)) ? "foo" : "bar";',
+            ),
+            array(
+                '<?php include ($html)? "custom.html": "custom.php";',
+            ),
         );
     }
 

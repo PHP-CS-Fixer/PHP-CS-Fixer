@@ -50,6 +50,16 @@ final class FunctionCallSpaceFixer extends AbstractFixer
                 continue;
             }
 
+            // check for ternary operator
+            $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+            $nextNonWhiteSpace = $tokens->getNextNonWhitespace($endParenthesisIndex);
+            if (!empty($nextNonWhiteSpace)) {
+                $nextToken = $tokens[$nextNonWhiteSpace];
+                if ($nextToken->getContent() === '?') {
+                    continue;
+                }
+            }
+
             // check if it is a function call
             if ($tokens[$lastTokenIndex]->isGivenKind($functionyTokens)) {
                 $this->fixFunctionCall($tokens, $index);
