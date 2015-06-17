@@ -141,7 +141,7 @@ class ConfigurationResolver
         $this->resolveUsingCache();
         $this->resolveCacheFile();
 
-        $this->config->fixers($this->getFixers());
+        $this->config->fixers($this->getFixers()); // FIXME this should be done in another way
         $this->config->setUsingCache($this->usingCache);
         $this->config->setCacheFile($this->cacheFile);
 
@@ -417,6 +417,20 @@ class ConfigurationResolver
         foreach ($this->allFixers as $fixer) {
             if (isset($addNames[$fixer->getName()]) && !in_array($fixer, $this->fixers, true)) {
                 $this->fixers[] = $fixer;
+            }
+        }
+
+        foreach ($addNames as $addName => $add) {
+            $found = false;
+            foreach ($this->fixers as $fixer) {
+                if ($addName === $fixer->getName()) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            if (false === $found) {
+                throw new \UnexpectedValueException(sprintf('Fixer to add not found "%s"', $addName));
             }
         }
     }

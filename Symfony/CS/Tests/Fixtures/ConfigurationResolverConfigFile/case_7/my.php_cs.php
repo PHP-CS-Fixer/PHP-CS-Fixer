@@ -106,6 +106,11 @@ class CustomConfig implements ConfigInterface
     {
         return false;
     }
+
+    public function finder(Traversable $finder)
+    {
+        return $this;
+    }
 }
 
 return new CustomConfig();

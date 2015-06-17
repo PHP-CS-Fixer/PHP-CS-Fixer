@@ -112,7 +112,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('foo', $property);
     }
 
-    protected function makeFixersTest($expectedFixers, $resolvedFixers)
+    protected function makeFixersTest(array $expectedFixers, array $resolvedFixers)
     {
         $this->assertCount(count($expectedFixers), $resolvedFixers);
 
@@ -624,5 +624,16 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $config = $this->resolver->getConfig();
         $this->assertSame('TestCase7', $config->getName());
         $this->assertSame('Test config for PHPUnit test case 7', $config->getDescription());
+    }
+
+    /**
+     * @expectedException              \UnexpectedValueException
+     * @expectedExceptionMessageRegExp /Fixer to add not found "not_existing_fixer"/
+     */
+    public function testResolveUnknownFixer()
+    {
+        $this->config->fixers(array('encoding', 'not_existing_fixer'));
+        $this->resolver
+            ->resolve();
     }
 }
