@@ -18,7 +18,7 @@ namespace Symfony\CS;
  *
  * @internal
  */
-class ToolInfo
+final class ToolInfo
 {
     const COMPOSER_INSTALLED_FILE = '/../../composer/installed.json';
     const COMPOSER_PACKAGE_NAME = 'fabpot/php-cs-fixer';

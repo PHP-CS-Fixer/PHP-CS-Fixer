@@ -29,7 +29,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
  *
  * @internal
  */
-class FileCacheManager
+final class FileCacheManager
 {
     private $cacheFile;
     private $isEnabled;

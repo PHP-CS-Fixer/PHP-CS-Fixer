@@ -23,7 +23,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @internal
  */
-class BraceClassInstantiationTransformer extends AbstractTransformer
+final class BraceClassInstantiationTransformer extends AbstractTransformer
 {
     /**
      * {@inheritdoc}
