@@ -62,7 +62,15 @@ EOF
                 '<?php $a = \'foo $bar7\';',
                 '<?php $a = "foo \$bar7";',
             ),
-            array('<?php $a = "foo \\" \\$$bar13";'),
+            array(
+                '<?php $a = \'foo $(bar7)\';',
+                '<?php $a = "foo \$(bar7)";',
+            ),
+            array(
+                '<?php $a = \'foo \\\\($bar8)\';',
+                '<?php $a = "foo \\\\(\$bar8)";',
+            ),
+            array('<?php $a = "foo \\" \\$$bar";'),
             array('<?php $a = \'foo bar\';'),
             array('<?php $a = \'foo "bar"\';'),
             array('<?php $a = "foo \'bar\'";'),
