@@ -104,7 +104,7 @@ class Config implements ConfigInterface
         return $this->level;
     }
 
-    public function fixers($fixers)
+    public function fixers(array $fixers)
     {
         $this->fixers = $fixers;
 

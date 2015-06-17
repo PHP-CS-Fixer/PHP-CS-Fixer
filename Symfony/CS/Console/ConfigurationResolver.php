@@ -12,7 +12,6 @@
 namespace Symfony\CS\Console;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
@@ -30,7 +29,14 @@ use Symfony\CS\StdinFileInfo;
 final class ConfigurationResolver
 {
     private $allFixers;
+
+    /**
+     * The config instance.
+     *
+     * @var ConfigInterface
+     */
     private $config;
+
     private $configFile;
     private $cwd;
     private $defaultConfig;
@@ -135,7 +141,7 @@ final class ConfigurationResolver
         $this->resolveUsingCache();
         $this->resolveCacheFile();
 
-        $this->config->fixers($this->getFixers());
+        $this->config->fixers($this->getFixers()); // FIXME this should be done in another way
         $this->config->setUsingCache($this->usingCache);
         $this->config->setCacheFile($this->cacheFile);
 
@@ -334,9 +340,9 @@ final class ConfigurationResolver
             if (file_exists($configFile)) {
                 $config = include $configFile;
 
-                // verify that the config has an instance of Config
-                if (!$config instanceof Config) {
-                    throw new \UnexpectedValueException(sprintf('The config file: "%s" does not return a "Symfony\CS\Config\Config" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
+                // verify that the config has an instance of ConfigInterface
+                if (!$config instanceof ConfigInterface) {
+                    throw new \UnexpectedValueException(sprintf('The config file "%s" does not return an instance of Symfony\CS\ConfigInterface. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
                 }
 
                 $this->config = $config;
@@ -415,6 +421,20 @@ final class ConfigurationResolver
         foreach ($this->allFixers as $fixer) {
             if (isset($addNames[$fixer->getName()]) && !in_array($fixer, $this->fixers, true)) {
                 $this->fixers[] = $fixer;
+            }
+        }
+
+        foreach ($addNames as $addName => $add) {
+            $found = false;
+            foreach ($this->fixers as $fixer) {
+                if ($addName === $fixer->getName()) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            if (false === $found) {
+                throw new \UnexpectedValueException(sprintf('Fixer to add not found "%s"', $addName));
             }
         }
     }

@@ -11,6 +11,8 @@
 
 namespace Symfony\CS;
 
+use Traversable;
+
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -37,7 +39,7 @@ interface ConfigInterface
     /**
      * Returns an iterator of files to scan.
      *
-     * @return \Traversable A \Traversable instance that returns \SplFileInfo instances
+     * @return Traversable A \Traversable instance that returns \SplFileInfo instances
      */
     public function getFinder();
 
@@ -49,9 +51,18 @@ interface ConfigInterface
     public function getLevel();
 
     /**
-     * Returns the fixers to run.
+     * Set the fixers to be used.
      *
-     * @return array A list of fixer names
+     * @param string[] $fixers
+     *
+     * @return ConfigInterface
+     */
+    public function fixers(array $fixers);
+
+    /**
+     * Returns the fixers.
+     *
+     * @return FixerInterface[] A list of fixers
      */
     public function getFixers();
 
@@ -116,6 +127,15 @@ interface ConfigInterface
     public function setCacheFile($cacheFile);
 
     /**
+     * Sets if caching should be enabled.
+     *
+     * @param bool $usingCache
+     *
+     * @return ConfigInterface
+     */
+    public function setUsingCache($usingCache);
+
+    /**
      * Returns the path to the cache file.
      *
      * @return string
@@ -128,4 +148,13 @@ interface ConfigInterface
      * @return string|null
      */
     public function getPhpExecutable();
+
+    /**
+     * Set the finder to be used.
+     *
+     * @param Traversable $finder
+     *
+     * @return ConfigInterface
+     */
+    public function finder(Traversable $finder);
 }

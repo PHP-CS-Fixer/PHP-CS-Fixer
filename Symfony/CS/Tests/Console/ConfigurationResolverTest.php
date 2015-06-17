@@ -112,7 +112,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('foo', $property);
     }
 
-    protected function makeFixersTest($expectedFixers, $resolvedFixers)
+    protected function makeFixersTest(array $expectedFixers, array $resolvedFixers)
     {
         $this->assertCount(count($expectedFixers), $resolvedFixers);
 
@@ -460,7 +460,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException              \UnexpectedValueException
-     * @expectedExceptionMessageRegExp /The config file: ".+\/Tests\/Fixtures\/ConfigurationResolverConfigFile\/case_5\/.php_cs.dist" does not return a "Symfony\\CS\\Config\\Config" instance. Got: "string"./
+     * @expectedExceptionMessageRegExp /The config file ".+\/Tests\/Fixtures\/ConfigurationResolverConfigFile\/case_5\/.php_cs.dist" does not return an instance of Symfony\\CS\\ConfigInterface. Got: "string"./
      */
     public function testResolveConfigFileChooseFileWithInvalidFile()
     {
@@ -610,5 +610,30 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->resolver->resolve();
 
         $this->assertSame($optionCacheFile, $this->config->getCacheFile());
+    }
+
+    public function testResolveCustomConfigClass()
+    {
+        $file = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_7/my.php_cs.php';
+
+        $this->resolver->setOption('config-file', $file)->resolve();
+
+        $this->assertSame($file, $this->resolver->getConfigFile());
+        $this->assertSame(array(), $this->resolver->getFixers());
+
+        $config = $this->resolver->getConfig();
+        $this->assertSame('TestCase7', $config->getName());
+        $this->assertSame('Test config for PHPUnit test case 7', $config->getDescription());
+    }
+
+    /**
+     * @expectedException              \UnexpectedValueException
+     * @expectedExceptionMessageRegExp /Fixer to add not found "not_existing_fixer"/
+     */
+    public function testResolveUnknownFixer()
+    {
+        $this->config->fixers(array('encoding', 'not_existing_fixer'));
+        $this->resolver
+            ->resolve();
     }
 }
