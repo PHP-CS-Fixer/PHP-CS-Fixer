@@ -132,7 +132,7 @@ final class FunctionCallSpaceFixer extends AbstractFixer
     private function getLanguageConstructionTokens()
     {
         static $languageConstructionTokens = null;
-      
+
         if (null === $languageConstructionTokens) {
             $languageConstructionTokens = array(
                 T_ECHO,
