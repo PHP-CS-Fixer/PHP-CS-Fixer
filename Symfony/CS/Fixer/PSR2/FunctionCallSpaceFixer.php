@@ -36,6 +36,7 @@ final class FunctionCallSpaceFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $functionyTokens = $this->getFunctionyTokens();
+        $languageConstructionTokens = $this->getLanguageConstructionTokens();
 
         foreach ($tokens as $index => $token) {
             // looking for start brace
@@ -53,8 +54,10 @@ final class FunctionCallSpaceFixer extends AbstractFixer
             // check for ternary operator
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
             $nextNonWhiteSpace = $tokens->getNextMeaningfulToken($endParenthesisIndex);
-            if (!empty($nextNonWhiteSpace) and $tokens[$nextNonWhiteSpace]->equals('?')) {
-                continue;
+            if (!empty($nextNonWhiteSpace) && $tokens[$nextNonWhiteSpace]->equals('?')) {
+                if ($tokens[$lastTokenIndex]->isGivenKind($languageConstructionTokens)) {
+                    continue;
+                }
             }
 
             // check if it is a function call
@@ -117,5 +120,30 @@ final class FunctionCallSpaceFixer extends AbstractFixer
         }
 
         return $tokens;
+    }
+
+    /**
+     * Gets the name of tokens that are actually language construction.
+     *
+     * @staticvar int[] $tokens Token names.
+     *
+     * @return int[]
+     */
+    private function getLanguageConstructionTokens()
+    {
+        static $languageConstructionTokens = null;
+      
+        if (null === $languageConstructionTokens) {
+            $languageConstructionTokens = array(
+                T_ECHO,
+                T_PRINT,
+                T_INCLUDE,
+                T_INCLUDE_ONCE,
+                T_REQUIRE,
+                T_REQUIRE_ONCE,
+          );
+        }
+
+        return $languageConstructionTokens;
     }
 }

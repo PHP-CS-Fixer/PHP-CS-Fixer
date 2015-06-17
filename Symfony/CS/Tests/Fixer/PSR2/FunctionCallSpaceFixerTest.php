@@ -76,6 +76,18 @@ class FunctionCallSpaceFixerTest extends AbstractFixerTestBase
     $foo = &ref ();
     ',
             ),
+            array(
+                '<?php echo foo(1) ? "y" : "n";',
+                '<?php echo foo (1) ? "y" : "n";',
+            ),
+            array(
+                '<?php echo isset($name) ? "y" : "n";',
+                '<?php echo isset ($name) ? "y" : "n";',
+            ),
+            array(
+                '<?php include (isHtml())? "1.html": "1.php";',
+                '<?php include (isHtml ())? "1.html": "1.php";',
+            ),
             // skip other language constructs
             array(
                 '<?php $a = 2 * (1 + 1);',
