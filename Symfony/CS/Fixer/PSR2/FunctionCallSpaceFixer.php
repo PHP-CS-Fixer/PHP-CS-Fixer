@@ -125,25 +125,19 @@ final class FunctionCallSpaceFixer extends AbstractFixer
     /**
      * Gets the name of tokens that are actually language construction.
      *
-     * @staticvar int[] $tokens Token names.
-     *
      * @return int[]
      */
     private function getLanguageConstructionTokens()
     {
-        static $languageConstructionTokens = null;
-
-        if (null === $languageConstructionTokens) {
-            $languageConstructionTokens = array(
-                T_ECHO,
-                T_PRINT,
-                T_INCLUDE,
-                T_INCLUDE_ONCE,
-                T_REQUIRE,
-                T_REQUIRE_ONCE,
-          );
-        }
-
+        static $languageConstructionTokens = array(
+            T_ECHO,
+            T_PRINT,
+            T_INCLUDE,
+            T_INCLUDE_ONCE,
+            T_REQUIRE,
+            T_REQUIRE_ONCE,
+        );
+      
         return $languageConstructionTokens;
     }
 }
