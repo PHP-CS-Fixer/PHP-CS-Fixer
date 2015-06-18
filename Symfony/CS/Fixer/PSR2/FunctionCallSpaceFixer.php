@@ -139,7 +139,7 @@ final class FunctionCallSpaceFixer extends AbstractFixer
             T_REQUIRE,
             T_REQUIRE_ONCE,
         );
-      
+
         return $languageConstructionTokens;
     }
 }
