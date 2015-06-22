@@ -343,6 +343,10 @@ Choose from the list of available fixers:
                 Docblocks should have the same
                 indentation as the documented subject.
 
+* **phpdoc_inline_tag** [symfony]
+                Fix PHPDoc inline tags, make
+                inheritdoc always inline.
+
 * **phpdoc_no_access** [symfony]
                 @access annotations should be omitted
                 from phpdocs.
