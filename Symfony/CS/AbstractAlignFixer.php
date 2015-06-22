@@ -64,16 +64,21 @@ abstract class AbstractAlignFixer extends AbstractFixer
 
                 $rightmostSymbol = 0;
                 foreach ($group as $index) {
-                    $rightmostSymbol = max($rightmostSymbol, strpos(utf8_decode($lines[$index]), $placeholder));
+                    $line = $this->cleanInnerSpaces($lines[$index], $placeholder);
+
+                    $rightmostSymbol = max($rightmostSymbol, strpos(utf8_decode($line), $placeholder));
                 }
 
                 foreach ($group as $index) {
                     $line = $lines[$index];
                     $currentSymbol = strpos(utf8_decode($line), $placeholder);
-                    $delta = abs($rightmostSymbol - $currentSymbol);
+                    $delta = $rightmostSymbol - $currentSymbol;
 
                     if ($delta > 0) {
                         $line = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
+                        $lines[$index] = $line;
+                    } elseif ($delta < 0) {
+                        $line = $this->cleanInnerSpaces($line, $placeholder);
                         $lines[$index] = $line;
                     }
                 }
@@ -83,5 +88,23 @@ abstract class AbstractAlignFixer extends AbstractFixer
         }
 
         return $tmpCode;
+    }
+
+    /**
+     * Cleans up extra spaces between variable and placeholder.
+     *
+     * Ex: `$ccc  = 1` becomes `$ccc = 1`.
+     *
+     * @param string $line
+     * @param string $placeholder
+     *
+     * @return string
+     */
+    private function cleanInnerSpaces($line, $placeholder)
+    {
+        $lineBlocks = explode($placeholder, $line);
+        $lineBlocks[0] = rtrim($lineBlocks[0]).' ';
+
+        return implode($placeholder, $lineBlocks);
     }
 }
