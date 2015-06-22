@@ -155,6 +155,8 @@ fixer does not change what is not supposed to change. Thus:
     ...
 ```
 
+Note that expected outputs are **always** tested alone to ensure your fixer will not change it.
+
 We want to have a failing test to start with, so the test file now looks
 like:
 `Symfony/CS/Tests/Fixer/Contrib/RemoveCommentsFixerTest.php`
