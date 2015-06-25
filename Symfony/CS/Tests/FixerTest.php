@@ -238,6 +238,8 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['php_unit_strict'], $fixers['php_unit_construct']),
             array($fixers['unary_operators_spaces'], $fixers['logical_not_operators_with_spaces']),
             array($fixers['unary_operators_spaces'], $fixers['logical_not_operators_with_successor_space']),
+            array($fixers['method_separation'], $fixers['braces']),
+            array($fixers['method_separation'], $fixers['indentation']),
         );
 
         $docFixerNames = array_filter(

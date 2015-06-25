@@ -38,7 +38,7 @@ final class TokensAnalyzer
     /**
      * Get indexes of methods and properties in classy code (classes, interfaces and traits).
      *
-     * @return array
+     * @return array[]
      */
     public function getClassyElements()
     {
@@ -211,7 +211,85 @@ final class TokensAnalyzer
     }
 
     /**
-     * Check if there is a lambda function under given index.
+     * Returns the attributes of the method under the given index.
+     *
+     * The array has the following items:
+     * 'visibility' int|null  T_PRIVATE, T_PROTECTED or T_PUBLIC
+     * 'static'     bool
+     * 'abstract'   bool
+     * 'final'      bool
+     *
+     * @param int $index Token index of the method (T_FUNCTION)
+     *
+     * @return array
+     */
+    public function getMethodAttributes($index)
+    {
+        $tokens = $this->tokens;
+        $token = $tokens[$index];
+
+        if (!$token->isGivenKind(T_FUNCTION)) {
+            throw new \LogicException(sprintf('No T_FUNCTION at given index %d, got %s', $index, $token->getName()));
+        }
+
+        $attributes = array(
+            'visibility' => null,
+            'static' => false,
+            'abstract' => false,
+            'final' => false,
+        );
+
+        for ($i = $index; $i >= 0; --$i) {
+            $tokenIndex = $tokens->getPrevMeaningfulToken($i);
+            if (null === $tokenIndex) {
+                break;
+            }
+
+            $i = $tokenIndex;
+            $token = $tokens[$tokenIndex];
+
+            if ($token->isGivenKind(array(T_STATIC))) {
+                $attributes['static'] = true;
+                continue;
+            }
+
+            if ($token->isGivenKind(array(T_FINAL))) {
+                $attributes['final'] = true;
+                continue;
+            }
+
+            if ($token->isGivenKind(array(T_ABSTRACT))) {
+                $attributes['abstract'] = true;
+                continue;
+            }
+
+            // visibility
+
+            if ($token->isGivenKind(array(T_PRIVATE))) {
+                $attributes['visibility'] = T_PRIVATE;
+                continue;
+            }
+
+            if ($token->isGivenKind(array(T_PROTECTED))) {
+                $attributes['visibility'] = T_PROTECTED;
+                continue;
+            }
+
+            if ($token->isGivenKind(array(T_PUBLIC))) {
+                $attributes['visibility'] = T_PUBLIC;
+                continue;
+            }
+
+            // found a meaningful token that is not part of
+            // the function signature; stop looking
+            break;
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * Check if the function under given index is a lambda.
      *
      * @param int $index
      *
@@ -223,7 +301,7 @@ final class TokensAnalyzer
         $token = $tokens[$index];
 
         if (!$token->isGivenKind(T_FUNCTION)) {
-            throw new \LogicException('No T_FUNCTION at given index');
+            throw new \LogicException(sprintf('No T_FUNCTION at given index %d, got %s', $index, $token->getName()));
         }
 
         $startParenthesisIndex = $tokens->getNextMeaningfulToken($index);
@@ -459,7 +537,7 @@ final class TokensAnalyzer
     }
 
     /**
-     * Check if Token at given index is `T_WHILE` token for `do { ... } while ();` syntax
+     * Check if `T_WHILE` token at given index is `do { ... } while ();` syntax
      * and not `while () { ...}`.
      *
      * @param int $index
@@ -472,7 +550,7 @@ final class TokensAnalyzer
         $token = $tokens[$index];
 
         if (!$token->isGivenKind(T_WHILE)) {
-            throw new \LogicException('No T_WHILE at given index');
+            throw new \LogicException(sprintf('No T_WHILE at given index %d, got %s', $index, $token->getName()));
         }
 
         $startParenthesisIndex = $tokens->getNextMeaningfulToken($index);
