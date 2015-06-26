@@ -39,7 +39,7 @@ class FixCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($option->getDefault());
     }
 
-    public function testExitCodeDryRunWithoutChangedFiles()
+    public function testExitCodeDryRun()
     {
         $command = new FixCommand();
 
@@ -55,7 +55,7 @@ class FixCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(0, $exitCode);
     }
 
-    public function testExitCodeActualRunWithoutChangedFiles()
+    public function testExitCodeActualRun()
     {
         $fixer = $this->getFixerMock();
 
@@ -90,7 +90,7 @@ class FixCommandTest extends \PHPUnit_Framework_TestCase
             new NullOutput()
         );
 
-        $this->assertSame(3, $exitCode);
+        $this->assertSame(8, $exitCode);
     }
 
     public function testExitCodeActualRunWithChangedFiles()
@@ -135,7 +135,7 @@ class FixCommandTest extends \PHPUnit_Framework_TestCase
             new NullOutput()
         );
 
-        $this->assertSame(3, $exitCode);
+        $this->assertSame(4, $exitCode);
     }
 
     public function testExitCodeActualRunWithInvalidFiles()
@@ -160,7 +160,67 @@ class FixCommandTest extends \PHPUnit_Framework_TestCase
             new NullOutput()
         );
 
-        $this->assertSame(3, $exitCode);
+        $this->assertSame(0, $exitCode);
+    }
+
+    public function testExitCodeDryRunWithChangedAndInvalidFiles()
+    {
+        $errorsManager = new ErrorsManager();
+
+        $errorsManager->report(new Error(
+            Error::TYPE_INVALID,
+            'Invalid.php'
+        ));
+
+        $fixer = $this->getFixerMock(
+            array(
+                'Changed.php',
+            ),
+            $errorsManager
+        );
+
+        $command = new FixCommand($fixer);
+
+        $input = $this->getInputMock(array(
+            'dry-run' => true,
+        ));
+
+        $exitCode = $command->run(
+            $input,
+            new NullOutput()
+        );
+
+        $this->assertSame(12, $exitCode);
+    }
+
+    public function testExitCodeActualRunWithChangedAndInvalidFiles()
+    {
+        $errorsManager = new ErrorsManager();
+
+        $errorsManager->report(new Error(
+            Error::TYPE_INVALID,
+            'Invalid.php'
+        ));
+
+        $fixer = $this->getFixerMock(
+            array(
+                'Changed.php',
+            ),
+            $errorsManager
+        );
+
+        $command = new FixCommand($fixer);
+
+        $input = $this->getInputMock(array(
+            'dry-run' => false,
+        ));
+
+        $exitCode = $command->run(
+            $input,
+            new NullOutput()
+        );
+
+        $this->assertSame(0, $exitCode);
     }
 
     /**
