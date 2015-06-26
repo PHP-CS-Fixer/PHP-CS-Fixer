@@ -545,8 +545,19 @@ EOF
             $this->listErrors($output, 'linting after fixing', $lintErrors);
         }
 
-        if (($resolver->isDryRun() && !empty($changed)) || !empty($invalidErrors)) {
-            return 3;
+        if ($resolver->isDryRun()) {
+
+            $exitStatus = 0;
+
+            if (!empty($invalidErrors)) {
+                $exitStatus |= 4;
+            }
+
+            if (!empty($changed)) {
+                $exitStatus |= 8;
+            }
+
+            return $exitStatus;
         }
 
         return 0;
