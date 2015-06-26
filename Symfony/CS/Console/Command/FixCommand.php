@@ -548,10 +548,9 @@ EOF
             $this->listErrors($output, 'linting after fixing', $lintErrors);
         }
 
+        $exitStatus = 0;
+
         if ($resolver->isDryRun()) {
-
-            $exitStatus = 0;
-
             if (!empty($invalidErrors)) {
                 $exitStatus |= self::FLAG_HAS_INVALID_FILES;
             }
@@ -559,11 +558,9 @@ EOF
             if (!empty($changed)) {
                 $exitStatus |= self::FLAG_HAS_CHANGED_FILES;
             }
-
-            return $exitStatus;
         }
 
-        return 0;
+        return $exitStatus;
     }
 
     /**
