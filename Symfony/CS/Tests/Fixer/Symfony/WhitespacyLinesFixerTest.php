@@ -44,6 +44,10 @@ class WhitespacyLinesFixerTest extends AbstractFixerTestBase
             array(
                 "<?php\necho 1;\n?>\n\n\n\n",
             ),
+            array(
+                "<?php\necho <<<HTML\ndata     \n  \n \t  \n     \nHTML\n;\n//a",
+
+            ),
         );
     }
 }
