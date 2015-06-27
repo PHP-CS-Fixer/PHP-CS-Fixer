@@ -46,7 +46,9 @@ class WhitespacyLinesFixerTest extends AbstractFixerTestBase
             ),
             array(
                 "<?php\necho <<<HTML\ndata     \n  \n \t  \n     \nHTML\n;\n//a",
-
+            ),
+            array(
+                "<?php\n\$sql = 'SELECT * FROM products WHERE description = \"This product\n   \nis nice\"';",
             ),
         );
     }
