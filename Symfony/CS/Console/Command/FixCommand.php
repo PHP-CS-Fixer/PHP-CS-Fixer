@@ -37,8 +37,8 @@ use Symfony\CS\Utils;
  */
 class FixCommand extends Command
 {
-    const FLAG_HAS_INVALID_FILES = 4;
-    const FLAG_HAS_CHANGED_FILES = 8;
+    const EXIT_STATUS_FLAG_HAS_INVALID_FILES = 4;
+    const EXIT_STATUS_FLAG_HAS_CHANGED_FILES = 8;
 
     /**
      * EventDispatcher instance.
@@ -552,11 +552,11 @@ EOF
 
         if ($resolver->isDryRun()) {
             if (!empty($invalidErrors)) {
-                $exitStatus |= self::FLAG_HAS_INVALID_FILES;
+                $exitStatus |= self::EXIT_STATUS_FLAG_HAS_INVALID_FILES;
             }
 
             if (!empty($changed)) {
-                $exitStatus |= self::FLAG_HAS_CHANGED_FILES;
+                $exitStatus |= self::EXIT_STATUS_FLAG_HAS_CHANGED_FILES;
             }
         }
 
