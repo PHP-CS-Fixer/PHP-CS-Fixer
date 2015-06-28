@@ -17,7 +17,10 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * Fixer for rules defined in PSR2 ¶2.3.
  *
+ * Don't add trailing spaces at the end of non-blank lines.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class TrailingSpacesFixer extends AbstractFixer
 {
@@ -34,8 +37,28 @@ final class TrailingSpacesFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        // [Structure] Don't add trailing spaces at the end of non-blank lines
-        $tokens->setCode(preg_replace('/(?<=\S)[ \t]+$/m', '', $tokens->generateCode()));
+        foreach ($tokens as $index => $token) {
+            if (!$token->isWhitespace()) {
+                continue;
+            }
+
+            $lines = preg_split("/([\r\n]+)/", $token->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
+            $linesSize = count($lines);
+
+            // fix only multiline whitespaces or singleline whitespaces at the and of file
+            if ($linesSize > 1 || !isset($tokens[$index + 1])) {
+                $lines[0] = rtrim($lines[0], " \t");
+
+                for ($i = 1; $i < $linesSize; ++$i) {
+                    $trimmedLine = rtrim($lines[$i], " \t");
+                    if ('' !== $trimmedLine) {
+                        $lines[$i] = $trimmedLine;
+                    }
+                }
+
+                $token->setContent(implode($lines));
+            }
+        }
     }
 
     /**

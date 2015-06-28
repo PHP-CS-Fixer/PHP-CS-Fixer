@@ -32,7 +32,23 @@ final class WhitespacyLinesFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens->setCode(preg_replace('/^\h+$/m', '', $tokens->generateCode()));
+        foreach ($tokens as $index => $token) {
+            if (!$token->isWhitespace()) {
+                continue;
+            }
+
+            $content = $token->getContent();
+            $lines = preg_split("/([\r\n]+)/", $content);
+
+            if (
+                // fix T_WHITESPACES with at least 3 lines (eg `\n   \n`)
+                count($lines) > 2
+                // and T_WHITESPACES with at least 2 lines at the end of file
+                || (count($lines) > 1 && !isset($tokens[$index + 1]))
+            ) {
+                $token->setContent(preg_replace('/^\h+$/m', '', $content));
+            }
+        }
     }
 
     /**
