@@ -208,7 +208,7 @@ final class UnusedUseFixer extends AbstractFixer
         }
 
         if ($prevToken->isWhitespace() && $nextToken->isWhitespace()) {
-            $nextToken->setContent($prevToken->getContent().$nextToken->getContent());
+            $nextToken->override(array(T_WHITESPACE, $prevToken->getContent().$nextToken->getContent()));
             $prevToken->clear();
         }
     }
