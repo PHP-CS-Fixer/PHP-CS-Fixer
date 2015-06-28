@@ -58,6 +58,11 @@ $b = 1;		',
             array(
                 "<?php\necho 1;\n   \necho2;",
             ),
+array(
+                '<?php
+	$b = 1;
+	',
+            ),
             array(
                 "<?php\n\$a=1;\n      \n\t\n\$b = 1;",
             ),

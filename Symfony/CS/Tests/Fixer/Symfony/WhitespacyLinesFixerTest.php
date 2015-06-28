@@ -34,15 +34,37 @@ class WhitespacyLinesFixerTest extends AbstractFixerTestBase
     $a = 1;   ',
             ),
             array(
+                "<?php
+\t\$b = 1;\t\t",
+            ),
+            array(
                 '<?php
-	$b = 1;		',
+    $b = 1;
+',
+                '<?php
+    $b = 1;
+    ',
             ),
             array(
                 "<?php\n\n\n\$b = 1;",
-                "<?php\n                \n	\n\$b = 1;",
+                "<?php\n                \n\t\n\$b = 1;",
             ),
             array(
                 "<?php\necho 1;\n?>\n\n\n\n",
+            ),
+            array(
+                "<?php\necho <<<HTML\ndata     \n  \n \t  \n     \nHTML\n;\n//a",
+            ),
+            array(
+                "<?php\n\$sql = 'SELECT * FROM products WHERE description = \"This product\n   \nis nice\"';",
+            ),
+            array(
+                '<?php
+    /**
+     * @const Foo.
+     */
+    const FOO = "BAR";
+',
             ),
         );
     }
