@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 final class PhpUnitStrictFixer extends AbstractFixer
 {
-    static private $phpUnitMethods = array(
+    private static $phpUnitMethods = array(
         'assertAttributeEquals' => 'assertAttributeSame',
         'assertAttributeNotEquals' => 'assertAttributeNotSame',
         'assertEquals' => 'assertSame',
