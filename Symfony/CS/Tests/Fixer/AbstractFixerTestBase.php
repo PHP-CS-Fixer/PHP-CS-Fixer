@@ -78,6 +78,6 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
             $this->assertTrue($token->equals($expectedPrototype), sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype), $token->toJson()));
         }
 
-        $this->assertEquals($expectedTokens->count(), $tokens->count(), 'The collection should have the same length than the expected one');
+        $this->assertSame($expectedTokens->count(), $tokens->count(), 'The collection should have the same length than the expected one');
     }
 }
