@@ -42,7 +42,7 @@ final class PhpUnitStrictFixer extends AbstractFixer
                         array(T_STRING, $methodBefore),
                         '(',
                     ),
-                    0
+                    $index
                 );
 
                 if (null === $sequence) {
