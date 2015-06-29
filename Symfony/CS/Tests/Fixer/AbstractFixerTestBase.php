@@ -18,11 +18,16 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
 {
+    protected function getFixerFullName()
+    {
+        return 'Symfony\CS\Fixer'.substr(get_called_class(), strlen(__NAMESPACE__), -strlen('Test'));
+    }
+
     protected function getFixer()
     {
-        $fixerName = 'Symfony\CS\Fixer'.substr(get_called_class(), strlen(__NAMESPACE__), -strlen('Test'));
+        $name = $this->getFixerFullName();
 
-        return new $fixerName();
+        return new $name();
     }
 
     protected function getTestFile($filename = __FILE__)

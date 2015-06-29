@@ -502,6 +502,12 @@ Choose from the list of available fixers:
                 __construct. Warning! This could
                 change code behavior.
 
+* **php_unit_strict** [contrib]
+                PHPUnit methods like "assertSame"
+                should be used instead of
+                "assertEquals". Warning! This could
+                change code behavior.
+
 * **phpdoc_order** [contrib]
                 Annotations in phpdocs should be
                 ordered so that param annotations come
