@@ -1,0 +1,480 @@
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-04T06:37:50Z
+
+@keradus
+
+Something's totally :hankey:ed with the build states:
+
+* 6442884 should have passed (just covering existing functionality)
+* 01f5cbb should have failed (because I changed assertions)
+* f0f862a should have failed (because of https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/61044310#L236)
+* cbea631 should have passed
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-04T17:19:15Z
+
+Push commit A to branch `foo`.
+Travis queued new job for A push.
+Push commit B to branch `foo`.
+Travis queued new job for B push.
+Travis execute job for A push - pulling branch `foo` "as is" (it pulls the newest version of branch! not the HEAD on A commit).
+
+That could be the reason.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-05T12:28:47Z
+
+@keradus
+
+Any thoughts on this?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-08T11:44:02Z
+
+/cc @gharlan
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-10T17:24:37Z
+
+@keradus
+
+Good to go!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-10T17:39:27Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-10T17:39:56Z
+
+@keradus
+
+Awesome, glad you like it!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-10T17:45:43Z
+
+Waiting for a little more likes ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-05-11T07:45:03Z
+
+:+1:  from me
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-05-11T15:21:14Z
+
+:+1: :ship:
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-05-11T15:23:14Z
+
+I still don't see the point why we should differentiate here between dry-run or not.
+The files are invalid and not fixable in both modes.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-11T15:24:03Z
+
+@gharlan
+
+Exiting with `3` in both scenarios, as you suggested!
+
+See https://github.com/localheinz/PHP-CS-Fixer/blob/feature/exit-code-when-invalid-files-were-found/Symfony/CS/Tests/Console/Command/FixCommandTest.php#L116-L164.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-05-11T15:30:31Z
+
+hmm? Without `--dry-run` exit code is always 0.
+IMO if we change the exit code for `dry-run` when files are invalid, we should also do it in fixing mode.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-05-11T15:33:41Z
+
+> IMO if we change the exit code for dry-run when files are invalid, we should also do it in fixing mode.
+
+Hmmm, I agree.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-11T15:33:41Z
+
+:+1: for exit with `3` when met invalid files on `dry-run`
+:-1: for exit with `3` when met invalid files *not* on `dry-run`
+
+Non 0 return status is when tool failed. When we run tool in normal mode and one fail failed to fix - we simply skip it, and we must do if for file that is invalid on start.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-05-11T15:34:49Z
+
+Skipping a file is a fail IMO.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-11T15:38:29Z
+
+@keradus @GrahamCampbell @gharlan
+
+I think we all agree that we should exit with non-zero when we're doing a `--dry-run`, don't we?
+
+Whatever you think is fine when doing an actual run, I'm happy to update the PR!
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-05-11T15:39:14Z
+
+> Non 0 return status is when tool failed. When we run tool in normal mode and one fail failed to fix - we simply skip it, and we must do if for file that is invalid on start.
+
+In fixing mode we skip the invalid files, but in `dry-run` it is a failure?? It makes no sense to me.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-11T15:39:37Z
+
+> Skipping a file is a fail IMO.
+
+non-0 status is fail of tool
+invalid input file is fail of user, not the tool.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-11T15:40:53Z
+
+> In fixing mode we skip the invalid files, but in dry-run it is a failure?? It makes no sense to me.
+
+In normal mode we fix files, and we return 0 when fix was done, non-0 if we crash.
+In dry-run mode we test files, and we return 0 when files are OK, and non-0 if files aren't OK, like linting or standards problems.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-05-11T15:45:32Z
+
+> I think we all agree that we should exit with non-zero when we're doing a --dry-run, don't we?
+
+No, I don't agree. Imo we should not change the exit code at all. And if we change the exit code anyway, we should change it in both modes.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-05-11T15:47:26Z
+
+If exit code of `php-cs-fixer fix` is 0, and running `php-cs-fixer fix --dry-run` afterwards, I would expect that exit code is 0, too.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-05-11T15:49:32Z
+
+> invalid input file is fail of user, not the tool.
+
+So. If your phpunit tests fail, it's the user's fault, but they still want to know about it!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-11T15:50:46Z
+
+> > invalid input file is fail of user, not the tool.
+>
+> So. If your phpunit tests fail, it's the user's fault, but they still want to know about it!
+
+Also, one file may be valid in 5.6 but not in 5.3
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-05-11T16:03:35Z
+
+> Also, one file may be valid in 5.6 but not in 5.3
+
+So, the same is true in phpunit. If you run tests with php 5.4 array style, it's going to blow up in your face.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-11T16:05:56Z
+
+But, for now, we are proudly to claim that one can fix his code on whatever PHP version he want.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-11T16:05:57Z
+
+I think we have too much disagreement about this PR to merge it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-05-11T16:19:21Z
+
+@keradus We need to find the "least worst" solution. I think this might be it. ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-11T16:21:13Z
+
+you meant `this` as `this PR` or `this` as `do not merge this PR`?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-05-11T16:27:52Z
+
+This PR is probably fine for now otherwise we'll argue about this for ever and go around in circles.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-11T16:33:23Z
+
+Not all of us agreed with current state of this PR.
+The problem might be that implementation is different that intention.
+Implementation is to return 3 only in dry-run, intention was to return 3 in normal run as well.
+
+eg I agreed with implementation but not intention.
+All problem is about `testExitCodeActualRunWithInvalidFiles` that is the same as `testExitCodeDryRunWithInvalidFiles` (and i guess it was intended to has `dry-run` set to false)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-11T16:47:10Z
+
+@keradus
+
+True, my bad!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-11T19:43:19Z
+
+@keradus @GrahamCampbell @gharlan
+
+Updated to the intended state, thanks for catching!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-11T19:55:49Z
+
+:-1:
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-11T19:57:45Z
+
+@keradus
+
+So you'd prefer it the other way around? Fine with that, hang on a minute. All *I* care about is that there is a way to exit with non-zero if files with linting errors were found *before* fixing.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-11T19:59:18Z
+
+Don't rush to change code. As I said before I am against throwing it in fix-run. But the other ones are for it. We need to have a consensus here or leave it as-is.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-17T20:42:57Z
+
+@keradus @gharlan @GrahamCampbell @SpacePossum @stof
+
+Can we get this merged?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-17T20:45:29Z
+
+:-1: by me, but of course it will be merged when overwhelmed by community's `:+1:`
+(btw, tests are great and it will be great to merge them one way or another!)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-17T20:47:54Z
+
+@keradus
+
+This is useful, I don't understand why you :-1: this, can you explain?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-05-17T20:50:15Z
+
+There are 3 options:
+
+1. Leave it as-is
+2. Change exit code in `dry-run` mode only
+3. Change it in both modes
+
+My order from good to bad is:
+
+Option 1
+Option 3
+.
+.
+.
+Option 2
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-17T20:51:35Z
+
+@gharlan
+
+We've got your option 3 with this PR, where's your :+1:?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-17T20:56:45Z
+
+@localheinz
+
+> This is useful, I don't understand why you :-1: this, can you explain?
+
+This tool is fixer, not a linter. Invalid input file is not sth that why should crash on (consider autofixing dir of thousand files). Also, we may faced much false positives with invalid syntax of new syntax of PHP when running on old PHP executable or HHVM case with invalid treating `<?xml` as PHP open tag regardless of `short_open_tag` option.
+I strongly understand opinion to return `3` on lint error, just prefer not to ;)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-17T21:03:53Z
+
+@keradus
+
+For the circumstances you described, you could still disable using the linter:
+
+```php
+Symfony\CS\Config\Config::setUsingLinter(false);
+```
+
+Why wouldn't that be an option when you're concerned with linting?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-17T21:05:42Z
+
+No, it is extra cool for me to ignore files that have invalid syntax, and disabling linter will produce side effect of changing invalid file by fixers.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-17T21:06:54Z
+
+@keradus
+
+So you also think it's extra cool to deploy files with invalid syntax to production?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-17T21:10:31Z
+
+Never said sth like that.
+Again, this is CS fixing tool, not deploying etc.
+And, again, env on production and sb personal env may be different, like said before, and file that is invalid locally may be perfectly valid on production.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-17T21:11:33Z
+
+@keradus
+
+So why would you care if people are using the fixer in an inappropriate environment?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-17T21:17:32Z
+
+It is not to us to decide whether the user local env is appropriate or not. It's up to them. And when they want to have it different than production - it is their decision.
+To be honest I see no point in this discussion. I have my opinion and already explained it 6 days ago. And it's cool. You have your, different opinion - and it is also so cool. And, as always, we decide by voting.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-17T21:21:55Z
+
+@gharlan @GrahamCampbell
+
+It seems you're the only part of the community left that's not fully :-1: yet, can you please take some time and give this a thought?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-17T21:25:47Z
+
+@keradus
+
+How about a configuration option for this behavior as a compromise?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-05-17T22:20:17Z
+
+Why had you closed this PR? :(
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-18T02:38:33Z
+
+@keradus
+
+Because I'm finished wasting my time here.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-05-18T08:23:40Z
+
+I liked this as you had it @localheinz. :(
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-18T08:34:46Z
+
+@GrahamCampbell
+
+Fine to reopen once I see a consensus here. Tired of contributing and then being hold off with merging. Arguing with people on the Internet, I'm too old for this.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-05-20T19:09:36Z
+
+Reopening per opened discussion in #1211!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-06-01T13:10:19Z
+
+please @localheinz , could you set the exit status as we discussed in #1211 ?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-06-26T14:31:20Z
+
+@keradus
+
+Updated as suggested.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-06-26T14:35:57Z
+
+Great to hear that !
+
+---------------------------------------------------------------------------
+
+by localheinz at 2015-06-26T14:57:06Z
+
+@keradus
+
+Updated again!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-06-27T20:34:03Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-06-29T21:35:34Z
+
+:+1:   thanks @localheinz
