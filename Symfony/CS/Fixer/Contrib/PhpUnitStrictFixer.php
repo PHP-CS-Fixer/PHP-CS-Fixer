@@ -33,6 +33,29 @@ final class PhpUnitStrictFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
+        foreach (self::$phpUnitMethods as $methodBefore => $methodAfter) {
+            for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+                $sequence = $tokens->findSequence(
+                    array(
+                        array(T_VARIABLE, '$this'),
+                        array(T_OBJECT_OPERATOR, '->'),
+                        array(T_STRING, $methodBefore),
+                        '(',
+                    ),
+                    0
+                );
+
+                if (null === $sequence) {
+                    break;
+                }
+
+                $sequenceIndexes = array_keys($sequence);
+                $tokens[$sequenceIndexes[2]]->setContent($methodAfter);
+
+                $index = $sequenceIndexes[3];
+            }
+        }
+
         return $tokens->generateCode();
     }
 
