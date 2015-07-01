@@ -162,6 +162,7 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
      * {@inheritdoc} should this be inside the tag?
      * {@inheritdoc}
      * {@inheritdoc}
+     * {@inheritdoc}
      * inheritdoc
      */
 ',
@@ -171,6 +172,7 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
      * @inheritdoc should this be inside the tag?
      * @inheritdoc
      * @inheritdocs
+     * {@inheritdocs}
      * inheritdoc
      */
 ',
