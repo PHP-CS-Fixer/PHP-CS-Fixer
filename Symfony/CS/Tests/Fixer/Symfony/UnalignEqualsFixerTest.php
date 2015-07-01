@@ -14,7 +14,7 @@ namespace Symfony\CS\Tests\Fixer\Symfony;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
- * @author Dariusz Rumiñski <dariusz.ruminski@gmail.com>
+ * @author Dariusz RumiÅ„ski <dariusz.ruminski@gmail.com>
  */
 class UnalignEqualsFixerTest extends AbstractFixerTestBase
 {
