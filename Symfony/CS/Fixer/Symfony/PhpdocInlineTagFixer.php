@@ -22,16 +22,10 @@ final class PhpdocInlineTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function fix(\SplFileInfo $file, $content)
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
+        $tokens = Tokens::fromCode($content);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
         foreach ($tokens as $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
@@ -44,14 +38,15 @@ final class PhpdocInlineTagFixer extends AbstractFixer
             // Make sure the tags are written in lower case, remove white space between end
             // of text and closing bracket and between the tag and inline comment.
             $content = preg_replace_callback(
-                '#(@{+|{+[ \t]*@)[ \t]*(example|id|internal|inheritdoc|link|source|toc|tutorial)s*([^}]*)(}*)#i',
+                '#(?:@{+|{+[ \t]*@)[ \t]*(example|id|internal|inheritdoc|link|source|toc|tutorial)s?([^}]*)(?:}*)#i',
                 function (array $matches) {
-                    $doc = trim($matches[3]);
+                    $doc = trim($matches[2]);
+
                     if ('' === $doc) {
-                        return '{@'.strtolower($matches[2]).'}';
+                        return '{@'.strtolower($matches[1]).'}';
                     }
 
-                    return '{@'.strtolower($matches[2]).' '.$doc.'}';
+                    return '{@'.strtolower($matches[1]).' '.$doc.'}';
                 },
                 $content
             );
@@ -66,6 +61,8 @@ final class PhpdocInlineTagFixer extends AbstractFixer
 
             $token->setContent($content);
         }
+
+        return $tokens->generateCode();
     }
 
     /**
