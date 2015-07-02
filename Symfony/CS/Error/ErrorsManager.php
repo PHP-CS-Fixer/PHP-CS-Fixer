@@ -74,7 +74,7 @@ final class ErrorsManager
     }
 
     /**
-     * Report error.
+     * Report an error.
      *
      * @param Error $error
      */
