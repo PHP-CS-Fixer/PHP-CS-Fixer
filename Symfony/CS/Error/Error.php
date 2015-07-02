@@ -46,13 +46,20 @@ final class Error
     private $filePath;
 
     /**
+     * @var string
+     */
+    private $message;
+
+    /**
      * @param string $type
      * @param string $filePath
+     * @param string $message
      */
-    public function __construct($type, $filePath)
+    public function __construct($type, $filePath, $message = '')
     {
         $this->type = $type;
         $this->filePath = $filePath;
+        $this->message  = $message;
     }
 
     /**
@@ -69,5 +76,13 @@ final class Error
     public function getFilePath()
     {
         return $this->filePath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
     }
 }

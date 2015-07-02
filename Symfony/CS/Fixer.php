@@ -215,7 +215,8 @@ class Fixer
 
             $this->errorsManager->report(new Error(
                 Error::TYPE_INVALID,
-                $this->getFileRelativePathname($file)
+                $this->getFileRelativePathname($file),
+                $e->getMessage()
             ));
 
             return;
@@ -252,7 +253,8 @@ class Fixer
 
             $this->errorsManager->report(new Error(
                 Error::TYPE_EXCEPTION,
-                $this->getFileRelativePathname($file)
+                $this->getFileRelativePathname($file),
+                $e->getMessage()
             ));
 
             return;
@@ -280,7 +282,8 @@ class Fixer
 
                 $this->errorsManager->report(new Error(
                     Error::TYPE_LINT,
-                    $this->getFileRelativePathname($file)
+                    $this->getFileRelativePathname($file),
+                    $e->getMessage()
                 ));
 
                 return;
