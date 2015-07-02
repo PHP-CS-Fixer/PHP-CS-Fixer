@@ -18,14 +18,9 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
 {
-    protected function getFixerFullName()
-    {
-        return 'Symfony\CS\Fixer'.substr(get_called_class(), strlen(__NAMESPACE__), -strlen('Test'));
-    }
-
     protected function getFixer()
     {
-        $name = $this->getFixerFullName();
+        $name = 'Symfony\CS\Fixer'.substr(get_called_class(), strlen(__NAMESPACE__), -strlen('Test'));
 
         return new $name();
     }
