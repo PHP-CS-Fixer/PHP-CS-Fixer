@@ -59,7 +59,7 @@ final class Error
     {
         $this->type = $type;
         $this->filePath = $filePath;
-        $this->message  = $message;
+        $this->message = $message;
     }
 
     /**
