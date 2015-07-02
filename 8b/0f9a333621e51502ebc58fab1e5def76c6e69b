@@ -1,0 +1,187 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-06-22T15:35:35Z
+
+Great to see that PR !
+`phpdoc_inline_tag` - how is that? the fixer fixes only `inheritdoc` tag.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-06-22T15:36:26Z
+
+oh, I see, WIP...
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-06-22T15:46:38Z
+
+( @keradus yeah sorry, just spotted a bug.. :/ )
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-06-22T15:48:25Z
+
+You mean bug of fabbot.io? Then relax, it's why @fabpot raisen #1208
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-06-22T16:41:48Z
+
+the bug was that tags like this:
+```
+@{inheritdoc test} c
+```
+became:
+```
+{@inheritdoc} c
+```
+and not
+```
+{@inheritdoc test} c
+```
+
+should be fixed now :)
+(I ignore fabbot for now, I like the bot but in this case I think my code is fine ;)  )
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-06-22T16:46:34Z
+
+BTW, https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.10/Symfony/CS/DocBlock/Annotation.php may be useful
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-06-22T16:50:28Z
+
+TODO list:
+* check , https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.10/Symfony/CS/DocBlock/Annotation.php (:+1: @keradus )
+* check priorities with other fixers
+* check if the first two regexes can be joined together
+* check i regexes can be simplified
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-06-23T20:53:27Z
+
+ready for serious reviewing :)
+@GrahamCampbell and @gharlan like to hear what you think as well!
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-06-23T22:10:20Z
+
+What about "inherit**D**oc" and "inheritdoc**s**"?
+Should this be fixed by this fixer?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-06-24T07:44:22Z
+
+>What about "inheritDoc" and "inheritdocs"?
+Should this be fixed by this fixer?
+
+Nice suggestions :)
+"inheritdocs" is fixed.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-06-24T09:00:45Z
+
+>What about "inheritDoc" and "inheritdocs"?
+
+fixed as well.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-06-24T12:56:04Z
+
+>[ ] ? char group with single char?
+>The parentheses around inheritdoc are useless, now.
+
+great pointers! updated the code.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-06-27T17:09:59Z
+
+:+1: for implementation
+
+Is there no need for this fixer to run before or after any other php docs fixers?
+// cc @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-07-01T15:25:35Z
+
+Thanks again for the feedback @gharlan and @keradus. I've updated the code. Is there a way to write `[^{]` shorter?
+
+>Is there no need for this fixer to run before or after any other php docs fixers?
+
+I didn't find any, it would be nice to have some integration tests with multiple fixers.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-07-01T15:26:07Z
+
+> Is there a way to write [^{] shorter?
+
+No.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-01T19:00:50Z
+
+> Is there a way to write [^{] shorter?
+
+You don't need that capturing group with characters group at all. Let me see...
+https://github.com/SpacePossum/PHP-CS-Fixer/pull/3
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-07-01T20:17:57Z
+
+I've no idea what is wrong with Travis @ https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/69192550
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-01T20:20:42Z
+
+Please squash 1502492 into bf37a52 ;)
+I think Travis itself is dead :(
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-07-01T20:41:49Z
+
+>Please squash 1502492 into bf37a52 ;)
+
+Is that possible, with another commit in between?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-01T20:54:41Z
+
+one of possible ways:
+```bash
+git checkout bf37a52
+git branch -D master_phpdoc_inline_tag
+git checkout -b master_phpdoc_inline_tag
+git cherry-pick --no-commit 1502492
+git commit --amend
+git cherry-pick ac1fda8
+git diff origin/master_phpdoc_inline_tag HEAD
+## if no differences then:
+git push --force
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-07-01T22:41:50Z
+
+Thanks again :)   commits squashed
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-02T06:08:12Z
+
+:+1:
