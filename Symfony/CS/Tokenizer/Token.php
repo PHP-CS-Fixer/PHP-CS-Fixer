@@ -116,7 +116,7 @@ class Token
         $this->changed = false;
     }
 
-    /*
+    /**
      * Check if token is equals to given one.
      *
      * If tokens are arrays, then only keys defined in parameter token are checked.
