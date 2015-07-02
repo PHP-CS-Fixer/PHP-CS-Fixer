@@ -36,7 +36,7 @@ final class Error
     const TYPE_LINT = 3;
 
     /**
-     * @var string
+     * @var int
      */
     private $type;
 
@@ -46,7 +46,7 @@ final class Error
     private $filePath;
 
     /**
-     * @param string $type
+     * @param int    $type
      * @param string $filePath
      */
     public function __construct($type, $filePath)
@@ -56,7 +56,7 @@ final class Error
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getType()
     {
