@@ -86,7 +86,7 @@ final class FixCommand extends Command
 
         $this->fixer = $fixer ?: new Fixer();
         $this->fixer->registerBuiltInFixers();
-        $this->fixer->registerBuiltInConfigs();
+        $this->fixer->registerBuiltInConfig();
 
         $this->errorsManager = $this->fixer->getErrorsManager();
         $this->stopwatch = $this->fixer->getStopwatch();
@@ -173,7 +173,7 @@ on some well-known directory structures:
 
 Choose from the list of available configurations:
 
-{$this->getConfigsHelp()}
+{$this->getConfigHelp()}
 The <comment>--dry-run</comment> option displays the files that need to be
 fixed but without actually modifying them:
 
@@ -623,30 +623,30 @@ EOF
         return $help;
     }
 
-    protected function getConfigsHelp()
+    protected function getConfigHelp()
     {
         $help = '';
         $maxName = 0;
 
-        $configs = $this->fixer->getConfigs();
+        $config = $this->fixer->getConfig();
 
         usort(
-            $configs,
+            $config,
             function (ConfigInterface $a, ConfigInterface $b) {
                 return strcmp($a->getName(), $b->getName());
             }
         );
 
-        foreach ($configs as $config) {
-            if (strlen($config->getName()) > $maxName) {
-                $maxName = strlen($config->getName());
+        foreach ($config as $c) {
+            if (strlen($c->getName()) > $maxName) {
+                $maxName = strlen($c->getName());
             }
         }
 
-        $count = count($this->fixer->getConfigs()) - 1;
-        foreach ($configs as $i => $config) {
-            $chunks = explode("\n", wordwrap($config->getDescription(), 72 - $maxName, "\n"));
-            $help .= sprintf(" * <comment>%s</comment>%s %s\n", $config->getName(), str_repeat(' ', $maxName - strlen($config->getName())), array_shift($chunks));
+        $count = count($config) - 1;
+        foreach ($config as $i => $c) {
+            $chunks = explode("\n", wordwrap($c->getDescription(), 72 - $maxName, "\n"));
+            $help .= sprintf(" * <comment>%s</comment>%s %s\n", $c->getName(), str_repeat(' ', $maxName - strlen($c->getName())), array_shift($chunks));
             while ($c = array_shift($chunks)) {
                 $help .= str_repeat(' ', $maxName + 4).$c."\n";
             }

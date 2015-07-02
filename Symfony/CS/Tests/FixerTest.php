@@ -60,15 +60,15 @@ class FixerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\Fixer::registerBuiltInConfigs
+     * @covers Symfony\CS\Fixer::registerBuiltInConfig
      */
-    public function testThatRegisterBuiltInConfigs()
+    public function testThatRegisterBuiltInConfig()
     {
         $fixer = new Fixer();
 
-        $this->assertCount(0, $fixer->getConfigs());
-        $fixer->registerBuiltInConfigs();
-        $this->assertGreaterThan(0, count($fixer->getConfigs()));
+        $this->assertCount(0, $fixer->getConfig());
+        $fixer->registerBuiltInConfig();
+        $this->assertGreaterThan(0, count($fixer->getConfig()));
     }
 
     /**
@@ -90,9 +90,9 @@ class FixerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Symfony\CS\Fixer::addConfig
-     * @covers Symfony\CS\Fixer::getConfigs
+     * @covers Symfony\CS\Fixer::getConfig
      */
-    public function testThatCanAddAndGetConfigs()
+    public function testThatCanAddAndGetConfig()
     {
         $fixer = new Fixer();
 
@@ -101,7 +101,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $fixer->addConfig($c1);
         $fixer->addConfig($c2);
 
-        $this->assertSame(array($c1, $c2), $fixer->getConfigs());
+        $this->assertSame(array($c1, $c2), $fixer->getConfig());
     }
 
     /**

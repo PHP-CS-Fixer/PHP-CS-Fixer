@@ -289,7 +289,7 @@ class FixCommandTest extends \PHPUnit_Framework_TestCase
 
         $fixer
             ->expects($this->any())
-            ->method('getConfigs')
+            ->method('getConfig')
             ->willReturn(array())
         ;
 
