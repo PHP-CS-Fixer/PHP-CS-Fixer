@@ -256,7 +256,7 @@ function parseTag($tag)
     }
 }
 EOF
-);
+        );
 
         $cases[] = array(<<<'EOF'
 <?php
@@ -271,7 +271,7 @@ function parseTag($tag)
     }
 }
 EOF
-);
+        );
 
         $cases[] = array(<<<'EOF'
 <?php
@@ -286,7 +286,7 @@ function parseTag($tag)
     }
 }
 EOF
-);
+        );
 
         $cases[] = array(<<<'EOF'
 <?php
@@ -303,7 +303,7 @@ function parseTag($tag)
     }
 }
 EOF
-);
+        );
 
         $cases[] = array(<<<'EOF'
 <?php
@@ -320,7 +320,7 @@ function parseTag($tag)
     }
 }
 EOF
-);
+        );
 
         return $cases;
     }

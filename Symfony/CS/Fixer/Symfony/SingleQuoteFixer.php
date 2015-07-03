@@ -36,7 +36,7 @@ class SingleQuoteFixer extends AbstractFixer
                 '"' === $content[0] &&
                 false === strpos($content, "'") &&
                 // regex: odd number of backslashes, not followed by double quote or dollar
-                !preg_match('/(?<!\\\\)(?:\\\\{2})*\\\\(?!["$\\\\])/', $content, $m)
+                !preg_match('/(?<!\\\\)(?:\\\\{2})*\\\\(?!["$\\\\])/', $content)
             ) {
                 $content = substr($content, 1, -1);
                 $content = str_replace('\\"', '"', $content);
