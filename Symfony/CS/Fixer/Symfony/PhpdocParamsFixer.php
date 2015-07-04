@@ -20,6 +20,7 @@ use Symfony\CS\Utils;
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Graham Campbell <graham@mineuk.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class PhpdocParamsFixer extends AbstractFixer
 {
@@ -35,8 +36,8 @@ class PhpdocParamsFixer extends AbstractFixer
         // optional <desc>
         $desc = '(?:\s+(?P<desc>.*)|\s*)';
 
-        $this->regex = '/^ {5}\* @(?:'.$paramTag.'|'.$otherTags.')'.$desc.'$/';
-        $this->regexCommentLine = '/^ {5}\*(?! @)(?:\s+(?P<desc>.+))(?<!\*\/)$/';
+        $this->regex = '/^(?P<indent>(?: {4})*) \* @(?:'.$paramTag.'|'.$otherTags.')'.$desc.'$/';
+        $this->regexCommentLine = '/^(?P<indent>(?: {4})*) \*(?! @)(?:\s+(?P<desc>.+))(?<!\*\/)$/';
     }
 
     /**
@@ -91,76 +92,83 @@ class PhpdocParamsFixer extends AbstractFixer
 
         for ($i = 0; $i < $l; ++$i) {
             $items = array();
+            $matches = $this->getMatches($lines[$i]);
 
-            if ($matches = $this->getMatches($lines[$i])) {
-                $current = $i;
+            if (null === $matches) {
+                continue;
+            }
+
+            $current = $i;
+            $items[] = $matches;
+
+            while ($matches = $this->getMatches($lines[++$i], true)) {
                 $items[] = $matches;
+            }
 
-                while ($matches = $this->getMatches($lines[++$i], true)) {
-                    $items[] = $matches;
+            // compute the max length of the tag, hint and variables
+            $tagMax = 0;
+            $hintMax = 0;
+            $varMax = 0;
+
+            foreach ($items as $item) {
+                if (null === $item['tag']) {
+                    continue;
                 }
 
-                // compute the max length of the tag, hint and variables
-                $tagMax = 0;
-                $hintMax = 0;
-                $varMax = 0;
+                $tagMax = max($tagMax, strlen($item['tag']));
+                $hintMax = max($hintMax, strlen($item['hint']));
+                $varMax = max($varMax, strlen($item['var']));
+            }
 
-                foreach ($items as $item) {
-                    if (null === $item['tag']) {
+            $currTag = null;
+
+            // update
+            foreach ($items as $j => $item) {
+                if (null === $item['tag']) {
+                    if ($item['desc'][0] === '@') {
+                        $lines[$current + $j] = $item['indent'].' * '.$item['desc']."\n";
                         continue;
                     }
-
-                    $tagMax = max($tagMax, strlen($item['tag']));
-                    $hintMax = max($hintMax, strlen($item['hint']));
-                    $varMax = max($varMax, strlen($item['var']));
-                }
-
-                $currTag = null;
-
-                // update
-                foreach ($items as $j => $item) {
-                    if (null === $item['tag']) {
-                        if ($item['desc'][0] === '@') {
-                            $lines[$current + $j] = '     * '.$item['desc']."\n";
-                            continue;
-                        }
-                        $line =
-                            '     *  '
-                            .str_repeat(' ', ($tagMax + $hintMax + $varMax + ('param' === $currTag ? 3 : 2)))
-                            .$item['desc']."\n";
-
-                        $lines[$current + $j] = $line;
-
-                        continue;
-                    }
-
-                    $currTag = $item['tag'];
 
                     $line =
-                        '     * @'
-                        .$item['tag']
-                        .str_repeat(' ', $tagMax - strlen($item['tag']) + 1)
-                        .$item['hint']
-                    ;
-
-                    if (!empty($item['var'])) {
-                        $line .=
-                            str_repeat(' ', $hintMax - strlen($item['hint']) + 1)
-                            .$item['var']
-                            .(
-                                !empty($item['desc'])
-                                ? str_repeat(' ', $varMax - strlen($item['var']) + 1).$item['desc']."\n"
-                                : "\n"
-                            )
-                        ;
-                    } elseif (!empty($item['desc'])) {
-                        $line .= str_repeat(' ', $hintMax - strlen($item['hint']) + 1).$item['desc']."\n";
-                    } else {
-                        $line .= "\n";
-                    }
+                        $item['indent']
+                        .' *  '
+                        .str_repeat(' ', ($tagMax + $hintMax + $varMax + ('param' === $currTag ? 3 : 2)))
+                        .$item['desc']
+                        ."\n";
 
                     $lines[$current + $j] = $line;
+
+                    continue;
                 }
+
+                $currTag = $item['tag'];
+
+                $line =
+                    $item['indent']
+                    .' * @'
+                    .$item['tag']
+                    .str_repeat(' ', $tagMax - strlen($item['tag']) + 1)
+                    .$item['hint']
+                ;
+
+                if (!empty($item['var'])) {
+                    $line .=
+                        str_repeat(' ', $hintMax - strlen($item['hint']) + 1)
+                        .$item['var']
+                        .(
+                            !empty($item['desc'])
+                            ? str_repeat(' ', $varMax - strlen($item['var']) + 1).$item['desc']."\n"
+                            : "\n"
+                        )
+                    ;
+                } elseif (!empty($item['desc'])) {
+                    $line .= str_repeat(' ', $hintMax - strlen($item['hint']) + 1).$item['desc']."\n";
+                } else {
+                    $line .= "\n";
+                }
+
+                $lines[$current + $j] = $line;
             }
         }
 
