@@ -398,4 +398,43 @@ EOF;
 
         $this->makeTest($input);
     }
+
+    public function testDifferentIndentation()
+    {
+        $expected = <<<'EOF'
+<?php
+/**
+ * @param int    $limit
+ * @param string $more
+ *
+ * @return array
+ */
+
+        /**
+         * @param int    $limit
+         * @param string $more
+         *
+         * @return array
+         */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+/**
+ * @param   int       $limit
+ * @param   string       $more
+ *
+ * @return array
+ */
+
+        /**
+         * @param   int       $limit
+         * @param   string       $more
+         *
+         * @return array
+         */
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
 }
