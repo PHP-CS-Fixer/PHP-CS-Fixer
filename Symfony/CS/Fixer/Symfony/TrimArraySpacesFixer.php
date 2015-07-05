@@ -63,13 +63,23 @@ class TrimArraySpacesFixer extends AbstractFixer
         }
 
         $nextToken = $tokens[$startIndex + 1];
-
-        if ($nextToken->isWhitespace($whitespaceOptions)) {
-            $nextToken->clear();
-        }
+        $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($startIndex);
+        $nextNonWhitespaceToken = $tokens[$nextNonWhitespaceIndex];
 
         $prevToken = $tokens[$endIndex - 1];
-        $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($endIndex)];
+        $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($endIndex);
+        $prevNonWhitespaceToken = $tokens[$prevNonWhitespaceIndex];
+
+        if (
+            $nextToken->isWhitespace($whitespaceOptions)
+            && (
+                !$nextNonWhitespaceToken->isComment()
+                || $nextNonWhitespaceIndex === $prevNonWhitespaceIndex
+                || false === strpos($nextNonWhitespaceToken->getContent(), "\n")
+            )
+        ) {
+            $nextToken->clear();
+        }
 
         if (
             $prevToken->isWhitespace($whitespaceOptions)
