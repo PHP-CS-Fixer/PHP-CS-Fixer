@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\CS\FixerFileProcessedEvent;
 
 /**
- * Custom logger implementation. Used only for test
+ * Custom logger implementation. Used only for test.
  */
 class CustomFixerLogger
 {
@@ -16,13 +16,12 @@ class CustomFixerLogger
      * @var EventDispatcher
      */
     private $eventDispatcher;
-    
+
     /**
-     *
      * @var array
      */
     private $filesStatuses = array();
-    
+
     /**
      * @param EventDispatcher $dispatcher
      */
@@ -31,7 +30,7 @@ class CustomFixerLogger
         $this->eventDispatcher = $dispatcher;
         $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, array($this, 'onFixerFileProcessed'));
     }
-    
+
     /**
      * @param FixerFileProcessedEvent $event
      */
@@ -40,7 +39,7 @@ class CustomFixerLogger
         $name = $event->getFileInfo() ? $event->getFileInfo()->getFilename() : null;
         $this->filesStatuses[$event->getStatus()][] = $name;
     }
-    
+
     /**
      * @return array
      */
@@ -48,7 +47,7 @@ class CustomFixerLogger
     {
         return $this->filesStatuses;
     }
-    
+
     /**
      * 
      */

@@ -88,15 +88,16 @@ final class FixerFileProcessedEvent extends Event
     {
         return $this->fileInfo;
     }
-  
+
     /**
      * @param null|\SplFileInfo $fileInfo
+     *
      * @return $this
      */
     public function setFileInfo(\SplFileInfo $fileInfo)
     {
         $this->fileInfo = $fileInfo;
-  
+
         return $this;
     }
 }
