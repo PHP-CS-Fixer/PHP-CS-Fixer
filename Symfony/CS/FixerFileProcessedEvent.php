@@ -35,6 +35,11 @@ final class FixerFileProcessedEvent extends Event
     const STATUS_EXCEPTION = 5;
     const STATUS_LINT = 6;
 
+    /**            
+     * @var \SplFileInfo|null
+     */
+    private $fileInfo;
+
     /**
      * File status.
      *
@@ -73,6 +78,25 @@ final class FixerFileProcessedEvent extends Event
     {
         $this->status = $status;
 
+        return $this;
+    }
+
+    /**
+     * @return null|\SplFileInfo
+     */
+    public function getFileInfo()
+    {
+        return $this->fileInfo;
+    }
+  
+    /**
+     * @param null|\SplFileInfo $fileInfo
+     * @return $this
+     */
+    public function setFileInfo(\SplFileInfo $fileInfo)
+    {
+        $this->fileInfo = $fileInfo;
+  
         return $this;
     }
 }

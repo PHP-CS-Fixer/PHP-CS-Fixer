@@ -199,7 +199,7 @@ class Fixer
         ) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
-                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_SKIPPED)
+                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_SKIPPED)->setFileInfo($file)
             );
 
             return;
@@ -210,7 +210,7 @@ class Fixer
         } catch (LintingException $e) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
-                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
+                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)->setFileInfo($file)
             );
 
             $this->errorsManager->report(new Error(
@@ -247,7 +247,7 @@ class Fixer
         } catch (\Exception $e) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
-                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)
+                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)->setFileInfo($file)
             );
 
             $this->errorsManager->report(new Error(
@@ -275,7 +275,7 @@ class Fixer
             } catch (LintingException $e) {
                 $this->dispatchEvent(
                     FixerFileProcessedEvent::NAME,
-                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
+                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)->setFileInfo($file)
                 );
 
                 $this->errorsManager->report(new Error(
@@ -305,7 +305,7 @@ class Fixer
 
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,
-            FixerFileProcessedEvent::create()->setStatus($fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES)
+            FixerFileProcessedEvent::create()->setStatus($fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES)->setFileInfo($file)
         );
 
         return $fixInfo;
