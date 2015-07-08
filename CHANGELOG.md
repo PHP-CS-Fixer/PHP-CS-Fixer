@@ -3,6 +3,17 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.9.1
+--------------------
+
+* bug #1288 TrimArraySpacesFixer - fix moving first comment (keradus)
+* bug #1287 PhpdocParamsFixer - now works on any indentation level (keradus)
+* bug #1278 Travis - fix PHP7 build (keradus)
+* bug #1277 WhitespacyLinesFixer - stop changing non-whitespacy tokens (SpacePossum, SamBurns-awin, keradus)
+* bug #1224 TrailingSpacesFixer - stop changing non-whitespacy tokens (SpacePossum, SamBurns-awin, keradus)
+* bug #1266 FunctionCallSpaceFixer - better detection of function call (funivan)
+* bug #1255 make sure some phpdoc fixers are run in right order (SpacePossum)
+
 Changelog for v1.9
 ------------------
 
