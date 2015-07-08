@@ -267,6 +267,98 @@ class TrimArraySpacesFixerTest extends AbstractFixerTestBase
                 '<?php someFunc([ /* empty array */ ]);',
             ),
 
+            array(
+                '<?php
+    someFunc(array(
+        /* empty array */
+    ));',
+            ),
+
+            array(
+                '<?php
+    someFunc([
+        /* empty array */
+    ]);',
+            ),
+
+            array(
+                '<?php
+    someFunc(array(
+        /* empty
+        array */));',
+                '<?php
+    someFunc(array(
+        /* empty
+        array */ ));',
+            ),
+
+            array(
+                '<?php
+    someFunc([
+        /* empty
+        array */]);',
+                '<?php
+    someFunc([
+        /* empty
+        array */ ]);',
+            ),
+
+            array(
+                '<?php
+    $a = array( // My array of:
+        1,      // - first item
+        2,      // - second item
+    );',
+            ),
+
+            array(
+                '<?php
+    $a = [  // My array of:
+        1,  // - first item
+        2,  // - second item
+    ];',
+            ),
+
+            array(
+                '<?php
+    $a = array(
+            // My array of:
+        1,  // - first item
+        2,  // - second item
+    );',
+            ),
+
+            array(
+                '<?php
+    $a = [
+            // My array of:
+        1,  // - first item
+        2,  // - second item
+    ];',
+            ),
+
+            array(
+                '<?php
+    $foo = array(/* comment */
+        1
+    );',
+                '<?php
+    $foo = array( /* comment */
+        1
+    );',
+            ),
+
+            array(
+                '<?php
+    $foo = [/* comment */
+        1
+    ];',
+                '<?php
+    $foo = [ /* comment */
+        1
+    ];',
+            ),
+
             // don't fix array syntax within comments
             array(
                 '<?php someFunc([/* array( "foo", "bar", [ "foo" ] ) */]);',
@@ -329,8 +421,8 @@ class TrimArraySpacesFixerTest extends AbstractFixerTestBase
 
             // crazy nested garbage pile #1
             array(
-                "<?php \$foo = array(/* comment \$bar = array([ ], array( 'foo' ) ) */, function(\$a = array('foo'), \$b = [/* comment [] */]) {}, array('foo' => 'bar', 'baz' => \$x[  4], 'hash' => array(1,2,3)));",
-                "<?php \$foo = array( /* comment \$bar = array([ ], array( 'foo' ) ) */, function(\$a = array( 'foo' ), \$b = [ /* comment [] */ ]) {}, array( 'foo' => 'bar', 'baz' => \$x[  4], 'hash' => array(1,2,3 )) );",
+                "<?php \$foo = array(/* comment \$bar = array([ ], array( 'foo' ) ), */ function(\$a = array('foo'), \$b = [/* comment [] */]) {}, array('foo' => 'bar', 'baz' => \$x[  4], 'hash' => array(1,2,3)));",
+                "<?php \$foo = array( /* comment \$bar = array([ ], array( 'foo' ) ), */ function(\$a = array( 'foo' ), \$b = [ /* comment [] */ ]) {}, array( 'foo' => 'bar', 'baz' => \$x[  4], 'hash' => array(1,2,3 )) );",
             ),
 
             // crazy nested garbage pile #2
