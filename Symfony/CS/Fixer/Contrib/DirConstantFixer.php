@@ -63,7 +63,7 @@ final class DirConstantFixer extends AbstractFixer
             if ($prevToken->isGivenKind(T_NS_SEPARATOR)) {
                 $twicePrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
                 $twicePrevToken = $tokens[$twicePrevTokenIndex];
-                if ($twicePrevToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, T_STRING, CT_NAMESPACE_OPERATOR))) {
+                if ($twicePrevToken->isGivenKind(array(T_NEW, T_STRING, CT_NAMESPACE_OPERATOR))) {
                     continue;
                 }
             }
