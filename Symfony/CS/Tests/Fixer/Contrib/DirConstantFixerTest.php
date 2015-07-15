@@ -74,6 +74,7 @@ FIXED;
             array('<?php $x = __DIR__.".dist";', '<?php $x = \\dirname(__FILE__).".dist";'),
 
             array($multiLinePatternFixed, $multiLinePatternToFix),
+            array('<?php $x = /**/__DIR__/*xx*/;', '<?php $x = /**/dirname/**/ /** x*/(/**//** */__FILE__/***/)/*xx*/;'),
         );
     }
 }
