@@ -476,6 +476,10 @@ Choose from the list of available fixers:
                 Concatenation should be used with at
                 least one whitespace around.
 
+* **dir_constant** [contrib]
+                Replaces dirname(__FILE__) expression
+                with equivalent __DIR__ constant.
+
 * **ereg_to_preg** [contrib]
                 Replace deprecated ereg regular
                 expression functions with preg.
