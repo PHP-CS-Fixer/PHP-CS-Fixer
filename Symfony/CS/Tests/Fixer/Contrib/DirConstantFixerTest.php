@@ -23,11 +23,7 @@ class DirConstantFixerTest extends AbstractFixerTestBase
      */
     public function testFix($expected, $input = null)
     {
-        try {
-            $this->makeTest($expected, $input);
-        } catch (\RuntimeException $e) {
-            $this->assertTrue(false, $expected.' -> '.$e->getMessage());
-        }
+        $this->makeTest($expected, $input);
     }
 
     public function provideExamples()
