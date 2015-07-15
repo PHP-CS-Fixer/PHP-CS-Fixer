@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocScalarFixer extends AbstractFixer
+final class PhpdocScalarFixer extends AbstractFixer
 {
     /**
      * The annotation tags search inside.
@@ -63,10 +63,16 @@ class PhpdocScalarFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         foreach ($tokens as $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
@@ -85,8 +91,6 @@ class PhpdocScalarFixer extends AbstractFixer
 
             $token->setContent($doc->getContent());
         }
-
-        return $tokens->generateCode();
     }
 
     /**

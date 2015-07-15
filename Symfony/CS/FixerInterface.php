@@ -11,6 +11,8 @@
 
 namespace Symfony\CS;
 
+use Symfony\CS\Tokenizer\Tokens;
+
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -24,14 +26,27 @@ interface FixerInterface
     const CONTRIB_LEVEL = 32;
 
     /**
+     * Check if the fixer is a candidate for given Tokens collection.
+     *
+     * Fixer is a candidate when the collection contains tokens that may be fixed
+     * during fixer work. This could be considered as some kind of bloom filter.
+     * When this method returns true then to the Tokens collection may or may not
+     * need a fixing, but when this method returns false then the Tokens collection
+     * need no fixing for sure.
+     *
+     * @param Tokens $tokens
+     *
+     * @return bool
+     */
+    public function isCandidate(Tokens $tokens);
+
+    /**
      * Fixes a file.
      *
-     * @param \SplFileInfo $file    A \SplFileInfo instance
-     * @param string       $content The file content
-     *
-     * @return string The fixed file content
+     * @param \SplFileInfo $file   A \SplFileInfo instance
+     * @param Tokens       $tokens Tokens collection
      */
-    public function fix(\SplFileInfo $file, $content);
+    public function fix(\SplFileInfo $file, Tokens $tokens);
 
     /**
      * Returns the description of the fixer.

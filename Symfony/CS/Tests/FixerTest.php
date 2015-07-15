@@ -12,8 +12,10 @@
 namespace Symfony\CS\Tests;
 
 use Symfony\CS\Config\Config;
+use Symfony\CS\Error\Error;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Linter\Linter;
 
 class FixerTest extends \PHPUnit_Framework_TestCase
 {
@@ -113,16 +115,50 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $fixer->addFixer(new \Symfony\CS\Fixer\PSR2\VisibilityFixer());
         $fixer->addFixer(new \Symfony\CS\Fixer\PSR0\Psr0Fixer()); //will be ignored cause of test keyword in namespace
 
-        $config = Config::create()->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'));
+        $config = Config::create()->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'));
         $config->fixers($fixer->getFixers());
+        $config->setUsingCache(false);
 
         $changed = $fixer->fix($config, true, true);
-        $pathToInvalidFile = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'somefile.php';
+        $pathToInvalidFile = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'.DIRECTORY_SEPARATOR.'somefile.php';
 
         $this->assertCount(1, $changed);
         $this->assertCount(2, $changed[$pathToInvalidFile]);
         $this->assertSame(array('appliedFixers', 'diff'), array_keys($changed[$pathToInvalidFile]));
         $this->assertSame('visibility', $changed[$pathToInvalidFile]['appliedFixers'][0]);
+    }
+
+    /**
+     * @covers Symfony\CS\Fixer::fix
+     * @covers Symfony\CS\Fixer::fixFile
+     * @covers Symfony\CS\Fixer::prepareFixers
+     */
+    public function testThatFixInvalidFileReportsToErrorManager()
+    {
+        $fixer = new Fixer();
+        $fixer->addFixer(new \Symfony\CS\Fixer\PSR2\VisibilityFixer());
+        $fixer->addFixer(new \Symfony\CS\Fixer\PSR0\Psr0Fixer()); //will be ignored cause of test keyword in namespace
+        $fixer->setLinter(new Linter());
+
+        $config = Config::create()->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'));
+        $config->fixers($fixer->getFixers());
+        $config->setUsingCache(false);
+
+        $changed = $fixer->fix($config, true, true);
+        $pathToInvalidFile = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'.DIRECTORY_SEPARATOR.'somefile.php';
+
+        $this->assertCount(0, $changed);
+
+        $errors = $fixer->getErrorsManager()->getInvalidErrors();
+
+        $this->assertCount(1, $errors);
+
+        $error = $errors[0];
+
+        $this->assertInstanceOf('Symfony\CS\Error\Error', $error);
+
+        $this->assertSame(Error::TYPE_INVALID, $error->getType());
+        $this->assertSame($pathToInvalidFile, $error->getFilePath());
     }
 
     /**
@@ -212,7 +248,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         // * `phpdoc_to_comment` is first
         // * `phpdoc_indent` is second
         // * `phpdoc_scalar` is third
-        // * `phpdoc_params` is last
+        // * `phpdoc_align` is last
         $cases[] = array($fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']);
         $cases[] = array($fixers['phpdoc_indent'], $fixers['phpdoc_scalar']);
 
@@ -223,8 +259,8 @@ class FixerTest extends \PHPUnit_Framework_TestCase
                 $cases[] = array($fixers['phpdoc_scalar'], $fixers[$docFixerName]);
             }
 
-            if ('phpdoc_params' !== $docFixerName) {
-                $cases[] = array($fixers[$docFixerName], $fixers['phpdoc_params']);
+            if ('phpdoc_align' !== $docFixerName) {
+                $cases[] = array($fixers[$docFixerName], $fixers['phpdoc_align']);
             }
         }
 
@@ -260,6 +296,49 @@ class FixerTest extends \PHPUnit_Framework_TestCase
 
         foreach ($fixers as $fixer) {
             $cases[] = array($fixer);
+        }
+
+        return $cases;
+    }
+
+    public function testCanFixWithConfigInterfaceImplementation()
+    {
+        $config = $this->getMockBuilder('Symfony\CS\ConfigInterface')->getMock();
+
+        $config
+            ->expects($this->any())
+            ->method('getFixers')
+            ->willReturn(array())
+        ;
+
+        $config
+            ->expects($this->any())
+            ->method('getFinder')
+            ->willReturn(array())
+        ;
+
+        $fixer = new Fixer();
+
+        $fixer->fix($config);
+    }
+
+    /**
+     * @dataProvider provideFixersForFinalCheckCases
+     */
+    public function testFixersAreFinal(\ReflectionClass $class)
+    {
+        $this->assertTrue($class->isFinal());
+    }
+
+    public function provideFixersForFinalCheckCases()
+    {
+        $fixer = new Fixer();
+        $fixer->registerBuiltInFixers();
+        $fixers = $fixer->getFixers();
+        $cases = array();
+
+        foreach ($fixers as $fixer) {
+            $cases[] = array(new \ReflectionClass($fixer));
         }
 
         return $cases;

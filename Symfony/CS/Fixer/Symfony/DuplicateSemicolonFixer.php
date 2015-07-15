@@ -17,14 +17,21 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class DuplicateSemicolonFixer extends AbstractFixer
+final class DuplicateSemicolonFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(';');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         $limit = $tokens->count();
 
         for ($index = 0; $index < $limit; ++$index) {
@@ -50,8 +57,6 @@ class DuplicateSemicolonFixer extends AbstractFixer
             $tokens->removeLeadingWhitespace($index);
             $token->clear();
         }
-
-        return $tokens->generateCode();
     }
 
     /**

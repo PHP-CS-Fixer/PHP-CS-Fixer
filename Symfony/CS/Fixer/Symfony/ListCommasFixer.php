@@ -17,8 +17,16 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ListCommasFixer extends AbstractFixer
+final class ListCommasFixer extends AbstractFixer
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_LIST);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,10 +38,8 @@ class ListCommasFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
@@ -58,7 +64,5 @@ class ListCommasFixer extends AbstractFixer
                 );
             }
         }
-
-        return $tokens->generateCode();
     }
 }

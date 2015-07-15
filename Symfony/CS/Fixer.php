@@ -12,10 +12,17 @@
 namespace Symfony\CS;
 
 use SebastianBergmann\Diff\Differ;
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\CS\Error\Error;
+use Symfony\CS\Error\ErrorsManager;
+use Symfony\CS\Linter\LinterInterface;
+use Symfony\CS\Linter\LintingException;
+use Symfony\CS\Linter\NullLinter;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -24,7 +31,7 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class Fixer
 {
-    const VERSION = '1.9.1';
+    const VERSION = '2.0-DEV';
 
     protected $fixers = array();
     protected $configs = array();
@@ -44,29 +51,32 @@ class Fixer
     protected $eventDispatcher;
 
     /**
-     * ErrorsManager instance.
+     * Errors manager instance.
      *
-     * @var ErrorsManager|null
+     * @var ErrorsManager
      */
     protected $errorsManager;
 
     /**
-     * LintManager instance.
+     * Linter instance.
      *
-     * @var LintManager|null
+     * @var LinterInterface
      */
-    protected $lintManager;
+    protected $linter;
 
     /**
      * Stopwatch instance.
      *
-     * @var Stopwatch|null
+     * @var Stopwatch
      */
     protected $stopwatch;
 
     public function __construct()
     {
         $this->diff = new Differ();
+        $this->errorsManager = new ErrorsManager();
+        $this->linter = new NullLinter();
+        $this->stopwatch = new Stopwatch();
     }
 
     public function registerBuiltInFixers()
@@ -117,6 +127,26 @@ class Fixer
     }
 
     /**
+     * Get the errors manager instance.
+     *
+     * @return ErrorsManager
+     */
+    public function getErrorsManager()
+    {
+        return $this->errorsManager;
+    }
+
+    /**
+     * Get stopwatch instance.
+     *
+     * @return Stopwatch
+     */
+    public function getStopwatch()
+    {
+        return $this->stopwatch;
+    }
+
+    /**
      * Fixes all files for the given finder.
      *
      * @param ConfigInterface $config A ConfigInterface instance
@@ -130,33 +160,29 @@ class Fixer
         $fixers = $this->prepareFixers($config);
         $changed = array();
 
-        if ($this->stopwatch) {
-            $this->stopwatch->openSection();
-        }
+        $this->stopwatch->openSection();
 
-        $fileCacheManager = new FileCacheManager($config->usingCache(), $config->getDir(), $config->getFixers());
+        $fileCacheManager = new FileCacheManager(
+            $config->usingCache(),
+            $config->getCacheFile(),
+            $config->getFixers()
+        );
 
         foreach ($config->getFinder() as $file) {
             if ($file->isDir() || $file->isLink()) {
                 continue;
             }
 
-            if ($this->stopwatch) {
-                $this->stopwatch->start($this->getFileRelativePathname($file));
-            }
+            $this->stopwatch->start($this->getFileRelativePathname($file));
 
             if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff, $fileCacheManager)) {
                 $changed[$this->getFileRelativePathname($file)] = $fixInfo;
             }
 
-            if ($this->stopwatch) {
-                $this->stopwatch->stop($this->getFileRelativePathname($file));
-            }
+            $this->stopwatch->stop($this->getFileRelativePathname($file));
         }
 
-        if ($this->stopwatch) {
-            $this->stopwatch->stopSection('fixFile');
-        }
+        $this->stopwatch->stopSection('fixFile');
 
         return $changed;
     }
@@ -171,83 +197,101 @@ class Fixer
             // PHP 5.3 has a broken implementation of token_get_all when the file uses __halt_compiler() starting in 5.3.6
             || (PHP_VERSION_ID >= 50306 && PHP_VERSION_ID < 50400 && false !== stripos($old, '__halt_compiler()'))
         ) {
-            if ($this->eventDispatcher) {
-                $this->eventDispatcher->dispatch(
-                    FixerFileProcessedEvent::NAME,
-                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_SKIPPED)
-                );
-            }
+            $this->dispatchEvent(
+                FixerFileProcessedEvent::NAME,
+                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_SKIPPED)
+            );
 
             return;
         }
 
-        if ($this->lintManager && !$this->lintManager->createProcessForFile($file->getRealpath())->isSuccessful()) {
-            if ($this->eventDispatcher) {
-                $this->eventDispatcher->dispatch(
-                    FixerFileProcessedEvent::NAME,
-                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
-                );
-            }
+        try {
+            $this->linter->lintFile($file->getRealpath());
+        } catch (LintingException $e) {
+            $this->dispatchEvent(
+                FixerFileProcessedEvent::NAME,
+                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
+            );
+
+            $this->errorsManager->report(new Error(
+                Error::TYPE_INVALID,
+                $this->getFileRelativePathname($file)
+            ));
 
             return;
         }
 
+        $old = file_get_contents($file->getRealpath());
         $appliedFixers = array();
 
         // we do not need Tokens to still caching previously fixed file - so clear the cache
         Tokens::clearCache();
 
+        $tokens = Tokens::fromCode($old);
+        $newHash = $oldHash = $tokens->getCodeHash();
+
         try {
             foreach ($fixers as $fixer) {
-                if (!$fixer->supports($file)) {
+                if (!$fixer->supports($file) || !$fixer->isCandidate($tokens)) {
                     continue;
                 }
 
-                $newest = $fixer->fix($file, $new);
-                if ($newest !== $new) {
+                $fixer->fix($file, $tokens);
+
+                if ($tokens->isChanged()) {
+                    $tokens->clearEmptyTokens();
+                    $tokens->clearChanged();
                     $appliedFixers[] = $fixer->getName();
                 }
-                $new = $newest;
             }
         } catch (\Exception $e) {
-            if ($this->eventDispatcher) {
-                $this->eventDispatcher->dispatch(
-                    FixerFileProcessedEvent::NAME,
-                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)
-                );
-            }
+            $this->dispatchEvent(
+                FixerFileProcessedEvent::NAME,
+                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)
+            );
 
-            if ($this->errorsManager) {
-                $this->errorsManager->report(ErrorsManager::ERROR_TYPE_EXCEPTION, $this->getFileRelativePathname($file), $e->__toString());
-            }
+            $this->errorsManager->report(new Error(
+                Error::TYPE_EXCEPTION,
+                $this->getFileRelativePathname($file)
+            ));
 
             return;
         }
 
         $fixInfo = null;
 
-        if ($new !== $old) {
-            if ($this->lintManager) {
-                $lintProcess = $this->lintManager->createProcessForSource($new);
+        if (!empty($appliedFixers)) {
+            $new = $tokens->generateCode();
+            $newHash = $tokens->getCodeHash();
+        }
 
-                if (!$lintProcess->isSuccessful()) {
-                    if ($this->eventDispatcher) {
-                        $this->eventDispatcher->dispatch(
-                            FixerFileProcessedEvent::NAME,
-                            FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
-                        );
-                    }
+        // We need to check if content was changed and then applied changes.
+        // But we can't simple check $appliedFixers, because one fixer may revert
+        // work of other and both of them will mark collection as changed.
+        // Therefore we need to check if code hashes changed.
+        if ($oldHash !== $newHash) {
+            try {
+                $this->linter->lintSource($new);
+            } catch (LintingException $e) {
+                $this->dispatchEvent(
+                    FixerFileProcessedEvent::NAME,
+                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
+                );
 
-                    if ($this->errorsManager) {
-                        $this->errorsManager->report(ErrorsManager::ERROR_TYPE_LINT, $this->getFileRelativePathname($file), $lintProcess->getOutput());
-                    }
+                $this->errorsManager->report(new Error(
+                    Error::TYPE_LINT,
+                    $this->getFileRelativePathname($file)
+                ));
 
-                    return;
-                }
+                return;
             }
 
-            if (!$dryRun) {
-                file_put_contents($file->getRealpath(), $new);
+            if (!$dryRun && false === @file_put_contents($file->getRealpath(), $new)) {
+                $error = error_get_last();
+                if ($error) {
+                    throw new IOException(sprintf('Failed to write file "%s", "%s".', $file->getRealpath(), $error['message']), 0, null, $file->getRealpath());
+                }
+                throw new IOException(sprintf('Failed to write file "%s".', $file->getRealpath()), 0, null, $file->getRealpath());
             }
 
             $fixInfo = array('appliedFixers' => $appliedFixers);
@@ -259,12 +303,10 @@ class Fixer
 
         $fileCacheManager->setFile($this->getFileRelativePathname($file), $new);
 
-        if ($this->eventDispatcher) {
-            $this->eventDispatcher->dispatch(
-                FixerFileProcessedEvent::NAME,
-                FixerFileProcessedEvent::create()->setStatus($fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES)
-            );
-        }
+        $this->dispatchEvent(
+            FixerFileProcessedEvent::NAME,
+            FixerFileProcessedEvent::create()->setStatus($fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES)
+        );
 
         return $fixInfo;
     }
@@ -361,32 +403,27 @@ class Fixer
     }
 
     /**
-     * Set ErrorsManager instance.
+     * Set linter instance.
      *
-     * @param ErrorsManager|null $errorsManager
+     * @param LinterInterface $linter
      */
-    public function setErrorsManager(ErrorsManager $errorsManager = null)
+    public function setLinter(LinterInterface $linter)
     {
-        $this->errorsManager = $errorsManager;
+        $this->linter = $linter;
     }
 
     /**
-     * Set LintManager instance.
+     * Dispatch event.
      *
-     * @param LintManager|null $lintManager
+     * @param string $name
+     * @param Event  $event
      */
-    public function setLintManager(LintManager $lintManager = null)
+    private function dispatchEvent($name, Event $event)
     {
-        $this->lintManager = $lintManager;
-    }
+        if (null === $this->eventDispatcher) {
+            return;
+        }
 
-    /**
-     * Set Stopwatch instance.
-     *
-     * @param Stopwatch|null $stopwatch
-     */
-    public function setStopwatch(Stopwatch $stopwatch = null)
-    {
-        $this->stopwatch = $stopwatch;
+        $this->eventDispatcher->dispatch($name, $event);
     }
 }

@@ -20,8 +20,10 @@ use Symfony\CS\ToolInfo;
  * @author Igor Wiedler <igor@wiedler.ch>
  * @author Stephane PY <py.stephane1@gmail.com>
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
+ *
+ * @internal
  */
-class SelfUpdateCommand extends Command
+final class SelfUpdateCommand extends Command
 {
     /**
      * {@inheritdoc}

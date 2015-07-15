@@ -20,15 +20,21 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Varga Bence <vbence@czentral.org>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class FunctionCallSpaceFixer extends AbstractFixer
+final class FunctionCallSpaceFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isAnyTokenKindsFound($this->getFunctionyTokens());
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         $functionyTokens = $this->getFunctionyTokens();
         $languageConstructionTokens = $this->getLanguageConstructionTokens();
 
@@ -61,8 +67,6 @@ class FunctionCallSpaceFixer extends AbstractFixer
                 $this->fixFunctionCall($tokens, $index);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

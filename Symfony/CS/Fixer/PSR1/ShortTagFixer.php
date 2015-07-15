@@ -19,18 +19,28 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ShortTagFixer extends AbstractFixer
+final class ShortTagFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokensOrg)
+    {
+        $content = $tokensOrg->generateCode();
+
         // replace all <? with <?php to replace all short open tags even without short_open_tag option enabled
         $newContent = preg_replace('/<\?(\s|$)/', '<?php$1', $content, -1, $count);
 
         if (!$count) {
-            return $content;
+            return;
         }
 
         /* the following code is magic to revert previous replacements which should NOT be replaced, for example incorrectly replacing
@@ -39,6 +49,7 @@ class ShortTagFixer extends AbstractFixer
          * > echo '<?php ';
         */
         $tokens = Tokens::fromCode($newContent);
+
         $tokensOldContent = '';
         $tokensOldContentLength = 0;
 
@@ -83,7 +94,7 @@ class ShortTagFixer extends AbstractFixer
             $tokensOldContentLength += strlen($token->getContent());
         }
 
-        return $tokens->generateCode();
+        $tokensOrg->overrideRange(0, $tokensOrg->count() - 1, $tokens);
     }
 
     /**

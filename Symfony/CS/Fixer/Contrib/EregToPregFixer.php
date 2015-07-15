@@ -18,7 +18,7 @@ use Symfony\CS\Utils;
 /**
  * @author Matteo Beccati <matteo@beccati.com>
  */
-class EregToPregFixer extends AbstractFixer
+final class EregToPregFixer extends AbstractFixer
 {
     /**
      * @var array the list of the ext/ereg function names, their preg equivalent and the preg modifier(s), if any
@@ -41,13 +41,16 @@ class EregToPregFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        if (!$this->cursoryMatch($content)) {
-            return $content;
-        }
+        return $tokens->isTokenKindFound(T_STRING);
+    }
 
-        $tokens = Tokens::fromCode($content);
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         $end = $tokens->count() - 1;
 
         foreach (self::$functions as $map) {
@@ -100,8 +103,6 @@ class EregToPregFixer extends AbstractFixer
                 $tokens[$match[0]]->setContent($map[1]);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -153,18 +154,5 @@ class EregToPregFixer extends AbstractFixer
         });
 
         return key($delimiters);
-    }
-
-    /**
-     * Perform a quick search to see if any ext/ereg functions are used.
-     *
-     * @param string $content the content itself
-     *
-     * @return bool
-     */
-    private function cursoryMatch($content)
-    {
-        // just searching for "ereg" or "split" will do, since all the function names start with either of them
-        return false !== stripos($content, 'ereg') || false !== stripos($content, 'split');
     }
 }

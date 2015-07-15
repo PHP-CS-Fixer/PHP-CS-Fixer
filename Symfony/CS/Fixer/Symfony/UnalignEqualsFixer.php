@@ -16,10 +16,18 @@ use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
- * @author Dariusz Rumiñski <dariusz.ruminski@gmail.com>
+ * @author Dariusz RumiÅ„ski <dariusz.ruminski@gmail.com>
  */
-class UnalignEqualsFixer extends AbstractFixer
+final class UnalignEqualsFixer extends AbstractFixer
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound('=');
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,10 +39,8 @@ class UnalignEqualsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens as $index => $token) {
             if (!$token->equals('=')) {
                 continue;
@@ -43,8 +49,6 @@ class UnalignEqualsFixer extends AbstractFixer
             $this->fixWhitespace($tokens[$index - 1]);
             $this->fixWhitespace($tokens[$index + 1]);
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -54,7 +58,7 @@ class UnalignEqualsFixer extends AbstractFixer
      */
     private function fixWhitespace(Token $token)
     {
-        if ($token->isWhitespace(array('whitespaces' => " \t"))) {
+        if ($token->isWhitespace(" \t")) {
             $token->setContent(' ');
         }
     }

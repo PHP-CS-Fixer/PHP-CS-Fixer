@@ -17,15 +17,21 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Gregor Harlan <gharlan@web.de>
  */
-class SingleQuoteFixer extends AbstractFixer
+final class SingleQuoteFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_CONSTANT_ENCAPSED_STRING);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         foreach ($tokens as $token) {
             if (!$token->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
                 continue;
@@ -35,16 +41,15 @@ class SingleQuoteFixer extends AbstractFixer
             if (
                 '"' === $content[0] &&
                 false === strpos($content, "'") &&
-                // regex: odd number of backslashes, not followed by double quote
-                !preg_match('/(?<!\\\\)(?:\\\\{2})*\\\\(?!["\\\\])/', $content, $m)
+                // regex: odd number of backslashes, not followed by double quote or dollar
+                !preg_match('/(?<!\\\\)(?:\\\\{2})*\\\\(?!["$\\\\])/', $content, $m)
             ) {
                 $content = substr($content, 1, -1);
                 $content = str_replace('\\"', '"', $content);
-                $token->setContent("'".$content."'");
+                $content = str_replace('\\$', '$', $content);
+                $token->setContent('\''.$content.'\'');
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

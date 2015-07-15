@@ -19,16 +19,26 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocVarWithoutNameFixer extends AbstractFixer
+final class PhpdocVarWithoutNameFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
 
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
             $doc = new DocBlock($token->getContent());
 
             // don't process single line docblocks
@@ -48,8 +58,6 @@ class PhpdocVarWithoutNameFixer extends AbstractFixer
 
             $token->setContent($doc->getContent());
         }
-
-        return $tokens->generateCode();
     }
 
     /**

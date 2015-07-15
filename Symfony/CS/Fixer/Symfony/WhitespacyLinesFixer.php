@@ -17,15 +17,21 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class WhitespacyLinesFixer extends AbstractFixer
+final class WhitespacyLinesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return true;
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         foreach ($tokens as $index => $token) {
             if (!$token->isWhitespace()) {
                 continue;
@@ -43,8 +49,6 @@ class WhitespacyLinesFixer extends AbstractFixer
                 $token->setContent(preg_replace('/^\h+$/m', '', $content));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

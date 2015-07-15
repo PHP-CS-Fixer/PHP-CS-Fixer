@@ -19,16 +19,26 @@ use Symfony\CS\Utils;
  * @author Ceeram <ceeram@cakephp.org>
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocIndentFixer extends AbstractFixer
+final class PhpdocIndentFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
 
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
             $nextIndex = $tokens->getNextMeaningfulToken($index);
 
             // skip if there is no next token or if next token is block end `}`
@@ -40,7 +50,7 @@ class PhpdocIndentFixer extends AbstractFixer
 
             // ignore inline docblocks
             if (
-                ($prevToken->isWhitespace(array('whitespaces' => " \t")) && !$tokens[$index - 2]->isGivenKind(T_OPEN_TAG))
+                ($prevToken->isWhitespace(" \t") && !$tokens[$index - 2]->isGivenKind(T_OPEN_TAG))
                 || $prevToken->equalsAny(array(';', '{'))
             ) {
                 continue;
@@ -54,8 +64,6 @@ class PhpdocIndentFixer extends AbstractFixer
             $prevToken->setContent($this->fixWhitespaceBefore($prevToken->getContent(), $indent));
             $token->setContent($this->fixDocBlock($token->getContent(), $indent));
         }
-
-        return $tokens->generateCode();
     }
 
     /**

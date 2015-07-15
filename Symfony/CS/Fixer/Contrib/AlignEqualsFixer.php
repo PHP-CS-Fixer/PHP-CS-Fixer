@@ -18,16 +18,35 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
  */
-class AlignEqualsFixer extends AbstractAlignFixer
+final class AlignEqualsFixer extends AbstractAlignFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        list($tokens, $deepestLevel) = $this->injectAlignmentPlaceholders($content);
+        return $tokens->isTokenKindFound('=');
+    }
 
-        return $this->replacePlaceholder($tokens, $deepestLevel);
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $this->deepestLevel = 0;
+
+        // This fixer works partially on Tokens and partially on string representation of code.
+        // During the process of fixing internal state of single Token may be affected by injecting ALIGNABLE_PLACEHOLDER to its content.
+        // The placeholder will be resolved by `replacePlaceholder` method by removing placeholder or changing it into spaces.
+        // That way of fixing the code causes disturbances in marking Token as changed - if code is perfectly valid then placeholder
+        // still be injected and removed, which will cause the `changed` flag to be set.
+        // To handle that unwanted behavior we work on clone of Tokens collection and then override original collection with fixed collection.
+        $tokensClone = clone $tokens;
+
+        $this->injectAlignmentPlaceholders($tokensClone);
+        $content = $this->replacePlaceholder($tokensClone);
+
+        $tokens->setCode($content);
     }
 
     /**
@@ -41,38 +60,42 @@ class AlignEqualsFixer extends AbstractAlignFixer
     /**
      * Inject into the text placeholders of candidates of vertical alignment.
      *
-     * @param string $content
-     *
-     * @return array($code, $deepestLevel)
+     * @param Tokens $tokens
      */
-    private function injectAlignmentPlaceholders($content)
+    private function injectAlignmentPlaceholders(Tokens $tokens)
     {
         $deepestLevel = 0;
-        $parenCount = 0;
-        $bracketCount = 0;
-        $tokens = Tokens::fromCode($content);
+        $limit = $tokens->count();
 
-        foreach ($tokens as $token) {
-            $tokenContent = $token->getContent();
+        for ($index = 0; $index < $limit; ++$index) {
+            $token = $tokens[$index];
 
-            if (0 === $parenCount && 0 === $bracketCount && $token->equals('=')) {
-                $token->setContent(sprintf(self::ALIGNABLE_PLACEHOLDER, $deepestLevel).$tokenContent);
+            if ($token->equals('=')) {
+                $token->setContent(sprintf(self::ALIGNABLE_PLACEHOLDER, $deepestLevel).$token->getContent());
                 continue;
             }
 
             if ($token->isGivenKind(T_FUNCTION)) {
                 ++$deepestLevel;
-            } elseif ($token->equals('(')) {
-                ++$parenCount;
-            } elseif ($token->equals(')')) {
-                --$parenCount;
-            } elseif ($token->equals('[')) {
-                ++$bracketCount;
-            } elseif ($token->equals(']')) {
-                --$bracketCount;
+                continue;
+            }
+
+            if ($token->equals('(')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                continue;
+            }
+
+            if ($token->equals('[')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
+                continue;
+            }
+
+            if ($token->isGivenKind(CT_ARRAY_SQUARE_BRACE_OPEN)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+                continue;
             }
         }
 
-        return array($tokens, $deepestLevel);
+        $this->deepestLevel = $deepestLevel;
     }
 }

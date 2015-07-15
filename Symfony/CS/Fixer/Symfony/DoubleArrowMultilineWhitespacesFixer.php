@@ -20,24 +20,32 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
  */
-class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
+final class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_DOUBLE_ARROW);
+    }
 
-        foreach ($tokens->findGivenKind(T_DOUBLE_ARROW) as $index => $token) {
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOUBLE_ARROW)) {
+                continue;
+            }
+
             $this->fixWhitespace($tokens[$index - 1]);
             // do not move anything about if there is a comment following the whitespace
             if (!$tokens[$index + 2]->isComment()) {
                 $this->fixWhitespace($tokens[$index + 1]);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -59,7 +67,7 @@ class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
 
     private function fixWhitespace(Token $token)
     {
-        if ($token->isWhitespace() && !$token->isWhitespace(array('whitespaces' => " \t"))) {
+        if ($token->isWhitespace() && !$token->isWhitespace(" \t")) {
             $token->setContent(rtrim($token->getContent()).' ');
         }
     }

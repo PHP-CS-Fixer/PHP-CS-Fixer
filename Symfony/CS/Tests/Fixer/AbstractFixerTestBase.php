@@ -11,6 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer;
 
+use Symfony\CS\FixerInterface;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -36,43 +37,70 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
         return $files[$filename];
     }
 
-    protected function makeTest($expected, $input = null, \SplFileInfo $file = null)
+    protected function makeTest($expected, $input = null, \SplFileInfo $file = null, FixerInterface $fixer = null)
     {
         if ($expected === $input) {
             throw new \InvalidArgumentException('Input parameter must not be equal to expected parameter.');
         }
 
-        $fixer = $this->getFixer();
+        $fixer = $fixer ?: $this->getFixer();
         $file = $file ?: $this->getTestFile();
         $fileIsSupported = $fixer->supports($file);
 
         if (null !== $input) {
-            $fixedCode = $fileIsSupported ? $fixer->fix($file, $input) : $input;
-
-            $this->assertSame($expected, $fixedCode);
-
-            $tokens = Tokens::fromCode($fixedCode); // Load cached collection (used by the fixer)
             Tokens::clearCache();
-            $expectedTokens = Tokens::fromCode($fixedCode); // Load the expected collection based on PHP parsing
+            $tokens = Tokens::fromCode($input);
+
+            if ($fileIsSupported) {
+                $this->assertTrue($fixer->isCandidate($tokens), 'Fixer must be a candidate for input code.');
+                $fixResult = $fixer->fix($file, $tokens);
+                $this->assertNull($fixResult, '->fix method must return null.');
+            }
+
+            $this->assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
+            $this->assertSame($expected, $tokens->generateCode(), 'Code build on input code must match expected code.');
+
+            Tokens::clearCache();
+            $expectedTokens = Tokens::fromCode($expected);
+            $tokens->clearEmptyTokens();
             $this->assertTokens($expectedTokens, $tokens);
         }
 
-        $this->assertSame($expected, $fileIsSupported ? $fixer->fix($file, $expected) : $expected);
-    }
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($expected);
 
-    private function assertTokens(Tokens $expectedTokens, Tokens $tokens)
-    {
-        foreach ($expectedTokens as $index => $expectedToken) {
-            $token = $tokens[$index];
-
-            $expectedPrototype = $expectedToken->getPrototype();
-            if (is_array($expectedPrototype)) {
-                unset($expectedPrototype[2]); // don't compare token lines as our token mutations don't deal with line numbers
-            }
-
-            $this->assertTrue($token->equals($expectedPrototype), sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype), $token->toJson()));
+        if ($fileIsSupported) {
+            $fixResult = $fixer->fix($file, $tokens);
+            $this->assertNull($fixResult, '->fix method must return null.');
         }
 
-        $this->assertEquals($expectedTokens->count(), $tokens->count(), 'The collection should have the same length than the expected one');
+        $this->assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
+        $this->assertSame($expected, $tokens->generateCode(), 'Code build on expected code must not change.');
+    }
+
+    private function assertTokens(Tokens $expectedTokens, Tokens $inputTokens)
+    {
+        foreach ($expectedTokens as $index => $expectedToken) {
+            $inputToken = $inputTokens[$index];
+
+            $this->assertTrue(
+                $expectedToken->equals($inputToken),
+                sprintf('The token at index %d must be %s, got %s', $index, $expectedToken->toJson(), $inputToken->toJson())
+            );
+        }
+
+        $this->assertEquals($expectedTokens->count(), $inputTokens->count(), 'The collection must have the same length than the expected one.');
+
+        $tokensReflection = new \ReflectionClass($expectedTokens);
+        $propertyReflection = $tokensReflection->getProperty('foundTokenKinds');
+        $propertyReflection->setAccessible(true);
+        $foundTokenKinds = array_keys($propertyReflection->getValue($expectedTokens));
+
+        foreach ($foundTokenKinds as $tokenKind) {
+            $this->assertTrue(
+                $inputTokens->isTokenKindFound($tokenKind),
+                sprintf('The token kind %s must be found in fixed tokens collection.', $tokenKind)
+            );
+        }
     }
 }

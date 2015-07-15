@@ -17,15 +17,21 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class SpacesBeforeSemicolonFixer extends AbstractFixer
+final class SpacesBeforeSemicolonFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(';');
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         foreach ($tokens as $index => $token) {
             if (!$token->equals(';')) {
                 continue;
@@ -33,12 +39,10 @@ class SpacesBeforeSemicolonFixer extends AbstractFixer
 
             $previous = $tokens[$index - 1];
 
-            if ($previous->isWhitespace(array('whitespaces' => " \t")) && !$tokens[$index - 2]->isComment()) {
+            if ($previous->isWhitespace(" \t") && !$tokens[$index - 2]->isComment()) {
                 $previous->clear();
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

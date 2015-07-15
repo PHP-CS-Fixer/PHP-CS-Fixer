@@ -123,6 +123,9 @@ foo () {}',
         public function setConfig(ConfigInterface $config);
     }',
             ),
+            array(
+                '<?php use function Foo\bar; bar ( 1 );',
+            ),
         );
     }
 }

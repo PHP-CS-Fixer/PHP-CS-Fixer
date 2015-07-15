@@ -39,6 +39,7 @@ class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestBase
             array("<?php\nnamespace X;", "<?php\n\n\n\nnamespace X;"),
             array("<?php\r\nnamespace X;"),
             array("<?php\r\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"),
+            array("<?php\n\nnamespace\\Sub\\Foo::bar();"),
         );
     }
 

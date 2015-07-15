@@ -14,6 +14,7 @@ namespace Symfony\CS\Fixer\PSR0;
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\ConfigAwareInterface;
 use Symfony\CS\ConfigInterface;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -21,17 +22,23 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Bram Gotink <bram@gotink.me>
  */
-class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
+final class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
 {
     protected $config;
 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         $namespace = false;
         $namespaceIndex = 0;
         $namespaceEndIndex = 0;
@@ -42,7 +49,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_NAMESPACE)) {
                 if (false !== $namespace) {
-                    return $content;
+                    return;
                 }
 
                 $namespaceIndex = $tokens->getNextNonWhitespace($index);
@@ -51,7 +58,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                 $namespace = trim($tokens->generatePartialCode($namespaceIndex, $namespaceEndIndex - 1));
             } elseif ($token->isClassy()) {
                 if (null !== $classyName) {
-                    return $content;
+                    return;
                 }
 
                 $classyIndex = $tokens->getNextNonWhitespace($index);
@@ -60,7 +67,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
         }
 
         if (null === $classyName) {
-            return $content;
+            return;
         }
 
         if (false !== $namespace) {
@@ -100,6 +107,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                 $newNamespace[0]->clear();
                 $newNamespace[1]->clear();
                 $newNamespace[2]->clear();
+                $newNamespace->clearEmptyTokens();
 
                 $tokens->insertAt($namespaceIndex, $newNamespace);
             }
@@ -112,8 +120,6 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                 $tokens[$classyIndex]->setContent(strtr($filename, '/', '_'));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -137,7 +143,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
      */
     public function getDescription()
     {
-        return 'Classes must be in a path that matches their namespace, be at least one namespace deep, and the class name should match the file name.';
+        return 'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.';
     }
 
     /**

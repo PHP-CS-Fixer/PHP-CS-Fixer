@@ -30,6 +30,10 @@ class EofEndingFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
+                // test for not adding an empty line in empty file
+                '',
+            ),
+            array(
                 "<?php\n",
             ),
             array(
@@ -71,7 +75,8 @@ $a = 6;
 //test
 
 ?>
-  ', ),
+  ',
+            ),
             array(
                 // test for not adding an empty line after PHP tag has been closed
                 '<?php
@@ -79,7 +84,8 @@ $a = 7;
 
 //test
 
-?>', ),
+?>',
+            ),
             array(
                 // test for not adding an empty line after PHP tag has been closed
                 '<?php
@@ -88,7 +94,8 @@ $a = 8;
 ?>
 Outside of PHP tags rendering
 
-', ),
+',
+            ),
 array(
                 // test for not adding an empty line after PHP tag has been closed
                 "<?php
@@ -97,7 +104,8 @@ array(
 inline 1
 <?php
 
-?>Inline2\r\n", ),
+?>Inline2\r\n",
+            ),
         );
     }
 }

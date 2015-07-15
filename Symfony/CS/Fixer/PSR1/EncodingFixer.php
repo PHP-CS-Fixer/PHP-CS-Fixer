@@ -12,13 +12,14 @@
 namespace Symfony\CS\Fixer\PSR1;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * Fixer for rules defined in PSR1 ¶2.2.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class EncodingFixer extends AbstractFixer
+final class EncodingFixer extends AbstractFixer
 {
     private $BOM;
 
@@ -30,13 +31,28 @@ class EncodingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        if (0 === strncmp($content, $this->BOM, 3)) {
-            return substr($content, 3);
-        }
+        return true;
+    }
 
-        return $content;
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $token = $tokens[0];
+        $content = $token->getContent();
+
+        if (0 === strncmp($content, $this->BOM, 3)) {
+            $newContent = substr($content, 3);
+
+            if (false === $newContent) {
+                $newContent = ''; // substr returns false rather than an empty string when starting at the end
+            }
+
+            $token->setContent($newContent);
+        }
     }
 
     /**

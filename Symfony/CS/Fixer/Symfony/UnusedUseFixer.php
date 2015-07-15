@@ -13,29 +13,35 @@ namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class UnusedUseFixer extends AbstractFixer
+final class UnusedUseFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_USE);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
         $namespaceDeclarations = $this->getNamespaceDeclarations($tokens);
-        $useDeclarationsIndexes = $tokens->getImportUseIndexes();
+        $useDeclarationsIndexes = $tokensAnalyzer->getImportUseIndexes();
         $useDeclarations = $this->getNamespaceUseDeclarations($tokens, $useDeclarationsIndexes);
         $contentWithoutUseDeclarations = $this->generateCodeWithoutPartials($tokens, array_merge($namespaceDeclarations, $useDeclarations));
         $useUsages = $this->detectUseUsages($contentWithoutUseDeclarations, $useDeclarations);
 
         $this->removeUnusedUseDeclarations($tokens, $useDeclarations, $useUsages);
         $this->removeUsesInSameNamespace($tokens, $useDeclarations, $namespaceDeclarations);
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -202,7 +208,7 @@ class UnusedUseFixer extends AbstractFixer
         }
 
         if ($prevToken->isWhitespace() && $nextToken->isWhitespace()) {
-            $nextToken->override(array(T_WHITESPACE, $prevToken->getContent().$nextToken->getContent(), $prevToken->getLine()));
+            $nextToken->override(array(T_WHITESPACE, $prevToken->getContent().$nextToken->getContent()));
             $prevToken->clear();
         }
     }

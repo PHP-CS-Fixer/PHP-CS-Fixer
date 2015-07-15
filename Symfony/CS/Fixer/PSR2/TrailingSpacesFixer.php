@@ -22,15 +22,21 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class TrailingSpacesFixer extends AbstractFixer
+final class TrailingSpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return true;
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         foreach ($tokens as $index => $token) {
             if (!$token->isWhitespace()) {
                 continue;
@@ -53,8 +59,6 @@ class TrailingSpacesFixer extends AbstractFixer
                 $token->setContent(implode($lines));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
