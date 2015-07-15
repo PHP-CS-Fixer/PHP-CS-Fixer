@@ -33,7 +33,7 @@ class IsNullFixerTest extends AbstractFixerTestBase
 is_null
 
 (
-    trim
+    file_get_contents
     (
         \$x
     )
@@ -45,7 +45,7 @@ FIX;
         $multiLinePatternFixed = <<<FIXED
 <?php \$x =
 null ===
-    trim
+    file_get_contents
     (
         \$x
     )
@@ -56,39 +56,39 @@ FIXED;
         return array(
             array('<?php $x = "is_null";'),
 
-            array('<?php $x = ClassA::is_null(trim($x));'),
-            array('<?php $x = ScopeA\\is_null(trim($x));'),
-            array('<?php $x = namespace\\is_null(trim($x));'),
-            array('<?php $x = $object->is_null(trim($x));'),
+            array('<?php $x = ClassA::is_null(file_get_contents($x));'),
+            array('<?php $x = ScopeA\\is_null(file_get_contents($x));'),
+            array('<?php $x = namespace\\is_null(file_get_contents($x));'),
+            array('<?php $x = $object->is_null(file_get_contents($x));'),
 
-            array('<?php $x = new \\is_null(trim($x));'),
-            array('<?php $x = new is_null(trim($x));'),
-            array('<?php $x = new ScopeB\\is_null(trim($x));'),
+            array('<?php $x = new \\is_null(file_get_contents($x));'),
+            array('<?php $x = new is_null(file_get_contents($x));'),
+            array('<?php $x = new ScopeB\\is_null(file_get_contents($x));'),
 
-            array('<?php is_nullSmth(trim($x));'),
-            array('<?php smth_is_null(trim($x));'),
+            array('<?php is_nullSmth(file_get_contents($x));'),
+            array('<?php smth_is_null(file_get_contents($x));'),
 
-            array('<?php "SELECT ... is_null(trim($x)) ...";'),
-            array('<?php "SELECT ... is_null(trim($x)) ...";'),
+            array('<?php "SELECT ... is_null(file_get_contents($x)) ...";'),
+            array('<?php "SELECT ... is_null(file_get_contents($x)) ...";'),
             array('<?php "test" . "is_null" . "in concatenation";'),
 
-            array('<?php $x = null === trim($x);', '<?php $x = is_null(trim($x));'),
-            array('<?php $x = null !== trim($x);', '<?php $x = !is_null(trim($x));'),
-            array('<?php $x = null !== trim($x);', '<?php $x = ! is_null(trim($x));'),
-            array('<?php $x = null !== trim($x);', '<?php $x = ! is_null( trim($x) );'),
+            array('<?php $x = null === file_get_contents($x);', '<?php $x = is_null(file_get_contents($x));'),
+            array('<?php $x = null !== file_get_contents($x);', '<?php $x = !is_null(file_get_contents($x));'),
+            array('<?php $x = null !== file_get_contents($x);', '<?php $x = ! is_null(file_get_contents($x));'),
+            array('<?php $x = null !== file_get_contents($x);', '<?php $x = ! is_null( file_get_contents($x) );'),
 
-            array('<?php $x = null === trim($x);', '<?php $x = \\is_null(trim($x));'),
-            array('<?php $x = null !== trim($x);', '<?php $x = !\\is_null(trim($x));'),
-            array('<?php $x = null !== trim($x);', '<?php $x = ! \\is_null(trim($x));'),
-            array('<?php $x = null !== trim($x);', '<?php $x = ! \\is_null( trim($x) );'),
+            array('<?php $x = null === file_get_contents($x);', '<?php $x = \\is_null(file_get_contents($x));'),
+            array('<?php $x = null !== file_get_contents($x);', '<?php $x = !\\is_null(file_get_contents($x));'),
+            array('<?php $x = null !== file_get_contents($x);', '<?php $x = ! \\is_null(file_get_contents($x));'),
+            array('<?php $x = null !== file_get_contents($x);', '<?php $x = ! \\is_null( file_get_contents($x) );'),
 
-            array('<?php $x = null === trim($x).".dist";', '<?php $x = is_null(trim($x)).".dist";'),
-            array('<?php $x = null !== trim($x).".dist";', '<?php $x = !is_null(trim($x)).".dist";'),
-            array('<?php $x = null === trim($x).".dist";', '<?php $x = \\is_null(trim($x)).".dist";'),
-            array('<?php $x = null !== trim($x).".dist";', '<?php $x = !\\is_null(trim($x)).".dist";'),
+            array('<?php $x = null === file_get_contents($x).".dist";', '<?php $x = is_null(file_get_contents($x)).".dist";'),
+            array('<?php $x = null !== file_get_contents($x).".dist";', '<?php $x = !is_null(file_get_contents($x)).".dist";'),
+            array('<?php $x = null === file_get_contents($x).".dist";', '<?php $x = \\is_null(file_get_contents($x)).".dist";'),
+            array('<?php $x = null !== file_get_contents($x).".dist";', '<?php $x = !\\is_null(file_get_contents($x)).".dist";'),
 
             array($multiLinePatternFixed, $multiLinePatternToFix),
-            array('<?php $x = /**/null === /**//** */trim($x)/***//*xx*/;', '<?php $x = /**/is_null/**/ /** x*/(/**//** */trim($x)/***/)/*xx*/;'),
+            array('<?php $x = /**/null === /**//** */file_get_contents($x)/***//*xx*/;', '<?php $x = /**/is_null/**/ /** x*/(/**//** */file_get_contents($x)/***/)/*xx*/;'),
         );
     }
 }
