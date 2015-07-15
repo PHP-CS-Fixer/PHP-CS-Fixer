@@ -75,6 +75,7 @@ final class DirConstantFixer extends AbstractFixer
 
             // transform construction
             $tokens->overrideRange($matches[0], $matches[3], array(new Token(array(T_DIR, '__DIR__'))));
+            $end = $tokens->count() - 1;
         }
     }
 
