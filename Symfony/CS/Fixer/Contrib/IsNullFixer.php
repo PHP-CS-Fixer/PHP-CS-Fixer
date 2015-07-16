@@ -87,7 +87,7 @@ final class IsNullFixer extends AbstractFixer
                 new Token(array(T_STRING, 'null')),
                 new Token(array(T_WHITESPACE, ' ')),
                 new Token($isInvertedNullCheck ? array(T_IS_NOT_IDENTICAL, '!==') : array(T_IS_IDENTICAL, '===')),
-                $replacement [] = new Token(array(T_WHITESPACE, ' ')),
+                new Token(array(T_WHITESPACE, ' ')),
             );
 
             // closing parenthesis removed with leading spaces
