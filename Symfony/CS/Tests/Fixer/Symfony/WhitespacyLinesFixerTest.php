@@ -66,6 +66,10 @@ class WhitespacyLinesFixerTest extends AbstractFixerTestBase
     const FOO = "BAR";
 ',
             ),
+            array(
+                "<?php\n\n    \$a = 1;\n\n    \$b = 2;",
+                "<?php\n\n    \$a = 1;\n    \n    \$b = 2;",
+            ),
         );
     }
 }
