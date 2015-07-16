@@ -28,26 +28,25 @@ class IsNullFixerTest extends AbstractFixerTestBase
 
     public function provideExamples()
     {
-        $multiLinePatternToFix = <<<FIX
-<?php \$x =
+        $multiLinePatternToFix = <<<'FIX'
+<?php $x =
 is_null
 
 (
     json_decode
     (
-        \$x
+        $x
     )
 
 )
 
 ;
 FIX;
-        $multiLinePatternFixed = <<<FIXED
-<?php \$x =
-null ===
-    json_decode
+        $multiLinePatternFixed = <<<'FIXED'
+<?php $x =
+null === json_decode
     (
-        \$x
+        $x
     )
 
 ;
@@ -88,7 +87,14 @@ FIXED;
             array('<?php $x = null !== json_decode($x).".dist";', '<?php $x = !\\is_null(json_decode($x)).".dist";'),
 
             array($multiLinePatternFixed, $multiLinePatternToFix),
-            array('<?php $x = /**/null === /**//** */json_decode($x)/***//*xx*/;', '<?php $x = /**/is_null/**/ /** x*/(/**//** */json_decode($x)/***/)/*xx*/;'),
+            array(
+                '<?php $x = /**/null === /**/ /** x*//**//** */json_decode($x)/***//*xx*/;',
+                '<?php $x = /**/is_null/**/ /** x*/(/**//** */json_decode($x)/***/)/*xx*/;'
+            ),
+            array(
+                '<?php $x = null === null === $x ? z(null === $y) : z(null === $z);',
+                '<?php $x = is_null(is_null($x) ? z(is_null($y)) : z(is_null($z)));'
+            ),
         );
     }
 }

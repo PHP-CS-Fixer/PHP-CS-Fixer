@@ -33,13 +33,11 @@ final class IsNullFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $end = $tokens->count() - 1;
-
         $sequenceNeeded = array(array(T_STRING, 'is_null'), '(');
 
         $currIndex = 0;
         while (null !== $currIndex) {
-            $matches = $tokens->findSequence($sequenceNeeded, $currIndex, $end, false);
+            $matches = $tokens->findSequence($sequenceNeeded, $currIndex, $tokens->count() - 1, false);
 
             // stop looping if didn't find any new matches
             if (null === $matches) {
@@ -51,6 +49,7 @@ final class IsNullFixer extends AbstractFixer
 
             // move cursor just after sequence
             $currIndex = $matches[1];
+            $isNullIndex = $matches[0];
 
             // skip expressions which are not function reference
             $inversionCandidateIndex = $prevTokenIndex = $tokens->getPrevMeaningfulToken($matches[0]);
@@ -69,14 +68,18 @@ final class IsNullFixer extends AbstractFixer
                 }
 
                 // get rid of root namespace when it used and check if inversion provided
-                $matches[0] = $prevTokenIndex;
+                $tokens->removeTrailingWhitespace($prevTokenIndex);
+                $tokens[$prevTokenIndex]->clear();
             }
 
             // check if inversion being used, text comparison is due to not existing constant
             $isInvertedNullCheck = false;
             if ('!' === $tokens[$inversionCandidateIndex]->getContent()) {
                 $isInvertedNullCheck = true;
-                $matches[0] = $inversionCandidateIndex;
+
+                // get rid of inverting for proper transformations
+                $tokens->removeTrailingWhitespace($inversionCandidateIndex);
+                $tokens[$inversionCandidateIndex]->clear();
             }
 
             // sequence which we'll use as a replacement
@@ -84,21 +87,23 @@ final class IsNullFixer extends AbstractFixer
                 new Token(array(T_STRING, 'null')),
                 new Token(array(T_WHITESPACE, ' ')),
                 new Token($isInvertedNullCheck ? array(T_IS_NOT_IDENTICAL, '!==') : array(T_IS_IDENTICAL, '===')),
+                $replacement [] = new Token(array(T_WHITESPACE, ' ')),
             );
-            // if space is not before arguments, provide default one
-            if (!$tokens[$matches[1] + 1]->isGivenKind(T_WHITESPACE)) {
-                $replacement [] = new Token(array(T_WHITESPACE, ' '));
-            }
 
-            // transform construction
+            // closing parenthesis removed with leading spaces
             $referenceEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $matches[1]);
             $tokens->removeLeadingWhitespace($referenceEnd);
             $tokens[$referenceEnd]->clear();
-            $tokens->overrideRange($matches[0], $matches[1], $replacement);
 
-            //adjust cursor positioning
-            $end = $tokens->count() - 1;
-            $currIndex = $referenceEnd;
+            // opening parenthesis removed with trailing spaces
+            $tokens->removeLeadingWhitespace($matches[1]);
+            $tokens->removeTrailingWhitespace($matches[1]);
+            $tokens[$matches[1]]->clear();
+
+            $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
+
+            // nested is_null's support
+            $currIndex = $isNullIndex;
         }
     }
 
