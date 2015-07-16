@@ -46,7 +46,13 @@ final class WhitespacyLinesFixer extends AbstractFixer
                 // and T_WHITESPACES with at least 2 lines at the end of file
                 || (count($lines) > 1 && !isset($tokens[$index + 1]))
             ) {
-                $token->setContent(preg_replace('/^\h+$/m', '', $content));
+                $newContent = preg_replace('/^\h+$/m', '', $content);
+
+                if (isset($tokens[$index + 1])) {
+                    $newContent .= end($lines);
+                }
+
+                $token->setContent($newContent);
             }
         }
     }
