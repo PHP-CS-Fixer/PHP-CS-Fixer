@@ -76,7 +76,7 @@ FIXED;
             array($multiLinePatternFixed, $multiLinePatternToFix),
             array(
                 '<?php $x = /**//**/ /** x*//**//** */__DIR__/***//*xx*/;',
-                '<?php $x = /**/dirname/**/ /** x*/(/**//** */__FILE__/***/)/*xx*/;'
+                '<?php $x = /**/dirname/**/ /** x*/(/**//** */__FILE__/***/)/*xx*/;',
             ),
         );
     }

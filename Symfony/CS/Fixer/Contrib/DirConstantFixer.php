@@ -82,7 +82,6 @@ final class DirConstantFixer extends AbstractFixer
             // replace constant and remove function name
             $tokens->overrideAt($matches[2], new Token(array(T_DIR, '__DIR__')));
             $tokens[$matches[0]]->clear();
-
         }
     }
 
