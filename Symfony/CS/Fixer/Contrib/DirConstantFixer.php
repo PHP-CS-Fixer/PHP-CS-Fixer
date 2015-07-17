@@ -33,13 +33,11 @@ final class DirConstantFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $end = $tokens->count() - 1;
-
         $sequenceNeeded = array(array(T_STRING, 'dirname'), '(', array(T_FILE), ')');
 
         $currIndex = 0;
         while (null !== $currIndex) {
-            $matches = $tokens->findSequence($sequenceNeeded, $currIndex, $end, false);
+            $matches = $tokens->findSequence($sequenceNeeded, $currIndex, $tokens->count() - 1, false);
 
             // stop looping if didn't find any new matches
             if (null === $matches) {
@@ -66,16 +64,25 @@ final class DirConstantFixer extends AbstractFixer
                 if ($twicePrevToken->isGivenKind(array(T_NEW, T_STRING, CT_NAMESPACE_OPERATOR))) {
                     continue;
                 }
+
+                // get rid of root namespace when it used
+                $tokens->removeTrailingWhitespace($prevTokenIndex);
+                $tokens[$prevTokenIndex]->clear();
             }
 
-            // get rid of root namespace when it used
-            if ($prevToken->isGivenKind(T_NS_SEPARATOR)) {
-                $matches[0] = $prevTokenIndex;
-            }
+            // closing parenthesis removed with leading spaces
+            $tokens->removeLeadingWhitespace($matches[3]);
+            $tokens[$matches[3]]->clear();
 
-            // transform construction
-            $tokens->overrideRange($matches[0], $matches[3], array(new Token(array(T_DIR, '__DIR__'))));
-            $end = $tokens->count() - 1;
+            // opening parenthesis removed with trailing and leading spaces
+            $tokens->removeLeadingWhitespace($matches[1]);
+            $tokens->removeTrailingWhitespace($matches[1]);
+            $tokens[$matches[1]]->clear();
+
+            // replace constant and remove function name
+            $tokens->overrideAt($matches[2], new Token(array(T_DIR, '__DIR__')));
+            $tokens[$matches[0]]->clear();
+
         }
     }
 
