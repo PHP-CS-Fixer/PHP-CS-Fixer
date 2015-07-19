@@ -488,6 +488,11 @@ Choose from the list of available fixers:
 * **long_array_syntax** [contrib]
                 Arrays should use the long syntax.
 
+* **modernize_types_casting** [contrib]
+                Replaces intval, floatval, strval,
+                boolval functions calls wit according
+                type casting operator.
+
 * **multiline_spaces_before_semicolon** [contrib]
                 Multi-line whitespace before closing
                 semicolon are prohibited.
