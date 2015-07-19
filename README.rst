@@ -490,7 +490,7 @@ Choose from the list of available fixers:
 
 * **modernize_types_casting** [contrib]
                 Replaces intval, floatval, strval,
-                boolval functions calls wit according
+                boolval functions calls with according
                 type casting operator.
 
 * **multiline_spaces_before_semicolon** [contrib]

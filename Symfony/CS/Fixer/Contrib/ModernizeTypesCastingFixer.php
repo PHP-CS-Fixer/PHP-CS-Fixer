@@ -20,6 +20,13 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 final class ModernizeTypesCastingFixer extends AbstractFixer
 {
+    private static $sequencesInvariants = array(
+        T_INT_CAST => array(array(T_STRING, 'intval'), '('),
+        T_DOUBLE_CAST => array(array(T_STRING, 'floatval'), '('),
+        T_STRING_CAST => array(array(T_STRING, 'strval'), '('),
+        T_BOOL_CAST => array(array(T_STRING, 'boolval'), '('),
+    );
+
     /**
      * {@inheritdoc}
      */
@@ -33,12 +40,6 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $sequencesInvariants = array(
-            T_INT_CAST => array(array(T_STRING, 'intval'), '('),
-            T_DOUBLE_CAST => array(array(T_STRING, 'floatval'), '('),
-            T_STRING_CAST => array(array(T_STRING, 'strval'), '('),
-            T_BOOL_CAST => array(array(T_STRING, 'boolval'), '('),
-        );
         $castingTokens = array(
             T_INT_CAST => new Token(array(T_INT_CAST, '(int)')),
             T_DOUBLE_CAST => new Token(array(T_DOUBLE_CAST, '(float)')),
@@ -46,7 +47,7 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
             T_BOOL_CAST => new Token(array(T_BOOL_CAST, '(bool)')),
         );
 
-        foreach ($sequencesInvariants as $operator => $sequenceNeeded) {
+        foreach (self::$sequencesInvariants as $operator => $sequenceNeeded) {
             $currIndex = 0;
             while (null !== $currIndex) {
                 $matches = $tokens->findSequence($sequenceNeeded, $currIndex, $tokens->count() - 1, false);
@@ -122,6 +123,6 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Replaces intval, floatval, strval, boolval functions calls wit according type casting operator.';
+        return 'Replaces intval, floatval, strval, boolval functions calls with according type casting operator.';
     }
 }
