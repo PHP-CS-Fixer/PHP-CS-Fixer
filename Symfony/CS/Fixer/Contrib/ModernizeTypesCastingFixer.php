@@ -33,21 +33,24 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
+        // contains sequence identity as key an sequence as value
         static $sequencesInvariants = array(
-            T_INT_CAST => array(array(T_STRING, 'intval'), '('),
-            T_DOUBLE_CAST => array(array(T_STRING, 'floatval'), '('),
-            T_STRING_CAST => array(array(T_STRING, 'strval'), '('),
-            T_BOOL_CAST => array(array(T_STRING, 'boolval'), '('),
+            'intval' => array(array(T_STRING, 'intval'), '('),
+            'floatval' => array(array(T_STRING, 'floatval'), '('),
+            'doubleval' => array(array(T_STRING, 'doubleval'), '('),
+            'strval' => array(array(T_STRING, 'strval'), '('),
+            'boolval' => array(array(T_STRING, 'boolval'), '('),
+        );
+        // tokens object which will be used as replacement
+        static $castingTokens = array(
+             'intval' => array(T_INT_CAST, '(int)'),
+             'floatval' => array(T_DOUBLE_CAST, '(float)'),
+             'doubleval' => array(T_DOUBLE_CAST, '(float)'),
+             'strval' => array(T_STRING_CAST, '(string)'),
+             'boolval' => array(T_BOOL_CAST, '(bool)'),
         );
 
-        $castingTokens = array(
-            T_INT_CAST => new Token(array(T_INT_CAST, '(int)')),
-            T_DOUBLE_CAST => new Token(array(T_DOUBLE_CAST, '(float)')),
-            T_STRING_CAST => new Token(array(T_STRING_CAST, '(string)')),
-            T_BOOL_CAST => new Token(array(T_BOOL_CAST, '(bool)')),
-        );
-
-        foreach ($sequencesInvariants as $operator => $sequenceNeeded) {
+        foreach ($sequencesInvariants as $functionIdentity => $sequenceNeeded) {
             $currIndex = 0;
             while (null !== $currIndex) {
                 $matches = $tokens->findSequence($sequenceNeeded, $currIndex, $tokens->count() - 1, false);
@@ -71,6 +74,29 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
                     continue;
                 }
 
+                // check if something complex passed as an argument and preserve parenthesises then
+                $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
+                $countParamTokens = 0;
+                for ($paramContentIndex = $openParenthesis + 1; $paramContentIndex < $closeParenthesis; ++$paramContentIndex) {
+                    //not a space, means some sensible token
+                    if (!$tokens[$paramContentIndex]->isGivenKind(T_WHITESPACE)) {
+                        ++$countParamTokens;
+                    }
+                }
+                $preserveParenthesises = $countParamTokens > 1;
+
+                // special case: intval with 2 parameters shall not be processed
+                if ('intval' === $functionIdentity) {
+                    $tokenBeforeSecondBracket = $tokens->getPrevMeaningfulToken($closeParenthesis);
+                    if (null !== $tokenBeforeSecondBracket) {
+                        // we are assuming comma is at second place from the right
+                        $commaCandidate = $tokens->getPrevMeaningfulToken($tokenBeforeSecondBracket);
+                        if (null !== $commaCandidate && ',' === $tokens[$commaCandidate]->getContent()) {
+                            continue;
+                        }
+                    }
+                }
+
                 // handle function reference with namespaces
                 if ($prevToken->isGivenKind(T_NS_SEPARATOR)) {
                     $twicePrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
@@ -84,19 +110,11 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
                     $tokens[$prevTokenIndex]->clear();
                 }
 
-                // check if something complex passed as an argument and preserve parenthesises then
-                $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
-                $countParamTokens = 0;
-                for ($paramContentIndex = $openParenthesis + 1; $paramContentIndex < $closeParenthesis; ++$paramContentIndex) {
-                    //not a space, means some sensible token
-                    if (!$tokens[$paramContentIndex]->isGivenKind(T_WHITESPACE)) {
-                        ++$countParamTokens;
-                    }
-                }
-                $preserveParenthesises = $countParamTokens > 1;
-
                 // perform transformation
-                $replacement = array($castingTokens[$operator], new Token(array(T_WHITESPACE, ' ')));
+                $replacement = array(
+                    new Token($castingTokens[$functionIdentity]),
+                    new Token(array(T_WHITESPACE, ' ')),
+                );
                 if (!$preserveParenthesises) {
                     // closing parenthesis removed with leading spaces
                     $tokens->removeLeadingWhitespace($closeParenthesis);

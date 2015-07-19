@@ -74,8 +74,11 @@ FIXED;
             array('<?php "SELECT ... intval(mt_rand(0, 100)) ...";'),
             array('<?php "test" . "intval" . "in concatenation";'),
 
+            array('<?php $x = intval($x, 16);'),
+
             array('<?php $x = (int) $x;', '<?php $x = intval($x);'),
             array('<?php $x = (float) $x;', '<?php $x = floatval($x);'),
+            array('<?php $x = (float) $x;', '<?php $x = doubleval($x);'),
             array('<?php $x = (string) $x;', '<?php $x = strval($x);'),
             array('<?php $x = (bool) $x;', '<?php $x = boolval($x);'),
             array('<?php $x = (int) (mt_rand(0, 100));', '<?php $x = intval(mt_rand(0, 100));'),
