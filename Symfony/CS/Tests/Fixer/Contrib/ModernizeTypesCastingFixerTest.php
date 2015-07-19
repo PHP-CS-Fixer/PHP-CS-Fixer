@@ -75,6 +75,8 @@ FIXED;
             array('<?php "test" . "intval" . "in concatenation";'),
 
             array('<?php $x = intval($x, 16);'),
+            array('<?php $x = intval($x, $options["base"]);'),
+            array('<?php $x = intval($x, $options->get("base", 16));'),
 
             array('<?php $x = (int) $x;', '<?php $x = intval($x);'),
             array('<?php $x = (float) $x;', '<?php $x = floatval($x);'),

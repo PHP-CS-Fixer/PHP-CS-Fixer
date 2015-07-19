@@ -77,24 +77,28 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
                 // check if something complex passed as an argument and preserve parenthesises then
                 $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
                 $countParamTokens = 0;
+                $hasCommas = false;
                 for ($paramContentIndex = $openParenthesis + 1; $paramContentIndex < $closeParenthesis; ++$paramContentIndex) {
                     //not a space, means some sensible token
                     if (!$tokens[$paramContentIndex]->isGivenKind(T_WHITESPACE)) {
                         ++$countParamTokens;
                     }
+
+                    // skip (...) constructs
+                    if ('(' === $tokens[$paramContentIndex]->getContent()) {
+                        $paramContentIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $paramContentIndex);
+                        continue;
+                    }
+                    // check if commas are available
+                    if (',' === $tokens[$paramContentIndex]->getContent()) {
+                        $hasCommas = true;
+                    }
                 }
                 $preserveParenthesises = $countParamTokens > 1;
 
                 // special case: intval with 2 parameters shall not be processed
-                if ('intval' === $functionIdentity) {
-                    $tokenBeforeSecondBracket = $tokens->getPrevMeaningfulToken($closeParenthesis);
-                    if (null !== $tokenBeforeSecondBracket) {
-                        // we are assuming comma is at second place from the right
-                        $commaCandidate = $tokens->getPrevMeaningfulToken($tokenBeforeSecondBracket);
-                        if (null !== $commaCandidate && ',' === $tokens[$commaCandidate]->getContent()) {
-                            continue;
-                        }
-                    }
+                if ($hasCommas && 'intval' === $functionIdentity) {
+                    continue;
                 }
 
                 // handle function reference with namespaces
