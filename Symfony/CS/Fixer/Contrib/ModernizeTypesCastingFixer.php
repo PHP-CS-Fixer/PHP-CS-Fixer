@@ -56,7 +56,7 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
                     // next function search, as current one not found
                     continue 2;
                 }
-                list ($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
+                list($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
 
                 // analysing cursor shift
                 $currIndex = $openParenthesis;
