@@ -63,7 +63,7 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
 
                 // special case: intval with 2 parameters shall not be processed (base conversion)
                 if ('intval' === $functionIdentity) {
-                    $parametersCount = FunctionArgumentsUtil::gerArgumentsCount($openParenthesis, $closeParenthesis, $tokens);
+                    $parametersCount = FunctionArgumentsUtil::countArguments($openParenthesis, $closeParenthesis, $tokens);
                     if ($parametersCount > 1) {
                         continue;
                     }
@@ -79,7 +79,7 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
                 }
                 $preserveParenthesises = $countParamTokens > 1;
 
-                // analyse namespace specification (root one oe none) and decide what to do
+                // analyse namespace specification (root one or none) and decide what to do
                 $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionName);
                 if ($tokens[$prevTokenIndex]->isGivenKind(T_NS_SEPARATOR)) {
                     // get rid of root namespace when it used

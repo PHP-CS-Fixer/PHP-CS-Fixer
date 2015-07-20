@@ -24,10 +24,10 @@ final class FunctionArgumentsUtil
      *
      * @return int
      */
-    public static function gerArgumentsCount($openParenthesis, $closeParenthesis, Tokens $tokens)
+    public static function countArguments($openParenthesis, $closeParenthesis, Tokens $tokens)
     {
         $firstSensibleToken = $tokens->getNextMeaningfulToken($openParenthesis);
-        if ('(' === $tokens[$firstSensibleToken]->getContent()) {
+        if (')' === $tokens[$firstSensibleToken]->getContent()) {
             return 0;
         }
 
