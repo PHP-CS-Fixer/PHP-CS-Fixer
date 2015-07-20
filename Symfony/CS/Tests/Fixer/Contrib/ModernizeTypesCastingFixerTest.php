@@ -55,6 +55,40 @@ FIX;
 ;
 FIXED;
 
+        $overriddenFunction = <<<'OVERRIDDEN'
+<?php
+
+class overridesIntval
+{
+    public function intval($x)
+    {
+        return \intval($x);
+    }
+
+    public function usesInval()
+    {
+        return intval(mt_rand(0, 100));
+    }
+}
+OVERRIDDEN;
+
+        $overriddenFunctionFixed = <<<'OVERRIDDEN'
+<?php
+
+class overridesIntval
+{
+    public function intval($x)
+    {
+        return (int) $x;
+    }
+
+    public function usesInval()
+    {
+        return intval(mt_rand(0, 100));
+    }
+}
+OVERRIDDEN;
+
         return array(
             array('<?php $x = "intval";'),
 
@@ -70,7 +104,6 @@ FIXED;
             array('<?php intvalSmth(mt_rand(0, 100));'),
             array('<?php smth_intval(mt_rand(0, 100));'),
 
-            array('<?php "SELECT ... intval(mt_rand(0, 100)) ...";'),
             array('<?php "SELECT ... intval(mt_rand(0, 100)) ...";'),
             array('<?php "test" . "intval" . "in concatenation";'),
 
@@ -89,6 +122,8 @@ FIXED;
             array('<?php $x = (int) (mt_rand(0, 100)).".dist";', '<?php $x = \\intval(mt_rand(0, 100)).".dist";'),
 
             array($multiLinePatternFixed, $multiLinePatternToFix),
+            array($overriddenFunctionFixed, $overriddenFunction),
+
             array(
                 '<?php $x = /**/(int) /**/ /** x*/(/**//** */mt_rand(0, 100)/***/)/*xx*/;',
                 '<?php $x = /**/intval/**/ /** x*/(/**//** */mt_rand(0, 100)/***/)/*xx*/;',

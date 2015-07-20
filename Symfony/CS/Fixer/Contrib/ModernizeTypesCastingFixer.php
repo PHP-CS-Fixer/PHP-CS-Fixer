@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Functions\FunctionDefinitionUtil;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
@@ -51,6 +52,8 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
         );
 
         foreach ($sequencesInvariants as $functionIdentity => $sequenceNeeded) {
+            $isFunctionDefinedInScope = FunctionDefinitionUtil::isDefinedInScope($functionIdentity, $tokens);
+
             $currIndex = 0;
             while (null !== $currIndex) {
                 $matches = $tokens->findSequence($sequenceNeeded, $currIndex, $tokens->count() - 1, false);
@@ -112,6 +115,9 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
                     // get rid of root namespace when it used
                     $tokens->removeTrailingWhitespace($prevTokenIndex);
                     $tokens[$prevTokenIndex]->clear();
+                } elseif ($isFunctionDefinedInScope) {
+                    // skip analysis if function is defined in the scope, so this is a referenced call
+                    continue;
                 }
 
                 // perform transformation
