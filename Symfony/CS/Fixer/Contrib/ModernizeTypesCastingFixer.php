@@ -14,6 +14,7 @@ namespace Symfony\CS\Fixer\Contrib;
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Functions\FunctionArgumentsUtil;
 use Symfony\CS\Functions\FunctionDefinitionUtil;
+use Symfony\CS\Functions\FunctionReference\Finder;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
@@ -35,16 +36,8 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        // contains sequence identity as key an sequence as value
-        static $sequencesInvariants = array(
-            'intval' => array(array(T_STRING, 'intval'), '('),
-            'floatval' => array(array(T_STRING, 'floatval'), '('),
-            'doubleval' => array(array(T_STRING, 'doubleval'), '('),
-            'strval' => array(array(T_STRING, 'strval'), '('),
-            'boolval' => array(array(T_STRING, 'boolval'), '('),
-        );
-        // tokens object which will be used as replacement
-        static $castingTokens = array(
+        // replacement patterns
+        static $replacement = array(
              'intval' => array(T_INT_CAST, '(int)'),
              'floatval' => array(T_DOUBLE_CAST, '(float)'),
              'doubleval' => array(T_DOUBLE_CAST, '(float)'),
@@ -52,34 +45,31 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
              'boolval' => array(T_BOOL_CAST, '(bool)'),
         );
 
-        foreach ($sequencesInvariants as $functionIdentity => $sequenceNeeded) {
+        foreach ($replacement as $functionIdentity => $newToken) {
             $isFunctionDefinedInScope = FunctionDefinitionUtil::isDefinedInScope($functionIdentity, $tokens);
 
             $currIndex = 0;
             while (null !== $currIndex) {
-                $matches = $tokens->findSequence($sequenceNeeded, $currIndex, $tokens->count() - 1, false);
-
-                // stop looping if didn't find any new matches
-                if (null === $matches) {
-                    break;
+                // try getting function reference and translate boundaries for humans
+                $boundaries = Finder::find($functionIdentity, $tokens, $currIndex, $tokens->count() - 1);
+                if (null === $boundaries) {
+                    // next function search, as current one not found
+                    continue 2;
                 }
+                list ($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
 
-                // 0 and 1 accordingly are "intval|floatval|strval|boolval", "("
-                $matches = array_keys($matches);
+                // analysing cursor shift
+                $currIndex = $openParenthesis;
 
-                // move cursor just after sequence
-                $openParenthesis = $currIndex = $matches[1];
-                $functionName = $matches[0];
-
-                // skip expressions which are not function reference
-                $prevTokenIndex = $tokens->getPrevMeaningfulToken($matches[0]);
-                $prevToken = $tokens[$prevTokenIndex];
-                if ($prevToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION))) {
-                    continue;
+                // special case: intval with 2 parameters shall not be processed (base conversion)
+                if ('intval' === $functionIdentity) {
+                    $parametersCount = FunctionArgumentsUtil::gerArgumentsCount($openParenthesis, $closeParenthesis, $tokens);
+                    if ($parametersCount > 1) {
+                        continue;
+                    }
                 }
 
                 // check if something complex passed as an argument and preserve parenthesises then
-                $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
                 $countParamTokens = 0;
                 for ($paramContentIndex = $openParenthesis + 1; $paramContentIndex < $closeParenthesis; ++$paramContentIndex) {
                     //not a space, means some sensible token
@@ -89,21 +79,9 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
                 }
                 $preserveParenthesises = $countParamTokens > 1;
 
-                // special case: intval with 2 parameters shall not be processed
-                if ('intval' === $functionIdentity &&
-                    FunctionArgumentsUtil::gerArgumentsCount($openParenthesis, $closeParenthesis, $tokens) > 1
-                ) {
-                    continue;
-                }
-
-                // handle function reference with namespaces
-                if ($prevToken->isGivenKind(T_NS_SEPARATOR)) {
-                    $twicePrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
-                    $twicePrevToken = $tokens[$twicePrevTokenIndex];
-                    if ($twicePrevToken->isGivenKind(array(T_NEW, T_STRING, CT_NAMESPACE_OPERATOR))) {
-                        continue;
-                    }
-
+                // analyse namespace specification (root one oe none) and decide what to do
+                $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionName);
+                if ($tokens[$prevTokenIndex]->isGivenKind(T_NS_SEPARATOR)) {
                     // get rid of root namespace when it used
                     $tokens->removeTrailingWhitespace($prevTokenIndex);
                     $tokens[$prevTokenIndex]->clear();
@@ -113,8 +91,8 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
                 }
 
                 // perform transformation
-                $replacement = array(
-                    new Token($castingTokens[$functionIdentity]),
+                $replacementSequence = array(
+                    new Token($newToken),
                     new Token(array(T_WHITESPACE, ' ')),
                 );
                 if (!$preserveParenthesises) {
@@ -125,12 +103,12 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
                     // opening parenthesis removed with trailing spaces
                     $tokens->removeLeadingWhitespace($openParenthesis);
                     $tokens->removeTrailingWhitespace($openParenthesis);
-                    $tokens[$matches[1]]->clear();
+                    $tokens[$openParenthesis]->clear();
                 } else {
                     // we'll need to provide a space after a casting operator
                     $tokens->removeTrailingWhitespace($functionName);
                 }
-                $tokens->overrideRange($functionName, $functionName, $replacement);
+                $tokens->overrideRange($functionName, $functionName, $replacementSequence);
 
                 // nested transformations support
                 $currIndex = $functionName;
