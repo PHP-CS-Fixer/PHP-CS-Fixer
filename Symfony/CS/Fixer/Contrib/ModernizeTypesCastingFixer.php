@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Functions\FunctionArgumentsUtil;
 use Symfony\CS\Functions\FunctionDefinitionUtil;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
@@ -80,27 +81,18 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
                 // check if something complex passed as an argument and preserve parenthesises then
                 $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
                 $countParamTokens = 0;
-                $hasCommas = false;
                 for ($paramContentIndex = $openParenthesis + 1; $paramContentIndex < $closeParenthesis; ++$paramContentIndex) {
                     //not a space, means some sensible token
                     if (!$tokens[$paramContentIndex]->isGivenKind(T_WHITESPACE)) {
                         ++$countParamTokens;
                     }
-
-                    // skip (...) constructs
-                    if ('(' === $tokens[$paramContentIndex]->getContent()) {
-                        $paramContentIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $paramContentIndex);
-                        continue;
-                    }
-                    // check if commas are available
-                    if (',' === $tokens[$paramContentIndex]->getContent()) {
-                        $hasCommas = true;
-                    }
                 }
                 $preserveParenthesises = $countParamTokens > 1;
 
                 // special case: intval with 2 parameters shall not be processed
-                if ($hasCommas && 'intval' === $functionIdentity) {
+                if ('intval' === $functionIdentity &&
+                    FunctionArgumentsUtil::gerArgumentsCount($openParenthesis, $closeParenthesis, $tokens) > 1
+                ) {
                     continue;
                 }
 
