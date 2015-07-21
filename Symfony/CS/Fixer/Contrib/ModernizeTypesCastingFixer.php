@@ -11,17 +11,14 @@
 
 namespace Symfony\CS\Fixer\Contrib;
 
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\Functions\FunctionArgumentsUtil;
-use Symfony\CS\Functions\FunctionDefinitionUtil;
-use Symfony\CS\Functions\FunctionReference\Finder;
+use Symfony\CS\AbstractFunctionReferenceFixer;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
-final class ModernizeTypesCastingFixer extends AbstractFixer
+final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 {
     /**
      * {@inheritdoc}
@@ -46,12 +43,12 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
         );
 
         foreach ($replacement as $functionIdentity => $newToken) {
-            $isFunctionDefinedInScope = FunctionDefinitionUtil::isDefinedInScope($functionIdentity, $tokens);
+            $isFunctionDefinedInScope = $this->isDefinedInScope($functionIdentity, $tokens);
 
             $currIndex = 0;
             while (null !== $currIndex) {
                 // try getting function reference and translate boundaries for humans
-                $boundaries = Finder::find($functionIdentity, $tokens, $currIndex, $tokens->count() - 1);
+                $boundaries = $this->find($functionIdentity, $tokens, $currIndex, $tokens->count() - 1);
                 if (null === $boundaries) {
                     // next function search, as current one not found
                     continue 2;
@@ -63,7 +60,7 @@ final class ModernizeTypesCastingFixer extends AbstractFixer
 
                 // special case: intval with 2 parameters shall not be processed (base conversion)
                 if ('intval' === $functionIdentity) {
-                    $parametersCount = FunctionArgumentsUtil::countArguments($openParenthesis, $closeParenthesis, $tokens);
+                    $parametersCount = $this->countArguments($openParenthesis, $closeParenthesis, $tokens);
                     if ($parametersCount > 1) {
                         continue;
                     }
