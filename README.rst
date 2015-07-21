@@ -489,9 +489,9 @@ Choose from the list of available fixers:
                 Arrays should use the long syntax.
 
 * **modernize_types_casting** [contrib]
-                Replaces intval, floatval, strval,
-                boolval functions calls with according
-                type casting operator.
+                Replaces intval, floatval, doubleval,
+                strval, boolval functions calls with
+                according type casting operator.
 
 * **multiline_spaces_before_semicolon** [contrib]
                 Multi-line whitespace before closing

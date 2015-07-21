@@ -118,6 +118,6 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
      */
     public function getDescription()
     {
-        return 'Replaces intval, floatval, strval, boolval functions calls with according type casting operator.';
+        return 'Replaces intval, floatval, doubleval, strval, boolval functions calls with according type casting operator.';
     }
 }
