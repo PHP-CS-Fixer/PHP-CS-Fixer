@@ -25,9 +25,12 @@ cache:
 install:
     - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction
 
+before_script:
+    - if [ $TRAVIS_PHP_VERSION = '5.6' ]; then PHPUNIT_FLAGS="--coverage-clover build/logs/clover.xml"; fi
+
 script:
-    - phpunit --verbose --coverage-clover build/logs/clover.xml
+    - phpunit --verbose $PHPUNIT_FLAGS
     - php php-cs-fixer --diff --dry-run -v fix
 
 after_script:
-    - php vendor/bin/coveralls -v
+    - if [ $TRAVIS_PHP_VERSION = '5.6' ]; then php vendor/bin/coveralls -v; fi
