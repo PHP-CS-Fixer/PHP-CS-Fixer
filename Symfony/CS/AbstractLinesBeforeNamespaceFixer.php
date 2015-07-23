@@ -18,6 +18,8 @@ use Symfony\CS\Tokenizer\Tokens;
  * lines prefix a namespace declaration.
  *
  * @author Graham Campbell <graham@mineuk.com>
+ *
+ * @internal
  */
 abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer
 {
