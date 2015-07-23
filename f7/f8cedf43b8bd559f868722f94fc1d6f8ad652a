@@ -1,0 +1,52 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2015-07-17T15:21:28Z
+
+@keradus Sorry for the ping, but this bug is messing a lot of my codebase
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-17T15:25:07Z
+
+Is this bug only present on 2.0?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2015-07-20T06:35:03Z
+
+@GrahamCampbell the code of the fixer is the same till 1.9 branch: do I have to rebase against a previous version?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-20T08:31:14Z
+
+OK, read it once again, so...
+indeed, does this bug exists on 1.x line too?
+@Slamdunk , the fixer may have same code but may using different tokenizer version.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2015-07-20T09:10:10Z
+
+@keradus So, the bug affects `master`, `1.10` and `1.9`. Previous branches are ok.
+Do you want me to PR the test in every branch, and then the source fix only in those 3 branches?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-20T10:24:39Z
+
+So the fix should be only for lowest brach - 1.9.
+Setting correct target for this PR... and done :)
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2015-07-20T10:43:34Z
+
+@keradus Sorry I don't understand the consequences of your statement: have I to rebase the PR against `1.9`? Because as of yet github doesn't allow branch target change of a PR.
+Should I close it and reopen, or will you manually merge it?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-21T06:58:01Z
+
+I will auto-merge it to 1.9 line
