@@ -1,0 +1,44 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-13T12:15:36Z
+
+Ref #1295
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-13T12:21:47Z
+
+This is kind of more of a feature than a bug fix I think @keradus. Wondering if maybe 1.10 is a better target?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-13T12:23:06Z
+
+Also, we were looking for a place for me to update my email address across the code base, could I do that here @keradus?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-13T12:24:10Z
+
+I agree it may be treaten like enhance or bugfix.
+But it was intended to fix long form to short form of types in phpdocs, we just missed that one annotation. Personally it's a bugfix to me.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-13T12:25:36Z
+
+> Personally it's a bugfix to me.
+
+Sure. That's what I first thought too when I selected the 1.9 branch. :)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-07-14T21:10:37Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-07-14T22:34:31Z
+
+:+1:
