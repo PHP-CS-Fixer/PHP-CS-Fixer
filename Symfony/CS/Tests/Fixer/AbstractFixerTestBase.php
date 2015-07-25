@@ -20,9 +20,9 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
 {
     protected function getFixer()
     {
-        $fixerName = 'Symfony\CS\Fixer'.substr(get_called_class(), strlen(__NAMESPACE__), -strlen('Test'));
+        $name = 'Symfony\CS\Fixer'.substr(get_called_class(), strlen(__NAMESPACE__), -strlen('Test'));
 
-        return new $fixerName();
+        return new $name();
     }
 
     protected function getTestFile($filename = __FILE__)
@@ -73,6 +73,6 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
             $this->assertTrue($token->equals($expectedPrototype), sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype), $token->toJson()));
         }
 
-        $this->assertEquals($expectedTokens->count(), $tokens->count(), 'The collection should have the same length than the expected one');
+        $this->assertSame($expectedTokens->count(), $tokens->count(), 'The collection should have the same length than the expected one');
     }
 }

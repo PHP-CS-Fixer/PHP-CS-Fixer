@@ -29,7 +29,7 @@ class ShortTagFixer extends AbstractFixer
         // replace all <? with <?php to replace all short open tags even without short_open_tag option enabled
         $newContent = preg_replace('/<\?(\s|$)/', '<?php$1', $content, -1, $count);
 
-        if (!$count) {
+        if (0 === $count) {
             return $content;
         }
 
