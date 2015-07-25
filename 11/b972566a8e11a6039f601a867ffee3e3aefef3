@@ -1,0 +1,118 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-06-29T20:20:34Z
+
+> contrib vs symfony
+
+This would break symfony's tests so I doubt it should be symfony level.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-06-29T20:21:50Z
+
+> > contrib vs symfony
+
+> This would break symfony's tests so I doubt it should be symfony level.
+
+And still it's a request from Fabien, so maybe we could apply that fixer to Symfony codebase like we did with a lot of rules that we know Symfony want to keep and just wasn't able to manage it itself for whole codebase.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-06-29T20:22:51Z
+
+Converting assertEquals makes total sense to me, but converting assertNotEquals makes no sense.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-06-29T20:23:33Z
+
+> assertNotEquals makes no sense.
+
+Or rather, has applications that are useful and shouldn't be blanket applied to a code base.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-06-29T20:24:52Z
+
+Ref https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1279#discussion_r33508241
+It's strict rule. One want to be strict or not. I agree that one may not always want to be strict, simply it is not a rule for all usages.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-06-29T20:41:12Z
+
+For now we cannot apply this fixer for this codebase ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-06-29T20:42:19Z
+
+> > contrib vs symfony
+
+> This would break symfony's tests so I doubt it should be symfony level.
+
+BTW currently this check is done by fabbot.io, therefore it is somehow encouraged on Symfony
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-06-29T20:54:13Z
+
+> Converting assertEquals makes total sense to me, but converting assertNotEquals makes no sense.
+
+Going to have multiple fixers that made the same but with other method of PHPUnit is not nice for me.
+Because one may want to not have `assertNotEquals` in package, and other one may want to not have `assertAttribute...`.
+I think we should go in direction started by `header_comment` - in time we could add option to parametrize this fixer to tell which methods it should fix, and for BC if there is no config then fix them all.
+What do you think?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-06-29T21:08:05Z
+
+BTW, 435 files would need that fix on Symfony 2.3.
+Leave level as Contrib
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-06-29T21:42:01Z
+
+Nice fixer, but I have to say I'm happy it is on contrib level :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-06-29T21:45:20Z
+
+It's a prelude that is (imo) needed to create requested `assertSame(true, ...)` -> `assertTrue(...)` fixer ;)
+Many may want to use second one, but few may want to use first one. And giving whole in one would cause few to use it.
+I won't use that fixer myself too ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-02T20:33:20Z
+
+@GrahamCampbell, could you please take a look at 82ab5443fef3df175dc76a1d85eee76118859a04 ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-02T20:44:24Z
+
+I guess that's a way of doing it. PHP-CS-Fixer is becoming swamped in configuration and confusing options and resolutions though. I think 2.0 made things even more complex.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-03T10:55:13Z
+
+Great, that's good that this fixer don't need that configuration, it just allow to use it.
+I think too that 2.x line need some way to allow configure fixers, the need was introduced by `HeaderFixer`.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-03T10:56:14Z
+
+Any pluses? Merge of this fixer will allow to work on last fixer requested for fabbot.io
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-07-03T15:19:31Z
+
+cool and thanks :)
+:+1:
