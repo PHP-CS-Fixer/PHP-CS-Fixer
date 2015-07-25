@@ -479,6 +479,10 @@ Choose from the list of available fixers:
 * **header_comment** [contrib]
                 Add, replace or remove header comment.
 
+* **logical_not_operators_with_spaces** [contrib]
+                Logical NOT operators (!) should have
+                leading and trailing whitespaces.
+
 * **long_array_syntax** [contrib]
                 Arrays should use the long syntax.
 
