@@ -189,6 +189,9 @@ class Fixer
                 );
             }
 
+            // If file is not valid then store it in cache to not lint it again next time:
+            $fileCacheManager->setFile($this->getFileRelativePathname($file), $old);
+
             return;
         }
 
