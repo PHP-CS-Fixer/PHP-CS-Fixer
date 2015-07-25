@@ -485,6 +485,10 @@ Choose from the list of available fixers:
 * **header_comment** [contrib]
                 Add, replace or remove header comment.
 
+* **logical_not_operators_with_spaces** [contrib]
+                Logical NOT operators (!) should have
+                leading and trailing whitespaces.
+
 * **long_array_syntax** [contrib]
                 Arrays should use the long syntax.
 
@@ -506,6 +510,19 @@ Choose from the list of available fixers:
 * **php4_constructor** [contrib]
                 Convert PHP4-style constructors to
                 __construct. Warning! This could
+                change code behavior.
+
+* **php_unit_construct** [contrib]
+                PHPUnit assertion method calls like
+                "->assertSame(true, $foo)" should be
+                written with dedicated method like
+                "->assertTrue($foo)". Warning! This
+                could change code behavior.
+
+* **php_unit_strict** [contrib]
+                PHPUnit methods like "assertSame"
+                should be used instead of
+                "assertEquals". Warning! This could
                 change code behavior.
 
 * **phpdoc_order** [contrib]

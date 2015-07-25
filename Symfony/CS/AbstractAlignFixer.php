@@ -76,12 +76,12 @@ abstract class AbstractAlignFixer extends AbstractFixer
                 $rightmostSymbol = 0;
 
                 foreach ($group as $index) {
-                    $rightmostSymbol = max($rightmostSymbol, strpos($lines[$index], $placeholder));
+                    $rightmostSymbol = max($rightmostSymbol, strpos(utf8_decode($lines[$index]), $placeholder));
                 }
 
                 foreach ($group as $index) {
                     $line = $lines[$index];
-                    $currentSymbol = strpos($line, $placeholder);
+                    $currentSymbol = strpos(utf8_decode($line), $placeholder);
                     $delta = abs($rightmostSymbol - $currentSymbol);
 
                     if ($delta > 0) {

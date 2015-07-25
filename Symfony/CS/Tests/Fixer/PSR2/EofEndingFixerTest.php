@@ -94,9 +94,10 @@ $a = 8;
 ?>
 Outside of PHP tags rendering
 
+
 ',
             ),
-array(
+            array(
                 // test for not adding an empty line after PHP tag has been closed
                 "<?php
 //test

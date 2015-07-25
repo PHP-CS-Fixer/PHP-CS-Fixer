@@ -346,6 +346,22 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
     Foo::new()->aaa(array(1 => 2))->bbb("a", "b");
 ',
             ),
+            array(
+                '<?php
+    $inflect_male = array(
+        "aitė\b" => "as",
+        "ytė\b"  => "is",
+        "iūtė\b" => "ius",
+        "utė\b"  => "us",
+    );',
+                '<?php
+    $inflect_male = array(
+        "aitė\b" => "as",
+        "ytė\b" => "is",
+        "iūtė\b" => "ius",
+        "utė\b" => "us",
+    );',
+            ),
         );
     }
 }

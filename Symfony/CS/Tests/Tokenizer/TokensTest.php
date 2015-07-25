@@ -19,6 +19,24 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class TokensTest extends \PHPUnit_Framework_TestCase
 {
+    private function assertEqualsTokensArray($expected, $input)
+    {
+        if (null === $expected) {
+            $this->assertSame($expected, $input);
+
+            return;
+        }
+
+        $this->assertSame(array_keys($expected), array_keys($input), 'Both arrays need to have same keys.');
+
+        foreach ($expected as $index => $expectedToken) {
+            $this->assertTrue(
+                $expectedToken->equals($input[$index]),
+                sprintf('The token at index %d should be %s, got %s', $index, $expectedToken->toJson(), $input[$index]->toJson())
+            );
+        }
+    }
+
     public function testReadFromCacheAfterClearing()
     {
         $code = '<?php echo 1;';
@@ -42,7 +60,7 @@ class TokensTest extends \PHPUnit_Framework_TestCase
     {
         $tokens = Tokens::fromCode($source);
 
-        $this->assertEquals($expected, call_user_func_array(array($tokens, 'findSequence'), $params));
+        $this->assertEqualsTokensArray($expected, call_user_func_array(array($tokens, 'findSequence'), $params));
     }
 
     public function provideFindSequence()
@@ -275,7 +293,7 @@ PHP;
         $tokens->clearRange($fooIndex, $barIndex - 1);
 
         $newPublicIndexes = array_keys($tokens->findGivenKind(T_PUBLIC));
-        $this->assertEquals($barIndex, reset($newPublicIndexes));
+        $this->assertSame($barIndex, reset($newPublicIndexes));
 
         for ($i = $fooIndex; $i < $barIndex; ++$i) {
             $this->assertTrue($tokens[$i]->isWhiteSpace());

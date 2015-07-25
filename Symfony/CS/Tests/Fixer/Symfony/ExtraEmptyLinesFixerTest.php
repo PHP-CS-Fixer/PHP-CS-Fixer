@@ -197,8 +197,8 @@ EOF;
 
     public function testFixWithTrailingInlineBlock()
     {
-        $expected =
-"<?php
+        $expected = "
+<?php
     echo 'ellow';
 ?>
 

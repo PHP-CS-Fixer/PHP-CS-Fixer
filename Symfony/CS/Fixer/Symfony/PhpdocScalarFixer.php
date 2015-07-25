@@ -26,7 +26,7 @@ final class PhpdocScalarFixer extends AbstractFixer
      *
      * @var array
      */
-    private static $tags = array('param', 'return', 'type', 'var');
+    private static $tags = array('param', 'return', 'type', 'var', 'property');
 
     /**
      * The types to fix.

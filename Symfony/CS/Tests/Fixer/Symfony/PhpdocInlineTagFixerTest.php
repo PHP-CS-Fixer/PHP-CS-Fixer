@@ -63,7 +63,7 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
             ),
         );
 
-        foreach (array('example','id', 'internal', 'inheritdoc', 'link', 'source', 'toc', 'tutorial') as $tag) {
+        foreach (array('example', 'id', 'internal', 'inheritdoc', 'link', 'source', 'toc', 'tutorial') as $tag) {
             $cases[] = array(
                 sprintf("<?php\n     /**\n      * {@%s}a\n      */\n", $tag),
                 sprintf("<?php\n     /**\n      * @{%s}a\n      */\n", $tag),
@@ -112,15 +112,14 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
         );
 
         // don't auto inline tags with the exception of inheritdoc
-        foreach (array('example','id', 'internal', 'foo', 'link', 'source', 'toc', 'tutorial') as $tag) {
+        foreach (array('example', 'id', 'internal', 'foo', 'link', 'source', 'toc', 'tutorial') as $tag) {
             $cases[] = array(
                 sprintf("<?php\n     /**\n      * @%s\n      */\n", $tag),
             );
         }
 
         // don't touch well formatted tags
-
-        foreach (array('example','id', 'internal', 'inheritdoc', 'link', 'source', 'toc', 'tutorial') as $tag) {
+        foreach (array('example', 'id', 'internal', 'inheritdoc', 'link', 'source', 'toc', 'tutorial') as $tag) {
             $cases[] = array(
                 sprintf("<?php\n     /**\n      * {@%s}\n      */\n", $tag),
             );
