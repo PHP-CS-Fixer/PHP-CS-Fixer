@@ -1,0 +1,103 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-15T22:15:42Z
+
+We need to add this to our internal conflicts list since this conflicts with PSR2.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-15T22:16:12Z
+
+`(! $foo)` is permitted within PSR-2, but `( ! $foo)` is not.
+
+---------------------------------------------------------------------------
+
+by phansys at 2015-07-16T01:28:46Z
+
+Thank you for the feedback @GrahamCampbell. Is that change something actionable on my side?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-16T09:43:19Z
+
+> Is that change something actionable on my side?
+
+No, something to us to note when the conflict checks are written. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-16T15:58:39Z
+
+How about having a fixer to just make sure that there's a space to the right of a `!`?
+
+---------------------------------------------------------------------------
+
+by phansys at 2015-07-16T16:02:35Z
+
+You mean an extra fixer for that? I could add a new one if that's your suggestion.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-16T17:58:08Z
+
+@GrahamCampbell is that a standard anywhere? If it would be usefull somewhere then yeah, why not. But if it won't then there is no need.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-16T19:35:17Z
+
+> is that a standard anywhere?
+
+Laravel would use it if we could, but no such fixer exists.
+
+---------------------------------------------------------------------------
+
+by phansys at 2015-07-18T01:54:40Z
+
+@GrahamCampbell, if there is some reference for this or if someone else agrees, I'll work on it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-18T10:30:09Z
+
+> if there is some reference for this
+
+I'm on the core team. :)
+
+---------------------------------------------------------------------------
+
+by phansys at 2015-07-18T20:49:21Z
+
+@GrahamCampbell, it's ok then. Here you are: #1306.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-23T20:13:58Z
+
+What about https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1306#issuecomment-122811837 ?
+
+---------------------------------------------------------------------------
+
+by phansys at 2015-07-23T20:17:39Z
+
+I was waiting for the confirmation there (at #1306) @keradus. If you can confirm that solves the issue, I'll apply the same here.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-23T20:20:25Z
+
+OK, done: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1306#issuecomment-124228577 ;)
+Sorry, I was extra busy last week...
+
+---------------------------------------------------------------------------
+
+by phansys at 2015-07-23T20:40:26Z
+
+No problem at all @keradus, thank you.
+PR updated.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-23T21:16:35Z
+
+:+1:
