@@ -58,7 +58,7 @@ $b = 1;		',
             array(
                 "<?php\necho 1;\n   \necho2;",
             ),
-array(
+            array(
                 '<?php
 	$b = 1;
 	',

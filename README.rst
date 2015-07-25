@@ -510,6 +510,13 @@ Choose from the list of available fixers:
                 __construct. Warning! This could
                 change code behavior.
 
+* **php_unit_construct** [contrib]
+                PHPUnit assertion method calls like
+                "->assertSame(true, $foo)" should be
+                written with dedicated method like
+                "->assertTrue($foo)". Warning! This
+                could change code behavior.
+
 * **php_unit_strict** [contrib]
                 PHPUnit methods like "assertSame"
                 should be used instead of
