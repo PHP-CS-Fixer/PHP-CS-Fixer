@@ -535,6 +535,11 @@ Choose from the list of available fixers:
                 @var should always be written as
                 @type.
 
+* **random_api_migration** [contrib]
+                Replaces rand, srand, getrandmax
+                functions calls with their mt_*
+                analogs.
+
 * **short_array_syntax** [contrib]
                 PHP arrays should use the PHP 5.4
                 short-syntax.
