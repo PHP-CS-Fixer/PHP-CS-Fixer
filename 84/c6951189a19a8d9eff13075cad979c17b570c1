@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-08T21:47:03Z
+
+I think that this and #1279 fixer could be the last that come into v1.10 release.
+If we decided to merge it.
+
+---------------------------------------------------------------------------
+
+by Anahkiasen at 2015-07-08T22:25:25Z
+
+Aren't there a lot of other constructs that could be fixed in this way?
+
+| Before                                           | After                                  |
+| ---                                              | ---                                    |
+| `$this->assertEquals(5, count($foobar))`         | `$this->assertCount(5, $foobar)`       |
+| `$this->assertTrue(empty($foobar))`              | `$this->assertEmpty($foobar)`          |
+| `$this->assertTrue(file_exists($foobar))`        | `$this->assertFileExists($foobar)`     |
+| `$this->assertTrue(preg_match($regex, $foobar))` | `$this->assertRegExp($regex, $foobar)` |
+
+etc.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-08T22:38:24Z
+
+Yes and no.
+For now the proposed fixer fixes most common misuses when there are no extra logic in passing argument.
+When using `assertTrue` one can imitate every other exceptions via `assertTrue(magicFnc($foo))`
