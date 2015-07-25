@@ -485,6 +485,10 @@ Choose from the list of available fixers:
 * **header_comment** [contrib]
                 Add, replace or remove header comment.
 
+* **is_null** [contrib]
+                Replaces is_null(parameter) expression
+                with null === parameters.
+
 * **long_array_syntax** [contrib]
                 Arrays should use the long syntax.
 
