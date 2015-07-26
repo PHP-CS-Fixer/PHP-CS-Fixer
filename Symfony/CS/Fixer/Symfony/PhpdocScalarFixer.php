@@ -100,7 +100,7 @@ class PhpdocScalarFixer extends AbstractFixer
     private function fixScalars(Line $line, $tag)
     {
         $content = $line->getContent();
-        $tagSplit = preg_split('/\s*\@'.$tag.'\s*/', $content);
+        $tagSplit = preg_split('/\s*\@'.$tag.'\s*/i', $content);
         $spaceSplit = preg_split('/\s/', $tagSplit[1]);
         $usefulContent = $spaceSplit[0];
 
