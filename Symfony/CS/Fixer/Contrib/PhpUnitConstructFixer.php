@@ -29,15 +29,21 @@ final class PhpUnitConstructFixer extends AbstractFixer
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
             $skipToIndex = $this->fixAssertNotSame($tokens, $index);
 
-            if (null !== $skipToIndex) {
-                $index = $skipToIndex;
+            if (null === $skipToIndex) {
+                break;
             }
 
+            $index = $skipToIndex;
+        }
+
+        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
             $skipToIndex = $this->fixAssertSame($tokens, $index);
 
-            if (null !== $skipToIndex) {
-                $index = $skipToIndex;
+            if (null === $skipToIndex) {
+                break;
             }
+
+            $index = $skipToIndex;
         }
 
         return $tokens->generateCode();
