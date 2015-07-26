@@ -256,4 +256,16 @@ EOF;
 
         $this->makeTest($expected);
     }
+
+    public function testPhpdocHasAWrongTagNameCase()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @Param string
+     */
+
+EOF;
+        $this->makeTest($expected);
+    }
 }
