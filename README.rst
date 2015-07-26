@@ -531,6 +531,11 @@ Choose from the list of available fixers:
                 first, then throws annotations, then
                 return annotations.
 
+* **phpdoc_scalar_full** [contrib]
+                Scalar types should always be written
+                in the same form. "integer", not
+                "int"; "boolean", not "bool".
+
 * **phpdoc_var_to_type** [contrib]
                 @var should always be written as
                 @type.
