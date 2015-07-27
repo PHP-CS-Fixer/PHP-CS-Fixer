@@ -101,6 +101,11 @@ class PhpdocScalarFixer extends AbstractFixer
     {
         $content = $line->getContent();
         $tagSplit = preg_split('/\s*\@'.$tag.'\s*/', $content);
+
+        if (!isset($tagSplit[1])) {
+            return; // this can happens if phpdoc's tag has a wrong case (i.e. @Params instead of @params)
+        }
+
         $spaceSplit = preg_split('/\s/', $tagSplit[1]);
         $usefulContent = $spaceSplit[0];
 

@@ -256,4 +256,16 @@ EOF;
 
         $this->makeTest($expected);
     }
+
+    public function testWrongCasedPhpdocTagDoesNotAltered()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @Param boolean
+     */
+
+EOF;
+        $this->makeTest($expected);
+    }
 }
