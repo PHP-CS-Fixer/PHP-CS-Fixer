@@ -3,6 +3,18 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.9.3
+--------------------
+
+* bug #1327 DocBlock\Tag - keep the case of tags (GrahamCampbell)
+
+Changelog for v1.9.2
+--------------------
+
+* bug #1313 AlignDoubleArrowFixer - fix aligning after UTF8 chars (keradus)
+* bug #1296 PhpdocScalarFixer - fix property annotation too (GrahamCampbell)
+* bug #1299 WhitespacyLinesFixer - spaces on next valid line must not be fixed (Slamdunk)
+
 Changelog for v1.9.1
 --------------------
 

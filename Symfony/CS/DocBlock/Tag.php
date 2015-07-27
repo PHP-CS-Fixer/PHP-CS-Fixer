@@ -48,7 +48,7 @@ class Tag
         preg_match_all('/@[a-zA-Z0-9_]+(?=\s|$)/', $content, $matches);
 
         if (isset($matches[0][0])) {
-            $this->name = strtolower(ltrim($matches[0][0], '@'));
+            $this->name = ltrim($matches[0][0], '@');
         }
     }
 
