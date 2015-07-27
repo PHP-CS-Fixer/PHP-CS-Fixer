@@ -363,8 +363,8 @@ Choose from the list of available fixers:
                         subject.
 
 * **phpdoc_inline_tag** [symfony]
-                Fix PHPDoc inline tags, make
-                inheritdoc always inline.
+                        Fix PHPDoc inline tags, make
+                        inheritdoc always inline.
 
 * **phpdoc_no_access** [symfony]
                         @access annotations should be
@@ -527,14 +527,15 @@ Choose from the list of available fixers:
                         Add, replace or remove header
                         comment.
 
+* **logical_not_operators_with_spaces** [contrib]
+                        Logical NOT operators (!)
+                        should have leading and
+                        trailing whitespaces.
+
 * **logical_not_operators_with_successor_space** [contrib]
                         Logical NOT operators (!)
                         should have one trailing
                         whitespace.
-
-* **logical_not_operators_with_spaces** [contrib]
-                Logical NOT operators (!) should have
-                leading and trailing whitespaces.
 
 * **long_array_syntax** [contrib]
                         Arrays should use the long
@@ -564,17 +565,20 @@ Choose from the list of available fixers:
                         code behavior.
 
 * **php_unit_construct** [contrib]
-                PHPUnit assertion method calls like
-                "->assertSame(true, $foo)" should be
-                written with dedicated method like
-                "->assertTrue($foo)". Warning! This
-                could change code behavior.
+                        PHPUnit assertion method calls
+                        like "->assertSame(true,
+                        $foo)" should be written with
+                        dedicated method like
+                        "->assertTrue($foo)". Warning!
+                        This could change code
+                        behavior.
 
 * **php_unit_strict** [contrib]
-                PHPUnit methods like "assertSame"
-                should be used instead of
-                "assertEquals". Warning! This could
-                change code behavior.
+                        PHPUnit methods like
+                        "assertSame" should be used
+                        instead of "assertEquals".
+                        Warning! This could change
+                        code behavior.
 
 * **phpdoc_order** [contrib]
                         Annotations in phpdocs should
