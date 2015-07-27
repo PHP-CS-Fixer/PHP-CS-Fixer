@@ -14,6 +14,8 @@ namespace Symfony\CS;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
+ * @internal base class for function reference fixers
+ *
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
 abstract class AbstractFunctionReferenceFixer extends AbstractFixer
@@ -47,7 +49,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
         $functionNamePrecedingToken = $tokens[$functionNamePrefix];
         if ($functionNamePrecedingToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION))) {
             // this expression is differs from expected, resume
-            return self::find($functionNameToSearch, $tokens, $openParenthesis, $end);
+            return $this->find($functionNameToSearch, $tokens, $openParenthesis, $end);
         }
 
         // second criteria check: ensure namespace is the root one
@@ -57,7 +59,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
             if ($namespaceCandidateToken->isGivenKind(array(T_NEW, T_STRING, CT_NAMESPACE_OPERATOR))) {
                 // here can be added complete namespace scan
                 // this expression is differs from expected, resume
-                return self::find($functionNameToSearch, $tokens, $openParenthesis, $end);
+                return $this->find($functionNameToSearch, $tokens, $openParenthesis, $end);
             }
         }
 
@@ -65,7 +67,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
         $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
         if (null === $closeParenthesis) {
             // this sequence is not closed, try resuming
-            return self::find($functionNameToSearch, $tokens, $openParenthesis, $end);
+            return $this->find($functionNameToSearch, $tokens, $openParenthesis, $end);
         }
 
         return array($functionName, $openParenthesis, $closeParenthesis);
@@ -74,9 +76,9 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
     /**
      * Count amount of parameters in a function/method reference.
      *
-     * @param int                                  $openParenthesis
-     * @param int                                  $closeParenthesis
-     * @param Tokens|\Symfony\CS\Tokenizer\Token[] $tokens
+     * @param int    $openParenthesis
+     * @param int    $closeParenthesis
+     * @param Tokens $tokens
      *
      * @return int
      */

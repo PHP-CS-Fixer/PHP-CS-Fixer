@@ -492,6 +492,8 @@ Choose from the list of available fixers:
                 Replaces intval, floatval, doubleval,
                 strval, boolval functions calls with
                 according type casting operator.
+                Warning! This could change code
+                behavior.
 
 * **multiline_spaces_before_semicolon** [contrib]
                 Multi-line whitespace before closing
