@@ -19,6 +19,8 @@ use Symfony\CS\Utils;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @method Token current()
  */
 class Tokens extends \SplFixedArray
 {
