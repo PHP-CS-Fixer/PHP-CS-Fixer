@@ -19,22 +19,18 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 final class PhpUnitStrictFixer extends AbstractFixer
 {
-    private $phpUnitMethods = array(
+    private $configuration = array(
         'assertAttributeEquals' => 'assertAttributeSame',
         'assertAttributeNotEquals' => 'assertAttributeNotSame',
         'assertEquals' => 'assertSame',
         'assertNotEquals' => 'assertNotSame',
     );
 
-    public function configure(array $usingMethods = null)
+    public function configure(array $usingMethods)
     {
-        if (null === $usingMethods) {
-            return;
-        }
-
-        foreach (array_keys($this->phpUnitMethods) as $method) {
+        foreach (array_keys($this->configuration) as $method) {
             if (!in_array($method, $usingMethods, true)) {
-                unset($this->phpUnitMethods[$method]);
+                unset($this->configuration[$method]);
             }
         }
     }
@@ -46,7 +42,7 @@ final class PhpUnitStrictFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($this->phpUnitMethods as $methodBefore => $methodAfter) {
+        foreach ($this->configuration as $methodBefore => $methodAfter) {
             for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
                 $sequence = $tokens->findSequence(
                     array(

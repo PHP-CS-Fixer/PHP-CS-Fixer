@@ -19,31 +19,57 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 final class PhpUnitConstructFixer extends AbstractFixer
 {
+    private $configuration = array(
+        'assertSame' => true,
+        'assertEquals' => true,
+        'assertNotEquals' => true,
+        'assertNotSame' => true,
+    );
+
+    private $assertionFixers = array(
+        'assertSame' => 'fixAssertPositive',
+        'assertEquals' => 'fixAssertPositive',
+        'assertNotEquals' => 'fixAssertNegative',
+        'assertNotSame' => 'fixAssertNegative',
+    );
+
+    public function configure(array $usingMethods)
+    {
+        foreach ($usingMethods as $method => $fix) {
+            if (!isset($this->configuration[$method])) {
+                throw new \InvalidArgumentException();
+            }
+
+            $this->configuration[$method] = $fix;
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
     public function fix(\SplFileInfo $file, $content)
     {
-        $tokens = Tokens::fromCode($content);
-
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $skipToIndex = $this->fixAssertNotSame($tokens, $index);
-
-            if (null === $skipToIndex) {
-                break;
-            }
-
-            $index = $skipToIndex;
+        // no assertions to be fixed - fast return
+        if (!in_array(true, $this->configuration, true)) {
+            return $content;
         }
 
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $skipToIndex = $this->fixAssertSame($tokens, $index);
+        $tokens = Tokens::fromCode($content);
 
-            if (null === $skipToIndex) {
-                break;
+        foreach ($this->configuration as $assertionMethod => $assertionShouldBeFixed) {
+            if (true !== $assertionShouldBeFixed) {
+                continue;
             }
 
-            $index = $skipToIndex;
+            $assertionFixer = $this->assertionFixers[$assertionMethod];
+
+            for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+                $index = $this->$assertionFixer($tokens, $index, $assertionMethod);
+
+                if (null === $index) {
+                    break;
+                }
+            }
         }
 
         return $tokens->generateCode();
@@ -66,13 +92,13 @@ final class PhpUnitConstructFixer extends AbstractFixer
         return -10;
     }
 
-    private function fixAssertNotSame(Tokens $tokens, $index)
+    private function fixAssertNegative(Tokens $tokens, $index, $method)
     {
         $sequence = $tokens->findSequence(
             array(
                 array(T_VARIABLE, '$this'),
                 array(T_OBJECT_OPERATOR, '->'),
-                array(T_STRING, 'assertNotSame'),
+                array(T_STRING, $method),
                 '(',
                 array(T_STRING, 'null'),
                 ',',
@@ -91,7 +117,7 @@ final class PhpUnitConstructFixer extends AbstractFixer
         return $sequenceIndexes[5];
     }
 
-    private function fixAssertSame(Tokens $tokens, $index)
+    private function fixAssertPositive(Tokens $tokens, $index, $method)
     {
         static $map = array(
             'false' => 'assertFalse',
@@ -103,7 +129,7 @@ final class PhpUnitConstructFixer extends AbstractFixer
             array(
                 array(T_VARIABLE, '$this'),
                 array(T_OBJECT_OPERATOR, '->'),
-                array(T_STRING, 'assertSame'),
+                array(T_STRING, $method),
                 '(',
             ),
             $index

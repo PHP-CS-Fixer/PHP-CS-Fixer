@@ -11,6 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer;
 
+use Symfony\CS\FixerInterface;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -36,13 +37,13 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
         return $files[$filename];
     }
 
-    protected function makeTest($expected, $input = null, \SplFileInfo $file = null)
+    protected function makeTest($expected, $input = null, \SplFileInfo $file = null, FixerInterface $fixer = null)
     {
         if ($expected === $input) {
             throw new \InvalidArgumentException('Input parameter must not be equal to expected parameter.');
         }
 
-        $fixer = $this->getFixer();
+        $fixer = $fixer ?: $this->getFixer();
         $file = $file ?: $this->getTestFile();
         $fileIsSupported = $fixer->supports($file);
 
