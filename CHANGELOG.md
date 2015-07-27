@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.9.3
+--------------------
+
+* bug #1327 DocBlock\Tag - keep the case of tags (GrahamCampbell)
+
 Changelog for v1.9.2
 --------------------
 
