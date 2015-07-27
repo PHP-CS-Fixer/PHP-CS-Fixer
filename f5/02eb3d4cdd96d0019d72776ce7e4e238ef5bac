@@ -1,0 +1,36 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-27T17:03:57Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-07-27T17:07:41Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-27T17:51:08Z
+
+BTW, what do you think @GrahamCampbell about using external docblock parser like `phpDocumentor\Reflection\DocBlock` or `Sami\ParserDocBlockParser` (build on first one) ?
+Then we won't need to maintain all crazy variants of phpdocs ourselves
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-27T18:01:17Z
+
+Because external parsers don't offer the things we want, and implement a load of things we don't need. That's why I didn't use them originally.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-07-27T18:07:52Z
+
+@keradus the issue is that PHP-CS-Fixer actually needs info about formatting, to be able to fix it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-27T18:11:09Z
+
+OK, just the thought to reduce possible bugs. Thank you both for quick answer ;)
