@@ -1,0 +1,111 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-20T08:27:49Z
+
+Does this fixer is in conflict with `UnaryOperatorsSpacesFixer` ? `UnaryOperatorsSpacesFixer` fixers also `- 5` => `-5`
+
+---------------------------------------------------------------------------
+
+by phansys at 2015-07-20T12:41:32Z
+
+I guess so @keradus, should I work with ```getPriority()```?
+
+---------------------------------------------------------------------------
+
+by phansys at 2015-07-20T13:15:19Z
+
+I added a [new commit](https://github.com/phansys/PHP-CS-Fixer/commit/007101d2c0805255d78462351641ff34f9040ce6) with that change. If it is valid, I'll squash later and backport the same update for #1303.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-21T06:57:02Z
+
+Then I understand it's not a conflicting fixer and `- 5` should be changed into `-5` for Laravel?
+Then also please add tests [here](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.10/Symfony/CS/Tests/FixerTest.php#L158)
+
+---------------------------------------------------------------------------
+
+by phansys at 2015-07-21T18:06:42Z
+
+Done @keradus.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-23T20:20:02Z
+
+> I added a new commit with that change. If it is valid, I'll squash later and backport the same update for #1303.
+
+Yeah, it's great.
+BTW, there is no need to squash it yourself.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-23T20:41:40Z
+
+Having fixer to ensure there's a least one space feels a bit pointless. Surely we should ensure there's exactly one space.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-23T20:42:02Z
+
+That's the use case I'd want from the fixer, and so far, I'm the only one who's said I'd actually use it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-23T20:42:28Z
+
+That, is laravel/framework will use this fixer, and we want exactly one space.
+
+---------------------------------------------------------------------------
+
+by phansys at 2015-07-23T21:26:24Z
+
+@GrahamCampbell, updated.
+
+---------------------------------------------------------------------------
+
+by phansys at 2015-07-24T00:41:11Z
+
+Updated according your comment @keradus. Please tell me if that is the right way to achive what you suggested.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-24T06:12:04Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-25T19:18:11Z
+
+Please @phansys , could you resolve conflict ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-26T09:35:49Z
+
+INFO: I will release 1.10 after merge of this PR.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-26T09:37:40Z
+
+Can we not just resolve the conflicts?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-26T09:39:27Z
+
+gh is playing with me during merging conflicted PR, that's why I have asked @phansys to do it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-26T09:40:17Z
+
+I would offer to do it, but I'm really busy right now, sorry. If this isn't done by Tuesday, I can do it. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-26T09:41:52Z
+
+Fixing it on separate PR isn't a problem, I just want to keep history of original PR. waiting for @phansys isn't a problem.
