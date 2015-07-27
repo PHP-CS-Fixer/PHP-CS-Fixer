@@ -11,7 +11,6 @@
 
 namespace Symfony\CS;
 
-use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -77,9 +76,9 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
     /**
      * Count amount of parameters in a function/method reference.
      *
-     * @param int    $openParenthesis
-     * @param int    $closeParenthesis
-     * @param Tokens|Token[] $tokens
+     * @param int            $openParenthesis
+     * @param int            $closeParenthesis
+     * @param Tokens $tokens
      *
      * @return int
      */
