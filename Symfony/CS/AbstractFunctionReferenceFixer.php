@@ -76,8 +76,8 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
     /**
      * Count amount of parameters in a function/method reference.
      *
-     * @param int            $openParenthesis
-     * @param int            $closeParenthesis
+     * @param int    $openParenthesis
+     * @param int    $closeParenthesis
      * @param Tokens $tokens
      *
      * @return int
@@ -91,24 +91,27 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
 
         $argumentsCount = 1;
         for ($paramContentIndex = $openParenthesis + 1; $paramContentIndex < $closeParenthesis; ++$paramContentIndex) {
+            /* @var \Symfony\CS\Tokenizer\Token $token */
+            $token = $tokens[$paramContentIndex];
+
             // skip nested (...) constructs
-            if ($tokens[$paramContentIndex]->equals('(')) {
+            if ($token->equals('(')) {
                 $paramContentIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $paramContentIndex);
                 continue;
             }
             // skip nested [...] constructs
-            if ($tokens[$paramContentIndex]->equals('[')) {
+            if ($token->equals('[')) {
                 $paramContentIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $paramContentIndex);
                 continue;
             }
             // skip nested {...} constructs
-            if ($tokens[$paramContentIndex]->equals('{')) {
+            if ($token->equals('{')) {
                 $paramContentIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $paramContentIndex);
                 continue;
             }
 
             // if comma matched, increase arguments counter
-            if ($tokens[$paramContentIndex]->equals(',')) {
+            if ($token->equals(',')) {
                 ++$argumentsCount;
             }
         }
