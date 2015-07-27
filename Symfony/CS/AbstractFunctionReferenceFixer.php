@@ -11,6 +11,7 @@
 
 namespace Symfony\CS;
 
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -78,27 +79,37 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
      *
      * @param int    $openParenthesis
      * @param int    $closeParenthesis
-     * @param Tokens $tokens
+     * @param Tokens|Token[] $tokens
      *
      * @return int
      */
     protected function countArguments($openParenthesis, $closeParenthesis, Tokens $tokens)
     {
         $firstSensibleToken = $tokens->getNextMeaningfulToken($openParenthesis);
-        if (')' === $tokens[$firstSensibleToken]->getContent()) {
+        if ($tokens[$firstSensibleToken]->equals(')')) {
             return 0;
         }
 
         $argumentsCount = 1;
         for ($paramContentIndex = $openParenthesis + 1; $paramContentIndex < $closeParenthesis; ++$paramContentIndex) {
             // skip nested (...) constructs
-            if ('(' === $tokens[$paramContentIndex]->getContent()) {
+            if ($tokens[$paramContentIndex]->equals('(')) {
                 $paramContentIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $paramContentIndex);
+                continue;
+            }
+            // skip nested [...] constructs
+            if ($tokens[$paramContentIndex]->equals('[')) {
+                $paramContentIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $paramContentIndex);
+                continue;
+            }
+            // skip nested {...} constructs
+            if ($tokens[$paramContentIndex]->equals('{')) {
+                $paramContentIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $paramContentIndex);
                 continue;
             }
 
             // if comma matched, increase arguments counter
-            if (',' === $tokens[$paramContentIndex]->getContent()) {
+            if ($tokens[$paramContentIndex]->equals(',')) {
                 ++$argumentsCount;
             }
         }
