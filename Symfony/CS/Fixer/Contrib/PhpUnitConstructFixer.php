@@ -19,6 +19,24 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 final class PhpUnitConstructFixer extends AbstractFixer
 {
+    private $configuration = array(
+        'assertSame' => true,
+        'assertEquals' => true,
+        'assertNotEquals' => true,
+        'assertNotSame' => true,
+    );
+
+    public function configure(array $usingMethods)
+    {
+        foreach ($usingMethods as $method => $fix) {
+            if (!isset($this->configuration[$method])) {
+                throw new \InvalidArgumentException();
+            }
+
+            $this->configuration[$method] = $fix;
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -26,24 +44,44 @@ final class PhpUnitConstructFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $skipToIndex = $this->fixAssertNotSame($tokens, $index);
+        if ($this->configuration['assertNotEquals']) {
+            for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+                $index = $this->fixAssertNegative($tokens, $index, 'assertNotEquals');
 
-            if (null === $skipToIndex) {
-                break;
+                if (null === $index) {
+                    break;
+                }
             }
-
-            $index = $skipToIndex;
         }
 
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $skipToIndex = $this->fixAssertSame($tokens, $index);
+        if ($this->configuration['assertNotSame']) {
+            for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+                $index = $this->fixAssertNegative($tokens, $index, 'assertNotSame');
 
-            if (null === $skipToIndex) {
-                break;
+                if (null === $index) {
+                    break;
+                }
             }
+        }
 
-            $index = $skipToIndex;
+        if ($this->configuration['assertEquals']) {
+            for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+                $index = $this->fixAssertPositive($tokens, $index, 'assertEquals');
+
+                if (null === $index) {
+                    break;
+                }
+            }
+        }
+
+        if ($this->configuration['assertSame']) {
+            for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+                $index = $this->fixAssertPositive($tokens, $index, 'assertSame');
+
+                if (null === $index) {
+                    break;
+                }
+            }
         }
 
         return $tokens->generateCode();
@@ -66,13 +104,13 @@ final class PhpUnitConstructFixer extends AbstractFixer
         return -10;
     }
 
-    private function fixAssertNotSame(Tokens $tokens, $index)
+    private function fixAssertNegative(Tokens $tokens, $index, $method)
     {
         $sequence = $tokens->findSequence(
             array(
                 array(T_VARIABLE, '$this'),
                 array(T_OBJECT_OPERATOR, '->'),
-                array(T_STRING, 'assertNotSame'),
+                array(T_STRING, $method),
                 '(',
                 array(T_STRING, 'null'),
                 ',',
@@ -91,7 +129,7 @@ final class PhpUnitConstructFixer extends AbstractFixer
         return $sequenceIndexes[5];
     }
 
-    private function fixAssertSame(Tokens $tokens, $index)
+    private function fixAssertPositive(Tokens $tokens, $index, $method)
     {
         static $map = array(
             'false' => 'assertFalse',
@@ -103,7 +141,7 @@ final class PhpUnitConstructFixer extends AbstractFixer
             array(
                 array(T_VARIABLE, '$this'),
                 array(T_OBJECT_OPERATOR, '->'),
-                array(T_STRING, 'assertSame'),
+                array(T_STRING, $method),
                 '(',
             ),
             $index

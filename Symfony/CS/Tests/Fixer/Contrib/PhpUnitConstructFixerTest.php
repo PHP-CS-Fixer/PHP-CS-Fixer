@@ -21,9 +21,25 @@ class PhpUnitConstructFixerTest extends AbstractFixerTestBase
     /**
      * @dataProvider provideTestFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFixWithDisabled($expected, $input = null)
     {
         $this->makeTest($expected, $input);
+    }
+
+    /**
+     * @dataProvider provideTestFixCases
+     */
+    public function testFix($expected, $input = null)
+    {
+        $fixer = $this->getFixer();
+        $fixer->configure(array(
+            'assertSame' => false,
+            'assertEquals' => false,
+            'assertNotEquals' => false,
+            'assertNotSame' => false,
+        ));
+
+        $this->makeTest($expected, null, null, $fixer);
     }
 
     public function provideTestFixCases()
@@ -49,6 +65,14 @@ class PhpUnitConstructFixerTest extends AbstractFixerTestBase
             array(
                 '<?php $this->assertNotNull(  $a  , "notNull" . $bar);',
                 '<?php $this->assertNotSame(  null, $a  , "notNull" . $bar);',
+            ),
+            array(
+                '<?php $this->assertFalse(  $a, "false" . $bar);',
+                '<?php $this->assertEquals(  false, $a, "false" . $bar);',
+            ),
+            array(
+                '<?php $this->assertNotNull(  $a  , "notNull" . $bar);',
+                '<?php $this->assertNotEquals(  null, $a  , "notNull" . $bar);',
             ),
             array(
                 '<?php
