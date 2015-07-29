@@ -11,6 +11,7 @@
 
 namespace Symfony\CS;
 
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -40,6 +41,14 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer
         }
 
         $previous = $tokens[$index - 1];
+
+        if ($previous->isGivenKind(T_OPEN_TAG)) {
+            if ($expected > 1) {
+                $previous->setContent(trim($previous->getContent(), ' ')."\n");
+                $tokens->insertAt($index, new Token(array(T_WHITESPACE, str_repeat("\n", $expected - 1))));
+            }
+        }
+
         if ($previous->isWhitespace()) {
             $content = $previous->getContent();
             if (substr_count($content, "\n") !== $expected) {
