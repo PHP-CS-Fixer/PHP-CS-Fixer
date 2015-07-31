@@ -317,7 +317,7 @@ final class ConfigurationResolver
         $configOption = $this->options['config'];
 
         if ($configOption) {
-            foreach ($this->fixer->getConfigs() as $c) {
+            foreach ($this->fixer->getConfig() as $c) {
                 if ($c->getName() === $configOption) {
                     $this->config = $c;
 

@@ -30,7 +30,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
         $fixer->registerBuiltInFixers();
-        $fixer->registerBuiltInConfigs();
+        $fixer->registerBuiltInConfig();
 
         $fixersMap = array();
 

@@ -184,8 +184,8 @@ Fixers
 A *fixer* is a class that tries to fix one CS issue (a ``Fixer`` class must
 implement ``FixerInterface``).
 
-Configs
-~~~~~~~
+Config
+~~~~~~
 
 A *config* knows about the CS level and the files and directories that must be
 scanned by the tool when run in the directory of your project. It is useful for

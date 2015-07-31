@@ -34,7 +34,7 @@ class Fixer
     const VERSION = '2.0-DEV';
 
     protected $fixers = array();
-    protected $configs = array();
+    protected $config = array();
 
     /**
      * Differ instance.
@@ -107,7 +107,7 @@ class Fixer
         return $this->fixers;
     }
 
-    public function registerBuiltInConfigs()
+    public function registerBuiltInConfig()
     {
         foreach (Finder::create()->files()->in(__DIR__.'/Config') as $file) {
             $relativeNamespace = $file->getRelativePath();
@@ -118,12 +118,12 @@ class Fixer
 
     public function addConfig(ConfigInterface $config)
     {
-        $this->configs[] = $config;
+        $this->config[] = $config;
     }
 
-    public function getConfigs()
+    public function getConfig()
     {
-        return $this->configs;
+        return $this->config;
     }
 
     /**
