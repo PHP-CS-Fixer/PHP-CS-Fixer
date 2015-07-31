@@ -3,6 +3,31 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.10
+-------------------
+
+* feature #1306 Added LogicalNotOperatorsWithSuccessorSpaceFixer (phansys)
+* feature #1286 Added PhpUnitConstructFixer (keradus)
+* feature #1316 Added PhpdocInlineTagFixer (SpacePossum, keradus)
+* feature #1303 Added LogicalNotOperatorsWithSpacesFixer (phansys)
+* feature #1279 Added PhpUnitStrictFixer (keradus)
+* feature #1267 SingleQuoteFixer fix more use cases (SpacePossum)
+* minor #1319 PhpUnitConstructFixer - fix performance and add to local .php_cs (keradus)
+* minor #1280 Fix non-utf characters in docs (keradus)
+* minor #1274 Cookbook - No change auto-test note (Soullivaneuh)
+
+Changelog for v1.9.3
+--------------------
+
+* bug #1327 DocBlock\Tag - keep the case of tags (GrahamCampbell)
+
+Changelog for v1.9.2
+--------------------
+
+* bug #1313 AlignDoubleArrowFixer - fix aligning after UTF8 chars (keradus)
+* bug #1296 PhpdocScalarFixer - fix property annotation too (GrahamCampbell)
+* bug #1299 WhitespacyLinesFixer - spaces on next valid line must not be fixed (Slamdunk)
+
 Changelog for v1.9.1
 --------------------
 
