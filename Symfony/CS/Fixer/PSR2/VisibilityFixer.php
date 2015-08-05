@@ -188,15 +188,12 @@ final class VisibilityFixer extends AbstractFixer
                 continue;
             }
 
-            // if token is attribute
+            // if token is attribute set token attribute name
             if (array_key_exists($token->getId(), $tokenAttribsMap)) {
-                // set token attribute if token map defines attribute name for token
-                if ($tokenAttribsMap[$token->getId()]) {
-                    $attribs[$tokenAttribsMap[$token->getId()]] = array(
-                        'token' => clone $token,
-                        'index' => $index,
-                    );
-                }
+                $attribs[$tokenAttribsMap[$token->getId()]] = array(
+                    'token' => clone $token,
+                    'index' => $index,
+                );
 
                 continue;
             }

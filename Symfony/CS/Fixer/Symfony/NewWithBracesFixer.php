@@ -53,7 +53,7 @@ final class NewWithBracesFixer extends AbstractFixer
             }
 
             // new statement has a gap in it - advance to the next token
-            if ($nextToken->isGivenKind(T_WHITESPACE)) {
+            if ($nextToken->isWhitespace()) {
                 $nextIndex = $tokens->getNextNonWhitespace($nextIndex);
                 $nextToken = $tokens[$nextIndex];
             }

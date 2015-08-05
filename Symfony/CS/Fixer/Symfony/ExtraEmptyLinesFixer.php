@@ -33,7 +33,7 @@ final class ExtraEmptyLinesFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $token) {
-            if (!$token->isGivenKind(T_WHITESPACE)) {
+            if (!$token->isWhitespace()) {
                 continue;
             }
 
