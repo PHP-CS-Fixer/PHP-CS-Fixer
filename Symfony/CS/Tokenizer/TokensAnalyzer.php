@@ -199,7 +199,7 @@ final class TokensAnalyzer
             }
 
             if (
-                $token->isGivenKind(T_WHITESPACE) &&
+                $token->isWhitespace() &&
                 !$tokens[$index - 1]->isGivenKind(T_END_HEREDOC) &&
                 false !== strpos($token->getContent(), "\n")
             ) {
@@ -427,16 +427,16 @@ final class TokensAnalyzer
             );
 
             if (defined('T_POW')) {
-                $arrayOperators[T_POW] = true;          // **
-                $arrayOperators[T_POW_EQUAL] = true;    // **=
+                $arrayOperators[T_POW] = true;       // **
+                $arrayOperators[T_POW_EQUAL] = true; // **=
             }
 
             if (defined('T_SPACESHIP')) {
-                $arrayOperators[T_SPACESHIP] = true;    // <=>
+                $arrayOperators[T_SPACESHIP] = true; // <=>
             }
 
             if (defined('T_COALESCE')) {
-                $arrayOperators[T_COALESCE] = true;     // ??
+                $arrayOperators[T_COALESCE] = true;  // ??
             }
         }
 
