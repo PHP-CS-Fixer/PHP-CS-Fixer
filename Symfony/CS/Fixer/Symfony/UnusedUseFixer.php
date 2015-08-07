@@ -112,7 +112,7 @@ final class UnusedUseFixer extends AbstractFixer
         $namespaces = array();
 
         foreach ($tokens as $index => $token) {
-            if (T_NAMESPACE !== $token->getId()) {
+            if (!$token->isGivenKind(T_NAMESPACE)) {
                 continue;
             }
 

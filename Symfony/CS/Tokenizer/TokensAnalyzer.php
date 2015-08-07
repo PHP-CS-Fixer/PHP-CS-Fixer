@@ -90,12 +90,12 @@ final class TokensAnalyzer
                 continue;
             }
 
-            if (0 === $bracesLevel && T_VARIABLE === $token->getId()) {
+            if (0 === $bracesLevel && $token->isGivenKind(T_VARIABLE)) {
                 $elements[$index] = array('token' => $token, 'type' => 'property');
                 continue;
             }
 
-            if (T_FUNCTION === $token->getId()) {
+            if ($token->isGivenKind(T_FUNCTION)) {
                 $elements[$index] = array('token' => $token, 'type' => 'method');
             }
         }
