@@ -32,7 +32,7 @@ class LineAfterNamespaceFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (T_NAMESPACE === $token->getId()) {
+            if ($token->isGivenKind(T_NAMESPACE)) {
                 $semicolonIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
                 $semicolonToken = $tokens[$semicolonIndex];
 

@@ -58,6 +58,11 @@ class Foo
     }
     public function bar5($data)
     {
+        $message = $data;
+        $example = function ($arg) use ($message) {
+            echo $arg . ' ' . $message;
+        };
+        $example('hello');
     }
 }
 PHP;
