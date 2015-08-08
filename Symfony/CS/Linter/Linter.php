@@ -11,6 +11,7 @@
 
 namespace Symfony\CS\Linter;
 
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
@@ -124,7 +125,10 @@ final class Linter implements LinterInterface
             $this->temporaryFile = tempnam('.', 'tmp');
         }
 
-        file_put_contents($this->temporaryFile, $source);
+        if (false === @file_put_contents($this->temporaryFile, $source)) {
+            throw new IOException(sprintf('Failed to write file "%s".', $this->temporaryFile), 0, null, $this->temporaryFile);
+        }
+
         $process = $this->createProcessForFile($this->temporaryFile);
 
         return $process;
