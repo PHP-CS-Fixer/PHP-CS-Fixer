@@ -87,7 +87,8 @@ final class Linter implements LinterInterface
     private function checkProcess(Process $process)
     {
         if (!$process->isSuccessful()) {
-            throw new LintingException($process->getOutput(), $process->getExitCode());
+            // on some systems stderr is used, but on others, it's not
+            throw new LintingException($process->getErrorOutput() ?: $process->getOutput(), $process->getExitCode());
         }
     }
 
