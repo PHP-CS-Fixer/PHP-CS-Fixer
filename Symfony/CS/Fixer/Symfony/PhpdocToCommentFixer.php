@@ -105,7 +105,7 @@ final class PhpdocToCommentFixer extends AbstractFixer
     /**
      * Check if token is a structural element.
      *
-     * @see http://www.phpdoc.org/docs/latest/glossary.html#term-structural-elements
+     * @see https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md#3-definitions
      *
      * @param Token $token
      *
