@@ -24,7 +24,6 @@ abstract class AbstractFixer implements FixerInterface
     public function getLevel()
     {
         static $map = array(
-            'PSR0' => FixerInterface::PSR0_LEVEL,
             'PSR1' => FixerInterface::PSR1_LEVEL,
             'PSR2' => FixerInterface::PSR2_LEVEL,
             'Symfony' => FixerInterface::SYMFONY_LEVEL,

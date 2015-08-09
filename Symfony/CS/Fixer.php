@@ -328,10 +328,6 @@ class Fixer
             return 'none';
         }
 
-        if (($level & FixerInterface::PSR0_LEVEL) === $level) {
-            return 'PSR-0';
-        }
-
         if (($level & FixerInterface::PSR1_LEVEL) === $level) {
             return 'PSR-1';
         }
