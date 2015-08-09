@@ -324,6 +324,11 @@ Choose from the list of available fixers:
                         Remove trailing commas in list
                         function calls.
 
+* **method_typehint** [symfony]
+                        Add missing space between
+                        function's argument and it's
+                        typehint.
+
 * **multiline_array_trailing_comma** [symfony]
                         PHP multi-line arrays should
                         have a trailing comma.
