@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class MethodTypehintSpaceTest extends AbstractFixerTestBase
+class FunctionTypehintSpaceFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
@@ -33,11 +33,25 @@ class MethodTypehintSpaceTest extends AbstractFixerTestBase
                 '<?php function foo($param) {}',
             ),
             array(
+                '<?php function foo(&$param) {}',
+            ),
+            array(
+                '<?php function foo(& $param) {}',
+            ),
+            array(
                 '<?php function foo(/**int*/$param) {}',
             ),
             array(
                 '<?php function foo(array $param) {}',
                 '<?php function foo(array$param) {}',
+            ),
+            array(
+                '<?php function foo(array $param) {}',
+                '<?php function foo(array&$param) {}',
+            ),
+            array(
+                '<?php function foo(array $param) {}',
+                '<?php function foo(array& $param) {}',
             ),
             array(
                 '<?php function foo(Bar $param) {}',
@@ -46,6 +60,14 @@ class MethodTypehintSpaceTest extends AbstractFixerTestBase
             array(
                 '<?php function foo(Bar\Baz $param) {}',
                 '<?php function foo(Bar\Baz$param) {}',
+            ),
+            array(
+                '<?php function foo(Bar\Baz $param) {}',
+                '<?php function foo(Bar\Baz&$param) {}',
+            ),
+            array(
+                '<?php function foo(Bar\Baz $param) {}',
+                '<?php function foo(Bar\Baz& $param) {}',
             ),
             array(
                 '<?php class Test { public function foo(Bar\Baz $param) {} }',

@@ -310,6 +310,11 @@ Choose from the list of available fixers:
 * **extra_empty_lines** [symfony]
                         Removes extra empty lines.
 
+* **function_typehint_space** [symfony]
+                        Add missing space between
+                        function's argument and it's
+                        typehint.
+
 * **include** [symfony]
                         Include and file path should
                         be divided with a single
@@ -323,11 +328,6 @@ Choose from the list of available fixers:
 * **list_commas** [symfony]
                         Remove trailing commas in list
                         function calls.
-
-* **method_typehint** [symfony]
-                        Add missing space between
-                        function's argument and it's
-                        typehint.
 
 * **multiline_array_trailing_comma** [symfony]
                         PHP multi-line arrays should

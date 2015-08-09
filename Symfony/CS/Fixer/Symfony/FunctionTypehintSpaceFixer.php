@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class MethodTypehintSpace extends AbstractFixer
+class FunctionTypehintSpaceFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
