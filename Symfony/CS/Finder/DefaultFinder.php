@@ -28,6 +28,7 @@ class DefaultFinder extends Finder implements FinderInterface
         $this
             ->files()
             ->name('*.php')
+            ->name('*.phpt')
             ->name('*.twig')
             ->name('*.xml')
             ->name('*.yml')
