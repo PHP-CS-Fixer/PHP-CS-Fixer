@@ -38,11 +38,17 @@ class FunctionTypehintSpaceFixer extends AbstractFixer
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
 
             for ($iter = $endParenthesisIndex - 1; $iter > $startParenthesisIndex; --$iter) {
-                if (
-                    $tokens[$iter]->isGivenKind(T_VARIABLE) &&
-                    !$tokens[$iter - 1]->equalsAny(array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT), '('))
-                ) {
-                    $tokens->insertAt($iter, new Token(array(T_WHITESPACE, ' ', $tokens[$iter]->getLine())));
+                if (!$tokens[$iter]->isGivenKind(T_VARIABLE)) {
+                    continue;
+                }
+
+                $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($iter);
+                $pos = $tokens[$prevNonWhitespaceIndex]->equals('&')
+                    ? $prevNonWhitespaceIndex
+                    : $iter;
+
+                if (!$tokens[$pos - 1]->equalsAny(array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT), '('))) {
+                    $tokens->insertAt($pos, new Token(array(T_WHITESPACE, ' ', $tokens[$pos]->getLine())));
                 }
             }
         }
