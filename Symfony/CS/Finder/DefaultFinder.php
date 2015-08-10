@@ -26,6 +26,7 @@ class DefaultFinder extends Finder implements FinderInterface
         $this
             ->files()
             ->name('*.php')
+            ->name('*.phpt')
             ->name('*.twig')
             ->ignoreDotFiles(true)
             ->ignoreVCS(true)
