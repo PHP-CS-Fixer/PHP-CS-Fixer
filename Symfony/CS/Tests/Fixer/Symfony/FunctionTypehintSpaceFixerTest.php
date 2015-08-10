@@ -46,11 +46,11 @@ class FunctionTypehintSpaceFixerTest extends AbstractFixerTestBase
                 '<?php function foo(array$param) {}',
             ),
             array(
-                '<?php function foo(array $param) {}',
+                '<?php function foo(array &$param) {}',
                 '<?php function foo(array&$param) {}',
             ),
             array(
-                '<?php function foo(array $param) {}',
+                '<?php function foo(array & $param) {}',
                 '<?php function foo(array& $param) {}',
             ),
             array(
@@ -62,11 +62,11 @@ class FunctionTypehintSpaceFixerTest extends AbstractFixerTestBase
                 '<?php function foo(Bar\Baz$param) {}',
             ),
             array(
-                '<?php function foo(Bar\Baz $param) {}',
+                '<?php function foo(Bar\Baz &$param) {}',
                 '<?php function foo(Bar\Baz&$param) {}',
             ),
             array(
-                '<?php function foo(Bar\Baz $param) {}',
+                '<?php function foo(Bar\Baz & $param) {}',
                 '<?php function foo(Bar\Baz& $param) {}',
             ),
             array(
