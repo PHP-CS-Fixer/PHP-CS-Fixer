@@ -56,7 +56,7 @@ class FunctionTypehintSpaceFixer extends AbstractFixer
                     $iter = $prevNonWhitespaceIndex;
                 }
 
-                if (!$tokens[$iter - 1]->equalsAny(array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT), '('))) {
+                if (!$tokens[$iter - 1]->equalsAny(array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT), '(', ','))) {
                     $tokens->insertAt($iter, new Token(array(T_WHITESPACE, ' ', $tokens[$iter]->getLine())));
                 }
             }

@@ -33,6 +33,9 @@ class FunctionTypehintSpaceFixerTest extends AbstractFixerTestBase
                 '<?php function foo($param) {}',
             ),
             array(
+                '<?php function foo($param1,$param2) {}',
+            ),
+            array(
                 '<?php function foo(&$param) {}',
             ),
             array(
