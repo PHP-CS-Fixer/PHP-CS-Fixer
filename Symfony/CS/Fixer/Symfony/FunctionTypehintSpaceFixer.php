@@ -42,13 +42,22 @@ class FunctionTypehintSpaceFixer extends AbstractFixer
                     continue;
                 }
 
-                $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($iter);
-                $pos = $tokens[$prevNonWhitespaceIndex]->equals('&')
-                    ? $prevNonWhitespaceIndex
-                    : $iter;
+                // skip ... before $variable for variadic parameter
+                if (defined('T_ELLIPSIS')) {
+                    $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($iter);
+                    if ($tokens[$prevNonWhitespaceIndex]->isGivenKind(T_ELLIPSIS)) {
+                        $iter = $prevNonWhitespaceIndex;
+                    }
+                }
 
-                if (!$tokens[$pos - 1]->equalsAny(array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT), '('))) {
-                    $tokens->insertAt($pos, new Token(array(T_WHITESPACE, ' ', $tokens[$pos]->getLine())));
+                // skip & before $variable for parameter passed by reference
+                $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($iter);
+                if ($tokens[$prevNonWhitespaceIndex]->equals('&')) {
+                    $iter = $prevNonWhitespaceIndex;
+                }
+
+                if (!$tokens[$iter - 1]->equalsAny(array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT), '('))) {
+                    $tokens->insertAt($iter, new Token(array(T_WHITESPACE, ' ', $tokens[$iter]->getLine())));
                 }
             }
         }

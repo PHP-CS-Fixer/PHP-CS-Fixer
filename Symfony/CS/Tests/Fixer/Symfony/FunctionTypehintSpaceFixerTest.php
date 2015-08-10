@@ -75,4 +75,33 @@ class FunctionTypehintSpaceFixerTest extends AbstractFixerTestBase
             ),
         );
     }
+
+    /**
+     * @dataProvider provideCases56
+     * @requires PHP 5.6
+     */
+    public function testFix56($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideCases56()
+    {
+        return array(
+            array(
+                '<?php function foo(...$param) {}',
+            ),
+            array(
+                '<?php function foo(&...$param) {}',
+            ),
+            array(
+                '<?php function foo(array ...$param) {}',
+                '<?php function foo(array...$param) {}',
+            ),
+            array(
+                '<?php function foo(array & ...$param) {}',
+                '<?php function foo(array& ...$param) {}',
+            ),
+        );
+    }
 }
