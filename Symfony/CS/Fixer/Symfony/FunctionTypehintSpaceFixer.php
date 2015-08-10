@@ -55,6 +55,6 @@ class FunctionTypehintSpaceFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Add missing space between function\'s argument and it\'s typehint.';
+        return 'Add missing space between function\'s argument and its typehint.';
     }
 }

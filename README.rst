@@ -312,7 +312,7 @@ Choose from the list of available fixers:
 
 * **function_typehint_space** [symfony]
                         Add missing space between
-                        function's argument and it's
+                        function's argument and its
                         typehint.
 
 * **include** [symfony]
