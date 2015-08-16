@@ -1,0 +1,194 @@
+---------------------------------------------------------------------------
+
+by stof at 2015-07-28T08:08:32Z
+
+:+1: for the removal. This fixer is a risky one, fixing things the wrong way in most cases, and breaking things for people using PSR-4 because it is enabled by default.
+
+However, from a git history PoV, you should split the changes in 2 commits IMO (maybe even 2 separate PRs):
+- one removing this fixer
+- another one changing the FixerInterface
+
+these are 2 different changes (and it would be valid to remove the PSR-0 fixer without changing the interface btw)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-07-28T08:25:00Z
+
+Ok, I've split the commits.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-28T08:50:49Z
+
+:-1: for removing the file parameters. Makes it impossible to write a psr4 fixer.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-28T08:51:28Z
+
+And breaks custom fixers other people might have.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-07-28T10:16:47Z
+
+@GrahamCampbell a PSR-4 fixer would suffer exactly from the same issue than a PSR-0 one: renaming the class is the wrong way to fix it (changing class names is a BC break) so it is entirely risky. In many cases, the right fix is actually to rename the file, and this is not possible in a fixer.
+so I would also vote -1 on a PSR-4 fixer as we cannot get it right (thus, it would be hard to write it without knowing where the PSR-4 path is starting)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-28T10:26:07Z
+
+@stof My point was it prevents me writing my own fixer because I'm not allowed to know the filename.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-28T10:26:22Z
+
+And it breaks all other custom fixers that need to know the filename.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-28T10:26:33Z
+
+Someone might have a fixer to check migration file names for example.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-07-28T10:54:54Z
+
+@GrahamCampbell but in this case, the same applies: if you want to fix it, you would always have to assume that the file name is right and the content is wrong, because the opposite is not possible. and it might be wrong.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-28T21:26:51Z
+
+> And breaks custom fixers other people might have.
+
+That is why this is a BC breaker, so no big deal about that one point
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-28T21:35:21Z
+
+It's a massive deal. It's making php-cs-fixer significantly less attractive for people and will ultimately drive people to phpcs.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-28T21:50:21Z
+
+@gharlan, @stof,
+What are the benefits of removing `\SplFileInfo` from `fix` method signature ?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-07-29T11:00:34Z
+
+To be honest there is no big advantage. In my opinion the parameter is useless. No Fixer is using it (except the faulty Psr0Fixer), I didn't see any custom fixer using it until now.
+Fixing class names by using filename is a bad idea. But changing filenames would not be better in my opinion, because we should only fix the content of files.
+So I can not imagine a "good" fixer using this parameter.
+
+Note: It is still possible to decide if a fixer supports a file, because the method `supports(\SplFileInfo $file)` is still there.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-29T11:02:05Z
+
+> I didn't see any custom fixer using it until now.
+
+I do. I know of fixers in private code bases using that.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-08-02T15:52:12Z
+
+@keradus you were the one mentionning it in the first place
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-08-04T17:13:01Z
+
+:+1: for removing the PSR-0 fixer, also for remove the SplFileInfo from the interface (we are bumping a major release version...). However I've no strong opinion on the interface change.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-08-04T18:49:14Z
+
+>  also for remove the SplFileInfo from the interface (we are bumping a major release version...).
+
+It's not the fact that it's a breaking change that bothers me. I don't care about that. I care because I need access to the file name.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-08-09T09:58:57Z
+
+I would agree in some cases knowing info about file may be useful (Even UnusedUseFixer uses it, but in different way).
+I would also agree that someone would like to use PSR0 fixer, even if it is so risky.
+
+To keep everyone happy I would suggest keeping SplFileInfo as parameter and move PSR0 fixer into contrib level, marked as risky.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-08-09T10:14:05Z
+
+> To keep everyone happy I would suggest keeping SplFileInfo as parameter and move PSR0 fixer into contrib level, marked as risky.
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-08-09T10:14:14Z
+
+I think we also need a psr4 fixer too though.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-08-09T10:15:43Z
+
+Consider the following code:
+
+Location on disk: app/Foo.php
+```
+<?php
+
+namespace App;
+
+Class Bar
+{
+}
+```
+
+I'd expect the filename to be changed only, but the namespace in the code is changed from App to app. A psr4 fixer shouldn't change the namespace like that.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-08-09T10:18:06Z
+
+PSR4 is different discussion, even if I would be happy to see it.
+Just try to keep this discussion concise to finally finish it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-08-09T10:19:11Z
+
+Sure. I like your proposal. It would be good to get that done asap. :)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-08-09T10:38:18Z
+
+> To keep everyone happy I would suggest keeping SplFileInfo as parameter and move PSR0 fixer into contrib level, marked as risky.
+
+done
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-08-09T10:55:07Z
+
+:+1: :ship:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-08-09T11:01:10Z
+
+:+1:
