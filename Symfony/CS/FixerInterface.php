@@ -19,7 +19,6 @@ use Symfony\CS\Tokenizer\Tokens;
 interface FixerInterface
 {
     const NONE_LEVEL = 0;
-    const PSR0_LEVEL = 1;
     const PSR1_LEVEL = 3;
     const PSR2_LEVEL = 7;
     const SYMFONY_LEVEL = 15;
@@ -61,7 +60,6 @@ interface FixerInterface
      * Returns the level of CS standard.
      *
      * Can be one of:
-     *  - self::PSR0_LEVEL,
      *  - self::PSR1_LEVEL,
      *  - self::PSR2_LEVEL,
      *  - self::SYMFONY_LEVEL,

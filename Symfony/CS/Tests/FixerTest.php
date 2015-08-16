@@ -113,7 +113,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
         $fixer->addFixer(new \Symfony\CS\Fixer\PSR2\VisibilityFixer());
-        $fixer->addFixer(new \Symfony\CS\Fixer\PSR0\Psr0Fixer()); //will be ignored cause of test keyword in namespace
+        $fixer->addFixer(new \Symfony\CS\Fixer\Symfony\UnusedUseFixer()); //will be ignored cause of test keyword in namespace
 
         $config = Config::create()->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'));
         $config->fixers($fixer->getFixers());
@@ -137,7 +137,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
         $fixer->addFixer(new \Symfony\CS\Fixer\PSR2\VisibilityFixer());
-        $fixer->addFixer(new \Symfony\CS\Fixer\PSR0\Psr0Fixer()); //will be ignored cause of test keyword in namespace
+        $fixer->addFixer(new \Symfony\CS\Fixer\Symfony\UnusedUseFixer()); //will be ignored cause of test keyword in namespace
         $fixer->setLinter(new Linter());
 
         $config = Config::create()->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'));
@@ -274,7 +274,6 @@ class FixerTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(FixerInterface::NONE_LEVEL, 'none'),
-            array(FixerInterface::PSR0_LEVEL, 'PSR-0'),
             array(FixerInterface::PSR1_LEVEL, 'PSR-1'),
             array(FixerInterface::PSR2_LEVEL, 'PSR-2'),
             array(FixerInterface::SYMFONY_LEVEL, 'symfony'),

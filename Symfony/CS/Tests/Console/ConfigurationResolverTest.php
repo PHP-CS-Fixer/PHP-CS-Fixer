@@ -128,12 +128,12 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveFixersWithLevelConfig()
     {
-        $this->config->level(FixerInterface::PSR1_LEVEL);
+        $this->config->level(FixerInterface::PSR2_LEVEL);
 
         $this->resolver->resolve();
 
         $this->makeFixersTest(
-            array_merge($this->fixersMap[FixerInterface::PSR0_LEVEL], $this->fixersMap[FixerInterface::PSR1_LEVEL]),
+            array_merge($this->fixersMap[FixerInterface::PSR1_LEVEL], $this->fixersMap[FixerInterface::PSR2_LEVEL]),
             $this->resolver->getFixers()
         );
     }
@@ -146,7 +146,6 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->resolver->resolve();
 
         $expectedFixers = array_merge(
-            $this->fixersMap[FixerInterface::PSR0_LEVEL],
             $this->fixersMap[FixerInterface::PSR1_LEVEL],
             $this->fixersMap[FixerInterface::PSR2_LEVEL],
             $this->fixersMap[FixerInterface::SYMFONY_LEVEL],
@@ -167,7 +166,6 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->resolver->resolve();
 
         $expectedFixers = array_merge(
-            $this->fixersMap[FixerInterface::PSR0_LEVEL],
             $this->fixersMap[FixerInterface::PSR1_LEVEL],
             $this->fixersMap[FixerInterface::PSR2_LEVEL],
             $this->fixersMap[FixerInterface::SYMFONY_LEVEL],
@@ -202,12 +200,12 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function testResolveFixersWithLevelOption()
     {
         $this->resolver
-            ->setOption('level', 'psr1')
+            ->setOption('level', 'psr2')
             ->resolve()
         ;
 
         $this->makeFixersTest(
-            array_merge($this->fixersMap[FixerInterface::PSR0_LEVEL], $this->fixersMap[FixerInterface::PSR1_LEVEL]),
+            array_merge($this->fixersMap[FixerInterface::PSR1_LEVEL], $this->fixersMap[FixerInterface::PSR2_LEVEL]),
             $this->resolver->getFixers()
         );
     }
@@ -215,16 +213,16 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function testResolveFixersWithLevelConfigAndFixersConfigAndLevelOption()
     {
         $this->config
-            ->level(FixerInterface::PSR2_LEVEL)
+            ->level(FixerInterface::SYMFONY_LEVEL)
             ->fixers(array('strict'))
         ;
         $this->resolver
-            ->setOption('level', 'psr1')
+            ->setOption('level', 'psr2')
             ->resolve()
         ;
 
         $this->makeFixersTest(
-            array_merge($this->fixersMap[FixerInterface::PSR0_LEVEL], $this->fixersMap[FixerInterface::PSR1_LEVEL]),
+            array_merge($this->fixersMap[FixerInterface::PSR1_LEVEL], $this->fixersMap[FixerInterface::PSR2_LEVEL]),
             $this->resolver->getFixers()
         );
     }
@@ -236,12 +234,12 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->fixers(array('strict'))
         ;
         $this->resolver
-            ->setOption('fixers', 'psr0')
+            ->setOption('fixers', 'short_tag')
             ->resolve()
         ;
 
         $this->makeFixersTest(
-            array($this->fixersMap[FixerInterface::PSR0_LEVEL]['psr0']),
+            array($this->fixersMap[FixerInterface::PSR1_LEVEL]['short_tag']),
             $this->resolver->getFixers()
         );
     }
@@ -258,7 +256,6 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         ;
 
         $expectedFixers = array_merge(
-            $this->fixersMap[FixerInterface::PSR0_LEVEL],
             $this->fixersMap[FixerInterface::PSR1_LEVEL],
             $this->fixersMap[FixerInterface::PSR2_LEVEL],
             $this->fixersMap[FixerInterface::SYMFONY_LEVEL],
@@ -291,7 +288,6 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         ;
 
         $expectedFixers = array_merge(
-            $this->fixersMap[FixerInterface::PSR0_LEVEL],
             $this->fixersMap[FixerInterface::PSR1_LEVEL],
             $this->fixersMap[FixerInterface::PSR2_LEVEL],
             $this->fixersMap[FixerInterface::SYMFONY_LEVEL],

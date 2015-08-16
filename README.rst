@@ -133,7 +133,6 @@ project:
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/project --level=psr0
     php php-cs-fixer.phar fix /path/to/project --level=psr1
     php php-cs-fixer.phar fix /path/to/project --level=psr2
     php php-cs-fixer.phar fix /path/to/project --level=symfony
@@ -173,13 +172,6 @@ automatically fix anything:
     cat foo.php | php php-cs-fixer.phar fix --diff -
 
 Choose from the list of available fixers:
-
-* **psr0** [PSR-0]
-                        Classes must be in a path that
-                        matches their namespace, be at
-                        least one namespace deep and
-                        the class name should match
-                        the file name.
 
 * **encoding** [PSR-1]
                         PHP code MUST use only UTF-8
@@ -593,6 +585,14 @@ Choose from the list of available fixers:
                         @var should always be written
                         as @type.
 
+* **psr0** [contrib]
+                        Classes must be in a path that
+                        matches their namespace, be at
+                        least one namespace deep and
+                        the class name should match
+                        the file name. Warning: This
+                        could change code behavior.
+
 * **short_array_syntax** [contrib]
                         PHP arrays should use the PHP
                         5.4 short-syntax.
@@ -679,7 +679,7 @@ then specify all fixers to be used:
     ;
 
 You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
-The following example shows how to use all ``symfony`` Fixers but the ``psr0`` fixer.
+The following example shows how to use all ``symfony`` Fixers but the ``short_tag`` fixer.
 Note the additional ``-`` in front of the Fixer name.
 
 .. code-block:: php
@@ -692,7 +692,7 @@ Note the additional ``-`` in front of the Fixer name.
     ;
 
     return Symfony\CS\Config\Config::create()
-        ->fixers(array('-psr0'))
+        ->fixers(array('-short_tag'))
         ->finder($finder)
     ;
 
@@ -709,7 +709,7 @@ The ``psr2`` level is set by default, you can also change the default level:
 In combination with these config and command line options, you can choose various usage.
 
 For example, the default level is ``psr2``, but if you don't want to use
-the ``psr0`` fixer, you can specify the ``--fixers="-psr0"`` option.
+the ``short_tag`` fixer, you can specify the ``--fixers="-short_tag"`` option.
 
 But if you use the ``--fixers`` option with only exact fixers,
 only those exact fixers are enabled whether or not level is set.

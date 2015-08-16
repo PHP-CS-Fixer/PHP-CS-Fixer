@@ -9,6 +9,6 @@ return $config
     ->setUsingCache(false)
     ->setUsingLinter(true)
     ->fixers(array(
-        'psr0',
+        'short_tag',
     ))
 ;

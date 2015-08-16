@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\PSR0;
+namespace Symfony\CS\Tests\Fixer\Contrib;
 
 use Symfony\CS\Config\Config;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
@@ -18,16 +18,16 @@ class Psr0FixerTest extends AbstractFixerTestBase
 {
     public function testFixCase()
     {
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../../Fixer/Contrib/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 <?php
-namespace Symfony\CS\Fixer\PSR0;
+namespace Symfony\CS\Fixer\Contrib;
 class Psr0Fixer {}
 EOF;
         $input = <<<'EOF'
 <?php
-namespace Symfony\cs\Fixer\PSR0;
+namespace Symfony\cs\Fixer\Contrib;
 class psr0Fixer {}
 EOF;
 
@@ -35,11 +35,11 @@ EOF;
 
         $expected = <<<'EOF'
 <?php
-class Symfony_CS_Fixer_PSR0_Psr0Fixer {}
+class Symfony_CS_Fixer_Contrib_Psr0Fixer {}
 EOF;
         $input = <<<'EOF'
 <?php
-class symfony_cs_FiXER_PSR0_Psr0FIXer {}
+class symfony_cs_FiXER_Contrib_Psr0FIXer {}
 EOF;
 
         $this->makeTest($expected, $input, $file);
@@ -47,17 +47,17 @@ EOF;
 
     public function testFixClassName()
     {
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../../Fixer/Contrib/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 <?php
-namespace Symfony\CS\Fixer\PSR0;
+namespace Symfony\CS\Fixer\Contrib;
 class Psr0Fixer {}
 /* class foo */
 EOF;
         $input = <<<'EOF'
 <?php
-namespace Symfony\CS\Fixer\PSR0;
+namespace Symfony\CS\Fixer\Contrib;
 class blah {}
 /* class foo */
 EOF;
@@ -67,17 +67,17 @@ EOF;
 
     public function testFixAbstractClassName()
     {
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../../Fixer/Contrib/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 <?php
-namespace Symfony\CS\Fixer\PSR0;
+namespace Symfony\CS\Fixer\Contrib;
 abstract class Psr0Fixer {}
 /* class foo */
 EOF;
         $input = <<<'EOF'
 <?php
-namespace Symfony\CS\Fixer\PSR0;
+namespace Symfony\CS\Fixer\Contrib;
 abstract class blah {}
 /* class foo */
 EOF;
@@ -87,17 +87,17 @@ EOF;
 
     public function testFixFinalClassName()
     {
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../../Fixer/Contrib/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 <?php
-namespace Symfony\CS\Fixer\PSR0;
+namespace Symfony\CS\Fixer\Contrib;
 final class Psr0Fixer {}
 /* class foo */
 EOF;
         $input = <<<'EOF'
 <?php
-namespace Symfony\CS\Fixer\PSR0;
+namespace Symfony\CS\Fixer\Contrib;
 final class blah {}
 /* class foo */
 EOF;
@@ -112,22 +112,22 @@ EOF;
         $config->setDir(__DIR__.'/../../../');
         $fixer->setConfig($config);
 
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../../Fixer/Contrib/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 <?php
-namespace Foo\Bar\Baz\Fixer\PSR0;
+namespace Foo\Bar\Baz\Fixer\Contrib;
 class Psr0Fixer {}
 EOF;
         $input = <<<'EOF'
 <?php
-namespace Foo\Bar\Baz\FIXER\PSR0;
+namespace Foo\Bar\Baz\FIXER\Contrib;
 class Psr0Fixer {}
 EOF;
 
         $this->makeTest($expected, $input, $file, $fixer);
 
-        $config->setDir(__DIR__.'/../../../Fixer/PSR0');
+        $config->setDir(__DIR__.'/../../../Fixer/Contrib');
         $expected = <<<'EOF'
 <?php
 namespace Foo\Bar\Baz;

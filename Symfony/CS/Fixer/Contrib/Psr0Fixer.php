@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\PSR0;
+namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\ConfigAwareInterface;
@@ -143,7 +143,7 @@ final class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
      */
     public function getDescription()
     {
-        return 'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.';
+        return 'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name. Warning: This could change code behavior.';
     }
 
     /**
