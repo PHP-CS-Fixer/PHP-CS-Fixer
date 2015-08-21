@@ -26,6 +26,13 @@ final class PhpUnitConstructFixer extends AbstractFixer
         'assertNotSame' => true,
     );
 
+    private $assertionFixers = array(
+        'assertSame' => 'fixAssertPositive',
+        'assertEquals' => 'fixAssertPositive',
+        'assertNotEquals' => 'fixAssertNegative',
+        'assertNotSame' => 'fixAssertNegative',
+    );
+
     public function configure(array $usingMethods)
     {
         foreach ($usingMethods as $method => $fix) {
@@ -42,41 +49,22 @@ final class PhpUnitConstructFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, $content)
     {
+        // no assertions to be fixed - fast return
+        if (!in_array(true, $this->configuration)) {
+            return $content;
+        }
+
         $tokens = Tokens::fromCode($content);
 
-        if ($this->configuration['assertNotEquals']) {
-            for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-                $index = $this->fixAssertNegative($tokens, $index, 'assertNotEquals');
-
-                if (null === $index) {
-                    break;
-                }
+        foreach ($this->configuration as $assertionMethod => $assertionShouldBeFixed) {
+            if (true !== $assertionShouldBeFixed) {
+                continue;
             }
-        }
 
-        if ($this->configuration['assertNotSame']) {
+            $assertionFixer = $this->assertionFixers[$assertionMethod];
+
             for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-                $index = $this->fixAssertNegative($tokens, $index, 'assertNotSame');
-
-                if (null === $index) {
-                    break;
-                }
-            }
-        }
-
-        if ($this->configuration['assertEquals']) {
-            for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-                $index = $this->fixAssertPositive($tokens, $index, 'assertEquals');
-
-                if (null === $index) {
-                    break;
-                }
-            }
-        }
-
-        if ($this->configuration['assertSame']) {
-            for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-                $index = $this->fixAssertPositive($tokens, $index, 'assertSame');
+                $index = $this->$assertionFixer($tokens, $index, $assertionMethod);
 
                 if (null === $index) {
                     break;
