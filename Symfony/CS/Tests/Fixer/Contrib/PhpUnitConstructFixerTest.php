@@ -21,25 +21,43 @@ class PhpUnitConstructFixerTest extends AbstractFixerTestBase
     /**
      * @dataProvider provideTestFixCases
      */
-    public function testFixWithDisabled($expected, $input = null)
-    {
-        $this->makeTest($expected, $input);
-    }
-
-    /**
-     * @dataProvider provideTestFixCases
-     */
     public function testFix($expected, $input = null)
     {
         $fixer = $this->getFixer();
+
         $fixer->configure(array(
-            'assertSame' => false,
+            'assertEquals' => true,
+            'assertSame' => true,
+            'assertNotEquals' => true,
+            'assertNotSame' => true,
+        ));
+        $this->makeTest($expected, $input);
+
+        $fixer->configure(array(
             'assertEquals' => false,
+            'assertSame' => false,
             'assertNotEquals' => false,
             'assertNotSame' => false,
         ));
+        $this->makeTest($input ?: $expected, null, null, $fixer);
 
-        $this->makeTest($expected, null, null, $fixer);
+        foreach (array('assertSame', 'assertEquals', 'assertNotEquals', 'assertNotSame') as $method) {
+            $config = array(
+                'assertEquals' => false,
+                'assertSame' => false,
+                'assertNotEquals' => false,
+                'assertNotSame' => false,
+            );
+            $config[$method] = true;
+
+            $fixer->configure($config);
+            $this->makeTest(
+                $expected,
+                $input && false !== strpos($input, $method) ? $input : null,
+                null,
+                $fixer
+            );
+        }
     }
 
     public function provideTestFixCases()
