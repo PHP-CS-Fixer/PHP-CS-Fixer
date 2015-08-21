@@ -50,7 +50,7 @@ final class PhpUnitConstructFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         // no assertions to be fixed - fast return
-        if (!in_array(true, $this->configuration)) {
+        if (!in_array(true, $this->configuration, true)) {
             return $content;
         }
 
