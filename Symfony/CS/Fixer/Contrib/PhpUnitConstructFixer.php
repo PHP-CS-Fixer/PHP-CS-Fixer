@@ -33,8 +33,15 @@ final class PhpUnitConstructFixer extends AbstractFixer
         'assertNotSame' => 'fixAssertNegative',
     );
 
-    public function configure(array $usingMethods)
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $usingMethods = null)
     {
+        if (null === $usingMethods) {
+            return;
+        }
+
         foreach ($usingMethods as $method => $fix) {
             if (!isset($this->configuration[$method])) {
                 throw new \InvalidArgumentException();

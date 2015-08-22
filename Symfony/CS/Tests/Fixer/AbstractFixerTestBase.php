@@ -25,7 +25,15 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
     {
         $name = 'Symfony\CS\Fixer'.substr(get_called_class(), strlen(__NAMESPACE__), -strlen('Test'));
 
-        return new $name();
+        $fixer = new $name();
+        $fixer->configure($this->getFixerConfiguration());
+
+        return $fixer;
+    }
+
+    protected function getFixerConfiguration()
+    {
+        return;
     }
 
     protected function getTestFile($filename = __FILE__)

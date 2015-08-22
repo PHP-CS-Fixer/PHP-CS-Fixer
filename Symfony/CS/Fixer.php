@@ -33,7 +33,6 @@ class Fixer
 {
     const VERSION = '2.0-DEV';
 
-    protected $fixers = array();
     protected $configs = array();
 
     /**
@@ -77,37 +76,6 @@ class Fixer
         $this->errorsManager = new ErrorsManager();
         $this->linter = new NullLinter();
         $this->stopwatch = new Stopwatch();
-    }
-
-    public function registerBuiltInFixers()
-    {
-        foreach (Finder::create()->files()->in(__DIR__.'/Fixer') as $file) {
-            $relativeNamespace = $file->getRelativePath();
-            $class = 'Symfony\\CS\\Fixer\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
-            $this->addFixer(new $class());
-        }
-    }
-
-    public function registerCustomFixers($fixers)
-    {
-        foreach ($fixers as $fixer) {
-            $this->addFixer($fixer);
-        }
-    }
-
-    public function addFixer(FixerInterface $fixer)
-    {
-        $this->fixers[] = $fixer;
-    }
-
-    /**
-     * @return FixerInterface[]
-     */
-    public function getFixers()
-    {
-        $this->sortFixers();
-
-        return $this->fixers;
     }
 
     public function registerBuiltInConfigs()
@@ -160,15 +128,15 @@ class Fixer
      */
     public function fix(ConfigInterface $config, $dryRun = false, $diff = false)
     {
-        $fixers = $this->prepareFixers($config);
         $changed = array();
+        $fixers = $config->getFixers();
 
         $this->stopwatch->openSection();
 
         $fileCacheManager = new FileCacheManager(
             $config->usingCache(),
             $config->getCacheFile(),
-            $config->getFixers()
+            $config->getRules()
         );
 
         foreach ($config->getFinder() as $file) {
@@ -323,29 +291,6 @@ class Fixer
         return $file->getPathname();
     }
 
-    public function getLevelAsString(FixerInterface $fixer)
-    {
-        $level = $fixer->getLevel();
-
-        if (($level & FixerInterface::NONE_LEVEL) === $level) {
-            return 'none';
-        }
-
-        if (($level & FixerInterface::PSR1_LEVEL) === $level) {
-            return 'PSR-1';
-        }
-
-        if (($level & FixerInterface::PSR2_LEVEL) === $level) {
-            return 'PSR-2';
-        }
-
-        if (($level & FixerInterface::CONTRIB_LEVEL) === $level) {
-            return 'contrib';
-        }
-
-        return 'symfony';
-    }
-
     protected function stringDiff($old, $new)
     {
         $diff = $this->diff->diff($old, $new);
@@ -369,26 +314,6 @@ class Fixer
         );
 
         return $diff;
-    }
-
-    private function sortFixers()
-    {
-        usort($this->fixers, function (FixerInterface $a, FixerInterface $b) {
-            return Utils::cmpInt($b->getPriority(), $a->getPriority());
-        });
-    }
-
-    private function prepareFixers(ConfigInterface $config)
-    {
-        $fixers = $config->getFixers();
-
-        foreach ($fixers as $fixer) {
-            if ($fixer instanceof ConfigAwareInterface) {
-                $fixer->setConfig($config);
-            }
-        }
-
-        return $fixers;
     }
 
     /**

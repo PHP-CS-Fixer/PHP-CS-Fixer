@@ -1,7 +1,7 @@
 --TEST--
 PSR2 integration
 --CONFIG--
-level=psr2
+{"@PSR2": true}
 --INPUT--
 <?php
 namespace Vendor\Package;
