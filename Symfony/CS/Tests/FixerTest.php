@@ -167,10 +167,12 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatCanGetFixerLevelString($level, $expectedLevelString)
     {
-        $fixer = $this->getMock('Symfony\CS\FixerInterface');
-        $fixer->expects($this->any())->method('getLevel')->will($this->returnValue($level));
+        $fixer = new Fixer();
 
-        $this->assertSame($expectedLevelString, Fixer::getLevelAsString($fixer));
+        $fixerInstance = $this->getMock('Symfony\CS\FixerInterface');
+        $fixerInstance->expects($this->any())->method('getLevel')->will($this->returnValue($level));
+
+        $this->assertSame($expectedLevelString, $fixer->getLevelAsString($fixerInstance));
     }
 
     public function testFixersPriorityEdgeFixers()
