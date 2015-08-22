@@ -31,12 +31,18 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $fixer = new Fixer();
-        $fixer->registerBuiltInFixers();
         $fixer->registerBuiltInConfigs();
+
+        $this->config = new Config();
+        $this->resolver = new ConfigurationResolver();
+        $this->resolver
+            ->setDefaultConfig($this->config)
+            ->setFixer($fixer)
+        ;
 
         $fixersMap = array();
 
-        foreach ($fixer->getFixers() as $singleFixer) {
+        foreach ($this->resolver->getFixerFactory()->getFixers() as $singleFixer) {
             $level = $singleFixer->getLevel();
 
             if (!isset($fixersMap[$level])) {
@@ -47,13 +53,6 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->fixersMap = $fixersMap;
-
-        $this->config = new Config();
-        $this->resolver = new ConfigurationResolver();
-        $this->resolver
-            ->setDefaultConfig($this->config)
-            ->setFixer($fixer)
-        ;
     }
 
     protected function tearDown()

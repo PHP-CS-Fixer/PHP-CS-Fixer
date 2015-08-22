@@ -16,6 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\CS\Error\Error;
 use Symfony\CS\FileCacheManager;
 use Symfony\CS\Fixer;
+use Symfony\CS\FixerFactory;
 use Symfony\CS\FixerInterface;
 
 /**
@@ -240,7 +241,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
         }
 
         if (null === self::$builtInFixers) {
-            $fixer = new Fixer();
+            $fixer = new FixerFactory();
             $fixer->registerBuiltInFixers();
             self::$builtInFixers = $fixer->getFixers();
         }

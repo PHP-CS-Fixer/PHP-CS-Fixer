@@ -25,6 +25,7 @@ use Symfony\CS\Console\Output\ProcessOutput;
 use Symfony\CS\Error\Error;
 use Symfony\CS\Error\ErrorsManager;
 use Symfony\CS\Fixer;
+use Symfony\CS\FixerFactory;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Linter\Linter;
 use Symfony\CS\Linter\UnavailableLinterException;
@@ -85,7 +86,6 @@ final class FixCommand extends Command
         $this->eventDispatcher = new EventDispatcher();
 
         $this->fixer = $fixer ?: new Fixer();
-        $this->fixer->registerBuiltInFixers();
         $this->fixer->registerBuiltInConfigs();
 
         $this->errorsManager = $this->fixer->getErrorsManager();
@@ -351,8 +351,6 @@ EOF
             $output->writeln(sprintf('Loaded config from "%s"', $configFile));
         }
 
-        // register custom fixers from config
-        $this->fixer->registerCustomFixers($config->getCustomFixers());
         if ($config->usingLinter()) {
             try {
                 $this->fixer->setLinter(new Linter($config->getPhpExecutable()));
@@ -585,7 +583,8 @@ EOF
     {
         $help = '';
         $maxName = 0;
-        $fixers = $this->fixer->getFixers();
+        $fixerFactory = new FixerFactory();
+        $fixers = $fixerFactory->registerBuiltInFixers()->getFixers();
 
         // sort fixers by level and name
         usort(

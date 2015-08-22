@@ -15,6 +15,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\Fixer;
+use Symfony\CS\FixerFactory;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\StdinFileInfo;
 
@@ -29,11 +30,11 @@ use Symfony\CS\StdinFileInfo;
  */
 final class ConfigurationResolver
 {
-    private $allFixers;
     private $config;
     private $configFile;
     private $cwd;
     private $defaultConfig;
+    private $fixerFactory;
     private $isStdIn;
     private $isDryRun;
     private $fixer;
@@ -54,6 +55,12 @@ final class ConfigurationResolver
     private $usingCache;
     private $cacheFile;
 
+    public function __construct()
+    {
+        $this->fixerFactory = new FixerFactory();
+        $this->fixerFactory->registerBuiltInFixers();
+    }
+
     /**
      * Returns config instance.
      *
@@ -72,6 +79,16 @@ final class ConfigurationResolver
     public function getConfigFile()
     {
         return $this->configFile;
+    }
+
+    /**
+     * Returns fixer factory.
+     *
+     * @return FixerFactory
+     */
+    public function getFixerFactory()
+    {
+        return $this->fixerFactory;
     }
 
     /**
@@ -128,6 +145,9 @@ final class ConfigurationResolver
         $this->resolveConfig();
         $this->resolveConfigPath();
 
+        $this->fixerFactory->registerCustomFixers($this->getConfig()->getCustomFixers());
+        $this->fixerFactory->attachConfig($this->getConfig());
+
         $this->resolveFixersByLevel();
         $this->resolveFixersByNames();
 
@@ -180,7 +200,6 @@ final class ConfigurationResolver
     public function setFixer(Fixer $fixer)
     {
         $this->fixer = $fixer;
-        $this->allFixers = $fixer->getFixers();
 
         return $this;
     }
@@ -324,19 +343,21 @@ final class ConfigurationResolver
         }
 
         foreach ($this->computeConfigFiles() as $configFile) {
-            if (file_exists($configFile)) {
-                $config = include $configFile;
-
-                // verify that the config has an instance of Config
-                if (!$config instanceof Config) {
-                    throw new \UnexpectedValueException(sprintf('The config file: "%s" does not return a "Symfony\CS\Config\Config" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
-                }
-
-                $this->config = $config;
-                $this->configFile = $configFile;
-
-                return;
+            if (!file_exists($configFile)) {
+                continue;
             }
+
+            $config = include $configFile;
+
+            // verify that the config has an instance of Config
+            if (!$config instanceof Config) {
+                throw new \UnexpectedValueException(sprintf('The config file: "%s" does not return a "Symfony\CS\Config\Config" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
+            }
+
+            $this->config = $config;
+            $this->configFile = $configFile;
+
+            return;
         }
 
         $this->config = $this->defaultConfig;
@@ -369,7 +390,7 @@ final class ConfigurationResolver
 
         $fixers = array();
 
-        foreach ($this->allFixers as $fixer) {
+        foreach ($this->fixerFactory->getFixers() as $fixer) {
             if ($fixer->getLevel() === ($fixer->getLevel() & $level)) {
                 $fixers[] = $fixer;
             }
@@ -405,7 +426,7 @@ final class ConfigurationResolver
             }
         }
 
-        foreach ($this->allFixers as $fixer) {
+        foreach ($this->fixerFactory->getFixers() as $fixer) {
             if (isset($addNames[$fixer->getName()]) && !in_array($fixer, $this->fixers, true)) {
                 $this->fixers[] = $fixer;
             }
