@@ -14,6 +14,7 @@ namespace Symfony\CS\Fixer\PSR0;
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\ConfigAwareInterface;
 use Symfony\CS\ConfigInterface;
+use Symfony\CS\StdinFileInfo;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -145,6 +146,10 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
      */
     public function supports(\SplFileInfo $file)
     {
+        if ($file instanceof StdinFileInfo) {
+            return false;
+        }
+
         $filenameParts = explode('.', $file->getBasename(), 2);
 
         if (!isset($filenameParts[1]) || 'php' !== $filenameParts[1]) {
