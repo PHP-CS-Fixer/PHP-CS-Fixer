@@ -95,6 +95,14 @@ final class FixCommand extends Command
     }
 
     /**
+     * @return EventDispatcher
+     */
+    public function getEventDispatcher()
+    {
+        return $this->eventDispatcher;
+    }
+
+    /**
      * @see Command
      */
     protected function configure()
