@@ -1,0 +1,92 @@
+---------------------------------------------------------------------------
+
+by gharlan at 2015-08-09T21:39:28Z
+
+Please add some tests with reference parameters
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-08-09T21:44:32Z
+
+Nice catch, will need to fix it ;)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-08-09T21:45:02Z
+
+And variadic parameters..
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-08-09T21:46:31Z
+
+I see you want to have support for PHP7 ;)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-08-09T21:47:32Z
+
+Yes, but variadic parameters exist since 5.6 ;)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-08-09T21:48:42Z
+
+And to be complete you should add a test case with callable type hint.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-08-10T19:36:20Z
+
+Please add this test case:
+
+```php
+<?php function foo($param1,$param2) {}
+```
+
+I think it will fail..
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-08-10T19:45:11Z
+
+Yep, it will.
+Oh, it would add a space after that comma, which is cool, but is not the work for this fixer :D
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-08-10T19:47:31Z
+
+All remarks should be fixed now ;)
+Could you take a look again ?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-08-10T19:49:55Z
+
+looks good to me :+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-08-11T07:41:50Z
+
+Looks good :)  Maybe add one test with a `lambda`?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-08-11T07:49:15Z
+
+Maybe include some multiline testcases?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-08-21T20:04:09Z
+
+Sorry for the delay, both added
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-08-22T10:10:01Z
+
+looks good to me :+1:
+thanks for adding the test :)
