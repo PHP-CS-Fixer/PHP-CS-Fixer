@@ -42,7 +42,7 @@ then:
 
 .. code-block:: bash
 
-    $ sudo chmod a+x php-cs-fixer
+    $ chmod a+x php-cs-fixer
     $ sudo mv php-cs-fixer /usr/local/bin/php-cs-fixer
 
 Then, just run ``php-cs-fixer``.
