@@ -264,11 +264,11 @@ final class ConfigurationResolver
             return array_map('trim', explode(',', $this->options['fixers']));
         }
 
-        if (null === $this->options['level']) {
-            return $this->config->getFixers();
+        if (null !== $this->options['level']) {
+            return;
         }
 
-        return;
+        return $this->config->getFixers();
     }
 
     /**
@@ -295,17 +295,11 @@ final class ConfigurationResolver
             return $levelMap[$levelOption];
         }
 
-        if (null === $this->options['fixers']) {
-            return $this->config->getLevel();
+        if (null !== $this->options['fixers']) {
+            return;
         }
 
-        foreach ($this->parseFixers() as $fixer) {
-            if (0 === strpos($fixer, '-')) {
-                return $this->config->getLevel();
-            }
-        }
-
-        return;
+        return $this->config->getLevel();
     }
 
     /**

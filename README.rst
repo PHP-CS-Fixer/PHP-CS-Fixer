@@ -153,13 +153,13 @@ using ``-name_of_fixer``:
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/dir --fixers=-short_tag,-indentation
+    php php-cs-fixer.phar fix /path/to/dir --level=psr2 --fixers=-short_tag,-indentation
 
 When using combinations of exact and blacklist fixers, applying exact fixers along with above blacklisted results:
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,-short_tag
+    php php-cs-fixer.phar fix /path/to/dir --level=psr2 --fixers=return,-short_tag
 
 A combination of ``--dry-run`` and ``--diff`` will
 display a summary of proposed fixes, leaving your files unchanged.
@@ -723,10 +723,7 @@ The ``psr2`` level is set by default, you can also change the default level:
 In combination with these config and command line options, you can choose various usage.
 
 For example, the default level is ``psr2``, but if you don't want to use
-the ``short_tag`` fixer, you can specify the ``--fixers="-short_tag"`` option.
-
-But if you use the ``--fixers`` option with only exact fixers,
-only those exact fixers are enabled whether or not level is set.
+the ``short_tag`` fixer, you can specify the ``--level=psr2 --fixers=-short_tag`` options.
 
 By using ``--using-cache`` option with yes or no you can set if the caching
 mechanism should be used.
