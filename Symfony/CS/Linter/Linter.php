@@ -105,7 +105,7 @@ final class Linter implements LinterInterface
             return $this->createProcessForSource(file_get_contents($path));
         }
 
-        $process = new Process(sprintf('%s -l %s', $this->executable, ProcessUtils::escapeArgument($path)));
+        $process = new Process(sprintf('%s -l %s', ProcessUtils::escapeArgument($this->executable), ProcessUtils::escapeArgument($path)));
         $process->setTimeout(null);
         $process->run();
 
