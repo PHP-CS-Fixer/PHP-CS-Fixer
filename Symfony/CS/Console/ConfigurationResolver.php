@@ -247,10 +247,24 @@ final class ConfigurationResolver
             $configDir = $path;
         }
 
-        return array(
-            $configDir.DIRECTORY_SEPARATOR.'.php_cs',
-            $configDir.DIRECTORY_SEPARATOR.'.php_cs.dist',
+        $configDir .= DIRECTORY_SEPARATOR;
+
+        $files = array(
+            $configDir.'.php_cs',
+            $configDir.'.php_cs.dist',
         );
+
+        while (is_dir($configDir)) {
+            foreach (array('.php_cs', '.php_cs.dist') as $fileName) {
+                if (file_exists($configDir.$fileName)) {
+                    return array(realpath($configDir.$fileName));
+                }
+            }
+
+            $configDir .= '..'.DIRECTORY_SEPARATOR;
+        }
+
+        return $files;
     }
 
     /**
