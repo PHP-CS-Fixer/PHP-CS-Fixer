@@ -257,7 +257,8 @@ final class ConfigurationResolver
         while (is_dir($configDir)) {
             foreach (array('.php_cs', '.php_cs.dist') as $fileName) {
                 if (file_exists($configDir.$fileName)) {
-                    return array(realpath($configDir.$fileName));
+                    $files = array(realpath($configDir.$fileName));
+                    break 2;
                 }
             }
 
