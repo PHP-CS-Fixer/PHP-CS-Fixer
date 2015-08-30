@@ -112,6 +112,7 @@ final class FixCommand extends Command
                     new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file'),
                     new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
+                    new InputOption('diff-format', '', InputOption::VALUE_OPTIONAL, 'Format of diff', 'unified'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
                 )
             )
@@ -349,6 +350,7 @@ EOF
 
         $config = $resolver->getConfig();
         $configFile = $resolver->getConfigFile();
+        $diff = $input->getOption('diff') ? $input->getOption('diff-format') : false;
 
         if ($configFile && 'txt' === $input->getOption('format')) {
             $output->writeln(sprintf('Loaded config from "%s"', $configFile));
@@ -374,7 +376,7 @@ EOF
         }
 
         $this->stopwatch->start('fixFiles');
-        $changed = $this->fixer->fix($config, $resolver->isDryRun(), $input->getOption('diff'));
+        $changed = $this->fixer->fix($config, $resolver->isDryRun(), $diff);
         $this->stopwatch->stop('fixFiles');
 
         if ($showProgress) {
