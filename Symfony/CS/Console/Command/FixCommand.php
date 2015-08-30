@@ -453,8 +453,8 @@ EOF
 
                 $timeXML = $dom->createElement('time');
                 $memoryXML = $dom->createElement('memory');
-                $dom->appendChild($timeXML);
-                $dom->appendChild($memoryXML);
+                $filesXML->appendChild($timeXML);
+                $filesXML->appendChild($memoryXML);
 
                 $memoryXML->setAttribute('value', round($fixEvent->getMemory() / 1024 / 1024, 3));
                 $memoryXML->setAttribute('unit', 'MB');
