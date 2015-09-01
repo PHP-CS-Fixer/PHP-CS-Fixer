@@ -184,7 +184,7 @@ class PhpdocScalarFixer extends AbstractFixer
         if (!self::$caseSensitive) {
             $lower = strtolower($type);
 
-            if (in_array($lower, self::$standard, true)) {
+            if (in_array($lower, self::$supported, true)) {
                 $type = $lower;
             }
         }
