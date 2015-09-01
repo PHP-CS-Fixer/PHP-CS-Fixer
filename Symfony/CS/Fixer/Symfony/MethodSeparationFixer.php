@@ -172,7 +172,7 @@ final class MethodSeparationFixer extends AbstractFixer
 
     private function correctLineBreaks(Tokens $tokens, $startIndex, $endIndex, $reqLineCount = 2)
     {
-        $startIndex += 1;
+        ++$startIndex;
         $numbOfWhiteTokens = $endIndex - $startIndex;
         if (0 === $numbOfWhiteTokens) {
             $tokens->insertAt($startIndex, new Token(array(T_WHITESPACE, str_repeat("\n", $reqLineCount))));
