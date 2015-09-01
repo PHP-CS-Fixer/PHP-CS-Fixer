@@ -28,28 +28,8 @@ class PhpUnitConstructFixerTest extends AbstractFixerTestBase
 
     public function provideTestFixCases()
     {
-        return array(
+        $cases = array(
             array('<?php $sth->assertSame(true, $foo);'),
-            array(
-                '<?php $this->assertTrue($a);',
-                '<?php $this->assertSame(true, $a);',
-            ),
-            array(
-                '<?php $this->assertTrue($a  , "true" . $bar);',
-                '<?php $this->assertSame(true  , $a  , "true" . $bar);',
-            ),
-            array(
-                '<?php $this->assertFalse(  $a, "false" . $bar);',
-                '<?php $this->assertSame(  false, $a, "false" . $bar);',
-            ),
-            array(
-                '<?php $this->assertNull(  $a  , "null" . $bar);',
-                '<?php $this->assertSame(  null, $a  , "null" . $bar);',
-            ),
-            array(
-                '<?php $this->assertNotNull(  $a  , "notNull" . $bar);',
-                '<?php $this->assertNotSame(  null, $a  , "notNull" . $bar);',
-            ),
             array(
                 '<?php
     $this->assertTrue(
@@ -64,5 +44,42 @@ class PhpUnitConstructFixerTest extends AbstractFixerTestBase
     );',
             ),
         );
+
+        $types = array('true', 'false', 'null');
+        // Equals' => true, 'NotEquals' => false); are transformed by PhpUnitStrictFixer to 'Same' and 'NotSame'
+        $functionTypes = array('Same' => true, 'NotSame' => false);
+        $fromTemplate = '<?php $this->assert%s(%s, $a, "%s", "%s")';
+        $toTemplate = '<?php $this->assert%s%s($a, "%s", "%s")';
+
+        for ($i = count($types) - 1; $i >= 0; --$i) {
+            foreach ($functionTypes as $type => $positive) {
+                $from = sprintf($fromTemplate, $type, $types[$i], $types[$i], $types[$i]);
+                if ($positive) {
+                    $to = sprintf($toTemplate, '', ucfirst($types[$i]), $types[$i], $types[$i]);
+                } else {
+                    $to = sprintf($toTemplate, 'Not', ucfirst($types[$i]), $types[$i], $types[$i]);
+                }
+
+                $cases[] = array($to, $from);
+            }
+        }
+
+        $fromTemplate = '<?php $this->assert%s(%s, $a)';
+        $toTemplate = '<?php $this->assert%s%s($a)';
+
+        for ($i = count($types) - 1; $i >= 0; --$i) {
+            foreach ($functionTypes as $type => $positive) {
+                $from = sprintf($fromTemplate, $type, $types[$i]);
+                if ($positive) {
+                    $to = sprintf($toTemplate, '', ucfirst($types[$i]));
+                } else {
+                    $to = sprintf($toTemplate, 'Not', ucfirst($types[$i]));
+                }
+
+                $cases[] = array($to, $from);
+            }
+        }
+
+        return $cases;
     }
 }
