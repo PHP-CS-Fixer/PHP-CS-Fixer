@@ -212,11 +212,12 @@ final class TokensAnalyzer
 
     /**
      * Returns the attributes of the method under the given index.
+     *
      * The array has the following items:
      * 'visibility' int|null  T_PRIVATE, T_PROTECTED or T_PUBLIC
      * 'static'     bool
      * 'abstract'   bool
-     * 'final'      bool.
+     * 'final'      bool
      *
      * @param int $index Token index of the method (T_FUNCTION)
      *
