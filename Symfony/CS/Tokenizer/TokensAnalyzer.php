@@ -216,7 +216,7 @@ final class TokensAnalyzer
      * 'visibility' int|null  T_PRIVATE, T_PROTECTED or T_PUBLIC
      * 'static'     bool
      * 'abstract'   bool
-     * 'final'      bool
+     * 'final'      bool.
      *
      * @param int $index Token index of the method (T_FUNCTION)
      *
