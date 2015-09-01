@@ -9,6 +9,7 @@ php:
     - hhvm
 
 matrix:
+    fast_finish: true
     include:
         - php: 5.3
           env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
