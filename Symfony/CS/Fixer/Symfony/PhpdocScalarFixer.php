@@ -49,6 +49,7 @@ class PhpdocScalarFixer extends AbstractFixer
         'array',
         'bool',
         'boolean',
+        'callable',
         'double',
         'float',
         'int',
@@ -57,6 +58,7 @@ class PhpdocScalarFixer extends AbstractFixer
         'null',
         'object',
         'real',
+        'resource',
         'string',
         'void',
     );
