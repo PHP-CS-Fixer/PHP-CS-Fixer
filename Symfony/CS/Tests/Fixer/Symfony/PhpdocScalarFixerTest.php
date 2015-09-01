@@ -11,6 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
+use Symfony\CS\Fixer\Symfony\PhpdocScalarFixer;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
@@ -18,6 +19,13 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  */
 class PhpdocScalarFixerTest extends AbstractFixerTestBase
 {
+    protected function makeTest($expected, $input = null, \SplFileInfo $file = null, $case = true)
+    {
+        PhpdocScalarFixer::setCaseSensitive($case);
+
+        parent::makeTest($expected, $input, $file);
+    }
+
     public function testBasicFix()
     {
         $expected = <<<'EOF'
@@ -269,5 +277,53 @@ EOF;
 
 EOF;
         $this->makeTest($expected);
+    }
+
+    public function testNotCaseSensitive()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param bool|array|Foo
+     *
+     * @return int|float
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param Boolean|Array|Foo $bar
+     *
+     * @return inTEger|Float
+     */
+
+EOF;
+        $this->makeTest($expected, $input, null, false);
+    }
+
+    public function testMoreNotCaseSensitive()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param mixed
+     *
+     * @return void
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param Mixed $foo
+     *
+     * @return Void
+     */
+
+EOF;
+        $this->makeTest($expected, $input, null, false);
     }
 }

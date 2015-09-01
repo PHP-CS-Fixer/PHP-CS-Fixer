@@ -34,11 +34,51 @@ class PhpdocScalarFixer extends AbstractFixer
      * @var array
      */
     private static $types = array(
-        'integer' => 'int',
         'boolean' => 'bool',
-        'real' => 'float',
         'double' => 'float',
+        'integer' => 'int',
+        'real' => 'float',
     );
+
+    /**
+     * The supported types to process.
+     *
+     * @var array
+     */
+    private static $supported = array(
+        'array',
+        'bool',
+        'boolean',
+        'callable',
+        'double',
+        'float',
+        'int',
+        'integer',
+        'mixed',
+        'null',
+        'object',
+        'real',
+        'resource',
+        'string',
+        'void',
+    );
+
+    /**
+     * Are searches are case sensitive.
+     *
+     * @var bool
+     */
+    private static $caseSensitive = true;
+
+    /**
+     * Sets if searches are case sensitive.
+     *
+     * @param bool $caseSensitive
+     */
+    public static function setCaseSensitive($caseSensitive)
+    {
+        self::$caseSensitive = (bool) $caseSensitive;
+    }
 
     /**
      * {@inheritdoc}
@@ -143,6 +183,14 @@ class PhpdocScalarFixer extends AbstractFixer
      */
     private static function normalizeType($type)
     {
+        if (!self::$caseSensitive) {
+            $lower = strtolower($type);
+
+            if (in_array($lower, self::$supported, true)) {
+                $type = $lower;
+            }
+        }
+
         if (array_key_exists($type, self::$types)) {
             return self::$types[$type];
         }
