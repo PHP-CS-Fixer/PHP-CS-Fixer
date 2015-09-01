@@ -182,7 +182,7 @@ class PhpdocScalarFixer extends AbstractFixer
     private static function normalizeType($type)
     {
         if (!self::$caseSensitive) {
-            $lower = strtolower($type)
+            $lower = strtolower($type);
 
             if (in_array($lower, self::$standard, true)) {
                 $type = $lower;
