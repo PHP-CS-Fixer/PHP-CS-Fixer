@@ -38,7 +38,8 @@ class PhpdocVarWithoutNameFixer extends AbstractFixer
 
             $annotations = $doc->getAnnotationsOfType(array('var', 'type'));
 
-            if (empty($annotations)) {
+            // only process docblocks where there is exactly one occurrence
+            if (count($annotations) !== 1) {
                 continue;
             }
 

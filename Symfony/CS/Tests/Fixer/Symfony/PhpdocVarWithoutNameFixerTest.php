@@ -96,4 +96,22 @@ EOF;
 
         $this->makeTest($expected);
     }
+
+    public function testInlineDoc()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * Initializes this class with the given options.
+     *
+     * @param array $options {
+     *     @var bool   $required Whether this element is required
+     *     @var string $label    The display name for this element
+     * }
+     */
+
+EOF;
+
+        $this->makeTest($expected);
+    }
 }
