@@ -114,4 +114,21 @@ EOF;
 
         $this->makeTest($expected);
     }
+
+    public function testInlineDocAgain()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param int[] $stuff {
+     *     @var int $foo
+     * }
+     *
+     * @return void
+     */
+
+EOF;
+
+        $this->makeTest($expected);
+    }
 }
