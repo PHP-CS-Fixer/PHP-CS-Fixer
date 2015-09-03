@@ -1,0 +1,71 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-30T12:28:06Z
+
+Ping @fabpot @GrahamCampbell (Ref #1208)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-08-09T09:33:45Z
+
+anyone ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-08-11T07:37:51Z
+
+Shouldn't all PHPUnit fixer be marked as risky?
+For example if I've a class that is not unit test with methods named alike those that are `fixed` then it will brake my code.
+Maybe we make the fixers less risky by only fixing methods (this not tested now in the unit tests) of a class with a name ending on `Test`?
+This would cause base test classes not called with the suffix `Test` and traits not to be fixed, but it would stop the `fixing` of class like `MyCustomValidator` that isn't a unit test.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-08-11T08:12:56Z
+
+Maybe the test should test if the right methods are skipped from fixing based on configuration? (ie. not testing that nothing is changed if all options are set to `false` (which is a configuration error IMO; why add fixer and configure it to do nothing?))
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-08-21T20:36:11Z
+
+Sorry for delay.
+
+-----------------------
+
+> Shouldn't all PHPUnit fixer be marked as risky?
+
+They all already are. Because of the reasons you have said.
+Guessing by names is bad. One may has class like `SpeedTest`, which has no tests, and on the other hand `SaleTestCase` with utests. Then - that guessing disallow to fix second one. Fixer is risky, this is true, and if one really want to run it he must face that it may change the meaning of his code.
+
+> Maybe the test should test if the right methods are skipped from fixing based on configuration?
+
+Indeed.
+
+> all options are set to false (which is a configuration error IMO; why add fixer and configure it to do nothing?)
+
+It's not so bad. if all functions are disabled then fixer will simply do nothing (even not loop over tokens collection), so it's not time consuming.
+And turning methods on/off may be done basing on some calculations, not by constants.
+
+---------------------------------
+
+All requested changes were applied
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-08-23T06:28:24Z
+
+I see, thank you :)
+
+~~I still think it would be nice to: ~~
+* ~~fix only methods (for both classes and traits) and not functions~~ nevermind, it already is
+* ~~have a test with at least one combination for the configruration besides 'all on' and 'all off'~~
+
+~~both items are not a major point for me, so~~ I'm :+1: on this fixer.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-08-27T13:58:23Z
+
+ping @fabpot
+is this what is requested for fabbot ?
