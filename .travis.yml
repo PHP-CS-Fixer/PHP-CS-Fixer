@@ -13,8 +13,6 @@ matrix:
     include:
         - php: 5.3
           env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
-    allow_failures:
-        - php: 7.0
 
 sudo: false
 
