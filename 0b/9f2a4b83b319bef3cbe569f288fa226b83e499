@@ -1,0 +1,147 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-07-09T12:33:55Z
+
+We need to make sure the fixer order is correct.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-07-09T12:50:42Z
+
+You are right. I think it should be:
+after:
+* visibility
+
+before:
+* phpdoc_*
+* braces
+* indentation
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-07-09T13:40:07Z
+
+Great to have that fixer indeed!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-07-10T00:24:23Z
+
+updated following suggestions :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-07-10T15:54:52Z
+
+TODO: ~~https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1292#discussion-diff-34338266~~
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-07-10T17:19:38Z
+
+TODO
+* ~~rewrite the loops for classy items and method items~~
+* ~~fix for abstract methods in classes~~
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-07-10T17:29:57Z
+
+Maybe this method is helpful: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Tokenizer/TokensAnalyzer.php#L39
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-07-10T18:11:27Z
+
+> fix for abstract methods in classes
+
+.. and abstract methods in traits
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-08-04T14:49:03Z
+
+ready for re-re-re-review
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-08-04T15:03:48Z
+
+We're missing test cases where a method follows a `use Trait;` statement.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-08-04T15:49:52Z
+
+@GrahamCampbell
+>We're missing test cases where a method follows a use Trait; statement.
+
+check:
+https://github.com/SpacePossum/PHP-CS-Fixer/commit/42b929ffc385631e212054645c9bbde6c379df9e
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-08-04T15:54:10Z
+
+> SpacePossum@42b929f
+
+Great.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-08-05T02:03:21Z
+
+looks like a lot of great job ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-08-31T18:46:11Z
+
+@keradus any ideas about what you want with this?
+The discussion about the PSR5 doc is without a useful conclusion for this PR (i.e. other fixers have to fixed) and silent for weeks.
+Is there any way you would accept this PR with other doc's? Is there anything else to be fixed for this PR?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-01T10:29:27Z
+
+Indeed, then I would suggest to change
+
+```php
+@return array {
+    items...
+}
+```
+
+into
+```php
+@return array
+```
+
+and move that array items description into long method descr.
+
+Then, the build should be green and then we see if everything is ok.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-01T10:30:19Z
+
+Yeh, that's what we've already done for the other case in this code base.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-01T10:30:33Z
+
+We can change both cases back after we've fixed the other stuff.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-01T10:31:15Z
+
+Also, we might want to add tests to the other phpdoc fixers to check they work with this nested stuff. I have my doubts about many of them, though, I can probably fix those cases when I fix the other stuff.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-09-01T15:10:51Z
+
+done, all green \o/
