@@ -308,6 +308,11 @@ Choose from the list of available fixers:
 * **extra_empty_lines** [symfony]
                         Removes extra empty lines.
 
+* **function_typehint_space** [symfony]
+                        Add missing space between
+                        function's argument and its
+                        typehint.
+
 * **include** [symfony]
                         Include and file path should
                         be divided with a single

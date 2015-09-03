@@ -449,39 +449,6 @@ EOF
                     }
                 }
 
-                $fixEvent = $this->stopwatch->getEvent('fixFiles');
-
-                $timeXML = $dom->createElement('time');
-                $memoryXML = $dom->createElement('memory');
-                $dom->appendChild($timeXML);
-                $dom->appendChild($memoryXML);
-
-                $memoryXML->setAttribute('value', round($fixEvent->getMemory() / 1024 / 1024, 3));
-                $memoryXML->setAttribute('unit', 'MB');
-
-                $timeXML->setAttribute('unit', 's');
-                $timeTotalXML = $dom->createElement('total');
-                $timeTotalXML->setAttribute('value', round($fixEvent->getDuration() / 1000, 3));
-                $timeXML->appendChild($timeTotalXML);
-
-                if (OutputInterface::VERBOSITY_DEBUG <= $verbosity) {
-                    $timeFilesXML = $dom->createElement('files');
-                    $timeXML->appendChild($timeFilesXML);
-                    $eventCounter = 1;
-
-                    foreach ($this->stopwatch->getSectionEvents('fixFile') as $file => $event) {
-                        if ('__section__' === $file) {
-                            continue;
-                        }
-
-                        $timeFileXML = $dom->createElement('file');
-                        $timeFilesXML->appendChild($timeFileXML);
-                        $timeFileXML->setAttribute('id', $eventCounter++);
-                        $timeFileXML->setAttribute('name', $file);
-                        $timeFileXML->setAttribute('value', round($event->getDuration() / 1000, 3));
-                    }
-                }
-
                 $dom->formatOutput = true;
                 $output->write($dom->saveXML());
                 break;
