@@ -323,6 +323,10 @@ Choose from the list of available fixers:
                         Remove trailing commas in list
                         function calls.
 
+* **method_separation** [symfony]
+                        Methods must be separated with
+                        one blank line.
+
 * **multiline_array_trailing_comma** [symfony]
                         PHP multi-line arrays should
                         have a trailing comma.

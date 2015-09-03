@@ -111,7 +111,7 @@ final class Utils
     public static function calculateTrailingWhitespaceIndent(Token $token)
     {
         if (!$token->isWhitespace()) {
-            throw new \InvalidArgumentException('The given token must be whitespace.');
+            throw new \InvalidArgumentException(sprintf('The given token must be whitespace, got "%s".', $token->getName()));
         }
 
         return ltrim(strrchr(str_replace(array("\r\n", "\r"), "\n", $token->getContent()), 10), "\n");

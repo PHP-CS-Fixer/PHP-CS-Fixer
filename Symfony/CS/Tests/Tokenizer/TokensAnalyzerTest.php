@@ -558,4 +558,73 @@ $b;',
 
         return $cases;
     }
+
+    /**
+     * @dataProvider provideGetFunctionProperties
+     */
+    public function testGetFunctionProperties($source, $index, $expected)
+    {
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $attributes = $tokensAnalyzer->getMethodAttributes($index);
+        $this->assertSame($expected, $attributes);
+    }
+
+    public function provideGetFunctionProperties()
+    {
+        $defaultAttributes = array(
+            'visibility' => null,
+            'static' => false,
+            'abstract' => false,
+            'final' => false,
+        );
+
+        $template = '
+<?php
+class TestClass {
+    %s function a() {
+        //
+    }
+}
+';
+        $cases = array();
+
+        $attributes = $defaultAttributes;
+        $attributes['visibility'] = T_PRIVATE;
+        $cases[] = array(sprintf($template, 'private'), 10, $attributes);
+
+        $attributes = $defaultAttributes;
+        $attributes['visibility'] = T_PUBLIC;
+        $cases[] = array(sprintf($template, 'public'), 10, $attributes);
+
+        $attributes = $defaultAttributes;
+        $attributes['visibility'] = T_PROTECTED;
+        $cases[] = array(sprintf($template, 'protected'), 10, $attributes);
+
+        $attributes = $defaultAttributes;
+        $attributes['visibility'] = null;
+        $attributes['static'] = true;
+        $cases[] = array(sprintf($template, 'static'), 10, $attributes);
+
+        $attributes = $defaultAttributes;
+        $attributes['visibility'] = T_PUBLIC;
+        $attributes['static'] = true;
+        $attributes['final'] = true;
+        $cases[] = array(sprintf($template, 'final public static'), 14, $attributes);
+
+        $attributes = $defaultAttributes;
+        $attributes['visibility'] = null;
+        $attributes['abstract'] = true;
+        $cases[] = array(sprintf($template, 'abstract'), 10, $attributes);
+
+        $attributes = $defaultAttributes;
+        $attributes['visibility'] = T_PUBLIC;
+        $attributes['abstract'] = true;
+        $cases[] = array(sprintf($template, 'abstract public'), 12, $attributes);
+
+        $attributes = $defaultAttributes;
+        $cases[] = array(sprintf($template, ''), 8, $attributes);
+
+        return $cases;
+    }
 }
