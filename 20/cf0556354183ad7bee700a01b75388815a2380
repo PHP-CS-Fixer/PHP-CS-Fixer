@@ -1,0 +1,57 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-08-10T18:13:31Z
+
+This is breaking so should go to master imo.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-08-10T19:02:23Z
+
+Why adding this ? ``.phpt`` is the extension used by test files for the PHPT tool used in PHP itself and in most extensions, and these files are not valid PHP files (sections in it are, but it is very common to omit the closing PHP tag in sections)
+
+---------------------------------------------------------------------------
+
+by henriquemoody at 2015-08-10T19:09:53Z
+
+PHPUnit also runs PHPT files and uses it to test its own code.
+
+It's really not a PHP file, by definition, but it contains valid PHP code.
+
+Also, it's not common to omit the closing PHP tag in the sections, it's a [recomendation to close them](https://qa.php.net/write-test.php#basic-format), because doing that you can run the file with the `php` command.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-08-10T20:13:27Z
+
+hmm, indeed. Looks like I had no luck when choosing some of the PHP tests themselves at first...
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-08-21T19:49:58Z
+
+any other opinions ?
+
+---------------------------------------------------------------------------
+
+by henriquemoody at 2015-09-01T18:35:37Z
+
+@keradus, have you intent to merge it?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-02T14:54:27Z
+
+I am not against this PR, but before merge I would like to see some :+1: here
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-09-03T09:40:52Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-03T09:57:20Z
+
+:+1: here, but for merging to master.
