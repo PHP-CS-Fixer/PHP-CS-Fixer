@@ -1,0 +1,92 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-09-02T06:27:06Z
+
+Having multiple root elements is indeed wrong, thanks for reporting and creating a PR.
+One thing to consider is if we want the `time` and `memory` elements with the `files`-element, or create a new root element and move both the `files` and the other elements into that, something like `report`, I dunno ;)
+
+---------------------------------------------------------------------------
+
+by junichi11 at 2015-09-02T09:53:24Z
+
+Okay, I'll change like the following:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<report>
+    <files>
+        <file id="1" name="/home/junichi11/NetBeansProjects/issue-254585/Some.php">
+            <applied_fixers>
+                <applied_fixer name="phpdoc_short_description"/>
+                <applied_fixer name="blankline_after_open_tag"/>
+                <applied_fixer name="psr0"/>
+                <applied_fixer name="line_after_namespace"/>
+                <applied_fixer name="braces"/>
+            </applied_fixers>
+            <diff><![CDATA[      --- Original
+      +++ New
+      @@ @@
+       <?php
+      +
+       namespace Foo\Bar;
+      +
+       /**
+      - * Description of Some
+      + * Description of Some.
+        *
+        * @author junichi11
+        */
+      -class Some2 {
+      +class Some
+      +{
+       }
+
+      ]]></diff>
+        </file>
+    </files>
+    <time unit="s">
+        <total value="0.134"/>
+    </time>
+    <memory value="3.75" unit="MB"/>
+</report>
+```
+
+Thanks.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-09-02T11:49:40Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-02T15:00:15Z
+
+This is a BC break, we should remove time and memory on 1.x line. When we add it to 1.x line then we introduced a bug so we just need to revert it and it will be a bug fix without BC break,
+then we should revert removal of time/memory in XML in 2.x line and merge your great PR! ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-09-02T16:51:08Z
+
+@keradus sounds like a plan :)
+
+---------------------------------------------------------------------------
+
+by junichi11 at 2015-09-03T01:02:34Z
+
+@keradus I see. I'll just remove time and memory tags :) Thanks!
+
+---------------------------------------------------------------------------
+
+by junichi11 at 2015-09-03T04:45:32Z
+
+I've removed them. Thanks.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-09-03T06:01:50Z
+
+:+1:
+(1d91c1e94fcf9e5a2e83d4c57ca8c20ea270bb1f can be picked on master, after this one is merged into the 1.x line :)  )
