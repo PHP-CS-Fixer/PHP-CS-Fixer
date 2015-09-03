@@ -28,17 +28,14 @@ class StrictParamFixer extends AbstractFixer
         static $map = null;
 
         if (null === $map) {
-            $token = array(
-                'true' => new Token(array(T_STRING, 'true')),
-                'null' => new Token(array(T_STRING, 'null')),
-            );
+            $trueToken = new Token(array(T_STRING, 'true'));
 
             $map = array(
-                'in_array' => array(null, null, $token['true']),
-                'base64_decode' => array(null, $token['true']),
-                'array_search' => array(null, null, $token['true']),
-                'array_keys' => array(null, null, $token['true']),
-                'mb_detect_encoding' => array(null, array(new Token(array(T_STRING, 'mb_detect_order')), new Token('('), new Token(')')), $token['true']),
+                'in_array' => array(null, null, $trueToken),
+                'base64_decode' => array(null, $trueToken),
+                'array_search' => array(null, null, $trueToken),
+                'array_keys' => array(null, null, $trueToken),
+                'mb_detect_encoding' => array(null, array(new Token(array(T_STRING, 'mb_detect_order')), new Token('('), new Token(')')), $trueToken),
             );
         }
 

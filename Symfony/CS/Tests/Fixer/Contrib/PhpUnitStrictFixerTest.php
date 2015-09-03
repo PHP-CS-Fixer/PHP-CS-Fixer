@@ -29,7 +29,7 @@ class PhpUnitStrictFixerTest extends AbstractFixerTestBase
     public function provideTestFixCases()
     {
         $fixerReflection = new \ReflectionClass($this->getFixer());
-        $propertyReflection = $fixerReflection->getProperty('phpUnitMethods');
+        $propertyReflection = $fixerReflection->getProperty('configuration');
         $propertyReflection->setAccessible(true);
         $methodsMap = $propertyReflection->getValue($this->getFixer());
 
