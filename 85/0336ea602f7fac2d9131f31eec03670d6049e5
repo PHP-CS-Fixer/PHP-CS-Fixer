@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------
+
+by gharlan at 2015-09-01T22:49:02Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-03T20:02:57Z
+
+Our PHP CS Fixer may be run under PHP7 and it's work really great, but it can't fix PHP7 code yet.
+So one may use tool under PHP7 to fix code without PHP7 features, which is sad and I'm not sure do we really want to say "we support PHP7" before we really support PHP7 syntax...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-03T20:26:26Z
+
+I don't really agree here. What we're saying is "our codebase runs on php 7 and can fix php 5 code just fine as our tests prove".
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-03T20:29:44Z
+
+Fine for me ;)
