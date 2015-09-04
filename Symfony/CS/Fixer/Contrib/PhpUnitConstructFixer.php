@@ -72,14 +72,18 @@ final class PhpUnitConstructFixer extends AbstractFixer
 
     private function fixAssertNotSame(Tokens $tokens, $index)
     {
+        static $map = array(
+            'false' => 'assertNotFalse',
+            'null' => 'assertNotNull',
+            'true' => 'assertNotTrue',
+        );
+
         $sequence = $tokens->findSequence(
             array(
                 array(T_VARIABLE, '$this'),
                 array(T_OBJECT_OPERATOR, '->'),
                 array(T_STRING, 'assertNotSame'),
                 '(',
-                array(T_STRING, 'null'),
-                ',',
             ),
             $index
         );
@@ -89,7 +93,16 @@ final class PhpUnitConstructFixer extends AbstractFixer
         }
 
         $sequenceIndexes = array_keys($sequence);
-        $tokens[$sequenceIndexes[2]]->setContent('assertNotNull');
+        $sequenceIndexes[4] = $tokens->getNextMeaningfulToken($sequenceIndexes[3]);
+        $firstParameterToken = $tokens[$sequenceIndexes[4]];
+
+        if (!$firstParameterToken->isNativeConstant()) {
+            return;
+        }
+
+        $sequenceIndexes[5] = $tokens->getNextNonWhitespace($sequenceIndexes[4]);
+
+        $tokens[$sequenceIndexes[2]]->setContent($map[$firstParameterToken->getContent()]);
         $tokens->clearRange($sequenceIndexes[4], $tokens->getNextNonWhitespace($sequenceIndexes[5]) - 1);
 
         return $sequenceIndexes[5];
