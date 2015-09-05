@@ -167,6 +167,7 @@ final class ConfigurationResolver
         $this->resolveCacheFile();
 
         $this->config->fixers($this->getFixers());
+        $this->config->setRules($this->getRules());
         $this->config->setUsingCache($this->usingCache);
         $this->config->setCacheFile($this->cacheFile);
 

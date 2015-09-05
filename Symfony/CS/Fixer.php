@@ -136,7 +136,7 @@ class Fixer
         $fileCacheManager = new FileCacheManager(
             $config->usingCache(),
             $config->getCacheFile(),
-            $fixers
+            $config->getRules()
         );
 
         foreach ($config->getFinder() as $file) {

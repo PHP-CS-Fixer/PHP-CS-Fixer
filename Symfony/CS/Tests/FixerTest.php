@@ -140,6 +140,12 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
 
         $config
             ->expects($this->any())
+            ->method('getRules')
+            ->willReturn(array())
+        ;
+
+        $config
+            ->expects($this->any())
             ->method('getFinder')
             ->willReturn(array())
         ;
