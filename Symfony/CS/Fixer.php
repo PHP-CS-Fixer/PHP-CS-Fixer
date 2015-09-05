@@ -90,6 +90,9 @@ class Fixer
         $this->fixers[] = $fixer;
     }
 
+    /**
+     * @return FixerInterface[]
+     */
     public function getFixers()
     {
         $this->sortFixers();
