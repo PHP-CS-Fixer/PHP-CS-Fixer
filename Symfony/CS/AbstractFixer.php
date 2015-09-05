@@ -21,6 +21,14 @@ abstract class AbstractFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
+    public function configure(array $configuration = null)
+    {
+        return;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         $nameParts = explode('\\', get_called_class());

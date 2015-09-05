@@ -26,8 +26,15 @@ final class PhpUnitStrictFixer extends AbstractFixer
         'assertNotEquals' => 'assertNotSame',
     );
 
-    public function configure(array $usingMethods)
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $usingMethods = null)
     {
+        if (null === $usingMethods) {
+            return;
+        }
+
         foreach (array_keys($this->configuration) as $method) {
             if (!in_array($method, $usingMethods, true)) {
                 unset($this->configuration[$method]);

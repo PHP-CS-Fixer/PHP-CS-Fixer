@@ -139,6 +139,22 @@ final class RuleSet implements RuleSetInterface
     /**
      * {@inheritdoc}
      */
+    public function getRuleConfiguration($rule)
+    {
+        if (!$this->hasRule($rule)) {
+            throw new \UnexpectedValueException(sprintf('Rule "%s" is not in the set.', $rule));
+        }
+
+        if ($this->rules[$rule] === true) {
+            return;
+        }
+
+        return $this->rules[$rule];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRules()
     {
         return $this->rules;

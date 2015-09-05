@@ -53,7 +53,7 @@ interface ConfigInterface
      *
      * @param string $dir The project root directory
      *
-     * @return ConfigInterface The same instance
+     * @return $this
      */
     public function setDir($dir);
 
@@ -134,11 +134,14 @@ interface ConfigInterface
     /**
      * Set rules.
      *
-     * Keys of array are names of fixers/sets, values are true/false.
+     * Keys of array are names of fixers or sets.
+     * Value for set must be bool (turn it on or off).
+     * Value for fixer may be bool (turn it on or off) or array of configuration
+     * (turn it on and contains configuration for FixerInterface::configure method).
      *
      * @param array $rules
      *
-     * @return ConfigInterface The same instance
+     * @return $this
      */
     public function setRules(array $rules);
 }

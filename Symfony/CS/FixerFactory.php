@@ -139,14 +139,18 @@ final class FixerFactory
      */
     public function useRuleSet(RuleSetInterface $ruleSet)
     {
-        $names = array_keys($ruleSet->getRules());
+        $fixers = array();
 
-        $this->fixers = array_filter(
-            $this->fixers,
-            function ($fixer) use ($names) {
-                return in_array($fixer->getName(), $names, true);
+        foreach ($this->fixers as $fixer) {
+            $name = $fixer->getName();
+
+            if ($ruleSet->hasRule($name)) {
+                $fixer->configure($ruleSet->getRuleConfiguration($name));
+                $fixers[] = $fixer;
             }
-        );
+        }
+
+        $this->fixers = $fixers;
 
         return $this;
     }

@@ -9,12 +9,10 @@ This source file is subject to the MIT license that is bundled
 with this source code in the file LICENSE.
 EOF;
 
-Symfony\CS\Fixer\Contrib\HeaderCommentFixer::setHeader($header);
-
 return Symfony\CS\Config\Config::create()
     ->setRules(array(
         '@Symfony' => true,
-        'header_comment' => true,
+        'header_comment' => array('header' => $header),
         'long_array_syntax' => true,
         'ordered_use' => true,
         'php_unit_construct' => true,

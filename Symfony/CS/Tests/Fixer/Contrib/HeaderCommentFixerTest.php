@@ -11,7 +11,6 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Fixer\Contrib\HeaderCommentFixer;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
@@ -19,7 +18,6 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  */
 final class HeaderCommentFixerTest extends AbstractFixerTestBase
 {
-    protected static $savedHeader;
     protected static $testHeader = <<<EOH
 This file is part of the PHP CS utility.
 
@@ -29,17 +27,9 @@ This source file is subject to the MIT license that is bundled
 with this source code in the file LICENSE.
 EOH;
 
-    protected function setUp()
+    protected function getFixerConfiguration()
     {
-        parent::setUp();
-        self::$savedHeader = HeaderCommentFixer::getHeader();
-        HeaderCommentFixer::setHeader(self::$testHeader);
-    }
-
-    protected function tearDown()
-    {
-        HeaderCommentFixer::setHeader(self::$savedHeader);
-        parent::tearDown();
+        return array('header' => self::$testHeader);
     }
 
     public function testFixWithPreviousHeader()
@@ -137,7 +127,6 @@ EOH;
 
     public function testFixRemovePreviousHeader()
     {
-        HeaderCommentFixer::setHeader('');
         $expected = <<<'EOH'
 <?php
 
@@ -159,7 +148,10 @@ EOH;
 phpinfo();
 EOH;
 
-        $this->makeTest($expected, $input);
+        $fixer = $this->getFixer();
+        $fixer->configure(array('header' => ''));
+
+        $this->makeTest($expected, $input, null, $fixer);
     }
 
     public function testFixDoNotTouchFilesWithSeveralOpenTags()

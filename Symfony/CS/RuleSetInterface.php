@@ -34,6 +34,15 @@ interface RuleSetInterface
     public function hasRule($rule);
 
     /**
+     * Get configuration for given rule.
+     *
+     * @param string $rule name of rule
+     *
+     * @return array|null
+     */
+    public function getRuleConfiguration($rule);
+
+    /**
      * Get all rules from rules set.
      *
      * @return array

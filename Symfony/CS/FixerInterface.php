@@ -19,6 +19,18 @@ use Symfony\CS\Tokenizer\Tokens;
 interface FixerInterface
 {
     /**
+     * Set configuration.
+     *
+     * Some fixers may have no configuration, then - simply pass null.
+     * Other ones may have configuration that will change behavior of fixer,
+     * eg `php_unit_strict` fixer allows to configure which methods should be fixed.
+     * Finally, some fixers need configuration to work, eg `header_comment`.
+     *
+     * @param array|null $configuration configuration depends on Fixer
+     */
+    public function configure(array $configuration = null);
+
+    /**
      * Check if the fixer is a candidate for given Tokens collection.
      *
      * Fixer is a candidate when the collection contains tokens that may be fixed
