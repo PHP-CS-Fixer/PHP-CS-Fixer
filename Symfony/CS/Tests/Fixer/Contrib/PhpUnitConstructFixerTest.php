@@ -23,7 +23,41 @@ class PhpUnitConstructFixerTest extends AbstractFixerTestBase
      */
     public function testFix($expected, $input = null)
     {
+        $fixer = $this->getFixer();
+
+        $fixer->configure(array(
+            'assertEquals' => true,
+            'assertSame' => true,
+            'assertNotEquals' => true,
+            'assertNotSame' => true,
+        ));
         $this->makeTest($expected, $input);
+
+        $fixer->configure(array(
+            'assertEquals' => false,
+            'assertSame' => false,
+            'assertNotEquals' => false,
+            'assertNotSame' => false,
+        ));
+        $this->makeTest($input ?: $expected, null, null, $fixer);
+
+        foreach (array('assertSame', 'assertEquals', 'assertNotEquals', 'assertNotSame') as $method) {
+            $config = array(
+                'assertEquals' => false,
+                'assertSame' => false,
+                'assertNotEquals' => false,
+                'assertNotSame' => false,
+            );
+            $config[$method] = true;
+
+            $fixer->configure($config);
+            $this->makeTest(
+                $expected,
+                $input && false !== strpos($input, $method) ? $input : null,
+                null,
+                $fixer
+            );
+        }
     }
 
     public function provideTestFixCases()
@@ -49,6 +83,14 @@ class PhpUnitConstructFixerTest extends AbstractFixerTestBase
             array(
                 '<?php $this->assertNotNull(  $a  , "notNull" . $bar);',
                 '<?php $this->assertNotSame(  null, $a  , "notNull" . $bar);',
+            ),
+            array(
+                '<?php $this->assertFalse(  $a, "false" . $bar);',
+                '<?php $this->assertEquals(  false, $a, "false" . $bar);',
+            ),
+            array(
+                '<?php $this->assertNotNull(  $a  , "notNull" . $bar);',
+                '<?php $this->assertNotEquals(  null, $a  , "notNull" . $bar);',
             ),
             array(
                 '<?php
