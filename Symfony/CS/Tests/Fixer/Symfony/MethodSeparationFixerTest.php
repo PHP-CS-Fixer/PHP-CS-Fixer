@@ -533,4 +533,9 @@ class ezcReflectionMethod extends ReflectionMethod {
     {
         $this->makeTest("<?php\n    \nfunction foo() {}\n");
     }
+
+    public function testFixFunctionWithDoc()
+    {
+        $this->makeTest("<?php\n    \n    /**\n     * Hi!\n     */\n    function foo() {}\n");
+    }
 }
