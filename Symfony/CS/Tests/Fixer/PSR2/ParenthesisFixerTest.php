@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Marc Aubé
  */
-class ParenthesisFixerTest extends AbstractFixerTestBase
+final class ParenthesisFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

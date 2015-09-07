@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ConcatWithSpacesFixerTest extends AbstractFixerTestBase
+final class ConcatWithSpacesFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

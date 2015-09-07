@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class DuplicateSemicolonFixerTest extends AbstractFixerTestBase
+final class DuplicateSemicolonFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

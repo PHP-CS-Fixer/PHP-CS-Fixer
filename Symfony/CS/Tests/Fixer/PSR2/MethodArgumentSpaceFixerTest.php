@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Kuanhung Chen <ericj.tw@gmail.com>
  */
-class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
+final class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider testFixProvider

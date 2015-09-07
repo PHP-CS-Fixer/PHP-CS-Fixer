@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Ceeram <ceeram@cakephp.org>
  */
-class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestBase
+final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  */
-class RemoveLeadingSlashUseFixerTest extends AbstractFixerTestBase
+final class RemoveLeadingSlashUseFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideFixCases

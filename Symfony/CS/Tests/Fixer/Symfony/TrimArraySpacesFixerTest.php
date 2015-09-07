@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Jared Henderson <jared@netrivet.com>
  */
-class TrimArraySpacesFixerTest extends AbstractFixerTestBase
+final class TrimArraySpacesFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideFixCases

@@ -22,7 +22,7 @@ use Symfony\CS\Fixer;
 /**
  * @author Andreas Möller <am@localheinz.com>
  */
-class FixCommandTest extends \PHPUnit_Framework_TestCase
+final class FixCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testCommandHasCacheFileOption()
     {

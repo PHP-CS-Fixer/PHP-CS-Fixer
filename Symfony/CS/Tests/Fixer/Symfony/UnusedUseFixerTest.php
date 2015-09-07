@@ -13,7 +13,7 @@ namespace Symfony\CS\Tests\Fixer\Symfony;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class UnusedUseFixerTest extends AbstractFixerTestBase
+final class UnusedUseFixerTest extends AbstractFixerTestBase
 {
     public function testFix()
     {

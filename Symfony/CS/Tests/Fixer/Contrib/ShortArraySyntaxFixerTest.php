@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class ShortArraySyntaxFixerTest extends AbstractFixerTestBase
+final class ShortArraySyntaxFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideExamples

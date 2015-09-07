@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class PhpUnitConstructFixerTest extends AbstractFixerTestBase
+final class PhpUnitConstructFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideTestFixCases

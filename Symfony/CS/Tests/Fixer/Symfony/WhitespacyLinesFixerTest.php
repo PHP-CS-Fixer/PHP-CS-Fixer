@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class WhitespacyLinesFixerTest extends AbstractFixerTestBase
+final class WhitespacyLinesFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

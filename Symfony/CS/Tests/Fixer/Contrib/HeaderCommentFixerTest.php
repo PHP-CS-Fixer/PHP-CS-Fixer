@@ -14,7 +14,7 @@ namespace Symfony\CS\Tests\Fixer\Contrib;
 use Symfony\CS\Fixer\Contrib\HeaderCommentFixer;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class HeaderCommentFixerTest extends AbstractFixerTestBase
+final class HeaderCommentFixerTest extends AbstractFixerTestBase
 {
     protected static $savedHeader;
     protected static $testHeader = <<<EOH

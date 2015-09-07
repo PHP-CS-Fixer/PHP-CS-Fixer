@@ -17,7 +17,7 @@ use Symfony\CS\DocBlock\Line;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class LineTest extends \PHPUnit_Framework_TestCase
+final class LineTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * This represents the content an entire docblock.

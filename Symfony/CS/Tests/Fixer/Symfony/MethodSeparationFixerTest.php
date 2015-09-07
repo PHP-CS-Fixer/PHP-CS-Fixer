@@ -13,7 +13,7 @@ namespace Symfony\CS\Tests\Fixer\Symfony;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class MethodSeparationFixerTest extends AbstractFixerTestBase
+final class MethodSeparationFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideFixClassesCases

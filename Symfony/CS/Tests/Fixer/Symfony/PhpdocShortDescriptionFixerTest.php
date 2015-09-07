@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocShortDescriptionFixerTest extends AbstractFixerTestBase
+final class PhpdocShortDescriptionFixerTest extends AbstractFixerTestBase
 {
     public function testFix()
     {
