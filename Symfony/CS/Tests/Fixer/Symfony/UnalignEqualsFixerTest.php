@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class UnalignEqualsFixerTest extends AbstractFixerTestBase
+final class UnalignEqualsFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideFixCases

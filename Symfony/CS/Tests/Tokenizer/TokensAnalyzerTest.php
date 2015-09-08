@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
  * @author Max Voloshin <voloshin.dp@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
  */
-class TokensAnalyzerTest extends \PHPUnit_Framework_TestCase
+final class TokensAnalyzerTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetClassyElements()
     {

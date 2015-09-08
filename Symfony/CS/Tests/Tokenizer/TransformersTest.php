@@ -16,7 +16,7 @@ use Symfony\CS\Tokenizer\Transformers;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class TransformersTest extends \PHPUnit_Framework_TestCase
+final class TransformersTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider provideCustomTokenPrefixCases

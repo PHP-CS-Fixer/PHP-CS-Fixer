@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class FunctionTypehintSpaceFixerTest extends AbstractFixerTestBase
+final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

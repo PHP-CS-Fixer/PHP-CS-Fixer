@@ -20,7 +20,7 @@ use Symfony\CS\FixerInterface;
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
+final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 {
     protected $config;
     protected $resolver;

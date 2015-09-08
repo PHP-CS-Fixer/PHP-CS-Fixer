@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class SingleArrayNoTrailingCommaFixerTest extends AbstractFixerTestBase
+final class SingleArrayNoTrailingCommaFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideExamples

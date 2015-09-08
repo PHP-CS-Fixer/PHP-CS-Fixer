@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Ceeram <ceeram@cakephp.org>
  */
-class PhpdocIndentFixerTest extends AbstractFixerTestBase
+final class PhpdocIndentFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideDocblocks

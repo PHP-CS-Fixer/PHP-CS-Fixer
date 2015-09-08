@@ -16,7 +16,7 @@ use Symfony\CS\Tokenizer\Token;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class TokenTest extends \PHPUnit_Framework_TestCase
+final class TokenTest extends \PHPUnit_Framework_TestCase
 {
     public function getBraceToken()
     {

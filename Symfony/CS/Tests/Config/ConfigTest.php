@@ -15,7 +15,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\CS\Config\Config;
 use Symfony\CS\Finder\DefaultFinder;
 
-class ConfigTest extends \PHPUnit_Framework_TestCase
+final class ConfigTest extends \PHPUnit_Framework_TestCase
 {
     public function testThatDefaultFinderWorksWithDirSetOnConfig()
     {

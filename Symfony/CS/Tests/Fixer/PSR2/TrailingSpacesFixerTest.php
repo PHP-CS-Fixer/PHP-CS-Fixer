@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class TrailingSpacesFixerTest extends AbstractFixerTestBase
+final class TrailingSpacesFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

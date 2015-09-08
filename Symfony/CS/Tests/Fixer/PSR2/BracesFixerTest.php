@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class BracesFixerTest extends AbstractFixerTestBase
+final class BracesFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideFixControlContinuationBracesCases

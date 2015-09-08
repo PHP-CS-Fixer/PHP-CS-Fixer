@@ -14,7 +14,7 @@ namespace Symfony\CS\Tests;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class AbstractFixerTest extends \PHPUnit_Framework_TestCase
+final class AbstractFixerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException        \LogicException

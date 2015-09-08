@@ -14,7 +14,7 @@ namespace Symfony\CS\Tests\Fixer\Contrib;
 use Symfony\CS\Config\Config;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class Psr0FixerTest extends AbstractFixerTestBase
+final class Psr0FixerTest extends AbstractFixerTestBase
 {
     public function testFixCase()
     {

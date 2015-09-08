@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
+final class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideExamples

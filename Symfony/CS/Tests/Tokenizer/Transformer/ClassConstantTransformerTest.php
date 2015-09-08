@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Tokenizer\AbstractTransformerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ClassConstantTransformerTest extends AbstractTransformerTestBase
+final class ClassConstantTransformerTest extends AbstractTransformerTestBase
 {
     /**
      * @dataProvider provideProcessCases

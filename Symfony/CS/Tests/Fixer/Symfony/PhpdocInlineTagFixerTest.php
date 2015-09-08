@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * Test PhpdocInlineTagFixer.
  */
-class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
+final class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideTestFixInlineDocCases

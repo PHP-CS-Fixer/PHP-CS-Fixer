@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class StandardizeNotEqualFixerTest extends AbstractFixerTestBase
+final class StandardizeNotEqualFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

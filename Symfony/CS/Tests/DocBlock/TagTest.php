@@ -16,7 +16,7 @@ use Symfony\CS\DocBlock\Tag;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class TagTest extends \PHPUnit_Framework_TestCase
+final class TagTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider provideNameCases

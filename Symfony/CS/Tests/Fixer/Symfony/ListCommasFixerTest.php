@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ListCommasFixerTest extends AbstractFixerTestBase
+final class ListCommasFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

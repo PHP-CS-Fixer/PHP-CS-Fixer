@@ -18,7 +18,7 @@ use Symfony\CS\Console\Application;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ReadmeTest extends \PHPUnit_Framework_TestCase
+final class ReadmeTest extends \PHPUnit_Framework_TestCase
 {
     public function testIfReadmeFileIsCorrect()
     {

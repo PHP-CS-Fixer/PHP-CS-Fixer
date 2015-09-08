@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Bram Gotink <bram@gotink.me>
  */
-class NamespaceNoLeadingWhitespaceFixerTest extends AbstractFixerTestBase
+final class NamespaceNoLeadingWhitespaceFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideExamples

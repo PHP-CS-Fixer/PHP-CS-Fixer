@@ -13,7 +13,7 @@ namespace Symfony\CS\Tests\Fixer\PSR1;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class ShortTagFixerTest extends AbstractFixerTestBase
+final class ShortTagFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideClosingTagExamples

@@ -16,7 +16,7 @@ use Symfony\CS\DocBlock\DocBlock;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class DocBlockTest extends \PHPUnit_Framework_TestCase
+final class DocBlockTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * This represents the content an entire docblock.

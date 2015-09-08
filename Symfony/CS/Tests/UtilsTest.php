@@ -19,7 +19,7 @@ use Symfony\CS\Utils;
  * @author Graham Campbell <graham@mineuk.com>
  * @author Odín del Río <odin.drp@gmail.com>
  */
-class UtilsTest extends \PHPUnit_Framework_TestCase
+final class UtilsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider provideCamelCaseToUnderscoreCases

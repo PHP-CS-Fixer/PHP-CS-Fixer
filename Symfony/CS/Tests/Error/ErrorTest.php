@@ -13,7 +13,7 @@ namespace Symfony\CS\Tests\Error;
 
 use Symfony\CS\Error\Error;
 
-class ErrorTest extends \PHPUnit_Framework_TestCase
+final class ErrorTest extends \PHPUnit_Framework_TestCase
 {
     public function testThatErrorTypeConstantValuesAreDifferent()
     {

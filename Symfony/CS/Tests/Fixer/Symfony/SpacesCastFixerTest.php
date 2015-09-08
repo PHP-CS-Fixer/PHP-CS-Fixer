@@ -13,7 +13,7 @@ namespace Symfony\CS\Tests\Fixer\Symfony;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class SpacesCastFixerTest extends AbstractFixerTestBase
+final class SpacesCastFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider testFixCastsProvider

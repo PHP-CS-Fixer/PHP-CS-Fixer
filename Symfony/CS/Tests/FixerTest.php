@@ -17,7 +17,7 @@ use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Linter\Linter;
 
-class FixerTest extends \PHPUnit_Framework_TestCase
+final class FixerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers Symfony\CS\Fixer::sortFixers

@@ -18,7 +18,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
  */
-class DoubleArrowMultilineWhitespacesFixerTest extends AbstractFixerTestBase
+final class DoubleArrowMultilineWhitespacesFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideFixCases

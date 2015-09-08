@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class IndentationFixerTest extends AbstractFixerTestBase
+final class IndentationFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideIndentationOnly
