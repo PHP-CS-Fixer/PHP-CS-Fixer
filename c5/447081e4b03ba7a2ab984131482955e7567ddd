@@ -1,0 +1,59 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-07T22:44:17Z
+
+fabbot.io still fails on PHPUnit Optimizations
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-07T23:56:48Z
+
+Hmmmm, in this context, probably, but I guess it's normally not bothered with because tests are normally in autoload-dev in other projects, but here, they're not separated like that.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-08T07:30:15Z
+
+Whatever they are autoloaded or not one can still import them himself ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-08T08:27:05Z
+
+> Whatever they are autoloaded or not one can still import them himself ;)
+
+Not out of the box though. Someone would have to go out of their way to get that done.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-08T08:28:30Z
+
+therefore, :+1: ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-08T08:31:32Z
+
+I can't decide. I guess I'm :+1:, but would prefer us to move to a `src` `tests` structure at the top.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-08T09:02:20Z
+
+step by step @GrahamCampbell , step by step ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-08T09:03:44Z
+
+;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-09-08T14:58:20Z
+
+nice :+1:
+
+>but would prefer us to move to a src tests structure at the top.
+
+in advance  :+1:  ;)
