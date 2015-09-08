@@ -572,6 +572,21 @@ Choose from the list of available rules:
   Converts implicit variables into explicit ones in double-quoted strings
   or heredoc syntax.
 
+* **final_internal_class**
+
+  Internal classes should be ``final``.
+
+  *Risky rule: changing classes to ``final`` might cause code execution to break.*
+
+  Configuration options:
+
+  - ``annotation-black-list`` (``array``): class level annotations tags that must be
+    omitted to fix the class, even if others are in white list. (case in
+    sensitive); defaults to ``['@final', '@Entity', '@ORM']``
+  - ``annotation-white-list`` (``array``): class level annotations tags that must be
+    set in order to fix the class. (case in sensitive); defaults to
+    ``['@internal']``
+
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
   PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
