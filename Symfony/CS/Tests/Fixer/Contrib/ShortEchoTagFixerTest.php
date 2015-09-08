@@ -15,6 +15,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Vincent Klaiber <hello@vinkla.com>
+ *
+ * @internal
  */
 final class ShortEchoTagFixerTest extends AbstractFixerTestBase
 {

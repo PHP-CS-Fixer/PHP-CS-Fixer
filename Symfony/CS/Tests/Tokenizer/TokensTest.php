@@ -16,6 +16,8 @@ use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class TokensTest extends \PHPUnit_Framework_TestCase
 {

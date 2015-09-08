@@ -15,6 +15,8 @@ use Symfony\CS\DocBlock\DocBlock;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
+ *
+ * @internal
  */
 final class AnnotationTest extends \PHPUnit_Framework_TestCase
 {

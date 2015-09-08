@@ -15,6 +15,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Marc Aubé
+ *
+ * @internal
  */
 final class ParenthesisFixerTest extends AbstractFixerTestBase
 {

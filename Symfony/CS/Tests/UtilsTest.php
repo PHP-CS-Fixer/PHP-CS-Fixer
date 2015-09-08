@@ -18,6 +18,8 @@ use Symfony\CS\Utils;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
  * @author Odín del Río <odin.drp@gmail.com>
+ *
+ * @internal
  */
 final class UtilsTest extends \PHPUnit_Framework_TestCase
 {

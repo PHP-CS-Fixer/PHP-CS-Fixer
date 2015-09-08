@@ -15,6 +15,8 @@ use Symfony\CS\DocBlock\Tag;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
+ *
+ * @internal
  */
 final class TagTest extends \PHPUnit_Framework_TestCase
 {

@@ -15,6 +15,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Matteo Beccati <matteo@beccati.com>
+ *
+ * @internal
  */
 final class Php4ConstructorFixerTest extends AbstractFixerTestBase
 {

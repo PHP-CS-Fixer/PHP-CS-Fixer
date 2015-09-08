@@ -15,6 +15,8 @@ use Symfony\CS\Tests\Tokenizer\AbstractTransformerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class UseTransformerTest extends AbstractTransformerTestBase
 {

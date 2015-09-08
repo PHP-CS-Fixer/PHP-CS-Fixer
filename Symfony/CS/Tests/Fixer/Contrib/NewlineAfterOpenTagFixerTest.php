@@ -16,6 +16,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Ceeram <ceeram@cakephp.org>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class NewlineAfterOpenTagFixerTest extends AbstractFixerTestBase
 {

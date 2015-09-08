@@ -15,6 +15,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
+ *
+ * @internal
  */
 final class ElseifFixerTest extends AbstractFixerTestBase
 {

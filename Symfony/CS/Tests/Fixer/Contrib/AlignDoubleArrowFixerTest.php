@@ -15,6 +15,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
+ *
+ * @internal
  */
 final class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
 {
