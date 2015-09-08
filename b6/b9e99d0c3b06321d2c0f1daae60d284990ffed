@@ -1,0 +1,215 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-08-11T07:42:19Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-01T22:22:25Z
+
+Ping @keradus. ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-03T20:46:48Z
+
+I replaced `checkProcess` method with the following one:
+```php
+    private function checkProcess(Process $process)
+    {
+        if (!$process->isSuccessful()) {
+            echo sprintf(">>>%s<<<\n>>>%s<<<", $process->getOutput(), $process->getErrorOutput());
+            throw new LintingException($process->getOutput(), $process->getExitCode());
+        }
+    }
+```
+and run fixer on invalid file, what I got is:
+```bash
+>>>
+Parse error: syntax error, unexpected 'namespace' (T_NAMESPACE) in D:\GIT\fork\PHP-CS-Fixer-upstream\test\test.php on line 12
+Errors parsing D:\GIT\fork\PHP-CS-Fixer-upstream\test\test.php
+<<<
+>>><<<
+```
+
+`getOutput` provides me some info, `getErrorOutput` does not.
+
+Am I doing sth wrong @GrahamCampbell ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-03T20:51:12Z
+
+> Parse error: syntax error, unexpected 'namespace' (T_NAMESPACE) in D:\GIT\fork\PHP-CS-Fixer-upstream\test\test.php on line 12
+
+That's from the error output, and is the only bit that's actually useful.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-03T20:56:10Z
+
+```php
+    private function checkProcess(Process $process)
+    {
+        if (!$process->isSuccessful()) {
+            echo sprintf(">>>%s<<<", $process->getErrorOutput());
+            throw new LintingException($process->getOutput(), $process->getExitCode());
+        }
+    }
+```
+
+Gave me
+```
+>>><<<
+```
+
+So no information at all.
+
+-------------------------
+
+Maybe there is a difference between OS?
+```bash
+λ php --version
+PHP 5.6.8 (cli) (built: Apr 15 2015 15:07:09)
+Copyright (c) 1997-2015 The PHP Group
+Zend Engine v2.6.0, Copyright (c) 1998-2015 Zend Technologies
+
+λ ver
+Microsoft Windows [Version 10.0.10130]
+```
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-04T10:10:23Z
+
+Maybe, yeh. I've only tested this on ubuntu 14.04.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-04T10:10:54Z
+
+Does windows not have a standard error output?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-04T19:41:23Z
+
+It has.
+Don't know why is the difference here.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-04T21:37:01Z
+
+Maybe a php bug?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-05T10:20:01Z
+
+@keradus How does this look now?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-05T11:18:01Z
+
+LGTM, I would just add a comment why we are doing that fallback.
+
+---------------------------
+
+Tiny curiosity below...
+
+```bash
+D:\GIT\fork\PHP-CS-Fixer ((detached from GrahamForks/linting))
+λ php -v
+PHP 5.6.8 (cli) (built: Apr 15 2015 15:07:09)
+Copyright (c) 1997-2015 The PHP Group
+Zend Engine v2.6.0, Copyright (c) 1998-2015 Zend Technologies
+
+D:\GIT\fork\PHP-CS-Fixer ((detached from GrahamForks/linting))
+λ php php-cs-fixer fix 1 -vvv
+array(2) {
+  ["errorOutput"]=>
+  NULL
+  ["output"]=>
+  string(145) "
+Parse error: syntax error, unexpected end of file in D:\GIT\fork\PHP-CS-Fixer\1\a.php on line 3
+Errors parsing D:\GIT\fork\PHP-CS-Fixer\1\a.php
+"
+}
+```
+
+```bash
+λ php -v
+PHP 7.0.0-dev (cli) (built: May 28 2015 08:20:23)
+Copyright (c) 1997-2015 The PHP Group
+Zend Engine v3.0.0-dev, Copyright (c) 1998-2015 Zend Technologies
+
+D:\GIT\fork\PHP-CS-Fixer ((detached from GrahamForks/linting))
+λ php php-cs-fixer fix 1 -vvv
+array(2) {
+  ["errorOutput"]=>
+  string(101) "PHP Parse error:  syntax error, unexpected end of file in D:\GIT\fork\PHP-CS-Fixer\1\a.php on line 3
+"
+  ["output"]=>
+  string(145) "
+Parse error: syntax error, unexpected end of file in D:\GIT\fork\PHP-CS-Fixer\1\a.php on line 3
+Errors parsing D:\GIT\fork\PHP-CS-Fixer\1\a.php
+"
+}
+```
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-05T11:19:11Z
+
+Hmm. Can you try on a newer 5.6.x release?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-05T12:49:43Z
+
+```bash
+D:\GIT\fork\PHP-CS-Fixer ((detached from GrahamForks/linting))
+λ php -v
+PHP 5.6.13 (cli) (built: Sep  3 2015 15:14:40)
+Copyright (c) 1997-2015 The PHP Group
+Zend Engine v2.6.0, Copyright (c) 1998-2015 Zend Technologies
+
+D:\GIT\fork\PHP-CS-Fixer ((detached from GrahamForks/linting))
+λ php php-cs-fixer fix 1 -vvv
+array(2) {
+  ["errorOutput"]=>
+  NULL
+  ["output"]=>
+  string(145) "
+Parse error: syntax error, unexpected end of file in D:\GIT\fork\PHP-CS-Fixer\1\a.php on line 3
+Errors parsing D:\GIT\fork\PHP-CS-Fixer\1\a.php
+"
+}
+```
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-05T13:00:15Z
+
+Hmmm, strange.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-05T13:01:17Z
+
+Must just be the windows implementation in php being inconsistent with that of linux.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-08T18:25:15Z
+
+Is this ok now?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-08T18:31:35Z
+
+:+1:, after Travis successful build I will merge this PR, thank you ;)
