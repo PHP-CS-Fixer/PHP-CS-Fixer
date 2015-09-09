@@ -12,6 +12,7 @@
 namespace Symfony\CS\Tests;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\CS\DocBlock\DocBlock;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -28,6 +29,19 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(
             $rc->isAbstract() || $rc->isFinal(),
             sprintf('Test class %s should be abstract or final.', $rc->getName())
+        );
+    }
+
+    /**
+     * @dataProvider provideTestClasses
+     */
+    public function testThatTestClassesAreInternal(\ReflectionClass $rc)
+    {
+        $doc = new DocBlock($rc->getDocComment());
+
+        $this->assertNotEmpty(
+            $doc->getAnnotationsOfType('internal'),
+            sprintf('Test class %s should have internal annotation.', $rc->getName())
         );
     }
 
