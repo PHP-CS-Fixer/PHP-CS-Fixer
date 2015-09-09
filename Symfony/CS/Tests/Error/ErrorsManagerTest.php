@@ -14,6 +14,9 @@ namespace Symfony\CS\Tests\Error;
 use Symfony\CS\Error\Error;
 use Symfony\CS\Error\ErrorsManager;
 
+/**
+ * @internal
+ */
 final class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
 {
     public function testDefaults()
