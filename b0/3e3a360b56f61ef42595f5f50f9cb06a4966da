@@ -1,0 +1,28 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-09-04T05:14:26Z
+
+Looks good to me, valid xml :+1:
+About the format itself, we can both ways and I have no strong feelings about one or the other.
+Just pick something that we hope most people like since we cannot change it until 3.x (but you probably are all aware of that) ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-04T10:20:53Z
+
+What? We can change anything we want in 2.x. It's not released yet. Nothing needs to wait until 3.x?
+
+---------------------------------------------------------------------------
+
+by junichi11 at 2015-09-04T10:27:57Z
+
+@keradus
+> Do you want to add change you have mentioned here ?
+
+Yes, I think that we should change it. When new tags will be added later, they can be added easily to the root tag(`report` or `phpcsfixer`?). It is easier to understand that the `report` tag is the root tag than the `files` tag.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-09-04T11:01:07Z
+
+:+1: for changing the root node from `files` to `report` :)
