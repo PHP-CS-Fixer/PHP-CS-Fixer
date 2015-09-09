@@ -15,6 +15,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Farhad Safarov <farhad.safarov@gmail.com>
+ *
+ * @internal
  */
 final class ObjectOperatorFixerTest extends AbstractFixerTestBase
 {

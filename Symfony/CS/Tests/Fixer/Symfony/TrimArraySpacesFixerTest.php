@@ -15,6 +15,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Jared Henderson <jared@netrivet.com>
+ *
+ * @internal
  */
 final class TrimArraySpacesFixerTest extends AbstractFixerTestBase
 {

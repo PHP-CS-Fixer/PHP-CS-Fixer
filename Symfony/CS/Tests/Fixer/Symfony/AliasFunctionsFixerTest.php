@@ -16,6 +16,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class AliasFunctionsFixerTest extends AbstractFixerTestBase
 {

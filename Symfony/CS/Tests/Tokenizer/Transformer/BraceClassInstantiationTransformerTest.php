@@ -15,6 +15,8 @@ use Symfony\CS\Tests\Tokenizer\AbstractTransformerTestBase;
 
 /**
  * @author Sebastiaans Stok <s.stok@rollerscapes.net>
+ *
+ * @internal
  */
 final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestBase
 {

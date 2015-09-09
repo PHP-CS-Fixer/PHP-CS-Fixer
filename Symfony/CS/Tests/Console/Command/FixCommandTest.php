@@ -21,6 +21,8 @@ use Symfony\CS\Fixer;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
+ *
+ * @internal
  */
 final class FixCommandTest extends \PHPUnit_Framework_TestCase
 {

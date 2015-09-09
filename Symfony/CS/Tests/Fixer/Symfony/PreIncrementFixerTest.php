@@ -15,6 +15,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @internal
  */
 final class PreIncrementFixerTest extends AbstractFixerTestBase
 {

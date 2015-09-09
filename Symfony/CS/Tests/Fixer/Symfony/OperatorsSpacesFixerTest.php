@@ -16,6 +16,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @internal
  */
 final class OperatorsSpacesFixerTest extends AbstractFixerTestBase
 {

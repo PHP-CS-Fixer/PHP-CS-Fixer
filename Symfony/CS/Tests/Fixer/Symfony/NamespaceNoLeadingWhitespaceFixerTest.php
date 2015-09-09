@@ -15,6 +15,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Bram Gotink <bram@gotink.me>
+ *
+ * @internal
  */
 final class NamespaceNoLeadingWhitespaceFixerTest extends AbstractFixerTestBase
 {

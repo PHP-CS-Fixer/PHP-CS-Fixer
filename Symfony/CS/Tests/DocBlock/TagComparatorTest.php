@@ -16,6 +16,8 @@ use Symfony\CS\DocBlock\TagComparator;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
+ *
+ * @internal
  */
 final class TagComparatorTest extends \PHPUnit_Framework_TestCase
 {

@@ -16,6 +16,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Luis Cordova <cordoval@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class RemoveLinesBetweenUsesFixerTest extends AbstractFixerTestBase
 {

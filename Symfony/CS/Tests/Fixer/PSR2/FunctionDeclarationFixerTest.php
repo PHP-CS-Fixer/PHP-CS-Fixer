@@ -16,6 +16,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Denis Sokolov <denis@sokolov.cc>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class FunctionDeclarationFixerTest extends AbstractFixerTestBase
 {

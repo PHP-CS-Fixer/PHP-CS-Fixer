@@ -15,6 +15,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Саша Стаменковић <umpirsky@gmail.com>
+ *
+ * @internal
  */
 final class IncludeFixerTest extends AbstractFixerTestBase
 {

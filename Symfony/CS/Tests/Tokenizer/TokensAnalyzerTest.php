@@ -18,6 +18,8 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Max Voloshin <voloshin.dp@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @internal
  */
 final class TokensAnalyzerTest extends \PHPUnit_Framework_TestCase
 {
