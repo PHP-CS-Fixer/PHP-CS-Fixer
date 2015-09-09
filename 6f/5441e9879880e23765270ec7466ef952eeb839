@@ -1,0 +1,46 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-08T21:16:10Z
+
+fabbot.io fails as always :(
+
+---------------------------------------------------------------------------
+
+by stof at 2015-09-09T08:55:05Z
+
+@keradus what do you think about moving them to a separate ``tests`` folder at the root, which would not be autoloadable at runtime ?
+This would cleanly separate the testsuite from the library, avoiding the need to mark anything as internal in the testsuite (as it would not be accessible at all anymore)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-09T08:56:25Z
+
+> @keradus what do you think about moving them to a separate tests folder at the root, which would not be autoloadable at runtime ?
+
+I suggested this before, and @fabpot rejected the idea.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-09T10:23:21Z
+
+> This would cleanly separate the testsuite from the library, avoiding the need to mark anything as internal in the testsuite (as it would not be accessible at all anymore)
+
+I can include classes from tests dir myself and use it, extend it ect. So marking them internal/final isn't pointless.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-09-09T10:29:51Z
+
+@keradus if you have to include them yourselves rather than relying on the autoloading, it is clear you are doing weird thing (and that you would ignore an ``@internal`` phpdoc anyway, which is harder to see than an autoloading failure)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-09T11:21:21Z
+
+I' not saying here should we move tests or not, just saying that marking tests as final/internal is still gr8
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-09T22:35:57Z
+
+I agree that one should not include files from vendor himself, but if we mark tests as internal we won't lose anything
