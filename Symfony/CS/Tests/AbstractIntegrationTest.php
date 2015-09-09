@@ -215,8 +215,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
                     break;
                 case 'fixers' :
                 case '--fixers' :
-                    $fixers = explode(',', $value);
-                    foreach ($fixers as $fixer) {
+                    foreach (explode(',', $value) as $fixer) {
                         $config[$label][] = strtolower(trim($fixer));
                     }
 
