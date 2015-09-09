@@ -17,6 +17,9 @@ use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Linter\Linter;
 
+/**
+ * @internal
+ */
 final class FixerTest extends \PHPUnit_Framework_TestCase
 {
     /**

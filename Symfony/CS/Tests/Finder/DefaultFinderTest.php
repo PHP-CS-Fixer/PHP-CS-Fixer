@@ -13,6 +13,9 @@ namespace Symfony\CS\Tests\Finder;
 
 use Symfony\CS\Finder\DefaultFinder;
 
+/**
+ * @internal
+ */
 final class DefaultFinderTest extends \PHPUnit_Framework_TestCase
 {
     /**
