@@ -1,0 +1,66 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-06T10:15:24Z
+
+It would be great to document `*.test` file structure
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-06T19:56:09Z
+
+Travis failed.
+https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/78998867#L197
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-09-07T07:38:26Z
+
+>There should be one $fixer for all tests. Now we register built in fixers over and over again.
+
+This and removing the temp file is kind of a problem. PHPUnit has no hooks to share objects between tests, nor does it have a hook to perform the deletion of the temp file when the last test case has run.
+The hook that is there `tearDownAfterClass` is static so it is not useful since the temp file location is fetch dynamically.
+
+Pointers about how to approach this are welcome :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-07T12:41:44Z
+
+Why name of file can't be static then? Same for fixers table.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-07T22:26:24Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1384#issuecomment-138062303
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-08T12:58:24Z
+
+It looks really great, I would be very happy to merge this PR after that few markers ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-09-08T14:55:21Z
+
+while the tests passes, it states:
+```
+[0Ktravis_time:start:06e52a26
+[0K$ phpunit --verbose --coverage-clover build/logs/clover.xml
+PHP Strict standards:  Static function Symfony\CS\Tests\AbstractIntegrationTest::getFixturesDir() should not be abstract in /home/travis/build/FriendsOfPHP/PHP-CS-Fixer/Symfony/CS/Tests/AbstractIntegrationTest.php on line 116
+```
+
+is this something to worry about, I don't see why this is wrong, isn't this good use of late static binding?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-08T14:56:35Z
+
+LSB is good, but in PHP one can not create method, which is both abstract and static.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-09T12:01:32Z
+
+:+1:
