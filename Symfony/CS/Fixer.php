@@ -323,7 +323,7 @@ class Fixer
         return $file->getPathname();
     }
 
-    public static function getLevelAsString(FixerInterface $fixer)
+    public function getLevelAsString(FixerInterface $fixer)
     {
         $level = $fixer->getLevel();
 
