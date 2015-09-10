@@ -398,7 +398,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveConfigFileByPathOfFile()
     {
-        $dir = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_1';
+        $dir = realpath(__DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_1');
 
         $this->resolver
             ->setOption('path', $dir.DIRECTORY_SEPARATOR.'foo.php')
@@ -410,7 +410,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveConfigFileSpecified()
     {
-        $file = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_4/my.php_cs';
+        $file = realpath(__DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_4/my.php_cs');
 
         $this->resolver
             ->setOption('config-file', $file)
@@ -435,7 +435,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function provideResolveConfigFileDefaultCases()
     {
-        $dirBase = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR;
+        $dirBase = realpath(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile').DIRECTORY_SEPARATOR;
 
         return array(
             array(
