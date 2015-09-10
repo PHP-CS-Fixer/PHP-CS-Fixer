@@ -13,6 +13,7 @@ namespace Symfony\CS\Tests;
 
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\CS\Error\Error;
 use Symfony\CS\FileCacheManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
@@ -278,5 +279,20 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
         }
 
         return $fixers;
+    }
+
+    /**
+     * @param Error[] $errors
+     *
+     * @return string
+     */
+    private function implodeErrors(array $errors)
+    {
+        $errorStr = '';
+        foreach ($errors as $error) {
+            $errorStr .= sprintf("%d: %s\n", $error->getType(), $error->getFilePath());
+        }
+
+        return $errorStr;
     }
 }
