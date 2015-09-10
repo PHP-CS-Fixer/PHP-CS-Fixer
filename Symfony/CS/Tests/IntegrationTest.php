@@ -14,7 +14,7 @@ namespace Symfony\CS\Tests;
 /**
  * Test that parses and runs the fixture '*.test' files found in '/Fixtures/Integration'.
  *
- * @author SpacePossum
+ * @author SpacePossum <possumfromspace@gmail.com>
  *
  * @internal
  */

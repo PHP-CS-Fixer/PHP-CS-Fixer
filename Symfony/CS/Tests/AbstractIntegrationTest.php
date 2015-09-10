@@ -42,7 +42,7 @@ use Symfony\CS\FixerInterface;
  * *** When the expected block is omitted the input is expected not to
  *     be changed by the fixers.
  *
- * @author SpacePossum
+ * @author SpacePossum <possumfromspace@gmail.com>
  *
  * @internal
  */
