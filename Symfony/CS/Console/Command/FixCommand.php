@@ -422,8 +422,12 @@ EOF
                 break;
             case 'xml':
                 $dom = new \DOMDocument('1.0', 'UTF-8');
+                // new nodes should be added to this or existing children
+                $root = $dom->createElement('report');
+                $dom->appendChild($root);
+
                 $filesXML = $dom->createElement('files');
-                $dom->appendChild($filesXML);
+                $root->appendChild($filesXML);
 
                 foreach ($changed as $file => $fixResult) {
                     $fileXML = $dom->createElement('file');
@@ -453,8 +457,8 @@ EOF
 
                 $timeXML = $dom->createElement('time');
                 $memoryXML = $dom->createElement('memory');
-                $filesXML->appendChild($timeXML);
-                $filesXML->appendChild($memoryXML);
+                $root->appendChild($timeXML);
+                $root->appendChild($memoryXML);
 
                 $memoryXML->setAttribute('value', round($fixEvent->getMemory() / 1024 / 1024, 3));
                 $memoryXML->setAttribute('unit', 'MB');
