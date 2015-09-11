@@ -1,18 +1,18 @@
 language: php
 
-php:
-    - 5.3
-    - 5.4
-    - 5.5
-    - 5.6
-    - 7.0
-    - hhvm
-
 matrix:
     fast_finish: true
     include:
         - php: 5.3
           env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
+        - php: 5.3
+        - php: 5.4
+        - php: 5.5
+        - php: 5.6
+          env: 'COVERAGE=true'
+        - php: 7.0
+        - php: hhvm
+          env: 'COVERAGE=true'
 
 sudo: false
 
@@ -21,11 +21,14 @@ cache:
         - $HOME/.composer/cache
 
 install:
+    - if [[ $COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini || return 0; fi
     - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction
 
 script:
-    - phpunit --verbose --coverage-clover build/logs/clover.xml
+    - if [[ $COVERAGE != 'true' ]]; then phpunit --verbose; fi
+    - if [[ $COVERAGE == 'true' ]]; then phpunit --verbose --coverage-clover build/logs/clover.xml; fi
+    - if [[ $COVERAGE == 'true' ]]; then phpenv config-rm xdebug.ini || return 0; fi
     - php php-cs-fixer --diff --dry-run -v fix
 
-after_script:
-    - php vendor/bin/coveralls -v
+after_success:
+    - if [[ $COVERAGE == 'true' ]]; then php vendor/bin/coveralls -v; fi
