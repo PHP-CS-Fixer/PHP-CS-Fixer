@@ -36,7 +36,7 @@ class PhpdocVarWithoutNameFixer extends AbstractFixer
                 continue;
             }
 
-            $annotations = $doc->getAnnotations();
+            $annotations = $doc->getAnnotationsOfType(array('param', 'return', 'type', 'var'));
 
             // only process docblocks containing exactly one annotation
             // also, require that annotation to be either @type or @var
