@@ -73,6 +73,31 @@ EOF;
         $this->makeTest($expected);
     }
 
+    public function testFixVarWithOtherAnnotation()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @var string Hello!
+     *
+     * @deprecated
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @var string $foo Hello!
+     *
+     * @deprecated
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
     public function testSingleLine()
     {
         $expected = <<<'EOF'
