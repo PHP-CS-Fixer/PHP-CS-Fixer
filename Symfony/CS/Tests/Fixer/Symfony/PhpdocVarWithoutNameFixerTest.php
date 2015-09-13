@@ -98,6 +98,33 @@ EOF;
         $this->makeTest($expected, $input);
     }
 
+    public function testFixVarWithNestedKeys()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @var array {
+     *     @var bool   $required Whether this element is required
+     *     @var string $label    The display name for this element
+     * }
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @var array $options {
+     *     @var bool   $required Whether this element is required
+     *     @var string $label    The display name for this element
+     * }
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
     public function testSingleLine()
     {
         $expected = <<<'EOF'
