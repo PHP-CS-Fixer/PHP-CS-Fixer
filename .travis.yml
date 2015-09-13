@@ -9,10 +9,8 @@ matrix:
         - php: 5.4
         - php: 5.5
         - php: 5.6
-          env: 'COVERAGE=true'
         - php: 7.0
         - php: hhvm
-          env: 'COVERAGE=true'
 
 sudo: false
 
@@ -21,14 +19,12 @@ cache:
         - $HOME/.composer/cache
 
 install:
-    - if [[ $COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini || return 0; fi
     - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction
 
 script:
-    - if [[ $COVERAGE != 'true' ]]; then phpunit --verbose; fi
-    - if [[ $COVERAGE == 'true' ]]; then phpunit --verbose --coverage-clover build/logs/clover.xml; fi
-    - if [[ $COVERAGE == 'true' ]]; then phpenv config-rm xdebug.ini || return 0; fi
+    - phpunit --verbose --coverage-clover build/logs/clover.xml
+    - phpenv config-rm xdebug.ini || return 0
     - php php-cs-fixer --diff --dry-run -v fix
 
 after_success:
-    - if [[ $COVERAGE == 'true' ]]; then php vendor/bin/coveralls -v; fi
+    - php vendor/bin/coveralls -v
