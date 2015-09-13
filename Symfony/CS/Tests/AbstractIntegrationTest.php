@@ -212,7 +212,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
             $value = trim($labelValuePair[1]);
 
             switch ($label) {
-                case 'level' :
+                case 'level':
                     if (!array_key_exists($value, $levelMap)) {
                         throw new \InvalidArgumentException(sprintf('Unknown level "%s" set in configuration in "%s", expected any of "%s".', $value, $fileName, implode(', ', array_keys($levelMap))));
                     }
@@ -223,14 +223,14 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
 
                     $config['level'] = $value;
                     break;
-                case 'fixers' :
-                case '--fixers' :
+                case 'fixers':
+                case '--fixers':
                     foreach (explode(',', $value) as $fixer) {
                         $config[$label][] = strtolower(trim($fixer));
                     }
 
                     break;
-                default :
+                default:
                     throw new \InvalidArgumentException(sprintf('Unknown configuration item "%s" in "%s".', $label, $fileName));
             }
         }

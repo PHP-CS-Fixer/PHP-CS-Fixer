@@ -395,6 +395,12 @@ final class BracesFixer extends AbstractFixer
         }
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return string
+     */
     private function detectIndent(Tokens $tokens, $index)
     {
         static $goBackTokens = array(T_ABSTRACT, T_FINAL, T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC);
@@ -434,6 +440,12 @@ final class BracesFixer extends AbstractFixer
         return end($explodedContent);
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $structureTokenIndex
+     *
+     * @return int
+     */
     private function findParenthesisEnd(Tokens $tokens, $structureTokenIndex)
     {
         $nextIndex = $tokens->getNextNonWhitespace($structureTokenIndex);
