@@ -257,19 +257,10 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->resolve()
         ;
 
-        $expectedFixers = array_merge(
-            $this->fixersMap[FixerInterface::PSR1_LEVEL],
-            $this->fixersMap[FixerInterface::PSR2_LEVEL],
-            $this->fixersMap[FixerInterface::SYMFONY_LEVEL],
-            array($this->fixersMap[FixerInterface::CONTRIB_LEVEL]['strict'], $this->fixersMap[FixerInterface::CONTRIB_LEVEL]['strict_param'])
+        $expectedFixers = array(
+            $this->fixersMap[FixerInterface::CONTRIB_LEVEL]['strict'],
+            $this->fixersMap[FixerInterface::CONTRIB_LEVEL]['strict_param'],
         );
-
-        foreach ($expectedFixers as $key => $fixer) {
-            if ($fixer->getName() === 'include') {
-                unset($expectedFixers[$key]);
-                break;
-            }
-        }
 
         $this->makeFixersTest(
             $expectedFixers,
