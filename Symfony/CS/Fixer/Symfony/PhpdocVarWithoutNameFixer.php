@@ -38,9 +38,8 @@ class PhpdocVarWithoutNameFixer extends AbstractFixer
 
             $annotations = $doc->getAnnotationsOfType(array('param', 'return', 'type', 'var'));
 
-            // only process docblocks containing exactly one annotation
-            // also, require that annotation to be either @type or @var
-            if (count($annotations) !== 1 || !in_array($annotations[0]->getTag()->getName(), array('type', 'var'), true)) {
+            // only process docblocks where the first meaningful annotation is @type or @var
+            if (!isset($annotations[0]) || !in_array($annotations[0]->getTag()->getName(), array('type', 'var'), true)) {
                 continue;
             }
 
