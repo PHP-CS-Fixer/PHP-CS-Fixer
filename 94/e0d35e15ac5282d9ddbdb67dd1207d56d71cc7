@@ -1,0 +1,177 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-05T11:05:58Z
+
+Note that I would have made the normalizeType function abstract, but php doesn't allow abstract static methods.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-08T18:23:05Z
+
+Any news on this?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-08T18:33:18Z
+
+Sorry, I was busy with my rules&sets PR lately ;)
+Sad that nobody had shared his opinion yet.
+
+Let me see this inside..
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-09-09T09:13:54Z
+
+Both fixers should support array types like `int[]`.
+
+```
+integer[] -> int[]
+String[] -> string[]
+```
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-09T09:18:45Z
+
+Sure. I'll look into this asap.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-09T09:19:04Z
+
+Also, note that things like `int[string]` are valid too I think.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-09T09:19:38Z
+
+Where string says the keys to access the integer values are strings.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-09T09:20:00Z
+
+Not sure if anyone actually uses that, or if I'm even right here. Does anyone know?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-09-09T09:27:47Z
+
+> Also, note that things like int[string] are valid too I think.
+
+No, not in current draft.
+
+But there are other types: https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md#arrays
+
+```
+(int|string)[]
+\ArrayObject<\ArrayObject<int>>
+\ArrayObject<int, string>
+\ArrayObject<string|bool>
+```
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-09T09:31:03Z
+
+Hmmm, ok. Let me think about this in the background today, and I'll write something tonight.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-10T15:46:24Z
+
+> (int|string)[]
+> \ArrayObject<\ArrayObject<int>>
+> \ArrayObject<int, string>
+> \ArrayObject<string|bool>
+
+Can we fix those cases in another issue. Those cases will affect a lot of other fixers too, and I don't think anyone is actually using that syntax anyway.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-10T15:48:51Z
+
+Added support for `int[]` and stuff, since that definitely is used a lot.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-10T15:49:50Z
+
+> Note that I would have made the normalizeType function abstract, but php doesn't allow abstract static methods.
+
+Ditched the "static" stuff in order to make this abstract.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-09-10T15:51:49Z
+
+> Can we fix those cases in another issue. Those cases will affect a lot of other fixers too, and I don't think anyone is actually using that syntax anyway.
+
+That's the reason why I didn't mention them first. So I agree.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-10T16:05:44Z
+
+Passing limits to preg_split broke everything so I reverted. Where did I mess up?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-10T16:08:17Z
+
+Ok, I think this is ready to go. ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-10T16:12:21Z
+
+> Passing limits to preg_split broke everything so I reverted. Where did I mess up?
+
+Passing `1` as limit make whole splitting pointless. Pass `2` instead of `1` and it will work ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-10T16:14:27Z
+
+So I wanted 2 and 3 rather than 1 and 2?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-10T16:18:38Z
+
+Seems to be working now. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-10T16:40:22Z
+
+```php
+$tagSplit = preg_split('/\s*\@'.$tag.'\s*/', $content, 3);
+var_dump(count($tagSplit));
+```
+gave always `2`. So there is no third element. So you should limit to `2` instead of `3` or add new tests.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-10T16:42:17Z
+
+Does this look ok now?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-10T19:26:28Z
+
+i think so
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-09-10T20:05:05Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-10T20:08:19Z
+
+:ship:
