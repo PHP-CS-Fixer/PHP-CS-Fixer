@@ -13,6 +13,9 @@ namespace Symfony\CS\Tests\Fixer\PSR1;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
+/**
+ * @internal
+ */
 final class ShortTagFixerTest extends AbstractFixerTestBase
 {
     /**

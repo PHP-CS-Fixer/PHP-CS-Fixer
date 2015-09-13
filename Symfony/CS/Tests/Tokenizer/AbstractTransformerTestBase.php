@@ -15,6 +15,8 @@ use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 abstract class AbstractTransformerTestBase extends \PHPUnit_Framework_TestCase
 {
