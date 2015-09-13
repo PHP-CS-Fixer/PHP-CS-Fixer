@@ -131,6 +131,27 @@ final class FixerFactory
     }
 
     /**
+     * Apply RuleSet on fixers to filter out all unwanted fixers.
+     *
+     * @param RuleSetInteface $ruleSet
+     *
+     * @return $this
+     */
+    public function useRuleSet(RuleSetInterface $ruleSet)
+    {
+        $names = array_keys($ruleSet->getRules());
+
+        $this->fixers = array_filter(
+            $this->fixers,
+            function ($fixer) use ($names) {
+                return in_array($fixer->getName(), $names, true);
+            }
+        );
+
+        return $this;
+    }
+
+    /**
      * Sort fixers by their priorities.
      *
      * @return $this

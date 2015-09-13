@@ -37,6 +37,13 @@ final class FileCacheManager
     private $newHashes = array();
     private $oldHashes = array();
 
+    /**
+     * Create instance.
+     *
+     * @param bool             $isEnabled is cache enabled
+     * @param string           $cacheFile cache file
+     * @param FixerInterface[] $fixers
+     */
     public function __construct($isEnabled, $cacheFile, array $fixers)
     {
         $this->isEnabled = $isEnabled;

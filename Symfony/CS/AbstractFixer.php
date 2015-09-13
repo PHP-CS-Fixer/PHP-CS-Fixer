@@ -21,27 +21,6 @@ abstract class AbstractFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
-    {
-        static $map = array(
-            'PSR1' => FixerInterface::PSR1_LEVEL,
-            'PSR2' => FixerInterface::PSR2_LEVEL,
-            'Symfony' => FixerInterface::SYMFONY_LEVEL,
-            'Contrib' => FixerInterface::CONTRIB_LEVEL,
-        );
-
-        $level = current(explode('\\', substr(get_called_class(), strlen(__NAMESPACE__.'\\Fixer\\'))));
-
-        if (!isset($map[$level])) {
-            throw new \LogicException(sprintf('Can not determine Fixer level: "%s".', $level));
-        }
-
-        return $map[$level];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         $nameParts = explode('\\', get_called_class());

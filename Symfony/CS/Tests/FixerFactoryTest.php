@@ -14,6 +14,7 @@ namespace Symfony\CS\Tests;
 use Symfony\CS\Fixer\Contrib\Psr0Fixer;
 use Symfony\CS\FixerFactory;
 use Symfony\CS\FixerInterface;
+use Symfony\CS\RuleSet;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -35,6 +36,11 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
         $mock = $this->getMock('Symfony\CS\FixerInterface');
         $testInstance = $factory->registerFixer($mock);
+        $this->assertSame($factory, $testInstance);
+
+        $mock = $this->getMock('Symfony\CS\RuleSetInterface');
+        $mock->expects($this->any())->method('getRules')->willReturn(array());
+        $testInstance = $factory->useRuleSet($mock);
         $this->assertSame($factory, $testInstance);
 
         $mock = $this->getMock('Symfony\CS\ConfigInterface');
@@ -132,6 +138,26 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(in_array($f1, $factory->getFixers(), true));
         $this->assertTrue(in_array($f2, $factory->getFixers(), true));
         $this->assertTrue(in_array($f3, $factory->getFixers(), true));
+    }
+
+    /**
+     * @covers Symfony\CS\FixerFactory::useRuleSet
+     */
+    public function testUseRuleSet()
+    {
+        $factory = FixerFactory::create()
+            ->registerBuiltInFixers()
+            ->useRuleSet(new RuleSet(array()))
+        ;
+        $this->assertCount(0, $factory->getFixers());
+
+        $factory = FixerFactory::create()
+            ->registerBuiltInFixers()
+            ->useRuleSet(new RuleSet(array('strict' => true, 'return' => false)))
+        ;
+        $fixers = $factory->getFixers();
+        $this->assertCount(1, $fixers);
+        $this->assertSame('strict', $fixers[0]->getName());
     }
 
     public function testFixersPriorityEdgeFixers()

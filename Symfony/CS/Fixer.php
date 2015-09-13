@@ -291,29 +291,6 @@ class Fixer
         return $file->getPathname();
     }
 
-    public function getLevelAsString(FixerInterface $fixer)
-    {
-        $level = $fixer->getLevel();
-
-        if (($level & FixerInterface::NONE_LEVEL) === $level) {
-            return 'none';
-        }
-
-        if (($level & FixerInterface::PSR1_LEVEL) === $level) {
-            return 'PSR-1';
-        }
-
-        if (($level & FixerInterface::PSR2_LEVEL) === $level) {
-            return 'PSR-2';
-        }
-
-        if (($level & FixerInterface::CONTRIB_LEVEL) === $level) {
-            return 'contrib';
-        }
-
-        return 'symfony';
-    }
-
     protected function stringDiff($old, $new)
     {
         $diff = $this->diff->diff($old, $new);

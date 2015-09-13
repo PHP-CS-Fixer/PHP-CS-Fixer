@@ -17,6 +17,7 @@ use Symfony\CS\ConfigInterface;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerFactory;
 use Symfony\CS\FixerInterface;
+use Symfony\CS\RuleSet;
 use Symfony\CS\StdinFileInfo;
 
 /**
@@ -43,17 +44,17 @@ final class ConfigurationResolver
         'config' => null,
         'config-file' => null,
         'dry-run' => null,
-        'fixers' => null,
-        'level' => null,
         'path' => null,
         'progress' => null,
         'using-cache' => null,
         'cache-file' => null,
+        'rules' => null,
     );
     private $path;
     private $progress;
     private $usingCache;
     private $cacheFile;
+    private $ruleSet;
 
     public function __construct()
     {
@@ -122,6 +123,16 @@ final class ConfigurationResolver
     }
 
     /**
+     * Returns rules.
+     *
+     * @return array
+     */
+    public function getRules()
+    {
+        return $this->ruleSet->getRules();
+    }
+
+    /**
      * Returns dry-run flag.
      *
      * @return bool
@@ -148,8 +159,8 @@ final class ConfigurationResolver
         $this->fixerFactory->registerCustomFixers($this->getConfig()->getCustomFixers());
         $this->fixerFactory->attachConfig($this->getConfig());
 
-        $this->resolveFixersByLevel();
-        $this->resolveFixersByNames();
+        $this->resolveRules();
+        $this->resolveFixers();
 
         $this->resolveProgress();
         $this->resolveUsingCache();
@@ -273,52 +284,27 @@ final class ConfigurationResolver
     }
 
     /**
-     * Compute fixers.
+     * Compute rules.
      *
-     * @return string[]|null
+     * @return array
      */
-    private function parseFixers()
+    private function parseRules()
     {
-        if (null !== $this->options['fixers']) {
-            return array_map('trim', explode(',', $this->options['fixers']));
+        if (null === $this->options['rules']) {
+            return $this->config->getRules();
         }
 
-        if (null !== $this->options['level']) {
-            return;
-        }
+        $rules = array();
 
-        return $this->config->getFixers();
-    }
-
-    /**
-     * Compute level.
-     *
-     * @return string|null
-     */
-    private function parseLevel()
-    {
-        static $levelMap = array(
-            'none' => FixerInterface::NONE_LEVEL,
-            'psr1' => FixerInterface::PSR1_LEVEL,
-            'psr2' => FixerInterface::PSR2_LEVEL,
-            'symfony' => FixerInterface::SYMFONY_LEVEL,
-        );
-
-        $levelOption = $this->options['level'];
-
-        if (null !== $levelOption) {
-            if (!isset($levelMap[$levelOption])) {
-                throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $levelOption));
+        foreach (array_map('trim', explode(',', $this->options['rules'])) as $rule) {
+            if ('-' === $rule[0]) {
+                $rules[ltrim($rule, '-')] = false;
+            } else {
+                $rules[$rule] = true;
             }
-
-            return $levelMap[$levelOption];
         }
 
-        if (null !== $this->options['fixers']) {
-            return;
-        }
-
-        return $this->config->getLevel();
+        return $rules;
     }
 
     /**
@@ -378,59 +364,11 @@ final class ConfigurationResolver
     }
 
     /**
-     * Resolve fixers to run based on level.
+     * Resolve fixers to run based on rules.
      */
-    private function resolveFixersByLevel()
+    private function resolveFixers()
     {
-        $level = $this->parseLevel();
-
-        if (null === $level) {
-            return;
-        }
-
-        $fixers = array();
-
-        foreach ($this->fixerFactory->getFixers() as $fixer) {
-            if ($fixer->getLevel() === ($fixer->getLevel() & $level)) {
-                $fixers[] = $fixer;
-            }
-        }
-
-        $this->fixers = $fixers;
-    }
-
-    /**
-     * Resolve fixers to run based on names.
-     */
-    private function resolveFixersByNames()
-    {
-        $names = $this->parseFixers();
-
-        if (null === $names) {
-            return;
-        }
-
-        $addNames = array();
-        $removeNames = array();
-        foreach ($names as $name) {
-            if (0 === strpos($name, '-')) {
-                $removeNames[ltrim($name, '-')] = true;
-            } else {
-                $addNames[$name] = true;
-            }
-        }
-
-        foreach ($this->fixers as $key => $fixer) {
-            if (isset($removeNames[$fixer->getName()])) {
-                unset($this->fixers[$key]);
-            }
-        }
-
-        foreach ($this->fixerFactory->getFixers() as $fixer) {
-            if (isset($addNames[$fixer->getName()]) && !in_array($fixer, $this->fixers, true)) {
-                $this->fixers[] = $fixer;
-            }
-        }
+        $this->fixers = $this->fixerFactory->useRuleSet($this->ruleSet)->getFixers();
     }
 
     /**
@@ -479,6 +417,14 @@ final class ConfigurationResolver
     private function resolveProgress()
     {
         $this->progress = $this->options['progress'] && !$this->config->getHideProgress();
+    }
+
+    /**
+     * Resolve rules.
+     */
+    private function resolveRules()
+    {
+        $this->ruleSet = new RuleSet($this->parseRules());
     }
 
     /**

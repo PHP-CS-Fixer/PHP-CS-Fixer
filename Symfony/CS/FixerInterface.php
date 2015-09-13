@@ -18,12 +18,6 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 interface FixerInterface
 {
-    const NONE_LEVEL = 0;
-    const PSR1_LEVEL = 3;
-    const PSR2_LEVEL = 7;
-    const SYMFONY_LEVEL = 15;
-    const CONTRIB_LEVEL = 32;
-
     /**
      * Check if the fixer is a candidate for given Tokens collection.
      *
@@ -55,17 +49,6 @@ interface FixerInterface
      * @return string The description of the fixer
      */
     public function getDescription();
-
-    /**
-     * Returns the level of CS standard.
-     *
-     * Can be one of:
-     *  - self::PSR1_LEVEL,
-     *  - self::PSR2_LEVEL,
-     *  - self::SYMFONY_LEVEL,
-     *  - self::CONTRIB_LEVEL.
-     */
-    public function getLevel();
 
     /**
      * Returns the name of the fixer.

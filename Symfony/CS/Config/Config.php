@@ -25,24 +25,21 @@ class Config implements ConfigInterface
     protected $name;
     protected $description;
     protected $finder;
-    protected $level;
-    protected $fixers;
+    protected $fixers = array();
     protected $dir;
-    protected $customFixers;
+    protected $customFixers = array();
     protected $usingCache = true;
     protected $usingLinter = true;
     protected $hideProgress = false;
     protected $cacheFile = '.php_cs.cache';
     protected $phpExecutable;
+    protected $rules = array('@PSR2' => true);
 
     public function __construct($name = 'default', $description = 'A default configuration')
     {
         $this->name = $name;
         $this->description = $description;
-        $this->level = FixerInterface::PSR2_LEVEL;
-        $this->fixers = array();
         $this->finder = new DefaultFinder();
-        $this->customFixers = array();
     }
 
     public static function create()
@@ -92,19 +89,14 @@ class Config implements ConfigInterface
         return $this->finder;
     }
 
-    public function level($level)
-    {
-        $this->level = $level;
-
-        return $this;
-    }
-
-    public function getLevel()
-    {
-        return $this->level;
-    }
-
-    public function fixers($fixers)
+    /**
+     * Set fixers.
+     *
+     * @param FixerInterface[] $fixers
+     *
+     * @return $this
+     */
+    public function fixers(array $fixers)
     {
         $this->fixers = $fixers;
 
@@ -198,5 +190,23 @@ class Config implements ConfigInterface
     public function getPhpExecutable()
     {
         return $this->phpExecutable;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRules(array $rules)
+    {
+        $this->rules = $rules;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRules()
+    {
+        return $this->rules;
     }
 }
