@@ -10,6 +10,7 @@ with this source code in the file LICENSE.
 EOF;
 
 return Symfony\CS\Config\Config::create()
+    ->setRiskyAllowed(true)
     ->setRules(array(
         '@Symfony' => true,
         'header_comment' => array('header' => $header),

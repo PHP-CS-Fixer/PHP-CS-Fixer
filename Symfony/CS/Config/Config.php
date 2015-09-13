@@ -33,6 +33,7 @@ class Config implements ConfigInterface
     protected $hideProgress = false;
     protected $cacheFile = '.php_cs.cache';
     protected $phpExecutable;
+    protected $isRiskyAllowed = false;
     protected $rules = array('@PSR2' => true);
 
     public function __construct($name = 'default', $description = 'A default configuration')
@@ -190,6 +191,24 @@ class Config implements ConfigInterface
     public function getPhpExecutable()
     {
         return $this->phpExecutable;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRiskyAllowed()
+    {
+        return $this->isRiskyAllowed;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRiskyAllowed($isRiskyAllowed)
+    {
+        $this->isRiskyAllowed = $isRiskyAllowed;
+
+        return $this;
     }
 
     /**

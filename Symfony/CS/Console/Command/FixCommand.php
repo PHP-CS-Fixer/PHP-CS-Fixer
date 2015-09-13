@@ -104,6 +104,7 @@ final class FixCommand extends Command
             ->setDefinition(
                 array(
                     new InputArgument('path', InputArgument::OPTIONAL, 'The path', null),
+                    new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no)', null),
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The configuration name', null),
                     new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
@@ -149,6 +150,9 @@ When using combinations of exact and blacklist fixers, applying exact fixers alo
 
 A combination of <comment>--dry-run</comment> and <comment>--diff</comment> will
 display a summary of proposed fixes, leaving your files unchanged.
+
+The <comment>--allow-risky</comment> option allows you to set whether riskys fixer may run. Default value is taken from config file.
+Risky fixer is a fixer, which could change code behaviour. By default no risky fixers are run.
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
@@ -300,6 +304,7 @@ EOF
             ->setDefaultConfig($this->defaultConfig)
             ->setFixer($this->fixer)
             ->setOptions(array(
+                'allow-risky' => $input->getOption('allow-risky'),
                 'config' => $input->getOption('config'),
                 'config-file' => $input->getOption('config-file'),
                 'dry-run' => $input->getOption('dry-run'),
@@ -589,11 +594,17 @@ EOF
         foreach ($fixers as $i => $fixer) {
             $sets = $getSetsWithRule($fixer->getName());
 
+            $description = $fixer->getDescription();
+
+            if ($fixer->isRisky()) {
+                $description .= ' (Risky fixer!)';
+            }
+
             if (!empty($sets)) {
-                $chunks = explode("\n", wordwrap(sprintf("[%s]\n%s", implode(', ', $sets), $fixer->getDescription()), 72 - $maxName, "\n"));
+                $chunks = explode("\n", wordwrap(sprintf("[%s]\n%s", implode(', ', $sets), $description), 72 - $maxName, "\n"));
                 $help .= sprintf(" * <comment>%s</comment>%s %s\n", $fixer->getName(), str_repeat(' ', $maxName - strlen($fixer->getName())), array_shift($chunks));
             } else {
-                $chunks = explode("\n", wordwrap(sprintf("\n%s", $fixer->getDescription()), 72 - $maxName, "\n"));
+                $chunks = explode("\n", wordwrap(sprintf("\n%s", $description), 72 - $maxName, "\n"));
                 $help .= sprintf(" * <comment>%s</comment>%s\n", $fixer->getName(), array_shift($chunks));
             }
 

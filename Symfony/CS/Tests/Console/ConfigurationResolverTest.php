@@ -411,6 +411,64 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($optionCacheFile, $this->config->getCacheFile());
     }
 
+    public function testResolveAllowRiskyWithPositiveConfigAndPositiveOption()
+    {
+        $this->config->setRiskyAllowed(true);
+        $this->resolver
+            ->setOption('allow-risky', 'yes')
+            ->resolve();
+
+        $this->assertTrue($this->config->getRiskyAllowed());
+    }
+
+    public function testResolveAllowRiskyWithPositiveConfigAndNegativeOption()
+    {
+        $this->config->setRiskyAllowed(true);
+        $this->resolver
+            ->setOption('allow-risky', 'no')
+            ->resolve();
+
+        $this->assertFalse($this->config->getRiskyAllowed());
+    }
+
+    public function testResolveAllowRiskyWithNegativeConfigAndPositiveOption()
+    {
+        $this->config->setRiskyAllowed(false);
+        $this->resolver
+            ->setOption('allow-risky', 'yes')
+            ->resolve();
+
+        $this->assertTrue($this->config->getRiskyAllowed());
+    }
+
+    public function testResolveAllowRiskyWithNegativeConfigAndNegativeOption()
+    {
+        $this->config->setRiskyAllowed(false);
+        $this->resolver
+            ->setOption('allow-risky', 'no')
+            ->resolve();
+
+        $this->assertFalse($this->config->getRiskyAllowed());
+    }
+
+    public function testResolveAllowRiskyWithPositiveConfigAndNoOption()
+    {
+        $this->config->setRiskyAllowed(true);
+        $this->resolver
+            ->resolve();
+
+        $this->assertTrue($this->config->getRiskyAllowed());
+    }
+
+    public function testResolveAllowRiskyWithNegativeConfigAndNoOption()
+    {
+        $this->config->setRiskyAllowed(false);
+        $this->resolver
+            ->resolve();
+
+        $this->assertFalse($this->config->getRiskyAllowed());
+    }
+
     public function testResolveRulesWithConfig()
     {
         $this->config->setRules(array(

@@ -31,6 +31,14 @@ final class Php4ConstructorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $classes = array_keys($tokens->findGivenKind(T_CLASS));
@@ -92,7 +100,7 @@ final class Php4ConstructorFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Convert PHP4-style constructors to __construct. Warning! This could change code behavior.';
+        return 'Convert PHP4-style constructors to __construct.';
     }
 
     /**

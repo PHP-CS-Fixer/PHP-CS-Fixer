@@ -29,6 +29,14 @@ abstract class AbstractFixer implements FixerInterface
     /**
      * {@inheritdoc}
      */
+    public function isRisky()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         $nameParts = explode('\\', get_called_class());

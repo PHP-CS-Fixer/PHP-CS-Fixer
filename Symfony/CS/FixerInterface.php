@@ -46,6 +46,15 @@ interface FixerInterface
     public function isCandidate(Tokens $tokens);
 
     /**
+     * Check if fixer is risky or not.
+     *
+     * Risky fixer could change code behavior!
+     *
+     * @return bool
+     */
+    public function isRisky();
+
+    /**
      * Fixes a file.
      *
      * @param \SplFileInfo $file   A \SplFileInfo instance

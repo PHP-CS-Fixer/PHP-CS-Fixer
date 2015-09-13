@@ -160,6 +160,9 @@ When using combinations of exact and blacklist fixers, applying exact fixers alo
 A combination of ``--dry-run`` and ``--diff`` will
 display a summary of proposed fixes, leaving your files unchanged.
 
+The ``--allow-risky`` option allows you to set whether riskys fixer may run. Default value is taken from config file.
+Risky fixer is a fixer, which could change code behaviour. By default no risky fixers are run.
+
 The command can also read from standard input, in which case it won't
 automatically fix anything:
 
@@ -233,8 +236,7 @@ Choose from the list of available fixers:
 * **ereg_to_preg**
                         Replace deprecated ereg
                         regular expression functions
-                        with preg. Warning! This could
-                        change code behavior.
+                        with preg. (Risky fixer!)
 
 * **extra_empty_lines** [@Symfony]
                         Removes extra empty lines.
@@ -383,8 +385,7 @@ Choose from the list of available fixers:
 * **php4_constructor**
                         Convert PHP4-style
                         constructors to __construct.
-                        Warning! This could change
-                        code behavior.
+                        (Risky fixer!)
 
 * **php_closing_tag** [@PSR2, @Symfony]
                         The closing ?> tag MUST be
@@ -396,16 +397,14 @@ Choose from the list of available fixers:
                         like "->assertSame(true,
                         $foo)" should be written with
                         dedicated method like
-                        "->assertTrue($foo)". Warning!
-                        This could change code
-                        behavior.
+                        "->assertTrue($foo)". (Risky
+                        fixer!)
 
 * **php_unit_strict**
                         PHPUnit methods like
                         "assertSame" should be used
                         instead of "assertEquals".
-                        Warning! This could change
-                        code behavior.
+                        (Risky fixer!)
 
 * **phpdoc_align** [@Symfony]
                         All items of the @param,
@@ -503,8 +502,7 @@ Choose from the list of available fixers:
                         matches their namespace, be at
                         least one namespace deep and
                         the class name should match
-                        the file name. Warning: This
-                        could change code behavior.
+                        the file name. (Risky fixer!)
 
 * **remove_leading_slash_use** [@Symfony]
                         Remove leading slashes in use
@@ -572,13 +570,11 @@ Choose from the list of available fixers:
 
 * **strict**
                         Comparison should be strict.
-                        Warning! This could change
-                        code behavior.
+                        (Risky fixer!)
 
 * **strict_param**
                         Functions should be used with
-                        $strict param. Warning! This
-                        could change code behavior.
+                        $strict param. (Risky fixer!)
 
 * **ternary_spaces** [@Symfony]
                         Standardize spaces around

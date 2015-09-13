@@ -53,6 +53,14 @@ final class PhpUnitStrictFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($this->configuration as $methodBefore => $methodAfter) {
@@ -84,6 +92,6 @@ final class PhpUnitStrictFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'PHPUnit methods like "assertSame" should be used instead of "assertEquals". Warning! This could change code behavior.';
+        return 'PHPUnit methods like "assertSame" should be used instead of "assertEquals".';
     }
 }

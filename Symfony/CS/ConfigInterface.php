@@ -123,6 +123,22 @@ interface ConfigInterface
     public function getPhpExecutable();
 
     /**
+     * Check if it is allowed to run risky fixers.
+     *
+     * @return bool
+     */
+    public function getRiskyAllowed();
+
+    /**
+     * Set if it is allowed to run risky fixers.
+     *
+     * @param bool $isAllowed
+     *
+     * @return $this
+     */
+    public function setRiskyAllowed($isRiskyAllowed);
+
+    /**
      * Get rules.
      *
      * Keys of array are names of fixers/sets, values are true/false.
