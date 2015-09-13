@@ -1,0 +1,85 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-12T09:21:40Z
+
+Hmmm, though PHP 5.4 has different execution paths to 5.6 in some places, which is why coverage was running on every vesion, because we have version specific execution paths.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-12T20:08:05Z
+
+We execute more path on newer and newer versions.
+Do we indeed do sth only in old versions?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-12T20:55:04Z
+
+Well some paths are only executed on old versions?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-13T09:12:30Z
+
+like?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-13T09:22:56Z
+
+```
+        if (
+            '' === $old
+            || !$fileCacheManager->needFixing($this->getFileRelativePathname($file), $old)
+            // PHP 5.3 has a broken implementation of token_get_all when the file uses __halt_compiler() starting in 5.3.6
+            || (PHP_VERSION_ID >= 50306 && PHP_VERSION_ID < 50400 && false !== stripos($old, '__halt_compiler()'))
+        ) {
+            if ($this->eventDispatcher) {
+                $this->eventDispatcher->dispatch(
+                    FixerFileProcessedEvent::NAME,
+                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_SKIPPED)
+                );
+            }
+
+            return;
+        }
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-13T09:36:29Z
+
+Then, 5.3, 5.6 and hhvm should be enought?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-13T09:46:00Z
+
+Yes, though do we actually have coverage for that anyway? if not, then we don't need 5.3.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-13T13:18:10Z
+
+For now we have. Question is do we want to collect 5.3 (or 5.5) coverage on Travis.
+For now we do not collect it for php7 (no support fod xdebug)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-13T13:41:19Z
+
+> For now we do not collect it for php7 (no support fod xdebug)
+
+You don't need xdebug. On php 7, you can collect coverage using phpdbg and phpunit 5.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-13T13:41:43Z
+
+Travis only has an old version of phpunit though, and I don't think phpdbg is available - I've never tried.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-13T16:49:24Z
+
+updated to run coverage on every available php versions, but still a bit faster ;)
