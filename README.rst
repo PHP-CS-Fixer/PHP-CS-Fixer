@@ -425,6 +425,11 @@ Choose from the list of available fixers:
                         @type should always be written
                         as @var.
 
+* **phpdoc_types** [symfony]
+                        The correct case must be used
+                        for standard PHP types in
+                        phpdoc.
+
 * **phpdoc_var_without_name** [symfony]
                         @var and @type annotations
                         should not contain the

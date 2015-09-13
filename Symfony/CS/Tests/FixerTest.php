@@ -254,15 +254,18 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
         // prepare bulk tests for phpdoc fixers to test that:
         // * `phpdoc_to_comment` is first
         // * `phpdoc_indent` is second
-        // * `phpdoc_scalar` is third
+        // * `phpdoc_types` is third
+        // * `phpdoc_scalar` is fourth
         // * `phpdoc_align` is last
         $cases[] = array($fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']);
-        $cases[] = array($fixers['phpdoc_indent'], $fixers['phpdoc_scalar']);
+        $cases[] = array($fixers['phpdoc_indent'], $fixers['phpdoc_types']);
+        $cases[] = array($fixers['phpdoc_types'], $fixers['phpdoc_scalar']);
 
         foreach ($docFixerNames as $docFixerName) {
-            if (!in_array($docFixerName, array('phpdoc_to_comment', 'phpdoc_indent', 'phpdoc_scalar'), true)) {
+            if (!in_array($docFixerName, array('phpdoc_to_comment', 'phpdoc_indent', 'phpdoc_types', 'phpdoc_scalar'), true)) {
                 $cases[] = array($fixers['phpdoc_to_comment'], $fixers[$docFixerName]);
                 $cases[] = array($fixers['phpdoc_indent'], $fixers[$docFixerName]);
+                $cases[] = array($fixers['phpdoc_types'], $fixers[$docFixerName]);
                 $cases[] = array($fixers['phpdoc_scalar'], $fixers[$docFixerName]);
             }
 

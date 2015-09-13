@@ -16,18 +16,34 @@ use Symfony\CS\AbstractPhpdocTypesFixer;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
+final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
 {
     /**
-     * The types to fix.
+     * The types to process.
      *
-     * @var array
+     * @var string[]
      */
     private static $types = array(
-        'boolean' => 'bool',
-        'double' => 'float',
-        'integer' => 'int',
-        'real' => 'float',
+        'array',
+        'bool',
+        'boolean',
+        'callable',
+        'double',
+        'false',
+        'float',
+        'int',
+        'integer',
+        'mixed',
+        'null',
+        'object',
+        'real',
+        'resource',
+        'self',
+        'static',
+        'string',
+        'true',
+        'void',
+        '$this',
     );
 
     /**
@@ -35,7 +51,7 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
      */
     public function getDescription()
     {
-        return 'Scalar types should always be written in the same form. "int", not "integer"; "bool", not "boolean"; "float", not "real" or "double".';
+        return 'The correct case must be used for standard PHP types in phpdoc.';
     }
 
     public function getPriority()
@@ -45,11 +61,10 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
          * phpdoc_to_comment and phpdoc_indent fixer to make sure all fixers
          * apply correct indentation to new code they add. This should run
          * before alignment of params is done since this fixer might change
-         * the type and thereby un-aligning the params. We also must run after
-         * the phpdoc_types_fixer because it can convert types to things that
-         * we can fix.
+         * the type and thereby un-aligning the params. We also must run before
+         * the phpdoc_scalar_fixer so that it can make changes after us.
          */
-        return 15;
+        return 16;
     }
 
     /**
@@ -57,8 +72,10 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
      */
     protected function normalize($type)
     {
-        if (array_key_exists($type, self::$types)) {
-            return self::$types[$type];
+        $lower = strtolower($type);
+
+        if (in_array($lower, self::$types, true)) {
+            return $lower;
         }
 
         return $type;
