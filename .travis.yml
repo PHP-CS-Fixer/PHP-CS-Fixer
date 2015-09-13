@@ -1,18 +1,16 @@
 language: php
 
-php:
-    - 5.3
-    - 5.4
-    - 5.5
-    - 5.6
-    - 7.0
-    - hhvm
-
 matrix:
     fast_finish: true
     include:
         - php: 5.3
           env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
+        - php: 5.3
+        - php: 5.4
+        - php: 5.5
+        - php: 5.6
+        - php: 7.0
+        - php: hhvm
 
 sudo: false
 
@@ -25,7 +23,8 @@ install:
 
 script:
     - phpunit --verbose --coverage-clover build/logs/clover.xml
+    - phpenv config-rm xdebug.ini || return 0
     - php php-cs-fixer --diff --dry-run -v fix
 
-after_script:
+after_success:
     - php vendor/bin/coveralls -v
