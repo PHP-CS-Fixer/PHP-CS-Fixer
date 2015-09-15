@@ -75,6 +75,58 @@ EOF;
         $this->makeTest($expected);
     }
 
+    public function testFixVarWithOtherAnnotation()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @var string Hello!
+     *
+     * @deprecated
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @var string $foo Hello!
+     *
+     * @deprecated
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixVarWithNestedKeys()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @var array {
+     *     @var bool   $required Whether this element is required
+     *     @var string $label    The display name for this element
+     * }
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @var array $options {
+     *     @var bool   $required Whether this element is required
+     *     @var string $label    The display name for this element
+     * }
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
     public function testSingleLine()
     {
         $expected = <<<'EOF'
@@ -92,6 +144,41 @@ EOF;
 <?php
     /**
      *
+     */
+
+EOF;
+
+        $this->makeTest($expected);
+    }
+
+    public function testInlineDoc()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * Initializes this class with the given options.
+     *
+     * @param array $options {
+     *     @var bool   $required Whether this element is required
+     *     @var string $label    The display name for this element
+     * }
+     */
+
+EOF;
+
+        $this->makeTest($expected);
+    }
+
+    public function testInlineDocAgain()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param int[] $stuff {
+     *     @var int $foo
+     * }
+     *
+     * @return void
      */
 
 EOF;

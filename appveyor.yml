@@ -1,0 +1,30 @@
+build: off
+version: dev-{build}
+shallow_clone: false
+clone_folder: C:\projects\php-cs-fixer
+
+environment:
+    matrix:
+        - php_ver: 5.6.3
+
+cache:
+    - C:\tools -> appveyor.yml
+    - '%APPDATA%\Composer'
+
+install:
+    - choco install -y php -version %php_ver%
+    - SET PATH=C:\tools\php;%PATH%
+    - cd C:\tools\php
+    - copy php.ini-production php.ini
+    - cd C:\tools
+    - appveyor DownloadFile https://getcomposer.org/composer.phar
+    - appveyor DownloadFile https://phar.phpunit.de/phpunit.phar
+
+before_test:
+    - cd C:\projects\php-cs-fixer
+    - php C:\tools\composer.phar update --prefer-source --ansi --no-interaction --no-dev
+
+test_script:
+    - cd C:\projects\php-cs-fixer
+    - php C:\tools\phpunit.phar --verbose
+    - php php-cs-fixer --diff --dry-run -v fix

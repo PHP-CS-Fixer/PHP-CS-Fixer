@@ -101,7 +101,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
     private function normalizeTypes(array $types)
     {
         foreach ($types as $index => $type) {
-            $types[$index] = static::normalizeType($type);
+            $types[$index] = $this->normalizeType($type);
         }
 
         return $types;
