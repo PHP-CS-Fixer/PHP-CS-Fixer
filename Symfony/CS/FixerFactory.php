@@ -139,15 +139,22 @@ final class FixerFactory
      */
     public function useRuleSet(RuleSetInterface $ruleSet)
     {
-        $fixers = array();
+        $fixersByName = array();
 
         foreach ($this->fixers as $fixer) {
-            $name = $fixer->getName();
+            $fixersByName[$fixer->getName()] = $fixer;
+        }
 
-            if ($ruleSet->hasRule($name)) {
-                $fixer->configure($ruleSet->getRuleConfiguration($name));
-                $fixers[] = $fixer;
+        $fixers = array();
+
+        foreach (array_keys($ruleSet->getRules()) as $name) {
+            if (!array_key_exists($name, $fixersByName)) {
+                throw new \UnexpectedValueException(sprintf('Rule "%s" does not exist.', $name));
             }
+
+            $fixer = $fixersByName[$name];
+            $fixer->configure($ruleSet->getRuleConfiguration($name));
+            $fixers[] = $fixer;
         }
 
         $this->fixers = $fixers;

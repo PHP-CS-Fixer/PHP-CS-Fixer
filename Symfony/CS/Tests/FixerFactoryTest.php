@@ -160,6 +160,22 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('strict', $fixers[0]->getName());
     }
 
+    /**
+     * @covers Symfony\CS\FixerFactory::useRuleSet
+     * @expectedException        \UnexpectedValueException
+     * @expectedExceptionMessage Rule "non_existing_rule" does not exist.
+     */
+    public function testUseRuleSetWithNonExistingRule()
+    {
+        $factory = FixerFactory::create()
+            ->registerBuiltInFixers()
+            ->useRuleSet(new RuleSet(array('non_existing_rule' => true)))
+        ;
+        $fixers = $factory->getFixers();
+        $this->assertCount(1, $fixers);
+        $this->assertSame('strict', $fixers[0]->getName());
+    }
+
     public function testFixersPriorityEdgeFixers()
     {
         $factory = new FixerFactory();
