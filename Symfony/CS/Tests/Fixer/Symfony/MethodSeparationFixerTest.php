@@ -269,7 +269,7 @@ abstract class MethodTest3
     {
     }
 
-    abstract protected function method221();	
+    abstract protected function method221();
 
     final private function method321a()
     {
@@ -292,7 +292,7 @@ abstract class MethodTest3
 
 
 
-	
+
 
 
 
@@ -466,7 +466,7 @@ interface TestInterface
 
     /**
      * {@link}
-     */           
+     */
     public function testInterfaceMethod6();
 
     public function testInterfaceMethod7();
@@ -482,7 +482,7 @@ interface TestInterface
 
     /**
      * {@link}
-     */           
+     */
     public function testInterfaceMethod6();
 
 
@@ -527,5 +527,15 @@ class ezcReflectionMethod extends ReflectionMethod {
         );
 
         return $cases;
+    }
+
+    public function testFixPlainFunction()
+    {
+        $this->makeTest("<?php\n    \nfunction foo() {}\n");
+    }
+
+    public function testFixFunctionWithDoc()
+    {
+        $this->makeTest("<?php\n    \n    /**\n     * Hi!\n     */\n    function foo() {}\n");
     }
 }
