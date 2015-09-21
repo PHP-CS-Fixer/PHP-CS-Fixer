@@ -248,6 +248,9 @@ Choose from the list of available fixers:
                         There MUST be one use keyword
                         per declaration.
 
+* **one_line_method_argument** [PSR-2]
+                Split method arguments in new lines.
+
 * **parenthesis** [PSR-2]
                         There MUST NOT be a space
                         after the opening parenthesis.
