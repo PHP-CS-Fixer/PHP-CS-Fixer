@@ -40,17 +40,17 @@ final class Linter implements LinterInterface
     private $executable;
 
     /**
-     * @param string|null $phpExecutable PHP executable, null for autodetection
+     * @param string|null $executable PHP executable, null for autodetection
      */
-    public function __construct($phpExecutable = null)
+    public function __construct($executable = null)
     {
-        if (null === $phpExecutable) {
+        if (null === $executable) {
             $executableFinder = new PhpExecutableFinder();
             $executable = $executableFinder->find();
-        }
 
-        if (empty($executable)) {
-            throw new UnavailableLinterException();
+            if (false === $executable) {
+                throw new UnavailableLinterException();
+            }
         }
 
         $this->executable = $executable;
@@ -106,7 +106,7 @@ final class Linter implements LinterInterface
             return $this->createProcessForSource(file_get_contents($path));
         }
 
-        $process = new Process(sprintf('%s -l %s', $this->executable, ProcessUtils::escapeArgument($path)));
+        $process = new Process($this->prepareCommand($path));
         $process->setTimeout(null);
         $process->run();
 
@@ -133,5 +133,17 @@ final class Linter implements LinterInterface
         $process = $this->createProcessForFile($this->temporaryFile);
 
         return $process;
+    }
+
+    /**
+     * Prepare command that will lint a file.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    private function prepareCommand($path)
+    {
+        return sprintf('%s -l %s', $this->executable, ProcessUtils::escapeArgument($path));
     }
 }
