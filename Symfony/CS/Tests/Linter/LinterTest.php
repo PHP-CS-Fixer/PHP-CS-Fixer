@@ -33,7 +33,7 @@ final class LinterTest extends \PHPUnit_Framework_TestCase
      * @covers Symfony\CS\Linter\Linter::lintSource
      *
      * @expectedException Symfony\CS\Linter\LintingException
-     * @expectedExceptionMessageRegExp /unexpected 'echo' \(T_ECHO\)/
+     * @expectedExceptionMessageRegExp /syntax error, unexpected (?:'echo' \(T_ECHO\))|(?:T_ECHO)/
      */
     public function testLintSourceWithBadCode()
     {

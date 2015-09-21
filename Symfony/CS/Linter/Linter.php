@@ -48,7 +48,7 @@ final class Linter implements LinterInterface
             $executableFinder = new PhpExecutableFinder();
             $executable = $executableFinder->find();
 
-            if (empty($executable)) {
+            if (false === $executable) {
                 throw new UnavailableLinterException();
             }
         }
