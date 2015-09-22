@@ -22,7 +22,7 @@
         "symfony/finder": "~2.1",
         "symfony/process": "~2.3",
         "symfony/stopwatch": "~2.5",
-        "sebastian/diff": "~1.1"
+        "phpspec/php-diff": "^1.0"
     },
     "require-dev": {
         "satooshi/php-coveralls": "0.7.*@dev"

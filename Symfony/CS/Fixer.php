@@ -11,7 +11,9 @@
 
 namespace Symfony\CS;
 
-use SebastianBergmann\Diff\Differ;
+use Diff;
+use Diff_Renderer_Text_Context;
+use Diff_Renderer_Text_Unified;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -35,13 +37,6 @@ class Fixer
 
     protected $fixers = array();
     protected $configs = array();
-
-    /**
-     * Differ instance.
-     *
-     * @var Differ
-     */
-    protected $diff;
 
     /**
      * EventDispatcher instance.
@@ -73,7 +68,6 @@ class Fixer
 
     public function __construct()
     {
-        $this->diff = new Differ();
         $this->errorsManager = new ErrorsManager();
         $this->linter = new NullLinter();
         $this->stopwatch = new Stopwatch();
@@ -299,8 +293,8 @@ class Fixer
 
             $fixInfo = array('appliedFixers' => $appliedFixers);
 
-            if ($diff) {
-                $fixInfo['diff'] = $this->stringDiff($old, $new);
+            if (false !== $diff) {
+                $fixInfo['diff'] = $this->stringDiff($old, $new, $diff);
             }
         }
 
@@ -346,18 +340,23 @@ class Fixer
         return 'symfony';
     }
 
-    protected function stringDiff($old, $new)
+    protected function stringDiff($old, $new, $type = 'unified')
     {
-        $diff = $this->diff->diff($old, $new);
+        $diff = new Diff(explode(PHP_EOL, $old), explode(PHP_EOL, $new));
+
+        if ($type === 'unified') {
+            $renderer = new Diff_Renderer_Text_Unified();
+        } else {
+            $renderer = new Diff_Renderer_Text_Context();
+        }
+
+        $diff = $diff->render($renderer);
 
         $diff = implode(
             PHP_EOL,
             array_map(
                 function ($string) {
-                    $string = preg_replace('/^(\+){3}/', '<info>+++</info>', $string);
                     $string = preg_replace('/^(\+){1}/', '<info>+</info>', $string);
-
-                    $string = preg_replace('/^(\-){3}/', '<error>---</error>', $string);
                     $string = preg_replace('/^(\-){1}/', '<error>-</error>', $string);
 
                     $string = str_repeat(' ', 6).$string;
