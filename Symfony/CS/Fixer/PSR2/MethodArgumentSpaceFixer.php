@@ -60,8 +60,33 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
      */
     private function fixFunction(Tokens $tokens, $startFunctionIndex)
     {
+        // detect if the arguments should be formatted over multiple lines
+        $multiLine = false;
         $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
+        for ($i = $endFunctionIndex - 1; $i > $startFunctionIndex; --$i) {
+            if ($tokens[$i]->isWhitespace() && false !== strpos($tokens[$i]->getContent(), "\n")) {
+                $multiLine = true;
+                break;
+            }
+        }
 
+        // start by correcting from the end, we loop backwards later on
+        if ($multiLine) {
+            // set or add linebreak after the last argument
+            if ($tokens[$endFunctionIndex - 1]->isWhitespace()) {
+                if (false === strpos($tokens[$endFunctionIndex - 1]->getContent(), "\n")) {
+                    $tokens[$endFunctionIndex - 1]->setContent("\n");
+                }
+            } else {
+                $tokens->insertAt($endFunctionIndex, new Token(array(T_WHITESPACE, "\n")));
+                ++$endFunctionIndex;
+            }
+        } elseif ($tokens[$endFunctionIndex - 1]->isWhitespace() && $tokens[$endFunctionIndex - 2]->getContent() !== ',') {
+            // if the last argument is not a trailing comma and the space between the last argument is not an linebreak, clean it up
+            $tokens[$endFunctionIndex - 1]->clear();
+        }
+
+        // loop back to the start of the function and correct the arguments if needed
         for ($index = $endFunctionIndex - 1; $index > $startFunctionIndex; --$index) {
             $token = $tokens[$index];
 
@@ -76,8 +101,22 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
             }
 
             if ($token->equals(',')) {
-                $this->fixSpace($tokens, $index);
+                $this->fixSpace($tokens, $index, $multiLine);
             }
+        }
+
+        // remove the spacing between the function opening and the next meaningful argument (like the first argument)
+        if ($tokens[$startFunctionIndex + 1]->isWhitespace()) {
+            if ($multiLine) {
+                if (false === strpos($tokens[$startFunctionIndex + 1]->getContent(), "\n")) {
+                    $tokens[$startFunctionIndex + 1]->setContent("\n");
+                }
+            } else {
+                $tokens[$startFunctionIndex + 1]->clear();
+            }
+        } elseif ($multiLine) {
+            // add a line break after the first if needed
+            $tokens->insertAt($startFunctionIndex + 1, new Token(array(T_WHITESPACE, "\n")));
         }
     }
 
@@ -86,8 +125,9 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
      *
      * @param Tokens $tokens
      * @param int    $index
+     * @param bool   $multiLine
      */
-    private function fixSpace(Tokens $tokens, $index)
+    private function fixSpace(Tokens $tokens, $index, $multiLine)
     {
         // remove space before comma if exist
         if ($tokens[$index - 1]->isWhitespace()) {
@@ -108,19 +148,35 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
                 return;
             }
 
-            $newContent = ltrim($nextToken->getContent(), " \t");
+            if ($multiLine) {
+                if (false === strpos($nextToken->getContent(), "\n")) {
+                    $nextToken->setContent("\n");
+                }
+            } else {
+                $newContent = ltrim($nextToken->getContent(), " \t");
 
-            if ('' === $newContent) {
-                $newContent = ' ';
+                if ('' === $newContent) {
+                    $newContent = ' ';
+                }
+
+                $nextToken->setContent($newContent);
             }
-
-            $nextToken->setContent($newContent);
 
             return;
         }
 
         if (!$this->isCommentLastLineToken($tokens, $index + 1)) {
-            $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
+            if ($multiLine) {
+                if ($tokens[$index + 1]->isWhitespace()) {
+                    if (false === strpos($tokens[$index + 1]->getContent(), "\n")) {
+                        $tokens[$index + 1]->setContent("\n");
+                    }
+                } else {
+                    $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, "\n")));
+                }
+            } else {
+                $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
+            }
         }
     }
 
