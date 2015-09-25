@@ -1,0 +1,88 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-24T13:38:53Z
+
+looking nice ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-24T13:39:34Z
+
+This if statement is somewhat hard to read. Maybe it's worth moving it out to a protected method with multiple logical blocks in it rather than one massive ass statement.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-09-24T17:53:21Z
+
+@GrahamCampbell I don't see much value adding the overhead with a method. What do you think @keradus ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-24T18:23:16Z
+
+Each condition is written in separate line, `if` is clear for me.
+
+But I'm also a perl developer, where you used to write code like
+```perl
+@dst = sort {
+    $$a{nested_key} <=> $$b{nested_key}
+} grep {
+    $$_{nested_key} > 3.14
+} map {
+    $$_{flat_key}
+} @src if ($$one{need}[$the]{data});
+````
+;P
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-24T19:34:09Z
+
+Well, I managed to missread it the first time, so I didn't find it very clear.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-24T19:34:26Z
+
+It made the diff hard to read in particular, more than the code before and after.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-09-25T08:57:43Z
+
+I see no problem with the Perl code ^-^
+
+The diff. might be a bit hard, but as long as the end code is OK I think I rather keep this PR as is.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-25T10:09:25Z
+
+But, the point in a lot of symfony's code style, IS to make diffs easier to read, and I think that's very important.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-09-25T10:27:50Z
+
+I agree it is important, however I think most developers spend more time reading the code then the diffs of it.
+It is not an excuse to mess up the history, but in this case I think the readability of the code outweighs that of the diff.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-25T10:28:27Z
+
+I think it would make BOTH more readable.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-25T11:48:16Z
+
+I think that discussion has little point now...
+
+---------------------------------------------------------------------------
+
+by stof at 2015-09-25T11:52:32Z
+
+> But, the point in a lot of symfony's code style, IS to make diffs easier to read, and I think that's very important.
+
+Trailing commas in multiline arrays and not aligning assignment/array arrows are not about making the diff easier to read. They are about avoiding useless changes in diffs, which would also lead to more frequent conflicts (even more important in Symfony as we merge older branch into newer branches all the time, and we try to avoid conflicts between maintained branches whenever possible. this is also why we don't reorder existing use statements)
