@@ -228,16 +228,16 @@ $b2=2000,
             array(
                 "<?php
     \$this->foo(
-<<<EOTXTa
+        <<<EOTXTa
     heredoc
 EOTXTa
         ,
-<<<'EOTXTb'
+        <<<'EOTXTb'
     nowdoc
 EOTXTb
         ,
-'foo'
-);
+        'foo'
+    );
 ",
             ),
         );
