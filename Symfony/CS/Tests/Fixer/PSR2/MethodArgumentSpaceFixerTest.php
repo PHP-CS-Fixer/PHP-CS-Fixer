@@ -51,13 +51,13 @@ $c ,"d");',
 
             ),
             array(
-                '<?php function(
+                '<?php function a(
 "e",
 "f", // comment 1
                 "g",
 "h"
 ) /* comment 2 */;',
-                '<?php function("e","f", // comment 1
+                '<?php function a("e","f", // comment 1
                 "g","h"  ) /* comment 2 */;',
 
             ),
