@@ -146,7 +146,7 @@ final class Linter implements LinterInterface
     {
         $executable = ProcessUtils::escapeArgument($this->executable);
 
-        if (defined('HHVM_VESION')) {
+        if (defined('HHVM_VERSION')) {
             $executable .= ' --php';
         }
 
