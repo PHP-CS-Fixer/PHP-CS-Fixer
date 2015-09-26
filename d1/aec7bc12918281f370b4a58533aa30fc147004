@@ -1,0 +1,204 @@
+---------------------------------------------------------------------------
+
+by Seldaek at 2015-09-06T12:43:08Z
+
+I think it makes sense, thanks for all the work!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-08T15:04:01Z
+
+Thank you @Seldaek , it's great to see your opinion here again ! ;)
+
+Any other thoughts guys ?
+
+ping @GrahamCampbell @gharlan @ceeram @SpacePossum @stof @sstok @ccirello @localheinz (and everyone willing!)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-08T15:17:24Z
+
+Looks cool, but quite large to review. I'll have to block out like an hour at the weekend to take a proper look at this. ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-08T15:23:53Z
+
+That is why I ask to talk about idea itself (event only the part described in PR descr) and after that take a look at code review itself. Thanks ;)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-09-08T15:32:00Z
+
+:+1: to pr description (did not look at code).
+
+only one thing: Why introducing a new term `rules`? Why not `fixers`?
+
+```
+--fixers=@Symfony,-encoding
+
+->setFixers([
+    '@Symfony' => true,
+    'encoding' => false,
+]);
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-08T15:39:32Z
+
+> only one thing: Why introducing a new term rules? Why not fixers?
+
+About Config. On 1.x line Config class has property `fixers` and both accessor and mutator. But what are that fixers?
+When used before `FixCommand` (eg inside `.php_cs`), the `fixers` are *array of names*.
+When used in/after `FixCommand` (eg in `Fixer`), the `fixers` are *array of instances*.
+
+This is extra bad and I had to split it.
+So now, on this PR, we have a Fixer, a class that fixes sth, and we have a rule, a string value that tells us should we use Fixer (and how) or not.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-09-08T15:42:25Z
+
+> ``Fixer::getLevelAsString`` is no longer static
+> In non-tests code method is currently run in instance context and there is no way to mock static method.
+
+why is this even described in the PR when the PR removes the concept of level entirely ?
+
+> In .php_cs file configuration is passed as part of rules definition:
+
+this makes it harder to handle the configuration IMO: it forces to add it explicitly instead of having it in groups. IMO, fixer configuration should be separate from the list of rules (and given that the list of rules can be configured in the CLI but config cannot, this makes even more sense).
+
+What about something like this ?
+
+```php
+->configureFixer('php_unit_strict', [ 'assertEquals', 'assertNotEquals' ])
+```
+
+> Current behavior is very confusing and has so few user scenarios. The whole behavior changed when one add dash to fixers list.
+
+WTF. I did not even know that the current behavior was so weird.
+
+@keradus do you plan a way to define groups easily, so that ZF could define a ZF group for instance in some way for reusability by ZF modules, etc ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-08T16:58:27Z
+
+> why is this even described in the PR when the PR removes the concept of level entirely ?
+
+I have separated concepts in separate commits, and this move was needed for some of next commits, and if we decided that some change is not good then it would be easier to pick/revert only that atomic part.
+
+---------------------------
+
+> this makes it harder to handle the configuration IMO: it forces to add it explicitly instead of having it in groups. IMO, fixer configuration should be separate from the list of rules (and given that the list of rules can be configured in the CLI but config cannot, this makes even more sense).
+
+I have taken inspiration here from ESLint. Splitting it would made sets harder - then they should have both list and configuration, and resolving nested sets will not be fun.
+Splitting it won't make things easier for CLI - you will not be able to set fixer configuration as well. And when one will want to add that possibility to CLI - he will do it at same cost whatever variant will be choosen.
+Also, putting it all togeter will make a whole fixers configuration _one_, simple data structure like JSON etc, allowing it to move it to separate file (eg, even in this PR one can simply `$config->setRules(loadJSONFile())`). This is great benefit IMO.
+
+---------------------------
+
+> @keradus do you plan a way to define groups easily, so that ZF could define a ZF group for instance in some way for reusability by ZF modules, etc ?
+
+This PR does not focus on that part. It will just allow to have some sets. But yeah, I was thinking about it a bit.
+The main point here I can see is that set must be published somewhere, allowing people to use it.
+For now it may be published inside repo of PHP CS Fixer (like `@Symfony`). If one have scenario to register it outside, and when one want to use the tool he will need not only to download a tool, but also download a set definition and inject set into tool and then use it - I'm open for that, but that looks so similar to run `->setRules(...)` in `.php_cs`.
+One way or another this PR will open a way for such functionality.
+
+---------------------------------------------------------------------------
+
+by ccirello at 2015-09-08T17:17:09Z
+
+LGTM as it add flexibility both in configuration and call time.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-10T20:38:55Z
+
+rebased on master
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-09-11T22:46:24Z
+
+What do you think about using sf `OptionResolver` for fixer configurations?
+(Similar to sf form types.)
+
+```php
+public function configureOptions(OptionsResolver $resolver)
+{
+    $resolver->setDefaults(array(
+        // ...
+    ));
+    $resolver->setRequired(...);
+    // etc.
+}
+```
+
+http://symfony.com/doc/current/components/options_resolver.html
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-13T17:06:21Z
+
+Then I think we have a consensus about idea itself.
+Let us all take a deep look into the code :D
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-13T18:16:50Z
+
+> What do you think about using sf OptionResolver for fixer configurations?
+(Similar to sf form types.)
+
+I would not change `FixerInterface::configure` method to get `OptionResolver` on input, but if we want we may use `OptionResolver` inside (hide it from user).
+But we have so few and so simple configure cases, do we really need to resolve them by external class?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-13T20:30:20Z
+
+updated to recent changes on repo (like extracting two changes into separate PRs)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-13T23:02:53Z
+
+Diff has only 128KB,
+looking good for me ;P
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-14T15:06:57Z
+
+anyone? :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-15T16:51:17Z
+
+Thank you for review @gharlan !
+
+Then, I guess ready to merge
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-09-15T17:39:29Z
+
+lots of work, looks great :)
+:+1:
+
+(especially because it will make things more easier when dealing with the configuration system)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-24T18:43:48Z
+
+Review issues were fixed.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-09-25T09:06:04Z
+
+Looks very good. Thanks!
