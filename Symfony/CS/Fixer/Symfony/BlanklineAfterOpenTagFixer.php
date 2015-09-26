@@ -38,6 +38,7 @@ class BlanklineAfterOpenTagFixer extends AbstractFixer
         }
 
         $newlineFound = false;
+        /** @var Token $token */
         foreach ($tokens as $token) {
             if ($token->isWhitespace(array('whitespaces' => "\n"))) {
                 $newlineFound = true;
@@ -56,7 +57,7 @@ class BlanklineAfterOpenTagFixer extends AbstractFixer
             $token->setContent(rtrim($token->getContent())."\n");
         }
 
-        if (!$tokens[1]->isWhitespace(array('whitespaces' => "\n"))) {
+        if (!$tokens[1]->isWhitespace() && false === strpos($tokens[1]->getContent(), "\n")) {
             $tokens->insertAt(1, new Token(array(T_WHITESPACE, "\n")));
         }
 
