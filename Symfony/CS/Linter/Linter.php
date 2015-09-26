@@ -46,7 +46,7 @@ final class Linter implements LinterInterface
     {
         if (null === $executable) {
             $executableFinder = new PhpExecutableFinder();
-            $executable = $executableFinder->find();
+            $executable = $executableFinder->find(false);
 
             if (false === $executable) {
                 throw new UnavailableLinterException();
@@ -144,6 +144,14 @@ final class Linter implements LinterInterface
      */
     private function prepareCommand($path)
     {
-        return sprintf('%s -l %s', $this->executable, ProcessUtils::escapeArgument($path));
+        $executable = ProcessUtils::escapeArgument($this->executable);
+
+        if (defined('HHVM_VERSION')) {
+            $executable .= ' --php';
+        }
+
+        $path = ProcessUtils::escapeArgument($path);
+
+        return sprintf('%s -l %s', $executable, $path);
     }
 }
