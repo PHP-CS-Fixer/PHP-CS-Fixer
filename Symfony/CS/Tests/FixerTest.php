@@ -14,6 +14,7 @@ namespace Symfony\CS\Tests;
 use Symfony\CS\Config\Config;
 use Symfony\CS\Error\Error;
 use Symfony\CS\Fixer;
+use Symfony\CS\FixerFactory;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Linter\Linter;
 
@@ -23,72 +24,15 @@ use Symfony\CS\Linter\Linter;
 final class FixerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers Symfony\CS\Fixer::sortFixers
-     */
-    public function testThatFixersAreSorted()
-    {
-        $fixer = new Fixer();
-
-        $fxPrototypes = array(
-            array('getPriority' => 0),
-            array('getPriority' => -10),
-            array('getPriority' => 10),
-            array('getPriority' => -10),
-        );
-
-        $fxs = array();
-
-        foreach ($fxPrototypes as $fxPrototype) {
-            $fx = $this->getMock('Symfony\CS\FixerInterface');
-            $fx->expects($this->any())->method('getPriority')->willReturn($fxPrototype['getPriority']);
-
-            $fixer->addFixer($fx);
-            $fxs[] = $fx;
-        }
-
-        // There are no rules that forces $fxs[1] to be prioritized before $fxs[3]. We should not test against that
-        $this->assertSame(array($fxs[2], $fxs[0]), array_slice($fixer->getFixers(), 0, 2));
-    }
-
-    /**
-     * @covers Symfony\CS\Fixer::registerBuiltInFixers
-     */
-    public function testThatRegisterBuiltInFixers()
-    {
-        $fixer = new Fixer();
-
-        $this->assertCount(0, $fixer->getFixers());
-        $fixer->registerBuiltInFixers();
-        $this->assertGreaterThan(0, count($fixer->getFixers()));
-    }
-
-    /**
      * @covers Symfony\CS\Fixer::registerBuiltInConfigs
      */
-    public function testThatRegisterBuiltInConfigs()
+    public function testRegisterBuiltInConfigs()
     {
         $fixer = new Fixer();
 
         $this->assertCount(0, $fixer->getConfigs());
         $fixer->registerBuiltInConfigs();
         $this->assertGreaterThan(0, count($fixer->getConfigs()));
-    }
-
-    /**
-     * @covers Symfony\CS\Fixer::addFixer
-     * @covers Symfony\CS\Fixer::getFixers
-     */
-    public function testThatCanAddAndGetFixers()
-    {
-        $fixer = new Fixer();
-
-        $f1 = $this->getMock('Symfony\CS\FixerInterface');
-        $f2 = $this->getMock('Symfony\CS\FixerInterface');
-        $fixer->addFixer($f1);
-        $fixer->addFixer($f2);
-
-        $this->assertTrue(in_array($f1, $fixer->getFixers(), true));
-        $this->assertTrue(in_array($f2, $fixer->getFixers(), true));
     }
 
     /**
@@ -110,17 +54,18 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Symfony\CS\Fixer::fix
      * @covers Symfony\CS\Fixer::fixFile
-     * @covers Symfony\CS\Fixer::prepareFixers
      */
     public function testThatFixSuccessfully()
     {
         $fixer = new Fixer();
-        $fixer->addFixer(new \Symfony\CS\Fixer\PSR2\VisibilityFixer());
-        $fixer->addFixer(new \Symfony\CS\Fixer\Symfony\UnusedUseFixer()); //will be ignored cause of test keyword in namespace
-
-        $config = Config::create()->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'));
-        $config->fixers($fixer->getFixers());
-        $config->setUsingCache(false);
+        $config = Config::create()
+            ->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'))
+            ->fixers(array(
+                new \Symfony\CS\Fixer\PSR2\VisibilityFixer(),
+                new \Symfony\CS\Fixer\Symfony\UnusedUseFixer(), // will be ignored cause of test keyword in namespace
+            ))
+            ->setUsingCache(false)
+        ;
 
         $changed = $fixer->fix($config, true, true);
         $pathToInvalidFile = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'.DIRECTORY_SEPARATOR.'somefile.php';
@@ -134,18 +79,20 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Symfony\CS\Fixer::fix
      * @covers Symfony\CS\Fixer::fixFile
-     * @covers Symfony\CS\Fixer::prepareFixers
      */
     public function testThatFixInvalidFileReportsToErrorManager()
     {
         $fixer = new Fixer();
-        $fixer->addFixer(new \Symfony\CS\Fixer\PSR2\VisibilityFixer());
-        $fixer->addFixer(new \Symfony\CS\Fixer\Symfony\UnusedUseFixer()); //will be ignored cause of test keyword in namespace
         $fixer->setLinter(new Linter());
 
-        $config = Config::create()->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'));
-        $config->fixers($fixer->getFixers());
-        $config->setUsingCache(false);
+        $config = Config::create()
+            ->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'))
+            ->fixers(array(
+                new \Symfony\CS\Fixer\PSR2\VisibilityFixer(),
+                new \Symfony\CS\Fixer\Symfony\UnusedUseFixer(), // will be ignored cause of test keyword in namespace
+            ))
+            ->setUsingCache(false)
+        ;
 
         $changed = $fixer->fix($config, true, true);
         $pathToInvalidFile = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'.DIRECTORY_SEPARATOR.'somefile.php';
@@ -165,133 +112,6 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\Fixer::getLevelAsString
-     * @dataProvider getFixerLevels
-     */
-    public function testThatCanGetFixerLevelString($level, $expectedLevelString)
-    {
-        $fixer = new Fixer();
-
-        $fixerInstance = $this->getMock('Symfony\CS\FixerInterface');
-        $fixerInstance->expects($this->any())->method('getLevel')->will($this->returnValue($level));
-
-        $this->assertSame($expectedLevelString, $fixer->getLevelAsString($fixerInstance));
-    }
-
-    public function testFixersPriorityEdgeFixers()
-    {
-        $fixer = new Fixer();
-        $fixer->registerBuiltInFixers();
-        $fixers = $fixer->getFixers();
-
-        $this->assertSame('encoding', $fixers[0]->getName());
-        $this->assertSame('eof_ending', $fixers[count($fixers) - 1]->getName());
-    }
-
-    /**
-     * @dataProvider getFixersPriorityCases
-     */
-    public function testFixersPriority(FixerInterface $first, FixerInterface $second)
-    {
-        $this->assertLessThan($first->getPriority(), $second->getPriority());
-    }
-
-    public function getFixersPriorityCases()
-    {
-        $fixer = new Fixer();
-        $fixer->registerBuiltInFixers();
-
-        $fixers = array();
-
-        foreach ($fixer->getFixers() as $fixer) {
-            $fixers[$fixer->getName()] = $fixer;
-        }
-
-        $cases = array(
-            array($fixers['php_closing_tag'], $fixers['short_tag']),
-            array($fixers['unused_use'], $fixers['extra_empty_lines']),
-            array($fixers['multiple_use'], $fixers['unused_use']),
-            array($fixers['multiple_use'], $fixers['ordered_use']),
-            array($fixers['remove_lines_between_uses'], $fixers['ordered_use']),
-            array($fixers['unused_use'], $fixers['remove_leading_slash_use']),
-            array($fixers['multiple_use'], $fixers['remove_leading_slash_use']),
-            array($fixers['concat_without_spaces'], $fixers['concat_with_spaces']),
-            array($fixers['elseif'], $fixers['braces']),
-            array($fixers['duplicate_semicolon'], $fixers['braces']),
-            array($fixers['duplicate_semicolon'], $fixers['spaces_before_semicolon']),
-            array($fixers['duplicate_semicolon'], $fixers['multiline_spaces_before_semicolon']),
-            array($fixers['standardize_not_equal'], $fixers['strict']),
-            array($fixers['double_arrow_multiline_whitespaces'], $fixers['multiline_array_trailing_comma']),
-            array($fixers['double_arrow_multiline_whitespaces'], $fixers['align_double_arrow']),
-            array($fixers['indentation'], $fixers['phpdoc_indent']),
-            array($fixers['phpdoc_order'], $fixers['phpdoc_separation']),
-            array($fixers['phpdoc_no_access'], $fixers['phpdoc_separation']),
-            array($fixers['phpdoc_no_access'], $fixers['phpdoc_order']),
-            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_separation']),
-            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_order']),
-            array($fixers['phpdoc_no_package'], $fixers['phpdoc_separation']),
-            array($fixers['phpdoc_no_package'], $fixers['phpdoc_order']),
-            array($fixers['phpdoc_no_access'], $fixers['phpdoc_trim']),
-            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_trim']),
-            array($fixers['phpdoc_no_package'], $fixers['phpdoc_trim']),
-            array($fixers['phpdoc_separation'], $fixers['phpdoc_trim']),
-            array($fixers['phpdoc_short_description'], $fixers['phpdoc_trim']),
-            array($fixers['phpdoc_var_without_name'], $fixers['phpdoc_trim']),
-            array($fixers['phpdoc_order'], $fixers['phpdoc_trim']),
-            array($fixers['unused_use'], $fixers['line_after_namespace']),
-            array($fixers['linefeed'], $fixers['eof_ending']),
-            array($fixers['php_unit_strict'], $fixers['php_unit_construct']),
-            array($fixers['unary_operators_spaces'], $fixers['logical_not_operators_with_spaces']),
-            array($fixers['unary_operators_spaces'], $fixers['logical_not_operators_with_successor_space']),
-            array($fixers['method_separation'], $fixers['braces']),
-            array($fixers['method_separation'], $fixers['indentation']),
-        );
-
-        $docFixerNames = array_filter(
-            array_keys($fixers),
-            function ($name) {
-                return false !== strpos($name, 'phpdoc');
-            }
-        );
-
-        // prepare bulk tests for phpdoc fixers to test that:
-        // * `phpdoc_to_comment` is first
-        // * `phpdoc_indent` is second
-        // * `phpdoc_types` is third
-        // * `phpdoc_scalar` is fourth
-        // * `phpdoc_align` is last
-        $cases[] = array($fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']);
-        $cases[] = array($fixers['phpdoc_indent'], $fixers['phpdoc_types']);
-        $cases[] = array($fixers['phpdoc_types'], $fixers['phpdoc_scalar']);
-
-        foreach ($docFixerNames as $docFixerName) {
-            if (!in_array($docFixerName, array('phpdoc_to_comment', 'phpdoc_indent', 'phpdoc_types', 'phpdoc_scalar'), true)) {
-                $cases[] = array($fixers['phpdoc_to_comment'], $fixers[$docFixerName]);
-                $cases[] = array($fixers['phpdoc_indent'], $fixers[$docFixerName]);
-                $cases[] = array($fixers['phpdoc_types'], $fixers[$docFixerName]);
-                $cases[] = array($fixers['phpdoc_scalar'], $fixers[$docFixerName]);
-            }
-
-            if ('phpdoc_align' !== $docFixerName) {
-                $cases[] = array($fixers[$docFixerName], $fixers['phpdoc_align']);
-            }
-        }
-
-        return $cases;
-    }
-
-    public static function getFixerLevels()
-    {
-        return array(
-            array(FixerInterface::NONE_LEVEL, 'none'),
-            array(FixerInterface::PSR1_LEVEL, 'PSR-1'),
-            array(FixerInterface::PSR2_LEVEL, 'PSR-2'),
-            array(FixerInterface::SYMFONY_LEVEL, 'symfony'),
-            array(FixerInterface::CONTRIB_LEVEL, 'contrib'),
-        );
-    }
-
-    /**
      * @dataProvider provideFixersDescriptionConsistencyCases
      */
     public function testFixersDescriptionConsistency(FixerInterface $fixer)
@@ -301,12 +121,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
 
     public function provideFixersDescriptionConsistencyCases()
     {
-        $fixer = new Fixer();
-        $fixer->registerBuiltInFixers();
-        $fixers = $fixer->getFixers();
-        $cases = array();
-
-        foreach ($fixers as $fixer) {
+        foreach ($this->getAllFixers() as $fixer) {
             $cases[] = array($fixer);
         }
 
@@ -320,6 +135,12 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
         $config
             ->expects($this->any())
             ->method('getFixers')
+            ->willReturn(array())
+        ;
+
+        $config
+            ->expects($this->any())
+            ->method('getRules')
             ->willReturn(array())
         ;
 
@@ -344,15 +165,19 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
 
     public function provideFixersForFinalCheckCases()
     {
-        $fixer = new Fixer();
-        $fixer->registerBuiltInFixers();
-        $fixers = $fixer->getFixers();
         $cases = array();
 
-        foreach ($fixers as $fixer) {
+        foreach ($this->getAllFixers() as $fixer) {
             $cases[] = array(new \ReflectionClass($fixer));
         }
 
         return $cases;
+    }
+
+    private function getAllFixers()
+    {
+        $factory = new FixerFactory();
+
+        return $factory->registerBuiltInFixers()->getFixers();
     }
 }

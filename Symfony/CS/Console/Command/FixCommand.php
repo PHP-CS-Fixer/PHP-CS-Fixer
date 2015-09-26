@@ -25,10 +25,11 @@ use Symfony\CS\Console\Output\ProcessOutput;
 use Symfony\CS\Error\Error;
 use Symfony\CS\Error\ErrorsManager;
 use Symfony\CS\Fixer;
+use Symfony\CS\FixerFactory;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Linter\Linter;
 use Symfony\CS\Linter\UnavailableLinterException;
-use Symfony\CS\Utils;
+use Symfony\CS\RuleSet;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -85,7 +86,6 @@ final class FixCommand extends Command
         $this->eventDispatcher = new EventDispatcher();
 
         $this->fixer = $fixer ?: new Fixer();
-        $this->fixer->registerBuiltInFixers();
         $this->fixer->registerBuiltInConfigs();
 
         $this->errorsManager = $this->fixer->getErrorsManager();
@@ -107,10 +107,9 @@ final class FixCommand extends Command
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The configuration name', null),
                     new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
-                    new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr1, psr2, or symfony (formerly all))', null),
+                    new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'The rules', null),
                     new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no)', null),
                     new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file'),
-                    new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
                 )
@@ -127,30 +126,26 @@ The <comment>--format</comment> option can be used to set the output format of t
 
 The <comment>--verbose</comment> option will show the applied fixers. When using the ``txt`` format it will also displays progress notifications.
 
-The <comment>--level</comment> option limits the fixers to apply on the
+The <comment>--rules</comment> option limits the rules to apply on the
 project:
 
-    <info>php %command.full_name% /path/to/project --level=psr1</info>
-    <info>php %command.full_name% /path/to/project --level=psr2</info>
-    <info>php %command.full_name% /path/to/project --level=symfony</info>
+    <info>php %command.full_name% /path/to/project --rules=@PSR2</info>
 
-By default, all PSR fixers are run. The "contrib
-level" fixers cannot be enabled via this option; you should instead set them
-manually by their name via the <comment>--fixers</comment> option.
+By default, all PSR fixers are run.
 
-The <comment>--fixers</comment> option lets you choose the exact fixers to
+The <comment>--rules</comment> option lets you choose the exact fixers to
 apply (the fixer names must be separated by a comma):
 
-    <info>php %command.full_name% /path/to/dir --fixers=linefeed,short_tag,indentation</info>
+    <info>php %command.full_name% /path/to/dir --rules=linefeed,short_tag,indentation</info>
 
 You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
 using <comment>-name_of_fixer</comment>:
 
-    <info>php %command.full_name% /path/to/dir --level=psr2 --fixers=-short_tag,-indentation</info>
+    <info>php %command.full_name% /path/to/dir --rules=-short_tag,-indentation</info>
 
 When using combinations of exact and blacklist fixers, applying exact fixers along with above blacklisted results:
 
-    <info>php php-cs-fixer.phar fix /path/to/dir --level=psr2 --fixers=return,-short_tag</info>
+    <info>php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-return,strict</info>
 
 A combination of <comment>--dry-run</comment> and <comment>--diff</comment> will
 display a summary of proposed fixes, leaving your files unchanged.
@@ -181,14 +176,14 @@ fixed but without actually modifying them:
 Instead of using command line options to customize the fixer, you can save the
 project configuration in a <comment>.php_cs.dist</comment> file in the root directory
 of your project. The file must return an instance of ``Symfony\CS\ConfigInterface``,
-which lets you configure the fixers, the level, the files and directories that
+which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create <comment>.php_cs</comment> file, which is
 the local configuration that will be used instead of the project configuration. It
 is a good practice to add that file into your <comment>.gitignore</comment> file.
 With the <comment>--config-file</comment> option you can specify the path to the
 <comment>.php_cs</comment> file.
 
-The example below will add two contrib fixers to the default list of PSR2-level fixers:
+The example below will add two fixers to the default list of PSR2 set fixers:
 
     <?php
 
@@ -198,32 +193,18 @@ The example below will add two contrib fixers to the default list of PSR2-level 
     ;
 
     return Symfony\CS\Config\Config::create()
-        ->fixers(array('strict_param', 'short_array_syntax'))
-        ->finder(\$finder)
-    ;
-
-    ?>
-
-If you want complete control over which fixers you use, you can use the empty level and
-then specify all fixers to be used:
-
-    <?php
-
-    \$finder = Symfony\CS\Finder\DefaultFinder::create()
-        ->in(__DIR__)
-    ;
-
-    return Symfony\CS\Config\Config::create()
-        ->level(Symfony\CS\FixerInterface::NONE_LEVEL)
-        ->fixers(array('trailing_spaces', 'encoding'))
+        ->setRules(array(
+            '@PSR2' => true,
+            'strict_param' => true,
+            'short_array_syntax' => true,
+        ))
         ->finder(\$finder)
     ;
 
     ?>
 
 You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
-The following example shows how to use all ``symfony`` Fixers but the ``short_tag`` fixer.
-Note the additional <comment>-</comment> in front of the Fixer name.
+The following example shows how to use all ``Symfony`` Fixers but the ``short_tag`` Fixer.
 
     <?php
 
@@ -233,26 +214,14 @@ Note the additional <comment>-</comment> in front of the Fixer name.
     ;
 
     return Symfony\CS\Config\Config::create()
-        ->fixers(array('-short_tag'))
+        ->setRules(array(
+            '@Symfony' => true,
+            'short_tag' => false,
+        ))
         ->finder(\$finder)
     ;
 
     ?>
-
-The ``psr2`` level is set by default, you can also change the default level:
-
-    <?php
-
-    return Symfony\CS\Config\Config::create()
-        ->level(Symfony\CS\FixerInterface::SYMFONY_LEVEL)
-    ;
-
-    ?>
-
-In combination with these config and command line options, you can choose various usage.
-
-For example, the default level is ``psr2``, but if you don't want to use
-the ``short_tag`` fixer, you can specify the ``--level=psr2 --fixers=-short_tag`` options.
 
 By using ``--using-cache`` option with yes or no you can set if the caching
 mechanism should be used.
@@ -334,8 +303,7 @@ EOF
                 'config' => $input->getOption('config'),
                 'config-file' => $input->getOption('config-file'),
                 'dry-run' => $input->getOption('dry-run'),
-                'level' => $input->getOption('level'),
-                'fixers' => $input->getOption('fixers'),
+                'rules' => $input->getOption('rules'),
                 'path' => $input->getArgument('path'),
                 'progress' => (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) && 'txt' === $input->getOption('format'),
                 'using-cache' => $input->getOption('using-cache'),
@@ -351,8 +319,6 @@ EOF
             $output->writeln(sprintf('Loaded config from "%s"', $configFile));
         }
 
-        // register custom fixers from config
-        $this->fixer->registerCustomFixers($config->getCustomFixers());
         if ($config->usingLinter()) {
             try {
                 $this->fixer->setLinter(new Linter($config->getPhpExecutable()));
@@ -585,18 +551,13 @@ EOF
     {
         $help = '';
         $maxName = 0;
-        $fixers = $this->fixer->getFixers();
+        $fixerFactory = new FixerFactory();
+        $fixers = $fixerFactory->registerBuiltInFixers()->getFixers();
 
-        // sort fixers by level and name
+        // sort fixers by name
         usort(
             $fixers,
             function (FixerInterface $a, FixerInterface $b) {
-                $cmp = Utils::cmpInt($a->getLevel(), $b->getLevel());
-
-                if (0 !== $cmp) {
-                    return $cmp;
-                }
-
                 return strcmp($a->getName(), $b->getName());
             }
         );
@@ -607,10 +568,35 @@ EOF
             }
         }
 
+        $ruleSets = array();
+        foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
+            $ruleSets[$setName] = new RuleSet(array($setName => true));
+        }
+
+        $getSetsWithRule = function ($rule) use ($ruleSets) {
+            $sets = array();
+
+            foreach ($ruleSets as $setName => $ruleSet) {
+                if ($ruleSet->hasRule($rule)) {
+                    $sets[] = $setName;
+                }
+            }
+
+            return $sets;
+        };
+
         $count = count($fixers) - 1;
         foreach ($fixers as $i => $fixer) {
-            $chunks = explode("\n", wordwrap(sprintf("[%s]\n%s", $this->fixer->getLevelAsString($fixer), $fixer->getDescription()), 72 - $maxName, "\n"));
-            $help .= sprintf(" * <comment>%s</comment>%s %s\n", $fixer->getName(), str_repeat(' ', $maxName - strlen($fixer->getName())), array_shift($chunks));
+            $sets = $getSetsWithRule($fixer->getName());
+
+            if (!empty($sets)) {
+                $chunks = explode("\n", wordwrap(sprintf("[%s]\n%s", implode(', ', $sets), $fixer->getDescription()), 72 - $maxName, "\n"));
+                $help .= sprintf(" * <comment>%s</comment>%s %s\n", $fixer->getName(), str_repeat(' ', $maxName - strlen($fixer->getName())), array_shift($chunks));
+            } else {
+                $chunks = explode("\n", wordwrap(sprintf("\n%s", $fixer->getDescription()), 72 - $maxName, "\n"));
+                $help .= sprintf(" * <comment>%s</comment>%s\n", $fixer->getName(), array_shift($chunks));
+            }
+
             while ($c = array_shift($chunks)) {
                 $help .= str_repeat(' ', $maxName + 4).$c."\n";
             }

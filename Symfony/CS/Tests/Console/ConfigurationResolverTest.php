@@ -14,7 +14,6 @@ namespace Symfony\CS\Tests\Console;
 use Symfony\CS\Config\Config;
 use Symfony\CS\Console\ConfigurationResolver;
 use Symfony\CS\Fixer;
-use Symfony\CS\FixerInterface;
 
 /**
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
@@ -26,27 +25,11 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 {
     protected $config;
     protected $resolver;
-    protected $fixersMap;
 
     protected function setUp()
     {
         $fixer = new Fixer();
-        $fixer->registerBuiltInFixers();
         $fixer->registerBuiltInConfigs();
-
-        $fixersMap = array();
-
-        foreach ($fixer->getFixers() as $singleFixer) {
-            $level = $singleFixer->getLevel();
-
-            if (!isset($fixersMap[$level])) {
-                $fixersMap[$level] = array();
-            }
-
-            $fixersMap[$level][$singleFixer->getName()] = $singleFixer;
-        }
-
-        $this->fixersMap = $fixersMap;
 
         $this->config = new Config();
         $this->resolver = new ConfigurationResolver();
@@ -59,7 +42,6 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         unset(
-            $this->fixersMap,
             $this->config,
             $this->resolver
         );
@@ -126,178 +108,6 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function testResolveFixersReturnsEmptyArrayByDefault()
     {
         $this->makeFixersTest(array(), $this->resolver->getFixers());
-    }
-
-    public function testResolveFixersWithLevelConfig()
-    {
-        $this->config->level(FixerInterface::PSR2_LEVEL);
-
-        $this->resolver->resolve();
-
-        $this->makeFixersTest(
-            array_merge($this->fixersMap[FixerInterface::PSR1_LEVEL], $this->fixersMap[FixerInterface::PSR2_LEVEL]),
-            $this->resolver->getFixers()
-        );
-    }
-
-    public function testResolveFixersWithPositiveFixersConfig()
-    {
-        $this->config->level(FixerInterface::SYMFONY_LEVEL);
-        $this->config->fixers(array('strict', 'strict_param'));
-
-        $this->resolver->resolve();
-
-        $expectedFixers = array_merge(
-            $this->fixersMap[FixerInterface::PSR1_LEVEL],
-            $this->fixersMap[FixerInterface::PSR2_LEVEL],
-            $this->fixersMap[FixerInterface::SYMFONY_LEVEL],
-            array($this->fixersMap[FixerInterface::CONTRIB_LEVEL]['strict'], $this->fixersMap[FixerInterface::CONTRIB_LEVEL]['strict_param'])
-        );
-
-        $this->makeFixersTest(
-            $expectedFixers,
-            $this->resolver->getFixers()
-        );
-    }
-
-    public function testResolveFixersWithNegativeFixersConfig()
-    {
-        $this->config->level(FixerInterface::SYMFONY_LEVEL);
-        $this->config->fixers(array('strict', '-include', 'strict_param'));
-
-        $this->resolver->resolve();
-
-        $expectedFixers = array_merge(
-            $this->fixersMap[FixerInterface::PSR1_LEVEL],
-            $this->fixersMap[FixerInterface::PSR2_LEVEL],
-            $this->fixersMap[FixerInterface::SYMFONY_LEVEL],
-            array($this->fixersMap[FixerInterface::CONTRIB_LEVEL]['strict'], $this->fixersMap[FixerInterface::CONTRIB_LEVEL]['strict_param'])
-        );
-
-        foreach ($expectedFixers as $key => $fixer) {
-            if ('include' === $fixer->getName()) {
-                unset($expectedFixers[$key]);
-                break;
-            }
-        }
-
-        $this->makeFixersTest(
-            $expectedFixers,
-            $this->resolver->getFixers()
-        );
-    }
-
-    /**
-     * @expectedException              \InvalidArgumentException
-     * @expectedExceptionMessageRegExp /The level "foo" is not defined./
-     */
-    public function testResolveFixersWithInvalidLevelOption()
-    {
-        $this->resolver
-            ->setOption('level', 'foo')
-            ->resolve()
-        ;
-    }
-
-    public function testResolveFixersWithLevelOption()
-    {
-        $this->resolver
-            ->setOption('level', 'psr2')
-            ->resolve()
-        ;
-
-        $this->makeFixersTest(
-            array_merge($this->fixersMap[FixerInterface::PSR1_LEVEL], $this->fixersMap[FixerInterface::PSR2_LEVEL]),
-            $this->resolver->getFixers()
-        );
-    }
-
-    public function testResolveFixersWithLevelConfigAndFixersConfigAndLevelOption()
-    {
-        $this->config
-            ->level(FixerInterface::SYMFONY_LEVEL)
-            ->fixers(array('strict'))
-        ;
-        $this->resolver
-            ->setOption('level', 'psr2')
-            ->resolve()
-        ;
-
-        $this->makeFixersTest(
-            array_merge($this->fixersMap[FixerInterface::PSR1_LEVEL], $this->fixersMap[FixerInterface::PSR2_LEVEL]),
-            $this->resolver->getFixers()
-        );
-    }
-
-    public function testResolveFixersWithLevelConfigAndFixersConfigAndPositiveFixersOption()
-    {
-        $this->config
-            ->level(FixerInterface::PSR2_LEVEL)
-            ->fixers(array('strict'))
-        ;
-        $this->resolver
-            ->setOption('fixers', 'short_tag')
-            ->resolve()
-        ;
-
-        $this->makeFixersTest(
-            array($this->fixersMap[FixerInterface::PSR1_LEVEL]['short_tag']),
-            $this->resolver->getFixers()
-        );
-    }
-
-    public function testResolveFixersWithLevelConfigAndFixersConfigAndNegativeFixersOption()
-    {
-        $this->config
-            ->level(FixerInterface::SYMFONY_LEVEL)
-            ->fixers(array('strict'))
-        ;
-        $this->resolver
-            ->setOption('fixers', 'strict, -include,strict_param ')
-            ->resolve()
-        ;
-
-        $expectedFixers = array(
-            $this->fixersMap[FixerInterface::CONTRIB_LEVEL]['strict'],
-            $this->fixersMap[FixerInterface::CONTRIB_LEVEL]['strict_param'],
-        );
-
-        $this->makeFixersTest(
-            $expectedFixers,
-            $this->resolver->getFixers()
-        );
-    }
-
-    public function testResolveFixersWithLevelConfigAndFixersConfigAndLevelOptionsAndFixersOption()
-    {
-        $this->config
-            ->level(FixerInterface::PSR2_LEVEL)
-            ->fixers(array('concat_with_spaces'))
-        ;
-        $this->resolver
-            ->setOption('level', 'symfony')
-            ->setOption('fixers', 'strict, -include,strict_param ')
-            ->resolve()
-        ;
-
-        $expectedFixers = array_merge(
-            $this->fixersMap[FixerInterface::PSR1_LEVEL],
-            $this->fixersMap[FixerInterface::PSR2_LEVEL],
-            $this->fixersMap[FixerInterface::SYMFONY_LEVEL],
-            array($this->fixersMap[FixerInterface::CONTRIB_LEVEL]['strict'], $this->fixersMap[FixerInterface::CONTRIB_LEVEL]['strict_param'])
-        );
-
-        foreach ($expectedFixers as $key => $fixer) {
-            if ($fixer->getName() === 'include') {
-                unset($expectedFixers[$key]);
-                break;
-            }
-        }
-
-        $this->makeFixersTest(
-            $expectedFixers,
-            $this->resolver->getFixers()
-        );
     }
 
     public function testResolveProgressWithPositiveConfigAndPositiveOption()
@@ -599,5 +409,63 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->resolver->resolve();
 
         $this->assertSame($optionCacheFile, $this->config->getCacheFile());
+    }
+
+    public function testResolveRulesWithConfig()
+    {
+        $this->config->setRules(array(
+            'braces' => true,
+            'strict' => false,
+        ));
+
+        $this->resolver->resolve();
+
+        $this->assertSameRules(
+            array(
+                'braces' => true,
+            ),
+            $this->resolver->getRules()
+        );
+    }
+
+    public function testResolveRulesWithOption()
+    {
+        $this->resolver->setOption('rules', 'braces,-strict');
+
+        $this->resolver->resolve();
+
+        $this->assertSameRules(
+            array(
+                'braces' => true,
+            ),
+            $this->resolver->getRules()
+        );
+    }
+
+    public function testResolveRulesWithConfigAndOption()
+    {
+        $this->config->setRules(array(
+            'braces' => true,
+            'strict' => false,
+        ));
+
+        $this->resolver->setOption('rules', 'return');
+
+        $this->resolver->resolve();
+
+        $this->assertSameRules(
+            array(
+                'return' => true,
+            ),
+            $this->resolver->getRules()
+        );
+    }
+
+    private function assertSameRules(array $expected, array $actual, $message = '')
+    {
+        ksort($expected);
+        ksort($actual);
+
+        $this->assertSame($expected, $actual, $message);
     }
 }

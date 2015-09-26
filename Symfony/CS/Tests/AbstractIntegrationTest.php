@@ -16,7 +16,9 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\CS\Error\Error;
 use Symfony\CS\FileCacheManager;
 use Symfony\CS\Fixer;
+use Symfony\CS\FixerFactory;
 use Symfony\CS\FixerInterface;
+use Symfony\CS\RuleSet;
 
 /**
  * Integration test base class.
@@ -29,17 +31,13 @@ use Symfony\CS\FixerInterface;
  * --TEST--
  * Example test description
  * --CONFIG--
- * level=symfony|none|psr0|psr1|psr2|symfony
- * fixers=fixer1,fixer2,...*
- * --fixers=fixer3,fixer4,...**
+ * {"@PSR2": true, "strict": true}
  * --INPUT--
  * Code to fix
  * --EXPECT--
- * Expected code after fixing***
+ * Expected code after fixing*
  *
- *   * Additional fixers may be omitted.
- *  ** Black listed filters may be omitted.
- * *** When the expected block is omitted the input is expected not to
+ * * When the expected block is omitted the input is expected not to
  *     be changed by the fixers.
  *
  * @author SpacePossum <possumfromspace@gmail.com>
@@ -48,8 +46,6 @@ use Symfony\CS\FixerInterface;
  */
 abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
 {
-    private static $builtInFixers;
-
     public static function setUpBeforeClass()
     {
         $tmpFile = static::getTempFile();
@@ -179,6 +175,16 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Create fixer factory with all needed fixers registered.
+     *
+     * @return FixerFactory
+     */
+    protected function createFixerFactory()
+    {
+        return FixerFactory::create()->registerBuiltInFixers();
+    }
+
+    /**
      * Parses the '--CONFIG--' block of a '.test' file and determines what fixers should be used.
      *
      * @param string $fileName
@@ -188,97 +194,16 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
      */
     protected function getFixersFromConfig($fileName, $config)
     {
-        static $levelMap = array(
-            'none' => FixerInterface::NONE_LEVEL,
-            'psr1' => FixerInterface::PSR1_LEVEL,
-            'psr2' => FixerInterface::PSR2_LEVEL,
-            'symfony' => FixerInterface::SYMFONY_LEVEL,
-        );
+        $ruleSet = json_decode($config, true);
 
-        $lines = explode("\n", $config);
-        if (count($lines) < 1) {
-            throw new \InvalidArgumentException(sprintf('No configuration options found in "%s".', $fileName));
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            throw new \InvalidArgumentException(sprintf('Malformed JSON configuration "%s".', $fileName));
         }
 
-        $config = array('level' => null, 'fixers' => array(), '--fixers' => array());
-
-        foreach ($lines as $line) {
-            $labelValuePair = explode('=', $line);
-            if (2 !== count($labelValuePair)) {
-                throw new \InvalidArgumentException(sprintf('Invalid configuration line "%s" in "%s".', $line, $fileName));
-            }
-
-            $label = strtolower(trim($labelValuePair[0]));
-            $value = trim($labelValuePair[1]);
-
-            switch ($label) {
-                case 'level':
-                    if (!array_key_exists($value, $levelMap)) {
-                        throw new \InvalidArgumentException(sprintf('Unknown level "%s" set in configuration in "%s", expected any of "%s".', $value, $fileName, implode(', ', array_keys($levelMap))));
-                    }
-
-                    if (null !== $config['level']) {
-                        throw new \InvalidArgumentException(sprintf('Cannot use multiple levels in configuration in "%s".', $fileName));
-                    }
-
-                    $config['level'] = $value;
-                    break;
-                case 'fixers':
-                case '--fixers':
-                    foreach (explode(',', $value) as $fixer) {
-                        $config[$label][] = strtolower(trim($fixer));
-                    }
-
-                    break;
-                default:
-                    throw new \InvalidArgumentException(sprintf('Unknown configuration item "%s" in "%s".', $label, $fileName));
-            }
-        }
-
-        if (null === $config['level']) {
-            throw new \InvalidArgumentException(sprintf('Level not set in configuration "%s".', $fileName));
-        }
-
-        if (null === self::$builtInFixers) {
-            $fixer = new Fixer();
-            $fixer->registerBuiltInFixers();
-            self::$builtInFixers = $fixer->getFixers();
-        }
-
-        $fixers = array();
-        for ($i = count(self::$builtInFixers) - 1; $i >= 0; --$i) {
-            $fixer = self::$builtInFixers[$i];
-            $fixerName = $fixer->getName();
-            if ('psr0' === $fixer->getName()) {
-                // File based fixer won't work
-                continue;
-            }
-
-            if ($fixer->getLevel() !== ($fixer->getLevel() & $levelMap[$config['level']])) {
-                if (false !== $key = array_search($fixerName, $config['fixers'], true)) {
-                    $fixers[] = $fixer;
-                    unset($config['fixers'][$key]);
-                }
-                continue;
-            }
-
-            if (false !== $key = array_search($fixerName, $config['--fixers'], true)) {
-                unset($config['--fixers'][$key]);
-                continue;
-            }
-
-            if (in_array($fixerName, $config['fixers'], true)) {
-                throw new \InvalidArgumentException(sprintf('Additional fixer "%s" configured, but is already part of the level.', $fixerName));
-            }
-
-            $fixers[] = $fixer;
-        }
-
-        if (!empty($config['fixers']) || !empty($config['--fixers'])) {
-            throw new \InvalidArgumentException(sprintf('Unknown fixers in configuration "%s".', implode(',', empty($config['fixers']) ? $config['--fixers'] : $config['fixers'])));
-        }
-
-        return $fixers;
+        return $this->createFixerFactory()
+            ->useRuleSet(new RuleSet($ruleSet))
+            ->getFixers()
+        ;
     }
 
     /**

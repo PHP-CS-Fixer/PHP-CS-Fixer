@@ -42,16 +42,9 @@ interface ConfigInterface
     public function getFinder();
 
     /**
-     * Returns the level to run.
-     *
-     * @return int A level
-     */
-    public function getLevel();
-
-    /**
      * Returns the fixers to run.
      *
-     * @return array A list of fixer names
+     * @return FixerInterface[]
      */
     public function getFixers();
 
@@ -60,7 +53,7 @@ interface ConfigInterface
      *
      * @param string $dir The project root directory
      *
-     * @return ConfigInterface The same instance
+     * @return $this
      */
     public function setDir($dir);
 
@@ -128,4 +121,27 @@ interface ConfigInterface
      * @return string|null
      */
     public function getPhpExecutable();
+
+    /**
+     * Get rules.
+     *
+     * Keys of array are names of fixers/sets, values are true/false.
+     *
+     * @return array
+     */
+    public function getRules();
+
+    /**
+     * Set rules.
+     *
+     * Keys of array are names of fixers or sets.
+     * Value for set must be bool (turn it on or off).
+     * Value for fixer may be bool (turn it on or off) or array of configuration
+     * (turn it on and contains configuration for FixerInterface::configure method).
+     *
+     * @param array $rules
+     *
+     * @return $this
+     */
+    public function setRules(array $rules);
 }
