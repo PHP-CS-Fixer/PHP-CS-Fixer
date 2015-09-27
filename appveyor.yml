@@ -8,7 +8,6 @@ environment:
         - php_ver: 5.6.3
 
 cache:
-    - C:\tools -> appveyor.yml
     - '%APPDATA%\Composer'
 
 install:
