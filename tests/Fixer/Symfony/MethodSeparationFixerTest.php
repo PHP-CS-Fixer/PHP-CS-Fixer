@@ -31,6 +31,159 @@ final class MethodSeparationFixerTest extends AbstractFixerTestCase
         $cases = array();
         $cases[] = array(
             '<?php
+class SomeClass1
+{
+    private $a; //
+
+    public function methodA()
+    {
+    }
+
+    private $b;
+
+    //
+    public function methodB()
+    {
+    }
+
+    // C
+    public function methodC()
+    {
+    }
+
+    // D
+
+    public function methodD()
+    {
+    }
+
+    /* E */
+
+    public function methodD()
+    {
+    }
+
+    /* F */
+    public function methodD()
+    {
+    }
+}
+',
+            '<?php
+class SomeClass1
+{
+    private $a; //
+    public function methodA()
+    {
+    }
+
+    private $b;
+    //
+    public function methodB()
+    {
+    }
+    // C
+    public function methodC()
+    {
+    }
+
+    // D
+
+    public function methodD()
+    {
+    }
+
+    /* E */
+
+    public function methodD()
+    {
+    }
+
+    /* F */
+    public function methodD()
+    {
+    }
+}
+', );
+        $cases[] = array('<?php
+class SomeClass
+{
+    // comment
+    public function echoA()
+    {
+        echo "a";
+    }
+}
+');
+        $cases[] = array(
+        '<?php
+class SomeClass
+{
+    // comment
+
+    public function echoA()
+    {
+        echo "a";
+    }
+}
+',
+            '<?php
+class SomeClass
+{
+    // comment
+
+
+    public function echoA()
+    {
+        echo "a";
+    }
+}
+',
+        );
+        $cases[] = array(
+            '<?php
+class SomeClass
+{
+    /* comment */
+public function echoB()
+    {
+        echo "a";
+    }
+}
+',
+            '<?php
+class SomeClass
+{
+    /* comment */public function echoB()
+    {
+        echo "a";
+    }
+}
+',
+        );
+        $cases[] = array(
+            '<?php
+class SomeClass
+{
+    /* comment */
+ public function echoC()
+    {
+        echo "a";
+    }
+}
+',
+            '<?php
+class SomeClass
+{
+    /* comment */ public function echoC()
+    {
+        echo "a";
+    }
+}
+',
+        );
+        $cases[] = array(
+            '<?php
 abstract class MethodTest2
 {
     public function method045()
@@ -187,8 +340,8 @@ class MethodTest1
     }
 
     private $b;
-    //
 
+    //
     public function method444e()
     {
     }
@@ -204,7 +357,6 @@ class MethodTest1
     }
 
     /**/
-
     public function method444g()
     {
     }

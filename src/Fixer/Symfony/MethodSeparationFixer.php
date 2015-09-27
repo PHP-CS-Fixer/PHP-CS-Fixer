@@ -19,7 +19,8 @@ use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * Make sure there is one blank line above and below a method.
- * The exception is when a method is the last item in a 'classy'.
+ *
+ * The exception is when a method is the first or last item in a 'classy'.
  *
  * @author SpacePossum
  */
@@ -135,7 +136,9 @@ final class MethodSeparationFixer extends AbstractFixer
     }
 
     /**
-     * Fix spacing above a method signature. Deal with comments, PHPDocs and spaces above the method.
+     * Fix spacing above a method signature.
+     *
+     * Deals with comments, PHPDocs and spaces above the method with respect to the position of the method in the class.
      *
      * @param Tokens $tokens
      * @param int    $classStart  index of the class Token the method is in
@@ -156,6 +159,41 @@ final class MethodSeparationFixer extends AbstractFixer
             }
         }
 
+        // deal with comments above a method
+        if ($tokens[$nonWhiteAbove]->isGivenKind(T_COMMENT)) {
+            if ($firstMethodAttrIndex - $nonWhiteAbove === 1) {
+                // no white space found between comment and method start
+                $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstMethodAttrIndex, 1);
+
+                return;
+            }
+
+            // $tokens[$nonWhiteAbove+1] is always a white space token here
+            if (substr_count($tokens[$nonWhiteAbove + 1]->getContent(), "\n") > 1) {
+                // more than one line break, always bring it back to 2 line breaks between the method start and what is above it
+                $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstMethodAttrIndex, 2);
+
+                return;
+            }
+
+            // there are 2 cases:
+            if ($tokens[$nonWhiteAbove - 1]->isWhitespace() && substr_count($tokens[$nonWhiteAbove - 1]->getContent(), "\n") > 0) {
+                // 1. The comment is meant for the method (although not a PHPDoc),
+                //    make sure there is one line break between the method and the comment...
+                $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstMethodAttrIndex, 1);
+                //    ... and make sure there is blank line above the comment (with the exception when it is directly after a class opening)
+                $nonWhiteAboveComment = $tokens->getNonWhitespaceSibling($nonWhiteAbove, -1);
+                $this->correctLineBreaks($tokens, $nonWhiteAboveComment, $nonWhiteAbove, $nonWhiteAboveComment === $classStart ? 1 : 2);
+            } else {
+                // 2. The comment belongs to the code above the method,
+                //    make sure there is a blank line above the method (i.e. 2 line breaks)
+                $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstMethodAttrIndex, 2);
+            }
+
+            return;
+        }
+
+        // deal with method without a PHPDoc above it
         if (false === $tokens[$nonWhiteAbove]->isGivenKind(T_DOC_COMMENT)) {
             $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstMethodAttrIndex, $nonWhiteAbove === $classStart ? 1 : 2);
 
@@ -165,7 +203,7 @@ final class MethodSeparationFixer extends AbstractFixer
         // there should be one linebreak between the method signature and the PHPDoc above it
         $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstMethodAttrIndex, 1);
 
-        // there should be one blank line between the PHPDoc and whatever is above
+        // there should be one blank line between the PHPDoc and whatever is above (with the exception when it is directly after a class opening)
         $nonWhiteAbovePHPDoc = $tokens->getNonWhitespaceSibling($nonWhiteAbove, -1);
         $this->correctLineBreaks($tokens, $nonWhiteAbovePHPDoc, $nonWhiteAbove, $nonWhiteAbovePHPDoc === $classStart ? 1 : 2);
     }
