@@ -69,6 +69,15 @@ final class AlignDoubleArrowFixer extends AbstractAlignFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run after the OperatorsSpacesFixer
+        return -10;
+    }
+
+    /**
      * Inject into the text placeholders of candidates of vertical alignment.
      *
      * @param Tokens $tokens

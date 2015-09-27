@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: align_double_arrow,operators_spaces.
+--CONFIG--
+{"align_double_arrow": true, "operators_spaces": true}
+--INPUT--
+<?php
+$array = [
+    '€ 1,00 (23,00% IVA incluído)'=> 1,
+    '€ 3.542,90 (23,00% IVA incluído)'=> 3543,
+    '€ 4.200,00' => 4200,
+];
+
+--EXPECT--
+<?php
+$array = [
+    '€ 1,00 (23,00% IVA incluído)'     => 1,
+    '€ 3.542,90 (23,00% IVA incluído)' => 3543,
+    '€ 4.200,00'                       => 4200,
+];
