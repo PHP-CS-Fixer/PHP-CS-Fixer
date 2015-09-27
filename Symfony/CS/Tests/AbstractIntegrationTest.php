@@ -64,7 +64,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
 
     public static function tearDownAfterClass()
     {
-        unlink(static::getTempFile());
+        @unlink(static::getTempFile());
     }
 
     /**
@@ -162,7 +162,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertNotEmpty($changed, sprintf('Expected changes made to test "%s" in "%s".', $testTitle, $testFileName));
-        $this->assertSame($expected, file_get_contents($tmpFile), sprintf('Expected changes do not match result, for "%s" in "%s".', $testTitle, $testFileName));
+        $this->assertSame($expected, file_get_contents($tmpFile), sprintf('Expected changes do not match result for "%s" in "%s".', $testTitle, $testFileName));
 
         // run the test again with the `expected` part, this should always stay the same
         $this->testIntegration($testFileName, $testTitle.' "--EXPECT-- part run"', $fixers, $expected);
@@ -236,7 +236,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
         }
 
         $fixers = array();
-        for ($i = count(self::$builtInFixers) - 1; $i >= 0; --$i) {
+        for ($i = 0, $limit = count(self::$builtInFixers); $i < $limit; ++$i) {
             $fixer = self::$builtInFixers[$i];
             $fixerName = $fixer->getName();
             if ('psr0' === $fixer->getName()) {

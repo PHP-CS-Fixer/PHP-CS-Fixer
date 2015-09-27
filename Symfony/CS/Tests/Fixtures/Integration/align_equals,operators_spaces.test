@@ -1,0 +1,16 @@
+--TEST--
+Integration of fixers: align_equals,operators_spaces.
+--CONFIG--
+level=none
+fixers=align_equals,operators_spaces
+--INPUT--
+<?php
+$FOO€BARí= 123;
+$FOO€BARíBAZ= 123;
+$FOO = 123;
+
+--EXPECT--
+<?php
+$FOO€BARí    = 123;
+$FOO€BARíBAZ = 123;
+$FOO         = 123;
