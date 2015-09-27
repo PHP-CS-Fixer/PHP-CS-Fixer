@@ -31,6 +31,7 @@ use Symfony\CS\StdinFileInfo;
  */
 final class ConfigurationResolver
 {
+    private $allowRisky;
     private $config;
     private $configFile;
     private $cwd;
@@ -41,6 +42,7 @@ final class ConfigurationResolver
     private $fixer;
     private $fixers = array();
     private $options = array(
+        'allow-risky' => null,
         'config' => null,
         'config-file' => null,
         'dry-run' => null,
@@ -155,6 +157,7 @@ final class ConfigurationResolver
 
         $this->resolveConfig();
         $this->resolveConfigPath();
+        $this->resolveRiskyAllowed();
 
         $this->fixerFactory->registerCustomFixers($this->getConfig()->getCustomFixers());
         $this->fixerFactory->attachConfig($this->getConfig());
@@ -170,6 +173,7 @@ final class ConfigurationResolver
         $this->config->setRules($this->getRules());
         $this->config->setUsingCache($this->usingCache);
         $this->config->setCacheFile($this->cacheFile);
+        $this->config->setRiskyAllowed($this->allowRisky);
 
         return $this;
     }
@@ -370,6 +374,26 @@ final class ConfigurationResolver
     private function resolveFixers()
     {
         $this->fixers = $this->fixerFactory->useRuleSet($this->ruleSet)->getFixers();
+
+        if (true === $this->allowRisky) {
+            return;
+        }
+
+        $riskyFixers = array_map(
+            function (FixerInterface $fixer) {
+                return $fixer->getName();
+            },
+            array_filter(
+                $this->fixers,
+                function (FixerInterface $fixer) {
+                    return $fixer->isRisky();
+                }
+            )
+        );
+
+        if (!empty($riskyFixers)) {
+            throw new \UnexpectedValueException(sprintf('The rules contain risky fixers (%s), but they are not allowed to run. Perhaps you forget to use --allow-risky option?', implode(', ', $riskyFixers)));
+        }
     }
 
     /**
@@ -454,5 +478,19 @@ final class ConfigurationResolver
         }
 
         $this->cacheFile = $this->config->getCacheFile();
+    }
+
+    /**
+     * Resolves risky allowed flag.
+     */
+    private function resolveRiskyAllowed()
+    {
+        if (null !== $this->options['allow-risky']) {
+            $this->allowRisky = 'yes' === $this->options['allow-risky'];
+
+            return;
+        }
+
+        $this->allowRisky = $this->config->getRiskyAllowed();
     }
 }

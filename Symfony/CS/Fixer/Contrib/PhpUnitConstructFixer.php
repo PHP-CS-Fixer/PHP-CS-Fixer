@@ -62,6 +62,14 @@ final class PhpUnitConstructFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         // no assertions to be fixed - fast return
@@ -91,7 +99,7 @@ final class PhpUnitConstructFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'PHPUnit assertion method calls like "->assertSame(true, $foo)" should be written with dedicated method like "->assertTrue($foo)". Warning! This could change code behavior.';
+        return 'PHPUnit assertion method calls like "->assertSame(true, $foo)" should be written with dedicated method like "->assertTrue($foo)".';
     }
 
     /**

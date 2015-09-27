@@ -30,6 +30,14 @@ final class StrictFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         static $map = array(
@@ -57,7 +65,7 @@ final class StrictFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Comparison should be strict. Warning! This could change code behavior.';
+        return 'Comparison should be strict.';
     }
 
     /**

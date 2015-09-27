@@ -49,6 +49,14 @@ final class EregToPregFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $end = $tokens->count() - 1;
@@ -110,7 +118,7 @@ final class EregToPregFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Replace deprecated ereg regular expression functions with preg. Warning! This could change code behavior.';
+        return 'Replace deprecated ereg regular expression functions with preg.';
     }
 
     /**
