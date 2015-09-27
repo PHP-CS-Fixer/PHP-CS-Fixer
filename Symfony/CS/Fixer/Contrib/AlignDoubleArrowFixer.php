@@ -48,7 +48,7 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
         $this->deepestLevel = 0;
         $tokens = Tokens::fromCode($content);
 
-        $this->injectAlignmentPlaceholders($tokens);
+        $this->injectAlignmentPlaceholders($tokens, 0, count($tokens));
 
         return $this->replacePlaceholder($tokens, $this->deepestLevel);
     }
@@ -79,16 +79,8 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
      *
      * @return array($code, $context_counter)
      */
-    private function injectAlignmentPlaceholders(Tokens $tokens, $startAt = null, $endAt = null)
+    private function injectAlignmentPlaceholders(Tokens $tokens, $startAt, $endAt)
     {
-        if (empty($startAt)) {
-            $startAt = 0;
-        }
-
-        if (empty($endAt)) {
-            $endAt = count($tokens);
-        }
-
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
 
@@ -148,10 +140,12 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
             }
 
             if ($token->equals(',')) {
-                do {
+                for ($i = $index; $i < $endAt - 1; ++$i) {
+                    if ($tokens[$i + 1]->equals('[') || $tokens[$i + 1]->isGivenKind(T_ARRAY) || false !== strpos($tokens[$i - 1]->getContent(), "\n")) {
+                        break;
+                    }
                     ++$index;
-                    $token = $tokens[$index];
-                } while (false === strpos($token->getContent(), "\n"));
+                }
             }
         }
     }
