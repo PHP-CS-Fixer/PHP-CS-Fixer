@@ -76,6 +76,22 @@ final class FixerFactory
     }
 
     /**
+     * Get associative array of fixers with names as key.
+     *
+     * @return FixerInterface[]
+     */
+    public function getFixersByName()
+    {
+        $fixersByName = array();
+
+        foreach ($this->fixers as $fixer) {
+            $fixersByName[$fixer->getName()] = $fixer;
+        }
+
+        return $fixersByName;
+    }
+
+    /**
      * Register all built in fixers.
      *
      * @return $this
@@ -139,7 +155,7 @@ final class FixerFactory
      */
     public function useRuleSet(RuleSetInterface $ruleSet)
     {
-        $fixersByName = array();
+        $fixersByName = $this->getFixersByName();
 
         foreach ($this->fixers as $fixer) {
             $fixersByName[$fixer->getName()] = $fixer;
