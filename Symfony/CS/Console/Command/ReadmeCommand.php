@@ -187,7 +187,7 @@ implement ``FixerInterface``).
 Configs
 ~~~~~~~
 
-A *config* knows about the CS level and the files and directories that must be
+A *config* knows about the CS rules and the files and directories that must be
 scanned by the tool when run in the directory of your project. It is useful for
 projects that follow a well-known directory structures (like for Symfony
 projects for instance).

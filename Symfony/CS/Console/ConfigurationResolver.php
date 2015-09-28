@@ -15,7 +15,9 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\Fixer;
+use Symfony\CS\FixerFactory;
 use Symfony\CS\FixerInterface;
+use Symfony\CS\RuleSet;
 use Symfony\CS\StdinFileInfo;
 
 /**
@@ -29,30 +31,38 @@ use Symfony\CS\StdinFileInfo;
  */
 final class ConfigurationResolver
 {
-    private $allFixers;
+    private $allowRisky;
     private $config;
     private $configFile;
     private $cwd;
     private $defaultConfig;
+    private $fixerFactory;
     private $isStdIn;
     private $isDryRun;
     private $fixer;
     private $fixers = array();
     private $options = array(
+        'allow-risky' => null,
         'config' => null,
         'config-file' => null,
         'dry-run' => null,
-        'fixers' => null,
-        'level' => null,
         'path' => null,
         'progress' => null,
         'using-cache' => null,
         'cache-file' => null,
+        'rules' => null,
     );
     private $path;
     private $progress;
     private $usingCache;
     private $cacheFile;
+    private $ruleSet;
+
+    public function __construct()
+    {
+        $this->fixerFactory = new FixerFactory();
+        $this->fixerFactory->registerBuiltInFixers();
+    }
 
     /**
      * Returns config instance.
@@ -72,6 +82,16 @@ final class ConfigurationResolver
     public function getConfigFile()
     {
         return $this->configFile;
+    }
+
+    /**
+     * Returns fixer factory.
+     *
+     * @return FixerFactory
+     */
+    public function getFixerFactory()
+    {
+        return $this->fixerFactory;
     }
 
     /**
@@ -105,6 +125,16 @@ final class ConfigurationResolver
     }
 
     /**
+     * Returns rules.
+     *
+     * @return array
+     */
+    public function getRules()
+    {
+        return $this->ruleSet->getRules();
+    }
+
+    /**
      * Returns dry-run flag.
      *
      * @return bool
@@ -127,17 +157,23 @@ final class ConfigurationResolver
 
         $this->resolveConfig();
         $this->resolveConfigPath();
+        $this->resolveRiskyAllowed();
 
-        $this->resolveFixersByLevel();
-        $this->resolveFixersByNames();
+        $this->fixerFactory->registerCustomFixers($this->getConfig()->getCustomFixers());
+        $this->fixerFactory->attachConfig($this->getConfig());
+
+        $this->resolveRules();
+        $this->resolveFixers();
 
         $this->resolveProgress();
         $this->resolveUsingCache();
         $this->resolveCacheFile();
 
         $this->config->fixers($this->getFixers());
+        $this->config->setRules($this->getRules());
         $this->config->setUsingCache($this->usingCache);
         $this->config->setCacheFile($this->cacheFile);
+        $this->config->setRiskyAllowed($this->allowRisky);
 
         return $this;
     }
@@ -180,7 +216,6 @@ final class ConfigurationResolver
     public function setFixer(Fixer $fixer)
     {
         $this->fixer = $fixer;
-        $this->allFixers = $fixer->getFixers();
 
         return $this;
     }
@@ -254,52 +289,27 @@ final class ConfigurationResolver
     }
 
     /**
-     * Compute fixers.
+     * Compute rules.
      *
-     * @return string[]|null
+     * @return array
      */
-    private function parseFixers()
+    private function parseRules()
     {
-        if (null !== $this->options['fixers']) {
-            return array_map('trim', explode(',', $this->options['fixers']));
+        if (null === $this->options['rules']) {
+            return $this->config->getRules();
         }
 
-        if (null !== $this->options['level']) {
-            return;
-        }
+        $rules = array();
 
-        return $this->config->getFixers();
-    }
-
-    /**
-     * Compute level.
-     *
-     * @return string|null
-     */
-    private function parseLevel()
-    {
-        static $levelMap = array(
-            'none' => FixerInterface::NONE_LEVEL,
-            'psr1' => FixerInterface::PSR1_LEVEL,
-            'psr2' => FixerInterface::PSR2_LEVEL,
-            'symfony' => FixerInterface::SYMFONY_LEVEL,
-        );
-
-        $levelOption = $this->options['level'];
-
-        if (null !== $levelOption) {
-            if (!isset($levelMap[$levelOption])) {
-                throw new \InvalidArgumentException(sprintf('The level "%s" is not defined.', $levelOption));
+        foreach (array_map('trim', explode(',', $this->options['rules'])) as $rule) {
+            if ('-' === $rule[0]) {
+                $rules[ltrim($rule, '-')] = false;
+            } else {
+                $rules[$rule] = true;
             }
-
-            return $levelMap[$levelOption];
         }
 
-        if (null !== $this->options['fixers']) {
-            return;
-        }
-
-        return $this->config->getLevel();
+        return $rules;
     }
 
     /**
@@ -324,19 +334,21 @@ final class ConfigurationResolver
         }
 
         foreach ($this->computeConfigFiles() as $configFile) {
-            if (file_exists($configFile)) {
-                $config = include $configFile;
-
-                // verify that the config has an instance of Config
-                if (!$config instanceof Config) {
-                    throw new \UnexpectedValueException(sprintf('The config file: "%s" does not return a "Symfony\CS\Config\Config" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
-                }
-
-                $this->config = $config;
-                $this->configFile = $configFile;
-
-                return;
+            if (!file_exists($configFile)) {
+                continue;
             }
+
+            $config = include $configFile;
+
+            // verify that the config has an instance of Config
+            if (!$config instanceof Config) {
+                throw new \UnexpectedValueException(sprintf('The config file: "%s" does not return a "Symfony\CS\Config\Config" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
+            }
+
+            $this->config = $config;
+            $this->configFile = $configFile;
+
+            return;
         }
 
         $this->config = $this->defaultConfig;
@@ -357,58 +369,30 @@ final class ConfigurationResolver
     }
 
     /**
-     * Resolve fixers to run based on level.
+     * Resolve fixers to run based on rules.
      */
-    private function resolveFixersByLevel()
+    private function resolveFixers()
     {
-        $level = $this->parseLevel();
+        $this->fixers = $this->fixerFactory->useRuleSet($this->ruleSet)->getFixers();
 
-        if (null === $level) {
+        if (true === $this->allowRisky) {
             return;
         }
 
-        $fixers = array();
+        $riskyFixers = array_map(
+            function (FixerInterface $fixer) {
+                return $fixer->getName();
+            },
+            array_filter(
+                $this->fixers,
+                function (FixerInterface $fixer) {
+                    return $fixer->isRisky();
+                }
+            )
+        );
 
-        foreach ($this->allFixers as $fixer) {
-            if ($fixer->getLevel() === ($fixer->getLevel() & $level)) {
-                $fixers[] = $fixer;
-            }
-        }
-
-        $this->fixers = $fixers;
-    }
-
-    /**
-     * Resolve fixers to run based on names.
-     */
-    private function resolveFixersByNames()
-    {
-        $names = $this->parseFixers();
-
-        if (null === $names) {
-            return;
-        }
-
-        $addNames = array();
-        $removeNames = array();
-        foreach ($names as $name) {
-            if (0 === strpos($name, '-')) {
-                $removeNames[ltrim($name, '-')] = true;
-            } else {
-                $addNames[$name] = true;
-            }
-        }
-
-        foreach ($this->fixers as $key => $fixer) {
-            if (isset($removeNames[$fixer->getName()])) {
-                unset($this->fixers[$key]);
-            }
-        }
-
-        foreach ($this->allFixers as $fixer) {
-            if (isset($addNames[$fixer->getName()]) && !in_array($fixer, $this->fixers, true)) {
-                $this->fixers[] = $fixer;
-            }
+        if (!empty($riskyFixers)) {
+            throw new \UnexpectedValueException(sprintf('The rules contain risky fixers (%s), but they are not allowed to run. Perhaps you forget to use --allow-risky option?', implode(', ', $riskyFixers)));
         }
     }
 
@@ -461,6 +445,14 @@ final class ConfigurationResolver
     }
 
     /**
+     * Resolve rules.
+     */
+    private function resolveRules()
+    {
+        $this->ruleSet = new RuleSet($this->parseRules());
+    }
+
+    /**
      * Resolve using cache.
      */
     private function resolveUsingCache()
@@ -486,5 +478,19 @@ final class ConfigurationResolver
         }
 
         $this->cacheFile = $this->config->getCacheFile();
+    }
+
+    /**
+     * Resolves risky allowed flag.
+     */
+    private function resolveRiskyAllowed()
+    {
+        if (null !== $this->options['allow-risky']) {
+            $this->allowRisky = 'yes' === $this->options['allow-risky'];
+
+            return;
+        }
+
+        $this->allowRisky = $this->config->getRiskyAllowed();
     }
 }

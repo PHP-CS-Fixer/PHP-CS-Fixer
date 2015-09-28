@@ -38,6 +38,14 @@ final class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
     /**
      * {@inheritdoc}
      */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $namespace = false;
@@ -144,7 +152,7 @@ final class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
      */
     public function getDescription()
     {
-        return 'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name. Warning: This could change code behavior.';
+        return 'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.';
     }
 
     /**

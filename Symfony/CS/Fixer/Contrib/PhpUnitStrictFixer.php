@@ -26,8 +26,15 @@ final class PhpUnitStrictFixer extends AbstractFixer
         'assertNotEquals' => 'assertNotSame',
     );
 
-    public function configure(array $usingMethods)
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $usingMethods = null)
     {
+        if (null === $usingMethods) {
+            return;
+        }
+
         foreach (array_keys($this->configuration) as $method) {
             if (!in_array($method, $usingMethods, true)) {
                 unset($this->configuration[$method]);
@@ -41,6 +48,14 @@ final class PhpUnitStrictFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
     }
 
     /**
@@ -77,6 +92,6 @@ final class PhpUnitStrictFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'PHPUnit methods like "assertSame" should be used instead of "assertEquals". Warning! This could change code behavior.';
+        return 'PHPUnit methods like "assertSame" should be used instead of "assertEquals".';
     }
 }

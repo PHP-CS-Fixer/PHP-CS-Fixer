@@ -42,6 +42,16 @@ final class BlanklineAfterOpenTagFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
+                '<?php
+
+ class SomeClass
+ {
+     const VERSION = "1.1.1";
+     const FOO = "bar";
+ }
+',
+            ),
+            array(
                 '<?php $foo = true; ?>',
             ),
             array(

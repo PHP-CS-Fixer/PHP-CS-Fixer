@@ -31,6 +31,14 @@ final class StrictParamFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         static $map = null;
@@ -61,7 +69,7 @@ final class StrictParamFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Functions should be used with $strict param. Warning! This could change code behavior.';
+        return 'Functions should be used with $strict param.';
     }
 
     private function fixFunction(Tokens $tokens, $functionIndex, array $functionParams)

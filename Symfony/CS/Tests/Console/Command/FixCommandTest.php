@@ -297,12 +297,6 @@ final class FixCommandTest extends \PHPUnit_Framework_TestCase
 
         $fixer
             ->expects($this->any())
-            ->method('getFixers')
-            ->willReturn(array())
-        ;
-
-        $fixer
-            ->expects($this->any())
             ->method('getStopwatch')
             ->willReturn(new Stopwatch())
         ;
