@@ -1,8 +1,7 @@
 --TEST--
 Integration of fixers: align_equals,operators_spaces.
 --CONFIG--
-level=none
-fixers=align_equals,operators_spaces
+{"align_equals": true, "operators_spaces": true}
 --INPUT--
 <?php
 $FOO€BARí= 123;

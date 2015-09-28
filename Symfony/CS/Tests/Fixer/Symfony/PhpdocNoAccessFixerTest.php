@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
+ *
+ * @internal
  */
-class PhpdocNoAccessFixerTest extends AbstractFixerTestBase
+final class PhpdocNoAccessFixerTest extends AbstractFixerTestBase
 {
     public function testFixAccess()
     {

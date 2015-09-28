@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
-class EofEndingFixerTest extends AbstractFixerTestBase
+final class EofEndingFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
@@ -29,6 +31,10 @@ class EofEndingFixerTest extends AbstractFixerTestBase
     public function provideCases()
     {
         return array(
+            array(
+                // test for not adding an empty line in empty file
+                '',
+            ),
             array(
                 "<?php\n",
             ),
@@ -71,7 +77,8 @@ $a = 6;
 //test
 
 ?>
-  ', ),
+  ',
+            ),
             array(
                 // test for not adding an empty line after PHP tag has been closed
                 '<?php
@@ -79,7 +86,8 @@ $a = 7;
 
 //test
 
-?>', ),
+?>',
+            ),
             array(
                 // test for not adding an empty line after PHP tag has been closed
                 '<?php
@@ -88,7 +96,9 @@ $a = 8;
 ?>
 Outside of PHP tags rendering
 
-', ),
+
+',
+            ),
             array(
                 // test for not adding an empty line after PHP tag has been closed
                 "<?php
@@ -97,7 +107,8 @@ Outside of PHP tags rendering
 inline 1
 <?php
 
-?>Inline2\r\n", ),
+?>Inline2\r\n",
+            ),
         );
     }
 }

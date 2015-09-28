@@ -19,19 +19,23 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class IncludeFixer extends AbstractFixer
+final class IncludeFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isAnyTokenKindsFound(array(T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE));
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         $includies = $this->findIncludies($tokens);
         $this->clearIncludies($tokens, $includies);
-
-        return $tokens->generateCode();
     }
 
     /**

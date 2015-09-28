@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
+ *
+ * @internal
  */
-class LogicalNotOperatorsWithSuccessorSpaceFixerTest extends AbstractFixerTestBase
+final class LogicalNotOperatorsWithSuccessorSpaceFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

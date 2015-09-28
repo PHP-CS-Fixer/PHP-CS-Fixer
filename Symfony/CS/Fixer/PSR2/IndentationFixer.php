@@ -19,15 +19,21 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class IndentationFixer extends AbstractFixer
+final class IndentationFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isAnyTokenKindsFound(array(T_COMMENT, T_DOC_COMMENT, T_WHITESPACE));
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         foreach ($tokens as $index => $token) {
             if ($token->isComment()) {
                 $content = preg_replace('/^(?:(?<! ) {1,3})?\t/m', '\1    ', $token->getContent(), -1, $count);
@@ -45,8 +51,6 @@ class IndentationFixer extends AbstractFixer
                 $tokens[$index]->setContent(preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $token->getContent()));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

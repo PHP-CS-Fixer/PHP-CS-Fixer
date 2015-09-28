@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
-class EncodingFixerTest extends AbstractFixerTestBase
+final class EncodingFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideExamples

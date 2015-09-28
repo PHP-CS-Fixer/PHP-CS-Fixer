@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
+ *
+ * @internal
  */
-class PhpdocVarToTypeFixerTest extends AbstractFixerTestBase
+final class PhpdocVarToTypeFixerTest extends AbstractFixerTestBase
 {
     public function testBasicFix()
     {

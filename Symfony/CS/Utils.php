@@ -17,8 +17,10 @@ use Symfony\CS\Tokenizer\Token;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
  * @author Odín del Río <odin.drp@gmail.com>
+ *
+ * @internal
  */
-class Utils
+final class Utils
 {
     /**
      * Calculate a bitmask for given constant names.
@@ -109,7 +111,7 @@ class Utils
     public static function calculateTrailingWhitespaceIndent(Token $token)
     {
         if (!$token->isWhitespace()) {
-            throw new \InvalidArgumentException('The given token must be whitespace.');
+            throw new \InvalidArgumentException(sprintf('The given token must be whitespace, got "%s".', $token->getName()));
         }
 
         return ltrim(strrchr(str_replace(array("\r\n", "\r"), "\n", $token->getContent()), 10), "\n");

@@ -13,29 +13,25 @@ namespace Symfony\CS;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 abstract class AbstractFixer implements FixerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
+    public function configure(array $configuration = null)
     {
-        static $map = array(
-            'PSR0' => FixerInterface::PSR0_LEVEL,
-            'PSR1' => FixerInterface::PSR1_LEVEL,
-            'PSR2' => FixerInterface::PSR2_LEVEL,
-            'Symfony' => FixerInterface::SYMFONY_LEVEL,
-            'Contrib' => FixerInterface::CONTRIB_LEVEL,
-        );
+        return;
+    }
 
-        $level = current(explode('\\', substr(get_called_class(), strlen(__NAMESPACE__.'\\Fixer\\'))));
-
-        if (!isset($map[$level])) {
-            throw new \LogicException('Can not determine Fixer level');
-        }
-
-        return $map[$level];
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return false;
     }
 
     /**

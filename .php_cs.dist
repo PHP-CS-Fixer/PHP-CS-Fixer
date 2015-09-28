@@ -1,0 +1,29 @@
+<?php
+
+$header = <<<EOF
+This file is part of the PHP CS utility.
+
+(c) Fabien Potencier <fabien@symfony.com>
+
+This source file is subject to the MIT license that is bundled
+with this source code in the file LICENSE.
+EOF;
+
+return Symfony\CS\Config\Config::create()
+    ->setRiskyAllowed(true)
+    ->setRules(array(
+        '@Symfony' => true,
+        'header_comment' => array('header' => $header),
+        'long_array_syntax' => true,
+        'ordered_use' => true,
+        'php_unit_construct' => true,
+        'php_unit_strict' => true,
+        'strict' => true,
+        'strict_param' => true,
+    ))
+    ->finder(
+        Symfony\CS\Finder\DefaultFinder::create()
+            ->exclude('Symfony/CS/Tests/Fixtures')
+            ->in(__DIR__)
+    )
+;

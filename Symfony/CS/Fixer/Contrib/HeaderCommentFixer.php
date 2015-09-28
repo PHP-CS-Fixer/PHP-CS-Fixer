@@ -18,55 +18,51 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Antonio J. García Lagar <aj@garcialagar.es>
  */
-class HeaderCommentFixer extends AbstractFixer
+final class HeaderCommentFixer extends AbstractFixer
 {
-    private static $header = '';
-    private static $headerComment = '';
+    private $header = '';
+    private $headerComment = '';
 
     /**
-     * Sets the desired header text.
-     *
-     * The given text will be trimmed and enclosed into a multiline comment.
-     * If the text is empty, when a file get fixed, the header comment will be
-     * erased.
-     *
-     * @param string $header
+     * {@inheritdoc}
      */
-    public static function setHeader($header)
+    public function configure(array $configuration = null)
     {
-        self::$header = trim((string) $header);
-        self::$headerComment = '';
-
-        if ('' !== self::$header) {
-            self::$headerComment = self::encloseTextInComment(self::$header);
+        if (null === $configuration || !isset($configuration['header'])) {
+            throw new \Exception('Configuration is missing.');
         }
-    }
 
-    /**
-     * @return string
-     */
-    public static function getHeader()
-    {
-        return self::$header;
+        $this->setHeader($configuration['header']);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return true;
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         if (!$tokens->isMonolithicPhp()) {
-            return $content;
+            return;
         }
 
-        $this->removeHeaderComment($tokens);
-        $insertionIndex = $this->findHeaderCommentInsertionIndex($tokens);
-        $tokens->clearRange(1, $insertionIndex - 1);
-        $this->insertHeaderComment($tokens, $insertionIndex);
+        $oldHeaderIndex = $this->findHeaderCommentIndex($tokens);
+        $newHeaderIndex = $this->findHeaderCommentInsertionIndex($tokens);
 
-        return $tokens->generateCode();
+        if (
+            $oldHeaderIndex === $newHeaderIndex
+            && $this->headerComment === $tokens[$oldHeaderIndex]->getContent()
+        ) {
+            return;
+        }
+
+        $this->replaceHeaderComment($tokens, $oldHeaderIndex);
     }
 
     /**
@@ -78,13 +74,13 @@ class HeaderCommentFixer extends AbstractFixer
     }
 
     /**
-     * Encloses the given text in a comment block.
+     * Enclose the given text in a comment block.
      *
      * @param string $header
      *
      * @return string
      */
-    private static function encloseTextInComment($header)
+    private function encloseTextInComment($header)
     {
         $comment = "/*\n";
         $lines = explode("\n", str_replace("\r", '', $header));
@@ -97,20 +93,23 @@ class HeaderCommentFixer extends AbstractFixer
     }
 
     /**
-     * Removes the header comment, if any.
+     * Find the header comment index.
      *
      * @param Tokens $tokens
+     *
+     * @return int|null
      */
-    private function removeHeaderComment(Tokens $tokens)
+    private function findHeaderCommentIndex(Tokens $tokens)
     {
         $index = $tokens->getNextNonWhitespace(0);
+
         if (null !== $index && $tokens[$index]->isGivenKind(T_COMMENT)) {
-            $tokens[$index]->clear();
+            return $index;
         }
     }
 
     /**
-     * Finds the index where the header comment must be inserted.
+     * Find the index where the header comment must be inserted.
      *
      * @param Tokens $tokens
      *
@@ -121,7 +120,7 @@ class HeaderCommentFixer extends AbstractFixer
         $index = $tokens->getNextNonWhitespace(0);
 
         if (null === $index) {
-            //Empty file, insert at the end
+            // empty file, insert at the end
             $index = $tokens->getSize();
         }
 
@@ -129,22 +128,51 @@ class HeaderCommentFixer extends AbstractFixer
     }
 
     /**
-     * Inserts the header comment at the given index.
+     * Replace the header comment at the given index.
      *
      * @param Tokens $tokens
-     * @param int    $index
+     * @param int    $oldHeaderIndex
      */
-    private function insertHeaderComment(Tokens $tokens, $index)
+    private function replaceHeaderComment(Tokens $tokens, $oldHeaderIndex)
     {
-        $headCommentTokens = array(
-            new Token(array(T_WHITESPACE, "\n")),
-        );
+        if ('' === $this->headerComment) {
+            if ($oldHeaderIndex) {
+                $tokens->clearRange($oldHeaderIndex, $oldHeaderIndex + 1);
+            }
 
-        if ('' !== self::$headerComment) {
-            $headCommentTokens[] = new Token(array(T_COMMENT, self::$headerComment));
-            $headCommentTokens[] = new Token(array(T_WHITESPACE, "\n\n"));
+            return;
         }
 
-        $tokens->insertAt($index, $headCommentTokens);
+        $headCommentTokens = array(
+            new Token(array(T_WHITESPACE, "\n")),
+            new Token(array(T_COMMENT, $this->headerComment)),
+            new Token(array(T_WHITESPACE, "\n\n")),
+        );
+
+        $newHeaderIndex = null !== $oldHeaderIndex
+            ? $oldHeaderIndex + 1
+            : $this->findHeaderCommentInsertionIndex($tokens) - 1
+        ;
+
+        $tokens->overrideRange(1, $newHeaderIndex, $headCommentTokens);
+    }
+
+    /**
+     * Set the desired header text.
+     *
+     * The given text will be trimmed and enclosed into a multiline comment.
+     * If the text is empty, when a file get fixed, the header comment will be
+     * erased.
+     *
+     * @param string $header
+     */
+    private function setHeader($header)
+    {
+        $this->header = trim((string) $header);
+        $this->headerComment = '';
+
+        if ('' !== $this->header) {
+            $this->headerComment = $this->encloseTextInComment($this->header);
+        }
     }
 }

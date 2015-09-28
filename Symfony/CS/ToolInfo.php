@@ -15,8 +15,10 @@ namespace Symfony\CS;
  * Obtain information about using version of tool.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
-class ToolInfo
+final class ToolInfo
 {
     const COMPOSER_INSTALLED_FILE = '/../../composer/installed.json';
     const COMPOSER_PACKAGE_NAME = 'fabpot/php-cs-fixer';

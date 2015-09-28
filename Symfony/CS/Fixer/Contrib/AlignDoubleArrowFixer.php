@@ -19,8 +19,16 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
  */
-class AlignDoubleArrowFixer extends AbstractAlignFixer
+final class AlignDoubleArrowFixer extends AbstractAlignFixer
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOUBLE_ARROW);
+    }
+
     /**
      * Level counter of the current nest level.
      * So one level alignments are not mixed with
@@ -31,26 +39,25 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
     private $currentLevel;
 
     /**
-     * Keep track of the deepest level ever achieved while
-     * parsing the code. Used later to replace alignment
-     * placeholders with spaces.
-     *
-     * @var int
-     */
-    private $deepestLevel;
-
-    /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $this->currentLevel = 0;
         $this->deepestLevel = 0;
-        $tokens = Tokens::fromCode($content);
 
-        $this->injectAlignmentPlaceholders($tokens);
+        // This fixer works partially on Tokens and partially on string representation of code.
+        // During the process of fixing internal state of single Token may be affected by injecting ALIGNABLE_PLACEHOLDER to its content.
+        // The placeholder will be resolved by `replacePlaceholder` method by removing placeholder or changing it into spaces.
+        // That way of fixing the code causes disturbances in marking Token as changed - if code is perfectly valid then placeholder
+        // still be injected and removed, which will cause the `changed` flag to be set.
+        // To handle that unwanted behavior we work on clone of Tokens collection and then override original collection with fixed collection.
+        $tokensClone = clone $tokens;
 
-        return $this->replacePlaceholder($tokens, $this->deepestLevel);
+        $this->injectAlignmentPlaceholders($tokensClone);
+        $content = $this->replacePlaceholder($tokensClone);
+
+        $tokens->setCode($content);
     }
 
     /**
@@ -110,14 +117,14 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
                 continue;
             }
 
-            if ($token->equals('[')) {
+            if ($token->isGivenKind(CT_ARRAY_SQUARE_BRACE_OPEN)) {
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
                 if ($prevToken->isGivenKind(array(T_STRING, T_VARIABLE))) {
                     continue;
                 }
 
                 $from = $index;
-                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $from);
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $from);
                 $index = $until;
 
                 ++$this->deepestLevel;
@@ -133,7 +140,7 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
                 $nextToken = $tokens[$index + 1];
                 if (!$nextToken->isWhitespace()) {
                     $tokenContent .= ' ';
-                } elseif ($nextToken->isWhitespace(array('whitespaces' => " \t"))) {
+                } elseif ($nextToken->isWhitespace(" \t")) {
                     $nextToken->setContent(' ');
                 }
 

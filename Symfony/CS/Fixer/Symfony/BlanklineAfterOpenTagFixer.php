@@ -18,29 +18,35 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Ceeram <ceeram@cakephp.org>
  */
-class BlanklineAfterOpenTagFixer extends AbstractFixer
+final class BlanklineAfterOpenTagFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_OPEN_TAG);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         // ignore non-monolithic files
         if (!$tokens->isMonolithicPhp()) {
-            return $content;
+            return;
         }
 
         // ignore files with short open tag
         if (!$tokens[0]->isGivenKind(T_OPEN_TAG)) {
-            return $content;
+            return;
         }
 
         $newlineFound = false;
         /** @var Token $token */
         foreach ($tokens as $token) {
-            if ($token->isWhitespace(array('whitespaces' => "\n"))) {
+            if ($token->isWhitespace("\n")) {
                 $newlineFound = true;
                 break;
             }
@@ -48,7 +54,7 @@ class BlanklineAfterOpenTagFixer extends AbstractFixer
 
         // ignore one-line files
         if (!$newlineFound) {
-            return $content;
+            return;
         }
 
         $token = $tokens[0];
@@ -60,8 +66,6 @@ class BlanklineAfterOpenTagFixer extends AbstractFixer
         if (!$tokens[1]->isWhitespace() && false === strpos($tokens[1]->getContent(), "\n")) {
             $tokens->insertAt(1, new Token(array(T_WHITESPACE, "\n")));
         }
-
-        return $tokens->generateCode();
     }
 
     /**

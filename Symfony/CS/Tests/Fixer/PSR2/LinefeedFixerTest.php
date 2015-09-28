@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
-class LinefeedFixerTest extends AbstractFixerTestBase
+final class LinefeedFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

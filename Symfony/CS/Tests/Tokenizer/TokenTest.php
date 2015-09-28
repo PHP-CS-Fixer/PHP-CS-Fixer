@@ -15,8 +15,10 @@ use Symfony\CS\Tokenizer\Token;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
-class TokenTest extends \PHPUnit_Framework_TestCase
+final class TokenTest extends \PHPUnit_Framework_TestCase
 {
     public function getBraceToken()
     {
@@ -35,7 +37,7 @@ class TokenTest extends \PHPUnit_Framework_TestCase
 
     public function getForeachTokenPrototype()
     {
-        static $prototype = array(T_FOREACH, 'foreach', 123);
+        static $prototype = array(T_FOREACH, 'foreach');
 
         return $prototype;
     }
@@ -47,7 +49,6 @@ class TokenTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame('', $token->getContent());
         $this->assertNull($token->getId());
-        $this->assertNull($token->getLine());
         $this->assertFalse($token->isArray());
     }
 
@@ -198,9 +199,13 @@ class TokenTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideIsWhitespaceCases
      */
-    public function testIsWhitespace($token, $isWhitespace, array $opts = array())
+    public function testIsWhitespace($token, $isWhitespace, $whitespaces = null)
     {
-        $this->assertSame($isWhitespace, $token->isWhitespace($opts));
+        if (null !== $whitespaces) {
+            $this->assertSame($isWhitespace, $token->isWhitespace($whitespaces));
+        } else {
+            $this->assertSame($isWhitespace, $token->isWhitespace());
+        }
     }
 
     public function provideIsWhitespaceCases()
@@ -210,12 +215,12 @@ class TokenTest extends \PHPUnit_Framework_TestCase
             array($this->getForeachToken(), false),
             array(new Token(' '), true),
             array(new Token("\t "), true),
-            array(new Token("\t "), false, array('whitespaces' => ' ')),
+            array(new Token("\t "), false, ' '),
             array(new Token(array(T_WHITESPACE, "\r", 1)), true),
             array(new Token(array(T_WHITESPACE, "\0", 1)), true),
             array(new Token(array(T_WHITESPACE, "\x0B", 1)), true),
             array(new Token(array(T_WHITESPACE, "\n", 1)), true),
-            array(new Token(array(T_WHITESPACE, "\n", 1)), false, array('whitespaces' => " \t")),
+            array(new Token(array(T_WHITESPACE, "\n", 1)), false, " \t"),
         );
     }
 
@@ -226,7 +231,6 @@ class TokenTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($prototype[0], $token->getId());
         $this->assertSame($prototype[1], $token->getContent());
-        $this->assertSame($prototype[2], $token->getLine());
         $this->assertTrue($token->isArray());
     }
 
@@ -237,7 +241,6 @@ class TokenTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($prototype, $token->getContent());
         $this->assertNull($token->getId());
-        $this->assertNull($token->getLine());
         $this->assertFalse($token->isArray());
     }
 
@@ -269,6 +272,7 @@ class TokenTest extends \PHPUnit_Framework_TestCase
             array($brace, true, '(', false),
             array($function, false, '('),
             array($function, false, '(', false),
+
             array($function, false, array(T_NAMESPACE)),
             array($function, false, array(T_NAMESPACE), false),
             array($function, false, array(T_VARIABLE, 'function')),
@@ -283,16 +287,12 @@ class TokenTest extends \PHPUnit_Framework_TestCase
             array($function, true, array(T_FUNCTION, 'Function'), false),
             array($function, false, array(T_FUNCTION, 'junction'), false),
 
-            // Line number is checked too, as well as any additional field, if it is an array
-            array($function, true, new Token(array(T_FUNCTION, 'function', 1))),
-            array($function, true, new Token(array(T_FUNCTION, 'Function', 1)), false),
-            array($function, false, new Token(array(T_FUNCTION, 'function', 10))),
-            array($function, false, new Token(array(T_FUNCTION, 'function', 10)), false),
-            array($function, true, array(T_FUNCTION, 'function', 1)),
-            array($function, true, array(T_FUNCTION, 'Function', 1), false),
-            array($function, false, array(T_FUNCTION, 'function', 10)),
-            array($function, false, array(T_FUNCTION, 'function', 10), false),
-            array($function, false, array(T_FUNCTION, 'function', 1, 'unexpected')),
+            array($function, true, new Token(array(T_FUNCTION, 'function'))),
+            array($function, false, new Token(array(T_FUNCTION, 'Function'))),
+            array($function, true, new Token(array(T_FUNCTION, 'Function')), false),
+
+            // if it is an array any additional field is checked too
+            array($function, false, array(T_FUNCTION, 'function', 'unexpected')),
         );
     }
 

@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
-class FunctionTypehintSpaceFixerTest extends AbstractFixerTestBase
+final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

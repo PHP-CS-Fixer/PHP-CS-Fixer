@@ -16,8 +16,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Ceeram <ceeram@cakephp.org>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
-class BlanklineAfterOpenTagFixerTest extends AbstractFixerTestBase
+final class BlanklineAfterOpenTagFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

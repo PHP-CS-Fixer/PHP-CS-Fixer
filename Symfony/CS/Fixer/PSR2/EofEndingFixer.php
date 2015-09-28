@@ -16,25 +16,35 @@ use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
+ * A file must always end with a linefeed character.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class EofEndingFixer extends AbstractFixer
+final class EofEndingFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return true;
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         $count = $tokens->count();
+
         if (0 === $count) {
-            return '';
+            return;
         }
 
         $token = $tokens[$count - 1];
         if ($token->isGivenKind(array(T_INLINE_HTML, T_CLOSE_TAG, T_OPEN_TAG))) {
-            return $content;
+            return;
         }
 
         if ($token->isWhitespace()) {
@@ -43,8 +53,6 @@ class EofEndingFixer extends AbstractFixer
         } else {
             $tokens->insertAt($count, new Token(array(T_WHITESPACE, "\n")));
         }
-
-        return $tokens->generateCode();
     }
 
     /**

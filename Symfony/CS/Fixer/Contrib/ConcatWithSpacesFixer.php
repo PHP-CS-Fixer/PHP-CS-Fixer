@@ -18,15 +18,21 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ConcatWithSpacesFixer extends AbstractFixer
+final class ConcatWithSpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound('.');
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
@@ -40,8 +46,6 @@ class ConcatWithSpacesFixer extends AbstractFixer
                 }
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

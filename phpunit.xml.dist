@@ -15,10 +15,14 @@
         <testsuite name="general">
             <directory>./Symfony/CS/Tests/</directory>
             <exclude>
+                <directory>./Symfony/CS/Tests/Console/</directory>
                 <directory>./Symfony/CS/Tests/Fixer/</directory>
                 <directory>./Symfony/CS/Tests/Fixtures/</directory>
                 <directory>./Symfony/CS/Tests/Tokenizer/</directory>
             </exclude>
+        </testsuite>
+        <testsuite name="console">
+            <directory>./Symfony/CS/Tests/Console/</directory>
         </testsuite>
         <testsuite name="fixer">
             <directory>./Symfony/CS/Tests/Fixer/</directory>

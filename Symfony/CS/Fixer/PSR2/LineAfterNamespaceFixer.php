@@ -20,37 +20,43 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class LineAfterNamespaceFixer extends AbstractFixer
+final class LineAfterNamespaceFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_NAMESPACE);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_NAMESPACE)) {
-                $semicolonIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
-                $semicolonToken = $tokens[$semicolonIndex];
+            if (!$token->isGivenKind(T_NAMESPACE)) {
+                continue;
+            }
 
-                if (!isset($tokens[$semicolonIndex + 1]) || !$semicolonToken->equals(';')) {
-                    continue;
-                }
+            $semicolonIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
+            $semicolonToken = $tokens[$semicolonIndex];
 
-                $nextToken = $tokens[$semicolonIndex + 1];
+            if (!isset($tokens[$semicolonIndex + 1]) || !$semicolonToken->equals(';')) {
+                continue;
+            }
 
-                if (!$nextToken->isWhitespace()) {
-                    $tokens->insertAt($semicolonIndex + 1, new Token(array(T_WHITESPACE, "\n\n")));
-                } else {
-                    $nextToken->setContent("\n\n".ltrim($nextToken->getContent()));
-                }
+            $nextToken = $tokens[$semicolonIndex + 1];
+
+            if (!$nextToken->isWhitespace()) {
+                $tokens->insertAt($semicolonIndex + 1, new Token(array(T_WHITESPACE, "\n\n")));
+            } else {
+                $nextToken->setContent("\n\n".ltrim($nextToken->getContent()));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

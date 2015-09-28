@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
+ *
+ * @internal
  */
-class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestBase
+final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideExamples
@@ -39,6 +41,7 @@ class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestBase
             array("<?php\nnamespace X;", "<?php\n\n\n\nnamespace X;"),
             array("<?php\r\nnamespace X;"),
             array("<?php\r\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"),
+            array("<?php\n\nnamespace\\Sub\\Foo::bar();"),
         );
     }
 

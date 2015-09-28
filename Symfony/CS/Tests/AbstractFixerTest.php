@@ -13,19 +13,11 @@ namespace Symfony\CS\Tests;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
-class AbstractFixerTest extends \PHPUnit_Framework_TestCase
+final class AbstractFixerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @expectedException        \LogicException
-     * @expectedExceptionMessage Can not determine Fixer level
-     */
-    public function testLevelThatNotExists()
-    {
-        $mockup = $this->getMockForAbstractClass('\\Symfony\\CS\\AbstractFixer');
-        $mockup->getLevel();
-    }
-
     public function testSupports()
     {
         $mockup = $this->getMockForAbstractClass('\\Symfony\\CS\\AbstractFixer');

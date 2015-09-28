@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Matteo Beccati <matteo@beccati.com>
+ *
+ * @internal
  */
-class EregToPregFixerTest extends AbstractFixerTestBase
+final class EregToPregFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideExamples

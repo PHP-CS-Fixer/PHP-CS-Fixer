@@ -19,12 +19,20 @@ use Symfony\CS\Utils;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
+final class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         static $forbiddenSuccessors = array(
             T_DOC_COMMENT,
@@ -37,9 +45,10 @@ class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
             T_BREAK,
         );
 
-        $tokens = Tokens::fromCode($content);
-
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
             // get the next non-whitespace token inc comments, provided
             // that there is whitespace between it and the current token
             $next = $tokens->getNextNonWhitespace($index);
@@ -47,8 +56,6 @@ class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
                 $this->fixWhitespace($tokens[$index + 1]);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

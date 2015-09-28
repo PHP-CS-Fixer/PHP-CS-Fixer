@@ -49,6 +49,7 @@ Create a new file in
 Put this content inside:
 ```php
 <?php
+
 /*
  * This file is part of the PHP CS utility.
  *
@@ -57,6 +58,7 @@ Put this content inside:
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
@@ -81,6 +83,7 @@ content inside:
 
 ```php
 <?php
+
 /*
  * This file is part of the PHP CS utility.
  *
@@ -89,6 +92,7 @@ content inside:
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
@@ -162,6 +166,7 @@ like:
 `Symfony/CS/Tests/Fixer/Contrib/RemoveCommentsFixerTest.php`
 ```php
 <?php
+
 /*
  * This file is part of the PHP CS utility.
  *
@@ -170,6 +175,7 @@ like:
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
@@ -210,13 +216,28 @@ We need first to create one method to describe what this fixer does:
 ```php
 class RemoveCommentsFixer extends AbstractFixer
 {
-    ...
     /**
      * {@inheritdoc}
      */
     public function getDescription()
     {
         return 'Removes all comments of the code that are preceded by ";" (semicolon).'; // Trailing dot is important. We thrive to use English grammar properly.
+    }
+}
+```
+
+Next, we must filter what type of tokens we want to fix. Here, we are interested in code that contains `T_COMMENT` tokens:
+`Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
+```php
+class RemoveCommentsFixer extends AbstractFixer
+{
+    ...
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_COMMENT);
     }
 }
 ```
@@ -229,12 +250,11 @@ class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
-        return $tokens->generateCode();
+        // no action
     }
+    ...
 }
 ```
 
@@ -279,17 +299,17 @@ class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        foreach($tokens as $index => $token){
+            if (!$token->isGivenKind(T_COMMENT)) {
+                continue;
+            }
 
-        $foundComments = $tokens->findGivenKind(T_COMMENT);
-        foreach($foundComments as $index => $token){
-
+            // need to figure out what to do here!
         }
-
-        return $tokens->generateCode();
     }
+    ...
 }
 ```
 
@@ -302,12 +322,13 @@ class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        foreach($tokens as $index => $token){
+            if (!$token->isGivenKind(T_COMMENT)) {
+                continue;
+            }
 
-        $foundComments = $tokens->findGivenKind(T_COMMENT);
-        foreach($foundComments as $index => $token){
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevTokenIndex];
 
@@ -315,15 +336,15 @@ class RemoveCommentsFixer extends AbstractFixer
                 $token->clear();
             }
         }
-
-        return $tokens->generateCode();
     }
+    ...
 }
 ```
 
 So the fixer in the end looks like this:
 ```php
 <?php
+
 /*
  * This file is part of the PHP CS utility.
  *
@@ -333,6 +354,7 @@ So the fixer in the end looks like this:
  * with this source code in the file LICENSE.
  *
  */
+
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
@@ -345,11 +367,12 @@ class RemoveCommentsFixer extends AbstractFixer {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content) {
-        $tokens = Tokens::fromCode($content);
+    public function fix(\SplFileInfo $file, Tokens $tokens) {
+        foreach($tokens as $index => $token){
+            if (!$token->isGivenKind(T_COMMENT)) {
+                continue;
+            }
 
-        $foundComments = $tokens->findGivenKind(T_COMMENT);
-        foreach ($foundComments as $index => $token) {
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevTokenIndex];
 
@@ -357,8 +380,6 @@ class RemoveCommentsFixer extends AbstractFixer {
                 $token->clear();
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -366,6 +387,14 @@ class RemoveCommentsFixer extends AbstractFixer {
      */
     public function getDescription() {
         return 'Removes all comments of the code that are preceded by ";" (semicolon).';// Trailing dot is important. We thrive to use English grammar properly.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_COMMENT);
     }
 }
 ```

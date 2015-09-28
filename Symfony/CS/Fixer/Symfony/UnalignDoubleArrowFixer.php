@@ -18,8 +18,16 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class UnalignDoubleArrowFixer extends AbstractFixer
+final class UnalignDoubleArrowFixer extends AbstractFixer
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOUBLE_ARROW);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,10 +39,8 @@ class UnalignDoubleArrowFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOUBLE_ARROW)) {
                 continue;
@@ -43,8 +49,6 @@ class UnalignDoubleArrowFixer extends AbstractFixer
             $this->fixWhitespace($tokens[$index - 1]);
             $this->fixWhitespace($tokens[$index + 1]);
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -54,7 +58,7 @@ class UnalignDoubleArrowFixer extends AbstractFixer
      */
     private function fixWhitespace(Token $token)
     {
-        if ($token->isWhitespace(array('whitespaces' => " \t"))) {
+        if ($token->isWhitespace(" \t")) {
             $token->setContent(' ');
         }
     }

@@ -13,7 +13,10 @@ namespace Symfony\CS\Tests\Finder;
 
 use Symfony\CS\Finder\DefaultFinder;
 
-class DefaultFinderTest extends \PHPUnit_Framework_TestCase
+/**
+ * @internal
+ */
+final class DefaultFinderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException \LogicException

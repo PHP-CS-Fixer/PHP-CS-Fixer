@@ -20,15 +20,21 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Marc Aubé
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ParenthesisFixer extends AbstractFixer
+final class ParenthesisFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound('(');
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         foreach ($tokens as $index => $token) {
             if (!$token->equals('(')) {
                 continue;
@@ -51,8 +57,6 @@ class ParenthesisFixer extends AbstractFixer
                 $this->removeSpaceAroundToken($tokens, $endIndex, -1);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

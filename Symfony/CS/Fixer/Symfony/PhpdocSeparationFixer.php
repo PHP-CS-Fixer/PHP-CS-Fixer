@@ -20,23 +20,32 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocSeparationFixer extends AbstractFixer
+final class PhpdocSeparationFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
 
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
             $doc = new DocBlock($token->getContent());
             $this->fixDescription($doc);
             $this->fixAnnotations($doc);
+
             $token->setContent($doc->getContent());
         }
-
-        return $tokens->generateCode();
     }
 
     /**

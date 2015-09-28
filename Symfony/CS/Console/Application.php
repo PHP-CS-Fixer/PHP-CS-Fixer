@@ -19,8 +19,10 @@ use Symfony\CS\Fixer;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @internal
  */
-class Application extends BaseApplication
+final class Application extends BaseApplication
 {
     /**
      * Constructor.

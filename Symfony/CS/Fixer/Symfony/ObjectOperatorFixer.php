@@ -18,29 +18,37 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ObjectOperatorFixer extends AbstractFixer
+final class ObjectOperatorFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_OBJECT_OPERATOR);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         // [Structure] there should not be space before or after T_OBJECT_OPERATOR
-        $tokens = Tokens::fromCode($content);
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_OBJECT_OPERATOR)) {
+                continue;
+            }
 
-        foreach ($tokens->findGivenKind(T_OBJECT_OPERATOR) as $index => $token) {
             // clear whitespace before ->
-            if ($tokens[$index - 1]->isWhitespace(array('whitespaces' => " \t")) && !$tokens[$index - 2]->isComment()) {
+            if ($tokens[$index - 1]->isWhitespace(" \t") && !$tokens[$index - 2]->isComment()) {
                 $tokens[$index - 1]->clear();
             }
 
             // clear whitespace after ->
-            if ($tokens[$index + 1]->isWhitespace(array('whitespaces' => " \t")) && !$tokens[$index + 2]->isComment()) {
+            if ($tokens[$index + 1]->isWhitespace(" \t") && !$tokens[$index + 2]->isComment()) {
                 $tokens[$index + 1]->clear();
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

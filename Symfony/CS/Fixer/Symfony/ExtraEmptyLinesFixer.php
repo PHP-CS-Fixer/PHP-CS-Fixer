@@ -17,16 +17,26 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class ExtraEmptyLinesFixer extends AbstractFixer
+final class ExtraEmptyLinesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_WHITESPACE);
+    }
 
-        foreach ($tokens->findGivenKind(T_WHITESPACE) as $token) {
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $token) {
+            if (!$token->isWhitespace()) {
+                continue;
+            }
+
             $content = '';
             $count = 0;
             $parts = explode("\n", $token->getContent());
@@ -47,8 +57,6 @@ class ExtraEmptyLinesFixer extends AbstractFixer
 
             $token->setContent($content);
         }
-
-        return $tokens->generateCode();
     }
 
     /**

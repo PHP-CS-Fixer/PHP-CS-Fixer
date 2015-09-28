@@ -42,16 +42,9 @@ interface ConfigInterface
     public function getFinder();
 
     /**
-     * Returns the level to run.
-     *
-     * @return int A level
-     */
-    public function getLevel();
-
-    /**
      * Returns the fixers to run.
      *
-     * @return array A list of fixer names
+     * @return FixerInterface[]
      */
     public function getFixers();
 
@@ -59,6 +52,8 @@ interface ConfigInterface
      * Sets the root directory of the project.
      *
      * @param string $dir The project root directory
+     *
+     * @return $this
      */
     public function setDir($dir);
 
@@ -68,6 +63,13 @@ interface ConfigInterface
      * @return string The project root directory
      */
     public function getDir();
+
+    /**
+     * Returns true if progress should be hidden.
+     *
+     * @return bool
+     */
+    public function getHideProgress();
 
     /**
      * Adds an instance of a custom fixer.
@@ -82,4 +84,103 @@ interface ConfigInterface
      * @return FixerInterface[]
      */
     public function getCustomFixers();
+
+    /**
+     * Returns true if caching should be enabled.
+     *
+     * @return bool
+     */
+    public function usingCache();
+
+    /**
+     * Returns true if linter should be enabled.
+     *
+     * @return bool
+     */
+    public function usingLinter();
+
+    /**
+     * Sets the path to the cache file.
+     *
+     * @param string $cacheFile
+     *
+     * @return ConfigInterface
+     */
+    public function setCacheFile($cacheFile);
+
+    /**
+     * Returns the path to the cache file.
+     *
+     * @return string
+     */
+    public function getCacheFile();
+
+    /**
+     * Get configured PHP executable, if any.
+     *
+     * @return string|null
+     */
+    public function getPhpExecutable();
+
+    /**
+     * Check if it is allowed to run risky fixers.
+     *
+     * @return bool
+     */
+    public function getRiskyAllowed();
+
+    /**
+     * Set if it is allowed to run risky fixers.
+     *
+     * @param bool $isAllowed
+     *
+     * @return $this
+     */
+    public function setRiskyAllowed($isRiskyAllowed);
+
+    /**
+     * Get rules.
+     *
+     * Keys of array are names of fixers/sets, values are true/false.
+     *
+     * @return array
+     */
+    public function getRules();
+
+    /**
+     * Set rules.
+     *
+     * Keys of array are names of fixers or sets.
+     * Value for set must be bool (turn it on or off).
+     * Value for fixer may be bool (turn it on or off) or array of configuration
+     * (turn it on and contains configuration for FixerInterface::configure method).
+     *
+     * @param array $rules
+     *
+     * @return $this
+     */
+    public function setRules(array $rules);
+
+    /**
+     * Add rules.
+     *
+     * Rules array will be merge to the current one.
+     *
+     * @param array $rules
+     *
+     * @return $this
+     */
+    public function addRules(array $rules);
+
+    /**
+     * Add rule.
+     *
+     * Rule will be added to the others.
+     *
+     * @param string     $name
+     * @param bool|array $options
+     *
+     * @return $this
+     */
+    public function addRule($name, $options);
 }

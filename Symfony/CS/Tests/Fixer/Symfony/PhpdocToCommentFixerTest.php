@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
+ *
+ * @internal
  */
-class PhpdocToCommentFixerTest extends AbstractFixerTestBase
+final class PhpdocToCommentFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideDocblocks

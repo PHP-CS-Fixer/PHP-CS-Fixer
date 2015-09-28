@@ -16,6 +16,8 @@ use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
+ *
+ * @internal
  */
 abstract class AbstractAnnotationRemovalFixer extends AbstractFixer
 {

@@ -11,27 +11,56 @@
 
 namespace Symfony\CS;
 
+use Symfony\CS\Tokenizer\Tokens;
+
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
 interface FixerInterface
 {
-    const NONE_LEVEL = 0;
-    const PSR0_LEVEL = 1;
-    const PSR1_LEVEL = 3;
-    const PSR2_LEVEL = 7;
-    const SYMFONY_LEVEL = 15;
-    const CONTRIB_LEVEL = 32;
+    /**
+     * Set configuration.
+     *
+     * Some fixers may have no configuration, then - simply pass null.
+     * Other ones may have configuration that will change behavior of fixer,
+     * eg `php_unit_strict` fixer allows to configure which methods should be fixed.
+     * Finally, some fixers need configuration to work, eg `header_comment`.
+     *
+     * @param array|null $configuration configuration depends on Fixer
+     */
+    public function configure(array $configuration = null);
+
+    /**
+     * Check if the fixer is a candidate for given Tokens collection.
+     *
+     * Fixer is a candidate when the collection contains tokens that may be fixed
+     * during fixer work. This could be considered as some kind of bloom filter.
+     * When this method returns true then to the Tokens collection may or may not
+     * need a fixing, but when this method returns false then the Tokens collection
+     * need no fixing for sure.
+     *
+     * @param Tokens $tokens
+     *
+     * @return bool
+     */
+    public function isCandidate(Tokens $tokens);
+
+    /**
+     * Check if fixer is risky or not.
+     *
+     * Risky fixer could change code behavior!
+     *
+     * @return bool
+     */
+    public function isRisky();
 
     /**
      * Fixes a file.
      *
-     * @param \SplFileInfo $file    A \SplFileInfo instance
-     * @param string       $content The file content
-     *
-     * @return string The fixed file content
+     * @param \SplFileInfo $file   A \SplFileInfo instance
+     * @param Tokens       $tokens Tokens collection
      */
-    public function fix(\SplFileInfo $file, $content);
+    public function fix(\SplFileInfo $file, Tokens $tokens);
 
     /**
      * Returns the description of the fixer.
@@ -41,18 +70,6 @@ interface FixerInterface
      * @return string The description of the fixer
      */
     public function getDescription();
-
-    /**
-     * Returns the level of CS standard.
-     *
-     * Can be one of:
-     *  - self::PSR0_LEVEL,
-     *  - self::PSR1_LEVEL,
-     *  - self::PSR2_LEVEL,
-     *  - self::SYMFONY_LEVEL,
-     *  - self::CONTRIB_LEVEL.
-     */
-    public function getLevel();
 
     /**
      * Returns the name of the fixer.

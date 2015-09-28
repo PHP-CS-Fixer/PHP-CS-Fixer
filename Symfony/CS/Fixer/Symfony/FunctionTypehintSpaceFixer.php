@@ -18,15 +18,21 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class FunctionTypehintSpaceFixer extends AbstractFixer
+final class FunctionTypehintSpaceFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_FUNCTION);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
@@ -57,12 +63,10 @@ class FunctionTypehintSpaceFixer extends AbstractFixer
                 }
 
                 if (!$tokens[$iter - 1]->equalsAny(array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT), '(', ','))) {
-                    $tokens->insertAt($iter, new Token(array(T_WHITESPACE, ' ', $tokens[$iter]->getLine())));
+                    $tokens->insertAt($iter, new Token(array(T_WHITESPACE, ' ')));
                 }
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

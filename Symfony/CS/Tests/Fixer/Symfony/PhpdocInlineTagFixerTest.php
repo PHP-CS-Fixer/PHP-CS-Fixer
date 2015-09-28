@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * Test PhpdocInlineTagFixer.
+ *
+ * @internal
  */
-class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
+final class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideTestFixInlineDocCases
@@ -119,7 +121,6 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
         }
 
         // don't touch well formatted tags
-
         foreach (array('example', 'id', 'internal', 'inheritdoc', 'link', 'source', 'toc', 'tutorial') as $tag) {
             $cases[] = array(
                 sprintf("<?php\n     /**\n      * {@%s}\n      */\n", $tag),

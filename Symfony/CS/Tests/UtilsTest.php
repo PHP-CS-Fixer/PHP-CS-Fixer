@@ -18,8 +18,10 @@ use Symfony\CS\Utils;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
  * @author Odín del Río <odin.drp@gmail.com>
+ *
+ * @internal
  */
-class UtilsTest extends \PHPUnit_Framework_TestCase
+final class UtilsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider provideCamelCaseToUnderscoreCases
@@ -135,7 +137,7 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The given token must be whitespace.
+     * @expectedExceptionMessage The given token must be whitespace, got "T_STRING".
      */
     public function testCalculateTrailingWhitespaceIndentFail()
     {

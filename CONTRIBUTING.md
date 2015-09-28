@@ -37,4 +37,5 @@ before opening a PR.
  * [PSR-4: Autoloading Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
  * [PSR-5: PHPDoc (draft)](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md)
  * [Symfony Coding Standards](http://symfony.com/doc/current/contributing/code/standards.html)
+ * [Symfony Documentation Standards](http://symfony.com/doc/current/contributing/documentation/standards.html)
  * Keep the order of class elements: static properties, instance properties, constructor (or setUp for PHPUnit), destructor (or tearDown for PHPUnit), static methods, instance methods, magic static methods, magic instance methods.

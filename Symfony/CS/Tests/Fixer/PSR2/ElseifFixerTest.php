@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
+ *
+ * @internal
  */
-class ElseifFixerTest extends AbstractFixerTestBase
+final class ElseifFixerTest extends AbstractFixerTestBase
 {
     /**
      * @covers Symfony\CS\Fixer\PSR2\ElseifFixer::fix

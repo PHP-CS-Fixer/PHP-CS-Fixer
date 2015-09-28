@@ -17,18 +17,22 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocNoAccessFixer extends AbstractAnnotationRemovalFixer
+final class PhpdocNoAccessFixer extends AbstractAnnotationRemovalFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         $this->removeAnnotations($tokens, array('access'));
-
-        return $tokens->generateCode();
     }
 
     /**

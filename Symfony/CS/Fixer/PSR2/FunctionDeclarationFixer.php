@@ -13,22 +13,31 @@ namespace Symfony\CS\Fixer\PSR2;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * Fixer for rules defined in PSR2 generally (¶1 and ¶6).
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class FunctionDeclarationFixer extends AbstractFixer
+final class FunctionDeclarationFixer extends AbstractFixer
 {
-    private $singleLineWhitespaceOptions = array('whitespaces' => " \t");
+    private $singleLineWhitespaceOptions = " \t";
 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_FUNCTION);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
@@ -57,35 +66,35 @@ class FunctionDeclarationFixer extends AbstractFixer
             $afterParenthesisIndex = $tokens->getNextNonWhitespace($endParenthesisIndex);
             $afterParenthesisToken = $tokens[$afterParenthesisIndex];
 
-            if ($afterParenthesisToken->isGivenKind(T_USE)) {
+            if ($afterParenthesisToken->isGivenKind(CT_USE_LAMBDA)) {
                 $useStartParenthesisIndex = $tokens->getNextTokenOfKind($afterParenthesisIndex, array('('));
                 $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $useStartParenthesisIndex);
 
-                // fix whitespace after T_USE
+                // fix whitespace after CT_USE_LAMBDA
                 $tokens->ensureWhitespaceAtIndex($afterParenthesisIndex + 1, 0, ' ');
 
                 // remove single-line edge whitespaces inside use parentheses
                 $this->fixParenthesisInnerEdge($tokens, $useStartParenthesisIndex, $useEndParenthesisIndex);
 
-                // fix whitespace before T_USE
+                // fix whitespace before CT_USE_LAMBDA
                 $tokens->ensureWhitespaceAtIndex($afterParenthesisIndex - 1, 1, ' ');
             }
 
             // remove single-line edge whitespaces inside parameters list parentheses
             $this->fixParenthesisInnerEdge($tokens, $startParenthesisIndex, $endParenthesisIndex);
 
-            // remove whitespace before (
-            // eg: `function foo () {}` => `function foo() {}`
-            if ($tokens[$startParenthesisIndex - 1]->isWhitespace()) {
-                $tokens[$startParenthesisIndex - 1]->clear();
+            if (!$tokensAnalyzer->isLambda($index)) {
+                // remove whitespace before (
+                // eg: `function foo () {}` => `function foo() {}`
+                if ($tokens[$startParenthesisIndex - 1]->isWhitespace()) {
+                    $tokens[$startParenthesisIndex - 1]->clear();
+                }
             }
 
             // fix whitespace after T_FUNCTION
             // eg: `function     foo() {}` => `function foo() {}`
             $tokens->ensureWhitespaceAtIndex($index + 1, 0, ' ');
         }
-
-        return $tokens->generateCode();
     }
 
     /**

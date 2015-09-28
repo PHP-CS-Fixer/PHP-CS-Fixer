@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
+ *
+ * @internal
  */
-class NoEmptyLinesAfterPhpdocsFixerTest extends AbstractFixerTestBase
+final class NoEmptyLinesAfterPhpdocsFixerTest extends AbstractFixerTestBase
 {
     public function testSimpleExampleIsNotChanged()
     {

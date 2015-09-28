@@ -17,22 +17,26 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Jared Henderson <jared@netrivet.com>
  */
-class TrimArraySpacesFixer extends AbstractFixer
+final class TrimArraySpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isAnyTokenKindsFound(array(T_ARRAY, CT_ARRAY_SQUARE_BRACE_OPEN));
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {
-            if ($tokens->isArray($index)) {
+            if ($tokens[$index]->isGivenKind(array(T_ARRAY, CT_ARRAY_SQUARE_BRACE_OPEN))) {
                 self::fixArray($tokens, $index);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -51,41 +55,39 @@ class TrimArraySpacesFixer extends AbstractFixer
      */
     private static function fixArray(Tokens $tokens, $index)
     {
-        static $whitespaceOptions = array('whitespaces' => " \t");
-
         $startIndex = $index;
 
         if ($tokens[$startIndex]->isGivenKind(T_ARRAY)) {
             $startIndex = $tokens->getNextMeaningfulToken($startIndex);
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
         } else {
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $startIndex);
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
         }
 
         $nextToken = $tokens[$startIndex + 1];
         $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($startIndex);
         $nextNonWhitespaceToken = $tokens[$nextNonWhitespaceIndex];
+        $tokenAfterNextNonWhitespaceToken = $tokens[$nextNonWhitespaceIndex + 1];
 
         $prevToken = $tokens[$endIndex - 1];
         $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($endIndex);
         $prevNonWhitespaceToken = $tokens[$prevNonWhitespaceIndex];
 
         if (
-            $nextToken->isWhitespace($whitespaceOptions)
+            $nextToken->isWhitespace(" \t")
             && (
                 !$nextNonWhitespaceToken->isComment()
                 || $nextNonWhitespaceIndex === $prevNonWhitespaceIndex
-                || false === strpos($nextNonWhitespaceToken->getContent(), "\n")
+                || $tokenAfterNextNonWhitespaceToken->isWhitespace(" \t")
+                || '/*' === substr($nextNonWhitespaceToken->getContent(), 0, 2)
             )
         ) {
             $nextToken->clear();
         }
 
         if (
-            $prevToken->isWhitespace($whitespaceOptions)
+            $prevToken->isWhitespace(" \t")
             && !$prevNonWhitespaceToken->equals(',')
-            // TODO: following condition should be removed on 2.0 line thanks to WhitespacyCommentTransformer
-            && !($prevNonWhitespaceToken->isComment() && $prevNonWhitespaceToken->getContent() !== rtrim($prevNonWhitespaceToken->getContent()))
         ) {
             $prevToken->clear();
         }

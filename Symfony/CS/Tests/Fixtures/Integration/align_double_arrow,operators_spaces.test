@@ -1,8 +1,7 @@
 --TEST--
 Integration of fixers: align_double_arrow,operators_spaces.
 --CONFIG--
-level=none
-fixers=align_double_arrow,operators_spaces
+{"align_double_arrow": true, "operators_spaces": true}
 --INPUT--
 <?php
 $array = [

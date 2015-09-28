@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @internal
  */
-class SingleQuoteFixerTest extends AbstractFixerTestBase
+final class SingleQuoteFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideTestFixCases

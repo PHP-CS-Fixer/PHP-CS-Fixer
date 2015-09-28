@@ -17,22 +17,28 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNamespaceFixer
+final class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNamespaceFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_NAMESPACE);
+    }
 
-        foreach ($tokens as $index => $token) {
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            $token = $tokens[$index];
+
             if ($token->isGivenKind(T_NAMESPACE)) {
                 $this->fixLinesBeforeNamespace($tokens, $index, 2);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

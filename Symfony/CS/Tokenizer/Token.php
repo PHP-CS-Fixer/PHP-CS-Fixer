@@ -43,11 +43,43 @@ class Token
     private $isArray;
 
     /**
-     * Line of token prototype occurrence, if available.
+     * Flag is token was changed.
      *
-     * @var int|null
+     * @var bool
      */
-    private $line;
+    private $changed = false;
+
+    /**
+     * Get cast token kinds.
+     *
+     * @return int[]
+     */
+    public static function getCastTokenKinds()
+    {
+        static $castTokens = array(T_ARRAY_CAST, T_BOOL_CAST, T_DOUBLE_CAST, T_INT_CAST, T_OBJECT_CAST, T_STRING_CAST, T_UNSET_CAST);
+
+        return $castTokens;
+    }
+
+    /**
+     * Get classy tokens kinds: T_CLASS, T_INTERFACE and T_TRAIT (if defined).
+     *
+     * @return int[]
+     */
+    public static function getClassyTokenKinds()
+    {
+        static $classTokens = null;
+
+        if (null === $classTokens) {
+            $classTokens = array(T_CLASS, T_INTERFACE);
+
+            if (defined('T_TRAIT')) {
+                $classTokens[] = T_TRAIT;
+            }
+        }
+
+        return $classTokens;
+    }
 
     /**
      * Constructor.
@@ -60,7 +92,6 @@ class Token
             $this->isArray = true;
             $this->id = $token[0];
             $this->content = $token[1];
-            $this->line = isset($token[2]) ? $token[2] : null;
         } else {
             $this->isArray = false;
             $this->content = $token;
@@ -75,6 +106,14 @@ class Token
     public function clear()
     {
         $this->override('');
+    }
+
+    /**
+     * Clear internal flag if token was changed.
+     */
+    public function clearChanged()
+    {
+        $this->changed = false;
     }
 
     /**
@@ -99,25 +138,24 @@ class Token
             return $this->content === $otherPrototype;
         }
 
-        $selfPrototype = $this->getPrototype();
+        if (array_key_exists(0, $otherPrototype) && $this->getId() !== $otherPrototype[0]) {
+            return false;
+        }
 
-        foreach ($otherPrototype as $key => $val) {
-            // make sure the token has such key
-            if (!isset($selfPrototype[$key])) {
+        if (array_key_exists(1, $otherPrototype)) {
+            if ($caseSensitive) {
+                if ($this->getContent() !== $otherPrototype[1]) {
+                    return false;
+                }
+            } elseif (0 !== strcasecmp($this->getContent(), $otherPrototype[1])) {
                 return false;
             }
+        }
 
-            if (1 === $key && !$caseSensitive) {
-                // case-insensitive comparison only applies to the content (key 1)
-                if (0 !== strcasecmp($val, $selfPrototype[1])) {
-                    return false;
-                }
-            } else {
-                // regular comparison
-                if ($selfPrototype[$key] !== $val) {
-                    return false;
-                }
-            }
+        // detect unknown keys
+        unset($otherPrototype[0], $otherPrototype[1]);
+        if (count($otherPrototype)) {
+            return false;
         }
 
         return true;
@@ -179,7 +217,6 @@ class Token
         return array(
             $this->id,
             $this->content,
-            $this->line,
         );
     }
 
@@ -201,16 +238,6 @@ class Token
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get token's line.
-     *
-     * @return int
-     */
-    public function getLine()
-    {
-        return $this->line;
     }
 
     /**
@@ -254,6 +281,7 @@ class Token
                 'T_NAMESPACE', 'T_NEW', 'T_PRINT', 'T_PRIVATE', 'T_PROTECTED', 'T_PUBLIC', 'T_REQUIRE',
                 'T_REQUIRE_ONCE', 'T_RETURN', 'T_STATIC', 'T_SWITCH', 'T_THROW', 'T_TRAIT', 'T_TRY',
                 'T_UNSET', 'T_USE', 'T_VAR', 'T_WHILE', 'T_YIELD',
+                'CT_ARRAY_TYPEHINT', 'CT_CLASS_CONSTANT', 'CT_CONST_IMPORT', 'CT_FUNCTION_IMPORT', 'CT_NAMESPACE_OPERATOR', 'CT_USE_TRAIT', 'CT_USE_LAMBDA',
             );
 
             foreach ($keywordsStrings as $keywordName) {
@@ -284,9 +312,17 @@ class Token
      */
     public function isCast()
     {
-        static $castTokens = array(T_ARRAY_CAST, T_BOOL_CAST, T_DOUBLE_CAST, T_INT_CAST, T_OBJECT_CAST, T_STRING_CAST, T_UNSET_CAST);
+        return $this->isGivenKind(self::getCastTokenKinds());
+    }
 
-        return $this->isGivenKind($castTokens);
+    /**
+     * Check if token was changed.
+     *
+     * @return bool
+     */
+    public function isChanged()
+    {
+        return $this->changed;
     }
 
     /**
@@ -296,17 +332,7 @@ class Token
      */
     public function isClassy()
     {
-        static $classTokens = null;
-
-        if (null === $classTokens) {
-            $classTokens = array(T_CLASS, T_INTERFACE);
-
-            if (defined('T_TRAIT')) {
-                $classTokens[] = constant('T_TRAIT');
-            }
-        }
-
-        return $this->isGivenKind($classTokens);
+        return $this->isGivenKind(self::getClassyTokenKinds());
     }
 
     /**
@@ -368,33 +394,21 @@ class Token
     }
 
     /**
-     * Check if token is one of structure alternative end syntax (T_END...).
-     *
-     * @return bool
-     */
-    public function isStructureAlternativeEnd()
-    {
-        static $tokens = array(T_ENDDECLARE, T_ENDFOR, T_ENDFOREACH, T_ENDIF, T_ENDSWITCH, T_ENDWHILE, T_END_HEREDOC);
-
-        return $this->isGivenKind($tokens);
-    }
-
-    /**
      * Check if token is a whitespace.
      *
-     * @param array $opts Extra options, $opts['whitespaces'] string
-     *                    determining whitespaces chars,
-     *                    default is " \t\n\r\0\x0B"
+     * @param null|string $whitespaces whitespaces characters, default is " \t\n\r\0\x0B"
      *
      * @return bool
      */
-    public function isWhitespace(array $opts = array())
+    public function isWhitespace($whitespaces = " \t\n\r\0\x0B")
     {
+        if (null === $whitespaces) {
+            $whitespaces = " \t\n\r\0\x0B";
+        }
+
         if ($this->isArray && !$this->isGivenKind(T_WHITESPACE)) {
             return false;
         }
-
-        $whitespaces = isset($opts['whitespaces']) ? $opts['whitespaces'] : " \t\n\r\0\x0B";
 
         return '' === trim($this->content, $whitespaces);
     }
@@ -404,15 +418,22 @@ class Token
      *
      * If called on Token inside Tokens collection please use `Tokens::overrideAt` instead.
      *
-     * @param string|array $prototype token prototype
+     * @param Token|array|string $other token prototype
      */
-    public function override($prototype)
+    public function override($other)
     {
+        $prototype = $other instanceof self ? $other->getPrototype() : $other;
+
+        if ($this->equals($prototype)) {
+            return;
+        }
+
+        $this->changed = true;
+
         if (is_array($prototype)) {
             $this->isArray = true;
             $this->id = $prototype[0];
             $this->content = $prototype[1];
-            $this->line = isset($prototype[2]) ? $prototype[2] : null;
 
             return;
         }
@@ -420,7 +441,6 @@ class Token
         $this->isArray = false;
         $this->id = null;
         $this->content = $prototype;
-        $this->line = null;
     }
 
     /**
@@ -437,6 +457,11 @@ class Token
             return;
         }
 
+        if ($this->content === $content) {
+            return;
+        }
+
+        $this->changed = true;
         $this->content = $content;
     }
 
@@ -446,8 +471,8 @@ class Token
             'id' => $this->id,
             'name' => $this->getName(),
             'content' => $this->content,
-            'line' => $this->line,
             'isArray' => $this->isArray,
+            'changed' => $this->changed,
         );
     }
 

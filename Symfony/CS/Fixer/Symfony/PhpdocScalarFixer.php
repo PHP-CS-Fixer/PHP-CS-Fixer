@@ -16,7 +16,7 @@ use Symfony\CS\AbstractPhpdocTypesFixer;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
+final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
 {
     /**
      * The types to fix.

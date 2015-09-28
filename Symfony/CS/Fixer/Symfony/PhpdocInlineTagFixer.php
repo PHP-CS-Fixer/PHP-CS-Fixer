@@ -22,10 +22,16 @@ final class PhpdocInlineTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         foreach ($tokens as $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
@@ -61,8 +67,6 @@ final class PhpdocInlineTagFixer extends AbstractFixer
 
             $token->setContent($content);
         }
-
-        return $tokens->generateCode();
     }
 
     /**

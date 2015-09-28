@@ -33,8 +33,15 @@ final class PhpUnitConstructFixer extends AbstractFixer
         'assertNotSame' => 'fixAssertNegative',
     );
 
-    public function configure(array $usingMethods)
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $usingMethods = null)
     {
+        if (null === $usingMethods) {
+            return;
+        }
+
         foreach ($usingMethods as $method => $fix) {
             if (!isset($this->configuration[$method])) {
                 throw new \InvalidArgumentException();
@@ -47,14 +54,28 @@ final class PhpUnitConstructFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         // no assertions to be fixed - fast return
         if (!in_array(true, $this->configuration, true)) {
-            return $content;
+            return;
         }
-
-        $tokens = Tokens::fromCode($content);
 
         foreach ($this->configuration as $assertionMethod => $assertionShouldBeFixed) {
             if (true !== $assertionShouldBeFixed) {
@@ -71,8 +92,6 @@ final class PhpUnitConstructFixer extends AbstractFixer
                 }
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -80,7 +99,7 @@ final class PhpUnitConstructFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'PHPUnit assertion method calls like "->assertSame(true, $foo)" should be written with dedicated method like "->assertTrue($foo)". Warning! This could change code behavior.';
+        return 'PHPUnit assertion method calls like "->assertSame(true, $foo)" should be written with dedicated method like "->assertTrue($foo)".';
     }
 
     /**

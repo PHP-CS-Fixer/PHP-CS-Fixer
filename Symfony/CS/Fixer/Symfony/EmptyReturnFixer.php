@@ -17,22 +17,30 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class EmptyReturnFixer extends AbstractFixer
+final class EmptyReturnFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_RETURN);
+    }
 
-        foreach ($tokens->findGivenKind(T_RETURN) as $index => $token) {
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_RETURN)) {
+                continue;
+            }
+
             if ($this->needFixing($tokens, $index)) {
                 $this->clear($tokens, $index);
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

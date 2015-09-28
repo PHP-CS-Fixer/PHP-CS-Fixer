@@ -17,22 +17,26 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class StandardizeNotEqualFixer extends AbstractFixer
+final class StandardizeNotEqualFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_IS_NOT_EQUAL);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_IS_NOT_EQUAL)) {
                 $tokens[$index]->setContent('!=');
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

@@ -17,8 +17,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  * @author John Kelly <wablam@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
-class SpacesBeforeSemicolonFixerTest extends AbstractFixerTestBase
+final class SpacesBeforeSemicolonFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

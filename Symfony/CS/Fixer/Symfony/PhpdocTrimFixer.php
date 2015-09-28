@@ -18,16 +18,26 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocTrimFixer extends AbstractFixer
+final class PhpdocTrimFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
 
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
             $content = $token->getContent();
             $content = $this->fixStart($content);
             // we need re-parse the docblock after fixing the start before
@@ -35,8 +45,6 @@ class PhpdocTrimFixer extends AbstractFixer
             $content = $this->fixEnd($content);
             $token->setContent($content);
         }
-
-        return $tokens->generateCode();
     }
 
     /**

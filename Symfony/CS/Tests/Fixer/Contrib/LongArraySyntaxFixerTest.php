@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @internal
  */
-class LongArraySyntaxFixerTest extends AbstractFixerTestBase
+final class LongArraySyntaxFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideExamples

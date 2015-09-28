@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
+ *
+ * @internal
  */
-class PhpdocNoPackageFixerTest extends AbstractFixerTestBase
+final class PhpdocNoPackageFixerTest extends AbstractFixerTestBase
 {
     public function testFixPackage()
     {

@@ -17,15 +17,21 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Gregor Harlan <gharlan@web.de>
  */
-class SingleQuoteFixer extends AbstractFixer
+final class SingleQuoteFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_CONSTANT_ENCAPSED_STRING);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         foreach ($tokens as $token) {
             if (!$token->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
                 continue;
@@ -44,8 +50,6 @@ class SingleQuoteFixer extends AbstractFixer
                 $token->setContent('\''.$content.'\'');
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

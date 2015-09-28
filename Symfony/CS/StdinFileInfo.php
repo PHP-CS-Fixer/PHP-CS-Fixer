@@ -13,8 +13,10 @@ namespace Symfony\CS;
 
 /**
  * @author Davi Koscianski Vidal <davividal@gmail.com>
+ *
+ * @internal
  */
-class StdinFileInfo extends \SplFileInfo
+final class StdinFileInfo extends \SplFileInfo
 {
     public function __construct()
     {

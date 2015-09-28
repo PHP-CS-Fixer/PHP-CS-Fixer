@@ -18,16 +18,26 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocOrderFixer extends AbstractFixer
+final class PhpdocOrderFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
 
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
             $content = $token->getContent();
             // move param to start, return to end, leave throws in the middle
             $content = $this->moveParamAnnotations($content);
@@ -37,8 +47,6 @@ class PhpdocOrderFixer extends AbstractFixer
             // persist the content at the end
             $token->setContent($content);
         }
-
-        return $tokens->generateCode();
     }
 
     /**

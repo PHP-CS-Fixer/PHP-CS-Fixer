@@ -18,15 +18,21 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Bram Gotink <bram@gotink.me>
  */
-class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
+final class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_NAMESPACE);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         for ($index = count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
@@ -58,8 +64,6 @@ class NamespaceNoLeadingWhitespaceFixer extends AbstractFixer
                 $beforeNamespace->setContent(substr($beforeNamespace->getContent(), 0, $lastNewline + 1));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

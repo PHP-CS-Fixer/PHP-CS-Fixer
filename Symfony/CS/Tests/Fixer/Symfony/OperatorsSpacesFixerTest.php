@@ -16,8 +16,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @internal
  */
-class OperatorsSpacesFixerTest extends AbstractFixerTestBase
+final class OperatorsSpacesFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases

@@ -17,24 +17,30 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
-use Symfony\CS\ConfigurationResolver;
-use Symfony\CS\ErrorsManager;
+use Symfony\CS\Console\ConfigurationResolver;
+use Symfony\CS\Console\Output\ProcessOutput;
+use Symfony\CS\Error\Error;
+use Symfony\CS\Error\ErrorsManager;
 use Symfony\CS\Fixer;
-use Symfony\CS\FixerFileProcessedEvent;
+use Symfony\CS\FixerFactory;
 use Symfony\CS\FixerInterface;
-use Symfony\CS\LintManager;
-use Symfony\CS\StdinFileInfo;
-use Symfony\CS\Utils;
+use Symfony\CS\Linter\Linter;
+use Symfony\CS\Linter\UnavailableLinterException;
+use Symfony\CS\RuleSet;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @internal
  */
-class FixCommand extends Command
+final class FixCommand extends Command
 {
+    const EXIT_STATUS_FLAG_HAS_INVALID_FILES = 4;
+    const EXIT_STATUS_FLAG_HAS_CHANGED_FILES = 8;
+
     /**
      * EventDispatcher instance.
      *
@@ -78,14 +84,12 @@ class FixCommand extends Command
     {
         $this->defaultConfig = $config ?: new Config();
         $this->eventDispatcher = new EventDispatcher();
-        $this->errorsManager = new ErrorsManager();
-        $this->stopwatch = new Stopwatch();
 
         $this->fixer = $fixer ?: new Fixer();
-        $this->fixer->registerBuiltInFixers();
         $this->fixer->registerBuiltInConfigs();
-        $this->fixer->setStopwatch($this->stopwatch);
-        $this->fixer->setErrorsManager($this->errorsManager);
+
+        $this->errorsManager = $this->fixer->getErrorsManager();
+        $this->stopwatch = $this->fixer->getStopwatch();
 
         parent::__construct();
     }
@@ -100,11 +104,13 @@ class FixCommand extends Command
             ->setDefinition(
                 array(
                     new InputArgument('path', InputArgument::OPTIONAL, 'The path', null),
+                    new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no)', null),
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The configuration name', null),
                     new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
-                    new InputOption('level', '', InputOption::VALUE_REQUIRED, 'The level of fixes (can be psr0, psr1, psr2, or symfony (formerly all))', null),
-                    new InputOption('fixers', '', InputOption::VALUE_REQUIRED, 'A list of fixers to run'),
+                    new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'The rules', null),
+                    new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no)', null),
+                    new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file'),
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
                 )
@@ -112,41 +118,41 @@ class FixCommand extends Command
             ->setDescription('Fixes a directory or a file')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> command tries to fix as much coding standards
-problems as possible on a given file or directory:
+problems as possible on a given file or files in a given directory and its subdirectories:
 
     <info>php %command.full_name% /path/to/dir</info>
     <info>php %command.full_name% /path/to/file</info>
 
-The <comment>--verbose</comment> option show applied fixers. When using ``txt`` format (default one) it will also displays progress notification.
+The <comment>--format</comment> option can be used to set the output format of the results; ``txt`` (default one), ``xml`` or ``json``.
 
-The <comment>--level</comment> option limits the fixers to apply on the
+The <comment>--verbose</comment> option will show the applied fixers. When using the ``txt`` format it will also displays progress notifications.
+
+The <comment>--rules</comment> option limits the rules to apply on the
 project:
 
-    <info>php %command.full_name% /path/to/project --level=psr0</info>
-    <info>php %command.full_name% /path/to/project --level=psr1</info>
-    <info>php %command.full_name% /path/to/project --level=psr2</info>
-    <info>php %command.full_name% /path/to/project --level=symfony</info>
+    <info>php %command.full_name% /path/to/project --rules=@PSR2</info>
 
-By default, all PSR-2 fixers and some additional ones are run. The "contrib
-level" fixers cannot be enabled via this option; you should instead set them
-manually by their name via the <comment>--fixers</comment> option.
+By default, all PSR fixers are run.
 
-The <comment>--fixers</comment> option lets you choose the exact fixers to
+The <comment>--rules</comment> option lets you choose the exact fixers to
 apply (the fixer names must be separated by a comma):
 
-    <info>php %command.full_name% /path/to/dir --fixers=linefeed,short_tag,indentation</info>
+    <info>php %command.full_name% /path/to/dir --rules=linefeed,short_tag,indentation</info>
 
 You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
 using <comment>-name_of_fixer</comment>:
 
-    <info>php %command.full_name% /path/to/dir --fixers=-short_tag,-indentation</info>
+    <info>php %command.full_name% /path/to/dir --rules=-short_tag,-indentation</info>
 
-When using combination with exact and blacklist fixers, apply exact fixers along with above blacklisted result:
+When using combinations of exact and blacklist fixers, applying exact fixers along with above blacklisted results:
 
-    <info>php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,-short_tag</info>
+    <info>php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-return,strict</info>
 
 A combination of <comment>--dry-run</comment> and <comment>--diff</comment> will
-display summary of proposed fixes, leaving your files unchanged.
+display a summary of proposed fixes, leaving your files unchanged.
+
+The <comment>--allow-risky</comment> option allows you to set whether riskys fixer may run. Default value is taken from config file.
+Risky fixer is a fixer, which could change code behaviour. By default no risky fixers are run.
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
@@ -172,11 +178,16 @@ fixed but without actually modifying them:
     <info>php %command.full_name% /path/to/code --dry-run</info>
 
 Instead of using command line options to customize the fixer, you can save the
-configuration in a <comment>.php_cs</comment> file in the root directory of
-your project. The file must return an instance of
-``Symfony\CS\ConfigInterface``, which lets you configure the fixers, the level, the files,
-and directories that need to be analyzed. The example below will add two contrib fixers
-to the default list of symfony-level fixers:
+project configuration in a <comment>.php_cs.dist</comment> file in the root directory
+of your project. The file must return an instance of ``Symfony\CS\ConfigInterface``,
+which lets you configure the rules, the files and directories that
+need to be analyzed. You may also create <comment>.php_cs</comment> file, which is
+the local configuration that will be used instead of the project configuration. It
+is a good practice to add that file into your <comment>.gitignore</comment> file.
+With the <comment>--config-file</comment> option you can specify the path to the
+<comment>.php_cs</comment> file.
+
+The example below will add two fixers to the default list of PSR2 set fixers:
 
     <?php
 
@@ -186,32 +197,18 @@ to the default list of symfony-level fixers:
     ;
 
     return Symfony\CS\Config\Config::create()
-        ->fixers(array('strict_param', 'short_array_syntax'))
-        ->finder(\$finder)
-    ;
-
-    ?>
-
-If you want complete control over which fixers you use, you may use the empty level and
-then specify all fixers to be used:
-
-    <?php
-
-    \$finder = Symfony\CS\Finder\DefaultFinder::create()
-        ->in(__DIR__)
-    ;
-
-    return Symfony\CS\Config\Config::create()
-        ->level(Symfony\CS\FixerInterface::NONE_LEVEL)
-        ->fixers(array('trailing_spaces', 'encoding'))
+        ->setRules(array(
+            '@PSR2' => true,
+            'strict_param' => true,
+            'short_array_syntax' => true,
+        ))
         ->finder(\$finder)
     ;
 
     ?>
 
 You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
-The following example shows how to use all ``symfony`` Fixers but the ``psr0`` fixer.
-Note the additional <comment>-</comment> in front of the Fixer name.
+The following example shows how to use all ``Symfony`` Fixers but the ``short_tag`` Fixer.
 
     <?php
 
@@ -221,46 +218,76 @@ Note the additional <comment>-</comment> in front of the Fixer name.
     ;
 
     return Symfony\CS\Config\Config::create()
-        ->fixers(array('-psr0'))
+        ->setRules(array(
+            '@Symfony' => true,
+            'short_tag' => false,
+        ))
         ->finder(\$finder)
     ;
 
     ?>
 
-The ``symfony`` level is set by default, you can also change the default level:
-
-    <?php
-
-    return Symfony\CS\Config\Config::create()
-        ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
-    ;
-
-    ?>
-
-In combination with these config and command line options, you can choose various usage.
-
-For example, default level is ``symfony``, but if you also don't want to use
-the ``psr0`` fixer, you can specify the ``--fixers="-psr0"`` option.
-
-But if you use the ``--fixers`` option with only exact fixers,
-only those exact fixers are enabled whether or not level is set.
-
-With the <comment>--config-file</comment> option you can specify the path to the
-<comment>.php_cs</comment> file.
+By using ``--using-cache`` option with yes or no you can set if the caching
+mechanism should be used.
 
 Caching
 -------
 
-You can enable caching by returning a custom config with caching enabled. This will
-speed up further runs.
+The caching mechanism is enabled by default. This will speed up further runs by
+fixing only files that were modified since the last run. The tool will fix all
+files if the tool version has changed or the list of fixers has changed.
+Cache is supported only for tool downloaded as phar file or installed via
+composer.
+
+Cache can be disabled via ``--using-cache`` option or config file:
 
     <?php
 
     return Symfony\CS\Config\Config::create()
-        ->setUsingCache(true)
+        ->setUsingCache(false)
     ;
 
     ?>
+
+Cache file can be specified via ``--cache-file`` option or config file:
+
+    <?php
+
+    return Symfony\CS\Config\Config::create()
+        ->setCacheFile(__DIR__.'/.php_cs.cache')
+    ;
+
+    ?>
+
+Using PHP CS Fixer on Travis
+----------------------------
+
+Require ``fabpot/php-cs-fixer`` as a `dev`` dependency:
+
+    $ ./composer.phar require --dev fabpot/php-cs-fixer
+
+Create a build file to run ``php-cs-fixer`` on Travis. It's advisable to create a dedicated directory
+for PHP CS Fixer cache files and have Travis cache it between builds.
+
+    <?yml
+
+    language: php
+    php:
+        - 5.5
+    sudo: false
+    cache:
+        directories:
+            - "\$HOME/.composer/cache"
+            - "\$HOME/.php-cs-fixer"
+    before_script:
+        - mkdir -p "\$HOME/.php-cs-fixer"
+    script:
+        - vendor/bin/php-cs-fixer fix --cache-file "\$HOME/.php-cs-fixer/.php_cs.cache" --dry-run --diff --verbose
+
+    ?>
+
+Note: This will only trigger a build if you have a subscription for Travis
+or are using their free open source plan.
 EOF
             );
     }
@@ -270,120 +297,57 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $input->getArgument('path');
+        $verbosity = $output->getVerbosity();
+        $resolver = new ConfigurationResolver();
+        $resolver
+            ->setCwd(getcwd())
+            ->setDefaultConfig($this->defaultConfig)
+            ->setFixer($this->fixer)
+            ->setOptions(array(
+                'allow-risky' => $input->getOption('allow-risky'),
+                'config' => $input->getOption('config'),
+                'config-file' => $input->getOption('config-file'),
+                'dry-run' => $input->getOption('dry-run'),
+                'rules' => $input->getOption('rules'),
+                'path' => $input->getArgument('path'),
+                'progress' => (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) && 'txt' === $input->getOption('format'),
+                'using-cache' => $input->getOption('using-cache'),
+                'cache-file' => $input->getOption('cache-file'),
+            ))
+            ->resolve()
+        ;
 
-        $stdin = false;
+        $config = $resolver->getConfig();
+        $configFile = $resolver->getConfigFile();
 
-        if ('-' === $path) {
-            $stdin = true;
-
-            // Can't write to STDIN
-            $input->setOption('dry-run', true);
-        }
-
-        if (null !== $path) {
-            $filesystem = new Filesystem();
-            if (!$filesystem->isAbsolutePath($path)) {
-                $path = getcwd().DIRECTORY_SEPARATOR.$path;
-            }
-        }
-
-        $configFile = $input->getOption('config-file');
-        if (null === $configFile) {
-            $configDir = $path;
-
-            if (is_file($path) && $dirName = pathinfo($path, PATHINFO_DIRNAME)) {
-                $configDir = $dirName;
-            } elseif ($stdin || null === $path) {
-                $configDir = getcwd();
-                // path is directory
-            }
-            $configFile = $configDir.DIRECTORY_SEPARATOR.'.php_cs';
-        }
-
-        if ($input->getOption('config')) {
-            $config = null;
-            foreach ($this->fixer->getConfigs() as $c) {
-                if ($c->getName() === $input->getOption('config')) {
-                    $config = $c;
-                    break;
-                }
-            }
-
-            if (null === $config) {
-                throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined.', $input->getOption('config')));
-            }
-        } elseif (file_exists($configFile)) {
-            $config = include $configFile;
-            // verify that the config has an instance of Config
-            if (!$config instanceof Config) {
-                throw new \UnexpectedValueException(sprintf('The config file "%s" does not return a "Symfony\CS\Config\Config" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
-            }
-
-            if ('txt' === $input->getOption('format')) {
-                $output->writeln(sprintf('Loaded config from "%s"', $configFile));
-            }
-        } else {
-            $config = $this->defaultConfig;
+        if ($configFile && 'txt' === $input->getOption('format')) {
+            $output->writeln(sprintf('Loaded config from "%s"', $configFile));
         }
 
         if ($config->usingLinter()) {
-            $this->fixer->setLintManager(new LintManager());
+            try {
+                $this->fixer->setLinter(new Linter($config->getPhpExecutable()));
+            } catch (UnavailableLinterException $e) {
+                if ($configFile && 'txt' === $input->getOption('format')) {
+                    $output->writeln('Unable to use linter, can not find PHP executable');
+                }
+            }
         }
 
-        if (is_file($path)) {
-            $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
-        } elseif ($stdin) {
-            $config->finder(new \ArrayIterator(array(new StdinFileInfo())));
-        } elseif (null !== $path) {
-            $config->setDir($path);
-        }
-
-        $verbosity = $output->getVerbosity();
-
-        // register custom fixers from config
-        $this->fixer->registerCustomFixers($config->getCustomFixers());
-
-        $resolver = new ConfigurationResolver();
-        $resolver
-            ->setAllFixers($this->fixer->getFixers())
-            ->setConfig($config)
-            ->setOptions(array(
-                'level' => $input->getOption('level'),
-                'fixers' => $input->getOption('fixers'),
-                'progress' => (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) && 'txt' === $input->getOption('format'),
-            ))
-            ->resolve();
-
-        $config->fixers($resolver->getFixers());
         $showProgress = $resolver->getProgress();
 
         if ($showProgress) {
-            $fileProcessedEventListener = function (FixerFileProcessedEvent $event) use ($output) {
-                $output->write($event->getStatusAsString());
-            };
-
             $this->fixer->setEventDispatcher($this->eventDispatcher);
-            $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
+            $progressOutput = new ProcessOutput($this->eventDispatcher);
         }
 
         $this->stopwatch->start('fixFiles');
-        $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
+        $changed = $this->fixer->fix($config, $resolver->isDryRun(), $input->getOption('diff'));
         $this->stopwatch->stop('fixFiles');
 
         if ($showProgress) {
+            $progressOutput->printLegend();
             $this->fixer->setEventDispatcher(null);
-            $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
-            $output->writeln('');
-
-            $legend = array();
-            foreach (FixerFileProcessedEvent::getStatusMap() as $status) {
-                if ($status['symbol'] && $status['description']) {
-                    $legend[] = $status['symbol'].'-'.$status['description'];
-                }
-            }
-
-            $output->writeln('Legend: '.implode(', ', array_unique($legend)));
         }
 
         $i = 1;
@@ -426,8 +390,12 @@ EOF
                 break;
             case 'xml':
                 $dom = new \DOMDocument('1.0', 'UTF-8');
+                // new nodes should be added to this or existing children
+                $root = $dom->createElement('report');
+                $dom->appendChild($root);
+
                 $filesXML = $dom->createElement('files');
-                $dom->appendChild($filesXML);
+                $root->appendChild($filesXML);
 
                 foreach ($changed as $file => $fixResult) {
                     $fileXML = $dom->createElement('file');
@@ -450,6 +418,39 @@ EOF
                         $diffXML = $dom->createElement('diff');
                         $diffXML->appendChild($dom->createCDATASection($fixResult['diff']));
                         $fileXML->appendChild($diffXML);
+                    }
+                }
+
+                $fixEvent = $this->stopwatch->getEvent('fixFiles');
+
+                $timeXML = $dom->createElement('time');
+                $memoryXML = $dom->createElement('memory');
+                $root->appendChild($timeXML);
+                $root->appendChild($memoryXML);
+
+                $memoryXML->setAttribute('value', round($fixEvent->getMemory() / 1024 / 1024, 3));
+                $memoryXML->setAttribute('unit', 'MB');
+
+                $timeXML->setAttribute('unit', 's');
+                $timeTotalXML = $dom->createElement('total');
+                $timeTotalXML->setAttribute('value', round($fixEvent->getDuration() / 1000, 3));
+                $timeXML->appendChild($timeTotalXML);
+
+                if (OutputInterface::VERBOSITY_DEBUG <= $verbosity) {
+                    $timeFilesXML = $dom->createElement('files');
+                    $timeXML->appendChild($timeFilesXML);
+                    $eventCounter = 1;
+
+                    foreach ($this->stopwatch->getSectionEvents('fixFile') as $file => $event) {
+                        if ('__section__' === $file) {
+                            continue;
+                        }
+
+                        $timeFileXML = $dom->createElement('file');
+                        $timeFilesXML->appendChild($timeFileXML);
+                        $timeFileXML->setAttribute('id', $eventCounter++);
+                        $timeFileXML->setAttribute('name', $file);
+                        $timeFileXML->setAttribute('value', round($event->getDuration() / 1000, 3));
                     }
                 }
 
@@ -503,34 +504,65 @@ EOF
                 throw new \InvalidArgumentException(sprintf('The format "%s" is not defined.', $input->getOption('format')));
         }
 
-        if (!$this->errorsManager->isEmpty()) {
-            $output->writeLn('');
-            $output->writeLn('Files that were not fixed due to internal error:');
+        $invalidErrors = $this->errorsManager->getInvalidErrors();
+        if (!empty($invalidErrors)) {
+            $this->listErrors($output, 'linting before fixing', $invalidErrors);
+        }
 
-            foreach ($this->errorsManager->getErrors() as $i => $error) {
-                $output->writeLn(sprintf('%4d) %s', $i + 1, $error['filepath']));
+        $exceptionErrors = $this->errorsManager->getExceptionErrors();
+        if (!empty($exceptionErrors)) {
+            $this->listErrors($output, 'fixing', $exceptionErrors);
+        }
+
+        $lintErrors = $this->errorsManager->getLintErrors();
+        if (!empty($lintErrors)) {
+            $this->listErrors($output, 'linting after fixing', $lintErrors);
+        }
+
+        $exitStatus = 0;
+
+        if ($resolver->isDryRun()) {
+            if (!empty($invalidErrors)) {
+                $exitStatus |= self::EXIT_STATUS_FLAG_HAS_INVALID_FILES;
+            }
+
+            if (!empty($changed)) {
+                $exitStatus |= self::EXIT_STATUS_FLAG_HAS_CHANGED_FILES;
             }
         }
 
-        return empty($changed) ? 0 : 1;
+        return $exitStatus;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param string          $process
+     * @param Error[]         $errors
+     */
+    private function listErrors(OutputInterface $output, $process, array $errors)
+    {
+        $output->writeLn('');
+        $output->writeLn(sprintf(
+            'Files that were not fixed due to errors reported during %s:',
+             $process
+        ));
+
+        foreach ($errors as $i => $error) {
+            $output->writeLn(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
+        }
     }
 
     protected function getFixersHelp()
     {
         $help = '';
         $maxName = 0;
-        $fixers = $this->fixer->getFixers();
+        $fixerFactory = new FixerFactory();
+        $fixers = $fixerFactory->registerBuiltInFixers()->getFixers();
 
-        // sort fixers by level and name
+        // sort fixers by name
         usort(
             $fixers,
             function (FixerInterface $a, FixerInterface $b) {
-                $cmp = Utils::cmpInt($a->getLevel(), $b->getLevel());
-
-                if (0 !== $cmp) {
-                    return $cmp;
-                }
-
                 return strcmp($a->getName(), $b->getName());
             }
         );
@@ -541,10 +573,41 @@ EOF
             }
         }
 
+        $ruleSets = array();
+        foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
+            $ruleSets[$setName] = new RuleSet(array($setName => true));
+        }
+
+        $getSetsWithRule = function ($rule) use ($ruleSets) {
+            $sets = array();
+
+            foreach ($ruleSets as $setName => $ruleSet) {
+                if ($ruleSet->hasRule($rule)) {
+                    $sets[] = $setName;
+                }
+            }
+
+            return $sets;
+        };
+
         $count = count($fixers) - 1;
         foreach ($fixers as $i => $fixer) {
-            $chunks = explode("\n", wordwrap(sprintf("[%s]\n%s", $this->fixer->getLevelAsString($fixer), $fixer->getDescription()), 72 - $maxName, "\n"));
-            $help .= sprintf(" * <comment>%s</comment>%s %s\n", $fixer->getName(), str_repeat(' ', $maxName - strlen($fixer->getName())), array_shift($chunks));
+            $sets = $getSetsWithRule($fixer->getName());
+
+            $description = $fixer->getDescription();
+
+            if ($fixer->isRisky()) {
+                $description .= ' (Risky fixer!)';
+            }
+
+            if (!empty($sets)) {
+                $chunks = explode("\n", wordwrap(sprintf("[%s]\n%s", implode(', ', $sets), $description), 72 - $maxName, "\n"));
+                $help .= sprintf(" * <comment>%s</comment>%s %s\n", $fixer->getName(), str_repeat(' ', $maxName - strlen($fixer->getName())), array_shift($chunks));
+            } else {
+                $chunks = explode("\n", wordwrap(sprintf("\n%s", $description), 72 - $maxName, "\n"));
+                $help .= sprintf(" * <comment>%s</comment>%s\n", $fixer->getName(), array_shift($chunks));
+            }
+
             while ($c = array_shift($chunks)) {
                 $help .= str_repeat(' ', $maxName + 4).$c."\n";
             }

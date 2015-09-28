@@ -16,8 +16,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Denis Sokolov <denis@sokolov.cc>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
-class FunctionDeclarationFixerTest extends AbstractFixerTestBase
+final class FunctionDeclarationFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
@@ -122,6 +124,9 @@ foo () {}',
     {
         public function setConfig(ConfigInterface $config);
     }',
+            ),
+            array(
+                '<?php use function Foo\bar; bar ( 1 );',
             ),
         );
     }

@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
-class LineAfterNamespaceFixerTest extends AbstractFixerTestBase
+final class LineAfterNamespaceFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
@@ -96,6 +98,14 @@ namespace A\B {
 
 class C {}\r",
                 "<?php\rnamespace A\B;\r\r\r\r\r\rclass C {}\r",
+            ),
+            array(
+                '<?php
+namespace A\B;
+
+namespace\C\func();
+foo();
+',
             ),
         );
     }

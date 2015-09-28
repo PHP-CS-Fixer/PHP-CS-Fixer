@@ -19,15 +19,21 @@ use Symfony\CS\Utils;
 /**
  * @author Ceeram <ceeram@cakephp.org>
  */
-class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer
+final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         foreach ($tokens as $index => $token) {
             if (!$token->isClassy()) {
                 continue;
@@ -40,8 +46,6 @@ class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer
 
             $this->fixWhitespace($tokens[$startBraceIndex + 1]);
         }
-
-        return $tokens->generateCode();
     }
 
     /**

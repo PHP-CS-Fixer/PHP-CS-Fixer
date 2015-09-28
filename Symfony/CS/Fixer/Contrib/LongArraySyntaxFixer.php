@@ -18,29 +18,35 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Gregor Harlan <gharlan@web.de>
  */
-class LongArraySyntaxFixer extends AbstractFixer
+final class LongArraySyntaxFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(CT_ARRAY_SQUARE_BRACE_OPEN);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            if (!$tokens->isShortArray($index)) {
+            $token = $tokens[$index];
+
+            if (!$token->isGivenKind(CT_ARRAY_SQUARE_BRACE_OPEN)) {
                 continue;
             }
 
-            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $index);
+            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
 
             $tokens->overrideAt($index, '(');
             $tokens->overrideAt($closeIndex, ')');
 
             $tokens->insertAt($index, new Token(array(T_ARRAY, 'array')));
         }
-
-        return $tokens->generateCode();
     }
 
     /**

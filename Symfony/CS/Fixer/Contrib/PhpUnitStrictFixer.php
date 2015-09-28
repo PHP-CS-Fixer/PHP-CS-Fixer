@@ -26,8 +26,15 @@ final class PhpUnitStrictFixer extends AbstractFixer
         'assertNotEquals' => 'assertNotSame',
     );
 
-    public function configure(array $usingMethods)
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $usingMethods = null)
     {
+        if (null === $usingMethods) {
+            return;
+        }
+
         foreach (array_keys($this->configuration) as $method) {
             if (!in_array($method, $usingMethods, true)) {
                 unset($this->configuration[$method]);
@@ -38,10 +45,24 @@ final class PhpUnitStrictFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_STRING);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         foreach ($this->configuration as $methodBefore => $methodAfter) {
             for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
                 $sequence = $tokens->findSequence(
@@ -64,8 +85,6 @@ final class PhpUnitStrictFixer extends AbstractFixer
                 $index = $sequenceIndexes[3];
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -73,6 +92,6 @@ final class PhpUnitStrictFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'PHPUnit methods like "assertSame" should be used instead of "assertEquals". Warning! This could change code behavior.';
+        return 'PHPUnit methods like "assertSame" should be used instead of "assertEquals".';
     }
 }

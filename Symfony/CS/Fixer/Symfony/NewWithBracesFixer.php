@@ -18,15 +18,21 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class NewWithBracesFixer extends AbstractFixer
+final class NewWithBracesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return $tokens->isTokenKindFound(T_NEW);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
@@ -34,17 +40,20 @@ class NewWithBracesFixer extends AbstractFixer
                 continue;
             }
 
-            $nextIndex = $tokens->getNextTokenOfKind($index, array(';', ',', '(', ')', '[', ']', ':'));
+            $nextIndex = $tokens->getNextTokenOfKind(
+                $index,
+                array(':', ';', ',', '(', ')', '[', ']', array(CT_ARRAY_SQUARE_BRACE_OPEN), array(CT_ARRAY_SQUARE_BRACE_CLOSE), array(CT_BRACE_CLASS_INSTANTIATION_OPEN), array(CT_BRACE_CLASS_INSTANTIATION_CLOSE))
+            );
             $nextToken = $tokens[$nextIndex];
 
             // entrance into array index syntax - need to look for exit
             while ($nextToken->equals('[')) {
-                $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $nextIndex) + 1;
+                $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $nextIndex) + 1;
                 $nextToken = $tokens[$nextIndex];
             }
 
             // new statement has a gap in it - advance to the next token
-            if ($nextToken->isGivenKind(T_WHITESPACE)) {
+            if ($nextToken->isWhitespace()) {
                 $nextIndex = $tokens->getNextNonWhitespace($nextIndex);
                 $nextToken = $tokens[$nextIndex];
             }
@@ -58,8 +67,6 @@ class NewWithBracesFixer extends AbstractFixer
 
             $tokens->insertAt($meaningBeforeNextIndex + 1, array(new Token('('), new Token(')')));
         }
-
-        return $tokens->generateCode();
     }
 
     /**

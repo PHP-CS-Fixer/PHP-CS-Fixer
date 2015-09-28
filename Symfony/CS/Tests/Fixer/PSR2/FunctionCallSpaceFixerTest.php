@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Varga Bence <vbence@czentral.org>
+ *
+ * @internal
  */
-class FunctionCallSpaceFixerTest extends AbstractFixerTestBase
+final class FunctionCallSpaceFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider testFixProvider
@@ -100,6 +102,24 @@ class FunctionCallSpaceFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php include ($html)? "custom.html": "custom.php";',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider testFixProvider
+     * @requires PHP 5.4
+     */
+    public function test54($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provide54Cases()
+    {
+        return array(
+           array(
+                '<?php echo (new Process())->getOutput();',
             ),
         );
     }

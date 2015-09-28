@@ -11,16 +11,19 @@
 
 namespace Symfony\CS\Tests\Config;
 
+use Satooshi\Bundle\CoverallsV1Bundle\Config\Configuration;
 use Symfony\Component\Finder\Finder;
 use Symfony\CS\Config\Config;
 use Symfony\CS\Finder\DefaultFinder;
 
-class ConfigTest extends \PHPUnit_Framework_TestCase
+/**
+ * @internal
+ */
+final class ConfigTest extends \PHPUnit_Framework_TestCase
 {
     public function testThatDefaultFinderWorksWithDirSetOnConfig()
     {
-        $config = Config::create();
-        $config->setDir(__DIR__.'/../Fixtures/FinderDirectory');
+        $config = Config::create()->setDir(__DIR__.'/../Fixtures/FinderDirectory');
 
         $iterator = $config->getFinder()->getIterator();
         $this->assertSame(1, count($iterator));
@@ -33,8 +36,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $finder = DefaultFinder::create();
         $finder->in(__DIR__.'/../Fixtures/FinderDirectory');
 
-        $config = Config::create();
-        $config->finder($finder);
+        $config = Config::create()->finder($finder);
 
         $iterator = $config->getFinder()->getIterator();
         $this->assertSame(1, count($iterator));
@@ -47,12 +49,73 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $finder = Finder::create();
         $finder->in(__DIR__.'/../Fixtures/FinderDirectory');
 
-        $config = Config::create();
-        $config->finder($finder);
+        $config = Config::create()->finder($finder);
 
         $iterator = $config->getFinder()->getIterator();
         $this->assertSame(1, count($iterator));
         $iterator->rewind();
         $this->assertSame('somefile.php', $iterator->current()->getFilename());
+    }
+
+    public function testThatCacheFileHasDefaultValue()
+    {
+        $config = new Config();
+
+        $this->assertSame('.php_cs.cache', $config->getCacheFile());
+    }
+
+    public function testThatCacheFileCanBeMutated()
+    {
+        $cacheFile = 'some-directory/some.file';
+
+        $config = new Config();
+        $config->setCacheFile($cacheFile);
+
+        $this->assertSame($cacheFile, $config->getCacheFile());
+    }
+
+    public function testThatMutatorHasFluentInterface()
+    {
+        $config = new Config();
+
+        $this->assertSame($config, $config->setCacheFile('some-directory/some.file'));
+    }
+
+    public function testAddRules()
+    {
+        $config = new Config();
+        $config->setRules(array(
+            'foo' => true,
+            'bar' => true,
+        ));
+
+        $config->addRules(array(
+            'foo' => false,
+            'something' => array('with' => 'array'),
+        ));
+
+        $this->assertSame(array(
+            'foo' => false,
+            'bar' => true,
+            'something' => array('with' => 'array'),
+        ), $config->getRules());
+    }
+
+    public function testAddRule()
+    {
+        $config = new Config();
+        $config->setRules(array(
+            'foo' => true,
+            'bar' => true,
+        ));
+
+        $config->addRule('foo', false);
+        $config->addRule('something', array('with' => 'array'));
+
+        $this->assertSame(array(
+            'foo' => false,
+            'bar' => true,
+            'something' => array('with' => 'array'),
+        ), $config->getRules());
     }
 }

@@ -17,12 +17,28 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class StrictFixer extends AbstractFixer
+final class StrictFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array(T_IS_EQUAL, T_IS_NOT_EQUAL));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         static $map = array(
             T_IS_EQUAL => array(
@@ -35,17 +51,13 @@ class StrictFixer extends AbstractFixer
             ),
         );
 
-        $tokens = Tokens::fromCode($content);
-
         foreach ($tokens as $index => $token) {
             $tokenId = $token->getId();
 
             if (isset($map[$tokenId])) {
-                $tokens->overrideAt($index, array($map[$tokenId]['id'], $map[$tokenId]['content'], $token->getLine()));
+                $tokens->overrideAt($index, array($map[$tokenId]['id'], $map[$tokenId]['content']));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -53,7 +65,7 @@ class StrictFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Comparison should be strict. Warning! This could change code behavior.';
+        return 'Comparison should be strict.';
     }
 
     /**

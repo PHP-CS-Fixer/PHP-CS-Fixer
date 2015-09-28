@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
-class BracesFixerTest extends AbstractFixerTestBase
+final class BracesFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideFixControlContinuationBracesCases
@@ -126,6 +128,15 @@ class BracesFixerTest extends AbstractFixerTestBase
         self::${$type}[$rule] = $pattern + self::${$type}["rules"];
     }
                 ',
+            ),
+            array(
+            '<?php
+    if (1) {
+        do {
+            $a = 1;
+        } while (true);
+    }
+    ',
             ),
         );
     }
@@ -571,6 +582,27 @@ function mixedComplex()
         // foo
         // bar
             {
+        if (true)
+        {
+            print("foo");
+            print("bar");
+        }
+    }',
+            ),
+            array(
+                '<?php
+    if (true) {
+        // foo
+        /* bar */
+        if (true) {
+            print("foo");
+            print("bar");
+        }
+    }',
+                '<?php
+    if (true)
+        // foo
+        /* bar */{
         if (true)
         {
             print("foo");
@@ -1111,6 +1143,12 @@ class Foo
         }
     );',
             ),
+            array(
+                '<?php
+    use function Foo\bar;
+    if (true) {
+    }',
+            ),
         );
     }
 
@@ -1295,7 +1333,7 @@ if (true) {
 }',
             ),
             array(
-                "<?php if (true) {\r\n\r\n// CRLF newline\r\n}",
+                "<?php if (true) {\r\n\r\n// CRLF newline\n}",
             ),
         );
     }

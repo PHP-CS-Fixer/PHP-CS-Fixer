@@ -14,21 +14,30 @@ namespace Symfony\CS\Fixer\Symfony;
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class OperatorsSpacesFixer extends AbstractFixer
+final class OperatorsSpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if (!$tokens->isBinaryOperator($index)) {
+            if (!$tokensAnalyzer->isBinaryOperator($index)) {
                 continue;
             }
 
@@ -40,8 +49,6 @@ class OperatorsSpacesFixer extends AbstractFixer
                 $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**

@@ -11,6 +11,8 @@
 
 namespace Symfony\CS;
 
+use Symfony\Component\Filesystem\Exception\IOException;
+
 /**
  * Class supports caching information about state of fixing files.
  *
@@ -19,30 +21,34 @@ namespace Symfony\CS;
  * File will be processed by PHP CS Fixer only if any of the following conditions is fulfilled:
  *  - cache is not available,
  *  - fixer version changed,
- *  - fixers list is changed,
+ *  - rules changed,
  *  - file is new,
  *  - file changed.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
-class FileCacheManager
+final class FileCacheManager
 {
-    const CACHE_FILE = '.php_cs.cache';
-
-    private $dir;
+    private $cacheFile;
     private $isEnabled;
-    private $fixers;
+    private $rules;
     private $newHashes = array();
     private $oldHashes = array();
 
-    public function __construct($isEnabled, $dir, array $fixers)
+    /**
+     * Create instance.
+     *
+     * @param bool   $isEnabled is cache enabled
+     * @param string $cacheFile cache file
+     * @param array  $rules     array defining rules, format like one for ConfigInterface::setRules
+     */
+    public function __construct($isEnabled, $cacheFile, array $rules)
     {
         $this->isEnabled = $isEnabled;
-        $this->dir = null !== $dir ? $dir.DIRECTORY_SEPARATOR : '';
-        $this->fixers = array_map(function (FixerInterface $f) {
-            return $f->getName();
-        }, $fixers);
-        sort($this->fixers);
+        $this->cacheFile = $cacheFile;
+        $this->rules = $rules;
 
         $this->readFromFile();
     }
@@ -97,13 +103,13 @@ class FileCacheManager
         return $result;
     }
 
-    private function isCacheStale($cacheVersion, $fixers)
+    private function isCacheStale($cacheVersion, $rules)
     {
         if (!$this->isCacheAvailable()) {
             return true;
         }
 
-        return ToolInfo::getVersion() !== $cacheVersion || $this->fixers !== $fixers;
+        return ToolInfo::getVersion() !== $cacheVersion || $this->rules !== $rules;
     }
 
     private function readFromFile()
@@ -112,20 +118,19 @@ class FileCacheManager
             return;
         }
 
-        if (!file_exists($this->dir.self::CACHE_FILE)) {
+        if (!file_exists($this->cacheFile)) {
             return;
         }
 
-        $content = file_get_contents($this->dir.self::CACHE_FILE);
+        $content = file_get_contents($this->cacheFile);
         $data = unserialize($content);
 
-        // BC for old cache without fixers list
-        if (!isset($data['fixers'])) {
-            $data['fixers'] = null;
+        if (!isset($data['version']) || !isset($data['rules'])) {
+            return;
         }
 
         // Set hashes only if the cache is fresh, otherwise we need to parse all files
-        if (!$this->isCacheStale($data['version'], $data['fixers'])) {
+        if (!$this->isCacheStale($data['version'], $data['rules'])) {
             $this->oldHashes = $data['hashes'];
         }
     }
@@ -139,11 +144,13 @@ class FileCacheManager
         $data = serialize(
             array(
                 'version' => ToolInfo::getVersion(),
-                'fixers' => $this->fixers,
+                'rules' => $this->rules,
                 'hashes' => $this->newHashes,
             )
         );
 
-        file_put_contents($this->dir.self::CACHE_FILE, $data, LOCK_EX);
+        if (false === @file_put_contents($this->cacheFile, $data, LOCK_EX)) {
+            throw new IOException(sprintf('Failed to write file "%s".', $this->cacheFile), 0, null, $this->cacheFile);
+        }
     }
 }
