@@ -296,7 +296,7 @@ Choose from the list of available fixers:
 
 * **double_arrow_multiline_whitespaces** [symfony]
                         Operator => should not be
-                        arounded by multi-line
+                        surrounded by multi-line
                         whitespaces.
 
 * **duplicate_semicolon** [symfony]
@@ -359,7 +359,7 @@ Choose from the list of available fixers:
 
 * **operators_spaces** [symfony]
                         Binary operators should be
-                        arounded by at least one
+                        surrounded by at least one
                         space.
 
 * **phpdoc_indent** [symfony]
