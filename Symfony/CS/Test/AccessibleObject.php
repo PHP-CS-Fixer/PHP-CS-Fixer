@@ -24,6 +24,9 @@ final class AccessibleObject
         return new self($object);
     }
 
+    /**
+     * @param object $object
+     */
     public function __construct($object)
     {
         $this->object = $object;
