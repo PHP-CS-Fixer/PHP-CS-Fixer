@@ -11,6 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
+use Symfony\CS\Test\AccessibleObject;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
@@ -30,10 +31,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestBase
 
     public function provideTestFixCases()
     {
-        $fixerReflection = new \ReflectionClass($this->getFixer());
-        $propertyReflection = $fixerReflection->getProperty('configuration');
-        $propertyReflection->setAccessible(true);
-        $methodsMap = $propertyReflection->getValue($this->getFixer());
+        $methodsMap = AccessibleObject::create($this->getFixer())->configuration;
 
         $cases = array(
             array('<?php $self->foo();'),

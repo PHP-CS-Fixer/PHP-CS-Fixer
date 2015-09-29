@@ -11,6 +11,7 @@
 
 namespace Symfony\CS\Tests\Tokenizer;
 
+use Symfony\CS\Test\AccessibleObject;
 use Symfony\CS\Tokenizer\Transformers;
 
 /**
@@ -32,11 +33,7 @@ final class TransformersTest extends \PHPUnit_Framework_TestCase
     {
         $transformers = Transformers::create();
 
-        $transformersReflection = new \ReflectionClass($transformers);
-        $propertyReflection = $transformersReflection->getProperty('items');
-        $propertyReflection->setAccessible(true);
-
-        $items = $propertyReflection->getValue($transformers);
+        $items = AccessibleObject::create($transformers)->items;
 
         $cases = array();
 

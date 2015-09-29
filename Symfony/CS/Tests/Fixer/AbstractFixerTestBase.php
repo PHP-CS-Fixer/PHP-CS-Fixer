@@ -12,6 +12,7 @@
 namespace Symfony\CS\Tests\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Test\AccessibleObject;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -101,10 +102,7 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($expectedTokens->count(), $inputTokens->count(), 'The collection must have the same length than the expected one.');
 
-        $tokensReflection = new \ReflectionClass($expectedTokens);
-        $propertyReflection = $tokensReflection->getProperty('foundTokenKinds');
-        $propertyReflection->setAccessible(true);
-        $foundTokenKinds = array_keys($propertyReflection->getValue($expectedTokens));
+        $foundTokenKinds = array_keys(AccessibleObject::create($expectedTokens)->foundTokenKinds);
 
         foreach ($foundTokenKinds as $tokenKind) {
             $this->assertTrue(

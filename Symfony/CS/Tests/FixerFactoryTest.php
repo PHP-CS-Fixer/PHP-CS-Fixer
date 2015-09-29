@@ -15,6 +15,7 @@ use Symfony\CS\Fixer\Contrib\Psr0Fixer;
 use Symfony\CS\FixerFactory;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\RuleSet;
+use Symfony\CS\Test\AccessibleObject;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -81,11 +82,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
         $mock = $this->getMock('Symfony\CS\ConfigInterface');
         $testInstance = $factory->attachConfig($mock);
-
-        $classReflection = new \ReflectionClass($fixer);
-        $propertyReflection = $classReflection->getProperty('config');
-        $propertyReflection->setAccessible(true);
-        $property = $propertyReflection->getValue($fixer);
+        $property = AccessibleObject::create($fixer)->config;
 
         $this->assertSame($mock, $property);
     }
