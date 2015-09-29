@@ -1,0 +1,75 @@
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-09-28T14:36:37Z
+
+@keradus review fixed.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-28T14:37:02Z
+
+Implementation is buggy.
+
+```php
+$factory->registerBuiltInFixers();
+$factory->hasRule('return'); // true
+$factory->useRuleSet(new RuleSet(['@PSR1' => true]));
+$factory->hasRule('return'); // true, MUST be false
+```
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-09-28T14:42:12Z
+
+@keradus Fixed. Also added related test.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-09-28T16:30:00Z
+
+Tests are failing though, because of the usage of short array syntax (the tool supports PHP 5.3)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-28T17:36:54Z
+
+yeah, my snippet was more a pseudocode than testcase ready to use ;)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-09-29T08:35:01Z
+
+@keradus @stof fixed.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-09-29T12:36:35Z
+
+Review corrected.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-29T12:52:18Z
+
+Looks great @Soullivaneuh !
+I hope I wasn't been picky
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-09-29T12:54:15Z
+
+> I hope I wasn't been picky
+
+I'm also quite picky on PR where I am repository contributor so I understand. ;-)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-09-29T14:11:36Z
+
+@keradus When this PR will be merged?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-29T17:57:32Z
+
+Relax, I simply wasn't online ;)
