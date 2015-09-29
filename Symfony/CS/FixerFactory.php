@@ -36,6 +36,14 @@ final class FixerFactory
     private $fixers = array();
 
     /**
+     * Fixers by name.
+     * Lazy loaded well calling getFixersByName.
+     *
+     * @var FixerInterface[]|null Associative array of fixers with names as keys.
+     */
+    private $fixersByName = null;
+
+    /**
      * Create instance.
      *
      * @return FixerFactory
@@ -139,11 +147,7 @@ final class FixerFactory
      */
     public function useRuleSet(RuleSetInterface $ruleSet)
     {
-        $fixersByName = array();
-
-        foreach ($this->fixers as $fixer) {
-            $fixersByName[$fixer->getName()] = $fixer;
-        }
+        $fixersByName = $this->getFixersByName();
 
         $fixers = array();
 
@@ -158,8 +162,24 @@ final class FixerFactory
         }
 
         $this->fixers = $fixers;
+        // Reset fixers by name to be refreshed
+        $this->fixersByName = null;
 
         return $this;
+    }
+
+    /**
+     * Check if fixer exists.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasRule($name)
+    {
+        $fixersByName = $this->getFixersByName();
+
+        return isset($fixersByName[$name]);
     }
 
     /**
@@ -174,5 +194,23 @@ final class FixerFactory
         });
 
         return $this;
+    }
+
+    /**
+     * Get associative array of fixers with names as key.
+     *
+     * @return FixerInterface[] Associative array of fixers with names as keys.
+     */
+    private function getFixersByName()
+    {
+        if (null === $this->fixersByName) {
+            $this->fixersByName = array();
+
+            foreach ($this->fixers as $fixer) {
+                $this->fixersByName[$fixer->getName()] = $fixer;
+            }
+        }
+
+        return $this->fixersByName;
     }
 }

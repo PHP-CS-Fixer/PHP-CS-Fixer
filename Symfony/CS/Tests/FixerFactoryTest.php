@@ -279,4 +279,44 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
         return $cases;
     }
+
+    public function testHasRule()
+    {
+        $factory = new FixerFactory();
+        $factory->registerBuiltInFixers();
+
+        $f1 = $this->getMock('Symfony\CS\FixerInterface');
+        $f1->expects($this->any())->method('getName')->willReturn('f1');
+        $f2 = $this->getMock('Symfony\CS\FixerInterface');
+        $f2->expects($this->any())->method('getName')->willReturn('f2');
+        $f3 = $this->getMock('Symfony\CS\FixerInterface');
+        $f3->expects($this->any())->method('getName')->willReturn('f3');
+        $factory->registerFixer($f1);
+        $factory->registerCustomFixers(array($f2, $f3));
+
+        $this->assertTrue($factory->hasRule('f1'), 'Should have f1 fixer');
+        $this->assertTrue($factory->hasRule('f2'), 'Should have f2 fixer');
+        $this->assertTrue($factory->hasRule('f3'), 'Should have f3 fixer');
+        $this->assertFalse($factory->hasRule('dummy'), 'Should not have dummy fixer');
+    }
+
+    public function testHasRuleWithChangedRuleSet()
+    {
+        $factory = new FixerFactory();
+        $factory->registerBuiltInFixers();
+
+        $f1 = $this->getMock('Symfony\CS\FixerInterface');
+        $f1->expects($this->any())->method('getName')->willReturn('f1');
+        $f2 = $this->getMock('Symfony\CS\FixerInterface');
+        $f2->expects($this->any())->method('getName')->willReturn('f2');
+        $factory->registerFixer($f1);
+        $factory->registerFixer($f2);
+
+        $this->assertTrue($factory->hasRule('f1'), 'Should have f1 fixer');
+        $this->assertTrue($factory->hasRule('f2'), 'Should have f2 fixer');
+
+        $factory->useRuleSet(new RuleSet(array('f2' => true)));
+        $this->assertFalse($factory->hasRule('f1'), 'Should not have f1 fixer');
+        $this->assertTrue($factory->hasRule('f2'), 'Should have f2 fixer');
+    }
 }
