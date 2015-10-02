@@ -40,4 +40,8 @@
             </exclude>
         </whitelist>
     </filter>
+
+    <php>
+        <ini name="zend.enable_gc" value="0"/>
+    </php>
 </phpunit>
