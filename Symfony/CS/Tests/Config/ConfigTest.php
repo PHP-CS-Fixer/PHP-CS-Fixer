@@ -79,4 +79,42 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($config, $config->setCacheFile('some-directory/some.file'));
     }
+
+    public function testAddRules()
+    {
+        $config = new Config();
+        $config->setRules(array(
+            'foo' => true,
+            'bar' => true,
+        ));
+
+        $config->addRules(array(
+            'foo' => false,
+            'something' => array('with' => 'array'),
+        ));
+
+        $this->assertSame(array(
+            'foo' => false,
+            'bar' => true,
+            'something' => array('with' => 'array'),
+        ), $config->getRules());
+    }
+
+    public function testAddRule()
+    {
+        $config = new Config();
+        $config->setRules(array(
+            'foo' => true,
+            'bar' => true,
+        ));
+
+        $config->addRule('foo', false);
+        $config->addRule('something', array('with' => 'array'));
+
+        $this->assertSame(array(
+            'foo' => false,
+            'bar' => true,
+            'something' => array('with' => 'array'),
+        ), $config->getRules());
+    }
 }

@@ -224,6 +224,26 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
+    public function addRules(array $rules)
+    {
+        $this->rules = array_merge($this->rules, $rules);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addRule($name, $options)
+    {
+        $this->rules[$name] = $options;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRules()
     {
         return $this->rules;

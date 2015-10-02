@@ -160,4 +160,27 @@ interface ConfigInterface
      * @return $this
      */
     public function setRules(array $rules);
+
+    /**
+     * Add rules.
+     *
+     * Rules array will be merge to the current one.
+     *
+     * @param array $rules
+     *
+     * @return $this
+     */
+    public function addRules(array $rules);
+
+    /**
+     * Add rule.
+     *
+     * Rule will be added to the others.
+     *
+     * @param string     $name
+     * @param bool|array $options
+     *
+     * @return $this
+     */
+    public function addRule($name, $options);
 }
