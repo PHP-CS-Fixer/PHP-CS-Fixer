@@ -1,0 +1,42 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-09-29T20:26:48Z
+
+out of pure curiosity, what is this benefit of stopping the default garbage collection?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-29T20:28:46Z
+
+we don't need circular reference collector enabled on tests, therefore a bit speedup
+
+---------------------------------------------------------------------------
+
+by stof at 2015-09-30T10:38:02Z
+
+you need to rebase your branch because of the branch protection you enabled (because of the status requirement actually)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-30T20:59:38Z
+
+Sorry @stof, but I don't understand.
+Branch protection required Travis and AppVeyor to pass, and they passed, so it doesn't block the merge.
+Also, I just mark that 2 services as required, but that doesn't include administrators of repository.
+Why the rebase is needed?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-01T07:49:12Z
+
+Because after rebasing, the checks might fail.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-10-01T07:53:22Z
+
+@keradus the protection enforces the feature branch to be uptodate:
+
+> When using required status checks, your branch must be up-to-date to ensure your tests will pass after merging. The new “Update branch” button lets you merge the latest changes from the base branch of the Pull Request with one click.
+
+I forgot that there is a way to disable the check for repo admins though.
