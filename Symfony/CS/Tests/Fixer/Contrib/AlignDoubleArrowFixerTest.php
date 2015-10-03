@@ -31,6 +31,14 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
         return array(
             array(
                 '<?php
+                switch ($a) {
+                    case "prod":
+                        break;
+                }
+                ',
+            ),
+            array(
+                '<?php
     $array = array(
         "closure" => function ($param1, $param2) {
             return;
@@ -98,14 +106,6 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
         ]),
         "baz" => "OK",
     ]);',
-            ),
-            array(
-                '<?php
-    switch ($a) {
-        case "prod":
-            break;
-    }
-    ',
             ),
             array(
                 '<?php
