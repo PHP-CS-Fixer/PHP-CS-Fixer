@@ -153,6 +153,16 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
     }',
             ),
             array(
+                "<?php
+    return new JsonResponse([
+        'result' => 'OK',
+        'html'   => renderView('views/my_view.html.twig', [
+            'foo'    => 'bar',
+            'foofoo' => 42,
+        ]),
+    ]);",
+            ),
+            array(
                 '<?php
     $data = [
         "foo"  => "Bar",
