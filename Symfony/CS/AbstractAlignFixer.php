@@ -57,14 +57,12 @@ abstract class AbstractAlignFixer extends AbstractFixer
                 }
             }
 
-            $i = 0;
             foreach ($linesWithPlaceholder as $group) {
-                if (1 === count($group)) {
+                if (count($group) < 1) {
                     continue;
                 }
-                ++$i;
-                $rightmostSymbol = 0;
 
+                $rightmostSymbol = 0;
                 foreach ($group as $index) {
                     $rightmostSymbol = max($rightmostSymbol, strpos(utf8_decode($lines[$index]), $placeholder));
                 }
