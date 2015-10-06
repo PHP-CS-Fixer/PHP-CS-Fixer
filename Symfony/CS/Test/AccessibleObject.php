@@ -48,10 +48,12 @@ final class AccessibleObject
     public function __isset($name)
     {
         try {
-            return isset($this->$name);
+            $value = $this->$name;
         } catch (\LogicException $e) {
             return false;
         }
+
+        return isset($value);
     }
 
     public function __get($name)
