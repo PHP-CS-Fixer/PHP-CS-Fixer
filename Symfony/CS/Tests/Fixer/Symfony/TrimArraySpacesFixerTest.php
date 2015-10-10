@@ -25,7 +25,7 @@ final class TrimArraySpacesFixerTest extends AbstractFixerTestBase
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixCases()
@@ -449,7 +449,7 @@ final class TrimArraySpacesFixerTest extends AbstractFixerTestBase
      */
     public function testFix55($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideExamples55()

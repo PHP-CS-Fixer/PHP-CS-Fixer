@@ -26,7 +26,7 @@ final class NewlineAfterOpenTagFixerTest extends AbstractFixerTestBase
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -35,7 +35,7 @@ final class NewlineAfterOpenTagFixerTest extends AbstractFixerTestBase
      */
     public function testFix54($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideCases()

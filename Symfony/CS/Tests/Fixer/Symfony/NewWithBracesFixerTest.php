@@ -25,7 +25,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestBase
      */
     public function testStandard($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -34,7 +34,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestBase
      */
     public function test54($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideStandardCases()

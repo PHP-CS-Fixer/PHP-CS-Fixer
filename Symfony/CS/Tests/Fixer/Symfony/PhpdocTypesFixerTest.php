@@ -41,7 +41,7 @@ EOF;
      */
 
 EOF;
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testArrayStuff()
@@ -65,7 +65,7 @@ EOF;
      */
 
 EOF;
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testMixedAndVoid()
@@ -89,6 +89,6 @@ EOF;
      */
 
 EOF;
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 }

@@ -25,7 +25,7 @@ final class WhitespacyLinesFixerTest extends AbstractFixerTestBase
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideCases()

@@ -66,7 +66,7 @@ $a = new Qux();
 EOF
         ;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testWithoutUses()
@@ -81,6 +81,6 @@ $a = new Qux();
 EOF
         ;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 }

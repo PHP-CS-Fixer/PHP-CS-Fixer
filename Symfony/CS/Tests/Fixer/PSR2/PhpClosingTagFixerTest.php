@@ -23,7 +23,7 @@ final class PhpClosingTagFixerTest extends AbstractFixerTestBase
      */
     public function testCasesWithFullOpenTag($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -37,7 +37,7 @@ final class PhpClosingTagFixerTest extends AbstractFixerTestBase
             return;
         }
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideCasesWithFullOpenTag()

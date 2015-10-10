@@ -100,7 +100,7 @@ class AnnotatedClass
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixWithMultipleNamespace()
@@ -237,7 +237,7 @@ namespace BlaRoo {
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixWithComment()
@@ -322,7 +322,7 @@ class AnnotatedClass
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -400,7 +400,7 @@ class AnnotatedClass
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -494,7 +494,7 @@ class AnnotatedClass
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixWithDifferentCases()
@@ -533,7 +533,7 @@ class Test
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testWithoutUses()
@@ -545,7 +545,7 @@ $c = 1;
 EOF
         ;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testOrderWithTrailingDigit()
@@ -580,7 +580,7 @@ class Test
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testCodeWithImportsOnly()

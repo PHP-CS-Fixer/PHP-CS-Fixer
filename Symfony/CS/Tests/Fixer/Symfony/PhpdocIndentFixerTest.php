@@ -25,7 +25,7 @@ final class PhpdocIndentFixerTest extends AbstractFixerTestBase
      */
     public function testFixIndent($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideDocblocks()

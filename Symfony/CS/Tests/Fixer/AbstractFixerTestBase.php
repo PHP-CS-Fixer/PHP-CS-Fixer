@@ -106,7 +106,7 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
      * @param SplFileInfo|null    $file     File with which code will be fixed
      * @param FixerInterface|null $fixer    Fixer by which code will be fixed
      */
-    protected function makeTest($expected, $input = null, \SplFileInfo $file = null, FixerInterface $fixer = null)
+    protected function doTest($expected, $input = null, \SplFileInfo $file = null, FixerInterface $fixer = null)
     {
         if ($expected === $input) {
             throw new \InvalidArgumentException('Input parameter must not be equal to expected parameter.');

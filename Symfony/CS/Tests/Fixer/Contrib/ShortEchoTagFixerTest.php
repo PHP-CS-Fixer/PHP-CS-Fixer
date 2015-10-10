@@ -31,7 +31,7 @@ final class ShortEchoTagFixerTest extends AbstractFixerTestBase
          * @see https://github.com/facebook/hhvm/issues/4809
          */
         if (!defined('HHVM_VERSION')) {
-            $this->makeTest($expected, $input);
+            $this->doTest($expected, $input);
         }
     }
 

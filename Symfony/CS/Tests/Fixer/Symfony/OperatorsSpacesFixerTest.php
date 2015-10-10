@@ -26,7 +26,7 @@ final class OperatorsSpacesFixerTest extends AbstractFixerTestBase
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideCases()
@@ -146,7 +146,7 @@ $b;',
      */
     public function testFix54($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideCases54()

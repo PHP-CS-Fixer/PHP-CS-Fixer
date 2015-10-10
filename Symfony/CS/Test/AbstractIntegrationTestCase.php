@@ -64,11 +64,11 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getTests
      *
-     * @see doTestIntegration()
+     * @see doTest()
      */
     public function testIntegration($testFileName, $testTitle, $fixers, $input, $expected = null)
     {
-        $this->doTestIntegration($testFileName, $testTitle, $fixers, $input, $expected);
+        $this->doTest($testFileName, $testTitle, $fixers, $input, $expected);
     }
 
     /**
@@ -135,7 +135,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
      * @param string           $input        Code to fix
      * @param string|null      $expected     Expected result or null if the input is expected not to change
      */
-    protected function doTestIntegration($testFileName, $testTitle, $fixers, $input, $expected = null)
+    protected function doTest($testFileName, $testTitle, $fixers, $input, $expected = null)
     {
         $fixer = new Fixer();
         $tmpFile = static::getTempFile();

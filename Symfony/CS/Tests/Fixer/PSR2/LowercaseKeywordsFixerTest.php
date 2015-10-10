@@ -25,7 +25,7 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestBase
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideExamples()
@@ -42,6 +42,6 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestBase
      */
     public function testHaltCompiler()
     {
-        $this->makeTest('<?php __HALT_COMPILER();');
+        $this->doTest('<?php __HALT_COMPILER();');
     }
 }

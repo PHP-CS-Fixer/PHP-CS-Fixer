@@ -36,7 +36,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestBase
      */
 
 EOF;
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testOnlyParams()
@@ -49,7 +49,7 @@ EOF;
      */
 
 EOF;
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testOnlyReturns()
@@ -63,12 +63,12 @@ EOF;
      */
 
 EOF;
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testEmpty()
     {
-        $this->makeTest('/***/');
+        $this->doTest('/***/');
     }
 
     public function testNoAnnotations()
@@ -82,7 +82,7 @@ EOF;
      */
 
 EOF;
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testFixBasicCase()
@@ -107,7 +107,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixCompeteCase()
@@ -164,7 +164,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testExampleFromSymfony()
@@ -201,6 +201,6 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 }

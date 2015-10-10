@@ -23,7 +23,7 @@ final class SpacesCastFixerTest extends AbstractFixerTestBase
      */
     public function testFixCasts($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixCastsProvider()

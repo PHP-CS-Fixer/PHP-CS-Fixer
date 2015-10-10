@@ -28,7 +28,7 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestBas
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -80,7 +80,7 @@ namespace Symfony\CS\Fixer\Contrib;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixExampleWithCommentTooLittle()
@@ -116,6 +116,6 @@ namespace Symfony\CS\Fixer\Contrib;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 }

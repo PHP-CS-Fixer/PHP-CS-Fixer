@@ -82,6 +82,6 @@ namespace Boo {
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 }

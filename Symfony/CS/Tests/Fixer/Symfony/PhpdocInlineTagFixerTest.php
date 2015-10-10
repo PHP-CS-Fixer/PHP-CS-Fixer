@@ -25,7 +25,7 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
      */
     public function testFixInlineDoc($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideTestFixInlineDocCases()
@@ -161,7 +161,7 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
      */
     public function testFixInheritDoc($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideTestFixInheritDocCases()

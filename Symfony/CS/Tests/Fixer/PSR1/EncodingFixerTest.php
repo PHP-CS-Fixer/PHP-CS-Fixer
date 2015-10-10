@@ -25,7 +25,7 @@ final class EncodingFixerTest extends AbstractFixerTestBase
      */
     public function testFix($expected, $input, $file)
     {
-        $this->makeTest($expected, $input, $file);
+        $this->doTest($expected, $input, $file);
     }
 
     public function provideExamples()

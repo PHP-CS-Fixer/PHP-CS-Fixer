@@ -38,7 +38,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testWithQuestionMark()
@@ -50,7 +50,7 @@ EOF;
      */
 
 EOF;
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testWithExclimationMark()
@@ -62,7 +62,7 @@ EOF;
      */
 
 EOF;
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testFixIncBlank()
@@ -85,7 +85,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixMultiline()
@@ -108,7 +108,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testWithTags()
@@ -137,7 +137,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testWithLongDescription()
@@ -168,7 +168,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testCrazyMultiLineComments()
@@ -251,7 +251,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testWithNoDescription()
@@ -264,7 +264,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testWithInheritDoc()
@@ -277,7 +277,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testEmptyDocBlock()
@@ -290,6 +290,6 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 }

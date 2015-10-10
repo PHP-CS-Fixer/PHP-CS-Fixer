@@ -23,7 +23,7 @@ final class MethodSeparationFixerTest extends AbstractFixerTestBase
      */
     public function testFixClasses($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixClassesCases()
@@ -359,7 +359,7 @@ function test2() {
      */
     public function testFixTraits($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixTraitsCases()
@@ -450,7 +450,7 @@ trait SomeReturnInfo {
      */
     public function testFixInterfaces($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixInterfaces()

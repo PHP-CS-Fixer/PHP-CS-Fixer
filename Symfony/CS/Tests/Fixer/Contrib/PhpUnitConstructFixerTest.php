@@ -33,7 +33,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestBase
             'assertNotEquals' => true,
             'assertNotSame' => true,
         ));
-        $this->makeTest($expected, $input, null, $fixer);
+        $this->doTest($expected, $input, null, $fixer);
 
         $fixer->configure(array(
             'assertEquals' => false,
@@ -41,7 +41,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestBase
             'assertNotEquals' => false,
             'assertNotSame' => false,
         ));
-        $this->makeTest($input ?: $expected, null, null, $fixer);
+        $this->doTest($input ?: $expected, null, null, $fixer);
 
         foreach (array('assertSame', 'assertEquals', 'assertNotEquals', 'assertNotSame') as $method) {
             $config = array(
@@ -53,7 +53,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestBase
             $config[$method] = true;
 
             $fixer->configure($config);
-            $this->makeTest(
+            $this->doTest(
                 $expected,
                 $input && false !== strpos($input, $method) ? $input : null,
                 null,

@@ -25,7 +25,7 @@ final class ParenthesisFixerTest extends AbstractFixerTestBase
      */
     public function testFixSpaceInsideParenthesis($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testLeaveNewLinesAlone()
@@ -48,7 +48,7 @@ class Foo
     }
 }
 EOF;
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function provideCases()

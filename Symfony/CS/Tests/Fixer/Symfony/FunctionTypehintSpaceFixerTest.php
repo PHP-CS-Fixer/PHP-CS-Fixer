@@ -25,7 +25,7 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestBase
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideCases()
@@ -107,7 +107,7 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestBase
      */
     public function testFix56($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideCases56()

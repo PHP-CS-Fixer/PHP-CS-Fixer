@@ -23,7 +23,7 @@ final class ShortTagFixerTest extends AbstractFixerTestBase
      */
     public function testOneLineFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideClosingTagExamples()
