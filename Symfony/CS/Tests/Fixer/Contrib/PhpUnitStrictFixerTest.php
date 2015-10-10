@@ -11,8 +11,8 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Test\AccessibleObject;
 use Symfony\CS\Test\AbstractFixerTestCase;
+use Symfony\CS\Test\AccessibleObject;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

@@ -11,10 +11,9 @@
 
 namespace Symfony\CS\Test;
 
-use Symfony\CS\FixerInterface;
 use Symfony\CS\FixerFactory;
+use Symfony\CS\FixerInterface;
 use Symfony\CS\RuleSet;
-use Symfony\CS\Test\AccessibleObject;
 use Symfony\CS\Tokenizer\Tokens;
 use Symfony\CS\Utils;
 
@@ -52,8 +51,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
                 ->useRuleSet(new RuleSet(array($name => $configuration)))
                 ->getFixers()
             ;
-        }
-        catch (\UnexpectedValueException $e) {
+        } catch (\UnexpectedValueException $e) {
             throw new \UnexpectedValueException('Cannot determine fixer class, perhaps you forget to override `getFixerName` or `createFixerFactory` method?');
         }
 
