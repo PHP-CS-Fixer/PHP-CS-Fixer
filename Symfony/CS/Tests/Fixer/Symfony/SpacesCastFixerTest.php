@@ -11,19 +11,19 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @internal
  */
-final class SpacesCastFixerTest extends AbstractFixerTestBase
+final class SpacesCastFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider testFixCastsProvider
      */
     public function testFixCasts($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixCastsProvider()

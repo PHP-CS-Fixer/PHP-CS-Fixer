@@ -11,21 +11,21 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  *
  * @internal
  */
-final class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
+final class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideExamples
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideExamples()
@@ -320,7 +320,7 @@ TWIG
      */
     public function testFix55($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideExamples55()

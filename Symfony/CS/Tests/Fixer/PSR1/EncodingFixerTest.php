@@ -11,21 +11,21 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR1;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class EncodingFixerTest extends AbstractFixerTestBase
+final class EncodingFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideExamples
      */
     public function testFix($expected, $input, $file)
     {
-        $this->makeTest($expected, $input, $file);
+        $this->doTest($expected, $input, $file);
     }
 
     public function provideExamples()

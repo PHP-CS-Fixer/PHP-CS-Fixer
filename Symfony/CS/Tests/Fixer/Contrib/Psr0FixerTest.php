@@ -12,12 +12,12 @@
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
 use Symfony\CS\Config\Config;
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @internal
  */
-final class Psr0FixerTest extends AbstractFixerTestBase
+final class Psr0FixerTest extends AbstractFixerTestCase
 {
     public function testFixCase()
     {
@@ -34,7 +34,7 @@ namespace Symfony\cs\Fixer\Contrib;
 class psr0Fixer {}
 EOF;
 
-        $this->makeTest($expected, $input, $file);
+        $this->doTest($expected, $input, $file);
 
         $expected = <<<'EOF'
 <?php
@@ -45,7 +45,7 @@ EOF;
 class symfony_cs_FiXER_Contrib_Psr0FIXer {}
 EOF;
 
-        $this->makeTest($expected, $input, $file);
+        $this->doTest($expected, $input, $file);
     }
 
     public function testFixClassName()
@@ -65,7 +65,7 @@ class blah {}
 /* class foo */
 EOF;
 
-        $this->makeTest($expected, $input, $file);
+        $this->doTest($expected, $input, $file);
     }
 
     public function testFixAbstractClassName()
@@ -85,7 +85,7 @@ abstract class blah {}
 /* class foo */
 EOF;
 
-        $this->makeTest($expected, $input, $file);
+        $this->doTest($expected, $input, $file);
     }
 
     public function testFixFinalClassName()
@@ -105,7 +105,7 @@ final class blah {}
 /* class foo */
 EOF;
 
-        $this->makeTest($expected, $input, $file);
+        $this->doTest($expected, $input, $file);
     }
 
     public function testHandlePartialNamespaces()
@@ -128,7 +128,7 @@ namespace Foo\Bar\Baz\FIXER\Contrib;
 class Psr0Fixer {}
 EOF;
 
-        $this->makeTest($expected, $input, $file, $fixer);
+        $this->doTest($expected, $input, $file, $fixer);
 
         $config->setDir(__DIR__.'/../../../Fixer/Contrib');
         $expected = <<<'EOF'
@@ -137,7 +137,7 @@ namespace Foo\Bar\Baz;
 class Psr0Fixer {}
 EOF;
 
-        $this->makeTest($expected, null, $file, $fixer);
+        $this->doTest($expected, null, $file, $fixer);
     }
 
     public function testIgnoreLongExtension()
@@ -150,6 +150,6 @@ namespace Aaa;
 class Bar {}
 EOF;
 
-        $this->makeTest($expected, null, $file);
+        $this->doTest($expected, null, $file);
     }
 }

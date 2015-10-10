@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @internal
  */
-final class HeaderCommentFixerTest extends AbstractFixerTestBase
+final class HeaderCommentFixerTest extends AbstractFixerTestCase
 {
     protected static $testHeader = <<<EOH
 This file is part of the PHP CS utility.
@@ -60,7 +60,7 @@ EOH;
 
 phpinfo();
 EOH;
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixWithoutPreviousHeader()
@@ -87,7 +87,7 @@ EOH;
 
 phpinfo();
 EOH;
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixWithClassDocblock()
@@ -122,7 +122,7 @@ class Foo()
 }
 EOH;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixRemovePreviousHeader()
@@ -151,25 +151,25 @@ EOH;
         $fixer = $this->getFixer();
         $fixer->configure(array('header' => ''));
 
-        $this->makeTest($expected, $input, null, $fixer);
+        $this->doTest($expected, $input, null, $fixer);
     }
 
     public function testFixDoNotTouchFilesWithSeveralOpenTags()
     {
         $input = "<?php\nphpinfo();\n?>\n<?";
-        $this->makeTest($input);
+        $this->doTest($input);
     }
 
     public function testFixDoNotTouchFilesNotStartingWithOpenTag()
     {
         $input = " <?php\nphpinfo();\n";
-        $this->makeTest($input);
+        $this->doTest($input);
     }
 
     public function testFixDoNotTouchFilesWithInlineHtml()
     {
         $input = "<?php\nphpinfo();\n?><hr/>";
-        $this->makeTest($input);
+        $this->doTest($input);
     }
 
     public function testFixAddHeaderToEmptyFile()
@@ -190,6 +190,6 @@ EOH;
 EOH;
 
         $input = "<?php\n";
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 }

@@ -9,34 +9,80 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer;
+namespace Symfony\CS\Test;
 
+use Symfony\CS\FixerFactory;
 use Symfony\CS\FixerInterface;
-use Symfony\CS\Test\AccessibleObject;
+use Symfony\CS\RuleSet;
 use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\Utils;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
  */
-abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
+abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
 {
+    private $fixer;
+
+    /**
+     * Create fixer factory with all needed fixers registered.
+     *
+     * @return FixerFactory
+     */
+    protected function createFixerFactory()
+    {
+        return FixerFactory::create()->registerBuiltInFixers();
+    }
+
+    /**
+     * @return FixerInterface
+     */
     protected function getFixer()
     {
-        $name = 'Symfony\CS\Fixer'.substr(get_called_class(), strlen(__NAMESPACE__), -strlen('Test'));
+        if (null !== $this->fixer) {
+            return $this->fixer;
+        }
 
-        $fixer = new $name();
-        $fixer->configure($this->getFixerConfiguration());
+        $name = $this->getFixerName();
+        $configuration = $this->getFixerConfiguration();
 
-        return $fixer;
+        try {
+            $fixers = $this->createFixerFactory()
+                ->useRuleSet(new RuleSet(array($name => $configuration)))
+                ->getFixers()
+            ;
+        } catch (\UnexpectedValueException $e) {
+            throw new \UnexpectedValueException('Cannot determine fixer class, perhaps you forget to override `getFixerName` or `createFixerFactory` method?');
+        }
+
+        $this->fixer = $fixers[0];
+
+        return $this->fixer;
     }
 
+    /**
+     * @return bool|array
+     */
     protected function getFixerConfiguration()
     {
-        return;
+        return true;
     }
 
+    /**
+     * @return string
+     */
+    protected function getFixerName()
+    {
+        $reflection = new \ReflectionClass($this);
+
+        $name = preg_replace('/FixerTest$/', '', $reflection->getShortName());
+
+        return Utils::camelCaseToUnderscore($name);
+    }
+
+    /**
+     * @return \SplFileInfo
+     */
     protected function getTestFile($filename = __FILE__)
     {
         static $files = array();
@@ -48,7 +94,15 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
         return $files[$filename];
     }
 
-    protected function makeTest($expected, $input = null, \SplFileInfo $file = null, FixerInterface $fixer = null)
+    /**
+     * Perform a test scenario for fixer.
+     *
+     * @param string              $expected Fixed source code
+     * @param string|null         $input    Input source code
+     * @param SplFileInfo|null    $file     File with which code will be fixed
+     * @param FixerInterface|null $fixer    Fixer by which code will be fixed
+     */
+    protected function doTest($expected, $input = null, \SplFileInfo $file = null, FixerInterface $fixer = null)
     {
         if ($expected === $input) {
             throw new \InvalidArgumentException('Input parameter must not be equal to expected parameter.');

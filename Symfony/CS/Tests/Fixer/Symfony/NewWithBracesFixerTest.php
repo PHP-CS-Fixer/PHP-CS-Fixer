@@ -11,21 +11,21 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class NewWithBracesFixerTest extends AbstractFixerTestBase
+final class NewWithBracesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideStandardCases
      */
     public function testStandard($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -34,7 +34,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestBase
      */
     public function test54($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideStandardCases()

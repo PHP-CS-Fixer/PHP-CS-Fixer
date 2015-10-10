@@ -11,21 +11,21 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
  *
  * @internal
  */
-final class LogicalNotOperatorsWithSuccessorSpaceFixerTest extends AbstractFixerTestBase
+final class LogicalNotOperatorsWithSuccessorSpaceFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideCases()

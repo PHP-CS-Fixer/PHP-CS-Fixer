@@ -11,7 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
@@ -19,14 +19,14 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  *
  * @internal
  */
-final class NewlineAfterOpenTagFixerTest extends AbstractFixerTestBase
+final class NewlineAfterOpenTagFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -35,7 +35,7 @@ final class NewlineAfterOpenTagFixerTest extends AbstractFixerTestBase
      */
     public function testFix54($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideCases()

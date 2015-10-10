@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
  *
  * @internal
  */
-final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestBase
+final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
 {
     public function testFixVar()
     {
@@ -38,7 +38,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixType()
@@ -59,7 +59,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testDoNothing()
@@ -72,7 +72,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testFixVarWithOtherAnnotation()
@@ -97,7 +97,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixVarWithNestedKeys()
@@ -124,7 +124,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testSingleLine()
@@ -135,7 +135,7 @@ EOF;
     $bar;
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testEmpty()
@@ -148,7 +148,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testInlineDoc()
@@ -166,7 +166,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testInlineDocAgain()
@@ -183,6 +183,6 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 }

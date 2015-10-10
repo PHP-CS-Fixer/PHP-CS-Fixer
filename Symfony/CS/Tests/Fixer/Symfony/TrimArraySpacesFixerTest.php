@@ -11,21 +11,21 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Jared Henderson <jared@netrivet.com>
  *
  * @internal
  */
-final class TrimArraySpacesFixerTest extends AbstractFixerTestBase
+final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixCases()
@@ -449,7 +449,7 @@ final class TrimArraySpacesFixerTest extends AbstractFixerTestBase
      */
     public function testFix55($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideExamples55()

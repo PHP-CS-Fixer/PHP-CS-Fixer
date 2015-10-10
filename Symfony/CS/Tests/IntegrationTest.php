@@ -11,6 +11,8 @@
 
 namespace Symfony\CS\Tests;
 
+use Symfony\CS\Test\AbstractIntegrationTestCase;
+
 /**
  * Test that parses and runs the fixture '*.test' files found in '/Fixtures/Integration'.
  *
@@ -18,7 +20,7 @@ namespace Symfony\CS\Tests;
  *
  * @internal
  */
-final class IntegrationTest extends AbstractIntegrationTest
+final class IntegrationTest extends AbstractIntegrationTestCase
 {
     /**
      * {@inheritdoc}

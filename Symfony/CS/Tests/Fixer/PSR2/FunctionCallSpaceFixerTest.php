@@ -11,21 +11,21 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Varga Bence <vbence@czentral.org>
  *
  * @internal
  */
-final class FunctionCallSpaceFixerTest extends AbstractFixerTestBase
+final class FunctionCallSpaceFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider testFixProvider
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixProvider()
@@ -112,7 +112,7 @@ final class FunctionCallSpaceFixerTest extends AbstractFixerTestBase
      */
     public function test54($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provide54Cases()

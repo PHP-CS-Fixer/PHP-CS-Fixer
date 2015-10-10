@@ -11,7 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Luis Cordova <cordoval@gmail.com>
@@ -19,7 +19,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  *
  * @internal
  */
-final class RemoveLinesBetweenUsesFixerTest extends AbstractFixerTestBase
+final class RemoveLinesBetweenUsesFixerTest extends AbstractFixerTestCase
 {
     public function testRemoveLinesBetweenUseStatements()
     {
@@ -66,7 +66,7 @@ $a = new Qux();
 EOF
         ;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testWithoutUses()
@@ -81,6 +81,6 @@ $a = new Qux();
 EOF
         ;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 }

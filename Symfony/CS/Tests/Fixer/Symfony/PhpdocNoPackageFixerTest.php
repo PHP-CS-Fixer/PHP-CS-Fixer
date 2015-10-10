@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
  *
  * @internal
  */
-final class PhpdocNoPackageFixerTest extends AbstractFixerTestBase
+final class PhpdocNoPackageFixerTest extends AbstractFixerTestCase
 {
     public function testFixPackage()
     {
@@ -37,7 +37,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixSubpackage()
@@ -57,7 +57,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixMany()
@@ -80,7 +80,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testDoNothing()
@@ -93,6 +93,6 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 }

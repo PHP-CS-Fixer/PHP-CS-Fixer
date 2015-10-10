@@ -11,21 +11,21 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class StrictFixerTest extends AbstractFixerTestBase
+final class StrictFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideTestFixCases
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideTestFixCases()

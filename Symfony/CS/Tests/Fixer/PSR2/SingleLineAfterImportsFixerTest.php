@@ -11,21 +11,21 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
  *
  * @internal
  */
-final class SingleLineAfterImportsFixerTest extends AbstractFixerTestBase
+final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideCases()

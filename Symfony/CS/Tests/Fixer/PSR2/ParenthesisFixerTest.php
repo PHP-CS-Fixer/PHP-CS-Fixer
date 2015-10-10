@@ -11,21 +11,21 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Marc Aubé
  *
  * @internal
  */
-final class ParenthesisFixerTest extends AbstractFixerTestBase
+final class ParenthesisFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases
      */
     public function testFixSpaceInsideParenthesis($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testLeaveNewLinesAlone()
@@ -48,7 +48,7 @@ class Foo
     }
 }
 EOF;
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function provideCases()

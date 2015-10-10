@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class MultipleUseFixerTest extends AbstractFixerTestBase
+final class MultipleUseFixerTest extends AbstractFixerTestCase
 {
     public function testFix()
     {
@@ -82,6 +82,6 @@ namespace Boo {
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 }

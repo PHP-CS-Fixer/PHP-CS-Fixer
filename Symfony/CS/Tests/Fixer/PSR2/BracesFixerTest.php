@@ -11,21 +11,21 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class BracesFixerTest extends AbstractFixerTestBase
+final class BracesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixControlContinuationBracesCases
      */
     public function testFixControlContinuationBraces($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixControlContinuationBracesCases()
@@ -146,7 +146,7 @@ final class BracesFixerTest extends AbstractFixerTestBase
      */
     public function testFixMissingBracesAndIndent($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixMissingBracesAndIndentCases()
@@ -825,7 +825,7 @@ class Foo
      */
     public function testFixClassyBraces($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixClassyBracesCases()
@@ -900,7 +900,7 @@ function foo()
      */
     public function testFixClassyBraces54($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixClassyBraces54Cases()
@@ -924,7 +924,7 @@ function foo()
      */
     public function testFixAnonFunctionInShortArraySyntax54($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixAnonFunctionInShortArraySyntax54Cases()
@@ -956,7 +956,7 @@ function foo()
      */
     public function testFixCommentBeforeBrace($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixCommentBeforeBraceCases()
@@ -983,7 +983,7 @@ function foo()
      */
     public function testFixWhitespaceBeforeBrace($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixWhitespaceBeforeBraceCases()
@@ -1060,7 +1060,7 @@ function foo()
      */
     public function testFixFunctions($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixFunctionsCases()
@@ -1164,7 +1164,7 @@ class Foo
      */
     public function testFixSpaceAroundToken($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixSpaceAroundTokenCases()
@@ -1255,7 +1255,7 @@ while (true) {
      */
     public function test55($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provide55Cases()
@@ -1321,7 +1321,7 @@ catch(Exception $e)
      */
     public function testPreserveLineAfterControlBrace($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function providePreserveLineAfterControlBrace()

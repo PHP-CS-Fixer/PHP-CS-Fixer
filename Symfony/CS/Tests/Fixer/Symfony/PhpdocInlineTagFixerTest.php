@@ -11,21 +11,21 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * Test PhpdocInlineTagFixer.
  *
  * @internal
  */
-final class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
+final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideTestFixInlineDocCases
      */
     public function testFixInlineDoc($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideTestFixInlineDocCases()
@@ -161,7 +161,7 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
      */
     public function testFixInheritDoc($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideTestFixInheritDocCases()
