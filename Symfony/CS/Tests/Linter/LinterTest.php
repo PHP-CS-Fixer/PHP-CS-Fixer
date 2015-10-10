@@ -13,6 +13,7 @@ namespace Symfony\CS\Tests;
 
 use Symfony\Component\Process\ProcessUtils;
 use Symfony\CS\Linter\Linter;
+use Symfony\CS\Test\AccessibleObject;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -29,12 +30,12 @@ final class LinterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(
             $this->fixEscape('"php" -l "foo.php"'),
-            $this->invokeMethod(new Linter('php'), 'prepareCommand', array('foo.php'))
+            AccessibleObject::create(new Linter('php'))->prepareCommand('foo.php')
         );
 
         $this->assertSame(
             $this->fixEscape('"C:\Program Files\php\php.exe" -l "foo bar\baz.php"'),
-            $this->invokeMethod(new Linter('C:\Program Files\php\php.exe'), 'prepareCommand', array('foo bar\baz.php'))
+            AccessibleObject::create(new Linter('C:\Program Files\php\php.exe'))->prepareCommand('foo bar\baz.php')
         );
     }
 
@@ -46,7 +47,7 @@ final class LinterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(
             $this->fixEscape('"hhvm" --php -l "foo.php"'),
-            $this->invokeMethod(new Linter('hhvm'), 'prepareCommand', array('foo.php'))
+            AccessibleObject::create(new Linter('hhvm'))->prepareCommand('foo.php')
         );
     }
 
@@ -96,14 +97,5 @@ final class LinterTest extends \PHPUnit_Framework_TestCase
         }
 
         return str_replace($usedEscapeChar, $escapeChar, $value);
-    }
-
-    private function invokeMethod($object, $methodName, array $parameters = array())
-    {
-        $reflection = new \ReflectionClass($object);
-        $method = $reflection->getMethod($methodName);
-        $method->setAccessible(true);
-
-        return $method->invokeArgs($object, $parameters);
     }
 }

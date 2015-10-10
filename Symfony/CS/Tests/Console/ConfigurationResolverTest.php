@@ -14,6 +14,7 @@ namespace Symfony\CS\Tests\Console;
 use Symfony\CS\Config\Config;
 use Symfony\CS\Console\ConfigurationResolver;
 use Symfony\CS\Fixer;
+use Symfony\CS\Test\AccessibleObject;
 
 /**
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
@@ -50,11 +51,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function testSetOption()
     {
         $this->resolver->setOption('path', '.');
-
-        $classReflection = new \ReflectionClass($this->resolver);
-        $propertyReflection = $classReflection->getProperty('options');
-        $propertyReflection->setAccessible(true);
-        $property = $propertyReflection->getValue($this->resolver);
+        $property = AccessibleObject::create($this->resolver)->options;
 
         $this->assertSame('.', $property['path']);
     }
@@ -74,11 +71,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             'path' => '.',
             'config-file' => 'config.php_cs',
         ));
-
-        $classReflection = new \ReflectionClass($this->resolver);
-        $propertyReflection = $classReflection->getProperty('options');
-        $propertyReflection->setAccessible(true);
-        $property = $propertyReflection->getValue($this->resolver);
+        $property = AccessibleObject::create($this->resolver)->options;
 
         $this->assertSame('.', $property['path']);
         $this->assertSame('config.php_cs', $property['config-file']);
@@ -87,11 +80,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function testCwd()
     {
         $this->resolver->setCwd('foo');
-
-        $classReflection = new \ReflectionClass($this->resolver);
-        $propertyReflection = $classReflection->getProperty('cwd');
-        $propertyReflection->setAccessible(true);
-        $property = $propertyReflection->getValue($this->resolver);
+        $property = AccessibleObject::create($this->resolver)->cwd;
 
         $this->assertSame('foo', $property);
     }
