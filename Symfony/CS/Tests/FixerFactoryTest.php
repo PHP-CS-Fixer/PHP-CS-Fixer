@@ -124,7 +124,6 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     public function testThatCanRegisterAndGetFixers()
     {
         $factory = new FixerFactory();
-        $factory->registerBuiltInFixers();
 
         $f1 = $this->getMock('Symfony\CS\FixerInterface');
         $f2 = $this->getMock('Symfony\CS\FixerInterface');
@@ -280,7 +279,6 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     public function testHasRule()
     {
         $factory = new FixerFactory();
-        $factory->registerBuiltInFixers();
 
         $f1 = $this->getMock('Symfony\CS\FixerInterface');
         $f1->expects($this->any())->method('getName')->willReturn('f1');
@@ -300,7 +298,6 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     public function testHasRuleWithChangedRuleSet()
     {
         $factory = new FixerFactory();
-        $factory->registerBuiltInFixers();
 
         $f1 = $this->getMock('Symfony\CS\FixerInterface');
         $f1->expects($this->any())->method('getName')->willReturn('f1');
