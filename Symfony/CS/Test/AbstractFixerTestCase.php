@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer;
+namespace Symfony\CS\Test;
 
 use Symfony\CS\FixerInterface;
 use Symfony\CS\FixerFactory;
@@ -20,10 +20,8 @@ use Symfony\CS\Utils;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
  */
-abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
+abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
 {
     private $fixer;
 

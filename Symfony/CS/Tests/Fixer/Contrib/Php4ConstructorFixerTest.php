@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Matteo Beccati <matteo@beccati.com>
  *
  * @internal
  */
-final class Php4ConstructorFixerTest extends AbstractFixerTestBase
+final class Php4ConstructorFixerTest extends AbstractFixerTestCase
 {
     public function testNamespaces()
     {

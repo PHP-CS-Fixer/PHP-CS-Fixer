@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @internal
  */
-final class VisibilityFixerTest extends AbstractFixerTestBase
+final class VisibilityFixerTest extends AbstractFixerTestCase
 {
     public function testFixProperties()
     {

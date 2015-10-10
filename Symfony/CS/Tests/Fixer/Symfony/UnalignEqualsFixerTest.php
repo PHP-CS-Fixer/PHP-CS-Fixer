@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class UnalignEqualsFixerTest extends AbstractFixerTestBase
+final class UnalignEqualsFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases

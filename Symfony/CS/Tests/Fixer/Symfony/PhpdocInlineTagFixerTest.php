@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * Test PhpdocInlineTagFixer.
  *
  * @internal
  */
-final class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
+final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideTestFixInlineDocCases

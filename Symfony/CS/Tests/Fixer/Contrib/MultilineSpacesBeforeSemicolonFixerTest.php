@@ -11,7 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author John Kelly <wablam@gmail.com>
@@ -20,7 +20,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  *
  * @internal
  */
-final class MultilineSpacesBeforeSemicolonFixerTest extends AbstractFixerTestBase
+final class MultilineSpacesBeforeSemicolonFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases

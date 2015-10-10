@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
  */
-final class LongArraySyntaxFixerTest extends AbstractFixerTestBase
+final class LongArraySyntaxFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideExamples

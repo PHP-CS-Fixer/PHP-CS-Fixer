@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @internal
  */
-final class HeaderCommentFixerTest extends AbstractFixerTestBase
+final class HeaderCommentFixerTest extends AbstractFixerTestCase
 {
     protected static $testHeader = <<<EOH
 This file is part of the PHP CS utility.

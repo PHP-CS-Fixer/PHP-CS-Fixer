@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Vincent Klaiber <hello@vinkla.com>
  *
  * @internal
  */
-final class ShortEchoTagFixerTest extends AbstractFixerTestBase
+final class ShortEchoTagFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideClosingTagExamples

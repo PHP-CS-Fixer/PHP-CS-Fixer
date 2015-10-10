@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
  */
-final class PreIncrementFixerTest extends AbstractFixerTestBase
+final class PreIncrementFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideExamples

@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @internal
  */
-final class ExtraEmptyLinesFixerTest extends AbstractFixerTestBase
+final class ExtraEmptyLinesFixerTest extends AbstractFixerTestCase
 {
     public function testFix()
     {

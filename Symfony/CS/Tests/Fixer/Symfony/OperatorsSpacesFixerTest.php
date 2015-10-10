@@ -11,7 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -19,7 +19,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  *
  * @internal
  */
-final class OperatorsSpacesFixerTest extends AbstractFixerTestBase
+final class OperatorsSpacesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases

@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Marc Aubé
  *
  * @internal
  */
-final class ParenthesisFixerTest extends AbstractFixerTestBase
+final class ParenthesisFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases

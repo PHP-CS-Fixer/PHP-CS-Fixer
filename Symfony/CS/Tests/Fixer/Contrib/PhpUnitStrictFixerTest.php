@@ -12,14 +12,14 @@
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
 use Symfony\CS\Test\AccessibleObject;
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class PhpUnitStrictFixerTest extends AbstractFixerTestBase
+final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideTestFixCases

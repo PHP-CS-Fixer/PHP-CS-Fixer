@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
  *
  * @internal
  */
-final class PhpdocSeparationFixerTest extends AbstractFixerTestBase
+final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
 {
     public function testFix()
     {

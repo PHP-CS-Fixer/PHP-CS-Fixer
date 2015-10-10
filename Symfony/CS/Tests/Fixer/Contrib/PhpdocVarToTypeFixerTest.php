@@ -11,7 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
@@ -19,7 +19,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  *
  * @internal
  */
-final class PhpdocVarToTypeFixerTest extends AbstractFixerTestBase
+final class PhpdocVarToTypeFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases

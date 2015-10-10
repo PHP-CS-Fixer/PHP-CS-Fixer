@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
  *
  * @internal
  */
-final class PhpdocToCommentFixerTest extends AbstractFixerTestBase
+final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideDocblocks

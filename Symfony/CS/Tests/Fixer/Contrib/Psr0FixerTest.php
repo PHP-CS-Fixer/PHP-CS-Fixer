@@ -12,12 +12,12 @@
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
 use Symfony\CS\Config\Config;
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @internal
  */
-final class Psr0FixerTest extends AbstractFixerTestBase
+final class Psr0FixerTest extends AbstractFixerTestCase
 {
     public function testFixCase()
     {

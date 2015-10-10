@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Varga Bence <vbence@czentral.org>
  *
  * @internal
  */
-final class FunctionCallSpaceFixerTest extends AbstractFixerTestBase
+final class FunctionCallSpaceFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider testFixProvider

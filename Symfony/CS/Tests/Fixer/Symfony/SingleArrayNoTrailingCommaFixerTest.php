@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  *
  * @internal
  */
-final class SingleArrayNoTrailingCommaFixerTest extends AbstractFixerTestBase
+final class SingleArrayNoTrailingCommaFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideExamples

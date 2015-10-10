@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  *
  * @internal
  */
-final class RemoveLeadingSlashUseFixerTest extends AbstractFixerTestBase
+final class RemoveLeadingSlashUseFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases

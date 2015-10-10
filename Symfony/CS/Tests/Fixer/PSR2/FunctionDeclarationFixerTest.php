@@ -11,7 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Denis Sokolov <denis@sokolov.cc>
@@ -19,7 +19,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  *
  * @internal
  */
-final class FunctionDeclarationFixerTest extends AbstractFixerTestBase
+final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases

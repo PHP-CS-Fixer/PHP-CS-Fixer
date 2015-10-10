@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class LineAfterNamespaceFixerTest extends AbstractFixerTestBase
+final class LineAfterNamespaceFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases

@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  *
  * @internal
  */
-final class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
+final class AlignDoubleArrowFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases

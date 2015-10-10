@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @internal
  */
-final class PhpClosingTagFixerTest extends AbstractFixerTestBase
+final class PhpClosingTagFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCasesWithFullOpenTag

@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
  *
  * @internal
  */
-final class ElseifFixerTest extends AbstractFixerTestBase
+final class ElseifFixerTest extends AbstractFixerTestCase
 {
     /**
      * @covers Symfony\CS\Fixer\PSR2\ElseifFixer::fix
