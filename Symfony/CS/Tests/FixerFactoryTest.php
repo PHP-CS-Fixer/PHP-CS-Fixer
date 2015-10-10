@@ -137,6 +137,21 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Symfony\CS\FixerFactory::registerFixer
+     * @expectedException        \UnexpectedValueException
+     * @expectedExceptionMessage Fixer named "non_unique_name" is already registered.
+     */
+    public function testRegisterFixerWithOccupiedName()
+    {
+        $factory = new FixerFactory();
+
+        $f1 = $this->createFixerMock('non_unique_name');
+        $f2 = $this->createFixerMock('non_unique_name');
+        $factory->registerFixer($f1);
+        $factory->registerFixer($f2);
+    }
+
+    /**
      * @covers Symfony\CS\FixerFactory::useRuleSet
      */
     public function testUseRuleSet()
@@ -312,5 +327,14 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $factory->useRuleSet(new RuleSet(array('f2' => true)));
         $this->assertFalse($factory->hasRule('f1'), 'Should not have f1 fixer');
         $this->assertTrue($factory->hasRule('f2'), 'Should have f2 fixer');
+    }
+
+    private function createFixerMock($name, $priority = 0)
+    {
+        $fixer = $this->getMock('Symfony\CS\FixerInterface');
+        $fixer->expects($this->any())->method('getName')->willReturn($name);
+        $fixer->expects($this->any())->method('getPriority')->willReturn($priority);
+
+        return $fixer;
     }
 }
