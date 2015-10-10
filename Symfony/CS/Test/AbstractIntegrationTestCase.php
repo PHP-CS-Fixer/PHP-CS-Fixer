@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests;
+namespace Symfony\CS\Test;
 
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -41,10 +41,8 @@ use Symfony\CS\RuleSet;
  *     be changed by the fixers.
  *
  * @author SpacePossum <possumfromspace@gmail.com>
- *
- * @internal
  */
-abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 {
     public static function setUpBeforeClass()
     {
