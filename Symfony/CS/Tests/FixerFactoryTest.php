@@ -31,11 +31,11 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $testInstance = $factory->registerBuiltInFixers();
         $this->assertSame($factory, $testInstance);
 
-        $mocks = array($this->getMock('Symfony\CS\FixerInterface'), $this->getMock('Symfony\CS\FixerInterface'));
+        $mocks = array($this->createFixerMock('f1'), $this->createFixerMock('f2'));
         $testInstance = $factory->registerCustomFixers($mocks);
         $this->assertSame($factory, $testInstance);
 
-        $mock = $this->getMock('Symfony\CS\FixerInterface');
+        $mock = $this->createFixerMock('f3');
         $testInstance = $factory->registerFixer($mock);
         $this->assertSame($factory, $testInstance);
 
@@ -94,22 +94,15 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     public function testThatFixersAreSorted()
     {
         $factory = new FixerFactory();
-
-        $fxPrototypes = array(
-            array('getPriority' => 0),
-            array('getPriority' => -10),
-            array('getPriority' => 10),
-            array('getPriority' => -10),
+        $fxs = array(
+            $this->createFixerMock('f1', 0),
+            $this->createFixerMock('f2', -10),
+            $this->createFixerMock('f3', 10),
+            $this->createFixerMock('f4', -10),
         );
 
-        $fxs = array();
-
-        foreach ($fxPrototypes as $fxPrototype) {
-            $fx = $this->getMock('Symfony\CS\FixerInterface');
-            $fx->expects($this->any())->method('getPriority')->willReturn($fxPrototype['getPriority']);
-
+        foreach ($fxs as $fx) {
             $factory->registerFixer($fx);
-            $fxs[] = $fx;
         }
 
         // There are no rules that forces $fxs[1] to be prioritized before $fxs[3]. We should not test against that
@@ -125,9 +118,10 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = new FixerFactory();
 
-        $f1 = $this->getMock('Symfony\CS\FixerInterface');
-        $f2 = $this->getMock('Symfony\CS\FixerInterface');
-        $f3 = $this->getMock('Symfony\CS\FixerInterface');
+        $f1 = $this->createFixerMock('f1');
+        $f2 = $this->createFixerMock('f2');
+        $f3 = $this->createFixerMock('f3');
+
         $factory->registerFixer($f1);
         $factory->registerCustomFixers(array($f2, $f3));
 
@@ -295,12 +289,9 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = new FixerFactory();
 
-        $f1 = $this->getMock('Symfony\CS\FixerInterface');
-        $f1->expects($this->any())->method('getName')->willReturn('f1');
-        $f2 = $this->getMock('Symfony\CS\FixerInterface');
-        $f2->expects($this->any())->method('getName')->willReturn('f2');
-        $f3 = $this->getMock('Symfony\CS\FixerInterface');
-        $f3->expects($this->any())->method('getName')->willReturn('f3');
+        $f1 = $this->createFixerMock('f1');
+        $f2 = $this->createFixerMock('f2');
+        $f3 = $this->createFixerMock('f3');
         $factory->registerFixer($f1);
         $factory->registerCustomFixers(array($f2, $f3));
 
@@ -314,10 +305,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = new FixerFactory();
 
-        $f1 = $this->getMock('Symfony\CS\FixerInterface');
-        $f1->expects($this->any())->method('getName')->willReturn('f1');
-        $f2 = $this->getMock('Symfony\CS\FixerInterface');
-        $f2->expects($this->any())->method('getName')->willReturn('f2');
+        $f1 = $this->createFixerMock('f1');
+        $f2 = $this->createFixerMock('f2');
         $factory->registerFixer($f1);
         $factory->registerFixer($f2);
 
