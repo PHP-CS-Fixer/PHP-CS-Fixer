@@ -39,6 +39,76 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
+    $array = array(
+        "closure" => function ($param1, $param2) {
+            return;
+        }
+    );',
+            ),
+            array(
+                '<?php
+    return new JsonResponse(array(
+        "result" => "OK",
+        "html"   => 1, array(
+            "foo"    => "bar",
+            "foofoo" => array(
+                "a"  => 1,
+                "b"  => 2
+            )
+        ),)
+    );',
+                '<?php
+    return new JsonResponse(array(
+        "result" => "OK",
+        "html" => 1, array(
+            "foo" => "bar",
+            "foofoo" => array(
+                "a" => 1,
+                "b"  =>  2
+            )
+        ),)
+    );',
+            ),
+            array(
+                '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html"   => renderView("views/my_view.html.twig", array(
+            "foo"    => "bar",
+            "foofoo" => 43,
+        )),
+    ]);',
+                '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html" =>    renderView("views/my_view.html.twig", array(
+            "foo" => "bar",
+            "foofoo" => 43,
+        )),
+    ]);',
+            ),
+            array(
+                '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html"   => renderView("views/my_view.html.twig", [
+            "foo"    => "bar",
+            "foofoo" => 42,
+        ]),
+        "baz" => "OK",
+    ]);',
+                '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html" =>    renderView("views/my_view.html.twig", [
+            "foo" =>   "bar",
+            "foofoo" =>    42,
+        ]),
+        "baz" => "OK",
+    ]);',
+            ),
+            array(
+                '<?php
     $data = [
         "foo"  => "Bar",
         "main" => array(
