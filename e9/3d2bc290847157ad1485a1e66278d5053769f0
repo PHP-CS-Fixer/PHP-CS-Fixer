@@ -1,0 +1,42 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-11T11:13:11Z
+
+`continuous-integration/appveyor` should be removed from the required checks on 1.10.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-11T14:38:48Z
+
+I'm curious what's going on with AppVeyor...
+Only 1.10 is broken? Why?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-11T14:50:20Z
+
+It's not broken. It's not even running, because there is no config file on 1.10.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-11T14:50:40Z
+
+You've just missconfigured github's required status stuff on the 1.10 branch.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-11T15:47:30Z
+
+hahahahaha, mea culpa ;D
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-11T15:47:57Z
+
+done
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-11T15:48:02Z
+
+:+1:
