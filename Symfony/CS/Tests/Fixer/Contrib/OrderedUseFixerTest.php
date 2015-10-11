@@ -589,7 +589,7 @@ use Aaa;
 use Bbb;
 EOF;
 
-$input = <<<'EOF'
+        $input = <<<'EOF'
 <?php
 
 use Bbb;
