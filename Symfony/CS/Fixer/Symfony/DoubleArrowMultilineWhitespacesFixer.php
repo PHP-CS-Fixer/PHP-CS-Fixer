@@ -29,7 +29,7 @@ class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens->findGivenKind(T_DOUBLE_ARROW) as $index => $token) {
+        foreach (array_keys($tokens->findGivenKind(T_DOUBLE_ARROW)) as $index) {
             $this->fixWhitespace($tokens[$index - 1]);
             // do not move anything about if there is a comment following the whitespace
             if (!$tokens[$index + 2]->isComment()) {

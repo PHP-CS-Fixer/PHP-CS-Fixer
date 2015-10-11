@@ -26,7 +26,7 @@ class EmptyReturnFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens->findGivenKind(T_RETURN) as $index => $token) {
+        foreach (array_keys($tokens->findGivenKind(T_RETURN)) as $index) {
             if ($this->needFixing($tokens, $index)) {
                 $this->clear($tokens, $index);
             }

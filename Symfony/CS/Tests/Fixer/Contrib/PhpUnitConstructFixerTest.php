@@ -31,7 +31,7 @@ class PhpUnitConstructFixerTest extends AbstractFixerTestBase
             'assertNotEquals' => true,
             'assertNotSame' => true,
         ));
-        $this->makeTest($expected, $input);
+        $this->makeTest($expected, $input, null, $fixer);
 
         $fixer->configure(array(
             'assertEquals' => false,
