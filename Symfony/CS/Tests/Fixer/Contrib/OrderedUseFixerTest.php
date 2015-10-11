@@ -579,4 +579,23 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
+
+    public function testCodeWithImportsOnly()
+    {
+        $expected = <<<'EOF'
+<?php
+
+use Aaa;
+use Bbb;
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use Bbb;
+use Aaa;
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
 }
