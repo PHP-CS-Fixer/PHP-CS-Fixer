@@ -19,16 +19,31 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  *
  * @internal
  */
-final class PhpdocTypeToVarFixerTest extends AbstractFixerTestBase
+final class PhpdocTypehintTagFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $fixer = $this->getFixer();
+
+        $fixer->configure(array(
+            'annotation' => 'var',
+        ));
+        $this->makeTest($expected, $input, null, $fixer);
+
+        $fixer->configure(array(
+            'annotation' => 'type',
+        ));
+        list($expected, $input) = array($input ?: $expected, $input ? $expected : null);
+        $this->makeTest($expected, $input, null, $fixer);
     }
 
+    /**
+     * Cases are providen for standard configuration - var annotation is expected.
+     * For type annotation rotate $expected with $input.
+     */
     public function provideCases()
     {
         return array(
