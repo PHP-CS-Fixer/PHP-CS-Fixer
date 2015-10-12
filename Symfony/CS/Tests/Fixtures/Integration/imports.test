@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: multiple_use,remove_leading_slash_use,remove_lines_between_uses,ordered_use.
+--CONFIG--
+level=none
+fixers=multiple_use,remove_leading_slash_use,remove_lines_between_uses,ordered_use
+--INPUT--
+<?php
+
+namespace Acme;
+
+use \Foo;
+use BBB\Bar;
+
+use Abc, \Barr, \Zzzz;
+
+--EXPECT--
+<?php
+
+namespace Acme;
+
+use Abc;
+use Barr;
+use BBB\Bar;
+use Foo;
+use Zzzz;
