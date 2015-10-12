@@ -1,0 +1,126 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-27T10:52:02Z
+
+Please, add integration test for that
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-27T14:02:24Z
+
+Does the 1.10 branch have integration tests?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-27T14:10:14Z
+
+No, but it doesn't mean we may ommit tests during fixing a bug.
+Take a look at #1419 and #1420 (originally second contains first inside)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-27T15:11:59Z
+
+Can we merge this then?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-27T15:12:19Z
+
+And I'll send a second PR to 1.11 once you've merged 1.10->1.11, with an integration test.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-27T15:17:37Z
+
+Please send a PR to 1.11 with a fix and tests, and when tests prove the fix works - we will merge this PR into 1.10, and then the second PR to 1.11
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-09-29T22:30:14Z
+
+ping @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-09-29T22:35:05Z
+
+I'll sort this at the weekend with the psr4 fixer.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-02T14:53:26Z
+
+Is appveyor working?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-02T19:23:48Z
+
+change PR commits (eg ammend empty changes to last commit and force push it) to recreate the build for AppVeyor
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-02T20:13:47Z
+
+I just did force push.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-02T20:13:52Z
+
+And that broke it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-02T20:25:32Z
+
+I did forced push on other PR and it restart AppVeyor
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-02T20:59:14Z
+
+Well, it was because of a force push that I noticed this broken. I'll deal with this at the weekend though, like I originally said. ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-04T19:28:53Z
+
+ping @GrahamCampbell ;P
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-04T19:33:45Z
+
+Just reset, re-commited, and force pushed.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-04T19:33:51Z
+
+Still not working...
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-04T19:36:49Z
+
+Then simply ignore AppVeyor and work on tests.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-04T19:39:18Z
+
+Already doing that. PR incoming. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-12T14:33:14Z
+
+How does this look now?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-12T15:16:46Z
+
+Passing. :)
