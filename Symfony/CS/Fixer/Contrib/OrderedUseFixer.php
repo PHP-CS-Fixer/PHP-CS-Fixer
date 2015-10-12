@@ -73,8 +73,8 @@ class OrderedUseFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run after the MultipleUseFixer
-        return -10;
+        // should be run after the MultipleUseFixer and RemoveLeadingSlashUseFixer
+        return -30;
     }
 
     /**

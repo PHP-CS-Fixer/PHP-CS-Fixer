@@ -171,6 +171,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['unused_use'], $fixers['extra_empty_lines']),
             array($fixers['multiple_use'], $fixers['unused_use']),
             array($fixers['multiple_use'], $fixers['ordered_use']),
+            array($fixers['remove_leading_slash_use'], $fixers['ordered_use']),
             array($fixers['remove_lines_between_uses'], $fixers['ordered_use']),
             array($fixers['unused_use'], $fixers['remove_leading_slash_use']),
             array($fixers['multiple_use'], $fixers['remove_leading_slash_use']),
