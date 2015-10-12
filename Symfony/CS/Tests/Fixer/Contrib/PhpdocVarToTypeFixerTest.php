@@ -48,7 +48,7 @@ class PhpdocVarToTypeFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php /** @type string Hello! */',
-                '<?php /** @var string Hello! */'
+                '<?php /** @var string Hello! */',
             ),
         );
     }
