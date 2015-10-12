@@ -1,0 +1,137 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-04T19:49:46Z
+
+Our integration tests are a bit crap at telling us what went wrong.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-04T20:02:03Z
+
+Indeed. Feel free to enhance them!
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-04T20:07:30Z
+
+Meh. Turns out it was due to duplicating `Bar` so the lining failed.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-04T20:17:15Z
+
+> Errors reported during.
+
+and that one msg has been already improved on 2.x line :D
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-05T07:53:22Z
+
+This would be the last one into 1.10.1, when tests will pass.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-05T10:34:43Z
+
+Sure. I need to look at why this isn't passing.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-05T10:39:27Z
+
+Hmmm:
+
+```
+array(1) {
+  [0]=>
+  array(3) {
+    ["type"]=>
+    int(1)
+    ["filepath"]=>
+    string(91) "/media/sf_GitHub/GrahamForks/PHP-CS-Fixer/Symfony/CS/Tests/Fixtures/Integration/tmp/tmp.php"
+    ["message"]=>
+    string(3241) "exception 'RuntimeException' with message 'Index invalid or out of range' in /media/sf_GitHub/GrahamForks/PHP-CS-Fixer/Symfony/CS/Fixer/Contrib/OrderedUseFixer.php:117
+Stack trace:
+#0 /media/sf_GitHub/GrahamForks/PHP-CS-Fixer/Symfony/CS/Fixer/Contrib/OrderedUseFixer.php(117): Symfony\CS\Fixer\Contrib\OrderedUseFixer->getNewOrder()
+#1 /media/sf_GitHub/GrahamForks/PHP-CS-Fixer/Symfony/CS/Fixer/Contrib/OrderedUseFixer.php(39): Symfony\CS\Fixer\Contrib\OrderedUseFixer->getNewOrder(Array, Object(Symfony\CS\Tokenizer\Tokens))
+#2 /media/sf_GitHub/GrahamForks/PHP-CS-Fixer/Symfony/CS/Fixer.php(209): Symfony\CS\Fixer\Contrib\OrderedUseFixer->fix(Object(SplFileInfo), '<?php\n\nnamespac...')
+#3 /media/sf_GitHub/GrahamForks/PHP-CS-Fixer/Symfony/CS/Tests/AbstractIntegrationTest.php(155): Symfony\CS\Fixer->fixFile(Object(SplFileInfo), Array, false, true, Object(Symfony\CS\FileCacheManager))
+#4 /media/sf_GitHub/GrahamForks/PHP-CS-Fixer/Symfony/CS/Tests/AbstractIntegrationTest.php(77): Symfony\CS\Tests\AbstractIntegrationTest->doTestIntegration('imports.test', 'Integration of ...', Array, '<?php\n\nnamespac...', '<?php\n\nnamespac...')
+#5 [internal function]: Symfony\CS\Tests\AbstractIntegrationTest->testIntegration('imports.test', 'Integration of ...', Array, '<?php\n\nnamespac...', '<?php\n\nnamespac...')
+#6 phar:///media/sf_GitHub/GrahamForks/PHP-CS-Fixer/phpunit/phar/phpunit/Framework/TestCase.php(886): ReflectionMethod->invokeArgs(Object(Symfony\CS\Tests\IntegrationTest), Array)
+#7 phar:///media/sf_GitHub/GrahamForks/PHP-CS-Fixer/phpunit/phar/phpunit/Framework/TestCase.php(746): PHPUnit_Framework_TestCase->runTest()
+#8 phar:///media/sf_GitHub/GrahamForks/PHP-CS-Fixer/phpunit/phar/phpunit/Framework/TestResult.php(601): PHPUnit_Framework_TestCase->runBare()
+#9 phar:///media/sf_GitHub/GrahamForks/PHP-CS-Fixer/phpunit/phar/phpunit/Framework/TestCase.php(702): PHPUnit_Framework_TestResult->run(Object(Symfony\CS\Tests\IntegrationTest))
+#10 phar:///media/sf_GitHub/GrahamForks/PHP-CS-Fixer/phpunit/phar/phpunit/Framework/TestSuite.php(735): PHPUnit_Framework_TestCase->run(Object(PHPUnit_Framework_TestResult))
+#11 phar:///media/sf_GitHub/GrahamForks/PHP-CS-Fixer/phpunit/phar/phpunit/Framework/TestSuite.php(735): PHPUnit_Framework_TestSuite->run(Object(PHPUnit_Framework_TestResult))
+#12 phar:///media/sf_GitHub/GrahamForks/PHP-CS-Fixer/phpunit/phar/phpunit/Framework/TestSuite.php(735): PHPUnit_Framework_TestSuite->run(Object(PHPUnit_Framework_TestResult))
+#13 phar:///media/sf_GitHub/GrahamForks/PHP-CS-Fixer/phpunit/phar/phpunit/Framework/TestSuite.php(735): PHPUnit_Framework_TestSuite->run(Object(PHPUnit_Framework_TestResult))
+#14 phar:///media/sf_GitHub/GrahamForks/PHP-CS-Fixer/phpunit/phar/phpunit/TextUI/TestRunner.php(432): PHPUnit_Framework_TestSuite->run(Object(PHPUnit_Framework_TestResult))
+#15 phar:///media/sf_GitHub/GrahamForks/PHP-CS-Fixer/phpunit/phar/phpunit/TextUI/Command.php(148): PHPUnit_TextUI_TestRunner->doRun(Object(PHPUnit_Framework_TestSuite), Array)
+#16 phar:///media/sf_GitHub/GrahamForks/PHP-CS-Fixer/phpunit/phar/phpunit/TextUI/Command.php(100): PHPUnit_TextUI_Command->run(Array, true)
+#17 /media/sf_GitHub/GrahamForks/PHP-CS-Fixer/phpunit(547): PHPUnit_TextUI_Command::main()
+#18 {main}"
+  }
+}
+```
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-05T10:39:47Z
+
+This looks like an actual bug in the implementation.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-05T10:43:12Z
+
+Fixed it, ish. Basically a hack fix. Would be nice to know why that case was happening though.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-05T12:16:27Z
+
+fails on hhvm
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-11T15:49:15Z
+
+Isn't the dodgie stuff a different bug though?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-11T15:49:32Z
+
+#1424 Fixes a bug. The broken internals were there anywway.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-12T14:33:11Z
+
+How does this look now?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-12T15:16:53Z
+
+Passing. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-12T16:29:31Z
+
+Could be rebased on 1.11 ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-12T17:01:17Z
+
+k, sec
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-12T17:09:45Z
+
+Done.
