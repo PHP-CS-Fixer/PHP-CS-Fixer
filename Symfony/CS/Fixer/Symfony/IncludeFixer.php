@@ -87,7 +87,7 @@ class IncludeFixer extends AbstractFixer
         $includies = array();
 
         foreach ($tokens->findGivenKind($includyTokenKinds) as $includyTokens) {
-            foreach ($includyTokens as $index => $token) {
+            foreach (array_keys($includyTokens) as $index) {
                 $includy = array(
                     'begin' => $index,
                     'braces' => null,

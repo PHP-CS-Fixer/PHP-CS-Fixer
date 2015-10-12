@@ -26,7 +26,7 @@ class DollarCloseCurlyBraces extends AbstractTransformer
      */
     public function process(Tokens $tokens)
     {
-        foreach ($tokens->findGivenKind(T_DOLLAR_OPEN_CURLY_BRACES) as $index => $token) {
+        foreach (array_keys($tokens->findGivenKind(T_DOLLAR_OPEN_CURLY_BRACES)) as $index) {
             $nextIndex = $tokens->getNextTokenOfKind($index, array('}'));
             $tokens[$nextIndex]->override(array(CT_DOLLAR_CLOSE_CURLY_BRACES, '}', $tokens[$nextIndex]->getLine()));
         }
