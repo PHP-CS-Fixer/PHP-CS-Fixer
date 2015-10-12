@@ -26,7 +26,7 @@ class DynamicPropBrace extends AbstractTransformer
      */
     public function process(Tokens $tokens)
     {
-        foreach ($tokens->findGivenKind(T_OBJECT_OPERATOR) as $index => $token) {
+        foreach (array_keys($tokens->findGivenKind(T_OBJECT_OPERATOR)) as $index) {
             if (!$tokens[$index + 1]->equals('{')) {
                 continue;
             }
