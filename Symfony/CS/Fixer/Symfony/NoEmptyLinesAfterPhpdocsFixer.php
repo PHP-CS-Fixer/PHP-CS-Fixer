@@ -39,7 +39,7 @@ class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
 
         $tokens = Tokens::fromCode($content);
 
-        foreach (array_keys($tokens->findGivenKind(T_DOC_COMMENT)) as $index) {
+        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
             // get the next non-whitespace token inc comments, provided
             // that there is whitespace between it and the current token
             $next = $tokens->getNextNonWhitespace($index);
