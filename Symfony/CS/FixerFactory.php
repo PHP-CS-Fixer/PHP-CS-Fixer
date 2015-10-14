@@ -37,11 +37,10 @@ final class FixerFactory
 
     /**
      * Fixers by name.
-     * Lazy loaded well calling getFixersByName.
      *
-     * @var FixerInterface[]|null Associative array of fixers with names as keys.
+     * @var FixerInterface[] Associative array of fixers with names as keys.
      */
-    private $fixersByName = null;
+    private $fixersByName = array();
 
     /**
      * Create instance.
@@ -133,7 +132,14 @@ final class FixerFactory
      */
     public function registerFixer(FixerInterface $fixer)
     {
+        $name = $fixer->getName();
+
+        if (isset($this->fixersByName[$name])) {
+            throw new \UnexpectedValueException(sprintf('Fixer named "%s" is already registered.', $name));
+        }
+
         $this->fixers[] = $fixer;
+        $this->fixersByName[$name] = $fixer;
 
         return $this;
     }
@@ -147,23 +153,22 @@ final class FixerFactory
      */
     public function useRuleSet(RuleSetInterface $ruleSet)
     {
-        $fixersByName = $this->getFixersByName();
-
         $fixers = array();
+        $fixersByName = array();
 
         foreach (array_keys($ruleSet->getRules()) as $name) {
-            if (!array_key_exists($name, $fixersByName)) {
+            if (!array_key_exists($name, $this->fixersByName)) {
                 throw new \UnexpectedValueException(sprintf('Rule "%s" does not exist.', $name));
             }
 
-            $fixer = $fixersByName[$name];
+            $fixer = $this->fixersByName[$name];
             $fixer->configure($ruleSet->getRuleConfiguration($name));
             $fixers[] = $fixer;
+            $fixersByName[$name] = $fixer;
         }
 
         $this->fixers = $fixers;
-        // Reset fixers by name to be refreshed
-        $this->fixersByName = null;
+        $this->fixersByName = $fixersByName;
 
         return $this;
     }
@@ -177,9 +182,7 @@ final class FixerFactory
      */
     public function hasRule($name)
     {
-        $fixersByName = $this->getFixersByName();
-
-        return isset($fixersByName[$name]);
+        return isset($this->fixersByName[$name]);
     }
 
     /**
@@ -189,28 +192,21 @@ final class FixerFactory
      */
     private function sortFixers()
     {
-        usort($this->fixers, function (FixerInterface $a, FixerInterface $b) {
-            return Utils::cmpInt($b->getPriority(), $a->getPriority());
+        // Schwartzian transform is used to improve the efficiency and avoid
+        // `usort(): Array was modified by the user comparison function` warning for mocked objects.
+
+        $data = array_map(function (FixerInterface $fixer) {
+            return array($fixer, $fixer->getPriority());
+        }, $this->fixers);
+
+        usort($data, function (array $a, array $b) {
+            return Utils::cmpInt($b[1], $a[1]);
         });
 
+        $this->fixers = array_map(function (array $item) {
+            return $item[0];
+        }, $data);
+
         return $this;
-    }
-
-    /**
-     * Get associative array of fixers with names as key.
-     *
-     * @return FixerInterface[] Associative array of fixers with names as keys.
-     */
-    private function getFixersByName()
-    {
-        if (null === $this->fixersByName) {
-            $this->fixersByName = array();
-
-            foreach ($this->fixers as $fixer) {
-                $this->fixersByName[$fixer->getName()] = $fixer;
-            }
-        }
-
-        return $this->fixersByName;
     }
 }
