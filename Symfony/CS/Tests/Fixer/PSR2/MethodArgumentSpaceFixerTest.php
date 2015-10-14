@@ -33,7 +33,33 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
         return array(
             array(
                 '<?php xyz("", "", "", "");',
+                '<?php xyz(   "", "" ,"" ,""  );',
+            ),
+            array(
+                '<?php xyz("", "", "", "");',
                 '<?php xyz("","","","");',
+            ),
+            array(
+                '<?php xyz(
+$a,
+"b",
+$c,
+"d"
+);',
+                '<?php xyz($a , "b"  ,
+$c ,"d");',
+
+            ),
+            array(
+                '<?php function a(
+"e",
+"f", // comment 1
+                "g",
+"h"
+) /* comment 2 */;',
+                '<?php function a("e","f", // comment 1
+                "g","h"  ) /* comment 2 */;',
+
             ),
             // test method arguments
             array(
@@ -60,14 +86,6 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
                 '<?php xyz($a=10, $b=20, $c=30);',
                 "<?php xyz(\$a=10 , \$b=20 ,\t \$c=30);",
             ),
-            // test method call with \n not affected
-            array(
-                "<?php xyz(\$a=10, \$b=20,\n                    \$c=30);",
-            ),
-            // test method call with \r\n not affected
-            array(
-                "<?php xyz(\$a=10, \$b=20,\r\n                    \$c=30);",
-            ),
             // test method call
             array(
                 '<?php xyz($a=10, $b=20, $this->foo(), $c=30);',
@@ -77,6 +95,10 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
             array(
                 '<?php xyz($a=10, $b=20, $this->foo(), $c=30);',
                 '<?php xyz($a=10,$b=20 ,         $this->foo() ,$c=30);',
+            ),
+            array(
+                '<?php function xyz($a=10, $b=20, $c=30) {',
+                '<?php function xyz($a=10,$b=20,$c=30 ) {',
             ),
             // test receiving data in list context with omitted values
             array(
@@ -97,6 +119,10 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
                 '<?php list($path, $mode, ) = foo();',
                 '<?php list($path, $mode,) = foo();',
             ),
+            array(
+                '<?php list($path, $mode, ) = foo();',
+                '<?php list($path, $mode,     ) = foo();',
+            ),
             //inline comments with spaces
             array(
                 '<?php xyz($a=10, /*comment1*/ $b=2000, /*comment2*/ $c=30);',
@@ -108,14 +134,18 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
                 '<?php function xyz(
                     $a=10,      //comment1
                     $b=20,      //comment2
-                    $c=30) {
+                    $c=30
+) {
                 }',
             ),
             array(
+
                 '<?php function xyz(
                     $a=10,  //comment1
                     $b=2000,//comment2
-                    $c=30) {
+                    $c=30
+) {
+
                 }',
             ),
             //multiline comments also must be ignored
@@ -127,43 +157,33 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
                     $b=2000,/* comment2a
                         comment 2b
                         comment 2c */
-                    $c=30) {
+                    $c=30
+) {
                 }',
             ),
             // multiline comments also must be ignored
             array(
                 '<?php
                     function xyz(
-                        $a=10, /* multiline comment
+                        $a=10,
+/* multiline comment
                                  not at the end of line
                                 */ $b=2000,
                         $a2=10 /* multiline comment
                                  not at the end of line
-                                */, $b2=2000,
-                        $c=30) {
-                    }',
-                '<?php
-                    function xyz(
-                        $a=10, /* multiline comment
-                                 not at the end of line
-                                */ $b=2000,
-                        $a2=10 /* multiline comment
-                                 not at the end of line
-                                */ ,$b2=2000,
-                        $c=30) {
+                                */,
+$b2=2000,
+                        $c=30
+) {
                     }',
             ),
             // multi line testing method arguments
             array(
                 '<?php function xyz(
-                    $a=10,
-                    $b=20,
-                    $c=30) {
-                }',
-                '<?php function xyz(
-                    $a=10 ,
-                    $b=20,
-                    $c=30) {
+                                $a=10,      //comment1
+                                $b=20,      //comment2
+                                $c=30
+            ) {
                 }',
             ),
             // multi line testing method call
