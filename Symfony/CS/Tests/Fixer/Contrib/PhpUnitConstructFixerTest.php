@@ -81,8 +81,8 @@ class PhpUnitConstructFixerTest extends AbstractFixerTestBase
 
         return array_merge(
             $cases,
-            $this->generateCases('<?php $this->assert%s(%s, $a); //%s %s', '<?php $this->assert%s%s($a); //%s %s'),
-            $this->generateCases('<?php $this->assert%s(%s, $a, "%s", "%s");', '<?php $this->assert%s%s($a, "%s", "%s");')
+            $this->generateCases('<?php $this->assert%s%s($a); //%s %s', '<?php $this->assert%s(%s, $a); //%s %s'),
+            $this->generateCases('<?php $this->assert%s%s($a, "%s", "%s");', '<?php $this->assert%s(%s, $a, "%s", "%s");')
         );
     }
 
