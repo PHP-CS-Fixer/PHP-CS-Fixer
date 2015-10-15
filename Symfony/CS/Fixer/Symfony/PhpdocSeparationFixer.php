@@ -29,7 +29,7 @@ class PhpdocSeparationFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
+        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $index => $token) {
             $doc = new DocBlock($token->getContent());
             $this->fixDescription($doc);
             $this->fixAnnotations($doc);
