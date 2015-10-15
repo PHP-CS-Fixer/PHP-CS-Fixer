@@ -158,7 +158,7 @@ class Php4ConstructorFixer extends AbstractFixer
     private function fixParent(Tokens $tokens, $classStart, $classEnd)
     {
         // check calls to the parent constructor
-        foreach (array_keys($tokens->findGivenKind(T_EXTENDS)) as $index) {
+        foreach ($tokens->findGivenKind(T_EXTENDS) as $index => $token) {
             $parentIndex = $tokens->getNextMeaningfulToken($index);
             $parentClass = $tokens[$parentIndex]->getContent();
 
