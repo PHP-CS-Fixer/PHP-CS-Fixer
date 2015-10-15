@@ -28,7 +28,7 @@ class ObjectOperatorFixer extends AbstractFixer
         // [Structure] there should not be space before or after T_OBJECT_OPERATOR
         $tokens = Tokens::fromCode($content);
 
-        foreach (array_keys($tokens->findGivenKind(T_OBJECT_OPERATOR)) as $index) {
+        foreach ($tokens->findGivenKind(T_OBJECT_OPERATOR) as $index => $token) {
             // clear whitespace before ->
             if ($tokens[$index - 1]->isWhitespace(array('whitespaces' => " \t")) && !$tokens[$index - 2]->isComment()) {
                 $tokens[$index - 1]->clear();
