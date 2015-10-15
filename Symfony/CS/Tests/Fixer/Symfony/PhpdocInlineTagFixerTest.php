@@ -141,6 +141,16 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
      * inheritdocs
      */
 ',
+
+        );
+
+        // invalid syntax
+        $cases[] = array(
+            '<?php
+    /**
+     * {@link http://www.ietf.org/rfc/rfc1035.text)
+     */
+    $someVar = "hello";',
         );
 
         return $cases;

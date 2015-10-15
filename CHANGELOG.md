@@ -3,6 +3,21 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.10.1
+---------------------
+
+* bug #1424 Fixed the import fixer priorities (GrahamCampbell)
+* bug #1444 OrderedUseFixer - fix next case (keradus)
+* bug #1441 BracesFixer - fix next case (keradus)
+* bug #1422 AlignDoubleArrowFixer - fix handling of nested array (SpacePossum)
+* bug #1425 PhpdocInlineTagFixerTest - fix case when met inalid PHPDoc (keradus)
+* bug #1419 AlignDoubleArrowFixer, AlignEqualsFixer - fix priorities (keradus)
+* bug #1415 BlanklineAfterOpenTagFixer - Do not add a line break if there is one already. (SpacePossum)
+* bug #1410 PhpdocIndentFixer - Fix for open tag (SpacePossum)
+* bug #1401 PhpdocVarWithoutNameFixer - Fixed the var without name fixer for inline docs (keradus, GrahamCampbell)
+* bug #1369 Fix not well-formed XML output (junichi11)
+* bug #1356 Psr0Fixer - disallow run on StdinFileInfo (keradus)
+
 Changelog for v1.10
 -------------------
 

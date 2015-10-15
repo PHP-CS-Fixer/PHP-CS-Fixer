@@ -228,6 +228,8 @@ final class BracesFixer extends AbstractFixer
                         !$nextNonWhitespaceNestToken->isComment() &&
                         // and it is not a `$foo = function () {};` situation
                         !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equalsAny(array(';', ',', ']', array(CT_ARRAY_SQUARE_BRACE_CLOSE)))) &&
+                        // and it is not a `Foo::{bar}()` situation
+                        !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equals('(')) &&
                         // and it is not a `${"a"}->...` and `${"b{$foo}"}->...` situation
                         !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(array('"', "'", array(T_CONSTANT_ENCAPSED_STRING))))
                     ) {

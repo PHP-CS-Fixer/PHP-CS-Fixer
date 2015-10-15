@@ -54,7 +54,7 @@ final class AlignDoubleArrowFixer extends AbstractAlignFixer
         // To handle that unwanted behavior we work on clone of Tokens collection and then override original collection with fixed collection.
         $tokensClone = clone $tokens;
 
-        $this->injectAlignmentPlaceholders($tokensClone);
+        $this->injectAlignmentPlaceholders($tokensClone, 0, count($tokens));
         $content = $this->replacePlaceholder($tokensClone);
 
         $tokens->setCode($content);
@@ -86,16 +86,8 @@ final class AlignDoubleArrowFixer extends AbstractAlignFixer
      *
      * @return array($code, $context_counter)
      */
-    private function injectAlignmentPlaceholders(Tokens $tokens, $startAt = null, $endAt = null)
+    private function injectAlignmentPlaceholders(Tokens $tokens, $startAt, $endAt)
     {
-        if (empty($startAt)) {
-            $startAt = 0;
-        }
-
-        if (empty($endAt)) {
-            $endAt = count($tokens);
-        }
-
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
 
@@ -105,7 +97,7 @@ final class AlignDoubleArrowFixer extends AbstractAlignFixer
                 continue;
             }
 
-            if ($token->isGivenKind(T_ARRAY)) {
+            if ($token->isGivenKind(T_ARRAY)) { // don't use "$tokens->isArray()" here, short arrays are handled in the next case
                 $from = $tokens->getNextMeaningfulToken($index);
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $from);
                 $index = $until;
@@ -155,10 +147,12 @@ final class AlignDoubleArrowFixer extends AbstractAlignFixer
             }
 
             if ($token->equals(',')) {
-                do {
+                for ($i = $index; $i < $endAt - 1; ++$i) {
+                    if ($tokens[$i + 1]->isGivenKind(array(T_ARRAY, CT_ARRAY_SQUARE_BRACE_OPEN)) || false !== strpos($tokens[$i - 1]->getContent(), "\n")) {
+                        break;
+                    }
                     ++$index;
-                    $token = $tokens[$index];
-                } while (false === strpos($token->getContent(), "\n"));
+                }
             }
         }
     }

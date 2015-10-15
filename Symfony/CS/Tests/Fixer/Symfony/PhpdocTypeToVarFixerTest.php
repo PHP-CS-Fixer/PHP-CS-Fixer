@@ -15,60 +15,43 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
 final class PhpdocTypeToVarFixerTest extends AbstractFixerTestBase
 {
-    public function testBasicFix()
+    /**
+     * @dataProvider provideCases
+     */
+    public function testFix($expected, $input = null)
     {
-        $expected = <<<'EOF'
-<?php
-    /**
-     * @var string Hello!
-     */
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
-    /**
-     * @type string Hello!
-     */
-
-EOF;
-
         $this->makeTest($expected, $input);
     }
 
-    public function testNoChanges()
+    public function provideCases()
     {
-        $expected = <<<'EOF'
-<?php
-    /**
-     * @var string Hello!
-     */
-
-EOF;
-
-        $this->makeTest($expected);
-    }
-
-    public function testSingleLine()
-    {
-        $this->makeTest('<?php /** @var string Hello! */', '<?php /** @type string Hello! */');
-    }
-
-    public function testEmpty()
-    {
-        $expected = <<<'EOF'
-<?php
+        return array(
+            array(
+                '<?php
     /**
      *
-     */
-
-EOF;
-
-        $this->makeTest($expected);
+     */',
+            ),
+            array(
+                '<?php
+    /**
+     * @var string Hello!
+     */',
+                '<?php
+    /**
+     * @type string Hello!
+     */',
+            ),
+            array(
+                '<?php /** @var string Hello! */',
+                '<?php /** @type string Hello! */',
+            ),
+        );
     }
 }

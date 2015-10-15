@@ -1,5 +1,5 @@
 --TEST--
-Symfony test
+Tntegration of @Symfony.
 --CONFIG--
 {"@Symfony": true}
 --INPUT--

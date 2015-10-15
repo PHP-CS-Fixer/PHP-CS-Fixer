@@ -56,6 +56,6 @@ final class OperatorsSpacesFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Binary operators should be arounded by at least one space.';
+        return 'Binary operators should be surrounded by at least one space.';
     }
 }

@@ -208,7 +208,7 @@ Choose from the list of available fixers:
 
 * **double_arrow_multiline_whitespaces** [@Symfony]
                         Operator => should not be
-                        arounded by multi-line
+                        surrounded by multi-line
                         whitespaces.
 
 * **duplicate_semicolon** [@Symfony]
@@ -369,7 +369,7 @@ Choose from the list of available fixers:
 
 * **operators_spaces** [@Symfony]
                         Binary operators should be
-                        arounded by at least one
+                        surrounded by at least one
                         space.
 
 * **ordered_use**
