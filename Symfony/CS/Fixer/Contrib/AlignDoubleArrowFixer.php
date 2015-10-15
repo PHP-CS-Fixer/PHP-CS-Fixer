@@ -48,7 +48,7 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
         $this->deepestLevel = 0;
         $tokens = Tokens::fromCode($content);
 
-        $this->injectAlignmentPlaceholders($tokens, 0, count($tokens));
+        $this->injectAlignmentPlaceholders($tokens);
 
         return $this->replacePlaceholder($tokens, $this->deepestLevel);
     }
@@ -79,8 +79,16 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
      *
      * @return array($code, $context_counter)
      */
-    private function injectAlignmentPlaceholders(Tokens $tokens, $startAt, $endAt)
+    private function injectAlignmentPlaceholders(Tokens $tokens, $startAt = null, $endAt = null)
     {
+        if (empty($startAt)) {
+            $startAt = 0;
+        }
+
+        if (empty($endAt)) {
+            $endAt = count($tokens);
+        }
+
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
 
@@ -90,7 +98,7 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
                 continue;
             }
 
-            if ($token->isGivenKind(T_ARRAY)) { // don't use "$tokens->isArray()" here, short arrays are handled in the next case
+            if ($token->isGivenKind(T_ARRAY)) {
                 $from = $tokens->getNextMeaningfulToken($index);
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $from);
                 $index = $until;
@@ -102,7 +110,7 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
                 continue;
             }
 
-            if ($tokens->isShortArray($index)) {
+            if ($token->equals('[')) {
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
                 if ($prevToken->isGivenKind(array(T_STRING, T_VARIABLE))) {
                     continue;
@@ -140,12 +148,10 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
             }
 
             if ($token->equals(',')) {
-                for ($i = $index; $i < $endAt - 1; ++$i) {
-                    if ($tokens->isArray($i + 1) || false !== strpos($tokens[$i - 1]->getContent(), "\n")) {
-                        break;
-                    }
+                do {
                     ++$index;
-                }
+                    $token = $tokens[$index];
+                } while (false === strpos($token->getContent(), "\n"));
             }
         }
     }
