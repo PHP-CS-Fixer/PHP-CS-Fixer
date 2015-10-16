@@ -1,0 +1,39 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-10-13T18:08:38Z
+
+fabbot tries to fix the test cases, this is not an issue IMO.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-14T06:39:44Z
+
+Yes, fabbot is broken about that
+cc @fabpot
+
+---------------------------------------------------------------------------
+
+by fabpot at 2015-10-14T06:43:53Z
+
+@keradus I would be more than happy to remove this check whenever php-cs-fixer does that for me :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-14T06:50:44Z
+
+@fabpot I think this fixer do what you want (see https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.11/Symfony/CS/Tests/Fixer/Contrib/PhpUnitConstructFixerTest.php#L87-L90)
+(but only on 1.11@dev)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-15T10:08:48Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-10-15T17:30:03Z
+
+>@fabpot I think this fixer do what you want
+
+which is the same fixer being adjusted in this PR ^-^
