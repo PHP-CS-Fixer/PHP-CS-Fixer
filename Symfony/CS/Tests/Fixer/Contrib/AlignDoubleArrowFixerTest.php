@@ -432,6 +432,22 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
         "utė\b" => "us",
     );',
             ),
+            array(
+                '<?php
+                $formMapper
+                    ->add(\'foo\', null, [\'required\' => false])
+                    ->add(\'dummy_field\', null, [\'required\' => false])
+                ;
+                ',
+            ),
+            array(
+                '<?php
+                new DummyObject([
+                    \'foo\'   => [\'path\' => sprintf(\'%s/%s\', $publicPath, $filename)],
+                    \'dummy\' => [\'path_longer\' => sprintf(\'%s/%s\', $publicPath, $filename)],
+                ]);
+                ',
+            ),
         );
     }
 }
