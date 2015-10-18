@@ -19,37 +19,44 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  */
 class PhpdocTypeToVarFixerTest extends AbstractFixerTestBase
 {
-    /**
-     * @dataProvider provideCases
-     */
-    public function testFix($expected, $input = null)
+    public function testBasicDoc()
     {
-        $this->makeTest($expected, $input);
+        $this->makeTest('<?php /** @var string Hello! */', '<?php /** @type string Hello! */');
     }
 
-    public function provideCases()
+    public function testEmptyDoc()
     {
-        return array(
-            array(
-                '<?php
+        $this->makeTest("<?php\n    /**\n     *\n     */\n");
+    }
+
+    public function testInlineDoc()
+    {
+        $expected = <<<'EOF'
+<?php
     /**
+     * Initializes this class with the given options.
      *
-     */',
-            ),
-            array(
-                '<?php
+     * @param array $options {
+     *     @var bool   $required Whether this element is required
+     *     @var string $label    The display name for this element
+     * }
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
     /**
-     * @var string Hello!
-     */',
-                '<?php
-    /**
-     * @type string Hello!
-     */',
-            ),
-            array(
-                '<?php /** @var string Hello! */',
-                '<?php /** @type string Hello! */',
-            ),
-        );
+     * Initializes this class with the given options.
+     *
+     * @param array $options {
+     *     @type bool   $required Whether this element is required
+     *     @type string $label    The display name for this element
+     * }
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
     }
 }
