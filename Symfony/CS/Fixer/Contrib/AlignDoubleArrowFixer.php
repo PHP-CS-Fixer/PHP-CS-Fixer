@@ -141,7 +141,7 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
 
             if ($token->equals(',')) {
                 for ($i = $index; $i < $endAt - 1; ++$i) {
-                    if ($tokens->isArray($i + 1) || false !== strpos($tokens[$i - 1]->getContent(), "\n")) {
+                    if (false !== strpos($tokens[$i - 1]->getContent(), "\n")) {
                         break;
                     }
                     ++$index;
