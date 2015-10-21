@@ -1,0 +1,34 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-21T13:33:08Z
+
+@SpacePossum @Soullivaneuh
+Please, could you take a look on fix?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-10-21T15:33:36Z
+
+Looks good to me :+1:
+
+If I understand/read you code correctly you won't insert any place holders for the spacing of double arrows for nested arrays if such an an array is on one line, correct?
+So a small future improvement could be removing extra white space around an double arrow if found in an nested array (for example in something like this:
+
+```php
+<?php
+$formMapper->add(1, 2, array(
+    "keys" => array(
+        array(5, 123, array(10   => array(12 => false))),
+)));
+```
+)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-21T18:51:47Z
+
+Yeah, your solution was to detect nested array, I add a check if nested array is single-line.
+
+The fixer does not remove extra spaces, so I would keep it that way. If one want to remove extra spaces around `=>` he has separated fixer for that ;)
+
+Thanks for approval ! Fixer is quite tricky.
