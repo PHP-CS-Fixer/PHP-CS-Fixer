@@ -63,6 +63,16 @@ class PhpUnitConstructFixerTest extends AbstractFixerTestBase
         "foo" . $bar
     );',
             ),
+            array(
+                '<?php $this->assertNull(/*bar*/ $a);',
+                '<?php $this->assertSame(null /*foo*/, /*bar*/ $a);',
+            ),
+            array(
+                '<?php $this->assertSame(null === $eventException ? $exception : $eventException, $event->getException());',
+            ),
+            array(
+                '<?php $this->assertSame(null /*comment*/ === $eventException ? $exception : $eventException, $event->getException());',
+            ),
         );
     }
 }

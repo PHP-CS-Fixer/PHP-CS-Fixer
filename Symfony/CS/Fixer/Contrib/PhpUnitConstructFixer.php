@@ -121,7 +121,12 @@ final class PhpUnitConstructFixer extends AbstractFixer
             return;
         }
 
-        $sequenceIndexes[5] = $tokens->getNextNonWhitespace($sequenceIndexes[4]);
+        $sequenceIndexes[5] = $tokens->getNextMeaningfulToken($sequenceIndexes[4]);
+
+        // return if first method argument is an expression, not value
+        if (!$tokens[$sequenceIndexes[5]]->equals(',')) {
+            return;
+        }
 
         $tokens[$sequenceIndexes[2]]->setContent($map[$firstParameterToken->getContent()]);
         $tokens->clearRange($sequenceIndexes[4], $tokens->getNextNonWhitespace($sequenceIndexes[5]) - 1);
