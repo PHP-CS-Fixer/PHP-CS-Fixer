@@ -599,6 +599,6 @@ use Bbb;
 use Aaa;
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 }
