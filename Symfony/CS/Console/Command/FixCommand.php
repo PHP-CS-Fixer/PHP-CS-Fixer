@@ -25,6 +25,7 @@ use Symfony\CS\ConfigurationResolver;
 use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerFileProcessedEvent;
+use Symfony\CS\FixerFileProcessedStatsListener;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\LintManager;
 use Symfony\CS\StdinFileInfo;
@@ -85,6 +86,7 @@ class FixCommand extends Command
         $this->fixer->registerBuiltInFixers();
         $this->fixer->registerBuiltInConfigs();
         $this->fixer->setStopwatch($this->stopwatch);
+        $this->fixer->setEventDispatcher($this->eventDispatcher);
         $this->fixer->setErrorsManager($this->errorsManager);
 
         parent::__construct();
@@ -358,22 +360,21 @@ EOF
         $config->fixers($resolver->getFixers());
         $showProgress = $resolver->getProgress();
 
-        if ($showProgress) {
-            $fileProcessedEventListener = function (FixerFileProcessedEvent $event) use ($output) {
+        $eventListener = !$showProgress
+            ? new FixerFileProcessedStatsListener()
+            : function (FixerFileProcessedEvent $event) use ($output) {
                 $output->write($event->getStatusAsString());
             };
 
-            $this->fixer->setEventDispatcher($this->eventDispatcher);
-            $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
-        }
+        $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, $eventListener);
 
         $this->stopwatch->start('fixFiles');
         $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
         $this->stopwatch->stop('fixFiles');
 
+        $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, $eventListener);
+
         if ($showProgress) {
-            $this->fixer->setEventDispatcher(null);
-            $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
             $output->writeln('');
 
             $legend = array();
@@ -422,7 +423,10 @@ EOF
                 }
 
                 $fixEvent = $this->stopwatch->getEvent('fixFiles');
-                $output->writeln(sprintf('Fixed all files in %.3f seconds, %.3f MB memory used', $fixEvent->getDuration() / 1000, $fixEvent->getMemory() / 1024 / 1024));
+                $output->writeln(sprintf('Processed all files in %.3f seconds, %.3f MB memory used', $fixEvent->getDuration() / 1000, $fixEvent->getMemory() / 1024 / 1024));
+                if (!$showProgress) {
+                    $output->writeln($eventListener->getStatsAsString());
+                }
                 break;
             case 'xml':
                 $dom = new \DOMDocument('1.0', 'UTF-8');
