@@ -31,7 +31,7 @@ class FixerFileProcessedStatsListener
             $this->stats[$symbol] = 0;
         }
 
-        $this->stats[$symbol]++;
+        ++$this->stats[$symbol];
     }
 
     /**
@@ -51,6 +51,6 @@ class FixerFileProcessedStatsListener
             }
         }
 
-        return join(', ', $result);
+        return implode(', ', $result);
     }
 }
