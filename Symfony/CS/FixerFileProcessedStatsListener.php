@@ -16,7 +16,7 @@ namespace Symfony\CS;
  */
 class FixerFileProcessedStatsListener
 {
-    private $stats = [];
+    private $stats = array();
 
     /**
      * Process the event.
