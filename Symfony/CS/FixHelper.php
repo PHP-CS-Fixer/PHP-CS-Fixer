@@ -56,12 +56,12 @@ class FixHelper
     }
 
     /**
-     * @param callable                 $fixFiles
+     * @param \Closure                 $fixFiles
      * @param EventDispatcherInterface $eventDispatcher
      *
      * @return array
      */
-    public function fixFiles(callable $fixFiles, EventDispatcherInterface $eventDispatcher)
+    public function fixFiles(\Closure $fixFiles, EventDispatcherInterface $eventDispatcher)
     {
         $listener = array($this, 'onFileProcessed');
 
