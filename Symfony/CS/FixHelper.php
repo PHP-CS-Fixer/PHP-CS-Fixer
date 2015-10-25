@@ -63,7 +63,7 @@ class FixHelper
      */
     public function fixFiles(callable $fixFiles, EventDispatcherInterface $eventDispatcher)
     {
-        $listener = [$this, 'onFileProcessed'];
+        $listener = array($this, 'onFileProcessed');
 
         $eventDispatcher->addListener(FixerFileProcessedEvent::NAME, $listener);
         $this->stopwatch->start('fixFiles');
