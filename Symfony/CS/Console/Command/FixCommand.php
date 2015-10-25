@@ -359,8 +359,9 @@ EOF
         $config->fixers($resolver->getFixers());
         $fixHelper = new FixHelper($output, $this->stopwatch, $resolver->getProgress());
 
-        $fixFiles = function () use ($config, $input) {
-            return $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
+        $fixer = $this->fixer;
+        $fixFiles = function () use ($fixer, $config, $input) {
+            return $fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
         };
 
         $processedFiles = $fixHelper->fixFiles($fixFiles, $this->eventDispatcher);
