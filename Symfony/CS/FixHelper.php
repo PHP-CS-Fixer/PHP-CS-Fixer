@@ -59,7 +59,7 @@ class FixHelper
      * @param \Closure                 $fixFiles
      * @param EventDispatcherInterface $eventDispatcher
      *
-     * @return array
+     * @return mixed
      */
     public function fixFiles(\Closure $fixFiles, EventDispatcherInterface $eventDispatcher)
     {
