@@ -450,6 +450,42 @@ final class AlignDoubleArrowFixerTest extends AbstractFixerTestCase
                 ;
                 ',
             ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(["server1" => $object], ["addedAt" => "DESC"], 5);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(["server2" => $object], ["checkedAt" => "desc"], 50);
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array("server1" => $object), array("addedAt" => "DESC"), 5);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array("server2" => $object), array("checkedAt" => "desc"), 50);
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy($foo[123]);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy($foo[123]);
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy((1 + 2));
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy((1 + 2));
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array(1, 2));
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array(1, 2));
+    ',
+            ),
         );
     }
 }
