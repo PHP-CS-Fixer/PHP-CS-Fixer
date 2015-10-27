@@ -113,27 +113,13 @@ final class PhpUnitConstructFixer extends AbstractFixer
 
     private function fixAssertNegative(Tokens $tokens, $index, $method)
     {
-        $sequence = $tokens->findSequence(
-            array(
-                array(T_VARIABLE, '$this'),
-                array(T_OBJECT_OPERATOR, '->'),
-                array(T_STRING, $method),
-                '(',
-                array(T_STRING, 'null'),
-                ',',
-            ),
-            $index
+        static $map = array(
+            'false' => 'assertNotFalse',
+            'null' => 'assertNotNull',
+            'true' => 'assertNotTrue',
         );
 
-        if (null === $sequence) {
-            return;
-        }
-
-        $sequenceIndexes = array_keys($sequence);
-        $tokens[$sequenceIndexes[2]]->setContent('assertNotNull');
-        $tokens->clearRange($sequenceIndexes[4], $tokens->getNextNonWhitespace($sequenceIndexes[5]) - 1);
-
-        return $sequenceIndexes[5];
+        return $this->fixAssert($map, $tokens, $index, $method);
     }
 
     private function fixAssertPositive(Tokens $tokens, $index, $method)
@@ -144,6 +130,11 @@ final class PhpUnitConstructFixer extends AbstractFixer
             'true' => 'assertTrue',
         );
 
+        return $this->fixAssert($map, $tokens, $index, $method);
+    }
+
+    private function fixAssert(array $map, Tokens $tokens, $index, $method)
+    {
         $sequence = $tokens->findSequence(
             array(
                 array(T_VARIABLE, '$this'),
@@ -166,7 +157,12 @@ final class PhpUnitConstructFixer extends AbstractFixer
             return;
         }
 
-        $sequenceIndexes[5] = $tokens->getNextNonWhitespace($sequenceIndexes[4]);
+        $sequenceIndexes[5] = $tokens->getNextMeaningfulToken($sequenceIndexes[4]);
+
+        // return if first method argument is an expression, not value
+        if (!$tokens[$sequenceIndexes[5]]->equals(',')) {
+            return;
+        }
 
         $tokens[$sequenceIndexes[2]]->setContent($map[$firstParameterToken->getContent()]);
         $tokens->clearRange($sequenceIndexes[4], $tokens->getNextNonWhitespace($sequenceIndexes[5]) - 1);

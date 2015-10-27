@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.10.2
+---------------------
+
+* bug #1461 PhpUnitConstructFixer - fix case when first argument is an expression (keradus)
+* bug #1460 AlignDoubleArrowFixer - fix handling of nested arrays (Soullivaneuh, keradus)
+
 Changelog for v1.10.1
 ---------------------
 
