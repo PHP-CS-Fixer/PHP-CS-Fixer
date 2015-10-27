@@ -11,19 +11,19 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @internal
  */
-final class MethodSeparationFixerTest extends AbstractFixerTestBase
+final class MethodSeparationFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixClassesCases
      */
     public function testFixClasses($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixClassesCases()
@@ -359,7 +359,7 @@ function test2() {
      */
     public function testFixTraits($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixTraitsCases()
@@ -450,7 +450,7 @@ trait SomeReturnInfo {
      */
     public function testFixInterfaces($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixInterfaces()

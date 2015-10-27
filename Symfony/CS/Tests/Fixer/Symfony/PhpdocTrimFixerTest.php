@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
  *
  * @internal
  */
-final class PhpdocTrimFixerTest extends AbstractFixerTestBase
+final class PhpdocTrimFixerTest extends AbstractFixerTestCase
 {
     public function testFix()
     {
@@ -32,7 +32,7 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestBase
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testFixMore()
@@ -70,7 +70,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testClassDocBlock()
@@ -114,7 +114,7 @@ class Bar {}
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testEmptyDocBlock()
@@ -127,7 +127,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testEmptyLargerEmptyDocBlock()
@@ -151,7 +151,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testSuperSimpleDocBlockStart()
@@ -173,7 +173,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testSuperSimpleDocBlockEnd()
@@ -195,6 +195,6 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 }

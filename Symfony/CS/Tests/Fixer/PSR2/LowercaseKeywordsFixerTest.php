@@ -11,21 +11,21 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class LowercaseKeywordsFixerTest extends AbstractFixerTestBase
+final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideExamples
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideExamples()
@@ -42,6 +42,6 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestBase
      */
     public function testHaltCompiler()
     {
-        $this->makeTest('<?php __HALT_COMPILER();');
+        $this->doTest('<?php __HALT_COMPILER();');
     }
 }

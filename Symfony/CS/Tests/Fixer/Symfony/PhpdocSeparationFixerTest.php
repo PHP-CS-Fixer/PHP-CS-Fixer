@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
  *
  * @internal
  */
-final class PhpdocSeparationFixerTest extends AbstractFixerTestBase
+final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
 {
     public function testFix()
     {
@@ -41,7 +41,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixMoreTags()
@@ -77,7 +77,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixSpreadOut()
@@ -124,7 +124,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testMultiLineComments()
@@ -164,7 +164,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testCrazyMultiLineComments()
@@ -208,7 +208,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testDoctrineExample()
@@ -249,7 +249,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testSymfonyExample()
@@ -305,7 +305,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testDeprecatedAndSeeTags()
@@ -347,7 +347,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testClassDocBlock()
@@ -399,7 +399,7 @@ class Bar {}
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testPoorAlignment()
@@ -442,7 +442,7 @@ class Bar {}
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testDoNotMoveUnknownAnnotations()
@@ -482,7 +482,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testInheritDoc()
@@ -508,7 +508,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testEmptyDocBlock()
@@ -521,7 +521,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testLargerEmptyDocBlock()
@@ -537,6 +537,6 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 }

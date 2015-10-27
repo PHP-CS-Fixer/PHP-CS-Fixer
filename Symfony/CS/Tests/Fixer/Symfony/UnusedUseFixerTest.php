@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @internal
  */
-final class UnusedUseFixerTest extends AbstractFixerTestBase
+final class UnusedUseFixerTest extends AbstractFixerTestCase
 {
     public function testFix()
     {
@@ -81,7 +81,7 @@ class AnnotatedClass
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixFunWithIndent()
@@ -117,7 +117,7 @@ $a = new SomeClassIndented();
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixUseInTheSameNamespace()
@@ -152,7 +152,7 @@ $c = new Bar\Fooz();
 $d = new Bbb();
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
 
         // the fixer doesn't support file with multiple namespace - test if we don't remove imports in that case
         $expected = <<<'EOF'
@@ -168,7 +168,7 @@ $a = new Bar();
 $b = new Baz();
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testMultipleUseStatements()
@@ -201,7 +201,7 @@ $c = new D();
 $e = new BarE();
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testNamespaceWithBraces()
@@ -236,7 +236,7 @@ namespace Foo\Bar\FooBar {
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testTrailingSpaces()
@@ -263,7 +263,7 @@ $a = new Bar();
 $a = new FooBaz();
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testTraits()
@@ -295,7 +295,7 @@ use MyTrait2;
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFunctionUse()
@@ -323,7 +323,7 @@ $a = function ($item) use ($f) {
 };
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testSimilarNames()
@@ -357,7 +357,7 @@ class SomeService
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testVariableName()
@@ -377,7 +377,7 @@ use Foo\Bar;
 $bar = null;
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testNamespacePart()
@@ -397,7 +397,7 @@ use Foo\Bar;
 new \Baz\Bar();
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -405,7 +405,7 @@ EOF;
      */
     public function testUseInString($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function providerUseInString()
@@ -450,7 +450,7 @@ EOF;
 use Bar\Finder;
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testUseWithSameLastPartThatIsInNamespace()
@@ -471,6 +471,6 @@ namespace Foo\Finder;
 use Bar\Finder;
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 }

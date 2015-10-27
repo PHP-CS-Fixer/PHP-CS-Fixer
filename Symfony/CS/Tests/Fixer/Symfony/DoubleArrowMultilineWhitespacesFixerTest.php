@@ -11,7 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
@@ -20,14 +20,14 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  *
  * @internal
  */
-final class DoubleArrowMultilineWhitespacesFixerTest extends AbstractFixerTestBase
+final class DoubleArrowMultilineWhitespacesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixCases()

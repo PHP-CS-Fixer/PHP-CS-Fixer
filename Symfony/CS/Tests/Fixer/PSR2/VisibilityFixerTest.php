@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @internal
  */
-final class VisibilityFixerTest extends AbstractFixerTestBase
+final class VisibilityFixerTest extends AbstractFixerTestCase
 {
     public function testFixProperties()
     {
@@ -55,7 +55,7 @@ class Foo {
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixPropertiesAfterMethod()
@@ -68,7 +68,7 @@ class Foo {
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testFixMethods()
@@ -125,7 +125,7 @@ abstract class Foo {
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testLeaveFunctionsAlone()
@@ -137,7 +137,7 @@ function foo() {
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testLeaveFunctionsAloneWithVariablesMatchingOopWords()
@@ -151,7 +151,7 @@ function foo() {
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testLeaveFunctionsAloneInsideConditionals()
@@ -165,7 +165,7 @@ if (!function_exists('foo')) {
     }
 }
 EOF;
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testLeaveFunctionsAloneInsideConditionalsWithOopWordInComment()
@@ -181,7 +181,7 @@ if (!function_exists('foo')) {
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testLeaveFunctionsAloneWithOopWordInComment()
@@ -194,7 +194,7 @@ function foo($arg)
     return $arg;
 }
 EOF;
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testLeaveFunctionsAloneOutsideClassesWithOopWordInInlineHtml()
@@ -211,7 +211,7 @@ if (!function_exists('foo')) {
     }
 }
 EOF;
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testLeaveFunctionsAloneOutsideClassesWithOopWordInStringValue()
@@ -225,7 +225,7 @@ if (!function_exists('foo')) {
     }
 }
 EOF;
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testLeaveFunctionsAloneOutsideClassesWithOopWordInFunctionName()
@@ -242,7 +242,7 @@ if (!function_exists('foo')) {
     }
 }
 EOF;
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     /**
@@ -266,7 +266,7 @@ if (!function_exists('bar')) {
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     /**
@@ -289,7 +289,7 @@ class Foo
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     /**
@@ -309,7 +309,7 @@ class Foo {
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     /**
@@ -331,7 +331,7 @@ function foo(bar) {
 </script>
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     /**
@@ -351,7 +351,7 @@ function foo(bar) {
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     /**
@@ -378,7 +378,7 @@ JAVASCRIPT;
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     /**
@@ -410,7 +410,7 @@ class Foo
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixesVarDeclarationsWithArrayValue()
@@ -443,6 +443,6 @@ class Foo
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 }

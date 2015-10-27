@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
  *
  * @internal
  */
-final class PhpdocTypesFixerTest extends AbstractFixerTestBase
+final class PhpdocTypesFixerTest extends AbstractFixerTestCase
 {
     public function testConvesion()
     {
@@ -41,7 +41,7 @@ EOF;
      */
 
 EOF;
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testArrayStuff()
@@ -65,7 +65,7 @@ EOF;
      */
 
 EOF;
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testMixedAndVoid()
@@ -89,6 +89,6 @@ EOF;
      */
 
 EOF;
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 }

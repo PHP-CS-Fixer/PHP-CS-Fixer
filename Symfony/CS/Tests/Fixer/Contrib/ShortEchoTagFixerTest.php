@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Vincent Klaiber <hello@vinkla.com>
  *
  * @internal
  */
-final class ShortEchoTagFixerTest extends AbstractFixerTestBase
+final class ShortEchoTagFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideClosingTagExamples
@@ -31,7 +31,7 @@ final class ShortEchoTagFixerTest extends AbstractFixerTestBase
          * @see https://github.com/facebook/hhvm/issues/4809
          */
         if (!defined('HHVM_VERSION')) {
-            $this->makeTest($expected, $input);
+            $this->doTest($expected, $input);
         }
     }
 

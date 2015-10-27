@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
  *
  * @internal
  */
-final class PhpdocScalarFixerTest extends AbstractFixerTestBase
+final class PhpdocScalarFixerTest extends AbstractFixerTestCase
 {
     public function testBasicFix()
     {
@@ -38,7 +38,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testPropertyFix()
@@ -59,7 +59,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testDoNotModifyVariables()
@@ -80,7 +80,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixWithTabsOnOneLine()
@@ -89,7 +89,7 @@ EOF;
 
         $input = "<?php /**\t@return\tboolean\t*/";
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixMoreThings()
@@ -120,7 +120,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixVar()
@@ -141,7 +141,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixVarWithMoreStuff()
@@ -162,7 +162,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixType()
@@ -183,7 +183,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testDoNotFix()
@@ -196,7 +196,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testComplexMix()
@@ -217,7 +217,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testDoNotModifyComplexTag()
@@ -229,7 +229,7 @@ EOF;
      */
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testDoNotModifyStrings()
@@ -245,7 +245,7 @@ $string = '
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testEmptyDocBlock()
@@ -258,7 +258,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testWrongCasedPhpdocTagIsNotAltered()
@@ -272,6 +272,6 @@ EOF;
      */
 
 EOF;
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 }

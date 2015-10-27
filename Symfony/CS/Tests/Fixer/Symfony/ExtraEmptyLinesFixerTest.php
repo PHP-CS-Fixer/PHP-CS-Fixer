@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @internal
  */
-final class ExtraEmptyLinesFixerTest extends AbstractFixerTestBase
+final class ExtraEmptyLinesFixerTest extends AbstractFixerTestCase
 {
     public function testFix()
     {
@@ -35,7 +35,7 @@ $a = new Bar();
 $a = new FooBaz();
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixWithManyEmptyLines()
@@ -59,7 +59,7 @@ $a = new Bar();
 $a = new FooBaz();
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixWithHeredoc()
@@ -75,7 +75,7 @@ FooFoo
 TEXT;
 ';
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testFixWithNowdoc()
@@ -91,7 +91,7 @@ FooFoo
 TEXT;
 ';
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testFixWithEncapsulatedNowdoc()
@@ -113,7 +113,7 @@ FooFoo
 TEXT;
 ';
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testFixWithMultilineString()
@@ -126,7 +126,7 @@ $a = 'Foo
 Bar';
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testFixWithTrickyMultilineStrings()
@@ -168,7 +168,7 @@ Here\'s an escaped quote '
 FooFoo';
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixWithCommentWithAQuote()
@@ -195,7 +195,7 @@ $b = 'foobar';
 $c = 'bar';
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixWithTrailingInlineBlock()
@@ -223,6 +223,6 @@ EOF;
 
 
 ";
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 }

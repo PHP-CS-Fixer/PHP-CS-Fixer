@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Matteo Beccati <matteo@beccati.com>
  *
  * @internal
  */
-final class Php4ConstructorFixerTest extends AbstractFixerTestBase
+final class Php4ConstructorFixerTest extends AbstractFixerTestCase
 {
     public function testNamespaces()
     {
@@ -41,7 +41,7 @@ class Foo
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testNamespaces2()
@@ -118,7 +118,7 @@ class Foo
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testNamespaceGlobal()
@@ -151,7 +151,7 @@ namespace {
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testPhp5Only()
@@ -173,7 +173,7 @@ class Foo
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testPhp4Only()
@@ -218,7 +218,7 @@ class Foo
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testBothTheRightWay1()
@@ -272,7 +272,7 @@ class Foo
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testBothTheRightWay2()
@@ -326,7 +326,7 @@ class Foo
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testBothTheRightWay3()
@@ -380,7 +380,7 @@ class Foo
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testBothTheOtherWayAround()
@@ -441,7 +441,7 @@ class Foo
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testPhp4Parent()
@@ -488,7 +488,7 @@ class Foo extends FooParEnt
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testPhp4ParentInit()
@@ -535,7 +535,7 @@ class Foo extends FooParent
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testMixedParent()
@@ -582,7 +582,7 @@ class Foo extends FooParent
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testMixedParent2()
@@ -629,7 +629,7 @@ class Foo extends FooParent
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testParentOther()
@@ -676,7 +676,7 @@ class Foo extends FooParent
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testParentOther2()
@@ -723,7 +723,7 @@ class Foo extends FooParent
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testClassWithAnonymous()
@@ -753,7 +753,7 @@ class Foo {
     }
 }
 EOF;
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testClassWithComments()
@@ -780,7 +780,7 @@ public function /* test */ Foo($param) {
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testAlphaBeta()
@@ -801,7 +801,7 @@ class Foo
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testAlphaBetaTrick1()
@@ -823,7 +823,7 @@ class Foo
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testAlphaBetaTrick2()
@@ -845,7 +845,7 @@ class Foo
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testAlphaBetaTrick3()
@@ -868,7 +868,7 @@ class Foo
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testAlphaBetaTrick4WithAnotherClass()
@@ -925,7 +925,7 @@ Class Bar
 }
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testAbstract()
@@ -939,7 +939,7 @@ abstract class Foo
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testAbstractTrick()
@@ -964,7 +964,7 @@ abstract class Foo
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testStatic()
@@ -981,7 +981,7 @@ static class Foo
 }
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testParentMultipleClasses()
@@ -1028,7 +1028,7 @@ EOF;
 ?>
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testInfiniteRecursion()
@@ -1075,6 +1075,6 @@ EOF;
 ?>
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 }

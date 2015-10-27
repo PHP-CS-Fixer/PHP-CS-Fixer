@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
  *
  * @internal
  */
-final class NoEmptyLinesAfterPhpdocsFixerTest extends AbstractFixerTestBase
+final class NoEmptyLinesAfterPhpdocsFixerTest extends AbstractFixerTestCase
 {
     public function testSimpleExampleIsNotChanged()
     {
@@ -41,7 +41,7 @@ class Bar
 
 EOF;
 
-        $this->makeTest($input);
+        $this->doTest($input);
     }
 
     public function testComplexExampleIsNotChanged()
@@ -106,7 +106,7 @@ final class Bar
 
 EOF;
 
-        $this->makeTest($input);
+        $this->doTest($input);
     }
 
     public function testCommentsAreNotChanged()
@@ -124,7 +124,7 @@ namespace Foo\Bar;
 
 EOF;
 
-        $this->makeTest($input);
+        $this->doTest($input);
     }
 
     public function testFixesSimpleClass()
@@ -151,7 +151,7 @@ class Bar {}
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixesIndentedClass()
@@ -181,7 +181,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixesOthers()
@@ -219,7 +219,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixesWindowsStyle()
@@ -228,7 +228,7 @@ EOF;
 
         $input = "<?php\r\n    /**     * Constant!     */\r\n\r\n\r\n    \$foo = 123;";
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -238,7 +238,7 @@ EOF;
      */
     public function testInlineTypehintingDocsBeforeFlowBreak($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideInlineTypehintingDocsBeforeFlowBreakCases()

@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @internal
  */
-final class PhpdocAlignFixerTest extends AbstractFixerTestBase
+final class PhpdocAlignFixerTest extends AbstractFixerTestCase
 {
     public function testFix()
     {
@@ -44,7 +44,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixMultiLineDesc()
@@ -79,7 +79,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixMultiLineDescWithThrows()
@@ -124,7 +124,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixWithReturnAndThrows()
@@ -151,7 +151,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -182,7 +182,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixOnlyReturn()
@@ -203,7 +203,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testReturnWithDollarThis()
@@ -226,7 +226,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testCustomAnnotationsStayUntouched()
@@ -249,7 +249,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testCustomAnnotationsStayUntouched2()
@@ -271,7 +271,7 @@ class X
 
 EOF;
 
-        $this->makeTest($expected);
+        $this->doTest($expected);
     }
 
     public function testFixWithVar()
@@ -292,7 +292,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixWithType()
@@ -313,7 +313,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixWithVarAndDescription()
@@ -338,7 +338,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixWithVarAndInlineDescription()
@@ -359,7 +359,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testFixWithTypeAndInlineDescription()
@@ -380,13 +380,13 @@ EOF;
 
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function testRetainsNewLineCharacters()
     {
         // when we're not modifying a docblock, then line endings shouldn't change
-        $this->makeTest("<?php\r    /**\r     * @param Example Hello there!\r     */\r");
+        $this->doTest("<?php\r    /**\r     * @param Example Hello there!\r     */\r");
     }
 
     public function testMalformedDocBlock()
@@ -399,7 +399,7 @@ EOF;
 
 EOF;
 
-        $this->makeTest($input);
+        $this->doTest($input);
     }
 
     public function testDifferentIndentation()
@@ -438,6 +438,6 @@ EOF;
          */
 EOF;
 
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 }

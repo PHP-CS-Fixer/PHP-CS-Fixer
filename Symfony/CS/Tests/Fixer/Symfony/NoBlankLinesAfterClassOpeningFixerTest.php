@@ -11,21 +11,21 @@
 
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
  *
  * @internal
  */
-final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestBase
+final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -34,7 +34,7 @@ final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestBase
      */
     public function testFixTraits($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideCases()

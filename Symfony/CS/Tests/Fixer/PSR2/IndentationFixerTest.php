@@ -11,21 +11,21 @@
 
 namespace Symfony\CS\Tests\Fixer\PSR2;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class IndentationFixerTest extends AbstractFixerTestBase
+final class IndentationFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideIndentationOnly
      */
     public function testIndentationOnly($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -33,7 +33,7 @@ final class IndentationFixerTest extends AbstractFixerTestBase
      */
     public function testIndentationAndAlignment($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -41,7 +41,7 @@ final class IndentationFixerTest extends AbstractFixerTestBase
      */
     public function testTabInString($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -49,7 +49,7 @@ final class IndentationFixerTest extends AbstractFixerTestBase
      */
     public function testTabInComment($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideIndentationOnly()
@@ -260,7 +260,7 @@ final class IndentationFixerTest extends AbstractFixerTestBase
      */
     public function testTabInInlineHTML($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideTabInInlineHTML()
