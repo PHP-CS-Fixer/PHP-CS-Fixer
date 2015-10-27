@@ -1,0 +1,80 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-10T20:19:45Z
+
+Fabbot failed as usual...
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-14T10:09:37Z
+
+any thoughts ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-21T13:54:22Z
+
+rebased
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-22T07:36:31Z
+
+A note about BC break should be added on the upgrade guide IMO.
+
+Althoug the class was marked as internal, it's still usable and probably use on 1.x.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-22T07:51:28Z
+
+I don't get it. Yes, the classes were internal, now they are not - how could it be a BC break?
+Changing internal interface isn't a BC break.
+
+Also, we have stable 1.x, and this PR is for 2.x, so even if it was a BC breaker, we are already targetting branch with major version change.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-22T08:09:26Z
+
+> Yes, the classes were internal, now they are not - how could it be a BC break?
+
+The class is renamed also. And even if it's marked as internal, it could be technically be used actually.
+
+This should not, I agree, but it could AFAIK.
+
+> Also, we have stable 1.x, and this PR is for 2.x, so even if it was a BC breaker, we are already targetting branch with major version change.
+
+Yes, I was not talking about removing or handling BC break. Just put a note to `UPGRADE-2.0.md` file. :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-22T08:35:35Z
+
+> The class is renamed also. And even if it's marked as internal, it could be technically be used actually.
+> This should not, I agree, but it could AFAIK.
+
+If one decided to use internal code he should not be surprised when it changed. We do not promise to keep the compatibility of it, then it is not a BC break. No exceptions.
+
+> Yes, I was not talking about removing or handling BC break. Just put a note to `UPGRADE-2.0.md` file. :+1:
+
+Please, feel free to send a PR with that file, I will be more than happy to see it ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-10-22T08:59:24Z
+
+Looks good to me.
+Why not move all tests out of the namespace of the project and only leave the test we want to support as service point in the namespace? That way we can do what we want with the tests, the tests are never needed at run time anyway (so there is no need for those to be namespaced).
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-22T11:01:12Z
+
+Whole `Tests` dir could be moved, but it is a work for separate PR.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-27T16:23:41Z
+
+Rebased, then I think it is ready to merge
