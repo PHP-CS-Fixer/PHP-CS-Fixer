@@ -75,7 +75,7 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_short_description' => true,
             'phpdoc_to_comment' => true,
             'phpdoc_trim' => true,
-            'phpdoc_type_to_var' => true,
+            'phpdoc_typehint_tag' => true,
             'phpdoc_var_without_name' => true,
             'pre_increment' => true,
             'remove_leading_slash_use' => true,

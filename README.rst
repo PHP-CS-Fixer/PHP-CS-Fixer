@@ -474,18 +474,15 @@ Choose from the list of available fixers:
                         very first and last line of
                         the docblocks.
 
-* **phpdoc_type_to_var** [@Symfony]
-                        @type should always be written
-                        as @var.
+* **phpdoc_typehint_tag** [@Symfony]
+                        Typehint PHPDoc annotation
+                        should always be written same
+                        way (@var or @type).
 
 * **phpdoc_types**
                         The correct case must be used
                         for standard PHP types in
                         phpdoc.
-
-* **phpdoc_var_to_type**
-                        @var should always be written
-                        as @type.
 
 * **phpdoc_var_without_name** [@Symfony]
                         @var and @type annotations
