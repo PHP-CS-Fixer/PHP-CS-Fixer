@@ -95,10 +95,7 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $from);
                 $index = $until;
 
-                ++$this->deepestLevel;
-                ++$this->currentLevel;
-                $this->injectAlignmentPlaceholders($tokens, $from, $until);
-                --$this->currentLevel;
+                $this->injectArrayAlignmentPlaceholders($tokens, $from, $until);
                 continue;
             }
 
@@ -112,10 +109,7 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $from);
                 $index = $until;
 
-                ++$this->deepestLevel;
-                ++$this->currentLevel;
-                $this->injectAlignmentPlaceholders($tokens, $from + 1, $until - 1);
-                --$this->currentLevel;
+                $this->injectArrayAlignmentPlaceholders($tokens, $from + 1, $until - 1);
                 continue;
             }
 
@@ -163,6 +157,22 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
                     ++$index;
                 }
             }
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $from
+     * @param int    $until
+     */
+    private function injectArrayAlignmentPlaceholders(Tokens $tokens, $from, $until)
+    {
+        // Only inject placeholders for multi-line arrays
+        if (false !== strpos($tokens->generatePartialCode($from, $until), "\n")) {
+            ++$this->deepestLevel;
+            ++$this->currentLevel;
+            $this->injectAlignmentPlaceholders($tokens, $from, $until);
+            --$this->currentLevel;
         }
     }
 }
