@@ -297,7 +297,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->resolver->getProgress());
     }
 
-    public function testResolveProgressRespectConfigInterface()
+    public function testResolveProgressRespectsConfigInterface()
     {
         $this->resolver->setOption('progress', true);
 
