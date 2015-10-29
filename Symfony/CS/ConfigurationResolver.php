@@ -99,6 +99,10 @@ class ConfigurationResolver
 
     public function getProgress()
     {
+        if (!method_exists($this->config, 'getHideProgress')) {
+            return $this->options['progress'];
+        }
+
         return $this->options['progress'] && !$this->config->getHideProgress();
     }
 
