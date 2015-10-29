@@ -20,9 +20,24 @@ namespace Symfony\CS;
  */
 class ConfigurationResolver
 {
+    /**
+     * @var FixerInterface[]
+     */
     protected $allFixers;
+
+    /**
+     * @var ConfigInterface
+     */
     protected $config;
+
+    /**
+     * @var FixerInterface[]
+     */
     protected $fixers = array();
+
+    /**
+     * @var array
+     */
     protected $options = array(
         'fixers' => null,
         'level' => null,
