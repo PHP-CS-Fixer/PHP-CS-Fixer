@@ -70,6 +70,13 @@ interface ConfigInterface
     public function getDir();
 
     /**
+     * Returns the whether to hide progress.
+     *
+     * @return bool
+     */
+    public function getHideProgress();
+
+    /**
      * Adds an instance of a custom fixer.
      *
      * @param FixerInterface $fixer
