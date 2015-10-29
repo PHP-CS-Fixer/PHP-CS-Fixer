@@ -537,6 +537,10 @@ Choose from the list of available fixers:
                         Add, replace or remove header
                         comment.
 
+* **line_between_methods** [contrib]
+                        There should be a blank lines
+                        between methods.
+
 * **logical_not_operators_with_spaces** [contrib]
                         Logical NOT operators (!)
                         should have leading and
