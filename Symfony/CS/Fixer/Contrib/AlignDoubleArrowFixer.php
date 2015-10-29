@@ -147,9 +147,7 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
                         $blockType = Tokens::detectBlockType($tokens[$arrayStartIndex]);
                         $arrayEndIndex = $tokens->findBlockEnd($blockType['type'], $arrayStartIndex);
 
-                        $arrayContent = $tokens->generatePartialCode($arrayStartIndex, $arrayEndIndex);
-
-                        if (false !== strpos($arrayContent, "\n")) {
+                        if ($tokens->isPartialCodeMultiline($arrayStartIndex, $arrayEndIndex)) {
                             break;
                         }
                     }
@@ -168,7 +166,7 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
     private function injectArrayAlignmentPlaceholders(Tokens $tokens, $from, $until)
     {
         // Only inject placeholders for multi-line arrays
-        if (false !== strpos($tokens->generatePartialCode($from, $until), "\n")) {
+        if ($tokens->isPartialCodeMultiline($from, $until)) {
             ++$this->deepestLevel;
             ++$this->currentLevel;
             $this->injectAlignmentPlaceholders($tokens, $from, $until);
