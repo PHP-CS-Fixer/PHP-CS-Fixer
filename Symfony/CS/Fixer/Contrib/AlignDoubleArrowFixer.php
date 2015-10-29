@@ -141,9 +141,25 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
 
             if ($token->equals(',')) {
                 for ($i = $index; $i < $endAt - 1; ++$i) {
-                    if ($tokens->isArray($i + 1) || false !== strpos($tokens[$i - 1]->getContent(), "\n")) {
+                    if (false !== strpos($tokens[$i - 1]->getContent(), "\n")) {
                         break;
                     }
+
+                    if ($tokens->isArray($i + 1)) {
+                        $arrayStartIndex = $tokens[$i + 1]->isGivenKind(T_ARRAY)
+                            ? $tokens->getNextMeaningfulToken($i + 1)
+                            : $i + 1
+                        ;
+                        $blockType = Tokens::detectBlockType($tokens[$arrayStartIndex]);
+                        $arrayEndIndex = $tokens->findBlockEnd($blockType['type'], $arrayStartIndex);
+
+                        $arrayContent = $tokens->generatePartialCode($arrayStartIndex, $arrayEndIndex);
+
+                        if (false !== strpos($arrayContent, "\n")) {
+                            break;
+                        }
+                    }
+
                     ++$index;
                 }
             }
