@@ -68,7 +68,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveFixersWithLevelConfig()
     {
-        $this->config->expects($this->once())->method('getLevel')
+        $this->config->expects($this->any())->method('getLevel')
             ->will($this->returnValue(FixerInterface::PSR1_LEVEL));
 
         $this->resolver->resolve();
@@ -81,10 +81,10 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveFixersWithPositiveFixersConfig()
     {
-        $this->config->expects($this->once())->method('getLevel')
+        $this->config->expects($this->any())->method('getLevel')
             ->will($this->returnValue(FixerInterface::SYMFONY_LEVEL));
 
-        $this->config->expects($this->once())->method('getFixers')
+        $this->config->expects($this->any())->method('getFixers')
             ->will($this->returnValue(array('strict', 'strict_param')));
 
         $this->resolver->resolve();
@@ -105,10 +105,10 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveFixersWithNegativeFixersConfig()
     {
-        $this->config->expects($this->once())->method('getLevel')
+        $this->config->expects($this->any())->method('getLevel')
             ->will($this->returnValue(FixerInterface::SYMFONY_LEVEL));
 
-        $this->config->expects($this->once())->method('getFixers')
+        $this->config->expects($this->any())->method('getFixers')
             ->will($this->returnValue(array('strict', '-include', 'strict_param')));
 
         $this->resolver->resolve();
