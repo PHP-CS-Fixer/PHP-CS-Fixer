@@ -448,6 +448,10 @@ if (1) {
                 '<?php
     class ClassName
     {
+
+
+
+
         /**
          * comment
          */
