@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-final class PhpdocShortDescriptionFixer extends AbstractFixer
+final class PhpdocSummaryFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -59,7 +59,7 @@ final class PhpdocShortDescriptionFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Phpdocs short descriptions should end in either a full stop, exclamation mark, or question mark.';
+        return 'Phpdocs summary should end in either a full stop, exclamation mark, or question mark.';
     }
 
     /**

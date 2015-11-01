@@ -18,7 +18,7 @@ use Symfony\CS\Test\AbstractFixerTestCase;
  *
  * @internal
  */
-final class PhpdocShortDescriptionFixerTest extends AbstractFixerTestCase
+final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
 {
     public function testFix()
     {

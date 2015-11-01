@@ -241,7 +241,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_no_package'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_separation'], $fixers['phpdoc_trim']),
-            array($fixers['phpdoc_short_description'], $fixers['phpdoc_trim']),
+            array($fixers['phpdoc_summary'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_var_without_name'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_order'], $fixers['phpdoc_trim']),
             array($fixers['unused_use'], $fixers['line_after_namespace']),
