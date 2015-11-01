@@ -63,6 +63,42 @@ EOF;
         $this->makeTest($expected);
     }
 
+    public function testWithUnicodeQuestionMark()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * ハロー？
+     */
+
+EOF;
+        $this->makeTest($expected);
+    }
+
+    public function testWithUnicodeExclamationMark()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * ハロー！
+     */
+
+EOF;
+        $this->makeTest($expected);
+    }
+
+    public function testWithJapanesePeriod()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * ハロー。
+     */
+
+EOF;
+        $this->makeTest($expected);
+    }
+
     public function testFixIncBlank()
     {
         $expected = <<<'EOF'
