@@ -99,6 +99,8 @@ class ConfigurationResolver
 
     public function getProgress()
     {
+        // TODO: following condition should be removed on 2.0 line
+        // and method should be added to ConfigInterface
         if (!method_exists($this->config, 'getHideProgress')) {
             return $this->options['progress'];
         }
