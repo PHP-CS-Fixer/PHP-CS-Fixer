@@ -982,6 +982,7 @@ class Tokens extends \SplFixedArray
             '"',
             array(T_CONSTANT_ENCAPSED_STRING),
             array(T_STRING),
+            array(T_STRING_VARNAME),
             array(T_VARIABLE),
             array(CT_DYNAMIC_PROP_BRACE_CLOSE),
             array(CT_DYNAMIC_VAR_BRACE_CLOSE),
