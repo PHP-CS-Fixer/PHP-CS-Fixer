@@ -31,6 +31,19 @@
         "psr-4": { "Symfony\\CS\\": "Symfony/CS/" }
     },
     "bin": ["php-cs-fixer"],
+    "scripts": {
+        "test": [
+            "phpunit",
+            "phpunit Symfony/CS/Tests/Standalone/ProjectCodeTest.php"
+        ],
+        "test-ci": [
+            "phpunit --verbose --coverage-clover build/logs/clover.xml",
+            "phpunit Symfony/CS/Tests/Standalone/ProjectCodeTest.php"
+        ]
+    },
+    "config": {
+		"process-timeout": 0
+	},
     "extra": {
         "branch-alias": {
             "dev-master": "2.0-dev"

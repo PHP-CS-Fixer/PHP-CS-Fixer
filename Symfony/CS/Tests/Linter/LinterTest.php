@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests;
+namespace Symfony\CS\Tests\Linter;
 
 use Symfony\Component\Process\ProcessUtils;
 use Symfony\CS\Linter\Linter;

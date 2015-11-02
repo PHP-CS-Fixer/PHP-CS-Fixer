@@ -12,26 +12,9 @@
          bootstrap="./vendor/autoload.php"
 >
     <testsuites>
-        <testsuite name="general">
+        <testsuite>
             <directory>./Symfony/CS/Tests/</directory>
-            <exclude>
-                <directory>./Symfony/CS/Tests/Console/</directory>
-                <directory>./Symfony/CS/Tests/Fixer/</directory>
-                <directory>./Symfony/CS/Tests/Fixtures/</directory>
-                <directory>./Symfony/CS/Tests/Tokenizer/</directory>
-            </exclude>
-        </testsuite>
-        <testsuite name="console">
-            <directory>./Symfony/CS/Tests/Console/</directory>
-        </testsuite>
-        <testsuite name="fixer">
-            <directory>./Symfony/CS/Tests/Fixer/</directory>
-        </testsuite>
-        <testsuite name="tokenizer">
-            <directory>./Symfony/CS/Tests/Tokenizer/</directory>
-        </testsuite>
-        <testsuite name="docblock">
-            <directory>./Symfony/CS/Tests/DocBlock/</directory>
+            <exclude>./Symfony/CS/Tests/Standalone</exclude>
         </testsuite>
     </testsuites>
 

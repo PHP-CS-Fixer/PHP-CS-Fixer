@@ -22,7 +22,7 @@ install:
     - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction
 
 script:
-    - phpunit --verbose --coverage-clover build/logs/clover.xml
+    - composer test-ci
     - phpenv config-rm xdebug.ini || return 0
     - php php-cs-fixer --diff --dry-run -v fix
 
