@@ -1,0 +1,100 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-10-29T09:06:26Z
+
+It is not, you can use the result of:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.11/Symfony/CS/ConfigurationResolver.php#L85
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-29T09:17:02Z
+
+@SpacePossum method you pointed need `ConfigInterface` to has `getHideProgress` method
+
+---------------------------------------------------------------------------
+
+by rybakit at 2015-10-29T09:21:01Z
+
+@SpacePossum I didn't get how using the result of `getProgress()` can help here. Consider the following example:
+
+```php
+class FooConfig implements ConfigInterface
+{
+    public function getName() { return 'foo'; }
+    public function getDescription() { return 'foobar'; }
+    public function getFinder() { return []; }
+    public function getLevel() { return FixerInterface::PSR2_LEVEL; }
+    public function getFixers() { return []; }
+    public function setDir($dir) {}
+    public function getDir() {}
+    public function addCustomFixer(FixerInterface $fixer) {}
+    public function getCustomFixers() { return []; }
+}
+
+$resolver = new ConfigurationResolver();
+$resolver->setConfig(new FooConfig());
+
+$hideProgress = $resolver->getHideProgress(); // fatal error
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-10-29T09:45:19Z
+
+I don't think the `show process` option should be part of the interface. Just like `is dry run` and the `verbosity level` . I'm not sure about `'use cache` and `generate diff`.
+Anyway, there are more problems with the interface vs. the implementation and I would not add the `process` option to keep the interface as small as possible (it is already big and incomplete).
+
+just for ref: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1248
+
+---------------------------------------------------------------------------
+
+by rybakit at 2015-10-29T11:35:44Z
+
+@SpacePossum I agree that `ConfigInterface` needs refactoring, but that's out of the scope of this PR. This PR is about fixing broken `ConfigurationResolver` implementation, which relays on non-existing method. So either `getHideProgress()` should to be added to the interface or the method call should be removed from `ConfigurationResolver`.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-29T11:40:03Z
+
+1.x: if method exists in config instance - call it, if not get default value.
+2.x: ad method to interface
+
+---------------------------------------------------------------------------
+
+by rybakit at 2015-10-29T12:21:19Z
+
+> 1.x: if method exists in config instance - call it, if not get default value.
+
+What do you propose to do in a such case:
+
+```php
+class FooConfig implements ConfigInterface
+{
+    ...
+
+    public function getHideProgress($requiredArg)
+    {
+    }
+}
+```
+Is it assumed that `getHideProgress()` must not have any arguments and we can just do `method_exists()` check before calling it?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-29T12:26:11Z
+
+Is sb make that method but with args then the method is not compatible with the call and it will fail.
+But it is so edge case that I wouldn't care about it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-01T09:18:11Z
+
+Great work @rybakit !
+Just raised some minors
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-01T10:29:54Z
+
+:+1:
