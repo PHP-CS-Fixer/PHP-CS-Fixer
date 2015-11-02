@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Tokenizer;
+namespace Symfony\CS\Test;
 
 use Symfony\CS\Tokenizer\Tokens;
 
@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @internal
  */
-abstract class AbstractTransformerTestBase extends \PHPUnit_Framework_TestCase
+abstract class AbstractTransformerTestCase extends \PHPUnit_Framework_TestCase
 {
     protected function makeTest($source, array $expectedTokens = array())
     {
