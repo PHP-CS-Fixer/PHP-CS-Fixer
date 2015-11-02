@@ -11,7 +11,6 @@
 
 namespace Symfony\CS\Tests;
 
-use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigurationResolver;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
@@ -46,7 +45,7 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
         $this->fixersMap = $fixersMap;
 
-        $this->config = new Config();
+        $this->config = $this->getMock('Symfony\CS\ConfigInterface');
         $this->resolver = new ConfigurationResolver();
         $this->resolver
             ->setAllFixers($fixer->getFixers())
@@ -69,7 +68,8 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveFixersWithLevelConfig()
     {
-        $this->config->level(FixerInterface::PSR1_LEVEL);
+        $this->config->expects($this->any())->method('getLevel')
+            ->will($this->returnValue(FixerInterface::PSR1_LEVEL));
 
         $this->resolver->resolve();
 
@@ -81,8 +81,11 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveFixersWithPositiveFixersConfig()
     {
-        $this->config->level(FixerInterface::SYMFONY_LEVEL);
-        $this->config->fixers(array('strict', 'strict_param'));
+        $this->config->expects($this->any())->method('getLevel')
+            ->will($this->returnValue(FixerInterface::SYMFONY_LEVEL));
+
+        $this->config->expects($this->any())->method('getFixers')
+            ->will($this->returnValue(array('strict', 'strict_param')));
 
         $this->resolver->resolve();
 
@@ -102,8 +105,11 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveFixersWithNegativeFixersConfig()
     {
-        $this->config->level(FixerInterface::SYMFONY_LEVEL);
-        $this->config->fixers(array('strict', '-include', 'strict_param'));
+        $this->config->expects($this->any())->method('getLevel')
+            ->will($this->returnValue(FixerInterface::SYMFONY_LEVEL));
+
+        $this->config->expects($this->any())->method('getFixers')
+            ->will($this->returnValue(array('strict', '-include', 'strict_param')));
 
         $this->resolver->resolve();
 
@@ -142,9 +148,12 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveFixersWithLevelConfigAndFixersConfigAndLevelOption()
     {
-        $this->config
-            ->level(FixerInterface::PSR2_LEVEL)
-            ->fixers(array('strict'));
+        $this->config->expects($this->any())->method('getLevel')
+            ->will($this->returnValue(FixerInterface::PSR2_LEVEL));
+
+        $this->config->expects($this->any())->method('getFixers')
+            ->will($this->returnValue(array('strict')));
+
         $this->resolver
             ->setOption('level', 'psr1')
             ->resolve();
@@ -157,9 +166,12 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveFixersWithLevelConfigAndFixersConfigAndPositiveFixersOption()
     {
-        $this->config
-            ->level(FixerInterface::PSR2_LEVEL)
-            ->fixers(array('strict'));
+        $this->config->expects($this->any())->method('getLevel')
+            ->will($this->returnValue(FixerInterface::PSR2_LEVEL));
+
+        $this->config->expects($this->any())->method('getFixers')
+            ->will($this->returnValue(array('strict')));
+
         $this->resolver
             ->setOption('fixers', 'psr0')
             ->resolve();
@@ -172,9 +184,12 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveFixersWithLevelConfigAndFixersConfigAndNegativeFixersOption()
     {
-        $this->config
-            ->level(FixerInterface::SYMFONY_LEVEL)
-            ->fixers(array('strict'));
+        $this->config->expects($this->any())->method('getLevel')
+            ->will($this->returnValue(FixerInterface::SYMFONY_LEVEL));
+
+        $this->config->expects($this->any())->method('getFixers')
+            ->will($this->returnValue(array('strict')));
+
         $this->resolver
             ->setOption('fixers', 'strict, -include,strict_param ')
             ->resolve();
@@ -202,9 +217,12 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveFixersWithLevelConfigAndFixersConfigAndLevelOptionsAndFixersOption()
     {
-        $this->config
-            ->level(FixerInterface::PSR2_LEVEL)
-            ->fixers(array('concat_with_spaces'));
+        $this->config->expects($this->any())->method('getLevel')
+            ->will($this->returnValue(FixerInterface::PSR2_LEVEL));
+
+        $this->config->expects($this->any())->method('getFixers')
+            ->will($this->returnValue(array('concat_with_spaces')));
+
         $this->resolver
             ->setOption('level', 'symfony')
             ->setOption('fixers', 'strict, -include,strict_param ')
@@ -233,7 +251,11 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveProgressWithPositiveConfigAndPositiveOption()
     {
-        $this->config->hideProgress(true);
+        $config = $this->getMock('Symfony\CS\Config\Config');
+        $config->expects($this->any())->method('getHideProgress')
+            ->will($this->returnValue(true));
+
+        $this->resolver->setConfig($config);
         $this->resolver->setOption('progress', true);
 
         $this->assertFalse($this->resolver->getProgress());
@@ -241,7 +263,11 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveProgressWithPositiveConfigAndNegativeOption()
     {
-        $this->config->hideProgress(true);
+        $config = $this->getMock('Symfony\CS\Config\Config');
+        $config->expects($this->any())->method('getHideProgress')
+            ->will($this->returnValue(true));
+
+        $this->resolver->setConfig($config);
         $this->resolver->setOption('progress', false);
 
         $this->assertFalse($this->resolver->getProgress());
@@ -249,7 +275,11 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveProgressWithNegativeConfigAndPositiveOption()
     {
-        $this->config->hideProgress(false);
+        $config = $this->getMock('Symfony\CS\Config\Config');
+        $config->expects($this->any())->method('getHideProgress')
+            ->will($this->returnValue(false));
+
+        $this->resolver->setConfig($config);
         $this->resolver->setOption('progress', true);
 
         $this->assertTrue($this->resolver->getProgress());
@@ -257,9 +287,20 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveProgressWithNegativeConfigAndNegativeOption()
     {
-        $this->config->hideProgress(false);
+        $config = $this->getMock('Symfony\CS\Config\Config');
+        $config->expects($this->any())->method('getHideProgress')
+            ->will($this->returnValue(false));
+
+        $this->resolver->setConfig($config);
         $this->resolver->setOption('progress', false);
 
         $this->assertFalse($this->resolver->getProgress());
+    }
+
+    public function testResolveProgressRespectsConfigInterface()
+    {
+        $this->resolver->setOption('progress', true);
+
+        $this->assertTrue($this->resolver->getProgress());
     }
 }
