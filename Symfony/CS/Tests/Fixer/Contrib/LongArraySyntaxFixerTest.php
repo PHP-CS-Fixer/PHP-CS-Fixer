@@ -50,6 +50,7 @@ class LongArraySyntaxFixerTest extends AbstractFixerTestBase
             array('<?php $x["a"] = 1;'),
             array('<?php $x = func()[$x];'),
             array('<?php $x = "foo"[$x];'),
+            array('<?php $text = "foo ${aaa[123]} bar $bbb[0] baz";'),
         );
     }
 }

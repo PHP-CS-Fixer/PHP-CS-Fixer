@@ -969,6 +969,25 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Check if partial code is multiline.
+     *
+     * @param int $start start index
+     * @param int $end   end index
+     *
+     * @return bool
+     */
+    public function isPartialCodeMultiline($start, $end)
+    {
+        for ($i = $start; $i <= $end; ++$i) {
+            if (false !== strpos($this[$i]->getContent(), "\n")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Check if the array at index uses the short-syntax.
      *
      * @param int $index
@@ -984,6 +1003,7 @@ class Tokens extends \SplFixedArray
             '"',
             array(T_CONSTANT_ENCAPSED_STRING),
             array(T_STRING),
+            array(T_STRING_VARNAME),
             array(T_VARIABLE),
             array(CT_DYNAMIC_PROP_BRACE_CLOSE),
             array(CT_DYNAMIC_VAR_BRACE_CLOSE),

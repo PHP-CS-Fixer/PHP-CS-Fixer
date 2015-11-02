@@ -1017,6 +1017,8 @@ PHP;
         $cases = array(
             array('<?php $a;', 1),
             array("<?php\n \$a = (0+1); // [0,1]", 4),
+            array('<?php $text = "foo $bbb[0] bar";', 8),
+            array('<?php $text = "foo ${aaa[123]} bar";', 9),
         );
 
         return $cases;
