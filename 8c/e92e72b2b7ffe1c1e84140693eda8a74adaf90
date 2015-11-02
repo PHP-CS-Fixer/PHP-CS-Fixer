@@ -1,0 +1,295 @@
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-28T09:44:09Z
+
+@keradus tests passed, ready to merge. :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-28T09:45:31Z
+
+I would like to get answer for https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1463#discussion_r43188994 first
+@cc GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-28T10:05:36Z
+
+> I would like to get answer for #1463 (comment) first
+
+I can understand, but this annoying bug is here from a long time and the fix is ready.
+
+New tests passed and no regression with other tests, what is missing?
+
+I would like to add tests later if @GrahamCampbell want it but I think this PR can be merged as is.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-28T12:04:18Z
+
+> New tests passed and no regression with other tests, what is missing?
+
+Votes with approval for this PR. Fix is probably good, but most of us just need more time than few hours to think about the bug, solution and discover edge cases
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-28T12:07:41Z
+
+@keradus review corrected.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-28T15:47:29Z
+
+@SpacePossum Could you please take a look of this one? Thanks!
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-28T20:20:37Z
+
+What I was saying is you need to check these tokens actually belong to an array rather than:
+
+`$foo[1],` where that would match a closing bracket and a comma.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-28T20:22:48Z
+
+Looks like we're missing a test case:
+
+```php
+<?php
+
+function foo() {}
+
+$bar = 42;
+
+$foo = [
+    'test123' => 'foo',
+    'foo' => $bar[123],
+    'a' => foo(),
+];
+```
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-28T20:23:28Z
+
+If that gets fixed correctly after your change, than that's fine. I'd just like to be sure. :)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-29T08:50:23Z
+
+@GrahamCampbell I added your test, seems to be OK. :+1:
+
+cc @keradus
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-29T09:14:32Z
+
+looking on the condition, could you change the case into:
+
+```diff
+    $foo = [
+        "test123" => "foo",
+        "foo" => $bar[123],
+        "a" => foo(),
++       "b" => 1,
+    ];
+```
+
+?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-10-29T09:40:35Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-29T09:43:12Z
+
+@keradus done.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-10-29T10:13:27Z
+
+Thanks for the PR. I've been testing a bit with it and I'm wondering what people think of the following two failing test cases.
+Kindly note, these fail with and without your changes.
+
+```php
+            array(
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN    => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID    => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID    => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+```
+
+```php
+            array(
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN    => array((1+11)=> "?", "description" => "unknown"),
+        self::STATUS_INVALID    => array((2+3)=> "III", "description" => "invalid file syntax, file ignored"),
+    );',
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN => array((1+11)=> "?", "description" => "unknown"),
+        self::STATUS_INVALID    => array((2+3)=> "III", "description" => "invalid file syntax, file ignored"),
+    );',
+            ),
+```
+
+In other words, the inline array detection does not seem to work for all cases I think.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-29T10:15:09Z
+
+Thanks @SpacePossum, will take a look.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-29T10:17:04Z
+
+Sorry @SpacePossum, but what is the difference between your two pastes?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-10-29T10:18:54Z
+
+in case 1, `hard` index, space between `3"` and `=>` :
+`array("symbol123" => "III",`
+
+in case 2, `dynamic` index, no space between `)` and `=>` :
+`array((2+3)=> "III",`
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-29T10:26:28Z
+
+Oh, didn't saw it. Need a :coffee:. :-)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-29T10:36:38Z
+
+I'm trying to check with line position:
+
+```php
+            if ($token->isGivenKind(T_ARRAY)) { // don't use "$tokens->isArray()" here, short arrays are handled in the next case
+                $from = $tokens->getNextMeaningfulToken($index);
+                $lineFrom = $tokens[$from]->getLine();
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $from);
+                $lineUntil = $tokens[$until]->getLine();
+                $index = $until;
+
+                var_dump($lineFrom, $lineUntil);
+                if ($lineUntil > $lineFrom) {
+                    ++$this->deepestLevel;
+                    ++$this->currentLevel;
+                    $this->injectAlignmentPlaceholders($tokens, $from, $until);
+                    --$this->currentLevel;
+                }
+
+                continue;
+            }
+```
+
+But `getLine` always returns `NULL`.
+
+@keradus do you know why?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-29T10:44:50Z
+
+Yes. Never, never use `getLine`. As token prototype from `tokens_get_all` has it, `Token` class has it too. But when all our fixers do theirs stuff they change lines, adding new, removing old, and _do not_ update all lines of all tokens in collection. Do not rely on that method.
+After said that, the method was removed on 2.x line.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-29T10:49:37Z
+
+Well, that's so bad. How can I deal with lines? I don't know how to solve it with other way.
+
+PHP code sniffer tokenizer have line management working well, maybe could we get inspiration of it?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-29T11:27:26Z
+
+So far we need to handle line numbers in so few places, while keeping them up to date was costly, we decided to throw it away.
+In that few places if we need to know if the tokens are in same line or not - we simply analyze content between, eg https://github.com/Soullivaneuh/PHP-CS-Fixer/blob/issue-1450-proof/Symfony/CS/Fixer/Contrib/AlignDoubleArrowFixer.php#L158
+It may be good to move that check into dedicated method, which will also allow to optimize it.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-29T13:29:57Z
+
+@SpacePossum @keradus fixed! :+1:
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-29T14:40:14Z
+
+@GrahamCampbell suggestion added.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-30T14:56:56Z
+
+@keradus Are we OK now? :-)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-30T18:16:29Z
+
+LGTM, just pleae get rid of that merge commit (eg rebase on 1.10)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-10-31T00:49:52Z
+
+Indeed, nicer history. :-)
+
+PR ready to merge! :+1:
+
+I'm curious: Why a simple `rebase 1.10` can get rid of merge commits? And what would happen if I was already up to date from `1.10`?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-31T07:44:15Z
+
+After rebasing on 1.10 the merge commit wouldn't bring any code changes (because you are working on top of 1.10), therefore it will be considered as empty commit, and during rebasing empty commits are ommited by default.
+If your branch would be created on top of 1.10 - then you wouldn't have merge commit of 1.10 (that would mean the 1.10 has new commits and your branch is not created on top of 1.10).
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-31T07:45:12Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-10-31T08:05:28Z
+
+looking good :+1:
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-02T08:57:17Z
+
+Thanks. :-)
+
+When this could be merged?
