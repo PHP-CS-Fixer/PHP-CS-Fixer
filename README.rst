@@ -458,11 +458,11 @@ Choose from the list of available fixers:
                         type are separated by a single
                         blank line.
 
-* **phpdoc_short_description** [@Symfony]
-                        Phpdocs short descriptions
-                        should end in either a full
-                        stop, exclamation mark, or
-                        question mark.
+* **phpdoc_summary** [@Symfony]
+                        Phpdocs summary should end in
+                        either a full stop,
+                        exclamation mark, or question
+                        mark.
 
 * **phpdoc_to_comment** [@Symfony]
                         Docblocks should only be used
