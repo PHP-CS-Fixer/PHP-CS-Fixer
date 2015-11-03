@@ -1,0 +1,51 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-01T21:19:12Z
+
+Could you describe what has been improved?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-01T23:24:35Z
+
+The tests describe that surely?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-01T23:42:57Z
+
+and the title of PR, which will be in changelog - does not
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-01T23:45:04Z
+
+D'no a way to put it succinctly, lol.
+
+---------------------------------------------------------------------------
+
+by sstok at 2015-11-02T08:11:26Z
+
+How about: Fix PhpdocToCommentFixer not properly fixing for block right after namespace.
+
+Or something like that?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-03T07:02:02Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-03T07:37:53Z
+
+I'm wondering... Isn't it a bugfix?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-03T11:19:39Z
+
+> I'm wondering... Isn't it a bugfix?
+
+Yes. Feel free to merge to 1.10 if you want. :P
