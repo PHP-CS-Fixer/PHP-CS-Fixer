@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-01T23:25:49Z
+
+I guess we also need a fixer that will remove these extra lines?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-01T23:42:12Z
+
+perhaps on some other level
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-01T23:44:24Z
+
+Yeh, of course. ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-03T06:28:02Z
+
+@fabpot
+PHP CS Fixer found CS issues, eg `braces` (from `PSR2` level) .
+Why fabbot.io didn't notice that?
