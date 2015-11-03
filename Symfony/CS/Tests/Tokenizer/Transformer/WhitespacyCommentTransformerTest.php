@@ -11,7 +11,7 @@
 
 namespace Symfony\CS\Tests\Tokenizer\Transformer;
 
-use Symfony\CS\Tests\Tokenizer\AbstractTransformerTestBase;
+use Symfony\CS\Test\AbstractTransformerTestCase;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
  *
  * @internal
  */
-final class WhitespacyCommentTransformerTest extends AbstractTransformerTestBase
+final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
 {
     /**
      * @dataProvider provideProcessCases

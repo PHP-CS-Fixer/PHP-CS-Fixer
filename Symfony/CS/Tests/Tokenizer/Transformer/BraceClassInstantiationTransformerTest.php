@@ -11,14 +11,14 @@
 
 namespace Symfony\CS\Tests\Tokenizer\Transformer;
 
-use Symfony\CS\Tests\Tokenizer\AbstractTransformerTestBase;
+use Symfony\CS\Test\AbstractTransformerTestCase;
 
 /**
  * @author Sebastiaans Stok <s.stok@rollerscapes.net>
  *
  * @internal
  */
-final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestBase
+final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestCase
 {
     /**
      * @dataProvider provideProcessCases
