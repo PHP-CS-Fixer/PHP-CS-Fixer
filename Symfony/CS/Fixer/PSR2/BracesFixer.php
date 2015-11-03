@@ -271,11 +271,10 @@ class BracesFixer extends AbstractFixer
 
                 if (!$nextToken->isWhitespace()) {
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
-                }
-                else {
+                } else {
                     $tmpIndent = trim($nextToken->getContent(), " \t").$indent.'    ';
 
-                    if (!isset ($tmpIndent[0]) || "\n" !== $tmpIndent[0]) {
+                    if (!isset($tmpIndent[0]) || "\n" !== $tmpIndent[0]) {
                         $tmpIndent = "\n".$tmpIndent;
                     }
 
