@@ -268,7 +268,18 @@ class BracesFixer extends AbstractFixer
                 }
             } else {
                 $nextToken = $tokens[$startBraceIndex + 1];
-                $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
+
+                if (!$nextToken->isWhitespace()) {
+                    $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
+                } else {
+                    $tmpIndent = trim($nextToken->getContent(), " \t").$indent.'    ';
+
+                    if (!isset($tmpIndent[0]) || "\n" !== $tmpIndent[0]) {
+                        $tmpIndent = "\n".$tmpIndent;
+                    }
+
+                    $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, $tmpIndent);
+                }
             }
 
             if ($token->isGivenKind($classyTokens)) {
