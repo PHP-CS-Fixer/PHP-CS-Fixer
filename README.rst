@@ -284,6 +284,16 @@ Choose from the list of available fixers:
                         visibility; static MUST be
                         declared after the visibility.
 
+* **array_element_no_space_before_comma** [symfony]
+                        In array declaration, there
+                        MUST NOT be a space before
+                        each comma.
+
+* **array_element_white_space_after_comma** [symfony]
+                        In array declaration, there
+                        MUST be a white wspace after
+                        each comma.
+
 * **blankline_after_open_tag** [symfony]
                         Ensure there is no code on the
                         same line as the PHP open tag
