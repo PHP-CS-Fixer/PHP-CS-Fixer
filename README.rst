@@ -522,6 +522,14 @@ Choose from the list of available fixers:
                         Align equals symbols in
                         consecutive lines.
 
+* **array_element_space** [contrib]
+                        In array declaration, there
+                        MUST NOT be a space before
+                        each comma, there MUST be one
+                        space after each comma and
+                        there should be space around
+                        double arrow.
+
 * **concat_with_spaces** [contrib]
                         Concatenation should be used
                         with at least one whitespace
