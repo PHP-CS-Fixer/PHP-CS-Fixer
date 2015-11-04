@@ -71,7 +71,7 @@ class ArrayElementSpaceFixer extends AbstractFixer
             $tokens[$endIndex - 1]->clear();
         }
 
-        for ($i = $endIndex - 1; $i >= $startIndex; --$i) {
+        for ($i = $endIndex - 1; $i > $startIndex; --$i) {
             $currentToken = $tokens[$i];
             if ($currentToken->equals(',')) {
                 $this->fixCommaSpace($i, $tokens, $tokens->isArrayMultiLine($index));
@@ -109,7 +109,7 @@ class ArrayElementSpaceFixer extends AbstractFixer
      * @param int    $index
      * @param Tokens $tokens
      */
-    private function fixDoubleArrowSpace(&$index, Tokens $tokens)
+    private function fixDoubleArrowSpace($index, Tokens $tokens)
     {
         if ($tokens[$index + 1]->isWhitespace()) {
             $tokens[$index + 1]->override(array(T_WHITESPACE, ' '));
@@ -121,7 +121,6 @@ class ArrayElementSpaceFixer extends AbstractFixer
             $tokens[$index - 1]->override(array(T_WHITESPACE, ' '));
         } else {
             $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
-            ++$index;
         }
     }
 }
