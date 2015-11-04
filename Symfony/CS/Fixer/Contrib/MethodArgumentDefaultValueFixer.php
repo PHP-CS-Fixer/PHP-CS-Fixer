@@ -1,0 +1,195 @@
+<?php
+
+/*
+ * This file is part of the PHP CS utility.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace Symfony\CS\Fixer\Contrib;
+
+use Symfony\CS\AbstractFixer;
+use Symfony\CS\FixerInterface;
+use Symfony\CS\Tokenizer\Tokens;
+
+/**
+ * @author Mark Scherer
+ * @author Lucas Manzke <lmanzke@outlook.com>
+ */
+class MethodArgumentDefaultValueFixer extends AbstractFixer
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'In method arguments there must not be arguments with default values before non-default ones.';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file = null, $content)
+    {
+        $tokens = Tokens::fromCode($content);
+
+        $functionTokenIndices = array_keys($tokens->findGivenKind(T_FUNCTION));
+        foreach ($functionTokenIndices as $index) {
+            $this->fixFunctionDefinition($tokens, $index);
+        }
+
+        return $tokens->generateCode();
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function fixFunctionDefinition(Tokens $tokens, $index)
+    {
+        $examinedIndex = $tokens->getNextTokenOfKind($index, array('(', ',', ')'));
+        while (
+            $this->hasNonDefaultArgumentAfterIndex($tokens, $examinedIndex) &&
+            $this->hasDefaultValueAfterIndex($tokens, $examinedIndex)
+        ) {
+            $nextRelevantIndex = $this->findNextVariableOrTokenOfKind($tokens, $examinedIndex, array(')'));
+
+            if (')' === $tokens[$nextRelevantIndex]->getContent()) {
+                break;
+            }
+
+            if (
+                $this->isDefaultArgumentAfterIndex($tokens, $nextRelevantIndex - 1) &&
+                $this->hasNonDefaultArgumentAfterIndex($tokens, $nextRelevantIndex - 1)
+            ) {
+                $this->removeDefaultArgument($tokens, $nextRelevantIndex);
+            }
+            $examinedIndex = $nextRelevantIndex;
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return bool
+     */
+    private function hasNonDefaultArgumentAfterIndex(Tokens $tokens, $index)
+    {
+        $nextRelevantTokenIndex = $this->findNextVariableOrTokenOfKind($tokens, $index, array(')'));
+
+        if (null === $nextRelevantTokenIndex) {
+            return false;
+        }
+
+        while (')' !== $tokens[$nextRelevantTokenIndex]->getContent()) {
+            $nextRelevantTokenContent = $tokens[$tokens->getNextMeaningfulToken($nextRelevantTokenIndex)]->getContent();
+
+            if (in_array($nextRelevantTokenContent, array(',', ')'), true)) {
+                return true;
+            }
+
+            $nextRelevantTokenIndex = $this->findNextVariableOrTokenOfKind($tokens, $nextRelevantTokenIndex, array(')'));
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int $index
+     * @param array $relevantTokens
+     * @return int|null
+     */
+    private function findNextVariableOrTokenOfKind(Tokens $tokens, $index, array $relevantTokens)
+    {
+        $variableIndices = array_keys($tokens->findGivenKind(T_VARIABLE));
+
+        $nextVariableIndex = $this->getFirstValueBiggerThan($variableIndices, $index);
+        $nextRelevantTokenIndex = $tokens->getNextTokenOfKind($index, $relevantTokens);
+
+        if (null === $nextVariableIndex) {
+            return $nextRelevantTokenIndex;
+        }
+
+        if (null === $nextRelevantTokenIndex) {
+            return $nextVariableIndex;
+        }
+
+        return ($nextVariableIndex < $nextRelevantTokenIndex) ? $nextVariableIndex : $nextRelevantTokenIndex;
+    }
+
+    /**
+     * @param array $values
+     * @param int $minimumValue
+     *
+     * @return int|null
+     */
+    private function getFirstValueBiggerThan(array $values, $minimumValue)
+    {
+        foreach ($values as $value) {
+            if ($value > $minimumValue) {
+                return $value;
+            }
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return bool
+     */
+    private function hasDefaultValueAfterIndex(Tokens $tokens, $index)
+    {
+        $nextTokenIndex = $tokens->getNextTokenOfKind($index, array('=', ')'));
+        $nextToken = $tokens[$nextTokenIndex];
+
+        return $nextToken->getContent() !== ')';
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int $index
+     * @return bool
+     */
+    private function isDefaultArgumentAfterIndex(Tokens $tokens, $index)
+    {
+        $nextTokenIndex = $tokens->getNextTokenOfKind($index, array('=', ')', ','));
+        $nextToken = $tokens[$nextTokenIndex];
+
+        return $nextToken->getContent() === '=';
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int $nextVariableIndex
+     */
+    private function removeDefaultArgument(Tokens $tokens, $nextVariableIndex)
+    {
+        $currentIndex = $nextVariableIndex;
+
+        while (!in_array($tokens[$currentIndex + 1]->getContent(), array(',', ')'), true)) {
+            $tokens[++$currentIndex]->clear();
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority()
+    {
+        return -49;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLevel()
+    {
+        return FixerInterface::CONTRIB_LEVEL;
+    }
+}
