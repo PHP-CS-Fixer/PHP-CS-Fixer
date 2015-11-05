@@ -579,6 +579,12 @@ Choose from the list of available fixers:
                         Arrays should use the long
                         syntax.
 
+* **method_argument_default_value** [contrib]
+                        In method arguments there must
+                        not be arguments with default
+                        values before non-default
+                        ones.
+
 * **multiline_spaces_before_semicolon** [contrib]
                         Multi-line whitespace before
                         closing semicolon are
