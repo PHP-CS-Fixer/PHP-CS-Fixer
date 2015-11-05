@@ -16,8 +16,6 @@ use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
- * Fixer for rules defined in PSR2 ¶4.6.
- *
  * @author Adam Marczuk <adam@marczuk.info>
  */
 class ArrayElementSpaceFixer extends AbstractFixer
@@ -56,25 +54,31 @@ class ArrayElementSpaceFixer extends AbstractFixer
      */
     private function fixSpacing($index, Tokens $tokens)
     {
+        $multiLine = $tokens->isArrayMultiLine($index);
         if ($tokens->isShortArray($index)) {
             $startIndex = $index;
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $startIndex);
         } else {
-            $startIndex = $index + 1;
+            $startIndex = $tokens->getNextTokenOfKind($startIndex, array('('));
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
         }
 
         if ($tokens[$startIndex + 1]->isWhitespace()) {
-            $tokens[$startIndex + 1]->clear();
+            if (!$multiLine || ($multiLine && false === strpos($tokens[$startIndex + 1]->getContent(), "\n"))) {
+                $tokens[$startIndex + 1]->clear();
+            }
         }
         if ($tokens[$endIndex - 1]->isWhitespace()) {
-            $tokens[$endIndex - 1]->clear();
+            if (!$multiLine || ($multiLine && false === strpos($tokens[$endIndex - 1]->getContent(), "\n"))) {
+                $tokens[$endIndex - 1]->clear();
+            }
         }
 
         for ($i = $endIndex - 1; $i > $startIndex; --$i) {
+            $i = $this->skipNonArrayElements($i, $tokens);
             $currentToken = $tokens[$i];
             if ($currentToken->equals(',')) {
-                $this->fixCommaSpace($i, $tokens, $tokens->isArrayMultiLine($index));
+                $this->fixCommaSpace($i, $tokens, $multiLine);
             }
             if ($currentToken->isGivenKind(T_DOUBLE_ARROW)) {
                 $this->fixDoubleArrowSpace($i, $tokens);
@@ -83,10 +87,34 @@ class ArrayElementSpaceFixer extends AbstractFixer
     }
 
     /**
+     * Method to move index over the non-array elements like function calls or function declarations.
+     *
+     * @param int    $index
+     * @param Tokens $tokens
+     *
+     * @return int New index
+     */
+    private function skipNonArrayElements($index, Tokens $tokens)
+    {
+        if ($tokens[$index]->equals(')')) {
+            $startIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false);
+            $startIndex = $tokens->getPrevMeaningfulToken($startIndex);
+            if (!$tokens->isArray($startIndex)) {
+                return $startIndex;
+            }
+        } elseif ($tokens[$index]->equals('}')) {
+            return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index, false);
+        }
+
+        return $index;
+    }
+
+    /**
      * Method to insert space after comma and remove space before comma.
      *
      * @param int    $index
      * @param Tokens $tokens
+     * @param bool   $multiLine
      */
     private function fixCommaSpace($index, Tokens $tokens, $multiLine)
     {

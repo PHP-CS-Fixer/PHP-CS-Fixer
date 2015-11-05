@@ -34,10 +34,31 @@ class ArrayElementSpaceFixerTest extends AbstractFixerTestBase
                 '<?php $x = array(1, "2", 3);',
                 '<?php $x = array( 1 ,  "2",3);',
             ),
+            //old style array with comments
+            array(
+                '<?php $x = array /* comment */ (1, "2", 3);',
+                '<?php $x = array /* comment */ ( 1 ,  "2",3);',
+            ),
+
             //short array
             array(
                 '<?php $x = [1, "2", 3, $y];',
                 '<?php $x = [ 1 ,  "2",3 ,$y];',
+            ),
+            // don't change function calls
+            array(
+                '<?php $x = [1, "2", getValue(1,2  ,3 ), $y];',
+                '<?php $x = [ 1 ,  "2",getValue(1,2  ,3 ) ,$y];',
+            ),
+            // don't change function declarations
+            array(
+                '<?php $x = [1, "2", function( $x ,$y) { return $x + $y; }, $y];',
+                '<?php $x = [ 1 ,  "2",function( $x ,$y) { return $x + $y; },$y ];',
+            ),
+            // don't change function declarations but change array inside
+            array(
+                '<?php $x = [1, "2", "c" => function( $x ,$y) { return [$x, $y]; }, $y];',
+                '<?php $x = [ 1 ,  "2","c"=>function( $x ,$y) { return [  $x , $y  ]; },$y ];',
             ),
             // associative array (old)
             array(
@@ -65,6 +86,17 @@ class ArrayElementSpaceFixerTest extends AbstractFixerTestBase
                 \'b\',
                     3=>$this->foo()  , 
                     \'d\' =>30  ];',
+            ),
+            // multi line array
+            array(
+                '<?php $a = [
+                            \'foo\',
+                            \'bar\', 
+                        ];',
+                '<?php $a = [
+                            \'foo\' ,
+                            \'bar\', 
+                        ];',
             ),
         );
     }
