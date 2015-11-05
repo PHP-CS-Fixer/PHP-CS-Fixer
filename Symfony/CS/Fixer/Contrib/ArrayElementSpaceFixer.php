@@ -59,7 +59,7 @@ class ArrayElementSpaceFixer extends AbstractFixer
             $startIndex = $index;
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $startIndex);
         } else {
-            $startIndex = $tokens->getNextTokenOfKind($startIndex, array('('));
+            $startIndex = $tokens->getNextTokenOfKind($index, array('('));
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
         }
 
