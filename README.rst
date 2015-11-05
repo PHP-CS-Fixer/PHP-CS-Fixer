@@ -284,6 +284,12 @@ Choose from the list of available fixers:
                         visibility; static MUST be
                         declared after the visibility.
 
+* **array_element_space** [symfony]
+                        In array declaration, there
+                        MUST NOT be a space before
+                        each comma and there MUST be
+                        one space after each comma.
+
 * **blankline_after_open_tag** [symfony]
                         Ensure there is no code on the
                         same line as the PHP open tag
@@ -521,14 +527,6 @@ Choose from the list of available fixers:
 * **align_equals** [contrib]
                         Align equals symbols in
                         consecutive lines.
-
-* **array_element_space** [contrib]
-                        In array declaration, there
-                        MUST NOT be a space before
-                        each comma, there MUST be one
-                        space after each comma and
-                        there should be space around
-                        double arrow.
 
 * **concat_with_spaces** [contrib]
                         Concatenation should be used

@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Contrib;
+namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Token;
@@ -43,7 +43,7 @@ class ArrayElementSpaceFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'In array declaration, there MUST NOT be a space before each comma, there MUST be one space after each comma and there should be space around double arrow.';
+        return 'In array declaration, there MUST NOT be a space before each comma and there MUST be one space after each comma.';
     }
 
     /**
@@ -79,9 +79,6 @@ class ArrayElementSpaceFixer extends AbstractFixer
             $currentToken = $tokens[$i];
             if ($currentToken->equals(',')) {
                 $this->fixCommaSpace($i, $tokens, $multiLine);
-            }
-            if ($currentToken->isGivenKind(T_DOUBLE_ARROW)) {
-                $this->fixDoubleArrowSpace($i, $tokens);
             }
         }
     }
@@ -128,27 +125,6 @@ class ArrayElementSpaceFixer extends AbstractFixer
 
         if ($tokens[$index - 1]->isWhitespace()) {
             $tokens[$index - 1]->clear();
-        }
-    }
-
-    /**
-     * Method to ensure space around double arrow.
-     *
-     * @param int    $index
-     * @param Tokens $tokens
-     */
-    private function fixDoubleArrowSpace($index, Tokens $tokens)
-    {
-        if ($tokens[$index + 1]->isWhitespace()) {
-            $tokens[$index + 1]->override(array(T_WHITESPACE, ' '));
-        } else {
-            $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
-        }
-
-        if ($tokens[$index - 1]->isWhitespace()) {
-            $tokens[$index - 1]->override(array(T_WHITESPACE, ' '));
-        } else {
-            $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
         }
     }
 }

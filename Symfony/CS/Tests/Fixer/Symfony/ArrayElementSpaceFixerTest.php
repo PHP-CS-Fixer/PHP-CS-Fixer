@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace Symfony\CS\Tests\Fixer\Symfony;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
@@ -58,44 +58,45 @@ class ArrayElementSpaceFixerTest extends AbstractFixerTestBase
             // don't change function declarations but change array inside
             array(
                 '<?php $x = [1, "2", "c" => function( $x ,$y) { return [$x, $y]; }, $y];',
-                '<?php $x = [ 1 ,  "2","c"=>function( $x ,$y) { return [  $x , $y  ]; },$y ];',
+                '<?php $x = [ 1 ,  "2","c" => function( $x ,$y) { return [  $x , $y  ]; },$y ];',
             ),
             // associative array (old)
             array(
-                '<?php $x = array(\'a\' => $a, "b" => \'b\', 3 => $this->foo(), \'d\' => 30);',
-                '<?php $x = array(  \'a\' =>$a , "b"=>  \'b\',3=>$this->foo()  , \'d\' =>30  );',
+                '<?php $x = array("a" => $a, "b" =>  "b", 3=>$this->foo(), "d" => 30);',
+                '<?php $x = array(  "a" => $a , "b" =>  "b",3=>$this->foo()  , "d" => 30  );',
             ),
             // associative array (short)
             array(
-                '<?php $x = [\'a\' => $a, "b" => \'b\', 3 => $this->foo(), \'d\' => 30];',
-                '<?php $x = [  \'a\' =>$a , "b"=>  \'b\',3=>$this->foo()  , \'d\' =>30  ];',
+                '<?php $x = ["a" => $a, "b"=>"b", 3 => $this->foo(), "d" =>30];',
+                '<?php $x = [  "a" => $a , "b"=>"b",3 => $this->foo()  , "d" =>30  ];',
             ),
             // nested arrays
             array(
-                '<?php $x = [\'a\' => $a, "b" => \'b\', 3 => [5, 6, 7], \'d\' => array(1, 2, 3, 4)];',
-                '<?php $x = [  \'a\' =>$a , "b"=>  \'b\',3=> [   5 ,6,  7 ]  , \'d\'=>  array(  1,  2,3 ,4)  ];',
+                '<?php $x = ["a" => $a, "b" => "b", 3=> [5, 6, 7], "d" => array(1, 2, 3, 4)];',
+                '<?php $x = [  "a" => $a , "b" => "b",3=> [   5 ,6,  7 ]  , "d" => array(  1,  2,3 ,4)  ];',
             ),
             // multi line array
             array(
-                '<?php $x = [\'a\' => $a,
-                    "b" => \'b\',
-                    3 => $this->foo(), 
-                    \'d\' => 30];',
-                '<?php $x = [  \'a\' =>$a ,
+                '<?php $x = ["a" =>$a,
                     "b"=>  
-                \'b\',
-                    3=>$this->foo()  , 
-                    \'d\' =>30  ];',
+                "b",
+                    3 => $this->foo(), 
+                    "d" => 30];',
+                '<?php $x = [  "a" =>$a ,
+                    "b"=>  
+                "b",
+                    3 => $this->foo()  , 
+                    "d" => 30  ];',
             ),
             // multi line array
             array(
                 '<?php $a = [
-                            \'foo\',
-                            \'bar\', 
+                            "foo",
+                            "bar", 
                         ];',
                 '<?php $a = [
-                            \'foo\' ,
-                            \'bar\', 
+                            "foo" ,
+                            "bar", 
                         ];',
             ),
         );
