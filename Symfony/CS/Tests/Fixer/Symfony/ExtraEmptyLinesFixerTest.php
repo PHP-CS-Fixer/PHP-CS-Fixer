@@ -222,4 +222,27 @@ EOF;
 ";
         $this->makeTest($expected);
     }
+
+    public function testFixWithComments()
+    {
+        $expected = <<<'EOF'
+<?php
+//class Test
+$a; //
+
+$b;
+EOF;
+
+        $input = <<<'EOF'
+<?php
+//class Test
+$a; //
+
+
+
+
+$b;
+EOF;
+        $this->makeTest($expected, $input);
+    }
 }
