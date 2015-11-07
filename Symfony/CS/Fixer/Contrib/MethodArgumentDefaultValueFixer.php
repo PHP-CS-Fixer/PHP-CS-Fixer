@@ -91,7 +91,7 @@ class MethodArgumentDefaultValueFixer extends AbstractFixer
             return false;
         }
 
-        while (!in_array($tokens[$nextRelevantTokenIndex]->getContent(), $this->functionDefinitionTerminatorTokens)) {
+        while (!in_array($tokens[$nextRelevantTokenIndex]->getContent(), $this->functionDefinitionTerminatorTokens, true)) {
             $nextRelevantTokenContent = $tokens[$tokens->getNextMeaningfulToken($nextRelevantTokenIndex)]->getContent();
 
             if (in_array($nextRelevantTokenContent, $this->argumentTerminatorTokens, true)) {
@@ -106,8 +106,9 @@ class MethodArgumentDefaultValueFixer extends AbstractFixer
 
     /**
      * @param Tokens $tokens
-     * @param int $index
-     * @param array $relevantTokens
+     * @param int    $index
+     * @param array  $relevantTokens
+     *
      * @return int|null
      */
     private function findNextVariableOrTokenOfKind(Tokens $tokens, $index, array $relevantTokens)
@@ -130,7 +131,7 @@ class MethodArgumentDefaultValueFixer extends AbstractFixer
 
     /**
      * @param array $values
-     * @param int $minimumValue
+     * @param int   $minimumValue
      *
      * @return int|null
      */
@@ -159,7 +160,8 @@ class MethodArgumentDefaultValueFixer extends AbstractFixer
 
     /**
      * @param Tokens $tokens
-     * @param int $index
+     * @param int    $index
+     *
      * @return bool
      */
     private function isDefaultArgumentAfterIndex(Tokens $tokens, $index)
@@ -172,7 +174,7 @@ class MethodArgumentDefaultValueFixer extends AbstractFixer
 
     /**
      * @param Tokens $tokens
-     * @param int $nextVariableIndex
+     * @param int    $nextVariableIndex
      */
     private function removeDefaultArgument(Tokens $tokens, $nextVariableIndex)
     {
