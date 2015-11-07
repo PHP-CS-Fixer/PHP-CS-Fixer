@@ -61,6 +61,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
             array(true, '*@throws \Exception'),
             array(true, ' * @method'),
             array(true, ' * @method string getString()'),
+            array(true, ' * @property-read integer $daysInMonth number of days in the given month'),
             array(false, ' * @method("GET")'),
             array(false, '*@thRoWs \InvalidArgumentException'),
             array(false, "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"),
