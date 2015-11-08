@@ -21,6 +21,12 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class MethodArgumentDefaultValueFixer extends AbstractFixer
 {
+    private $argumentBoundaryTokens = array('(', ',', ')', ';', '{', '}');
+    private $functionDefinitionTerminatorTokens = array(')', ';', '{', '}');
+    private $argumentTerminatorTokens = array(',', ')', ';', '{');
+    private $defaultValueTokens = array('=', ')', ';', '{');
+    private $immediateDefaultValueTokens = array('=', ')', ',', ';', '{');
+
     /**
      * {@inheritdoc}
      */
@@ -50,14 +56,14 @@ class MethodArgumentDefaultValueFixer extends AbstractFixer
      */
     private function fixFunctionDefinition(Tokens $tokens, $index)
     {
-        $examinedIndex = $tokens->getNextTokenOfKind($index, array('(', ',', ')'));
+        $examinedIndex = $tokens->getNextTokenOfKind($index, $this->argumentBoundaryTokens);
         while (
             $this->hasNonDefaultArgumentAfterIndex($tokens, $examinedIndex) &&
             $this->hasDefaultValueAfterIndex($tokens, $examinedIndex)
         ) {
-            $nextRelevantIndex = $this->findNextVariableOrTokenOfKind($tokens, $examinedIndex, array(')'));
+            $nextRelevantIndex = $this->findNextVariableOrTokenOfKind($tokens, $examinedIndex, $this->functionDefinitionTerminatorTokens);
 
-            if (')' === $tokens[$nextRelevantIndex]->getContent()) {
+            if (!$tokens[$nextRelevantIndex]->isGivenKind(T_VARIABLE)) {
                 break;
             }
 
@@ -79,20 +85,20 @@ class MethodArgumentDefaultValueFixer extends AbstractFixer
      */
     private function hasNonDefaultArgumentAfterIndex(Tokens $tokens, $index)
     {
-        $nextRelevantTokenIndex = $this->findNextVariableOrTokenOfKind($tokens, $index, array(')'));
+        $nextRelevantTokenIndex = $this->findNextVariableOrTokenOfKind($tokens, $index, $this->functionDefinitionTerminatorTokens);
 
         if (null === $nextRelevantTokenIndex) {
             return false;
         }
 
-        while (')' !== $tokens[$nextRelevantTokenIndex]->getContent()) {
+        while (!in_array($tokens[$nextRelevantTokenIndex]->getContent(), $this->functionDefinitionTerminatorTokens)) {
             $nextRelevantTokenContent = $tokens[$tokens->getNextMeaningfulToken($nextRelevantTokenIndex)]->getContent();
 
-            if (in_array($nextRelevantTokenContent, array(',', ')'), true)) {
+            if (in_array($nextRelevantTokenContent, $this->argumentTerminatorTokens, true)) {
                 return true;
             }
 
-            $nextRelevantTokenIndex = $this->findNextVariableOrTokenOfKind($tokens, $nextRelevantTokenIndex, array(')'));
+            $nextRelevantTokenIndex = $this->findNextVariableOrTokenOfKind($tokens, $nextRelevantTokenIndex, $this->functionDefinitionTerminatorTokens);
         }
 
         return false;
@@ -145,10 +151,10 @@ class MethodArgumentDefaultValueFixer extends AbstractFixer
      */
     private function hasDefaultValueAfterIndex(Tokens $tokens, $index)
     {
-        $nextTokenIndex = $tokens->getNextTokenOfKind($index, array('=', ')'));
+        $nextTokenIndex = $tokens->getNextTokenOfKind($index, $this->defaultValueTokens);
         $nextToken = $tokens[$nextTokenIndex];
 
-        return $nextToken->getContent() !== ')';
+        return $nextToken->getContent() === '=';
     }
 
     /**
@@ -158,7 +164,7 @@ class MethodArgumentDefaultValueFixer extends AbstractFixer
      */
     private function isDefaultArgumentAfterIndex(Tokens $tokens, $index)
     {
-        $nextTokenIndex = $tokens->getNextTokenOfKind($index, array('=', ')', ','));
+        $nextTokenIndex = $tokens->getNextTokenOfKind($index, $this->immediateDefaultValueTokens);
         $nextToken = $tokens[$nextTokenIndex];
 
         return $nextToken->getContent() === '=';
@@ -172,7 +178,7 @@ class MethodArgumentDefaultValueFixer extends AbstractFixer
     {
         $currentIndex = $nextVariableIndex;
 
-        while (!in_array($tokens[$currentIndex + 1]->getContent(), array(',', ')'), true)) {
+        while (!in_array($tokens[$currentIndex + 1]->getContent(), $this->argumentTerminatorTokens, true)) {
             $tokens[++$currentIndex]->clear();
         }
     }
