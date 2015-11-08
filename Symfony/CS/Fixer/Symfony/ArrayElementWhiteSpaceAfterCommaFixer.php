@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Adam Marczuk <adam@marczuk.info>
  */
-class ArrayElementSpaceFixer extends AbstractFixer
+class ArrayElementWhiteSpaceAfterCommaFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -43,7 +43,7 @@ class ArrayElementSpaceFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'In array declaration, there MUST NOT be a space before each comma and there MUST be one space after each comma.';
+        return 'In array declaration, there MUST be a white wspace after each comma.';
     }
 
     /**
@@ -63,22 +63,10 @@ class ArrayElementSpaceFixer extends AbstractFixer
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
         }
 
-        if ($tokens[$startIndex + 1]->isWhitespace()) {
-            if (!$multiLine || ($multiLine && false === strpos($tokens[$startIndex + 1]->getContent(), "\n"))) {
-                $tokens[$startIndex + 1]->clear();
-            }
-        }
-        if ($tokens[$endIndex - 1]->isWhitespace()) {
-            if (!$multiLine || ($multiLine && false === strpos($tokens[$endIndex - 1]->getContent(), "\n"))) {
-                $tokens[$endIndex - 1]->clear();
-            }
-        }
-
         for ($i = $endIndex - 1; $i > $startIndex; --$i) {
             $i = $this->skipNonArrayElements($i, $tokens);
-            $currentToken = $tokens[$i];
-            if ($currentToken->equals(',')) {
-                $this->fixCommaSpace($i, $tokens, $multiLine);
+            if ($tokens[$i]->equals(',') && !$tokens[$i + 1]->isWhitespace()) {
+                $tokens->insertAt($i + 1, new Token(array(T_WHITESPACE, ' ')));
             }
         }
     }
@@ -93,38 +81,18 @@ class ArrayElementSpaceFixer extends AbstractFixer
      */
     private function skipNonArrayElements($index, Tokens $tokens)
     {
+        if ($tokens[$index]->equals('}')) {
+            return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index, false);
+        }
+
         if ($tokens[$index]->equals(')')) {
             $startIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false);
             $startIndex = $tokens->getPrevMeaningfulToken($startIndex);
             if (!$tokens->isArray($startIndex)) {
                 return $startIndex;
             }
-        } elseif ($tokens[$index]->equals('}')) {
-            return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index, false);
         }
 
         return $index;
-    }
-
-    /**
-     * Method to insert space after comma and remove space before comma.
-     *
-     * @param int    $index
-     * @param Tokens $tokens
-     * @param bool   $multiLine
-     */
-    private function fixCommaSpace($index, Tokens $tokens, $multiLine)
-    {
-        if ($tokens[$index + 1]->isWhitespace()) {
-            if (!$multiLine) {
-                $tokens[$index + 1]->override(array(T_WHITESPACE, ' '));
-            }
-        } else {
-            $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
-        }
-
-        if ($tokens[$index - 1]->isWhitespace()) {
-            $tokens[$index - 1]->clear();
-        }
     }
 }
