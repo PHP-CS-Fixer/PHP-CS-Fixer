@@ -112,6 +112,15 @@ class ArrayElementNoSpaceBeforeCommaFixerTest extends AbstractFixerTestBase
                     123,
                 );',
             ),
+            array(
+                "<?php \$x = array(<<<'EOF'
+<?php \$a = '\\foo\\bar\\\\';
+EOF
+                , <<<'EOF'
+<?php \$a = \"\\foo\\bar\\\\\";
+EOF
+                    );",
+            ),
         );
     }
 }

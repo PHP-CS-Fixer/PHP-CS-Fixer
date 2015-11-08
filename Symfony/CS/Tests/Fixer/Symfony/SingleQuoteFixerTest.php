@@ -53,7 +53,8 @@ class SingleQuoteFixerTest extends AbstractFixerTestBase
             ),
             array(<<<'EOF'
 <?php $a = '\\foo\\bar\\\\';
-EOF, <<<'EOF'
+EOF
+                , <<<'EOF'
 <?php $a = "\\foo\\bar\\\\";
 EOF
             ),

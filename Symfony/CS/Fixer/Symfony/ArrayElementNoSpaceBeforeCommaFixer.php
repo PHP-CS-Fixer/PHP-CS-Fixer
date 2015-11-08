@@ -65,7 +65,8 @@ class ArrayElementNoSpaceBeforeCommaFixer extends AbstractFixer
         for ($i = $endIndex - 1; $i > $startIndex; --$i) {
             $i = $this->skipNonArrayElements($i, $tokens);
             $currentToken = $tokens[$i];
-            if ($currentToken->equals(',')) {
+            $prevIndex = $tokens->getPrevNonWhitespace($i - 1);
+            if ($currentToken->equals(',') && !$tokens[$prevIndex]->equals(array(T_END_HEREDOC))) {
                 $tokens->removeLeadingWhitespace($i);
             }
         }
