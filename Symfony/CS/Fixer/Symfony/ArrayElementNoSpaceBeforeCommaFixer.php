@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Adam Marczuk <adam@marczuk.info>
  */
-class ArrayElementNoSpaceBeforeCommaFixer extends AbstractFixer
+final class ArrayElementNoSpaceBeforeCommaFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

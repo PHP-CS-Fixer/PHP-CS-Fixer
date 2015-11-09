@@ -16,7 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 /**
  * @author Adam Marczuk <adam@marczuk.info>
  */
-class ArrayElementNoSpaceBeforeCommaFixerTest extends AbstractFixerTestBase
+final class ArrayElementNoSpaceBeforeCommaFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider testFixProvider
