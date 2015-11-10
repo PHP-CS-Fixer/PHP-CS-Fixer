@@ -37,6 +37,10 @@ final class MethodArgumentDefaultValueFixerTest extends AbstractFixerTestBase
                 '<?php function bFunction($foo = null, $bar) {}',
             ),
             array(
+                '<?php function bFunction($foo, $bar) {}',
+                '<?php function bFunction($foo = \'two words\', $bar) {}',
+            ),
+            array(
                 '<?php function cFunction($foo, $bar, $baz) {}',
                 '<?php function cFunction($foo = false, $bar = \'bar\', $baz) {}',
             ),

@@ -57,8 +57,10 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
     private function fixFunctionDefinition(Tokens $tokens, $index)
     {
         $examinedIndex = $tokens->getNextTokenOfKind($index, $this->argumentBoundaryTokens);
+        $lastNonDefaultArgumentIndex = $this->getLastNonDefaultArgumentIndex($tokens, $index);
+
         while (
-            $this->hasNonDefaultArgumentAfterIndex($tokens, $examinedIndex) &&
+            $examinedIndex < $lastNonDefaultArgumentIndex &&
             $this->hasDefaultValueAfterIndex($tokens, $examinedIndex)
         ) {
             $nextRelevantIndex = $this->findNextVariableOrTokenOfKind($tokens, $examinedIndex, $this->functionDefinitionTerminatorTokens);
@@ -69,7 +71,7 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
 
             if (
                 $this->isDefaultArgumentAfterIndex($tokens, $nextRelevantIndex - 1) &&
-                $this->hasNonDefaultArgumentAfterIndex($tokens, $nextRelevantIndex - 1)
+                $nextRelevantIndex - 1 < $lastNonDefaultArgumentIndex
             ) {
                 $this->removeDefaultArgument($tokens, $nextRelevantIndex);
             }
@@ -81,25 +83,27 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
      * @param Tokens $tokens
      * @param int    $index
      *
-     * @return bool
+     * @return int|null
      */
-    private function hasNonDefaultArgumentAfterIndex(Tokens $tokens, $index)
+    private function getLastNonDefaultArgumentIndex(Tokens $tokens, $index)
     {
         $nextRelevantTokenIndex = $this->findNextVariableOrTokenOfKind($tokens, $index, $this->functionDefinitionTerminatorTokens);
 
         if (null === $nextRelevantTokenIndex) {
-            return false;
+            return;
         }
 
-        while (!$tokens[$nextRelevantTokenIndex]->equalsAny($this->functionDefinitionTerminatorTokens)) {
+        $lastNonDefaultArgumentIndex = null;
+
+        while ($tokens[$nextRelevantTokenIndex]->isGivenKind(T_VARIABLE)) {
             if ($tokens[$tokens->getNextMeaningfulToken($nextRelevantTokenIndex)]->equalsAny($this->argumentTerminatorTokens)) {
-                return true;
+                $lastNonDefaultArgumentIndex = $nextRelevantTokenIndex;
             }
 
             $nextRelevantTokenIndex = $this->findNextVariableOrTokenOfKind($tokens, $nextRelevantTokenIndex, $this->functionDefinitionTerminatorTokens);
         }
 
-        return false;
+        return $lastNonDefaultArgumentIndex;
     }
 
     /**
