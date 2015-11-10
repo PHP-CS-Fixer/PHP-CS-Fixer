@@ -13,18 +13,19 @@ namespace Symfony\CS\Tests\Fixer\Contrib;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class MethodArgumentDefaultValueFixerTest extends AbstractFixerTestBase
+final class MethodArgumentDefaultValueFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideExamples
      *
      * @param string $expected
-     * @param string $input
+     * @param string|null $input
      */
     public function testFix($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
+
     /**
      * @return array
      */

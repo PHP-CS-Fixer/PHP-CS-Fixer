@@ -19,7 +19,7 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Mark Scherer
  * @author Lucas Manzke <lmanzke@outlook.com>
  */
-class MethodArgumentDefaultValueFixer extends AbstractFixer
+final class MethodArgumentDefaultValueFixer extends AbstractFixer
 {
     private $argumentBoundaryTokens = array('(', ',', ')', ';', '{', '}');
     private $functionDefinitionTerminatorTokens = array(')', ';', '{', '}');
@@ -38,13 +38,13 @@ class MethodArgumentDefaultValueFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file = null, $content)
+    public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
-
-        $functionTokenIndices = array_keys($tokens->findGivenKind(T_FUNCTION));
-        foreach ($functionTokenIndices as $index) {
-            $this->fixFunctionDefinition($tokens, $index);
+        for ($i = 0, $l = $tokens->count(); $i < $l; ++$i) {
+            if ($tokens[$i]->isGivenKind(T_FUNCTION)) {
+                $this->fixFunctionDefinition($tokens, $i);
+            }
         }
 
         return $tokens->generateCode();
@@ -91,10 +91,8 @@ class MethodArgumentDefaultValueFixer extends AbstractFixer
             return false;
         }
 
-        while (!in_array($tokens[$nextRelevantTokenIndex]->getContent(), $this->functionDefinitionTerminatorTokens, true)) {
-            $nextRelevantTokenContent = $tokens[$tokens->getNextMeaningfulToken($nextRelevantTokenIndex)]->getContent();
-
-            if (in_array($nextRelevantTokenContent, $this->argumentTerminatorTokens, true)) {
+        while (!$tokens[$nextRelevantTokenIndex]->equalsAny($this->functionDefinitionTerminatorTokens)) {
+            if ($tokens[$tokens->getNextMeaningfulToken($nextRelevantTokenIndex)]->equalsAny($this->argumentTerminatorTokens)) {
                 return true;
             }
 
@@ -155,7 +153,7 @@ class MethodArgumentDefaultValueFixer extends AbstractFixer
         $nextTokenIndex = $tokens->getNextTokenOfKind($index, $this->defaultValueTokens);
         $nextToken = $tokens[$nextTokenIndex];
 
-        return $nextToken->getContent() === '=';
+        return $nextToken->equals('=');
     }
 
     /**
@@ -169,7 +167,7 @@ class MethodArgumentDefaultValueFixer extends AbstractFixer
         $nextTokenIndex = $tokens->getNextTokenOfKind($index, $this->immediateDefaultValueTokens);
         $nextToken = $tokens[$nextTokenIndex];
 
-        return $nextToken->getContent() === '=';
+        return $nextToken->equals('=');
     }
 
     /**
@@ -180,7 +178,7 @@ class MethodArgumentDefaultValueFixer extends AbstractFixer
     {
         $currentIndex = $nextVariableIndex;
 
-        while (!in_array($tokens[$currentIndex + 1]->getContent(), $this->argumentTerminatorTokens, true)) {
+        while (!$tokens[$currentIndex + 1]->equalsAny($this->argumentTerminatorTokens)) {
             $tokens[++$currentIndex]->clear();
         }
     }
