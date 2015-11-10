@@ -37,6 +37,12 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
         return $files[$filename];
     }
 
+    /**
+     * @param string              $expected The expected fixer output.
+     * @param string|null         $input    The fixer input, or null if it should intentionally be equal to the output.
+     * @param \SplFileInfo|null   $file     The file to fix, or null if unneeded.
+     * @param FixerInterface|null $fixer    A fixer that should be used, or null if it should be inferred from the test name.
+     */
     protected function makeTest($expected, $input = null, \SplFileInfo $file = null, FixerInterface $fixer = null)
     {
         if ($expected === $input) {
