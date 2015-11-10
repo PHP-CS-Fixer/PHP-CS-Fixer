@@ -186,14 +186,6 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
     /**
      * @return int
      */
-    public function getPriority()
-    {
-        return -49;
-    }
-
-    /**
-     * @return int
-     */
     public function getLevel()
     {
         return FixerInterface::CONTRIB_LEVEL;
