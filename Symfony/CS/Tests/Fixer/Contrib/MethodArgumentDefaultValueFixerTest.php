@@ -18,7 +18,7 @@ final class MethodArgumentDefaultValueFixerTest extends AbstractFixerTestBase
     /**
      * @dataProvider provideExamples
      *
-     * @param string $expected
+     * @param string      $expected
      * @param string|null $input
      */
     public function testFix($expected, $input = null)
@@ -34,23 +34,23 @@ final class MethodArgumentDefaultValueFixerTest extends AbstractFixerTestBase
         return array(
             array(
                 '<?php public function bFunction($foo, $bar) {}',
-                '<?php public function bFunction($foo = null, $bar) {}'
+                '<?php public function bFunction($foo = null, $bar) {}',
             ),
             array(
                 '<?php public function cFunction($foo, $bar, $baz) {}',
-                '<?php public function cFunction($foo = false, $bar = \'bar\', $baz) {}'
+                '<?php public function cFunction($foo = false, $bar = \'bar\', $baz) {}',
             ),
             array(
                 '<?php public function dFunction($foo, $bar, $baz) {}',
-                '<?php public function dFunction($foo = false, $bar, $baz) {}'
+                '<?php public function dFunction($foo = false, $bar, $baz) {}',
             ),
             array(
                 '<?php public function eFunction($foo, $bar, \SplFileInfo $baz, $x) {}',
-                '<?php public function eFunction($foo = PHP_EOL, $bar, \SplFileInfo $baz = null, $x) {}'
+                '<?php public function eFunction($foo = PHP_EOL, $bar, \SplFileInfo $baz = null, $x) {}',
             ),
             array(
                 '<?php public function eFunction($foo, $bar, \SplFileInfo $baz, $x = \'default\') {}',
-                '<?php public function eFunction($foo, $bar = \'removedDefault\', \SplFileInfo $baz, $x = \'default\') {}'
+                '<?php public function eFunction($foo, $bar = \'removedDefault\', \SplFileInfo $baz, $x = \'default\') {}',
             ),
             array(
                 <<<'EOT'
@@ -70,7 +70,7 @@ EOT
             array(
                 '<?php function foo ($bar, $c) {}',
                 '<?php function foo ($bar /* a */ = /* b */ 1, $c) {}',
-            )
+            ),
         );
     }
 }
