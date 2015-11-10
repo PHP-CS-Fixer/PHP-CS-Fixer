@@ -22,7 +22,7 @@ use Symfony\CS\Tokenizer\Tokens;
 final class MethodArgumentDefaultValueFixer extends AbstractFixer
 {
     private $argumentBoundaryTokens = array('(', ',', ')', ';', '{', '}');
-    private $functionDefinitionTerminatorTokens = array(')', ';', '{', '}');
+    private $variableOrTerminatorTokens = array(array(T_VARIABLE), ')', ';', '{', '}');
     private $argumentTerminatorTokens = array(',', ')', ';', '{');
     private $defaultValueTokens = array('=', ')', ';', '{');
     private $immediateDefaultValueTokens = array('=', ')', ',', ';', '{');
@@ -63,7 +63,7 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
             $examinedIndex < $lastNonDefaultArgumentIndex &&
             $this->hasDefaultValueAfterIndex($tokens, $examinedIndex)
         ) {
-            $nextRelevantIndex = $this->findNextVariableOrTokenOfKind($tokens, $examinedIndex, $this->functionDefinitionTerminatorTokens);
+            $nextRelevantIndex = $tokens->getNextTokenOfKind($examinedIndex, $this->variableOrTerminatorTokens);
 
             if (!$tokens[$nextRelevantIndex]->isGivenKind(T_VARIABLE)) {
                 break;
@@ -87,7 +87,7 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
      */
     private function getLastNonDefaultArgumentIndex(Tokens $tokens, $index)
     {
-        $nextRelevantTokenIndex = $this->findNextVariableOrTokenOfKind($tokens, $index, $this->functionDefinitionTerminatorTokens);
+        $nextRelevantTokenIndex = $tokens->getNextTokenOfKind($index, $this->variableOrTerminatorTokens);
 
         if (null === $nextRelevantTokenIndex) {
             return;
@@ -100,50 +100,10 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
                 $lastNonDefaultArgumentIndex = $nextRelevantTokenIndex;
             }
 
-            $nextRelevantTokenIndex = $this->findNextVariableOrTokenOfKind($tokens, $nextRelevantTokenIndex, $this->functionDefinitionTerminatorTokens);
+            $nextRelevantTokenIndex = $tokens->getNextTokenOfKind($nextRelevantTokenIndex, $this->variableOrTerminatorTokens);
         }
 
         return $lastNonDefaultArgumentIndex;
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $index
-     * @param array  $relevantTokens
-     *
-     * @return int|null
-     */
-    private function findNextVariableOrTokenOfKind(Tokens $tokens, $index, array $relevantTokens)
-    {
-        $variableIndices = array_keys($tokens->findGivenKind(T_VARIABLE));
-
-        $nextVariableIndex = $this->getFirstValueBiggerThan($variableIndices, $index);
-        $nextRelevantTokenIndex = $tokens->getNextTokenOfKind($index, $relevantTokens);
-
-        if (null === $nextVariableIndex) {
-            return $nextRelevantTokenIndex;
-        }
-
-        if (null === $nextRelevantTokenIndex) {
-            return $nextVariableIndex;
-        }
-
-        return ($nextVariableIndex < $nextRelevantTokenIndex) ? $nextVariableIndex : $nextRelevantTokenIndex;
-    }
-
-    /**
-     * @param array $values
-     * @param int   $minimumValue
-     *
-     * @return int|null
-     */
-    private function getFirstValueBiggerThan(array $values, $minimumValue)
-    {
-        foreach ($values as $value) {
-            if ($value > $minimumValue) {
-                return $value;
-            }
-        }
     }
 
     /**
@@ -188,7 +148,7 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getLevel()
     {
