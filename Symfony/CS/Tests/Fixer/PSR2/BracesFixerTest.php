@@ -134,14 +134,6 @@ class BracesFixerTest extends AbstractFixerTestBase
     class Test
     {
     }',
-            ),
-            array(
-                '<?php
-    declare(strict_types=1);
-
-    class Test
-    {
-    }',
                 '<?php
     declare (strict_types=1);
 
@@ -156,12 +148,6 @@ class BracesFixerTest extends AbstractFixerTestBase
     }',
                 '<?php
     declare(ticks=1) {
-        //
-    }',
-            ),
-            array(
-                '<?php
-    declare (ticks=1) {
         //
     }',
             ),
