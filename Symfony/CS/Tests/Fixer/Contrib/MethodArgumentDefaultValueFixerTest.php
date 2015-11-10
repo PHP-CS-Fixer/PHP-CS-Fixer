@@ -33,43 +33,47 @@ final class MethodArgumentDefaultValueFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
-                '<?php public function bFunction($foo, $bar) {}',
-                '<?php public function bFunction($foo = null, $bar) {}',
+                '<?php function bFunction($foo, $bar) {}',
+                '<?php function bFunction($foo = null, $bar) {}',
             ),
             array(
-                '<?php public function cFunction($foo, $bar, $baz) {}',
-                '<?php public function cFunction($foo = false, $bar = \'bar\', $baz) {}',
+                '<?php function cFunction($foo, $bar, $baz) {}',
+                '<?php function cFunction($foo = false, $bar = \'bar\', $baz) {}',
             ),
             array(
-                '<?php public function dFunction($foo, $bar, $baz) {}',
-                '<?php public function dFunction($foo = false, $bar, $baz) {}',
+                '<?php function dFunction($foo, $bar, $baz) {}',
+                '<?php function dFunction($foo = false, $bar, $baz) {}',
             ),
             array(
-                '<?php public function eFunction($foo, $bar, \SplFileInfo $baz, $x) {}',
-                '<?php public function eFunction($foo = PHP_EOL, $bar, \SplFileInfo $baz = null, $x) {}',
+                '<?php function eFunction($foo, $bar, \SplFileInfo $baz, $x) {}',
+                '<?php function eFunction($foo = PHP_EOL, $bar, \SplFileInfo $baz = null, $x) {}',
             ),
             array(
-                '<?php public function eFunction($foo, $bar, \SplFileInfo $baz, $x = \'default\') {}',
-                '<?php public function eFunction($foo, $bar = \'removedDefault\', \SplFileInfo $baz, $x = \'default\') {}',
+                '<?php function eFunction($foo, $bar, \SplFileInfo $baz, $x = \'default\') {}',
+                '<?php function eFunction($foo, $bar = \'removedDefault\', \SplFileInfo $baz, $x = \'default\') {}',
             ),
             array(
                 <<<'EOT'
                     <?php
-                        public function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default' {};
+                        function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default' {};
 
-                        public function fFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
+                        function fFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
 EOT
                 ,
                 <<<'EOT'
                     <?php
-                        public function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default' {};
+                        function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default' {};
 
-                        public function fFunction($foo, $bar = 'removedValue', \SplFileInfo $baz, $x = 'default') {};
+                        function fFunction($foo, $bar = 'removedValue', \SplFileInfo $baz, $x = 'default') {};
 EOT
             ),
             array(
                 '<?php function foo ($bar, $c) {}',
                 '<?php function foo ($bar /* a */ = /* b */ 1, $c) {}',
+            ),
+            array(
+                '<?php function hFunction($foo,$bar,\SplFileInfo $baz,$x = 5) {};',
+                '<?php function hFunction($foo,$bar=\'removedValue\',\SplFileInfo $baz,$x = 5) {};',
             ),
         );
     }
