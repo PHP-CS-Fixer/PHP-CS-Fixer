@@ -386,11 +386,11 @@ if (1) {
             ),
             array(
                 '<?php
-    declare (ticks=1) {
+    declare(ticks=1) {
         $ticks = 1;
     }',
                 '<?php
-    declare (ticks=1) {
+    declare(ticks=1) {
   $ticks = 1;
     }',
             ),
@@ -1226,10 +1226,18 @@ class Foo
                 '<?php
 
 // comment
-declare (ticks = 1);
+declare(strict_types=1);
 
 // comment
 while (true) {
+}',
+            ),
+            array(
+                '<?php
+declare(ticks=1) {
+}',
+                '<?php
+declare   (   ticks   =   1   )   {
 }',
             ),
         );
