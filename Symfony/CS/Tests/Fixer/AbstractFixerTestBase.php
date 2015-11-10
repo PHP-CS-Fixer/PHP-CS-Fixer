@@ -38,8 +38,9 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests if a fixer fixes a given input string to match the expected result. It is used both if you want to test
-     * if something is fixed or if it is not touched by the fixer.
+     * Tests if a fixer fixes a given input string to match the expected result.
+     *
+     * It is used both if you want to test if something is fixed or if it is not touched by the fixer.
      * It also makes sure that the expected output does not change when run through the fixer. That means that you do not
      * need two test cases like [$expected] and [$expected, $input] (where $expected is the same in both cases)
      * as the latter covers both of them.
