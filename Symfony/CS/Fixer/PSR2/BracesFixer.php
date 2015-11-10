@@ -36,6 +36,7 @@ class BracesFixer extends AbstractFixer
         $this->fixSpaceAroundToken($tokens);
         $this->fixDoWhile($tokens);
         $this->fixLambdas($tokens);
+        $this->fixDeclareStrictTypes($tokens);
 
         // Set code to itself to redo tokenizer work, that will guard as against token collection corruption.
         // TODO: This MUST be removed on 2.0-dev version, where we add more transformers (and lack of them causes corruption on 1.x line).
@@ -604,5 +605,28 @@ class BracesFixer extends AbstractFixer
         }
 
         return array();
+    }
+
+    private function fixDeclareStrictTypes(Tokens $tokens)
+    {
+        $declares = $tokens->findGivenKind(T_DECLARE);
+
+        foreach ($declares as $index => $declare) {
+            if ($this->isStrictTypeDeclare($index, $tokens)) {
+                $tokens->removeTrailingWhitespace($index);
+            }
+        }
+    }
+
+    private function isStrictTypeDeclare($index, Tokens $tokens)
+    {
+        $openParenthesisIndex = $tokens->getNextMeaningfulToken($index);
+        $nextTokenIndex = $tokens->getNextNonWhitespace($openParenthesisIndex);
+
+        if ($tokens[$nextTokenIndex]->getContent() === 'strict_types') {
+            return true;
+        }
+
+        return false;
     }
 }
