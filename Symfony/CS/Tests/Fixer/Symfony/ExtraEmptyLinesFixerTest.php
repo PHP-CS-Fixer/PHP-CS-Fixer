@@ -18,6 +18,135 @@ use Symfony\CS\Test\AbstractFixerTestCase;
  */
 final class ExtraEmptyLinesFixerTest extends AbstractFixerTestCase
 {
+    /**
+     * @param int[]         $lineNumberRemoved Line numbers expected to be removed after fixing
+     * @param string[]|null $config
+     *
+     * @dataProvider provideConfigTests
+     */
+    public function testWithConfig(array $lineNumberRemoved, array $config = null)
+    {
+        $this->getFixer()->configure($config);
+        $template = <<<'EOF'
+<?php
+use \DateTime;
+
+use \stdClass;
+
+use \InvalidArgumentException;
+
+class Test {
+
+    public function testThrow($a)
+    {
+        if ($a) {
+            throw new InvalidArgumentException('test'); // test
+
+        }
+        $date = new DateTime();
+        $class = new stdClass();
+        $class = (string) $class;
+        $e = new InvalidArgumentException($class.$date->format('Y'));
+        throw $e;
+
+    }
+
+
+
+    public function testBreak($a)
+    {
+        switch($a) {
+            case 1:
+                echo $a;
+                break;
+
+            case 2:
+                echo 'test';
+                break;
+        }
+    }
+
+    public function testContinueAndReturn($a, $b)
+    {
+        while($a < 100) {
+            if ($b < time()) {
+                continue;
+
+            }
+
+            return $b;
+
+        }
+
+        return $a;
+
+    }
+}
+EOF;
+        $this->doTest($this->removeLinesFromString($template, $lineNumberRemoved), $template);
+    }
+
+    public function provideConfigTests()
+    {
+        $tests = array(
+            array(
+                array(3, 5),
+                array('use'),
+            ),
+            array(
+                array(23, 24),
+                array('extra'),
+            ),
+            array(
+                array(48, 52),
+                array('return'),
+            ),
+            array(
+                array(44),
+                array('continue'),
+            ),
+            array(
+                array(32),
+                array('break'),
+            ),
+            array(
+                array(14, 21),
+                array('throw'),
+            ),
+        );
+
+        $all = array(array(), array());
+        foreach ($tests as $test) {
+            $all[0] = array_merge($test[0], $all[0]);
+            $all[1] = array_merge($test[1], $all[1]);
+        }
+        $tests[] = $all;
+
+        // default configuration test
+        $tests[] = array(
+            array(23, 24),
+            null,
+        );
+
+        return $tests;
+    }
+
+    private function removeLinesFromString($input, array $lineNumbers)
+    {
+        sort($lineNumbers);
+        $lines = explode("\n", $input);
+        $lineCount = count($lines);
+        foreach ($lineNumbers as $lineNumber) {
+            --$lineNumber;
+            if ($lineNumber < 0 || $lineNumber > $lineCount) {
+                throw new \InvalidArgumentException(sprintf('Line number "%d" out of range (0 - %d).', ++$lineNumber, $lineCount));
+            }
+            unset($lines[$lineNumber]);
+        }
+
+        return implode("\n", $lines);
+    }
+
     public function testFix()
     {
         $expected = <<<'EOF'
@@ -234,6 +363,12 @@ EOF;
 $a; //
 
 $b;
+/***/
+
+$c;
+//
+
+$d;
 EOF;
 
         $input = <<<'EOF'
@@ -245,7 +380,31 @@ $a; //
 
 
 $b;
+/***/
+
+
+
+$c;
+//
+
+
+
+$d;
 EOF;
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixWithComments2()
+    {
+        $input = "<?php\n\\\\a\n\n\n\n\$a =1;";
+        $expected = "<?php\n\\\\a\n\n\$a =1;";
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixWithWindowsLineBreaks()
+    {
+        $input = "<?php\r\n\\\\a\r\n\r\n\r\n\r\n\$a =1;";
+        $expected = "<?php\r\n\\\\a\n\n\$a =1;";
         $this->doTest($expected, $input);
     }
 }
