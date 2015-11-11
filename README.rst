@@ -197,6 +197,12 @@ Choose from the list of available fixers:
                         placed. Body of braces should
                         be properly indented.
 
+* **common_operator_whitespace**
+                        Common math, comparison, and
+                        boolean operators should have
+                        at least one whitespace
+                        surrounding them.
+
 * **concat_with_spaces**
                         Concatenation should be used
                         with at least one whitespace
