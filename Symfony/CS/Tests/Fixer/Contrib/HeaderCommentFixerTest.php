@@ -11,6 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
+use Symfony\CS\Fixer\Contrib\HeaderCommentFixer;
 use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
@@ -191,5 +192,16 @@ EOH;
 
         $input = "<?php\n";
         $this->doTest($expected, $input);
+    }
+
+    /**
+     * @expectedException \Symfony\CS\InvalidFixerConfigurationException
+     * @expectedExceptionMessage Configuration is missing.
+     */
+    public function testInvalidConfiguration()
+    {
+        /** @var HeaderCommentFixer $fixer */
+        $fixer = $this->getFixer();
+        $fixer->configure(null);
     }
 }

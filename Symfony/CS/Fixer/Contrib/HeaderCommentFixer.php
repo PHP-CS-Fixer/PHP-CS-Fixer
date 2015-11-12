@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\InvalidFixerConfigurationException;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
@@ -29,7 +30,7 @@ final class HeaderCommentFixer extends AbstractFixer
     public function configure(array $configuration = null)
     {
         if (null === $configuration || !isset($configuration['header'])) {
-            throw new \Exception('Configuration is missing.');
+            throw new InvalidFixerConfigurationException('Configuration is missing.');
         }
 
         $this->setHeader($configuration['header']);

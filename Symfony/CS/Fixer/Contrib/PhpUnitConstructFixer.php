@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\InvalidFixerConfigurationException;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -43,8 +44,8 @@ final class PhpUnitConstructFixer extends AbstractFixer
         }
 
         foreach ($usingMethods as $method => $fix) {
-            if (!isset($this->configuration[$method])) {
-                throw new \InvalidArgumentException();
+            if (!array_key_exists($method, $this->configuration)) {
+                throw new InvalidFixerConfigurationException(sprintf('Unknown method name "%s" in configuration.', $method));
             }
 
             $this->configuration[$method] = $fix;
