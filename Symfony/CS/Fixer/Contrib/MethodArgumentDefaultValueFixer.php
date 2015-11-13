@@ -142,6 +142,16 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
     {
         $currentIndex = $nextVariableIndex;
 
+        $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($nextVariableIndex);
+        $nextMeaningfulTokenIndex = $tokens->getNextTokenOfKind($nextVariableIndex, array(array(310, 'null'), ',', ')'));
+
+        if (
+            $tokens[$nextMeaningfulTokenIndex]->equals(array(310, 'null')) &&
+            !$tokens[$prevMeaningfulTokenIndex]->equalsAny($this->argumentBoundaryTokens)
+        ) {
+            return; //ignore typehinted null default values
+        }
+
         while (!$tokens[$currentIndex + 1]->equalsAny($this->argumentTerminatorTokens)) {
             $tokens[++$currentIndex]->clear();
         }

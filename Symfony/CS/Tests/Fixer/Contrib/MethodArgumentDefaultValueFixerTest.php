@@ -49,8 +49,7 @@ final class MethodArgumentDefaultValueFixerTest extends AbstractFixerTestBase
                 '<?php function dFunction($foo = false, $bar, $baz) {}',
             ),
             array(
-                '<?php function eFunction($foo, $bar, \SplFileInfo $baz, $x) {}',
-                '<?php function eFunction($foo = PHP_EOL, $bar, \SplFileInfo $baz = null, $x) {}',
+                '<?php function foo (Foo $bar = null, $baz) {}',
             ),
             array(
                 '<?php function eFunction($foo, $bar, \SplFileInfo $baz, $x = \'default\') {}',
@@ -78,6 +77,10 @@ EOT
             array(
                 '<?php function hFunction($foo,$bar,\SplFileInfo $baz,$x = 5) {};',
                 '<?php function hFunction($foo,$bar=\'removedValue\',\SplFileInfo $baz,$x = 5) {};',
+            ),
+            array(
+                '<?php function eFunction($foo, $bar, \SplFileInfo $baz = null, $x) {}',
+                '<?php function eFunction($foo = PHP_EOL, $bar, \SplFileInfo $baz = null, $x) {}',
             ),
         );
     }
