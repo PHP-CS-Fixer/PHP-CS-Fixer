@@ -42,7 +42,7 @@ final class ClassyDefinitionFixer extends AbstractFixer
                 if ($tokens[$j]->isWhitespace()) {
                     $content = $tokens[$j]->getContent();
                     if (false === $breakAt = strpos($content, "\n")) {
-                        if (',' === $tokens[$j + 1]->getContent()) {
+                        if ($tokens[$j + 1]->equals(',')) {
                             $tokens[$j]->clear();
                         } elseif (' ' !== $content) {
                             $tokens[$j]->setContent(' ');
