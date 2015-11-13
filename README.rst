@@ -197,6 +197,12 @@ Choose from the list of available fixers:
                         placed. Body of braces should
                         be properly indented.
 
+* **classy_definition**
+                        White space around the key
+                        words of a class, trait or
+                        interfaces definition should
+                        be one space.
+
 * **concat_with_spaces**
                         Concatenation should be used
                         with at least one whitespace
