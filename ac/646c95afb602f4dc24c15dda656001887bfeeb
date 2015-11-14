@@ -1,0 +1,36 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-10T16:07:31Z
+
+the docs doesn't say that method tests both `expoected === fix(input)` and `expected === fix(expected)`
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-10T16:15:12Z
+
+Where would you add this? I just added the note that input should be null if it is intentionally the same.
+Would you just have some paragraph above explaining that?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-10T16:17:25Z
+
+> Where would you add this? I just added the note that input should be null if it is intentionally the same.
+
+But don't tell why. And that won't protect us for generating tests like `[$exp], [$exp, $inp]`.
+
+Yeah, summary + description would make it!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-13T13:32:34Z
+
+really nice :+1:
+
+good job!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-13T13:36:13Z
+
+nice :+1:  thanks
