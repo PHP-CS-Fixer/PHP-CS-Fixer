@@ -116,7 +116,6 @@ final class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                 $newNamespace[0]->clear();
                 $newNamespace[1]->clear();
                 $newNamespace[2]->clear();
-                $newNamespace->clearEmptyTokens();
 
                 $tokens->insertAt($namespaceIndex, $newNamespace);
             }
