@@ -272,4 +272,35 @@ EOF;
 EOF;
         $this->makeTest($expected);
     }
+
+    public function testInlineDoc()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * Does stuffs with stuffs.
+     *
+     * @param array $stuffs {
+     *     @type bool $foo
+     *     @type int $bar
+     * }
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * Does stuffs with stuffs.
+     *
+     * @param array $stuffs {
+     *     @type boolean $foo
+     *     @type integer $bar
+     * }
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
 }

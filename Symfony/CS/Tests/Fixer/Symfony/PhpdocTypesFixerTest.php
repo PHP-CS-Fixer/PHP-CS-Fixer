@@ -89,4 +89,35 @@ EOF;
 EOF;
         $this->makeTest($expected, $input);
     }
+
+    public function testInlineDoc()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * Does stuffs with stuffs.
+     *
+     * @param array $stuffs {
+     *     @var bool $foo
+     *     @var int  $bar
+     * }
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * Does stuffs with stuffs.
+     *
+     * @param array $stuffs {
+     *     @var Bool $foo
+     *     @var INT  $bar
+     * }
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
 }
