@@ -248,7 +248,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException              \Symfony\CS\ConfigurationException\InvalidConfigurationException
-     * @expectedExceptionMessageRegExp /The config file: ".+[\/\\]Tests[\/\\]Fixtures[\/\\]ConfigurationResolverConfigFile[\/\\]case_5[\/\\].php_cs.dist" does not return a "Symfony\\CS\\Config\\Config" instance\. Got: "string"\./
+     * @expectedExceptionMessageRegExp /The config file: ".+[\/\\]Fixtures[\/\\]ConfigurationResolverConfigFile[\/\\]case_5[\/\\].php_cs.dist" does not return a "Symfony\\CS\\Config\\Config" instance\. Got: "string"\./
      */
     public function testResolveConfigFileChooseFileWithInvalidFile()
     {

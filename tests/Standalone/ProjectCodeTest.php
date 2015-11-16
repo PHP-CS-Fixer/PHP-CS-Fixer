@@ -60,7 +60,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         static $projectClasses = null;
 
         if (null === $classes && null === $projectClasses) {
-            $this->registerAllProjectClasses();
+            $this->registerAllProjectTestsClasses();
             $projectClasses = $this->getClasses('Symfony\\CS\\', get_declared_classes());
         }
 
@@ -78,15 +78,14 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    private function registerAllProjectClasses()
+    private function registerAllProjectTestsClasses()
     {
         $finder = Finder::create()
             ->files()
             ->name('*.php')
-            ->in(__DIR__.'/../..')
+            ->in(__DIR__.'/..')
             ->exclude(array(
-                'Resources',
-                'Tests/Fixtures',
+                'Fixtures',
             ))
         ;
 

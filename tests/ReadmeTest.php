@@ -34,7 +34,7 @@ final class ReadmeTest extends \PHPUnit_Framework_TestCase
 
         $app->get('readme')->run($input, $output);
 
-        $fileContent = file_get_contents(__DIR__.'/../../../README.rst');
+        $fileContent = file_get_contents(__DIR__.'/../README.rst');
 
         $this->assertSame(
             $output->fetch(),
