@@ -43,7 +43,7 @@ final class ArrayElementWhiteSpaceAfterCommaFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'In array declaration, there MUST be a white wspace after each comma.';
+        return 'In array declaration, there MUST be a whitespace after each comma.';
     }
 
     /**
@@ -54,7 +54,6 @@ final class ArrayElementWhiteSpaceAfterCommaFixer extends AbstractFixer
      */
     private function fixSpacing($index, Tokens $tokens)
     {
-        $multiLine = $tokens->isArrayMultiLine($index);
         if ($tokens->isShortArray($index)) {
             $startIndex = $index;
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $startIndex);
