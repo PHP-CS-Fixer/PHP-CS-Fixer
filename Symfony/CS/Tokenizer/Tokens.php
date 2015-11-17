@@ -48,7 +48,7 @@ class Tokens extends \SplFixedArray
     private $codeHash;
 
     /**
-     * Flag is collection was changed.
+     * Flag indicating the collection was changed.
      *
      * It doesn't know about change of collection's items. To check it run `isChanged` method.
      *
@@ -59,9 +59,9 @@ class Tokens extends \SplFixedArray
     /**
      * Set of found token kinds.
      *
-     * When the token kind is present in this set it means that given token kind
-     * was ever seen inside the collection (but may not be part of it any longer).
-     * The key is token kind and the value is always true.
+     * When the token kind is present in this set it means that a token of given
+     * kind was seen inside the collection (but may not be part of it any longer).
+     * The key is a token kind and the value is always true.
      *
      * @var bool[]
      */
@@ -339,7 +339,7 @@ class Tokens extends \SplFixedArray
      * Ensure that on given index is a whitespace with given kind.
      *
      * If there is a whitespace then it's content will be modified.
-     * If not - the new Token will be added.
+     * If not - a new Token will be added.
      *
      * @param int    $index       index
      * @param int    $indexOffset index offset for Token insertion
@@ -1024,7 +1024,7 @@ class Tokens extends \SplFixedArray
     /**
      * Check if token kind given as argument is found.
      *
-     * @param array
+     * @param int|string $tokenKind
      *
      * @return bool
      */
