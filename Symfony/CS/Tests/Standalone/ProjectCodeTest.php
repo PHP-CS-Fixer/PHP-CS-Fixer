@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests;
+namespace Symfony\CS\Tests\Standalone;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\CS\DocBlock\DocBlock;
@@ -83,7 +83,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         $finder = Finder::create()
             ->files()
             ->name('*.php')
-            ->in(__DIR__.'/..')
+            ->in(__DIR__.'/../..')
             ->exclude(array(
                 'Resources',
                 'Tests/Fixtures',
