@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author SpacePossum
  */
-final class ClassyDefinitionFixer extends AbstractFixer
+final class ClassDefinitionWhitespacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -41,7 +41,8 @@ final class ClassyDefinitionFixer extends AbstractFixer
             for ($j = $index + 1; $j < $classyStart; ++$j) {
                 if ($tokens[$j]->isWhitespace()) {
                     $content = $tokens[$j]->getContent();
-                    if (false === $breakAt = strpos($content, "\n")) {
+                    $breakAt = strpos($content, "\n");
+                    if (false === $breakAt) {
                         if ($tokens[$j + 1]->equals(',')) {
                             $tokens[$j]->clear();
                         } elseif (' ' !== $content) {

@@ -16,7 +16,7 @@ use Symfony\CS\Test\AbstractFixerTestCase;
 /**
  * @internal
  */
-final class ClassyDefinitionFixerTest extends AbstractFixerTestCase
+final class ClassDefinitionWhitespacesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases
