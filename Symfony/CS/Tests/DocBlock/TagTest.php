@@ -103,7 +103,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
             array(array('Foo', 'null'), array('Bar[]'), '     * @param Foo|null $foo', '     * @param Bar[] $foo'),
             array(array('false'), array('bool'), '*   @return            false', '*   @return            bool'),
             array(array('RUNTIMEEEEeXCEPTION'), array('Throwable'), "\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"),
-            array(array('string'), ['string', 'null'], ' * @method string getString()', ' * @method string|null getString()'),
+            array(array('string'), array('string', 'null'), ' * @method string getString()', ' * @method string|null getString()'),
         );
     }
 
