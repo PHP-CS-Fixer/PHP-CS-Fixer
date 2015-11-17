@@ -126,6 +126,6 @@ class TagTest extends \PHPUnit_Framework_TestCase
     {
         $tag = new Tag(new Line(' * @author Chuck Norris'));
 
-        $tag->setTypes(['string']);
+        $tag->setTypes(array('string'));
     }
 }
