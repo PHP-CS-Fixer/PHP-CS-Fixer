@@ -12,7 +12,7 @@
 namespace Symfony\CS;
 
 use Symfony\CS\DocBlock\DocBlock;
-use Symfony\CS\DocBlock\Line;
+use Symfony\CS\DocBlock\Tag;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -27,7 +27,10 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
      *
      * @var string[]
      */
-    protected static $tags = array('param', 'property', 'property-read', 'property-write', 'return', 'type', 'var');
+    protected static $tags = array(
+        'method', 'param', 'property', 'property-read', 'property-write',
+        'return', 'throws', 'type', 'var',
+    );
 
     /**
      * {@inheritdoc}
@@ -49,7 +52,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
             }
 
             foreach ($annotations as $annotation) {
-                $this->fixTypes($doc->getLine($annotation->getStart()), $annotation->getTag()->getName());
+                $this->fixTypes($annotation->getTag());
             }
 
             $token->setContent($doc->getContent());
@@ -63,27 +66,18 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
      *
      * We must be super careful not to modify parts of words.
      *
-     * @param Line   $line
-     * @param string $tag
+     * This will be nicely handled behind the scenes for us by the tag class.
+     *
+     * @param Tag $tag
      */
-    private function fixTypes(Line $line, $tag)
+    private function fixTypes(Tag $tag)
     {
-        $content = $line->getContent();
-        $tagSplit = preg_split('/\s*\@'.$tag.'\s*/', $content, 2);
-        $spaceSplit = preg_split('/\s/', $tagSplit[1], 2);
-        $usefulContent = $spaceSplit[0];
+        $types = $tag->getTypes();
 
-        if (strpos($usefulContent, '|') !== false) {
-            $newContent = implode('|', $this->normalizeTypes(explode('|', $usefulContent)));
-        } else {
-            $newContent = $this->normalizeType($usefulContent);
-        }
+        $new = $this->normalizeTypes($types);
 
-        if ($newContent !== $usefulContent) {
-            // limiting to 1 replacement to prevent errors like
-            // "integer $integer" being converted to "int $int"
-            // when they should be converted to "int $integer"
-            $line->setContent(preg_replace('/'.preg_quote($usefulContent).'/', $newContent, $content, 1));
+        if ($types !== $new) {
+            $tag->setTypes($new);
         }
     }
 

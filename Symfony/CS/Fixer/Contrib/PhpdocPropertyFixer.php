@@ -19,25 +19,14 @@ use Symfony\CS\AbstractPhpdocTagsFixer;
 class PhpdocPropertyFixer extends AbstractPhpdocTagsFixer
 {
     /**
-     * The tags to search for.
-     *
-     * @var string[]
+     * {@inheritdoc}
      */
     protected static $search = array('property-read', 'property-write');
 
     /**
-     * The input tag.
-     *
-     * @var string[]
+     * {@inheritdoc}
      */
-    protected static $input = array('@property-read', '@property-write');
-
-    /**
-     * The output tag.
-     *
-     * @var string
-     */
-    protected static $output = '@property';
+    protected static $replace = 'property';
 
     /**
      * {@inheritdoc}

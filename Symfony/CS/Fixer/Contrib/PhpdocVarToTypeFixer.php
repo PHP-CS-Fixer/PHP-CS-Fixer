@@ -19,25 +19,14 @@ use Symfony\CS\AbstractPhpdocTagsFixer;
 class PhpdocVarToTypeFixer extends AbstractPhpdocTagsFixer
 {
     /**
-     * The tag to search for.
-     *
-     * @var string
+     * {@inheritdoc}
      */
-    protected static $search = 'var';
+    protected static $search = array('var');
 
     /**
-     * The input tag.
-     *
-     * @var string
+     * {@inheritdoc}
      */
-    protected static $input = '@var';
-
-    /**
-     * The output tag.
-     *
-     * @var string
-     */
-    protected static $output = '@type';
+    protected static $replace = 'type';
 
     /**
      * {@inheritdoc}

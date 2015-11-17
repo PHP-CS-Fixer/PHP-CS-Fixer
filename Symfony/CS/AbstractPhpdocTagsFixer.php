@@ -22,6 +22,20 @@ use Symfony\CS\Tokenizer\Tokens;
 abstract class AbstractPhpdocTagsFixer extends AbstractFixer
 {
     /**
+     * The tags to search for.
+     *
+     * @var string[]
+     */
+    protected static $search;
+
+    /**
+     * The replacement tag.
+     *
+     * @var string
+     */
+    protected static $replace;
+
+    /**
      * {@inheritdoc}
      */
     public function fix(\SplFileInfo $file, $content)
@@ -37,8 +51,7 @@ abstract class AbstractPhpdocTagsFixer extends AbstractFixer
             }
 
             foreach ($annotations as $annotation) {
-                $line = $doc->getLine($annotation->getStart());
-                $line->setContent(str_replace(static::$input, static::$output, $line->getContent()));
+                $annotation->getTag()->setName(static::$replace);
             }
 
             $token->setContent($doc->getContent());
