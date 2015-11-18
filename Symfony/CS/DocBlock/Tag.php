@@ -56,18 +56,6 @@ class Tag
     }
 
     /**
-     * Is the tag a known tag.
-     *
-     * This is defined by if it exists in the proposed PSR PHPDoc standard.
-     *
-     * @return bool
-     */
-    public function valid()
-    {
-        return in_array($this->getName(), self::$tags, true);
-    }
-
-    /**
      * Get the tag name.
      *
      * This may be "param", or "return", etc.
@@ -107,5 +95,17 @@ class Tag
         $this->line->setContent(preg_replace("/@$current/", "@$name", $this->line->getContent(), 1));
 
         $this->name = $name;
+    }
+
+    /**
+     * Is the tag a known tag?
+     *
+     * This is defined by if it exists in the proposed PSR PHPDoc standard.
+     *
+     * @return bool
+     */
+    public function valid()
+    {
+        return in_array($this->getName(), self::$tags, true);
     }
 }

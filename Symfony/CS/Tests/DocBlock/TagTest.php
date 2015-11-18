@@ -20,33 +20,6 @@ use Symfony\CS\DocBlock\Tag;
 class TagTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @dataProvider provideValidCases
-     */
-    public function testValid($expected, $input)
-    {
-        $tag = new Tag(new Line($input));
-
-        $this->assertSame($expected, $tag->valid());
-    }
-
-    public function provideValidCases()
-    {
-        return array(
-            array(true, '     * @param Foo $foo'),
-            array(true, '*   @return            false'),
-            array(true, '*@throws \Exception'),
-            array(true, ' * @method'),
-            array(true, ' * @method string getString()'),
-            array(true, ' * @property-read integer $daysInMonth number of days in the given month'),
-            array(false, ' * @method("GET")'),
-            array(false, '*@thRoWs \InvalidArgumentException'),
-            array(false, "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"),
-            array(false, ' *   @\Foo\Bar(baz = 123)'),
-            array(false, '     * @expectedException Exception'),
-        );
-    }
-
-    /**
      * @dataProvider provideNameCases
      */
     public function testName($expected, $new, $input)
@@ -77,6 +50,33 @@ class TagTest extends \PHPUnit_Framework_TestCase
             array('method', ' * @method'),
             array('method', 'hi', ' * @method string getString()'),
             array('other', 'hello', ' * @method("GET")'),
+        );
+    }
+
+    /**
+     * @dataProvider provideValidCases
+     */
+    public function testValid($expected, $input)
+    {
+        $tag = new Tag(new Line($input));
+
+        $this->assertSame($expected, $tag->valid());
+    }
+
+    public function provideValidCases()
+    {
+        return array(
+            array(true, '     * @param Foo $foo'),
+            array(true, '*   @return            false'),
+            array(true, '*@throws \Exception'),
+            array(true, ' * @method'),
+            array(true, ' * @method string getString()'),
+            array(true, ' * @property-read integer $daysInMonth number of days in the given month'),
+            array(false, ' * @method("GET")'),
+            array(false, '*@thRoWs \InvalidArgumentException'),
+            array(false, "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"),
+            array(false, ' *   @\Foo\Bar(baz = 123)'),
+            array(false, '     * @expectedException Exception'),
         );
     }
 }
