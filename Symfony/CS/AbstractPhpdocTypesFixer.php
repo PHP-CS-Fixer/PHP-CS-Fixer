@@ -11,8 +11,8 @@
 
 namespace Symfony\CS;
 
+use Symfony\CS\DocBlock\Annotation;
 use Symfony\CS\DocBlock\DocBlock;
-use Symfony\CS\DocBlock\Tag;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -52,7 +52,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
             }
 
             foreach ($annotations as $annotation) {
-                $this->fixTypes($annotation->getTag());
+                $this->fixTypes($annotation);
             }
 
             $token->setContent($doc->getContent());
@@ -66,18 +66,18 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
      *
      * We must be super careful not to modify parts of words.
      *
-     * This will be nicely handled behind the scenes for us by the tag class.
+     * This will be nicely handled behind the scenes for us by the annotation class.
      *
-     * @param Tag $tag
+     * @param Annotation $annotation
      */
-    private function fixTypes(Tag $tag)
+    private function fixTypes(Annotation $annotation)
     {
-        $types = $tag->getTypes();
+        $types = $annotation->getTypes();
 
         $new = $this->normalizeTypes($types);
 
         if ($types !== $new) {
-            $tag->setTypes($new);
+            $annotation->setTypes($new);
         }
     }
 

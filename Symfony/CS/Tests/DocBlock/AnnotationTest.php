@@ -11,7 +11,9 @@
 
 namespace Symfony\CS\Tests\DocBlock;
 
+use Symfony\CS\DocBlock\Annotation;
 use Symfony\CS\DocBlock\DocBlock;
+use Symfony\CS\DocBlock\Line;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
@@ -186,5 +188,54 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
         }
 
         return $cases;
+    }
+
+    /**
+     * @dataProvider provideTypesCases
+     */
+    public function testTypes($expected, $new, $input, $output)
+    {
+        $line = new Line($input);
+        $tag = new Annotation(array($line));
+
+        $this->assertSame($expected, $tag->getTypes());
+
+        $tag->setTypes($new);
+
+        $this->assertSame($new, $tag->getTypes());
+
+        $this->assertSame($output, $line->getContent());
+    }
+
+    public function provideTypesCases()
+    {
+        return array(
+            array(array('Foo', 'null'), array('Bar[]'), '     * @param Foo|null $foo', '     * @param Bar[] $foo'),
+            array(array('false'), array('bool'), '*   @return            false', '*   @return            bool'),
+            array(array('RUNTIMEEEEeXCEPTION'), array('Throwable'), "\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"),
+            array(array('string'), array('string', 'null'), ' * @method string getString()', ' * @method string|null getString()'),
+        );
+    }
+
+    /**
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage This tag does not support types
+     */
+    public function testGetTypesOnBadTag()
+    {
+        $tag = new Annotation(array(new Line(' * @deprecated since 1.2')));
+
+        $tag->getTypes();
+    }
+
+    /**
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage This tag does not support types
+     */
+    public function testSetTypesOnBadTag()
+    {
+        $tag = new Annotation(array(new Line(' * @author Chuck Norris')));
+
+        $tag->setTypes(array('string'));
     }
 }
