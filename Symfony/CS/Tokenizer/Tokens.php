@@ -1116,6 +1116,25 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Check if partial code is multiline.
+     *
+     * @param int $start start index
+     * @param int $end   end index
+     *
+     * @return bool
+     */
+    public function isPartialCodeMultiline($start, $end)
+    {
+        for ($i = $start; $i <= $end; ++$i) {
+            if (false !== strpos($this[$i]->getContent(), "\n")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Change code hash.
      *
      * Remove old cache and set new one.

@@ -95,12 +95,19 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Perform a test scenario for fixer.
+     * Tests if a fixer fixes a given string to match the expected result.
      *
-     * @param string              $expected Fixed source code
-     * @param string|null         $input    Input source code
-     * @param SplFileInfo|null    $file     File with which code will be fixed
-     * @param FixerInterface|null $fixer    Fixer by which code will be fixed
+     * It is used both if you want to test if something is fixed or if it is not touched by the fixer.
+     * It also makes sure that the expected output does not change when run through the fixer. That means that you
+     * do not need two test cases like [$expected] and [$expected, $input] (where $expected is the same in both cases)
+     * as the latter covers both of them.
+     * This method throws an exception if $expected and $input are equal to prevent test cases that accidentally do
+     * not test anything.
+     *
+     * @param string              $expected The expected fixer output.
+     * @param string|null         $input    The fixer input, or null if it should intentionally be equal to the output.
+     * @param \SplFileInfo|null   $file     The file to fix, or null if unneeded.
+     * @param FixerInterface|null $fixer    The fixer to be used, or null if it should be inferred from the test name.
      */
     protected function doTest($expected, $input = null, \SplFileInfo $file = null, FixerInterface $fixer = null)
     {

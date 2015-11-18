@@ -41,6 +41,18 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testWithPeriod()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * Hello.
+     */
+
+EOF;
+        $this->doTest($expected);
+    }
+
     public function testWithQuestionMark()
     {
         $expected = <<<'EOF'
@@ -53,12 +65,72 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testWithExclimationMark()
+    public function testWithExclamationMark()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * Hello!
+     */
+
+EOF;
+        $this->doTest($expected);
+    }
+
+    public function testWithInvertedQuestionMark()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * Hello¿
+     */
+
+EOF;
+        $this->doTest($expected);
+    }
+
+    public function testWithInvertedExclamationMark()
     {
         $expected = <<<'EOF'
 <?php
     /**
      * Hello¡
+     */
+
+EOF;
+        $this->doTest($expected);
+    }
+
+    public function testWithUnicodeQuestionMark()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * ハロー？
+     */
+
+EOF;
+        $this->doTest($expected);
+    }
+
+    public function testWithUnicodeExclamationMark()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * ハロー！
+     */
+
+EOF;
+        $this->doTest($expected);
+    }
+
+    public function testWithJapanesePeriod()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * ハロー。
      */
 
 EOF;

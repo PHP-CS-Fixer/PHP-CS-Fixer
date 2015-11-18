@@ -31,16 +31,59 @@ use Symfony\CS\StdinFileInfo;
  */
 final class ConfigurationResolver
 {
+    /**
+     * @var bool
+     */
     private $allowRisky;
+
+    /**
+     * @var ConfigInterface
+     */
     private $config;
+
+    /**
+     * @var string
+     */
     private $configFile;
+
+    /**
+     * @var string
+     */
     private $cwd;
+
+    /**
+     * @var ConfigInterface
+     */
     private $defaultConfig;
+
+    /**
+     * @var FixerFactory
+     */
     private $fixerFactory;
+
+    /**
+     * @var bool
+     */
     private $isStdIn;
+
+    /**
+     * @var bool
+     */
     private $isDryRun;
+
+    /**
+     * @var Fixer
+     */
     private $fixer;
+
+    /**
+     * @var FixerInterface[]
+     */
     private $fixers = array();
+
+    /**
+     * @var array
+     */
     private $options = array(
         'allow-risky' => null,
         'config' => null,

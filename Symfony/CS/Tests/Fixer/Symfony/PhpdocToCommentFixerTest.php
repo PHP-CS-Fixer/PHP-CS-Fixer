@@ -48,7 +48,7 @@ final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
  */
  namespace Docs;
 
- /**
+/**
  * Do not convert this
  */
 class DocBlocks
@@ -78,6 +78,31 @@ class DocBlocks
      */
     function testNoVisibility() {}
 }',
+        );
+
+        $cases[] = array(
+            '<?php namespace Docs;
+
+/**
+ * Do not convert this
+ */
+
+/**
+ * Do not convert this
+ */
+class DocBlocks{}
+',
+        );
+
+        $cases[] = array(
+            '<?php
+
+/**
+ * Do not convert this
+ */
+
+namespace Foo;
+',
         );
 
         $cases[] = array(

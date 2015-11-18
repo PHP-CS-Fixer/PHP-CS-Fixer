@@ -52,6 +52,26 @@ final class PhpdocTypeToVarFixerTest extends AbstractFixerTestCase
                 '<?php /** @var string Hello! */',
                 '<?php /** @type string Hello! */',
             ),
+            array(
+                '<?php
+    /**
+     * Initializes this class with the given options.
+     *
+     * @param array $options {
+     *     @var bool   $required Whether this element is required
+     *     @var string $label    The display name for this element
+     * }
+     */',
+                '<?php
+    /**
+     * Initializes this class with the given options.
+     *
+     * @param array $options {
+     *     @type bool   $required Whether this element is required
+     *     @type string $label    The display name for this element
+     * }
+     */',
+            ),
         );
     }
 }

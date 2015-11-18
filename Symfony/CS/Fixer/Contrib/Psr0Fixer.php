@@ -61,7 +61,7 @@ final class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                     return;
                 }
 
-                $namespaceIndex = $tokens->getNextNonWhitespace($index);
+                $namespaceIndex = $tokens->getNextMeaningfulToken($index);
                 $namespaceEndIndex = $tokens->getNextTokenOfKind($index, array(';'));
 
                 $namespace = trim($tokens->generatePartialCode($namespaceIndex, $namespaceEndIndex - 1));
@@ -70,7 +70,7 @@ final class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                     return;
                 }
 
-                $classyIndex = $tokens->getNextNonWhitespace($index);
+                $classyIndex = $tokens->getNextMeaningfulToken($index);
                 $classyName = $tokens[$classyIndex]->getContent();
             }
         }

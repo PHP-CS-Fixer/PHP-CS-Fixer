@@ -25,7 +25,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
      */
     public function testProcess($source, array $expectedTokens)
     {
-        $this->makeTest($source, $expectedTokens);
+        $this->doTest($source, $expectedTokens);
     }
 
     public function provideProcessCases()

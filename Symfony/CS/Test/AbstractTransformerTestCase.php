@@ -20,7 +20,7 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 abstract class AbstractTransformerTestCase extends \PHPUnit_Framework_TestCase
 {
-    protected function makeTest($source, array $expectedTokens = array())
+    protected function doTest($source, array $expectedTokens = array())
     {
         $tokens = Tokens::fromCode($source);
 

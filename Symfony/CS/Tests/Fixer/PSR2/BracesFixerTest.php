@@ -459,6 +459,10 @@ if (1) {
                 '<?php
     class ClassName
     {
+
+
+
+
         /**
          * comment
          */
@@ -778,6 +782,26 @@ if (1)
             echo "!";
         }',
             ),
+
+            array(
+                '<?php
+    class Foo
+    {
+        public function main()
+        {
+            echo "Hello";
+        }
+    }',
+                '<?php
+    class Foo
+    {
+      public function main()
+      {
+        echo "Hello";
+      }
+    }',
+            ),
+
             array(
                 '<?php
 class Foo

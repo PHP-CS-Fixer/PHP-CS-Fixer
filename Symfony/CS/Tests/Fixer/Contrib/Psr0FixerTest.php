@@ -108,6 +108,26 @@ EOF;
         $this->doTest($expected, $input, $file);
     }
 
+    public function testFixClassNameWithComment()
+    {
+        $file = $this->getTestFile(__DIR__.'/../../../Fixer/Contrib/Psr0Fixer.php');
+
+        $expected = <<<'EOF'
+<?php
+namespace /* namespace here */ Symfony\CS\Fixer\PSR0;
+class /* hi there */ Psr0Fixer /* why hello */ {}
+/* class foo */
+EOF;
+        $input = <<<'EOF'
+<?php
+namespace /* namespace here */ Symfony\CS\Fixer\PSR0;
+class /* hi there */ blah /* why hello */ {}
+/* class foo */
+EOF;
+
+        $this->doTest($expected, $input, $file);
+    }
+
     public function testHandlePartialNamespaces()
     {
         $fixer = $this->getFixer();
@@ -127,7 +147,18 @@ EOF;
 namespace Foo\Bar\Baz\FIXER\Contrib;
 class Psr0Fixer {}
 EOF;
+        $this->doTest($expected, $input, $file, $fixer);
 
+        $expected = <<<'EOF'
+<?php
+namespace /* hi there */ Foo\Bar\Baz\Fixer\Contrib;
+class /* hi there */ Psr0Fixer {}
+EOF;
+        $input = <<<'EOF'
+<?php
+namespace /* hi there */ Foo\Bar\Baz\FIXER\Contrib;
+class /* hi there */ Psr0Fixer {}
+EOF;
         $this->doTest($expected, $input, $file, $fixer);
 
         $config->setDir(__DIR__.'/../../../Fixer/Contrib');
@@ -136,7 +167,6 @@ EOF;
 namespace Foo\Bar\Baz;
 class Psr0Fixer {}
 EOF;
-
         $this->doTest($expected, null, $file, $fixer);
     }
 

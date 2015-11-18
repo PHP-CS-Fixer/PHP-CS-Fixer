@@ -450,6 +450,118 @@ final class AlignDoubleArrowFixerTest extends AbstractFixerTestCase
                 ;
                 ',
             ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(["server1" => $object], ["addedAt" => "DESC"], 5);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(["server2" => $object], ["checkedAt" => "desc"], 50);
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array("server1" => $object), array("addedAt" => "DESC"), 5);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array("server2" => $object), array("checkedAt" => "desc"), 50);
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy($foo[123]);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy($foo[123]);
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy((1 + 2));
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy((1 + 2));
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array(1, 2));
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array(1, 2));
+    ',
+            ),
+            array(
+                '<?php
+
+    function foo() {}
+
+    $bar = 42;
+
+    $foo = [
+        "test123" => "foo",
+        "foo"     => $bar[123],
+        "a"       => foo(),
+        "b"       => 1,
+    ];
+    ',
+                '<?php
+
+    function foo() {}
+
+    $bar = 42;
+
+    $foo = [
+        "test123" => "foo",
+        "foo" => $bar[123],
+        "a" => foo(),
+        "b" => 1,
+    ];
+    ',
+            ),
+            array(
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN    => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID    => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID    => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+            ),
+            array(
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN    => array((1+11)=> "?", "description" => "unknown"),
+        self::STATUS_INVALID    => array((2+3)=> "III", "description" => "invalid file syntax, file ignored"),
+    );',
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN => array((1+11)=> "?", "description" => "unknown"),
+        self::STATUS_INVALID    => array((2+3)=> "III", "description" => "invalid file syntax, file ignored"),
+    );',
+            ),
+            array(
+                '<?php
+    return [
+        self::STATUS_UNKNOWN    => ["symbol" => "?", "description" => "unknown"],
+        self::STATUS_INVALID    => ["symbol123" => "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+                '<?php
+    return [
+        self::STATUS_UNKNOWN => ["symbol" => "?", "description" => "unknown"],
+        self::STATUS_INVALID    => ["symbol123" => "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+            ),
+            array(
+                '<?php
+    return [
+        self::STATUS_UNKNOWN    => [(1+11)=> "?", "description" => "unknown"],
+        self::STATUS_INVALID    => [(2+3)=> "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+                '<?php
+    return [
+        self::STATUS_UNKNOWN => [(1+11)=> "?", "description" => "unknown"],
+        self::STATUS_INVALID    => [(2+3)=> "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+            ),
         );
     }
 }
