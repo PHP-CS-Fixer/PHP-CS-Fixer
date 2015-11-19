@@ -28,6 +28,7 @@ class TagComparator
         array('deprecated', 'link', 'see', 'since'),
         array('author', 'copyright', 'license'),
         array('package', 'subpackage'),
+        array('property', 'property-read', 'property-write'),
     );
 
     /**
