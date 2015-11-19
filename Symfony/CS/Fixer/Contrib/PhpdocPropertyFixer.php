@@ -16,34 +16,34 @@ use Symfony\CS\AbstractPhpdocTagsFixer;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocVarToTypeFixer extends AbstractPhpdocTagsFixer
+class PhpdocPropertyFixer extends AbstractPhpdocTagsFixer
 {
     /**
-     * The tag to search for.
+     * The tags to search for.
      *
-     * @var string
+     * @var string[]
      */
-    protected static $search = 'var';
+    protected static $search = array('property-read', 'property-write');
 
     /**
      * The input tag.
      *
-     * @var string
+     * @var string[]
      */
-    protected static $input = '@var';
+    protected static $input = array('@property-read', '@property-write');
 
     /**
      * The output tag.
      *
      * @var string
      */
-    protected static $output = '@type';
+    protected static $output = '@property';
 
     /**
      * {@inheritdoc}
      */
     public function getDescription()
     {
-        return '@var should always be written as @type.';
+        return '@property tags should be used rather than other variants.';
     }
 }
