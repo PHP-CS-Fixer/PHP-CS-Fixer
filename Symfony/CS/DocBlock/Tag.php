@@ -26,8 +26,9 @@ class Tag
     private static $tags = array(
         'api', 'author', 'category', 'copyright', 'deprecated', 'example',
         'global', 'internal', 'license', 'link', 'method', 'package', 'param',
-        'property', 'return', 'see', 'since', 'struct', 'subpackage', 'throws',
-        'todo', 'typedef', 'uses', 'var', 'version',
+        'property', 'property-read', 'property-write', 'return', 'see',
+        'since', 'struct', 'subpackage', 'throws', 'todo', 'typedef', 'uses',
+        'var', 'version',
     );
 
     /**
@@ -45,7 +46,7 @@ class Tag
     public function __construct($content)
     {
         $this->name = 'other';
-        preg_match_all('/@[a-zA-Z0-9_]+(?=\s|$)/', $content, $matches);
+        preg_match_all('/@[a-zA-Z0-9_-]+(?=\s|$)/', $content, $matches);
 
         if (isset($matches[0][0])) {
             $this->name = ltrim($matches[0][0], '@');
