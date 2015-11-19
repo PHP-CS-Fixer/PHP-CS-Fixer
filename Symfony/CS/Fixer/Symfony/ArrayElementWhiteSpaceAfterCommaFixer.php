@@ -54,7 +54,6 @@ final class ArrayElementWhiteSpaceAfterCommaFixer extends AbstractFixer
      */
     private function fixSpacing($index, Tokens $tokens)
     {
-        $multiLine = $tokens->isArrayMultiLine($index);
         if ($tokens->isShortArray($index)) {
             $startIndex = $index;
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $startIndex);
