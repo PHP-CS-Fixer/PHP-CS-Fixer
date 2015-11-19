@@ -422,7 +422,7 @@ EOF
                 }
 
                 $fixEvent = $this->stopwatch->getEvent('fixFiles');
-                $output->writeln(sprintf('Fixed all files in %.3f seconds, %.3f MB memory used', $fixEvent->getDuration() / 1000, $fixEvent->getMemory() / 1024 / 1024));
+                $output->writeln(sprintf('%s all files in %.3f seconds, %.3f MB memory used', $input->getOption('dry-run') ? 'Checked' : 'Fixed', $fixEvent->getDuration() / 1000, $fixEvent->getMemory() / 1024 / 1024));
                 break;
             case 'xml':
                 $dom = new \DOMDocument('1.0', 'UTF-8');
