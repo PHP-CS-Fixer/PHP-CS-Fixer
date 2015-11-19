@@ -11,40 +11,22 @@
 
 namespace Symfony\CS\Fixer\Symfony;
 
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\DocBlock\DocBlock;
-use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\AbstractPhpdocTagsFixer;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocTypeToVarFixer extends AbstractFixer
+class PhpdocTypeToVarFixer extends AbstractPhpdocTagsFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
-    {
-        $tokens = Tokens::fromCode($content);
+    protected static $search = array('type');
 
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
-            $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType('type');
-
-            if (empty($annotations)) {
-                continue;
-            }
-
-            foreach ($annotations as $annotation) {
-                $line = $doc->getLine($annotation->getStart());
-                $line->setContent(str_replace('@type', '@var', $line->getContent()));
-            }
-
-            $token->setContent($doc->getContent());
-        }
-
-        return $tokens->generateCode();
-    }
+    /**
+     * {@inheritdoc}
+     */
+    protected static $replace = 'var';
 
     /**
      * {@inheritdoc}

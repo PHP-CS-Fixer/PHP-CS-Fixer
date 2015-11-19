@@ -607,6 +607,10 @@ Choose from the list of available fixers:
                         throws annotations, then
                         return annotations.
 
+* **phpdoc_property** [contrib]
+                        @property tags should be used
+                        rather than other variants.
+
 * **phpdoc_var_to_type** [contrib]
                         @var should always be written
                         as @type.
