@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: class_definition, trailing_spaces
+--CONFIG--
+level=none
+fixers=class_definition, trailing_spaces
+--INPUT--
+<?php
+class Aaa implements
+    Symfony\CS\Tests\Fixer,\RFb,
+    \Fcc1, \GFdd
+{
+}
+
+--EXPECT--
+<?php
+class Aaa implements
+    Symfony\CS\Tests\Fixer,
+\RFb,
+    \Fcc1,
+\GFdd
+{
+}

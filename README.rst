@@ -197,6 +197,12 @@ Choose from the list of available fixers:
                         placed. Body of braces should
                         be properly indented.
 
+* **class_definition** [PSR-2]
+                        Whitespace around the key
+                        words of a class, trait or
+                        interfaces definition should
+                        be one space.
+
 * **elseif** [PSR-2]
                         The keyword elseif should be
                         used instead of else if so

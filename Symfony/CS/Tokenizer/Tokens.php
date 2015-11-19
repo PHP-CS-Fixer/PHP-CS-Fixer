@@ -289,7 +289,7 @@ class Tokens extends \SplFixedArray
     {
         $removeLastCommentLine = function (Token $token, $indexOffset) {
             // because comments tokens are greedy and may consume single \n if we are putting whitespace after it let trim that \n
-            if (1 === $indexOffset && $token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT))) {
+            if (1 === $indexOffset && $token->isComment()) {
                 $content = $token->getContent();
 
                 if ("\n" === $content[strlen($content) - 1]) {
@@ -383,12 +383,17 @@ class Tokens extends \SplFixedArray
      * Find tokens of given kind.
      *
      * @param int|array $possibleKind kind or array of kind
+     * @param int       $start        optional offset
+     * @param int|null  $end          optional limit
      *
      * @return array array of tokens of given kinds or assoc array of arrays
      */
-    public function findGivenKind($possibleKind)
+    public function findGivenKind($possibleKind, $start = 0, $end = null)
     {
         $this->rewind();
+        if (null === $end) {
+            $end = $this->count();
+        }
 
         $elements = array();
         $possibleKinds = (array) $possibleKind;
@@ -397,9 +402,10 @@ class Tokens extends \SplFixedArray
             $elements[$kind] = array();
         }
 
-        foreach ($this as $index => $token) {
+        for ($i = $start;  $i < $end; ++$i) {
+            $token = $this[$i];
             if ($token->isGivenKind($possibleKinds)) {
-                $elements[$token->getId()][$index] = $token;
+                $elements[$token->getId()][$i] = $token;
             }
         }
 
