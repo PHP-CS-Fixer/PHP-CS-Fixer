@@ -26,8 +26,9 @@ class Tag
     private static $tags = array(
         'api', 'author', 'category', 'copyright', 'deprecated', 'example',
         'global', 'internal', 'license', 'link', 'method', 'package', 'param',
-        'property', 'return', 'see', 'since', 'struct', 'subpackage', 'throws',
-        'todo', 'typedef', 'uses', 'var', 'version',
+        'property', 'property-read', 'property-write', 'return', 'see',
+        'since', 'struct', 'subpackage', 'throws', 'todo', 'typedef', 'uses',
+        'var', 'version',
     );
 
     /**

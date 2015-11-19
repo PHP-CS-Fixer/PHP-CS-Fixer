@@ -27,7 +27,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
      *
      * @var string[]
      */
-    protected static $tags = array('param', 'return', 'type', 'var', 'property');
+    protected static $tags = array('param', 'property', 'property-read', 'property-write', 'return', 'type', 'var');
 
     /**
      * {@inheritdoc}
