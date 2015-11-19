@@ -1,0 +1,54 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-18T23:03:05Z
+
+:+1: if Travis passes
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-19T08:08:08Z
+
+I see that php7 crashes on Travis :/
+https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/91932810
+https://github.com/travis-ci/travis-ci/issues/5111
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-19T09:13:45Z
+
+> I see that php7 crashes on Travis :/
+
+LOL. Not again.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-19T09:14:16Z
+
+I can confirm the tests pass on PHP 7 though. I've got PHP 7 installed on a VM on my laptop.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-19T09:23:31Z
+
+php7 on my Windows passes too.
+I'm not saying the tests fail, just feel bad about Travis :(
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-19T09:31:55Z
+
+(poor Travis : (  )
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-19T15:42:35Z
+
+done
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-19T16:55:16Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1519 now includes the bugfix part of this for the tag class, targeted at 1.10.
