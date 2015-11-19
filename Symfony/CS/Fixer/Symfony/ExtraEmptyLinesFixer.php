@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -32,13 +33,14 @@ final class ExtraEmptyLinesFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             if (!$token->isWhitespace()) {
                 continue;
             }
 
             $content = '';
             $count = 0;
+
             $parts = explode("\n", $token->getContent());
 
             for ($i = 0, $last = count($parts) - 1; $i <= $last; ++$i) {

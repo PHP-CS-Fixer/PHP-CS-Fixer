@@ -350,6 +350,36 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testPropertyTags()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @author Bar Baz <foo@example.com>
+     *
+     * @property int $foo
+     * @property-read int $foo
+     * @property-write int $bar
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @author Bar Baz <foo@example.com>
+     * @property int $foo
+     *
+     * @property-read int $foo
+     *
+     * @property-write int $bar
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testClassDocBlock()
     {
         $expected = <<<'EOF'

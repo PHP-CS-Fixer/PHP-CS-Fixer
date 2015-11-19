@@ -47,6 +47,8 @@ EOF;
 <?php
 /**
  * @property int $foo
+ * @property-read bool $bar
+ * @property-write float $baz
  */
 
 EOF;
@@ -55,6 +57,8 @@ EOF;
 <?php
 /**
  * @property integer $foo
+ * @property-read boolean $bar
+ * @property-write double $baz
  */
 
 EOF;

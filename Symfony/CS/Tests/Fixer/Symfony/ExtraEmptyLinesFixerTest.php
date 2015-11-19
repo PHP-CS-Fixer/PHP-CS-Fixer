@@ -225,4 +225,27 @@ EOF;
 ";
         $this->doTest($expected);
     }
+
+    public function testFixWithComments()
+    {
+        $expected = <<<'EOF'
+<?php
+//class Test
+$a; //
+
+$b;
+EOF;
+
+        $input = <<<'EOF'
+<?php
+//class Test
+$a; //
+
+
+
+
+$b;
+EOF;
+        $this->doTest($expected, $input);
+    }
 }

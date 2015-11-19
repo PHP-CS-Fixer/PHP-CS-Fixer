@@ -184,6 +184,16 @@ Choose from the list of available fixers:
                         Align equals symbols in
                         consecutive lines.
 
+* **array_element_no_space_before_comma** [@Symfony]
+                        In array declaration, there
+                        MUST NOT be a space before
+                        each comma.
+
+* **array_element_white_space_after_comma** [@Symfony]
+                        In array declaration, there
+                        MUST be a white wspace after
+                        each comma.
+
 * **blankline_after_open_tag** [@Symfony]
                         Ensure there is no code on the
                         same line as the PHP open tag
@@ -253,7 +263,7 @@ Choose from the list of available fixers:
                         placed in a function
                         declaration.
 
-* **function_typehint_space**
+* **function_typehint_space** [@Symfony]
                         Add missing space between
                         function's argument and its
                         typehint.
@@ -478,7 +488,7 @@ Choose from the list of available fixers:
                         @type should always be written
                         as @var.
 
-* **phpdoc_types**
+* **phpdoc_types** [@Symfony]
                         The correct case must be used
                         for standard PHP types in
                         phpdoc.
