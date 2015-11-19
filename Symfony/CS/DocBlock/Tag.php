@@ -45,7 +45,7 @@ class Tag
     public function __construct($content)
     {
         $this->name = 'other';
-        preg_match_all('/@[a-zA-Z0-9_]+(?=\s|$)/', $content, $matches);
+        preg_match_all('/@[a-zA-Z0-9_-]+(?=\s|$)/', $content, $matches);
 
         if (isset($matches[0][0])) {
             $this->name = ltrim($matches[0][0], '@');

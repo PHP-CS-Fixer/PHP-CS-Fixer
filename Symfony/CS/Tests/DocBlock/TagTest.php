@@ -37,6 +37,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
             array('THROWSSS', "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"),
             array('other', ' *   @\Foo\Bar(baz = 123)'),
             array('expectedException', '     * @expectedException Exception'),
+            array('property-read', ' * @property-read integer $daysInMonth number of days in the given month'),
             array('method', ' * @method'),
             array('method', ' * @method string getString()'),
             array('other', ' * @method("GET")'),
