@@ -1,0 +1,105 @@
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-05T08:36:26Z
+
+Not sure about that but this rules is related to a PSR level, isn't it? Should be placed on the right folder if yes.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-05T08:41:42Z
+
+It is not PSR, but Symfony.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-05T10:59:38Z
+
+> It is not PSR, but Symfony.
+
+@gharlan So it should be on `Symfony` folder. ;-)
+
+@amarczuk Could you please do that?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-05T21:50:49Z
+
+IMO it should be 3 fixers:
+- no space before `,`
+- new line or 1+ spaces after `,`
+- new line or 1 (but no more) spaces after `,`
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-05T21:52:33Z
+
+This should not happen:
+
+```diff
+-array( // comment
++array(// comment
+     123,
+ );
+```
+
+```diff
+ if (1) {
+     array(
+         1,
+         // comment
+-    );
++);
+ }
+```
+
+```diff
+         $input = array('templating' => array(
+-            'form' => array('resources' => array('FrameworkBundle:Form')),
+-            'engines' => array('php'),
+-        ));
++            'form' => array('resources' => array('FrameworkBundle:Form')), 'engines' => array('php'), ));
+```
+
+---------------------------------------------------------------------------
+
+by amarczuk at 2015-11-06T08:38:43Z
+
+@keradus
+
+> IMO it should be 3 fixers:
+>    no space before ,
+>    new line or 1+ spaces after ,
+>    new line or 1 (but no more) spaces after ,
+
+ok. that makes sense. And I found the fixer dealing with removing space after `(` and `[` so I'll get rid of this bit as well
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-06T09:21:09Z
+
+which one it would be?
+
+---------------------------------------------------------------------------
+
+by amarczuk at 2015-11-08T22:50:08Z
+
+first two. I've replaced one big fixer with two smaller ones
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-09T09:35:13Z
+
+looks much better ;)
+anyone willing to make a review?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-09T09:43:55Z
+
+lgtm :+1:
+
+---------------------------------------------------------------------------
+
+by amarczuk at 2015-11-09T09:55:57Z
+
+@keradus, @gharlan, thx. Sorry for initial confusion I didn't realise how granular the fixer structure is.
