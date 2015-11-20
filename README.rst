@@ -452,6 +452,10 @@ Choose from the list of available fixers:
                         incrementation/decrementation
                         should be used if possible.
 
+* **print_to_echo** [symfony]
+                        Converts print language
+                        construct to echo if possible.
+
 * **remove_leading_slash_use** [symfony]
                         Remove leading slashes in use
                         clauses.
@@ -536,6 +540,11 @@ Choose from the list of available fixers:
                         Concatenation should be used
                         with at least one whitespace
                         around.
+
+* **echo_to_print** [contrib]
+                        Converts echo language
+                        construct to print if
+                        possible.
 
 * **ereg_to_preg** [contrib]
                         Replace deprecated ereg
