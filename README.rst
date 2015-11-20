@@ -537,6 +537,11 @@ Choose from the list of available fixers:
                         with at least one whitespace
                         around.
 
+* **echo_to_print** [contrib]
+                        Converts echo language
+                        construct to print if
+                        possible.
+
 * **ereg_to_preg** [contrib]
                         Replace deprecated ereg
                         regular expression functions
@@ -610,6 +615,10 @@ Choose from the list of available fixers:
 * **phpdoc_var_to_type** [contrib]
                         @var should always be written
                         as @type.
+
+* **print_to_echo** [contrib]
+                        Converts print language
+                        construct to echo if possible.
 
 * **short_array_syntax** [contrib]
                         PHP arrays should use the PHP
