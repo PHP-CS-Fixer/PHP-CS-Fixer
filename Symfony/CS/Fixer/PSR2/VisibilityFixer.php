@@ -61,9 +61,9 @@ class VisibilityFixer extends AbstractFixer
      *
      * Token at given index is prepended by attributes.
      *
-     * @param Tokens                    $tokens  Tokens collection
-     * @param int                       $index   token index
-     * @param array<string, Token|null> $attribs array of token attributes
+     * @param Tokens $tokens  Tokens collection
+     * @param int    $index   token index
+     * @param array  $attribs array of token attributes
      */
     private function applyAttribs(Tokens $tokens, $index, array $attribs)
     {
@@ -89,7 +89,7 @@ class VisibilityFixer extends AbstractFixer
      * @param Tokens $tokens Tokens collection
      * @param int    $index  token index
      *
-     * @return array<string, Token|null> array of grabbed attributes
+     * @return array array of grabbed attributes
      */
     private function grabAttribsBeforeMethodToken(Tokens $tokens, $index)
     {
@@ -123,7 +123,7 @@ class VisibilityFixer extends AbstractFixer
      * @param Tokens $tokens Tokens collection
      * @param int    $index  token index
      *
-     * @return array<string, Token|null> array of grabbed attributes
+     * @return array array of grabbed attributes
      */
     private function grabAttribsBeforePropertyToken(Tokens $tokens, $index)
     {
@@ -151,12 +151,12 @@ class VisibilityFixer extends AbstractFixer
      *
      * Grabbed attributes are cleared by overriding them with empty string and should be manually applied with applyTokenAttribs method.
      *
-     * @param Tokens                    $tokens          Tokens collection
-     * @param int                       $index           token index
-     * @param array<int, string|null>   $tokenAttribsMap token to attribute name map
-     * @param array<string, Token|null> $attribs         array of token attributes
+     * @param Tokens $tokens          Tokens collection
+     * @param int    $index           token index
+     * @param array  $tokenAttribsMap token to attribute name map
+     * @param array  $attribs         array of token attributes
      *
-     * @return array<string, Token|null> array of grabbed attributes
+     * @return array array of grabbed attributes
      */
     private function grabAttribsBeforeToken(Tokens $tokens, $index, array $tokenAttribsMap, array $attribs)
     {
