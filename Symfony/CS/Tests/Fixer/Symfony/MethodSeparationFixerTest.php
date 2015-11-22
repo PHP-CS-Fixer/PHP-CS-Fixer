@@ -269,13 +269,12 @@ abstract class MethodTest3
     {
     }
 
-    abstract protected function method221();	
+    abstract protected function method221();	'.'
 
     final private function method321a()
     {
     }
-}'
-        ,
+}',
             '<?php
 abstract class MethodTest3
 {
@@ -292,7 +291,7 @@ abstract class MethodTest3
 
 
 
-	
+	'.'
 
 
 
@@ -367,7 +366,8 @@ function test2() {
         $cases = array();
 
         // do not touch well formatted traits
-        $cases[] = array('<?php
+        $cases[] = array(
+    '<?php
 trait OkTrait
 {
     function getReturnTypeOk()
@@ -383,7 +383,8 @@ trait OkTrait
 }',
         );
 
-        $cases[] = array('<?php
+        $cases[] = array(
+    '<?php
 trait ezcReflectionReturnInfo {
     public $x = 1;
 
@@ -401,8 +402,8 @@ function getD(){echo 4;}
 private $a;
 
 function getF(){echo 4;}
-}'
-        , '<?php
+}',
+    '<?php
 trait ezcReflectionReturnInfo {
     public $x = 1;
     protected function getA(){echo 1;}function getB(){echo 2;}
@@ -411,7 +412,8 @@ trait ezcReflectionReturnInfo {
 }',
         );
 
-        $cases[] = array('<?php
+        $cases[] = array(
+    '<?php
 trait SomeReturnInfo {
     function getReturnType()
     {
@@ -426,8 +428,8 @@ trait SomeReturnInfo {
     }
 
     abstract public function getWorld();
-}'
-        , '<?php
+}',
+    '<?php
 trait SomeReturnInfo {
     function getReturnType()
     {
@@ -466,14 +468,13 @@ interface TestInterface
 
     /**
      * {@link}
-     */           
+     */           '.'
     public function testInterfaceMethod6();
 
     public function testInterfaceMethod7();
 
  public function testInterfaceMethod8();
-}'
-            ,
+}',
             '<?php
 interface TestInterface
 {    public function testInterfaceMethod4();
@@ -482,7 +483,7 @@ interface TestInterface
 
     /**
      * {@link}
-     */           
+     */           '.'
     public function testInterfaceMethod6();
 
 
