@@ -624,6 +624,11 @@ Choose from the list of available fixers:
                         PHP arrays should use the PHP
                         5.4 short-syntax.
 
+* **short_bool_cast** [contrib]
+                        Short cast bool using double
+                        exclamation mark should not be
+                        used.
+
 * **short_echo_tag** [contrib]
                         Replace short-echo <?= with
                         long format <?php echo syntax.

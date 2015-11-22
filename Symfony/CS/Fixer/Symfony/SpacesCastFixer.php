@@ -61,4 +61,13 @@ class SpacesCastFixer extends AbstractFixer
     {
         return 'A single space should be between cast and variable.';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be ran after the ShortBoolCastFixer
+        return -10;
+    }
 }
