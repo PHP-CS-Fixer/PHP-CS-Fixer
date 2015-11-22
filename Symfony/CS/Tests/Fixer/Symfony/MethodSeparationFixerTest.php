@@ -274,8 +274,7 @@ abstract class MethodTest3
     final private function method321a()
     {
     }
-}'
-        ,
+}',
             '<?php
 abstract class MethodTest3
 {
@@ -401,8 +400,7 @@ function getD(){echo 4;}
 private $a;
 
 function getF(){echo 4;}
-}'
-        , '<?php
+}', '<?php
 trait ezcReflectionReturnInfo {
     public $x = 1;
     protected function getA(){echo 1;}function getB(){echo 2;}
@@ -426,8 +424,7 @@ trait SomeReturnInfo {
     }
 
     abstract public function getWorld();
-}'
-        , '<?php
+}', '<?php
 trait SomeReturnInfo {
     function getReturnType()
     {
@@ -472,8 +469,7 @@ interface TestInterface
     public function testInterfaceMethod7();
 
  public function testInterfaceMethod8();
-}'
-            ,
+}',
             '<?php
 interface TestInterface
 {    public function testInterfaceMethod4();
