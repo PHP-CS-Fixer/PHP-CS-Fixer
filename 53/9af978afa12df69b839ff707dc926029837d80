@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-23T09:45:43Z
+
+nice ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-23T10:46:59Z
+
+why is hhvm failing?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-23T11:50:07Z
+
+cc @GrahamCampbell http://fabbot.io/report/FriendsOfPHP/PHP-CS-Fixer/1535/10861d56f208c18a2415e38cb94c063f1518db48 do you agree withj fabbot here?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-23T11:51:03Z
+
+>why is hhvm failing?
+
+not a clue so far, I messed up my HHVM VM setup with the last RC of PHP7 so I'm a bit in the dark here.
