@@ -109,7 +109,7 @@ class Token
     }
 
     /**
-     * Clear internal flag if token was changed.
+     * Clear the internal flag stating if token was changed.
      */
     public function clearChanged()
     {
