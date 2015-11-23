@@ -29,8 +29,8 @@ class FunctionCallSpaceFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        $functionyTokens = $this->getFunctionyTokens();
-        $languageConstructionTokens = $this->getLanguageConstructionTokens();
+        $functionyTokens = $this->getFunctionyTokenKinds();
+        $languageConstructionTokens = $this->getLanguageConstructionTokenKinds();
 
         foreach ($tokens as $index => $token) {
             // looking for start brace
@@ -88,13 +88,11 @@ class FunctionCallSpaceFixer extends AbstractFixer
     }
 
     /**
-     * Gets the name of tokens which can work as function calls.
+     * Gets the token kinds which can work as function calls.
      *
-     * @staticvar string[] $tokens Token names.
-     *
-     * @return string[] Token names.
+     * @return int[] Token names.
      */
-    private function getFunctionyTokens()
+    private function getFunctionyTokenKinds()
     {
         static $tokens = null;
 
@@ -121,11 +119,11 @@ class FunctionCallSpaceFixer extends AbstractFixer
     }
 
     /**
-     * Gets the name of tokens that are actually language construction.
+     * Gets the token kinds of actually language construction.
      *
      * @return int[]
      */
-    private function getLanguageConstructionTokens()
+    private function getLanguageConstructionTokenKinds()
     {
         static $languageConstructionTokens = array(
             T_ECHO,

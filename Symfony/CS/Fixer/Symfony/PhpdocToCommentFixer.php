@@ -49,15 +49,15 @@ class PhpdocToCommentFixer extends AbstractFixer
                 continue;
             }
 
-            if ($nextToken->isGivenkind($controlStructures) && $this->isValidControl($tokens, $token, $nextIndex)) {
+            if ($nextToken->isGivenKind($controlStructures) && $this->isValidControl($tokens, $token, $nextIndex)) {
                 continue;
             }
 
-            if ($nextToken->isGivenkind(T_VARIABLE) && $this->isValidVariable($tokens, $token, $nextIndex)) {
+            if ($nextToken->isGivenKind(T_VARIABLE) && $this->isValidVariable($tokens, $token, $nextIndex)) {
                 continue;
             }
 
-            if ($nextToken->isGivenkind(T_LIST) && $this->isValidList($tokens, $token, $nextIndex)) {
+            if ($nextToken->isGivenKind(T_LIST) && $this->isValidList($tokens, $token, $nextIndex)) {
                 continue;
             }
 
@@ -143,7 +143,7 @@ class PhpdocToCommentFixer extends AbstractFixer
             $token = $tokens[$index];
 
             if (
-                $token->isGivenkind(T_VARIABLE) &&
+                $token->isGivenKind(T_VARIABLE) &&
                 false !== strpos($docsContent, $token->getContent())
             ) {
                 return true;
@@ -191,7 +191,7 @@ class PhpdocToCommentFixer extends AbstractFixer
             $token = $tokens[$index];
 
             if (
-                $token->isGivenkind(T_VARIABLE)
+                $token->isGivenKind(T_VARIABLE)
                 && false !== strpos($docsContent, $token->getContent())
             ) {
                 return true;
