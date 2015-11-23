@@ -21,10 +21,14 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class TokensTest extends \PHPUnit_Framework_TestCase
 {
-    private function assertEqualsTokensArray($expected, $input)
+    /**
+     * @param Token[]|null $expected
+     * @param Token[]|null $input
+     */
+    private function assertEqualsTokensArray(array $expected = null, array $input = null)
     {
         if (null === $expected) {
-            $this->assertSame($expected, $input);
+            $this->assertNull($input);
 
             return;
         }
@@ -806,7 +810,7 @@ PHP;
         $this->assertSame($barIndex, reset($newPublicIndexes));
 
         for ($i = $fooIndex; $i < $barIndex; ++$i) {
-            $this->assertTrue($tokens[$i]->isWhiteSpace());
+            $this->assertTrue($tokens[$i]->isWhitespace());
         }
     }
 
