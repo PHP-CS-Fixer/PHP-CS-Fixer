@@ -80,26 +80,26 @@ final class ArrayElementNoSpaceBeforeCommaFixerTest extends AbstractFixerTestCas
             // multi line array
             array(
                 '<?php $x = [  "a" =>$a,
-                    "b"=>  
+                    "b"=>
                 "b",
-                    3 => $this->foo(), 
+                    3 => $this->foo(),
                     "d" => 30  ];',
                 '<?php $x = [  "a" =>$a ,
-                    "b"=>  
+                    "b"=>
                 "b",
-                    3 => $this->foo()  , 
+                    3 => $this->foo()  ,
                     "d" => 30  ];',
             ),
             // multi line array
             array(
                 '<?php $a = [
                             "foo",
-                            "bar", 
+                            "bar",
                         ];',
                 '<?php $a = [
                             "foo" ,
                             "bar"
-                            , 
+                            ,
                         ];',
             ),
             // nested multiline

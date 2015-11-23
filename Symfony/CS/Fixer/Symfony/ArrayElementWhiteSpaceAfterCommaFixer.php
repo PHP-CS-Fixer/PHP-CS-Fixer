@@ -45,7 +45,7 @@ final class ArrayElementWhiteSpaceAfterCommaFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'In array declaration, there MUST be a white wspace after each comma.';
+        return 'In array declaration, there MUST be a whitespace after each comma.';
     }
 
     /**

@@ -108,8 +108,8 @@ class Tokens extends \SplFixedArray
     /**
      * Create token collection from array.
      *
-     * @param array $array       the array to import
-     * @param bool  $saveIndexes save the numeric indexes used in the original array, default is yes
+     * @param Token[] $array       the array to import
+     * @param bool    $saveIndexes save the numeric indexes used in the original array, default is yes
      *
      * @return Tokens
      */
