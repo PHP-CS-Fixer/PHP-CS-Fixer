@@ -286,12 +286,12 @@ Choose from the list of available fixers:
 
 * **array_element_no_space_before_comma** [symfony]
                         In array declaration, there
-                        MUST NOT be a space before
-                        each comma.
+                        MUST NOT be a whitespace
+                        before each comma.
 
 * **array_element_white_space_after_comma** [symfony]
                         In array declaration, there
-                        MUST be a white wspace after
+                        MUST be a whitespace after
                         each comma.
 
 * **blankline_after_open_tag** [symfony]
