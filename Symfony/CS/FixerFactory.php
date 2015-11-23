@@ -147,7 +147,7 @@ final class FixerFactory
     /**
      * Apply RuleSet on fixers to filter out all unwanted fixers.
      *
-     * @param RuleSetInteface $ruleSet
+     * @param RuleSetInterface $ruleSet
      *
      * @return $this
      */
