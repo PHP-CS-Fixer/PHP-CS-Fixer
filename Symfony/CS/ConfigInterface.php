@@ -132,7 +132,7 @@ interface ConfigInterface
     /**
      * Set if it is allowed to run risky fixers.
      *
-     * @param bool $isAllowed
+     * @param bool $isRiskyAllowed
      *
      * @return $this
      */

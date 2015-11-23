@@ -1024,7 +1024,7 @@ class Tokens extends \SplFixedArray
     /**
      * Check if token kind given as argument is found.
      *
-     * @param array
+     * @param int|string $tokenKind
      *
      * @return bool
      */
