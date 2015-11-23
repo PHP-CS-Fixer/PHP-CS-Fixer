@@ -187,4 +187,30 @@ EOF;
 
         $this->makeTest($expected, null, $file);
     }
+
+    public function testIgnoreFileWithoutName()
+    {
+        $file = $this->getTestFile('.php');
+
+        $expected = <<<'EOF'
+<?php
+namespace Aaa;
+class Bar {}
+EOF;
+
+        $this->makeTest($expected, null, $file);
+    }
+
+    public function testIgnoreFileStartedByDigit()
+    {
+        $file = $this->getTestFile('4Foo.php');
+
+        $expected = <<<'EOF'
+<?php
+namespace Aaa;
+class Bar {}
+EOF;
+
+        $this->makeTest($expected, null, $file);
+    }
 }
