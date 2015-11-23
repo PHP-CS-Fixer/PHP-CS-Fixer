@@ -1,0 +1,246 @@
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-17T17:00:20Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-17T19:28:19Z
+
+:-1: for going to 1.10. Should go to 1.11 IMO.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-17T19:29:02Z
+
+:-1: for this anyway because the version selection doesn't actually work.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-17T19:29:26Z
+
+3.0 will end up getting installed by default as soon as it's stable so you're not even running the tests on 2.x on all php versions at that point.
+
+---------------------------------------------------------------------------
+
+by Ener-Getick at 2015-11-17T19:46:14Z
+
+>
+:-1: for this anyway because the version selection doesn't actually work.
+
+It allows to install symfony 3.0 so yes it works:
+```json
+{
+    "require": {
+        "fabpot/php-cs-fixer": "~1.0",
+        "symfony/symfony": "3.0.x-dev"
+    }
+}
+```
+This actually doesn't work ...
+
+>
+3.0 will end up getting installed by default as soon as it's stable so you're not even running the tests on 2.x on all php versions at that point.
+
+Symfony 3.0 only removes the deprecated interfaces. So something that works with symfony 3.0 works with symfony 2.8. Then there is a build that uses symfony 2.3, symfony respects bc so we are sure that the package works with symfony ``~2.3|~3.0``...
+To be even more sure I added a build that uses symfony ``2.7.*``.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-17T19:50:07Z
+
+Better to have `~2.7` and `~3.0` IMO.
+
+---------------------------------------------------------------------------
+
+by Ener-Getick at 2015-11-17T19:53:26Z
+
+For the branch, I targeted ``1.10`` for this to be released faster but I can create a new PR targeting ``1.11`` if you want.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-17T19:53:59Z
+
+> For the branch, I targeted 1.10 for this to be released faster but I can create a new PR targeting 1.11 if you want.
+
+No need. It can be merged into either branch by @keradus. ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-17T19:54:42Z
+
+Just noticed you're requiring ALL of symfony there. Massive :-1: for that. Just require each component.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-17T19:54:57Z
+
+Once that's sorted, :+1: from me. ;)
+
+---------------------------------------------------------------------------
+
+by Ener-Getick at 2015-11-17T20:00:42Z
+
+This is the easiest way and this is how all the bundles I know works (see several examples here https://docs.google.com/spreadsheets/d/1GOxJ2lNpLxN12YyZ87Bhsxb0iLAQ7e4UDZbJSly8Sy8/edit).
+
+Another solution is to load the dev version of all the components but I'm not sure that this is better for this package (see https://github.com/dunglas/DunglasApiBundle/blob/1.0/.travis.yml#L26).
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-18T01:48:59Z
+
+> This is the easiest way and this is how all the bundles I know works
+
+`throw new \InvalidArgumentException('This is not the bundle.');`
+
+When you download whole framework then you will be able to use classes in code that aren't even required in composer directly! Not to mention the performance impact to Travis...
+Such solution won't be merged.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-18T08:29:59Z
+
+@keradus Exactly.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-18T08:45:25Z
+
+PHP-CS-Fixer requires many symfony dependencies. Requiring them one by one on travis would be painful.
+
+I don't get the point of why required symfony full stack is bad? It is just for Travis, in order to test a specific version of all bundles.
+
+As @Ener-Getick almost all library use this method without any problem.
+
+:+1: for me.
+
+---------------------------------------------------------------------------
+
+by Ener-Getick at 2015-11-18T12:50:01Z
+
+@keradus @GrahamCampbell Do you prefer an update of only the necessary dependencies ? (see 338ea52)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-18T13:14:07Z
+
+> PHP-CS-Fixer requires many symfony dependencies.
+
+nope, only 3 components.
+
+> Do you prefer an update of only the necessary dependencies ? (see 338ea52)
+
+better, what about modify composer.json file on the go to replace all packages `symfony/.*` using eg regex ? Then you won't need to manually list all of them in travis file
+
+---------------------------------------------------------------------------
+
+by Ener-Getick at 2015-11-18T14:21:24Z
+
+Good idea ! I changed it.
+
+---------------------------------------------------------------------------
+
+by mmoreram at 2015-11-18T18:27:23Z
+
+:+1: to merge this and to add a new tag :)
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2015-11-19T10:17:20Z
+
+[As for Symfony 3 bundles support](https://docs.google.com/spreadsheets/d/1GOxJ2lNpLxN12YyZ87Bhsxb0iLAQ7e4UDZbJSly8Sy8/edit#gid=0), every package using this package depends on this to be merged.
+
+E.g. https://travis-ci.org/mmoreram/php-formatter/jobs/92008056
+
+---------------------------------------------------------------------------
+
+by Ener-Getick at 2015-11-19T11:28:05Z
+
+Why @TomasVotruba? this change only removes symfony 2.2 support and symfony 3.0 is already supported apparently...
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2015-11-19T13:01:34Z
+
+@Ener-Getick Since which version?
+
+---------------------------------------------------------------------------
+
+by stof at 2015-11-19T13:07:24Z
+
+> When you download whole framework then you will be able to use classes in code that aren't even required in composer directly
+
+no you can't, because Travis requires the full framework only for a few jobs, not for all of them
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-19T13:47:21Z
+
+> no you can't, because Travis requires the full framework only for a few jobs, not for all of them
+
+and in that jobs you would be able.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-11-19T14:00:45Z
+
+@keradus but the testsuite and the PHP-CS-Fixer codebase are the same in all jobs, so such missing dependency would still make the Travis build fail, even though one of the jobs is passing (and locally, it would also fail as there is no the extra symfony requirement)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-19T14:35:17Z
+
+Yep, that's why it wasn't the only one argument.
+Also, in such a case it would be confusing to new contributors that tests passed using Symfony 3.x and not using Symfony 2.x.
+
+---------------------------------------------------------------------------
+
+by Ener-Getick at 2015-11-20T13:51:50Z
+
+@keradus @GrahamCampbell is there something else to do before this could be merged?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-20T19:02:41Z
+
+Please rebase to get rid of that merge commit.
+
+(From my side - I will need to check sth with this PR on myside)
+
+---------------------------------------------------------------------------
+
+by Ener-Getick at 2015-11-20T19:18:37Z
+
+This is done @keradus
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-21T10:33:35Z
+
+sth is wrong now.
+
+Take a look at number of jobs:
+https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/builds/92326598
+
+When you added items to matrix: https://github.com/Ener-Getick/PHP-CS-Fixer/blob/SF3/.travis.yml#L11
+you should remove them from php: https://github.com/Ener-Getick/PHP-CS-Fixer/blob/SF3/.travis.yml#L3
+(also remember to move hhvm)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-21T11:00:18Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-21T11:50:49Z
+
+:+1:  lgtm :)
+
+---------------------------------------------------------------------------
+
+by Ener-Getick at 2015-11-23T17:40:03Z
+
+ping
