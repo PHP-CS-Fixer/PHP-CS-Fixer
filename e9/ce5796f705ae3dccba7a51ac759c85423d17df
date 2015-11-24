@@ -1,0 +1,68 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-23T20:34:22Z
+
+LGTM :+1:
+off the record/PR, how would this fixer handle other file names with characters not supported as a class name, like non-UTF-8 stuff?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-23T20:37:48Z
+
+Please, give an example.
+
+BTW
+```bash
+D:\GIT\fork
+λ cat Żabka.php
+<?php
+
+class Żabka {}
+
+D:\GIT\fork
+λ php -l Żabka.php
+No syntax errors detected in »abka.php
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-23T21:05:06Z
+
+```php
+class Psr0FixerTest extends AbstractFixerTestBase
+{
+    public function testIgnoreFileStartedByDigit()
+    {
+        $file = $this->getTestFile('$test.php');
+
+        $expected = <<<'EOF'
+<?php
+namespace Aaa;
+class Bar {}
+EOF;
+
+        $this->makeTest($expected, null, $file);
+    }
+
+```
+
+I'm just trying things out here to be honest ;)
+~~(same for files starting with a dot)~~
+
+(and how about reserved keywords, like `interface.php`, `class.php`, `stdClass.php`? I know, all out of scope of this PR, I'll open a new one when I have time ;)  )
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-24T19:43:05Z
+
+@SpacePossum let us use same regex to validate classname as PHP uses
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-24T19:54:30Z
+
+sound like a solid idea @keradus :)
+~~A PSR4 fixer might benefit from this as well. Do you know where to find such regex, I don't but I'm happy to start looking.~~
+you already got it :) oh man silly me, overlooked your commit :P
+
+:+1:
