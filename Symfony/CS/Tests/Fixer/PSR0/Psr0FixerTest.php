@@ -175,9 +175,12 @@ EOF;
         $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
-    public function testIgnoreLongExtension()
+    /**
+     * @dataProvider provideIgnoredCases
+     */
+    public function testIgnoreWrongNames($filename)
     {
-        $file = $this->getTestFile('Foo.class.php');
+        $file = $this->getTestFile($filename);
 
         $expected = <<<'EOF'
 <?php
@@ -188,29 +191,13 @@ EOF;
         $this->makeTest($expected, null, $file);
     }
 
-    public function testIgnoreFileWithoutName()
+    public function provideIgnoredCases()
     {
-        $file = $this->getTestFile('.php');
-
-        $expected = <<<'EOF'
-<?php
-namespace Aaa;
-class Bar {}
-EOF;
-
-        $this->makeTest($expected, null, $file);
-    }
-
-    public function testIgnoreFileStartedByDigit()
-    {
-        $file = $this->getTestFile('4Foo.php');
-
-        $expected = <<<'EOF'
-<?php
-namespace Aaa;
-class Bar {}
-EOF;
-
-        $this->makeTest($expected, null, $file);
+        return array(
+            array('.php'),
+            array('Foo.class.php'),
+            array('4Foo.php'),
+            array('$#.php'),
+        );
     }
 }
