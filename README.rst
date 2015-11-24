@@ -452,6 +452,10 @@ Choose from the list of available fixers:
                         incrementation/decrementation
                         should be used if possible.
 
+* **print_to_echo** [symfony]
+                        Converts print language
+                        construct to echo if possible.
+
 * **remove_leading_slash_use** [symfony]
                         Remove leading slashes in use
                         clauses.
@@ -615,10 +619,6 @@ Choose from the list of available fixers:
 * **phpdoc_var_to_type** [contrib]
                         @var should always be written
                         as @type.
-
-* **print_to_echo** [contrib]
-                        Converts print language
-                        construct to echo if possible.
 
 * **short_array_syntax** [contrib]
                         PHP arrays should use the PHP
