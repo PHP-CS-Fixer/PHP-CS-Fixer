@@ -58,20 +58,20 @@ final class MethodArgumentDefaultValueFixerTest extends AbstractFixerTestBase
             array(
                 <<<'EOT'
                     <?php
-                        function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default' {};
+                        function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
 
                         function fFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
 EOT
                 ,
                 <<<'EOT'
                     <?php
-                        function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default' {};
+                        function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
 
                         function fFunction($foo, $bar = 'removedValue', \SplFileInfo $baz, $x = 'default') {};
 EOT
             ),
             array(
-                '<?php function foo ($bar, $c) {}',
+                '<?php function foo ($bar /* a */ /* b */, $c) {}',
                 '<?php function foo ($bar /* a */ = /* b */ 1, $c) {}',
             ),
             array(
@@ -106,6 +106,30 @@ EOT
                             $d
                         ) {}
 EOT
+            ),
+            array(
+                '<?php function foo($foo, $bar) {}',
+                '<?php function foo($foo = array(array(1)), $bar) {}',
+            ),
+            array(
+                '<?php public function a($a, $b) {}',
+                '<?php public function a($a = array(\'a\' => \'b\', \'c\' => \'d\'), $b) {}',
+            ),
+            array(
+                '<?php public function a($a, $b) {}',
+                '<?php public function a($a = [\'a\' => \'b\', \'c\' => \'d\'], $b) {}',
+            ),
+            array(
+                '<?php public function a($a, $b) {}',
+                '<?php public function a($a = NULL, $b) {}',
+            ),
+            array(
+                '<?php public function a($a, $b) {}',
+                '<?php public function a($a = Null, $b) {}',
+            ),
+            array(
+                '<?php public function a(&$a, $b) {}',
+                '<?php public function a(&$a = null, $b) {}',
             ),
         );
     }
