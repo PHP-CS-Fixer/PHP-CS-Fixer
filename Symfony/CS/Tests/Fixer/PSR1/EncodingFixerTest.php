@@ -42,8 +42,8 @@ final class EncodingFixerTest extends AbstractFixerTestCase
         $inputFile = $inputFilename ? $this->getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$inputFilename) : null;
 
         return array(
-            file_get_contents($expectedFile->getRealpath()),
-            $inputFile ? file_get_contents($inputFile->getRealpath()) : null,
+            file_get_contents($expectedFile->getRealPath()),
+            $inputFile ? file_get_contents($inputFile->getRealPath()) : null,
             $inputFile ?: $expectedFile,
         );
     }
