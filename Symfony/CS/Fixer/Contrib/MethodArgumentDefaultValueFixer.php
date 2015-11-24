@@ -21,11 +21,11 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 final class MethodArgumentDefaultValueFixer extends AbstractFixer
 {
-    private $argumentBoundaryTokens = array('(', ',', ')', ';', '{', '}');
-    private $variableOrTerminatorTokens = array(array(T_VARIABLE), ')', ';', '{', '}');
+    private $argumentBoundaryTokens = array('(', ',', ';', '{', '}');
+    private $variableOrTerminatorTokens = array(array(T_VARIABLE), ';', '{', '}');
     private $argumentTerminatorTokens = array(',', ')', ';', '{');
-    private $defaultValueTokens = array('=', ')', ';', '{');
-    private $immediateDefaultValueTokens = array('=', ')', ',', ';', '{');
+    private $defaultValueTokens = array('=', ';', '{');
+    private $immediateDefaultValueTokens = array('=', ',', ';', '{');
 
     /**
      * {@inheritdoc}
@@ -96,7 +96,7 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
         $lastNonDefaultArgumentIndex = null;
 
         while ($tokens[$nextRelevantTokenIndex]->isGivenKind(T_VARIABLE)) {
-            if ($tokens[$tokens->getNextMeaningfulToken($nextRelevantTokenIndex)]->equalsAny($this->argumentTerminatorTokens)) {
+            if (!$tokens[$tokens->getNextMeaningfulToken($nextRelevantTokenIndex)]->equals('=')) {
                 $lastNonDefaultArgumentIndex = $nextRelevantTokenIndex;
             }
 
@@ -136,24 +136,73 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
 
     /**
      * @param Tokens $tokens
-     * @param int    $nextVariableIndex
+     * @param int    $variableIndex
      */
-    private function removeDefaultArgument(Tokens $tokens, $nextVariableIndex)
+    private function removeDefaultArgument(Tokens $tokens, $variableIndex)
     {
-        $currentIndex = $nextVariableIndex;
-
-        $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($nextVariableIndex);
-        $nextMeaningfulTokenIndex = $tokens->getNextTokenOfKind($nextVariableIndex, array(array(T_STRING, 'null'), ',', ')'));
-
-        if (
-            $tokens[$nextMeaningfulTokenIndex]->equals(array(T_STRING, 'null')) &&
-            !$tokens[$prevMeaningfulTokenIndex]->equalsAny($this->argumentBoundaryTokens)
-        ) {
-            return; //ignore typehinted null default values
+        if ($this->isTypehintedNullableVariable($tokens, $variableIndex)) {
+            return;
         }
 
-        while (!$tokens[$currentIndex + 1]->equalsAny($this->argumentTerminatorTokens)) {
-            $tokens[++$currentIndex]->clear();
+        $argumentEndIndex = $this->findArgumentEndIndex($tokens, $variableIndex);
+        $currentIndex = $tokens->getNextMeaningfulToken($variableIndex);
+
+        while ($currentIndex < $argumentEndIndex) {
+            $tokens[$currentIndex]->clear();
+            $this->clearWhitespacesBeforeIndex($tokens, $currentIndex);
+            $currentIndex = $tokens->getNextMeaningfulToken($currentIndex);
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $variableIndex
+     *
+     * @return bool
+     */
+    private function isTypehintedNullableVariable(Tokens $tokens, $variableIndex)
+    {
+        $prevMeaningfulTokenIndex = $tokens->getPrevTokenOfKind($variableIndex, array(array(T_STRING), ',', '('));
+        $nextMeaningfulTokenIndex = $tokens->getNextTokenOfKind($variableIndex, array(array(T_STRING, 'null'), ',', ')'));
+
+        return
+            $tokens[$nextMeaningfulTokenIndex]->equals(array(T_STRING, 'null')) &&
+            $tokens[$prevMeaningfulTokenIndex]->isGivenKind(T_STRING);
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $variableIndex
+     *
+     * @return int
+     */
+    private function findArgumentEndIndex(Tokens $tokens, $variableIndex)
+    {
+        $currentIndex = $variableIndex;
+        while (!$tokens[$currentIndex]->equalsAny($this->argumentTerminatorTokens)) {
+            ++$currentIndex;
+            if ($tokens[$currentIndex]->equals('(')) {
+                $currentIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $currentIndex) + 1;
+            }
+
+            if ($tokens[$currentIndex]->equals('[')) {
+                $currentIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $currentIndex) + 1;
+            }
+        }
+
+        return $currentIndex;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function clearWhitespacesBeforeIndex(Tokens $tokens, $index)
+    {
+        $currentIndex = $index - 1;
+
+        while ($tokens[$currentIndex]->isGivenKind(T_WHITESPACE)) {
+            $tokens[$currentIndex]->clear();
         }
     }
 
