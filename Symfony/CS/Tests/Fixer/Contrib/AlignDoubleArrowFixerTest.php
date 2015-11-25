@@ -413,7 +413,7 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-    Foo::new()->aaa(array(1 => 2))->bbb("a", "b");
+    Foo::test()->aaa(array(1 => 2))->bbb("a", "b");
 ',
             ),
             array(
