@@ -289,7 +289,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
      */
     protected function getRequirementsFromConfig($fileName, $config)
     {
-        $requirements = array('hhvm' => true);
+        $requirements = array('hhvm' => true, 'php' => PHP_VERSION);
 
         $lines = explode("\n", $config);
         if (count($lines) <= 1) {
