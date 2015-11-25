@@ -218,11 +218,10 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
      */
     private function clearWhitespacesBeforeIndex(Tokens $tokens, $index)
     {
-        $currentIndex = $index - 1;
+        $token = $tokens[$index - 1];
 
-        while ($tokens[$currentIndex]->isGivenKind(T_WHITESPACE)) {
-            $tokens[$currentIndex]->clear();
-            --$currentIndex;
+        if ($token->isGivenKind(T_WHITESPACE)) {
+            $token->clear();
         }
     }
 
