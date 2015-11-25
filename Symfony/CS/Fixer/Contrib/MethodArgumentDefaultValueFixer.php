@@ -222,6 +222,7 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
 
         while ($tokens[$currentIndex]->isGivenKind(T_WHITESPACE)) {
             $tokens[$currentIndex]->clear();
+            --$currentIndex;
         }
     }
 
