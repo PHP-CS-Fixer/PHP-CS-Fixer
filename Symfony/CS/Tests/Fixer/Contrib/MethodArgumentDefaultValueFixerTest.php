@@ -16,12 +16,24 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 final class MethodArgumentDefaultValueFixerTest extends AbstractFixerTestBase
 {
     /**
-     * @dataProvider provideExamples
+     * @dataProvider provideExamplesForAllVersions
      *
      * @param string      $expected
      * @param string|null $input
      */
-    public function testFix($expected, $input = null)
+    public function testFixForAllVersions($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    /**
+     * @requires PHP 5.6
+     * @dataProvider provideExamplesFor56
+     *
+     * @param string      $expected
+     * @param string|null $input
+     */
+    public function testFixFor56($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
@@ -29,7 +41,7 @@ final class MethodArgumentDefaultValueFixerTest extends AbstractFixerTestBase
     /**
      * @return array
      */
-    public function provideExamples()
+    public function provideExamplesForAllVersions()
     {
         return array(
             array(
@@ -130,6 +142,15 @@ EOT
                 '<?php function a(&$a, $b) {}',
                 '<?php function a(&$a = null, $b) {}',
             ),
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function provideExamplesFor56()
+    {
+        return array(
             array(
                 '<?php function a($a = 1, ...$b) {}',
             ),
