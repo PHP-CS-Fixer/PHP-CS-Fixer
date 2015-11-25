@@ -152,7 +152,12 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
 
         $filenameParts = explode('.', $file->getBasename(), 2);
 
-        if (!isset($filenameParts[1]) || 'php' !== $filenameParts[1]) {
+        if (
+            // ignore file with extension other than php
+            (!isset($filenameParts[1]) || 'php' !== $filenameParts[1])
+            // ignore file with name that cannot be a class name
+            || 0 === preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $filenameParts[0])
+        ) {
             return false;
         }
 
