@@ -116,20 +116,25 @@ EOT
                 '<?php function a($a = array(\'a\' => \'b\', \'c\' => \'d\'), $b) {}',
             ),
             array(
-                '<?php public function a($a, $b) {}',
-                '<?php public function a($a = [\'a\' => \'b\', \'c\' => \'d\'], $b) {}',
+                '<?php function a($a, $b) {}',
+                '<?php function a($a = [\'a\' => \'b\', \'c\' => \'d\'], $b) {}',
             ),
             array(
-                '<?php public function a($a, $b) {}',
-                '<?php public function a($a = NULL, $b) {}',
+                '<?php function a($a, $b) {}',
+                '<?php function a($a = NULL, $b) {}',
             ),
             array(
-                '<?php public function a($a, $b) {}',
-                '<?php public function a($a = Null, $b) {}',
+                '<?php function a(\SplFileInfo $a = Null, $b) {}',
             ),
             array(
-                '<?php public function a(&$a, $b) {}',
-                '<?php public function a(&$a = null, $b) {}',
+                '<?php function a(&$a, $b) {}',
+                '<?php function a(&$a = null, $b) {}',
+            ),
+            array(
+                '<?php function a($a = 1, ...$b) {}',
+            ),
+            array(
+                '<?php function a($a = 1, \SplFileInfo ...$b) {}',
             ),
         );
     }

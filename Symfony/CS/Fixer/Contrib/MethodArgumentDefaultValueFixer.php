@@ -96,7 +96,9 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
         $lastNonDefaultArgumentIndex = null;
 
         while ($tokens[$nextRelevantTokenIndex]->isGivenKind(T_VARIABLE)) {
-            if (!$tokens[$tokens->getNextMeaningfulToken($nextRelevantTokenIndex)]->equals('=')) {
+            if (!$tokens[$tokens->getNextMeaningfulToken($nextRelevantTokenIndex)]->equals('=') &&
+                !$tokens[$tokens->getPrevMeaningfulToken($nextRelevantTokenIndex)]->isGivenKind(T_ELLIPSIS)
+            ) {
                 $lastNonDefaultArgumentIndex = $nextRelevantTokenIndex;
             }
 
@@ -163,10 +165,12 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
     private function isTypehintedNullableVariable(Tokens $tokens, $variableIndex)
     {
         $prevMeaningfulTokenIndex = $tokens->getPrevTokenOfKind($variableIndex, array(array(T_STRING), ',', '('));
-        $nextMeaningfulTokenIndex = $tokens->getNextTokenOfKind($variableIndex, array(array(T_STRING, 'null'), ',', ')'));
+        $nextMeaningfulTokenIndex = $tokens->getNextTokenOfKind($variableIndex, array(array(T_STRING), ',', ')'));
+
+        $lowerCasedNextContent = mb_convert_case($tokens[$nextMeaningfulTokenIndex]->getContent(), MB_CASE_LOWER, 'UTF-8');
 
         return
-            $tokens[$nextMeaningfulTokenIndex]->equals(array(T_STRING, 'null')) &&
+            $lowerCasedNextContent === 'null' &&
             $tokens[$prevMeaningfulTokenIndex]->isGivenKind(T_STRING);
     }
 
