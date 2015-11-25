@@ -97,7 +97,7 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
 
         while ($tokens[$nextRelevantTokenIndex]->isGivenKind(T_VARIABLE)) {
             if (!$tokens[$tokens->getNextMeaningfulToken($nextRelevantTokenIndex)]->equals('=') &&
-                !$tokens[$tokens->getPrevMeaningfulToken($nextRelevantTokenIndex)]->isGivenKind(T_ELLIPSIS)
+                !$this->isEllipsis($tokens, $nextRelevantTokenIndex)
             ) {
                 $lastNonDefaultArgumentIndex = $nextRelevantTokenIndex;
             }
@@ -106,6 +106,21 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
         }
 
         return $lastNonDefaultArgumentIndex;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $variableIndex
+     *
+     * @return bool
+     */
+    private function isEllipsis(Tokens $tokens, $variableIndex)
+    {
+        if (PHP_VERSION_ID < 50600) {
+            return false;
+        }
+
+        return $tokens[$tokens->getPrevMeaningfulToken($variableIndex)]->isGivenKind(T_ELLIPSIS);
     }
 
     /**
@@ -167,7 +182,7 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
         $prevMeaningfulTokenIndex = $tokens->getPrevTokenOfKind($variableIndex, array(array(T_STRING), ',', '('));
         $nextMeaningfulTokenIndex = $tokens->getNextTokenOfKind($variableIndex, array(array(T_STRING), ',', ')'));
 
-        $lowerCasedNextContent = mb_convert_case($tokens[$nextMeaningfulTokenIndex]->getContent(), MB_CASE_LOWER, 'UTF-8');
+        $lowerCasedNextContent = strtolower($tokens[$nextMeaningfulTokenIndex]->getContent());
 
         return
             $lowerCasedNextContent === 'null' &&
