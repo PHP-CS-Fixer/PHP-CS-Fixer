@@ -50,13 +50,6 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
 {
     private static $builtInFixers;
 
-    private static $levelMap = array(
-        'none' => FixerInterface::NONE_LEVEL,
-        'psr1' => FixerInterface::PSR1_LEVEL,
-        'psr2' => FixerInterface::PSR2_LEVEL,
-        'symfony' => FixerInterface::SYMFONY_LEVEL,
-    );
-
     public static function setUpBeforeClass()
     {
         $tmpFile = static::getTempFile();
@@ -79,9 +72,9 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
      *
      * @see doTestIntegration()
      */
-    public function testIntegration($testFileName, $testTitle, array $config, $fixers, $input, $expected = null)
+    public function testIntegration($testFileName, $testTitle, $fixers, $input, $expected = null)
     {
-        $this->doTestIntegration($testFileName, $testTitle, $config, $fixers, $input, $expected);
+        $this->doTestIntegration($testFileName, $testTitle, $fixers, $input, $expected);
     }
 
     /**
@@ -109,9 +102,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
                 throw new \InvalidArgumentException(sprintf('Test format invalid for "%s".', $fileName));
             }
 
-            $config = $this->getConfigFromSection($fileName, $match[2]);
-
-            $tests[] = array($fileName, $match[1], $config, $this->getFixersFromConfig($config), $match[3], isset($match[4]) ? $match[4] : null);
+            $tests[] = array($fileName, $match[1], $this->getFixersFromConfig($fileName, $match[2]), $match[3], isset($match[4]) ? $match[4] : null);
         }
 
         return $tests;
@@ -146,21 +137,12 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
      *
      * @param string           $testFileName Filename
      * @param string           $testTitle    Test title
-     * @param array            $config       Test file configuration
      * @param FixerInterface[] $fixers       Fixers to use
      * @param string           $input        Code to fix
      * @param string|null      $expected     Expected result or null if the input is expected not to change
      */
-    protected function doTestIntegration($testFileName, $testTitle, array $config, $fixers, $input, $expected = null)
+    protected function doTestIntegration($testFileName, $testTitle, $fixers, $input, $expected = null)
     {
-        if (defined('HHVM_VERSION') && isset($config['hhvm']) && false === $config['hhvm']) {
-            $this->markTestSkipped('HHVM is not supported.');
-        }
-
-        if (isset($config['php']) && version_compare(PHP_VERSION, $config['php']) < 0) {
-            $this->markTestSkipped(sprintf('PHP %s (or later) is required.', $config['php']));
-        }
-
         $errorsManager = new ErrorsManager();
         $fixer = new Fixer();
         $fixer->setErrorsManager($errorsManager);
@@ -183,18 +165,70 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, file_get_contents($tmpFile), sprintf('Expected changes do not match result for "%s" in "%s".', $testTitle, $testFileName));
 
         // run the test again with the `expected` part, this should always stay the same
-        $this->testIntegration($testFileName, $testTitle.' "--EXPECT-- part run"', $config, $fixers, $expected);
+        $this->testIntegration($testFileName, $testTitle.' "--EXPECT-- part run"', $fixers, $expected);
     }
 
     /**
      * Parses the '--CONFIG--' block of a '.test' file and determines what fixers should be used.
      *
-     * @param array $config
+     * @param string $fileName
+     * @param string $config
      *
-     * @return \Symfony\CS\FixerInterface[]
+     * @return FixerInterface[]
      */
-    protected function getFixersFromConfig($config)
+    protected function getFixersFromConfig($fileName, $config)
     {
+        static $levelMap = array(
+            'none' => FixerInterface::NONE_LEVEL,
+            'psr1' => FixerInterface::PSR1_LEVEL,
+            'psr2' => FixerInterface::PSR2_LEVEL,
+            'symfony' => FixerInterface::SYMFONY_LEVEL,
+        );
+
+        $lines = explode("\n", $config);
+        if (count($lines) < 1) {
+            throw new \InvalidArgumentException(sprintf('No configuration options found in "%s".', $fileName));
+        }
+
+        $config = array('level' => null, 'fixers' => array(), '--fixers' => array());
+
+        foreach ($lines as $line) {
+            $labelValuePair = explode('=', $line);
+            if (2 !== count($labelValuePair)) {
+                throw new \InvalidArgumentException(sprintf('Invalid configuration line "%s" in "%s".', $line, $fileName));
+            }
+
+            $label = strtolower(trim($labelValuePair[0]));
+            $value = trim($labelValuePair[1]);
+
+            switch ($label) {
+                case 'level':
+                    if (!array_key_exists($value, $levelMap)) {
+                        throw new \InvalidArgumentException(sprintf('Unknown level "%s" set in configuration in "%s", expected any of "%s".', $value, $fileName, implode(', ', array_keys($levelMap))));
+                    }
+
+                    if (null !== $config['level']) {
+                        throw new \InvalidArgumentException(sprintf('Cannot use multiple levels in configuration in "%s".', $fileName));
+                    }
+
+                    $config['level'] = $value;
+                    break;
+                case 'fixers':
+                case '--fixers':
+                    foreach (explode(',', $value) as $fixer) {
+                        $config[$label][] = strtolower(trim($fixer));
+                    }
+
+                    break;
+                default:
+                    throw new \InvalidArgumentException(sprintf('Unknown configuration item "%s" in "%s".', $label, $fileName));
+            }
+        }
+
+        if (null === $config['level']) {
+            throw new \InvalidArgumentException(sprintf('Level not set in configuration "%s".', $fileName));
+        }
+
         if (null === self::$builtInFixers) {
             $fixer = new Fixer();
             $fixer->registerBuiltInFixers();
@@ -210,7 +244,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
                 continue;
             }
 
-            if ($fixer->getLevel() !== ($fixer->getLevel() & self::$levelMap[$config['level']])) {
+            if ($fixer->getLevel() !== ($fixer->getLevel() & $levelMap[$config['level']])) {
                 if (false !== $key = array_search($fixerName, $config['fixers'], true)) {
                     $fixers[] = $fixer;
                     unset($config['fixers'][$key]);
@@ -235,68 +269,5 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
         }
 
         return $fixers;
-    }
-
-    /**
-     * Builds config from --CONFIG-- section.
-     *
-     * @param string $fileName
-     * @param string $configData
-     *
-     * @return string[]
-     */
-    private function getConfigFromSection($fileName, $configData)
-    {
-        $config = array('level' => null, 'fixers' => array(), '--fixers' => array());
-
-        $lines = explode("\n", $configData);
-        if (count($lines) < 1) {
-            throw new \InvalidArgumentException(sprintf('No configuration options found in "%s".', $fileName));
-        }
-
-        foreach ($lines as $line) {
-            $labelValuePair = explode('=', $line);
-            if (2 !== count($labelValuePair)) {
-                throw new \InvalidArgumentException(sprintf('Invalid configuration line "%s" in "%s".', $line, $fileName));
-            }
-
-            $label = strtolower(trim($labelValuePair[0]));
-            $value = trim($labelValuePair[1]);
-
-            switch ($label) {
-                case 'level':
-                    if (!array_key_exists($value, self::$levelMap)) {
-                        throw new \InvalidArgumentException(sprintf('Unknown level "%s" set in configuration in "%s", expected any of "%s".', $value, $fileName, implode(', ', array_keys(self::$levelMap))));
-                    }
-
-                    if (null !== $config['level']) {
-                        throw new \InvalidArgumentException(sprintf('Cannot use multiple levels in configuration in "%s".', $fileName));
-                    }
-
-                    $config['level'] = $value;
-                    break;
-                case 'fixers':
-                case '--fixers':
-                    foreach (explode(',', $value) as $fixer) {
-                        $config[$label][] = strtolower(trim($fixer));
-                    }
-
-                    break;
-                case 'hhvm':
-                    $config['hhvm'] = 'false' === $value ? false : true;
-                    break;
-                case 'php':
-                    $config['php'] = $value;
-                    break;
-                default:
-                    throw new \InvalidArgumentException(sprintf('Unknown configuration item "%s" in "%s".', $label, $fileName));
-            }
-        }
-
-        if (null === $config['level']) {
-            throw new \InvalidArgumentException(sprintf('Level not set in configuration "%s".', $fileName));
-        }
-
-        return $config;
     }
 }
