@@ -525,6 +525,10 @@ Choose from the list of available fixers:
                         placed adjacent to their
                         operands.
 
+* **unneeded_control_parentheses** [symfony]
+                        Removes unneeded parentheses
+                        around control statements.
+
 * **unused_use** [symfony]
                         Unused use statements must be
                         removed.
