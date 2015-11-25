@@ -26,10 +26,6 @@ before_install:
 install:
     - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction
 
-before_script:
-    # Enable short_open_tag to make some fixers working with php 5.3
-    - 'if [ "$TRAVIS_PHP_VERSION" = "5.3" ]; then echo "short_open_tag = On" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi'
-
 script:
     - phpunit --verbose --coverage-clover build/logs/clover.xml
     - phpenv config-rm xdebug.ini || return 0
