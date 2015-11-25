@@ -31,20 +31,20 @@ use Symfony\CS\FixerInterface;
  * --CONFIG--
  * level=symfony|none|psr0|psr1|psr2|symfony
  * fixers=fixer1,fixer2,...*
- * --REQUIREMENTS--**
- * php=5.4
- * hhvm=false
- * --fixers=fixer3,fixer4,...***
+ * --REQUIREMENTS--
+ * php=5.4**
+ * hhvm=false***
+ * --fixers=fixer3,fixer4,...****
  * --INPUT--
  * Code to fix
  * --EXPECT--
- * Expected code after fixing****
+ * Expected code after fixing*****
  *
- *    * Additional fixers may be omitted.
- *   ** Optional part. Tels which php minimum version is required and
- *     if hhvm is supported for the test.
- *  *** Black listed filters may be omitted.
- * **** When the expected block is omitted the input is expected not to
+ *     * Additional fixers may be omitted.
+ *    ** PHP minimum version. Default to current running php version (no effect).
+ *   *** HHVM compliant flag. Default to true. Set to false to skip test under HHVM.
+ *  **** Black listed filters may be omitted.
+ * ***** When the expected block is omitted the input is expected not to
  *     be changed by the fixers.
  *
  * @author SpacePossum <possumfromspace@gmail.com>
