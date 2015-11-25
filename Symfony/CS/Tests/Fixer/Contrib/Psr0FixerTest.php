@@ -161,12 +161,26 @@ class /* hi there */ Psr0Fixer {}
 EOF;
         $this->doTest($expected, $input, $file, $fixer);
 
+        $expected = <<<'EOF'
+<?php
+namespace /* hi there */ Foo\Bar\Baz\Fixer\Contrib;
+class /* hi there */ Psr0Fixer {}
+EOF;
+        $input = <<<'EOF'
+<?php
+namespace /* hi there */ Foo\Bar\Baz\FIXER\Contrib;
+class /* hi there */ Psr0Fixer {}
+EOF;
+
+        $this->doTest($expected, $input, $file, $fixer);
+
         $config->setDir(__DIR__.'/../../../Fixer/Contrib');
         $expected = <<<'EOF'
 <?php
 namespace Foo\Bar\Baz;
 class Psr0Fixer {}
 EOF;
+
         $this->doTest($expected, null, $file, $fixer);
     }
 
