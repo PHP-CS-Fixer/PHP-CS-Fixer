@@ -193,11 +193,33 @@ EOF;
 
     public function provideIgnoredCases()
     {
-        return array(
+        $ignoreCases = array(
             array('.php'),
             array('Foo.class.php'),
             array('4Foo.php'),
             array('$#.php'),
         );
+
+        foreach (array('__halt_compiler', 'abstract', 'and', 'array', 'as', 'break', 'case', 'catch', 'class', 'clone', 'const', 'continue', 'declare', 'default', 'die', 'do', 'echo', 'else', 'elseif', 'empty', 'enddeclare', 'endfor', 'endforeach', 'endif', 'endswitch', 'endwhile', 'eval', 'exit', 'extends', 'final', 'for', 'foreach', 'function', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'interface', 'isset', 'list', 'namespace', 'new', 'or', 'print', 'private', 'protected', 'public', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'try', 'unset', 'use', 'var', 'while', 'xor') as $keyword) {
+            $ignoreCases[] = array($keyword.'.php');
+        }
+
+        foreach (array('__CLASS__', '__DIR__', '__FILE__', '__FUNCTION__', '__LINE__', '__METHOD__', '__NAMESPACE__') as $magicConstant) {
+            $ignoreCases[] = array($magicConstant.'.php');
+            $ignoreCases[] = array(strtolower($magicConstant).'.php');
+        }
+
+        if (PHP_VERSION_ID >= 50400) {
+            $ignoreCases[] = array('callable.php');
+            $ignoreCases[] = array('trait.php');
+            $ignoreCases[] = array('__TRAIT__.php');
+            $ignoreCases[] = array('insteadof.php');
+        }
+
+        if (PHP_VERSION_ID >= 50500) {
+            $ignoreCases[] = array('finally.php');
+        }
+
+        return $ignoreCases;
     }
 }

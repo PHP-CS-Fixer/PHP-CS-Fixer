@@ -174,6 +174,13 @@ class TokenTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->getBraceToken()->isKeyword());
     }
 
+    public function testIsMagicConstant()
+    {
+        $this->assertFalse($this->getBraceToken()->isMagicConstant());
+        $token = new Token(array(T_CLASS_C, '__CLASS__'));
+        $this->assertTrue($token->isMagicConstant());
+    }
+
     /**
      * @dataProvider provideIsNativeConstantCases
      */
