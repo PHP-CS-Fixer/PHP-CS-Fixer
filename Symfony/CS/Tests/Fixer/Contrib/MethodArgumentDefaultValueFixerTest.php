@@ -27,18 +27,6 @@ final class MethodArgumentDefaultValueFixerTest extends AbstractFixerTestBase
     }
 
     /**
-     * @requires PHP 5.6
-     * @dataProvider provideExamplesFor56
-     *
-     * @param string      $expected
-     * @param string|null $input
-     */
-    public function testFixFor56($expected, $input = null)
-    {
-        $this->makeTest($expected, $input);
-    }
-
-    /**
      * @return array
      */
     public function provideExamplesForAllVersions()
@@ -145,15 +133,6 @@ EOT
                 '<?php function a(&$a, $b) {}',
                 '<?php function a(&$a = null, $b) {}',
             ),
-        );
-    }
-
-    /**
-     * @return array
-     */
-    public function provideExamplesFor56()
-    {
-        return array(
             array(
                 '<?php function a($a = 1, ...$b) {}',
             ),

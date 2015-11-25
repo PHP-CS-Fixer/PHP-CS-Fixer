@@ -117,7 +117,7 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
     private function isEllipsis(Tokens $tokens, $variableIndex)
     {
         if (PHP_VERSION_ID < 50600) {
-            return false;
+            return $tokens[$tokens->getPrevMeaningfulToken($variableIndex)]->equals('.');
         }
 
         return $tokens[$tokens->getPrevMeaningfulToken($variableIndex)]->isGivenKind(T_ELLIPSIS);
