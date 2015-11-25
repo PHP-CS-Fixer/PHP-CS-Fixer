@@ -189,7 +189,6 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
         $lowerCasedNextContent = strtolower($tokens[$nextMeaningfulTokenIndex]->getContent());
 
         return 'null' === $lowerCasedNextContent;
-
     }
 
     /**
