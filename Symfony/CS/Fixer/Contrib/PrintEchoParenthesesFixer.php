@@ -8,7 +8,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class PrintEchoParenthesesFixer extends AbstractFixer
+final class PrintEchoParenthesesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

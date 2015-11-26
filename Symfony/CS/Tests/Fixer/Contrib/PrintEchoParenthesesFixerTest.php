@@ -6,8 +6,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
+ *
+ * @internal
  */
-class PrintEchoParenthesesFixerTest extends AbstractFixerTestBase
+final class PrintEchoParenthesesFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideFixCases
