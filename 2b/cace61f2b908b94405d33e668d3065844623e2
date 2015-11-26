@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-26T19:47:10Z
+
+@keradus Does this look ok now?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-26T20:27:24Z
+
+What happened with changes of `Symfony/PhpdocTypesFixer.php` ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-26T20:28:08Z
+
+There never were any real changes. They were just pointless formatting changes that aren't there anymore. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-26T20:59:00Z
+
+ooooh, now I see ;)
