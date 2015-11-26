@@ -611,6 +611,10 @@ Choose from the list of available fixers:
                         @var should always be written
                         as @type.
 
+* **return_parentheses** [contrib]
+                        Removes parentheses around
+                        returns.
+
 * **short_array_syntax** [contrib]
                         PHP arrays should use the PHP
                         5.4 short-syntax.
