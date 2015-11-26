@@ -90,11 +90,12 @@ EOF;
         $this->makeTest($expected, $input);
     }
 
-    public function testPropertyFix()
+    public function testMethodAndPropertyFix()
     {
         $expected = <<<'EOF'
 <?php
 /**
+ * @method self foo()
  * @property int $foo
  * @property-read boolean $bar
  * @property-write mixed $baz
@@ -105,9 +106,31 @@ EOF;
         $input = <<<'EOF'
 <?php
 /**
+ * @method Self foo()
  * @property Int $foo
  * @property-read Boolean $bar
  * @property-write MIXED $baz
+ */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testThrows()
+    {
+        $expected = <<<'EOF'
+<?php
+/**
+ * @throws static
+ */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+/**
+ * @throws STATIC
  */
 
 EOF;
