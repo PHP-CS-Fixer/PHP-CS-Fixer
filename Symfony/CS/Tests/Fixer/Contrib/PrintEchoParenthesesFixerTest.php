@@ -28,6 +28,33 @@ class PrintEchoParenthesesFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
+                echo (1 + 2) . $foo;
+                print (1 + 2) . $foo;
+                ',
+            ),
+            array(
+                '<?php
+                echo (1 + 2) * 10, "\n";
+                ',
+            ),
+            array(
+                '<?php
+                echo (1 + 2) * 10, "\n";
+                ',
+                '<?php
+                echo ((1 + 2) * 10, "\n");
+                ',
+            ),
+            array(
+                '<?php
+                echo(1 + 2) * 10, "\n";
+                ',
+                '<?php
+                echo((1 + 2) * 10, "\n");
+                ',
+            ),
+            array(
+                '<?php
                 echo "foo";
                 print "foo";
                 ',
