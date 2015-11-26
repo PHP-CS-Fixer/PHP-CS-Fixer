@@ -84,6 +84,24 @@ class PrintEchoParenthesesFixerTest extends AbstractFixerTestBase
                 print("foo");
                 ',
             ),
+            array(
+                '<?php
+                echo $a ? $b : $c;
+                echo ($a ? $b : $c) ? $d : $e;
+                echo 10 * (2 + 3);
+                echo ("foo"), ("bar");
+                echo my_awesome_function("foo");
+                echo $this->getOutput(1);
+                ',
+                '<?php
+                echo ($a ? $b : $c);
+                echo ($a ? $b : $c) ? $d : $e;
+                echo 10 * (2 + 3);
+                echo ("foo"), ("bar");
+                echo my_awesome_function("foo");
+                echo $this->getOutput(1);
+                ',
+            ),
         );
     }
 }
