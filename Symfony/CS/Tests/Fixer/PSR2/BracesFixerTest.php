@@ -127,30 +127,6 @@ class BracesFixerTest extends AbstractFixerTestBase
     }
                 ',
             ),
-            array(
-                '<?php
-    declare(strict_types=1);
-
-    class Test
-    {
-    }',
-                '<?php
-    declare (strict_types=1);
-
-    class Test
-    {
-    }',
-            ),
-            array(
-                '<?php
-    declare (ticks=1) {
-        //
-    }',
-                '<?php
-    declare(ticks=1) {
-        //
-    }',
-            ),
         );
     }
 
@@ -410,11 +386,11 @@ if (1) {
             ),
             array(
                 '<?php
-    declare (ticks=1) {
+    declare(ticks=1) {
         $ticks = 1;
     }',
                 '<?php
-    declare (ticks=1) {
+    declare(ticks=1) {
   $ticks = 1;
     }',
             ),
@@ -1250,10 +1226,18 @@ class Foo
                 '<?php
 
 // comment
-declare (ticks = 1);
+declare(strict_types=1);
 
 // comment
 while (true) {
+}',
+            ),
+            array(
+                '<?php
+declare(ticks=1) {
+}',
+                '<?php
+declare (ticks=1) {
 }',
             ),
         );
