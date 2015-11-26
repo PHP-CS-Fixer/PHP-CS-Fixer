@@ -31,6 +31,13 @@ class WhitespacyLinesFixerTest extends AbstractFixerTestBase
         return array(
             array(
                 '<?php
+$r = 5 +6;                   '.'
+
+$t = true> 9;       '.'
+',
+            ),
+            array(
+                '<?php
     $a = 1;   ',
             ),
             array(
