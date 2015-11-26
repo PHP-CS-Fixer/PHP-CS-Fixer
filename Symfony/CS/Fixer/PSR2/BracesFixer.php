@@ -613,7 +613,7 @@ class BracesFixer extends AbstractFixer
 
     /**
      * @param Tokens $tokens
-     * @param int $index
+     * @param int    $index
      */
     private function fixDeclareStatement(Tokens $tokens, $index)
     {
@@ -633,7 +633,7 @@ class BracesFixer extends AbstractFixer
 
     /**
      * @param Tokens $tokens
-     * @param int $startBraceIndex
+     * @param int    $startBraceIndex
      */
     private function fixSingleLineWhitespaceForDeclare(Tokens $tokens, $startBraceIndex)
     {
@@ -650,12 +650,12 @@ class BracesFixer extends AbstractFixer
 
     /**
      * @param Tokens $tokens
-     * @param int $startParenthesisIndex
-     * @param int $endParenthesisIndex
+     * @param int    $startParenthesisIndex
+     * @param int    $endParenthesisIndex
      */
     private function removeWhitespaceInParenthesis(Tokens $tokens, $startParenthesisIndex, $endParenthesisIndex)
     {
-        for ($i = $startParenthesisIndex; $i < $endParenthesisIndex; $i++) {
+        for ($i = $startParenthesisIndex; $i < $endParenthesisIndex; ++$i) {
             if ($tokens[$i]->isWhitespace()) {
                 $tokens[$i]->clear();
             }
