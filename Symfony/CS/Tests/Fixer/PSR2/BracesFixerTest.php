@@ -1237,7 +1237,7 @@ while (true) {
 declare(ticks=1) {
 }',
                 '<?php
-declare (ticks=1) {
+declare   (   ticks   =   1   )   {
 }',
             ),
         );
