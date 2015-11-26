@@ -272,6 +272,10 @@ Choose from the list of available fixers:
                         one blank line after the use
                         statements block.
 
+* **switch_case_parentheses** [PSR-2]
+                        Removes parentheses around
+                        switch cases.
+
 * **trailing_spaces** [PSR-2]
                         Remove trailing whitespace at
                         the end of non-blank lines.
