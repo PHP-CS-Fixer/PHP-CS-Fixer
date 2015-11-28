@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Contrib;
+namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\FixerInterface;
@@ -232,6 +232,6 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
      */
     public function getLevel()
     {
-        return FixerInterface::CONTRIB_LEVEL;
+        return FixerInterface::SYMFONY_LEVEL;
     }
 }
