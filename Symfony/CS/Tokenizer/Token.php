@@ -68,6 +68,24 @@ class Token
     }
 
     /**
+     * @param string[] $tokenNames
+     *
+     * @return array<int, int>
+     */
+    private static function getTokenKindsForNames(array $tokenNames)
+    {
+        $keywords = array();
+        foreach ($tokenNames as $keywordName) {
+            if (defined($keywordName)) {
+                $keyword = constant($keywordName);
+                $keywords[$keyword] = $keyword;
+            }
+        }
+
+        return $keywords;
+    }
+
+    /**
      * Clear token at given index.
      *
      * Clearing means override token by empty string.
@@ -275,24 +293,6 @@ class Token
         }
 
         return $magicConstants;
-    }
-
-    /**
-     * @param string[] $tokenNames
-     *
-     * @return array<int, int>
-     */
-    private static function getTokenKindsForNames(array $tokenNames)
-    {
-        $keywords = array();
-        foreach ($tokenNames as $keywordName) {
-            if (defined($keywordName)) {
-                $keyword = constant($keywordName);
-                $keywords[$keyword] = $keyword;
-            }
-        }
-
-        return $keywords;
     }
 
     /**
