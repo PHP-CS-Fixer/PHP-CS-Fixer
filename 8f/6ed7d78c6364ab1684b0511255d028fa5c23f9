@@ -1,0 +1,37 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-25T14:15:45Z
+
+lets see what Travis thinks, http://php.net/manual/en/reserved.other-reserved-words.php is still a TODO
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-25T16:02:02Z
+
+I'd prefer to ignore all these cases on all PHP versions since we should be able to fix code that will run ok on later PHP versions.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-25T16:10:08Z
+
+> I'd prefer to ignore all these cases on all PHP versions since we should be able to fix code that will run ok on later PHP versions.
+
+I prefer that as well, however since we don't know have the tokens kind constants on newer versions we cannot filter on those.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-26T21:14:51Z
+
+Please fix Travis
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-27T10:56:38Z
+
+all green now :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-27T16:33:44Z
+
+:+1:
