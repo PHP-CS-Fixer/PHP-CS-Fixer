@@ -123,8 +123,7 @@ class Annotation
     public function getTag()
     {
         if (null === $this->tag) {
-            $values = array_values($this->lines);
-            $this->tag = new Tag($values[0]->getContent());
+            $this->tag = new Tag($this->lines[0]);
         }
 
         return $this->tag;
