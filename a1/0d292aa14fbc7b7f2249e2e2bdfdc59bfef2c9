@@ -1,0 +1,617 @@
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-20T11:57:52Z
+
+On issue, I quoted from [w3school](http://www.w3schools.com/php/php_echo_print.asp):
+
+> echo has no return value while print has a return value of 1 so it can be used in expressions
+
+But the PHP [official documentation](http://php.net/manual/en/function.print.php#refsect1-function.print-returnvalues) says:
+
+> Returns 1, always.
+
+Since the return value is always 1 in any cases, I guess we could ignore it for conversion.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-20T12:00:28Z
+
+Well, forgot this.
+
+```php
+$ret = echo 'test';
+```
+
+Will throw syntax error. We have to take care of it.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-20T16:10:24Z
+
+@keradus PR ready to review and merge. :+1:
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-20T16:39:12Z
+
+CS corrected.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-20T17:29:37Z
+
+I would like to request a test cases for:
+```php
+function testFunction() {
+  return print("test");
+}
+
+$a = testFunction();
+$b += print($a);
+$c='';
+$c .= $b.print($a);
+$d = print($c) > 0 ? 'a' : 'b';
+switch(print('a')...
+if (1 === print($a)...
+```
+
+great work so far :)
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-20T18:57:32Z
+
+Wow, nice @Soullivaneuh !
+I can see that PR is already in progress ;)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-23T10:25:30Z
+
+Ready for review.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-23T11:31:50Z
+
+This should be OK now.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-23T13:03:50Z
+
+@gharlan review corrected.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-23T13:44:45Z
+
+Please add this test case:
+
+```php
+echo foo(1, 2);
+```
+(should be converted)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-23T14:06:41Z
+
+Well, not working for `echo` to `print`.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-23T14:10:48Z
+
+And... fixed! :-)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-23T14:12:41Z
+
+Ok, next test case:
+
+```php
+echo ['foo', 'bar', 'baz'][$x];
+```
+;)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-23T14:15:14Z
+
+Ha ha ha ha... stop playing with me.
+
+:heart:
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-23T14:16:01Z
+
+I would fix these cases with `$tokens->findBlockEnd()`.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-23T14:21:57Z
+
+Another test case:
+
+```php
+<?php echo 'foo' ?>...<?php echo 'bar', 'baz' ?>
+```
+
+First `echo` should be converted.
+
+I guess it will fail because of https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1523#discussion_r45595696
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-23T16:30:22Z
+
+The `EchoToPrintFixer` should run after `ShortEchoTagFixer`.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-23T18:15:53Z
+
+Another test case:
+
+```php
+print $foo ? 'foo' : 'bar';
+```
+(should be converted)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-23T18:28:20Z
+
+And this one (should pass without modification):
+
+```php
+@print foo();
+```
+Must not be converted, `@echo foo()` would result in a parse error.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-24T08:56:45Z
+
+> The `EchoToPrintFixer` should run after `ShortEchoTagFixer`.
+
+Could you please elaborate why?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-24T09:02:03Z
+
+If someone uses both fixers the code should not change in a 2nd run. So the `ShortEchoTagFixer` (`<?=` to `echo`) has to run first
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-24T09:02:45Z
+
+Oh ok I see. Any way to test it? ping @keradus
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-24T09:30:33Z
+
+All tests should be OK now.
+
+Please tell me if this is ready to merge, I'll squash and rebase in this case.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-24T11:35:05Z
+
+Tests passed, rebasing.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-24T11:38:21Z
+
+Done, RTM. :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-24T11:45:41Z
+
+> Oh ok I see. Any way to test it? ping @keradus
+
+Yes.
+Add test here: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.11/Symfony/CS/Tests/FixerTest.php#L207 (it will test the priority of fixers)
+Also, you should add integration file here: https://github.com/FriendsOfPHP/PHP-CS-Fixer/tree/1.11/Symfony/CS/Tests/Fixtures/Integration (to check if both fixers in priority from previous test will fix the code as expected)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-24T14:12:11Z
+
+@keradus print_to_echo fixer moved and priority tests added.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-24T14:21:41Z
+
+Please, fix the Travis ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-24T14:28:54Z
+
+hhvm could be failing due to ignoring short_open_tag
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-24T14:31:28Z
+
+@keradus Well, I don't why the f*ck this is not working on 5.3... any idea?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-24T14:33:31Z
+
+nope, but didn't investigate it, sorry, no time now :(
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-24T14:33:46Z
+
+For HHVM, it seems to be failing because "PHP short open tags are not enabled.".
+
+How to enable it properly on Travis?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-24T14:41:52Z
+
+for hhvm see https://github.com/keradus/PHP-CS-Fixer/commit/766cb0ab07986c0196fd15409b727266827988e0
+(from https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1465)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-24T14:43:21Z
+
+Also https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.11/Symfony/CS/Tests/Fixer/Contrib/ShortEchoTagFixerTest.php#L31-L33
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-24T14:44:17Z
+
+So why should I do? Waiting your fix or simply ignore test with HHVM?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-24T14:50:00Z
+
+My PR is not a fix, it removes some workarounds of HHVM bugs. HHVM must fix that bug. They probably did it but on HHVM version not supported by Travis yet.
+My PR is to keep bad hhvm-related code tracked and remove it when possible.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-24T14:50:32Z
+
+yes, you should skip that one integration test on hhvm
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-24T14:56:01Z
+
+Well, HHVM failed on **integration** test.
+
+I don't know where to put the condition.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-24T15:02:10Z
+
+Yes, on integration, on simple utests it is already skipped for short_echo fixer.
+
+There is no such a place now, I think that you need, sadly, add the optional section in integration file and code to handle it :(
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T10:54:05Z
+
+@keradus I tried a quick implementation to make a generic ignore of some integration files.
+
+I don't think we need more, this is just a hack waiting HHVM fix.
+
+Note: I tried with `HipHop VM 3.10.1 (rel)`, the bug with the short open tag is still here.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T11:13:51Z
+
+Hacky... I don't like this... But I think we could accept it for now and later think for more general solution, if we have a need for it
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T11:14:18Z
+
+Then, the last thing is 5.3
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T11:24:30Z
+
+> Then, the last thing is 5.3
+
+For the moment, I clearly have no clue for this. :-(
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T11:27:02Z
+
+If I comment the concerned assert, I get this:
+
+```bash
+$ php phpunit-old.phar Symfony/CS/Tests/IntegrationTest.php
+PHPUnit 4.8.18 by Sebastian Bergmann and contributors.
+
+.F....
+
+Time: 547 ms, Memory: 23.50Mb
+
+There was 1 failure:
+
+1) Symfony\CS\Tests\IntegrationTest::testIntegration with data set #1 ('echo_to_print,short_echo_tag.test', 'Integration of fixers: echo_t...o_tag.', array(Symfony\CS\Fixer\Contrib\ShortEchoTagFixer Object (), Symfony\CS\Fixer\Contrib\EchoToPrintFixer Object ()), '<div><?= "test" ?></div>\n', '<div><?php print "test" ?></div>\n')
+Expected changes do not match result for "Integration of fixers: echo_to_print,short_echo_tag." in "echo_to_print,short_echo_tag.test".
+Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+-<div><?php print "test" ?></div>
++<div><?= "test" ?></div>
+
+/home/sullivan/projects/fork/PHP-CS-Fixer/Symfony/CS/Tests/AbstractIntegrationTest.php:165
+/home/sullivan/projects/fork/PHP-CS-Fixer/Symfony/CS/Tests/IntegrationTest.php:48
+/home/sullivan/projects/fork/PHP-CS-Fixer/Symfony/CS/Tests/AbstractIntegrationTest.php:77
+
+FAILURES!
+Tests: 6, Assertions: 20, Failures: 1.
+```
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T11:34:17Z
+
+@keradus If I remove the short open tag from the test file:
+
+```
+--INPUT--
+<div><?php echo "test" ?></div>
+
+--EXPECT--
+<div><?php print "test" ?></div>
+```
+
+This work. Maybe related to `short_echo_tag` fixer?
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T11:39:21Z
+
+I can confirmed it's related.
+
+`short_echo_tag` fixer does not detect any `T_OPEN_TAG_WITH_ECHO` on my test content.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T11:41:18Z
+
+Content of $token in `short_echo_tag` while:
+
+```php
+<div><?= "test" ?></div>
+```
+
+Just this token, with hole code inside. WTH? :-)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T11:47:52Z
+
+@keradus I think we have a problem with `token_get_all` function on PHP 5.3. Please see my `test.php`:
+
+```php
+<?php
+
+var_dump(token_get_all('<div><?= "test" ?></div>'));
+```
+
+And the result:
+
+```bash
+$ php test.php
+array(1) {
+  [0]=>
+  array(3) {
+    [0]=>
+    int(311)
+    [1]=>
+    string(24) "<div><?= "test" ?></div>"
+    [2]=>
+    int(1)
+  }
+}
+```
+
+What should I do? Ignoring this case for PHP 5.3? :trollface:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T11:49:11Z
+
+check the php.ini: short_open_tag
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T11:49:42Z
+
+ShortOpenTagFixer works on 5.3 right? if so, the integration test should work too.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-25T11:50:26Z
+
+ShortOpenTagFixer yes, ShortEchoTagFixer no (if `short_open_tag` disabled on 5.3).
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-25T11:51:08Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.11/Symfony/CS/Tests/Fixer/Contrib/ShortEchoTagFixerTest.php#L23
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T11:54:25Z
+
+Indeed, I enabled short_open_tag and this is working.
+
+I think the best is to enable it on Travis. That will solve ShortEchoTagFixer and permit to remove `@requires` tag too.
+
+Will investigate.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T12:02:20Z
+
+or just made whole fixer to run only under 5.4+.
+you can't know user's settings
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T12:04:01Z
+
+Solution works on Travis.yml.
+
+> or just made whole fixer to run only under 5.4+.
+
+Yeah, but how? This is due to integration tests. It would make two hacking methods? That's quite ugly.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T12:15:20Z
+
+Will work to expends options on `--CONFIG--` section.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T12:17:52Z
+
+> Will work to expends options on `--CONFIG--` section.
+
+this is not a config. this would be a new section. If you wan't I can help with that on evening.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T12:21:51Z
+
+Well, if config is not config, what is the config? :-)
+
+Anyway I almost finished my POC, I will let you review it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T12:23:43Z
+
+Config section is for things that will build your `Config` interface.
+The things we need now is requirements that need to be fulfilled to run the integration test.
+
+ok
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T12:30:27Z
+
+Done @keradus, I let you appreciate it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T12:54:19Z
+
+Could you make diff smaller? I can't see what changed in `getFixersFromConfig`.
+Also, remember that this method is rewritten on 2.x line: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Test/AbstractIntegrationTestCase.php#L193
+
+This (rewritting the method) is next reason why requirements should be moved to separated section (https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1523/files#r45862969)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T13:15:34Z
+
+> Could you make diff smaller?
+
+Not really, the diff is like that because I moved most of the logic from `getFixersFromConfig` to `getConfigFromSection`.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T13:17:19Z
+
+> This (rewritting the method) is next reason why requirements should be moved to separated section
+
+Oh I see. So what do you want? I propose a `--REQUIREMENTS--` or `--ENV--` section.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T13:17:50Z
+
+But if we add this section, we have to update all test files accordingly.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T13:21:03Z
+
+Exactly, as I [said](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1523#issuecomment-159591243).
+
+Requirements I think is better.
+
+You can make this section optional, don't you ?
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T13:23:48Z
+
+> You can make this section optional, don't you ?
+
+Will try.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T13:30:27Z
+
+the expected section is optional: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.11/Symfony/CS/Tests/AbstractIntegrationTest.php#L101
+
+you can base on it
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-25T13:57:53Z
+
+another pointer https://github.com/twigphp/Twig/blob/1.x/lib/Twig/Test/IntegrationTestCase.php#L90
+(I based the first version of the integration tests here on the Twig one, the Twig one has an optional `condition`-block, don't know why I didn't add that one in the first place.. )
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T13:59:07Z
+
+done @keradus.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T14:14:37Z
+
+So much better now @Soullivaneuh
+Thank you!
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T14:17:29Z
+
+You're welcome! ;-)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-27T09:43:14Z
+
+Is this PR goot to merge?
