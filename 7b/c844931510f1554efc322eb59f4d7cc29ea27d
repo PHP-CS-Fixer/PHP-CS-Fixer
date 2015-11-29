@@ -1,0 +1,107 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-26T21:33:33Z
+
+Rebased.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-27T16:40:51Z
+
+@keradus In order to remove the duplication, we did have to make a breaking change to a protected property. Is this acceptable?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-27T16:41:02Z
+
+Should that change be moved to 2.x?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-27T16:50:15Z
+
+Done. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-27T16:59:06Z
+
+I'm good to merge this, but first please could you tell what benefits to DocBlock component this PR will brings?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-27T17:00:58Z
+
+> I'm good to merge this, but first please could you tell what benefits to DocBlock component this PR will brings?
+
+I'm going to write a fixer to fix `false|bool` to `bool`, and other cases.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-27T17:01:15Z
+
+Abstracting this code can avoid duplication.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-27T17:01:37Z
+
+I had some other ideas, but I forgot them now. There were 2 or 3 others though. ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-27T17:03:53Z
+
+> benefits to DocBlock component this PR will brings?
+
+We also have actual unit testing over some stuff that was previously assumed to work and backed up by functional tests.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-27T17:08:12Z
+
+>I had some other ideas, but I forgot them now. There were 2 or 3 others though. ;)
+
+`Token[]|array` -> `array`
+`mixed|( ... )` -> `mixed`
+?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-27T17:11:30Z
+
+> I had some other ideas, but I forgot them now. There were 2 or 3 others though. ;)
+
+I meant for other fixers.
+
+But, yeh, those are valid cases for that fixer.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-27T17:11:49Z
+
+and anything `|void` is `void`
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-27T17:15:18Z
+
+:+1: (when tests will pass)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-27T18:37:29Z
+
+Tests passing. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-29T16:23:17Z
+
+Sorry, I have just a weekend of and can't wait for tests ;) One way or another marked as RTM so... merging :D
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-29T16:26:05Z
+
+:D
