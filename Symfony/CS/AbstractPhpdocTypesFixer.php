@@ -27,18 +27,16 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
     /**
      * The annotation tags search inside.
      *
-     * @var string[]|null
+     * @var string[]
      */
-    protected static $tags;
+    protected $tags;
 
     /**
      * {@inheritdoc}
      */
     public function __construct()
     {
-        if (null === static::$tags) {
-            static::$tags = Annotation::getTagsWithTypes();
-        }
+        $this->tags = Annotation::getTagsWithTypes();
     }
 
     /**
@@ -60,7 +58,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
             }
 
             $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType(static::$tags);
+            $annotations = $doc->getAnnotationsOfType($this->tags);
 
             if (empty($annotations)) {
                 continue;
