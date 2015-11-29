@@ -176,6 +176,47 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param int    $tokenId
+     * @param string $content
+     * @param bool   $isConstant
+     *
+     * @dataProvider provideMagicConstantCases
+     */
+    public function testIsMagicConstant($tokenId, $content, $isConstant = true)
+    {
+        $token = new Token(array($tokenId, $content));
+        $this->assertSame($isConstant, $token->isMagicConstant());
+    }
+
+    public function provideMagicConstantCases()
+    {
+        $cases = array(
+            array(T_CLASS_C, '__CLASS__'),
+            array(T_DIR, '__DIR__'),
+            array(T_FILE, '__FILE__'),
+            array(T_FUNC_C, '__FUNCTION__'),
+            array(T_LINE, '__LINE__'),
+            array(T_METHOD_C, '__METHOD__'),
+            array(T_NS_C, '__NAMESPACE__'),
+        );
+
+        if (defined('T_TRAIT_C')) {
+            $cases[] = array(T_TRAIT_C, '__TRAIT__');
+        }
+
+        foreach ($cases as $case) {
+            $cases[] = array($case[0], strtolower($case[1]));
+        }
+
+        foreach (array($this->getForeachToken(), $this->getBraceToken()) as $token) {
+            $cases[] = array($token->getId(), $token->getContent(), false);
+            $cases[] = array($token->getId(), strtolower($token->getContent()), false);
+        }
+
+        return $cases;
+    }
+
+    /**
      * @dataProvider provideIsNativeConstantCases
      */
     public function testIsNativeConstant($token, $isNativeConstant)

@@ -46,6 +46,7 @@ EOF;
         $expected = <<<'EOF'
 <?php
 /**
+ * @method int foo()
  * @property int $foo
  * @property-read bool $bar
  * @property-write float $baz
@@ -56,6 +57,7 @@ EOF;
         $input = <<<'EOF'
 <?php
 /**
+ * @method integer foo()
  * @property integer $foo
  * @property-read boolean $bar
  * @property-write double $baz

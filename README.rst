@@ -224,6 +224,11 @@ Choose from the list of available fixers:
 * **duplicate_semicolon** [@Symfony]
                         Remove duplicated semicolons.
 
+* **echo_to_print**
+                        Converts echo language
+                        construct to print if
+                        possible.
+
 * **elseif** [@PSR2, @Symfony]
                         The keyword elseif should be
                         used instead of else if so
@@ -506,6 +511,10 @@ Choose from the list of available fixers:
                         Pre
                         incrementation/decrementation
                         should be used if possible.
+
+* **print_to_echo**
+                        Converts print language
+                        construct to echo if possible.
 
 * **psr0**
                         Classes must be in a path that

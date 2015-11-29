@@ -67,7 +67,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Your name <your@email.com>
  */
-class RemoveCommentsFixer extends AbstractFixer
+final class RemoveCommentsFixer extends AbstractFixer
 {
 }
 ```
@@ -99,8 +99,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Your name <your@email.com>
+ *
+ * @internal
  */
-class RemoveCommentsFixerTest extends AbstractFixerTestBase
+final class RemoveCommentsFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideFixCases
@@ -182,8 +184,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Your name <your@email.com>
+ *
+ * @internal
  */
-class RemoveCommentsFixerTest extends AbstractFixerTestBase
+final class RemoveCommentsFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideFixCases
@@ -214,7 +218,7 @@ implement it.
 We need first to create one method to describe what this fixer does:
 `Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
 ```php
-class RemoveCommentsFixer extends AbstractFixer
+final class RemoveCommentsFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -229,7 +233,7 @@ class RemoveCommentsFixer extends AbstractFixer
 Next, we must filter what type of tokens we want to fix. Here, we are interested in code that contains `T_COMMENT` tokens:
 `Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
 ```php
-class RemoveCommentsFixer extends AbstractFixer
+final class RemoveCommentsFixer extends AbstractFixer
 {
     ...
     /**
@@ -294,7 +298,7 @@ We do not want all symbols to be analysed. Only `T_COMMENT`. So let us
 iterate the token(s) we are interested in.
 `Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
 ```php
-class RemoveCommentsFixer extends AbstractFixer
+final class RemoveCommentsFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -317,7 +321,7 @@ OK, now for each `T_COMMENT`, all we need to do is check if the previous
 token is a semicolon.
 `Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
 ```php
-class RemoveCommentsFixer extends AbstractFixer
+final class RemoveCommentsFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -363,7 +367,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Your name <your@email.com>
  */
-class RemoveCommentsFixer extends AbstractFixer {
+final class RemoveCommentsFixer extends AbstractFixer {
     /**
      * {@inheritdoc}
      */

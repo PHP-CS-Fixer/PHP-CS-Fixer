@@ -251,6 +251,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['unary_operators_spaces'], $fixers['logical_not_operators_with_successor_space']),
             array($fixers['method_separation'], $fixers['braces']),
             array($fixers['method_separation'], $fixers['indentation']),
+            array($fixers['short_echo_tag'], $fixers['echo_to_print']), // tested also in: echo_to_print,short_echo_tag.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:
