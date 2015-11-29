@@ -38,15 +38,38 @@ class NewWithBracesFixerTest extends AbstractFixerTestBase
     public function provideStandardCases()
     {
         return array(
-            array('<?php $x = new X();', '<?php $x = new X;'),
-            array('<?php $y = new Y() ;', '<?php $y = new Y ;'),
-            array('<?php $foo = new $foo();', '<?php $foo = new $foo;'),
-            array('<?php $baz = new {$bar->baz}();', '<?php $baz = new {$bar->baz};'),
-            array('<?php $xyz = new X(new Y(new Z()));', '<?php $xyz = new X(new Y(new Z));'),
-            array('<?php $foo = (new $bar())->foo;', '<?php $foo = (new $bar)->foo;'),
-            array('<?php $self = new self();', '<?php $self = new self;'),
-            array('<?php $static = new static();', '<?php $static = new static;'),
-            array('<?php $magic = new __CLASS__();', '<?php $magic = new __CLASS__;'),
+            array(
+                '<?php $x = new X();',
+                '<?php $x = new X;',
+            ),
+            array(
+                '<?php $y = new Y() ;',
+                '<?php $y = new Y ;',
+            ),
+            array(
+                '<?php $foo = new $foo();',
+                '<?php $foo = new $foo;',
+            ),
+            array(
+                '<?php $baz = new {$bar->baz}();',
+                '<?php $baz = new {$bar->baz};',
+            ),
+            array(
+                '<?php $xyz = new X(new Y(new Z()));',
+                '<?php $xyz = new X(new Y(new Z));',
+            ),
+            array(
+                '<?php $foo = (new $bar())->foo;',
+                '<?php $foo = (new $bar)->foo;',
+            ),
+            array(
+                '<?php $self = new self();',
+                '<?php $self = new self;',
+            ),
+            array(
+                '<?php $static = new static();',
+                '<?php $static = new static;',
+            ),
             array(
                 '<?php $a = array( "key" => new DateTime(), );',
                 '<?php $a = array( "key" => new DateTime, );',
@@ -77,8 +100,8 @@ class NewWithBracesFixerTest extends AbstractFixerTestBase
                 '<?php $a = new $b[$c] ($hello[$world]) ;',
             ),
             array(
-                '<?php $a = new $b[\'class\']()\r\n\t ;',
-                '<?php $a = new $b[\'class\']\r\n\t ;',
+                "<?php \$a = new \$b['class']()\r\n\t ;",
+                "<?php \$a = new \$b['class']\r\n\t ;",
             ),
             array(
                 '<?php $a = $b ? new DateTime() : $b;',

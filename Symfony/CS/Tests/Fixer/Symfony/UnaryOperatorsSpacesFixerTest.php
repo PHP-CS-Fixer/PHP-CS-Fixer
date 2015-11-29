@@ -28,7 +28,7 @@ class UnaryOperatorsSpacesFixerTest extends AbstractFixerTestBase
 
     public function provideCases()
     {
-        return array(
+        $cases = array(
             array(
                 '<?php $a++;',
                 '<?php $a ++;',
@@ -79,15 +79,21 @@ class UnaryOperatorsSpacesFixerTest extends AbstractFixerTestBase
                 '<?php function &foo(){}',
                 '<?php function & foo(){}',
             ),
-            array(
+        );
+
+        if (PHP_VERSION_ID < 50400) {
+            $cases [] = array(
                 '<?php function foo(&$a, array &$b, Bar &$c) {}',
                 '<?php function foo(& $a, array & $b, Bar & $c) {}',
-            ),
-            array(
+            );
+
+            $cases [] = array(
                 '<?php foo(+$a, -2,-$b, &$c);',
                 '<?php foo(+ $a, - 2,- $b, & $c);',
-            ),
-        );
+            );
+        }
+
+        return $cases;
     }
 
     /**

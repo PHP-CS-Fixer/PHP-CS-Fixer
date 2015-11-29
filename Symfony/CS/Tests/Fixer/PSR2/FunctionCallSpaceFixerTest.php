@@ -36,8 +36,8 @@ class FunctionCallSpaceFixerTest extends AbstractFixerTestBase
             ),
            // test method call
            array(
-                '<?php $o->abc($a)',
-                '<?php $o->abc ($a)',
+                '<?php $o->abc($a);',
+                '<?php $o->abc ($a);',
             ),
            // test function-like constructs
            array(

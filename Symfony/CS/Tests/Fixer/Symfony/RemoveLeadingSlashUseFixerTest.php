@@ -45,7 +45,7 @@ class RemoveLeadingSlashUseFixerTest extends AbstractFixerTestBase
                 '<?php
                 $a = function(\B\C $a) use ($b){
 
-                }
+                };
                 ',
             ),
             array(
@@ -148,12 +148,12 @@ class RemoveLeadingSlashUseFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-                namespace Foo\Bar
+                namespace Foo\Bar;
                 use Baz;
                 class Foo implements Baz {}
                 ',
                 '<?php
-                namespace Foo\Bar
+                namespace Foo\Bar;
                 use \Baz;
                 class Foo implements Baz {}
                 ',
