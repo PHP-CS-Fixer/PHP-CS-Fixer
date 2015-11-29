@@ -70,10 +70,6 @@ class NewWithBracesFixerTest extends AbstractFixerTestBase
                 '<?php $static = new static();',
                 '<?php $static = new static;',
             ),
-            //array( was this valid in any PHP version? https://bugs.php.net/bug.php?id=36221
-            //    '<?php $magic = new __CLASS__();',
-            //    '<?php $magic = new __CLASS__;'
-            //),
             array(
                 '<?php $a = array( "key" => new DateTime(), );',
                 '<?php $a = array( "key" => new DateTime, );',
