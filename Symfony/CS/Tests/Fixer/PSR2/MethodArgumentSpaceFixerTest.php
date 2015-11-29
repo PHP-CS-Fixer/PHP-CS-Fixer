@@ -37,8 +37,8 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
             ),
             // test method arguments
             array(
-                '<?php function xyz($a=10, $b=20, $c=30) {',
-                '<?php function xyz($a=10,$b=20,$c=30) {',
+                '<?php function xyz($a=10, $b=20, $c=30) {}',
+                '<?php function xyz($a=10,$b=20,$c=30) {}',
             ),
             // test method arguments with multiple spaces
             array(
@@ -172,12 +172,12 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                     $a=10,
                     $b=20,
                     $c=30
-                    )',
+                    );',
                 '<?php xyz(
                     $a=10 ,
                     $b=20,
                     $c=30
-                    )',
+                    );',
             ),
             // skip arrays but replace arg methods
             array(

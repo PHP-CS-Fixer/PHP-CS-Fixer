@@ -70,7 +70,7 @@ final class Bar
     /**
      * @return void
      */
-    static private function bar() {}
+    static private function bar123() {}
 
     /*
      * This T_COMMENT should not be moved
@@ -163,7 +163,7 @@ EOF;
      *
      */
     class Foo {
-        return;
+        private $a;
     }
 
 EOF;
@@ -176,7 +176,7 @@ EOF;
      */
 
     class Foo {
-        return;
+        private $a;
     }
 
 EOF;

@@ -43,9 +43,8 @@ final class LongArraySyntaxFixerTest extends AbstractFixerTestCase
             array('<?php print_r(array(($y ? true : false)));', '<?php print_r([($y ? true : false)]);'),
             array('<?php $x = array(array(array()));', '<?php $x = [[[]]];'),
             array('<?php $x = array(array(array())); $y = array(array(array()));', '<?php $x = [[[]]]; $y = [[[]]];'),
-            array('<?php function(array $foo = array()) {}', '<?php function(array $foo = []) {}'),
-            array('<?php $x = array(1, 2)[0]', '<?php $x = [1, 2][0]'),
-
+            array('<?php function(array $foo = array()) {};', '<?php function(array $foo = []) {};'),
+            array('<?php $x = array(1, 2)[0];', '<?php $x = [1, 2][0];'),
             array('<?php $x[] = 1;'),
             array('<?php $x[ ] = 1;'),
             array('<?php $x[2] = 1;'),

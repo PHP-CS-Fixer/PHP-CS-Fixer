@@ -32,9 +32,11 @@ final class SingleArrayNoTrailingCommaFixerTest extends AbstractFixerTestCase
     {
         return array(
             array('<?php $x = array();'),
-            array('<?php $x = array(());'),
             array('<?php $x = array("foo");'),
-            array('<?php $x = array("foo");', '<?php $x = array("foo", );'),
+            array(
+                '<?php $x = array("foo");',
+                '<?php $x = array("foo", );',
+            ),
             array("<?php \$x = array(\n'foo', \n);"),
             array("<?php \$x = array('foo', \n);"),
             array("<?php \$x = array(array('foo'), \n);", "<?php \$x = array(array('foo',), \n);"),
@@ -85,11 +87,11 @@ TWIG
             array('<?php $x = [[]];'),
             array('<?php $x = ["foo"];', '<?php $x = ["foo",];'),
             array('<?php $x = bar(["foo"]);', '<?php $x = bar(["foo",]);'),
-            array("<?php \$x = bar(['foo'],\n]);"),
+            array("<?php \$x = bar([['foo'],\n]);"),
             array("<?php \$x = ['foo', \n];"),
             array('<?php $x = array([]);', '<?php $x = array([],);'),
             array('<?php $x = [[]];', '<?php $x = [[],];'),
-            array('<?php $x = [$y[]];', '<?php $x = [$y[],];'),
+            array('<?php $x = [$y[""]];', '<?php $x = [$y[""],];'),
             array(
                 '<?php
     $test = ["foo", <<<TWIG

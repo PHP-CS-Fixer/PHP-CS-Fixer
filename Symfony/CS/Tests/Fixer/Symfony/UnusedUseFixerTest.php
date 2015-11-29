@@ -33,7 +33,7 @@ $a = new SomeClass();
 
 use Symfony\Annotation\Template;
 use Symfony\Doctrine\Entities\Entity;
-use Symfony\Array\ArrayInterface;
+use Symfony\Array123\ArrayInterface;
 
 class AnnotatedClass
 {
@@ -65,7 +65,7 @@ $a = new SomeClass();
 
 use Symfony\Annotation\Template;
 use Symfony\Doctrine\Entities\Entity;
-use Symfony\Array\ArrayInterface;
+use Symfony\Array123\ArrayInterface;
 
 class AnnotatedClass
 {

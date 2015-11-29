@@ -152,13 +152,13 @@ final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
             ),
 
             array(
-                '<?php function(array $foo = array("bar")) {}',
-                '<?php function(array $foo = array( "bar" )) {}',
+                '<?php function(array $foo = array("bar")) {};',
+                '<?php function(array $foo = array( "bar" )) {};',
             ),
 
             array(
-                '<?php function(array $foo = ["bar"]) {}',
-                '<?php function(array $foo = [ "bar" ]) {}',
+                '<?php function(array $foo = ["bar"]) {};',
+                '<?php function(array $foo = [ "bar" ]) {};',
             ),
 
             array(

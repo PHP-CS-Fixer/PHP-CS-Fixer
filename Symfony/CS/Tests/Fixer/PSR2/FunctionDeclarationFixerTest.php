@@ -54,8 +54,8 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
 foo () {}',
             ),
             array(
-                '<?php function ($i) {}',
-                '<?php function($i) {}',
+                '<?php function ($i) {};',
+                '<?php function($i) {};',
             ),
             array(
                 '<?php function _function() {}',
@@ -74,8 +74,8 @@ foo () {}',
 {}',
             ),
             array(
-                '<?php function ($a) use ($b) {}',
-                '<?php function ($a) use ($b)     {}',
+                '<?php function ($a) use ($b) {};',
+                '<?php function ($a) use ($b)     {};',
             ),
             array(
                 '<?php function &foo($a) {}',
@@ -96,27 +96,27 @@ foo () {}',
     ) {}',
             ),
             array(
-                '<?php $function = function () {}',
-                '<?php $function = function(){}',
+                '<?php $function = function () {};',
+                '<?php $function = function(){};',
             ),
             array(
                 '<?php $function("");',
             ),
             array(
-                '<?php function ($a) use ($b) {}',
-                '<?php function($a)use($b) {}',
+                '<?php function ($a) use ($b) {};',
+                '<?php function($a)use($b) {};',
             ),
             array(
-                '<?php function ($a) use ($b) {}',
-                '<?php function($a)         use      ($b) {}',
+                '<?php function ($a) use ($b) {};',
+                '<?php function($a)         use      ($b) {};',
             ),
             array(
-                '<?php function ($a) use ($b) {}',
-                '<?php function ($a) use ( $b ) {}',
+                '<?php function ($a) use ($b) {};',
+                '<?php function ($a) use ( $b ) {};',
             ),
             array(
-                '<?php function &($a) use ($b) {}',
-                '<?php function &(  $a   ) use (   $b      ) {}',
+                '<?php function &($a) use ($b) {};',
+                '<?php function &(  $a   ) use (   $b      ) {};',
             ),
             array(
                 '<?php

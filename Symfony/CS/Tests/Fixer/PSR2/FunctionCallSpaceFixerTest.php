@@ -38,8 +38,8 @@ final class FunctionCallSpaceFixerTest extends AbstractFixerTestCase
             ),
            // test method call
            array(
-                '<?php $o->abc($a)',
-                '<?php $o->abc ($a)',
+                '<?php $o->abc($a);',
+                '<?php $o->abc ($a);',
             ),
            // test function-like constructs
            array(

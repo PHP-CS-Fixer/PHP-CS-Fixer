@@ -75,16 +75,16 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
                 '<?php function foo(Bar\Baz& $param) {}',
             ),
             array(
-                '<?php $foo = function(Bar\Baz $param) {}',
-                '<?php $foo = function(Bar\Baz$param) {}',
+                '<?php $foo = function(Bar\Baz $param) {};',
+                '<?php $foo = function(Bar\Baz$param) {};',
             ),
             array(
-                '<?php $foo = function(Bar\Baz &$param) {}',
-                '<?php $foo = function(Bar\Baz&$param) {}',
+                '<?php $foo = function(Bar\Baz &$param) {};',
+                '<?php $foo = function(Bar\Baz&$param) {};',
             ),
             array(
-                '<?php $foo = function(Bar\Baz & $param) {}',
-                '<?php $foo = function(Bar\Baz& $param) {}',
+                '<?php $foo = function(Bar\Baz & $param) {};',
+                '<?php $foo = function(Bar\Baz& $param) {};',
             ),
             array(
                 '<?php class Test { public function foo(Bar\Baz $param) {} }',

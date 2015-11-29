@@ -93,7 +93,7 @@ final class LowercaseConstantsFixerTest extends AbstractFixerTestCase
                 '<?php /* foo */ true; /** bar */ false;',
                 '<?php /* foo */ TRUE; /** bar */ FALSE;',
             ),
-            array('<?php class True {} class False {}, class Null {}'),
+            array('<?php class True {} class False {} class Null {}'),
             array('<?php class Foo extends True {}'),
             array('<?php class Foo implements False {}'),
             array('<?php Class Null { use True; }'),
