@@ -15,6 +15,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Filesystem;
@@ -337,6 +338,11 @@ EOF
             $config->finder(new \ArrayIterator(array(new StdinFileInfo())));
         } elseif (null !== $path) {
             $config->setDir($path);
+        }
+
+        if ($output instanceof ConsoleOutputInterface && extension_loaded('xdebug')) {
+            $stdErr = $output->getErrorOutput();
+            $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running composer with xdebug enabled. This has a major impact on runtime performance.'));
         }
 
         $verbosity = $output->getVerbosity();
