@@ -42,8 +42,8 @@
         ]
     },
     "config": {
-		"process-timeout": 0
-	},
+        "process-timeout": 0
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "2.0-dev"
