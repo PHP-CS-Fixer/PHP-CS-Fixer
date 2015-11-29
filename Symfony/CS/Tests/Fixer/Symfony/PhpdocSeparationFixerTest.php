@@ -539,6 +539,77 @@ EOF;
         $this->makeTest($expected, $input);
     }
 
+    public function testParamNestedKeysNotChanged()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param array $foo {
+     *     @var bool   $foo
+     *     @var string $bar
+     * }
+     */
+
+EOF;
+
+        $this->makeTest($expected);
+    }
+
+    public function testReturnNestedKeysNotChanged()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @return array {
+     *     @var bool   $foo
+     *     @var string $bar
+     * }
+     */
+
+EOF;
+
+        $this->makeTest($expected);
+    }
+
+    public function testParamNestedKeysCombined()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param bool $baz
+     * @param array $test {
+     *     @var bool   $foo
+     *     @var string $bar
+     * }
+     *
+     * @return array {
+     *     @var bool   $foo
+     *     @var string $bar
+     * }
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param bool $baz
+     *
+     * @param array $test {
+     *     @var bool   $foo
+     *     @var string $bar
+     * }
+     * @return array {
+     *     @var bool   $foo
+     *     @var string $bar
+     * }
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
     public function testEmptyDocBlock()
     {
         $expected = <<<'EOF'
