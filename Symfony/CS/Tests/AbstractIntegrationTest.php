@@ -31,15 +31,20 @@ use Symfony\CS\FixerInterface;
  * --CONFIG--
  * level=symfony|none|psr0|psr1|psr2|symfony
  * fixers=fixer1,fixer2,...*
- * --fixers=fixer3,fixer4,...**
+ * --REQUIREMENTS--
+ * php=5.4**
+ * hhvm=false***
+ * --fixers=fixer3,fixer4,...****
  * --INPUT--
  * Code to fix
  * --EXPECT--
- * Expected code after fixing***
+ * Expected code after fixing*****
  *
- *   * Additional fixers may be omitted.
- *  ** Black listed filters may be omitted.
- * *** When the expected block is omitted the input is expected not to
+ *     * Additional fixers may be omitted.
+ *    ** PHP minimum version. Default to current running php version (no effect).
+ *   *** HHVM compliant flag. Default to true. Set to false to skip test under HHVM.
+ *  **** Black listed filters may be omitted.
+ * ***** When the expected block is omitted the input is expected not to
  *     be changed by the fixers.
  *
  * @author SpacePossum <possumfromspace@gmail.com>
@@ -72,9 +77,9 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
      *
      * @see doTestIntegration()
      */
-    public function testIntegration($testFileName, $testTitle, $fixers, $input, $expected = null)
+    public function testIntegration($testFileName, $testTitle, $fixers, array $requirements, $input, $expected = null)
     {
-        $this->doTestIntegration($testFileName, $testTitle, $fixers, $input, $expected);
+        $this->doTestIntegration($testFileName, $testTitle, $fixers, $requirements, $input, $expected);
     }
 
     /**
@@ -98,11 +103,11 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
 
             $test = file_get_contents($file->getRealpath());
             $fileName = $file->getFileName();
-            if (!preg_match('/--TEST--[\n](.*?)\s--CONFIG--[\n](.*?)\s--INPUT--[\n](.*?[\n]*)(?:[\n]--EXPECT--\s(.*)|$)/s', $test, $match)) {
+            if (!preg_match('/--TEST--[\n](.*?)\s--CONFIG--[\n](.*?)(\s--REQUIREMENTS--[\n](.*?))?\s--INPUT--[\n](.*?[\n]*)(?:[\n]--EXPECT--\s(.*)|$)/s', $test, $match)) {
                 throw new \InvalidArgumentException(sprintf('Test format invalid for "%s".', $fileName));
             }
 
-            $tests[] = array($fileName, $match[1], $this->getFixersFromConfig($fileName, $match[2]), $match[3], isset($match[4]) ? $match[4] : null);
+            $tests[] = array($fileName, $match[1], $this->getFixersFromConfig($fileName, $match[2]), $this->getRequirementsFromConfig($fileName, $match[4]), $match[5], isset($match[6]) ? $match[6] : null);
         }
 
         return $tests;
@@ -138,11 +143,19 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
      * @param string           $testFileName Filename
      * @param string           $testTitle    Test title
      * @param FixerInterface[] $fixers       Fixers to use
+     * @param array            $requirements Env requirements (PHP, HHVM)
      * @param string           $input        Code to fix
      * @param string|null      $expected     Expected result or null if the input is expected not to change
      */
-    protected function doTestIntegration($testFileName, $testTitle, $fixers, $input, $expected = null)
+    protected function doTestIntegration($testFileName, $testTitle, $fixers, array $requirements, $input, $expected = null)
     {
+        if (defined('HHVM_VERSION') && false === $requirements['hhvm']) {
+            $this->markTestSkipped('HHVM is not supported.');
+        }
+        if (isset($requirements['php']) && version_compare(PHP_VERSION, $requirements['php']) < 0) {
+            $this->markTestSkipped(sprintf('PHP %s (or later) is required.', $requirements['php']));
+        }
+
         $errorsManager = new ErrorsManager();
         $fixer = new Fixer();
         $fixer->setErrorsManager($errorsManager);
@@ -165,7 +178,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, file_get_contents($tmpFile), sprintf('Expected changes do not match result for "%s" in "%s".', $testTitle, $testFileName));
 
         // run the test again with the `expected` part, this should always stay the same
-        $this->testIntegration($testFileName, $testTitle.' "--EXPECT-- part run"', $fixers, $expected);
+        $this->testIntegration($testFileName, $testTitle.' "--EXPECT-- part run"', $fixers, $requirements, $expected);
     }
 
     /**
@@ -269,5 +282,46 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
         }
 
         return $fixers;
+    }
+
+    /**
+     * Parses the '--REQUIREMENTS--' block of a '.test' file and determines requirements.
+     *
+     * @param string $fileName
+     * @param string $config
+     *
+     * @return array
+     */
+    protected function getRequirementsFromConfig($fileName, $config)
+    {
+        $requirements = array('hhvm' => true, 'php' => PHP_VERSION);
+
+        $lines = explode("\n", $config);
+        if (count($lines) <= 1) {
+            return $requirements;
+        }
+
+        foreach ($lines as $line) {
+            $labelValuePair = explode('=', $line);
+            if (2 !== count($labelValuePair)) {
+                throw new \InvalidArgumentException(sprintf('Invalid configuration line "%s" in "%s".', $line, $fileName));
+            }
+
+            $label = strtolower(trim($labelValuePair[0]));
+            $value = trim($labelValuePair[1]);
+
+            switch ($label) {
+                case 'hhvm':
+                    $requirements['hhvm'] = 'false' === $value ? false : true;
+                    break;
+                case 'php':
+                    $requirements['php'] = $value;
+                    break;
+                default:
+                    throw new \InvalidArgumentException(sprintf('Unknown configuration item "%s" in "%s".', $label, $fileName));
+            }
+        }
+
+        return $requirements;
     }
 }
