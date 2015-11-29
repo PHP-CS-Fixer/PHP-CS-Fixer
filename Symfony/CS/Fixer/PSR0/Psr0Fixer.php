@@ -161,6 +161,11 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
             return false;
         }
 
+        $tokens = Tokens::fromCode(sprintf('<?php %s {}', $filenameParts[0]));
+        if ($tokens[1]->isKeyword() || $tokens[1]->isMagicConstant()) {
+            return false;
+        }
+
         // ignore stubs/fixtures, since they are typically containing invalid files for various reasons
         return !preg_match('{[/\\\\](stub|fixture)s?[/\\\\]}i', $file->getRealPath());
     }
