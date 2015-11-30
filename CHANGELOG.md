@@ -3,6 +3,21 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.10.3
+---------------------
+
+* bug #1559 WhitespacyLinesFixer - fix bug cases (SpacePossum, keradus)
+* bug #1541 Psr0Fixer - Ignore filenames that are a reserved keyword or predefined constant (SpacePossum)
+* bug #1537 Psr0Fixer - ignore file without name or with name started by digit (keradus)
+* bug #1516 FixCommand - fix wrong message for dry-run (SpacePossum)
+* bug #1486 ExtraEmptyLinesFixer - Remove extra lines after comment lines too (SpacePossum)
+* bug #1503 Psr0Fixer - fix case with comments lying around (GrahamCampbell)
+* bug #1474 PhpdocToCommentFixer - fix not properly fixing for block right after namespace (GrahamCampbell)
+* bug #1478 BracesFixer - do not remove empty lines after class opening (keradus)
+* bug #1468 Add missing ConfigInterface::getHideProgress() (Eugene Leonovich, rybakit)
+* bug #1466 Fix bad indent on align double arrow fixer (Soullivaneuh, keradus)
+* bug #1479 Tokens - fix detection of short array (keradus)
+
 Changelog for v1.10.2
 ---------------------
 
