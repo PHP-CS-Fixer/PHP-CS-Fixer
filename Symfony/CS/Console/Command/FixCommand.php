@@ -342,7 +342,7 @@ EOF
 
         if ($output instanceof ConsoleOutputInterface && extension_loaded('xdebug')) {
             $stdErr = $output->getErrorOutput();
-            $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running composer with xdebug enabled. This has a major impact on runtime performance.'));
+            $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
         }
 
         $verbosity = $output->getVerbosity();
