@@ -33,6 +33,13 @@ final class WhitespacyLinesFixerTest extends AbstractFixerTestCase
         return array(
             array(
                 '<?php
+$r = 5 +6;                   '.'
+
+$t = true> 9;       '.'
+',
+            ),
+            array(
+                '<?php
     $a = 1;   ',
             ),
             array(
@@ -41,15 +48,41 @@ final class WhitespacyLinesFixerTest extends AbstractFixerTestCase
             ),
             array(
                 '<?php
-    $b = 1;
+    $b = 2;
 ',
                 '<?php
-    $b = 1;
+    $b = 2;
     ',
             ),
             array(
-                "<?php\n\n\n\$b = 1;",
-                "<?php\n                \n\t\n\$b = 1;",
+                '<?php
+    $b = 3;
+
+
+',
+                '<?php
+    $b = 3;
+    '.'
+    '.'
+    ',
+            ),
+            array(
+                '<?php
+    $b = 4;
+
+
+
+    $b += 4;',
+                '<?php
+    $b = 4;
+    '.'
+    '.'
+    '.'
+    $b += 4;',
+            ),
+            array(
+                "<?php\n\n\n\$b = 5;",
+                "<?php\n                \n\t\n\$b = 5;",
             ),
             array(
                 "<?php\necho 1;\n?>\n\n\n\n",
