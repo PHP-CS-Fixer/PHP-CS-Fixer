@@ -101,9 +101,9 @@ class LowercaseConstantsFixerTest extends AbstractFixerTestBase
                 '<?php
     class Foo
     {
-        const TRUE;
-        const FALSE;
-        const NULL;
+        const TRUE = 1;
+        const FALSE = 2;
+        const NULL = null;
     }',
             ),
         );

@@ -30,8 +30,8 @@ class LogicalNotOperatorsWithSuccessorSpaceFixerTest extends AbstractFixerTestBa
     {
         return array(
             array(
-                '<?php $i = 0; $i++; $foo = ! false || (! true || ! ! false && (2 === (7 -5));',
-                '<?php $i = 0; $i++; $foo = !false || (!true || !!false && (2 === (7 -5));',
+                '<?php $i = 0; $i++; $foo = ! false || (! true || ! ! false && (2 === (7 -5)));',
+                '<?php $i = 0; $i++; $foo = !false || (!true || !!false && (2 === (7 -5)));',
             ),
             array(
                 '<?php $i = 0; $i--; $foo = ! false || ($i && ! true);',

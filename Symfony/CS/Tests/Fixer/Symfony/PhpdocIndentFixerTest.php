@@ -355,7 +355,7 @@ class DocBlocks
  *
  * ...
  */
-public function write($name) {}
+function write($name) {}
 ',
             "<?php
 \t/**
@@ -363,7 +363,7 @@ public function write($name) {}
  *
  * ...
  */
-public function write(\$name) {}
+function write(\$name) {}
 ",
         );
 
