@@ -19,6 +19,25 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 class LongArraySyntaxFixerTest extends AbstractFixerTestBase
 {
     /**
+     * @requires PHP 5.4
+     * @dataProvider provideSkipExamples
+     */
+    public function testSkip($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideSkipExamples()
+    {
+        return array(
+            array('<?php $x[2] = 1;'),
+            array('<?php $x["a"] = 1;'),
+            array('<?php $x[] = 1;'),
+            array('<?php $x[ ] = 1;'),
+        );
+    }
+
+    /**
      * @dataProvider provideExamples
      */
     public function testFix($expected, $input = null)
@@ -43,10 +62,6 @@ class LongArraySyntaxFixerTest extends AbstractFixerTestBase
             array('<?php $x = array(array(array())); $y = array(array(array()));', '<?php $x = [[[]]]; $y = [[[]]];'),
             array('<?php function(array $foo = array()) {};', '<?php function(array $foo = []) {};'),
             array('<?php $x = array(1, 2)[0];', '<?php $x = [1, 2][0];'),
-            array('<?php $x[] = 1;'),
-            array('<?php $x[ ] = 1;'),
-            array('<?php $x[2] = 1;'),
-            array('<?php $x["a"] = 1;'),
             array('<?php $x = func()[$x];'),
             array('<?php $x = "foo"[$x];'),
             array('<?php $text = "foo ${aaa[123]} bar $bbb[0] baz";'),

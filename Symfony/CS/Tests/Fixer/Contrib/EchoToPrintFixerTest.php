@@ -30,7 +30,7 @@ final class EchoToPrintFixerTest extends AbstractFixerTestBase
 
     public function provideFixCases()
     {
-        return array(
+        $cases = array(
             array(
                 '<?php
                 print "test";
@@ -87,14 +87,6 @@ final class EchoToPrintFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-                print ["foo", "bar", "baz"][$x];
-                ',
-                '<?php
-                echo ["foo", "bar", "baz"][$x];
-                ',
-            ),
-            array(
-                '<?php
                 print $foo ? "foo" : "bar";
                 ',
                 '<?php
@@ -124,5 +116,18 @@ final class EchoToPrintFixerTest extends AbstractFixerTestBase
                 "<div><?php echo 'foo' ?></div>",
             ),
         );
+
+        if (PHP_VERSION_ID >= 50400) {
+            $cases[] = array(
+                '<?php
+                print ["foo", "bar", "baz"][$x];
+                ',
+                '<?php
+                echo ["foo", "bar", "baz"][$x];
+                ',
+            );
+        }
+
+        return $cases;
     }
 }
