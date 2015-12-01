@@ -1,0 +1,418 @@
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T13:01:38Z
+
+I continue https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/1539#issuecomment-159906171 here.
+
+> Yes, the interface on 2.x line has changed, that's why it is MAJOR bump. There is really no need to create 5 fixers that do the same.
+
+I was talking about 1.x with `HeaderComment`.
+
+> Even if one keyword could be fixed on PSR and one not - then keep all PSR as default. Voila!
+
+So all fixers on PSR2 folder?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-26T13:04:28Z
+
+> I was talking about 1.x with HeaderComment.
+
+Yes, and that method was removed on 2.x line.
+
+> So all fixers on PSR2 folder?
+
+if you didn't notice - I was still talking about _one_ fixer.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T13:14:52Z
+
+Ok so let's go for one fixer.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-26T13:16:36Z
+
+Even now it's problematic - switch+case are together, print+echo too, but yield+return no, and clone is totally separated
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T13:25:16Z
+
+@keradus done.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-26T13:36:27Z
+
+Missing test cases like:
+
+```php
+return($x)
+case($x)
+```
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T13:41:21Z
+
+Is `case($x);` valid? Oo
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-26T13:46:05Z
+
+https://3v4l.org/uDqGD
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T14:13:31Z
+
+@keradus done.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T14:42:08Z
+
+https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/93369320#L424
+
+Well, I don't know how to fix it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-26T14:48:14Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1550/files#diff-88a34db2d4d0954ca3782d619b42b317R27
+there is no such token on older PHP versoins
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T14:53:20Z
+
+> there is no such token on older PHP versoins
+
+Yes I know, this is why I set a `@requires` tag on fixer test.
+
+This is not the problem. The problem is php-cs-fixer is ran at the end and fails on that.
+
+How to fix/skip it?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-26T15:11:41Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/3d666f10aa4d1cc545877351dc6cbcf036b524b1/Symfony/CS/Fixer/PSR2/LowercaseConstantsFixer.php#L75-L77
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T15:30:53Z
+
+Oh, indeed. :+1:
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T15:35:39Z
+
+Well, my `T_YIELD` is on a static array. How should I properly set it with a condition?
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T15:36:33Z
+
+Or a manual define outside the class.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T15:59:54Z
+
+Test passed.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T16:21:06Z
+
+@keradus tests and code updated.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-27T10:00:18Z
+
+@gharlan Should be fixed now. :+1:
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-29T16:59:33Z
+
+Tests passed, is this PR good to merge @keradus?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-29T17:00:00Z
+
+Might be an idea to rebase it to be 100% sure they do still pass.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-29T17:00:58Z
+
+no need for review?
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-29T17:06:46Z
+
+> Might be an idea to rebase it to be 100% sure they do still pass.
+
+Done.
+
+> no need for review?
+
+I think the fixer is OK but feel free! ;-)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-29T17:48:59Z
+
+More test cases:
+
+```php
+foo(clone($a));
+foo(clone($a), 1);
+$a = $b ? clone($b) : $c;
+$a = (yield($x));
+```
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-30T10:53:44Z
+
+Thanks @gharlan for the relevant tests.
+
+All reviews and tests are fixed. :+1:
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-30T13:06:35Z
+
+@keradus Should be ok. `controlStatements` is always an array and an empty one will run nothing.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-30T13:33:09Z
+
+Code looks nice for me ;)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-30T13:46:29Z
+
+> Code looks nice for me ;)
+
+![image](https://cloud.githubusercontent.com/assets/1698357/11473140/1fb53e02-9771-11e5-8d40-c3bd22c80890.png)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-30T18:56:19Z
+
+Is it really PSR-2? I'm not sure.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-01T07:04:00Z
+
+> Is it really PSR-2? I'm not sure.
+
+Is it surely for switch case. But since @keradus wants me for only one fixer, he said to put it on PSR.
+
+In another side, it's consistent IMHO.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T08:02:53Z
+
+I said to put it to PSR2 with proper default configuration
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-01T09:32:17Z
+
+So do I have to change something on this PR or it's OK?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T09:48:07Z
+
+Set [this](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1550/files#diff-88a34db2d4d0954ca3782d619b42b317R27) list to one matching PSR2
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-01T10:08:32Z
+
+I would prefer to put this to symfony level with all types enabled.
+In 2.x we can add some types to psr-2.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-01T10:27:36Z
+
+> I would prefer to put this to symfony level with all types enabled.
+In 2.x we can add some types to psr-2.
+
+I would :+1: for this solution.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T10:39:22Z
+
+OK
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T11:57:04Z
+
+bug report, this should not happen:
+```diff
+-        return (
++        return
+             0 === strpos($method->name, 'get') &&
+             3 < strlen($method->name) &&
+             0 === $method->getNumberOfRequiredParameters()
+-        );
++        ;
+```
+
+(the space after return should not be there)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-01T12:00:54Z
+
+Good catch @keradus.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T12:02:35Z
+
+regress for 1.11 release ;P
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-01T12:05:19Z
+
+@keradus Is that should be handled by this fixer? We have whitespace fixer for this AFAIK.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-01T12:11:03Z
+
+> Is that should be handled by this fixer? We have whitespace fixer for this AFAIK.
+
+True. We just need to correct the fixer priorities IMO.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T12:14:27Z
+
+yes and no.
+The fixer should not fix issues that isn't it's responsibility.
+But the fixer should not introduce new issues.
+One may run only this one fixer - and if it fixes one issue and introduce other then it's not OK.
+
+So if fixer need to remove the `(`, it should remove the space before brace if needed too.
+But is should not care about spaces after return in all other places (places not touched by fixer)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-01T12:18:05Z
+
+> But the fixer should not introduce new issues.
+
+Ah, yes, but who's to say that is an issue? That's only an issue by the definition that trailing whitespace is unwanted. Not everyone might have that definition, if you see what I mean? It's outside the scope of this fixer.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T12:22:03Z
+
+Very well.
+Then still need priority ensurance and integration test.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-01T13:20:10Z
+
+I added priority tests but I can't understand why it's failing.
+
+Any idea?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-01T17:42:07Z
+
+Maybe a bug in `TrailingSpacesFixer`?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T21:00:50Z
+
+nope
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T21:11:23Z
+
+Problem found by 2.x test (which, sadly, cannot be backported to 1.x easily).
+
+Solved: https://github.com/Soullivaneuh/PHP-CS-Fixer/pull/2
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-01T22:16:37Z
+
+@keradus Do we still need priority ensurance and tests with your fix?
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-01T22:17:27Z
+
+> keradus modified the milestone: v1.12, v1.11 5 minutes ago
+
+Too bad, we are closed to finish this PR. :-(
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T22:18:58Z
+
+Yes, I fix bug in your fixer, but the need for tests the priority and integration are still in place.
+
+Please, get rid of last commit (add author) (totally or squash it with first commit of yours).
+
+I have started new release of 1.11. If Travis will soon be green for this PR I will incorporate it to 1.11.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-01T22:20:45Z
+
+> Please, get rid of last commit (add author) (totally or squash it with first commit of yours).
+
+Like this?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T22:21:14Z
+
+could be ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T22:22:23Z
+
+please, rebase on 1.11, the branch is conflicted
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-01T22:24:27Z
+
+@keradus done.
+
+Seems Travis to be unfrozen! :smile:
