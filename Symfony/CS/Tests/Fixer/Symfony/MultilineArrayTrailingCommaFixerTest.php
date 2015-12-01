@@ -39,27 +39,27 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
             array("<?php \$x = array(\n<<<'EOT'\noet\nEOT\n);"),
             array(
                 "<?php \$x = array(\n'foo',\n);",
-                "<?php \$x = array(\n'foo'\n);"
+                "<?php \$x = array(\n'foo'\n);",
             ),
             array(
                 "<?php \$x = array('foo',\n);",
-                "<?php \$x = array('foo'\n);"
+                "<?php \$x = array('foo'\n);",
             ),
             array(
                 "<?php \$x = array('foo', /* boo */\n);",
-                "<?php \$x = array('foo' /* boo */\n);"
+                "<?php \$x = array('foo' /* boo */\n);",
             ),
             array(
                 "<?php \$x = array('foo',\n/* boo */\n);",
-                "<?php \$x = array('foo'\n/* boo */\n);"
+                "<?php \$x = array('foo'\n/* boo */\n);",
             ),
             array(
                 "<?php \$x = array(\narray('foo',\n),\n);",
-                "<?php \$x = array(\narray('foo'\n)\n);"
+                "<?php \$x = array(\narray('foo'\n)\n);",
             ),
             array(
                 "<?php \$x = array(\narray('foo'),\n);",
-                "<?php \$x = array(\narray('foo')\n);"
+                "<?php \$x = array(\narray('foo')\n);",
             ),
             array(
                 "<?php \$x = array('a', 'b', 'c',\n  'd', 'q', 'z', );",
