@@ -275,7 +275,6 @@ TWIG
     public function provideExamples54()
     {
         return array(
-            array(
                 // short syntax tests
                 array('<?php $x = array([]);'),
                 array('<?php $x = [[]];'),
@@ -331,6 +330,7 @@ TWIG
 TWIG
         , $twig];',
                 ),
+                array(
 
                 '<?php
     $var = [
@@ -340,7 +340,7 @@ TWIG
     $var = [
         "string"
         /* foo */];',
-            ),
+                ),
         );
     }
 
