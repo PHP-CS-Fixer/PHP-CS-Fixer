@@ -16,6 +16,7 @@ use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class UnneededControlParenthesesFixer extends AbstractFixer
 {
@@ -90,12 +91,13 @@ final class UnneededControlParenthesesFixer extends AbstractFixer
                 }
 
                 if ($tokens[$blockStartIndex - 1]->isWhitespace() || $tokens[$blockStartIndex - 1]->isComment()) {
-                    $tokens[$blockStartIndex]->clear();
+                    $this->clearParenthesis($tokens, $blockStartIndex);
                 } else {
                     // Adds a space to prevent broken code like `return2`.
                     $tokens->overrideAt($blockStartIndex, array(T_WHITESPACE, ' '));
                 }
-                $tokens[$blockEndIndex]->clear();
+
+                $this->clearParenthesis($tokens, $blockEndIndex);
             }
         }
 
@@ -118,5 +120,24 @@ final class UnneededControlParenthesesFixer extends AbstractFixer
     public function getPriority()
     {
         return 30;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function clearParenthesis(Tokens $tokens, $index)
+    {
+        $tokens[$index]->clear();
+
+        if (
+            isset($tokens[$index - 1]) &&
+            isset($tokens[$index + 1]) &&
+            $tokens[$index - 1]->isWhitespace() &&
+            $tokens[$index + 1]->isWhitespace()
+        ) {
+            $tokens[$index - 1]->setContent($tokens[$index - 1]->getContent().$tokens[$index + 1]->getContent());
+            $tokens[$index + 1]->clear();
+        }
     }
 }
