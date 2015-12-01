@@ -25,7 +25,7 @@ class ShortTagFixerTest extends AbstractFixerTestBase
 
     public function provideClosingTagExamples()
     {
-        $cases = array(
+        return array(
             array('<?php echo \'Foo\';', '<? echo \'Foo\';'),
             array('<?php echo \'Foo\'; ?> PLAIN TEXT'),
             array('PLAIN TEXT<?php echo \'Foo\'; ?>'),
@@ -56,28 +56,49 @@ echo \'Foo\';
                 "<?php \$this->data = preg_replace('/<\?(?!xml|php)/s', '<?php ',       \$this->data);",
             ),
         );
+    }
 
-        if ('' !== ini_get('short_open_tag')) {
+    /**
+     * @dataProvider provideShortOpenCases
+     */
+    public function testShortOpen($expected, $input = null)
+    {
+        if (!ini_get('short_open_tag')) {
+            $this->markTestSkipped('PHP short open tags are not enabled.');
 
-            $cases[] = array(
+            return;
+        }
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideShortOpenCases()
+    {
+        return array(
+            array(
                 "<?php if ('<?php' === '<?') { }",
                 "<? if ('<?php' === '<?') { }",
-            );
-            $cases[] = array(
-                            'foo <?php  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
-                            'foo <?  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
-                        );
-            $cases[] = array(
-                "<?php
+            ),
+            array(
+                'foo <?php  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
+                'foo <?  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
+            ),
+             array(
+            "<?php
 '<?
 ';",
-            );
+             ),
+        );
+    }
+
+    public function testShortEcho()
+    {
+        if (PHP_VERSION_ID < 50400 && '' === ini_get('short_open_tag')) {
+            $this->markTestSkipped('PHP short echo tags are not enabled.');
+
+            return;
         }
 
-        if (PHP_VERSION_ID >= 50400 || '' !== ini_get('short_open_tag')) {
-            $cases[] = array('<?= \'Foo\';');
-        }
-
-        return $cases;
+        $this->makeTest('<?= \'Foo\';');
     }
 }
