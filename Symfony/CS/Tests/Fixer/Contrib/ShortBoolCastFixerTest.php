@@ -13,7 +13,7 @@ namespace Symfony\CS\Tests\Fixer\Contrib;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-class ShortBoolCastFixerTest  extends AbstractFixerTestBase
+class ShortBoolCastFixerTest extends AbstractFixerTestBase
 {
     /**
      * * @dataProvider provideCases
