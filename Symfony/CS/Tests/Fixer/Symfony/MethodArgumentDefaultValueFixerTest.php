@@ -127,6 +127,12 @@ EOT
                 '<?php function a(\SplFileInfo $a = Null, $b) {}',
             ),
             array(
+                '<?php function a(array $a = null, $b) {}',
+            ),
+            array(
+                '<?php function a(callable $a = null, $b) {}',
+            ),
+            array(
                 '<?php function a(\SplFileInfo &$a = Null, $b) {}',
             ),
             array(

@@ -179,9 +179,9 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
      */
     private function isTypehintedNullableVariable(Tokens $tokens, $variableIndex)
     {
-        $prevMeaningfulTokenIndex = $tokens->getPrevTokenOfKind($variableIndex, array(array(T_STRING), ',', '('));
+        $prevMeaningfulTokenIndex = $tokens->getPrevTokenOfKind($variableIndex, array(array(T_STRING), array(T_CALLABLE), array(CT_ARRAY_TYPEHINT), ',', '('));
 
-        if (!$tokens[$prevMeaningfulTokenIndex]->isGivenKind(T_STRING)) {
+        if (!$tokens[$prevMeaningfulTokenIndex]->isGivenKind(array(T_STRING, T_CALLABLE, CT_ARRAY_TYPEHINT))) {
             return false;
         }
 
