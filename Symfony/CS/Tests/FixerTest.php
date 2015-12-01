@@ -207,6 +207,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['unary_operators_spaces'], $fixers['logical_not_operators_with_successor_space']),
             array($fixers['short_echo_tag'], $fixers['echo_to_print']), // tested also in: echo_to_print,short_echo_tag.test
             array($fixers['short_bool_cast'], $fixers['spaces_cast']),
+            array($fixers['unneeded_control_parentheses'], $fixers['trailing_spaces']), // tested also in: trailing_spaces,unneeded_control_parentheses.test
         );
 
         $docFixerNames = array_filter(
