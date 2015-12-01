@@ -33,14 +33,34 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
             array('<?php $x = array();'),
             array('<?php $x = array("foo");'),
             array('<?php $x = array("foo", );'),
-            array("<?php \$x = array(\n'foo',\n);", "<?php \$x = array(\n'foo'\n);"),
             array("<?php \$x = array('foo',\n);"),
-            array("<?php \$x = array('foo',\n);", "<?php \$x = array('foo'\n);"),
-            array("<?php \$x = array('foo', /* boo */\n);", "<?php \$x = array('foo' /* boo */\n);"),
-            array("<?php \$x = array('foo',\n/* boo */\n);", "<?php \$x = array('foo'\n/* boo */\n);"),
-            array("<?php \$x = array(\narray('foo',\n),\n);", "<?php \$x = array(\narray('foo'\n)\n);"),
-            array("<?php \$x = array(\narray('foo'),\n);", "<?php \$x = array(\narray('foo')\n);"),
             array("<?php \$x = array(\n /* He */ \n);"),
+            array("<?php \$x = array(\n<<<EOT\noet\nEOT\n);"),
+            array("<?php \$x = array(\n<<<'EOT'\noet\nEOT\n);"),
+            array(
+                "<?php \$x = array(\n'foo',\n);",
+                "<?php \$x = array(\n'foo'\n);"
+            ),
+            array(
+                "<?php \$x = array('foo',\n);",
+                "<?php \$x = array('foo'\n);"
+            ),
+            array(
+                "<?php \$x = array('foo', /* boo */\n);",
+                "<?php \$x = array('foo' /* boo */\n);"
+            ),
+            array(
+                "<?php \$x = array('foo',\n/* boo */\n);",
+                "<?php \$x = array('foo'\n/* boo */\n);"
+            ),
+            array(
+                "<?php \$x = array(\narray('foo',\n),\n);",
+                "<?php \$x = array(\narray('foo'\n)\n);"
+            ),
+            array(
+                "<?php \$x = array(\narray('foo'),\n);",
+                "<?php \$x = array(\narray('foo')\n);"
+            ),
             array(
                 "<?php \$x = array('a', 'b', 'c',\n  'd', 'q', 'z', );",
                 "<?php \$x = array('a', 'b', 'c',\n  'd', 'q', 'z');",
@@ -57,8 +77,6 @@ class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestBase
                 "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z',\t);",
                 "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z'\t);",
             ),
-            array("<?php \$x = array(\n<<<EOT\noet\nEOT\n);"),
-            array("<?php \$x = array(\n<<<'EOT'\noet\nEOT\n);"),
             array(
                 '<?php
     $foo = array(
@@ -172,62 +190,6 @@ TWIG
         , $twig);',
             ),
 
-            // short syntax tests
-            array('<?php $x = array([]);'),
-            array('<?php $x = [[]];'),
-            array('<?php $x = ["foo",];'),
-            array('<?php $x = bar(["foo",]);'),
-            array("<?php \$x = bar(['foo',\n]]);", "<?php \$x = bar(['foo'\n]]);"),
-            array("<?php \$x = ['foo', \n];"),
-            array('<?php $x = array([],);'),
-            array('<?php $x = [[],];'),
-            array('<?php $x = [$y[],];'),
-            array("<?php \$x = [\n /* He */ \n];"),
-            array(
-                '<?php
-    $foo = [
-        [
-        ],
-    ];',
-            ),
-            array(
-                '<?php
-
-                $a = ["foo" => function ($b) {
-                    return "bar".$b;
-                }];',
-            ),
-            array(
-                '<?php
-    return [
-        "a" => 1,
-        "b" => 2,
-    ];',
-                '<?php
-    return [
-        "a" => 1,
-        "b" => 2
-    ];',
-            ),
-            array(
-                '<?php
-    $test = ["foo", <<<TWIG
-        foo
-        bar
-        baz
-TWIG
-        , $twig];',
-            ),
-            array(
-                '<?php
-    $test = ["foo", <<<\'TWIG\'
-        foo
-        bar
-        baz
-TWIG
-        , $twig];',
-            ),
-
             // no array tests
             array(
                 "<?php
@@ -298,7 +260,78 @@ TWIG
         "string"
         /* foo */);',
             ),
+        );
+    }
+
+    /**
+     * @dataProvider provideExamples54
+     * @requires PHP 5.4
+     */
+    public function testFix54($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideExamples54()
+    {
+        return array(
             array(
+                // short syntax tests
+                array('<?php $x = array([]);'),
+                array('<?php $x = [[]];'),
+                array('<?php $x = ["foo",];'),
+                array('<?php $x = bar(["foo",]);'),
+                array("<?php \$x = bar(['foo',\n]]);", "<?php \$x = bar(['foo'\n]]);"),
+                array("<?php \$x = ['foo', \n];"),
+                array('<?php $x = array([],);'),
+                array('<?php $x = [[],];'),
+                array('<?php $x = [$y[],];'),
+                array("<?php \$x = [\n /* He */ \n];"),
+                array(
+                    '<?php
+    $foo = [
+        [
+        ],
+    ];',
+                ),
+                array(
+                    '<?php
+
+                $a = ["foo" => function ($b) {
+                    return "bar".$b;
+                }];',
+                ),
+                array(
+                    '<?php
+    return [
+        "a" => 1,
+        "b" => 2,
+    ];',
+                    '<?php
+    return [
+        "a" => 1,
+        "b" => 2
+    ];',
+                ),
+                array(
+                    '<?php
+    $test = ["foo", <<<TWIG
+        foo
+        bar
+        baz
+TWIG
+        , $twig];',
+                ),
+                array(
+                    '<?php
+    $test = ["foo", <<<\'TWIG\'
+        foo
+        bar
+        baz
+TWIG
+        , $twig];',
+                ),
+
                 '<?php
     $var = [
         "string",
