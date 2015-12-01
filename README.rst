@@ -504,6 +504,10 @@ Choose from the list of available fixers:
                         Remove trailing whitespace at
                         the end of blank lines.
 
+* **align_constant_equals** [contrib]
+                Align constant equals symbols in
+                consecutive lines.
+
 * **align_double_arrow** [contrib]
                         Align double arrow symbols in
                         consecutive lines.
