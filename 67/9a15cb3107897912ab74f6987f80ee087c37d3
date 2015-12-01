@@ -1,0 +1,100 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-22T11:09:17Z
+
+What about the case `!(!$foo)`?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-22T11:10:30Z
+
+This fixer needs to be run before the fixer that adds a space after `(bool)`. That relation needs testing.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-22T11:30:45Z
+
+>What about the case !(!$foo)?
+
+added to the test
+
+>This fixer needs to be run before the fixer that adds a space after (bool). That relation needs testing.
+
+priorities added
+
+thanks for the feed back :+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-25T16:17:34Z
+
+basic comment handling added, bucket list is an integration test I think?
+(and wait for the test results...)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-29T17:22:24Z
+
+please, rebase and add tests
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-30T18:46:12Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by dereuromark at 2015-11-30T18:56:13Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-30T18:57:24Z
+
+IMO this can be in symfony level.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-01T09:30:14Z
+
+>IMO this can be in symfony level.
+
+sounds good to me, what do you think @keradus (or should we ask someone over @ symfony?)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T10:04:46Z
+
+Symfony indeed, sure of it
+
+---------------------------------------------------------------------------
+
+by stof at 2015-12-01T10:07:39Z
+
+indeed, it can be at the Symfony level (even though I don't think we ever needed to apply such fix in Symfony itself)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T10:09:16Z
+
+1 occurrence on 2.7 line, none on 2.8
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-01T11:37:50Z
+
+Just wondering... Would it be overkill to add De Morgan fixers? Does anyone have a preferred style for that sort of thing? `!$p && !$q` vs `!($q || $q)`?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T11:50:37Z
+
+Please, don't go in that direction ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-01T12:00:03Z
+
+Haha. ;)
