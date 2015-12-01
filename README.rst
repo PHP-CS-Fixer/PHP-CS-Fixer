@@ -473,6 +473,11 @@ Choose from the list of available fixers:
                         should be preferred to the
                         class name itself.
 
+* **short_bool_cast** [symfony]
+                        Short cast bool using double
+                        exclamation mark should not be
+                        used.
+
 * **single_array_no_trailing_comma** [symfony]
                         PHP single-line arrays should
                         not have trailing comma.
@@ -623,11 +628,6 @@ Choose from the list of available fixers:
 * **short_array_syntax** [contrib]
                         PHP arrays should use the PHP
                         5.4 short-syntax.
-
-* **short_bool_cast** [contrib]
-                        Short cast bool using double
-                        exclamation mark should not be
-                        used.
 
 * **short_echo_tag** [contrib]
                         Replace short-echo <?= with
