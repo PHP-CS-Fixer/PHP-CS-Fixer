@@ -45,7 +45,7 @@ class DoubleArrowMultilineWhitespacesFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Operator => should not be arounded by multi-line whitespaces.';
+        return 'Operator => should not be surrounded by multi-line whitespaces.';
     }
 
     /**

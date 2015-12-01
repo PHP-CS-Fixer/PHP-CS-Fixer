@@ -19,6 +19,8 @@ use Symfony\CS\Utils;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @method Token current()
  */
 class Tokens extends \SplFixedArray
 {
@@ -85,8 +87,8 @@ class Tokens extends \SplFixedArray
     /**
      * Create token collection from array.
      *
-     * @param array $array       the array to import
-     * @param bool  $saveIndexes save the numeric indexes used in the original array, default is yes
+     * @param Token[] $array       the array to import
+     * @param bool    $saveIndexes save the numeric indexes used in the original array, default is yes
      *
      * @return Tokens
      */
@@ -489,12 +491,12 @@ class Tokens extends \SplFixedArray
                 continue;
             }
 
-            if (0 === $bracesLevel && T_VARIABLE === $token->getId()) {
+            if (0 === $bracesLevel && $token->isGivenKind(T_VARIABLE)) {
                 $elements[$index] = array('token' => $token, 'type' => 'property');
                 continue;
             }
 
-            if (T_FUNCTION === $token->getId()) {
+            if ($token->isGivenKind(T_FUNCTION)) {
                 $elements[$index] = array('token' => $token, 'type' => 'method');
             }
         }
@@ -967,6 +969,25 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Check if partial code is multiline.
+     *
+     * @param int $start start index
+     * @param int $end   end index
+     *
+     * @return bool
+     */
+    public function isPartialCodeMultiline($start, $end)
+    {
+        for ($i = $start; $i <= $end; ++$i) {
+            if (false !== strpos($this[$i]->getContent(), "\n")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Check if the array at index uses the short-syntax.
      *
      * @param int $index
@@ -982,6 +1003,7 @@ class Tokens extends \SplFixedArray
             '"',
             array(T_CONSTANT_ENCAPSED_STRING),
             array(T_STRING),
+            array(T_STRING_VARNAME),
             array(T_VARIABLE),
             array(CT_DYNAMIC_PROP_BRACE_CLOSE),
             array(CT_DYNAMIC_VAR_BRACE_CLOSE),

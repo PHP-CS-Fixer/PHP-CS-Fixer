@@ -171,6 +171,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['unused_use'], $fixers['extra_empty_lines']),
             array($fixers['multiple_use'], $fixers['unused_use']),
             array($fixers['multiple_use'], $fixers['ordered_use']),
+            array($fixers['remove_leading_slash_use'], $fixers['ordered_use']),
             array($fixers['remove_lines_between_uses'], $fixers['ordered_use']),
             array($fixers['unused_use'], $fixers['remove_leading_slash_use']),
             array($fixers['multiple_use'], $fixers['remove_leading_slash_use']),
@@ -182,6 +183,8 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['standardize_not_equal'], $fixers['strict']),
             array($fixers['double_arrow_multiline_whitespaces'], $fixers['multiline_array_trailing_comma']),
             array($fixers['double_arrow_multiline_whitespaces'], $fixers['align_double_arrow']),
+            array($fixers['operators_spaces'], $fixers['align_double_arrow']), // tested also in: align_double_arrow,operators_spaces.test
+            array($fixers['operators_spaces'], $fixers['align_equals']), // tested also in: align_double_arrow,align_equals.test
             array($fixers['indentation'], $fixers['phpdoc_indent']),
             array($fixers['phpdoc_order'], $fixers['phpdoc_separation']),
             array($fixers['phpdoc_no_access'], $fixers['phpdoc_separation']),
@@ -199,6 +202,12 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['phpdoc_order'], $fixers['phpdoc_trim']),
             array($fixers['unused_use'], $fixers['line_after_namespace']),
             array($fixers['linefeed'], $fixers['eof_ending']),
+            array($fixers['php_unit_strict'], $fixers['php_unit_construct']),
+            array($fixers['unary_operators_spaces'], $fixers['logical_not_operators_with_spaces']),
+            array($fixers['unary_operators_spaces'], $fixers['logical_not_operators_with_successor_space']),
+            array($fixers['short_echo_tag'], $fixers['echo_to_print']), // tested also in: echo_to_print,short_echo_tag.test
+            array($fixers['short_bool_cast'], $fixers['spaces_cast']),
+            array($fixers['unneeded_control_parentheses'], $fixers['trailing_spaces']), // tested also in: trailing_spaces,unneeded_control_parentheses.test
         );
 
         $docFixerNames = array_filter(
@@ -211,15 +220,18 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         // prepare bulk tests for phpdoc fixers to test that:
         // * `phpdoc_to_comment` is first
         // * `phpdoc_indent` is second
-        // * `phpdoc_scalar` is third
+        // * `phpdoc_types` is third
+        // * `phpdoc_scalar` is fourth
         // * `phpdoc_params` is last
         $cases[] = array($fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']);
-        $cases[] = array($fixers['phpdoc_indent'], $fixers['phpdoc_scalar']);
+        $cases[] = array($fixers['phpdoc_indent'], $fixers['phpdoc_types']);
+        $cases[] = array($fixers['phpdoc_types'], $fixers['phpdoc_scalar']);
 
         foreach ($docFixerNames as $docFixerName) {
-            if (!in_array($docFixerName, array('phpdoc_to_comment', 'phpdoc_indent', 'phpdoc_scalar'), true)) {
+            if (!in_array($docFixerName, array('phpdoc_to_comment', 'phpdoc_indent', 'phpdoc_types', 'phpdoc_scalar'), true)) {
                 $cases[] = array($fixers['phpdoc_to_comment'], $fixers[$docFixerName]);
                 $cases[] = array($fixers['phpdoc_indent'], $fixers[$docFixerName]);
+                $cases[] = array($fixers['phpdoc_types'], $fixers[$docFixerName]);
                 $cases[] = array($fixers['phpdoc_scalar'], $fixers[$docFixerName]);
             }
 

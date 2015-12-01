@@ -14,6 +14,7 @@ namespace Symfony\CS\Fixer\PSR0;
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\ConfigAwareInterface;
 use Symfony\CS\ConfigInterface;
+use Symfony\CS\StdinFileInfo;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -45,7 +46,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                     return $content;
                 }
 
-                $namespaceIndex = $tokens->getNextNonWhitespace($index);
+                $namespaceIndex = $tokens->getNextMeaningfulToken($index);
                 $namespaceEndIndex = $tokens->getNextTokenOfKind($index, array(';'));
 
                 $namespace = trim($tokens->generatePartialCode($namespaceIndex, $namespaceEndIndex - 1));
@@ -54,7 +55,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                     return $content;
                 }
 
-                $classyIndex = $tokens->getNextNonWhitespace($index);
+                $classyIndex = $tokens->getNextMeaningfulToken($index);
                 $classyName = $tokens[$classyIndex]->getContent();
             }
         }
@@ -145,9 +146,23 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
      */
     public function supports(\SplFileInfo $file)
     {
+        if ($file instanceof StdinFileInfo) {
+            return false;
+        }
+
         $filenameParts = explode('.', $file->getBasename(), 2);
 
-        if (!isset($filenameParts[1]) || 'php' !== $filenameParts[1]) {
+        if (
+            // ignore file with extension other than php
+            (!isset($filenameParts[1]) || 'php' !== $filenameParts[1])
+            // ignore file with name that cannot be a class name
+            || 0 === preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $filenameParts[0])
+        ) {
+            return false;
+        }
+
+        $tokens = Tokens::fromCode(sprintf('<?php %s {}', $filenameParts[0]));
+        if ($tokens[1]->isKeyword() || $tokens[1]->isMagicConstant()) {
             return false;
         }
 

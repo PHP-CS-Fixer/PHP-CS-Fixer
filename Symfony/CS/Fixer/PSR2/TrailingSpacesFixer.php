@@ -39,7 +39,7 @@ class TrailingSpacesFixer extends AbstractFixer
             $lines = preg_split("/([\r\n]+)/", $token->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
             $linesSize = count($lines);
 
-            // fix only multiline whitespaces or singleline whitespaces at the and of file
+            // fix only multiline whitespaces or singleline whitespaces at the end of file
             if ($linesSize > 1 || !isset($tokens[$index + 1])) {
                 $lines[0] = rtrim($lines[0], " \t");
 

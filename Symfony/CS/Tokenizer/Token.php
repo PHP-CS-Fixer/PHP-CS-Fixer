@@ -68,6 +68,24 @@ class Token
     }
 
     /**
+     * @param string[] $tokenNames
+     *
+     * @return array<int, int>
+     */
+    private static function getTokenKindsForNames(array $tokenNames)
+    {
+        $keywords = array();
+        foreach ($tokenNames as $keywordName) {
+            if (defined($keywordName)) {
+                $keyword = constant($keywordName);
+                $keywords[$keyword] = $keyword;
+            }
+        }
+
+        return $keywords;
+    }
+
+    /**
      * Clear token at given index.
      *
      * Clearing means override token by empty string.
@@ -234,17 +252,16 @@ class Token
     }
 
     /**
-     * Generate keywords array contains all keywords that exists in used PHP version.
+     * Generate array containing all keywords that exists in PHP version in use.
      *
-     * @return array
+     * @return array<int, int>
      */
     public static function getKeywords()
     {
         static $keywords = null;
 
         if (null === $keywords) {
-            $keywords = array();
-            $keywordsStrings = array('T_ABSTRACT', 'T_ARRAY', 'T_AS', 'T_BREAK', 'T_CALLABLE', 'T_CASE',
+            $keywords = self::getTokenKindsForNames(array('T_ABSTRACT', 'T_ARRAY', 'T_AS', 'T_BREAK', 'T_CALLABLE', 'T_CASE',
                 'T_CATCH', 'T_CLASS', 'T_CLONE', 'T_CONST', 'T_CONTINUE', 'T_DECLARE', 'T_DEFAULT', 'T_DO',
                 'T_ECHO', 'T_ELSE', 'T_ELSEIF', 'T_EMPTY', 'T_ENDDECLARE', 'T_ENDFOR', 'T_ENDFOREACH',
                 'T_ENDIF', 'T_ENDSWITCH', 'T_ENDWHILE', 'T_EVAL', 'T_EXIT', 'T_EXTENDS', 'T_FINAL',
@@ -253,18 +270,29 @@ class Token
                 'T_INTERFACE', 'T_ISSET', 'T_LIST', 'T_LOGICAL_AND', 'T_LOGICAL_OR', 'T_LOGICAL_XOR',
                 'T_NAMESPACE', 'T_NEW', 'T_PRINT', 'T_PRIVATE', 'T_PROTECTED', 'T_PUBLIC', 'T_REQUIRE',
                 'T_REQUIRE_ONCE', 'T_RETURN', 'T_STATIC', 'T_SWITCH', 'T_THROW', 'T_TRAIT', 'T_TRY',
-                'T_UNSET', 'T_USE', 'T_VAR', 'T_WHILE', 'T_YIELD',
-            );
-
-            foreach ($keywordsStrings as $keywordName) {
-                if (defined($keywordName)) {
-                    $keyword = constant($keywordName);
-                    $keywords[$keyword] = $keyword;
-                }
-            }
+                'T_UNSET', 'T_USE', 'T_VAR', 'T_WHILE', 'T_YIELD', 'CT_ARRAY_TYPEHINT',
+            ));
         }
 
         return $keywords;
+    }
+
+    /**
+     * Generate array containing all predefined constants that exists in PHP version in use.
+     *
+     * @see http://php.net/manual/en/language.constants.predefined.php
+     *
+     * @return array<int, int>
+     */
+    public static function getMagicConstants()
+    {
+        static $magicConstants = null;
+
+        if (null === $magicConstants) {
+            $magicConstants = self::getTokenKindsForNames(array('T_CLASS_C', 'T_DIR', 'T_FILE', 'T_FUNC_C', 'T_LINE', 'T_METHOD_C', 'T_NS_C', 'T_TRAIT_C'));
+        }
+
+        return $magicConstants;
     }
 
     /**
@@ -365,6 +393,20 @@ class Token
         static $nativeConstantStrings = array('true', 'false', 'null');
 
         return $this->isArray && in_array(strtolower($this->content), $nativeConstantStrings, true);
+    }
+
+    /**
+     * Returns if the token is of a Magic constants type.
+     *
+     * @see http://php.net/manual/en/language.constants.predefined.php
+     *
+     * @return bool
+     */
+    public function isMagicConstant()
+    {
+        $magicConstants = static::getMagicConstants();
+
+        return $this->isArray && isset($magicConstants[$this->id]);
     }
 
     /**

@@ -16,7 +16,7 @@ use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
- * @author Dariusz Rumiñski <dariusz.ruminski@gmail.com>
+ * @author Dariusz RumiÅ„ski <dariusz.ruminski@gmail.com>
  */
 class UnalignEqualsFixer extends AbstractFixer
 {

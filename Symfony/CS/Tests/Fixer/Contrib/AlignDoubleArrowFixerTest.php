@@ -39,6 +39,76 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
+    $array = array(
+        "closure" => function ($param1, $param2) {
+            return;
+        }
+    );',
+            ),
+            array(
+                '<?php
+    return new JsonResponse(array(
+        "result" => "OK",
+        "html"   => 1, array(
+            "foo"    => "bar",
+            "foofoo" => array(
+                "a" => 1,
+                "b" => 2
+            )
+        ),)
+    );',
+                '<?php
+    return new JsonResponse(array(
+        "result" => "OK",
+        "html" => 1, array(
+            "foo" => "bar",
+            "foofoo" => array(
+                "a" => 1,
+                "b"  =>  2
+            )
+        ),)
+    );',
+            ),
+            array(
+                '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html"   => renderView("views/my_view.html.twig", array(
+            "foo"    => "bar",
+            "foofoo" => 43,
+        )),
+    ]);',
+                '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html" =>    renderView("views/my_view.html.twig", array(
+            "foo" => "bar",
+            "foofoo" => 43,
+        )),
+    ]);',
+            ),
+            array(
+                '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html"   => renderView("views/my_view.html.twig", [
+            "foo"    => "bar",
+            "foofoo" => 42,
+        ]),
+        "baz" => "OK",
+    ]);',
+                '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html" =>    renderView("views/my_view.html.twig", [
+            "foo" =>   "bar",
+            "foofoo" =>    42,
+        ]),
+        "baz" => "OK",
+    ]);',
+            ),
+            array(
+                '<?php
     $data = [
         "foo"  => "Bar",
         "main" => array(
@@ -246,11 +316,11 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     $a = array(
-        10    => 11,
-        20    => 22,
-        30    => 33,
+        10 => 11,
+        20 => 22,
+        30 => 33,
         40
-            =>
+           =>
                 44,
     );',
                 '<?php
@@ -266,9 +336,9 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     return array(
-        " "    => "",    "\t"    => "",
-        "\n"   => "", "\r"   => "",
-        "\0"   => "", "\x0B"    => "",
+        " "  => "",    "\t"    => "",
+        "\n" => "", "\r"   => "",
+        "\0" => "", "\x0B"    => "",
     );',
                 '<?php
     return array(
@@ -306,8 +376,8 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     return array(
-        self::STATUS_UNKNOWN    => array("symbol" => "?", "description" => "unknown"),
-        self::STATUS_INVALID    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
+        self::STATUS_UNKNOWN => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
     );',
                 '<?php
     return array(
@@ -319,13 +389,13 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
                 '<?php
     $array = array(
         "bazab" => b(array(
-            1     => 2,
-            5     => [
-                6     => 7,
-                8     => 9,
+            1 => 2,
+            5 => [
+                6 => 7,
+                8 => 9,
             ],
-            3       => 4,
-            10      => 11,
+            3  => 4,
+            10 => 11,
         )),
     );',
                 '<?php
@@ -343,7 +413,7 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-    Foo::new()->aaa(array(1 => 2))->bbb("a", "b");
+    Foo::test()->aaa(array(1 => 2))->bbb("a", "b");
 ',
             ),
             array(
@@ -361,6 +431,134 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
         "iūtė\b" => "ius",
         "utė\b" => "us",
     );',
+            ),
+            array(
+                '<?php
+                $formMapper
+                    ->add(\'foo\', null, [\'required\' => false])
+                    ->add(\'dummy_field\', null, [\'required\' => false])
+                ;
+                ',
+            ),
+            array(
+                '<?php
+                $formMapper
+                    ->add(\'foo\', null, array(\'required\' => false))
+                    ->add(\'dummy_field\', null, array(\'required\' => false))
+                ;
+                ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(["server1" => $object], ["addedAt" => "DESC"], 5);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(["server2" => $object], ["checkedAt" => "desc"], 50);
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array("server1" => $object), array("addedAt" => "DESC"), 5);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array("server2" => $object), array("checkedAt" => "desc"), 50);
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy($foo[123]);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy($foo[123]);
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy((1 + 2));
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy((1 + 2));
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array(1, 2));
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array(1, 2));
+    ',
+            ),
+            array(
+                '<?php
+
+    function foo() {}
+
+    $bar = 42;
+
+    $foo = [
+        "test123" => "foo",
+        "foo"     => $bar[123],
+        "a"       => foo(),
+        "b"       => 1,
+    ];
+    ',
+                '<?php
+
+    function foo() {}
+
+    $bar = 42;
+
+    $foo = [
+        "test123" => "foo",
+        "foo" => $bar[123],
+        "a" => foo(),
+        "b" => 1,
+    ];
+    ',
+            ),
+            array(
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID    => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+            ),
+            array(
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN => array((1+11)=> "?", "description" => "unknown"),
+        self::STATUS_INVALID => array((2+3)=> "III", "description" => "invalid file syntax, file ignored"),
+    );',
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN => array((1+11)=> "?", "description" => "unknown"),
+        self::STATUS_INVALID    => array((2+3)=> "III", "description" => "invalid file syntax, file ignored"),
+    );',
+            ),
+            array(
+                '<?php
+    return [
+        self::STATUS_UNKNOWN => ["symbol" => "?", "description" => "unknown"],
+        self::STATUS_INVALID => ["symbol123" => "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+                '<?php
+    return [
+        self::STATUS_UNKNOWN => ["symbol" => "?", "description" => "unknown"],
+        self::STATUS_INVALID    => ["symbol123" => "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+            ),
+            array(
+                '<?php
+    return [
+        self::STATUS_UNKNOWN => [(1+11)=> "?", "description" => "unknown"],
+        self::STATUS_INVALID => [(2+3)=> "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+                '<?php
+    return [
+        self::STATUS_UNKNOWN => [(1+11)=> "?", "description" => "unknown"],
+        self::STATUS_INVALID    => [(2+3)=> "III", "description" => "invalid file syntax, file ignored"],
+    ];',
             ),
         );
     }

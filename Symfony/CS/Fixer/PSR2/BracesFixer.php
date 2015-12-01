@@ -210,6 +210,8 @@ class BracesFixer extends AbstractFixer
                         !$nextNonWhitespaceNestToken->isComment() &&
                         // and it is not a `$foo = function () {};` situation
                         !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equalsAny(array(';', ',', ']'))) &&
+                        // and it is not a `Foo::{bar}()` situation
+                        !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equals('(')) &&
                         // and it is not a `${"a"}->...` and `${"b{$foo}"}->...` situation
                         !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(array('"', "'", array(T_CONSTANT_ENCAPSED_STRING))))
                     ) {
@@ -266,7 +268,18 @@ class BracesFixer extends AbstractFixer
                 }
             } else {
                 $nextToken = $tokens[$startBraceIndex + 1];
-                $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
+
+                if (!$nextToken->isWhitespace()) {
+                    $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
+                } else {
+                    $tmpIndent = trim($nextToken->getContent(), " \t").$indent.'    ';
+
+                    if (!isset($tmpIndent[0]) || "\n" !== $tmpIndent[0]) {
+                        $tmpIndent = "\n".$tmpIndent;
+                    }
+
+                    $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, $tmpIndent);
+                }
             }
 
             if ($token->isGivenKind($classyTokens)) {
@@ -370,6 +383,12 @@ class BracesFixer extends AbstractFixer
         }
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return string
+     */
     private function detectIndent(Tokens $tokens, $index)
     {
         static $goBackTokens = array(T_ABSTRACT, T_FINAL, T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC);
@@ -409,6 +428,12 @@ class BracesFixer extends AbstractFixer
         return end($explodedContent);
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $structureTokenIndex
+     *
+     * @return int
+     */
     private function findParenthesisEnd(Tokens $tokens, $structureTokenIndex)
     {
         $nextIndex = $tokens->getNextNonWhitespace($structureTokenIndex);

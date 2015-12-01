@@ -73,8 +73,8 @@ class OrderedUseFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run after the MultipleUseFixer
-        return -10;
+        // should be run after the MultipleUseFixer and RemoveLeadingSlashUseFixer
+        return -30;
     }
 
     /**
@@ -115,9 +115,14 @@ class OrderedUseFixer extends AbstractFixer
 
             while ($index <= $endIndex) {
                 $token = $tokens[$index];
+
                 if ($index === $endIndex || $token->equals(',')) {
                     $indexes[$startIndex] = array($namespace, $startIndex, $index - 1);
                     $originalIndexes[] = $startIndex;
+
+                    if ($index === $endIndex) {
+                        break;
+                    }
 
                     $namespace = '';
                     $nextPartIndex = $tokens->getTokenNotOfKindSibling($index, 1, array(array(','), array(T_WHITESPACE)));

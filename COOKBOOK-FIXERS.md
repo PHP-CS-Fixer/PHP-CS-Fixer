@@ -65,7 +65,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Your name <your@email.com>
  */
-class RemoveCommentsFixer extends AbstractFixer
+final class RemoveCommentsFixer extends AbstractFixer
 {
 }
 ```
@@ -95,8 +95,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Your name <your@email.com>
+ *
+ * @internal
  */
-class RemoveCommentsFixerTest extends AbstractFixerTestBase
+final class RemoveCommentsFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideFixCases
@@ -155,6 +157,8 @@ fixer does not change what is not supposed to change. Thus:
     ...
 ```
 
+Note that expected outputs are **always** tested alone to ensure your fixer will not change it.
+
 We want to have a failing test to start with, so the test file now looks
 like:
 `Symfony/CS/Tests/Fixer/Contrib/RemoveCommentsFixerTest.php`
@@ -174,8 +178,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Your name <your@email.com>
+ *
+ * @internal
  */
-class RemoveCommentsFixerTest extends AbstractFixerTestBase
+final class RemoveCommentsFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideFixCases
@@ -206,7 +212,7 @@ implement it.
 We need first to create one method to describe what this fixer does:
 `Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
 ```php
-class RemoveCommentsFixer extends AbstractFixer
+final class RemoveCommentsFixer extends AbstractFixer
 {
     ...
     /**
@@ -222,7 +228,7 @@ class RemoveCommentsFixer extends AbstractFixer
 For now, let us just make a fixer that applies no modification:
 `Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
 ```php
-class RemoveCommentsFixer extends AbstractFixer
+final class RemoveCommentsFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -272,7 +278,7 @@ We do not want all symbols to be analysed. Only `T_COMMENT`. So let us
 iterate the token(s) we are interested in.
 `Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
 ```php
-class RemoveCommentsFixer extends AbstractFixer
+final class RemoveCommentsFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -295,7 +301,7 @@ OK, now for each `T_COMMENT`, all we need to do is check if the previous
 token is a semicolon.
 `Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
 ```php
-class RemoveCommentsFixer extends AbstractFixer
+final class RemoveCommentsFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -339,7 +345,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Your name <your@email.com>
  */
-class RemoveCommentsFixer extends AbstractFixer {
+final class RemoveCommentsFixer extends AbstractFixer {
     /**
      * {@inheritdoc}
      */

@@ -46,7 +46,7 @@ class PhpdocToCommentFixerTest extends AbstractFixerTestBase
  */
  namespace Docs;
 
- /**
+/**
  * Do not convert this
  */
 class DocBlocks
@@ -79,6 +79,31 @@ class DocBlocks
         );
 
         $cases[] = array(
+            '<?php namespace Docs;
+
+/**
+ * Do not convert this
+ */
+
+/**
+ * Do not convert this
+ */
+class DocBlocks{}
+',
+        );
+
+        $cases[] = array(
+            '<?php
+
+/**
+ * Do not convert this
+ */
+
+namespace Foo;
+',
+        );
+
+        $cases[] = array(
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -91,7 +116,7 @@ abstract class DocBlocks
     /**
      * Do not convert this
      */
-    abstract public function test() {}
+    abstract public function test();
 }',
         );
 
@@ -104,7 +129,7 @@ $first = true;// needed because by default first docblock is never fixed.
  */
 interface DocBlocks
 {
-    public function test() {}
+    public function test();
 }',
         );
 
@@ -231,13 +256,13 @@ $first = true;// needed because by default first docblock is never fixed.
 
 /* there should be no docblock here */
 $sqlite1->open($path);
-}',
+',
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
 /** there should be no docblock here */
 $sqlite1->open($path);
-}',
+',
         );
 
         $cases[] = array(
@@ -246,13 +271,13 @@ $first = true;// needed because by default first docblock is never fixed.
 
 /* there should be no docblock here */
 $i++;
-}',
+',
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
 /** there should be no docblock here */
 $i++;
-}',
+',
         );
 
         $cases[] = array(
@@ -293,7 +318,7 @@ list($one, $two) = explode("," , $csvLines);
 $first = true;// needed because by default first docblock is never fixed.
 
 /** @var int $index */
-foreach ($foo->getPairs($c->bar(), $bar) as $index => list($a, $b)) [
+foreach ($foo->getPairs($c->bar(), $bar) as $index => list($a, $b)) {
     // Do something with $index, $a and $b
 }
 
@@ -326,7 +351,7 @@ for($i = 0, $size = count($people); $i < $size; ++$i) {
 $first = true;// needed because by default first docblock is never fixed.
 
 /* @var int $wrong */
-foreach ($foo->getPairs($c->bar(), $bar) as $index => list($a, $b)) [
+foreach ($foo->getPairs($c->bar(), $bar) as $index => list($a, $b)) {
     // Do something with $index, $a and $b
 }
 
@@ -356,7 +381,7 @@ for($i = 0, $size = count($people); $i < $size; ++$i) {
 $first = true;// needed because by default first docblock is never fixed.
 
 /** @var int $wrong */
-foreach ($foo->getPairs($c->bar(), $bar) as $index => list($a, $b)) [
+foreach ($foo->getPairs($c->bar(), $bar) as $index => list($a, $b)) {
     // Do something with $index, $a and $b
 }
 

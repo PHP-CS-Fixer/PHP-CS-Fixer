@@ -30,6 +30,8 @@ class PhpdocIndentFixerTest extends AbstractFixerTestBase
     {
         $cases = array();
 
+        $cases[] = array('<?php /** @var Foo $foo */ ?>');
+
         $cases[] = array('<?php /** foo */');
 
         $cases[] = array(
@@ -353,7 +355,7 @@ class DocBlocks
  *
  * ...
  */
-public function write($name) {}
+function write($name) {}
 ',
             "<?php
 \t/**
@@ -361,7 +363,7 @@ public function write($name) {}
  *
  * ...
  */
-public function write(\$name) {}
+function write(\$name) {}
 ",
         );
 

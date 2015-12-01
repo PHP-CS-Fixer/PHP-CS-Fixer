@@ -21,6 +21,28 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class TokensTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @param Token[]|null $expected
+     * @param Token[]|null $input
+     */
+    private function assertEqualsTokensArray(array $expected = null, array $input = null)
+    {
+        if (null === $expected) {
+            $this->assertNull($input);
+
+            return;
+        }
+
+        $this->assertSame(array_keys($expected), array_keys($input), 'Both arrays need to have same keys.');
+
+        foreach ($expected as $index => $expectedToken) {
+            $this->assertTrue(
+                $expectedToken->equals($input[$index]),
+                sprintf('The token at index %d should be %s, got %s', $index, $expectedToken->toJson(), $input[$index]->toJson())
+            );
+        }
+    }
+
     public function testGetClassyElements()
     {
         $source = <<<'PHP'
@@ -40,6 +62,11 @@ class Foo
     }
     public function bar5($data)
     {
+        $message = $data;
+        $example = function ($arg) use ($message) {
+            echo $arg . ' ' . $message;
+        };
+        $example('hello');
     }
 }
 PHP;
@@ -547,7 +574,7 @@ $b;',
     {
         $tokens = Tokens::fromCode($source);
 
-        $this->assertEquals($expected, call_user_func_array(array($tokens, 'findSequence'), $params));
+        $this->assertEqualsTokensArray($expected, call_user_func_array(array($tokens, 'findSequence'), $params));
     }
 
     public function provideFindSequence()
@@ -780,10 +807,10 @@ PHP;
         $tokens->clearRange($fooIndex, $barIndex - 1);
 
         $newPublicIndexes = array_keys($tokens->findGivenKind(T_PUBLIC));
-        $this->assertEquals($barIndex, reset($newPublicIndexes));
+        $this->assertSame($barIndex, reset($newPublicIndexes));
 
         for ($i = $fooIndex; $i < $barIndex; ++$i) {
-            $this->assertTrue($tokens[$i]->isWhiteSpace());
+            $this->assertTrue($tokens[$i]->isWhitespace());
         }
     }
 
@@ -994,6 +1021,8 @@ PHP;
         $cases = array(
             array('<?php $a;', 1),
             array("<?php\n \$a = (0+1); // [0,1]", 4),
+            array('<?php $text = "foo $bbb[0] bar";', 8),
+            array('<?php $text = "foo ${aaa[123]} bar";', 9),
         );
 
         return $cases;

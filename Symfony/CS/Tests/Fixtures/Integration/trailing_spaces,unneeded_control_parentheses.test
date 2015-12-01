@@ -1,0 +1,20 @@
+--TEST--
+Integration of fixers: trailing_spaces,unneeded_control_parentheses.
+--CONFIG--
+level=none
+fixers=trailing_spaces,unneeded_control_parentheses
+--INPUT--
+<?php
+return (
+    0 === strpos($method->name, 'get') &&
+    3 < strlen($method->name) &&
+    0 === $method->getNumberOfRequiredParameters()
+);
+
+--EXPECT--
+<?php
+return
+    0 === strpos($method->name, 'get') &&
+    3 < strlen($method->name) &&
+    0 === $method->getNumberOfRequiredParameters()
+;

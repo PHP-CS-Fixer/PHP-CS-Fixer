@@ -11,33 +11,23 @@
 
 namespace Symfony\CS\Fixer\Symfony;
 
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\DocBlock\DocBlock;
-use Symfony\CS\DocBlock\Line;
-use Symfony\CS\Tokenizer\Tokens;
+use Symfony\CS\AbstractPhpdocTypesFixer;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PhpdocScalarFixer extends AbstractFixer
+class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
 {
-    /**
-     * The annotation tags search inside.
-     *
-     * @var array
-     */
-    private static $tags = array('param', 'return', 'type', 'var', 'property');
-
     /**
      * The types to fix.
      *
      * @var array
      */
     private static $types = array(
-        'integer' => 'int',
         'boolean' => 'bool',
-        'real' => 'float',
         'double' => 'float',
+        'integer' => 'int',
+        'real' => 'float',
     );
 
     /**
@@ -52,10 +42,12 @@ class PhpdocScalarFixer extends AbstractFixer
     {
         /*
          * Should be run before all other docblock fixers apart from the
-         * phpdoc_to_comment and phpdoc_indent fixer to make sure all fixers apply
-         * correct indentation to new code they add. This should run before
-         * alignment of params is done since this fixer might change the
-         * type and thereby un-aligning the params.
+         * phpdoc_to_comment and phpdoc_indent fixer to make sure all fixers
+         * apply correct indentation to new code they add. This should run
+         * before alignment of params is done since this fixer might change
+         * the type and thereby un-aligning the params. We also must run after
+         * the phpdoc_types_fixer because it can convert types to things that
+         * we can fix.
          */
         return 15;
     }
@@ -63,85 +55,7 @@ class PhpdocScalarFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
-    {
-        $tokens = Tokens::fromCode($content);
-
-        foreach ($tokens as $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
-
-            $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType(self::$tags);
-
-            if (empty($annotations)) {
-                continue;
-            }
-
-            foreach ($annotations as $annotation) {
-                $this->fixScalars($doc->getLine($annotation->getStart()), $annotation->getTag()->getName());
-            }
-
-            $token->setContent($doc->getContent());
-        }
-
-        return $tokens->generateCode();
-    }
-
-    /**
-     * Fix scalar types.
-     *
-     * We must be super careful not to modify parts of words.
-     *
-     * @param Line   $line
-     * @param string $tag
-     */
-    private function fixScalars(Line $line, $tag)
-    {
-        $content = $line->getContent();
-        $tagSplit = preg_split('/\s*\@'.$tag.'\s*/', $content);
-        $spaceSplit = preg_split('/\s/', $tagSplit[1]);
-        $usefulContent = $spaceSplit[0];
-
-        if (strpos($usefulContent, '|') !== false) {
-            $newContent = implode('|', self::normalizeTypes(explode('|', $usefulContent)));
-        } else {
-            $newContent = self::normalizeType($usefulContent);
-        }
-
-        if ($newContent !== $usefulContent) {
-            // limiting to 1 replacement to prevent errors like
-            // "integer $integer" being converted to "int $int"
-            // when they should be converted to "int $integer"
-            $line->setContent(preg_replace('/'.preg_quote($usefulContent).'/', $newContent, $content, 1));
-        }
-    }
-
-    /**
-     * Normalize the given types.
-     *
-     * @param string[] $types
-     *
-     * @return string[]
-     */
-    private static function normalizeTypes(array $types)
-    {
-        foreach ($types as $index => $type) {
-            $types[$index] = self::normalizeType($type);
-        }
-
-        return $types;
-    }
-
-    /**
-     * Normalize the given type.
-     *
-     * @param string $type
-     *
-     * @return string
-     */
-    private static function normalizeType($type)
+    protected function normalize($type)
     {
         if (array_key_exists($type, self::$types)) {
             return self::$types[$type];

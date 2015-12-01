@@ -551,11 +551,11 @@ EOF
 <?php
 
 use abc\Bar;
-use abc2\Bar;
-use xyz\abc\Bar;
-use xyz\abc2\Bar;
-use xyz\xyz\Bar;
-use xyz\xyz\Bar2;
+use abc2\Bar2;
+use xyz\abc\Bar6;
+use xyz\abc2\Bar7;
+use xyz\xyz\Bar4;
+use xyz\xyz\Bar5;
 
 class Test
 {
@@ -565,16 +565,35 @@ EOF;
         $input = <<<'EOF'
 <?php
 
-use abc2\Bar;
+use abc2\Bar2;
 use abc\Bar;
-use xyz\abc2\Bar;
-use xyz\abc\Bar;
-use xyz\xyz\Bar2;
-use xyz\xyz\Bar;
+use xyz\abc2\Bar7;
+use xyz\abc\Bar6;
+use xyz\xyz\Bar4;
+use xyz\xyz\Bar5;
 
 class Test
 {
 }
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    public function testCodeWithImportsOnly()
+    {
+        $expected = <<<'EOF'
+<?php
+
+use Aaa;
+use Bbb;
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use Bbb;
+use Aaa;
 EOF;
 
         $this->makeTest($expected, $input);

@@ -24,7 +24,7 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class Fixer
 {
-    const VERSION = '1.9.3';
+    const VERSION = '1.11.1-DEV';
 
     protected $fixers = array();
     protected $configs = array();
@@ -90,6 +90,9 @@ class Fixer
         $this->fixers[] = $fixer;
     }
 
+    /**
+     * @return FixerInterface[]
+     */
     public function getFixers()
     {
         $this->sortFixers();

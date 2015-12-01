@@ -105,6 +105,26 @@ EOF;
         $this->makeTest($expected, $input, $file);
     }
 
+    public function testFixClassNameWithComment()
+    {
+        $file = $this->getTestFile(__DIR__.'/../../../Fixer/PSR0/Psr0Fixer.php');
+
+        $expected = <<<'EOF'
+<?php
+namespace /* namespace here */ Symfony\CS\Fixer\PSR0;
+class /* hi there */ Psr0Fixer /* why hello */ {}
+/* class foo */
+EOF;
+        $input = <<<'EOF'
+<?php
+namespace /* namespace here */ Symfony\CS\Fixer\PSR0;
+class /* hi there */ blah /* why hello */ {}
+/* class foo */
+EOF;
+
+        $this->makeTest($expected, $input, $file);
+    }
+
     public function testHandlePartialNamespaces()
     {
         $fixer = $this->getFixer();
@@ -127,6 +147,19 @@ EOF;
 
         $this->assertSame($expected, $fixer->fix($file, $input));
 
+        $expected = <<<'EOF'
+<?php
+namespace /* hi there */ Foo\Bar\Baz\Fixer\PSR0;
+class /* hi there */ Psr0Fixer {}
+EOF;
+        $input = <<<'EOF'
+<?php
+namespace /* hi there */ Foo\Bar\Baz\FIXER\PSR0;
+class /* hi there */ Psr0Fixer {}
+EOF;
+
+        $this->assertSame($expected, $fixer->fix($file, $input));
+
         $config->setDir(__DIR__.'/../../../Fixer/PSR0');
         $expected = <<<'EOF'
 <?php
@@ -142,9 +175,12 @@ EOF;
         $this->assertSame($expected, $fixer->fix($file, $input));
     }
 
-    public function testIgnoreLongExtension()
+    /**
+     * @dataProvider provideIgnoredCases
+     */
+    public function testIgnoreWrongNames($filename)
     {
-        $file = $this->getTestFile('Foo.class.php');
+        $file = $this->getTestFile($filename);
 
         $expected = <<<'EOF'
 <?php
@@ -153,5 +189,37 @@ class Bar {}
 EOF;
 
         $this->makeTest($expected, null, $file);
+    }
+
+    public function provideIgnoredCases()
+    {
+        $ignoreCases = array(
+            array('.php'),
+            array('Foo.class.php'),
+            array('4Foo.php'),
+            array('$#.php'),
+        );
+
+        foreach (array('__halt_compiler', 'abstract', 'and', 'array', 'as', 'break', 'case', 'catch', 'class', 'clone', 'const', 'continue', 'declare', 'default', 'die', 'do', 'echo', 'else', 'elseif', 'empty', 'enddeclare', 'endfor', 'endforeach', 'endif', 'endswitch', 'endwhile', 'eval', 'exit', 'extends', 'final', 'for', 'foreach', 'function', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'interface', 'isset', 'list', 'namespace', 'new', 'or', 'print', 'private', 'protected', 'public', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'try', 'unset', 'use', 'var', 'while', 'xor') as $keyword) {
+            $ignoreCases[] = array($keyword.'.php');
+        }
+
+        foreach (array('__CLASS__', '__DIR__', '__FILE__', '__FUNCTION__', '__LINE__', '__METHOD__', '__NAMESPACE__') as $magicConstant) {
+            $ignoreCases[] = array($magicConstant.'.php');
+            $ignoreCases[] = array(strtolower($magicConstant).'.php');
+        }
+
+        if (PHP_VERSION_ID >= 50400) {
+            $ignoreCases[] = array('callable.php');
+            $ignoreCases[] = array('trait.php');
+            $ignoreCases[] = array('__TRAIT__.php');
+            $ignoreCases[] = array('insteadof.php');
+        }
+
+        if (PHP_VERSION_ID >= 50500) {
+            $ignoreCases[] = array('finally.php');
+        }
+
+        return $ignoreCases;
     }
 }

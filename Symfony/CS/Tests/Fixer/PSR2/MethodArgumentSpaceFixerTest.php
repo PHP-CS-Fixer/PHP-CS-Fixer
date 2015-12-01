@@ -31,8 +31,8 @@ class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
         return array(
             // test method arguments
             array(
-                '<?php function xyz($a=10, $b=20, $c=30) {',
-                '<?php function xyz($a=10,$b=20,$c=30) {',
+                '<?php function xyz($a=10, $b=20, $c=30) {}',
+                '<?php function xyz($a=10,$b=20,$c=30) {}',
             ),
             // test method call
             array(
@@ -77,12 +77,12 @@ class MethodArgumentSpaceFixerTest extends AbstractFixerTestBase
                     $a=10,
                     $b=20,
                     $c=30
-                    )',
+                    );',
                 '<?php xyz(
                     $a=10 ,
                     $b=20,
                     $c=30
-                    )',
+                    );',
             ),
             // skip multi line array
             array(

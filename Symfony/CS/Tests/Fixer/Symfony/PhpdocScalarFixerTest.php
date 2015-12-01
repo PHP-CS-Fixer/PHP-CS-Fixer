@@ -44,7 +44,10 @@ EOF;
         $expected = <<<'EOF'
 <?php
 /**
+ * @method int foo()
  * @property int $foo
+ * @property-read bool $bar
+ * @property-write float $baz
  */
 
 EOF;
@@ -52,7 +55,10 @@ EOF;
         $input = <<<'EOF'
 <?php
 /**
+ * @method integer foo()
  * @property integer $foo
+ * @property-read boolean $bar
+ * @property-write double $baz
  */
 
 EOF;
@@ -98,6 +104,7 @@ EOF;
      * Hello there mr integer!
      *
      * @param int|float $integer
+     * @param int|int[] $foo
      *
      * @return string|bool
      */
@@ -110,6 +117,7 @@ EOF;
      * Hello there mr integer!
      *
      * @param integer|real $integer
+     * @param int|integer[] $foo
      *
      * @return string|boolean
      */
@@ -269,5 +277,36 @@ EOF;
 
 EOF;
         $this->makeTest($expected);
+    }
+
+    public function testInlineDoc()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * Does stuffs with stuffs.
+     *
+     * @param array $stuffs {
+     *     @type bool $foo
+     *     @type int $bar
+     * }
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * Does stuffs with stuffs.
+     *
+     * @param array $stuffs {
+     *     @type boolean $foo
+     *     @type integer $bar
+     * }
+     */
+
+EOF;
+
+        $this->makeTest($expected, $input);
     }
 }

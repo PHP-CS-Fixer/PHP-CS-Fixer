@@ -48,7 +48,7 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
         $this->deepestLevel = 0;
         $tokens = Tokens::fromCode($content);
 
-        $this->injectAlignmentPlaceholders($tokens);
+        $this->injectAlignmentPlaceholders($tokens, 0, count($tokens));
 
         return $this->replacePlaceholder($tokens, $this->deepestLevel);
     }
@@ -62,6 +62,15 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run after the OperatorsSpacesFixer
+        return -10;
+    }
+
+    /**
      * Inject into the text placeholders of candidates of vertical alignment.
      *
      * @param Tokens $tokens
@@ -70,16 +79,8 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
      *
      * @return array($code, $context_counter)
      */
-    private function injectAlignmentPlaceholders(Tokens $tokens, $startAt = null, $endAt = null)
+    private function injectAlignmentPlaceholders(Tokens $tokens, $startAt, $endAt)
     {
-        if (empty($startAt)) {
-            $startAt = 0;
-        }
-
-        if (empty($endAt)) {
-            $endAt = count($tokens);
-        }
-
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
 
@@ -89,19 +90,16 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
                 continue;
             }
 
-            if ($token->isGivenKind(T_ARRAY)) {
+            if ($token->isGivenKind(T_ARRAY)) { // don't use "$tokens->isArray()" here, short arrays are handled in the next case
                 $from = $tokens->getNextMeaningfulToken($index);
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $from);
                 $index = $until;
 
-                ++$this->deepestLevel;
-                ++$this->currentLevel;
-                $this->injectAlignmentPlaceholders($tokens, $from, $until);
-                --$this->currentLevel;
+                $this->injectArrayAlignmentPlaceholders($tokens, $from, $until);
                 continue;
             }
 
-            if ($token->equals('[')) {
+            if ($tokens->isShortArray($index)) {
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
                 if ($prevToken->isGivenKind(array(T_STRING, T_VARIABLE))) {
                     continue;
@@ -111,10 +109,7 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $from);
                 $index = $until;
 
-                ++$this->deepestLevel;
-                ++$this->currentLevel;
-                $this->injectAlignmentPlaceholders($tokens, $from + 1, $until - 1);
-                --$this->currentLevel;
+                $this->injectArrayAlignmentPlaceholders($tokens, $from + 1, $until - 1);
                 continue;
             }
 
@@ -139,11 +134,43 @@ class AlignDoubleArrowFixer extends AbstractAlignFixer
             }
 
             if ($token->equals(',')) {
-                do {
+                for ($i = $index; $i < $endAt - 1; ++$i) {
+                    if (false !== strpos($tokens[$i - 1]->getContent(), "\n")) {
+                        break;
+                    }
+
+                    if ($tokens->isArray($i + 1)) {
+                        $arrayStartIndex = $tokens[$i + 1]->isGivenKind(T_ARRAY)
+                            ? $tokens->getNextMeaningfulToken($i + 1)
+                            : $i + 1
+                        ;
+                        $blockType = Tokens::detectBlockType($tokens[$arrayStartIndex]);
+                        $arrayEndIndex = $tokens->findBlockEnd($blockType['type'], $arrayStartIndex);
+
+                        if ($tokens->isPartialCodeMultiline($arrayStartIndex, $arrayEndIndex)) {
+                            break;
+                        }
+                    }
+
                     ++$index;
-                    $token = $tokens[$index];
-                } while (false === strpos($token->getContent(), "\n"));
+                }
             }
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $from
+     * @param int    $until
+     */
+    private function injectArrayAlignmentPlaceholders(Tokens $tokens, $from, $until)
+    {
+        // Only inject placeholders for multi-line arrays
+        if ($tokens->isPartialCodeMultiline($from, $until)) {
+            ++$this->deepestLevel;
+            ++$this->currentLevel;
+            $this->injectAlignmentPlaceholders($tokens, $from, $until);
+            --$this->currentLevel;
         }
     }
 }
