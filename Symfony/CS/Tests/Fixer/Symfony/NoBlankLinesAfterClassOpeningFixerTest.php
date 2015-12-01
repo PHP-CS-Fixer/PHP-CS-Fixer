@@ -91,7 +91,7 @@ interface Good
     /**
      * Also no blankline before DocBlock
      */
-    public function firstMethod() {}
+    public function firstMethod();
 }',
             '<?php
 interface Good
@@ -100,7 +100,7 @@ interface Good
     /**
      * Also no blankline before DocBlock
      */
-    public function firstMethod() {}
+    public function firstMethod();
 }',
         );
 

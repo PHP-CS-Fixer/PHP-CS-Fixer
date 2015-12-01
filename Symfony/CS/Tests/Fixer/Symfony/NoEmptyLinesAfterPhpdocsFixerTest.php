@@ -284,6 +284,8 @@ function parseTag($tag)
 
         goto FOO;
     }
+
+FOO:
 }
 EOF
         );
