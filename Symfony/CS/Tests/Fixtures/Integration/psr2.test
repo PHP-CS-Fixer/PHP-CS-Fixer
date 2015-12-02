@@ -1,5 +1,5 @@
 --TEST--
-Tntegration of @PSR2.
+Integration of @PSR2.
 --CONFIG--
 {"@PSR2": true}
 --INPUT--

@@ -393,7 +393,10 @@ final class BracesFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind($controlTokens) || $token->isGivenKind(CT_USE_LAMBDA)) {
+            // Declare tokens don't follow the same rules are other control statements
+            if ($token->isGivenKind(T_DECLARE)) {
+                $this->fixDeclareStatement($tokens, $index);
+            } elseif ($token->isGivenKind($controlTokens) || $token->isGivenKind(CT_USE_LAMBDA)) {
                 $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($index);
 
                 if (!$tokens[$nextNonWhitespaceIndex]->equals(':')) {
@@ -615,5 +618,56 @@ final class BracesFixer extends AbstractFixer
         }
 
         return array();
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function fixDeclareStatement(Tokens $tokens, $index)
+    {
+        $tokens->removeTrailingWhitespace($index);
+
+        $startParenthesisIndex = $tokens->getNextTokenOfKind($index, array('('));
+        $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
+        $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, array(';', '{'));
+        $startBraceToken = $tokens[$startBraceIndex];
+
+        if ($startBraceToken->equals('{')) {
+            $this->fixSingleLineWhitespaceForDeclare($tokens, $startBraceIndex);
+        }
+
+        $this->removeWhitespaceInParenthesis($tokens, $startParenthesisIndex, $endParenthesisIndex);
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $startBraceIndex
+     */
+    private function fixSingleLineWhitespaceForDeclare(Tokens $tokens, $startBraceIndex)
+    {
+        // fix single-line whitespace before {
+        // eg: `declare(ticks=1){` => `declare(ticks=1) {`
+        // eg: `declare(ticks=1)   {` => `declare(ticks=1) {`
+        if (
+            !$tokens[$startBraceIndex - 1]->isWhitespace() ||
+            $tokens[$startBraceIndex - 1]->isWhitespace(" \t")
+        ) {
+            $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $startParenthesisIndex
+     * @param int    $endParenthesisIndex
+     */
+    private function removeWhitespaceInParenthesis(Tokens $tokens, $startParenthesisIndex, $endParenthesisIndex)
+    {
+        for ($i = $startParenthesisIndex; $i < $endParenthesisIndex; ++$i) {
+            if ($tokens[$i]->isWhitespace()) {
+                $tokens[$i]->clear();
+            }
+        }
     }
 }
