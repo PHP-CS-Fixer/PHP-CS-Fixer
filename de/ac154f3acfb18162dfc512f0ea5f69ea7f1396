@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-02T09:45:40Z
+
+Good one.
+Please, as you extend `@Symfony` set, could you extend `symfony` integration test as well?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-02T09:54:22Z
+
+Hmm, at the moment there is only a symfony integration test without any modification: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Tests/Fixtures/Integration/symfony.test
+
+I'm not sure how I should add a test for PrintToEchoFixer
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-02T09:58:25Z
+
+add expect part ;)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-02T10:05:00Z
+
+This way?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-02T10:36:59Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-02T14:11:59Z
+
+:+1:
