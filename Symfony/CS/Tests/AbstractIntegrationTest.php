@@ -13,6 +13,7 @@ namespace Symfony\CS\Tests;
 
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\CS\ErrorsManager;
 use Symfony\CS\FileCacheManager;
 use Symfony\CS\Fixer;
@@ -96,13 +97,14 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
 
         $tests = array();
 
-        foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($fixturesDir), \RecursiveIteratorIterator::LEAVES_ONLY) as $file) {
-            if (!preg_match('/\.test$/', $file)) {
+        foreach (Finder::create()->files()->in($fixturesDir) as $file) {
+            if ('test' !== $file->getExtension()) {
                 continue;
             }
 
             $test = file_get_contents($file->getRealpath());
-            $fileName = $file->getFileName();
+            $fileName = $file->getRelativePathname();
+
             if (!preg_match('/--TEST--[\n](.*?)\s--CONFIG--[\n](.*?)(\s--REQUIREMENTS--[\n](.*?))?\s--INPUT--[\n](.*?[\n]*)(?:[\n]--EXPECT--\s(.*)|$)/s', $test, $match)) {
                 throw new \InvalidArgumentException(sprintf('Test format invalid for "%s".', $fileName));
             }
@@ -152,6 +154,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
         if (defined('HHVM_VERSION') && false === $requirements['hhvm']) {
             $this->markTestSkipped('HHVM is not supported.');
         }
+
         if (isset($requirements['php']) && version_compare(PHP_VERSION, $requirements['php']) < 0) {
             $this->markTestSkipped(sprintf('PHP %s (or later) is required.', $requirements['php']));
         }
@@ -175,7 +178,26 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertNotEmpty($changed, sprintf('Expected changes made to test "%s" in "%s".', $testTitle, $testFileName));
-        $this->assertSame($expected, file_get_contents($tmpFile), sprintf('Expected changes do not match result for "%s" in "%s".', $testTitle, $testFileName));
+        $fixedInputCode = file_get_contents($tmpFile);
+        $this->assertSame($expected, $fixedInputCode, sprintf('Expected changes do not match result for "%s" in "%s".', $testTitle, $testFileName));
+
+        $priorities = array_map(
+            function (FixerInterface $fixer) {
+                return $fixer->getPriority();
+            },
+            $fixers
+        );
+
+        $this->assertNotCount(1, array_unique($priorities), 'All used fixers must not have the same priority, integration tests should cover fixers with different priorities.');
+
+        $tmpFile = static::getTempFile();
+        if (false === @file_put_contents($tmpFile, $input)) {
+            throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
+        }
+
+        $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), array_reverse($fixers), false, true, new FileCacheManager(false, null, $fixers));
+        $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
+        $this->assertNotSame($fixedInputCode, $fixedInputCodeWithReversedFixers, 'Set priorities must be significant. If fixers used in reverse order return same output then the integration test is not sufficient or the priority relation between used fixers should not be set.');
 
         // run the test again with the `expected` part, this should always stay the same
         $this->testIntegration($testFileName, $testTitle.' "--EXPECT-- part run"', $fixers, $requirements, $expected);
