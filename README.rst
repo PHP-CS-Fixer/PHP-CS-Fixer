@@ -512,7 +512,7 @@ Choose from the list of available fixers:
                         incrementation/decrementation
                         should be used if possible.
 
-* **print_to_echo**
+* **print_to_echo** [@Symfony]
                         Converts print language
                         construct to echo if possible.
 
