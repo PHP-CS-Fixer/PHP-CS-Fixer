@@ -82,6 +82,7 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_type_to_var' => true,
             'phpdoc_var_without_name' => true,
             'pre_increment' => true,
+            'print_to_echo' => true,
             'remove_leading_slash_use' => true,
             'remove_lines_between_uses' => true,
             'return' => true,
