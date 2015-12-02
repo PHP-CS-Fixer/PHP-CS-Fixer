@@ -85,10 +85,10 @@ final class IndentationFixerTest extends AbstractFixerTestCase
         );
 
         $cases[] = array(
-            '<?php
-        echo ECHO;',
             "<?php
-   \t\techo ECHO;",
+        echo 'ECHO';",
+            "<?php
+   \t\techo 'ECHO';",
         );
 
         $cases[] = array(

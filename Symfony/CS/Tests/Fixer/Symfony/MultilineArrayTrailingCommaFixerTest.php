@@ -33,7 +33,6 @@ final class MultilineArrayTrailingCommaFixerTest extends AbstractFixerTestCase
         return array(
             // long syntax tests
             array('<?php $x = array();'),
-            array('<?php $x = array(());'),
             array('<?php $x = array("foo");'),
             array('<?php $x = array("foo", );'),
             array("<?php \$x = array(\n'foo',\n);", "<?php \$x = array(\n'foo'\n);"),

@@ -107,7 +107,7 @@ EOH;
 /**
  * @author Antonio J. García Lagar <aj@garcialagar.es>
  */
-class Foo()
+class Foo
 {
 }
 EOH;
@@ -117,7 +117,7 @@ EOH;
 /**
  * @author Antonio J. García Lagar <aj@garcialagar.es>
  */
-class Foo()
+class Foo
 {
 }
 EOH;

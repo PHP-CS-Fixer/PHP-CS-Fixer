@@ -544,6 +544,11 @@ Choose from the list of available fixers:
                         PHP arrays should use the PHP
                         5.4 short-syntax.
 
+* **short_bool_cast** [@Symfony]
+                        Short cast bool using double
+                        exclamation mark should not be
+                        used.
+
 * **short_echo_tag**
                         Replace short-echo <?= with
                         long format <?php echo syntax.
@@ -619,6 +624,10 @@ Choose from the list of available fixers:
                         Unary operators should be
                         placed adjacent to their
                         operands.
+
+* **unneeded_control_parentheses** [@Symfony]
+                        Removes unneeded parentheses
+                        around control statements.
 
 * **unused_use** [@Symfony]
                         Unused use statements must be

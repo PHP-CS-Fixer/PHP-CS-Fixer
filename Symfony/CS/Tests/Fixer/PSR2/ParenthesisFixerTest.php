@@ -80,12 +80,12 @@ if (     true   ) {
             ),
             array(
                 '<?php
-function foo(\$bar, \$baz) {
+function foo($bar, $baz)
 {
     // function body
 }',
                 '<?php
-function foo( \$bar, \$baz ) {
+function foo( $bar, $baz )
 {
     // function body
 }',

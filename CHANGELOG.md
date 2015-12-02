@@ -3,6 +3,49 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.11
+-------------------
+
+* feature #1550 Added UnneededControlParenthesesFixer (Soullivaneuh, keradus)
+* feature #1532 Added ShortBoolCastFixer (SpacePossum)
+* feature #1523 Added EchoToPrintFixer and PrintToEchoFixer (Soullivaneuh)
+* feature #1552 Warn when running with xdebug extension (SpacePossum)
+* feature #1484 Added ArrayElementNoSpaceBeforeCommaFixer and ArrayElementWhiteSpaceAfterCommaFixer (amarczuk)
+* feature #1449 PhpUnitConstructFixer - Fix more use cases (SpacePossum)
+* feature #1382 Added PhpdocTypesFixer (GrahamCampbell)
+* feature #1384 Add intergration tests (SpacePossum)
+* feature #1349 Added FunctionTypehintSpaceFixer (keradus)
+* minor #1562 Fix invalid PHP code samples in utests (SpacePossum)
+* minor #1560 Fixed project name in xdebug warning (gharlan)
+* minor #1545 Fix invalid PHP code samples in utests (SpacePossum)
+* minor #1554 Alphabetically sort entries in .gitignore (GrahamCampbell)
+* minor #1527 Refactor the way types work on annotations (GrahamCampbell)
+* minor #1546 Update coding guide in cookbook (keradus)
+* minor #1526 Support more annotations when fixing types in phpdoc (GrahamCampbell)
+* minor #1535 clean ups (SpacePossum)
+* minor #1510 Added Symfony 3.0 support (Ener-Getick)
+* minor #1520 Code grooming (keradus)
+* minor #1515 Support property, property-read and property-write tags (GrahamCampbell)
+* minor #1488 Added more inline phpdoc tests (GrahamCampbell)
+* minor #1496 Add docblock to AbstractFixerTestBase::makeTest (lmanzke)
+* minor #1467 PhpdocShortDescriptionFixer - add support for Japanese sentence-ending characters (fritz-c)
+* minor #1453 remove calling array_keys in foreach loops (keradus)
+* minor #1448 Code grooming (keradus)
+* minor #1437 Added import fixers integration test (GrahamCampbell)
+* minor #1433 phpunit.xml.dist - disable gc (keradus)
+* minor #1427 Change arounded to surrounded in README.rst (36degrees)
+* minor #1420 AlignDoubleArrowFixer, AlignEqualsFixer - add integration tests (keradus)
+* minor #1423 appveyor.yml - do not cache C:\tools, its internal forAppVeyor (keradus)
+* minor #1400 appveyor.yml - add file (keradus)
+* minor #1396 AbstractPhpdocTypesFixer - instance method should be called on instance (keradus)
+* minor #1395 code grooming (keradus)
+* minor #1393 boost .travis.yml file (keradus)
+* minor #1372 Don't allow PHP 7 to fail (GrahamCampbell)
+* minor #1332 PhpUnitConstructFixer - fix more functions (keradus)
+* minor #1339 CONTRIBUTING.md - add link to PSR-5 (keradus)
+* minor #1346 Core grooming (SpacePossum)
+* minor #1328 Tokens: added typehint for Iterator elements (gharlan)
+
 Changelog for v1.10.3
 ---------------------
 
