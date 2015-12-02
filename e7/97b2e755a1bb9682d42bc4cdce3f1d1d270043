@@ -1,0 +1,55 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-10T13:42:04Z
+
+> The strict types declare should only be on the second line too, is this something that needs to be checked as well?
+
+even if, it should be separate fixer then
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-10T13:43:35Z
+
+when we have a case:
+`array($expected, $input)`
+then under the hood it tests both `array($expected, $input)` and `array($expected)`
+
+So you don't need to add `array($expected)` on your own ;)
+
+---------------------------------------------------------------------------
+
+by EspadaV8 at 2015-11-10T13:46:51Z
+
+@keradus Removed the duplicated tests
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T21:51:36Z
+
+ref https://github.com/cs-extended/fig-standards/commit/1ebe95b3aeea5554b2a0d860439e104bd8266fd9
+
+---------------------------------------------------------------------------
+
+by EspadaV8 at 2015-11-26T03:37:15Z
+
+I've cleaned up some of the code with that document in mind, however, I'm not sure how to go about making sure that there are no spaces within the brackets after the declare. I couldn't find another test that does something similar since the only thing I could think of would be formatting of e.g. `for`s, and there doesn't seem to be a fixer for that.
+
+Any help in pointing out the fixers and tests for those would be great, thanks.
+
+---------------------------------------------------------------------------
+
+by EspadaV8 at 2015-11-26T05:54:41Z
+
+I found some code in the `FunctionDeclarationFixer` that seems to do something similar. I've reused some of that in the declare fixers so that it now removes any whitespace within the parenthesis.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-26T09:28:50Z
+
+Please, rebase on 1.11 to get rid of that merge commit
+
+---------------------------------------------------------------------------
+
+by EspadaV8 at 2015-11-26T10:18:32Z
+
+That should fix the merge commit.
