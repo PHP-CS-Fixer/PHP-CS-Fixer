@@ -110,7 +110,7 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-                clone new Class();
+                clone new Foo();
                 ',
             ),
             array(
@@ -123,10 +123,10 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-                clone new Class();
+                clone new Foo();
                 ',
                 '<?php
-                clone (new Class());
+                clone (new Foo());
                 ',
             ),
             array(
