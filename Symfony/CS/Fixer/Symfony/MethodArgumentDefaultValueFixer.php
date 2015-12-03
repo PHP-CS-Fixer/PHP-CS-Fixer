@@ -179,9 +179,17 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
      */
     private function isTypehintedNullableVariable(Tokens $tokens, $variableIndex)
     {
-        $prevMeaningfulTokenIndex = $tokens->getPrevTokenOfKind($variableIndex, array(array(T_STRING), array(T_CALLABLE), array(CT_ARRAY_TYPEHINT), ',', '('));
+        $typehintedTokens = array(array(T_STRING), array(CT_ARRAY_TYPEHINT), ',', '(');
+        $typehintedKinds = array(T_STRING, CT_ARRAY_TYPEHINT);
 
-        if (!$tokens[$prevMeaningfulTokenIndex]->isGivenKind(array(T_STRING, T_CALLABLE, CT_ARRAY_TYPEHINT))) {
+        if (PHP_VERSION_ID >= 50400) {
+            $typehintedTokens[] = array(T_CALLABLE);
+            $typehintedKinds[] = T_CALLABLE;
+        }
+
+        $prevMeaningfulTokenIndex = $tokens->getPrevTokenOfKind($variableIndex, $typehintedTokens);
+
+        if (!$tokens[$prevMeaningfulTokenIndex]->isGivenKind($typehintedKinds)) {
             return false;
         }
 
