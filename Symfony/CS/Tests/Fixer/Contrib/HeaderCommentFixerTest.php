@@ -30,6 +30,8 @@ EOH;
     {
         parent::setUp();
         self::$savedHeader = HeaderCommentFixer::getHeader();
+        HeaderCommentFixer::setUseDocBlockComment(false);
+        HeaderCommentFixer::setUseLeadingNewLine(true);
         HeaderCommentFixer::setHeader(self::$testHeader);
     }
 
@@ -195,6 +197,94 @@ EOH;
 EOH;
 
         $input = "<?php\n";
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixWithoutNewLine()
+    {
+        $expected = <<<'EOH'
+<?php
+/*
+ * This file is part of the PHP CS utility.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+
+EOH;
+
+        $input = "<?php\n";
+        HeaderCommentFixer::setUseLeadingNewLine(false);
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixWithExplicitNewLine()
+    {
+        $expected = <<<'EOH'
+<?php
+
+/*
+ * This file is part of the PHP CS utility.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+
+EOH;
+
+        $input = "<?php\n";
+        HeaderCommentFixer::setUseLeadingNewLine(true);
+        $this->makeTest($expected, $input);
+    }
+
+    public function testUseDocBlockComment()
+    {
+        $expected = <<<'EOH'
+<?php
+
+/**
+ * This file is part of the PHP CS utility.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+
+EOH;
+
+        $input = "<?php\n";
+        HeaderCommentFixer::setUseDocBlockComment(true);
+        $this->makeTest($expected, $input);
+    }
+
+    public function testUseDocBlockCommentExplicitFalse()
+    {
+        $expected = <<<'EOH'
+<?php
+
+/*
+ * This file is part of the PHP CS utility.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+
+EOH;
+
+        $input = "<?php\n";
+        HeaderCommentFixer::setUseDocBlockComment(true);
+        HeaderCommentFixer::setUseDocBlockComment(false);
         $this->makeTest($expected, $input);
     }
 }
