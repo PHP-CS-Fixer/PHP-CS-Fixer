@@ -207,6 +207,10 @@ Choose from the list of available fixers:
                         A file must always end with a
                         single empty line feed.
 
+* **for_loop_semicolon** [PSR-2]
+                        Spacing around semicolons in
+                        `for` control structures.
+
 * **function_call_space** [PSR-2]
                         When making a method or
                         function call, there MUST NOT
