@@ -4,7 +4,6 @@ PHP Coding Standards Fixer
 [![Build Status](https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer.svg?branch=1.12)](https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer)
 [![Coverage Status](https://coveralls.io/repos/FriendsOfPHP/PHP-CS-Fixer/badge.svg?branch=1.11&service=github)](https://coveralls.io/github/FriendsOfPHP/PHP-CS-Fixer?branch=1.11)
 
-
 The PHP Coding Standards Fixer tool fixes *most* issues in your code when you
 want to follow the PHP coding standards as defined in the PSR-1 and PSR-2
 documents.
