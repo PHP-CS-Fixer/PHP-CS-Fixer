@@ -339,6 +339,12 @@ Choose from the list of available fixers:
                         Remove trailing commas in list
                         function calls.
 
+* **method_argument_default_value** [symfony]
+                        In method arguments there must
+                        not be arguments with default
+                        values before non-default
+                        ones.
+
 * **multiline_array_trailing_comma** [symfony]
                         PHP multi-line arrays should
                         have a trailing comma.
