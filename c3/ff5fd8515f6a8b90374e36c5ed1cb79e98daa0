@@ -1,0 +1,233 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-19T10:22:38Z
+
+great to see this ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-23T16:24:18Z
+
+Doesn't this fixer fix PSR-2 ¶4.1. ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-23T19:02:31Z
+
+> Isn't this fixer fix PSR-2 ¶4.1. ?
+
+If I would make the fixer do; https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1518#discussion_r45623820 it might get close ;)
+
+I could not find a rule stating there must be one space between the class/interface/trait name and `implements` / `extends` etc., so this fixer does not format to a PSR rule I think.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-23T19:04:42Z
+
+OK, so if we want to be so strict (it's OK with me) - please, could you add second fixer, that replace whitespaces around `extends` and `implements` to be not-multiline? like `__\n___` to `_____` ?
+And then, run fixer that you have already wrote after the new one and it will convert whitespaces to `_` ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-24T19:40:13Z
+
+I like the idea, so I'm putting this one back to WIP status. I'll rework the fixer to apply PSR2 4.1 where possible. This will take a bit more time, so don't expect a useful update soon ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T21:35:13Z
+
+@SpacePossum could you please focus on this PR? I would like to merge it soon ! :D
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-26T17:20:48Z
+
+@keradus I rewrote the whole thing, I'm going to puzzle on both performance and more test cases,
+but please early comments are welcome  :)
+btw. this should fix to PSR-2 ¶4.1. now ^-^
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-29T14:43:32Z
+
+fabbot is wrong IMO
+fixer reworked into smaller chunks/methods.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-29T15:04:56Z
+
+> fabbot is wrong IMO
+
+Hmmm. That's not just fabbot. That's php-cs-fixer too.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-29T15:06:28Z
+
+Your phpdoc is also wrong though anyway.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-29T15:06:47Z
+
+https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md#7-describing-hashes
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-29T15:06:59Z
+
+You must include a `$` in each variable name.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-29T15:14:06Z
+
+Also, see https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1557.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-29T17:24:10Z
+
+If CS check won't pass after fixing your PHPDoc then please get rid of that PHPDoc hash and describe the content in long description.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-29T17:24:24Z
+
+I would really love to have it in 1.11 and the PHPDoc won't stop us!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T20:04:56Z
+
+https://github.com/SpacePossum/PHP-CS-Fixer/pull/5
+
+:(
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-02T09:24:29Z
+
+:(
+
+@keradus your tests prove that setting the indenting before the class opening to `\n    ` might not be the right thing to do.
+I suggest checking if there is one line break between the line with the class definition and the class opening '{', if there is leave as is, if there are more remove to one line break, if there is none add one break.
+This will cause this fixer to move the class opening to the correct line, but it won't fix the indenting.
+What you think?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-02T09:48:37Z
+
+I can't understand why to move class opening at all?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-02T10:19:09Z
+
+```
+PSR 2
+4.1. Extends and Implements
+The opening brace for the class MUST go on its own line; the closing brace for the class MUST go on the next line after the body.
+```
+
+you feel this is out of scope for this fixer?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-02T10:32:44Z
+
+Yes, we already have a fixer that moves `{`:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.12/Symfony/CS/Tests/Fixer/PSR2/BracesFixerTest.php#L826-L833
+
+And it works ;P
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-02T14:00:40Z
+
+I removed the indenting part as well, so an `indenting fixer` should take care of that,
+lets see how the tests do
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-03T22:48:49Z
+
+input file:
+```php
+<?php
+
+class Aaa implements
+    Symfony\CS\Tests\Fixer,\RFb,
+    \Fcc1, \GFdd
+{
+}
+```
+
+fixing:
+
+```bash
+D:\GIT\fork\PHP-CS-Fixer ((detached from SpacePossum/1_11_feature_add_class_definition_fixer))
+λ php php-cs-fixer fix issue -vv
+F
+Legend: ?-unknown, I-invalid file syntax, file ignored, .-no changes, F-fixed, E-error
+   1) Aaa.php (class_definition)
+```
+
+after first fix:
+```php
+<?php
+
+class Aaa implements
+    Symfony\CS\Tests\Fixer,
+\RFb,
+    \Fcc1,
+\GFdd
+{
+}
+
+```
+fixing:
+```bash
+D:\GIT\fork\PHP-CS-Fixer ((detached from SpacePossum/1_11_feature_add_class_definition_fixer))
+λ php php-cs-fixer fix issue -vv
+F
+Legend: ?-unknown, I-invalid file syntax, file ignored, .-no changes, F-fixed, E-error
+   1) Aaa.php (trailing_spaces)
+```
+
+after second fix:
+```php
+<?php
+
+class Aaa implements
+    Symfony\CS\Tests\Fixer,
+\RFb,
+    \Fcc1,
+\GFdd
+{
+}
+
+```
+fixing:
+```bash
+D:\GIT\fork\PHP-CS-Fixer ((detached from SpacePossum/1_11_feature_add_class_definition_fixer))
+λ php php-cs-fixer fix issue -vv
+.
+Legend: ?-unknown, I-invalid file syntax, file ignored, .-no changes, F-fixed, E-error
+```
+
+------------------------------
+
+priorities need to be set
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-05T17:02:51Z
+
+After the second there are no changes which is to be expected right?
+The only prio issue I can think of is that this fixer should run before the trailing white space one,
+I'll update to make sure of that.
+- done
