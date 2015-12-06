@@ -25,9 +25,9 @@ class AlignEqualsFixer extends AbstractAlignFixer
      */
     public function fix(\SplFileInfo $file, $content)
     {
-        list($tokens, $deepestLevel) = $this->injectAlignmentPlaceholders($content);
+        $data = $this->injectAlignmentPlaceholders($content);
 
-        return $this->replacePlaceholder($tokens, $deepestLevel);
+        return $this->replacePlaceholder($data['tokens'], $data['deepestLevel']);
     }
 
     /**
@@ -50,9 +50,13 @@ class AlignEqualsFixer extends AbstractAlignFixer
     /**
      * Inject into the text placeholders of candidates of vertical alignment.
      *
+     * Output structure:
+     * * Tokens $tokens
+     * * int    $deepestLevel
+     *
      * @param string $content
      *
-     * @return array($code, $deepestLevel)
+     * @return array
      */
     private function injectAlignmentPlaceholders($content)
     {
@@ -82,6 +86,9 @@ class AlignEqualsFixer extends AbstractAlignFixer
             }
         }
 
-        return array($tokens, $deepestLevel);
+        return array(
+            'tokens' => $tokens,
+            'deepestLevel' => $deepestLevel,
+        );
     }
 }

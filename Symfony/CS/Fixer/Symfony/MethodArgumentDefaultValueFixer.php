@@ -116,7 +116,7 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
      */
     private function isEllipsis(Tokens $tokens, $variableIndex)
     {
-        if (PHP_VERSION_ID < 50600) {
+        if (!defined('T_ELLIPSIS')) {
             return $tokens[$tokens->getPrevMeaningfulToken($variableIndex)]->equals('.');
         }
 
@@ -182,7 +182,7 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
         $typehintedTokens = array(array(T_STRING), array(CT_ARRAY_TYPEHINT), ',', '(');
         $typehintedKinds = array(T_STRING, CT_ARRAY_TYPEHINT);
 
-        if (PHP_VERSION_ID >= 50400) {
+        if (defined('T_CALLABLE')) {
             $typehintedTokens[] = array(T_CALLABLE);
             $typehintedKinds[] = T_CALLABLE;
         }

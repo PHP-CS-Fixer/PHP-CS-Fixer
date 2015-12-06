@@ -220,7 +220,7 @@ preg_replace_callback(
                 array(4 => false),
             ),
             array(
-                '<?php \'foo\'[1];',
+                '<?php "foo"[1];',
                 array(2 => false),
             ),
             array(
@@ -959,7 +959,7 @@ PHP;
                 '<?php
                     array(
                         "a" => array(5, 6, 7),
-8 => new \Exception(\'Ellow\')
+8 => new \Exception("Ellow")
                     );
                 ',
                 2, true,
@@ -969,7 +969,7 @@ PHP;
                 '<?php
                     array(
                         "a" => [9, 10, 11],
-12 => new \Exception(\'Ellow\')
+12 => new \Exception("Ellow")
                     );
                 ',
                 2, true,
