@@ -1,0 +1,101 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-18T17:08:19Z
+
+either I don't get the PSR 5 standard or fabbot is wrong here
+(and the Fixer itself as well)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-18T17:32:16Z
+
+fabbot is wrong, that's all ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-18T17:32:52Z
+
+Hmm, not sure what's going on with the align fixer here.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-18T19:49:28Z
+
+rebased, squashed and comments processed (still waiting for https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1486 though ;)  )
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-22T14:10:26Z
+
+rebase didn't go a planned, will work on this some more soon.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-22T20:28:34Z
+
+reworked, expecting Travis to fail because of https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1533
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T22:05:57Z
+
+is it done ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-26T07:50:52Z
+
+rebased
+>is it done ?
+
+happy to take more feedback on this one, cause I think it is done :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-26T09:27:17Z
+
+OK, if you think it's done I will try to make some final check-up and test few codebases.
+Thanks for update ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-26T09:30:04Z
+
+hurrah, AppVeyor is dead :/
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-26T09:42:37Z
+
+>hurrah, AppVeyor is dead :/
+
+yea.. no worries, same was with https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1545 but after some pushing it start working again.. can you trigger it manually (or can I)?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-26T10:00:20Z
+
+I already did it even before writing about it and it failed again
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-26T11:01:37Z
+
+>I already did it even before writing about it and it failed again
+
+thanks so much :)
+test are back up, all green
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-29T17:25:55Z
+
+it would be great i someone could make a review!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-29T17:55:00Z
+
+> it would be great i someone could make a review!
+
+yes please :) anyone?
