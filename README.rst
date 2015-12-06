@@ -254,7 +254,9 @@ Choose from the list of available fixers:
                         with preg. (Risky fixer!)
 
 * **extra_empty_lines** [@Symfony]
-                        Removes extra empty lines.
+                        Removes extra blank lines
+                        and/or blank lines following
+                        configuration.
 
 * **function_call_space** [@PSR2, @Symfony]
                         When making a method or
