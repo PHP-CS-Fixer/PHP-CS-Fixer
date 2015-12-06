@@ -1,0 +1,502 @@
+---------------------------------------------------------------------------
+
+by dereuromark at 2015-11-10T09:21:54Z
+
+Nice job!
+I wonder if we should also add an example with too less whitespace?
+
+    public function hFunction($foo,$bar='removedValue',\SplFileInfo $baz,$x) {};
+
+It should also remove the default value here properly without touching the rest of the whitespace - as taking care of that is the responsibility of the MethodArgumentSpacing fixer then.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-11-10T14:15:43Z
+
+This fixer must not remove a ``null`` default value from a typehinted argument, even though it is followed by a required argument, as such default is about making the argument nullable, even though it cannot make it optional.
+This case must be covered in the testsuite to ensure you don't break the code.
+
+@keradus you should change the required status from appveyor as they splitted the status for pushes and PRs (as done by travis since a long time).
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-10T14:23:33Z
+
+@stof: I do not really see the difference between making an argument nullable and making it optional. Isn't a sign of poor design if nullable arguments have to be specified because they appear in the middle of the function definition?
+
+I see your point, the fixer should not force you to refactor the code, but on the other side, this kind of refactoring should be done anyway.
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-10T14:29:38Z
+
+By the way, a general question on the tests: Why is it that expected and input must not be the same? Or is there a flag I have specify to point out that this behavior is intended?
+
+I'd quite like to write some test-cases to test specifically that some constructions are **not** touched. However, that is disallowed, presumably as a precaution against tests that do not test anything by accident.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-10T14:30:42Z
+
+```php
+function foo(Bar $b = null, $c) {}
+
+foo(new Bar(), 1); //OK
+foo(null, 1); //OK too
+```
+
+if changed:
+```php
+function foo(Bar $b, $c) {}
+
+foo(new Bar(), 1); //OK
+foo(null, 1); //error
+```
+
+and that change the logic.
+
+:+1: for @stof ;)
+
+---------------------------------------------------------------------------
+
+by dereuromark at 2015-11-10T14:31:48Z
+
+@stof @keradus PHP makes all object attributes nullable either way. As such your examples are invalid as that is a default value, nothing to do with nullable.
+To say that it can be nullable you should use the doc block `Object|null` instead.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-10T14:32:15Z
+
+@lmanzke
+take a look https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1495#issuecomment-155422233
+also, going into `makeTest` method should also helps
+
+---------------------------------------------------------------------------
+
+by dereuromark at 2015-11-10T14:35:00Z
+
+To clarify:
+
+    function foo(Bar $b, $c) {}
+
+Its perfectly valid to call `$this->foo(null, $c);` check it yourself
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-10T14:35:42Z
+
+@dereuromark
+
+```bash
+ker@ad:/cli$ php --version
+PHP 5.5.9-1ubuntu4.14 (cli) (built: Oct 28 2015 01:34:46)
+Copyright (c) 1997-2014 The PHP Group
+Zend Engine v2.5.0, Copyright (c) 1998-2014 Zend Technologies
+    with Zend OPcache v7.0.3, Copyright (c) 1999-2014, by Zend Technologies
+    with Xdebug v2.2.3, Copyright (c) 2002-2013, by Derick Rethans
+ker@ad:/cli$
+ker@ad:/cli$ cat test.php
+<?php
+
+class Bar{}
+function fnc(Bar $b, $c) {}
+
+fnc(null, 1);
+ker@ad:/cli$
+ker@ad:/cli$ php -f test.php
+PHP Catchable fatal error:  Argument 1 passed to fnc() must be an instance of Bar, null given, called in /cli/test.php on line 6 and defined in /cli/test.php on line 4
+PHP Stack trace:
+PHP   1. {main}() cli/test.php:0
+PHP   2. fnc() /cli/test.php:6
+ker@ad:/cli$
+```
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-10T14:36:50Z
+
+@keradus Thanks for clearing that up. However, "go into the method" is a somewhat invalid argument. That should clearly be something immediately obvious from the docblock, which is not even present on the AbstractFixerTestBase->makeTest(). Maybe adding that would avoid confusion in the feature. (Also, having inheritdoc and then there is no parent docblock seems strange)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-10T14:38:25Z
+
+> Maybe adding that would avoid confusion in the feature.
+
+great catch, feel free to attach it!
+
+---------------------------------------------------------------------------
+
+by dereuromark at 2015-11-10T14:38:47Z
+
+Wooh, ok. I could have sworn it was different in some cases.
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-10T15:56:44Z
+
+I added the makeTest docblock in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1496
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-12T21:29:37Z
+
+ping ;)
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-13T11:00:48Z
+
+I added the case described by @stof, but also encountered something odd:
+If I use getNextTokenOfKind('null'), it does not find it, as I half expected. Null seems to have the token id 310, which is, according to tokenizer.php, T_VARIABLE.
+
+At runtime, however, T_VARIABLE is 312. Did I look up the wrong definition?
+If yes, where do I find the right one? Don't like using "310" as magic token id at all.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-13T11:13:01Z
+
+The IDs are different in different php versions.
+
+https://3v4l.org/psqa6
+
+`null` is a `T_STRING` token.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-13T11:15:01Z
+
+> All tokens listed below are also defined as PHP constants. Their value is automatically generated based on PHP's underlying parser infrastructure. This means that the concrete value of a token may change between two PHP versions.
+
+http://php.net/manual/en/tokens.php
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-13T11:16:31Z
+
+Good to know ;). The function token_name is also a good catch ;). Will change that then.
+Still interesting that if it's a simple string that $token->equals('null') will not work.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-13T11:17:03Z
+
+Don't rely on int value itself.
+
+also, `getNextTokenOfKind` get the argument as array of possible tokens, not single token
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-13T11:19:28Z
+
+@keradus: I know  that, just was a bit lazy. Of course what I meant was getNextTokenOfKind(array('null')) won't work, because the underlying usage of equals will not catch it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-19T22:52:41Z
+
+@lmanzke
+
+```php
+<?php
+
+$a = null;
+
+```
+
+```php
+$tokens = Tokens::fromCode($content);
+$firstNull = $tokens->getNextTokenOfKind(0, [[T_STRING, 'null']]);
+var_dump($firstNull, $tokens[$firstNull]->toJson());
+```
+
+```bash
+int(6)
+string(100) "{
+    "id": 310,
+    "name": "T_STRING",
+    "content": "null",
+    "line": 3,
+    "isArray": true
+}"
+```
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-20T11:06:24Z
+
+@keradus I start getting the impression that you do not read my comments / commits. I already adapted this.
+Still, even if your code works, it shows that the tokenizer is bad and unreliable. The getNextTokenOfKind function works for 'function', why not for 'null'? Why is it necessary to use the prototype array construction there?
+
+Anyway, are there any things I should still adapt?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-20T19:10:20Z
+
+@lmanzke you said that this looking for null won't work, I show it works. Sorry, I don't saw your comment that you have already figured it out.
+One way or another - great that you manage it.
+
+> Still, even if your code works, it shows that the tokenizer is bad and unreliable. The getNextTokenOfKind function works for 'function', why not for 'null'? Why is it necessary to use the prototype array construction there?
+
+Because there is `T_FUNCTION` and there is not `T_NULL`. Please, send thanks to PHP authors.
+
+> Anyway, are there any things I should still adapt?
+
+Is the PR request ready from your side? If yes we will start a review ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-20T19:12:43Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1493#issuecomment-155431991 is still to be done
+
+---------------------------------------------------------------------------
+
+by dereuromark at 2015-11-20T19:17:13Z
+
+The test cases clearly show that this is not the case, that has been done already: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1493/files#diff-5c2c894b7930f5a05b2dd0248e6c8d5bR82
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-20T20:07:02Z
+
+And still you have https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1493/files#diff-5c2c894b7930f5a05b2dd0248e6c8d5bR37 .
+You cannot assume that if a parameter is not typehinted as object it is not an object. It's safer to not delete `null` as default value.
+
+If it will be removed for not-typehinted parameters then the fixer will be considered as risky (may change meaning of code!)
+
+---------------------------------------------------------------------------
+
+by dereuromark at 2015-11-20T20:40:56Z
+
+> considered as risky
+
+Maybe not a bad idea after all. In its original form it this fixer could be used to detect possible code smells early on.
+
+But we could also fix it up to be non-risky and be done with it :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-21T00:07:46Z
+
+> In its original form it this fixer could be used to detect possible code smells early on.
+
+Please remember that this is not mess detector but fixer.
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-21T02:03:18Z
+
+> If it will be removed for not-typehinted parameters then the fixer will be considered as risky (may
+> change meaning of code!)
+
+I do not think that is true. That is the whole purpose if this fixer: If there is a `$a = null` somewhere in the function definition, the null does not make sense. It can be removed without changing the meaning of the code. The param is also nullable without the default value, but will always have to be passed if there are required arguments after the = null.
+
+It is another case for typehinted arguments, though: Omitting the = null there would remove nullability and therefore change the behavior. So in this special case, if the argument is typehinted and default value is null, then it would change behavior, which is why it should leave it untouched.
+
+However, it has to said that if something like this occurs, it is a code smell and should probably be refactored. But as this is not the purpose of the fixer, it leaves it as it is.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-21T10:29:45Z
+
+@lmanzke , you are right, my bad.
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-21T12:36:39Z
+
+Testcase added and rebased it on top of current 1.11, too. I can also squash it a bit, but would do that at the end.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-22T13:38:34Z
+
+(no need to squash yourself)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-24T10:09:21Z
+
+@lmanzke it looks almost ready! Please, could you finish it off? I would be more than happy to merge it into 1.11
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-24T10:18:12Z
+
+So the open things are the comments that should not be removed and the "wrong" test case?
+
+---------------------------------------------------------------------------
+
+by dereuromark at 2015-11-24T10:22:47Z
+
+@lmanzke Looks like it. Adding the closing braces sure makes sense as we only want to work with valid PHP anyway.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-24T11:30:36Z
+
+exactly ;)
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-24T21:33:42Z
+
+@gharlan Added your test case and have adapted it to make it pass.
+Currently having another one that is causing trouble though:
+
+`public function a($a = array('a' => 'b', 'c' => 'd'), $b) {}`
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-24T21:38:44Z
+
+Wow, strange. Can somebody reproduce that this test case actually **breaks** the tokenizer?
+`public function a($a = array('a' => 'b', 'c' => 'd'), $b) {}`
+
+Tokens::fromCode returns one token for that string which is quite odd
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-24T21:42:12Z
+
+Seems to be a problem in the token_get_all function used by Tokens::fromCode.
+My PHP Version:
+`PHP 5.6.15 (cli) (built: Nov 13 2015 14:32:10)
+Copyright (c) 1997-2015 The PHP Group
+Zend Engine v2.6.0, Copyright (c) 1998-2015 Zend Technologies
+    with Xdebug v2.3.3, Copyright (c) 2002-2015, by Derick Rethans`
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-24T21:49:28Z
+
+Ah see the error. Good old <?php is missing in front. Never mind ...
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-24T23:47:26Z
+
+Ok, I now added all test cases mentioned here and refactored the fixer to make them work. If there are any other test cases anybody can think of :wink:
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-24T23:58:08Z
+
+Missing this: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1493#discussion_r45791923
+(typehinted nullable argument with non-lowercase `NULL` (or `Null`).
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-25T00:15:11Z
+
+Oh, found another special case:
+
+```php
+function foo($a = 1, ...$b) {}
+```
+
+This is valid since PHP 5.6 and the default value must not be removed.
+https://3v4l.org/EYN8Q
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-25T00:30:28Z
+
+Added a case for that and hope that all tests contain valid PHP code now.
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-25T00:41:16Z
+
+Ok, appveyor does not seem to know mb_convert_case (strange, exists since 4.3) and the T_ELLIPSIS constant is only available since 5.6 (makes sense). Will try to make sense of that tomorrow.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T09:32:53Z
+
+As `mbstring` extension is not available by default in all envs and we *do not* rely on it.
+Actually, we worked to remove `ext-mbstring` from requirements in `compsoer.json` ;)
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-25T10:24:45Z
+
+Ok, tests pass again now as I put the ellipsis test cases into a separate method.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-25T10:29:16Z
+
+:+1: Thanks, very nice fixer!
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-25T10:34:47Z
+
+Seems I'm not quite there yet:
+
+`function a(\SplFileInfo &$a = null, $b) {}`
+
+is valid php code (although senseless) and will probably fail. Verifying ...
+
+Would never have believed there are so many special cases! :wink:
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-11-25T10:41:02Z
+
+Actually, it passes. Added it to make sure though.
+Good to go.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-26T21:06:25Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-26T21:23:34Z
+
+:+1:  thanks @lmanzke :)
+before moving to Symfony level, I would like to know if @stof (https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1493#issuecomment-155431991) is happy with the implementation
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-26T21:50:07Z
+
+The fixer already follows his suggestion
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-26T23:11:38Z
+
+I don't think so, this test shows a default value `null` being removed because it is followed by a required argument https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1493/files#diff-5c2c894b7930f5a05b2dd0248e6c8d5bR36
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-26T23:17:49Z
+
+check out https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1493#issuecomment-158511368 and following 4 comments
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-12-02T13:54:06Z
+
+Didn't realize that PHP 5.3 doesn't know callable
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-02T14:00:58Z
+
+callable is new in php 5.4, yeh
+
+---------------------------------------------------------------------------
+
+by lmanzke at 2015-12-03T15:45:23Z
+
+Okay - callable is now also fixed in 5.3 , but without the constant
