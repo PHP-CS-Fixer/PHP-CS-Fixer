@@ -16,23 +16,23 @@ use Symfony\CS\AbstractPhpdocTagsFixer;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-final class PhpdocVarToTypeFixer extends AbstractPhpdocTagsFixer
+final class PhpdocPropertyFixer extends AbstractPhpdocTagsFixer
 {
     /**
      * {@inheritdoc}
      */
-    protected static $search = array('var');
+    protected static $search = array('property-read', 'property-write');
 
     /**
      * {@inheritdoc}
      */
-    protected static $replace = 'type';
+    protected static $replace = 'property';
 
     /**
      * {@inheritdoc}
      */
     public function getDescription()
     {
-        return '@var should always be written as @type.';
+        return '@property tags should be used rather than other variants.';
     }
 }

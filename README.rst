@@ -457,6 +457,10 @@ Choose from the list of available fixers:
                         throws annotations, then
                         return annotations.
 
+* **phpdoc_property**
+                        @property tags should be used
+                        rather than other variants.
+
 * **phpdoc_scalar** [@Symfony]
                         Scalar types should always be
                         written in the same form.

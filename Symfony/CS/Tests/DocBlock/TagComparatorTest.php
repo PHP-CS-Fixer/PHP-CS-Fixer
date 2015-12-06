@@ -11,6 +11,7 @@
 
 namespace Symfony\CS\Tests\DocBlock;
 
+use Symfony\CS\DocBlock\Line;
 use Symfony\CS\DocBlock\Tag;
 use Symfony\CS\DocBlock\TagComparator;
 
@@ -26,8 +27,8 @@ final class TagComparatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testComparatorTogether($first, $second, $expected)
     {
-        $tag1 = new Tag('* @'.$first);
-        $tag2 = new Tag('* @'.$second);
+        $tag1 = new Tag(new Line('* @'.$first));
+        $tag2 = new Tag(new Line('* @'.$second));
 
         $this->assertSame($expected, TagComparator::shouldBeTogether($tag1, $tag2));
     }
