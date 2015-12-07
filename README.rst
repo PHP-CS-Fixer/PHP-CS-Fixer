@@ -346,6 +346,10 @@ Choose from the list of available fixers:
                         use double slashes (//) and
                         not hash (#).
 
+* **heredoc_to_nowdoc** [symfony]
+                        Convert heredoc to nowdoc if
+                        possible.
+
 * **include** [symfony]
                         Include/Require and file path
                         should be divided with a
