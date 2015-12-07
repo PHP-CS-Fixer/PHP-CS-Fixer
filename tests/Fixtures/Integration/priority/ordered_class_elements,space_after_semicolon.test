@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: ordered_class_elements,space_after_semicolon.
+--CONFIG--
+{"ordered_class_elements": true, "space_after_semicolon": true}
+--EXPECT--
+<?php
+
+class Foo { protected $y; private $x; }
+
+--INPUT--
+<?php
+
+class Foo {private $x; protected $y;}

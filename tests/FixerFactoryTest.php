@@ -205,6 +205,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_leading_import_slash'], $fixers['ordered_imports']), // tested also in: no_leading_import_slash,ordered_imports.test
             array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['align_double_arrow']), // tested also in: no_multiline_whitespace_around_double_arrow,align_double_arrow.test
             array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['trailing_comma_in_multiline_array']),
+            array($fixers['no_php4_constructor'], $fixers['ordered_class_elements']), // tested also in: no_php4_constructor,ordered_class_elements.test
             array($fixers['no_short_bool_cast'], $fixers['cast_spaces']), // tested also in: no_short_bool_cast,cast_spaces.test
             array($fixers['no_short_echo_tag'], $fixers['echo_to_print']), // tested also in: echo_to_print,no_short_echo_tag.test
             array($fixers['no_tab_indentation'], $fixers['phpdoc_indent']),
@@ -212,6 +213,9 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_unused_imports'], $fixers['blank_line_after_namespace']), // tested also in: no_unused_imports,blank_line_after_namespace.test
             array($fixers['no_unused_imports'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: no_unused_imports,no_extra_consecutive_blank_lines.test
             array($fixers['no_unused_imports'], $fixers['no_leading_import_slash']),
+            array($fixers['ordered_class_elements'], $fixers['method_separation']), // tested also in: ordered_class_elements,method_separation.test
+            array($fixers['ordered_class_elements'], $fixers['no_blank_lines_after_class_opening']), // tested also in: ordered_class_elements,no_blank_lines_after_class_opening.test
+            array($fixers['ordered_class_elements'], $fixers['space_after_semicolon']), // tested also in: ordered_class_elements,space_after_semicolon.test
             array($fixers['php_unit_strict'], $fixers['php_unit_construct']),
             array($fixers['phpdoc_no_access'], $fixers['phpdoc_order']),
             array($fixers['phpdoc_no_access'], $fixers['phpdoc_separation']),
