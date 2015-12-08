@@ -33,14 +33,17 @@ final class SpacesBeforeSemicolonFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->equals(';')) {
+            if (!$token->equals(';') || !$tokens[$index - 1]->isWhitespace(" \t")) {
                 continue;
             }
 
-            $previous = $tokens[$index - 1];
-
-            if ($previous->isWhitespace(" \t") && !$tokens[$index - 2]->isComment()) {
-                $previous->clear();
+            if ($tokens[$index - 2]->equals(';')) {
+                // do not remove all whitespace before the semicolon because it is also whitespace after another semicolon
+                if (!$tokens[$index - 1]->equals(' ')) {
+                    $tokens[$index - 1]->setContent(' ');
+                }
+            } elseif (!$tokens[$index - 2]->isComment()) {
+                $tokens[$index - 1]->clear();
             }
         }
     }

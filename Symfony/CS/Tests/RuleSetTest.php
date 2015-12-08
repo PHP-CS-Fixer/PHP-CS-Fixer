@@ -119,6 +119,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
                 'lowercase_constants' => true,
                 'line_after_namespace' => true,
                 'braces' => true,
+                'class_definition' => true,
                 'eof_ending' => true,
                 'strict' => true,
             ),
@@ -153,6 +154,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
                 'lowercase_constants' => true,
                 'line_after_namespace' => true,
                 'braces' => true,
+                'class_definition' => true,
                 'eof_ending' => true,
             ),
             $ruleSet->getRules()

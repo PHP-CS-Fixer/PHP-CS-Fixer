@@ -34,6 +34,10 @@ final class SpacesBeforeSemicolonFixerTest extends AbstractFixerTestCase
     {
         return array(
             array(
+                '<?php for ($uu = 0; ; ++$uu) {}',
+                '<?php for ($uu = 0    ;    ; ++$uu) {}',
+            ),
+            array(
                 '<?php
 $this
     ->setName(\'readme1\')

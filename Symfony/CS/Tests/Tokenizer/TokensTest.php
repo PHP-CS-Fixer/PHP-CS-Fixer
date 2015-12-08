@@ -434,4 +434,58 @@ EOF;
         $this->assertTrue($tokens->isAnyTokenKindsFound(array(T_CLASS, T_INTERFACE)));
         $this->assertFalse($tokens->isAnyTokenKindsFound(array(T_INTERFACE, T_ARRAY)));
     }
+
+    public function testFindGivenKind()
+    {
+        $source = <<<'PHP'
+<?php
+class FooBar
+{
+    public function foo()
+    {
+        return 'bar';
+    }
+
+    public function bar()
+    {
+        return 'foo';
+    }
+}
+PHP;
+        $tokens = Tokens::fromCode($source);
+        /** @var Token[] $found */
+        $found = $tokens->findGivenKind(T_CLASS);
+        $this->assertTrue(is_array($found));
+        $this->assertCount(1, $found);
+        $this->assertArrayHasKey(1, $found);
+        $this->assertSame(T_CLASS, $found[1]->getId());
+
+        /** @var array $found */
+        $found = $tokens->findGivenKind(array(T_CLASS, T_FUNCTION));
+        $this->assertCount(2, $found);
+        $this->assertArrayHasKey(T_CLASS, $found);
+        $this->assertTrue(is_array($found[T_CLASS]));
+        $this->assertCount(1, $found[T_CLASS]);
+        $this->assertArrayHasKey(1, $found[T_CLASS]);
+        $this->assertSame(T_CLASS, $found[T_CLASS][1]->getId());
+
+        $this->assertArrayHasKey(T_FUNCTION, $found);
+        $this->assertTrue(is_array($found[T_FUNCTION]));
+        $this->assertCount(2, $found[T_FUNCTION]);
+        $this->assertArrayHasKey(9, $found[T_FUNCTION]);
+        $this->assertSame(T_FUNCTION, $found[T_FUNCTION][9]->getId());
+        $this->assertArrayHasKey(26, $found[T_FUNCTION]);
+        $this->assertSame(T_FUNCTION, $found[T_FUNCTION][26]->getId());
+
+        // test offset and limits of the search
+        $found = $tokens->findGivenKind(array(T_CLASS, T_FUNCTION), 10);
+        $this->assertCount(0, $found[T_CLASS]);
+        $this->assertCount(1, $found[T_FUNCTION]);
+        $this->assertArrayHasKey(26, $found[T_FUNCTION]);
+
+        $found = $tokens->findGivenKind(array(T_CLASS, T_FUNCTION), 2, 10);
+        $this->assertCount(0, $found[T_CLASS]);
+        $this->assertCount(1, $found[T_FUNCTION]);
+        $this->assertArrayHasKey(9, $found[T_FUNCTION]);
+    }
 }

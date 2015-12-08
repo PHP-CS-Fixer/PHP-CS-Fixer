@@ -207,6 +207,12 @@ Choose from the list of available fixers:
                         placed. Body of braces should
                         be properly indented.
 
+* **class_definition** [@PSR2, @Symfony]
+                        Whitespace around the key
+                        words of a class, trait or
+                        interfaces definition should
+                        be one space.
+
 * **concat_with_spaces**
                         Concatenation should be used
                         with at least one whitespace
@@ -326,6 +332,12 @@ Choose from the list of available fixers:
 * **lowercase_keywords** [@PSR2, @Symfony]
                         PHP keywords MUST be in lower
                         case.
+
+* **method_argument_default_value** [@Symfony]
+                        In method arguments there must
+                        not be arguments with default
+                        values before non-default
+                        ones.
 
 * **method_argument_space** [@PSR2, @Symfony]
                         In method arguments and method

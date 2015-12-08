@@ -28,6 +28,7 @@ final class RuleSet implements RuleSetInterface
         '@PSR2' => array(
             '@PSR1' => true,
             'braces' => true,
+            'class_definition' => true,
             'elseif' => true,
             'eof_ending' => true,
             'function_call_space' => true,
@@ -59,6 +60,7 @@ final class RuleSet implements RuleSetInterface
             'function_typehint_space' => true,
             'include' => true,
             'list_commas' => true,
+            'method_argument_default_value' => true,
             'method_separation' => true,
             'multiline_array_trailing_comma' => true,
             'namespace_no_leading_whitespace' => true,
