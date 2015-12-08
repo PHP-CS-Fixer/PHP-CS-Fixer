@@ -79,19 +79,15 @@ class UnaryOperatorsSpacesFixerTest extends AbstractFixerTestBase
                 '<?php function &foo(){}',
                 '<?php function & foo(){}',
             ),
-        );
-
-        if (PHP_VERSION_ID < 50400) {
-            $cases [] = array(
+            array(
                 '<?php function foo(&$a, array &$b, Bar &$c) {}',
                 '<?php function foo(& $a, array & $b, Bar & $c) {}',
-            );
-
-            $cases [] = array(
+            ),
+            array(
                 '<?php foo(+$a, -2,-$b, &$c);',
                 '<?php foo(+ $a, - 2,- $b, & $c);',
-            );
-        }
+            ),
+        );
 
         return $cases;
     }
