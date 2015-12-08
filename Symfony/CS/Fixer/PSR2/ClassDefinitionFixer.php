@@ -141,7 +141,7 @@ final class ClassDefinitionFixer extends AbstractFixer
                 } elseif (
                     $tokens[$index + 1]->isComment()
                     && ' ' !== $tokens[$index]->getContent()
-                    && !($tokens[$index - 1]->isComment() && "\n" === $tokens[$index]->getContent()[0])
+                    && !($tokens[$index - 1]->isComment() && "\n" === substr($tokens[$index]->getContent(), 0, 1))
                 ) {
                     $tokens[$index]->setContent(' ');
                 }
