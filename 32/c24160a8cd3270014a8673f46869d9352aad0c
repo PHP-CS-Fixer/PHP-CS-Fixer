@@ -1,0 +1,64 @@
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-07T19:38:56Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-07T19:40:51Z
+
+What about testing php 5 with symfony 3?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-07T19:42:38Z
+
+> What about testing php 5 with symfony 3?
+
+This is what we are doing.
+Only 5.3 and 5.4 are running symfony 2 because symfony 3 requires php >= 5.5.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-07T19:44:25Z
+
+PHP | Symfony
+--- | ---
+5.3 | 2.x (lowest)
+5.4 | 2.8
+5.5 | 3.0
+5.6 | 3.0
+7.0 | 2.8 and 3.0
+hhvm | 3.0
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-07T19:46:33Z
+
+Ahh, yes. What about hhvm and both symfony versions. :P
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-07T19:47:01Z
+
+and, why does php 5.3 get the really old symfony version only?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-07T19:48:44Z
+
+hhvm - I can't see any point of it. Even hhvm is extra old on Travis.
+5.3 - look at composer flags for 5.3, it is on purpose to check if the tool will work under the min version of deps we required.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-08T08:47:13Z
+
+Maybe we can take profit to add SF 3.1 on allowed failures.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-08T10:47:02Z
+
+Bit overkill imo.
