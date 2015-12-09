@@ -242,9 +242,9 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     public function testGetTagsWithTypes()
     {
         $tags = Annotation::getTagsWithTypes();
-        $this->assertTrue(is_array($tags));
+        $this->assertInternalType('array', $tags);
         foreach ($tags as $tag) {
-            $this->assertTrue(is_string($tag));
+            $this->assertInternalType('string', $tag);
             $this->assertNotEmpty($tag);
         }
     }

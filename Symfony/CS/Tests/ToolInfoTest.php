@@ -20,7 +20,7 @@ class ToolInfoTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetVersion()
     {
-        $this->assertTrue(is_string(ToolInfo::getVersion()));
+        $this->assertInternalType('string', ToolInfo::getVersion());
     }
 
     public function testIsInstallAsPhar()
