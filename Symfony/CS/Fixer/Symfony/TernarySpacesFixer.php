@@ -46,24 +46,24 @@ class TernarySpacesFixer extends AbstractFixer
                     }
                 } else {
                     // for `$a ? $b : $c` ensure space after `?`
-                    $this->ensureWhitespaceExistance($tokens, $index + 1, true);
+                    $this->ensureWhitespaceExistence($tokens, $index + 1, true);
                 }
 
                 // for `$a ? $b : $c` ensure space before `?`
-                $this->ensureWhitespaceExistance($tokens, $index - 1, false);
+                $this->ensureWhitespaceExistence($tokens, $index - 1, false);
 
                 continue;
             }
 
             if ($ternaryLevel && $token->equals(':')) {
                 // for `$a ? $b : $c` ensure space after `:`
-                $this->ensureWhitespaceExistance($tokens, $index + 1, true);
+                $this->ensureWhitespaceExistence($tokens, $index + 1, true);
 
                 $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
 
                 if (!$prevNonWhitespaceToken->equals('?')) {
                     // for `$a ? $b : $c` ensure space before `:`
-                    $this->ensureWhitespaceExistance($tokens, $index - 1, false);
+                    $this->ensureWhitespaceExistence($tokens, $index - 1, false);
                 }
 
                 --$ternaryLevel;
@@ -81,7 +81,7 @@ class TernarySpacesFixer extends AbstractFixer
         return 'Standardize spaces around ternary operator.';
     }
 
-    private function ensureWhitespaceExistance(Tokens $tokens, $index, $after)
+    private function ensureWhitespaceExistence(Tokens $tokens, $index, $after)
     {
         $indexChange = $after ? 0 : 1;
         $token = $tokens[$index];

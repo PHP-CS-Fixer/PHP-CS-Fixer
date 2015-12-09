@@ -89,7 +89,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
      */
     public function getTests()
     {
-        $fixturesDir = realpath($this->getFixturesDir());
+        $fixturesDir = realpath(static::getFixturesDir());
         if (!is_dir($fixturesDir)) {
             throw new \UnexpectedValueException(sprintf('Given fixture dir "%s" is not a directory.', $fixturesDir));
         }
