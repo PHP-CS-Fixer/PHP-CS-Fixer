@@ -1,0 +1,32 @@
+<?php
+
+/*
+ * This file is part of the PHP CS utility.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace Symfony\CS\ConfigurationException;
+
+use Symfony\CS\Console\Command\FixCommand;
+
+/**
+ * Exceptions of this type are thrown on misconfiguration of the Fixer.
+ *
+ * @author SpacePossum
+ *
+ * @internal
+ */
+class InvalidConfigurationException extends \InvalidArgumentException
+{
+    /**
+     * @param string $message
+     */
+    public function __construct($message)
+    {
+        parent::__construct($message, FixCommand::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG);
+    }
+}
