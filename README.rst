@@ -332,10 +332,10 @@ Choose from the list of available fixers:
                         typehint.
 
 * **include** [symfony]
-                        Include and file path should
-                        be divided with a single
-                        space. File path should not be
-                        placed under brackets.
+                        Include/Require and file path
+                        should be divided with a
+                        single space. File path should
+                        not be placed under brackets.
 
 * **join_function** [symfony]
                         Implode function should be
