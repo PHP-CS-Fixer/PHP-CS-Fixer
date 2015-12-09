@@ -197,4 +197,13 @@ EOH;
         $input = "<?php\n";
         $this->makeTest($expected, $input);
     }
+
+    /**
+     * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessage [header_comment] Header configuration is invalid. Expected "string", got "stdClass".
+     */
+    public function testInvalidConfig()
+    {
+        HeaderCommentFixer::setHeader(new \stdClass());
+    }
 }

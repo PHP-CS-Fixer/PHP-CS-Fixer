@@ -109,6 +109,17 @@ class PhpUnitConstructFixerTest extends AbstractFixerTestBase
         );
     }
 
+    /**
+     * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessage Configured method "__TEST__" cannot be fixed by this fixer.
+     */
+    public function testInvalidConfig()
+    {
+        /** @var PhpUnitConstructFixer $fixer */
+        $fixer = $this->getFixer();
+        $fixer->configure(array('__TEST__' => 'abc'));
+    }
+
     private function generateCases($expectedTemplate, $inputTemplate)
     {
         $cases = array();
