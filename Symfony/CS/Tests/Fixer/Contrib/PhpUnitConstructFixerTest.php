@@ -11,6 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
+use Symfony\CS\Fixer\Contrib\PhpUnitConstructFixer;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
@@ -18,6 +19,17 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  */
 class PhpUnitConstructFixerTest extends AbstractFixerTestBase
 {
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Configured method "MyTest" cannot be fixed by this fixer.
+     */
+    public function testInvalidConfiguration()
+    {
+        /** @var $fixer PhpUnitConstructFixer */
+        $fixer = $this->getFixer();
+        $fixer->configure(array('MyTest' => 'test'));
+    }
+
     /**
      * @dataProvider provideTestFixCases
      */
@@ -64,6 +76,7 @@ class PhpUnitConstructFixerTest extends AbstractFixerTestBase
     {
         $cases = array(
             array('<?php $sth->assertSame(true, $foo);'),
+            array('<?php $this->assertSame($b, null);'),
             array(
                 '<?php
     $this->assertTrue(
