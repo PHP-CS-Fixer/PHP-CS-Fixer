@@ -12,7 +12,6 @@
 namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
-use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -32,12 +31,12 @@ class OperatorsSpacesFixer extends AbstractFixer
                 continue;
             }
 
-            if (!$tokens[$index + 1]->isWhitespace()) {
-                $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
+            if (!$tokens->isIndented($index + 2)) {
+                $tokens->ensureSingleWithSpaceAt($index + 1);
             }
 
-            if (!$tokens[$index - 1]->isWhitespace()) {
-                $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
+            if (!$tokens->isIndented($index)) {
+                $tokens->ensureSingleWithSpaceAt($index - 1, 1);
             }
         }
 

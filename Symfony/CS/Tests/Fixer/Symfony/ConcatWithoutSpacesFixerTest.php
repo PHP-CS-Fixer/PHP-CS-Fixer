@@ -30,16 +30,23 @@ class ConcatWithoutSpacesFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
-                '<?php $foo = "a".\'b\'."c"."d".$e.($f + 1);',
-                '<?php $foo = "a" . \'b\' ."c". "d" . $e.($f + 1);',
+                '<?php "f". 1;',
+            ),
+            array(
+                '<?php $foo1 = "a".\'b\'."c"."d".$e.($f + 1);',
+                '<?php $foo1 = "a" . \'b\' ."c". "d" . $e.($f + 1);',
             ),
             array(
                 '<?php $foo = 1 ."foo";',
-                '<?php $foo = 1 . "foo";',
+                '<?php $foo = 1  . "foo";',
             ),
             array(
                 '<?php $foo = "foo". 1;',
-                '<?php $foo = "foo" . 1;',
+                '<?php $foo = "foo".   1;',
+            ),
+            array(
+                '<?php $foo = "foo". 1 ."a";',
+                '<?php $foo = "foo" . 1    . "a";',
             ),
             array(
                 '<?php $foo = "a".
@@ -49,6 +56,16 @@ class ConcatWithoutSpacesFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php $a = "foobar"
+    ."baz";',
+            ),
+            array(
+                '<?php $a = "foobar"
+    //test
+    ."baz";',
+            ),
+            array(
+                '<?php $a = "foobar"
+    /* test */
     ."baz";',
             ),
         );

@@ -12,7 +12,6 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
-use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -28,15 +27,13 @@ final class LogicalNotOperatorsWithSpacesFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            $token = $tokens[$index];
-
-            if ($tokens->isUnaryPredecessorOperator($index) && $token->equals('!')) {
-                if (!$tokens[$index + 1]->isWhitespace()) {
-                    $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
+            if ($tokens->isUnaryPredecessorOperator($index) && $tokens[$index]->equals('!')) {
+                if (!$tokens->isIndented($index + 1)) {
+                    $tokens->ensureSingleWithSpaceAt($index + 1);
                 }
 
-                if (!$tokens[$index - 1]->isWhitespace()) {
-                    $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
+                if (!$tokens->isIndented($index)) {
+                    $tokens->ensureSingleWithSpaceAt($index - 1, 1);
                 }
             }
         }

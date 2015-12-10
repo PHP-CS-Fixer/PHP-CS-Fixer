@@ -27,15 +27,22 @@ class ConcatWithoutSpacesFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
         $whitespaces = array('whitespaces' => " \t");
 
-        foreach ($tokens as $index => $token) {
-            if ($token->equals('.')) {
-                if (!$tokens[$tokens->getPrevNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
-                    $tokens->removeLeadingWhitespace($index, $whitespaces);
-                }
+        for ($index = count($tokens) - 1; $index > 0; --$index) {
+            if (!$tokens[$index]->equals('.')) {
+                continue;
+            }
 
-                if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
-                    $tokens->removeTrailingWhitespace($index, $whitespaces);
-                }
+            if ($tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
+                $tokens->ensureSingleWithSpaceAt($index + 1);
+            } else {
+                $tokens->removeTrailingWhitespace($index, $whitespaces);
+            }
+
+            if ($tokens[$tokens->getPrevNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
+                $tokens->ensureSingleWithSpaceAt($index - 1);
+            } elseif (!$tokens->isIndented($index)) {
+                // remove leading white space but not when it is indenting
+                $tokens->removeLeadingWhitespace($index, $whitespaces);
             }
         }
 

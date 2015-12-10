@@ -31,8 +31,16 @@ class OperatorsSpacesFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
+                '<?php $a44 &=
+$b;',
+            ),
+            array(
                 '<?php $a + $b;',
                 '<?php $a+$b;',
+            ),
+            array(
+                '<?php $a + $b;',
+                '<?php $a     +     $b;',
             ),
             array(
                 '<?php 1 + $b;',
@@ -78,18 +86,10 @@ class OperatorsSpacesFixerTest extends AbstractFixerTestBase
                 '<?php $a &= $b;',
             ),
             array(
-                '<?php $a  &=   $b;',
-            ),
-            array(
-                '<?php $a &=
-$b;',
-            ),
-
-            array(
-                '<?php $a
-&= $b;',
-                '<?php $a
-&=$b;',
+                '<?php $a1
+&= $b2;',
+                '<?php $a1
+&=$b2;',
             ),
             array(
                 '<?php (1) and 2;',
@@ -135,6 +135,14 @@ $b;',
             array(
                 '<?php function foo(&$a, array &$b, Bar &$c) {}',
             ),
+            array(
+                '<?php $a = 1 //
+                   || 2;',
+            ),
+            array(
+                '<?php $a =
+                   2;',
+            ),
         );
     }
 
@@ -153,6 +161,14 @@ $b;',
             array(
                 '<?php [1, 2] + [3, 4];',
                 '<?php [1, 2]+[3, 4];',
+            ),
+            array(
+                '<?php [5] + [7];',
+                '<?php [5] +[7];',
+            ),
+            array(
+                '<?php [8] + [9];',
+                '<?php [8]+ [9];',
             ),
         );
     }
