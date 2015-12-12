@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-07T18:36:58Z
+
+lgtm :+1:
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-10T18:30:24Z
+
+> keradus changed the title from **UnneededControlParenthesesFixer - add `break` and `continue`** to **UnneededControlParenthesesFixer - add "break" and "continue"** 22 hours ago
+
+haha, tried to fit your naming conventions, but failed again. ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-10T20:56:20Z
+
+I would use >\`< on my own too, but >\`< in `.md` files is a tricky char that need to be escaped :/
+And since changelog file is generated from title - I simplify it to not have need of escaping.
