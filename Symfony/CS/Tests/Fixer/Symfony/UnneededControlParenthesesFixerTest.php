@@ -16,6 +16,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
+ * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
  */
@@ -33,7 +34,7 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null, $fixStatement = null)
     {
         // PHP <5.5 BC
         if (version_compare(PHP_VERSION, '5.5', '<') && false !== strpos($input, 'yield')) {
@@ -51,9 +52,20 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
         // Test with only one statement
         foreach (self::$defaultStatements as $statement) {
             UnneededControlParenthesesFixer::configure(array($statement));
+
+            $withInput = false;
+            if ($input && (!$fixStatement || $fixStatement === $statement)) {
+                foreach (explode('_', $statement) as $singleStatement) {
+                    if (false !== strpos($input, $singleStatement)) {
+                        $withInput = true;
+                        break;
+                    }
+                }
+            }
+
             $this->makeTest(
                 $expected,
-                $input && false !== strpos($input, $statement) ? $input : null
+                $withInput ? $input : null
             );
         }
     }
@@ -61,6 +73,28 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
     public function provideFixCases()
     {
         return array(
+            array(
+                '<?php break;',
+            ),
+            array(
+                '<?php break 2;',
+                '<?php break (2);',
+            ),
+            array(
+                '<?php break 2;',
+                '<?php break(2);',
+            ),
+            array(
+                '<?php continue;',
+            ),
+            array(
+                '<?php continue 2;',
+                '<?php continue (2);',
+            ),
+            array(
+                '<?php continue 2;',
+                '<?php continue(2);',
+            ),
             array(
                 '<?php
                 yield "prod";
@@ -296,6 +330,7 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
                         break;
                 }
                 ',
+                'switch_case',
             ),
             array(
                 '<?php
@@ -380,6 +415,7 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
                     }
                 }
                 ',
+                'switch_case',
             ),
         );
     }
