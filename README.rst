@@ -663,6 +663,11 @@ Choose from the list of available fixers:
                         $strict param. Warning! This
                         could change code behavior.
 
+* **useless_return** [contrib]
+                        There should not be an empty
+                        return statement at the end of
+                        a function.
+
 
 The ``--config`` option customizes the files to analyse, based
 on some well-known directory structures:
