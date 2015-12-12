@@ -69,4 +69,13 @@ class ReturnFixer extends AbstractFixer
     {
         return 'An empty line feed should precede a return statement.';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run after UselessReturnFixer
+        return -19;
+    }
 }
