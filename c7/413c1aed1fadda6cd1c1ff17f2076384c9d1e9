@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-09T09:06:31Z
+
+fabbot.io fails because it tries to fix the tests cases by itself...
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-09T11:05:23Z
+
+@fabpot we have already released stable version of PHPUnit fixers.
+Please, could you update fabbot.io to use them instead of regex ?
