@@ -30,6 +30,9 @@ class EofEndingFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
+                '',
+            ),
+            array(
                 "<?php\n",
             ),
             array(

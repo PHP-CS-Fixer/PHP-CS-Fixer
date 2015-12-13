@@ -136,8 +136,7 @@ final class UnneededControlParenthesesFixer extends AbstractFixer
         $tokens[$index]->clear();
 
         if (
-            isset($tokens[$index - 1]) &&
-            isset($tokens[$index + 1]) &&
+            isset($tokens[$index - 1], $tokens[$index + 1]) &&
             $tokens[$index - 1]->isWhitespace() &&
             $tokens[$index + 1]->isWhitespace()
         ) {
