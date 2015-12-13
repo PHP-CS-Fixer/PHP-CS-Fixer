@@ -598,6 +598,10 @@ Choose from the list of available fixers:
                         single quotes for simple
                         strings.
 
+* **spaces_after_semicolon** [@Symfony]
+                        Fix whitespace after a
+                        semicolon.
+
 * **spaces_before_semicolon** [@Symfony]
                         Single-line whitespace before
                         closing semicolon are

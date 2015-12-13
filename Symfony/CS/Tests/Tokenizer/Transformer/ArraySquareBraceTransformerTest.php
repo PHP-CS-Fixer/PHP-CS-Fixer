@@ -119,7 +119,7 @@ final class ArraySquareBraceTransformerTest extends AbstractTransformerTestCase
                 '<?php foo()[1];',
             ),
             array(
-                '<?php \'foo\'[1];',
+                '<?php "foo"[1];',
             ),
             array(
                 '<?php "foo$bar"[1];',

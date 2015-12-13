@@ -58,7 +58,7 @@ final class MethodSeparationFixer extends AbstractFixer
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        for ($index = $tokens->getSize() - 1; $index > 0;--$index) {
+        for ($index = $tokens->getSize() - 1; $index > 0; --$index) {
             if (!$tokens[$index]->isClassy()) {
                 continue;
             }

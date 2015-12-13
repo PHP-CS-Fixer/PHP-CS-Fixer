@@ -464,7 +464,7 @@ class Tokens extends \SplFixedArray
             $elements[$kind] = array();
         }
 
-        for ($i = $start;  $i < $end; ++$i) {
+        for ($i = $start; $i < $end; ++$i) {
             $token = $this[$i];
             if ($token->isGivenKind($possibleKinds)) {
                 $elements[$token->getId()][$i] = $token;

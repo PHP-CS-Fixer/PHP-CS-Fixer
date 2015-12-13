@@ -88,7 +88,7 @@ class Annotation
     /**
      * Get all the annotation tag names with types.
      *
-     * @var string[]
+     * @return string[]
      */
     public static function getTagsWithTypes()
     {

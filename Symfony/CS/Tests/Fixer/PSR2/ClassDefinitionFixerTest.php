@@ -28,7 +28,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        $cases = array(
+        return array(
             array(
                 '<?php
 class Aaa implements
@@ -207,8 +207,6 @@ class Aaa implements
 {
 }', ),
         );
-
-        return $cases;
     }
 
     /**

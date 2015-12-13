@@ -93,6 +93,7 @@ final class RuleSet implements RuleSetInterface
             'single_blank_line_before_namespace' => true,
             'single_quote' => true,
             'short_bool_cast' => true,
+            'spaces_after_semicolon' => true,
             'spaces_before_semicolon' => true,
             'spaces_cast' => true,
             'standardize_not_equal' => true,

@@ -87,10 +87,6 @@ final class LowercaseConstantsFixer extends AbstractFixer
             }
         }
 
-        if (null === $index) {
-            return true;
-        }
-
         $token = $tokens[$index];
 
         if ($token->equalsAny(array('{', '}'))) {

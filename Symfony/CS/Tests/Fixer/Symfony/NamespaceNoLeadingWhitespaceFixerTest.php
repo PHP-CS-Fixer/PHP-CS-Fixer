@@ -52,6 +52,15 @@ namespace Test2;',
             array(
                 '<?php
 namespace Test1;
+/* abc */
+namespace Test2;',
+                '<?php
+namespace Test1;
+/* abc */namespace Test2;',
+            ),
+            array(
+                '<?php
+namespace Test1;
 namespace Test2;',
                 '<?php
  namespace Test1;

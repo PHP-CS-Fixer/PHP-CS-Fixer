@@ -44,7 +44,7 @@ final class PhpUnitConstructFixer extends AbstractFixer
 
         foreach ($usingMethods as $method => $fix) {
             if (!isset($this->configuration[$method])) {
-                throw new \InvalidArgumentException();
+                throw new \InvalidArgumentException(sprintf('Configured method "%s" cannot be fixed by this fixer.', $method));
             }
 
             $this->configuration[$method] = $fix;

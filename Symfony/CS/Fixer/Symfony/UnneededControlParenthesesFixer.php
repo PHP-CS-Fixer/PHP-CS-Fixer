@@ -17,6 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Gregor Harlan <gharlan@web.de>
  */
 final class UnneededControlParenthesesFixer extends AbstractFixer
 {
@@ -26,18 +27,22 @@ final class UnneededControlParenthesesFixer extends AbstractFixer
      * @var string[] List of statements to fix.
      */
     private $controlStatements = array(
-        'switch_case',
+        'break',
+        'clone',
+        'continue',
         'echo_print',
         'return',
-        'clone',
+        'switch_case',
         'yield',
     );
 
     private static $loops = array(
-        'switch_case' => array('lookupTokens' => T_CASE, 'neededSuccessors' => array(';', ':')),
+        'break' => array('lookupTokens' => T_BREAK, 'neededSuccessors' => array(';')),
+        'clone' => array('lookupTokens' => T_CLONE, 'neededSuccessors' => array(';', ':', ',', ')')),
+        'continue' => array('lookupTokens' => T_CONTINUE, 'neededSuccessors' => array(';')),
         'echo_print' => array('lookupTokens' => array(T_ECHO, T_PRINT), 'neededSuccessors' => array(';', array(T_CLOSE_TAG))),
         'return' => array('lookupTokens' => T_RETURN, 'neededSuccessors' => array(';')),
-        'clone' => array('lookupTokens' => T_CLONE, 'neededSuccessors' => array(';', ':', ',', ')')),
+        'switch_case' => array('lookupTokens' => T_CASE, 'neededSuccessors' => array(';', ':')),
     );
 
     /**
@@ -145,8 +150,7 @@ final class UnneededControlParenthesesFixer extends AbstractFixer
         $tokens[$index]->clear();
 
         if (
-            isset($tokens[$index - 1]) &&
-            isset($tokens[$index + 1]) &&
+            isset($tokens[$index - 1], $tokens[$index + 1]) &&
             $tokens[$index - 1]->isWhitespace() &&
             $tokens[$index + 1]->isWhitespace()
         ) {

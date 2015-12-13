@@ -20,9 +20,28 @@ use Symfony\CS\Test\AbstractFixerTestCase;
  */
 final class MultipleUseFixerTest extends AbstractFixerTestCase
 {
-    public function testFix()
+    /**
+     * @dataProvider provideCases
+     */
+    public function testFix($expected, $input = null)
     {
-        $expected = <<<'EOF'
+        $this->doTest($expected, $input);
+    }
+
+    public function provideCases()
+    {
+        return array(
+            array(
+                '<?php
+                    /**/use Foo;
+use FooB;
+                ',
+                '<?php
+                    /**/use Foo,FooB;
+                ',
+            ),
+            array(
+                <<<'EOF'
 use Some, Not, PHP, Like, Use, Statement;
 <?php
 
@@ -54,9 +73,9 @@ namespace Boo {
     use BarZ;
 }
 
-EOF;
-
-        $input = <<<'EOF'
+EOF
+            ,
+                <<<'EOF'
 use Some, Not, PHP, Like, Use, Statement;
 <?php
 
@@ -80,7 +99,9 @@ namespace Boo {
     use BarZ;
 }
 
-EOF;
+EOF
+            ),
+        );
 
         $this->doTest($expected, $input);
     }

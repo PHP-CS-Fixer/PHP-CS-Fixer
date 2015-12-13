@@ -41,11 +41,11 @@ final class MethodArgumentDefaultValueFixerTest extends AbstractFixerTestCase
             ),
             array(
                 '<?php function bFunction($foo, $bar) {}',
-                '<?php function bFunction($foo = \'two words\', $bar) {}',
+                '<?php function bFunction($foo = "two words", $bar) {}',
             ),
             array(
                 '<?php function cFunction($foo, $bar, $baz) {}',
-                '<?php function cFunction($foo = false, $bar = \'bar\', $baz) {}',
+                '<?php function cFunction($foo = false, $bar = "bar", $baz) {}',
             ),
             array(
                 '<?php function dFunction($foo, $bar, $baz) {}',
@@ -55,8 +55,8 @@ final class MethodArgumentDefaultValueFixerTest extends AbstractFixerTestCase
                 '<?php function foo (Foo $bar = null, $baz) {}',
             ),
             array(
-                '<?php function eFunction($foo, $bar, \SplFileInfo $baz, $x = \'default\') {}',
-                '<?php function eFunction($foo, $bar = \'removedDefault\', \SplFileInfo $baz, $x = \'default\') {}',
+                '<?php function eFunction($foo, $bar, \SplFileInfo $baz, $x = "default") {}',
+                '<?php function eFunction($foo, $bar = "removedDefault", \SplFileInfo $baz, $x = "default") {}',
             ),
             array(
                 <<<'EOT'
@@ -79,7 +79,7 @@ EOT
             ),
             array(
                 '<?php function hFunction($foo,$bar,\SplFileInfo $baz,$x = 5) {};',
-                '<?php function hFunction($foo,$bar=\'removedValue\',\SplFileInfo $baz,$x = 5) {};',
+                '<?php function hFunction($foo,$bar="removedValue",\SplFileInfo $baz,$x = 5) {};',
             ),
             array(
                 '<?php function eFunction($foo, $bar, \SplFileInfo $baz = null, $x) {}',
@@ -116,11 +116,11 @@ EOT
             ),
             array(
                 '<?php function a($a, $b) {}',
-                '<?php function a($a = array(\'a\' => \'b\', \'c\' => \'d\'), $b) {}',
+                '<?php function a($a = array("a" => "b", "c" => "d"), $b) {}',
             ),
             array(
                 '<?php function a($a, $b) {}',
-                '<?php function a($a = [\'a\' => \'b\', \'c\' => \'d\'], $b) {}',
+                '<?php function a($a = ["a" => "b", "c" => "d"], $b) {}',
             ),
             array(
                 '<?php function a($a, $b) {}',

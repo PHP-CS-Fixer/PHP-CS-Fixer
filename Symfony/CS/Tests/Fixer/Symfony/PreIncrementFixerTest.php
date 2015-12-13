@@ -80,6 +80,10 @@ final class PreIncrementFixerTest extends AbstractFixerTestCase
                 '<?php Foo\Bar::$bar++;',
             ),
             array(
+                '<?php ++$a::$bar;',
+                '<?php $a::$bar++;',
+            ),
+            array(
                 '<?php ++$a[0];',
                 '<?php $a[0]++;',
             ),
