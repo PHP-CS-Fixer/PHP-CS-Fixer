@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: useless_return,extra_empty_lines.
+--CONFIG--
+level=none
+fixers=useless_return,extra_empty_lines
+--INPUT--
+<?php
+class Test {
+    private static function a($a) {
+        $a = 1;
+
+return;
+    }
+}
+
+--EXPECT--
+<?php
+class Test {
+    private static function a($a) {
+        $a = 1;
+
+    }
+}
