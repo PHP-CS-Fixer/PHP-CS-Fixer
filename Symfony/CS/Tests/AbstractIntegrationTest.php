@@ -31,10 +31,10 @@ use Symfony\CS\FixerInterface;
  * --CONFIG--
  * level=symfony|none|psr0|psr1|psr2|symfony
  * fixers=fixer1,fixer2,...*
+ * --fixers=fixer3,fixer4,...****
  * --REQUIREMENTS--
  * php=5.4**
  * hhvm=false***
- * --fixers=fixer3,fixer4,...****
  * --INPUT--
  * Code to fix
  * --EXPECT--
@@ -199,7 +199,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
         );
 
         $lines = explode("\n", $config);
-        if (count($lines) < 1) {
+        if (empty($lines)) {
             throw new \InvalidArgumentException(sprintf('No configuration options found in "%s".', $fileName));
         }
 
@@ -296,15 +296,19 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
     {
         $requirements = array('hhvm' => true, 'php' => PHP_VERSION);
 
+        if ('' === $config) {
+            return $requirements;
+        }
+
         $lines = explode("\n", $config);
-        if (count($lines) <= 1) {
+        if (empty($lines)) {
             return $requirements;
         }
 
         foreach ($lines as $line) {
             $labelValuePair = explode('=', $line);
             if (2 !== count($labelValuePair)) {
-                throw new \InvalidArgumentException(sprintf('Invalid configuration line "%s" in "%s".', $line, $fileName));
+                throw new \InvalidArgumentException(sprintf('Invalid requirements line "%s" in "%s".', $line, $fileName));
             }
 
             $label = strtolower(trim($labelValuePair[0]));
