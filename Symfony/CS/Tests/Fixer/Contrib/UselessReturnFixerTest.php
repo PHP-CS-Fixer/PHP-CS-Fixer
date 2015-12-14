@@ -37,8 +37,8 @@ final class UselessReturnFixerTest extends AbstractFixerTestBase
         if ($b) {
             return;
         }
-        '.'
-    /**/}',
+        /**/
+    }',
                 '<?php
     function b($b) {
         if ($b) {

@@ -79,8 +79,10 @@ final class UselessReturnFixer extends AbstractFixer
 
     private function removeReturnStatement(Tokens $tokens, $start, $semiColonIndex)
     {
+        $commentFound = false;
         for ($index = $semiColonIndex; $index >= $start; --$index) {
             if ($tokens[$index]->isComment()) {
+                $commentFound = true;
                 continue;
             }
 
@@ -88,7 +90,7 @@ final class UselessReturnFixer extends AbstractFixer
         }
 
         // merge whitespace tokens if needed
-        if ($tokens[$start - 1]->isWhitespace() && $tokens[$semiColonIndex + 1]->isWhitespace()) {
+        if (!$commentFound && $tokens[$start - 1]->isWhitespace() && $tokens[$semiColonIndex + 1]->isWhitespace()) {
             $tokens[$start - 1]->setContent($tokens[$start - 1]->getContent().$tokens[$semiColonIndex + 1]->getContent());
             $tokens[$semiColonIndex + 1]->clear();
         }
