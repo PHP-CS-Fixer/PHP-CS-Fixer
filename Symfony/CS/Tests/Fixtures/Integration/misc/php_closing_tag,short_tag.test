@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: php_closing_tag,short_tag.
+--CONFIG--
+level=none
+fixers=php_closing_tag,short_tag
+--REQUIREMENTS--
+hhvm=false
+--INPUT--
+<?
+$a = 1;
+
+?>
+--EXPECT--
+<?php
+$a = 1;
