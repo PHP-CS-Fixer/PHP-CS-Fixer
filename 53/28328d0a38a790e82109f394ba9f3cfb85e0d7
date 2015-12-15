@@ -1,0 +1,40 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-02T23:04:49Z
+
+Odd.. it passes locally...
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-03T09:05:54Z
+
+Like the idea, changes look good :+1:
+you call for help is for finding why the test fails @ travis or is there more work to be done?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-03T10:02:10Z
+
+Firstly it means I asked for help covering the rest of priority relations, now it means Travis too (Travis is red... AppVeyor is green... :|) ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-06T15:05:04Z
+
+I have removed non-passing test to allow merge the enhanced test method to be merged, and then we will work on that integration test case again.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-06T16:37:45Z
+
+>I have removed non-passing test
+
+Travis and HHVM don't think so :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-14T23:53:37Z
+
+Done.
+This is why it is good to have atomic integration-tests.
+Bugfix backported to 1.11.x: #1595
