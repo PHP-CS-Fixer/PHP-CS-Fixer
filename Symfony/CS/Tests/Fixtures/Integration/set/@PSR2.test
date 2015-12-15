@@ -3,7 +3,7 @@ Integration of @PSR2.
 --CONFIG--
 {"@PSR2": true}
 --INPUT--
-<?php
+<?
 namespace Vendor\Package;
 use FooInterface;
 use BarClass as Bar;
@@ -13,7 +13,7 @@ class Foo extends Bar implements FooInterface{
     {
         if ($a === $b) {
             bar();
-        } elseif ($a > $b) {
+        } else if ($a > $b) {
             $foo->bar($arg1);
         } else {
                 BazClass::bar($arg2, $arg3);
@@ -24,6 +24,7 @@ class Foo extends Bar implements FooInterface{
     // method body
     }
 }
+?>
 --EXPECT--
 <?php
 namespace Vendor\Package;

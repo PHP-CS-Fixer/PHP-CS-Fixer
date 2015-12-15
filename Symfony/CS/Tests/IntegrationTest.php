@@ -35,6 +35,6 @@ final class IntegrationTest extends AbstractIntegrationTestCase
      */
     protected static function getTempFile()
     {
-        return self::getFixturesDir().'/tmp/tmp.php';
+        return self::getFixturesDir().'/.tmp.php';
     }
 }

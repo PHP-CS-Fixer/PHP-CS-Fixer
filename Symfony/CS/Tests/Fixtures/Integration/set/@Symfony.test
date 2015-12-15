@@ -3,7 +3,7 @@ Integration of @Symfony.
 --CONFIG--
 {"@Symfony": true}
 --INPUT--
-<?php
+<?
 
 /*
  * This file is part of the Symfony package.

@@ -61,15 +61,6 @@ final class PhpClosingTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
-    {
-        // should be run before the ShortTagFixer
-        return 5;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription()
     {
         return 'The closing ?> tag MUST be omitted from files containing only PHP.';

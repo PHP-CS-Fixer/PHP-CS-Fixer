@@ -104,4 +104,13 @@ final class ShortTagFixer extends AbstractFixer
     {
         return 'PHP code must use the long <?php ?> tags or the short-echo <?= ?> tags; it must not use the other tag variations.';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must run before all Token-based fixers
+        return 98;
+    }
 }

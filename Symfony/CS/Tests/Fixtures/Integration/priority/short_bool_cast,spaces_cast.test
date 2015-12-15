@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: fixers=short_bool_cast,spaces_cast.
+--CONFIG--
+{"short_bool_cast": true, "spaces_cast": true}
+--INPUT--
+<?php
+$b = !!$a;
+
+--EXPECT--
+<?php
+$b = (bool) $a;
