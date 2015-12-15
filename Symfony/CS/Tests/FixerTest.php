@@ -170,7 +170,6 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $cases = array(
             array($fixers['unused_use'], $fixers['extra_empty_lines']),
             array($fixers['multiple_use'], $fixers['unused_use']),
-            array($fixers['multiple_use'], $fixers['ordered_use']),
             array($fixers['remove_leading_slash_use'], $fixers['ordered_use']),
             array($fixers['remove_lines_between_uses'], $fixers['ordered_use']),
             array($fixers['unused_use'], $fixers['remove_leading_slash_use']),
@@ -180,7 +179,6 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['duplicate_semicolon'], $fixers['braces']),
             array($fixers['duplicate_semicolon'], $fixers['spaces_before_semicolon']),
             array($fixers['duplicate_semicolon'], $fixers['multiline_spaces_before_semicolon']),
-            array($fixers['standardize_not_equal'], $fixers['strict']),
             array($fixers['double_arrow_multiline_whitespaces'], $fixers['multiline_array_trailing_comma']),
             array($fixers['double_arrow_multiline_whitespaces'], $fixers['align_double_arrow']),
             array($fixers['operators_spaces'], $fixers['align_double_arrow']), // tested also in: align_double_arrow,operators_spaces.test
@@ -206,7 +204,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['unary_operators_spaces'], $fixers['logical_not_operators_with_spaces']),
             array($fixers['unary_operators_spaces'], $fixers['logical_not_operators_with_successor_space']),
             array($fixers['short_echo_tag'], $fixers['echo_to_print']), // tested also in: echo_to_print,short_echo_tag.test
-            array($fixers['short_bool_cast'], $fixers['spaces_cast']),
+            array($fixers['short_bool_cast'], $fixers['spaces_cast']), // tested also in: short_bool_cast,spaces_cast.test
             array($fixers['unneeded_control_parentheses'], $fixers['trailing_spaces']), // tested also in: trailing_spaces,unneeded_control_parentheses.test
             array($fixers['class_definition'], $fixers['trailing_spaces']), // tested also in: class_definition,trailing_spaces.test
         );

@@ -1,5 +1,5 @@
 --TEST--
-Symfony test
+Symfony test.
 --CONFIG--
 level=symfony
 --INPUT--
