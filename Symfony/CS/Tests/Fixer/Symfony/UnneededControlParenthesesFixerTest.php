@@ -253,6 +253,20 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
+                class Bar
+                {
+                    function baz()
+                    {
+                        return $this->foo(
+                            (1 + 2) * 10,
+                            "bar"  /// test
+                        );
+                    }
+                }
+                ',
+            ),
+            array(
+                '<?php
                 return "prod";
                 ',
                 '<?php
