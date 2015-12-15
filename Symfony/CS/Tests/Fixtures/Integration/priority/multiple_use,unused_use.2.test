@@ -5,12 +5,13 @@ level=none
 fixers=multiple_use,unused_use
 --INPUT--
 <?php
-use Foo,FooB;
+use Aaa, Bbb, Ccc;
 
-new FooB();
+new Aaa(new Ccc());
 
 --EXPECT--
 <?php
-use FooB;
+use Aaa;
+use Ccc;
 
-new FooB();
+new Aaa(new Ccc());
