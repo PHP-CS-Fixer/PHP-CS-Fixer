@@ -1,0 +1,16 @@
+--TEST--
+Integration of fixers: multiple_use,unused_use.
+--CONFIG--
+level=none
+fixers=multiple_use,unused_use
+--INPUT--
+<?php
+use Foo,FooB;
+
+new FooB();
+
+--EXPECT--
+<?php
+use FooB;
+
+new FooB();
