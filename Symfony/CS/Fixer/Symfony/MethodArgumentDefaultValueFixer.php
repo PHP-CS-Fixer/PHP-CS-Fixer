@@ -22,7 +22,7 @@ use Symfony\CS\Tokenizer\Tokens;
 final class MethodArgumentDefaultValueFixer extends AbstractFixer
 {
     private $argumentBoundaryTokens = array('(', ',', ';', '{', '}');
-    private $variableOrTerminatorTokens = array(array(T_VARIABLE), ';', '{', '}');
+    private $variableOrTerminatorTokens = array(array(T_VARIABLE), array(T_USE), ';', '{', '}');
     private $argumentTerminatorTokens = array(',', ')', ';', '{');
     private $defaultValueTokens = array('=', ';', '{');
     private $immediateDefaultValueTokens = array('=', ',', ';', '{');
