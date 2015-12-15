@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: unused_use,line_after_namespace.
+--CONFIG--
+level=none
+fixers=unused_use,line_after_namespace
+--INPUT--
+<?php
+namespace Foo\Finder;
+use Bar\Finder;
+
+use Bar;
+
+new Bar();
+
+--EXPECT--
+<?php
+namespace Foo\Finder;
+
+use Bar;
+
+new Bar();
