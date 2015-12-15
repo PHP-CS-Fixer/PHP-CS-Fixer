@@ -12,21 +12,15 @@
 namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
-use Symfony\CS\FixerInterface;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Mark Scherer
  * @author Lucas Manzke <lmanzke@outlook.com>
+ * @author Gregor Harlan <gharlan@web.de>
  */
 final class MethodArgumentDefaultValueFixer extends AbstractFixer
 {
-    private $argumentBoundaryTokens = array('(', ',', ';', '{', '}');
-    private $variableOrTerminatorTokens = array(array(T_VARIABLE), ';', '{', '}');
-    private $argumentTerminatorTokens = array(',', ')', ';', '{');
-    private $defaultValueTokens = array('=', ';', '{');
-    private $immediateDefaultValueTokens = array('=', ',', ';', '{');
-
     /**
      * {@inheritdoc}
      */
@@ -42,9 +36,14 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
         for ($i = 0, $l = $tokens->count(); $i < $l; ++$i) {
-            if ($tokens[$i]->isGivenKind(T_FUNCTION)) {
-                $this->fixFunctionDefinition($tokens, $i);
+            if (!$tokens[$i]->isGivenKind(T_FUNCTION)) {
+                continue;
             }
+
+            $startIndex = $tokens->getNextTokenOfKind($i, array('('));
+            $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
+
+            $this->fixFunctionDefinition($tokens, $startIndex, $i);
         }
 
         return $tokens->generateCode();
@@ -52,60 +51,56 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
 
     /**
      * @param Tokens $tokens
-     * @param int    $index
+     * @param int    $startIndex
+     * @param int    $endIndex
      */
-    private function fixFunctionDefinition(Tokens $tokens, $index)
+    private function fixFunctionDefinition(Tokens $tokens, $startIndex, $endIndex)
     {
-        $examinedIndex = $tokens->getNextTokenOfKind($index, $this->argumentBoundaryTokens);
-        $lastNonDefaultArgumentIndex = $this->getLastNonDefaultArgumentIndex($tokens, $index);
+        $lastArgumentIndex = $this->getLastNonDefaultArgumentIndex($tokens, $startIndex, $endIndex);
 
-        while (
-            $examinedIndex < $lastNonDefaultArgumentIndex &&
-            $this->hasDefaultValueAfterIndex($tokens, $examinedIndex)
-        ) {
-            $nextRelevantIndex = $tokens->getNextTokenOfKind($examinedIndex, $this->variableOrTerminatorTokens);
+        if (!$lastArgumentIndex) {
+            return;
+        }
 
-            if (!$tokens[$nextRelevantIndex]->isGivenKind(T_VARIABLE)) {
-                break;
+        for ($i = $lastArgumentIndex; $i > $startIndex; --$i) {
+            $token = $tokens[$i];
+
+            if ($token->isGivenKind(T_VARIABLE)) {
+                $lastArgumentIndex = $i;
+                continue;
             }
 
-            if (
-                $this->isDefaultArgumentAfterIndex($tokens, $nextRelevantIndex - 1) &&
-                $nextRelevantIndex - 1 < $lastNonDefaultArgumentIndex
-            ) {
-                $this->removeDefaultArgument($tokens, $nextRelevantIndex);
+            if (!$token->equals('=') || $this->isTypehintedNullableVariable($tokens, $i)) {
+                continue;
             }
-            $examinedIndex = $nextRelevantIndex;
+
+            $endIndex = $tokens->getPrevTokenOfKind($lastArgumentIndex, array(','));
+            $endIndex = $tokens->getPrevMeaningfulToken($endIndex);
+            $this->removeDefaultArgument($tokens, $i, $endIndex);
         }
     }
 
     /**
      * @param Tokens $tokens
-     * @param int    $index
+     * @param int    $startIndex
+     * @param int    $endIndex
      *
      * @return int|null
      */
-    private function getLastNonDefaultArgumentIndex(Tokens $tokens, $index)
+    private function getLastNonDefaultArgumentIndex(Tokens $tokens, $startIndex, $endIndex)
     {
-        $nextRelevantTokenIndex = $tokens->getNextTokenOfKind($index, $this->variableOrTerminatorTokens);
+        for ($i = $endIndex - 1; $i > $startIndex; --$i) {
+            $token = $tokens[$i];
 
-        if (null === $nextRelevantTokenIndex) {
-            return;
-        }
-
-        $lastNonDefaultArgumentIndex = null;
-
-        while ($tokens[$nextRelevantTokenIndex]->isGivenKind(T_VARIABLE)) {
-            if (!$tokens[$tokens->getNextMeaningfulToken($nextRelevantTokenIndex)]->equals('=') &&
-                !$this->isEllipsis($tokens, $nextRelevantTokenIndex)
-            ) {
-                $lastNonDefaultArgumentIndex = $nextRelevantTokenIndex;
+            if ($token->equals('=')) {
+                $i = $tokens->getPrevMeaningfulToken($i);
+                continue;
             }
 
-            $nextRelevantTokenIndex = $tokens->getNextTokenOfKind($nextRelevantTokenIndex, $this->variableOrTerminatorTokens);
+            if ($token->isGivenKind(T_VARIABLE) && !$this->isEllipsis($tokens, $i)) {
+                return $i;
+            }
         }
-
-        return $lastNonDefaultArgumentIndex;
     }
 
     /**
@@ -125,101 +120,45 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
 
     /**
      * @param Tokens $tokens
-     * @param int    $index
-     *
-     * @return bool
+     * @param int    $startIndex
+     * @param int    $endIndex
      */
-    private function hasDefaultValueAfterIndex(Tokens $tokens, $index)
+    private function removeDefaultArgument(Tokens $tokens, $startIndex, $endIndex)
     {
-        $nextTokenIndex = $tokens->getNextTokenOfKind($index, $this->defaultValueTokens);
-        $nextToken = $tokens[$nextTokenIndex];
-
-        return $nextToken->equals('=');
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $index
-     *
-     * @return bool
-     */
-    private function isDefaultArgumentAfterIndex(Tokens $tokens, $index)
-    {
-        $nextTokenIndex = $tokens->getNextTokenOfKind($index, $this->immediateDefaultValueTokens);
-        $nextToken = $tokens[$nextTokenIndex];
-
-        return $nextToken->equals('=');
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $variableIndex
-     */
-    private function removeDefaultArgument(Tokens $tokens, $variableIndex)
-    {
-        if ($this->isTypehintedNullableVariable($tokens, $variableIndex)) {
-            return;
-        }
-
-        $argumentEndIndex = $this->findArgumentEndIndex($tokens, $variableIndex);
-        $currentIndex = $tokens->getNextMeaningfulToken($variableIndex);
-
-        while ($currentIndex < $argumentEndIndex) {
-            $tokens[$currentIndex]->clear();
-            $this->clearWhitespacesBeforeIndex($tokens, $currentIndex);
-            $currentIndex = $tokens->getNextMeaningfulToken($currentIndex);
+        for ($i = $startIndex; $i <= $endIndex; ) {
+            $tokens[$i]->clear();
+            $this->clearWhitespacesBeforeIndex($tokens, $i);
+            $i = $tokens->getNextMeaningfulToken($i);
         }
     }
 
     /**
      * @param Tokens $tokens
-     * @param int    $variableIndex
+     * @param int    $index  Index of "="
      *
      * @return bool
      */
-    private function isTypehintedNullableVariable(Tokens $tokens, $variableIndex)
+    private function isTypehintedNullableVariable(Tokens $tokens, $index)
     {
-        $typehintedTokens = array(array(T_STRING), array(CT_ARRAY_TYPEHINT), ',', '(');
-        $typehintedKinds = array(T_STRING, CT_ARRAY_TYPEHINT);
+        $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
 
-        if (defined('T_CALLABLE')) {
-            $typehintedTokens[] = array(T_CALLABLE);
-            $typehintedKinds[] = T_CALLABLE;
-        }
-
-        $prevMeaningfulTokenIndex = $tokens->getPrevTokenOfKind($variableIndex, $typehintedTokens);
-
-        if (!$tokens[$prevMeaningfulTokenIndex]->isGivenKind($typehintedKinds)) {
+        if (!$nextToken->equals(array(T_STRING, 'null'), false)) {
             return false;
         }
 
-        $nextMeaningfulTokenIndex = $tokens->getNextTokenOfKind($variableIndex, array(array(T_STRING), ',', ')'));
-        $lowerCasedNextContent = strtolower($tokens[$nextMeaningfulTokenIndex]->getContent());
+        $variableIndex = $tokens->getPrevMeaningfulToken($index);
 
-        return 'null' === $lowerCasedNextContent;
-    }
+        $searchTokens = array(',', '(', array(T_STRING), array(CT_ARRAY_TYPEHINT));
+        $typehintKinds = array(T_STRING, CT_ARRAY_TYPEHINT);
 
-    /**
-     * @param Tokens $tokens
-     * @param int    $variableIndex
-     *
-     * @return int
-     */
-    private function findArgumentEndIndex(Tokens $tokens, $variableIndex)
-    {
-        $currentIndex = $variableIndex;
-        while (!$tokens[$currentIndex]->equalsAny($this->argumentTerminatorTokens)) {
-            ++$currentIndex;
-            if ($tokens[$currentIndex]->equals('(')) {
-                $currentIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $currentIndex) + 1;
-            }
-
-            if ($tokens[$currentIndex]->equals('[')) {
-                $currentIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $currentIndex) + 1;
-            }
+        if (defined('T_CALLABLE')) {
+            $searchTokens[] = array(T_CALLABLE);
+            $typehintKinds[] = T_CALLABLE;
         }
 
-        return $currentIndex;
+        $prevIndex = $tokens->getPrevTokenOfKind($variableIndex, $searchTokens);
+
+        return $tokens[$prevIndex]->isGivenKind($typehintKinds);
     }
 
     /**
@@ -233,13 +172,5 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
         if ($token->isGivenKind(T_WHITESPACE)) {
             $token->clear();
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLevel()
-    {
-        return FixerInterface::SYMFONY_LEVEL;
     }
 }
