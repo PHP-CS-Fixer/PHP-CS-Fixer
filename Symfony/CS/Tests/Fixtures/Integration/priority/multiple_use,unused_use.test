@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: multiple_use,unused_use.
+--CONFIG--
+level=none
+fixers=multiple_use,unused_use
+--INPUT--
+<?php
+use Aaa, Bbb, Ccc;
+
+new Aaa(new Ccc());
+
+--EXPECT--
+<?php
+use Aaa;
+use Ccc;
+
+new Aaa(new Ccc());
