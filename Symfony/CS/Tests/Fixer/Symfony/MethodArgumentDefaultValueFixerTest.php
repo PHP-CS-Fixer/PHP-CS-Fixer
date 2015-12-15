@@ -148,6 +148,10 @@ EOT
             array(
                 '<?php function ($a, $b = 1) use ($c) {}',
             ),
+            array(
+                '<?php function ($a, $b) use ($c) {}',
+                '<?php function ($a = 1, $b) use ($c) {}',
+            ),
         );
     }
 }
