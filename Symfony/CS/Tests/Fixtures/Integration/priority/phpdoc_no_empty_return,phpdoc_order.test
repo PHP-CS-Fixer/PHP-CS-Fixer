@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: phpdoc_no_empty_return,phpdoc_order.
+--CONFIG--
+level=none
+fixers=phpdoc_no_empty_return,phpdoc_order
+--INPUT--
+<?php
+/**
+ * @param int $foo
+ *
+ * @return void
+ *
+ * @throws Exception
+ */
+
+--EXPECT--
+<?php
+/**
+ * @param int $foo
+ *
+ *
+ * @throws Exception
+ */
