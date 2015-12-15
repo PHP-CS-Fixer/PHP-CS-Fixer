@@ -145,6 +145,9 @@ EOT
             array(
                 '<?php function a($a = 1, \SplFileInfo ...$b) {}',
             ),
+            array(
+                '<?php function ($a, $b = 1) use ($c) {}',
+            ),
         );
     }
 }
