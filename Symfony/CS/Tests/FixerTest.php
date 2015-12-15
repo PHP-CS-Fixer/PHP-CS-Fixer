@@ -144,6 +144,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         $fixers = $fixer->getFixers();
 
         $this->assertSame('encoding', $fixers[0]->getName());
+        $this->assertSame('short_tag', $fixers[1]->getName());
         $this->assertSame('eof_ending', $fixers[count($fixers) - 1]->getName());
     }
 
@@ -167,7 +168,6 @@ class FixerTest extends \PHPUnit_Framework_TestCase
         }
 
         $cases = array(
-            array($fixers['php_closing_tag'], $fixers['short_tag']),
             array($fixers['unused_use'], $fixers['extra_empty_lines']),
             array($fixers['multiple_use'], $fixers['unused_use']),
             array($fixers['multiple_use'], $fixers['ordered_use']),
