@@ -180,16 +180,16 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['duplicate_semicolon'], $fixers['spaces_before_semicolon']),
             array($fixers['duplicate_semicolon'], $fixers['multiline_spaces_before_semicolon']),
             array($fixers['double_arrow_multiline_whitespaces'], $fixers['multiline_array_trailing_comma']),
-            array($fixers['double_arrow_multiline_whitespaces'], $fixers['align_double_arrow']),
+            array($fixers['double_arrow_multiline_whitespaces'], $fixers['align_double_arrow']), // tested also in: double_arrow_multiline_whitespaces,align_double_arrow.test
             array($fixers['operators_spaces'], $fixers['align_double_arrow']), // tested also in: align_double_arrow,operators_spaces.test
             array($fixers['operators_spaces'], $fixers['align_equals']), // tested also in: align_double_arrow,align_equals.test
             array($fixers['indentation'], $fixers['phpdoc_indent']),
             array($fixers['phpdoc_order'], $fixers['phpdoc_separation']),
             array($fixers['phpdoc_no_access'], $fixers['phpdoc_separation']),
             array($fixers['phpdoc_no_access'], $fixers['phpdoc_order']),
-            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_separation']),
-            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_order']),
-            array($fixers['phpdoc_no_package'], $fixers['phpdoc_separation']),
+            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_separation']), // tested also in: phpdoc_no_empty_return,phpdoc_separation.test
+            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_order']), // tested also in: phpdoc_no_empty_return,phpdoc_separation.test
+            array($fixers['phpdoc_no_package'], $fixers['phpdoc_separation']), // tested also in: phpdoc_no_package,phpdoc_separation.test
             array($fixers['phpdoc_no_package'], $fixers['phpdoc_order']),
             array($fixers['phpdoc_no_access'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_trim']),
