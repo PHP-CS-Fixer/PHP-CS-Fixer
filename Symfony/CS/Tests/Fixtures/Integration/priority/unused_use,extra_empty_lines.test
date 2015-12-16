@@ -1,0 +1,16 @@
+--TEST--
+Integration of fixers: unused_use,extra_empty_lines.
+--CONFIG--
+{"unused_use": true, "extra_empty_lines": true}
+--INPUT--
+<?php
+
+
+use Foo\Bar;
+
+$bar = null;
+--EXPECT--
+<?php
+
+
+$bar = null;

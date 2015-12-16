@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: remove_leading_slash_use,ordered_use.
+--CONFIG--
+{"remove_leading_slash_use": true, "ordered_use": true}
+--INPUT--
+<?php
+namespace Foo\Bar;
+use \Baz;
+use Aaa;
+class Foo implements Baz {}
+
+--EXPECT--
+<?php
+namespace Foo\Bar;
+use Aaa;
+use Baz;
+class Foo implements Baz {}

@@ -1,0 +1,16 @@
+--TEST--
+Integration of fixers: phpdoc_no_package,phpdoc_separation.
+--CONFIG--
+{"phpdoc_no_package": true, "phpdoc_separation": true}
+--INPUT--
+<?php
+/**
+ * Foo with package.
+ * @package bar
+ */
+
+--EXPECT--
+<?php
+/**
+ * Foo with package.
+ */

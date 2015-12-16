@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: fixers=short_bool_cast,spaces_cast.
+Integration of fixers: short_bool_cast,spaces_cast.
 --CONFIG--
 {"short_bool_cast": true, "spaces_cast": true}
 --INPUT--

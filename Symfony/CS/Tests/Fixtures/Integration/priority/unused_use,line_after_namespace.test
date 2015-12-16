@@ -1,0 +1,20 @@
+--TEST--
+Integration of fixers: unused_use,line_after_namespace.
+--CONFIG--
+{"unused_use": true, "line_after_namespace": true}
+--INPUT--
+<?php
+namespace Foo\Finder;
+use Bar\Finder;
+
+use Bar;
+
+new Bar();
+
+--EXPECT--
+<?php
+namespace Foo\Finder;
+
+use Bar;
+
+new Bar();
