@@ -5,11 +5,11 @@ level=none
 fixers=php_closing_tag,short_tag
 --REQUIREMENTS--
 hhvm=false
+--EXPECT--
+<?php
+$a = 1;
 --INPUT--
 <?
 $a = 1;
 
 ?>
---EXPECT--
-<?php
-$a = 1;

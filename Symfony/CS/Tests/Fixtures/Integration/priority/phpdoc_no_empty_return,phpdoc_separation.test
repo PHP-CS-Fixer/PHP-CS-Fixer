@@ -3,15 +3,15 @@ Integration of fixers: phpdoc_no_empty_return,phpdoc_separation.
 --CONFIG--
 level=none
 fixers=phpdoc_no_empty_return,phpdoc_separation
+--EXPECT--
+<?php
+/**
+ * Foo.
+ */
+
 --INPUT--
 <?php
 /**
  * Foo.
  * @return void
- */
-
---EXPECT--
-<?php
-/**
- * Foo.
  */

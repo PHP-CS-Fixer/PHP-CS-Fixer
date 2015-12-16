@@ -2,29 +2,6 @@
 PSR2 integration.
 --CONFIG--
 level=psr2
---INPUT--
-<?
-namespace Vendor\Package;
-use FooInterface;
-use BarClass as Bar;
-use OtherVendor\OtherPackage\BazClass;
-class Foo extends Bar implements FooInterface{
-    public function sampleFunction($a, $b = null)
-    {
-        if ($a === $b) {
-            bar();
-        } else if ($a > $b) {
-            $foo->bar($arg1);
-        } else {
-                BazClass::bar($arg2, $arg3);
-        }
-    }
-
-    static public  final function bar() {
-    // method body
-    }
-}
-?>
 --EXPECT--
 <?php
 namespace Vendor\Package;
@@ -51,3 +28,27 @@ class Foo extends Bar implements FooInterface
         // method body
     }
 }
+
+--INPUT--
+<?
+namespace Vendor\Package;
+use FooInterface;
+use BarClass as Bar;
+use OtherVendor\OtherPackage\BazClass;
+class Foo extends Bar implements FooInterface{
+    public function sampleFunction($a, $b = null)
+    {
+        if ($a === $b) {
+            bar();
+        } else if ($a > $b) {
+            $foo->bar($arg1);
+        } else {
+                BazClass::bar($arg2, $arg3);
+        }
+    }
+
+    static public  final function bar() {
+    // method body
+    }
+}
+?>

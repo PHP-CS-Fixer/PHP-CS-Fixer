@@ -3,18 +3,18 @@ Integration of fixers: unused_use,line_after_namespace.
 --CONFIG--
 level=none
 fixers=unused_use,line_after_namespace
---INPUT--
+--EXPECT--
 <?php
 namespace Foo\Finder;
-use Bar\Finder;
 
 use Bar;
 
 new Bar();
 
---EXPECT--
+--INPUT--
 <?php
 namespace Foo\Finder;
+use Bar\Finder;
 
 use Bar;
 

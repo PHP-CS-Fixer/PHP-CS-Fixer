@@ -2,7 +2,7 @@
 Symfony test.
 --CONFIG--
 level=symfony
---INPUT--
+--EXPECT--
 <?php
 
 /*
