@@ -148,35 +148,32 @@ class Token
     {
         $otherPrototype = $other instanceof self ? $other->getPrototype() : $other;
 
-        if ($this->isArray() !== is_array($otherPrototype)) {
+        if ($this->isArray !== is_array($otherPrototype)) {
             return false;
         }
 
-        if (!$this->isArray()) {
+        if (!$this->isArray) {
             return $this->content === $otherPrototype;
         }
 
-        if (array_key_exists(0, $otherPrototype) && $this->getId() !== $otherPrototype[0]) {
+        if (array_key_exists(0, $otherPrototype) && $this->id !== $otherPrototype[0]) {
             return false;
         }
 
         if (array_key_exists(1, $otherPrototype)) {
             if ($caseSensitive) {
-                if ($this->getContent() !== $otherPrototype[1]) {
+                if ($this->content !== $otherPrototype[1]) {
                     return false;
                 }
-            } elseif (0 !== strcasecmp($this->getContent(), $otherPrototype[1])) {
+            } elseif (0 !== strcasecmp($this->content, $otherPrototype[1])) {
                 return false;
             }
         }
 
         // detect unknown keys
         unset($otherPrototype[0], $otherPrototype[1]);
-        if (count($otherPrototype)) {
-            return false;
-        }
 
-        return true;
+        return empty($otherPrototype);
     }
 
     /**
