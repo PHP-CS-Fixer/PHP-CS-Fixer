@@ -368,21 +368,6 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
             array(true, array($brace, $foreach, array(T_FUNCTION, 'function'))),
             array(false, array($brace, $foreach, array(T_FUNCTION, 'Function'))),
             array(true, array($brace, $foreach, array(T_FUNCTION, 'Function')), false),
-            array(false, array($brace, $foreach, array(T_FUNCTION, 'Function')), array()),
-            array(false, array($brace, $foreach, array(T_FUNCTION, 'Function')), array(false)),
-            array(false, array($brace, $foreach, array(T_FUNCTION, 'Function')), array(false, false)),
-            array(true, array($brace, $foreach, array(T_FUNCTION, 'Function')), array(false, false, false)),
-
-            array(true, array(array(T_FUNCTION, 'Function'), array(T_FUNCTION, 'function')), array(true, true)),
-            array(true, array(array(T_FUNCTION, 'Function'), array(T_FUNCTION, 'function')), array(true)),
-            array(true, array(array(T_FUNCTION, 'Function'), array(T_FUNCTION, 'function')), array(false, false)),
-            array(true, array(array(T_FUNCTION, 'Function'), array(T_FUNCTION, 'function')), array(false)),
-
-            array(false, array(array(T_FUNCTION, 'Function'), array(T_VARIABLE, 'function')), array(true, false)),
-            array(false, array(array(T_FUNCTION, 'Function'), array(T_VARIABLE, 'function')), array(true, true)),
-
-            array(true, array(',', '}', array(T_FUNCTION, 'Function')), array(2 => false)),
-
             array(false, array(array(T_VARIABLE, 'junction'), array(T_FUNCTION, 'junction')), false),
         );
     }

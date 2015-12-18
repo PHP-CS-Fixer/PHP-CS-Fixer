@@ -179,19 +179,15 @@ class Token
     /**
      * Check if token is equals to one of given.
      *
-     * @param array       $others        array of tokens or token prototypes
-     * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
-     *                                   the ones used in $others. If any is missing, the default case-sensitive
-     *                                   comparison is used.
+     * @param array $others        array of tokens or token prototypes
+     * @param bool  $caseSensitive perform a case sensitive comparison.
      *
      * @return bool
      */
     public function equalsAny(array $others, $caseSensitive = true)
     {
         foreach ($others as $key => $other) {
-            $cs = self::isKeyCaseSensitive($caseSensitive, $key);
-
-            if ($this->equals($other, $cs)) {
+            if ($this->equals($other, $caseSensitive)) {
                 return true;
             }
         }

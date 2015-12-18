@@ -536,11 +536,9 @@ class Tokens extends \SplFixedArray
      *
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param int         $index         token index
-     * @param array       $tokens        possible tokens
-     * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
-     *                                   the ones used in $others. If any is missing, the default case-sensitive
-     *                                   comparison is used.
+     * @param int   $index         token index
+     * @param array $tokens        possible tokens
+     * @param bool  $caseSensitive perform a case sensitive comparison
      *
      * @return int|null
      */
@@ -594,11 +592,9 @@ class Tokens extends \SplFixedArray
      * Get index for closest previous token of given kind.
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param int         $index         token index
-     * @param array       $tokens        possible tokens
-     * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
-     *                                   the ones used in $others. If any is missing, the default case-sensitive
-     *                                   comparison is used.
+     * @param int   $index         token index
+     * @param array $tokens        possible tokens
+     * @param bool  $caseSensitive perform a case sensitive comparison
      *
      * @return int|null
      */
@@ -610,12 +606,10 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token of given kind.
      *
-     * @param int         $index         token index
-     * @param int         $direction     direction for looking, +1 or -1
-     * @param array       $tokens        possible tokens
-     * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
-     *                                   the ones used in $others. If any is missing, the default case-sensitive
-     *                                   comparison is used.
+     * @param int   $index         token index
+     * @param int   $direction     direction for looking, +1 or -1
+     * @param array $tokens        possible tokens
+     * @param bool  $caseSensitive perform a case sensitive comparison
      *
      * @return int|null
      */
