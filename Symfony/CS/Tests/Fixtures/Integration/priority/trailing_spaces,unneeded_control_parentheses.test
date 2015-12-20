@@ -2,14 +2,6 @@
 Integration of fixers: trailing_spaces,unneeded_control_parentheses.
 --CONFIG--
 {"trailing_spaces": true, "unneeded_control_parentheses": true}
---INPUT--
-<?php
-return (
-    0 === strpos($method->name, 'get') &&
-    3 < strlen($method->name) &&
-    0 === $method->getNumberOfRequiredParameters()
-);
-
 --EXPECT--
 <?php
 return
@@ -17,3 +9,11 @@ return
     3 < strlen($method->name) &&
     0 === $method->getNumberOfRequiredParameters()
 ;
+
+--INPUT--
+<?php
+return (
+    0 === strpos($method->name, 'get') &&
+    3 < strlen($method->name) &&
+    0 === $method->getNumberOfRequiredParameters()
+);

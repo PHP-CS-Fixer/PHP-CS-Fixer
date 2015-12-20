@@ -2,13 +2,14 @@
 Integration of fixers: multiple_use,unused_use.
 --CONFIG--
 {"multiple_use": true, "unused_use": true}
---INPUT--
-<?php
-use Foo,FooB;
-
-new Foob();
 --EXPECT--
 <?php
 use FooB;
+
+new Foob();
+
+--INPUT--
+<?php
+use Foo,FooB;
 
 new Foob();

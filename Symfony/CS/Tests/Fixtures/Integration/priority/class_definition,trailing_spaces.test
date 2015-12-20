@@ -2,14 +2,6 @@
 Integration of fixers: class_definition, trailing_spaces.
 --CONFIG--
 {"class_definition": true, "trailing_spaces": true}
---INPUT--
-<?php
-class Aaa implements
-    Symfony\CS\Tests\Fixer,\RFb,
-    \Fcc1, \GFdd
-{
-}
-
 --EXPECT--
 <?php
 class Aaa implements
@@ -17,5 +9,13 @@ class Aaa implements
 \RFb,
     \Fcc1,
 \GFdd
+{
+}
+
+--INPUT--
+<?php
+class Aaa implements
+    Symfony\CS\Tests\Fixer,\RFb,
+    \Fcc1, \GFdd
 {
 }

@@ -4,11 +4,11 @@ Integration of fixers: php_closing_tag,short_tag.
 {"short_tag": true, "php_closing_tag": true}
 --REQUIREMENTS--
 hhvm=false
+--EXPECT--
+<?php
+$a = 1;
 --INPUT--
 <?
 $a = 1;
 
 ?>
---EXPECT--
-<?php
-$a = 1;
