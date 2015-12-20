@@ -77,7 +77,7 @@ class DoubleArrowMultilineWhitespacesFixerTest extends AbstractFixerTestBase
         "hi"  =>
         /*
          * Description.
-         */
+         */1,
         "ha"  =>
         /**
          * Description.

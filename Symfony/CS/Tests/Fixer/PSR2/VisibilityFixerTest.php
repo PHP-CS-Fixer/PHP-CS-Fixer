@@ -23,13 +23,13 @@ class Foo {
     public $var;
     protected $var_foo;
     private $FooBar;
-    public static $var;
-    protected static $var_foo;
-    private static $FooBar;
-    public static $var;
-    protected static $var_foo;
-    private static $FooBar;
-    private static $FooBar;
+    public static $var1;
+    protected static $var_foo2;
+    private static $FooBar1;
+    public static $var2;
+    protected static $var_foo3;
+    private static $FooBar2;
+    private static $FooBar3;
     public $old = 'foo';
 }
 EOF;
@@ -40,14 +40,14 @@ class Foo {
     public $var;
     protected $var_foo;
     private $FooBar;
-    static public $var;
-    static protected $var_foo;
-    static private $FooBar;
-    public static $var;
-    protected static $var_foo;
-    private static $FooBar;
+    static public $var1;
+    static protected $var_foo2;
+    static private $FooBar1;
+    public static $var2;
+    protected static $var_foo3;
+    private static $FooBar2;
     private static
-    $FooBar;
+    $FooBar3;
     var $old = 'foo';
 }
 EOF;
@@ -76,7 +76,7 @@ abstract class Foo {
     public function& foo1() {}
     public function &foo2() {}
     protected function foo3() {}
-    abstract protected function foo4() {};
+    abstract protected function foo4();
     private function foo5() {}
     final public function foo6() {}
     abstract public function foo7();
@@ -101,7 +101,7 @@ abstract class Foo {
     function &foo2() {}
     protected function foo3() {}
     protected
-    abstract function foo4() {};
+    abstract function foo4();
     private function foo5() {}
     final public function foo6() {}
     abstract public function foo7();
@@ -397,7 +397,7 @@ EOF;
 <?php
 class Foo
 {
-    $foo1;
+    var $foo1;
     private $foo2;
     protected $bar1, $bar2;
     public $baz1 = null, $baz2, $baz3 = false;
