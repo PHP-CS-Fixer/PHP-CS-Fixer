@@ -28,17 +28,20 @@
         "satooshi/php-coveralls": "^1.0"
     },
     "autoload": {
-        "psr-4": { "Symfony\\CS\\": "Symfony/CS/" }
+        "psr-4": { "Symfony\\CS\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Symfony\\CS\\Tests\\": "tests/" }
     },
     "bin": ["php-cs-fixer"],
     "scripts": {
         "test": [
             "phpunit",
-            "phpunit Symfony/CS/Tests/Standalone/ProjectCodeTest.php"
+            "phpunit tests/Standalone/ProjectCodeTest.php"
         ],
         "test-ci": [
             "phpunit --verbose --coverage-clover build/logs/clover.xml",
-            "phpunit Symfony/CS/Tests/Standalone/ProjectCodeTest.php"
+            "phpunit tests/Standalone/ProjectCodeTest.php"
         ]
     },
     "config": {
