@@ -1,0 +1,48 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-14T16:39:16Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-14T16:57:53Z
+
+btw. is there a PHP version supporting static classes?
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.12/Symfony/CS/Tests/Fixer/Contrib/Php4ConstructorFixerTest.php#L973
+
+and `try` without curly braces?
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.12/Symfony/CS/Tests/Fixer/PSR2/BracesFixerTest.php#L711
+
+No log from Appveyor https://ci.appveyor.com/project/keradus/php-cs-fixer/build/dev-738 : (
+
+---------------------------------------------------------------------------
+
+by stof at 2015-12-14T17:03:43Z
+
+@SpacePossum see the ``messages`` tab: https://ci.appveyor.com/project/keradus/php-cs-fixer/build/dev-738/messages (they could have opened it directly for better UX though)
+
+---------------------------------------------------------------------------
+
+by stof at 2015-12-14T17:06:05Z
+
+And regarding static classes, this indeed does not make any sense. Regarding try without braces, I don't think so: https://3v4l.org/bZ10s
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-14T17:08:27Z
+
+Nope, no support for static-classes and try-without-{
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-15T18:09:17Z
+
+thanks for the feedback @stof and @keradus (nice site to test code :) )
+lets see if AppVeyor gets a worker from google this time
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-16T11:02:10Z
+
+:+1: for current progress !
