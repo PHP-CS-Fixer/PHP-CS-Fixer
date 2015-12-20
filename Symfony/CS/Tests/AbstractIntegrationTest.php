@@ -17,6 +17,7 @@ use Symfony\CS\ErrorsManager;
 use Symfony\CS\FileCacheManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
+use Symfony\CS\LintManager;
 
 /**
  * Integration test base class.
@@ -154,6 +155,12 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
         }
         if (isset($requirements['php']) && version_compare(PHP_VERSION, $requirements['php']) < 0) {
             $this->markTestSkipped(sprintf('PHP %s (or later) is required.', $requirements['php']));
+        }
+
+        if (getenv('LINT_TEST_CASES')) {
+            $linter = new LintManager();
+            $lintProcess = $linter->createProcessForSource($input);
+            $this->assertTrue($lintProcess->isSuccessful(), $lintProcess->getOutput());
         }
 
         $errorsManager = new ErrorsManager();
