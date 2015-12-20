@@ -161,8 +161,14 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
 
         if (getenv('LINT_TEST_CASES')) {
             $linter = new LintManager();
-            $lintProcess = $linter->createProcessForSource($input);
+
+            $lintProcess = $linter->createProcessForSource($expected);
             $this->assertTrue($lintProcess->isSuccessful(), $lintProcess->getOutput());
+
+            if (null !== $input) {
+                $lintProcess = $linter->createProcessForSource($expected);
+                $this->assertTrue($lintProcess->isSuccessful(), $lintProcess->getOutput());
+            }
         }
 
         $errorsManager = new ErrorsManager();
