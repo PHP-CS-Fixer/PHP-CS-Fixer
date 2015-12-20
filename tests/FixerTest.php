@@ -59,7 +59,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
         $config = Config::create()
-            ->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'))
+            ->finder(new \FilesystemIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'))
             ->fixers(array(
                 new \Symfony\CS\Fixer\PSR2\VisibilityFixer(),
                 new \Symfony\CS\Fixer\Symfony\UnusedUseFixer(), // will be ignored cause of test keyword in namespace
@@ -86,7 +86,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
         $fixer->setLinter(new Linter());
 
         $config = Config::create()
-            ->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'))
+            ->finder(new \FilesystemIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'))
             ->fixers(array(
                 new \Symfony\CS\Fixer\PSR2\VisibilityFixer(),
                 new \Symfony\CS\Fixer\Symfony\UnusedUseFixer(), // will be ignored cause of test keyword in namespace
@@ -147,7 +147,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
         $config
             ->expects($this->any())
             ->method('getFinder')
-            ->willReturn(array())
+            ->willReturn(new \ArrayIterator())
         ;
 
         $fixer = new Fixer();
