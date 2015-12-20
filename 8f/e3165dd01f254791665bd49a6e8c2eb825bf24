@@ -1,0 +1,51 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-17T18:33:03Z
+
+Pretty sexy. :+1:
+
+---------------------------------------------------------------------------
+
+by sstok at 2015-12-18T09:42:11Z
+
+:+1: :clap:
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-18T09:48:12Z
+
+Made another improvement. What do you think? The feature was not used anywhere.
+
+New comparison to current master:
+https://blackfire.io/profiles/compare/b518187a-1e7a-4274-9c84-c644ab47f290/graph
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-20T14:08:31Z
+
+Unfortunately, those stats are massively inflated on the reality though. I find that blackfire generally slows down all function calls by a fixed cost, so low cost functions have their call time inflated by blackfire. If you run this code without blackfire, you'll see the difference is much less, but still pretty decent. I found this out while trying to improve the performance of Laravel.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-20T14:19:59Z
+
+hmm, yes, you're right. Without blackfire the performance gain is much lower.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-20T15:57:59Z
+
+At the moment the performance gain on my machine is round about 12%.
+(without blackfire, fixing project itself, php 5.6 and 7.0)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-20T16:00:38Z
+
+Yeh, still a very nice improvement though. :+1: :ship: :rocket:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-20T16:22:06Z
+
+:+1: :shipit: :)
