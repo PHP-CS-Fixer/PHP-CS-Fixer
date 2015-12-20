@@ -1,0 +1,209 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-24T20:02:02Z
+
+I was thinking about that too ;)
+Please, check the `$input` too.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-24T20:17:34Z
+
+PHP version | Invalid test cases
+--- | ---
+PHP 5.3 | 219
+PHP 5.4 | 81
+PHP 5.5 | 78
+PHP 5.6 | 78
+PHP 7.0 | 82
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-24T21:53:56Z
+
+LOL
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-29T09:18:25Z
+
+@gharlan ~~could you add messages to the test so it is a bit more clear to the developers what failed?~~
+If you agree with https://github.com/SpacePossum/PHP-CS-Fixer/commit/6c199933b39f87a74a97cab2ef5c0b3ef6cb0758 could you pick it on your branch? I'll drop the PR (https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1545) and move on with the next bunch of tests that needs fixing :)
+(and please rebase ;) )
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-29T16:39:58Z
+
+@SpacePossum I will rebase when your PR is merged.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-29T16:42:01Z
+
+good plan
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-29T17:50:19Z
+
+:+1:  sounds good to me :)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-29T19:31:21Z
+
+Update:
+
+PHP version | Invalid test cases
+--- | ---
+PHP 5.3 | 204
+PHP 5.4 | 47
+PHP 5.5 | 41
+PHP 5.6 | 41
+PHP 7.0 | 48
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-07T19:34:52Z
+
+So, what is to do here?
+Only linting on highest php version?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-07T19:37:11Z
+
+OK, please lint only there, and when we handle it we will think about next step
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-15T17:16:34Z
+
+shoud(n't) we lint the intergration test input as well?
+(https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.12/Symfony/CS/Tests/AbstractIntegrationTest.php#L147)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-15T17:43:30Z
+
+> shoud(n't) we lint the intergration test input as well?
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-15T17:55:24Z
+
+> OK, please lint only there
+
+How should I do this? hard coded check for php 7? environment variable? or..?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-15T18:34:51Z
+
+What do you think about using an env for PHPUnit?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-15T19:18:44Z
+
+done. that way?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-15T19:39:59Z
+
+Yeah, but please also add it to `phpunit.xml.dist` file with default value. Just to have listed env variables that are used inside phpunit tests.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-15T20:17:46Z
+
+> Yeah, but please also add it to phpunit.xml.dist file with default value.
+
+done
+
+> shoud(n't) we lint the intergration test input as well?
+
+done
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-15T22:25:53Z
+
+thanks! :+1:
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-15T23:45:53Z
+
+I have a general question: When should I add my `@author` tag to a modified class and when not?
+Is there any rule?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-16T00:13:27Z
+
+When you think that your contribution to the class is significant
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-16T11:52:06Z
+
+At the moment we are linting:
+
+* input and expected of test cases
+* input of integration tests
+
+IMO we should either add the expected part of integration tests, or remove the expected part from the other test cases (when input is present).
+
+By the way: I don't like the difference between integration tests and other test cases regarding input/expected. IMO we should change the integrations tests, so that the expected part is mandatory, and the input is optional. And we should swap input and expected (first expected, then input).
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-16T12:01:21Z
+
+> IMO we should either add the expected part of integration tests, or remove the expected part from the other test cases (when input is present).
+
+We should check both.
+
+> IMO we should change the integrations tests, so that the expected part is mandatory, and the input is optional. And we should swap input and expected (first expected, then input).
+
+big :+1: for that, I actually trap into that few times!
+Could you take care of it?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-16T12:04:25Z
+
+> Could you take care of it?
+
+which branch?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-16T12:06:49Z
+
+`AbstractIntegrationTest` is internal on 1.x so you could change it on 1.x
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-16T12:19:24Z
+
+>And we should swap input and expected (first expected, then input).
+
+does that mean swapping the parts in the fixtures file (i.e. `.test`) as well?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-16T12:29:26Z
+
+yes
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-20T22:16:56Z
+
+As #1594 is merged into 1.12, should I open a new pr for 1.12?
