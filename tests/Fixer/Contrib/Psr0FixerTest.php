@@ -21,28 +21,34 @@ final class Psr0FixerTest extends AbstractFixerTestCase
 {
     public function testFixCase()
     {
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/Contrib/Psr0Fixer.php');
+        $fixer = $this->getFixer();
+        $config = new Config();
+        $config->setDir(__DIR__.'/../../Fixtures/FixerTest/');
+        $fixer->setConfig($config);
+
+        $file = $this->getMock('SplFileInfo', array('getRealPath'), array(__DIR__.'/Psr0/Foo/Bar.php'));
+        $file->expects($this->any())->method('getRealPath')->willReturn(__DIR__.'/Psr0/Foo/Bar.php');
 
         $expected = <<<'EOF'
 <?php
-namespace Symfony\CS\Fixer\Contrib;
-class Psr0Fixer {}
+namespace Psr0\Foo;
+class Bar {}
 EOF;
         $input = <<<'EOF'
 <?php
-namespace Symfony\cs\Fixer\Contrib;
-class psr0Fixer {}
+namespace Psr0\foo;
+class bar {}
 EOF;
 
-        $this->doTest($expected, $input, $file);
+        $this->doTest($expected, $input, $file, $fixer);
 
         $expected = <<<'EOF'
 <?php
-class Symfony_CS_Fixer_Contrib_Psr0Fixer {}
+class Psr0_Foo_Bar {}
 EOF;
         $input = <<<'EOF'
 <?php
-class symfony_cs_FiXER_Contrib_Psr0FIXer {}
+class Psr0_fOo_bAr {}
 EOF;
 
         $this->doTest($expected, $input, $file);
@@ -50,17 +56,17 @@ EOF;
 
     public function testFixClassName()
     {
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/Contrib/Psr0Fixer.php');
+        $file = $this->getTestFile(__FILE__);
 
         $expected = <<<'EOF'
 <?php
-namespace Symfony\CS\Fixer\Contrib;
-class Psr0Fixer {}
+namespace Symfony\CS\Tests\Fixer\Contrib;
+class Psr0FixerTest {}
 /* class foo */
 EOF;
         $input = <<<'EOF'
 <?php
-namespace Symfony\CS\Fixer\Contrib;
+namespace Symfony\CS\Tests\Fixer\Contrib;
 class blah {}
 /* class foo */
 EOF;
@@ -70,17 +76,17 @@ EOF;
 
     public function testFixAbstractClassName()
     {
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/Contrib/Psr0Fixer.php');
+        $file = $this->getTestFile(__FILE__);
 
         $expected = <<<'EOF'
 <?php
-namespace Symfony\CS\Fixer\Contrib;
-abstract class Psr0Fixer {}
+namespace Symfony\CS\Tests\Fixer\Contrib;
+abstract class Psr0FixerTest {}
 /* class foo */
 EOF;
         $input = <<<'EOF'
 <?php
-namespace Symfony\CS\Fixer\Contrib;
+namespace Symfony\CS\Tests\Fixer\Contrib;
 abstract class blah {}
 /* class foo */
 EOF;
@@ -90,17 +96,17 @@ EOF;
 
     public function testFixFinalClassName()
     {
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/Contrib/Psr0Fixer.php');
+        $file = $this->getTestFile(__FILE__);
 
         $expected = <<<'EOF'
 <?php
-namespace Symfony\CS\Fixer\Contrib;
-final class Psr0Fixer {}
+namespace Symfony\CS\Tests\Fixer\Contrib;
+final class Psr0FixerTest {}
 /* class foo */
 EOF;
         $input = <<<'EOF'
 <?php
-namespace Symfony\CS\Fixer\Contrib;
+namespace Symfony\CS\Tests\Fixer\Contrib;
 final class blah {}
 /* class foo */
 EOF;
@@ -110,12 +116,12 @@ EOF;
 
     public function testFixClassNameWithComment()
     {
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/Contrib/Psr0Fixer.php');
+        $file = $this->getTestFile(__FILE__);
 
         $expected = <<<'EOF'
 <?php
 namespace /* namespace here */ Symfony\CS\Fixer\PSR0;
-class /* hi there */ Psr0Fixer /* why hello */ {}
+class /* hi there */ Psr0FixerTest /* why hello */ {}
 /* class foo */
 EOF;
         $input = <<<'EOF'
@@ -132,10 +138,10 @@ EOF;
     {
         $fixer = $this->getFixer();
         $config = new Config();
-        $config->setDir(__DIR__.'/../../../');
+        $config->setDir(__DIR__.'/../../../src/');
         $fixer->setConfig($config);
 
-        $file = $this->getTestFile(__DIR__.'/../../../Fixer/Contrib/Psr0Fixer.php');
+        $file = $this->getTestFile(__DIR__.'/../../../src/Fixer/Contrib/Psr0Fixer.php');
 
         $expected = <<<'EOF'
 <?php
@@ -161,7 +167,7 @@ class /* hi there */ Psr0Fixer {}
 EOF;
         $this->doTest($expected, $input, $file, $fixer);
 
-        $config->setDir(__DIR__.'/../../../Fixer/Contrib');
+        $config->setDir(__DIR__.'/../../../src/Fixer/Contrib');
         $expected = <<<'EOF'
 <?php
 namespace Foo\Bar\Baz;

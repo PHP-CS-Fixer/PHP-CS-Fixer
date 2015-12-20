@@ -13,17 +13,16 @@
 >
     <testsuites>
         <testsuite>
-            <directory>./Symfony/CS/Tests/</directory>
-            <exclude>./Symfony/CS/Tests/Standalone</exclude>
+            <directory>./tests</directory>
+            <exclude>./tests/Standalone</exclude>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>./Symfony/CS</directory>
+            <directory>./src</directory>
             <exclude>
-                <directory>./Symfony/CS/Resources</directory>
-                <directory>./Symfony/CS/Tests</directory>
+                <directory>./src/Resources</directory>
             </exclude>
         </whitelist>
     </filter>
