@@ -360,6 +360,10 @@ Choose from the list of available fixers:
                         Remove trailing commas in list
                         function calls.
 
+* **lowercase_cast** [symfony]
+                        Cast should be written in
+                        lower case.
+
 * **method_argument_default_value** [symfony]
                         In method arguments there must
                         not be arguments with default
@@ -504,6 +508,13 @@ Choose from the list of available fixers:
                         Short cast bool using double
                         exclamation mark should not be
                         used.
+
+* **short_scalar_cast** [symfony]
+                        Cast "(boolean)" and
+                        "(integer)" should be written
+                        as "(bool)" and "(int)".
+                        "(double)" and "(real)" as
+                        "(float)".
 
 * **single_array_no_trailing_comma** [symfony]
                         PHP single-line arrays should
