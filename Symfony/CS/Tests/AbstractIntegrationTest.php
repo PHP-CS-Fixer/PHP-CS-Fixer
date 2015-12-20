@@ -36,17 +36,16 @@ use Symfony\CS\FixerInterface;
  * --REQUIREMENTS--
  * php=5.4**
  * hhvm=false***
- * --INPUT--
- * Code to fix
  * --EXPECT--
- * Expected code after fixing*****
+ * Expected code after fixing
+ * --INPUT--
+ * Code to fix*****
  *
  *     * Additional fixers may be omitted.
  *    ** PHP minimum version. Default to current running php version (no effect).
  *   *** HHVM compliant flag. Default to true. Set to false to skip test under HHVM.
  *  **** Black listed filters may be omitted.
- * ***** When the expected block is omitted the input is expected not to
- *     be changed by the fixers.
+ * ***** Input part may be omitted
  *
  * @author SpacePossum <possumfromspace@gmail.com>
  *
@@ -78,9 +77,9 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
      *
      * @see doTestIntegration()
      */
-    public function testIntegration($testFileName, $testTitle, $fixers, array $requirements, $input, $expected = null)
+    public function testIntegration($testFileName, $testTitle, $fixers, array $requirements, $expected, $input = null)
     {
-        $this->doTestIntegration($testFileName, $testTitle, $fixers, $requirements, $input, $expected);
+        $this->doTestIntegration($testFileName, $testTitle, $fixers, $requirements, $expected, $input);
     }
 
     /**
@@ -105,7 +104,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
             $test = file_get_contents($file->getRealpath());
             $fileName = $file->getRelativePathname();
 
-            if (!preg_match('/--TEST--[\n](.*?)\s--CONFIG--[\n](.*?)(\s--REQUIREMENTS--[\n](.*?))?\s--INPUT--[\n](.*?[\n]*)(?:[\n]--EXPECT--\s(.*)|$)/s', $test, $match)) {
+            if (!preg_match('/--TEST--[\n](.*?)\s--CONFIG--[\n](.*?)(\s--REQUIREMENTS--[\n](.*?))?\s--EXPECT--[\n](.*?[\n]*)(?:[\n]--INPUT--\s(.*)|$)/s', $test, $match)) {
                 throw new \InvalidArgumentException(sprintf('Test format invalid for "%s".', $fileName));
             }
 
@@ -146,10 +145,10 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
      * @param string           $testTitle    Test title
      * @param FixerInterface[] $fixers       Fixers to use
      * @param array            $requirements Env requirements (PHP, HHVM)
-     * @param string           $input        Code to fix
-     * @param string|null      $expected     Expected result or null if the input is expected not to change
+     * @param string           $expected     Expected result
+     * @param string|null      $input        Code to fix, or null if it should intentionally be equal to the expected result.
      */
-    protected function doTestIntegration($testFileName, $testTitle, $fixers, array $requirements, $input, $expected = null)
+    protected function doTestIntegration($testFileName, $testTitle, $fixers, array $requirements, $expected, $input = null)
     {
         if (defined('HHVM_VERSION') && false === $requirements['hhvm']) {
             $this->markTestSkipped('HHVM is not supported.');
@@ -164,14 +163,14 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
         $fixer->setErrorsManager($errorsManager);
 
         $tmpFile = static::getTempFile();
-        if (false === @file_put_contents($tmpFile, $input)) {
+        if (false === @file_put_contents($tmpFile, null === $input ? $expected : $input)) {
             throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
         }
 
         $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), $fixers, false, true, new FileCacheManager(false, null, $fixers));
         $this->assertTrue($errorsManager->isEmpty(), 'Errors reported during fixing.');
 
-        if (null === $expected) {
+        if (null === $input) {
             $this->assertEmpty($changed, sprintf("Expected no changes made to test \"%s\" in \"%s\".\nFixers applied:\n\"%s\".\nDiff.:\n\"%s\".", $testTitle, $testFileName, $changed === null ? '[None]' : implode(',', $changed['appliedFixers']), $changed === null ? '[None]' : $changed['diff']));
 
             return;

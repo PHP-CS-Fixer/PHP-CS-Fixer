@@ -3,6 +3,13 @@ Integration of fixers: double_arrow_multiline_whitespaces,align_double_arrow.
 --CONFIG--
 level=none
 fixers=double_arrow_multiline_whitespaces,align_double_arrow
+--EXPECT--
+<?php
+$a = [
+    1  => 2,
+    33 => 44,
+];
+
 --INPUT--
 <?php
 $a = [
@@ -10,11 +17,4 @@ $a = [
     33
       =>
         44,
-];
-
---EXPECT--
-<?php
-$a = [
-    1  => 2,
-    33 => 44,
 ];
