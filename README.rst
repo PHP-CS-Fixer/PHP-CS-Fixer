@@ -360,6 +360,10 @@ Choose from the list of available fixers:
                         Remove trailing commas in list
                         function calls.
 
+* **lower_case_cast** [symfony]
+                        Cast should be written in
+                        lower case.
+
 * **method_argument_default_value** [symfony]
                         In method arguments there must
                         not be arguments with default
@@ -494,6 +498,13 @@ Choose from the list of available fixers:
 * **return** [symfony]
                         An empty line feed should
                         precede a return statement.
+
+* **scalar_cast** [symfony]
+                        Cast "(boolean)" and
+                        "(integer)" should be written
+                        as "(bool)" and "(int)".
+                        "(double)" and "(real)" as
+                        "(float)".
 
 * **self_accessor** [symfony]
                         Inside a classy element "self"
