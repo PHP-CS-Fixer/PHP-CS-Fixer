@@ -12,6 +12,7 @@
 namespace Symfony\CS\Tests\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\LintManager;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -58,11 +59,21 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
             throw new \InvalidArgumentException('Input parameter must not be equal to expected parameter.');
         }
 
+        $linter = null;
+        if (getenv('LINT_TEST_CASES')) {
+            $linter = new LintManager();
+        }
+
         $fixer = $fixer ?: $this->getFixer();
         $file = $file ?: $this->getTestFile();
         $fileIsSupported = $fixer->supports($file);
 
         if (null !== $input) {
+            if ($linter) {
+                $lintProcess = $linter->createProcessForSource($input);
+                $this->assertTrue($lintProcess->isSuccessful(), $lintProcess->getOutput());
+            }
+
             $fixedCode = $fileIsSupported ? $fixer->fix($file, $input) : $input;
 
             $this->assertSame($expected, $fixedCode);
@@ -71,6 +82,11 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
             Tokens::clearCache();
             $expectedTokens = Tokens::fromCode($fixedCode); // Load the expected collection based on PHP parsing
             $this->assertTokens($expectedTokens, $tokens);
+        }
+
+        if ($linter) {
+            $lintProcess = $linter->createProcessForSource($expected);
+            $this->assertTrue($lintProcess->isSuccessful(), $lintProcess->getOutput());
         }
 
         $this->assertSame($expected, $fileIsSupported ? $fixer->fix($file, $expected) : $expected);
