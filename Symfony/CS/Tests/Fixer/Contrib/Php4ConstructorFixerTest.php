@@ -967,23 +967,6 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testStatic()
-    {
-        $expected = <<<'EOF'
-<?php
-
-static class Foo
-{
-    static function Foo()
-    {
-        // Do stuff
-    }
-}
-EOF;
-
-        $this->doTest($expected);
-    }
-
     public function testParentMultipleClasses()
     {
         $expected = <<<'EOF'

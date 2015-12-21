@@ -79,7 +79,7 @@ final class DoubleArrowMultilineWhitespacesFixerTest extends AbstractFixerTestCa
         "hi"  =>
         /*
          * Description.
-         */
+         */1,
         "ha"  =>
         /**
          * Description.

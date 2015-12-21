@@ -13,6 +13,7 @@ namespace Symfony\CS\Test;
 
 use Symfony\CS\FixerFactory;
 use Symfony\CS\FixerInterface;
+use Symfony\CS\Linter\Linter;
 use Symfony\CS\RuleSet;
 use Symfony\CS\Tokenizer\Tokens;
 use Symfony\CS\Utils;
@@ -115,11 +116,21 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
             throw new \InvalidArgumentException('Input parameter must not be equal to expected parameter.');
         }
 
+        $linter = null;
+        if (getenv('LINT_TEST_CASES')) {
+            $linter = new Linter();
+        }
+
         $fixer = $fixer ?: $this->getFixer();
         $file = $file ?: $this->getTestFile();
         $fileIsSupported = $fixer->supports($file);
 
         if (null !== $input) {
+            if ($linter) {
+                $lintProcess = $linter->createProcessForSource($input);
+                $this->assertTrue($lintProcess->isSuccessful(), $lintProcess->getOutput());
+            }
+
             Tokens::clearCache();
             $tokens = Tokens::fromCode($input);
 
@@ -136,6 +147,11 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
             $expectedTokens = Tokens::fromCode($expected);
             $tokens->clearEmptyTokens();
             $this->assertTokens($expectedTokens, $tokens);
+        }
+
+        if ($linter) {
+            $lintProcess = $linter->createProcessForSource($input);
+            $this->assertTrue($lintProcess->isSuccessful(), $lintProcess->getOutput());
         }
 
         Tokens::clearCache();
