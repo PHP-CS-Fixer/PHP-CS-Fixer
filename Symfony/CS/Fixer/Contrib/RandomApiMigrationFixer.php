@@ -20,6 +20,32 @@ use Symfony\CS\Tokenizer\Tokens;
 final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
 {
     /**
+     * @var string[]
+     */
+    private static $replacements = array(
+        'rand' => 'mt_rand',
+        'srand' => 'mt_srand',
+        'getrandmax' => 'mt_getrandmax',
+    );
+
+    /**
+     * Static analog of 'public function configure(array $configuration = null)',
+     * which can not be overridden in favor of static.
+     *
+     * @param string[]|null $customReplacements
+     */
+    public static function configureReplacement(array $customReplacements = null)
+    {
+        if (null !== $customReplacements) {
+            foreach (self::$replacements as $pattern => &$replacement) {
+                if (array_key_exists($pattern, $customReplacements) && is_string($customReplacements[$pattern])) {
+                    $replacement = $customReplacements[$pattern];
+                }
+            }
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
@@ -32,13 +58,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        static $replacements = array(
-            'rand' => 'mt_rand',
-            'srand' => 'mt_srand',
-            'getrandmax' => 'mt_getrandmax',
-        );
-
-        foreach ($replacements as $functionIdentity => $newName) {
+        foreach (self::$replacements as $functionIdentity => $newName) {
             $isFunctionDefinedInScope = $this->isDefinedInScope($tokens, $functionIdentity);
 
             $currIndex = 0;
