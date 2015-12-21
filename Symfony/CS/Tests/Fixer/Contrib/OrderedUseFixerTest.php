@@ -21,7 +21,7 @@ class OrderedUseFixerTest extends AbstractFixerTestBase
 The normal
 use of this fixer
 should not change this sentence nor those statements below
-use Zoo\Bar;
+use Zoo\Bar as ZooBar;
 use Foo\Bar;
 use Foo\Zar\Baz;
 
@@ -33,7 +33,7 @@ use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
 use Foo\Zar\Baz;
 use SomeClass;
    use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
-use Zoo\Bar;
+use Zoo\Bar as ZooBar;
 
 $a = new Bar();
 $a = new FooBaz();
@@ -61,14 +61,14 @@ EOF;
 The normal
 use of this fixer
 should not change this sentence nor those statements below
-use Zoo\Bar;
+use Zoo\Bar as ZooBar;
 use Foo\Bar;
 use Foo\Zar\Baz;
 
 <?php
 
 use Foo\Bar\FooBar as FooBaz;
-use Zoo\Bar, Zoo\Tar;
+use Zoo\Bar as ZooBar, Zoo\Tar;
  use Foo\Bar;
 use Foo\Zar\Baz;
 use Symfony\Annotation\Template;
@@ -103,13 +103,6 @@ EOF;
     public function testFixWithMultipleNamespace()
     {
         $expected = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar;
-use Foo\Bar;
-use Foo\Zar\Baz;
-
 <?php
 
 namespace FooRoo {
@@ -119,14 +112,14 @@ namespace FooRoo {
      use Foo\Bir as FBB;
     use Foo\Zar\Baz;
     use SomeClass;
-       use Symfony\Annotation\Template, Zoo\Bar;
-    use Zoo\Tar;
+       use Symfony\Annotation\Template, Zoo\Bar as ZooBar;
+    use Zoo\Tar1;
 
     $a = new Bar();
     $a = new FooBaz();
     $a = new someclass();
 
-    use Zoo\Tar;
+    use Zoo\Tar2;
 
     class AnnotatedClass
     {
@@ -169,19 +162,12 @@ namespace BlaRoo {
 EOF;
 
         $input = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar;
-use Foo\Bar;
-use Foo\Zar\Baz;
-
 <?php
 
 namespace FooRoo {
 
     use Foo\Bar\FooBar as FooBaz;
-    use Zoo\Bar, Zoo\Tar;
+    use Zoo\Bar as ZooBar, Zoo\Tar1;
      use Foo\Bar;
     use Foo\Zar\Baz;
     use Symfony\Annotation\Template;
@@ -192,7 +178,7 @@ namespace FooRoo {
     $a = new FooBaz();
     $a = new someclass();
 
-    use Zoo\Tar;
+    use Zoo\Tar2;
 
     class AnnotatedClass
     {
@@ -255,7 +241,7 @@ use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar /* He there */ as FooBaz;
 use Foo\Zar\Baz;
 use SomeClass;
    use /* FIXME */Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
-use Zoo\Bar;
+use Zoo\Bar as ZooBar;
 
 $a = new Bar();
 $a = new FooBaz();
@@ -290,7 +276,7 @@ use Foo\Zar\Baz;
 <?php
 
 use Foo\Bar\FooBar /* He there */ as FooBaz;
-use Zoo\Bar, Zoo\Tar;
+use Zoo\Bar as ZooBar, Zoo\Tar;
  use Foo\Bar;
 use Foo\Zar\Baz;
 use /* FIXME */Symfony\Annotation\Template;
@@ -336,13 +322,13 @@ use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
 use Foo\Zar\Baz;
 use SomeClass;
    use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
-use Zoo\Bar;
+use Zoo\Bar as ZooBar;
 
 use Zoo\Tar;
 
 trait Foo {}
 
-trait Bar {}
+trait Zoo {}
 
 class AnnotatedClass
 {
@@ -366,7 +352,7 @@ EOF;
 <?php
 
 use Foo\Bar\FooBar as FooBaz;
-use Zoo\Bar, Zoo\Tar;
+use Zoo\Bar as ZooBar, Zoo\Tar;
  use Foo\Bar;
 use Foo\Zar\Baz;
 use Symfony\Annotation\Template;
@@ -377,7 +363,7 @@ use Symfony\Doctrine\Entities\Entity;
 
 trait Foo {}
 
-trait Bar {}
+trait Zoo {}
 
 class AnnotatedClass
 {
@@ -422,7 +408,7 @@ use Foo\Bir as FBB;
 use Foo\Zar\Baz;
 use SomeClass;
    use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
-use Zoo\Bar;
+use Zoo\Bar as ZooBar;
 
 $a = new Bar();
 $a = new FooBaz();
@@ -459,7 +445,7 @@ use Foo\Zar\Baz;
 <?php
 
 use Foo\Bar\FooBar as FooBaz;
-use Zoo\Bar, Zoo\Tar;
+use Zoo\Bar as ZooBar, Zoo\Tar;
  use Foo\Bar;
 use Foo\Zar\Baz;
 use Acme\MyReusableTrait;
@@ -500,13 +486,13 @@ EOF;
 The normal
 use of this fixer
 should not change this sentence nor those statements below
-use Zoo\Bar;
+use Zoo\Baz;
 use abc\Bar;
 
 <?php
 
 use abc\Bar;
-use Zoo\Bar;
+use Zoo\Baz;
 
 class Test
 {
@@ -517,12 +503,12 @@ EOF;
 The normal
 use of this fixer
 should not change this sentence nor those statements below
-use Zoo\Bar;
+use Zoo\Baz;
 use abc\Bar;
 
 <?php
 
-use Zoo\Bar;
+use Zoo\Baz;
 use abc\Bar;
 
 class Test
