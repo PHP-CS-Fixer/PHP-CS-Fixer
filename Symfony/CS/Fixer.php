@@ -187,7 +187,7 @@ class Fixer
             return new FulfilledPromise(null);
         }
 
-        return $this->linter->lintFile($file->getRealpath())->then(function ($result) use ($file, $fixers, $dryRun, $diff, $fileCacheManager) {
+        return $this->linter->lintFile($file->getRealpath())->then(function ($result) use ($file, $fixers, $dryRun, $diff, $fileCacheManager, $new, $old) {
             if (true !== $result) {
                 $this->dispatchEvent(
                     FixerFileProcessedEvent::NAME,
@@ -251,7 +251,7 @@ class Fixer
             // work of other and both of them will mark collection as changed.
             // Therefore we need to check if code hashes changed.
             if ($oldHash !== $newHash) {
-                return $this->linter->lintSource($new)->then(function ($result) use ($file, $fixers, $dryRun, $diff, $fileCacheManager) {
+                return $this->linter->lintSource($new)->then(function ($result) use ($file, $fixers, $dryRun, $diff, $fileCacheManager, $new, $old) {
                     if (true !== $result) {
                         $this->dispatchEvent(
                             FixerFileProcessedEvent::NAME,

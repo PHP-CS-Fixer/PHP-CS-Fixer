@@ -160,51 +160,59 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
         }
 
-        $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), $fixers, false, true, new FileCacheManager(false, null, $fixers));
+        $result = $fixer->fixFile(new \SplFileInfo($tmpFile), $fixers, false, true, new FileCacheManager(false, null, $fixers))->then(function ($changed) use ($testFileName, $testTitle, $fixers, $requirements, $input, $expected, $fixer, $tmpFile) {
+            try {
+                $errorsManager = $fixer->getErrorsManager();
 
-        $errorsManager = $fixer->getErrorsManager();
+                if (!$errorsManager->isEmpty()) {
+                    $errors = $errorsManager->getExceptionErrors();
+                    $this->assertEmpty($errors, sprintf('Errors reported during fixing: %s', $this->implodeErrors($errors)));
 
-        if (!$errorsManager->isEmpty()) {
-            $errors = $errorsManager->getExceptionErrors();
-            $this->assertEmpty($errors, sprintf('Errors reported during fixing: %s', $this->implodeErrors($errors)));
+                    $errors = $errorsManager->getInvalidErrors();
+                    $this->assertEmpty($errors, sprintf('Errors reported during linting before fixing: %s.', $this->implodeErrors($errors)));
 
-            $errors = $errorsManager->getInvalidErrors();
-            $this->assertEmpty($errors, sprintf('Errors reported during linting before fixing: %s.', $this->implodeErrors($errors)));
+                    $errors = $errorsManager->getLintErrors();
+                    $this->assertEmpty($errors, sprintf('Errors reported during linting after fixing: %s.', $this->implodeErrors($errors)));
+                }
 
-            $errors = $errorsManager->getLintErrors();
-            $this->assertEmpty($errors, sprintf('Errors reported during linting after fixing: %s.', $this->implodeErrors($errors)));
+                if (null === $expected) {
+                    $this->assertEmpty($changed, sprintf("Expected no changes made to test \"%s\" in \"%s\".\nFixers applied:\n\"%s\".\nDiff.:\n\"%s\".", $testTitle, $testFileName, $changed === null ? '[None]' : implode(',', $changed['appliedFixers']), $changed === null ? '[None]' : $changed['diff']));
+
+                    return;
+                }
+
+                $this->assertNotEmpty($changed, sprintf('Expected changes made to test "%s" in "%s".', $testTitle, $testFileName));
+                $fixedInputCode = file_get_contents($tmpFile);
+                $this->assertSame($expected, $fixedInputCode, sprintf('Expected changes do not match result for "%s" in "%s".', $testTitle, $testFileName));
+
+                $priorities = array_map(
+                    function (FixerInterface $fixer) {
+                        return $fixer->getPriority();
+                    },
+                    $fixers
+                );
+
+                $this->assertNotCount(1, array_unique($priorities), 'All used fixers must not have the same priority, integration tests should cover fixers with different priorities.');
+
+                $tmpFile = static::getTempFile();
+                if (false === @file_put_contents($tmpFile, $input)) {
+                    throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
+                }
+
+                $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), array_reverse($fixers), false, true, new FileCacheManager(false, null, $fixers));
+                $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
+                $this->assertNotSame($fixedInputCode, $fixedInputCodeWithReversedFixers, 'Set priorities must be significant. If fixers used in reverse order return same output then the integration test is not sufficient or the priority relation between used fixers should not be set.');
+
+                // run the test again with the `expected` part, this should always stay the same
+                $this->testIntegration($testFileName, $testTitle.' "--EXPECT-- part run"', $fixers, $requirements, $expected);
+            } catch (\Exception $e) {
+                return $e;
+            }
+        });
+
+        if ($result instanceof \Exception) {
+            throw $result;
         }
-
-        if (null === $expected) {
-            $this->assertEmpty($changed, sprintf("Expected no changes made to test \"%s\" in \"%s\".\nFixers applied:\n\"%s\".\nDiff.:\n\"%s\".", $testTitle, $testFileName, $changed === null ? '[None]' : implode(',', $changed['appliedFixers']), $changed === null ? '[None]' : $changed['diff']));
-
-            return;
-        }
-
-        $this->assertNotEmpty($changed, sprintf('Expected changes made to test "%s" in "%s".', $testTitle, $testFileName));
-        $fixedInputCode = file_get_contents($tmpFile);
-        $this->assertSame($expected, $fixedInputCode, sprintf('Expected changes do not match result for "%s" in "%s".', $testTitle, $testFileName));
-
-        $priorities = array_map(
-            function (FixerInterface $fixer) {
-                return $fixer->getPriority();
-            },
-            $fixers
-        );
-
-        $this->assertNotCount(1, array_unique($priorities), 'All used fixers must not have the same priority, integration tests should cover fixers with different priorities.');
-
-        $tmpFile = static::getTempFile();
-        if (false === @file_put_contents($tmpFile, $input)) {
-            throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
-        }
-
-        $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), array_reverse($fixers), false, true, new FileCacheManager(false, null, $fixers));
-        $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
-        $this->assertNotSame($fixedInputCode, $fixedInputCodeWithReversedFixers, 'Set priorities must be significant. If fixers used in reverse order return same output then the integration test is not sufficient or the priority relation between used fixers should not be set.');
-
-        // run the test again with the `expected` part, this should always stay the same
-        $this->testIntegration($testFileName, $testTitle.' "--EXPECT-- part run"', $fixers, $requirements, $expected);
     }
 
     /**
