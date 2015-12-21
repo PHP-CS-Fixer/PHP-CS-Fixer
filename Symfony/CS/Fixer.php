@@ -23,7 +23,6 @@ use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Error\Error;
 use Symfony\CS\Error\ErrorsManager;
 use Symfony\CS\Linter\LinterInterface;
-use Symfony\CS\Linter\LintingException;
 use Symfony\CS\Linter\NullLinter;
 use Symfony\CS\Tokenizer\Tokens;
 
@@ -252,7 +251,7 @@ class Fixer
             // work of other and both of them will mark collection as changed.
             // Therefore we need to check if code hashes changed.
             if ($oldHash !== $newHash) {
-                return $this->linter->lintSource($new)->then(function ($result) use ($file, $fixers, $dryRun, $diff, $fileCacheManager)) {
+                return $this->linter->lintSource($new)->then(function ($result) use ($file, $fixers, $dryRun, $diff, $fileCacheManager) {
                     if (true !== $result) {
                         $this->dispatchEvent(
                             FixerFileProcessedEvent::NAME,
