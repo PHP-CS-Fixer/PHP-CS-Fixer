@@ -422,8 +422,9 @@ EOF
                 }
 
                 foreach ($changed as $file => $fixResult) {
+                    $output->write(sprintf('%4d) %s', $i++, $file));
+
                     if ($fixerDetailLine) {
-                        $output->write(sprintf('%4d) %s', $i++, $file));
                         $output->write(sprintf($fixerDetailLine, implode(', ', $fixResult['appliedFixers'])));
                     }
 
