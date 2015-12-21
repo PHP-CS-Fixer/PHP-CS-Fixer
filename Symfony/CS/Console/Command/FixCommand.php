@@ -424,11 +424,7 @@ EOF
                 foreach ($changed as $file => $fixResult) {
                     if ($fixerDetailLine) {
                         $output->write(sprintf('%4d) %s', $i++, $file));
-                        if ($fixerDetailLine) {
-                            $output->write(sprintf($fixerDetailLine, implode(', ', $fixResult['appliedFixers'])));
-                        }
-
-                        $output->writeln('');
+                        $output->write(sprintf($fixerDetailLine, implode(', ', $fixResult['appliedFixers'])));
                     }
 
                     if ($input->getOption('diff')) {
@@ -436,8 +432,9 @@ EOF
                         $output->writeln('<comment>      ---------- begin diff ----------</comment>');
                         $output->writeln($fixResult['diff']);
                         $output->writeln('<comment>      ---------- end diff ----------</comment>');
-                        $output->writeln('');
                     }
+
+                    $output->writeln('');
                 }
 
                 if (OutputInterface::VERBOSITY_DEBUG <= $verbosity) {
