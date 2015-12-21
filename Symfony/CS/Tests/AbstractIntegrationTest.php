@@ -159,6 +159,9 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped(sprintf('PHP %s (or later) is required.', $requirements['php']));
         }
 
+        $hasInput = null !== $input;
+        $input = $hasInput ? $input : $expected;
+
         if (getenv('LINT_TEST_CASES')) {
             $linter = new LintManager();
             $lintProcess = $linter->createProcessForSource($input);
@@ -170,14 +173,14 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
         $fixer->setErrorsManager($errorsManager);
 
         $tmpFile = static::getTempFile();
-        if (false === @file_put_contents($tmpFile, null === $input ? $expected : $input)) {
+        if (false === @file_put_contents($tmpFile, $input)) {
             throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
         }
 
         $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), $fixers, false, true, new FileCacheManager(false, null, $fixers));
         $this->assertTrue($errorsManager->isEmpty(), 'Errors reported during fixing.');
 
-        if (null === $input) {
+        if (!$hasInput) {
             $this->assertEmpty($changed, sprintf("Expected no changes made to test \"%s\" in \"%s\".\nFixers applied:\n\"%s\".\nDiff.:\n\"%s\".", $testTitle, $testFileName, $changed === null ? '[None]' : implode(',', $changed['appliedFixers']), $changed === null ? '[None]' : $changed['diff']));
 
             return;
