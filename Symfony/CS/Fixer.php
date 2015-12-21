@@ -11,6 +11,8 @@
 
 namespace Symfony\CS;
 
+use React\Promise\FulfilledPromise;
+use React\Promise\PromiseInterface;
 use SebastianBergmann\Diff\Differ;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -144,13 +146,19 @@ class Fixer
                 continue;
             }
 
-            $this->stopwatch->start($this->getFileRelativePathname($file));
+            $name = $this->getFileRelativePathname($file);
 
-            if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff, $fileCacheManager)) {
-                $changed[$this->getFileRelativePathname($file)] = $fixInfo;
-            }
+            $this->stopwatch->start($name);
 
-            $this->stopwatch->stop($this->getFileRelativePathname($file));
+            $stopwatch = $this->stopwatch;
+
+            $this->fixFile($file, $fixers, $dryRun, $diff, $fileCacheManager)->then(function ($fixInfo) use (&$changed, $name, $stopwatch) {
+                if ($fixInfo) {
+                    $changed[$name] = $fixInfo;
+                }
+
+                $stopwatch->stop($name);
+            });
         }
 
         $this->stopwatch->stopSection('fixFile');
@@ -158,6 +166,17 @@ class Fixer
         return $changed;
     }
 
+    /**
+     * Fix the given file.
+     *
+     * @param \SplFileInfo     $file
+     * @param array            $fixers
+     * @param bool             $dryRun
+     * @param bool             $diff
+     * @param FileCacheManager $fileCacheManager
+     *
+     * @return PromiseInterface
+     */
     public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff, FileCacheManager $fileCacheManager)
     {
         $new = $old = file_get_contents($file->getRealpath());
@@ -168,7 +187,7 @@ class Fixer
                 FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_SKIPPED)
             );
 
-            return;
+            return new FulfilledPromise(null);
         }
 
         try {
@@ -184,7 +203,7 @@ class Fixer
                 $this->getFileRelativePathname($file)
             ));
 
-            return;
+            return new FulfilledPromise(null);
         }
 
         $old = file_get_contents($file->getRealpath());
@@ -221,7 +240,7 @@ class Fixer
                 $this->getFileRelativePathname($file)
             ));
 
-            return;
+            return new FulfilledPromise(null);
         }
 
         $fixInfo = null;
@@ -249,7 +268,7 @@ class Fixer
                     $this->getFileRelativePathname($file)
                 ));
 
-                return;
+                return new FulfilledPromise(null);
             }
 
             if (!$dryRun && false === @file_put_contents($file->getRealpath(), $new)) {
@@ -274,7 +293,7 @@ class Fixer
             FixerFileProcessedEvent::create()->setStatus($fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES)
         );
 
-        return $fixInfo;
+        return new FulfilledPromise($fixInfo);
     }
 
     private function getFileRelativePathname(\SplFileInfo $file)
