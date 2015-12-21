@@ -70,7 +70,7 @@ final class Linter implements LinterInterface
      */
     public function lintFile($path)
     {
-        $this->checkProcess($this->createProcessForFile($path));
+        return $this->checkProcess($this->createProcessForFile($path));
     }
 
     /**
@@ -78,7 +78,7 @@ final class Linter implements LinterInterface
      */
     public function lintSource($source)
     {
-        $this->checkProcess($this->createProcessForSource($source));
+        return $this->checkProcess($this->createProcessForSource($source));
     }
 
     /**

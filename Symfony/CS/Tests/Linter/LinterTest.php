@@ -57,19 +57,22 @@ final class LinterTest extends \PHPUnit_Framework_TestCase
     public function testLintSourceWithGoodCode()
     {
         $linter = new Linter();
-        $linter->lintSource('<?php echo 123;'); // no exception should be raised
+
+        $linter->lintSource('<?php echo 123;')->then(function ($result) {
+            $this->assertTrue($result);
+        });
     }
 
     /**
      * @covers Symfony\CS\Linter\Linter::lintSource
-     *
-     * @expectedException Symfony\CS\Linter\LintingException
-     * @expectedExceptionMessageRegExp /syntax error, unexpected (?:'echo' \(T_ECHO\))|(?:T_ECHO)/
      */
     public function testLintSourceWithBadCode()
     {
         $linter = new Linter();
-        $linter->lintSource('<?php echo echo;');
+
+        $linter->lintSource('<?php echo echo;')->then(function ($result) {
+            $this->assertRegExp('/syntax error, unexpected (?:\'echo\' \(T_ECHO\))|(?:T_ECHO)/', $result);
+        });
     }
 
     /**
