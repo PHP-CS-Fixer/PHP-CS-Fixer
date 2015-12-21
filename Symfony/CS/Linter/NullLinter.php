@@ -11,6 +11,8 @@
 
 namespace Symfony\CS\Linter;
 
+use React\Promise\FulfilledPromise;
+
 /**
  * Dummy linter. No linting is performed. No error is raised.
  *
@@ -25,7 +27,7 @@ final class NullLinter implements LinterInterface
      */
     public function lintFile($path)
     {
-        unset($path);
+        return new FulfilledPromise(true);
     }
 
     /**
@@ -33,6 +35,6 @@ final class NullLinter implements LinterInterface
      */
     public function lintSource($source)
     {
-        unset($source);
+        return new FulfilledPromise(true);
     }
 }

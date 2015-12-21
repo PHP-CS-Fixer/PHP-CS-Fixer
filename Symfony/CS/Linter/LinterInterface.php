@@ -22,6 +22,8 @@ interface LinterInterface
      * Lint PHP file.
      *
      * @param string $path
+     *
+     * @return PromiseInterface
      */
     public function lintFile($path);
 
@@ -29,6 +31,8 @@ interface LinterInterface
      * Lint PHP code.
      *
      * @param string $source
+     *
+     * @return PromiseInterface
      */
     public function lintSource($source);
 }

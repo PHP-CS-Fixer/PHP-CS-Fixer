@@ -11,6 +11,8 @@
 
 namespace Symfony\CS\Linter;
 
+use React\Promise\FulfilledPromise;
+use React\Promise\PromiseInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
@@ -80,16 +82,20 @@ final class Linter implements LinterInterface
     }
 
     /**
-     * Check if linting process was successful and raise LintingException if not.
+     * Check if linting process was successful.
      *
      * @param Process $process
+     *
+     * @return PromiseInterface
      */
     private function checkProcess(Process $process)
     {
-        if (!$process->isSuccessful()) {
-            // on some systems stderr is used, but on others, it's not
-            throw new LintingException($process->getErrorOutput() ?: $process->getOutput(), $process->getExitCode());
+        if ($process->isSuccessful()) {
+            return new FulfilledPromise(true);
         }
+
+        // on some systems stderr is used, but on others, it's not
+        return new FulfilledPromise($process->getErrorOutput() ?: $process->getOutput());
     }
 
     /**
