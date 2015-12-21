@@ -1,0 +1,137 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-09T13:59:45Z
+
+What about other places? Like Header fixer?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-09T15:58:38Z
+
+* HeaderCommentFixer done
+* PhpUnitConstructFixer done
+* ExtraEmptyLinesFixer not possible, config options on master only
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-09T16:26:11Z
+
+> ExtraEmptyLinesFixer not possible, config options on master only
+
+Great to hear that!
+In that case I ask you to apply that changes on 2.x line when this will be merged ;) Thanks!
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-09T16:27:12Z
+
+Shouldn't the `InvalidFixerConfigurationException` be caught in `FixCommand` ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-09T17:05:11Z
+
+We could :) do you have something in mind other than the default exception display of the symfony/console package?
+
+(ps 'In that case I ask you to apply that changes on 2.x line when this will be merged ;) Thanks!'
+course, will do :) )
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-09T17:40:02Z
+
+I would leave it to you to propose console output ;) Just remember to return correct exit status
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-13T12:59:51Z
+
+ping :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-15T11:01:32Z
+
+ping @SpacePossum :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-15T11:04:58Z
+
+I would suggest to create namespace `Symfony\CS\ConfigurationException` and in it two classes:
+- `InvalidConfigurationException`
+- `InvalidFixerConfigurationException` extending `InvalidConfigurationException`
+
+The later one will be used in places like: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/Symfony/CS/Console/ConfigurationResolver.php#L438
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-17T13:03:13Z
+
+ping @SpacePossum ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-18T12:10:56Z
+
+@SpacePossum Please, could you focus on that?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-18T12:14:42Z
+
+yes, on it :)
+(well not literary now, but like soon)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-18T12:54:56Z
+
+Great, thanks!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-18T16:26:46Z
+
+I left the output as is (i.e. leave it to the symfony/application) for now to prevent make an epic big PR out of this one.
+I made the two exception classes and which set the exit codes, let me know :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-18T23:19:27Z
+
+Please fix the build
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-19T15:09:42Z
+
+tests are happy, fabbot.io is off (as we know :) )
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-21T08:38:54Z
+
+This is still missing some utest so consider it WIP.
+
+Ping @stof for a second opion (and ping @keradus for a first :) )  about the `stdout` vs. `stderr` changes
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T09:53:55Z
+
+I would handle the stdout vs stderr discussion separate. We know we need to do this, we know we want to do this, no need to do this in this PR.
+
+Please finish it, I would really like to have it on 2.x line ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-21T11:44:34Z
+
+check, reverted and cleanupped
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T14:02:30Z
+
+:+1:
