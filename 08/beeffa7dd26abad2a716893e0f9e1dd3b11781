@@ -1,0 +1,56 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-21T22:43:10Z
+
+:+1:
+so sorry about this one :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T22:44:07Z
+
+Merging things to master started tooking me like half an hour :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T22:45:08Z
+
+BTW, it would be so nice to test the console output :D
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-21T22:45:32Z
+
+I think we need to hurry up and release 2.0.0 so you don't need to merge stuff all the time. Can we make 1.12 the last 1.x series?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-21T22:46:12Z
+
+oh no :(
+you want me to prep it? there is no rush getting to master..
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-21T22:48:58Z
+
+>BTW, it would be so nice to test the console output :D
+
+that should be do-able (and even more important when we split stdout to/and stderr), lets see. .. .. ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T22:51:09Z
+
+@SpacePossum
+it's already there.
+yep, Symfony has that kind of tests ;)
+
+@GrahamCampbell
+This is the idea. This is why I am pushing some refactoring changes lately (eg pinging SpacePossum on things like that instead of new and new fixers).
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T22:51:34Z
+
+Or didn't want to start refactoring whole codebase to work async ;P
