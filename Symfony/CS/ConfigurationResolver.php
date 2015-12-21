@@ -183,7 +183,7 @@ class ConfigurationResolver
         } elseif (method_exists($this->config, 'getFormat')) {
             $format = $this->config->getFormat();
         } else {
-            $format = 'txt'; // fast return default
+            $format = 'txt'; // default
         }
 
         static $formats = array('txt', 'xml', 'json');
@@ -192,8 +192,6 @@ class ConfigurationResolver
         }
 
         $this->format = $format;
-
-        return $format;
     }
 
     protected function parseLevel()

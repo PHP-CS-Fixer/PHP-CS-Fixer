@@ -29,6 +29,5 @@ class InvalidFixerConfigurationException extends InvalidConfigurationException
     public function __construct($fixerName, $message)
     {
         parent::__construct(sprintf('[%s] %s', $fixerName, $message), FixCommand::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG);
-        $this->fixerName = $fixerName;
     }
 }
