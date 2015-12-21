@@ -464,8 +464,7 @@ part of the application as soon as possible.
 
 #### May I use short arrays (`$a = []`)?
 
-No. Short arrays were introduced in PHP 5.4 and PHP CS Fixer still
-supports PHP 5.3.6.
+No. We do not use the short array syntax.
 
 #### Why are you steering me to create my fixer at CONTRIB_LEVEL ?
 
