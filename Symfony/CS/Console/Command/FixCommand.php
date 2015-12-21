@@ -22,6 +22,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
+use Symfony\CS\ConfigurationException\InvalidConfigurationException;
 use Symfony\CS\ConfigurationResolver;
 use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
@@ -36,6 +37,9 @@ use Symfony\CS\Utils;
  */
 class FixCommand extends Command
 {
+    const EXIT_STATUS_FLAG_HAS_INVALID_CONFIG = 16;
+    const EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG = 32;
+
     /**
      * EventDispatcher instance.
      *
@@ -118,7 +122,9 @@ problems as possible on a given file or directory:
     <info>php %command.full_name% /path/to/dir</info>
     <info>php %command.full_name% /path/to/file</info>
 
-The <comment>--verbose</comment> option show applied fixers. When using ``txt`` format (default one) it will also displays progress notification.
+The <comment>--verbose</comment> option show applied fixers. When using ``txt`` format it will also displays progress notification.
+
+The <comment>--format</comment> option for the output format. Support are ``txt`` (default one), ``json`` and ``xml``.
 
 The <comment>--level</comment> option limits the fixers to apply on the
 project:
@@ -262,6 +268,13 @@ speed up further runs.
     ;
 
     ?>
+
+Exit codes
+----------
+*  0 OK
+*  1 No changes made
+* 16 Configuration error of the application
+* 32 Configuration error of a Fixer
 EOF
             );
     }
@@ -271,6 +284,15 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // setup output
+        $stdErr = ($output instanceof ConsoleOutputInterface) ? $output->getErrorOutput() : null;
+        if ($stdErr && extension_loaded('xdebug')) {
+            $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
+        }
+
+        $verbosity = $output->getVerbosity();
+
+        // setup input
         $path = $input->getArgument('path');
 
         $stdin = false;
@@ -289,6 +311,7 @@ EOF
             }
         }
 
+        // setup configuration location
         $configFile = $input->getOption('config-file');
         if (null === $configFile) {
             $configDir = $path;
@@ -312,13 +335,13 @@ EOF
             }
 
             if (null === $config) {
-                throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined.', $input->getOption('config')));
+                throw new InvalidConfigurationException(sprintf('The configuration "%s" is not defined.', $input->getOption('config')));
             }
         } elseif (file_exists($configFile)) {
             $config = include $configFile;
             // verify that the config has an instance of Config
             if (!$config instanceof Config) {
-                throw new \UnexpectedValueException(sprintf('The config file "%s" does not return a "Symfony\CS\Config\Config" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
+                throw new InvalidConfigurationException(sprintf('The config file "%s" does not return a "Symfony\CS\Config\Config" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
             }
 
             if ('txt' === $input->getOption('format')) {
@@ -328,10 +351,7 @@ EOF
             $config = $this->defaultConfig;
         }
 
-        if ($config->usingLinter()) {
-            $this->fixer->setLintManager(new LintManager());
-        }
-
+        // setup location of source(s) to fix
         if (is_file($path)) {
             $config->finder(new \ArrayIterator(array(new \SplFileInfo($path))));
         } elseif ($stdin) {
@@ -340,12 +360,10 @@ EOF
             $config->setDir($path);
         }
 
-        if ($output instanceof ConsoleOutputInterface && extension_loaded('xdebug')) {
-            $stdErr = $output->getErrorOutput();
-            $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
+        // setup Linter
+        if ($config->usingLinter()) {
+            $this->fixer->setLintManager(new LintManager());
         }
-
-        $verbosity = $output->getVerbosity();
 
         // register custom fixers from config
         $this->fixer->registerCustomFixers($config->getCustomFixers());
@@ -358,6 +376,7 @@ EOF
                 'level' => $input->getOption('level'),
                 'fixers' => $input->getOption('fixers'),
                 'progress' => (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) && 'txt' === $input->getOption('format'),
+                'format' => $input->getOption('format'),
             ))
             ->resolve();
 
@@ -394,13 +413,18 @@ EOF
 
         $i = 1;
 
-        switch ($input->getOption('format')) {
+        switch ($resolver->getFormat()) {
             case 'txt':
-                foreach ($changed as $file => $fixResult) {
-                    $output->write(sprintf('%4d) %s', $i++, $file));
 
-                    if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
-                        $output->write(sprintf(' (<comment>%s</comment>)', implode(', ', $fixResult['appliedFixers'])));
+                $fixerDetailLine = false;
+                if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
+                    $fixerDetailLine = $output->isDecorated() ? ' (<comment>%s</comment>)' : ' %s';
+                }
+
+                foreach ($changed as $file => $fixResult) {
+                    if ($fixerDetailLine) {
+                        $output->write(sprintf('%4d) %s', $i++, $file));
+                        $output->write(sprintf($fixerDetailLine, implode(', ', $fixResult['appliedFixers'])));
                     }
 
                     if ($input->getOption('diff')) {
@@ -505,8 +529,6 @@ EOF
 
                 $output->write(json_encode($json));
                 break;
-            default:
-                throw new \InvalidArgumentException(sprintf('The format "%s" is not defined.', $input->getOption('format')));
         }
 
         if (!$this->errorsManager->isEmpty()) {

@@ -124,7 +124,9 @@ problems as possible on a given file or directory:
     php php-cs-fixer.phar fix /path/to/dir
     php php-cs-fixer.phar fix /path/to/file
 
-The ``--verbose`` option show applied fixers. When using ``txt`` format (default one) it will also displays progress notification.
+The ``--verbose`` option show applied fixers. When using ``txt`` format it will also displays progress notification.
+
+The ``--format`` option for the output format. Support are ``txt`` (default one), ``json`` and ``xml``.
 
 The ``--level`` option limits the fixers to apply on the
 project:
@@ -777,6 +779,13 @@ speed up further runs.
     return Symfony\CS\Config\Config::create()
         ->setUsingCache(true)
     ;
+
+Exit codes
+----------
+*  0 OK
+*  1 No changes made
+* 16 Configuration error of the application
+* 32 Configuration error of a Fixer
 
 Helpers
 -------
