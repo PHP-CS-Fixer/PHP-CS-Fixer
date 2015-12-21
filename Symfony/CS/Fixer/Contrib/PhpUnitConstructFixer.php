@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\ConfigurationException\InvalidFixerConfigurationException;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -43,8 +44,8 @@ final class PhpUnitConstructFixer extends AbstractFixer
         }
 
         foreach ($usingMethods as $method => $fix) {
-            if (!isset($this->configuration[$method])) {
-                throw new \InvalidArgumentException(sprintf('Configured method "%s" cannot be fixed by this fixer.', $method));
+            if (!array_key_exists($method, $this->configuration)) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Configured method "%s" cannot be fixed by this fixer.', $method));
             }
 
             $this->configuration[$method] = $fix;

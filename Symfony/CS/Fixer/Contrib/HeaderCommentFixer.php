@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\ConfigurationException\InvalidFixerConfigurationException;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
@@ -29,10 +30,16 @@ final class HeaderCommentFixer extends AbstractFixer
     public function configure(array $configuration = null)
     {
         if (null === $configuration || !isset($configuration['header'])) {
-            throw new \Exception('Configuration is missing.');
+            throw new InvalidFixerConfigurationException($this->getName(), 'Configuration is missing.');
         }
 
-        $this->setHeader($configuration['header']);
+        $header = $configuration['header'];
+
+        if (!is_string($header)) {
+            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Header configuration is invalid. Expected "string", got "%s".', is_object($header) ? get_class($header) : gettype($header)));
+        }
+
+        $this->setHeader($header);
     }
 
     /**
@@ -168,7 +175,7 @@ final class HeaderCommentFixer extends AbstractFixer
      */
     private function setHeader($header)
     {
-        $this->header = trim((string) $header);
+        $this->header = trim($header);
         $this->headerComment = '';
 
         if ('' !== $this->header) {

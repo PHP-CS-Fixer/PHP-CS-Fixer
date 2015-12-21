@@ -14,6 +14,7 @@ namespace Symfony\CS\Console;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
+use Symfony\CS\ConfigurationException\InvalidConfigurationException;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerFactory;
 use Symfony\CS\FixerInterface;
@@ -62,6 +63,11 @@ final class ConfigurationResolver
     private $fixerFactory;
 
     /**
+     * @var string
+     */
+    private $format;
+
+    /**
      * @var bool
      */
     private $isStdIn;
@@ -89,6 +95,7 @@ final class ConfigurationResolver
         'config' => null,
         'config-file' => null,
         'dry-run' => null,
+        'format' => 'txt',
         'path' => null,
         'progress' => null,
         'using-cache' => null,
@@ -148,6 +155,16 @@ final class ConfigurationResolver
     }
 
     /**
+     * Returns output format.
+     *
+     * @return string
+     */
+    public function getFormat()
+    {
+        return $this->format;
+    }
+
+    /**
      * Returns path.
      *
      * @return string
@@ -197,6 +214,7 @@ final class ConfigurationResolver
         $this->resolvePath();
         $this->resolveIsStdIn();
         $this->resolveIsDryRun();
+        $this->resolveFormat();
 
         $this->resolveConfig();
         $this->resolveConfigPath();
@@ -372,7 +390,7 @@ final class ConfigurationResolver
             }
 
             if (null === $this->config) {
-                throw new \InvalidArgumentException(sprintf('The configuration "%s" is not defined.', $configOption));
+                throw new InvalidConfigurationException(sprintf('The configuration "%s" is not defined.', $configOption));
             }
         }
 
@@ -437,6 +455,25 @@ final class ConfigurationResolver
         if (!empty($riskyFixers)) {
             throw new \UnexpectedValueException(sprintf('The rules contain risky fixers (%s), but they are not allowed to run. Perhaps you forget to use --allow-risky option?', implode(', ', $riskyFixers)));
         }
+    }
+
+    protected function resolveFormat()
+    {
+        static $formats = array('txt', 'xml', 'json');
+
+        if (array_key_exists('format', $this->options)) {
+            $format = $this->options['format'];
+        } elseif (method_exists($this->config, 'getFormat')) {
+            $format = $this->config->getFormat();
+        } else {
+            $format = 'txt'; // default
+        }
+
+        if (!in_array($format, $formats, true)) {
+            throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are %s.', $format, implode(', ', $formats)));
+        }
+
+        $this->format = $format;
     }
 
     /**

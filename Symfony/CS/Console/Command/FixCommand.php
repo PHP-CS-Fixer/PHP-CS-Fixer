@@ -41,6 +41,8 @@ final class FixCommand extends Command
 {
     const EXIT_STATUS_FLAG_HAS_INVALID_FILES = 4;
     const EXIT_STATUS_FLAG_HAS_CHANGED_FILES = 8;
+    const EXIT_STATUS_FLAG_HAS_INVALID_CONFIG = 16;
+    const EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG = 32;
 
     /**
      * EventDispatcher instance.
@@ -124,7 +126,7 @@ problems as possible on a given file or files in a given directory and its subdi
     <info>php %command.full_name% /path/to/dir</info>
     <info>php %command.full_name% /path/to/file</info>
 
-The <comment>--format</comment> option can be used to set the output format of the results; ``txt`` (default one), ``xml`` or ``json``.
+The <comment>--format</comment> option for the output format. Supported formats are ``txt`` (default one), ``json`` and ``xml``.
 
 The <comment>--verbose</comment> option will show the applied fixers. When using the ``txt`` format it will also displays progress notifications.
 
@@ -289,6 +291,17 @@ for PHP CS Fixer cache files and have Travis cache it between builds.
 
 Note: This will only trigger a build if you have a subscription for Travis
 or are using their free open source plan.
+
+Exit codes
+----------
+
+Exit code are build using following bit flags:
+
+*  0 OK
+*  4 Some files have invalid syntax (only in dry-run mode)
+*  8 Some files need fixing (only in dry-run mode)
+* 16 Configuration error of the application
+* 32 Configuration error of a Fixer
 EOF
             );
     }
@@ -298,6 +311,11 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $stdErr = ($output instanceof ConsoleOutputInterface) ? $output->getErrorOutput() : null;
+        if ($stdErr && extension_loaded('xdebug')) {
+            $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
+        }
+
         $verbosity = $output->getVerbosity();
         $resolver = new ConfigurationResolver();
         $resolver
@@ -314,6 +332,7 @@ EOF
                 'progress' => (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) && 'txt' === $input->getOption('format'),
                 'using-cache' => $input->getOption('using-cache'),
                 'cache-file' => $input->getOption('cache-file'),
+                'format' => $input->getOption('format'),
             ))
             ->resolve()
         ;
@@ -335,11 +354,6 @@ EOF
             }
         }
 
-        if ($output instanceof ConsoleOutputInterface && extension_loaded('xdebug')) {
-            $stdErr = $output->getErrorOutput();
-            $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
-        }
-
         $showProgress = $resolver->getProgress();
 
         if ($showProgress) {
@@ -358,13 +372,18 @@ EOF
 
         $i = 1;
 
-        switch ($input->getOption('format')) {
+        switch ($resolver->getFormat()) {
             case 'txt':
+                $fixerDetailLine = false;
+                if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
+                    $fixerDetailLine = $output->isDecorated() ? ' (<comment>%s</comment>)' : ' %s';
+                }
+
                 foreach ($changed as $file => $fixResult) {
                     $output->write(sprintf('%4d) %s', $i++, $file));
 
-                    if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
-                        $output->write(sprintf(' (<comment>%s</comment>)', implode(', ', $fixResult['appliedFixers'])));
+                    if ($fixerDetailLine) {
+                        $output->write(sprintf($fixerDetailLine, implode(', ', $fixResult['appliedFixers'])));
                     }
 
                     if ($input->getOption('diff')) {
@@ -506,8 +525,6 @@ EOF
 
                 $output->write(json_encode($json));
                 break;
-            default:
-                throw new \InvalidArgumentException(sprintf('The format "%s" is not defined.', $input->getOption('format')));
         }
 
         $invalidErrors = $this->errorsManager->getInvalidErrors();

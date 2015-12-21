@@ -124,7 +124,7 @@ problems as possible on a given file or files in a given directory and its subdi
     php php-cs-fixer.phar fix /path/to/dir
     php php-cs-fixer.phar fix /path/to/file
 
-The ``--format`` option can be used to set the output format of the results; ``txt`` (default one), ``xml`` or ``json``.
+The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``json`` and ``xml``.
 
 The ``--verbose`` option will show the applied fixers. When using the ``txt`` format it will also displays progress notifications.
 
@@ -802,6 +802,17 @@ for PHP CS Fixer cache files and have Travis cache it between builds.
 
 Note: This will only trigger a build if you have a subscription for Travis
 or are using their free open source plan.
+
+Exit codes
+----------
+
+Exit code are build using following bit flags:
+
+*  0 OK
+*  4 Some files have invalid syntax (only in dry-run mode)
+*  8 Some files need fixing (only in dry-run mode)
+* 16 Configuration error of the application
+* 32 Configuration error of a Fixer
 
 Helpers
 -------
