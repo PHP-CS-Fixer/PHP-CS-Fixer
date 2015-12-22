@@ -407,4 +407,13 @@ EOF;
         $expected = "<?php\r\n\\\\a\n\n\$a =1;";
         $this->doTest($expected, $input);
     }
+
+    /**
+     * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessage [extra_empty_lines] Unknown configuration item "__TEST__" passed.
+     */
+    public function testWrongConfig()
+    {
+        $this->getFixer()->configure(array('__TEST__'));
+    }
 }
