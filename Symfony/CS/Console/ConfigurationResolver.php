@@ -292,7 +292,7 @@ final class ConfigurationResolver
     public function setOption($name, $value)
     {
         if (!array_key_exists($name, $this->options)) {
-            throw new \OutOfBoundsException(sprintf('Unknown option name: "%s".', $name));
+            throw new InvalidConfigurationException(sprintf('Unknown option name: "%s".', $name));
         }
 
         $this->options[$name] = $value;
@@ -327,7 +327,7 @@ final class ConfigurationResolver
 
         if (null !== $configFile) {
             if (false === file_exists($configFile) || false === is_readable($configFile)) {
-                throw new \UnexpectedValueException(sprintf('Cannot read config file "%s".', $configFile));
+                throw new InvalidConfigurationException(sprintf('Cannot read config file "%s".', $configFile));
             }
 
             return array($configFile);
@@ -403,7 +403,7 @@ final class ConfigurationResolver
 
             // verify that the config has an instance of Config
             if (!$config instanceof Config) {
-                throw new \UnexpectedValueException(sprintf('The config file: "%s" does not return a "Symfony\CS\Config\Config" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
+                throw new InvalidConfigurationException(sprintf('The config file: "%s" does not return a "Symfony\CS\Config\Config" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
             }
 
             $this->config = $config;
@@ -453,7 +453,7 @@ final class ConfigurationResolver
         );
 
         if (!empty($riskyFixers)) {
-            throw new \UnexpectedValueException(sprintf('The rules contain risky fixers (%s), but they are not allowed to run. Perhaps you forget to use --allow-risky option?', implode(', ', $riskyFixers)));
+            throw new InvalidConfigurationException(sprintf('The rules contain risky fixers (%s), but they are not allowed to run. Perhaps you forget to use --allow-risky option?', implode(', ', $riskyFixers)));
         }
     }
 

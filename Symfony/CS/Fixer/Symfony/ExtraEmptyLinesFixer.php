@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\ConfigurationException\InvalidFixerConfigurationException;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
@@ -72,7 +73,7 @@ final class ExtraEmptyLinesFixer extends AbstractFixer
                     $this->tokenCallbackMap[T_USE] = 'removeBetweenUse';
                     break;
                 default :
-                    throw new \UnexpectedValueException(sprintf('Unknown configuration item "%s" passed.', $item));
+                    throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration item "%s" passed.', $item));
             }
         }
     }
