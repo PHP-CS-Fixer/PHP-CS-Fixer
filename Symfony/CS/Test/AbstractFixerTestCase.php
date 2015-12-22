@@ -127,8 +127,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
 
         if (null !== $input) {
             if ($linter) {
-                $lintProcess = $linter->createProcessForSource($input);
-                $this->assertTrue($lintProcess->isSuccessful(), $lintProcess->getOutput());
+                $linter->lintSource($input);
             }
 
             Tokens::clearCache();
@@ -150,8 +149,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
         }
 
         if ($linter) {
-            $lintProcess = $linter->createProcessForSource($input);
-            $this->assertTrue($lintProcess->isSuccessful(), $lintProcess->getOutput());
+            $linter->lintSource($input);
         }
 
         Tokens::clearCache();
