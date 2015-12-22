@@ -23,10 +23,11 @@ use Symfony\CS\Console\Command\FixCommand;
 class InvalidConfigurationException extends \InvalidArgumentException
 {
     /**
-     * @param string $message
+     * @param string   $message
+     * @param int|null $code
      */
-    public function __construct($message)
+    public function __construct($message, $code = null)
     {
-        parent::__construct($message, FixCommand::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG);
+        parent::__construct($message, null === $code ? FixCommand::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG : $code);
     }
 }
