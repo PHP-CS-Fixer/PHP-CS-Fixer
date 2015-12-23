@@ -57,7 +57,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException              \OutOfBoundsException
+     * @expectedException              \Symfony\CS\ConfigurationException\InvalidConfigurationException
      * @expectedExceptionMessageRegExp /Unknown option name: "foo"/
      */
     public function testSetOptionWithUndefinedOption()
@@ -247,7 +247,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException              \UnexpectedValueException
+     * @expectedException              \Symfony\CS\ConfigurationException\InvalidConfigurationException
      * @expectedExceptionMessageRegExp /The config file: ".+[\/\\]Tests[\/\\]Fixtures[\/\\]ConfigurationResolverConfigFile[\/\\]case_5[\/\\].php_cs.dist" does not return a "Symfony\\CS\\Config\\Config" instance\. Got: "string"\./
      */
     public function testResolveConfigFileChooseFileWithInvalidFile()
