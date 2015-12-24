@@ -1,0 +1,303 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-25T16:29:46Z
+
+please take a look @ https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/1539#issuecomment-159541538 for some more (`horror`) ways of defining a `case` in a switch ;)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-25T17:09:47Z
+
+@SpacePossum I don't know why should I do with comment. Remove it? keep it?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-25T18:22:20Z
+
+IMO the fixer should also handle the `default` case.
+What do you think?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T21:30:25Z
+
+> @keradus readme generator seems to be unsynced on 1.11 (elements are removed and my fixer not added). Could you please have a look?
+
+? readme file on 1.11 is good
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-25T21:58:15Z
+
+readme IS ok, tests show that the readme generated from code has info about `switch_case_space` and readme in file has not. just regenerate the readme.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-26T00:15:40Z
+
+>IMO the fixer should also handle the default case.
+>What do you think?
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T09:51:55Z
+
+> readme IS ok, tests show that the readme generated from code has info about switch_case_space and readme in file has not. just regenerate the readme.
+
+Yeah my bad, my unix shell was using the global one. --"
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T09:58:32Z
+
+Code updated, PR ready for review.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T10:19:09Z
+
+@keradus done.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-26T10:56:18Z
+
+test case:
+
+```php
+switch ($a) {
+    case $b ? 'c' : 'd' :
+        break;
+}
+```
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T11:03:46Z
+
+@gharlan Well, I'm wondering how I can fix this...
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-26T11:07:51Z
+
+I think you have to count the `?` and ignore same amount of `:`.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T11:09:57Z
+
+Yeah I was starting this way.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-26T11:12:24Z
+
+Another test case: `$b ?: $c`
+(Should pass automatically when the other test case is fixed. Just want to be sure. ;))
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T11:27:31Z
+
+Should be OK. :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-26T21:11:49Z
+
+Closing in favour of #1550
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-26T21:27:56Z
+
+@keradus this is a different fixer (spaces instead of parentheses).
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-26T21:31:58Z
+
+Yes @keradus, this one should not be closed.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-26T21:34:30Z
+
+@Soullivaneuh maybe he closed this because of your comment in #1550:
+
+> Closes #1543
+
+;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-26T21:39:18Z
+
+Requested by you then closed ;)
+OK, reopened.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-27T09:36:21Z
+
+Well, I have to stop drinking. :wine_glass:
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-27T09:48:02Z
+
+Ready for review and merge.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-30T13:55:22Z
+
+Tests passed. Ready to merge for me.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-30T13:58:01Z
+
+Could anyone make a review of logic please?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-11-30T18:41:53Z
+
+:+1: and thanks for implementing this!
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-01T22:36:40Z
+
+@keradus and what about this one for 1.11?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-01T22:37:22Z
+
+nope, 1.11 is out there!
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-01T22:38:14Z
+
+![image](https://cloud.githubusercontent.com/assets/1698357/11516601/8d23dec6-9884-11e5-9437-9ea45986a772.png)
+
+I squashed and updated for 1.12 then. :+1:
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-02T22:29:46Z
+
+> :+1: and thanks for implementing this!
+
+My :+1: is still valid (reviewed again).
+Anyone else?
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-07T06:57:01Z
+
+commit added.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-09T16:25:21Z
+
+Test case;
+```php
+            "<?php
+switch(1) {
+    case 1 ? Foo::bla() : 'e'     :    {
+
+    }
+    case Foo::bla()      :    {
+
+    }
+}
+            "
+```
+passes as well :)
+ :+1:
+(please rebase)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-09T16:27:49Z
+
+And squash your two commits ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-18T18:04:52Z
+
+ping @Soullivaneuh   :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-23T13:31:55Z
+
+> And squash your two commits ;)
+
+I think this is the only thing that left to merge this PR?
+ping @Soullivaneuh
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-23T13:38:02Z
+
+@keradus squashed and rebased.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-23T13:54:24Z
+
+I see that my commit is missing, but I don't remember what was that. Do you squash it into your commit or forgot to include ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-23T13:55:33Z
+
+Yeh, you should have hard reset to your last commit, squashed and rebased, then cherry-picked the other commit ontop.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-23T13:55:57Z
+
+That way you'd end up with a PR that was squashed by author.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-23T13:57:53Z
+
+On just use interactive rebase and set what to do with each commit ;)
+One way or another, it was my commit and I don't need it to be show as "mine". What I need is to have its changes. Are they there?
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-23T13:58:09Z
+
+> I see that my commit is missing, but I don't remember what was that. Do you squash it into your commit or forgot to include ?
+
+Oh, I didn't pay attention and only done a `rebase -i HEAD~3`. :-/
+
+Which commit is missing exactly?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-23T14:00:41Z
+
+There were 2 yours and 1 mine, Cannot point the commit now that you get rid of, didn't remember its hash...
+
+If you squash last 3 commits then you squash mine as well, so no changes are lost.
+
+In future please squash carefully (and read carefully - I asked to squash 2 of yours, not all - if all commits would be yours I would squash them during merging).
+
+-------------------------------------
+
+OK, thanks for info.
+:+1:
