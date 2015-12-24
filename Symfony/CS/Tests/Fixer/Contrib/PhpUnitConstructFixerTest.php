@@ -113,7 +113,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
 
     /**
      * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage Configured method "__TEST__" cannot be fixed by this fixer.
+     * @expectedExceptionMessage [php_unit_construct] Configured method "__TEST__" cannot be fixed by this fixer.
      */
     public function testInvalidConfig()
     {
