@@ -280,6 +280,10 @@ Choose from the list of available fixers:
                         one blank line after the use
                         statements block.
 
+* **switch_case_space** [PSR-2]
+                        Removes extra spaces between
+                        colon and case value.
+
 * **trailing_spaces** [PSR-2]
                         Remove trailing whitespace at
                         the end of non-blank lines.
