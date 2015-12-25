@@ -3,11 +3,11 @@ PHP Coding Standards Fixer
 
 The PHP Coding Standards Fixer tool fixes *most* issues in your code when you
 want to follow the PHP coding standards as defined in the PSR-1 and PSR-2
-documents.
+documents and many more.
 
-If you are already using ``PHP_CodeSniffer`` to identify coding standards
-problems in your code, you know that fixing them by hand is tedious, especially
-on large projects. This tool does the job for you.
+If you are already using a linter to identify coding standards problems in your
+code, you know that fixing them by hand is tedious, especially on large
+projects. This tool does not only detect them, but also fixes them for you.
 
 Requirements
 ------------
@@ -56,7 +56,7 @@ To install PHP-CS-Fixer, install Composer and issue the following command:
 
     $ ./composer.phar global require fabpot/php-cs-fixer
 
-Then, make sure you have ``~/.composer/vendor/bin`` in your ``PATH``, and
+Then make sure you have ``~/.composer/vendor/bin`` in your ``PATH`` and
 you're good to go:
 
 .. code-block:: bash
@@ -117,16 +117,16 @@ Usage
 -----
 
 The ``fix`` command tries to fix as much coding standards
-problems as possible on a given file or directory:
+problems as possible on a given file or files in a given directory and its subdirectories:
 
 .. code-block:: bash
 
     php php-cs-fixer.phar fix /path/to/dir
     php php-cs-fixer.phar fix /path/to/file
 
-The ``--verbose`` option show applied fixers. When using ``txt`` format it will also displays progress notification.
+The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``json`` and ``xml``.
 
-The ``--format`` option for the output format. Support are ``txt`` (default one), ``json`` and ``xml``.
+The ``--verbose`` option will show the applied fixers. When using the ``txt`` format it will also displays progress notifications.
 
 The ``--level`` option limits the fixers to apply on the
 project:

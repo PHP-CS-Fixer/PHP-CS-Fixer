@@ -117,14 +117,14 @@ class FixCommand extends Command
             ->setDescription('Fixes a directory or a file')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> command tries to fix as much coding standards
-problems as possible on a given file or directory:
+problems as possible on a given file or files in a given directory and its subdirectories:
 
     <info>php %command.full_name% /path/to/dir</info>
     <info>php %command.full_name% /path/to/file</info>
 
-The <comment>--verbose</comment> option show applied fixers. When using ``txt`` format it will also displays progress notification.
+The <comment>--format</comment> option for the output format. Supported formats are ``txt`` (default one), ``json`` and ``xml``.
 
-The <comment>--format</comment> option for the output format. Support are ``txt`` (default one), ``json`` and ``xml``.
+The <comment>--verbose</comment> option will show the applied fixers. When using the ``txt`` format it will also displays progress notifications.
 
 The <comment>--level</comment> option limits the fixers to apply on the
 project:

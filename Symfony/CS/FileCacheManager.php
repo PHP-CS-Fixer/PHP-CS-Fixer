@@ -11,6 +11,8 @@
 
 namespace Symfony\CS;
 
+use Symfony\Component\Filesystem\Exception\IOException;
+
 /**
  * Class supports caching information about state of fixing files.
  *
@@ -144,6 +146,8 @@ class FileCacheManager
             )
         );
 
-        file_put_contents($this->dir.self::CACHE_FILE, $data, LOCK_EX);
+        if (false === @file_put_contents($this->dir.self::CACHE_FILE, $data, LOCK_EX)) {
+            throw new IOException(sprintf('Failed to write file "%s".', $this->cacheFile), 0, null, $this->cacheFile);
+        }
     }
 }
