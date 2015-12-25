@@ -43,6 +43,7 @@ final class RuleSet implements RuleSetInterface
             'parenthesis' => true,
             'php_closing_tag' => true,
             'single_line_after_imports' => true,
+            'switch_case_space' => true,
             'trailing_spaces' => true,
             'visibility' => true,
         ),

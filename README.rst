@@ -622,6 +622,10 @@ Choose from the list of available fixers:
                         Functions should be used with
                         $strict param. (Risky fixer!)
 
+* **switch_case_space** [@PSR2, @Symfony]
+                        Removes extra spaces between
+                        colon and case value.
+
 * **ternary_spaces** [@Symfony]
                         Standardize spaces around
                         ternary operator.

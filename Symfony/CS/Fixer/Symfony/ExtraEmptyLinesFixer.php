@@ -60,7 +60,7 @@ final class ExtraEmptyLinesFixer extends AbstractFixer
                 case 'continue':
                     $this->tokenCallbackMap[T_CONTINUE] = 'removeEmptyLinesAfterLineWithTokenAt';
                     break;
-                case 'extra' :
+                case 'extra':
                     $this->tokenCallbackMap[T_WHITESPACE] = 'removeMultipleBlankLines';
                     break;
                 case 'return':
@@ -72,7 +72,7 @@ final class ExtraEmptyLinesFixer extends AbstractFixer
                 case 'use':
                     $this->tokenCallbackMap[T_USE] = 'removeBetweenUse';
                     break;
-                default :
+                default:
                     throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration item "%s" passed.', $item));
             }
         }
