@@ -16,6 +16,8 @@ matrix:
 
 sudo: false
 
+dist: trusty
+
 cache:
     directories:
         - $HOME/.composer/cache
