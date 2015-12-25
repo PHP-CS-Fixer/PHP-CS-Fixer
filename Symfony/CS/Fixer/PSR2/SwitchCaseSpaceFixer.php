@@ -32,7 +32,7 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
             }
 
             $ternariesCount = 0;
-            for ($colonIndex = $index + 1;; ++$colonIndex) {
+            for ($colonIndex = $index + 1; ; ++$colonIndex) {
                 // We have to skip ternary case for colons.
                 if ($tokens[$colonIndex]->equals('?')) {
                     ++$ternariesCount;
