@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-21T09:10:44Z
+
+ping, anyone willing to do a review? :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T09:57:47Z
+
+I will need to take a deeper look into it as diff is crappy here
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-21T10:01:22Z
+
+Yeah. Maybe it is easier to look first at my implementation without diff: https://github.com/gharlan/PHP-CS-Fixer/blob/madv-closures/Symfony/CS/Fixer/Symfony/MethodArgumentDefaultValueFixer.php
+
+And then search the lines in diff where you want to comment something.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T10:02:03Z
+
+That's the plan ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T23:03:13Z
+
+It looks like all my concerns have been addressed.
+
+:+1:
