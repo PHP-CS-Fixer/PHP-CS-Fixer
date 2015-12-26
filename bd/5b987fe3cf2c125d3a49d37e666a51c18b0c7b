@@ -1,0 +1,39 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T11:16:09Z
+
+pnig @stof
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T11:16:39Z
+
+ref #1465
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-21T13:26:31Z
+
+You learn me something, I didn't know we can choose the linux distribution.
+
+Do you have related doc link?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-21T13:35:12Z
+
+I think using the newer linux distro, you don't get the container architecture though?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T13:56:40Z
+
+Why you woudnt? If I get it right - you can use sudo, but you don't need to.
+
+@Soullivaneuh actually you could just use "default" 12.x or upcoming 14.x, which after some time will replace 12.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-22T12:02:01Z
+
+Any thoughts?
