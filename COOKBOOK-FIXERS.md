@@ -49,6 +49,7 @@ Create a new file in
 Put this content inside:
 ```php
 <?php
+
 /*
  * This file is part of the PHP CS utility.
  *
@@ -57,6 +58,7 @@ Put this content inside:
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
@@ -81,6 +83,7 @@ content inside:
 
 ```php
 <?php
+
 /*
  * This file is part of the PHP CS utility.
  *
@@ -89,6 +92,7 @@ content inside:
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
@@ -164,6 +168,7 @@ like:
 `Symfony/CS/Tests/Fixer/Contrib/RemoveCommentsFixerTest.php`
 ```php
 <?php
+
 /*
  * This file is part of the PHP CS utility.
  *
@@ -172,6 +177,7 @@ like:
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
@@ -328,6 +334,7 @@ final class RemoveCommentsFixer extends AbstractFixer
 So the fixer in the end looks like this:
 ```php
 <?php
+
 /*
  * This file is part of the PHP CS utility.
  *
@@ -337,6 +344,7 @@ So the fixer in the end looks like this:
  * with this source code in the file LICENSE.
  *
  */
+
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
