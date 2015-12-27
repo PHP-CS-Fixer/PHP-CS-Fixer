@@ -56,4 +56,12 @@ class CurlyClose extends AbstractTransformer
     {
         return array('CT_CURLY_CLOSE');
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerCustomTokens()
+    {
+        define('CT_CURLY_CLOSE', self::getNextGeneratedCustomTokenValue());
+    }
 }

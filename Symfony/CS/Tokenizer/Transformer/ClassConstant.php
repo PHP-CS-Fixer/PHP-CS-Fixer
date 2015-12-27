@@ -43,4 +43,12 @@ class ClassConstant extends AbstractTransformer
     {
         return array('CT_CLASS_CONSTANT');
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerCustomTokens()
+    {
+        define('CT_CLASS_CONSTANT', self::getNextGeneratedCustomTokenValue());
+    }
 }

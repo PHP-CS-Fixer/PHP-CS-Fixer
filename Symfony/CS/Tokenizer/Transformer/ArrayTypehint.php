@@ -43,4 +43,12 @@ class ArrayTypehint extends AbstractTransformer
     {
         return array('CT_ARRAY_TYPEHINT');
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerCustomTokens()
+    {
+        define('CT_ARRAY_TYPEHINT', self::getNextGeneratedCustomTokenValue());
+    }
 }
