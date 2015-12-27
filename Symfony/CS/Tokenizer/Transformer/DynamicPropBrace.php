@@ -50,6 +50,15 @@ class DynamicPropBrace extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function registerCustomTokens()
+    {
+        define('CT_DYNAMIC_PROP_BRACE_OPEN', self::getNextGeneratedCustomTokenValue());
+        define('CT_DYNAMIC_PROP_BRACE_CLOSE', self::getNextGeneratedCustomTokenValue());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run after the CurlyClose

@@ -55,8 +55,18 @@ abstract class AbstractTransformer implements TransformerInterface
     {
         foreach ($this->getCustomTokenNames() as $name) {
             if (!defined($name)) {
-                define($name, ++self::$lastGeneratedCustomTokenValue);
+                define($name, self::getNextGeneratedCustomTokenValue());
             }
         }
+    }
+
+    /**
+     * Next generated value for custom token.
+     *
+     * @return int
+     */
+    final protected static function getNextGeneratedCustomTokenValue()
+    {
+        return ++self::$lastGeneratedCustomTokenValue;
     }
 }

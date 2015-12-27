@@ -43,6 +43,14 @@ class DollarCloseCurlyBraces extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function registerCustomTokens()
+    {
+        define('CT_DOLLAR_CLOSE_CURLY_BRACES', self::getNextGeneratedCustomTokenValue());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run after the CurlyClose
