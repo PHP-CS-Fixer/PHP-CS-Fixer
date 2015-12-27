@@ -43,7 +43,7 @@ final class IncludeFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Include and file path should be divided with a single space. File path should not be placed under brackets.';
+        return 'Include/Require and file path should be divided with a single space. File path should not be placed under brackets.';
     }
 
     private function clearIncludies(Tokens $tokens, array $includies)
@@ -78,7 +78,7 @@ final class IncludeFixer extends AbstractFixer
 
             if ($nextToken->isWhitespace()) {
                 $nextToken->setContent(' ');
-            } elseif ($braces) {
+            } elseif ($braces || $tokens[$nextIndex]->isGivenKind(array(T_VARIABLE, T_CONSTANT_ENCAPSED_STRING, T_COMMENT))) {
                 $tokens->insertAt($includy['begin'] + 1, new Token(array(T_WHITESPACE, ' ')));
             }
         }

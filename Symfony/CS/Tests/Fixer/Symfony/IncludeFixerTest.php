@@ -15,6 +15,7 @@ use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Саша Стаменковић <umpirsky@gmail.com>
+ * @author SpacePossum
  *
  * @internal
  */
@@ -30,121 +31,170 @@ final class IncludeFixerTest extends AbstractFixerTestCase
 
     public function testFixProvider()
     {
-        return array(
-            array(
-                "<?php include 'foo.php';",
-                "<?php include   'foo.php';",
-            ),
-            array(
-                "<?php include 'foo.php';",
-                "<?php include   'foo.php'  ;",
-            ),
-            array(
-                "<?php include 'foo.php';",
-                "<?php include   ('foo.php')  ;",
-            ),
-            array(
-                '<?php include "Buzz/foo-Bar.php";',
-                '<?php include (  "Buzz/foo-Bar.php" );',
-            ),
-            array(
-                '<?php include "$buzz/foo-Bar.php";',
-                '<?php include (  "$buzz/foo-Bar.php" );',
-            ),
-            array(
-                '<?php include "{$buzz}/foo-Bar.php";',
-                '<?php include (  "{$buzz}/foo-Bar.php" );',
-            ),
-            array(
-                "<?php include 'foo.php';",
-                "<?php include('foo.php');",
-            ),
-            array(
-                "<?php include_once 'foo.php';",
-                "<?php include_once( 'foo.php' );",
-            ),
-            array(
-                '<?php require $foo ? "foo.php" : "bar.php";',
-                '<?php require($foo ? "foo.php" : "bar.php");',
-            ),
-            array(
-                '<?php require $foo  ?  "foo.php"  :  "bar.php";',
-                '<?php require($foo  ?  "foo.php"  :  "bar.php");',
-            ),
-            array(
-                "<?php return require_once __DIR__.'foo.php';",
-                "<?php return require_once  __DIR__.'foo.php';",
-            ),
-            array(
-                "<?php \$foo = require_once __DIR__.('foo.php');",
-                "<?php \$foo = require_once  __DIR__.('foo.php');",
-            ),
-            array(
-                "<?php     require_once __DIR__.('foo.php');",
-                "<?php     require_once  (__DIR__.('foo.php'));",
-            ),
-            array(
-                "<?php     require_once __DIR__ . ('foo.php');",
-                "<?php     require_once  (__DIR__ . ('foo.php'));",
-            ),
-            array(
-                "<?php require_once dirname(__FILE__).'foo.php';",
-                "<?php require_once (dirname(__FILE__).'foo.php');",
-            ),
-            array(
-                '<?php ClassCollectionLoader::load(include($this->getCacheDir().\'classes.map\'), $this->getCacheDir(), $name, $this->debug, false, $extension);',
-            ),
-            array(
-                "<?php require_once '\".__DIR__.\"/../bootstrap.php';",
-            ),
-            array(
-                '// require foo',
-            ),
-            array(
-                '<?php // require foo',
-            ),
-            array(
-                '* require foo',
-            ),
-            array(
-                '<?php /* require foo */',
-            ),
-            array(
-                'exit(\'POST must include "file"\');',
-            ),
-            array(
-                '<?php include_once "foo/".CONSTANT."/bar.php";',
-                '<?php include_once("foo/".CONSTANT."/bar.php");',
-            ),
-            array(
-                '<?php include_once "foo/".CONSTANT."/bar.php"; include_once "foo/".CONSTANT."/bar.php";',
-                '<?php include_once("foo/".CONSTANT."/bar.php"); include_once("foo/".CONSTANT."/bar.php");',
-            ),
-            array(
-                '<?php include_once "foo/".CONSTANT."/bar.php"; $foo = "bar";',
-                '<?php include_once("foo/".CONSTANT."/bar.php"); $foo = "bar";',
-            ),
-            array(
-                '<?php include_once "foo/".CONSTANT."/bar.php"; foo();',
-                '<?php include_once("foo/".CONSTANT."/bar.php"); foo();',
-            ),
-            array(
-                '<?php include_once "foo/" . CONSTANT . "/bar.php";',
-                '<?php include_once("foo/" . CONSTANT . "/bar.php");',
-            ),
-            array(
-                '<?php require ($a ? $b : $c) . $d;',
-            ),
-            array(
-                '<?php require($a ? $b : $c) . $d;',
-            ),
-            array(
-                '<?php $foo = (false === include($zfLibraryPath."/Zend/Loader/StandardAutoloader.php")) {$foo = "asd";};',
-            ),
-            array(
-                '<?php require_once SOME_CONST . "file.php"; require Foo::Bar($baz);',
-                '<?php require_once( SOME_CONST . "file.php" ); require Foo::Bar($baz);',
-            ),
-        );
+        $template = '<?php %s';
+        $tests = array();
+        foreach (array('require', 'require_once', 'include', 'include_once') as $statement) {
+            $tests[] = array(
+                sprintf($template.' $a;', $statement),
+                sprintf($template.'$a;', $statement),
+            );
+
+            $tests[] = array(
+                sprintf($template.' $a;', $statement),
+                sprintf($template.'            $a;', $statement),
+            );
+
+            $tests[] = array(
+                sprintf($template." /**/'foo.php';", $statement),
+                sprintf($template."/**/'foo.php';", $statement),
+            );
+
+            $tests[] = array(
+                sprintf($template." 'foo.php';", $statement),
+                sprintf($template."'foo.php';", $statement),
+            );
+
+            $tests[] = array(
+                sprintf($template." 'foo.php';", $statement),
+                sprintf($template."           'foo.php';", $statement),
+            );
+
+            $tests[] = array(
+                sprintf($template." 'foo.php';", $statement),
+                sprintf($template."('foo.php');", $statement),
+            );
+
+            $tests[] = array(
+                sprintf($template." 'foo.php';", $statement),
+                sprintf($template."(           'foo.php');", $statement),
+            );
+
+            $tests[] = array(
+                sprintf($template." 'foo.php';", $statement),
+                sprintf($template."          ( 'foo.php' );", $statement),
+            );
+
+            $tests[] = array(
+                sprintf($template." '\".__DIR__.\"/../bootstrap.php';", $statement),
+            );
+
+            $tests[] = array(
+                sprintf('<?php // %s foo', $statement),
+            );
+
+            $tests[] = array(
+                sprintf('<?php /* %s foo */', $statement),
+            );
+
+            $tests[] = array(
+                sprintf('<?php /** %s foo */', $statement),
+            );
+
+            $tests[] = array(
+                sprintf($template.'($a ? $b : $c) . $d;', $statement),
+            );
+
+            $tests[] = array(
+                sprintf($template.' ($a ? $b : $c) . $d;', $statement),
+            );
+
+            $tests[] = array(
+                sprintf('<?php exit("POST must %s "file"");', $statement),
+            );
+
+            $tests[] = array(
+                sprintf('<?php ClassCollectionLoader::load(%s($this->getCacheDir().\'classes.map\'), $this->getCacheDir(), $name, $this->debug, false, $extension);', $statement),
+            );
+
+            $tests[] = array(
+                sprintf('<?php $foo = (false === %s($zfLibraryPath."/Zend/Loader/StandardAutoloader.php")) {$foo = "asd";};', $statement),
+            );
+
+            $tests[] = array(
+                sprintf($template.' "Buzz/foo-Bar.php";', $statement),
+                sprintf($template.' (  "Buzz/foo-Bar.php" );', $statement),
+            );
+
+            $tests[] = array(
+                sprintf($template.' "$buzz/foo-Bar.php";', $statement),
+                sprintf($template.' (  "$buzz/foo-Bar.php" );', $statement),
+            );
+
+            $tests[] = array(
+                sprintf($template.' "{$buzz}/foo-Bar.php";', $statement),
+                sprintf($template.' (  "{$buzz}/foo-Bar.php" );', $statement),
+            );
+
+            $tests[] = array(
+                sprintf($template.' $foo ? "foo.php" : "bar.php";', $statement),
+                sprintf($template.'($foo ? "foo.php" : "bar.php");', $statement),
+            );
+
+            $tests[] = array(
+                sprintf($template.' $foo  ?  "foo.php"  :  "bar.php";', $statement),
+                sprintf($template.'($foo  ?  "foo.php"  :  "bar.php");', $statement),
+            );
+
+            $tests[] = array(
+                sprintf("<?php return %s __DIR__.'foo.php';", $statement),
+                sprintf("<?php return %s  __DIR__.'foo.php';", $statement),
+            );
+
+            $tests[] = array(
+                sprintf("<?php \$foo = %s __DIR__.('foo.php');", $statement),
+                sprintf("<?php \$foo = %s  __DIR__.('foo.php');", $statement),
+            );
+
+            $tests[] = array(
+                sprintf("<?php     %s __DIR__.('foo.php');", $statement),
+                sprintf("<?php     %s  (__DIR__.('foo.php'));", $statement),
+            );
+
+            $tests[] = array(
+                sprintf("<?php     %s __DIR__ . ('foo.php');", $statement),
+                sprintf("<?php     %s  (__DIR__ . ('foo.php'));", $statement),
+            );
+
+            $tests[] = array(
+                sprintf("<?php %s dirname(__FILE__).'foo.php';", $statement),
+                sprintf("<?php %s (dirname(__FILE__).'foo.php');", $statement),
+            );
+
+            $tests[] = array(
+                sprintf('<?php %s "foo/".CONSTANT."/bar.php";', $statement),
+                sprintf('<?php %s("foo/".CONSTANT."/bar.php");', $statement),
+            );
+
+            $tests[] = array(
+                sprintf('<?php %s "foo/".CONSTANT."/bar.php"; %s "foo/".CONSTANT."/bar.php";', $statement, $statement),
+                sprintf('<?php %s("foo/".CONSTANT."/bar.php"); %s("foo/".CONSTANT."/bar.php");', $statement, $statement),
+            );
+
+            $tests[] = array(
+                sprintf('<?php %s "foo/".CONSTANT."/bar.php"; $foo = "bar";', $statement),
+                sprintf('<?php %s("foo/".CONSTANT."/bar.php"); $foo = "bar";', $statement),
+            );
+
+            $tests[] = array(
+                sprintf('<?php %s "foo/".CONSTANT."/bar.php"; foo();', $statement),
+                sprintf('<?php %s("foo/".CONSTANT."/bar.php"); foo();', $statement),
+            );
+
+            $tests[] = array(
+                sprintf('<?php %s "foo/" . CONSTANT . "/bar.php";', $statement),
+                sprintf('<?php %s("foo/" . CONSTANT . "/bar.php");', $statement),
+            );
+
+            $tests[] = array(
+                sprintf('<?php %s SOME_CONST . "file.php"; %s Foo::Bar($baz);', $statement, $statement),
+                sprintf('<?php %s( SOME_CONST . "file.php" ); %s Foo::Bar($baz);', $statement, $statement),
+            );
+            $tests[] = array(
+                sprintf('<?php %s SOME_CONST . "file1.php"; %s Foo::Bar($baz);', $statement, $statement),
+                sprintf('<?php %s          SOME_CONST . "file1.php"; %s Foo::Bar($baz);', $statement, $statement),
+            );
+        }
+
+        return $tests;
     }
 }

@@ -72,12 +72,16 @@ your system:
 .. code-block:: bash
 
     \$ wget http://get.sensiolabs.org/php-cs-fixer.phar -O php-cs-fixer
+    # With a specific version
+    \$ wget http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -O php-cs-fixer
 
 or with curl:
 
 .. code-block:: bash
 
     \$ curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
+    # With a specific version
+    \$ curl http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -o php-cs-fixer
 
 then:
 

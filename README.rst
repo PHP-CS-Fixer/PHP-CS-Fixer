@@ -31,12 +31,16 @@ your system:
 .. code-block:: bash
 
     $ wget http://get.sensiolabs.org/php-cs-fixer.phar -O php-cs-fixer
+    # With a specific version
+    $ wget http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -O php-cs-fixer
 
 or with curl:
 
 .. code-block:: bash
 
     $ curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
+    # With a specific version
+    $ curl http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -o php-cs-fixer
 
 then:
 
@@ -286,10 +290,10 @@ Choose from the list of available fixers:
                         comment.
 
 * **include** [@Symfony]
-                        Include and file path should
-                        be divided with a single
-                        space. File path should not be
-                        placed under brackets.
+                        Include/Require and file path
+                        should be divided with a
+                        single space. File path should
+                        not be placed under brackets.
 
 * **indentation** [@PSR2, @Symfony]
                         Code MUST use an indent of 4
