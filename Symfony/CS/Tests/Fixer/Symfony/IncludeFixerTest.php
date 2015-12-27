@@ -97,7 +97,7 @@ class IncludeFixerTest extends AbstractFixerTestBase
             );
 
             $tests[] = array(
-                sprintf('<?php exit("POST must %s "file"");', $statement),
+                sprintf('<?php exit("POST must %s \"file\"");', $statement),
             );
 
             $tests[] = array(
@@ -105,7 +105,7 @@ class IncludeFixerTest extends AbstractFixerTestBase
             );
 
             $tests[] = array(
-                sprintf('<?php $foo = (false === %s($zfLibraryPath."/Zend/Loader/StandardAutoloader.php")) {$foo = "asd";};', $statement),
+                sprintf('<?php $foo = (false === %s($zfLibraryPath."/Zend/Loader/StandardAutoloader.php"));', $statement),
             );
 
             $tests[] = array(
