@@ -341,6 +341,11 @@ Choose from the list of available fixers:
                         function's argument and its
                         typehint.
 
+* **hash_to_slash_comment** [symfony]
+                        Single line comments should
+                        use double slashes (//) and
+                        not hash (#).
+
 * **include** [symfony]
                         Include/Require and file path
                         should be divided with a
