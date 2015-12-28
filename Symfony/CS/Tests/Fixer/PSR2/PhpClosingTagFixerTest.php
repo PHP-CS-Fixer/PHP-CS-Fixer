@@ -81,12 +81,12 @@ class foo
             ),
             array(
                 '<?php
-public function bar()
+function bar()
 {
     echo "Here I am!";
 }',
                 '<?php
-public function bar()
+function bar()
 {
     echo "Here I am!";
 }?>',

@@ -58,6 +58,42 @@ use FooI;
 use FooJ;
 use FooZ;
 
+EOF
+            ,
+                <<<'EOF'
+use Some, Not, PHP, Like, Use, Statement;
+<?php
+
+use Foo;
+use FooA, FooB;
+use FooC, FooD as D, FooE;
+use FooF,
+    FooG as G,
+  FooH,     FooI,
+        FooJ;
+use FooZ;
+
+EOF
+            ),
+            array(
+                <<<'EOF'
+<?php
+
+namespace {
+    use Foo;
+    use FooA;
+    use FooB;
+    use FooC;
+    use FooD as D;
+    use FooE;
+    use FooF;
+    use FooG as G;
+    use FooH;
+    use FooI;
+    use FooJ;
+    use FooZ;
+}
+
 namespace Boo {
     use Bar;
     use BarA;
@@ -76,17 +112,18 @@ namespace Boo {
 EOF
             ,
                 <<<'EOF'
-use Some, Not, PHP, Like, Use, Statement;
 <?php
 
-use Foo;
-use FooA, FooB;
-use FooC, FooD as D, FooE;
-use FooF,
-    FooG as G,
-  FooH,     FooI,
-        FooJ;
-use FooZ;
+namespace {
+    use Foo;
+    use FooA, FooB;
+    use FooC, FooD as D, FooE;
+    use FooF,
+        FooG as G,
+      FooH,     FooI,
+            FooJ;
+    use FooZ;
+}
 
 namespace Boo {
     use Bar;

@@ -294,7 +294,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 
             switch ($label) {
                 case 'hhvm':
-                    $requirements['hhvm'] = 'false' === $value ? false : true;
+                    $requirements['hhvm'] = 'false' !== $value;
                     break;
                 case 'php':
                     $requirements['php'] = $value;

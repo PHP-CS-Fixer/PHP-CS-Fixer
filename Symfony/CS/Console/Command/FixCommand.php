@@ -564,14 +564,14 @@ EOF
      */
     private function listErrors(OutputInterface $output, $process, array $errors)
     {
-        $output->writeLn('');
-        $output->writeLn(sprintf(
+        $output->writeln('');
+        $output->writeln(sprintf(
             'Files that were not fixed due to errors reported during %s:',
              $process
         ));
 
         foreach ($errors as $i => $error) {
-            $output->writeLn(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
+            $output->writeln(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
         }
     }
 

@@ -79,67 +79,67 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestCase
     {
         return array(
             array(
-                '<?php break;',
+                '<?php while ($x) { break; }',
             ),
             array(
-                '<?php break 2;',
-                '<?php break (2);',
+                '<?php while ($x) { while ($y) { break 2; } }',
+                '<?php while ($x) { while ($y) { break (2); } }',
             ),
             array(
-                '<?php break 2;',
-                '<?php break(2);',
+                '<?php while ($x) { while ($y) { break 2; } }',
+                '<?php while ($x) { while ($y) { break(2); } }',
             ),
             array(
-                '<?php continue;',
+                '<?php while ($x) { continue; }',
             ),
             array(
-                '<?php continue 2;',
-                '<?php continue (2);',
+                '<?php while ($x) { while ($y) { continue 2; } }',
+                '<?php while ($x) { while ($y) { continue (2); } }',
             ),
             array(
-                '<?php continue 2;',
-                '<?php continue(2);',
+                '<?php while ($x) { while ($y) { continue 2; } }',
+                '<?php while ($x) { while ($y) { continue(2); } }',
             ),
             array(
                 '<?php
-                yield "prod";
+                function foo() { yield "prod"; }
                 ',
             ),
             array(
                 '<?php
-                yield (1 + 2) * 10;
+                function foo() { yield (1 + 2) * 10; }
                 ',
             ),
             array(
                 '<?php
-                yield (1 + 2) * 10;
+                function foo() { yield (1 + 2) * 10; }
                 ',
                 '<?php
-                yield ((1 + 2) * 10);
-                ',
-            ),
-            array(
-                '<?php
-                yield "prod";
-                ',
-                '<?php
-                yield ("prod");
+                function foo() { yield ((1 + 2) * 10); }
                 ',
             ),
             array(
                 '<?php
-                yield 2;
+                function foo() { yield "prod"; }
                 ',
                 '<?php
-                yield(2);
+                function foo() { yield ("prod"); }
                 ',
             ),
             array(
                 '<?php
-                $a = (yield $x);
+                function foo() { yield 2; }
                 ',
                 '<?php
-                $a = (yield($x));
+                function foo() { yield(2); }
+                ',
+            ),
+            array(
+                '<?php
+                function foo() { $a = (yield $x); }
+                ',
+                '<?php
+                function foo() { $a = (yield($x)); }
                 ',
             ),
             array(
@@ -199,22 +199,6 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             ),
             array(
                 '<?php echo (1 + 2) * 10, "\n" ?>',
-            ),
-            array(
-                '<?php
-                echo (1 + 2) * 10, "\n";
-                ',
-                '<?php
-                echo ((1 + 2) * 10, "\n");
-                ',
-            ),
-            array(
-                '<?php
-                echo (1 + 2) * 10, "\n";
-                ',
-                '<?php
-                echo((1 + 2) * 10, "\n");
-                ',
             ),
             array(
                 '<?php echo "foo" ?>',

@@ -20,6 +20,35 @@ use Symfony\CS\Test\AbstractFixerTestCase;
  */
 final class Php4ConstructorFixerTest extends AbstractFixerTestCase
 {
+    public function testSimpleClass()
+    {
+        $expected = <<<'EOF'
+<?php
+
+class Foo
+{
+    public function __construct($bar)
+    {
+        var_dump(1);
+    }
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+class Foo
+{
+    public function Foo($bar)
+    {
+        var_dump(1);
+    }
+}
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testNamespaces()
     {
         $expected = <<<'EOF'
@@ -72,53 +101,9 @@ namespace Baz\Qux
         }
     }
 }
-
-class Foo
-{
-    public function __construct($bar)
-    {
-        var_dump(2);
-    }
-}
 EOF;
 
-        $input = <<<'EOF'
-<?php
-
-namespace Baz\Qux
-{
-    class Foo
-    {
-        public function __construct($bar)
-        {
-            var_dump(1);
-        }
-
-        public function Foo($bar)
-        {
-            var_dump(2);
-        }
-    }
-
-    class Bar
-    {
-        public function Bar()
-        {
-            var_dump(3);
-        }
-    }
-}
-
-class Foo
-{
-    public function Foo($bar)
-    {
-        var_dump(2);
-    }
-}
-EOF;
-
-        $this->doTest($expected, $input);
+        $this->doTest($expected);
     }
 
     public function testNamespaceGlobal()

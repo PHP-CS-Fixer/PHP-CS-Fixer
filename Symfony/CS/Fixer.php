@@ -160,7 +160,7 @@ class Fixer
 
     public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff, FileCacheManager $fileCacheManager)
     {
-        $new = $old = file_get_contents($file->getRealpath());
+        $new = $old = file_get_contents($file->getRealPath());
 
         if (
             '' === $old
@@ -177,7 +177,7 @@ class Fixer
         }
 
         try {
-            $this->linter->lintFile($file->getRealpath());
+            $this->linter->lintFile($file->getRealPath());
         } catch (LintingException $e) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
@@ -256,7 +256,7 @@ class Fixer
                 return;
             }
 
-            if (!$dryRun && false === @file_put_contents($file->getRealpath(), $new)) {
+            if (!$dryRun && false === @file_put_contents($file->getRealPath(), $new)) {
                 $error = error_get_last();
                 if ($error) {
                     throw new IOException(sprintf('Failed to write file "%s", "%s".', $file->getRealpath(), $error['message']), 0, null, $file->getRealpath());

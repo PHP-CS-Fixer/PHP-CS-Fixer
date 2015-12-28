@@ -30,7 +30,7 @@ final class ShortTagFixerTest extends AbstractFixerTestCase
     {
         return array(
             array('<?php echo \'Foo\';', '<? echo \'Foo\';'),
-            array('<?= echo \'Foo\';'),
+            array('<?= \'Foo\';'),
             array('<?php echo \'Foo\'; ?> PLAIN TEXT'),
             array('PLAIN TEXT<?php echo \'Foo\'; ?>'),
             array('<?php $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";', '<? $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";'),
