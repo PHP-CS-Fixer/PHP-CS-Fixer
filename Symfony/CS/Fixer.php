@@ -166,7 +166,7 @@ class Fixer
 
     public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff, FileCacheManager $fileCacheManager)
     {
-        $new = $old = file_get_contents($file->getRealpath());
+        $new = $old = file_get_contents($file->getRealPath());
 
         if (
             '' === $old
@@ -184,7 +184,7 @@ class Fixer
             return;
         }
 
-        if ($this->lintManager && !$this->lintManager->createProcessForFile($file->getRealpath())->isSuccessful()) {
+        if ($this->lintManager && !$this->lintManager->createProcessForFile($file->getRealPath())->isSuccessful()) {
             if ($this->eventDispatcher) {
                 $this->eventDispatcher->dispatch(
                     FixerFileProcessedEvent::NAME,
@@ -250,7 +250,7 @@ class Fixer
             }
 
             if (!$dryRun) {
-                file_put_contents($file->getRealpath(), $new);
+                file_put_contents($file->getRealPath(), $new);
             }
 
             $fixInfo = array('appliedFixers' => $appliedFixers);

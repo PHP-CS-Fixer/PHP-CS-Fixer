@@ -65,8 +65,8 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
         }
 
         if (false !== $namespace) {
-            $normNamespace = strtr($namespace, '\\', '/');
-            $path = strtr($file->getRealPath(), '\\', '/');
+            $normNamespace = str_replace('\\', '/', $namespace);
+            $path = str_replace('\\', '/', $file->getRealPath());
             $dir = dirname($path);
 
             if ($this->config) {
@@ -95,7 +95,7 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                 for ($i = $namespaceIndex; $i <= $namespaceEndIndex; ++$i) {
                     $tokens[$i]->clear();
                 }
-                $namespace = substr($namespace, 0, -strlen($dir)).strtr($dir, '/', '\\');
+                $namespace = substr($namespace, 0, -strlen($dir)).str_replace('/', '\\', $dir);
 
                 $newNamespace = Tokens::fromCode('<?php namespace '.$namespace.';');
                 $newNamespace[0]->clear();
@@ -105,12 +105,12 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                 $tokens->insertAt($namespaceIndex, $newNamespace);
             }
         } else {
-            $normClass = strtr($classyName, '_', '/');
-            $path = strtr($file->getRealPath(), '\\', '/');
+            $normClass = str_replace('_', '/', $classyName);
+            $path = str_replace('\\', '/', $file->getRealPath());
             $filename = substr($path, -strlen($normClass) - 4, -4);
 
             if ($normClass !== $filename && strtolower($normClass) === strtolower($filename)) {
-                $tokens[$classyIndex]->setContent(strtr($filename, '/', '_'));
+                $tokens[$classyIndex]->setContent(str_replace('/', '_', $filename));
             }
         }
 

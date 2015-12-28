@@ -133,7 +133,7 @@ class PhpdocParamsFixer extends AbstractFixer
                     $line =
                         $item['indent']
                         .' *  '
-                        .str_repeat(' ', ($tagMax + $hintMax + $varMax + ('param' === $currTag ? 3 : 2)))
+                        .str_repeat(' ', $tagMax + $hintMax + $varMax + ('param' === $currTag ? 3 : 2))
                         .$item['desc']
                         ."\n";
 
