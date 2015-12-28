@@ -1,0 +1,83 @@
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-18T09:24:54Z
+
+> I think others might want to use
+
+:+1: Thanks for this one.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-18T15:57:13Z
+
+symfony level?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-27T16:42:02Z
+
+multiline test should be added:
+```php
+            array(
+                '<?php
+                    // foo
+                    // bar
+                ',
+                '<?php
+                    # foo
+                    # bar
+                ',
+            ),
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-27T16:42:36Z
+
+Also, I think that this should also be changed by fixer:
+```php
+            array(
+                '<?php
+                    // foo
+                ',
+                '<?php
+                    ## foo
+                ',
+            ),
+```
+
+------------------
+
+Perhaps even this:
+```php
+            array(
+                '<?php
+                    ////////// foo
+                ',
+                '<?php
+                    ########## foo
+                ',
+            ),
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-27T16:43:36Z
+
+> symfony level?
+
+yes
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-27T18:31:42Z
+
+Test added, rebased, moved to Symfony, squashed
+
+I disagree with https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1610#issuecomment-167425472 so I won't change it, I thing we should not touch the content of comments (and even if this should be done, than it should not be done with this fixer)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-28T10:54:44Z
+
+:+1:
