@@ -1,0 +1,115 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-24T17:01:45Z
+
+(thanks for the great plugin btw., use it a lot :) )
+
+---------------------------------------------------------------------------
+
+by kalessil at 2015-12-24T17:06:08Z
+
+@SpacePossum : you are welcome, glad to hear that =)
+
+BTW: how did you run into it?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-24T17:23:15Z
+
+> how did you run into it?
+
+I saw a PR of yours over at Symfony a while back and wondered how you found all those improvements, so I googled EA Extended as you mentioned it in the PR :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-25T21:54:21Z
+
+> PhpUnit api usage (assertCount)
+
+:laughing:
+
+---------------------------------------------------------------------------
+
+by kalessil at 2015-12-25T22:14:10Z
+
+^_^ have no better naming, but it's quote often happens that people re-inventing a wheel with PhpUnit:
+
+assertTrue(false == ...) -> assertFalse(...)
+assertTrue(false != ...) -> assertNotFalse(...)
+assertTrue(... == ...) -> assertEquals(..., ...)
+assertTrue(instanceof) -> assertInstanceOf
+assertTrue(!empty) -> assertNotEmpty
+assertFalse(file_exists) -> assertFileNotExists
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-25T22:16:10Z
+
+PHPUnit changes like that are pretty much handled by our fixers ;)
+What I was laughing at was that your the... 4th (?) person that ran into `assertCount` trap on hhvm ;)
+
+---------------------------------------------------------------------------
+
+by kalessil at 2015-12-25T22:16:47Z
+
+^_^, lol
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-25T23:41:23Z
+
+Please @kalessil , could you rebase your branch?
+
+---------------------------------------------------------------------------
+
+by kalessil at 2015-12-26T01:09:19Z
+
+Will do tomorrow. Any feedback on my second PR as well?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-28T10:58:18Z
+
+ping @kalessil
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-28T10:58:33Z
+
+:+1: after rebase
+
+---------------------------------------------------------------------------
+
+by kalessil at 2015-12-28T12:12:24Z
+
+Still here, should finish this evening
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-28T18:39:02Z
+
+```
+git co fa3828e377cfe5f3bb78cdc2051ef78f3c4e227a
+git push origin SCA_1_12
+```
+?
+
+---------------------------------------------------------------------------
+
+by kalessil at 2015-12-28T19:55:11Z
+
+@keradus : I recreated branch.
+
+One more change I did: Symfony/CS/Fixer/PSR2/SwitchCaseSpaceFixer.php, please check before merging.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-28T20:03:34Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by kalessil at 2015-12-28T20:05:41Z
+
+Thanks!
