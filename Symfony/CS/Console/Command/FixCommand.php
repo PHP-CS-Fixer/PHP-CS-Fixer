@@ -533,11 +533,11 @@ EOF
         }
 
         if (!$this->errorsManager->isEmpty()) {
-            $output->writeLn('');
-            $output->writeLn('Files that were not fixed due to internal error:');
+            $output->writeln('');
+            $output->writeln('Files that were not fixed due to internal error:');
 
             foreach ($this->errorsManager->getErrors() as $i => $error) {
-                $output->writeLn(sprintf('%4d) %s', $i + 1, $error['filepath']));
+                $output->writeln(sprintf('%4d) %s', $i + 1, $error['filepath']));
             }
         }
 

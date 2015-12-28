@@ -70,8 +70,7 @@ class LintManager
         }
 
         file_put_contents($this->temporaryFile, $source);
-        $process = $this->createProcessForFile($this->temporaryFile);
 
-        return $process;
+        return $this->createProcessForFile($this->temporaryFile);
     }
 }
