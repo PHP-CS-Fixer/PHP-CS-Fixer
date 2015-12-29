@@ -26,16 +26,16 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
      * Looks up Tokens sequence for suitable candidates and delivers boundaries information,
      * which can be supplied by other methods in this abstract class.
      *
-     * @param string $functionNameToSearch
-     * @param Tokens $tokens
-     * @param int    $start
-     * @param int    $end
+     * @param string   $functionNameToSearch
+     * @param Tokens   $tokens
+     * @param int      $start
+     * @param int|null $end
      *
      * @return int[]|null returns $functionName, $openParenthesis, $closeParenthesis packed into array
      */
     protected function find($functionNameToSearch, Tokens $tokens, $start = 0, $end = null)
     {
-        /* make interface consistent with findSequence */
+        // make interface consistent with findSequence
         $end = null === $end ? $tokens->count() : $end;
 
         // find raw sequence which we can analyse for context

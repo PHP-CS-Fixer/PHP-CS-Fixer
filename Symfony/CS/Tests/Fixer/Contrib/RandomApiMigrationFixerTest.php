@@ -18,7 +18,37 @@ use Symfony\CS\Test\AbstractFixerTestCase;
  */
 class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 {
+    public function testConfigure()
+    {
+        $fixer = $this->getFixer();
+        $fixer->configure(array('rand' => 'random_int'));
+
+        $replacements = static::getStaticAttribute('\Symfony\CS\Fixer\Contrib\RandomApiMigrationFixer', 'replacements');
+        $fixer->configure(array('rand' => 'mt_rand'));
+
+        $this->assertSame($replacements['rand'], 'random_int');
+    }
+
     /**
+     * @expectedException \UnexpectedValueException
+     */
+    public function testConfigureCheckSearchFunction()
+    {
+        $fixer = $this->getFixer();
+        $fixer->configure(array('is_null' => 'random_int'));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testConfigureCheckReplacementType()
+    {
+        $fixer = $this->getFixer();
+        $fixer->configure(array('rand' => null));
+    }
+
+    /**
+     * @depends testConfigure
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)

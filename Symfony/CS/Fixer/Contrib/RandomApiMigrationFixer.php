@@ -29,18 +29,20 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
     );
 
     /**
-     * Static analog of 'public function configure(array $configuration = null)',
-     * which can not be overridden in favor of static.
-     *
      * @param string[]|null $customReplacements
      */
-    public static function configureReplacement(array $customReplacements = null)
+    public function configure(array $customReplacements = null)
     {
         if (null !== $customReplacements) {
-            foreach (self::$replacements as $pattern => &$replacement) {
-                if (array_key_exists($pattern, $customReplacements) && is_string($customReplacements[$pattern])) {
-                    $replacement = $customReplacements[$pattern];
+            foreach ($customReplacements as $pattern => $replacement) {
+                if (!array_key_exists($pattern, self::$replacements)) {
+                    throw new \UnexpectedValueException(sprintf('"%s" is not handled by the fixer', $pattern));
                 }
+                if (!is_string($replacement)) {
+                    throw new \InvalidArgumentException(sprintf('Expected string got "%s"', gettype($replacement)));
+                }
+
+                self::$replacements[$pattern] = $replacement;
             }
         }
     }
