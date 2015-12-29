@@ -31,12 +31,7 @@ final class LowerCaseCastFixer extends AbstractFixer
                 continue;
             }
 
-            $lowerContent = strtolower($tokens[$index]->getContent());
-            if ($lowerContent === $tokens[$index]->getContent()) {
-                continue;
-            }
-
-            $tokens[$index]->setContent($lowerContent);
+            $tokens[$index]->setContent(strtolower($tokens[$index]->getContent()));
         }
 
         return $tokens->generateCode();

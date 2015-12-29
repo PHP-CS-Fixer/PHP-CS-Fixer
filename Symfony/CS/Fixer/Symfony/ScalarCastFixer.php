@@ -38,13 +38,13 @@ final class ScalarCastFixer extends AbstractFixer
                 continue;
             }
 
-            $castFrom = substr($tokens[$index]->getContent(), 1, -1);
-            $castFrom = strtolower(trim($castFrom));
-            if (!array_key_exists($castFrom, $castMap)) {
+            $castFrom = trim(substr($tokens[$index]->getContent(), 1, -1));
+            $castFromLowered = strtolower($castFrom);
+            if (!array_key_exists($castFromLowered, $castMap)) {
                 continue;
             }
 
-            $tokens[$index]->setContent(str_ireplace($castFrom, $castMap[$castFrom], $tokens[$index]->getContent()));
+            $tokens[$index]->setContent(str_replace($castFrom, $castMap[$castFromLowered], $tokens[$index]->getContent()));
         }
 
         return $tokens->generateCode();
