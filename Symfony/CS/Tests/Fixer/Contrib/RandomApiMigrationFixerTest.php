@@ -15,6 +15,8 @@ use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
+ *
+ * @internal
  */
 final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 {
