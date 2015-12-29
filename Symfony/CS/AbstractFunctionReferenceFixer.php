@@ -23,6 +23,14 @@ use Symfony\CS\Tokenizer\Tokens;
 abstract class AbstractFunctionReferenceFixer extends AbstractFixer
 {
     /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
      * Looks up Tokens sequence for suitable candidates and delivers boundaries information,
      * which can be supplied by other methods in this abstract class.
      *
