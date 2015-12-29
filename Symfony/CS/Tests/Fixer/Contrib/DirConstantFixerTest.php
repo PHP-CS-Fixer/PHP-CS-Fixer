@@ -16,7 +16,7 @@ use Symfony\CS\Test\AbstractFixerTestCase;
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
-class DirConstantFixerTest extends AbstractFixerTestCase
+final class DirConstantFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideExamples

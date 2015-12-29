@@ -16,7 +16,7 @@ use Symfony\CS\Test\AbstractFixerTestCase;
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
-class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
+final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideExamples
