@@ -30,8 +30,6 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
 
     /**
      * @param string[]|null $customReplacements
-     *
-     * @throws \UnexpectedValueException|\InvalidArgumentException
      */
     public function configure(array $customReplacements = null)
     {
