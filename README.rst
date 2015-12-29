@@ -229,7 +229,8 @@ Choose from the list of available fixers:
 * **dir_constant**
                         Replaces dirname(__FILE__)
                         expression with equivalent
-                        __DIR__ constant.
+                        __DIR__ constant. (Risky
+                        fixer!)
 
 * **double_arrow_multiline_whitespaces** [@Symfony]
                         Operator => should not be
@@ -368,9 +369,8 @@ Choose from the list of available fixers:
                         Replaces intval, floatval,
                         doubleval, strval, boolval
                         functions calls with according
-                        type casting operator.
-                        Warning! This could change
-                        code behavior.
+                        type casting operator. (Risky
+                        fixer!)
 
 * **multiline_array_trailing_comma** [@Symfony]
                         PHP multi-line arrays should
@@ -567,6 +567,7 @@ Choose from the list of available fixers:
                         Replaces rand, srand,
                         getrandmax functions calls
                         with their mt_* analogs.
+                        (Risky fixer!)
 
 * **remove_leading_slash_use** [@Symfony]
                         Remove leading slashes in use
