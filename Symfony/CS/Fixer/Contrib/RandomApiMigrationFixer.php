@@ -59,8 +59,6 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach (self::$replacements as $functionIdentity => $newName) {
-            $isFunctionDefinedInScope = $this->isDefinedInScope($tokens, $functionIdentity);
-
             $currIndex = 0;
             while (null !== $currIndex) {
                 // try getting function reference and translate boundaries for humans
@@ -78,9 +76,6 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
                 $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionName);
                 if ($tokens[$prevTokenIndex]->isGivenKind(T_NS_SEPARATOR)) {
                     // do nothing with namespace identity
-                } elseif ($isFunctionDefinedInScope) {
-                    // skip analysis if function is defined in the scope, so this is a referenced call
-                    continue;
                 }
 
                 $tokens[$functionName]->setContent($newName);

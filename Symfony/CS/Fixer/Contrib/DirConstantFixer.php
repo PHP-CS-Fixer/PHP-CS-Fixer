@@ -33,8 +33,6 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $isFunctionDefinedInScope = $this->isDefinedInScope($tokens, 'dirname');
-
         $currIndex = 0;
         while (null !== $currIndex) {
             $boundaries = $this->find('dirname', $tokens, $currIndex, $tokens->count() - 1);
@@ -61,9 +59,6 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             if ($namespaceCandidate->isGivenKind(T_NS_SEPARATOR)) {
                 $tokens->removeTrailingWhitespace($namespaceCandidateIndex);
                 $namespaceCandidate->clear();
-            } elseif ($isFunctionDefinedInScope) {
-                // skip analysis if function is defined in the scope, so this is a referenced call
-                continue;
             }
 
             // closing parenthesis removed with leading spaces

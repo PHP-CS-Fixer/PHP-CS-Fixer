@@ -43,8 +43,6 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
         );
 
         foreach ($replacement as $functionIdentity => $newToken) {
-            $isFunctionDefinedInScope = $this->isDefinedInScope($tokens, $functionIdentity);
-
             $currIndex = 0;
             while (null !== $currIndex) {
                 // try getting function reference and translate boundaries for humans
@@ -82,9 +80,6 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                     // get rid of root namespace when it used
                     $tokens->removeTrailingWhitespace($prevTokenIndex);
                     $tokens[$prevTokenIndex]->clear();
-                } elseif ($isFunctionDefinedInScope) {
-                    // skip analysis if function is defined in the scope, so this is a referenced call
-                    continue;
                 }
 
                 // perform transformation

@@ -114,21 +114,4 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
 
         return $argumentsCount;
     }
-
-    /**
-     * Checks if function/method defined in the scope.
-     *
-     * @param Tokens $tokens
-     * @param string $functionName
-     *
-     * @return bool
-     */
-    protected function isDefinedInScope(Tokens $tokens, $functionName)
-    {
-        $definitionSequence = array(array(T_FUNCTION, 'function'), array(T_STRING, $functionName));
-
-        $matchedDefinition = $tokens->findSequence($definitionSequence, 0, $tokens->count() - 1, false);
-
-        return null !== $matchedDefinition;
-    }
 }
