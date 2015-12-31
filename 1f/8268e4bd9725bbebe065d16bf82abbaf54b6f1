@@ -1,0 +1,88 @@
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-17T18:53:11Z
+
+if ordering by version is unimportant for us, we could use this matrix (fastest and most interesting builds first):
+
+```yml
+matrix:
+    fast_finish: true
+    include:
+        - php: hhvm
+        - php: 7.0
+        - php: 7.0
+          env: SYMFONY_VERSION="~2.8"
+        - php: 5.3
+          env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
+        - php: 5.4
+        - php: 5.5
+        - php: 5.6
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-18T08:10:07Z
+
+putting slowest jobs at the end is nightmare - it causes whole build to be slow.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-18T09:09:06Z
+
+My main goal: get faster result when a build is failing, because then I have to change something in my pr.
+And a second goal: get a faster tendency. When hhvm, 7.0 and 5.3 are passing, there is a good chance that whole build will pass. So I prefer my second proposal.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-18T09:10:39Z
+
+Or this one:
+
+```yml
+matrix:
+    fast_finish: true
+    include:
+        - php: 5.3
+          env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
+        - php: 7.0
+        - php: hhvm
+        - php: 5.4
+        - php: 5.5
+        - php: 5.6
+        - php: 7.0
+          env: SYMFONY_VERSION="~2.8"
+```
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-18T11:46:55Z
+
+I don't think what we have needs changing.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-18T11:52:28Z
+
+Ok. @keradus your comment was a :-1:, right?
+Then we can close it ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-18T12:00:54Z
+
+I'm :-1: for flip-flop the order as you done in commit.
+But I'm **not** :-1: for changing the order, eg only move 7.0 on top (but I'm not :+1: for that neither, just ±0 ;) )
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-18T13:06:23Z
+
+(updated to my current proposal..)
+
+any other thoughts?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-18T13:15:28Z
+
+lgtm :+1:
