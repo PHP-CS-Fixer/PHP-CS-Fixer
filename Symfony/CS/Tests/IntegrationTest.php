@@ -27,6 +27,7 @@ final class IntegrationTest extends AbstractIntegrationTest
     {
         return __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'Integration';
     }
+
     /**
      * {@inheritdoc}
      */
