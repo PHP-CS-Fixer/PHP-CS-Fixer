@@ -18,6 +18,7 @@ install:
     - cd C:\tools
     - appveyor DownloadFile https://getcomposer.org/composer.phar
     - appveyor DownloadFile https://phar.phpunit.de/phpunit.phar
+    - git config --global github.accesstoken 5e7538aa415005c606ea68de2bbbade0409b4b8c
 
 before_test:
     - cd C:\projects\php-cs-fixer
