@@ -1,0 +1,112 @@
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-20T23:30:34Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-21T00:58:32Z
+
+YES. FINALLY! :rocket:
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-21T02:07:01Z
+
+What do you think about renaming the namespace?
+`Symfony\CS\` -> `PhpCsFixer\`
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-21T08:40:36Z
+
+like the idea :)
+
+>Symfony\CS\ -> PhpCsFixer\
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T09:39:44Z
+
+It is not the scope of this PR.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-21T09:41:11Z
+
+fair enough :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T09:41:58Z
+
+> Sorry, we could not display the entire diff because too many files (376) changed.
+
+:D
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-12-21T13:25:38Z
+
+> > Sorry, we could not display the entire diff because too many files (376) changed.
+
+> :D
+
+Hoy hoy peggy diff! :pig:
+
+:+1: for PSR-4! ;-)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-27T16:03:06Z
+
+Help would be appreciated.
+I cannot duplicate the errors on my local env :(
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-27T16:04:59Z
+
+@keradus I bet you it's due to line ending changes.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-27T16:05:51Z
+
+Where are they ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-27T16:06:55Z
+
+Not sure. GitHub's being lazy with showing all the diff, lol.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-27T16:10:02Z
+
+I can't see any line ending changes and errors didn't look like it is the reason...
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-28T10:52:00Z
+
+Anyone?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-30T23:01:22Z
+
+I can reproduce the failures on my mac.
+The reason is [this line](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/0c290f4bf31727be69fd8ec65a1dfc08be528b10/Symfony/CS/Fixer/Symfony/UnusedUseFixer.php#L63).
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-31T00:03:02Z
+
+Thank you @gharlan !
+The Travis is now green!
+The AppVeyor is still red.
