@@ -5,18 +5,15 @@ matrix:
     include:
         - php: 5.3
           env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
+        - php: 7.0
+        - php: hhvm
         - php: 5.4
         - php: 5.5
         - php: 5.6
         - php: 7.0
           env: SYMFONY_VERSION="~2.8"
-        - php: 7.0
-          env: SYMFONY_VERSION="~3.0"
-        - php: hhvm
 
 sudo: false
-
-dist: trusty
 
 cache:
     directories:

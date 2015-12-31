@@ -285,6 +285,11 @@ Choose from the list of available fixers:
                         function's argument and its
                         typehint.
 
+* **hash_to_slash_comment** [@Symfony]
+                        Single line comments should
+                        use double slashes (//) and
+                        not hash (#).
+
 * **header_comment**
                         Add, replace or remove header
                         comment.

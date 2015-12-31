@@ -59,6 +59,7 @@ final class RuleSet implements RuleSetInterface
             'empty_return' => true,
             'extra_empty_lines' => true,
             'function_typehint_space' => true,
+            'hash_to_slash_comment' => true,
             'include' => true,
             'list_commas' => true,
             'method_argument_default_value' => true,
