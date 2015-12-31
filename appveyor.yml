@@ -12,18 +12,30 @@ cache:
 
 install:
     - choco install -y php -version %php_ver%
+    - appveyor DownloadFile http://xdebug.org/files/php_xdebug-2.3.3-5.6-vc11-nts-x86_64.dll -FileName C:\tools\php\ext\php_xdebug.dll
     - SET PATH=C:\tools\php;%PATH%
     - cd C:\tools\php
     - copy php.ini-production php.ini
+    - echo date.timezone="UTC" >> php.ini
+    - echo memory_limit=512M >> php.ini
+    - echo extension_dir=ext >> php.ini
+    - echo extension=php_curl.dll >> php.ini
+    - echo extension=php_openssl.dll >> php.ini
+    - copy php.ini php-with_xdebug.ini
+    - echo zend_extension=php_xdebug.dll >> php-with_xdebug.ini
     - cd C:\tools
     - appveyor DownloadFile https://getcomposer.org/composer.phar
     - appveyor DownloadFile https://phar.phpunit.de/phpunit.phar
 
 before_test:
     - cd C:\projects\php-cs-fixer
-    - php C:\tools\composer.phar update --prefer-source --ansi --no-interaction --no-dev
+    - php C:\tools\composer.phar update --no-interaction
 
 test_script:
     - cd C:\projects\php-cs-fixer
-    - php C:\tools\phpunit.phar --verbose
+    - php -c C:\tools\php\php-with_xdebug.ini C:\tools\phpunit.phar --verbose --coverage-clover build\logs\clover.xml
     - php php-cs-fixer --diff --dry-run -v fix
+
+after_test:
+    - cd C:\projects\php-cs-fixer
+    - vendor\bin\coveralls.bat -v
