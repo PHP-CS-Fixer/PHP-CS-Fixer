@@ -1,0 +1,120 @@
+---------------------------------------------------------------------------
+
+by stof at 2015-12-31T14:14:11Z
+
+should it check whether the variable is defined ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-31T14:15:25Z
+
+I think it is not needed as it is defined directly in Travis configuration (not the file)
+
+---------------------------------------------------------------------------
+
+by stof at 2015-12-31T14:16:49Z
+
+Well, if it is a secure env variable, it will not be available in PRs sent from a fork (to avoid allowing a PR to be sent which would dump the value of the env variable and so leak it)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-31T14:18:45Z
+
+So... let us use the raw, readable format to allow all PRs use it ?
+
+---------------------------------------------------------------------------
+
+by stof at 2015-12-31T14:39:56Z
+
+@keradus well, this can be discussed though. PRs will still benefit from the existing cache (as they reuse the cache of the target branch, which will have been populated by builds using the token), so they may not need the token.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-31T14:43:21Z
+
+Indeed, in most cases PRs will use cache, but not always
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-31T14:46:02Z
+
+BTW, added token to AppVeyor as well
+
+---------------------------------------------------------------------------
+
+by stof at 2015-12-31T14:59:04Z
+
+@keradus there is still a fallback to the slower clone then. the question is whether you want to have a github token available publicly (even though a token with no scope is not a big issue, it still allows people to make read requests on your behalf)
+
+---------------------------------------------------------------------------
+
+by stof at 2015-12-31T14:59:53Z
+
+why have you cancelled the AppVeyor build ? you should let the build run as you changed the config file
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-31T15:02:50Z
+
+> there is still a fallback to the slower clone then.
+
+So, when possible use cache, when not use dist with oauth (5000 limit), and clone is the last hope.
+Isn't it nice?
+
+> the question is whether you want to have a github token available publicly (even though a token with no scope is not a big issue, it still allows people to make read requests on your behalf)
+
+I have no problem with that. That dummy token can be created for dummy account and always changed, right?
+
+---------------
+
+> why have you cancelled the AppVeyor build ?
+
+I will restart it if we agreed to merge the PR.
+For now I'm fighting with non-working AppVeyor on another PRs and AppVeyor is busy today (and I don't want to wait an hour to get my job done)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-31T15:32:14Z
+
+> For now I'm fighting with non-working AppVeyor on another PRs and AppVeyor is busy today (and I don't want to wait an hour to get my job done)
+
+Is there not something else better out there? AppVeyor is always slow as hell.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-31T15:32:47Z
+
+Feel free to find any ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-31T15:34:21Z
+
+> Feel free to find any ;)
+
+Haha. Might be faster to just write one. :P
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-31T15:34:53Z
+
+TBH, that's not too crazy a thought, lol.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-31T15:35:06Z
+
+OK, then please focus on main subject of this PR ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-31T15:47:31Z
+
+So...
+:+1: ? ;)
+
+---------------------------------------------------------------------------
+
+by stof at 2015-12-31T16:49:26Z
+
+:+1: from me
