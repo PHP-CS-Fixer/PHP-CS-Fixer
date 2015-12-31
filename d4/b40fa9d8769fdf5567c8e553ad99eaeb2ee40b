@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-31T16:07:44Z
+
+We need `--no-dev` still surely?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-31T16:08:02Z
+
+Just saw the description. Why would we want to do this?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-31T16:31:07Z
+
+Backported from 2.x line. Without this tests won't run (we have fixtures for test as well, and without this PSR4 autoloader wont load things from tests dir)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-31T16:31:30Z
+
+Also, we install devs on Travis ;)
