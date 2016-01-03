@@ -9,12 +9,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Contrib;
+namespace PhpCsFixer\Fixer\Contrib;
 
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\Tokenizer\Token;
-use Symfony\CS\Tokenizer\Tokens;
-use Symfony\CS\Tokenizer\TokensAnalyzer;
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>

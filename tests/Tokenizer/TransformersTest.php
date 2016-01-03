@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Tokenizer;
+namespace PhpCsFixer\Tests\Tokenizer;
 
-use Symfony\CS\Test\AccessibleObject;
-use Symfony\CS\Tokenizer\Transformers;
+use PhpCsFixer\Test\AccessibleObject;
+use PhpCsFixer\Tokenizer\Transformers;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

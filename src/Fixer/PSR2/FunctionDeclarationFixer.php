@@ -9,11 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\PSR2;
+namespace PhpCsFixer\Fixer\PSR2;
 
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\Tokenizer\Tokens;
-use Symfony\CS\Tokenizer\TokensAnalyzer;
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * Fixer for rules defined in PSR2 generally (¶1 and ¶6).

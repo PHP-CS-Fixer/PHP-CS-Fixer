@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Contrib;
 
-use Symfony\CS\Fixer\Contrib\PhpUnitConstructFixer;
-use Symfony\CS\Test\AbstractFixerTestCase;
+use PhpCsFixer\Fixer\Contrib\PhpUnitConstructFixer;
+use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -112,7 +112,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
      * @expectedExceptionMessage [php_unit_construct] Configured method "__TEST__" cannot be fixed by this fixer.
      */
     public function testInvalidConfig()

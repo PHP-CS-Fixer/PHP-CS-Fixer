@@ -9,14 +9,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Test;
+namespace PhpCsFixer\Test;
 
-use Symfony\CS\FixerFactory;
-use Symfony\CS\FixerInterface;
-use Symfony\CS\Linter\Linter;
-use Symfony\CS\RuleSet;
-use Symfony\CS\Tokenizer\Tokens;
-use Symfony\CS\Utils;
+use PhpCsFixer\FixerFactory;
+use PhpCsFixer\FixerInterface;
+use PhpCsFixer\Linter\Linter;
+use PhpCsFixer\RuleSet;
+use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Utils;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

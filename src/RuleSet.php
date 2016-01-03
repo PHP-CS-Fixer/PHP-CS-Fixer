@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS;
+namespace PhpCsFixer;
 
 /**
  * Set of rules to be used by fixer.

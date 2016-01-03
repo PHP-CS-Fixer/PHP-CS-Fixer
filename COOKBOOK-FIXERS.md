@@ -59,10 +59,10 @@ Put this content inside:
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Contrib;
+namespace PhpCsFixer\Fixer\Contrib;
 
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Your name <your@email.com>
@@ -93,9 +93,9 @@ content inside:
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use PhpCsFixer\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Your name <your@email.com>
@@ -178,9 +178,9 @@ like:
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use PhpCsFixer\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Your name <your@email.com>
@@ -359,10 +359,10 @@ So the fixer in the end looks like this:
  *
  */
 
-namespace Symfony\CS\Fixer\Contrib;
+namespace PhpCsFixer\Fixer\Contrib;
 
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Your name <your@email.com>

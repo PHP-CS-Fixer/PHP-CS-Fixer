@@ -9,11 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests;
+namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
-use Symfony\CS\Config;
-use Symfony\CS\Finder;
 
 /**
  * @internal
@@ -107,8 +107,8 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
     public function provideAddCustomFixersCases()
     {
         $fixers = array(
-            new \Symfony\CS\Fixer\Symfony\NoWhitespaceBeforeCommaInArrayFixer(),
-            new \Symfony\CS\Fixer\Symfony\IncludeFixer(),
+            new \PhpCsFixer\Fixer\Symfony\NoWhitespaceBeforeCommaInArrayFixer(),
+            new \PhpCsFixer\Fixer\Symfony\IncludeFixer(),
         );
 
         $cases = array(

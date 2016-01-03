@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Test;
+namespace PhpCsFixer\Test;
 
-use Symfony\CS\FixerInterface;
+use PhpCsFixer\FixerInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

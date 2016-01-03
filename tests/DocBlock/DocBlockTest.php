@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\DocBlock;
+namespace PhpCsFixer\Tests\DocBlock;
 
-use Symfony\CS\DocBlock\DocBlock;
+use PhpCsFixer\DocBlock\DocBlock;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
@@ -64,7 +64,7 @@ final class DocBlockTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(15, $doc->getLines());
 
         foreach ($doc->getLines() as $index => $line) {
-            $this->assertInstanceOf('Symfony\CS\DocBlock\Line', $line);
+            $this->assertInstanceOf('PhpCsFixer\DocBlock\Line', $line);
             $this->assertSame($doc->getLine($index), $line);
         }
 
@@ -79,7 +79,7 @@ final class DocBlockTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(5, $doc->getAnnotations());
 
         foreach ($doc->getAnnotations() as $index => $annotations) {
-            $this->assertInstanceOf('Symfony\CS\DocBlock\Annotation', $annotations);
+            $this->assertInstanceOf('PhpCsFixer\DocBlock\Annotation', $annotations);
             $this->assertSame($doc->getAnnotation($index), $annotations);
         }
 

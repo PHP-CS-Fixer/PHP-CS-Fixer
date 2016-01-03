@@ -9,11 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Console\Output;
+namespace PhpCsFixer\Console\Output;
 
+use PhpCsFixer\FixerFileProcessedEvent;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\CS\FixerFileProcessedEvent;
 
 /**
  * Output writer to show the process of a FixCommand.

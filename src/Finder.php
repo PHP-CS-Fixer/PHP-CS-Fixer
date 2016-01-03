@@ -9,13 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS;
+namespace PhpCsFixer;
 
 use Symfony\Component\Finder\Finder as BaseFinder;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
- * @author Dariusz Rumiñski <dariusz.ruminski@gmail.com>
+ * @author Dariusz RumiÃ±ski <dariusz.ruminski@gmail.com>
  */
 class Finder extends BaseFinder implements FinderInterface
 {

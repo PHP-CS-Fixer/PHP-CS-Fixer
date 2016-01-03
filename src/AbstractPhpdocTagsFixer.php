@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS;
+namespace PhpCsFixer;
 
-use Symfony\CS\DocBlock\DocBlock;
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * This abstract fixer provides a base for fixers to rename tags.

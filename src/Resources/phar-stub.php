@@ -30,7 +30,7 @@ Phar::mapPhar('php-cs-fixer.phar');
 
 require_once 'phar://php-cs-fixer.phar/vendor/autoload.php';
 
-use Symfony\CS\Console\Application;
+use PhpCsFixer\Console\Application;
 
 $application = new Application();
 $application->run();

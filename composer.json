@@ -28,10 +28,10 @@
         "satooshi/php-coveralls": "^1.0"
     },
     "autoload": {
-        "psr-4": { "Symfony\\CS\\": "src/" }
+        "psr-4": { "PhpCsFixer\\": "src/" }
     },
     "autoload-dev": {
-        "psr-4": { "Symfony\\CS\\Tests\\": "tests/" }
+        "psr-4": { "PhpCsFixer\\Tests\\": "tests/" }
     },
     "bin": ["php-cs-fixer"],
     "scripts": {

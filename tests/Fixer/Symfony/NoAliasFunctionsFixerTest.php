@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Symfony;
+namespace PhpCsFixer\Tests\Fixer\Symfony;
 
-use Symfony\CS\Test\AbstractFixerTestCase;
+use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
@@ -32,7 +32,7 @@ final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
     public function provideCases()
     {
         /** @var $aliases string[] */
-        $aliases = static::getStaticAttribute('\Symfony\CS\Fixer\Symfony\NoAliasFunctionsFixer', 'aliases');
+        $aliases = static::getStaticAttribute('\PhpCsFixer\Fixer\Symfony\NoAliasFunctionsFixer', 'aliases');
 
         $cases = array();
         foreach ($aliases as $alias => $master) {

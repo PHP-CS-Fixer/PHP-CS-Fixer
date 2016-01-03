@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Symfony;
+namespace PhpCsFixer\Tests\Fixer\Symfony;
 
-use Symfony\CS\Test\AbstractFixerTestCase;
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
@@ -411,7 +411,7 @@ function test1(){ echo 2;}',
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Linter;
+namespace PhpCsFixer\Linter;
 
 /**
  * Dummy linter. No linting is performed. No error is raised.

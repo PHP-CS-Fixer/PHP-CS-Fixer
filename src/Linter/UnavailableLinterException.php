@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Linter;
+namespace PhpCsFixer\Linter;
 
 /**
  * Exception that is thrown when the chosen linter is not available on the environment.

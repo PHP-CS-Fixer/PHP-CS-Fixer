@@ -9,12 +9,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Contrib;
+namespace PhpCsFixer\Fixer\Contrib;
 
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\ConfigurationException\InvalidFixerConfigurationException;
-use Symfony\CS\Tokenizer\Token;
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Antonio J. García Lagar <aj@garcialagar.es>

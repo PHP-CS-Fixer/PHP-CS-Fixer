@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS;
+namespace PhpCsFixer;
 
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
@@ -96,7 +96,7 @@ final class FixerFactory
 
             foreach (SymfonyFinder::create()->files()->in(__DIR__.'/Fixer') as $file) {
                 $relativeNamespace = $file->getRelativePath();
-                $builtInFixers[] = 'Symfony\\CS\\Fixer\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
+                $builtInFixers[] = 'PhpCsFixer\\Fixer\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
             }
         }
 

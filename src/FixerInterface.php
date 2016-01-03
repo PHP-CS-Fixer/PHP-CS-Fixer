@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS;
+namespace PhpCsFixer;
 
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>

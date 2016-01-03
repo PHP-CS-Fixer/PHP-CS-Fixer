@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Symfony;
+namespace PhpCsFixer\Fixer\Symfony;
 
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
@@ -54,7 +54,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        /** @var $token \Symfony\CS\Tokenizer\Token */
+        /** @var $token \PhpCsFixer\Tokenizer\Token */
         foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
             // skip expressions without parameters list
             $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];

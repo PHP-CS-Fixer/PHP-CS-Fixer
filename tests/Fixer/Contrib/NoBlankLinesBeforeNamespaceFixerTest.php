@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Contrib;
 
-use Symfony\CS\Test\AbstractFixerTestCase;
+use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
@@ -58,7 +58,7 @@ final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-namespace Symfony\CS\Fixer\Contrib;
+namespace PhpCsFixer\Fixer\Contrib;
 EOF;
 
         $input = <<<'EOF'
@@ -73,7 +73,7 @@ EOF;
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Contrib;
+namespace PhpCsFixer\Fixer\Contrib;
 EOF;
 
         $this->doTest($expected, $input);

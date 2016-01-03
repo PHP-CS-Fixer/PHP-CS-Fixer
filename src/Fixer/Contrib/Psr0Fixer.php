@@ -9,14 +9,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Contrib;
+namespace PhpCsFixer\Fixer\Contrib;
 
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\ConfigAwareInterface;
-use Symfony\CS\ConfigInterface;
-use Symfony\CS\StdinFileInfo;
-use Symfony\CS\Tokenizer\Token;
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigAwareInterface;
+use PhpCsFixer\ConfigInterface;
+use PhpCsFixer\StdinFileInfo;
+use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>

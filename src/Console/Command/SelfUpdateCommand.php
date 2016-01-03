@@ -9,12 +9,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Console\Command;
+namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\CS\ToolInfo;
 
 /**
  * @author Igor Wiedler <igor@wiedler.ch>

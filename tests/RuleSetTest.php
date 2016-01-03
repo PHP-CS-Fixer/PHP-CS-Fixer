@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests;
+namespace PhpCsFixer\Tests;
 
-use Symfony\CS\FixerFactory;
-use Symfony\CS\RuleSet;
+use PhpCsFixer\FixerFactory;
+use PhpCsFixer\RuleSet;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -25,7 +25,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
     {
         $ruleSet = RuleSet::create();
 
-        $this->assertInstanceOf('Symfony\CS\RuleSet', $ruleSet);
+        $this->assertInstanceOf('PhpCsFixer\RuleSet', $ruleSet);
     }
 
     /**

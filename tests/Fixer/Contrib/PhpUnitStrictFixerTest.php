@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Contrib;
 
-use Symfony\CS\Test\AbstractFixerTestCase;
-use Symfony\CS\Test\AccessibleObject;
+use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Test\AccessibleObject;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

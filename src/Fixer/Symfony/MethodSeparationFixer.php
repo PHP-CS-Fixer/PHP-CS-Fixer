@@ -9,13 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Symfony;
+namespace PhpCsFixer\Fixer\Symfony;
 
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use SplFileInfo;
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\Tokenizer\Token;
-use Symfony\CS\Tokenizer\Tokens;
-use Symfony\CS\Tokenizer\TokensAnalyzer;
 
 /**
  * Make sure there is one blank line above and below a method.

@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Error;
+namespace PhpCsFixer\Tests\Error;
 
-use Symfony\CS\Error\Error;
-use Symfony\CS\Error\ErrorsManager;
+use PhpCsFixer\Error\Error;
+use PhpCsFixer\Error\ErrorsManager;
 
 /**
  * @internal

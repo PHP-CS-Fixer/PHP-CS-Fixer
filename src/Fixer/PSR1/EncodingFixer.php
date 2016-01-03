@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\PSR1;
+namespace PhpCsFixer\Fixer\PSR1;
 
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Fixer for rules defined in PSR1 ¶2.2.

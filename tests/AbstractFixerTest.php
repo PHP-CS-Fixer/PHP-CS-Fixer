@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests;
+namespace PhpCsFixer\Tests;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -20,7 +20,7 @@ final class AbstractFixerTest extends \PHPUnit_Framework_TestCase
 {
     public function testSupports()
     {
-        $mockup = $this->getMockForAbstractClass('\\Symfony\\CS\\AbstractFixer');
+        $mockup = $this->getMockForAbstractClass('\\PhpCsFixer\\AbstractFixer');
         $this->assertTrue($mockup->supports(new \SplFileInfo(__FILE__)));
     }
 }

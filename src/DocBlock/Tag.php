@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\DocBlock;
+namespace PhpCsFixer\DocBlock;
 
 /**
  * This represents a tag, as defined by the proposed PSR PHPDoc standard.

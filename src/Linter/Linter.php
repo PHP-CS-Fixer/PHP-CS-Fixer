@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Linter;
+namespace PhpCsFixer\Linter;
 
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Process\PhpExecutableFinder;

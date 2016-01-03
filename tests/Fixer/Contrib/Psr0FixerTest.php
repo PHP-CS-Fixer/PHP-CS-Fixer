@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Contrib;
 
-use Symfony\CS\Config;
-use Symfony\CS\Test\AbstractFixerTestCase;
+use PhpCsFixer\Config;
+use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @internal
@@ -60,13 +60,13 @@ EOF;
 
         $expected = <<<'EOF'
 <?php
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Contrib;
 class Psr0FixerTest {}
 /* class foo */
 EOF;
         $input = <<<'EOF'
 <?php
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Contrib;
 class blah {}
 /* class foo */
 EOF;
@@ -80,13 +80,13 @@ EOF;
 
         $expected = <<<'EOF'
 <?php
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Contrib;
 abstract class Psr0FixerTest {}
 /* class foo */
 EOF;
         $input = <<<'EOF'
 <?php
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Contrib;
 abstract class blah {}
 /* class foo */
 EOF;
@@ -100,13 +100,13 @@ EOF;
 
         $expected = <<<'EOF'
 <?php
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Contrib;
 final class Psr0FixerTest {}
 /* class foo */
 EOF;
         $input = <<<'EOF'
 <?php
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Contrib;
 final class blah {}
 /* class foo */
 EOF;
@@ -120,13 +120,13 @@ EOF;
 
         $expected = <<<'EOF'
 <?php
-namespace /* namespace here */ Symfony\CS\Fixer\PSR0;
+namespace /* namespace here */ PhpCsFixer\Fixer\PSR0;
 class /* hi there */ Psr0FixerTest /* why hello */ {}
 /* class foo */
 EOF;
         $input = <<<'EOF'
 <?php
-namespace /* namespace here */ Symfony\CS\Fixer\PSR0;
+namespace /* namespace here */ PhpCsFixer\Fixer\PSR0;
 class /* hi there */ blah /* why hello */ {}
 /* class foo */
 EOF;

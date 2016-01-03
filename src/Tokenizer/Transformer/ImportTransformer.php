@@ -9,11 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tokenizer\Transformer;
+namespace PhpCsFixer\Tokenizer\Transformer;
 
-use Symfony\CS\Tokenizer\AbstractTransformer;
-use Symfony\CS\Tokenizer\Token;
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Transform const/function import tokens.

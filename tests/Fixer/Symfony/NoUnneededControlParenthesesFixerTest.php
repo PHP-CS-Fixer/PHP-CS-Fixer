@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Symfony;
+namespace PhpCsFixer\Tests\Fixer\Symfony;
 
-use Symfony\CS\Fixer\Symfony\NoUnneededControlParenthesesFixer;
-use Symfony\CS\Test\AbstractFixerTestCase;
+use PhpCsFixer\Fixer\Symfony\NoUnneededControlParenthesesFixer;
+use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>

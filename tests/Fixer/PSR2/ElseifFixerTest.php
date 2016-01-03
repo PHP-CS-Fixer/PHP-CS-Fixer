@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\PSR2;
+namespace PhpCsFixer\Tests\Fixer\PSR2;
 
-use Symfony\CS\Test\AbstractFixerTestCase;
+use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
@@ -21,7 +21,7 @@ use Symfony\CS\Test\AbstractFixerTestCase;
 final class ElseifFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @covers Symfony\CS\Fixer\PSR2\ElseifFixer::fix
+     * @covers PhpCsFixer\Fixer\PSR2\ElseifFixer::fix
      */
     public function testThatInvalidElseIfIsFixed()
     {

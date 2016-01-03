@@ -9,8 +9,20 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Console\Command;
+namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\Config;
+use PhpCsFixer\ConfigInterface;
+use PhpCsFixer\Console\ConfigurationResolver;
+use PhpCsFixer\Console\Output\ProcessOutput;
+use PhpCsFixer\Error\Error;
+use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\Fixer;
+use PhpCsFixer\FixerFactory;
+use PhpCsFixer\FixerInterface;
+use PhpCsFixer\Linter\Linter;
+use PhpCsFixer\Linter\UnavailableLinterException;
+use PhpCsFixer\RuleSet;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,18 +31,6 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Stopwatch\Stopwatch;
-use Symfony\CS\Config;
-use Symfony\CS\ConfigInterface;
-use Symfony\CS\Console\ConfigurationResolver;
-use Symfony\CS\Console\Output\ProcessOutput;
-use Symfony\CS\Error\Error;
-use Symfony\CS\Error\ErrorsManager;
-use Symfony\CS\Fixer;
-use Symfony\CS\FixerFactory;
-use Symfony\CS\FixerInterface;
-use Symfony\CS\Linter\Linter;
-use Symfony\CS\Linter\UnavailableLinterException;
-use Symfony\CS\RuleSet;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -171,7 +171,7 @@ fixed but without actually modifying them:
 
 Instead of using command line options to customize the fixer, you can save the
 project configuration in a <comment>.php_cs.dist</comment> file in the root directory
-of your project. The file must return an instance of ``Symfony\CS\ConfigInterface``,
+of your project. The file must return an instance of ``PhpCsFixer\ConfigInterface``,
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create <comment>.php_cs</comment> file, which is
 the local configuration that will be used instead of the project configuration. It
@@ -183,12 +183,12 @@ The example below will add two fixers to the default list of PSR2 set fixers:
 
     <?php
 
-    \$finder = Symfony\CS\Finder::create()
+    \$finder = PhpCsFixer\Finder::create()
         ->exclude('somedir')
         ->in(__DIR__)
     ;
 
-    return Symfony\CS\Config::create()
+    return PhpCsFixer\Config::create()
         ->setRules(array(
             '@PSR2' => true,
             'strict_param' => true,
@@ -204,12 +204,12 @@ The following example shows how to use all ``Symfony`` Fixers but the ``full_ope
 
     <?php
 
-    \$finder = Symfony\CS\Finder::create()
+    \$finder = PhpCsFixer\Finder::create()
         ->exclude('somedir')
         ->in(__DIR__)
     ;
 
-    return Symfony\CS\Config::create()
+    return PhpCsFixer\Config::create()
         ->setRules(array(
             '@Symfony' => true,
             'full_opening_tag' => false,
@@ -235,7 +235,7 @@ Cache can be disabled via ``--using-cache`` option or config file:
 
     <?php
 
-    return Symfony\CS\Config::create()
+    return PhpCsFixer\Config::create()
         ->setUsingCache(false)
     ;
 
@@ -245,7 +245,7 @@ Cache file can be specified via ``--cache-file`` option or config file:
 
     <?php
 
-    return Symfony\CS\Config::create()
+    return PhpCsFixer\Config::create()
         ->setCacheFile(__DIR__.'/.php_cs.cache')
     ;
 

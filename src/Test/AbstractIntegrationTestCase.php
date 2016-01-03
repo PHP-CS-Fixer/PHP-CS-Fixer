@@ -9,16 +9,16 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Test;
+namespace PhpCsFixer\Test;
 
+use PhpCsFixer\Error\Error;
+use PhpCsFixer\FileCacheManager;
+use PhpCsFixer\Fixer;
+use PhpCsFixer\FixerInterface;
+use PhpCsFixer\Linter\Linter;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\CS\Error\Error;
-use Symfony\CS\FileCacheManager;
-use Symfony\CS\Fixer;
-use Symfony\CS\FixerInterface;
-use Symfony\CS\Linter\Linter;
 
 /**
  * Integration test base class.

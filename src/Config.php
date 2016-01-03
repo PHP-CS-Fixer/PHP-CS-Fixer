@@ -9,12 +9,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS;
+namespace PhpCsFixer;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
- * @author Dariusz Rumiñski <dariusz.ruminski@gmail.com>
+ * @author Dariusz RumiÃ±ski <dariusz.ruminski@gmail.com>
  */
 class Config implements ConfigInterface
 {

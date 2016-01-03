@@ -9,12 +9,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Console;
+namespace PhpCsFixer\Tests\Console;
 
-use Symfony\CS\Config;
-use Symfony\CS\Console\ConfigurationResolver;
-use Symfony\CS\Fixer;
-use Symfony\CS\Test\AccessibleObject;
+use PhpCsFixer\Config;
+use PhpCsFixer\Console\ConfigurationResolver;
+use PhpCsFixer\Fixer;
+use PhpCsFixer\Test\AccessibleObject;
 
 /**
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
@@ -56,7 +56,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException              \Symfony\CS\ConfigurationException\InvalidConfigurationException
+     * @expectedException              \PhpCsFixer\ConfigurationException\InvalidConfigurationException
      * @expectedExceptionMessageRegExp /^Unknown option name: "foo"\.$/
      */
     public function testSetOptionWithUndefinedOption()
@@ -148,7 +148,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->resolve();
 
         $this->assertNull($this->resolver->getConfigFile());
-        $this->assertInstanceOf('\\Symfony\\CS\\ConfigInterface', $this->resolver->getConfig());
+        $this->assertInstanceOf('\\PhpCsFixer\\ConfigInterface', $this->resolver->getConfig());
     }
 
     public function testResolveConfigFileByPathOfFile()
@@ -212,8 +212,8 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException              \Symfony\CS\ConfigurationException\InvalidConfigurationException
-     * @expectedExceptionMessageRegExp /^The config file: ".+[\/\\]Fixtures[\/\\]ConfigurationResolverConfigFile[\/\\]case_5[\/\\].php_cs.dist" does not return a "Symfony\\CS\\ConfigInterface" instance\. Got: "string"\.$/
+     * @expectedException              \PhpCsFixer\ConfigurationException\InvalidConfigurationException
+     * @expectedExceptionMessageRegExp /^The config file: ".+[\/\\]Fixtures[\/\\]ConfigurationResolverConfigFile[\/\\]case_5[\/\\].php_cs.dist" does not return a "PhpCsFixer\\ConfigInterface" instance\. Got: "string"\.$/
      */
     public function testResolveConfigFileChooseFileWithInvalidFile()
     {

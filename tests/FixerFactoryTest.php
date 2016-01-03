@@ -9,13 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests;
+namespace PhpCsFixer\Tests;
 
-use Symfony\CS\Fixer\Contrib\Psr0Fixer;
-use Symfony\CS\FixerFactory;
-use Symfony\CS\FixerInterface;
-use Symfony\CS\RuleSet;
-use Symfony\CS\Test\AccessibleObject;
+use PhpCsFixer\Fixer\Contrib\Psr0Fixer;
+use PhpCsFixer\FixerFactory;
+use PhpCsFixer\FixerInterface;
+use PhpCsFixer\RuleSet;
+use PhpCsFixer\Test\AccessibleObject;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -39,28 +39,28 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $testInstance = $factory->registerFixer($mock);
         $this->assertSame($factory, $testInstance);
 
-        $mock = $this->getMock('Symfony\CS\RuleSetInterface');
+        $mock = $this->getMock('PhpCsFixer\RuleSetInterface');
         $mock->expects($this->any())->method('getRules')->willReturn(array());
         $testInstance = $factory->useRuleSet($mock);
         $this->assertSame($factory, $testInstance);
 
-        $mock = $this->getMock('Symfony\CS\ConfigInterface');
+        $mock = $this->getMock('PhpCsFixer\ConfigInterface');
         $testInstance = $factory->attachConfig($mock);
         $this->assertSame($factory, $testInstance);
     }
 
     /**
-     * @covers Symfony\CS\FixerFactory::create
+     * @covers PhpCsFixer\FixerFactory::create
      */
     public function testCreate()
     {
         $factory = FixerFactory::create();
 
-        $this->assertInstanceOf('Symfony\CS\FixerFactory', $factory);
+        $this->assertInstanceOf('PhpCsFixer\FixerFactory', $factory);
     }
 
     /**
-     * @covers Symfony\CS\FixerFactory::registerBuiltInFixers
+     * @covers PhpCsFixer\FixerFactory::registerBuiltInFixers
      */
     public function testRegisterBuiltInFixers()
     {
@@ -71,7 +71,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\FixerFactory::attachConfig
+     * @covers PhpCsFixer\FixerFactory::attachConfig
      */
     public function testMethodAttachConfig()
     {
@@ -80,7 +80,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $fixer = new Psr0Fixer();
         $factory->registerFixer($fixer);
 
-        $mock = $this->getMock('Symfony\CS\ConfigInterface');
+        $mock = $this->getMock('PhpCsFixer\ConfigInterface');
         $testInstance = $factory->attachConfig($mock);
         $property = AccessibleObject::create($fixer)->config;
 
@@ -88,8 +88,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\FixerFactory::getFixers
-     * @covers Symfony\CS\FixerFactory::sortFixers
+     * @covers PhpCsFixer\FixerFactory::getFixers
+     * @covers PhpCsFixer\FixerFactory::sortFixers
      */
     public function testThatFixersAreSorted()
     {
@@ -110,9 +110,9 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\FixerFactory::getFixers
-     * @covers Symfony\CS\FixerFactory::registerCustomFixers
-     * @covers Symfony\CS\FixerFactory::registerFixer
+     * @covers PhpCsFixer\FixerFactory::getFixers
+     * @covers PhpCsFixer\FixerFactory::registerCustomFixers
+     * @covers PhpCsFixer\FixerFactory::registerFixer
      */
     public function testThatCanRegisterAndGetFixers()
     {
@@ -131,7 +131,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\FixerFactory::registerFixer
+     * @covers PhpCsFixer\FixerFactory::registerFixer
      * @expectedException        \UnexpectedValueException
      * @expectedExceptionMessage Fixer named "non_unique_name" is already registered.
      */
@@ -146,7 +146,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\FixerFactory::useRuleSet
+     * @covers PhpCsFixer\FixerFactory::useRuleSet
      */
     public function testUseRuleSet()
     {
@@ -166,7 +166,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\FixerFactory::useRuleSet
+     * @covers PhpCsFixer\FixerFactory::useRuleSet
      * @expectedException        \UnexpectedValueException
      * @expectedExceptionMessage Rule "non_existing_rule" does not exist.
      */
@@ -324,7 +324,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
     private function createFixerMock($name, $priority = 0)
     {
-        $fixer = $this->getMock('Symfony\CS\FixerInterface');
+        $fixer = $this->getMock('PhpCsFixer\FixerInterface');
         $fixer->expects($this->any())->method('getName')->willReturn($name);
         $fixer->expects($this->any())->method('getPriority')->willReturn($priority);
 

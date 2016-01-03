@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Test;
+namespace PhpCsFixer\Test;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

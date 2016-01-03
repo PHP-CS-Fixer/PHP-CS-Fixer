@@ -9,7 +9,7 @@ This source file is subject to the MIT license that is bundled
 with this source code in the file LICENSE.
 EOF;
 
-return Symfony\CS\Config::create()
+return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules(array(
         '@Symfony' => true,
@@ -22,7 +22,7 @@ return Symfony\CS\Config::create()
         'strict_param' => true,
     ))
     ->finder(
-        Symfony\CS\Finder::create()
+        PhpCsFixer\Finder::create()
             ->exclude('tests/Fixtures')
             ->in(__DIR__)
     )

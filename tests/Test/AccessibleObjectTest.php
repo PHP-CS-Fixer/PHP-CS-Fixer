@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Test;
+namespace PhpCsFixer\Tests\Test;
 
-use Symfony\CS\Test\AccessibleObject;
-use Symfony\CS\Tests\Fixtures\Test\AccessibleObjectTest\DummyClass;
+use PhpCsFixer\Test\AccessibleObject;
+use PhpCsFixer\Tests\Fixtures\Test\AccessibleObjectTest\DummyClass;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -32,7 +32,7 @@ final class AccessibleObjectTest extends \PHPUnit_Framework_TestCase
     {
         $object = AccessibleObject::create(new \stdClass());
 
-        $this->assertInstanceOf('Symfony\CS\Test\AccessibleObject', $object);
+        $this->assertInstanceOf('PhpCsFixer\Test\AccessibleObject', $object);
     }
 
     public function testGet()
