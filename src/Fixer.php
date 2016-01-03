@@ -144,13 +144,15 @@ class Fixer
                 continue;
             }
 
-            $this->stopwatch->start($this->getFileRelativePathname($file));
+            $name = $this->getFileRelativePathname($file);
+
+            $this->stopwatch->start($name);
 
             if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff, $fileCacheManager)) {
-                $changed[$this->getFileRelativePathname($file)] = $fixInfo;
+                $changed[$name] = $fixInfo;
             }
 
-            $this->stopwatch->stop($this->getFileRelativePathname($file));
+            $this->stopwatch->stop($name);
         }
 
         $this->stopwatch->stopSection('fixFile');
@@ -162,9 +164,11 @@ class Fixer
     {
         $new = $old = file_get_contents($file->getRealPath());
 
+        $name = $this->getFileRelativePathname($file);
+
         if (
             '' === $old
-            || !$fileCacheManager->needFixing($this->getFileRelativePathname($file), $old)
+            || !$fileCacheManager->needFixing($name, $old)
             // PHP 5.3 has a broken implementation of token_get_all when the file uses __halt_compiler() starting in 5.3.6
             || (PHP_VERSION_ID >= 50306 && PHP_VERSION_ID < 50400 && false !== stripos($old, '__halt_compiler()'))
         ) {
@@ -184,10 +188,7 @@ class Fixer
                 FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
             );
 
-            $this->errorsManager->report(new Error(
-                Error::TYPE_INVALID,
-                $this->getFileRelativePathname($file)
-            ));
+            $this->errorsManager->report(new Error(Error::TYPE_INVALID, $name));
 
             return;
         }
@@ -220,10 +221,7 @@ class Fixer
                 FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)
             );
 
-            $this->errorsManager->report(new Error(
-                Error::TYPE_EXCEPTION,
-                $this->getFileRelativePathname($file)
-            ));
+            $this->errorsManager->report(new Error(Error::TYPE_EXCEPTION, $name));
 
             return;
         }
@@ -248,10 +246,7 @@ class Fixer
                     FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
                 );
 
-                $this->errorsManager->report(new Error(
-                    Error::TYPE_LINT,
-                    $this->getFileRelativePathname($file)
-                ));
+                $this->errorsManager->report(new Error(Error::TYPE_LINT, $name));
 
                 return;
             }
@@ -271,7 +266,7 @@ class Fixer
             }
         }
 
-        $fileCacheManager->setFile($this->getFileRelativePathname($file), $new);
+        $fileCacheManager->setFile($name, $new);
 
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,
