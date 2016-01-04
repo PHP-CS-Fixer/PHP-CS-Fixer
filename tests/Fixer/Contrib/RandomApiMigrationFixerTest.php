@@ -40,13 +40,12 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     {
         $this->getFixer()->configure(array('rand' => 'random_int'));
 
-        /* @var $aliases string[] */
+        /** @var $replacements string[] */
         $replacements = static::getStaticAttribute('\Symfony\CS\Fixer\Contrib\RandomApiMigrationFixer', 'replacements');
         static::assertSame($replacements['rand'], 'random_int');
     }
 
     /**
-     * @depends testConfigure
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
