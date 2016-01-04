@@ -20,24 +20,12 @@ use Symfony\CS\Test\AbstractFixerTestCase;
  */
 final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 {
-    public function testConfigure()
-    {
-        $fixer = $this->getFixer();
-        $fixer->configure(array('rand' => 'random_int'));
-
-        $replacements = static::getStaticAttribute('\Symfony\CS\Fixer\Contrib\RandomApiMigrationFixer', 'replacements');
-        $fixer->configure(array('rand' => 'mt_rand'));
-
-        $this->assertSame($replacements['rand'], 'random_int');
-    }
-
     /**
      * @expectedException \UnexpectedValueException
      */
     public function testConfigureCheckSearchFunction()
     {
-        $fixer = $this->getFixer();
-        $fixer->configure(array('is_null' => 'random_int'));
+        $this->getFixer()->configure(array('is_null' => 'random_int'));
     }
 
     /**
@@ -45,8 +33,16 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
      */
     public function testConfigureCheckReplacementType()
     {
-        $fixer = $this->getFixer();
-        $fixer->configure(array('rand' => null));
+        $this->getFixer()->configure(array('rand' => null));
+    }
+
+    public function testConfigure()
+    {
+        $this->getFixer()->configure(array('rand' => 'random_int'));
+
+        /* @var $aliases string[] */
+        $replacements = static::getStaticAttribute('\Symfony\CS\Fixer\Contrib\RandomApiMigrationFixer', 'replacements');
+        static::assertSame($replacements['rand'], 'random_int');
     }
 
     /**
@@ -58,6 +54,9 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return array[]
+     */
     public function provideCases()
     {
         $cases = array(
@@ -100,8 +99,10 @@ const srand = "srand"
             array('<?php /* foo */ mt_srand /** bar */ ($a);', '<?php /* foo */ srand /** bar */ ($a);'),
             array('<?php a(mt_srand());', '<?php a(srand());'),
             array('<?php a(\\mt_srand());', '<?php a(\\srand());'),
-            array('<?php mt_rand(mt_rand($a));', '<?php rand(rand($a));'),
-            array('<?php mt_rand(\Other\Scope\mt_rand($a));', '<?php rand(\Other\Scope\mt_rand($a));'),
+
+            // test cases for overridden configuration
+            array('<?php random_int(random_int($a));', '<?php rand(rand($a));'),
+            array('<?php random_int(\Other\Scope\mt_rand($a));', '<?php rand(\Other\Scope\mt_rand($a));'),
         );
 
         return $cases;
