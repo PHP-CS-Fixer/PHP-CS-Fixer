@@ -22,7 +22,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 {
     /**
      * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage "is_null" is not handled by the fixer
+     * @expectedExceptionMessage [random_api_migration] "is_null" is not handled by the fixer.
      */
     public function testConfigureCheckSearchFunction()
     {
@@ -31,7 +31,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 
     /**
      * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage Expected string got "NULL"
+     * @expectedExceptionMessage [random_api_migration] Expected string got "NULL".
      */
     public function testConfigureCheckReplacementType()
     {
