@@ -38,10 +38,11 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
         if (null !== $customReplacements) {
             foreach ($customReplacements as $pattern => $replacement) {
                 if (!array_key_exists($pattern, self::$replacements)) {
-                    throw new InvalidFixerConfigurationException($this->getName(), sprintf('"%s" is not handled by the fixer', $pattern));
+                    throw new InvalidFixerConfigurationException($this->getName(), sprintf('"%s" is not handled by the fixer.', $pattern));
                 }
+
                 if (!is_string($replacement)) {
-                    throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected string got "%s"', gettype($replacement)));
+                    throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected string got "%s".', is_object($replacement) ? get_class($replacement) : gettype($replacement)));
                 }
 
                 self::$replacements[$pattern] = $replacement;
@@ -71,6 +72,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
                     // next function search, as current one not found
                     continue 2;
                 }
+
                 list($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
 
                 // analysing cursor shift, so nested calls could be processed

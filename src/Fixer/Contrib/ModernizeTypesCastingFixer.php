@@ -52,6 +52,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                     // next function search, as current one not found
                     continue 2;
                 }
+
                 list($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
 
                 // analysing cursor shift
@@ -73,6 +74,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                         ++$countParamTokens;
                     }
                 }
+
                 $preserveParenthesises = $countParamTokens > 1;
 
                 // analyse namespace specification (root one or none) and decide what to do
@@ -101,6 +103,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                     // we'll need to provide a space after a casting operator
                     $tokens->removeTrailingWhitespace($functionName);
                 }
+
                 $tokens->overrideRange($functionName, $functionName, $replacementSequence);
 
                 // nested transformations support
