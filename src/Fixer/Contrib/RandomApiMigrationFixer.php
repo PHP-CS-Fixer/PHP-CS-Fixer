@@ -12,6 +12,7 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFunctionReferenceFixer;
+use Symfony\CS\ConfigurationException\InvalidFixerConfigurationException;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -36,10 +37,10 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
         if (null !== $customReplacements) {
             foreach ($customReplacements as $pattern => $replacement) {
                 if (!array_key_exists($pattern, self::$replacements)) {
-                    throw new \UnexpectedValueException(sprintf('"%s" is not handled by the fixer', $pattern));
+                    throw new InvalidFixerConfigurationException($this->getName(), sprintf('"%s" is not handled by the fixer', $pattern));
                 }
                 if (!is_string($replacement)) {
-                    throw new \InvalidArgumentException(sprintf('Expected string got "%s"', gettype($replacement)));
+                    throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected string got "%s"', gettype($replacement)));
                 }
 
                 self::$replacements[$pattern] = $replacement;

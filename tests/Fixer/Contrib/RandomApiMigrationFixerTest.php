@@ -21,7 +21,7 @@ use Symfony\CS\Test\AbstractFixerTestCase;
 final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @expectedException \UnexpectedValueException
+     * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
      */
     public function testConfigureCheckSearchFunction()
     {
@@ -29,7 +29,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
      */
     public function testConfigureCheckReplacementType()
     {
