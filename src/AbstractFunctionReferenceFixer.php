@@ -104,7 +104,6 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
 
         $argumentsCount = 1;
         for ($paramContentIndex = $openParenthesis + 1; $paramContentIndex < $closeParenthesis; ++$paramContentIndex) {
-            /* @var \Symfony\CS\Tokenizer\Token $token */
             $token = $tokens[$paramContentIndex];
 
             // skip nested (), [], {} constructs
