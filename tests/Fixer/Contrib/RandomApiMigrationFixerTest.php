@@ -22,6 +22,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 {
     /**
      * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessage "is_null" is not handled by the fixer
      */
     public function testConfigureCheckSearchFunction()
     {
@@ -30,6 +31,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 
     /**
      * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessage Expected string got "NULL"
      */
     public function testConfigureCheckReplacementType()
     {
@@ -88,7 +90,7 @@ public function srand($srand)
 }
 
 class srand extends SrandClass{
-const srand = "srand"
+    const srand = "srand"
 }
 ', ),
             array('<?php mt_srand($a);', '<?php srand($a);'),
