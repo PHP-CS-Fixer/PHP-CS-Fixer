@@ -34,14 +34,6 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
                 switch ($a) {
-                    case "prod":
-                        break;
-                }
-                ',
-            ),
-            array(
-                '<?php
-                switch ($a) {
                     case 42:
                         break;
                 }
@@ -271,6 +263,34 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestBase
                     }
                 }
                 ',
+                array(
+                    '<?php
+                    switch ($a) {
+                        case 42:
+                            break;
+                        case 1:
+                            switch ($a) {
+                                case 42:
+                                    break;
+                                default:
+                                    echo 1   ;
+                            }
+                    }
+                    ',
+                    '<?php
+                    switch ($a) {
+                        case 42   :
+                            break;
+                        case 1    :
+                            switch ($a) {
+                                case 42   :
+                                    break;
+                                default :
+                                    echo 1   ;
+                            }
+                    }
+                    ',
+                ),
             ),
         );
     }

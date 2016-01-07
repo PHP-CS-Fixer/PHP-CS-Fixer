@@ -284,6 +284,10 @@ Choose from the list of available fixers:
                         one blank line after the use
                         statements block.
 
+* **switch_case_semicolon_to_colon** [PSR-2]
+                        A case should be followed by a
+                        colon and not a semicolon.
+
 * **switch_case_space** [PSR-2]
                         Removes extra spaces between
                         colon and case value.
