@@ -26,6 +26,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
+            // test if we are at a function all
             if (!$tokens[$index]->isGivenKind(T_STRING)) {
                 continue;
             }
@@ -41,6 +42,12 @@ final class NativeFunctionCasingFixer extends AbstractFixer
                 continue;
             }
 
+            // do not though the function call if it is to a function in a namespace other than the default
+            if ($tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR) && $tokens[$tokens->getPrevMeaningfulToken($functionNamePrefix)]->isGivenKind(T_STRING)) {
+                continue;
+            }
+
+            // test if the function call is to a native PHP function
             static $nativeFunctionNames = null;
             if (null === $nativeFunctionNames) {
                 $nativeFunctionNames = $this->getNativeFunctionNames();
