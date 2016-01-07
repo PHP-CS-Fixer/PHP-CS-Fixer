@@ -93,6 +93,30 @@ class NativeFunctionCasingFixerTest extends AbstractFixerTestBase
                     $a->STRTOLOWER();
                 ',
             ),
+            array(
+                '<?php
+                namespace Bar {
+                    function strlen($str) {
+                        return "overriden" . \strlen($str);
+                    }
+
+                    echo strlen("foo");
+                }',
+            ),
+            array(
+                '<?php
+                namespace Bar {
+                    function strlen($str) {
+                        return "overriden" . \strlen($str);
+                    }
+                }
+
+                namespace {
+                    echo \strlen("aaaaa");
+                    echo "\n";
+                    echo \Bar\strlen("xxx");
+                }',
+            ),
         );
     }
 }
