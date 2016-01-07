@@ -615,6 +615,11 @@ Choose from the list of available fixers:
                         closing semicolon are
                         prohibited.
 
+* **native_function_casing** [contrib]
+                        Function defined by PHP should
+                        be called using the correct
+                        casing.
+
 * **newline_after_open_tag** [contrib]
                         Ensure there is no code on the
                         same line as the PHP open tag.
