@@ -360,7 +360,7 @@ Choose from the list of available fixers:
                         Remove trailing commas in list
                         function calls.
 
-* **lower_case_cast** [symfony]
+* **lowercase_cast** [symfony]
                         Cast should be written in
                         lower case.
 
