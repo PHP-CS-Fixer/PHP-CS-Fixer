@@ -499,13 +499,6 @@ Choose from the list of available fixers:
                         An empty line feed should
                         precede a return statement.
 
-* **scalar_cast** [symfony]
-                        Cast "(boolean)" and
-                        "(integer)" should be written
-                        as "(bool)" and "(int)".
-                        "(double)" and "(real)" as
-                        "(float)".
-
 * **self_accessor** [symfony]
                         Inside a classy element "self"
                         should be preferred to the
@@ -515,6 +508,13 @@ Choose from the list of available fixers:
                         Short cast bool using double
                         exclamation mark should not be
                         used.
+
+* **short_scalar_cast** [symfony]
+                        Cast "(boolean)" and
+                        "(integer)" should be written
+                        as "(bool)" and "(int)".
+                        "(double)" and "(real)" as
+                        "(float)".
 
 * **single_array_no_trailing_comma** [symfony]
                         PHP single-line arrays should

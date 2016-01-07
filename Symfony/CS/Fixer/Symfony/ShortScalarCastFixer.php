@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author SpacePossum
  */
-final class ScalarCastFixer extends AbstractFixer
+final class ShortScalarCastFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

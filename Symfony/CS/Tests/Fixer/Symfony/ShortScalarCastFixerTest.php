@@ -18,7 +18,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  *
  * @internal
  */
-final class ScalarCastFixerTest extends AbstractFixerTestBase
+final class ShortScalarCastFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideFixCases
