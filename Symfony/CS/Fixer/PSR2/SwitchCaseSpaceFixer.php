@@ -38,7 +38,7 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
                     ++$ternariesCount;
                 }
 
-                if ($tokens[$colonIndex]->equals(':') || $tokens[$colonIndex]->equals(';')) {
+                if ($tokens[$colonIndex]->equalsAny(array(':', ';'), false)) {
                     if (0 === $ternariesCount) {
                         break;
                     }
