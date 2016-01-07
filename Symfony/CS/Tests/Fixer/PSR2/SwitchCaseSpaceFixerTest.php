@@ -294,7 +294,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestBase
                         case 1  ;
                         case 2 ;
                             return 1;
-                        default;
+                        default ;
                             return 2;
                 }',
             ),
