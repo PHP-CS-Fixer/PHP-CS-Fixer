@@ -69,26 +69,33 @@ class NativeFunctionCasingFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-                    echo \numfmt_format("hello 4");
+                    echo \sqrt(4);
                 ',
                 '<?php
-                    echo \NUMFMT_format("hello 4");
-                ',
-            ),
-            array(
-                '<?php
-                    echo "1".\numfmt_format("hello 5");
-                ',
-                '<?php
-                    echo "1".\numfmt_FORMAT("hello 5");
+                    echo \sQrT(4);
                 ',
             ),
             array(
                 '<?php
-                    public function gettype()
+                    echo "1".\sqrt("hello 5");
+                ',
+                '<?php
+                    echo "1".\SQRT("hello 5");
+                ',
+            ),
+            array(
+                '<?php
+                    class Test{
+                        public function gettypE()
+                        {
+                            return 1;
+                        }
+                    }
+
+                    function sqrT($a)
                     {
-                        return 1;
-                    }',
+                    }
+                ',
             ),
             array(
                 '<?php
