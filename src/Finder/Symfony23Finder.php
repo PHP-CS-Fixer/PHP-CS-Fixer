@@ -16,6 +16,16 @@ namespace Symfony\CS\Finder;
  */
 class Symfony23Finder extends DefaultFinder
 {
+    public function __construct()
+    {
+        @trigger_error(
+            sprintf('The "%s" class is deprecated. You should stop using it, as it will soon be removed in 2.0 version.', __CLASS__),
+            E_USER_DEPRECATED
+        );
+
+        parent::__construct();
+    }
+
     protected function getDirs($dir)
     {
         return array($dir.'/src');
