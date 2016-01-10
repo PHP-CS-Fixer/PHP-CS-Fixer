@@ -41,7 +41,7 @@ class DuplicateSemicolonFixer extends AbstractFixer
                 continue;
             }
 
-            $prevIndex = $tokens->getPrevNonWhitespace($index);
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
             if (!$tokens[$prevIndex]->equals(';')) {
                 continue;
