@@ -23,6 +23,7 @@ return Symfony\CS\Config::create()
         'strict',
         'strict_param',
         'no_useless_return',
+        'combine_consecutive_unsets',
     ))
     ->finder(
         Symfony\CS\Finder::create()

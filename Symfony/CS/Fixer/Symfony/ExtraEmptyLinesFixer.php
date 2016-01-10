@@ -70,7 +70,7 @@ class ExtraEmptyLinesFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run after the UnusedUseFixer, DuplicateSemicolonFixer and NoEmptyPhpdocFixer.
+        // should be run after the UnusedUseFixer, DuplicateSemicolonFixer, NoEmptyPhpdocFixer and CombineConsecutiveUnsetsFixer.
         return -20;
     }
 }
