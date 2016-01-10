@@ -1,0 +1,12 @@
+--TEST--
+Integration of fixers: duplicate_semicolon,combine_consecutive_unsets.
+--CONFIG--
+level=none
+fixers=duplicate_semicolon,combine_consecutive_unsets
+--EXPECT--
+<?php
+unset($a, $b);
+
+--INPUT--
+<?php
+unset($a);;unset($b);
