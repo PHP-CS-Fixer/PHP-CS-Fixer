@@ -32,9 +32,11 @@ class DuplicateSemicolonFixerTest extends AbstractFixerTestBase
             array(
                 '<?php $foo = 2 ; //
 
+
                 ',
                 '<?php $foo = 2 ; //
                     ;
+
                 ',
             ),
             array(
