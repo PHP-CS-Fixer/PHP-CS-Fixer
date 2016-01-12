@@ -415,6 +415,10 @@ Choose from the list of available fixers:
                         There should not be empty
                         PHPDoc blocks.
 
+* **no_empty_statement** [symfony]
+                        Remove useless semicolon
+                        statements.
+
 * **object_operator** [symfony]
                         There should not be space
                         before or after object

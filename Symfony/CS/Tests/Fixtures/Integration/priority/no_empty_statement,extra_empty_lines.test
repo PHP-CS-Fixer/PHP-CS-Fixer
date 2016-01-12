@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: no_empty_statement,extra_empty_lines.
+--CONFIG--
+level=none
+fixers=no_empty_statement,extra_empty_lines
+--EXPECT--
+<?php $foo = 2 ; //
+
+//
+
+--INPUT--
+<?php $foo = 2 ; //
+;
+
+//
