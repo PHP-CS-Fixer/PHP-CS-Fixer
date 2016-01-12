@@ -11,148 +11,27 @@
 
 namespace Symfony\CS\Config;
 
-use Symfony\CS\ConfigInterface;
-use Symfony\CS\Finder\DefaultFinder;
-use Symfony\CS\FinderInterface;
-use Symfony\CS\FixerInterface;
+use Symfony\CS\Config as BaseConfig;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
+ *
+ * @deprecated
  */
-class Config implements ConfigInterface
+class Config extends BaseConfig
 {
-    protected $name;
-    protected $description;
-    protected $finder;
-    protected $level;
-    protected $fixers;
-    protected $dir;
-    protected $customFixers;
-    protected $usingCache = false;
-    protected $usingLinter = true;
-    protected $hideProgress = false;
-
-    public function __construct($name = 'default', $description = 'A default configuration')
+    public function __construct()
     {
-        $this->name = $name;
-        $this->description = $description;
-        $this->level = FixerInterface::SYMFONY_LEVEL;
-        $this->fixers = array();
-        $this->finder = new DefaultFinder();
-        $this->customFixers = array();
-    }
+        @trigger_error(
+            sprintf(
+                'The "%s" class is deprecated. You should stop using it, as it will soon be removed in 2.0 version. Use "%s" instead.',
+                __CLASS__,
+                'Symfony\CS\Config'
+            ),
+            E_USER_DEPRECATED
+        );
 
-    public static function create()
-    {
-        return new static();
-    }
-
-    public function setDir($dir)
-    {
-        $this->dir = $dir;
-    }
-
-    public function setUsingCache($usingCache)
-    {
-        $this->usingCache = $usingCache;
-
-        return $this;
-    }
-
-    public function setUsingLinter($usingLinter)
-    {
-        $this->usingLinter = $usingLinter;
-
-        return $this;
-    }
-
-    public function getDir()
-    {
-        return $this->dir;
-    }
-
-    public function finder(\Traversable $finder)
-    {
-        $this->finder = $finder;
-
-        return $this;
-    }
-
-    public function getFinder()
-    {
-        if ($this->finder instanceof FinderInterface && $this->dir !== null) {
-            $this->finder->setDir($this->dir);
-        }
-
-        return $this->finder;
-    }
-
-    public function level($level)
-    {
-        $this->level = $level;
-
-        return $this;
-    }
-
-    public function getLevel()
-    {
-        return $this->level;
-    }
-
-    public function fixers($fixers)
-    {
-        $this->fixers = $fixers;
-
-        return $this;
-    }
-
-    public function getFixers()
-    {
-        return $this->fixers;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    public function getHideProgress()
-    {
-        return $this->hideProgress;
-    }
-
-    public function addCustomFixer(FixerInterface $fixer)
-    {
-        $this->customFixers[] = $fixer;
-
-        return $this;
-    }
-
-    public function getCustomFixers()
-    {
-        return $this->customFixers;
-    }
-
-    public function hideProgress($hideProgress)
-    {
-        $this->hideProgress = $hideProgress;
-
-        return $this;
-    }
-
-    public function usingCache()
-    {
-        return $this->usingCache;
-    }
-
-    public function usingLinter()
-    {
-        return $this->usingLinter;
+        parent::__construct();
     }
 }
