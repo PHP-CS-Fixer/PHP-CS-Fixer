@@ -1,0 +1,63 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-07T15:57:11Z
+
+This should be marked as risky.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-07T16:00:42Z
+
+Could this take adv. from AbstractFunctionReferenceFixer (#31617) ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-07T16:32:01Z
+
+>This should be marked as risky.
+
+Why? Function names (and calling those) is case insensitive
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-07T16:33:43Z
+
+> Why? Function names (and calling those) is case insensitive
+
+Because you might be replacing other functions of the same name that are just namespaced.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-07T16:37:04Z
+
+>Could this take adv. from AbstractFunctionReferenceFixer (#31617) ?
+
+Not sure, that code is useful for finding functions by the name of the function, here I do it the other way around; when a function call is found; check if it should be changed.
+
+>Because you might be replacing other functions of the same name that are just namespaced.
+
+that still wouldn't break the code?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-07T16:40:37Z
+
+@SpacePossum check this out:
+https://3v4l.org/ZJL1L
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-01-07T16:44:24Z
+
+I agree with @SpacePossum that it would not change code behavior.
+But maybe there would be undesired changes anyway.
+
+But is it "risky"?
+
+---------------------------------------------------------------------------
+
+by stof at 2016-01-07T16:45:01Z
+
+> Because you might be replacing other functions of the same name that are just namespaced.
+
+even these are case insensitive
