@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-07T21:59:10Z
+
+a minimal case with nested switches would be great
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-10T13:18:50Z
+
+~~also needs an integration test, this fixer should run after `DuplicateSemicolonFixer`~~
+done
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-10T13:42:00Z
+
+>a minimal case with nested switches would be great
+
+:+1:  Done :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-10T21:02:09Z
+
+:+1: (after that one minor comment)
