@@ -1,0 +1,54 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-11T16:06:10Z
+
+I've a hard time trying to figure out why the coverage is reported as being down.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-11T16:16:45Z
+
+> Coverage decreased (-0.01%) to 88.587%
+
+This one? Ignore it, it's a measurement error.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-11T16:44:48Z
+
+I see, the test first failed but now its green :)
+Btw. I'm planning to add more logic to this fixer on the master line to remove semicolons after close braces of control structures as well. I think it would be better to rename it to UseSemiColonFixer than, any thoughts?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-11T17:11:39Z
+
+`;;` and `if (1) {};` are 2 different cases.
+Add new fixer on 1.x line
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-01-11T17:18:48Z
+
+IMO it should be one fixer, that removes empty statements (`/*nothing*/;`).
+It does not matter what kind of statement is before the empty statement (ending with `;` or `}`).
+So I would name it `NoEmptyStatementFixer`.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-01-11T17:20:40Z
+
+So I would also fix this case with the fixer:
+
+```php
+function foo()
+{
+    ;
+}
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-11T17:23:03Z
+
+:+1: for @gharlan
+Please, create complex fixer for 1.x line and send PR to remove trivial one for 2.x line.
