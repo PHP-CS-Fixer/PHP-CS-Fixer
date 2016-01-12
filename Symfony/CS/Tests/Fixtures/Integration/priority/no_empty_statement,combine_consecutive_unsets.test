@@ -1,0 +1,12 @@
+--TEST--
+Integration of fixers: no_empty_statement,combine_consecutive_unsets.
+--CONFIG--
+level=none
+fixers=no_empty_statement,combine_consecutive_unsets
+--EXPECT--
+<?php
+unset($a, $b);
+
+--INPUT--
+<?php
+unset($a);;;unset($b);
