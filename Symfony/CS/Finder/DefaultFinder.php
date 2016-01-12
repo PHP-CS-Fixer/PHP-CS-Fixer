@@ -32,5 +32,10 @@ class DefaultFinder extends BaseFinder
         );
 
         parent::__construct();
+
+        $this
+            ->name('*.xml')
+            ->name('*.yml')
+        ;
     }
 }
