@@ -24,7 +24,14 @@ final class NativeFunctionCasingFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, $content)
     {
+        static $nativeFunctionNames = null;
+
+        if (null === $nativeFunctionNames) {
+            $nativeFunctionNames = $this->getNativeFunctionNames();
+        }
+
         $tokens = Tokens::fromCode($content);
+
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
             // test if we are at a function all
             if (!$tokens[$index]->isGivenKind(T_STRING)) {
@@ -43,16 +50,14 @@ final class NativeFunctionCasingFixer extends AbstractFixer
             }
 
             // do not though the function call if it is to a function in a namespace other than the default
-            if ($tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR) && $tokens[$tokens->getPrevMeaningfulToken($functionNamePrefix)]->isGivenKind(T_STRING)) {
+            if (
+                $tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR)
+                && $tokens[$tokens->getPrevMeaningfulToken($functionNamePrefix)]->isGivenKind(T_STRING)
+            ) {
                 continue;
             }
 
             // test if the function call is to a native PHP function
-            static $nativeFunctionNames = null;
-            if (null === $nativeFunctionNames) {
-                $nativeFunctionNames = $this->getNativeFunctionNames();
-            }
-
             $lower = strtolower($tokens[$index]->getContent());
             if (!array_key_exists($lower, $nativeFunctionNames)) {
                 continue;
