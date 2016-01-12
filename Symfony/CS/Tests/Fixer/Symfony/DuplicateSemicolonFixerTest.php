@@ -30,25 +30,53 @@ class DuplicateSemicolonFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
+                '<?php $foo = 2 ; //
+
+
+                ',
+                '<?php $foo = 2 ; //
+                    ;
+
+                ',
+            ),
+            array(
+                '<?php $foo = 3; /**/',
+                '<?php $foo = 3; /**/; ;',
+            ),
+            array(
                 '<?php $foo = 1;',
                 '<?php $foo = 1;;;',
             ),
             array(
-                '<?php $foo = 1;',
-                '<?php $foo = 1;; ;;',
+                '<?php $foo = 4;',
+                '<?php $foo = 4;; ;;',
             ),
             array(
-                '<?php $foo = 1;',
-                '<?php $foo = 1;;
+                '<?php $foo = 5;',
+                '<?php $foo = 5;;
 ;
     ;',
             ),
             array(
-                '<?php $foo = 1; ',
-                '<?php $foo = 1;; ',
+                '<?php $foo = 6; ',
+                '<?php $foo = 6;; ',
             ),
             array(
-                '<?php for ($i = 0; ; ++$i) {}',
+                '<?php for ($i = 7; ; ++$i) {}',
+            ),
+            array(
+                '<?php
+                    switch($a){
+                        case 8;
+                            echo 2;
+                    }
+                ',
+                '<?php
+                    switch($a){
+                        case 8;;
+                            echo 2;
+                    }
+                ',
             ),
         );
     }
