@@ -180,6 +180,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['duplicate_semicolon'], $fixers['spaces_before_semicolon']),
             array($fixers['duplicate_semicolon'], $fixers['multiline_spaces_before_semicolon']),
             array($fixers['duplicate_semicolon'], $fixers['switch_case_semicolon_to_colon']),  // tested also in: duplicate_semicolon,switch_case_semicolon_to_colon.test
+            array($fixers['duplicate_semicolon'], $fixers['extra_empty_lines']), // tested also in: duplicate_semicolon,extra_empty_lines.test
             array($fixers['double_arrow_multiline_whitespaces'], $fixers['multiline_array_trailing_comma']),
             array($fixers['double_arrow_multiline_whitespaces'], $fixers['align_double_arrow']), // tested also in: double_arrow_multiline_whitespaces,align_double_arrow.test
             array($fixers['operators_spaces'], $fixers['align_double_arrow']), // tested also in: align_double_arrow,operators_spaces.test
