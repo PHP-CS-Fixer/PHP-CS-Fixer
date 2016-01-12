@@ -1,0 +1,158 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-07T18:21:14Z
+
+Test request
+
+```php
+            array(<<<'EOF'
+<?php
+$a = <<<TEST
+'
+TEST;
+
+$a = <<<TEST
+\$b = '<<<';
+\$c = <=;
+<<<'"$<<<'"
+TEST;
+EOF
+            ),
+```
+
+```
+1) Symfony\CS\Tests\Fixer\Contrib\HeredocToNowdocFixerTest::testFix with data set #0 ('<?php\n$a = <<<TEST\n'\nTEST;\n\n$...\nTEST;')
+RuntimeException: Index invalid or out of range
+
+/home/possum/work/PHP-CS-Fixer/Symfony/CS/Fixer/Contrib/HeredocToNowdocFixer.php:42
+```
+
+maybe I messed up the test?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-07T18:25:47Z
+
+> maybe I messed up the test?
+
+yes. your code is invalid. it is missing a newline at end of code.
+After end of heredoc/nowdoc there must be a newline (it is possible to put the newline after ";").
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-12-07T18:27:56Z
+
+I see, re-tested, all :+1: thanks!
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-07T18:37:12Z
+
+@stof should I move this fixer to symfony level?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-21T09:09:39Z
+
+ping, anyone else? :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-21T10:54:30Z
+
+> should I move this fixer to symfony level?
+
+Try running it on Symfony and see how many changes are made. If there are very few, or none, then yes. ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T10:55:23Z
+
+If there are few also send a PR for lowest maintained branch
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-21T10:57:58Z
+
+2.3, 2.7, 2.8, 3.0, master are the currently active branches on symfony atm btw. ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T11:00:00Z
+
+yes, and CS fixes go from lowest.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-21T11:01:15Z
+
+Yeh, it does. I do sometimes wonder why they bother with CS on a bug-fix only branch, but meh, they do.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T11:03:30Z
+
+To have diff between branches as little as possible.
+Dont say it is good or not, just it is that way.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-21T11:07:08Z
+
+made a pr for symfony.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-12-21T11:12:33Z
+
+@keradus @GrahamCampbell the goal is to avoid having CS differences between branches, which would cause conflicts each time there is a change near such line which need to be merged into newer branches. We are merging maintained branches into each other on a weekly basis during the whole maintenance time (i.e. 3 years for LTS versions), so we don't want to have useless conflicts each time (which may lead to bad conflict resolution and introducing bugs or losing bug fixes in newer branches, as happened in the past already)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-21T11:13:52Z
+
+Sure. ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-21T11:22:48Z
+
+Cool for me @stof, that is why I asked to send that PR to lowest branch ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-28T18:37:08Z
+
+As one can see in referenced commits - Symfony level
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-28T18:39:27Z
+
+Lol. Reference spam.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-28T18:42:36Z
+
+It was for making sure we won't miss it ;P
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-31T00:14:14Z
+
+> As one can see in referenced commits - Symfony level
+
+done
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-31T00:16:42Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-07T12:10:56Z
+
+:+1:
