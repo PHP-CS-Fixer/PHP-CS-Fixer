@@ -15,13 +15,19 @@ use Symfony\CS\Finder\MagentoFinder;
 
 /**
  * @author Myke Hines <myke@webhines.com>
+ *
+ * @deprecated
  */
 class MagentoConfig extends Config
 {
     public function __construct()
     {
         @trigger_error(
-            sprintf('The "%s" class is deprecated. You should stop using it, as it will soon be removed in 2.0 version.', __CLASS__),
+            sprintf(
+                'The "%s" class is deprecated. You should stop using it, as it will soon be removed in 2.0 version. Use "%s" instead.',
+                __CLASS__,
+                'Symfony\CS\Config'
+            ),
             E_USER_DEPRECATED
         );
 
