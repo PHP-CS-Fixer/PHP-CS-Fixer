@@ -1,0 +1,50 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-07T16:22:14Z
+
+This change is incorrect.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-07T16:22:26Z
+
+PHPUnit 5 doesn't work on php 5.3/5.4/5.5.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-01-07T16:22:53Z
+
+So, `>= 4.x` would be correct?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-07T16:23:13Z
+
+> So, >= 4.x would be correct?
+
+No.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-07T16:23:21Z
+
+"4.x or 5.x" is correct
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-07T16:23:38Z
+
+We don't know that phpunit 7.x or something might move to namespaces and break everything
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-07T16:37:49Z
+
+for now ^4|^5 works
+We already use PHPUnit 5 on Travis: https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/100858474#L164
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-01-10T13:36:43Z
+
+updated
