@@ -69,7 +69,7 @@ class ExtraEmptyLinesFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run after the UnusedUseFixer
+        // should be run after the UnusedUseFixer and DuplicateSemicolonFixer
         return -20;
     }
 }
