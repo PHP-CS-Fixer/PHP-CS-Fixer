@@ -16,6 +16,8 @@ use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
+ * Fixer for rules defined in PSR2 ¶2.2.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class EofEndingFixer extends AbstractFixer

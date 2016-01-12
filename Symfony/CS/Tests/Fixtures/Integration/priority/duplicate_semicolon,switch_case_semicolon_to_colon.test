@@ -1,0 +1,18 @@
+--TEST--
+Integration of fixers: duplicate_semicolon,switch_case_semicolon_to_colon.
+--CONFIG--
+level=none
+fixers=duplicate_semicolon,switch_case_semicolon_to_colon
+--EXPECT--
+<?php
+switch($a) {
+    case 1:
+        echo 2;
+}
+
+--INPUT--
+<?php
+switch($a) {
+    case 1;;
+        echo 2;
+}
