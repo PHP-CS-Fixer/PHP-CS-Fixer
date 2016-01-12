@@ -292,6 +292,32 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestBase
                     ',
                 ),
             ),
+            array(
+                '<?php
+                    switch($foo) {
+                        case 4:  ; ;
+                        case 31 + test(";");  ; ; ;;
+                        case 1 + test(";"); // ;
+                        case (1+2/*;*/);
+                        case 1;
+                        case 2;
+                            return 1;
+                        default;
+                            return 2;
+                }',
+                '<?php
+                    switch($foo) {
+                        case 4  :  ; ;
+                        case 31 + test(";") ;  ; ; ;;
+                        case 1 + test(";") ; // ;
+                        case (1+2/*;*/) ;
+                        case 1  ;
+                        case 2 ;
+                            return 1;
+                        default ;
+                            return 2;
+                }',
+            ),
         );
     }
 }
