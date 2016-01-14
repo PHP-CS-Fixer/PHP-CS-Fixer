@@ -82,4 +82,9 @@ interface ConfigInterface
      * @return FixerInterface[]
      */
     public function getCustomFixers();
+
+    /**
+     * Adds all fixers contained inside the given FixerSuiteInterface.
+     */
+    public function addCustomFixerSuite(FixerSuiteInterface $suite);
 }

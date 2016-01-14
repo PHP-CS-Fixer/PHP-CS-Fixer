@@ -15,6 +15,7 @@ use Symfony\CS\ConfigInterface;
 use Symfony\CS\Finder\DefaultFinder;
 use Symfony\CS\FinderInterface;
 use Symfony\CS\FixerInterface;
+use Symfony\CS\FixerSuiteInterface;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -137,6 +138,15 @@ class Config implements ConfigInterface
     public function getCustomFixers()
     {
         return $this->customFixers;
+    }
+
+    public function addCustomFixerSuite(FixerSuiteInterface $suite)
+    {
+        foreach ($suite->getFixers() as $fixer) {
+            $this->addCustomFixer($fixer);
+        }
+
+        return $this;
     }
 
     public function hideProgress($hideProgress)

@@ -14,6 +14,8 @@ namespace Symfony\CS\Tests\Config;
 use Symfony\Component\Finder\Finder;
 use Symfony\CS\Config\Config;
 use Symfony\CS\Finder\DefaultFinder;
+use Symfony\CS\Fixer\Symfony\ArrayElementNoSpaceBeforeCommaFixer;
+use Symfony\CS\Fixer\Symfony\HeredocToNowdocFixer;
 
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
@@ -54,5 +56,28 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1, count($iterator));
         $iterator->rewind();
         $this->assertSame('somefile.php', $iterator->current()->getFilename());
+    }
+
+    public function testThatFixerSuiteAreLoaded()
+    {
+        $suite = $this->getMockBuilder('Symfony\CS\FixerSuiteInterface')
+            ->getMock()
+        ;
+
+        $fixers = array(
+            new ArrayElementNoSpaceBeforeCommaFixer(),
+            new HeredocToNowdocFixer(),
+        );
+
+        $suite
+            ->method('getFixers')
+            ->willReturn($fixers)
+        ;
+
+        $config = Config::create();
+
+        $config->addCustomFixerSuite($suite);
+
+        $this->assertSame($config->getCustomFixers(), $fixers);
     }
 }
