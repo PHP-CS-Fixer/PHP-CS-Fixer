@@ -287,6 +287,32 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Ensure that on given index is single space whitespace token.
+     *
+     * If there is such a whitespace then it's content will be modified if needed,
+     * if not a new Token will be added.
+     *
+     * @param int $index       index
+     * @param int $indexOffset if there is whitespace at given index this offset will be added to the index on insert
+     *
+     * @return bool if new Token was added
+     */
+    public function ensureSingleWithSpaceAt($index, $indexOffset = 0)
+    {
+        if ($this[$index]->isWhitespace()) {
+            if (!$this[$index]->equals(array(T_WHITESPACE, ' '))) {
+                $this[$index]->setContent(' ');
+            }
+
+            return false;
+        }
+
+        $this->insertAt($index + $indexOffset, new Token(array(T_WHITESPACE, ' ')));
+
+        return true;
+    }
+
+    /**
      * Ensure that on given index is a whitespace with given kind.
      *
      * If there is a whitespace then it's content will be modified.
@@ -940,6 +966,29 @@ class Tokens extends \SplFixedArray
                 !$this[$index - 1]->isGivenKind(T_END_HEREDOC) &&
                 false !== strpos($token->getContent(), "\n")
             ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Return true is the token is has only whitespace before it or is that whitespace itself.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isIndented($index)
+    {
+        $previousNoWhiteAt = $this->getPrevNonWhitespace($index);
+        if (null === $previousNoWhiteAt) {
+            return false;
+        }
+
+        for (--$index; $index >= $previousNoWhiteAt; --$index) {
+            if (substr_count($this[$index]->getContent(), "\n")) {
                 return true;
             }
         }

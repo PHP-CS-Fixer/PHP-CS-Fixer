@@ -12,7 +12,6 @@
 namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
-use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -32,10 +31,8 @@ final class SpacesAfterSemicolonFixer extends AbstractFixer
                 continue;
             }
 
-            if (!$tokens[$index + 1]->isWhitespace()) {
-                $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
-            } elseif (!$tokens[$index + 1]->equals(array(T_WHITESPACE, ' ')) && $tokens[$index + 1]->isWhitespace(array('whitespaces' => " \t"))) {
-                $tokens[$index + 1]->setContent(' ');
+            if (!$tokens->isIndented($index + 2)) {
+                $tokens->ensureSingleWithSpaceAt($index + 1);
             }
         }
 

@@ -42,12 +42,16 @@ class LogicalNotOperatorsWithSpacesFixerTest extends AbstractFixerTestBase
                 '<?php $i = 0; $i--; $foo = !false || ($i && !/* some comment */true);',
             ),
             array(
-                '<?php $i = 0; $i--; $foo = ! false || ($i && !    true);',
+                '<?php $i = 0; $i--; $foo = ! false || ($i && ! true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i && !    true);',
             ),
             array(
-                '<?php $i = 0; $i--; $foo = ! false || ($i &&    !    true);',
+                '<?php $i = 0; $i--; $foo = ! false || ($i && ! true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i &&    !    true);',
+            ),
+            array(
+                '<?php $i = 0; $i--; $foo = ! false || ($i &&
+                ! true);',
             ),
         );
     }

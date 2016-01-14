@@ -49,6 +49,10 @@ class LogicalNotOperatorsWithSuccessorSpaceFixerTest extends AbstractFixerTestBa
                 '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */ true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i && !  /* some comment */ true);',
             ),
+            array(
+                '<?php $i = 0; $i--; $foo = ! false || ($i && !
+                 /* some comment */ true);',
+            ),
         );
     }
 }

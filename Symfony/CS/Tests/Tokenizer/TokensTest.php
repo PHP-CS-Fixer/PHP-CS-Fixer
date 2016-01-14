@@ -11,6 +11,7 @@
 
 namespace Symfony\CS\Tests\Tokenizer;
 
+use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
@@ -1086,5 +1087,101 @@ PHP;
     {
         $this->assertTrue(Tokens::isMethodNameIsMagic('__construct'));
         $this->assertFalse(Tokens::isMethodNameIsMagic('testIsMethodNameIsMagic'));
+    }
+
+    /**
+     * @param string $expected       PHP code after ensuring white space
+     * @param string $input          PHP code
+     * @param int    $ensureIndex    Token index to ensure is a single white space
+     * @param bool   $expectedInsert token should be inserted or not
+     *
+     * @dataProvider provideEnsureSingleWithSpaceAtCases
+     */
+    public function testEnsureSingleWithSpaceAt($expected, $ensureIndex, $expectedInsert, $input = null)
+    {
+        if (null === $input) {
+            $input = $expected;
+        }
+
+        $tokens = Tokens::fromCode($input);
+        $this->assertSame($expectedInsert, $tokens->ensureSingleWithSpaceAt($ensureIndex));
+        AbstractFixerTestBase::assertTokens(Tokens::fromCode($expected), $tokens);
+        // call second time should never add a new token, tokens should not be changed
+        $this->assertFalse($tokens->ensureSingleWithSpaceAt($ensureIndex));
+    }
+
+    public function provideEnsureSingleWithSpaceAtCases()
+    {
+        return array(
+            array(
+                '<?php $a =1;',
+                2,
+                true,
+                '<?php $a=1;',
+            ),
+            array(
+                '<?php $a= 1;',
+                3,
+                true,
+                '<?php $a=1;',
+            ),
+            array(
+                '<?php $a= 1;',
+                3,
+                false,
+                '<?php $a=     1;',
+            ),
+            array(
+                '<?php $a= 1;',
+                3,
+                false,
+            ),
+        );
+    }
+
+    /**
+     * @param string $input   PHP code
+     * @param int[]  $indexes indexes of tokens to be expected as being indented
+     *
+     * @dataProvider provideIsIndentedCases
+     */
+    public function testIsIndented($input, $indexes)
+    {
+        $tokens = Tokens::fromCode($input);
+        foreach ($tokens as $i => $token) {
+            $this->assertSame(in_array($i, $indexes, true), $tokens->isIndented($i), sprintf('Is indent check failed for token at index "%d".', $i));
+        }
+    }
+
+    public function provideIsIndentedCases()
+    {
+        return array(
+            array(
+                "<?php\nTEST;",
+                array(1),
+            ),
+            array(
+                '<?php
+                   $a;',
+                array(1, 2),
+            ),
+            array(
+                '<?php
+                    //
+                   $a;',
+                array(1, 2, 3, 4),
+            ),
+            array(
+                '<?php
+                   /**/
+                   $a;',
+                array(1, 2, 4),
+            ),
+            array(
+                '<?php $a = 1 //
+|| 2;',
+                array(8),
+            ),
+        );
     }
 }
