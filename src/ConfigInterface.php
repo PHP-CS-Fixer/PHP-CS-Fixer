@@ -79,6 +79,13 @@ interface ConfigInterface
     public function addCustomFixer(FixerInterface $fixer);
 
     /**
+     * Adds a suite of custom fixers.
+     *
+     * @param FixerInterface[]|\Traversable $fixers
+     */
+    public function addCustomFixers($fixers);
+
+    /**
      * Returns the custom fixers to use.
      *
      * @return FixerInterface[]

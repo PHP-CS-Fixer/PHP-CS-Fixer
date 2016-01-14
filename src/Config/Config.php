@@ -131,6 +131,19 @@ class Config implements ConfigInterface
         return $this;
     }
 
+    public function addCustomFixers($fixers)
+    {
+        if (false === is_array($fixers) && false === $fixers instanceof \Traversable) {
+            throw new \InvalidArgumentException('Argument must be an array or a Traversable');
+        }
+
+        foreach ($fixers as $fixer) {
+            $this->addCustomFixer($fixer);
+        }
+
+        return $this;
+    }
+
     public function getCustomFixers()
     {
         return $this->customFixers;
