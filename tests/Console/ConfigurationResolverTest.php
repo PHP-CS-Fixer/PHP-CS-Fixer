@@ -58,7 +58,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException              \Symfony\CS\ConfigurationException\InvalidConfigurationException
-     * @expectedExceptionMessageRegExp /Unknown option name: "foo"/
+     * @expectedExceptionMessageRegExp /^Unknown option name: "foo"\.$/
      */
     public function testSetOptionWithUndefinedOption()
     {
@@ -167,7 +167,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException              \InvalidArgumentException
-     * @expectedExceptionMessageRegExp /The configuration "\w+" is not defined/
+     * @expectedExceptionMessageRegExp /^The configuration "\w+" is not defined\.$/
      */
     public function testResolveConfigByNameThatDoesntExists()
     {
@@ -248,7 +248,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException              \Symfony\CS\ConfigurationException\InvalidConfigurationException
-     * @expectedExceptionMessageRegExp /The config file: ".+[\/\\]Fixtures[\/\\]ConfigurationResolverConfigFile[\/\\]case_5[\/\\].php_cs.dist" does not return a "Symfony\\CS\\Config\\Config" instance\. Got: "string"\./
+     * @expectedExceptionMessageRegExp /^The config file: ".+[\/\\]Fixtures[\/\\]ConfigurationResolverConfigFile[\/\\]case_5[\/\\].php_cs.dist" does not return a "Symfony\\CS\\Config\\Config" instance\. Got: "string"\.$/
      */
     public function testResolveConfigFileChooseFileWithInvalidFile()
     {
