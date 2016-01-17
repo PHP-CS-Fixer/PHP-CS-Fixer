@@ -79,4 +79,17 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($config, $config->setCacheFile('some-directory/some.file'));
     }
+
+    public function testThatFixerSuiteAreLoaded()
+    {
+        $fixers = array(
+            new \Symfony\CS\Fixer\Symfony\ArrayElementNoSpaceBeforeCommaFixer(),
+            new \Symfony\CS\Fixer\Symfony\IncludeFixer(),
+        );
+
+        $config = Config::create();
+        $config->addCustomFixers(new \ArrayIterator($fixers));
+
+        $this->assertSame($config->getCustomFixers(), $fixers);
+    }
 }
