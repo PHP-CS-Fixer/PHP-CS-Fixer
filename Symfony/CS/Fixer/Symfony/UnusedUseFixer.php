@@ -191,7 +191,8 @@ class UnusedUseFixer extends AbstractFixer
             return;
         }
 
-        $nextToken = $tokens[$useDeclaration['end'] + 1];
+        $nextIndex = $useDeclaration['end'] + 1;
+        $nextToken = $tokens[$nextIndex];
 
         if ($nextToken->isWhitespace()) {
             $content = ltrim($nextToken->getContent(), " \t");
@@ -204,7 +205,7 @@ class UnusedUseFixer extends AbstractFixer
         }
 
         if ($prevToken->isWhitespace() && $nextToken->isWhitespace()) {
-            $nextToken->override(array(T_WHITESPACE, $prevToken->getContent().$nextToken->getContent(), $prevToken->getLine()));
+            $tokens->overrideAt($nextIndex, array(T_WHITESPACE, $prevToken->getContent().$nextToken->getContent(), $prevToken->getLine()));
             $prevToken->clear();
         }
     }
