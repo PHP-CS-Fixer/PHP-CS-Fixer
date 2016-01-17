@@ -87,7 +87,7 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
     public function testAddCustomFixersWithInvalidArgument()
     {
         $config = Config::create();
-        $config->addCustomFixers("foo");
+        $config->addCustomFixers('foo');
     }
 
     /**

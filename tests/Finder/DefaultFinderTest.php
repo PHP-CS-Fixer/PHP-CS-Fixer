@@ -19,8 +19,8 @@ use Symfony\CS\Finder\DefaultFinder;
 final class DefaultFinderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \LogicException
-     * "You must call one of in() or append() methods before iterating over a Finder."
+     * @expectedException              \LogicException
+     * @expectedExceptionMessageRegExp /^You must call (?:the in\(\) method)|(?:one of in\(\) or append\(\)) methods before iterating over a Finder\.$/
      */
     public function testThatDefaultFinderDoesNotSpecifyAnyDirectory()
     {
