@@ -80,16 +80,42 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($config, $config->setCacheFile('some-directory/some.file'));
     }
 
-    public function testThatFixerSuiteAreLoaded()
+    /**
+     * @expectedException              \InvalidArgumentException
+     * @expectedExceptionMessageRegExp /^Argument must be an array or a Traversable, got "\w+"\.$/
+     */
+    public function testAddCustomFixersWithInvalidArgument()
+    {
+        $config = Config::create();
+        $config->addCustomFixers('foo');
+    }
+
+    /**
+     * @dataProvider provideAddCustomFixersCases
+     */
+    public function testAddCustomFixers($expected, $suite)
+    {
+        $config = Config::create();
+        $config->addCustomFixers($suite);
+
+        $this->assertSame($expected, $config->getCustomFixers());
+    }
+
+    /**
+     * @return array
+     */
+    public function provideAddCustomFixersCases()
     {
         $fixers = array(
             new \Symfony\CS\Fixer\Symfony\ArrayElementNoSpaceBeforeCommaFixer(),
             new \Symfony\CS\Fixer\Symfony\IncludeFixer(),
         );
 
-        $config = Config::create();
-        $config->addCustomFixers(new \ArrayIterator($fixers));
+        $cases = array(
+            array($fixers, $fixers),
+            array($fixers, new \ArrayIterator($fixers)),
+        );
 
-        $this->assertSame($config->getCustomFixers(), $fixers);
+        return $cases;
     }
 }
