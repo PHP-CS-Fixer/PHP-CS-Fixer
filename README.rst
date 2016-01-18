@@ -385,7 +385,7 @@ Choose from the list of available fixers:
                         shouldn't contain leading
                         whitespace.
 
-* **native_function_casing**
+* **native_function_casing** [@Symfony]
                         Function defined by PHP should
                         be called using the correct
                         casing.

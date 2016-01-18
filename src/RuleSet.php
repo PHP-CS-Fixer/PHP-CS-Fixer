@@ -69,6 +69,7 @@ final class RuleSet implements RuleSetInterface
             'method_separation' => true,
             'multiline_array_trailing_comma' => true,
             'namespace_no_leading_whitespace' => true,
+            'native_function_casing' => true,
             'new_with_braces' => true,
             'no_blank_lines_after_class_opening' => true,
             'no_empty_lines_after_phpdocs' => true,
