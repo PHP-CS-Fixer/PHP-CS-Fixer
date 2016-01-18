@@ -11,7 +11,7 @@
 
 namespace Symfony\CS\Tests\Console;
 
-use Symfony\CS\Config\Config;
+use Symfony\CS\Config;
 use Symfony\CS\Console\ConfigurationResolver;
 use Symfony\CS\Fixer;
 use Symfony\CS\Test\AccessibleObject;
@@ -183,7 +183,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->resolve();
 
         $this->assertNull($this->resolver->getConfigFile());
-        $this->assertInstanceOf('\\Symfony\\CS\\Config\\Config', $this->resolver->getConfig());
+        $this->assertInstanceOf('\\Symfony\\CS\\ConfigInterface', $this->resolver->getConfig());
     }
 
     public function testResolveConfigFileByPathOfFile()
@@ -248,7 +248,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException              \Symfony\CS\ConfigurationException\InvalidConfigurationException
-     * @expectedExceptionMessageRegExp /^The config file: ".+[\/\\]Fixtures[\/\\]ConfigurationResolverConfigFile[\/\\]case_5[\/\\].php_cs.dist" does not return a "Symfony\\CS\\Config\\Config" instance\. Got: "string"\.$/
+     * @expectedExceptionMessageRegExp /^The config file: ".+[\/\\]Fixtures[\/\\]ConfigurationResolverConfigFile[\/\\]case_5[\/\\].php_cs.dist" does not return a "Symfony\\CS\\ConfigInterface" instance\. Got: "string"\.$/
      */
     public function testResolveConfigFileChooseFileWithInvalidFile()
     {

@@ -11,7 +11,7 @@
 
 namespace Symfony\CS;
 
-use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 /**
  * Class provides a way to create a group of fixers.
@@ -94,7 +94,7 @@ final class FixerFactory
         if (null === $builtInFixers) {
             $builtInFixers = array();
 
-            foreach (Finder::create()->files()->in(__DIR__.'/Fixer') as $file) {
+            foreach (SymfonyFinder::create()->files()->in(__DIR__.'/Fixer') as $file) {
                 $relativeNamespace = $file->getRelativePath();
                 $builtInFixers[] = 'Symfony\\CS\\Fixer\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
             }

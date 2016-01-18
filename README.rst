@@ -744,12 +744,12 @@ The example below will add two fixers to the default list of PSR2 set fixers:
 
     <?php
 
-    $finder = Symfony\CS\Finder\DefaultFinder::create()
+    $finder = Symfony\CS\Finder::create()
         ->exclude('somedir')
         ->in(__DIR__)
     ;
 
-    return Symfony\CS\Config\Config::create()
+    return Symfony\CS\Config::create()
         ->setRules(array(
             '@PSR2' => true,
             'strict_param' => true,
@@ -765,12 +765,12 @@ The following example shows how to use all ``Symfony`` Fixers but the ``short_ta
 
     <?php
 
-    $finder = Symfony\CS\Finder\DefaultFinder::create()
+    $finder = Symfony\CS\Finder::create()
         ->exclude('somedir')
         ->in(__DIR__)
     ;
 
-    return Symfony\CS\Config\Config::create()
+    return Symfony\CS\Config::create()
         ->setRules(array(
             '@Symfony' => true,
             'short_tag' => false,
@@ -796,7 +796,7 @@ Cache can be disabled via ``--using-cache`` option or config file:
 
     <?php
 
-    return Symfony\CS\Config\Config::create()
+    return Symfony\CS\Config::create()
         ->setUsingCache(false)
     ;
 
@@ -806,7 +806,7 @@ Cache file can be specified via ``--cache-file`` option or config file:
 
     <?php
 
-    return Symfony\CS\Config\Config::create()
+    return Symfony\CS\Config::create()
         ->setCacheFile(__DIR__.'/.php_cs.cache')
     ;
 

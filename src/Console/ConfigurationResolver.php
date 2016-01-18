@@ -12,7 +12,6 @@
 namespace Symfony\CS\Console;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigInterface;
 use Symfony\CS\ConfigurationException\InvalidConfigurationException;
 use Symfony\CS\Fixer;
@@ -402,8 +401,8 @@ final class ConfigurationResolver
             $config = include $configFile;
 
             // verify that the config has an instance of Config
-            if (!$config instanceof Config) {
-                throw new InvalidConfigurationException(sprintf('The config file: "%s" does not return a "Symfony\CS\Config\Config" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
+            if (!$config instanceof ConfigInterface) {
+                throw new InvalidConfigurationException(sprintf('The config file: "%s" does not return a "Symfony\CS\ConfigInterface" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
             }
 
             $this->config = $config;
