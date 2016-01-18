@@ -387,6 +387,11 @@ Choose from the list of available fixers:
                         shouldn't contain leading
                         whitespace.
 
+* **native_function_casing** [symfony]
+                        Function defined by PHP should
+                        be called using the correct
+                        casing.
+
 * **new_with_braces** [symfony]
                         All instances created with new
                         keyword must be followed by
@@ -633,11 +638,6 @@ Choose from the list of available fixers:
                         Multi-line whitespace before
                         closing semicolon are
                         prohibited.
-
-* **native_function_casing** [contrib]
-                        Function defined by PHP should
-                        be called using the correct
-                        casing.
 
 * **newline_after_open_tag** [contrib]
                         Ensure there is no code on the

@@ -9,14 +9,16 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace Symfony\CS\Tests\Fixer\Symfony;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author SpacePossum
+ *
+ * @internal
  */
-class NativeFunctionCasingFixerTest extends AbstractFixerTestBase
+final class NativeFunctionCasingFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideFixCases
