@@ -1,6 +1,6 @@
 <?php
 
-$header = <<<EOF
+$header = <<<'EOF'
 This file is part of the PHP CS utility.
 
 (c) Fabien Potencier <fabien@symfony.com>

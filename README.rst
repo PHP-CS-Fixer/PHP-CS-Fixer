@@ -294,6 +294,10 @@ Choose from the list of available fixers:
                         Add, replace or remove header
                         comment.
 
+* **heredoc_to_nowdoc** [@Symfony]
+                        Convert heredoc to nowdoc if
+                        possible.
+
 * **include** [@Symfony]
                         Include/Require and file path
                         should be divided with a
@@ -332,6 +336,10 @@ Choose from the list of available fixers:
 * **long_array_syntax**
                         Arrays should use the long
                         syntax.
+
+* **lowercase_cast** [@Symfony]
+                        Cast should be written in
+                        lower case.
 
 * **lowercase_constants** [@PSR2, @Symfony]
                         The PHP constants true, false,
@@ -376,6 +384,11 @@ Choose from the list of available fixers:
                         The namespace declaration line
                         shouldn't contain leading
                         whitespace.
+
+* **native_function_casing**
+                        Function defined by PHP should
+                        be called using the correct
+                        casing.
 
 * **new_with_braces** [@Symfony]
                         All instances created with new
@@ -580,6 +593,13 @@ Choose from the list of available fixers:
                         Replace short-echo <?= with
                         long format <?php echo syntax.
 
+* **short_scalar_cast** [@Symfony]
+                        Cast "(boolean)" and
+                        "(integer)" should be written
+                        as "(bool)" and "(int)".
+                        "(double)" and "(real)" as
+                        "(float)".
+
 * **short_tag** [@PSR1, @PSR2, @Symfony]
                         PHP code must use the long
                         <?php ?> tags or the
@@ -630,6 +650,10 @@ Choose from the list of available fixers:
 * **strict_param**
                         Functions should be used with
                         $strict param. (Risky fixer!)
+
+* **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
+                        A case should be followed by a
+                        colon and not a semicolon.
 
 * **switch_case_space** [@PSR2, @Symfony]
                         Removes extra spaces between

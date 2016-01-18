@@ -38,7 +38,7 @@ final class ReadmeCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $header = <<<EOF
+        $header = <<<'EOF'
 PHP Coding Standards Fixer
 ==========================
 
@@ -71,24 +71,24 @@ your system:
 
 .. code-block:: bash
 
-    \$ wget http://get.sensiolabs.org/php-cs-fixer.phar -O php-cs-fixer
+    $ wget http://get.sensiolabs.org/php-cs-fixer.phar -O php-cs-fixer
     # With a specific version
-    \$ wget http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -O php-cs-fixer
+    $ wget http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -O php-cs-fixer
 
 or with curl:
 
 .. code-block:: bash
 
-    \$ curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
+    $ curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
     # With a specific version
-    \$ curl http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -o php-cs-fixer
+    $ curl http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -o php-cs-fixer
 
 then:
 
 .. code-block:: bash
 
-    \$ sudo chmod a+x php-cs-fixer
-    \$ sudo mv php-cs-fixer /usr/local/bin/php-cs-fixer
+    $ sudo chmod a+x php-cs-fixer
+    $ sudo mv php-cs-fixer /usr/local/bin/php-cs-fixer
 
 Then, just run ``php-cs-fixer``.
 
@@ -106,7 +106,7 @@ you're good to go:
 
 .. code-block:: bash
 
-    export PATH="\$PATH:\$HOME/.composer/vendor/bin"
+    export PATH="$PATH:$HOME/.composer/vendor/bin"
 
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
@@ -117,7 +117,7 @@ already have it.
 
 .. code-block:: bash
 
-    \$ brew install homebrew/php/php-cs-fixer
+    $ brew install homebrew/php/php-cs-fixer
 
 Update
 ------
@@ -129,7 +129,7 @@ The ``self-update`` command tries to update ``php-cs-fixer`` itself:
 
 .. code-block:: bash
 
-    \$ php php-cs-fixer.phar self-update
+    $ php php-cs-fixer.phar self-update
 
 Globally (manual)
 ~~~~~~~~~~~~~~~~~
@@ -138,7 +138,7 @@ You can update ``php-cs-fixer`` through this command:
 
 .. code-block:: bash
 
-    \$ sudo php-cs-fixer self-update
+    $ sudo php-cs-fixer self-update
 
 Globally (Composer)
 ~~~~~~~~~~~~~~~~~~~
@@ -147,7 +147,7 @@ You can update ``php-cs-fixer`` through this command:
 
 .. code-block:: bash
 
-    \$ ./composer.phar global update fabpot/php-cs-fixer
+    $ ./composer.phar global update fabpot/php-cs-fixer
 
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
@@ -156,14 +156,14 @@ You can update ``php-cs-fixer`` through this command:
 
 .. code-block:: bash
 
-    \$ brew upgrade php-cs-fixer
+    $ brew upgrade php-cs-fixer
 
 Usage
 -----
 
 EOF;
 
-        $footer = <<<EOF
+        $footer = <<<'EOF'
 
 Helpers
 -------

@@ -39,18 +39,11 @@ final class DuplicateSemicolonFixer extends AbstractFixer
 
             // skip T_FOR parenthesis to ignore duplicated `;` like `for ($i = 1; ; ++$i) {...}`
             if ($token->isGivenKind(T_FOR)) {
-                $index = $tokens->getNextMeaningfulToken($index);
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $tokens->getNextMeaningfulToken($index)) + 1;
                 continue;
             }
 
-            if (!$token->equals(';')) {
-                continue;
-            }
-
-            $prevIndex = $tokens->getPrevNonWhitespace($index);
-
-            if (!$tokens[$prevIndex]->equals(';')) {
+            if (!$token->equals(';') || !$tokens[$tokens->getPrevMeaningfulToken($index)]->equals(';')) {
                 continue;
             }
 
@@ -72,7 +65,7 @@ final class DuplicateSemicolonFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run before the BracesFixer, SpacesBeforeSemicolonFixer and MultilineSpacesBeforeSemicolonFixer
+        // should be run before the BracesFixer, SpacesBeforeSemicolonFixer, MultilineSpacesBeforeSemicolonFixer and SwitchCaseSemicolonToColonFixer.
         return 10;
     }
 }

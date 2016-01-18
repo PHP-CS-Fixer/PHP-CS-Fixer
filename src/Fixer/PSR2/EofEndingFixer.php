@@ -18,6 +18,8 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * A file must always end with a linefeed character.
  *
+ * Fixer for rules defined in PSR2 ¶2.2.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */

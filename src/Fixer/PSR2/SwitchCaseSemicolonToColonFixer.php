@@ -17,9 +17,9 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * Fixer for rules defined in PSR2 ¶5.2.
  *
- * @author Sullivan Senechal <soullivaneuh@gmail.com>
+ * @author SpacePossum
  */
-final class SwitchCaseSpaceFixer extends AbstractFixer
+final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -55,9 +55,8 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
                 }
             }
 
-            $valueIndex = $tokens->getPrevNonWhitespace($colonIndex);
-            if (2 + $valueIndex === $colonIndex) {
-                $tokens[$valueIndex + 1]->clear();
+            if ($tokens[$colonIndex]->equals(';')) {
+                $tokens->overrideAt($colonIndex, ':');
             }
         }
     }
@@ -67,6 +66,6 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Removes extra spaces between colon and case value.';
+        return 'A case should be followed by a colon and not a semicolon.';
     }
 }

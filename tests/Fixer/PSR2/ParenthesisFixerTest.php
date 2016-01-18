@@ -30,7 +30,7 @@ final class ParenthesisFixerTest extends AbstractFixerTestCase
 
     public function testLeaveNewLinesAlone()
     {
-        $expected = <<<EOF
+        $expected = <<<'EOF'
 <?php
 
 class Foo

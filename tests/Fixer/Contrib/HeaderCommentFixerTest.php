@@ -18,7 +18,7 @@ use Symfony\CS\Test\AbstractFixerTestCase;
  */
 final class HeaderCommentFixerTest extends AbstractFixerTestCase
 {
-    protected static $testHeader = <<<EOH
+    protected static $testHeader = <<<'EOH'
 This file is part of the PHP CS utility.
 
 (c) Fabien Potencier <fabien@symfony.com>

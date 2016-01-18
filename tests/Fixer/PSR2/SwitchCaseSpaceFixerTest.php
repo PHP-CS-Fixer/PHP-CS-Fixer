@@ -34,14 +34,6 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
             array(
                 '<?php
                 switch ($a) {
-                    case "prod":
-                        break;
-                }
-                ',
-            ),
-            array(
-                '<?php
-                switch ($a) {
                     case 42:
                         break;
                 }
@@ -271,6 +263,60 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                     }
                 }
                 ',
+                array(
+                    '<?php
+                    switch ($a) {
+                        case 42:
+                            break;
+                        case 1:
+                            switch ($a) {
+                                case 42:
+                                    break;
+                                default:
+                                    echo 1   ;
+                            }
+                    }
+                    ',
+                    '<?php
+                    switch ($a) {
+                        case 42   :
+                            break;
+                        case 1    :
+                            switch ($a) {
+                                case 42   :
+                                    break;
+                                default :
+                                    echo 1   ;
+                            }
+                    }
+                    ',
+                ),
+            ),
+            array(
+                '<?php
+                    switch($foo) {
+                        case 4:  ; ;
+                        case 31 + test(";");  ; ; ;;
+                        case 1 + test(";"); // ;
+                        case (1+2/*;*/);
+                        case 1;
+                        case 2;
+                            return 1;
+                        default;
+                            return 2;
+                }',
+                '<?php
+                    switch($foo) {
+                        case 4  :  ; ;
+                        case 31 + test(";") ;  ; ; ;;
+                        case 1 + test(";") ; // ;
+                        case (1+2/*;*/) ;
+                        case 1  ;
+                        case 2 ;
+                            return 1;
+                        default ;
+                            return 2;
+                }',
             ),
         );
     }

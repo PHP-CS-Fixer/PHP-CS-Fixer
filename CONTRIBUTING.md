@@ -13,7 +13,7 @@
  * If you are adding functionality or fixing a bug - add a test!
  * Fix project itself: `php php-cs-fixer fix`.
  * Regenerate readme: `php php-cs-fixer readme > README.rst`. Do not modify `README.rst` manually!
- * Check if tests pass: `phpunit` [(4.*)](https://phpunit.de/manual/current/en/installation.html)
+ * Check if tests pass: `phpunit` [(4.x or 5.x)](https://phpunit.de/manual/current/en/installation.html)
 
 ## Opening a pull request
 
