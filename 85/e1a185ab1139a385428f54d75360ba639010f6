@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-14T19:23:04Z
+
+Any thoughts?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-14T20:59:33Z
+
+like the idea :)
+however.. on 1.x this will break for others with configs like https://github.com/GeckoPackages/GeckoTwig/blob/master/.php_cs.dist#L14 ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-14T21:13:15Z
+
+Why is that?
+The class is still there: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1670/files#diff-c3d879ff174f5aec5f64e9fdb6cfe4a9R22 , only deprecated
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-15T21:27:13Z
+
+indeed, nevermind me :)
+lgtm :+1:
