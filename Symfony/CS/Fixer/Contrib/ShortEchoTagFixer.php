@@ -36,7 +36,7 @@ class ShortEchoTagFixer extends AbstractFixer
                 continue;
             }
 
-            $token->override(array(T_OPEN_TAG, '<?php ', $token->getLine()));
+            $tokens->overrideAt($i, array(T_OPEN_TAG, '<?php ', $token->getLine()));
 
             if (!$tokens[$nextIndex]->isWhitespace()) {
                 $tokens->insertAt($nextIndex, new Token(array(T_WHITESPACE, ' ')));
