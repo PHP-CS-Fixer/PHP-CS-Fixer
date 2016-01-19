@@ -34,19 +34,19 @@ use Symfony\CS\LintManager;
  * level=symfony|none|psr0|psr1|psr2|symfony
  * fixers=fixer1,fixer2,...*
  * --fixers=fixer3,fixer4,...****
- * --REQUIREMENTS--
+ * --REQUIREMENTS--*****
  * php=5.4**
  * hhvm=false***
  * --EXPECT--
  * Expected code after fixing
- * --INPUT--
- * Code to fix*****
+ * --INPUT--*****
+ * Code to fix
  *
  *     * Additional fixers may be omitted.
  *    ** PHP minimum version. Default to current running php version (no effect).
  *   *** HHVM compliant flag. Default to true. Set to false to skip test under HHVM.
  *  **** Black listed filters may be omitted.
- * ***** Input part may be omitted
+ * ***** Block may be omitted
  *
  * @author SpacePossum <possumfromspace@gmail.com>
  *
