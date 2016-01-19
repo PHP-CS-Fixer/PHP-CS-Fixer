@@ -55,19 +55,27 @@ final class SpacesAfterSemicolonFixerTest extends AbstractFixerTestBase
                 '<?php test6();       /* */ //',
             ),
             array(
+                '<?php test7a(); /* */',
+                '<?php test7a();/* */',
+            ),
+            array(
+                '<?php test7b(); /* *//**/',
+                '<?php test7b();/* *//**/',
+            ),
+            array(
                 '<?php
-                    test7(); $a = 4;
+                    test8(); $a = 4;
                 ',
                 '<?php
-                    test7();     $a = 4;
+                    test8();     $a = 4;
                 ',
             ),
             array(
                 '<?php
-                    test8(); $b = 7;
+                    test9(); $b = 7;
                 ',
                 '<?php
-                    test8();$b = 7;
+                    test9();$b = 7;
                 ',
             ),
             array(
@@ -152,7 +160,7 @@ final class SpacesAfterSemicolonFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-                    for (; ;) {
+                    for (; ;    ) {
                     }
                 ',
                 '<?php
@@ -172,7 +180,7 @@ final class SpacesAfterSemicolonFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-                    for (; $u2 < 0;) {
+                    for (; $u2 < 0;    ) {
                     }
                 ',
                 '<?php
@@ -192,7 +200,7 @@ final class SpacesAfterSemicolonFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-                    for ($ui4 = 0; ;) {
+                    for ($ui4 = 0; ;    ) {
                     }
                 ',
                 '<?php
@@ -212,7 +220,7 @@ final class SpacesAfterSemicolonFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-                    for ($u6 = 0; $u6 < 6;) {
+                    for ($u6 = 0; $u6 < 6;    ) {
                     }
                 ',
                 '<?php
@@ -230,10 +238,16 @@ final class SpacesAfterSemicolonFixerTest extends AbstractFixerTestBase
                     }
                 ',
             ),
-            array(
-                '<?php test9(); /* *//**/',
-                '<?php test9();/* *//**/',
-            ),
         );
+    }
+
+    /**
+     * @requires PHP 5.4
+     */
+    public function testHaltCompiler()
+    {
+        $this->makeTest('<?php
+            __HALT_COMPILER();
+        ');
     }
 }
