@@ -27,14 +27,22 @@ final class SpacesAfterSemicolonFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        for ($index = count($tokens) - 3; $index > 0; --$index) {
-            if (!$tokens[$index]->equals(';') || $tokens[$index + 2]->isComment()) {
+        for ($index = count($tokens) - 2; $index > 0; --$index) {
+            if (!$tokens[$index]->equals(';')) {
                 continue;
             }
 
             if (!$tokens[$index + 1]->isWhitespace()) {
-                $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
-            } elseif (!$tokens[$index + 1]->equals(array(T_WHITESPACE, ' ')) && $tokens[$index + 1]->isWhitespace(array('whitespaces' => " \t"))) {
+                if (!$tokens[$index + 1]->equalsAny(array(')', array(T_INLINE_HTML)))) {
+                    $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
+                }
+            } elseif (
+                isset($tokens[$index + 2])
+                && !$tokens[$index + 1]->equals(array(T_WHITESPACE, ' '))
+                && $tokens[$index + 1]->isWhitespace(array('whitespaces' => " \t"))
+                && !$tokens[$index + 2]->isComment()
+                && !$tokens[$index + 2]->equals(')')
+            ) {
                 $tokens[$index + 1]->setContent(' ');
             }
         }
