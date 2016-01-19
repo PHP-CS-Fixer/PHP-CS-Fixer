@@ -26,6 +26,7 @@ class NewWithBracesFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
+
         for ($index = $tokens->count() - 3; $index > 0; --$index) {
             $token = $tokens[$index];
 
