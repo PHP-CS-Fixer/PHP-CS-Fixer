@@ -27,14 +27,14 @@ class NewWithBracesFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+        for ($index = $tokens->count() - 3; $index > 0; --$index) {
             $token = $tokens[$index];
 
             if (!$token->isGivenKind(T_NEW)) {
                 continue;
             }
 
-            $nextIndex = $tokens->getNextTokenOfKind($index, array(';', ',', '(', ')', '[', ']', ':'));
+            $nextIndex = $tokens->getNextTokenOfKind($index, array(';', ',', '(', ')', '[', ']', ':', array(T_CLOSE_TAG)));
             $nextToken = $tokens[$nextIndex];
 
             // entrance into array index syntax - need to look for exit
@@ -54,7 +54,7 @@ class NewWithBracesFixer extends AbstractFixer
                 continue;
             }
 
-            $meaningBeforeNextIndex = $tokens->getPrevNonWhitespace($nextIndex);
+            $meaningBeforeNextIndex = $tokens->getPrevMeaningfulToken($nextIndex);
 
             $tokens->insertAt($meaningBeforeNextIndex + 1, array(new Token('('), new Token(')')));
         }
