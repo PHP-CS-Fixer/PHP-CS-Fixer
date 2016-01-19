@@ -67,6 +67,7 @@ final class SpacesAfterSemicolonFixer extends AbstractFixer
     {
         if (!$tokens[$index + 1]->isWhitespace()) {
             $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
+
             return 1;
         }
 
@@ -97,7 +98,7 @@ final class SpacesAfterSemicolonFixer extends AbstractFixer
             if ($tokens[$forEnd - 1]->isWhitespace()) {
                 $tokens->removeTrailingWhitespace($nextSemicolon); // if ';[whitespace])' clear whitespace
             }
-        } elseif(1 !== $diff) {
+        } elseif (1 !== $diff) {
             $added = $this->ensureSingleSpaceAfter($tokens, $nextSemicolon); // if not `;)` than ensure a space
         }
 

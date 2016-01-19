@@ -125,7 +125,7 @@ final class MethodArgumentDefaultValueFixer extends AbstractFixer
      */
     private function removeDefaultArgument(Tokens $tokens, $startIndex, $endIndex)
     {
-        for ($i = $startIndex; $i <= $endIndex; ) {
+        for ($i = $startIndex; $i <= $endIndex;) {
             $tokens[$i]->clear();
             $this->clearWhitespacesBeforeIndex($tokens, $i);
             $i = $tokens->getNextMeaningfulToken($i);
