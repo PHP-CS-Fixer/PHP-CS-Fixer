@@ -64,7 +64,7 @@ class EmptyReturnFixer extends AbstractFixer
         $content = ltrim($content, '(');
         $content = rtrim($content, ')');
 
-        return 'null' === $content;
+        return 'null' === strtolower($content);
     }
 
     /**
