@@ -47,6 +47,10 @@ class NewWithBracesFixerTest extends AbstractFixerTestBase
                 '<?php $y = new Y ;',
             ),
             array(
+                '<?php $x = new Z() /**/;//',
+                '<?php $x = new Z /**/;//',
+            ),
+            array(
                 '<?php $foo = new $foo();',
                 '<?php $foo = new $foo;',
             ),
@@ -106,6 +110,14 @@ class NewWithBracesFixerTest extends AbstractFixerTestBase
             array(
                 '<?php new self::$adapters[$name]["adapter"]();',
                 '<?php new self::$adapters[$name]["adapter"];',
+            ),
+            array(
+                '<?php $a = new \Exception()?> <?php echo 1;',
+                '<?php $a = new \Exception?> <?php echo 1;',
+            ),
+            array(
+                '<?php $b = new \StdClass() /**/?>',
+                '<?php $b = new \StdClass /**/?>',
             ),
         );
     }
