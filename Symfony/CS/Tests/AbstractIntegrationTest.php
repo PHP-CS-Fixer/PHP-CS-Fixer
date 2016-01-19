@@ -105,7 +105,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
             $test = file_get_contents($file->getRealpath());
             $fileName = $file->getRelativePathname();
 
-            if (!preg_match('/--TEST--[\n](.*?)\s--CONFIG--[\n](.*?)(\s--REQUIREMENTS--[\n](.*?))?\s--EXPECT--[\n](.*?[\n]*)(?:[\n]--INPUT--\s(.*)|$)/s', $test, $match)) {
+            if (!preg_match('/--TEST--\n(.*?)\s--CONFIG--\n(.*?)(\s--REQUIREMENTS--\n(.*?))?\s--EXPECT--\n(.*?\n*)(?:\n--INPUT--\s(.*)|$)/s', $test, $match)) {
                 throw new \InvalidArgumentException(sprintf('Test format invalid for "%s".', $fileName));
             }
 
