@@ -11,7 +11,7 @@
 
 namespace Symfony\CS\Tests;
 
-use Symfony\CS\Config\Config;
+use Symfony\CS\Config;
 use Symfony\CS\Error\Error;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerFactory;
@@ -24,18 +24,6 @@ use Symfony\CS\Linter\Linter;
 final class FixerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers Symfony\CS\Fixer::registerBuiltInConfigs
-     */
-    public function testRegisterBuiltInConfigs()
-    {
-        $fixer = new Fixer();
-
-        $this->assertCount(0, $fixer->getConfigs());
-        $fixer->registerBuiltInConfigs();
-        $this->assertGreaterThan(0, count($fixer->getConfigs()));
-    }
-
-    /**
      * @covers Symfony\CS\Fixer::addConfig
      * @covers Symfony\CS\Fixer::getConfigs
      */
@@ -43,12 +31,18 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
     {
         $fixer = new Fixer();
 
+        $configs = $fixer->getConfigs();
+
         $c1 = $this->getMock('Symfony\CS\ConfigInterface');
         $c2 = $this->getMock('Symfony\CS\ConfigInterface');
+
         $fixer->addConfig($c1);
         $fixer->addConfig($c2);
 
-        $this->assertSame(array($c1, $c2), $fixer->getConfigs());
+        $configs[] = $c1;
+        $configs[] = $c2;
+
+        $this->assertSame($configs, $fixer->getConfigs());
     }
 
     /**

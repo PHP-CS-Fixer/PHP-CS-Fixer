@@ -11,7 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\Config\Config;
+use Symfony\CS\Config;
 use Symfony\CS\Test\AbstractFixerTestCase;
 
 /**

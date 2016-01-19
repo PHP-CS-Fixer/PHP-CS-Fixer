@@ -30,7 +30,6 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $fixer = new Fixer();
-        $fixer->registerBuiltInConfigs();
 
         $this->config = new Config();
         $this->resolver = new ConfigurationResolver();
@@ -143,40 +142,6 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->resolver->getProgress());
     }
 
-    /**
-     * @dataProvider provideResolveConfigByNameCases
-     */
-    public function testResolveConfigByName($expected, $name)
-    {
-        $this->resolver
-            ->setOption('config', $name)
-            ->resolve()
-        ;
-
-        $this->assertInstanceOf($expected, $this->resolver->getConfig());
-    }
-
-    public function provideResolveConfigByNameCases()
-    {
-        return array(
-            array('\\Symfony\\CS\\Config\\Config', 'default'),
-            array('\\Symfony\\CS\\Config\\MagentoConfig', 'magento'),
-            array('\\Symfony\\CS\\Config\\Symfony23Config', 'sf23'),
-        );
-    }
-
-    /**
-     * @expectedException              \InvalidArgumentException
-     * @expectedExceptionMessageRegExp /^The configuration "\w+" is not defined\.$/
-     */
-    public function testResolveConfigByNameThatDoesntExists()
-    {
-        $this->resolver
-            ->setOption('config', 'NON_EXISTING_CONFIG')
-            ->resolve()
-        ;
-    }
-
     public function testResolveConfigFileDefault()
     {
         $this->resolver
@@ -195,7 +160,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->resolve();
 
         $this->assertSame($dir.DIRECTORY_SEPARATOR.'.php_cs.dist', $this->resolver->getConfigFile());
-        $this->assertInstanceOf('\\Symfony\\CS\\Config\\MagentoConfig', $this->resolver->getConfig());
+        $this->assertInstanceOf('Test1Config', $this->resolver->getConfig());
     }
 
     public function testResolveConfigFileSpecified()
@@ -207,7 +172,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->resolve();
 
         $this->assertSame($file, $this->resolver->getConfigFile());
-        $this->assertInstanceOf('\\Symfony\\CS\\Config\\MagentoConfig', $this->resolver->getConfig());
+        $this->assertInstanceOf('Test4Config', $this->resolver->getConfig());
     }
 
     /**
@@ -230,17 +195,17 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 $dirBase.'case_1'.DIRECTORY_SEPARATOR.'.php_cs.dist',
-                '\\Symfony\\CS\\Config\\MagentoConfig',
+                'Test1Config',
                 $dirBase.'case_1',
             ),
             array(
                 $dirBase.'case_2'.DIRECTORY_SEPARATOR.'.php_cs',
-                '\\Symfony\\CS\\Config\\MagentoConfig',
+                'Test2Config',
                 $dirBase.'case_2',
             ),
             array(
                 $dirBase.'case_3'.DIRECTORY_SEPARATOR.'.php_cs',
-                '\\Symfony\\CS\\Config\\MagentoConfig',
+                'Test3Config',
                 $dirBase.'case_3',
             ),
         );

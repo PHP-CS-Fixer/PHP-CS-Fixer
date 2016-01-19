@@ -1,3 +1,7 @@
 <?php
 
-return Symfony\CS\Config\MagentoConfig::create();
+if (!class_exists('Test1Config')) {
+    class Test1Config extends Symfony\CS\Config {}
+}
+
+return Test1Config::create();
