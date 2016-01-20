@@ -115,6 +115,17 @@ class SomeClass
     }
 }
 ');
+        $cases[] = array('<?php
+class SomeClass
+{
+    // This comment
+    // is multiline.
+    public function echoA()
+    {
+        echo "a";
+    }
+}
+');
         $cases[] = array(
         '<?php
 class SomeClass
