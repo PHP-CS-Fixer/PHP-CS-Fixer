@@ -29,24 +29,6 @@ final class MethodSeparationFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'Methods must be separated with one blank line.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // Must run before braces and indentation fixers because this fixer
-        // might add line breaks to the code without indenting.
-        return 55;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
@@ -77,6 +59,24 @@ final class MethodSeparationFixer extends AbstractFixer
                 $this->fixClass($tokens, $tokensAnalyzer, $classStart, $classEnd);
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Methods must be separated with one blank line.';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // Must run before braces and indentation fixers because this fixer
+        // might add line breaks to the code without indenting.
+        return 55;
     }
 
     /**
@@ -161,7 +161,7 @@ final class MethodSeparationFixer extends AbstractFixer
 
         // deal with comments above a method
         if ($tokens[$nonWhiteAbove]->isGivenKind(T_COMMENT)) {
-            if ($firstMethodAttrIndex - $nonWhiteAbove === 1) {
+            if (1 === $firstMethodAttrIndex - $nonWhiteAbove) {
                 // no white space found between comment and method start
                 $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstMethodAttrIndex, 1);
 
@@ -182,7 +182,9 @@ final class MethodSeparationFixer extends AbstractFixer
                 //    make sure there is one line break between the method and the comment...
                 $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstMethodAttrIndex, 1);
                 //    ... and make sure there is blank line above the comment (with the exception when it is directly after a class opening)
+                $nonWhiteAbove = $this->findCommentBlockStart($tokens, $nonWhiteAbove);
                 $nonWhiteAboveComment = $tokens->getNonWhitespaceSibling($nonWhiteAbove, -1);
+
                 $this->correctLineBreaks($tokens, $nonWhiteAboveComment, $nonWhiteAbove, $nonWhiteAboveComment === $classStart ? 1 : 2);
             } else {
                 // 2. The comment belongs to the code above the method,
@@ -208,6 +210,12 @@ final class MethodSeparationFixer extends AbstractFixer
         $this->correctLineBreaks($tokens, $nonWhiteAbovePHPDoc, $nonWhiteAbove, $nonWhiteAbovePHPDoc === $classStart ? 1 : 2);
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $startIndex
+     * @param int    $endIndex
+     * @param int    $reqLineCount
+     */
     private function correctLineBreaks(Tokens $tokens, $startIndex, $endIndex, $reqLineCount = 2)
     {
         ++$startIndex;
@@ -247,6 +255,13 @@ final class MethodSeparationFixer extends AbstractFixer
         }
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $whiteStart
+     * @param int    $whiteEnd
+     *
+     * @return int
+     */
     private function getLineBreakCount(Tokens $tokens, $whiteStart, $whiteEnd)
     {
         $lineCount = 0;
@@ -255,5 +270,28 @@ final class MethodSeparationFixer extends AbstractFixer
         }
 
         return $lineCount;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $commentIndex
+     *
+     * @return int
+     */
+    private function findCommentBlockStart(Tokens $tokens, $commentIndex)
+    {
+        $start = $commentIndex;
+        for ($i = $commentIndex - 1; $i > 0; --$i) {
+            if ($tokens[$i]->isComment()) {
+                $start = $i;
+                continue;
+            }
+
+            if (!$tokens[$i]->isWhitespace() || $this->getLineBreakCount($tokens, $i, $i + 1) > 1) {
+                break;
+            }
+        }
+
+        return $start;
     }
 }
