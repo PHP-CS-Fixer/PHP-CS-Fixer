@@ -1,11 +1,11 @@
 --TEST--
-Integration of fixers: multiple_use,remove_leading_slash_use,remove_lines_between_uses,ordered_use.
+Integration of fixers: single_import_per_statement,no_leading_import_slash,no_blank_lines_between_uses,ordered_imports.
 --CONFIG--
 {
-    "multiple_use": true,
-    "remove_leading_slash_use": true,
-    "remove_lines_between_uses": true,
-    "ordered_use": true
+    "single_import_per_statement": true,
+    "no_leading_import_slash": true,
+    "no_blank_lines_between_uses": true,
+    "ordered_imports": true
 }
 --EXPECT--
 <?php

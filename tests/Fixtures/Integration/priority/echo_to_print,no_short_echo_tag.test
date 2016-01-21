@@ -1,0 +1,12 @@
+--TEST--
+Integration of fixers: echo_to_print,no_short_echo_tag.
+--CONFIG--
+{"echo_to_print": true, "no_short_echo_tag": true}
+--REQUIREMENTS--
+php=5.4
+hhvm=false
+--EXPECT--
+<div><?php print "test" ?></div>
+
+--INPUT--
+<div><?= "test" ?></div>

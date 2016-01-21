@@ -55,8 +55,8 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
         $config = Config::create()
             ->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'))
             ->fixers(array(
-                new \Symfony\CS\Fixer\PSR2\VisibilityFixer(),
-                new \Symfony\CS\Fixer\Symfony\UnusedUseFixer(), // will be ignored cause of test keyword in namespace
+                new \Symfony\CS\Fixer\PSR2\VisibilityRequiredFixer(),
+                new \Symfony\CS\Fixer\Symfony\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
             ))
             ->setUsingCache(false)
         ;
@@ -67,7 +67,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $changed);
         $this->assertCount(2, $changed[$pathToInvalidFile]);
         $this->assertSame(array('appliedFixers', 'diff'), array_keys($changed[$pathToInvalidFile]));
-        $this->assertSame('visibility', $changed[$pathToInvalidFile]['appliedFixers'][0]);
+        $this->assertSame('visibility_required', $changed[$pathToInvalidFile]['appliedFixers'][0]);
     }
 
     /**
@@ -82,8 +82,8 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
         $config = Config::create()
             ->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'))
             ->fixers(array(
-                new \Symfony\CS\Fixer\PSR2\VisibilityFixer(),
-                new \Symfony\CS\Fixer\Symfony\UnusedUseFixer(), // will be ignored cause of test keyword in namespace
+                new \Symfony\CS\Fixer\PSR2\VisibilityRequiredFixer(),
+                new \Symfony\CS\Fixer\Symfony\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
             ))
             ->setUsingCache(false)
         ;

@@ -461,13 +461,13 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             'strict' => false,
         ));
 
-        $this->resolver->setOption('rules', 'return');
+        $this->resolver->setOption('rules', 'blank_line_before_return');
 
         $this->resolver->resolve();
 
         $this->assertSameRules(
             array(
-                'return' => true,
+                'blank_line_before_return' => true,
             ),
             $this->resolver->getRules()
         );

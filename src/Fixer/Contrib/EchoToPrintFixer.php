@@ -70,7 +70,7 @@ final class EchoToPrintFixer extends AbstractFixer
     }
 
     /**
-     * EchoToPrintFixer should run after ShortEchoTagFixer.
+     * EchoToPrintFixer should run after NoShortEchoTagFixer.
      *
      * {@inheritdoc}
      */
