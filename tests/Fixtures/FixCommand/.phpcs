@@ -8,6 +8,6 @@ return $config
     ->setUsingCache(false)
     ->setUsingLinter(true)
     ->setRules(array(
-        'short_tag' => true,
+        'full_opening_tag' => true,
     ))
 ;

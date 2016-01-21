@@ -38,7 +38,7 @@ final class MethodSeparationFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // Must run before braces and indentation fixers because this fixer
+        // Must run before braces and no_tabs fixers because this fixer
         // might add line breaks to the code without indenting.
         return 55;
     }

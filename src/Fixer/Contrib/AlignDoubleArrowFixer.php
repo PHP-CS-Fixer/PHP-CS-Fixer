@@ -73,7 +73,7 @@ final class AlignDoubleArrowFixer extends AbstractAlignFixer
      */
     public function getPriority()
     {
-        // should be run after the OperatorsSpacesFixer
+        // should be run after the BinaryOperatorSpacesFixer
         return -10;
     }
 

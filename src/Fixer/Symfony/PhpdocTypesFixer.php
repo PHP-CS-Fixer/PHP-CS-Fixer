@@ -59,7 +59,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
         /*
          * Should be run before all other docblock fixers apart from the
          * phpdoc_to_comment and phpdoc_indent fixer to make sure all fixers
-         * apply correct indentation to new code they add. This should run
+         * apply correct no_tabs to new code they add. This should run
          * before alignment of params is done since this fixer might change
          * the type and thereby un-aligning the params. We also must run before
          * the phpdoc_scalar_fixer so that it can make changes after us.

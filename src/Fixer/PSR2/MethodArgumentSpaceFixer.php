@@ -81,7 +81,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
      * Fix arguments spacing for given function.
      *
      * @param Tokens $tokens             Tokens to handle
-     * @param int    $startFunctionIndex Start parenthesis position
+     * @param int    $startFunctionIndex Start no_spaces_inside_parenthesis position
      */
     private function fixFunction(Tokens $tokens, $startFunctionIndex)
     {

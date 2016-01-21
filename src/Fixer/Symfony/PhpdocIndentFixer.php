@@ -72,7 +72,7 @@ final class PhpdocIndentFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Docblocks should have the same indentation as the documented subject.';
+        return 'Docblocks should have the same no_tabs as the documented subject.';
     }
 
     /**
@@ -83,21 +83,21 @@ final class PhpdocIndentFixer extends AbstractFixer
         /*
          * Should be run before all other docblock fixers apart from the
          * phpdoc_to_comment fixer to make sure all fixers apply correct
-         * indentation to new code they add, and the phpdoc_params fixer only
+         * no_tabs to new code they add, and the phpdoc_params fixer only
          * works on correctly indented docblocks. We also need to be running
-         * after the psr2 indentation fixer for obvious reasons.
+         * after the psr2 no_tabs fixer for obvious reasons.
          * comments.
          */
         return 20;
     }
 
     /**
-     * Fix indentation of Docblock.
+     * Fix no_tabs of Docblock.
      *
      * @param string $content Docblock contents
      * @param string $indent  Indentation to apply
      *
-     * @return string Dockblock contents including correct indentation
+     * @return string Dockblock contents including correct no_tabs
      */
     private function fixDocBlock($content, $indent)
     {
@@ -110,7 +110,7 @@ final class PhpdocIndentFixer extends AbstractFixer
      * @param string $content Whitespace before Docblock
      * @param string $indent  Indentation of the documented subject
      *
-     * @return string Whitespace including correct indentation for Dockblock after this whitespace
+     * @return string Whitespace including correct no_tabs for Dockblock after this whitespace
      */
     private function fixWhitespaceBefore($content, $indent)
     {

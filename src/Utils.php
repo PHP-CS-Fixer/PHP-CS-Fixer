@@ -100,7 +100,7 @@ final class Utils
     }
 
     /**
-     * Calculate the trailing whitespace indentation.
+     * Calculate the trailing whitespace no_tabs.
      *
      * What we're doing here is grabbing everything after the final newline.
      *

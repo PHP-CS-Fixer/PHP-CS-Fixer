@@ -58,7 +58,7 @@ final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer
         $content = $token->getContent();
         // if there is more than one new line in the whitespace, then we need to fix it
         if (substr_count($content, "\n") > 1) {
-            // the final bit of the whitespace must be the next statement's indentation
+            // the final bit of the whitespace must be the next statement's no_tabs
             $lines = Utils::splitLines($content);
             $token->setContent("\n".end($lines));
         }
