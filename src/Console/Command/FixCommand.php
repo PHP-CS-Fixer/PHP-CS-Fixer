@@ -138,12 +138,12 @@ By default, all PSR fixers are run.
 The <comment>--rules</comment> option lets you choose the exact fixers to
 apply (the fixer names must be separated by a comma):
 
-    <info>php %command.full_name% /path/to/dir --rules=linefeed,short_tag,indentation</info>
+    <info>php %command.full_name% /path/to/dir --rules=unix_line_endings,full_opening_tag,no_tab_indentation</info>
 
 You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
 using <comment>-name_of_fixer</comment>:
 
-    <info>php %command.full_name% /path/to/dir --rules=-short_tag,-indentation</info>
+    <info>php %command.full_name% /path/to/dir --rules=-full_opening_tag,-no_tab_indentation</info>
 
 When using combinations of exact and blacklist fixers, applying exact fixers along with above blacklisted results:
 
@@ -200,7 +200,7 @@ The example below will add two fixers to the default list of PSR2 set fixers:
     ?>
 
 You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
-The following example shows how to use all ``Symfony`` Fixers but the ``short_tag`` Fixer.
+The following example shows how to use all ``Symfony`` Fixers but the ``full_opening_tag`` Fixer.
 
     <?php
 
@@ -212,7 +212,7 @@ The following example shows how to use all ``Symfony`` Fixers but the ``short_ta
     return Symfony\CS\Config::create()
         ->setRules(array(
             '@Symfony' => true,
-            'short_tag' => false,
+            'full_opening_tag' => false,
         ))
         ->finder(\$finder)
     ;
