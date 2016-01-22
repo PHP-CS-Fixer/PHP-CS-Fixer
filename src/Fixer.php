@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Error\Error;
 use Symfony\CS\Error\ErrorsManager;
@@ -139,16 +140,24 @@ class Fixer
             $config->getRules()
         );
 
-        foreach ($config->getFinder() as $file) {
-            if ($file->isDir() || $file->isLink()) {
-                continue;
-            }
+        /** @var \Iterator|\IteratorAggregate $iterator */
+        $iterator = $config->getFinder();
+        if ($iterator instanceof \IteratorAggregate) {
+            $iterator = $iterator->getIterator();
+        }
+        $iterator->rewind();
 
-            $name = $this->getFileRelativePathname($file);
+        $nextFile = $this->getFileForFixing($iterator, $fileCacheManager);
+
+        while ($file = $nextFile) {
+            $iterator->next();
+            $nextFile = $this->getFileForFixing($iterator, $fileCacheManager);
+
+            $name = $this->getFileRelativePathname($file['file']);
 
             $this->stopwatch->start($name);
 
-            if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff, $fileCacheManager)) {
+            if ($fixInfo = $this->fixFile($file['file'], $file['content'], $fixers, $dryRun, $diff, $fileCacheManager, $file['lint_process'])) {
                 $changed[$name] = $fixInfo;
             }
 
@@ -160,37 +169,67 @@ class Fixer
         return $changed;
     }
 
-    public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff, FileCacheManager $fileCacheManager)
+    private function getFileForFixing(\Iterator $iterator, FileCacheManager $fileCacheManager)
     {
-        $new = $old = file_get_contents($file->getRealPath());
+        if (!$iterator->valid()) {
+            return;
+        }
 
+        /** @var \SplFileInfo $file */
+        $file = $iterator->current();
+
+        if ($file->isDir() || $file->isLink()) {
+            $iterator->next();
+
+            return $this->getFileForFixing($iterator, $fileCacheManager);
+        }
+
+        $content = file_get_contents($file->getRealPath());
         $name = $this->getFileRelativePathname($file);
 
         if (
-            '' === $old
-            || !$fileCacheManager->needFixing($name, $old)
+            '' === $content
+            || !$fileCacheManager->needFixing($name, $content)
             // PHP 5.3 has a broken implementation of token_get_all when the file uses __halt_compiler() starting in 5.3.6
-            || (PHP_VERSION_ID >= 50306 && PHP_VERSION_ID < 50400 && false !== stripos($old, '__halt_compiler()'))
+            || (PHP_VERSION_ID >= 50306 && PHP_VERSION_ID < 50400 && false !== stripos($content, '__halt_compiler()'))
         ) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
                 FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_SKIPPED)
             );
 
-            return;
+            $iterator->next();
+
+            return $this->getFileForFixing($iterator, $fileCacheManager);
         }
 
-        try {
-            $this->linter->lintFile($file->getRealPath());
-        } catch (LintingException $e) {
-            $this->dispatchEvent(
-                FixerFileProcessedEvent::NAME,
-                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
-            );
+        $lintProcess = $this->linter->startLintingFile($file->getRealPath());
 
-            $this->errorsManager->report(new Error(Error::TYPE_INVALID, $name));
+        return array(
+            'file' => $file,
+            'content' => $content,
+            'lint_process' => $lintProcess,
+        );
+    }
 
-            return;
+    public function fixFile(\SplFileInfo $file, $content, array $fixers, $dryRun, $diff, FileCacheManager $fileCacheManager, Process $lintProcess = null)
+    {
+        $new = $old = $content;
+        $name = $this->getFileRelativePathname($file);
+
+        if ($lintProcess) {
+            try {
+                $this->linter->checkProcess($lintProcess);
+            } catch (LintingException $e) {
+                $this->dispatchEvent(
+                    FixerFileProcessedEvent::NAME,
+                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
+                );
+
+                $this->errorsManager->report(new Error(Error::TYPE_INVALID, $name));
+
+                return;
+            }
         }
 
         $appliedFixers = array();

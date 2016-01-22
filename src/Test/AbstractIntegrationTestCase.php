@@ -168,7 +168,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
         }
 
-        $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), $fixers, false, true, new FileCacheManager(false, null, $fixers));
+        $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), $input, $fixers, false, true, new FileCacheManager(false, null, $fixers));
 
         $errorsManager = $fixer->getErrorsManager();
 
@@ -207,7 +207,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
         }
 
-        $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), array_reverse($fixers), false, true, new FileCacheManager(false, null, $fixers));
+        $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), $input, array_reverse($fixers), false, true, new FileCacheManager(false, null, $fixers));
         $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
         $this->assertNotSame($fixedInputCode, $fixedInputCodeWithReversedFixers, 'Set priorities must be significant. If fixers used in reverse order return same output then the integration test is not sufficient or the priority relation between used fixers should not be set.');
 

@@ -11,6 +11,8 @@
 
 namespace Symfony\CS\Linter;
 
+use Symfony\Component\Process\Process;
+
 /**
  * Interface for PHP code linting process manager.
  *
@@ -19,11 +21,13 @@ namespace Symfony\CS\Linter;
 interface LinterInterface
 {
     /**
-     * Lint PHP file.
+     * Start linting process for PHP file.
      *
      * @param string $path
+     *
+     * @return Process|null
      */
-    public function lintFile($path);
+    public function startLintingFile($path);
 
     /**
      * Lint PHP code.

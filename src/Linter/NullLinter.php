@@ -23,7 +23,7 @@ final class NullLinter implements LinterInterface
     /**
      * {@inheritdoc}
      */
-    public function lintFile($path)
+    public function startLintingFile($path)
     {
         unset($path);
     }
