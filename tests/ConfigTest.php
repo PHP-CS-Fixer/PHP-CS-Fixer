@@ -9,33 +9,20 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Config;
+namespace Symfony\CS\Tests;
 
-use Symfony\Component\Finder\Finder;
-use Symfony\CS\Config\Config;
-use Symfony\CS\Finder\DefaultFinder;
+use Symfony\Component\Finder\Finder as SymfonyFinder;
+use Symfony\CS\Config;
+use Symfony\CS\Finder;
 
 /**
  * @internal
  */
 final class ConfigTest extends \PHPUnit_Framework_TestCase
 {
-    public function testThatDefaultFinderWorksWithDirSetOnConfig()
+    public function testThatFinderWorksWithDirSetOnConfig()
     {
-        $config = Config::create()->setDir(__DIR__.'/../Fixtures/FinderDirectory');
-
-        $iterator = $config->getFinder()->getIterator();
-        $this->assertSame(1, count($iterator));
-        $iterator->rewind();
-        $this->assertSame('somefile.php', $iterator->current()->getFilename());
-    }
-
-    public function testThatCustomDefaultFinderWorks()
-    {
-        $finder = DefaultFinder::create();
-        $finder->in(__DIR__.'/../Fixtures/FinderDirectory');
-
-        $config = Config::create()->finder($finder);
+        $config = Config::create()->setDir(__DIR__.'/Fixtures/FinderDirectory');
 
         $iterator = $config->getFinder()->getIterator();
         $this->assertSame(1, count($iterator));
@@ -46,7 +33,20 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
     public function testThatCustomFinderWorks()
     {
         $finder = Finder::create();
-        $finder->in(__DIR__.'/../Fixtures/FinderDirectory');
+        $finder->in(__DIR__.'/Fixtures/FinderDirectory');
+
+        $config = Config::create()->finder($finder);
+
+        $iterator = $config->getFinder()->getIterator();
+        $this->assertSame(1, count($iterator));
+        $iterator->rewind();
+        $this->assertSame('somefile.php', $iterator->current()->getFilename());
+    }
+
+    public function testThatCustomSymfonyFinderWorks()
+    {
+        $finder = SymfonyFinder::create();
+        $finder->in(__DIR__.'/Fixtures/FinderDirectory');
 
         $config = Config::create()->finder($finder);
 

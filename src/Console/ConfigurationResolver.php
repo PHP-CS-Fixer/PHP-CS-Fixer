@@ -91,7 +91,6 @@ final class ConfigurationResolver
      */
     private $options = array(
         'allow-risky' => null,
-        'config' => null,
         'config-file' => null,
         'dry-run' => null,
         'format' => 'txt',
@@ -377,22 +376,6 @@ final class ConfigurationResolver
      */
     private function resolveConfig()
     {
-        $configOption = $this->options['config'];
-
-        if ($configOption) {
-            foreach ($this->fixer->getConfigs() as $c) {
-                if ($c->getName() === $configOption) {
-                    $this->config = $c;
-
-                    return;
-                }
-            }
-
-            if (null === $this->config) {
-                throw new InvalidConfigurationException(sprintf('The configuration "%s" is not defined.', $configOption));
-            }
-        }
-
         foreach ($this->computeConfigFiles() as $configFile) {
             if (!file_exists($configFile)) {
                 continue;

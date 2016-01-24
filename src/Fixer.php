@@ -15,7 +15,6 @@ use SebastianBergmann\Diff\Differ;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Finder\Finder as SymfonyFinder;
 use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Error\Error;
@@ -76,15 +75,7 @@ class Fixer
         $this->errorsManager = new ErrorsManager();
         $this->linter = new NullLinter();
         $this->stopwatch = new Stopwatch();
-    }
-
-    public function registerBuiltInConfigs()
-    {
-        foreach (SymfonyFinder::create()->files()->in(__DIR__.'/Config') as $file) {
-            $relativeNamespace = $file->getRelativePath();
-            $class = 'Symfony\\CS\\Config\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
-            $this->addConfig(new $class());
-        }
+        $this->addConfig(new Config());
     }
 
     public function addConfig(ConfigInterface $config)

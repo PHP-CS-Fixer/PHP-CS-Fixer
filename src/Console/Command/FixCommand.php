@@ -89,7 +89,6 @@ final class FixCommand extends Command
         $this->eventDispatcher = new EventDispatcher();
 
         $this->fixer = $fixer ?: new Fixer();
-        $this->fixer->registerBuiltInConfigs();
 
         $this->errorsManager = $this->fixer->getErrorsManager();
         $this->stopwatch = $this->fixer->getStopwatch();
@@ -108,7 +107,6 @@ final class FixCommand extends Command
                 array(
                     new InputArgument('path', InputArgument::OPTIONAL, 'The path', null),
                     new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no)', null),
-                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The configuration name', null),
                     new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
                     new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'The rules', null),
@@ -166,15 +164,6 @@ Choose from the list of available fixers:
 
 {$this->getFixersHelp()}
 
-The <comment>--config</comment> option customizes the files to analyse, based
-on some well-known directory structures:
-
-    <comment># For the Symfony 2.3+ branch</comment>
-    <info>php %command.full_name% /path/to/sf23 --config=sf23</info>
-
-Choose from the list of available configurations:
-
-{$this->getConfigsHelp()}
 The <comment>--dry-run</comment> option displays the files that need to be
 fixed but without actually modifying them:
 
@@ -324,7 +313,6 @@ EOF
             ->setFixer($this->fixer)
             ->setOptions(array(
                 'allow-risky' => $input->getOption('allow-risky'),
-                'config' => $input->getOption('config'),
                 'config-file' => $input->getOption('config-file'),
                 'dry-run' => $input->getOption('dry-run'),
                 'rules' => $input->getOption('rules'),
@@ -631,42 +619,6 @@ EOF
                 $help .= sprintf(" * <comment>%s</comment>%s\n", $fixer->getName(), array_shift($chunks));
             }
 
-            while ($c = array_shift($chunks)) {
-                $help .= str_repeat(' ', $maxName + 4).$c."\n";
-            }
-
-            if ($count !== $i) {
-                $help .= "\n";
-            }
-        }
-
-        return $help;
-    }
-
-    protected function getConfigsHelp()
-    {
-        $help = '';
-        $maxName = 0;
-
-        $configs = $this->fixer->getConfigs();
-
-        usort(
-            $configs,
-            function (ConfigInterface $a, ConfigInterface $b) {
-                return strcmp($a->getName(), $b->getName());
-            }
-        );
-
-        foreach ($configs as $config) {
-            if (strlen($config->getName()) > $maxName) {
-                $maxName = strlen($config->getName());
-            }
-        }
-
-        $count = count($this->fixer->getConfigs()) - 1;
-        foreach ($configs as $i => $config) {
-            $chunks = explode("\n", wordwrap($config->getDescription(), 72 - $maxName, "\n"));
-            $help .= sprintf(" * <comment>%s</comment>%s %s\n", $config->getName(), str_repeat(' ', $maxName - strlen($config->getName())), array_shift($chunks));
             while ($c = array_shift($chunks)) {
                 $help .= str_repeat(' ', $maxName + 4).$c."\n";
             }

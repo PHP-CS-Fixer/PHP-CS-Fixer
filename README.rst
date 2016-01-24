@@ -705,22 +705,6 @@ Choose from the list of available fixers:
                         the end of blank lines.
 
 
-The ``--config`` option customizes the files to analyse, based
-on some well-known directory structures:
-
-.. code-block:: bash
-
-    # For the Symfony 2.3+ branch
-    php php-cs-fixer.phar fix /path/to/sf23 --config=sf23
-
-Choose from the list of available configurations:
-
-* **default** A default configuration
-
-* **magento** The configuration for a Magento application
-
-* **sf23**    The configuration for the Symfony 2.3+ branch
-
 The ``--dry-run`` option displays the files that need to be
 fixed but without actually modifying them:
 

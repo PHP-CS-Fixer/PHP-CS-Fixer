@@ -11,12 +11,12 @@
 
 namespace Symfony\CS\Tests\Finder;
 
-use Symfony\CS\Finder\DefaultFinder;
+use Symfony\CS\Finder;
 
 /**
  * @internal
  */
-final class DefaultFinderTest extends \PHPUnit_Framework_TestCase
+final class FinderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException              \LogicException
@@ -24,7 +24,7 @@ final class DefaultFinderTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatDefaultFinderDoesNotSpecifyAnyDirectory()
     {
-        $finder = DefaultFinder::create();
+        $finder = Finder::create();
         $finder->getIterator();
     }
 }
