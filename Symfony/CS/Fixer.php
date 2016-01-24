@@ -14,7 +14,7 @@ namespace Symfony\CS;
 use SebastianBergmann\Diff\Differ;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
-use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
+use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Tokenizer\Tokens;
 
@@ -274,7 +274,7 @@ class Fixer
 
     private function getFileRelativePathname(\SplFileInfo $file)
     {
-        if ($file instanceof FinderSplFileInfo) {
+        if ($file instanceof SymfonySplFileInfo) {
             return $file->getRelativePathname();
         }
 
