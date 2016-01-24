@@ -209,6 +209,11 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['short_bool_cast'], $fixers['spaces_cast']), // tested also in: short_bool_cast,spaces_cast.test
             array($fixers['unneeded_control_parentheses'], $fixers['trailing_spaces']), // tested also in: trailing_spaces,unneeded_control_parentheses.test
             array($fixers['class_definition'], $fixers['trailing_spaces']), // tested also in: class_definition,trailing_spaces.test
+            array($fixers['empty_return'], $fixers['useless_return']), // tested also in: empty_return,useless_return.test
+            array($fixers['duplicate_semicolon'], $fixers['useless_return']), // tested also in: duplicate_semicolon,useless_return.test
+            array($fixers['useless_return'], $fixers['whitespacy_lines']), // tested also in: useless_return,whitespacy_lines.test
+            array($fixers['useless_return'], $fixers['extra_empty_lines']), // tested also in: useless_return,extra_empty_lines.test
+            array($fixers['useless_return'], $fixers['return']), // tested also in: useless_return,return.test
         );
 
         $docFixerNames = array_filter(
