@@ -15,8 +15,8 @@ use SebastianBergmann\Diff\Differ;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
+use Symfony\Component\Finder\Finder as SymfonyFinder;
+use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Error\Error;
 use Symfony\CS\Error\ErrorsManager;
@@ -80,7 +80,7 @@ class Fixer
 
     public function registerBuiltInConfigs()
     {
-        foreach (Finder::create()->files()->in(__DIR__.'/Config') as $file) {
+        foreach (SymfonyFinder::create()->files()->in(__DIR__.'/Config') as $file) {
             $relativeNamespace = $file->getRelativePath();
             $class = 'Symfony\\CS\\Config\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
             $this->addConfig(new $class());
@@ -278,7 +278,7 @@ class Fixer
 
     private function getFileRelativePathname(\SplFileInfo $file)
     {
-        if ($file instanceof FinderSplFileInfo) {
+        if ($file instanceof SymfonySplFileInfo) {
             return $file->getRelativePathname();
         }
 
