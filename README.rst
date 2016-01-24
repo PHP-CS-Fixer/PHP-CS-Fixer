@@ -226,6 +226,12 @@ Choose from the list of available fixers:
                         Concatenation should be used
                         without spaces.
 
+* **dir_constant**
+                        Replaces dirname(__FILE__)
+                        expression with equivalent
+                        __DIR__ constant. (Risky
+                        fixer!)
+
 * **double_arrow_multiline_whitespaces** [@Symfony]
                         Operator => should not be
                         surrounded by multi-line
@@ -366,6 +372,13 @@ Choose from the list of available fixers:
 * **method_separation** [@Symfony]
                         Methods must be separated with
                         one blank line.
+
+* **modernize_types_casting**
+                        Replaces intval, floatval,
+                        doubleval, strval, boolval
+                        functions calls with according
+                        type casting operator. (Risky
+                        fixer!)
 
 * **multiline_array_trailing_comma** [@Symfony]
                         PHP multi-line arrays should
@@ -562,6 +575,12 @@ Choose from the list of available fixers:
                         least one namespace deep and
                         the class name should match
                         the file name. (Risky fixer!)
+
+* **random_api_migration**
+                        Replaces rand, srand,
+                        getrandmax functions calls
+                        with their mt_* analogs.
+                        (Risky fixer!)
 
 * **remove_leading_slash_use** [@Symfony]
                         Remove leading slashes in use

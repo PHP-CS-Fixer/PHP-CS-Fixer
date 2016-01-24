@@ -125,7 +125,7 @@ final class FileCacheManager
         $content = file_get_contents($this->cacheFile);
         $data = unserialize($content);
 
-        if (!isset($data['version']) || !isset($data['rules'])) {
+        if (!isset($data['version'], $data['rules'])) {
             return;
         }
 
