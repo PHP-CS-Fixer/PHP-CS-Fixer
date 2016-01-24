@@ -33,7 +33,7 @@ final class NewWithBracesFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+        for ($index = $tokens->count() - 3; $index > 0; --$index) {
             $token = $tokens[$index];
 
             if (!$token->isGivenKind(T_NEW)) {
@@ -42,7 +42,7 @@ final class NewWithBracesFixer extends AbstractFixer
 
             $nextIndex = $tokens->getNextTokenOfKind(
                 $index,
-                array(':', ';', ',', '(', ')', '[', ']', array(CT_ARRAY_SQUARE_BRACE_OPEN), array(CT_ARRAY_SQUARE_BRACE_CLOSE), array(CT_BRACE_CLASS_INSTANTIATION_OPEN), array(CT_BRACE_CLASS_INSTANTIATION_CLOSE))
+                array(':', ';', ',', '(', ')', '[', ']', array(T_CLOSE_TAG), array(CT_ARRAY_SQUARE_BRACE_OPEN), array(CT_ARRAY_SQUARE_BRACE_CLOSE), array(CT_BRACE_CLASS_INSTANTIATION_OPEN), array(CT_BRACE_CLASS_INSTANTIATION_CLOSE))
             );
             $nextToken = $tokens[$nextIndex];
 
@@ -63,7 +63,7 @@ final class NewWithBracesFixer extends AbstractFixer
                 continue;
             }
 
-            $meaningBeforeNextIndex = $tokens->getPrevNonWhitespace($nextIndex);
+            $meaningBeforeNextIndex = $tokens->getPrevMeaningfulToken($nextIndex);
 
             $tokens->insertAt($meaningBeforeNextIndex + 1, array(new Token('('), new Token(')')));
         }

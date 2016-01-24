@@ -46,6 +46,7 @@ final class EmptyReturnFixerTest extends AbstractFixerTestCase
             array('<?php return;', '<?php return'.' ( null    );'),
             array('<?php return;', '<?php return'.' ( (( null)));'),
             array('<?php return /* hello */;', '<?php return /* hello */'.' null  ;'),
+            array('<?php return;', '<?php return NULL;'),
         );
     }
 }

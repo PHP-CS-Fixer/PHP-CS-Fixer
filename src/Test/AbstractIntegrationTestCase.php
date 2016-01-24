@@ -34,17 +34,17 @@ use Symfony\CS\RuleSet;
  * Example test description.
  * --CONFIG--
  * {"@PSR2": true, "strict": true}
- * --REQUIREMENTS--
+ * --REQUIREMENTS--****
  * php=5.4*
  * hhvm=false**
- * --INPUT--
- * Code to fix***
+ * --INPUT--***
+ * Code to fix
  * --EXPECT--
  * Expected code after fixing***
  *
  *   * PHP minimum version. Default to current running php version (no effect).
  *  ** HHVM compliant flag. Default to true. Set to false to skip test under HHVM.
- * *** Input part may be omitted
+ * *** Block may be omitted
  *
  * @author SpacePossum <possumfromspace@gmail.com>
  */
@@ -99,7 +99,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             $test = file_get_contents($file->getRealpath());
             $fileName = $file->getRelativePathname();
 
-            if (!preg_match('/--TEST--[\n](.*?)\s--CONFIG--[\n](.*?)(\s--REQUIREMENTS--[\n](.*?))?\s--EXPECT--[\n](.*?[\n]*)(?:[\n]--INPUT--\s(.*)|$)/s', $test, $match)) {
+            if (!preg_match('/--TEST--\n(.*?)\s--CONFIG--\n(.*?)(\s--REQUIREMENTS--\n(.*?))?\s--EXPECT--\n(.*?\n*)(?:\n--INPUT--\s(.*)|$)/s', $test, $match)) {
                 throw new \InvalidArgumentException(sprintf('Test format invalid for "%s".', $fileName));
             }
 
