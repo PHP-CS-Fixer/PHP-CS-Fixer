@@ -13,7 +13,7 @@ namespace Symfony\CS;
 
 use SebastianBergmann\Diff\Differ;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\Finder as SymfonyFinder;
 use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Tokenizer\Tokens;
@@ -71,7 +71,7 @@ class Fixer
 
     public function registerBuiltInFixers()
     {
-        foreach (Finder::create()->files()->in(__DIR__.'/Fixer') as $file) {
+        foreach (SymfonyFinder::create()->files()->in(__DIR__.'/Fixer') as $file) {
             $relativeNamespace = $file->getRelativePath();
             $class = 'Symfony\\CS\\Fixer\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
             $this->addFixer(new $class());
@@ -102,7 +102,7 @@ class Fixer
 
     public function registerBuiltInConfigs()
     {
-        foreach (Finder::create()->files()->in(__DIR__.'/Config') as $file) {
+        foreach (SymfonyFinder::create()->files()->in(__DIR__.'/Config') as $file) {
             $relativeNamespace = $file->getRelativePath();
             $class = 'Symfony\\CS\\Config\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
             $this->addConfig(new $class());
