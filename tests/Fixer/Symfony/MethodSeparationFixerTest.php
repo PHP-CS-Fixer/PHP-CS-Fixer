@@ -12,12 +12,109 @@
 namespace Symfony\CS\Tests\Fixer\Symfony;
 
 use Symfony\CS\Test\AbstractFixerTestCase;
+use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @internal
  */
 final class MethodSeparationFixerTest extends AbstractFixerTestCase
 {
+    /**
+     * @param int    $expected
+     * @param string $code
+     * @param int    $index
+     *
+     * @dataProvider provideCommentBlockStartDetectionCases
+     */
+    public function testCommentBlockStartDetection($expected, $code, $index)
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($code);
+        $fixer = $this->getFixer();
+        $method = new \ReflectionMethod($fixer, 'findCommentBlockStart');
+        $method->setAccessible(true);
+        if ($expected !== $result = $method->invoke($fixer, $tokens, $index)) {
+            $this->fail(sprintf('Expected index %d (%s) got index %d (%s).', $expected, $tokens[$expected]->toJson(), $result, $tokens[$result]->toJson()));
+        }
+    }
+
+    public function provideCommentBlockStartDetectionCases()
+    {
+        return array(
+            array(
+                4,
+                '<?php
+                    //ui
+
+                    //j1
+                    //k2
+                ',
+                6,
+            ),
+            array(
+                4,
+                '<?php
+                    //ui
+
+                    //j1
+                    //k2
+                ',
+                5,
+            ),
+            array(
+                4,
+                '<?php
+                    /**/
+
+                    //j1
+                    //k2
+                ',
+                6,
+            ),
+            array(
+                4,
+                '<?php
+                    $a;//j
+                    //k
+                ',
+                6,
+            ),
+            array(
+                2,
+                '<?php
+                    //a
+                ',
+                2,
+            ),
+            array(
+                2,
+                '<?php
+                    //b
+                    //c
+                ',
+                2,
+            ),
+            array(
+                2,
+                '<?php
+                    //d
+                    //e
+                ',
+                4,
+            ),
+            array(
+                2,
+                '<?php
+                    /**/
+                    //f
+                    //g
+                    //h
+                ',
+                8,
+            ),
+        );
+    }
+
     /**
      * @dataProvider provideFixClassesCases
      */
@@ -29,6 +126,217 @@ final class MethodSeparationFixerTest extends AbstractFixerTestCase
     public function provideFixClassesCases()
     {
         $cases = array();
+        $cases[] = array('<?php
+class SomeClass1
+{
+    // This comment
+    // is multiline.
+    public function echoA()
+    {
+        echo "a";
+    }
+}
+');
+        $cases[] = array(
+            '<?php
+class SomeClass2
+{
+    // This comment
+    /* is multiline. */
+public function echoA()
+    {
+        echo "a";
+    }
+}
+            ',
+            '<?php
+class SomeClass2
+{
+    // This comment
+    /* is multiline. */public function echoA()
+    {
+        echo "a";
+    }
+}
+            ',
+            );
+        $cases[] = array(
+            '<?php
+class SomeClass3
+{
+    // This comment
+    // is multiline.
+
+    public function echoA()
+    {
+        echo "a";
+    }
+}
+', );
+        $cases[] = array(
+            '<?php
+class SomeClass1
+{
+    private $a; //
+
+    public function methodA()
+    {
+    }
+
+    private $b;
+
+    //
+    public function methodB()
+    {
+    }
+
+    // C
+    public function methodC()
+    {
+    }
+
+    // D
+
+    public function methodD()
+    {
+    }
+
+    /* E */
+
+    public function methodD()
+    {
+    }
+
+    /* F */
+    public function methodD()
+    {
+    }
+}
+',
+            '<?php
+class SomeClass1
+{
+    private $a; //
+    public function methodA()
+    {
+    }
+
+    private $b;
+    //
+    public function methodB()
+    {
+    }
+    // C
+    public function methodC()
+    {
+    }
+
+    // D
+
+    public function methodD()
+    {
+    }
+
+    /* E */
+
+    public function methodD()
+    {
+    }
+
+    /* F */
+    public function methodD()
+    {
+    }
+}
+', );
+        $cases[] = array('<?php
+class SomeClass
+{
+    // comment
+    public function echoA()
+    {
+        echo "a";
+    }
+}
+');
+        $cases[] = array('<?php
+class SomeClass
+{
+    // This comment
+    // is multiline.
+    public function echoA()
+    {
+        echo "a";
+    }
+}
+');
+        $cases[] = array(
+        '<?php
+class SomeClass
+{
+    // comment
+
+    public function echoA()
+    {
+        echo "a";
+    }
+}
+',
+            '<?php
+class SomeClass
+{
+    // comment
+
+
+    public function echoA()
+    {
+        echo "a";
+    }
+}
+',
+        );
+        $cases[] = array(
+            '<?php
+class SomeClass
+{
+    /* comment */
+public function echoB()
+    {
+        echo "a";
+    }
+}
+',
+            '<?php
+class SomeClass
+{
+    /* comment */public function echoB()
+    {
+        echo "a";
+    }
+}
+',
+        );
+        $cases[] = array(
+            '<?php
+class SomeClass
+{
+    /* comment */
+ public function echoC()
+    {
+        echo "a";
+    }
+}
+',
+            '<?php
+class SomeClass
+{
+    /* comment */ public function echoC()
+    {
+        echo "a";
+    }
+}
+',
+        );
         $cases[] = array(
             '<?php
 abstract class MethodTest2
@@ -187,8 +495,8 @@ class MethodTest1
     }
 
     private $b;
-    //
 
+    //
     public function method444e()
     {
     }
@@ -204,7 +512,6 @@ class MethodTest1
     }
 
     /**/
-
     public function method444g()
     {
     }
