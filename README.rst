@@ -702,6 +702,10 @@ Choose from the list of available fixers:
                         $strict param. Warning! This
                         could change code behavior.
 
+* **useless_else** [contrib]
+                        There should not be useless
+                        else cases.
+
 
 The ``--config`` option customizes the files to analyse, based
 on some well-known directory structures:
