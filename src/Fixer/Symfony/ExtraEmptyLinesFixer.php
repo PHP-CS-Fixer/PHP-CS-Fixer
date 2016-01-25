@@ -37,10 +37,10 @@ final class ExtraEmptyLinesFixer extends AbstractFixer
      *
      * Valid configuration options are:
      * - 'break' remove blank lines after a line with a 'break' statement
-     * - 'continue' remove blank lines after a line with a 'break' statement
-     * - 'extra' [default] remove extra blank lines
-     * - 'return' remove blank lines after a line with a 'break' statement
-     * - 'throw' remove blank lines after a line with a 'break' statement
+     * - 'continue' remove blank lines after a line with a 'continue' statement
+     * - 'extra' [default] consecutive blank lines are squashed into one
+     * - 'return' remove blank lines after a line with a 'return' statement
+     * - 'throw' remove blank lines after a line with a 'throw' statement
      * - 'use' remove blank lines between 'use' import statements
      *
      * @param string[]|null $configuration
