@@ -17,10 +17,8 @@ use Symfony\Component\Finder\Finder;
 use Symfony\CS\Error\Error;
 use Symfony\CS\FileCacheManager;
 use Symfony\CS\Fixer;
-use Symfony\CS\FixerFactory;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Linter\Linter;
-use Symfony\CS\RuleSet;
 
 /**
  * Integration test base class.
@@ -34,17 +32,19 @@ use Symfony\CS\RuleSet;
  * Example test description.
  * --CONFIG--
  * {"@PSR2": true, "strict": true}
- * --REQUIREMENTS--****
- * php=5.4*
- * hhvm=false**
- * --INPUT--***
- * Code to fix
+ * --SETTINGS--*
+ * checkPriority=true
+ * --REQUIREMENTS--*
+ * php=5.4**
+ * hhvm=false***
  * --EXPECT--
- * Expected code after fixing***
+ * Expected code after fixing
+ * --INPUT--*
+ * Code to fix
  *
- *   * PHP minimum version. Default to current running php version (no effect).
- *  ** HHVM compliant flag. Default to true. Set to false to skip test under HHVM.
- * *** Block may be omitted
+ *   * Section or any line in it may be omitted.
+ *  ** PHP minimum version. Default to current running php version (no effect).
+ * *** HHVM compliant flag. Default to true. Set to false to skip test under HHVM.
  *
  * @author SpacePossum <possumfromspace@gmail.com>
  */
@@ -72,15 +72,15 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
      *
      * @see doTest()
      */
-    public function testIntegration($testFileName, $testTitle, $fixers, array $requirements, $expected, $input = null)
+    public function testIntegration(IntegrationCase $case)
     {
-        $this->doTest($testFileName, $testTitle, $fixers, $requirements, $expected, $input);
+        $this->doTest($case);
     }
 
     /**
      * Creates test data by parsing '.test' files.
      *
-     * @return array
+     * @return IntegrationCase[][]
      */
     public function getTests()
     {
@@ -89,6 +89,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             throw new \UnexpectedValueException(sprintf('Given fixture dir "%s" is not a directory.', $fixturesDir));
         }
 
+        $factory = new IntegrationCaseFactory();
         $tests = array();
 
         foreach (Finder::create()->files()->in($fixturesDir) as $file) {
@@ -96,14 +97,12 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
                 continue;
             }
 
-            $test = file_get_contents($file->getRealpath());
-            $fileName = $file->getRelativePathname();
-
-            if (!preg_match('/--TEST--\n(.*?)\s--CONFIG--\n(.*?)(\s--REQUIREMENTS--\n(.*?))?\s--EXPECT--\n(.*?\n*)(?:\n--INPUT--\s(.*)|$)/s', $test, $match)) {
-                throw new \InvalidArgumentException(sprintf('Test format invalid for "%s".', $fileName));
-            }
-
-            $tests[] = array($fileName, $match[1], $this->getFixersFromConfig($fileName, $match[2]), $this->getRequirementsFromConfig($fileName, $match[4]), $match[5], isset($match[6]) ? $match[6] : null);
+            $tests[] = array(
+                $factory->create(
+                    $file->getRelativePathname(),
+                    file_get_contents($file->getRealpath())
+                ),
+            );
         }
 
         return $tests;
@@ -136,25 +135,22 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
      * configured with the given fixers. The result is compared with the expected output.
      * It checks if no errors were reported during the fixing.
      *
-     * @param string           $testFileName Filename
-     * @param string           $testTitle    Test title
-     * @param FixerInterface[] $fixers       Fixers to use
-     * @param array            $requirements Env requirements (PHP, HHVM)
-     * @param string           $expected     Expected result
-     * @param string|null      $input        Code to fix, or null if it should intentionally be equal to the expected result.
+     * @param IntegrationCase $case
      */
-    protected function doTest($testFileName, $testTitle, $fixers, array $requirements, $expected, $input = null)
+    protected function doTest($case)
     {
-        if (defined('HHVM_VERSION') && false === $requirements['hhvm']) {
+        if (defined('HHVM_VERSION') && false === $case->getRequirement('hhvm')) {
             $this->markTestSkipped('HHVM is not supported.');
         }
 
-        if (isset($requirements['php']) && version_compare(PHP_VERSION, $requirements['php']) < 0) {
-            $this->markTestSkipped(sprintf('PHP %s (or later) is required.', $requirements['php']));
+        if (version_compare(PHP_VERSION, $case->getRequirement('php')) < 0) {
+            $this->markTestSkipped(sprintf('PHP %s (or later) is required.', $case->getRequirement('php')));
         }
 
-        $hasInput = null !== $input;
-        $input = $hasInput ? $input : $expected;
+        $input = $case->getInputCode();
+        $expected = $case->getExpectedCode();
+
+        $input = $case->hasInputCode() ? $input : $expected;
 
         if (getenv('LINT_TEST_CASES')) {
             $linter = new Linter();
@@ -168,7 +164,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
         }
 
-        $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), $fixers, false, true, new FileCacheManager(false, null, $fixers));
+        $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), $case->getFixers(), false, true, new FileCacheManager(false, null, $case->getFixers()));
 
         $errorsManager = $fixer->getErrorsManager();
 
@@ -183,68 +179,51 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             $this->assertEmpty($errors, sprintf('Errors reported during linting after fixing: %s.', $this->implodeErrors($errors)));
         }
 
-        if (!$hasInput) {
-            $this->assertEmpty($changed, sprintf("Expected no changes made to test \"%s\" in \"%s\".\nFixers applied:\n\"%s\".\nDiff.:\n\"%s\".", $testTitle, $testFileName, $changed === null ? '[None]' : implode(',', $changed['appliedFixers']), $changed === null ? '[None]' : $changed['diff']));
+        if (!$case->hasInputCode()) {
+            $this->assertEmpty(
+                $changed,
+                sprintf(
+                    "Expected no changes made to test \"%s\" in \"%s\".\nFixers applied:\n\"%s\".\nDiff.:\n\"%s\".",
+                    $case->getTitle(),
+                    $case->getFileName(),
+                    $changed === null ? '[None]' : implode(',', $changed['appliedFixers']),
+                    $changed === null ? '[None]' : $changed['diff']
+                )
+            );
 
             return;
         }
 
-        $this->assertNotEmpty($changed, sprintf('Expected changes made to test "%s" in "%s".', $testTitle, $testFileName));
+        $this->assertNotEmpty($changed, sprintf('Expected changes made to test "%s" in "%s".', $case->getTitle(), $case->getFileName()));
         $fixedInputCode = file_get_contents($tmpFile);
-        $this->assertSame($expected, $fixedInputCode, sprintf('Expected changes do not match result for "%s" in "%s".', $testTitle, $testFileName));
+        $this->assertSame($expected, $fixedInputCode, sprintf('Expected changes do not match result for "%s" in "%s".', $case->getTitle(), $case->getFileName()));
 
-        $priorities = array_map(
-            function (FixerInterface $fixer) {
-                return $fixer->getPriority();
-            },
-            $fixers
-        );
+        if ($case->shouldCheckPriority()) {
+            $priorities = array_map(
+                function (FixerInterface $fixer) {
+                    return $fixer->getPriority();
+                },
+                $case->getFixers()
+            );
 
-        $this->assertNotCount(1, array_unique($priorities), 'All used fixers must not have the same priority, integration tests should cover fixers with different priorities.');
+            $this->assertNotCount(1, array_unique($priorities), 'All used fixers must not have the same priority, integration tests should cover fixers with different priorities.');
 
-        $tmpFile = static::getTempFile();
-        if (false === @file_put_contents($tmpFile, $input)) {
-            throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
+            $tmpFile = static::getTempFile();
+            if (false === @file_put_contents($tmpFile, $input)) {
+                throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
+            }
+
+            $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), array_reverse($case->getFixers()), false, true, new FileCacheManager(false, null, $case->getFixers()));
+            $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
+            $this->assertNotSame($fixedInputCode, $fixedInputCodeWithReversedFixers, 'Set priorities must be significant. If fixers used in reverse order return same output then the integration test is not sufficient or the priority relation between used fixers should not be set.');
         }
-
-        $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), array_reverse($fixers), false, true, new FileCacheManager(false, null, $fixers));
-        $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
-        $this->assertNotSame($fixedInputCode, $fixedInputCodeWithReversedFixers, 'Set priorities must be significant. If fixers used in reverse order return same output then the integration test is not sufficient or the priority relation between used fixers should not be set.');
 
         // run the test again with the `expected` part, this should always stay the same
-        $this->testIntegration($testFileName, $testTitle.' "--EXPECT-- part run"', $fixers, $requirements, $expected);
-    }
-
-    /**
-     * Create fixer factory with all needed fixers registered.
-     *
-     * @return FixerFactory
-     */
-    protected function createFixerFactory()
-    {
-        return FixerFactory::create()->registerBuiltInFixers();
-    }
-
-    /**
-     * Parses the '--CONFIG--' block of a '.test' file and determines what fixers should be used.
-     *
-     * @param string $fileName
-     * @param string $config
-     *
-     * @return FixerInterface[]
-     */
-    protected function getFixersFromConfig($fileName, $config)
-    {
-        $ruleSet = json_decode($config, true);
-
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new \InvalidArgumentException(sprintf('Malformed JSON configuration "%s".', $fileName));
-        }
-
-        return $this->createFixerFactory()
-            ->useRuleSet(new RuleSet($ruleSet))
-            ->getFixers()
-        ;
+        $this->testIntegration(
+            $case
+                ->setTitle($case->getTitle().' "--EXPECT-- part run"')
+                ->setInputCode(null)
+        );
     }
 
     /**
@@ -260,50 +239,5 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
         }
 
         return $errorStr;
-    }
-
-    /**
-     * Parses the '--REQUIREMENTS--' block of a '.test' file and determines requirements.
-     *
-     * @param string $fileName
-     * @param string $config
-     *
-     * @return array
-     */
-    protected function getRequirementsFromConfig($fileName, $config)
-    {
-        $requirements = array('hhvm' => true, 'php' => PHP_VERSION);
-
-        if ('' === $config) {
-            return $requirements;
-        }
-
-        $lines = explode("\n", $config);
-        if (empty($lines)) {
-            return $requirements;
-        }
-
-        foreach ($lines as $line) {
-            $labelValuePair = explode('=', $line);
-            if (2 !== count($labelValuePair)) {
-                throw new \InvalidArgumentException(sprintf('Invalid requirements line "%s" in "%s".', $line, $fileName));
-            }
-
-            $label = strtolower(trim($labelValuePair[0]));
-            $value = trim($labelValuePair[1]);
-
-            switch ($label) {
-                case 'hhvm':
-                    $requirements['hhvm'] = 'false' !== $value;
-                    break;
-                case 'php':
-                    $requirements['php'] = $value;
-                    break;
-                default:
-                    throw new \InvalidArgumentException(sprintf('Unknown configuration item "%s" in "%s".', $label, $fileName));
-            }
-        }
-
-        return $requirements;
     }
 }
