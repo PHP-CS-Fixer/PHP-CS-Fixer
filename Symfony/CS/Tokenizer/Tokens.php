@@ -1403,4 +1403,45 @@ class Tokens extends \SplFixedArray
 
         return 0 === count($kinds[T_INLINE_HTML]) + count($hhvmHashBangs) && 1 === count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO]) + count($hhvmOpenTagsWithEcho);
     }
+
+    /**
+     * Clear token and merge surrounding whitespace tokens.
+     *
+     * @param int $index
+     */
+    public function clearTokenAndMergeSurroundingWhitespace($index)
+    {
+        $count = count($this);
+        $this[$index]->clear();
+        if ($index === $count - 1) {
+            return;
+        }
+
+        // We are looking for the following sequence:
+        // [w][c](0..N)[index][c](0..N)[w]
+        // (note that the sequence can be prefixed and/or suffixed with  cleared tokens)
+        for ($till = $index + 1; $till < $count - 1; ++$till) {
+            if (!$this[$till]->isEmpty()) {
+                break;
+            }
+        }
+
+        if (!$this[$till]->isWhitespace() || $this[$till]->isEmpty()) {
+            return;
+        }
+
+        for ($from = $index - 1; $from > 0; --$from) {
+            if (!$this[$from]->isEmpty()) {
+                break;
+            }
+        }
+
+        if ($this[$from]->isWhitespace()) {
+            $this[$from]->setContent($this[$from]->getContent().$this[$till]->getContent());
+        } elseif ($this[$from + 1]->isEmpty('')) {
+            $this[$from + 1]->override(array(T_WHITESPACE, $this[$till]->getContent(), $this[$from + 1]->getLine()));
+        }
+
+        $this[$till]->clear();
+    }
 }
