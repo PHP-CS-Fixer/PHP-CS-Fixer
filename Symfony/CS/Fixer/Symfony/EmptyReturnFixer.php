@@ -45,6 +45,15 @@ class EmptyReturnFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run before NoUselessReturnFixer
+        return -17;
+    }
+
+    /**
      * Does the return statement located at a given index need fixing?
      *
      * @param Tokens $tokens

@@ -69,4 +69,13 @@ class WhitespacyLinesFixer extends AbstractFixer
     {
         return 'Remove trailing whitespace at the end of blank lines.';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run after the NoUselessReturnFixer
+        return -19;
+    }
 }

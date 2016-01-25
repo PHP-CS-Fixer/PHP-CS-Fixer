@@ -653,6 +653,11 @@ Choose from the list of available fixers:
                         before a namespace
                         declaration.
 
+* **no_useless_return** [contrib]
+                        There should not be an empty
+                        return statement at the end of
+                        a function.
+
 * **ordered_use** [contrib]
                         Ordering use statements.
 

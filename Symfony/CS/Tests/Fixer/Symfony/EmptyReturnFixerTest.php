@@ -31,7 +31,6 @@ class EmptyReturnFixerTest extends AbstractFixerTestBase
     {
         return array(
             // check correct statements aren't changed
-            array('<?php return;'),
             array('<?php return  ;'),
             array('<?php return \'null\';'),
             array('<?php return false;'),
@@ -40,11 +39,11 @@ class EmptyReturnFixerTest extends AbstractFixerTestBase
             array('<?php return array() == null ;'),
 
             // check we modified those that can be changed
-            array('<?php return;', '<?php return'.' null;'),
-            array('<?php return;', '<?php return'.' (null);'),
-            array('<?php return;', '<?php return'.' ( null    );'),
-            array('<?php return;', '<?php return'.' ( (( null)));'),
-            array('<?php return /* hello */;', '<?php return /* hello */'.' null  ;'),
+            array('<?php return;', '<?php return null;'),
+            array('<?php return;', '<?php return (null);'),
+            array('<?php return;', '<?php return ( null    );'),
+            array('<?php return;', '<?php return ( (( null)));'),
+            array('<?php return /* hello */;', '<?php return /* hello */ null  ;'),
             array('<?php return;', '<?php return NULL;'),
         );
     }
