@@ -146,14 +146,14 @@ apply (the fixer names must be separated by a comma):
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/dir --rules=linefeed,short_tag,indentation
+    php php-cs-fixer.phar fix /path/to/dir --rules=unix_line_endings,full_opening_tag,no_tab_indentation
 
 You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
 using ``-name_of_fixer``:
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/dir --rules=-short_tag,-indentation
+    php php-cs-fixer.phar fix /path/to/dir --rules=-full_opening_tag,-no_tab_indentation
 
 When using combinations of exact and blacklist fixers, applying exact fixers along with above blacklisted results:
 
@@ -176,10 +176,6 @@ automatically fix anything:
 
 Choose from the list of available fixers:
 
-* **alias_functions** [@Symfony]
-                        Master functions shall be used
-                        instead of aliases.
-
 * **align_double_arrow**
                         Align double arrow symbols in
                         consecutive lines.
@@ -188,21 +184,25 @@ Choose from the list of available fixers:
                         Align equals symbols in
                         consecutive lines.
 
-* **array_element_no_space_before_comma** [@Symfony]
-                        In array declaration, there
-                        MUST NOT be a whitespace
-                        before each comma.
+* **binary_operator_spaces** [@Symfony]
+                        Binary operators should be
+                        surrounded by at least one
+                        space.
 
-* **array_element_white_space_after_comma** [@Symfony]
-                        In array declaration, there
-                        MUST be a whitespace after
-                        each comma.
+* **blank_line_after_namespace** [@PSR2, @Symfony]
+                        There MUST be one blank line
+                        after the namespace
+                        declaration.
 
-* **blankline_after_open_tag** [@Symfony]
+* **blank_line_after_opening_tag** [@Symfony]
                         Ensure there is no code on the
                         same line as the PHP open tag
                         and it is followed by a
                         blankline.
+
+* **blank_line_before_return** [@Symfony]
+                        An empty line feed should
+                        precede a return statement.
 
 * **braces** [@PSR2, @Symfony]
                         The body of each structure
@@ -226,13 +226,10 @@ Choose from the list of available fixers:
                         Concatenation should be used
                         without spaces.
 
-* **double_arrow_multiline_whitespaces** [@Symfony]
+* **double_arrow_no_multiline_whitespace** [@Symfony]
                         Operator => should not be
                         surrounded by multi-line
                         whitespaces.
-
-* **duplicate_semicolon** [@Symfony]
-                        Remove duplicated semicolons.
 
 * **echo_to_print**
                         Converts echo language
@@ -245,35 +242,21 @@ Choose from the list of available fixers:
                         that all control keywords look
                         like single words.
 
-* **empty_return** [@Symfony]
-                        A return statement wishing to
-                        return nothing should be
-                        simply "return".
-
 * **encoding** [@PSR1, @PSR2, @Symfony]
                         PHP code MUST use only UTF-8
                         without BOM (remove BOM).
-
-* **eof_ending** [@PSR2, @Symfony]
-                        A file must always end with a
-                        single empty line feed.
 
 * **ereg_to_preg**
                         Replace deprecated ereg
                         regular expression functions
                         with preg. (Risky fixer!)
 
-* **extra_empty_lines** [@Symfony]
-                        Removes extra blank lines
-                        and/or blank lines following
-                        configuration.
-
-* **function_call_space** [@PSR2, @Symfony]
-                        When making a method or
-                        function call, there MUST NOT
-                        be a space between the method
-                        or function name and the
-                        opening parenthesis.
+* **full_opening_tag** [@PSR1, @PSR2, @Symfony]
+                        PHP code must use the long
+                        <?php ?> tags or the
+                        short-echo <?= ?> tags; it
+                        must not use the other tag
+                        variations.
 
 * **function_declaration** [@PSR2, @Symfony]
                         Spaces should be properly
@@ -304,34 +287,9 @@ Choose from the list of available fixers:
                         single space. File path should
                         not be placed under brackets.
 
-* **indentation** [@PSR2, @Symfony]
-                        Code MUST use an indent of 4
-                        spaces, and MUST NOT use tabs
-                        for indenting.
-
-* **line_after_namespace** [@PSR2, @Symfony]
-                        There MUST be one blank line
-                        after the namespace
-                        declaration.
-
-* **linefeed** [@PSR2, @Symfony]
-                        All PHP files must use the
-                        Unix LF (linefeed) line
-                        ending.
-
-* **list_commas** [@Symfony]
-                        Remove trailing commas in list
-                        function calls.
-
-* **logical_not_operators_with_spaces**
-                        Logical NOT operators (!)
-                        should have leading and
-                        trailing whitespaces.
-
-* **logical_not_operators_with_successor_space**
-                        Logical NOT operators (!)
-                        should have one trailing
-                        whitespace.
+* **linebreak_after_opening_tag**
+                        Ensure there is no code on the
+                        same line as the PHP open tag.
 
 * **long_array_syntax**
                         Arrays should use the long
@@ -350,12 +308,6 @@ Choose from the list of available fixers:
                         PHP keywords MUST be in lower
                         case.
 
-* **method_argument_default_value** [@Symfony]
-                        In method arguments there must
-                        not be arguments with default
-                        values before non-default
-                        ones.
-
 * **method_argument_space** [@PSR2, @Symfony]
                         In method arguments and method
                         call, there MUST NOT be a
@@ -367,24 +319,6 @@ Choose from the list of available fixers:
                         Methods must be separated with
                         one blank line.
 
-* **multiline_array_trailing_comma** [@Symfony]
-                        PHP multi-line arrays should
-                        have a trailing comma.
-
-* **multiline_spaces_before_semicolon**
-                        Multi-line whitespace before
-                        closing semicolon are
-                        prohibited.
-
-* **multiple_use** [@PSR2, @Symfony]
-                        There MUST be one use keyword
-                        per declaration.
-
-* **namespace_no_leading_whitespace** [@Symfony]
-                        The namespace declaration line
-                        shouldn't contain leading
-                        whitespace.
-
 * **native_function_casing** [@Symfony]
                         Function defined by PHP should
                         be called using the correct
@@ -395,53 +329,141 @@ Choose from the list of available fixers:
                         keyword must be followed by
                         braces.
 
-* **newline_after_open_tag**
-                        Ensure there is no code on the
-                        same line as the PHP open tag.
+* **no_alias_functions** [@Symfony]
+                        Master functions shall be used
+                        instead of aliases.
 
 * **no_blank_lines_after_class_opening** [@Symfony]
                         There should be no empty lines
                         after class opening brace.
+
+* **no_blank_lines_after_phpdoc** [@Symfony]
+                        There should not be blank
+                        lines between docblock and the
+                        documented element.
 
 * **no_blank_lines_before_namespace**
                         There should be no blank lines
                         before a namespace
                         declaration.
 
-* **no_empty_lines_after_phpdocs** [@Symfony]
-                        There should not be blank
-                        lines between docblock and the
-                        documented element.
+* **no_blank_lines_between_uses** [@Symfony]
+                        Removes line breaks between
+                        use statements.
 
-* **object_operator** [@Symfony]
-                        There should not be space
-                        before or after object
-                        T_OBJECT_OPERATOR.
+* **no_closing_tag** [@PSR2, @Symfony]
+                        The closing ?> tag MUST be
+                        omitted from files containing
+                        only PHP.
 
-* **operators_spaces** [@Symfony]
-                        Binary operators should be
-                        surrounded by at least one
-                        space.
+* **no_duplicate_semicolons** [@Symfony]
+                        Remove duplicated semicolons.
 
-* **ordered_use**
-                        Ordering use statements.
+* **no_extra_consecutive_blank_lines** [@Symfony]
+                        Removes extra blank lines
+                        and/or blank lines following
+                        configuration.
 
-* **parenthesis** [@PSR2, @Symfony]
+* **no_leading_import_slash** [@Symfony]
+                        Remove leading slashes in use
+                        clauses.
+
+* **no_leading_namespace_whitespace** [@Symfony]
+                        The namespace declaration line
+                        shouldn't contain leading
+                        whitespace.
+
+* **no_multiline_whitespace_before_semicolons**
+                        Multi-line whitespace before
+                        closing semicolon are
+                        prohibited.
+
+* **no_php4_constructor**
+                        Convert PHP4-style
+                        constructors to __construct.
+                        (Risky fixer!)
+
+* **no_short_bool_cast** [@Symfony]
+                        Short cast bool using double
+                        exclamation mark should not be
+                        used.
+
+* **no_short_echo_tag**
+                        Replace short-echo <?= with
+                        long format <?php echo syntax.
+
+* **no_singleline_whitespace_before_semicolons** [@Symfony]
+                        Single-line whitespace before
+                        closing semicolon are
+                        prohibited.
+
+* **no_spaces_after_function_name** [@PSR2, @Symfony]
+                        When making a method or
+                        function call, there MUST NOT
+                        be a space between the method
+                        or function name and the
+                        opening parenthesis.
+
+* **no_spaces_inside_parenthesis** [@PSR2, @Symfony]
                         There MUST NOT be a space
                         after the opening parenthesis.
                         There MUST NOT be a space
                         before the closing
                         parenthesis.
 
-* **php4_constructor**
-                        Convert PHP4-style
-                        constructors to __construct.
-                        (Risky fixer!)
+* **no_tab_indentation** [@PSR2, @Symfony]
+                        Code MUST use an indent of 4
+                        spaces, and MUST NOT use tabs
+                        for indenting.
 
-* **php_closing_tag** [@PSR2, @Symfony]
-                        The closing ?> tag MUST be
-                        omitted from files containing
-                        only PHP.
+* **no_trailing_comma_in_list_call** [@Symfony]
+                        Remove trailing commas in list
+                        function calls.
+
+* **no_trailing_comma_in_singleline_array** [@Symfony]
+                        PHP single-line arrays should
+                        not have trailing comma.
+
+* **no_trailing_whitespace** [@PSR2, @Symfony]
+                        Remove trailing whitespace at
+                        the end of non-blank lines.
+
+* **no_unneeded_control_parentheses** [@Symfony]
+                        Removes unneeded parentheses
+                        around control statements.
+
+* **no_unreachable_default_argument_value** [@Symfony]
+                        In method arguments there must
+                        not be arguments with default
+                        values before non-default
+                        ones.
+
+* **no_unused_imports** [@Symfony]
+                        Unused use statements must be
+                        removed.
+
+* **no_whitespace_before_comma_in_array** [@Symfony]
+                        In array declaration, there
+                        MUST NOT be a whitespace
+                        before each comma.
+
+* **not_operator_with_successor_space**
+                        Logical NOT operators (!)
+                        should have one trailing
+                        whitespace.
+
+* **not_operators_with_space**
+                        Logical NOT operators (!)
+                        should have leading and
+                        trailing whitespaces.
+
+* **object_operator_without_whitespace** [@Symfony]
+                        There should not be space
+                        before or after object
+                        T_OBJECT_OPERATOR.
+
+* **ordered_imports**
+                        Ordering use statements.
 
 * **php_unit_construct**
                         PHPUnit assertion method calls
@@ -476,13 +498,13 @@ Choose from the list of available fixers:
                         @access annotations should be
                         omitted from phpdocs.
 
-* **phpdoc_no_empty_return** [@Symfony]
-                        @return void and @return null
+* **phpdoc_no_package** [@Symfony]
+                        @package and @subpackage
                         annotations should be omitted
                         from phpdocs.
 
-* **phpdoc_no_package** [@Symfony]
-                        @package and @subpackage
+* **phpdoc_no_simplified_null_return** [@Symfony]
+                        @return void and @return null
                         annotations should be omitted
                         from phpdocs.
 
@@ -563,18 +585,6 @@ Choose from the list of available fixers:
                         the class name should match
                         the file name. (Risky fixer!)
 
-* **remove_leading_slash_use** [@Symfony]
-                        Remove leading slashes in use
-                        clauses.
-
-* **remove_lines_between_uses** [@Symfony]
-                        Removes line breaks between
-                        use statements.
-
-* **return** [@Symfony]
-                        An empty line feed should
-                        precede a return statement.
-
 * **self_accessor** [@Symfony]
                         Inside a classy element "self"
                         should be preferred to the
@@ -584,15 +594,6 @@ Choose from the list of available fixers:
                         PHP arrays should use the PHP
                         5.4 short-syntax.
 
-* **short_bool_cast** [@Symfony]
-                        Short cast bool using double
-                        exclamation mark should not be
-                        used.
-
-* **short_echo_tag**
-                        Replace short-echo <?= with
-                        long format <?php echo syntax.
-
 * **short_scalar_cast** [@Symfony]
                         Cast "(boolean)" and
                         "(integer)" should be written
@@ -600,21 +601,23 @@ Choose from the list of available fixers:
                         "(double)" and "(real)" as
                         "(float)".
 
-* **short_tag** [@PSR1, @PSR2, @Symfony]
-                        PHP code must use the long
-                        <?php ?> tags or the
-                        short-echo <?= ?> tags; it
-                        must not use the other tag
-                        variations.
+* **simplified_null_return** [@Symfony]
+                        A return statement wishing to
+                        return nothing should be
+                        simply "return".
 
-* **single_array_no_trailing_comma** [@Symfony]
-                        PHP single-line arrays should
-                        not have trailing comma.
+* **single_blank_line_at_eof** [@PSR2, @Symfony]
+                        A file must always end with a
+                        single empty line feed.
 
 * **single_blank_line_before_namespace** [@Symfony]
                         There should be exactly one
                         blank line before a namespace
                         declaration.
+
+* **single_import_per_statement** [@PSR2, @Symfony]
+                        There MUST be one use keyword
+                        per declaration.
 
 * **single_line_after_imports** [@PSR2, @Symfony]
                         Each namespace use MUST go on
@@ -627,20 +630,15 @@ Choose from the list of available fixers:
                         single quotes for simple
                         strings.
 
-* **spaces_after_semicolon** [@Symfony]
+* **space_after_semicolon** [@Symfony]
                         Fix whitespace after a
                         semicolon.
-
-* **spaces_before_semicolon** [@Symfony]
-                        Single-line whitespace before
-                        closing semicolon are
-                        prohibited.
 
 * **spaces_cast** [@Symfony]
                         A single space should be
                         between cast and variable.
 
-* **standardize_not_equal** [@Symfony]
+* **standardize_not_equals** [@Symfony]
                         Replace all <> with !=.
 
 * **strict**
@@ -659,13 +657,13 @@ Choose from the list of available fixers:
                         Removes extra spaces between
                         colon and case value.
 
-* **ternary_spaces** [@Symfony]
+* **ternary_operator_spaces** [@Symfony]
                         Standardize spaces around
                         ternary operator.
 
-* **trailing_spaces** [@PSR2, @Symfony]
-                        Remove trailing whitespace at
-                        the end of non-blank lines.
+* **trailing_comma_in_multiline_array** [@Symfony]
+                        PHP multi-line arrays should
+                        have a trailing comma.
 
 * **trim_array_spaces** [@Symfony]
                         Arrays should be formatted
@@ -679,26 +677,27 @@ Choose from the list of available fixers:
 * **unalign_equals** [@Symfony]
                         Unalign equals symbols.
 
-* **unary_operators_spaces** [@Symfony]
+* **unary_operator_spaces** [@Symfony]
                         Unary operators should be
                         placed adjacent to their
                         operands.
 
-* **unneeded_control_parentheses** [@Symfony]
-                        Removes unneeded parentheses
-                        around control statements.
+* **unix_line_endings** [@PSR2, @Symfony]
+                        All PHP files must use the
+                        Unix LF line ending.
 
-* **unused_use** [@Symfony]
-                        Unused use statements must be
-                        removed.
-
-* **visibility** [@PSR2, @Symfony]
+* **visibility_required** [@PSR2, @Symfony]
                         Visibility MUST be declared on
                         all properties and methods;
                         abstract and final MUST be
                         declared before the
                         visibility; static MUST be
                         declared after the visibility.
+
+* **whitespace_after_comma_in_array** [@Symfony]
+                        In array declaration, there
+                        MUST be a whitespace after
+                        each comma.
 
 * **whitespacy_lines** [@Symfony]
                         Remove trailing whitespace at
@@ -743,7 +742,7 @@ The example below will add two fixers to the default list of PSR2 set fixers:
     ;
 
 You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
-The following example shows how to use all ``Symfony`` Fixers but the ``short_tag`` Fixer.
+The following example shows how to use all ``Symfony`` Fixers but the ``full_opening_tag`` Fixer.
 
 .. code-block:: php
 
@@ -757,7 +756,7 @@ The following example shows how to use all ``Symfony`` Fixers but the ``short_ta
     return Symfony\CS\Config::create()
         ->setRules(array(
             '@Symfony' => true,
-            'short_tag' => false,
+            'full_opening_tag' => false,
         ))
         ->finder($finder)
     ;

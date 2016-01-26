@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: no_leading_import_slash,ordered_imports.
+--CONFIG--
+{"no_leading_import_slash": true, "ordered_imports": true}
+--EXPECT--
+<?php
+namespace Foo\Bar;
+use Aaa;
+use Baz;
+class Foo implements Baz {}
+
+--INPUT--
+<?php
+namespace Foo\Bar;
+use \Baz;
+use Aaa;
+class Foo implements Baz {}

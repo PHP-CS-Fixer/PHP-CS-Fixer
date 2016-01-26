@@ -107,7 +107,7 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
     public function provideAddCustomFixersCases()
     {
         $fixers = array(
-            new \Symfony\CS\Fixer\Symfony\ArrayElementNoSpaceBeforeCommaFixer(),
+            new \Symfony\CS\Fixer\Symfony\NoWhitespaceBeforeCommaInArrayFixer(),
             new \Symfony\CS\Fixer\Symfony\IncludeFixer(),
         );
 
