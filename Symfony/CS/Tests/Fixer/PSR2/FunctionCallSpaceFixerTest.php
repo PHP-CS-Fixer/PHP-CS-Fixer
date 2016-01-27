@@ -101,6 +101,23 @@ class FunctionCallSpaceFixerTest extends AbstractFixerTestBase
             array(
                 '<?php include ($html)? "custom.html": "custom.php";',
             ),
+            // don't touch function declarations
+            array(
+                '<?php
+                function TisMy ($p1)
+                {
+                    print $p1;
+                }
+                ',
+            ),
+            array(
+                'class A {
+                    function TisMy    ($p1)
+                    {
+                        print $p1;
+                    }
+                }',
+            ),
         );
     }
 }
