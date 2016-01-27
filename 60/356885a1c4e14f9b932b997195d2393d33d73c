@@ -1,0 +1,84 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-26T08:23:54Z
+
+:-1: for doing this in a minor release.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-26T08:24:17Z
+
+Composer will just resolve php-cs-fixer 1.11 rather than 1.12 if someone on a later php version asked for 1.x now...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-26T08:24:54Z
+
+As far as I'm concerned, restricting version constraints requires a major version bump, but relaxing them does not.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-26T10:56:23Z
+
+Where is the restrictions ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-26T13:04:09Z
+
+> Where is the restrictions ?
+
+You don't allow php 8+ but before you did.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-26T13:04:36Z
+
+Or, indeed php 6, lol.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-26T13:05:18Z
+
+> You don't allow php 8+ but before you did.
+
+Yeah, we don't support it :D 6.x as well.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-26T13:10:54Z
+
+Yes, but, 1.11 DOES support those versions, even if we didn't want it to, according to composer, if you see what I mean.
+
+Forcing those versions off 1.12 results in undesired behaviour that 1.11.x is resolved instead.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-26T13:12:59Z
+
+No, it does not. Yes, composer would install it. But we, as people behind the tool, does not promise it will work, as we indeed does not support it, not test it etc.
+
+C'mon, if sb uses 6.x then yes, I want to disallow the tool to run under it.
+And reasoning of yours just give my some thought that maybe even merge it into 1.11 line
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-26T13:13:47Z
+
+> And reasoning of yours just give my some thought that maybe even merge it into 1.11 line
+
+Then 1.11.0 still has the issue. :trollface:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-26T13:15:55Z
+
+And then I think that only you will be affected by it.
+Then c'mon, ask why composer install 1.11.0 on your PHP 6 and then some contributor (like... you? :D) will answer that we do not support PHP 6.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-26T13:23:00Z
+
+LGTM :+1:
+Ditching PHP 6 makes sense to me, even if this was incorrectly supported in the composer configuration before. This is not a BC since it was never supported, so it is a fix IMHO :)
