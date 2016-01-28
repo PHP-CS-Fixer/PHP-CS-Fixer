@@ -107,7 +107,7 @@ final class FixCommand extends Command
                 array(
                     new InputArgument('path', InputArgument::OPTIONAL, 'The path', null),
                     new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no)', null),
-                    new InputOption('config-file', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
+                    new InputOption('config', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
                     new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'The rules', null),
                     new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no)', null),
@@ -176,7 +176,7 @@ which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create <comment>.php_cs</comment> file, which is
 the local configuration that will be used instead of the project configuration. It
 is a good practice to add that file into your <comment>.gitignore</comment> file.
-With the <comment>--config-file</comment> option you can specify the path to the
+With the <comment>--config</comment> option you can specify the path to the
 <comment>.php_cs</comment> file.
 
 The example below will add two fixers to the default list of PSR2 set fixers:
@@ -313,7 +313,7 @@ EOF
             ->setFixer($this->fixer)
             ->setOptions(array(
                 'allow-risky' => $input->getOption('allow-risky'),
-                'config-file' => $input->getOption('config-file'),
+                'config' => $input->getOption('config'),
                 'dry-run' => $input->getOption('dry-run'),
                 'rules' => $input->getOption('rules'),
                 'path' => $input->getArgument('path'),

@@ -91,7 +91,7 @@ final class ConfigurationResolver
      */
     private $options = array(
         'allow-risky' => null,
-        'config-file' => null,
+        'config' => null,
         'dry-run' => null,
         'format' => 'txt',
         'path' => null,
@@ -321,7 +321,7 @@ final class ConfigurationResolver
      */
     private function computeConfigFiles()
     {
-        $configFile = $this->options['config-file'];
+        $configFile = $this->options['config'];
 
         if (null !== $configFile) {
             if (false === file_exists($configFile) || false === is_readable($configFile)) {
@@ -372,7 +372,7 @@ final class ConfigurationResolver
     }
 
     /**
-     * Resolve config based on options: config, config-file.
+     * Resolve config.
      */
     private function resolveConfig()
     {
