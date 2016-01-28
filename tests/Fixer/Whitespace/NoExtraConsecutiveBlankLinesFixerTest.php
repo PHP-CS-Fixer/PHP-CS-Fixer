@@ -67,10 +67,11 @@ class Test {
         }
     }
 
-    public function testContinueAndReturn($a, $b)
+    protected static function testContinueAndReturn($a, $b)
     {
         while($a < 100) {
             if ($b < time()) {
+
                 continue;
 
             }
@@ -82,6 +83,15 @@ class Test {
         return $a;
 
     }
+
+    private function test(){
+
+        // comment
+    }
+
+    private function test123(){
+        // comment
+    }
 }
 EOF;
         $this->doTest($this->removeLinesFromString($template, $lineNumberRemoved), $template);
@@ -91,6 +101,10 @@ EOF;
     {
         $tests = array(
             array(
+                array(9, 43, 57),
+                array('curly_brace_open'),
+            ),
+            array(
                 array(3, 5),
                 array('use'),
             ),
@@ -99,11 +113,11 @@ EOF;
                 array('extra'),
             ),
             array(
-                array(48, 52),
+                array(49, 53),
                 array('return'),
             ),
             array(
-                array(44),
+                array(45),
                 array('continue'),
             ),
             array(
@@ -416,5 +430,178 @@ EOF;
     public function testWrongConfig()
     {
         $this->getFixer()->configure(array('__TEST__'));
+    }
+
+    /**
+     * @dataProvider provideBetweenUseCases
+     */
+    public function testBetweenUse($expected, $input = null)
+    {
+        $this->getFixer()->configure(array('use'));
+        $this->doTest($expected, $input);
+    }
+
+    public function provideBetweenUseCases()
+    {
+        return array(
+            array('<?php use A\B;'),
+            array('<?php use A\B?>'),
+            array('<?php use A\B;use A\D; return 1;'),
+            array(
+                '<?php
+                    use A\B;
+                    use A\C;',
+                '<?php
+                    use A\B;
+
+                    use A\C;',
+            ),
+            array(
+                '<?php use A\E;use A\Z;
+                    use C;
+                return 1;
+                ',
+                '<?php use A\E;use A\Z;
+
+                    use C;
+                return 1;
+                ',
+            ),
+            array(
+                '<?php
+                class Test {
+                    use A;
+
+                    use B;
+                }',
+            ),
+            array(
+                '<?php
+                    $example = function () use ($message) { var_dump($message); };
+
+                    $example = function () use ($message) { var_dump($message); };
+                ',
+            ),
+        );
+    }
+
+    public function testRemoveLinesBetweenUseStatements()
+    {
+        $expected = <<<'EOF'
+<?php
+
+use Zxy\Qux;
+use Zoo\Bar as Bar2;
+use Foo\Bar as Bar1;
+use Foo\Zar\Baz;
+
+$c = 1;
+
+use Foo\Quxx as Quxx1;
+use Foo\Zar\Quxx;
+
+$a = new Bar1();
+$a = new Bar2();
+$a = new Baz();
+$a = new Qux();
+EOF
+        ;
+
+        $input = <<<'EOF'
+<?php
+
+use Zxy\Qux;
+
+use Zoo\Bar as Bar2;
+
+use Foo\Bar as Bar1;
+use Foo\Zar\Baz;
+
+$c = 1;
+
+use Foo\Quxx as Quxx1;
+
+use Foo\Zar\Quxx;
+
+$a = new Bar1();
+$a = new Bar2();
+$a = new Baz();
+$a = new Qux();
+EOF
+        ;
+
+        $this->getFixer()->configure(array('use'));
+        $this->doTest($expected, $input);
+    }
+
+    public function testWithoutUses()
+    {
+        $expected = <<<'EOF'
+<?php
+
+$c = 1;
+
+$a = new Baz();
+$a = new Qux();
+EOF
+        ;
+
+        $this->getFixer()->configure(array('use'));
+        $this->doTest($expected);
+    }
+
+    public function testRemoveBetweenUseTraits()
+    {
+        $this->getFixer()->configure(array('useTrait'));
+        $this->doTest(
+                '<?php
+                class Test {
+                    use A;
+                    use B;
+
+                    private $a;
+                }',
+                '<?php
+                class Test {
+                    use A;
+
+                    use B;
+
+                    private $a;
+                }'
+        );
+    }
+
+    /**
+     * @dataProvider provideOneAndInLineCases
+     */
+    public function testOneOrInLineCases($expected, $input = null)
+    {
+        $this->getFixer()->configure(array(
+                'break',
+                'continue',
+                'return',
+                'throw',
+                'curly_brace_open',
+            )
+        );
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideOneAndInLineCases()
+    {
+        return array(
+            array(
+                "<?php\n\n\$a = function() use (\$b) { while(3<1)break; while(3<1)continue; if (true) throw \$e; return 1; };\n\n",
+            ),
+            array(
+                "<?php\n\n\$a = new class { public function a () { while(4<1)break; while(3<1)continue; if (true) throw \$e; return 1; }};\n\n",
+            ),
+            array(
+                "<?php throw new \\Exception('do not import');\n",
+                "<?php throw new \\Exception('do not import');\n\n",
+            ),
+        );
     }
 }

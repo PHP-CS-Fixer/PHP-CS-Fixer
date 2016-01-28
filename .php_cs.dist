@@ -24,6 +24,7 @@ return PhpCsFixer\Config::create()
         'php_unit_strict' => true,
         'strict_comparison' => true,
         'strict_param' => true,
+        'no_extra_consecutive_blank_lines' => array('break', 'continue', 'extra', 'return', 'throw', 'use', 'curly_brace_open'),
     ))
     ->finder(
         PhpCsFixer\Finder::create()

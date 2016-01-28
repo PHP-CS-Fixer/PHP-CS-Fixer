@@ -197,7 +197,6 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['elseif'], $fixers['braces']),
             array($fixers['method_separation'], $fixers['braces']),
             array($fixers['method_separation'], $fixers['no_tab_indentation']),
-            array($fixers['no_blank_lines_between_uses'], $fixers['ordered_imports']),
             array($fixers['no_duplicate_semicolons'], $fixers['braces']),
             array($fixers['no_duplicate_semicolons'], $fixers['no_multiline_whitespace_before_semicolons']),
             array($fixers['no_duplicate_semicolons'], $fixers['no_singleline_whitespace_before_semicolons']),

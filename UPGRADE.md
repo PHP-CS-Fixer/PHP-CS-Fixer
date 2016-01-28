@@ -106,7 +106,7 @@ php_closing_tag                                | no_closing_tag
 phpdoc_params                                  | phpdoc_align
 phpdoc_short_description                       | phpdoc_summary
 remove_leading_slash_use                       | no_leading_import_slash
-remove_lines_between_uses                      | no_blank_lines_between_uses
+remove_lines_between_uses                      | no_extra_consecutive_blank_lines                  | use configuration option 'use'
 return                                         | blank_line_before_return
 short_bool_cast                                | no_short_bool_cast
 short_echo_tag                                 | no_short_echo_tag
