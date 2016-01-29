@@ -250,7 +250,7 @@ final class FixCommandTest extends \PHPUnit_Framework_TestCase
 
         $options = array_merge(
             array(
-                'config-file' => __DIR__.'/../../Fixtures/FixCommand/.phpcs',
+                'config' => __DIR__.'/../../Fixtures/FixCommand/.phpcs',
                 'format' => 'txt',
             ),
             $options

@@ -68,12 +68,12 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     {
         $this->resolver->setOptions(array(
             'path' => '.',
-            'config-file' => 'config.php_cs',
+            'config' => 'config.php_cs',
         ));
         $property = AccessibleObject::create($this->resolver)->options;
 
         $this->assertSame('.', $property['path']);
-        $this->assertSame('config.php_cs', $property['config-file']);
+        $this->assertSame('config.php_cs', $property['config']);
     }
 
     public function testCwd()
@@ -168,7 +168,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $file = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_4/my.php_cs';
 
         $this->resolver
-            ->setOption('config-file', $file)
+            ->setOption('config', $file)
             ->resolve();
 
         $this->assertSame($file, $this->resolver->getConfigFile());
