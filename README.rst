@@ -447,15 +447,15 @@ Choose from the list of available fixers:
                         MUST NOT be a whitespace
                         before each comma.
 
+* **not_operator_with_space**
+                        Logical NOT operators (!)
+                        should have leading and
+                        trailing whitespaces.
+
 * **not_operator_with_successor_space**
                         Logical NOT operators (!)
                         should have one trailing
                         whitespace.
-
-* **not_operators_with_space**
-                        Logical NOT operators (!)
-                        should have leading and
-                        trailing whitespaces.
 
 * **object_operator_without_whitespace** [@Symfony]
                         There should not be space

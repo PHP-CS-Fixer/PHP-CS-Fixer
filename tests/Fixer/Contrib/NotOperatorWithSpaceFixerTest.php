@@ -18,7 +18,7 @@ use Symfony\CS\Test\AbstractFixerTestCase;
  *
  * @internal
  */
-final class NotOperatorsWithSpaceFixerTest extends AbstractFixerTestCase
+final class NotOperatorWithSpaceFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases
