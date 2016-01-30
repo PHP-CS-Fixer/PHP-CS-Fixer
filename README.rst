@@ -452,7 +452,7 @@ Choose from the list of available fixers:
                         should have one trailing
                         whitespace.
 
-* **not_operators_with_space**
+* **not_operator_with_space**
                         Logical NOT operators (!)
                         should have leading and
                         trailing whitespaces.
