@@ -428,6 +428,11 @@ Choose from the list of available fixers:
                         Remove trailing whitespace at
                         the end of non-blank lines.
 
+* **no_trailing_whitespace_in_comment** [@Symfony]
+                        There MUST be no trailing
+                        spaces inside comments and
+                        phpdocs.
+
 * **no_unneeded_control_parentheses** [@Symfony]
                         Removes unneeded parentheses
                         around control statements.
@@ -495,7 +500,7 @@ Choose from the list of available fixers:
                         subject.
 
 * **phpdoc_inline_tag** [@Symfony]
-                        Fix PHPDoc inline tags, make
+                        Fix phpdoc inline tags, make
                         inheritdoc always inline.
 
 * **phpdoc_no_access** [@Symfony]

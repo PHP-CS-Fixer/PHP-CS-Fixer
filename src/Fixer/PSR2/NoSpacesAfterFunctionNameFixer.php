@@ -27,7 +27,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound($this->getFunctionyTokenKinds());
+        return $tokens->isAnyTokenKindsFound(array_merge($this->getFunctionyTokenKinds(), array(T_STRING)));
     }
 
     /**
@@ -55,7 +55,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
             $nextNonWhiteSpace = $tokens->getNextMeaningfulToken($endParenthesisIndex);
             if (
-                !empty($nextNonWhiteSpace)
+                null !== $nextNonWhiteSpace
                 && $tokens[$nextNonWhiteSpace]->equals('?')
                 && $tokens[$lastTokenIndex]->isGivenKind($languageConstructionTokens)
             ) {
@@ -65,6 +65,11 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             // check if it is a function call
             if ($tokens[$lastTokenIndex]->isGivenKind($functionyTokens)) {
                 $this->fixFunctionCall($tokens, $index);
+            } elseif ($tokens[$lastTokenIndex]->isGivenKind(T_STRING)) { // for real function calls or definitions
+                $possibleDefinitionIndex = $tokens->getPrevMeaningfulToken($lastTokenIndex);
+                if (!$tokens[$possibleDefinitionIndex]->isGivenKind(T_FUNCTION)) {
+                    $this->fixFunctionCall($tokens, $index);
+                }
             }
         }
     }
@@ -114,7 +119,6 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
                 T_PRINT,
                 T_REQUIRE,
                 T_REQUIRE_ONCE,
-                T_STRING,   // for real function calls
                 T_UNSET,
             );
         }

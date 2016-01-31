@@ -64,6 +64,7 @@ final class RuleSet implements RuleSetInterface
             'heredoc_to_nowdoc' => true,
             'include' => true,
             'no_trailing_comma_in_list_call' => true,
+            'no_trailing_whitespace_in_comment' => true,
             'lowercase_cast' => true,
             'no_unreachable_default_argument_value' => true,
             'method_separation' => true,
