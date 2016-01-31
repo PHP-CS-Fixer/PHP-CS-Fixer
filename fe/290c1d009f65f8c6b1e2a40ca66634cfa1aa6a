@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-27T20:11:48Z
+
+do we have a fixer for removing that space?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-27T21:29:30Z
+
+>do we have a fixer for removing that space?
+
+we do, `function_declaration` will take care of that :)
+(https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.12/Symfony/CS/Tests/Fixer/PSR2/FunctionDeclarationFixerTest.php#L43)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-27T21:43:54Z
+
+:+1:
