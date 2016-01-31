@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\DocBlock;
+namespace PhpCsFixer\DocBlock;
 
-use Symfony\CS\Utils;
+use PhpCsFixer\Utils;
 
 /**
  * This class represents a docblock.

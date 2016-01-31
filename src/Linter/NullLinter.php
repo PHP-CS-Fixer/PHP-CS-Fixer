@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Linter;
+namespace PhpCsFixer\Linter;
 
 /**
  * Dummy linter. No linting is performed. No error is raised.

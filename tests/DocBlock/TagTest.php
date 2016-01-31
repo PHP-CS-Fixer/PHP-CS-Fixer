@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\DocBlock;
+namespace PhpCsFixer\Tests\DocBlock;
 
-use Symfony\CS\DocBlock\Line;
-use Symfony\CS\DocBlock\Tag;
+use PhpCsFixer\DocBlock\Line;
+use PhpCsFixer\DocBlock\Tag;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>

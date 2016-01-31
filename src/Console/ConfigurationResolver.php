@@ -9,16 +9,16 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Console;
+namespace PhpCsFixer\Console;
 
+use PhpCsFixer\ConfigInterface;
+use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
+use PhpCsFixer\Fixer;
+use PhpCsFixer\FixerFactory;
+use PhpCsFixer\FixerInterface;
+use PhpCsFixer\RuleSet;
+use PhpCsFixer\StdinFileInfo;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\CS\ConfigInterface;
-use Symfony\CS\ConfigurationException\InvalidConfigurationException;
-use Symfony\CS\Fixer;
-use Symfony\CS\FixerFactory;
-use Symfony\CS\FixerInterface;
-use Symfony\CS\RuleSet;
-use Symfony\CS\StdinFileInfo;
 
 /**
  * The resolver that resolves configuration to use by command line options and config.
@@ -385,7 +385,7 @@ final class ConfigurationResolver
 
             // verify that the config has an instance of Config
             if (!$config instanceof ConfigInterface) {
-                throw new InvalidConfigurationException(sprintf('The config file: "%s" does not return a "Symfony\CS\ConfigInterface" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
+                throw new InvalidConfigurationException(sprintf('The config file: "%s" does not return a "PhpCsFixer\ConfigInterface" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
             }
 
             $this->config = $config;

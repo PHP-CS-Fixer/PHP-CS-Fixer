@@ -9,14 +9,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests;
+namespace PhpCsFixer\Tests;
 
-use Symfony\CS\Config;
-use Symfony\CS\Error\Error;
-use Symfony\CS\Fixer;
-use Symfony\CS\FixerFactory;
-use Symfony\CS\FixerInterface;
-use Symfony\CS\Linter\Linter;
+use PhpCsFixer\Config;
+use PhpCsFixer\Error\Error;
+use PhpCsFixer\Fixer;
+use PhpCsFixer\FixerFactory;
+use PhpCsFixer\FixerInterface;
+use PhpCsFixer\Linter\Linter;
 
 /**
  * @internal
@@ -24,8 +24,8 @@ use Symfony\CS\Linter\Linter;
 final class FixerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers Symfony\CS\Fixer::addConfig
-     * @covers Symfony\CS\Fixer::getConfigs
+     * @covers PhpCsFixer\Fixer::addConfig
+     * @covers PhpCsFixer\Fixer::getConfigs
      */
     public function testThatCanAddAndGetConfigs()
     {
@@ -33,8 +33,8 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
 
         $configs = $fixer->getConfigs();
 
-        $c1 = $this->getMock('Symfony\CS\ConfigInterface');
-        $c2 = $this->getMock('Symfony\CS\ConfigInterface');
+        $c1 = $this->getMock('PhpCsFixer\ConfigInterface');
+        $c2 = $this->getMock('PhpCsFixer\ConfigInterface');
 
         $fixer->addConfig($c1);
         $fixer->addConfig($c2);
@@ -46,8 +46,8 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\Fixer::fix
-     * @covers Symfony\CS\Fixer::fixFile
+     * @covers PhpCsFixer\Fixer::fix
+     * @covers PhpCsFixer\Fixer::fixFile
      */
     public function testThatFixSuccessfully()
     {
@@ -55,8 +55,8 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
         $config = Config::create()
             ->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'))
             ->fixers(array(
-                new \Symfony\CS\Fixer\PSR2\VisibilityRequiredFixer(),
-                new \Symfony\CS\Fixer\Symfony\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
+                new \PhpCsFixer\Fixer\PSR2\VisibilityRequiredFixer(),
+                new \PhpCsFixer\Fixer\Symfony\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
             ))
             ->setUsingCache(false)
         ;
@@ -71,8 +71,8 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\Fixer::fix
-     * @covers Symfony\CS\Fixer::fixFile
+     * @covers PhpCsFixer\Fixer::fix
+     * @covers PhpCsFixer\Fixer::fixFile
      */
     public function testThatFixInvalidFileReportsToErrorManager()
     {
@@ -82,8 +82,8 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
         $config = Config::create()
             ->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'))
             ->fixers(array(
-                new \Symfony\CS\Fixer\PSR2\VisibilityRequiredFixer(),
-                new \Symfony\CS\Fixer\Symfony\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
+                new \PhpCsFixer\Fixer\PSR2\VisibilityRequiredFixer(),
+                new \PhpCsFixer\Fixer\Symfony\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
             ))
             ->setUsingCache(false)
         ;
@@ -99,7 +99,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
 
         $error = $errors[0];
 
-        $this->assertInstanceOf('Symfony\CS\Error\Error', $error);
+        $this->assertInstanceOf('PhpCsFixer\Error\Error', $error);
 
         $this->assertSame(Error::TYPE_INVALID, $error->getType());
         $this->assertSame($pathToInvalidFile, $error->getFilePath());
@@ -124,7 +124,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
 
     public function testCanFixWithConfigInterfaceImplementation()
     {
-        $config = $this->getMockBuilder('Symfony\CS\ConfigInterface')->getMock();
+        $config = $this->getMockBuilder('PhpCsFixer\ConfigInterface')->getMock();
 
         $config
             ->expects($this->any())

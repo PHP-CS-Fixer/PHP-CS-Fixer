@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\PSR2;
+namespace PhpCsFixer\Tests\Fixer\PSR2;
 
-use Symfony\CS\Test\AbstractFixerTestCase;
+use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @internal
@@ -47,7 +47,7 @@ class Aaa implements
             array(
                 '<?php
 class Aaa implements
-    Symfony\CS\Tests\Fixer,
+    PhpCsFixer\Tests\Fixer,
 \RFb,
     \Fcc1, '.'
 \GFdd
@@ -55,7 +55,7 @@ class Aaa implements
 }',
                 '<?php
 class Aaa implements
-    Symfony\CS\Tests\Fixer,\RFb,
+    PhpCsFixer\Tests\Fixer,\RFb,
     \Fcc1, \GFdd
 {
 }',

@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Symfony;
+namespace PhpCsFixer\Fixer\Symfony;
 
-use Symfony\CS\AbstractAnnotationRemovalFixer;
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\AbstractAnnotationRemovalFixer;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>

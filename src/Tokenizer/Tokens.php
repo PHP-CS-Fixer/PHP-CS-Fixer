@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tokenizer;
+namespace PhpCsFixer\Tokenizer;
 
-use Symfony\CS\Utils;
+use PhpCsFixer\Utils;
 
 /**
  * Collection of code tokens.

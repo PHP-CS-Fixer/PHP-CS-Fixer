@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Symfony;
+namespace PhpCsFixer\Tests\Fixer\Symfony;
 
-use Symfony\CS\Test\AbstractFixerTestCase;
+use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @internal
@@ -409,7 +409,7 @@ EOF;
     }
 
     /**
-     * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
      * @expectedExceptionMessage [no_extra_consecutive_blank_lines] Unknown configuration item "__TEST__" passed.
      */
     public function testWrongConfig()

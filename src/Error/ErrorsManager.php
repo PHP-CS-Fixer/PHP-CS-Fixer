@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Error;
+namespace PhpCsFixer\Error;
 
 /**
  * Manager of errors that occur during fixing.

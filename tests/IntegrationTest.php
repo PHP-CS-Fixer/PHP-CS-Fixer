@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests;
+namespace PhpCsFixer\Tests;
 
-use Symfony\CS\Test\AbstractIntegrationTestCase;
+use PhpCsFixer\Test\AbstractIntegrationTestCase;
 
 /**
  * Test that parses and runs the fixture '*.test' files found in '/Fixtures/Integration'.

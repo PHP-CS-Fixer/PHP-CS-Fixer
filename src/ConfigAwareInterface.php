@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS;
+namespace PhpCsFixer;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>

@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\DocBlock;
+namespace PhpCsFixer\DocBlock;
 
 /**
  * This class is responsible for comparing tags to see if they should be kept

@@ -9,12 +9,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Symfony;
+namespace PhpCsFixer\Fixer\Symfony;
 
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\DocBlock\DocBlock;
-use Symfony\CS\DocBlock\Line;
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\DocBlock\Line;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>

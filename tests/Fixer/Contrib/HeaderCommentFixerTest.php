@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Contrib;
 
-use Symfony\CS\Test\AbstractFixerTestCase;
+use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @internal
@@ -194,7 +194,7 @@ EOH;
     }
 
     /**
-     * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
      * @expectedExceptionMessage [header_comment] Header configuration is invalid. Expected "string", got "stdClass".
      */
     public function testInvalidConfig()

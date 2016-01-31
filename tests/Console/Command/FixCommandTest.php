@@ -9,15 +9,15 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Console\Command;
+namespace PhpCsFixer\Tests\Console\Command;
 
+use PhpCsFixer\Console\Command\FixCommand;
+use PhpCsFixer\Error\Error;
+use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\Fixer;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Stopwatch\Stopwatch;
-use Symfony\CS\Console\Command\FixCommand;
-use Symfony\CS\Error\Error;
-use Symfony\CS\Error\ErrorsManager;
-use Symfony\CS\Fixer;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -277,7 +277,7 @@ final class FixCommandTest extends \PHPUnit_Framework_TestCase
      */
     private function getFixerMock(array $changed = array(), ErrorsManager $errorsManager = null)
     {
-        $fixer = $this->getMockBuilder('Symfony\CS\Fixer')
+        $fixer = $this->getMockBuilder('PhpCsFixer\Fixer')
             ->disableOriginalConstructor()
             ->getMock()
         ;

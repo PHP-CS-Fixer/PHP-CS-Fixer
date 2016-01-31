@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Tokenizer\Transformer;
+namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
-use Symfony\CS\Test\AbstractTransformerTestCase;
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\Test\AbstractTransformerTestCase;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

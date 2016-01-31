@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Contrib;
+namespace PhpCsFixer\Fixer\Contrib;
 
-use Symfony\CS\AbstractPhpdocTagsFixer;
+use PhpCsFixer\AbstractPhpdocTagsFixer;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>

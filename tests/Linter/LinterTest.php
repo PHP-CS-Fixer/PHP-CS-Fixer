@@ -9,11 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Linter;
+namespace PhpCsFixer\Tests\Linter;
 
+use PhpCsFixer\Linter\Linter;
+use PhpCsFixer\Test\AccessibleObject;
 use Symfony\Component\Process\ProcessUtils;
-use Symfony\CS\Linter\Linter;
-use Symfony\CS\Test\AccessibleObject;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -52,7 +52,7 @@ final class LinterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\Linter\Linter::lintSource
+     * @covers PhpCsFixer\Linter\Linter::lintSource
      */
     public function testLintSourceWithGoodCode()
     {
@@ -61,9 +61,9 @@ final class LinterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\Linter\Linter::lintSource
+     * @covers PhpCsFixer\Linter\Linter::lintSource
      *
-     * @expectedException Symfony\CS\Linter\LintingException
+     * @expectedException PhpCsFixer\Linter\LintingException
      * @expectedExceptionMessageRegExp /syntax error, unexpected (?:'echo' \(T_ECHO\))|(?:T_ECHO)/
      */
     public function testLintSourceWithBadCode()

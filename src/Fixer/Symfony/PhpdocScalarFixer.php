@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Symfony;
+namespace PhpCsFixer\Fixer\Symfony;
 
-use Symfony\CS\AbstractPhpdocTypesFixer;
+use PhpCsFixer\AbstractPhpdocTypesFixer;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>

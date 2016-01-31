@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\ConfigurationException;
+namespace PhpCsFixer\ConfigurationException;
 
-use Symfony\CS\Console\Command\FixCommand;
+use PhpCsFixer\Console\Command\FixCommand;
 
 /**
  * Exceptions of this type are thrown on misconfiguration of the Fixer.

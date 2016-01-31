@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\DocBlock;
+namespace PhpCsFixer\DocBlock;
 
 /**
  * This represents an entire annotation from a docblock.

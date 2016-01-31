@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixtures\Test\AccessibleObjectTest;
+namespace PhpCsFixer\Tests\Fixtures\Test\AccessibleObjectTest;
 
 /**
- * @author Dariusz Rumiñski <dariusz.ruminski@gmail.com>
+ * @author Dariusz Rumiï¿½ski <dariusz.ruminski@gmail.com>
  *
  * @internal
  */

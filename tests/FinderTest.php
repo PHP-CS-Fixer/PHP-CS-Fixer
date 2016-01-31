@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Finder;
+namespace PhpCsFixer\Tests\Finder;
 
-use Symfony\CS\Finder;
+use PhpCsFixer\Finder;
 
 /**
  * @internal

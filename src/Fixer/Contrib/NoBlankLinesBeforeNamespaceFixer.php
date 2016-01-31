@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Contrib;
+namespace PhpCsFixer\Fixer\Contrib;
 
-use Symfony\CS\AbstractLinesBeforeNamespaceFixer;
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\AbstractLinesBeforeNamespaceFixer;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>

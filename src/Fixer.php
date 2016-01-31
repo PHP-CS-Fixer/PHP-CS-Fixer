@@ -9,20 +9,20 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS;
+namespace PhpCsFixer;
 
+use PhpCsFixer\Error\Error;
+use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\Linter\LintingException;
+use PhpCsFixer\Linter\NullLinter;
+use PhpCsFixer\Tokenizer\Tokens;
 use SebastianBergmann\Diff\Differ;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
-use Symfony\CS\Error\Error;
-use Symfony\CS\Error\ErrorsManager;
-use Symfony\CS\Linter\LinterInterface;
-use Symfony\CS\Linter\LintingException;
-use Symfony\CS\Linter\NullLinter;
-use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>

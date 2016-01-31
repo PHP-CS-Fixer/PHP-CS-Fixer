@@ -9,13 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Console;
+namespace PhpCsFixer\Console;
 
+use PhpCsFixer\Console\Command\FixCommand;
+use PhpCsFixer\Console\Command\ReadmeCommand;
+use PhpCsFixer\Console\Command\SelfUpdateCommand;
+use PhpCsFixer\Fixer;
 use Symfony\Component\Console\Application as BaseApplication;
-use Symfony\CS\Console\Command\FixCommand;
-use Symfony\CS\Console\Command\ReadmeCommand;
-use Symfony\CS\Console\Command\SelfUpdateCommand;
-use Symfony\CS\Fixer;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>

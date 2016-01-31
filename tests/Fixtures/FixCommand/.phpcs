@@ -1,6 +1,6 @@
 <?php
 
-$config = Symfony\CS\Config::create();
+$config = PhpCsFixer\Config::create();
 
 $finder = $config->getFinder()->in(__DIR__);
 

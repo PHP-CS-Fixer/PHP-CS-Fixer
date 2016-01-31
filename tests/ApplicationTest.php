@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests;
+namespace PhpCsFixer\Tests;
 
-use Symfony\CS\Console\Application;
+use PhpCsFixer\Console\Application;
 
 /**
  * @author SpacePossum

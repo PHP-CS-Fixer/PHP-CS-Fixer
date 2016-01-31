@@ -9,11 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS;
+namespace PhpCsFixer;
 
-use Symfony\CS\DocBlock\Annotation;
-use Symfony\CS\DocBlock\DocBlock;
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\DocBlock\Annotation;
+use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * This abstract fixer provides a base for fixers to fix types in phpdoc.

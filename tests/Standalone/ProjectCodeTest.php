@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Standalone;
+namespace PhpCsFixer\Tests\Standalone;
 
+use PhpCsFixer\DocBlock\DocBlock;
 use Symfony\Component\Finder\Finder;
-use Symfony\CS\DocBlock\DocBlock;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -51,7 +51,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
             function ($item) {
                 return array(new \ReflectionClass($item));
             },
-            $this->getClasses('Symfony\\CS\\Tests\\')
+            $this->getClasses('PhpCsFixer\\Tests\\')
         );
     }
 
@@ -61,7 +61,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
 
         if (null === $classes && null === $projectClasses) {
             $this->registerAllProjectTestsClasses();
-            $projectClasses = $this->getClasses('Symfony\\CS\\', get_declared_classes());
+            $projectClasses = $this->getClasses('PhpCsFixer\\', get_declared_classes());
         }
 
         if (null === $classes) {
