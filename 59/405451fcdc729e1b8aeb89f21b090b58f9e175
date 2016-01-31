@@ -1,0 +1,114 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-03T16:22:47Z
+
+Cs is incorrect spelling though?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-01-03T16:31:39Z
+
+Then `Php` is incorrect, too.
+Isn't it a matter of taste?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-03T16:43:17Z
+
+> Then Php is incorrect, too.
+
+Yes, it is.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-01-03T16:44:42Z
+
+But it is not the symfony style, see `HttpKernel`..
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-03T16:47:12Z
+
+> But it is not the symfony style, see HttpKernel..
+
+So? Isn't the point of the PR to remove the symfonyness?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-01-03T16:47:53Z
+
+No, the project will still follow symfony coding standards..
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-03T22:29:15Z
+
+LGTM :)
+:+1:
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-01-22T10:17:49Z
+
+Any other thoughts?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-28T15:46:37Z
+
+Please rebase and good to go
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-01-30T16:19:32Z
+
+done
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-30T16:25:03Z
+
+:+1:  :package:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-30T17:15:23Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-30T17:43:33Z
+
+You know I'm :-1:, lol.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-30T19:17:52Z
+
+it's good to have consistent naming between package name and namespace ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-30T19:19:50Z
+
+Yes, and this name isn't consistent due to the capitalization.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-31T09:37:32Z
+
+It is. `php-cs-fixer` is `PhpCsFixer`.
+About shorthands - HTTP in camel case is Http, like `getHttpResponse` etc.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-31T10:46:33Z
+
+How come the repo is named PHP-CS-Fixer and not Php-Cs-Fixer then?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-31T11:40:51Z
+
+repo name is case insensitive and does not follow camelCase notation
