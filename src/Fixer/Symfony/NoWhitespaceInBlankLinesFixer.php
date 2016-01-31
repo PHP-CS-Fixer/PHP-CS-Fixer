@@ -17,7 +17,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class WhitespacyLinesFixer extends AbstractFixer
+final class NoWhitespaceInBlankLinesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

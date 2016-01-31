@@ -111,7 +111,7 @@ final class RuleSet implements RuleSetInterface
             'unary_operator_spaces' => true,
             'no_unneeded_control_parentheses' => true,
             'no_unused_imports' => true,
-            'whitespacy_lines' => true,
+            'no_whitespace_in_blank_lines' => true,
         ),
     );
 
