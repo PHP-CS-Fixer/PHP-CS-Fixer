@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-31T18:41:19Z
+
+Before:
+
+```bash
+vendor\bin\php-cs-fixer fix src/file.php
+## no config file used, damn it!
+```
+
+```bash
+vendor\bin\php php-cs-fixer fix src/file.php --config=.php_cs.dist
+Loaded config from ".php_cs.dist" ## cool!
+```
+
+After:
+```bash
+vendor\bin\php php-cs-fixer fix src/file.php
+Loaded config from ".php_cs.dist" ## cool!
+```
