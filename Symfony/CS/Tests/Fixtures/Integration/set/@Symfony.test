@@ -2,6 +2,8 @@
 Symfony test.
 --CONFIG--
 level=symfony
+--SETTINGS--
+checkPriority=false
 --EXPECT--
 <?php
 
