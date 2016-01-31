@@ -26,6 +26,8 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
 
     public static function setUpBeforeClass()
     {
+        parent::setUpBeforeClass();
+
         $controlStatementsProperty = new \ReflectionProperty('Symfony\CS\Fixer\Symfony\UnneededControlParenthesesFixer', 'controlStatements');
         $controlStatementsProperty->setAccessible(true);
         self::$defaultStatements = $controlStatementsProperty->getValue(null);
@@ -318,18 +320,26 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-                case $x;
+                switch ($a) {
+                    case $x;
+                }
                 ',
                 '<?php
-                case($x);
+                switch ($a) {
+                    case($x);
+                }
                 ',
             ),
             array(
                 '<?php
-                case 2;
+                switch ($a) {
+                    case 2;
+                }
                 ',
                 '<?php
-                case(2);
+                switch ($a) {
+                    case(2);
+                }
                 ',
             ),
             array(
