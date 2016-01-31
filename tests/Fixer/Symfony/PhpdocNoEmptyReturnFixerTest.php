@@ -18,7 +18,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  */
-final class PhpdocNoSimplifiedNullReturnFixerTest extends AbstractFixerTestCase
+final class PhpdocNoEmptyReturnFixerTest extends AbstractFixerTestCase
 {
     public function testFixVoid()
     {

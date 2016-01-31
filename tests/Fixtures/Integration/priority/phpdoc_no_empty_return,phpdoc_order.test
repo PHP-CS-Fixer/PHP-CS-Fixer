@@ -1,7 +1,7 @@
 --TEST--
-Integration of fixers: phpdoc_no_simplified_null_return,phpdoc_order.
+Integration of fixers: phpdoc_no_empty_return,phpdoc_order.
 --CONFIG--
-{"phpdoc_no_simplified_null_return": true, "phpdoc_order": true}
+{"phpdoc_no_empty_return": true, "phpdoc_order": true}
 --EXPECT--
 <?php
 /**

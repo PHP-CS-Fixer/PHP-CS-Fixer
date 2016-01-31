@@ -79,7 +79,7 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_indent' => true,
             'phpdoc_inline_tag' => true,
             'phpdoc_no_access' => true,
-            'phpdoc_no_simplified_null_return' => true,
+            'phpdoc_no_empty_return' => true,
             'phpdoc_no_package' => true,
             'phpdoc_scalar' => true,
             'phpdoc_separation' => true,
