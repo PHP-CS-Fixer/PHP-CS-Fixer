@@ -447,6 +447,10 @@ Choose from the list of available fixers:
                         MUST NOT be a whitespace
                         before each comma.
 
+* **no_whitespace_in_blank_lines** [@Symfony]
+                        Remove trailing whitespace at
+                        the end of blank lines.
+
 * **not_operator_with_space**
                         Logical NOT operators (!)
                         should have leading and
@@ -698,10 +702,6 @@ Choose from the list of available fixers:
                         In array declaration, there
                         MUST be a whitespace after
                         each comma.
-
-* **whitespacy_lines** [@Symfony]
-                        Remove trailing whitespace at
-                        the end of blank lines.
 
 
 The ``--dry-run`` option displays the files that need to be

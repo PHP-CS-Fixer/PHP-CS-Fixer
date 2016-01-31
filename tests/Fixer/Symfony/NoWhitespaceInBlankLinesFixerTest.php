@@ -18,7 +18,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  */
-final class WhitespacyLinesFixerTest extends AbstractFixerTestCase
+final class NoWhitespaceInBlankLinesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases
