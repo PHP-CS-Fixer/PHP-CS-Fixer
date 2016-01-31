@@ -49,7 +49,7 @@ class FunctionCallSpaceFixer extends AbstractFixer
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
             $nextNonWhiteSpace = $tokens->getNextMeaningfulToken($endParenthesisIndex);
             if (
-                !empty($nextNonWhiteSpace)
+                null !== $nextNonWhiteSpace
                 && $tokens[$nextNonWhiteSpace]->equals('?')
                 && $tokens[$lastTokenIndex]->isGivenKind($languageConstructionTokens)
             ) {
@@ -59,6 +59,11 @@ class FunctionCallSpaceFixer extends AbstractFixer
             // check if it is a function call
             if ($tokens[$lastTokenIndex]->isGivenKind($functionyTokens)) {
                 $this->fixFunctionCall($tokens, $index);
+            } elseif ($tokens[$lastTokenIndex]->isGivenKind(T_STRING)) { // for real function calls or definitions
+                $possibleDefinitionIndex = $tokens->getPrevMeaningfulToken($lastTokenIndex);
+                if (!$tokens[$possibleDefinitionIndex]->isGivenKind(T_FUNCTION)) {
+                    $this->fixFunctionCall($tokens, $index);
+                }
             }
         }
 
@@ -110,7 +115,6 @@ class FunctionCallSpaceFixer extends AbstractFixer
                 T_PRINT,
                 T_REQUIRE,
                 T_REQUIRE_ONCE,
-                T_STRING,   // for real function calls
                 T_UNSET,
             );
         }
