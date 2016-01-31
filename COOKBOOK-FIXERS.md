@@ -59,10 +59,10 @@ Put this content inside:
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Contrib;
+namespace PhpCsFixer\Fixer\Contrib;
 
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Your name <your@email.com>
@@ -93,9 +93,9 @@ content inside:
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use PhpCsFixer\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Your name <your@email.com>
@@ -178,9 +178,9 @@ like:
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Contrib;
 
-use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
+use PhpCsFixer\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Your name <your@email.com>
@@ -220,7 +220,6 @@ We need first to create one method to describe what this fixer does:
 ```php
 final class RemoveCommentsFixer extends AbstractFixer
 {
-    ...
     /**
      * {@inheritdoc}
      */
@@ -231,20 +230,35 @@ final class RemoveCommentsFixer extends AbstractFixer
 }
 ```
 
-For now, let us just make a fixer that applies no modification:
+Next, we must filter what type of tokens we want to fix. Here, we are interested in code that contains `T_COMMENT` tokens:
 `Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
 ```php
 final class RemoveCommentsFixer extends AbstractFixer
 {
+    ...
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function isCandidate(Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
-
-        return $tokens->generateCode();
+        return $tokens->isTokenKindFound(T_COMMENT);
     }
+}
+```
+
+For now, let us just make a fixer that applies no modification:
+`Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
+```php
+class RemoveCommentsFixer extends AbstractFixer
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        // no action
+    }
+    ...
 }
 ```
 
@@ -289,17 +303,17 @@ final class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        foreach($tokens as $index => $token){
+            if (!$token->isGivenKind(T_COMMENT)) {
+                continue;
+            }
 
-        $foundComments = $tokens->findGivenKind(T_COMMENT);
-        foreach($foundComments as $index => $token){
-
+            // need to figure out what to do here!
         }
-
-        return $tokens->generateCode();
     }
+    ...
 }
 ```
 
@@ -312,12 +326,13 @@ final class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokens = Tokens::fromCode($content);
+        foreach($tokens as $index => $token){
+            if (!$token->isGivenKind(T_COMMENT)) {
+                continue;
+            }
 
-        $foundComments = $tokens->findGivenKind(T_COMMENT);
-        foreach($foundComments as $index => $token){
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevTokenIndex];
 
@@ -325,9 +340,8 @@ final class RemoveCommentsFixer extends AbstractFixer
                 $token->clear();
             }
         }
-
-        return $tokens->generateCode();
     }
+    ...
 }
 ```
 
@@ -345,10 +359,10 @@ So the fixer in the end looks like this:
  *
  */
 
-namespace Symfony\CS\Fixer\Contrib;
+namespace PhpCsFixer\Fixer\Contrib;
 
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\Tokenizer\Tokens;
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Your name <your@email.com>
@@ -357,11 +371,12 @@ final class RemoveCommentsFixer extends AbstractFixer {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content) {
-        $tokens = Tokens::fromCode($content);
+    public function fix(\SplFileInfo $file, Tokens $tokens) {
+        foreach($tokens as $index => $token){
+            if (!$token->isGivenKind(T_COMMENT)) {
+                continue;
+            }
 
-        $foundComments = $tokens->findGivenKind(T_COMMENT);
-        foreach ($foundComments as $index => $token) {
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevTokenIndex];
 
@@ -369,8 +384,6 @@ final class RemoveCommentsFixer extends AbstractFixer {
                 $token->clear();
             }
         }
-
-        return $tokens->generateCode();
     }
 
     /**
@@ -378,6 +391,14 @@ final class RemoveCommentsFixer extends AbstractFixer {
      */
     public function getDescription() {
         return 'Removes all comments of the code that are preceded by ";" (semicolon).';// Trailing dot is important. We thrive to use English grammar properly.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_COMMENT);
     }
 }
 ```

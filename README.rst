@@ -132,42 +132,40 @@ The ``--format`` option for the output format. Supported formats are ``txt`` (de
 
 The ``--verbose`` option will show the applied fixers. When using the ``txt`` format it will also displays progress notifications.
 
-The ``--level`` option limits the fixers to apply on the
+The ``--rules`` option limits the rules to apply on the
 project:
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/project --level=psr0
-    php php-cs-fixer.phar fix /path/to/project --level=psr1
-    php php-cs-fixer.phar fix /path/to/project --level=psr2
-    php php-cs-fixer.phar fix /path/to/project --level=symfony
+    php php-cs-fixer.phar fix /path/to/project --rules=@PSR2
 
-By default, all PSR-2 fixers and some additional ones are run. The "contrib
-level" fixers cannot be enabled via this option; you should instead set them
-manually by their name via the ``--fixers`` option.
+By default, all PSR fixers are run.
 
-The ``--fixers`` option lets you choose the exact fixers to
+The ``--rules`` option lets you choose the exact fixers to
 apply (the fixer names must be separated by a comma):
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,short_tag,indentation
+    php php-cs-fixer.phar fix /path/to/dir --rules=unix_line_endings,full_opening_tag,no_tab_indentation
 
 You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
 using ``-name_of_fixer``:
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/dir --fixers=-short_tag,-indentation
+    php php-cs-fixer.phar fix /path/to/dir --rules=-full_opening_tag,-no_tab_indentation
 
-When using combination with exact and blacklist fixers, apply exact fixers along with above blacklisted result:
+When using combinations of exact and blacklist fixers, applying exact fixers along with above blacklisted results:
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,-short_tag
+    php php-cs-fixer.phar fix /path/to/project --rules=@Symfony,-@PSR1,-return,strict
 
 A combination of ``--dry-run`` and ``--diff`` will
-display summary of proposed fixes, leaving your files unchanged.
+display a summary of proposed fixes, leaving your files unchanged.
+
+The ``--allow-risky`` option allows you to set whether riskys fixer may run. Default value is taken from config file.
+Risky fixer is a fixer, which could change code behaviour. By default no risky fixers are run.
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
@@ -178,281 +176,357 @@ automatically fix anything:
 
 Choose from the list of available fixers:
 
-* **psr0** [PSR-0]
-                        Classes must be in a path that
-                        matches their namespace, be at
-                        least one namespace deep, and
-                        the class name should match
-                        the file name.
+* **align_double_arrow**
+                        Align double arrow symbols in
+                        consecutive lines.
 
-* **encoding** [PSR-1]
-                        PHP code MUST use only UTF-8
-                        without BOM (remove BOM).
+* **align_equals**
+                        Align equals symbols in
+                        consecutive lines.
 
-* **short_tag** [PSR-1]
-                        PHP code must use the long
-                        <?php ?> tags or the
-                        short-echo <?= ?> tags; it
-                        must not use the other tag
-                        variations.
+* **binary_operator_spaces** [@Symfony]
+                        Binary operators should be
+                        surrounded by at least one
+                        space.
 
-* **braces** [PSR-2]
+* **blank_line_after_namespace** [@PSR2, @Symfony]
+                        There MUST be one blank line
+                        after the namespace
+                        declaration.
+
+* **blank_line_after_opening_tag** [@Symfony]
+                        Ensure there is no code on the
+                        same line as the PHP open tag
+                        and it is followed by a
+                        blankline.
+
+* **blank_line_before_return** [@Symfony]
+                        An empty line feed should
+                        precede a return statement.
+
+* **braces** [@PSR2, @Symfony]
                         The body of each structure
                         MUST be enclosed by braces.
                         Braces should be properly
                         placed. Body of braces should
                         be properly indented.
 
-* **class_definition** [PSR-2]
+* **class_definition** [@PSR2, @Symfony]
                         Whitespace around the key
                         words of a class, trait or
                         interfaces definition should
                         be one space.
 
-* **elseif** [PSR-2]
+* **concat_with_spaces**
+                        Concatenation should be used
+                        with at least one whitespace
+                        around.
+
+* **concat_without_spaces** [@Symfony]
+                        Concatenation should be used
+                        without spaces.
+
+* **double_arrow_no_multiline_whitespace** [@Symfony]
+                        Operator => should not be
+                        surrounded by multi-line
+                        whitespaces.
+
+* **echo_to_print**
+                        Converts echo language
+                        construct to print if
+                        possible.
+
+* **elseif** [@PSR2, @Symfony]
                         The keyword elseif should be
                         used instead of else if so
-                        that all control keywords
-                        looks like single words.
+                        that all control keywords look
+                        like single words.
 
-* **eof_ending** [PSR-2]
-                        A file must always end with a
-                        single empty line feed.
+* **encoding** [@PSR1, @PSR2, @Symfony]
+                        PHP code MUST use only UTF-8
+                        without BOM (remove BOM).
 
-* **function_call_space** [PSR-2]
-                        When making a method or
-                        function call, there MUST NOT
-                        be a space between the method
-                        or function name and the
-                        opening parenthesis.
+* **ereg_to_preg**
+                        Replace deprecated ereg
+                        regular expression functions
+                        with preg. (Risky fixer!)
 
-* **function_declaration** [PSR-2]
+* **full_opening_tag** [@PSR1, @PSR2, @Symfony]
+                        PHP code must use the long
+                        <?php ?> tags or the
+                        short-echo <?= ?> tags; it
+                        must not use the other tag
+                        variations.
+
+* **function_declaration** [@PSR2, @Symfony]
                         Spaces should be properly
                         placed in a function
                         declaration.
 
-* **indentation** [PSR-2]
-                        Code MUST use an indent of 4
-                        spaces, and MUST NOT use tabs
-                        for indenting.
+* **function_typehint_space** [@Symfony]
+                        Add missing space between
+                        function's argument and its
+                        typehint.
 
-* **line_after_namespace** [PSR-2]
-                        There MUST be one blank line
-                        after the namespace
-                        declaration.
+* **hash_to_slash_comment** [@Symfony]
+                        Single line comments should
+                        use double slashes (//) and
+                        not hash (#).
 
-* **linefeed** [PSR-2]
-                        All PHP files must use the
-                        Unix LF (linefeed) line
-                        ending.
+* **header_comment**
+                        Add, replace or remove header
+                        comment.
 
-* **lowercase_constants** [PSR-2]
+* **heredoc_to_nowdoc** [@Symfony]
+                        Convert heredoc to nowdoc if
+                        possible.
+
+* **include** [@Symfony]
+                        Include/Require and file path
+                        should be divided with a
+                        single space. File path should
+                        not be placed under brackets.
+
+* **linebreak_after_opening_tag**
+                        Ensure there is no code on the
+                        same line as the PHP open tag.
+
+* **long_array_syntax**
+                        Arrays should use the long
+                        syntax.
+
+* **lowercase_cast** [@Symfony]
+                        Cast should be written in
+                        lower case.
+
+* **lowercase_constants** [@PSR2, @Symfony]
                         The PHP constants true, false,
                         and null MUST be in lower
                         case.
 
-* **lowercase_keywords** [PSR-2]
+* **lowercase_keywords** [@PSR2, @Symfony]
                         PHP keywords MUST be in lower
                         case.
 
-* **method_argument_space** [PSR-2]
+* **method_argument_space** [@PSR2, @Symfony]
                         In method arguments and method
                         call, there MUST NOT be a
                         space before each comma and
                         there MUST be one space after
                         each comma.
 
-* **multiple_use** [PSR-2]
-                        There MUST be one use keyword
-                        per declaration.
+* **method_separation** [@Symfony]
+                        Methods must be separated with
+                        one blank line.
 
-* **parenthesis** [PSR-2]
+* **native_function_casing** [@Symfony]
+                        Function defined by PHP should
+                        be called using the correct
+                        casing.
+
+* **new_with_braces** [@Symfony]
+                        All instances created with new
+                        keyword must be followed by
+                        braces.
+
+* **no_alias_functions** [@Symfony]
+                        Master functions shall be used
+                        instead of aliases.
+
+* **no_blank_lines_after_class_opening** [@Symfony]
+                        There should be no empty lines
+                        after class opening brace.
+
+* **no_blank_lines_after_phpdoc** [@Symfony]
+                        There should not be blank
+                        lines between docblock and the
+                        documented element.
+
+* **no_blank_lines_before_namespace**
+                        There should be no blank lines
+                        before a namespace
+                        declaration.
+
+* **no_blank_lines_between_uses** [@Symfony]
+                        Removes line breaks between
+                        use statements.
+
+* **no_closing_tag** [@PSR2, @Symfony]
+                        The closing ?> tag MUST be
+                        omitted from files containing
+                        only PHP.
+
+* **no_duplicate_semicolons** [@Symfony]
+                        Remove duplicated semicolons.
+
+* **no_extra_consecutive_blank_lines** [@Symfony]
+                        Removes extra blank lines
+                        and/or blank lines following
+                        configuration.
+
+* **no_leading_import_slash** [@Symfony]
+                        Remove leading slashes in use
+                        clauses.
+
+* **no_leading_namespace_whitespace** [@Symfony]
+                        The namespace declaration line
+                        shouldn't contain leading
+                        whitespace.
+
+* **no_multiline_whitespace_before_semicolons**
+                        Multi-line whitespace before
+                        closing semicolon are
+                        prohibited.
+
+* **no_php4_constructor**
+                        Convert PHP4-style
+                        constructors to __construct.
+                        (Risky fixer!)
+
+* **no_short_bool_cast** [@Symfony]
+                        Short cast bool using double
+                        exclamation mark should not be
+                        used.
+
+* **no_short_echo_tag**
+                        Replace short-echo <?= with
+                        long format <?php echo syntax.
+
+* **no_singleline_whitespace_before_semicolons** [@Symfony]
+                        Single-line whitespace before
+                        closing semicolon are
+                        prohibited.
+
+* **no_spaces_after_function_name** [@PSR2, @Symfony]
+                        When making a method or
+                        function call, there MUST NOT
+                        be a space between the method
+                        or function name and the
+                        opening parenthesis.
+
+* **no_spaces_inside_parenthesis** [@PSR2, @Symfony]
                         There MUST NOT be a space
                         after the opening parenthesis.
                         There MUST NOT be a space
                         before the closing
                         parenthesis.
 
-* **php_closing_tag** [PSR-2]
-                        The closing ?> tag MUST be
-                        omitted from files containing
-                        only PHP.
+* **no_tab_indentation** [@PSR2, @Symfony]
+                        Code MUST use an indent of 4
+                        spaces, and MUST NOT use tabs
+                        for indenting.
 
-* **single_line_after_imports** [PSR-2]
-                        Each namespace use MUST go on
-                        its own line and there MUST be
-                        one blank line after the use
-                        statements block.
-
-* **switch_case_semicolon_to_colon** [PSR-2]
-                        A case should be followed by a
-                        colon and not a semicolon.
-
-* **switch_case_space** [PSR-2]
-                        Removes extra spaces between
-                        colon and case value.
-
-* **trailing_spaces** [PSR-2]
-                        Remove trailing whitespace at
-                        the end of non-blank lines.
-
-* **visibility** [PSR-2]
-                        Visibility MUST be declared on
-                        all properties and methods;
-                        abstract and final MUST be
-                        declared before the
-                        visibility; static MUST be
-                        declared after the visibility.
-
-* **array_element_no_space_before_comma** [symfony]
-                        In array declaration, there
-                        MUST NOT be a whitespace
-                        before each comma.
-
-* **array_element_white_space_after_comma** [symfony]
-                        In array declaration, there
-                        MUST be a whitespace after
-                        each comma.
-
-* **blankline_after_open_tag** [symfony]
-                        Ensure there is no code on the
-                        same line as the PHP open tag
-                        and it is followed by a
-                        blankline.
-
-* **concat_without_spaces** [symfony]
-                        Concatenation should be used
-                        without spaces.
-
-* **double_arrow_multiline_whitespaces** [symfony]
-                        Operator => should not be
-                        surrounded by multi-line
-                        whitespaces.
-
-* **duplicate_semicolon** [symfony]
-                        Remove duplicated semicolons.
-
-* **empty_return** [symfony]
-                        A return statement wishing to
-                        return nothing should be
-                        simply "return".
-
-* **extra_empty_lines** [symfony]
-                        Removes extra empty lines.
-
-* **function_typehint_space** [symfony]
-                        Add missing space between
-                        function's argument and its
-                        typehint.
-
-* **hash_to_slash_comment** [symfony]
-                        Single line comments should
-                        use double slashes (//) and
-                        not hash (#).
-
-* **heredoc_to_nowdoc** [symfony]
-                        Convert heredoc to nowdoc if
-                        possible.
-
-* **include** [symfony]
-                        Include/Require and file path
-                        should be divided with a
-                        single space. File path should
-                        not be placed under brackets.
-
-* **join_function** [symfony]
-                        Implode function should be
-                        used instead of join function.
-
-* **list_commas** [symfony]
+* **no_trailing_comma_in_list_call** [@Symfony]
                         Remove trailing commas in list
                         function calls.
 
-* **lowercase_cast** [symfony]
-                        Cast should be written in
-                        lower case.
+* **no_trailing_comma_in_singleline_array** [@Symfony]
+                        PHP single-line arrays should
+                        not have trailing comma.
 
-* **method_argument_default_value** [symfony]
+* **no_trailing_whitespace** [@PSR2, @Symfony]
+                        Remove trailing whitespace at
+                        the end of non-blank lines.
+
+* **no_unneeded_control_parentheses** [@Symfony]
+                        Removes unneeded parentheses
+                        around control statements.
+
+* **no_unreachable_default_argument_value** [@Symfony]
                         In method arguments there must
                         not be arguments with default
                         values before non-default
                         ones.
 
-* **multiline_array_trailing_comma** [symfony]
-                        PHP multi-line arrays should
-                        have a trailing comma.
+* **no_unused_imports** [@Symfony]
+                        Unused use statements must be
+                        removed.
 
-* **namespace_no_leading_whitespace** [symfony]
-                        The namespace declaration line
-                        shouldn't contain leading
+* **no_whitespace_before_comma_in_array** [@Symfony]
+                        In array declaration, there
+                        MUST NOT be a whitespace
+                        before each comma.
+
+* **not_operator_with_space**
+                        Logical NOT operators (!)
+                        should have leading and
+                        trailing whitespaces.
+
+* **not_operator_with_successor_space**
+                        Logical NOT operators (!)
+                        should have one trailing
                         whitespace.
 
-* **native_function_casing** [symfony]
-                        Function defined by PHP should
-                        be called using the correct
-                        casing.
-
-* **new_with_braces** [symfony]
-                        All instances created with new
-                        keyword must be followed by
-                        braces.
-
-* **no_blank_lines_after_class_opening** [symfony]
-                        There should be no empty lines
-                        after class opening brace.
-
-* **no_empty_lines_after_phpdocs** [symfony]
-                        There should not be blank
-                        lines between docblock and the
-                        documented element.
-
-* **object_operator** [symfony]
+* **object_operator_without_whitespace** [@Symfony]
                         There should not be space
                         before or after object
                         T_OBJECT_OPERATOR.
 
-* **operators_spaces** [symfony]
-                        Binary operators should be
-                        surrounded by at least one
-                        space.
+* **ordered_imports**
+                        Ordering use statements.
 
-* **phpdoc_indent** [symfony]
-                        Docblocks should have the same
-                        indentation as the documented
-                        subject.
+* **php_unit_construct**
+                        PHPUnit assertion method calls
+                        like "->assertSame(true,
+                        $foo)" should be written with
+                        dedicated method like
+                        "->assertTrue($foo)". (Risky
+                        fixer!)
 
-* **phpdoc_inline_tag** [symfony]
-                        Fix PHPDoc inline tags, make
-                        inheritdoc always inline.
+* **php_unit_strict**
+                        PHPUnit methods like
+                        "assertSame" should be used
+                        instead of "assertEquals".
+                        (Risky fixer!)
 
-* **phpdoc_no_access** [symfony]
-                        @access annotations should be
-                        omitted from phpdocs.
-
-* **phpdoc_no_empty_return** [symfony]
-                        @return void and @return null
-                        annotations should be omitted
-                        from phpdocs.
-
-* **phpdoc_no_package** [symfony]
-                        @package and @subpackage
-                        annotations should be omitted
-                        from phpdocs.
-
-* **phpdoc_params** [symfony]
+* **phpdoc_align** [@Symfony]
                         All items of the @param,
                         @throws, @return, @var, and
                         @type phpdoc tags must be
                         aligned vertically.
 
-* **phpdoc_scalar** [symfony]
+* **phpdoc_indent** [@Symfony]
+                        Docblocks should have the same
+                        indentation as the documented
+                        subject.
+
+* **phpdoc_inline_tag** [@Symfony]
+                        Fix PHPDoc inline tags, make
+                        inheritdoc always inline.
+
+* **phpdoc_no_access** [@Symfony]
+                        @access annotations should be
+                        omitted from phpdocs.
+
+* **phpdoc_no_package** [@Symfony]
+                        @package and @subpackage
+                        annotations should be omitted
+                        from phpdocs.
+
+* **phpdoc_no_simplified_null_return** [@Symfony]
+                        @return void and @return null
+                        annotations should be omitted
+                        from phpdocs.
+
+* **phpdoc_order**
+                        Annotations in phpdocs should
+                        be ordered so that param
+                        annotations come first, then
+                        throws annotations, then
+                        return annotations.
+
+* **phpdoc_property**
+                        @property tags should be used
+                        rather than other variants.
+
+* **phpdoc_scalar** [@Symfony]
                         Scalar types should always be
                         written in the same form.
                         "int", not "integer"; "bool",
                         not "boolean"; "float", not
                         "real" or "double".
 
-* **phpdoc_separation** [symfony]
+* **phpdoc_separation** [@Symfony]
                         Annotations in phpdocs should
                         be grouped together so that
                         annotations of the same type
@@ -461,263 +535,174 @@ Choose from the list of available fixers:
                         type are separated by a single
                         blank line.
 
-* **phpdoc_short_description** [symfony]
-                        Phpdocs short descriptions
-                        should end in either a full
-                        stop, exclamation mark, or
-                        question mark.
+* **phpdoc_summary** [@Symfony]
+                        Phpdocs summary should end in
+                        either a full stop,
+                        exclamation mark, or question
+                        mark.
 
-* **phpdoc_to_comment** [symfony]
+* **phpdoc_to_comment** [@Symfony]
                         Docblocks should only be used
                         on structural elements.
 
-* **phpdoc_trim** [symfony]
+* **phpdoc_trim** [@Symfony]
                         Phpdocs should start and end
                         with content, excluding the
                         very first and last line of
                         the docblocks.
 
-* **phpdoc_type_to_var** [symfony]
+* **phpdoc_type_to_var** [@Symfony]
                         @type should always be written
                         as @var.
 
-* **phpdoc_types** [symfony]
+* **phpdoc_types** [@Symfony]
                         The correct case must be used
                         for standard PHP types in
                         phpdoc.
 
-* **phpdoc_var_without_name** [symfony]
+* **phpdoc_var_to_type**
+                        @var should always be written
+                        as @type.
+
+* **phpdoc_var_without_name** [@Symfony]
                         @var and @type annotations
                         should not contain the
                         variable name.
 
-* **pre_increment** [symfony]
+* **pre_increment** [@Symfony]
                         Pre
                         incrementation/decrementation
                         should be used if possible.
 
-* **print_to_echo** [symfony]
+* **print_to_echo** [@Symfony]
                         Converts print language
                         construct to echo if possible.
 
-* **remove_leading_slash_use** [symfony]
-                        Remove leading slashes in use
-                        clauses.
+* **psr0**
+                        Classes must be in a path that
+                        matches their namespace, be at
+                        least one namespace deep and
+                        the class name should match
+                        the file name. (Risky fixer!)
 
-* **remove_lines_between_uses** [symfony]
-                        Removes line breaks between
-                        use statements.
-
-* **return** [symfony]
-                        An empty line feed should
-                        precede a return statement.
-
-* **self_accessor** [symfony]
+* **self_accessor** [@Symfony]
                         Inside a classy element "self"
                         should be preferred to the
                         class name itself.
 
-* **short_bool_cast** [symfony]
-                        Short cast bool using double
-                        exclamation mark should not be
-                        used.
+* **short_array_syntax**
+                        PHP arrays should use the PHP
+                        5.4 short-syntax.
 
-* **short_scalar_cast** [symfony]
+* **short_scalar_cast** [@Symfony]
                         Cast "(boolean)" and
                         "(integer)" should be written
                         as "(bool)" and "(int)".
                         "(double)" and "(real)" as
                         "(float)".
 
-* **single_array_no_trailing_comma** [symfony]
-                        PHP single-line arrays should
-                        not have trailing comma.
+* **simplified_null_return** [@Symfony]
+                        A return statement wishing to
+                        return nothing should be
+                        simply "return".
 
-* **single_blank_line_before_namespace** [symfony]
+* **single_blank_line_at_eof** [@PSR2, @Symfony]
+                        A file must always end with a
+                        single empty line feed.
+
+* **single_blank_line_before_namespace** [@Symfony]
                         There should be exactly one
                         blank line before a namespace
                         declaration.
 
-* **single_quote** [symfony]
+* **single_import_per_statement** [@PSR2, @Symfony]
+                        There MUST be one use keyword
+                        per declaration.
+
+* **single_line_after_imports** [@PSR2, @Symfony]
+                        Each namespace use MUST go on
+                        its own line and there MUST be
+                        one blank line after the use
+                        statements block.
+
+* **single_quote** [@Symfony]
                         Convert double quotes to
                         single quotes for simple
                         strings.
 
-* **spaces_after_semicolon** [symfony]
+* **space_after_semicolon** [@Symfony]
                         Fix whitespace after a
                         semicolon.
 
-* **spaces_before_semicolon** [symfony]
-                        Single-line whitespace before
-                        closing semicolon are
-                        prohibited.
-
-* **spaces_cast** [symfony]
+* **spaces_cast** [@Symfony]
                         A single space should be
                         between cast and variable.
 
-* **standardize_not_equal** [symfony]
+* **standardize_not_equals** [@Symfony]
                         Replace all <> with !=.
 
-* **ternary_spaces** [symfony]
+* **strict**
+                        Comparison should be strict.
+                        (Risky fixer!)
+
+* **strict_param**
+                        Functions should be used with
+                        $strict param. (Risky fixer!)
+
+* **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
+                        A case should be followed by a
+                        colon and not a semicolon.
+
+* **switch_case_space** [@PSR2, @Symfony]
+                        Removes extra spaces between
+                        colon and case value.
+
+* **ternary_operator_spaces** [@Symfony]
                         Standardize spaces around
                         ternary operator.
 
-* **trim_array_spaces** [symfony]
+* **trailing_comma_in_multiline_array** [@Symfony]
+                        PHP multi-line arrays should
+                        have a trailing comma.
+
+* **trim_array_spaces** [@Symfony]
                         Arrays should be formatted
                         like function/method
                         arguments, without leading or
                         trailing single line space.
 
-* **unalign_double_arrow** [symfony]
+* **unalign_double_arrow** [@Symfony]
                         Unalign double arrow symbols.
 
-* **unalign_equals** [symfony]
+* **unalign_equals** [@Symfony]
                         Unalign equals symbols.
 
-* **unary_operators_spaces** [symfony]
+* **unary_operator_spaces** [@Symfony]
                         Unary operators should be
                         placed adjacent to their
                         operands.
 
-* **unneeded_control_parentheses** [symfony]
-                        Removes unneeded parentheses
-                        around control statements.
+* **unix_line_endings** [@PSR2, @Symfony]
+                        All PHP files must use the
+                        Unix LF line ending.
 
-* **unused_use** [symfony]
-                        Unused use statements must be
-                        removed.
+* **visibility_required** [@PSR2, @Symfony]
+                        Visibility MUST be declared on
+                        all properties and methods;
+                        abstract and final MUST be
+                        declared before the
+                        visibility; static MUST be
+                        declared after the visibility.
 
-* **whitespacy_lines** [symfony]
+* **whitespace_after_comma_in_array** [@Symfony]
+                        In array declaration, there
+                        MUST be a whitespace after
+                        each comma.
+
+* **whitespacy_lines** [@Symfony]
                         Remove trailing whitespace at
                         the end of blank lines.
 
-* **align_double_arrow** [contrib]
-                        Align double arrow symbols in
-                        consecutive lines.
-
-* **align_equals** [contrib]
-                        Align equals symbols in
-                        consecutive lines.
-
-* **concat_with_spaces** [contrib]
-                        Concatenation should be used
-                        with at least one whitespace
-                        around.
-
-* **echo_to_print** [contrib]
-                        Converts echo language
-                        construct to print if
-                        possible.
-
-* **ereg_to_preg** [contrib]
-                        Replace deprecated ereg
-                        regular expression functions
-                        with preg. Warning! This could
-                        change code behavior.
-
-* **header_comment** [contrib]
-                        Add, replace or remove header
-                        comment.
-
-* **logical_not_operators_with_spaces** [contrib]
-                        Logical NOT operators (!)
-                        should have leading and
-                        trailing whitespaces.
-
-* **logical_not_operators_with_successor_space** [contrib]
-                        Logical NOT operators (!)
-                        should have one trailing
-                        whitespace.
-
-* **long_array_syntax** [contrib]
-                        Arrays should use the long
-                        syntax.
-
-* **multiline_spaces_before_semicolon** [contrib]
-                        Multi-line whitespace before
-                        closing semicolon are
-                        prohibited.
-
-* **newline_after_open_tag** [contrib]
-                        Ensure there is no code on the
-                        same line as the PHP open tag.
-
-* **no_blank_lines_before_namespace** [contrib]
-                        There should be no blank lines
-                        before a namespace
-                        declaration.
-
-* **ordered_use** [contrib]
-                        Ordering use statements.
-
-* **php4_constructor** [contrib]
-                        Convert PHP4-style
-                        constructors to __construct.
-                        Warning! This could change
-                        code behavior.
-
-* **php_unit_construct** [contrib]
-                        PHPUnit assertion method calls
-                        like "->assertSame(true,
-                        $foo)" should be written with
-                        dedicated method like
-                        "->assertTrue($foo)". Warning!
-                        This could change code
-                        behavior.
-
-* **php_unit_strict** [contrib]
-                        PHPUnit methods like
-                        "assertSame" should be used
-                        instead of "assertEquals".
-                        Warning! This could change
-                        code behavior.
-
-* **phpdoc_order** [contrib]
-                        Annotations in phpdocs should
-                        be ordered so that param
-                        annotations come first, then
-                        throws annotations, then
-                        return annotations.
-
-* **phpdoc_var_to_type** [contrib]
-                        @var should always be written
-                        as @type.
-
-* **short_array_syntax** [contrib]
-                        PHP arrays should use the PHP
-                        5.4 short-syntax.
-
-* **short_echo_tag** [contrib]
-                        Replace short-echo <?= with
-                        long format <?php echo syntax.
-
-* **strict** [contrib]
-                        Comparison should be strict.
-                        Warning! This could change
-                        code behavior.
-
-* **strict_param** [contrib]
-                        Functions should be used with
-                        $strict param. Warning! This
-                        could change code behavior.
-
-
-The ``--config`` option customizes the files to analyse, based
-on some well-known directory structures:
-
-.. code-block:: bash
-
-    # For the Symfony 2.3+ branch
-    php php-cs-fixer.phar fix /path/to/sf23 --config=sf23
-
-Choose from the list of available configurations:
-
-* **default** A default configuration
-
-* **magento** The configuration for a Magento application
-
-* **sf23**    The configuration for the Symfony 2.3+ branch
 
 The ``--dry-run`` option displays the files that need to be
 fixed but without actually modifying them:
@@ -727,100 +712,125 @@ fixed but without actually modifying them:
     php php-cs-fixer.phar fix /path/to/code --dry-run
 
 Instead of using command line options to customize the fixer, you can save the
-configuration in a ``.php_cs`` file in the root directory of
-your project. The file must return an instance of
-``Symfony\CS\ConfigInterface``, which lets you configure the fixers, the level, the files,
-and directories that need to be analyzed. The example below will add two contrib fixers
-to the default list of symfony-level fixers:
+project configuration in a ``.php_cs.dist`` file in the root directory
+of your project. The file must return an instance of ``PhpCsFixer\ConfigInterface``,
+which lets you configure the rules, the files and directories that
+need to be analyzed. You may also create ``.php_cs`` file, which is
+the local configuration that will be used instead of the project configuration. It
+is a good practice to add that file into your ``.gitignore`` file.
+With the ``--config`` option you can specify the path to the
+``.php_cs`` file.
+
+The example below will add two fixers to the default list of PSR2 set fixers:
 
 .. code-block:: php
 
     <?php
 
-    $finder = Symfony\CS\Finder::create()
+    $finder = PhpCsFixer\Finder::create()
         ->exclude('somedir')
         ->in(__DIR__)
     ;
 
-    return Symfony\CS\Config::create()
-        ->fixers(array('strict_param', 'short_array_syntax'))
-        ->finder($finder)
-    ;
-
-If you want complete control over which fixers you use, you may use the empty level and
-then specify all fixers to be used:
-
-.. code-block:: php
-
-    <?php
-
-    $finder = Symfony\CS\Finder::create()
-        ->in(__DIR__)
-    ;
-
-    return Symfony\CS\Config::create()
-        ->level(Symfony\CS\FixerInterface::NONE_LEVEL)
-        ->fixers(array('trailing_spaces', 'encoding'))
+    return PhpCsFixer\Config::create()
+        ->setRules(array(
+            '@PSR2' => true,
+            'strict_param' => true,
+            'short_array_syntax' => true,
+        ))
         ->finder($finder)
     ;
 
 You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
-The following example shows how to use all ``symfony`` Fixers but the ``psr0`` fixer.
-Note the additional ``-`` in front of the Fixer name.
+The following example shows how to use all ``Symfony`` Fixers but the ``full_opening_tag`` Fixer.
 
 .. code-block:: php
 
     <?php
 
-    $finder = Symfony\CS\Finder::create()
+    $finder = PhpCsFixer\Finder::create()
         ->exclude('somedir')
         ->in(__DIR__)
     ;
 
-    return Symfony\CS\Config::create()
-        ->fixers(array('-psr0'))
+    return PhpCsFixer\Config::create()
+        ->setRules(array(
+            '@Symfony' => true,
+            'full_opening_tag' => false,
+        ))
         ->finder($finder)
     ;
 
-The ``symfony`` level is set by default, you can also change the default level:
-
-.. code-block:: php
-
-    <?php
-
-    return Symfony\CS\Config::create()
-        ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
-    ;
-
-In combination with these config and command line options, you can choose various usage.
-
-For example, default level is ``symfony``, but if you also don't want to use
-the ``psr0`` fixer, you can specify the ``--fixers="-psr0"`` option.
-
-But if you use the ``--fixers`` option with only exact fixers,
-only those exact fixers are enabled whether or not level is set.
-
-With the ``--config-file`` option you can specify the path to the
-``.php_cs`` file.
+By using ``--using-cache`` option with yes or no you can set if the caching
+mechanism should be used.
 
 Caching
 -------
 
-You can enable caching by returning a custom config with caching enabled. This will
-speed up further runs.
+The caching mechanism is enabled by default. This will speed up further runs by
+fixing only files that were modified since the last run. The tool will fix all
+files if the tool version has changed or the list of fixers has changed.
+Cache is supported only for tool downloaded as phar file or installed via
+composer.
+
+Cache can be disabled via ``--using-cache`` option or config file:
 
 .. code-block:: php
 
     <?php
 
-    return Symfony\CS\Config::create()
-        ->setUsingCache(true)
+    return PhpCsFixer\Config::create()
+        ->setUsingCache(false)
     ;
+
+Cache file can be specified via ``--cache-file`` option or config file:
+
+.. code-block:: php
+
+    <?php
+
+    return PhpCsFixer\Config::create()
+        ->setCacheFile(__DIR__.'/.php_cs.cache')
+    ;
+
+Using PHP CS Fixer on Travis
+----------------------------
+
+Require ``fabpot/php-cs-fixer`` as a `dev`` dependency:
+
+.. code-block:: bash
+
+    $ ./composer.phar require --dev fabpot/php-cs-fixer
+
+Create a build file to run ``php-cs-fixer`` on Travis. It's advisable to create a dedicated directory
+for PHP CS Fixer cache files and have Travis cache it between builds.
+
+.. code-block:: yaml
+
+    language: php
+    php:
+        - 5.5
+    sudo: false
+    cache:
+        directories:
+            - "$HOME/.composer/cache"
+            - "$HOME/.php-cs-fixer"
+    before_script:
+        - mkdir -p "$HOME/.php-cs-fixer"
+    script:
+        - vendor/bin/php-cs-fixer fix --cache-file "$HOME/.php-cs-fixer/.php_cs.cache" --dry-run --diff --verbose
+
+Note: This will only trigger a build if you have a subscription for Travis
+or are using their free open source plan.
 
 Exit codes
 ----------
+
+Exit code are build using following bit flags:
+
 *  0 OK
-*  1 No changes made
+*  4 Some files have invalid syntax (only in dry-run mode)
+*  8 Some files need fixing (only in dry-run mode)
 * 16 Configuration error of the application
 * 32 Configuration error of a Fixer
 
@@ -850,7 +860,7 @@ implement ``FixerInterface``).
 Configs
 ~~~~~~~
 
-A *config* knows about the CS level and the files and directories that must be
+A *config* knows about the CS rules and the files and directories that must be
 scanned by the tool when run in the directory of your project. It is useful for
 projects that follow a well-known directory structures (like for Symfony
 projects for instance).

@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: no_trailing_whitespace,no_unneeded_control_parentheses.
+--CONFIG--
+{"no_trailing_whitespace": true, "no_unneeded_control_parentheses": true}
+--EXPECT--
+<?php
+return
+    0 === strpos($method->name, 'get') &&
+    3 < strlen($method->name) &&
+    0 === $method->getNumberOfRequiredParameters()
+;
+
+--INPUT--
+<?php
+return (
+    0 === strpos($method->name, 'get') &&
+    3 < strlen($method->name) &&
+    0 === $method->getNumberOfRequiredParameters()
+);

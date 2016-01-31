@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: single_import_per_statement,no_unused_imports.
+--CONFIG--
+{"single_import_per_statement": true, "no_unused_imports": true}
+--EXPECT--
+<?php
+use FooB;
+
+new Foob();
+
+--INPUT--
+<?php
+use Foo,FooB;
+
+new Foob();
