@@ -19,7 +19,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
  */
-final class NotOperatorsWithSpaceFixer extends AbstractFixer
+final class NotOperatorWithSpaceFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

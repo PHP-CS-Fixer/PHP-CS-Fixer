@@ -246,7 +246,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_unused_imports'], $fixers['blank_line_after_namespace']), // tested also in: no_unused_imports,blank_line_after_namespace.test
             array($fixers['unix_line_endings'], $fixers['single_blank_line_at_eof']),
             array($fixers['php_unit_strict'], $fixers['php_unit_construct']),
-            array($fixers['unary_operator_spaces'], $fixers['not_operators_with_space']),
+            array($fixers['unary_operator_spaces'], $fixers['not_operator_with_space']),
             array($fixers['unary_operator_spaces'], $fixers['not_operator_with_successor_space']),
             array($fixers['method_separation'], $fixers['braces']),
             array($fixers['method_separation'], $fixers['no_tab_indentation']),
