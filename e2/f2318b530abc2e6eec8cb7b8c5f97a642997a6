@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-31T13:07:39Z
+
+Oh, and then - `no_whitespace_in_blank_lines` or `no_whitespace_in_blank_line` ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-31T13:08:14Z
+
+> no_whitespace_in_blank_lines
+
+I prefer that and it's more consistent with our other fixer names.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-31T13:09:14Z
+
+OK, let us wait for CI and good to go
