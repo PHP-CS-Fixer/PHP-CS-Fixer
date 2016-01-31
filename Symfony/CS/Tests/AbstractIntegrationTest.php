@@ -57,8 +57,17 @@ use Symfony\CS\Test\IntegrationCaseFactory;
  */
 abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var LintManager
+     */
+    protected static $linter;
+
     public static function setUpBeforeClass()
     {
+        if (getenv('LINT_TEST_CASES')) {
+            static::$linter = new LintManager();
+        }
+
         $tmpFile = static::getTempFile();
         if (!is_file($tmpFile)) {
             $dir = dirname($tmpFile);
@@ -159,11 +168,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
 
         $input = $case->hasInputCode() ? $input : $expected;
 
-        if (getenv('LINT_TEST_CASES')) {
-            $linter = new LintManager();
-            $lintProcess = $linter->createProcessForSource($input);
-            $this->assertTrue($lintProcess->isSuccessful(), $lintProcess->getOutput());
-        }
+        $this->assertNull($this->lintSource($input));
 
         $errorsManager = new ErrorsManager();
         $fixer = new Fixer();
@@ -222,5 +227,36 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
                 ->setTitle($case->getTitle().' "--EXPECT-- part run"')
                 ->setInputCode(null)
         );
+    }
+
+    /**
+     * @param $source string
+     *
+     * @return string|null
+     */
+    protected function lintSource($source)
+    {
+        if (!isset(static::$linter)) {
+            return;
+        }
+
+        if ($this->isLintException($source)) {
+            return;
+        }
+
+        $lintProcess = static::$linter->createProcessForSource($source);
+        if (!$lintProcess->isSuccessful()) {
+            return $lintProcess->getOutput();
+        }
+    }
+
+    /**
+     * @param $source string
+     *
+     * @return bool
+     */
+    protected function isLintException($source)
+    {
+        return false;
     }
 }
