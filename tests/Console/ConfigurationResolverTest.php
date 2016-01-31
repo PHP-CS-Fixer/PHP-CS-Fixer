@@ -178,11 +178,17 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideResolveConfigFileDefaultCases
      */
-    public function testResolveConfigFileChooseFile($expectedFile, $expectedClass, $path)
+    public function testResolveConfigFileChooseFile($expectedFile, $expectedClass, $path, $cwdPath = null)
     {
-        $this->resolver
+        $resolver = $this->resolver
             ->setOption('path', $path)
-            ->resolve();
+        ;
+
+        if (null !== $cwdPath) {
+            $resolver->setCwd($cwdPath);
+        }
+
+        $resolver->resolve();
 
         $this->assertSame($expectedFile, $this->resolver->getConfigFile());
         $this->assertInstanceOf($expectedClass, $this->resolver->getConfig());
@@ -207,6 +213,18 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
                 $dirBase.'case_3'.DIRECTORY_SEPARATOR.'.php_cs',
                 'Test3Config',
                 $dirBase.'case_3',
+            ),
+            array(
+                $dirBase.'case_6'.DIRECTORY_SEPARATOR.'.php_cs.dist',
+                'Test6Config',
+                $dirBase.'case_6'.DIRECTORY_SEPARATOR.'subdir',
+                $dirBase.'case_6',
+            ),
+            array(
+                $dirBase.'case_6'.DIRECTORY_SEPARATOR.'.php_cs.dist',
+                'Test6Config',
+                $dirBase.'case_6'.DIRECTORY_SEPARATOR.'subdir/empty_file.php',
+                $dirBase.'case_6',
             ),
         );
     }

@@ -341,10 +341,17 @@ final class ConfigurationResolver
             $configDir = $path;
         }
 
-        return array(
+        $candidates = array(
             $configDir.DIRECTORY_SEPARATOR.'.php_cs',
             $configDir.DIRECTORY_SEPARATOR.'.php_cs.dist',
         );
+
+        if ($configDir !== $this->cwd) {
+            $candidates[] = $this->cwd.DIRECTORY_SEPARATOR.'.php_cs';
+            $candidates[] = $this->cwd.DIRECTORY_SEPARATOR.'.php_cs.dist';
+        }
+
+        return $candidates;
     }
 
     /**
