@@ -107,7 +107,7 @@ final class FixCommand extends Command
                 array(
                     new InputArgument('path', InputArgument::OPTIONAL, 'The path', null),
                     new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no)', null),
-                    new InputOption('config', '', InputOption::VALUE_OPTIONAL, 'The path to a .php_cs file ', null),
+                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file ', null),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
                     new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'The rules', null),
                     new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no)', null),
