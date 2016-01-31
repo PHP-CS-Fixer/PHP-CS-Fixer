@@ -19,7 +19,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@mineuk.com>
  */
-final class PhpdocNoSimplifiedNullReturnFixer extends AbstractFixer
+final class PhpdocNoEmptyReturnFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

@@ -232,12 +232,12 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['phpdoc_order'], $fixers['phpdoc_separation']),
             array($fixers['phpdoc_no_access'], $fixers['phpdoc_separation']),
             array($fixers['phpdoc_no_access'], $fixers['phpdoc_order']),
-            array($fixers['phpdoc_no_simplified_null_return'], $fixers['phpdoc_separation']), // tested also in: phpdoc_no_simplified_null_return,phpdoc_separation.test
-            array($fixers['phpdoc_no_simplified_null_return'], $fixers['phpdoc_order']), // tested also in: phpdoc_no_simplified_null_return,phpdoc_separation.test
+            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_separation']), // tested also in: phpdoc_no_empty_return,phpdoc_separation.test
+            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_order']), // tested also in: phpdoc_no_empty_return,phpdoc_separation.test
             array($fixers['phpdoc_no_package'], $fixers['phpdoc_separation']), // tested also in: phpdoc_no_package,phpdoc_separation.test
             array($fixers['phpdoc_no_package'], $fixers['phpdoc_order']),
             array($fixers['phpdoc_no_access'], $fixers['phpdoc_trim']),
-            array($fixers['phpdoc_no_simplified_null_return'], $fixers['phpdoc_trim']),
+            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_no_package'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_separation'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_summary'], $fixers['phpdoc_trim']),

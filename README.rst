@@ -502,13 +502,13 @@ Choose from the list of available fixers:
                         @access annotations should be
                         omitted from phpdocs.
 
-* **phpdoc_no_package** [@Symfony]
-                        @package and @subpackage
+* **phpdoc_no_empty_return** [@Symfony]
+                        @return void and @return null
                         annotations should be omitted
                         from phpdocs.
 
-* **phpdoc_no_simplified_null_return** [@Symfony]
-                        @return void and @return null
+* **phpdoc_no_package** [@Symfony]
+                        @package and @subpackage
                         annotations should be omitted
                         from phpdocs.
 
