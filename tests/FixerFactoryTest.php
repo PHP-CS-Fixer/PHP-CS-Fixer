@@ -212,48 +212,48 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         }
 
         $cases = array(
-            array($fixers['no_unused_imports'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: no_unused_imports,no_extra_consecutive_blank_lines.test
-            array($fixers['single_import_per_statement'], $fixers['no_unused_imports']), // tested also in: single_import_per_statement,no_unused_imports.test
-            array($fixers['no_leading_import_slash'], $fixers['ordered_imports']), // tested also in: no_leading_import_slash,ordered_imports.test
-            array($fixers['no_blank_lines_between_uses'], $fixers['ordered_imports']),
-            array($fixers['no_unused_imports'], $fixers['no_leading_import_slash']),
-            array($fixers['single_import_per_statement'], $fixers['no_leading_import_slash']),
-            array($fixers['concat_without_spaces'], $fixers['concat_with_spaces']),
-            array($fixers['elseif'], $fixers['braces']),
-            array($fixers['no_duplicate_semicolons'], $fixers['braces']),
-            array($fixers['no_duplicate_semicolons'], $fixers['no_singleline_whitespace_before_semicolons']),
-            array($fixers['no_duplicate_semicolons'], $fixers['no_multiline_whitespace_before_semicolons']),
-            array($fixers['no_duplicate_semicolons'], $fixers['switch_case_semicolon_to_colon']),  // tested also in: no_duplicate_semicolons,switch_case_semicolon_to_colon.test
-            array($fixers['double_arrow_no_multiline_whitespace'], $fixers['trailing_comma_in_multiline_array']),
-            array($fixers['double_arrow_no_multiline_whitespace'], $fixers['align_double_arrow']), // tested also in: double_arrow_no_multiline_whitespace,align_double_arrow.test
             array($fixers['binary_operator_spaces'], $fixers['align_double_arrow']), // tested also in: align_double_arrow,binary_operator_spaces.test
             array($fixers['binary_operator_spaces'], $fixers['align_equals']), // tested also in: align_double_arrow,align_equals.test
+            array($fixers['class_definition'], $fixers['no_trailing_whitespace']), // tested also in: class_definition,no_trailing_whitespace.test
+            array($fixers['concat_without_spaces'], $fixers['concat_with_spaces']),
+            array($fixers['double_arrow_no_multiline_whitespace'], $fixers['align_double_arrow']), // tested also in: double_arrow_no_multiline_whitespace,align_double_arrow.test
+            array($fixers['double_arrow_no_multiline_whitespace'], $fixers['trailing_comma_in_multiline_array']),
+            array($fixers['elseif'], $fixers['braces']),
+            array($fixers['method_separation'], $fixers['braces']),
+            array($fixers['method_separation'], $fixers['no_tab_indentation']),
+            array($fixers['no_blank_lines_between_uses'], $fixers['ordered_imports']),
+            array($fixers['no_duplicate_semicolons'], $fixers['braces']),
+            array($fixers['no_duplicate_semicolons'], $fixers['no_multiline_whitespace_before_semicolons']),
+            array($fixers['no_duplicate_semicolons'], $fixers['no_singleline_whitespace_before_semicolons']),
+            array($fixers['no_duplicate_semicolons'], $fixers['switch_case_semicolon_to_colon']),  // tested also in: no_duplicate_semicolons,switch_case_semicolon_to_colon.test
+            array($fixers['no_leading_import_slash'], $fixers['ordered_imports']), // tested also in: no_leading_import_slash,ordered_imports.test
+            array($fixers['no_short_bool_cast'], $fixers['spaces_cast']), // tested also in: no_short_bool_cast,spaces_cast.test
+            array($fixers['no_short_echo_tag'], $fixers['echo_to_print']), // tested also in: echo_to_print,no_short_echo_tag.test
             array($fixers['no_tab_indentation'], $fixers['phpdoc_indent']),
-            array($fixers['phpdoc_order'], $fixers['phpdoc_separation']),
-            array($fixers['phpdoc_no_access'], $fixers['phpdoc_separation']),
+            array($fixers['no_unneeded_control_parentheses'], $fixers['no_trailing_whitespace']), // tested also in: no_trailing_whitespace,no_unneeded_control_parentheses.test
+            array($fixers['no_unused_imports'], $fixers['blank_line_after_namespace']), // tested also in: no_unused_imports,blank_line_after_namespace.test
+            array($fixers['no_unused_imports'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: no_unused_imports,no_extra_consecutive_blank_lines.test
+            array($fixers['no_unused_imports'], $fixers['no_leading_import_slash']),
+            array($fixers['php_unit_strict'], $fixers['php_unit_construct']),
             array($fixers['phpdoc_no_access'], $fixers['phpdoc_order']),
-            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_separation']), // tested also in: phpdoc_no_empty_return,phpdoc_separation.test
-            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_order']), // tested also in: phpdoc_no_empty_return,phpdoc_separation.test
-            array($fixers['phpdoc_no_package'], $fixers['phpdoc_separation']), // tested also in: phpdoc_no_package,phpdoc_separation.test
-            array($fixers['phpdoc_no_package'], $fixers['phpdoc_order']),
+            array($fixers['phpdoc_no_access'], $fixers['phpdoc_separation']),
             array($fixers['phpdoc_no_access'], $fixers['phpdoc_trim']),
+            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_order']), // tested also in: phpdoc_no_empty_return,phpdoc_separation.test
+            array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_separation']), // tested also in: phpdoc_no_empty_return,phpdoc_separation.test
             array($fixers['phpdoc_no_empty_return'], $fixers['phpdoc_trim']),
+            array($fixers['phpdoc_no_package'], $fixers['phpdoc_order']),
+            array($fixers['phpdoc_no_package'], $fixers['phpdoc_separation']), // tested also in: phpdoc_no_package,phpdoc_separation.test
             array($fixers['phpdoc_no_package'], $fixers['phpdoc_trim']),
+            array($fixers['phpdoc_order'], $fixers['phpdoc_separation']),
+            array($fixers['phpdoc_order'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_separation'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_summary'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_var_without_name'], $fixers['phpdoc_trim']),
-            array($fixers['phpdoc_order'], $fixers['phpdoc_trim']),
-            array($fixers['no_unused_imports'], $fixers['blank_line_after_namespace']), // tested also in: no_unused_imports,blank_line_after_namespace.test
-            array($fixers['unix_line_endings'], $fixers['single_blank_line_at_eof']),
-            array($fixers['php_unit_strict'], $fixers['php_unit_construct']),
+            array($fixers['single_import_per_statement'], $fixers['no_leading_import_slash']),
+            array($fixers['single_import_per_statement'], $fixers['no_unused_imports']), // tested also in: single_import_per_statement,no_unused_imports.test
             array($fixers['unary_operator_spaces'], $fixers['not_operator_with_space']),
             array($fixers['unary_operator_spaces'], $fixers['not_operator_with_successor_space']),
-            array($fixers['method_separation'], $fixers['braces']),
-            array($fixers['method_separation'], $fixers['no_tab_indentation']),
-            array($fixers['no_short_echo_tag'], $fixers['echo_to_print']), // tested also in: echo_to_print,no_short_echo_tag.test
-            array($fixers['no_short_bool_cast'], $fixers['spaces_cast']), // tested also in: no_short_bool_cast,spaces_cast.test
-            array($fixers['no_unneeded_control_parentheses'], $fixers['no_trailing_whitespace']), // tested also in: no_trailing_whitespace,no_unneeded_control_parentheses.test
-            array($fixers['class_definition'], $fixers['no_trailing_whitespace']), // tested also in: class_definition,no_trailing_whitespace.test
+            array($fixers['unix_line_endings'], $fixers['single_blank_line_at_eof']),
         );
 
         // prepare bulk tests for phpdoc fixers to test that:
