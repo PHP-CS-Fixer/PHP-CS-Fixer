@@ -15,6 +15,9 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 class ShortTagFixerTest extends AbstractFixerTestBase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function isLintException($source)
     {
         return in_array($source, array(

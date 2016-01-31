@@ -20,6 +20,9 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var LintManager
+     */
     protected static $linter;
 
     public static function setUpBeforeClass()
@@ -91,6 +94,8 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param $source string
+     *
      * @return string|null
      */
     protected function lintSource($source)
@@ -109,6 +114,11 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @param $source string
+     *
+     * @return bool
+     */
     protected function isLintException($source)
     {
         return false;

@@ -18,6 +18,9 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  */
 class UnaryOperatorsSpacesFixerTest extends AbstractFixerTestBase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function isLintException($source)
     {
         return in_array($source, array(
