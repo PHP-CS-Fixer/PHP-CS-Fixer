@@ -406,6 +406,11 @@ Choose from the list of available fixers:
                         lines between docblock and the
                         documented element.
 
+* **no_trailing_whitespace_in_comment** [symfony]
+                        There MUST be no trailing
+                        spaces inside comments and
+                        phpdocs.
+
 * **object_operator** [symfony]
                         There should not be space
                         before or after object
@@ -422,7 +427,7 @@ Choose from the list of available fixers:
                         subject.
 
 * **phpdoc_inline_tag** [symfony]
-                        Fix PHPDoc inline tags, make
+                        Fix phpdoc inline tags, make
                         inheritdoc always inline.
 
 * **phpdoc_no_access** [symfony]
