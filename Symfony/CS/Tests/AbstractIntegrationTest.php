@@ -231,7 +231,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
      */
     protected function lintSource($source)
     {
-        if (!getenv('LINT_TEST_CASES')) {
+        if (!isset(static::$linter)) {
             return;
         }
 
