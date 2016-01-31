@@ -34,9 +34,8 @@ class LowercaseConstantsFixer extends AbstractFixer
             }
 
             if (
-                $this->isNeighbourAccepted($tokens, $tokens->getPrevNonWhitespace($index))
-                &&
-                $this->isNeighbourAccepted($tokens, $tokens->getNextNonWhitespace($index))
+                $this->isNeighbourAccepted($tokens, $tokens->getPrevMeaningfulToken($index)) &&
+                $this->isNeighbourAccepted($tokens, $tokens->getNextMeaningfulToken($index))
             ) {
                 $token->setContent(strtolower($token->getContent()));
             }

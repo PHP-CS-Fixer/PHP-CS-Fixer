@@ -3,6 +3,17 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.11.1
+---------------------
+
+* minor #1653 Update license year (gharlan)
+* bug #1680 NewWithBracesFixer - End tags  (SpacePossum)
+* bug #1685 EmptyReturnFixer - Make independent of LowercaseConstantsFixer (SpacePossum)
+* bug #1640 IntegrationTest - fix directory separator (keradus)
+* bug #1595 ShortTagFixer - fix priority (keradus)
+* bug #1576 SpacesBeforeSemicolonFixer - do not remove space before semicolon if that space is after a semicolon (SpacePossum)
+* bug #1570 UnneededControlParenthesesFixer - fix test samples (keradus)
+
 Changelog for v1.11
 -------------------
 
