@@ -27,6 +27,8 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 
     public static function setUpBeforeClass()
     {
+        parent::setUpBeforeClass();
+
         $fixer = new NoUnneededControlParenthesesFixer();
         $controlStatementsProperty = new \ReflectionProperty($fixer, 'controlStatements');
         $controlStatementsProperty->setAccessible(true);
@@ -324,18 +326,26 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             ),
             array(
                 '<?php
-                case $x;
+                switch ($a) {
+                    case $x;
+                }
                 ',
                 '<?php
-                case($x);
+                switch ($a) {
+                    case($x);
+                }
                 ',
             ),
             array(
                 '<?php
-                case 2;
+                switch ($a) {
+                    case 2;
+                }
                 ',
                 '<?php
-                case(2);
+                switch ($a) {
+                    case(2);
+                }
                 ',
             ),
             array(

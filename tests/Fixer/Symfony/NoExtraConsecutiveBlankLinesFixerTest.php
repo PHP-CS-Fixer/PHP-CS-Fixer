@@ -397,15 +397,15 @@ EOF;
 
     public function testFixWithComments2()
     {
-        $input = "<?php\n\\\\a\n\n\n\n\$a =1;";
-        $expected = "<?php\n\\\\a\n\n\$a =1;";
+        $input = "<?php\n//a\n\n\n\n\$a =1;";
+        $expected = "<?php\n//a\n\n\$a =1;";
         $this->doTest($expected, $input);
     }
 
     public function testFixWithWindowsLineBreaks()
     {
-        $input = "<?php\r\n\\\\a\r\n\r\n\r\n\r\n\$a =1;";
-        $expected = "<?php\r\n\\\\a\n\n\$a =1;";
+        $input = "<?php\r\n//a\r\n\r\n\r\n\r\n\$a =1;";
+        $expected = "<?php\r\n//a\n\n\$a =1;";
         $this->doTest($expected, $input);
     }
 

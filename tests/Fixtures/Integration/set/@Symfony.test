@@ -2,6 +2,8 @@
 Integration of @Symfony.
 --CONFIG--
 {"@Symfony": true}
+--SETTINGS--
+checkPriority=false
 --EXPECT--
 <?php
 

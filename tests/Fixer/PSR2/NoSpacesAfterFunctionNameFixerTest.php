@@ -114,7 +114,7 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
                 ',
             ),
             array(
-                'class A {
+                '<?php class A {
                     function TisMy    ($p1)
                     {
                         print $p1;

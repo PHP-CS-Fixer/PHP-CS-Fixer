@@ -204,12 +204,12 @@ class SomeClass1
 
     /* E */
 
-    public function methodD()
+    public function methodE()
     {
     }
 
     /* F */
-    public function methodD()
+    public function methodF()
     {
     }
 }
@@ -240,12 +240,12 @@ class SomeClass1
 
     /* E */
 
-    public function methodD()
+    public function methodE()
     {
     }
 
     /* F */
-    public function methodD()
+    public function methodF()
     {
     }
 }
@@ -369,7 +369,7 @@ abstract class MethodTest2
     }
 }
 function test1(){ echo 1;}
-function test1(){ echo 2;}',
+function test2(){ echo 2;}',
             '<?php
 abstract class MethodTest2
 {
@@ -397,7 +397,7 @@ abstract class MethodTest2
     }
 }
 function test1(){ echo 1;}
-function test1(){ echo 2;}',
+function test2(){ echo 2;}',
         );
 
         $cases[] = array(

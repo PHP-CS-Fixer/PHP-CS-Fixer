@@ -93,10 +93,10 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
                         {
                             return 1;
                         }
-                    }
 
-                    function sqrT($a)
-                    {
+                        function sqrT($a)
+                        {
+                        }
                     }
                 ',
             ),

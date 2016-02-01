@@ -24,7 +24,19 @@ use PhpCsFixer\Utils;
  */
 abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Linter|null
+     */
+    protected static $linter;
+
     private $fixer;
+
+    public static function setUpBeforeClass()
+    {
+        if (getenv('LINT_TEST_CASES')) {
+            static::$linter = new Linter();
+        }
+    }
 
     /**
      * Create fixer factory with all needed fixers registered.
@@ -117,19 +129,12 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
             throw new \InvalidArgumentException('Input parameter must not be equal to expected parameter.');
         }
 
-        $linter = null;
-        if (getenv('LINT_TEST_CASES')) {
-            $linter = new Linter();
-        }
-
         $fixer = $fixer ?: $this->getFixer();
         $file = $file ?: $this->getTestFile();
         $fileIsSupported = $fixer->supports($file);
 
         if (null !== $input) {
-            if ($linter) {
-                $linter->lintSource($input);
-            }
+            $this->assertNull($this->lintSource($input));
 
             Tokens::clearCache();
             $tokens = Tokens::fromCode($input);
@@ -149,9 +154,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
             $this->assertTokens($expectedTokens, $tokens);
         }
 
-        if ($linter) {
-            $linter->lintSource($input);
-        }
+        $this->assertNull($this->lintSource($expected));
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode($expected);
@@ -163,6 +166,38 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
         $this->assertSame($expected, $tokens->generateCode(), 'Code build on expected code must not change.');
+    }
+
+    /**
+     * @param $source string
+     *
+     * @return string|null
+     */
+    protected function lintSource($source)
+    {
+        if (!isset(static::$linter)) {
+            return;
+        }
+
+        if ($this->isLintException($source)) {
+            return;
+        }
+
+        try {
+            static::$linter->lintSource($source);
+        } catch (\Exception $e) {
+            return $e->getMessage()."\n\nSource:\n$source";
+        }
+    }
+
+    /**
+     * @param $source string
+     *
+     * @return bool
+     */
+    protected function isLintException($source)
+    {
+        return false;
     }
 
     private function assertTokens(Tokens $expectedTokens, Tokens $inputTokens)

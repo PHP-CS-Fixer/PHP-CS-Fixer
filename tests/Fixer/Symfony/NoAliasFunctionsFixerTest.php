@@ -23,6 +23,14 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
 {
     /**
+     * {@inheritdoc}
+     */
+    public function isLintException($source)
+    {
+        return false !== strpos($source, '/*lintException*/');
+    }
+
+    /**
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
@@ -57,17 +65,18 @@ final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
                 '<?php
 class '.ucfirst($alias).'ing
 {
+    const '.$alias.' = 1;
+
     public function '.$alias.'($'.$alias.')
     {
-        if (!defined("'.$alias.'") || $'.$alias.' instanceof '.$alias.') {
-            const '.$alias.' = 1;
+        if (defined("'.$alias.'") || $'.$alias.' instanceof '.$alias.') {
+            echo '.$alias.';
         }
-        echo '.$alias.';
     }
 }
 
 class '.$alias.' extends '.ucfirst($alias).'ing{
-    const '.$alias.' = "'.$alias.'"
+    const '.$alias.' = "'.$alias.'";
 }
 ',
             );
@@ -82,12 +91,12 @@ class '.$alias.' extends '.ucfirst($alias).'ing{
                 "<?php \\$alias(\$a);",
             );
             $cases[] = array(
-                "<?php \$a = &$master(\$a);",
-                "<?php \$a = &$alias(\$a);",
+                "<?php /*lintException*/ \$ref = &$master(\$a);",
+                "<?php /*lintException*/ \$ref = &$alias(\$a);",
             );
             $cases[] = array(
-                "<?php \$a = &\\$master(\$a);",
-                "<?php \$a = &\\$alias(\$a);",
+                "<?php /*lintException*/ \$ref = &\\$master(\$a);",
+                "<?php /*lintException*/ \$ref = &\\$alias(\$a);",
             );
             $cases[] = array(
                 "<?php $master

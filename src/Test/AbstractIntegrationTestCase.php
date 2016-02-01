@@ -51,8 +51,17 @@ use Symfony\Component\Finder\Finder;
  */
 abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Linter|null
+     */
+    protected static $linter;
+
     public static function setUpBeforeClass()
     {
+        if (getenv('LINT_TEST_CASES')) {
+            static::$linter = new Linter();
+        }
+
         $tmpFile = static::getTempFile();
         if (!is_file($tmpFile)) {
             $dir = dirname($tmpFile);
@@ -153,10 +162,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 
         $input = $case->hasInputCode() ? $input : $expected;
 
-        if (getenv('LINT_TEST_CASES')) {
-            $linter = new Linter();
-            $linter->lintSource($input);
-        }
+        $this->assertNull($this->lintSource($input));
 
         $fixer = new Fixer();
         $tmpFile = static::getTempFile();
@@ -225,6 +231,38 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
                 ->setTitle($case->getTitle().' "--EXPECT-- part run"')
                 ->setInputCode(null)
         );
+    }
+
+    /**
+     * @param $source string
+     *
+     * @return string|null
+     */
+    protected function lintSource($source)
+    {
+        if (!isset(static::$linter)) {
+            return;
+        }
+
+        if ($this->isLintException($source)) {
+            return;
+        }
+
+        try {
+            static::$linter->lintSource($source);
+        } catch (\Exception $e) {
+            return $e->getMessage()."\n\nSource:\n$source";
+        }
+    }
+
+    /**
+     * @param $source string
+     *
+     * @return bool
+     */
+    protected function isLintException($source)
+    {
+        return false;
     }
 
     /**
