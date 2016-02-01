@@ -20,6 +20,17 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 class UnaryOperatorsSpacesFixerTest extends AbstractFixerTestBase
 {
     /**
+     * {@inheritdoc}
+     */
+    protected function isLintException($source)
+    {
+        return in_array($source, array(
+            '<?php foo(+ $a, - 2,- $b, & $c);',
+            '<?php foo(+$a, -2,-$b, &$c);',
+        ), true);
+    }
+
+    /**
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)

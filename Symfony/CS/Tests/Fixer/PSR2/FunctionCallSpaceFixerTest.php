@@ -112,7 +112,7 @@ class FunctionCallSpaceFixerTest extends AbstractFixerTestBase
                 ',
             ),
             array(
-                'class A {
+                '<?php class A {
                     function TisMy    ($p1)
                     {
                         print $p1;

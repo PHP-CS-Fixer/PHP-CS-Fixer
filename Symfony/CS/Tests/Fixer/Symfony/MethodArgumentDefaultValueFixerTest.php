@@ -147,11 +147,11 @@ EOT
                 '<?php function a($a = 1, \SplFileInfo ...$b) {}',
             ),
             array(
-                '<?php function ($a, $b = 1) use ($c) {}',
+                '<?php $fnc = function ($a, $b = 1) use ($c) {};',
             ),
             array(
-                '<?php function ($a, $b) use ($c) {}',
-                '<?php function ($a = 1, $b) use ($c) {}',
+                '<?php $fnc = function ($a, $b) use ($c) {};',
+                '<?php $fnc = function ($a = 1, $b) use ($c) {};',
             ),
         );
     }

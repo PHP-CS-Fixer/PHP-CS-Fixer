@@ -21,6 +21,18 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var LintManager
+     */
+    protected static $linter;
+
+    public static function setUpBeforeClass()
+    {
+        if (getenv('LINT_TEST_CASES')) {
+            static::$linter = new LintManager();
+        }
+    }
+
     protected function getFixer()
     {
         $name = 'Symfony\CS\Fixer'.substr(get_called_class(), strlen(__NAMESPACE__), -strlen('Test'));
@@ -60,20 +72,12 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
             throw new \InvalidArgumentException('Input parameter must not be equal to expected parameter.');
         }
 
-        $linter = null;
-        if (getenv('LINT_TEST_CASES')) {
-            $linter = new LintManager();
-        }
-
         $fixer = $fixer ?: $this->getFixer();
         $file = $file ?: $this->getTestFile();
         $fileIsSupported = $fixer->supports($file);
 
         if (null !== $input) {
-            if ($linter) {
-                $lintProcess = $linter->createProcessForSource($input);
-                $this->assertTrue($lintProcess->isSuccessful(), $lintProcess->getOutput());
-            }
+            $this->assertNull($this->lintSource($input));
 
             $fixedCode = $fileIsSupported ? $fixer->fix($file, $input) : $input;
 
@@ -85,12 +89,40 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
             $this->assertTokens($expectedTokens, $tokens);
         }
 
-        if ($linter) {
-            $lintProcess = $linter->createProcessForSource($expected);
-            $this->assertTrue($lintProcess->isSuccessful(), $lintProcess->getOutput());
-        }
+        $this->assertNull($this->lintSource($expected));
 
         $this->assertSame($expected, $fileIsSupported ? $fixer->fix($file, $expected) : $expected);
+    }
+
+    /**
+     * @param $source string
+     *
+     * @return string|null
+     */
+    protected function lintSource($source)
+    {
+        if (!isset(static::$linter)) {
+            return;
+        }
+
+        if ($this->isLintException($source)) {
+            return;
+        }
+
+        $lintProcess = static::$linter->createProcessForSource($source);
+        if (!$lintProcess->isSuccessful()) {
+            return $lintProcess->getOutput();
+        }
+    }
+
+    /**
+     * @param $source string
+     *
+     * @return bool
+     */
+    protected function isLintException($source)
+    {
+        return false;
     }
 
     private function assertTokens(Tokens $expectedTokens, Tokens $tokens)
