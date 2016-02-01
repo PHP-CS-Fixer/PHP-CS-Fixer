@@ -2,6 +2,8 @@
 PSR2 integration.
 --CONFIG--
 level=psr2
+--SETTINGS--
+checkPriority=false
 --EXPECT--
 <?php
 namespace Vendor\Package;
