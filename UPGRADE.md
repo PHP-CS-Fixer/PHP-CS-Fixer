@@ -34,6 +34,12 @@ CLI options
               | --rules       | Rules to be used            | option was added
               | --using-cache | Does cache should be used   | option was added
 
+CLI argument
+------------
+
+On 1.x line `path` argument allows you to specify the dir/file that will be fixed.
+On 2.x line `path` argument is a bit different. It is a mask for finder you are using (defined in your configuration file or default one). Only files pointed by both finder and CLI `path` argument will be fixed.
+
 Exit codes
 ----------
 

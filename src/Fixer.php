@@ -142,11 +142,12 @@ class Fixer
     {
         $new = $old = file_get_contents($file->getRealPath());
 
+        $pathname = $file->getPathname();
         $name = $this->getFileRelativePathname($file);
 
         if (
             '' === $old
-            || !$fileCacheManager->needFixing($name, $old)
+            || !$fileCacheManager->needFixing($pathname, $old)
             // PHP 5.3 has a broken implementation of token_get_all when the file uses __halt_compiler() starting in 5.3.6
             || (PHP_VERSION_ID >= 50306 && PHP_VERSION_ID < 50400 && false !== stripos($old, '__halt_compiler()'))
         ) {
@@ -244,7 +245,7 @@ class Fixer
             }
         }
 
-        $fileCacheManager->setFile($name, $new);
+        $fileCacheManager->setFile($pathname, $new);
 
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,

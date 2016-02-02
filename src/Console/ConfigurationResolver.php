@@ -14,11 +14,14 @@ namespace PhpCsFixer\Console;
 
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
+use PhpCsFixer\Finder;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder as SymfonyFinder;
+use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
 
 /**
  * The resolver that resolves configuration to use by command line options and config.
@@ -389,13 +392,59 @@ final class ConfigurationResolver
      */
     private function resolveConfigPath()
     {
-        if (is_file($this->path)) {
-            $this->config->finder(new \ArrayIterator(array(new \SplFileInfo($this->path))));
-        } elseif ($this->isStdIn) {
+        if ($this->isStdIn) {
             $this->config->finder(new \ArrayIterator(array(new StdinFileInfo())));
-        } elseif (null !== $this->path) {
-            $this->config->getFinder()->in($this->path);
+
+            return;
         }
+
+        if (null === $this->path) {
+            return;
+        }
+
+        // - when we already have a valid finder - create intersection iterator of current finder and provided path
+        // - when we don't have valid finder - prepare new iterator
+        $iterator = null;
+        $currentFinder = $this->config->getFinder();
+
+        try {
+            $currentIteratorItems = array_map(
+                function (\SplFileInfo $current) {
+                    return $current->getRealPath();
+                },
+                iterator_to_array($currentFinder, false)
+            );
+
+            $nestedIterator = is_file($this->path)
+                ? new \ArrayIterator(array(new SymfonySplFileInfo(
+                    $this->path,
+                    substr(dirname($this->path), strlen($this->cwd) + 1),
+                    substr($this->path, strlen($this->cwd) + 1)
+                )))
+                : Finder::create()->in($this->path)->getIterator()
+            ;
+
+            $iterator = new \CallbackFilterIterator(
+                $nestedIterator,
+                function (\SplFileInfo $current) use ($currentIteratorItems) {
+                    return in_array($current->getRealPath(), $currentIteratorItems, true);
+                }
+            );
+        } catch (\LogicException $e) {
+            if ($this->path) {
+                $iterator = new \ArrayIterator(array(new SymfonySplFileInfo(
+                    $this->path,
+                    substr(dirname($this->path), strlen($this->cwd) + 1),
+                    substr($this->path, strlen($this->cwd) + 1)
+                )));
+            } elseif ($currentFinder instanceof SymfonyFinder) {
+                $iterator = $currentFinder->in($this->path);
+            } else {
+                $iterator = Finder::create()->in($this->path);
+            }
+        }
+
+        $this->config->finder($iterator);
     }
 
     /**
