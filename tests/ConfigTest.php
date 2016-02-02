@@ -109,7 +109,7 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
     {
         $fixers = array(
             new \PhpCsFixer\Fixer\Symfony\NoWhitespaceBeforeCommaInArrayFixer(),
-            new \PhpCsFixer\Fixer\Symfony\IncludeFixer(),
+            new \PhpCsFixer\Fixer\ControlStructure\IncludeFixer(),
         );
 
         $cases = array(
