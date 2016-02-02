@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Symfony;
+namespace Symfony\CS\Fixer\PSR2;
 
 use Symfony\CS\AbstractAnnotationRemovalFixer;
 use Symfony\CS\Tokenizer\Tokens;

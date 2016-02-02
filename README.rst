@@ -266,6 +266,11 @@ Choose from the list of available fixers:
                         There MUST be one use keyword
                         per declaration.
 
+* **no_trailing_whitespace_in_comment** [PSR-2]
+                        There MUST be no trailing
+                        spaces inside comments and
+                        phpdocs.
+
 * **parenthesis** [PSR-2]
                         There MUST NOT be a space
                         after the opening parenthesis.
@@ -405,11 +410,6 @@ Choose from the list of available fixers:
                         There should not be blank
                         lines between docblock and the
                         documented element.
-
-* **no_trailing_whitespace_in_comment** [symfony]
-                        There MUST be no trailing
-                        spaces inside comments and
-                        phpdocs.
 
 * **object_operator** [symfony]
                         There should not be space
