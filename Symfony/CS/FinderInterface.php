@@ -15,7 +15,7 @@ namespace Symfony\CS;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface FinderInterface
+interface FinderInterface extends \Traversable
 {
     public function setDir($dir);
 }
