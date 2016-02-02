@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Fixer\Symfony;
+namespace PhpCsFixer\Tests\Fixer\PSR2;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
 

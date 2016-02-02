@@ -428,7 +428,7 @@ Choose from the list of available fixers:
                         Remove trailing whitespace at
                         the end of non-blank lines.
 
-* **no_trailing_whitespace_in_comment** [@Symfony]
+* **no_trailing_whitespace_in_comment** [@PSR2, @Symfony]
                         There MUST be no trailing
                         spaces inside comments and
                         phpdocs.
