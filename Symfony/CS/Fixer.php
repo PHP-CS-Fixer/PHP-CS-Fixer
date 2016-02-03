@@ -139,11 +139,10 @@ class Fixer
 
         $fileCacheManager = new FileCacheManager($config->usingCache(), $config->getDir(), $config->getFixers());
 
-        foreach ($config->getFinder() as $file) {
-            if ($file->isDir() || $file->isLink()) {
-                continue;
-            }
+        $finder = $config->getFinder();
+        $finderIterator = $finder instanceof \IteratorAggregate ? $finder->getIterator() : $finder;
 
+        foreach (new UniqueFileIterator($finderIterator) as $file) {
             if ($this->stopwatch) {
                 $this->stopwatch->start($this->getFileRelativePathname($file));
             }
