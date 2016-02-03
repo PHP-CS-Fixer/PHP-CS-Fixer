@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP CS Fixer.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
