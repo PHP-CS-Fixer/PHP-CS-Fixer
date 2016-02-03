@@ -15,13 +15,19 @@ install:
     - SET PATH=C:\tools\php;%PATH%
     - cd C:\tools\php
     - copy php.ini-production php.ini
+    - echo date.timezone="UTC" >> php.ini
+    - echo memory_limit=512M >> php.ini
+    - echo extension_dir=ext >> php.ini
+    - echo extension=php_curl.dll >> php.ini
+    - echo extension=php_openssl.dll >> php.ini
     - cd C:\tools
     - appveyor DownloadFile https://getcomposer.org/composer.phar
     - appveyor DownloadFile https://phar.phpunit.de/phpunit.phar
+    - git config --global github.accesstoken 5e7538aa415005c606ea68de2bbbade0409b4b8c
 
 before_test:
     - cd C:\projects\php-cs-fixer
-    - php C:\tools\composer.phar update --prefer-source --ansi --no-interaction --no-dev
+    - php C:\tools\composer.phar update --no-interaction
 
 test_script:
     - cd C:\projects\php-cs-fixer
