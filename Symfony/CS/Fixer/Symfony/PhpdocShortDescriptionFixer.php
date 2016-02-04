@@ -31,17 +31,53 @@ class PhpdocShortDescriptionFixer extends AbstractFixer
 
         foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
             $doc = new DocBlock($token->getContent());
-            $end = $this->findShortDescriptionEnd($doc->getLines());
+            $startAndEnd = $this->findShortDescriptionStartAndEnd($doc->getLines());
 
-            if (null !== $end) {
-                $line = $doc->getLine($end);
-                $content = rtrim($line->getContent());
+            if (null === $startAndEnd) {
+                continue;
+            }
 
-                if (!$this->isCorrectlyFormatted($content)) {
-                    $line->setContent($content.".\n");
-                    $token->setContent($doc->getContent());
+            $lastLine = $doc->getLine($startAndEnd[1]);
+            $content = rtrim($lastLine->getContent());
+
+            if (!$this->isEndOfShortDescriptionValid($content)) {
+                $lastLine->setContent($content.".\n");
+                $token->setContent($doc->getContent());
+            }
+
+            $firstLine = $doc->getLine($startAndEnd[0]);
+            $content = $firstLine->getContent();
+
+            $firstAsterisk = strpos($content, '*');
+            // find first non white space char
+            for ($i = $firstAsterisk + 1, $length = strlen($content); $i < $length; ++$i) {
+                if (' ' !== $content[$i] && "\t" !== $content[$i]) {
+                    break;
                 }
             }
+
+            // * [nw]
+            if (2 === $i - $firstAsterisk) {
+                if (' ' !== $content[$firstAsterisk + 1]) {
+                    $content[$firstAsterisk + 1] = ' ';
+                    $firstLine->setContent($content);
+                    $token->setContent($doc->getContent());
+                }
+
+                continue;
+            }
+
+            // *[nw]
+            if (1 === $i - $firstAsterisk) {
+                $firstLine->setContent(substr($content, 0, $firstAsterisk + 1).' '.substr($content, $firstAsterisk + 1));
+                $token->setContent($doc->getContent());
+                continue;
+            }
+
+            // *(2+)[nw]
+            $firstLine->setContent(substr($content, 0, $firstAsterisk + 1).' '.substr($content, $i));
+            $token->setContent($doc->getContent());
+            continue;
         }
 
         return $tokens->generateCode();
@@ -61,17 +97,18 @@ class PhpdocShortDescriptionFixer extends AbstractFixer
      *
      * @param Line[] $lines
      *
-     * @return int|null
+     * @return int[]|null Start and end index
      */
-    private function findShortDescriptionEnd(array $lines)
+    private function findShortDescriptionStartAndEnd(array $lines)
     {
         $reachedContent = false;
 
         foreach ($lines as $index => $line) {
+
             // we went past a description, then hit a tag or blank line, so
             // the last line of the description must be the one before this one
-            if ($reachedContent && ($line->containsATag() || !$line->containsUsefulContent())) {
-                return $index - 1;
+            if (false !== $reachedContent && ($line->containsATag() || !$line->containsUsefulContent())) {
+                return array($reachedContent, $index - 1);
             }
 
             // no short description was found
@@ -81,8 +118,8 @@ class PhpdocShortDescriptionFixer extends AbstractFixer
 
             // we've reached content, but need to check the next lines too
             // in case the short description is multi-line
-            if ($line->containsUsefulContent()) {
-                $reachedContent = true;
+            if (false === $reachedContent && $line->containsUsefulContent()) {
+                $reachedContent = $index;
             }
         }
     }
@@ -94,7 +131,7 @@ class PhpdocShortDescriptionFixer extends AbstractFixer
      *
      * @return bool
      */
-    private function isCorrectlyFormatted($content)
+    private function isEndOfShortDescriptionValid($content)
     {
         if (false !== strpos(strtolower($content), '{@inheritdoc}')) {
             return true;
