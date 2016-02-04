@@ -19,25 +19,66 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  */
 class PhpdocShortDescriptionFixerTest extends AbstractFixerTestBase
 {
-    public function testFix()
+    /**
+     * @dataProvider provideFixCases
+     */
+    public function testFix($expected, $input = null)
     {
-        $expected = <<<'EOF'
-<?php
-    /**
-     * Hello there.
-     */
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
-    /**
-     * Hello there
-     */
-
-EOF;
-
         $this->makeTest($expected, $input);
+    }
+
+    public function provideFixCases()
+    {
+        return array(
+            array(
+                '<?php
+                    /**
+                     * Hello there.
+                     */
+                ',
+                '<?php
+                    /**
+                     * Hello there
+                     */
+                ',
+            ),
+            array(
+                '<?php
+                    /**
+                     * Hello there 2.
+                     */
+                ',
+                '<?php
+                    /**
+                     *	Hello there 2
+                     */
+                ',
+            ),
+            array(
+                '<?php
+                    /**
+                     * Hello there 3.
+                     */
+                ',
+                '<?php
+                    /**
+                     *     Hello there 3
+                     */
+                ',
+            ),
+            array(
+                '<?php
+                    /**
+                     * {@inheritdoc}
+                     */
+                ',
+                '<?php
+                    /**
+                     *{@inheritdoc}
+                     */
+                ',
+            ),
+        );
     }
 
     public function testWithPeriod()
@@ -150,7 +191,7 @@ EOF;
         $input = <<<'EOF'
 <?php
     /**
-     * Hi
+     *      Hi
      *
      */
 
@@ -165,7 +206,7 @@ EOF;
 <?php
     /**
      * Hello
-     * there.
+     *    multi line here.
      */
 
 EOF;
@@ -174,7 +215,7 @@ EOF;
 <?php
     /**
      * Hello
-     * there
+     *    multi line here
      */
 
 EOF;
@@ -342,10 +383,25 @@ EOF;
     {
         $expected = <<<'EOF'
 <?php
+
+class A
+{
     /**
      * {@inheritdoc}
      */
+    public function A()
+    {
 
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function C()
+    {
+        // see example code @ https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md#61-making-inheritance-explicit-using-the-inheritdoc-tag
+    }
+}
 EOF;
 
         $this->makeTest($expected);
@@ -359,6 +415,15 @@ EOF;
      *
      */
 
+    /**
+    */
+
+    /***/
+
+    /**
+
+        Hello
+     */
 EOF;
 
         $this->makeTest($expected);
