@@ -10,15 +10,16 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Fixer\Symfony;
+namespace PhpCsFixer\Fixer\ArrayNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Adam Marczuk <adam@marczuk.info>
  */
-final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer
+final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -45,7 +46,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'In array declaration, there MUST NOT be a whitespace before each comma.';
+        return 'In array declaration, there MUST be a whitespace after each comma.';
     }
 
     /**
@@ -66,10 +67,8 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer
 
         for ($i = $endIndex - 1; $i > $startIndex; --$i) {
             $i = $this->skipNonArrayElements($i, $tokens);
-            $currentToken = $tokens[$i];
-            $prevIndex = $tokens->getPrevNonWhitespace($i - 1);
-            if ($currentToken->equals(',') && !$tokens[$prevIndex]->equals(array(T_END_HEREDOC))) {
-                $tokens->removeLeadingWhitespace($i);
+            if ($tokens[$i]->equals(',') && !$tokens[$i + 1]->isWhitespace()) {
+                $tokens->insertAt($i + 1, new Token(array(T_WHITESPACE, ' ')));
             }
         }
     }

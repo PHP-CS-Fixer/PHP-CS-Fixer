@@ -10,18 +10,17 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Fixer\Symfony;
+namespace PhpCsFixer\Fixer\ArrayNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
- * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-final class TrailingCommaInMultilineArrayFixer extends AbstractFixer
+final class NoTrailingCommaInSinglelineArrayFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -38,7 +37,7 @@ final class TrailingCommaInMultilineArrayFixer extends AbstractFixer
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+        for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {
             if ($tokensAnalyzer->isArray($index)) {
                 $this->fixArray($tokens, $index);
             }
@@ -50,14 +49,14 @@ final class TrailingCommaInMultilineArrayFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'PHP multi-line arrays should have a trailing comma.';
+        return 'PHP single-line arrays should not have trailing comma.';
     }
 
     private function fixArray(Tokens $tokens, $index)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        if (!$tokensAnalyzer->isArrayMultiLine($index)) {
+        if ($tokensAnalyzer->isArrayMultiLine($index)) {
             return;
         }
 
@@ -73,15 +72,9 @@ final class TrailingCommaInMultilineArrayFixer extends AbstractFixer
         $beforeEndIndex = $tokens->getPrevMeaningfulToken($endIndex);
         $beforeEndToken = $tokens[$beforeEndIndex];
 
-        // if there is some item between braces then add `,` after it
-        if ($startIndex !== $beforeEndIndex && !$beforeEndToken->equalsAny(array(',', array(T_END_HEREDOC)))) {
-            $tokens->insertAt($beforeEndIndex + 1, new Token(','));
-
-            $endToken = $tokens[$endIndex];
-
-            if (!$endToken->isComment() && !$endToken->isWhitespace()) {
-                $tokens->ensureWhitespaceAtIndex($endIndex, 1, ' ');
-            }
+        if ($beforeEndToken->equals(',')) {
+            $tokens->removeTrailingWhitespace($beforeEndIndex);
+            $beforeEndToken->clear();
         }
     }
 }
