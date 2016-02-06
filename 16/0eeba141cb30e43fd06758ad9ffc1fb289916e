@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-03T00:23:21Z
+
+cc @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-03T10:40:07Z
+
+Surely this is slower than the alternative I suggested?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-04T08:24:36Z
+
+It shouldn't. Please measure and show.
+We will need to do it that way on 2.x when we will have cachingIterator to lint files before fixing them, and we need to ommit some files before linting
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-06T14:57:29Z
+
+I tried to measure real impact this has on running the tool. The difference in measurement error rate
