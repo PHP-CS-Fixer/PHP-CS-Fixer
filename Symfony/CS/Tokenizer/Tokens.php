@@ -645,6 +645,29 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Get index for closest sibling token which is not empty.
+     *
+     * @param int $index     token index
+     * @param int $direction direction for looking, +1 or -1
+     *
+     * @return int|null
+     */
+    private function getNonEmptySibling($index, $direction)
+    {
+        while (true) {
+            $index += $direction;
+
+            if (!$this->offsetExists($index)) {
+                return;
+            }
+
+            if (!$this[$index]->isEmpty()) {
+                return $index;
+            }
+        }
+    }
+
+    /**
      * Get index for closest previous token which is non whitespace.
      *
      * This method is shorthand for getNonWhitespaceSibling method.
@@ -1414,35 +1437,25 @@ class Tokens extends \SplFixedArray
     {
         $count = count($this);
         $this[$index]->clear();
+
         if ($index === $count - 1) {
             return;
         }
 
-        // We are looking for the following sequence:
-        // [w][c](0..N)[index][c](0..N)[w]
-        // (note that the sequence can be prefixed and/or suffixed with  cleared tokens)
-        for ($till = $index + 1; $till < $count - 1; ++$till) {
-            if (!$this[$till]->isEmpty()) {
-                break;
-            }
-        }
+        $nextIndex = $this->getNonEmptySibling($index, 1);
 
-        if (!$this[$till]->isWhitespace() || $this[$till]->isEmpty()) {
+        if (null === $nextIndex || !$this[$nextIndex]->isWhitespace()) {
             return;
         }
 
-        for ($from = $index - 1; $from > 0; --$from) {
-            if (!$this[$from]->isEmpty()) {
-                break;
-            }
+        $prevIndex = $this->getNonEmptySibling($index, -1);
+
+        if ($this[$prevIndex]->isWhitespace()) {
+            $this[$prevIndex]->setContent($this[$prevIndex]->getContent().$this[$nextIndex]->getContent());
+        } elseif ($this[$prevIndex + 1]->isEmpty()) {
+            $this[$prevIndex + 1]->override(array(T_WHITESPACE, $this[$nextIndex]->getContent(), $this[$prevIndex + 1]->getLine()));
         }
 
-        if ($this[$from]->isWhitespace()) {
-            $this[$from]->setContent($this[$from]->getContent().$this[$till]->getContent());
-        } elseif ($this[$from + 1]->isEmpty()) {
-            $this[$from + 1]->override(array(T_WHITESPACE, $this[$till]->getContent(), $this[$from + 1]->getLine()));
-        }
-
-        $this[$till]->clear();
+        $this[$nextIndex]->clear();
     }
 }
