@@ -22,6 +22,8 @@ interface FixerInterface
     /**
      * Set configuration.
      *
+     * New configuration must override current one, not patch it.
+     *
      * Some fixers may have no configuration, then - simply pass null.
      * Other ones may have configuration that will change behavior of fixer,
      * eg `php_unit_strict` fixer allows to configure which methods should be fixed.

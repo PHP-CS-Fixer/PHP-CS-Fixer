@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Contrib;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -21,6 +22,13 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpUnitStrictFixer extends AbstractFixer
 {
     private $configuration = array(
+        'assertAttributeEquals',
+        'assertAttributeNotEquals',
+        'assertEquals',
+        'assertNotEquals',
+    );
+
+    private $assertionMap = array(
         'assertAttributeEquals' => 'assertAttributeSame',
         'assertAttributeNotEquals' => 'assertAttributeNotSame',
         'assertEquals' => 'assertSame',
@@ -36,11 +44,13 @@ final class PhpUnitStrictFixer extends AbstractFixer
             return;
         }
 
-        foreach (array_keys($this->configuration) as $method) {
-            if (!in_array($method, $usingMethods, true)) {
-                unset($this->configuration[$method]);
+        foreach ($usingMethods as $method) {
+            if (!array_key_exists($method, $this->assertionMap)) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Configured method "%s" cannot be fixed by this fixer.', $method));
             }
         }
+
+        $this->configuration = $usingMethods;
     }
 
     /**
@@ -64,7 +74,9 @@ final class PhpUnitStrictFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($this->configuration as $methodBefore => $methodAfter) {
+        foreach ($this->configuration as $methodBefore) {
+            $methodAfter = $this->assertionMap[$methodBefore];
+
             for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
                 $sequence = $tokens->findSequence(
                     array(

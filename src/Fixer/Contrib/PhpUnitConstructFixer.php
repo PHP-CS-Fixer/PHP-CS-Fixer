@@ -22,10 +22,10 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpUnitConstructFixer extends AbstractFixer
 {
     private $configuration = array(
-        'assertSame' => true,
-        'assertEquals' => true,
-        'assertNotEquals' => true,
-        'assertNotSame' => true,
+        'assertSame',
+        'assertEquals',
+        'assertNotEquals',
+        'assertNotSame',
     );
 
     private $assertionFixers = array(
@@ -44,13 +44,13 @@ final class PhpUnitConstructFixer extends AbstractFixer
             return;
         }
 
-        foreach ($usingMethods as $method => $fix) {
-            if (!array_key_exists($method, $this->configuration)) {
+        foreach ($usingMethods as $method) {
+            if (!array_key_exists($method, $this->assertionFixers)) {
                 throw new InvalidFixerConfigurationException($this->getName(), sprintf('Configured method "%s" cannot be fixed by this fixer.', $method));
             }
-
-            $this->configuration[$method] = $fix;
         }
+
+        $this->configuration = $usingMethods;
     }
 
     /**
@@ -75,15 +75,11 @@ final class PhpUnitConstructFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         // no assertions to be fixed - fast return
-        if (!in_array(true, $this->configuration, true)) {
+        if (empty($this->configuration)) {
             return;
         }
 
-        foreach ($this->configuration as $assertionMethod => $assertionShouldBeFixed) {
-            if (true !== $assertionShouldBeFixed) {
-                continue;
-            }
-
+        foreach ($this->configuration as $assertionMethod) {
             $assertionFixer = $this->assertionFixers[$assertionMethod];
 
             for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
