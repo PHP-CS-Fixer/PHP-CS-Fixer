@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Alias;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
 
@@ -41,11 +41,12 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 
     public function testConfigure()
     {
-        $this->getFixer()->configure(array('rand' => 'random_int'));
+        $config = array('rand' => 'random_int');
+        $this->getFixer()->configure($config);
 
         /** @var $replacements string[] */
-        $replacements = static::getStaticAttribute('\PhpCsFixer\Fixer\Contrib\RandomApiMigrationFixer', 'replacements');
-        static::assertSame($replacements['rand'], 'random_int');
+        $replacements = static::getObjectAttribute($this->getFixer(), 'configuration');
+        static::assertSame($config, $replacements);
     }
 
     /**
@@ -61,7 +62,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
      */
     public function provideCases()
     {
-        $cases = array(
+        return array(
             array('<?php $smth->srand($a);'),
             array('<?php srandSmth($a);'),
             array('<?php smth_srand($a);'),
@@ -81,17 +82,17 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
             '<?php
 class SrandClass
 {
-public function srand($srand)
-{
-    if (!defined("srand") || $srand instanceof srand) {
-        const srand = 1;
+    const srand = 1;
+    public function srand($srand)
+    {
+        if (!defined("srand") || $srand instanceof srand) {
+            echo srand;
+        }
     }
-    echo srand;
-}
 }
 
 class srand extends SrandClass{
-    const srand = "srand"
+    const srand = "srand";
 }
 ', ),
             array('<?php mt_srand($a);', '<?php srand($a);'),
@@ -99,14 +100,31 @@ class srand extends SrandClass{
             array('<?php $a = &mt_srand($a);', '<?php $a = &srand($a);'),
             array('<?php $a = &\\mt_srand($a);', '<?php $a = &\\srand($a);'),
             array('<?php /* foo */ mt_srand /** bar */ ($a);', '<?php /* foo */ srand /** bar */ ($a);'),
+            array('<?php a(mt_getrandmax ());', '<?php a(getrandmax ());'),
+            array('<?php a(mt_rand());', '<?php a(rand());'),
             array('<?php a(mt_srand());', '<?php a(srand());'),
             array('<?php a(\\mt_srand());', '<?php a(\\srand());'),
+        );
+    }
 
-            // test cases for overridden configuration
+    /**
+     * @dataProvider provideCasesForCustomConfiguration
+     */
+    public function testFixForCustomConfiguration($expected, $input = null)
+    {
+        $this->getFixer()->configure(array('rand' => 'random_int'));
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array[]
+     */
+    public function provideCasesForCustomConfiguration()
+    {
+        return array(
             array('<?php random_int(random_int($a));', '<?php rand(rand($a));'),
             array('<?php random_int(\Other\Scope\mt_rand($a));', '<?php rand(\Other\Scope\mt_rand($a));'),
         );
-
-        return $cases;
     }
 }

@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Fixer\Contrib;
+namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\Tokenizer\Token;

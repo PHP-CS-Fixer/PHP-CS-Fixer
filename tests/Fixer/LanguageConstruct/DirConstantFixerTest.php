@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
 

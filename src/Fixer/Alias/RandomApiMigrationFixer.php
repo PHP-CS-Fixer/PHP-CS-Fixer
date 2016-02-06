@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Fixer\Contrib;
+namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
@@ -24,30 +24,34 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
     /**
      * @var string[]
      */
-    private static $replacements = array(
+    private $configuration = array(
         'rand' => 'mt_rand',
         'srand' => 'mt_srand',
         'getrandmax' => 'mt_getrandmax',
     );
 
     /**
-     * @param string[]|null $customReplacements
+     * @param string[]|null $configuration
      */
-    public function configure(array $customReplacements = null)
+    public function configure(array $configuration = null)
     {
-        if (null !== $customReplacements) {
-            foreach ($customReplacements as $pattern => $replacement) {
-                if (!array_key_exists($pattern, self::$replacements)) {
-                    throw new InvalidFixerConfigurationException($this->getName(), sprintf('"%s" is not handled by the fixer.', $pattern));
-                }
+        static $validFunctions = array('rand', 'srand', 'getrandmax');
 
-                if (!is_string($replacement)) {
-                    throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected string got "%s".', is_object($replacement) ? get_class($replacement) : gettype($replacement)));
-                }
+        if (null === $configuration) {
+            return;
+        }
 
-                self::$replacements[$pattern] = $replacement;
+        foreach ($configuration as $pattern => $replacement) {
+            if (!in_array($pattern, $validFunctions, true)) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('"%s" is not handled by the fixer.', $pattern));
+            }
+
+            if (!is_string($replacement)) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected string got "%s".', is_object($replacement) ? get_class($replacement) : gettype($replacement)));
             }
         }
+
+        $this->configuration = $configuration;
     }
 
     /**
@@ -63,7 +67,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach (self::$replacements as $functionIdentity => $newName) {
+        foreach ($this->configuration as $functionIdentity => $newName) {
             $currIndex = 0;
             while (null !== $currIndex) {
                 // try getting function reference and translate boundaries for humans

@@ -79,10 +79,6 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
 
         // final step: find closing parenthesis
         $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
-        if (null === $closeParenthesis) {
-            // this sequence is not closed, try resuming
-            return $this->find($functionNameToSearch, $tokens, $openParenthesis, $end);
-        }
 
         return array($functionName, $openParenthesis, $closeParenthesis);
     }
@@ -109,6 +105,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
 
             // skip nested (), [], {} constructs
             $blockDefinitionProbe = Tokens::detectBlockType($token);
+
             if (null !== $blockDefinitionProbe && true === $blockDefinitionProbe['isStart']) {
                 $paramContentIndex = $tokens->findBlockEnd($blockDefinitionProbe['type'], $paramContentIndex);
                 continue;
