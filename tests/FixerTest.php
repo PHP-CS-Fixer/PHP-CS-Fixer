@@ -142,7 +142,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
         $config
             ->expects($this->any())
             ->method('getFinder')
-            ->willReturn(array())
+            ->willReturn(new \ArrayIterator(array()))
         ;
 
         $fixer = new Fixer();

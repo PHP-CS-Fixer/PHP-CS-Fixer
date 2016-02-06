@@ -131,7 +131,10 @@ class Fixer
             $config->getRules()
         );
 
-        foreach ($config->getFinder() as $file) {
+        $finder = $config->getFinder();
+        $finderIterator = $finder instanceof \IteratorAggregate ? $finder->getIterator() : $finder;
+
+        foreach (new UniqueFileIterator($finderIterator) as $file) {
             if ($file->isDir() || $file->isLink()) {
                 continue;
             }
