@@ -30,7 +30,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
     {
         /** @var $fixer PhpUnitConstructFixer */
         $fixer = $this->getFixer();
-        $fixer->configure(array('MyTest' => 'test'));
+        $fixer->configure(array('MyTest'));
     }
 
     /**
@@ -41,31 +41,18 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         $fixer = $this->getFixer();
 
         $fixer->configure(array(
-            'assertEquals' => true,
-            'assertSame' => true,
-            'assertNotEquals' => true,
-            'assertNotSame' => true,
+            'assertEquals',
+            'assertSame',
+            'assertNotEquals',
+            'assertNotSame',
         ));
         $this->doTest($expected, $input, null, $fixer);
 
-        $fixer->configure(array(
-            'assertEquals' => false,
-            'assertSame' => false,
-            'assertNotEquals' => false,
-            'assertNotSame' => false,
-        ));
+        $fixer->configure(array());
         $this->doTest($input ?: $expected, null, null, $fixer);
 
         foreach (array('assertSame', 'assertEquals', 'assertNotEquals', 'assertNotSame') as $method) {
-            $config = array(
-                'assertEquals' => false,
-                'assertSame' => false,
-                'assertNotEquals' => false,
-                'assertNotSame' => false,
-            );
-            $config[$method] = true;
-
-            $fixer->configure($config);
+            $fixer->configure(array($method));
             $this->doTest(
                 $expected,
                 $input && false !== strpos($input, $method) ? $input : null,
@@ -120,7 +107,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
     {
         /** @var PhpUnitConstructFixer $fixer */
         $fixer = $this->getFixer();
-        $fixer->configure(array('__TEST__' => 'abc'));
+        $fixer->configure(array('__TEST__'));
     }
 
     private function generateCases($expectedTemplate, $inputTemplate)

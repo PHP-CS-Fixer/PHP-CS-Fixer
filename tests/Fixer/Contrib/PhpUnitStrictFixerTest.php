@@ -32,7 +32,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
 
     public function provideTestFixCases()
     {
-        $methodsMap = AccessibleObject::create($this->getFixer())->configuration;
+        $methodsMap = AccessibleObject::create($this->getFixer())->assertionMap;
 
         $cases = array(
             array('<?php $self->foo();'),
