@@ -1,0 +1,213 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-25T07:51:11Z
+
+Diff. of Fixer behavior is minimal, biggest change is the clear and merge logic added to Tokens.
+This change will great an option to start finishing some other PRs.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-06T16:55:38Z
+
+Please, fix Travis
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-06T17:24:15Z
+
+3 comments, all the rest look OK for me
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-06T17:53:35Z
+
+Needs squashing to 1 commits per author.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-06T18:06:40Z
+
+:+1: (after squashing)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-06T18:15:17Z
+
+>(after squashing)
+
+squashed to 1 commit by author, is this ok?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-06T18:23:36Z
+
+Please fix your commit log to sth more meaningful ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-07T10:18:39Z
+
+ping @SpacePossum
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-07T11:49:04Z
+
+```
+git checkout 538dd8d
+git pick --no-commit d999763
+git commit --amend -m "Added UselessReturnFixer"
+git pick c84039ba4d4a20389099666dcc2a0315fa8dec9e
+git push origin 1_12_clear_tokens -f
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-07T12:09:59Z
+
+thanks for hints, I did a little detour but I think this should be OK-ish now
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-07T13:31:05Z
+
+btw, just a thought, what about `no_useless_return` ? as in fact we are removing the statement ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-07T13:40:04Z
+
+>no_useless_return
+
+:+1: will rename and do the squashing thing again later today or maybe tomorrow morning.
+@ all let me know if there are other things to be fixed in this PR as well :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-07T17:25:30Z
+
+?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-07T17:27:15Z
+
+github auto closes the PR if I reset the branch back to 0 commits, than force push. After that I do the picking and merging and have to re-open the PR by hand. Not sure how to prevent this :/
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-07T17:28:00Z
+
+don't push before picking.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-07T17:30:40Z
+
+You need to regenerate readme
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-07T17:33:21Z
+
+d'oh, no time for the squashing, will do later tonight
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-07T17:41:24Z
+
+I am still wondering how you squash... a lot of time and PR closing/opening.
+It's just few commands ([eg](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1705#issuecomment-181000024))
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-07T18:38:31Z
+
+on the branch, no changes (of interest)
+- git reset HEAD~3
+- rm Symfony -rf
+- git reset --hard
+- git cherry-pick [fist commit]
+- git cherry-pick --no-commit [3rd commit]
+- git pick 2nd commit (yours)
+error: Your local changes would be overwritten by cherry-pick.
+- git reset README..
+- git co READ..
+- git chery-pick [again]
+- git push -f origin
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-07T18:39:50Z
+
+and readme is wrong again...
+to be honest, this PR feels out of my league with git magic, so how about I just squash the readme fix commit into your commit and we are all set?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-07T18:56:23Z
+
+@SpacePossum , just copy-execute:
+```bash
+D:\GIT\fork\PHP-CS-Fixer (2.x-async_linting)
+λ git checkout 9656a82af22011ada04629618c82e96d3e902f02
+Note: checking out '9656a82af22011ada04629618c82e96d3e902f02'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b new_branch_name
+
+HEAD is now at 9656a82... Added NoUselessReturnFixer
+
+D:\GIT\fork\PHP-CS-Fixer ((detached from 9656a82))
+λ git cherry-pick --no-commit cdfe52d18e87e1466054fd154f98f546270a3c6f
+
+D:\GIT\fork\PHP-CS-Fixer ((detached from 9656a82))
+λ git commit --amend --no-edit
+[detached HEAD 9e4d4e3] Added NoUselessReturnFixer
+ Author: Possum <possumfromspace@gmail.com>
+ 19 files changed, 684 insertions(+), 20 deletions(-)
+ create mode 100644 Symfony/CS/Fixer/Contrib/NoUselessReturnFixer.php
+ create mode 100644 Symfony/CS/Tests/Fixer/Contrib/NoUselessReturnFixerTest.php
+ create mode 100644 Symfony/CS/Tests/Fixtures/Integration/misc/empty_return,useless_return,whitespacy_lines,extra_empty_lines.test
+ create mode 100644 Symfony/CS/Tests/Fixtures/Integration/priority/duplicate_semicolon,no_useless_return.test
+ create mode 100644 Symfony/CS/Tests/Fixtures/Integration/priority/empty_return,no_useless_return.test
+ create mode 100644 Symfony/CS/Tests/Fixtures/Integration/priority/no_useless_return,extra_empty_lines.test
+ create mode 100644 Symfony/CS/Tests/Fixtures/Integration/priority/no_useless_return,return.test
+ create mode 100644 Symfony/CS/Tests/Fixtures/Integration/priority/no_useless_return,whitespacy_lines.test
+
+D:\GIT\fork\PHP-CS-Fixer ((detached from 9656a82))
+λ git cherry-pick 349f754215b201ab505d20e2ed86f46dcbf7ca0d
+[detached HEAD bb4bc6b] Tokens::clearTokenAndMergeSurroundingWhitespace - code grooming
+ 4 files changed, 36 insertions(+), 41 deletions(-)
+
+D:\GIT\fork\PHP-CS-Fixer ((detached from 9656a82))
+λ git branch -D 1_12_clear_tokens
+error: branch '1_12_clear_tokens' not found.
+
+D:\GIT\fork\PHP-CS-Fixer ((detached from 9656a82))
+λ git checkout -b 1_12_clear_tokens
+Switched to a new branch '1_12_clear_tokens'
+
+D:\GIT\fork\PHP-CS-Fixer (1_12_clear_tokens)
+λ git push origin 1_12_clear_tokens -f
+Counting objects: 229, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (49/49), done.
+Writing objects: 100% (51/51), 9.62 KiB | 0 bytes/s, done.
+Total 51 (delta 41), reused 0 (delta 0)
+To git@github.com:keradus/PHP-CS-Fixer.git
+ * .......     1_12_clear_tokens -> 1_12_clear_tokens (forced update)
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-07T19:36:48Z
+
+thanks so much @keradus !
+all done, lets see what travis and co. think :)
