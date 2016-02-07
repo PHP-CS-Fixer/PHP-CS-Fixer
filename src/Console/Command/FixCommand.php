@@ -312,7 +312,6 @@ EOF
         $resolver
             ->setCwd(getcwd())
             ->setDefaultConfig($this->defaultConfig)
-            ->setFixer($this->fixer)
             ->setOptions(array(
                 'allow-risky' => $input->getOption('allow-risky'),
                 'config' => $input->getOption('config'),

@@ -33,8 +33,6 @@ class Fixer
 {
     const VERSION = '2.0-DEV';
 
-    protected $configs = array();
-
     /**
      * Differ instance.
      *
@@ -76,17 +74,6 @@ class Fixer
         $this->errorsManager = new ErrorsManager();
         $this->linter = new NullLinter();
         $this->stopwatch = new Stopwatch();
-        $this->addConfig(new Config());
-    }
-
-    public function addConfig(ConfigInterface $config)
-    {
-        $this->configs[] = $config;
-    }
-
-    public function getConfigs()
-    {
-        return $this->configs;
     }
 
     /**
@@ -135,10 +122,6 @@ class Fixer
         $finderIterator = $finder instanceof \IteratorAggregate ? $finder->getIterator() : $finder;
 
         foreach (new UniqueFileIterator($finderIterator) as $file) {
-            if ($file->isDir() || $file->isLink()) {
-                continue;
-            }
-
             $name = $this->getFileRelativePathname($file);
 
             $this->stopwatch->start($name);

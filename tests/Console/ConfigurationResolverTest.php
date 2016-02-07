@@ -36,7 +36,6 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->resolver = new ConfigurationResolver();
         $this->resolver
             ->setDefaultConfig($this->config)
-            ->setFixer($fixer)
         ;
     }
 

@@ -25,28 +25,6 @@ use PhpCsFixer\Linter\Linter;
 final class FixerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers PhpCsFixer\Fixer::addConfig
-     * @covers PhpCsFixer\Fixer::getConfigs
-     */
-    public function testThatCanAddAndGetConfigs()
-    {
-        $fixer = new Fixer();
-
-        $configs = $fixer->getConfigs();
-
-        $c1 = $this->getMock('PhpCsFixer\ConfigInterface');
-        $c2 = $this->getMock('PhpCsFixer\ConfigInterface');
-
-        $fixer->addConfig($c1);
-        $fixer->addConfig($c2);
-
-        $configs[] = $c1;
-        $configs[] = $c2;
-
-        $this->assertSame($configs, $fixer->getConfigs());
-    }
-
-    /**
      * @covers PhpCsFixer\Fixer::fix
      * @covers PhpCsFixer\Fixer::fixFile
      */
