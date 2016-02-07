@@ -206,7 +206,7 @@ class Tokens extends \SplFixedArray
     private static function getCache($key)
     {
         if (!self::hasCache($key)) {
-            throw new \OutOfBoundsException(sprintf('Unknown cache key: "%s"', $key));
+            throw new \OutOfBoundsException(sprintf('Unknown cache key: "%s".', $key));
         }
 
         return self::$cache[$key];
@@ -345,7 +345,7 @@ class Tokens extends \SplFixedArray
         $blockEdgeDefinitions = self::getBlockEdgeDefinitions();
 
         if (!isset($blockEdgeDefinitions[$type])) {
-            throw new \InvalidArgumentException(sprintf('Invalid param type: %s', $type));
+            throw new \InvalidArgumentException(sprintf('Invalid param type: %s.', $type));
         }
 
         $startEdge = $blockEdgeDefinitions[$type]['start'];
@@ -361,7 +361,7 @@ class Tokens extends \SplFixedArray
         }
 
         if (!$this[$startIndex]->equals($startEdge)) {
-            throw new \InvalidArgumentException('Invalid param $startIndex - not a proper block start');
+            throw new \InvalidArgumentException(sprintf('Invalid param $startIndex - not a proper block %s.', $findEnd ? 'start' : 'end'));
         }
 
         $blockLevel = 0;
@@ -387,7 +387,7 @@ class Tokens extends \SplFixedArray
         }
 
         if (!$this[$index]->equals($endEdge)) {
-            throw new \UnexpectedValueException('Missing block end');
+            throw new \UnexpectedValueException(sprintf('Missing block %s.', $findEnd ? 'end' : 'start'));
         }
 
         return $index;
@@ -645,6 +645,29 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Get index for closest sibling token which is not empty.
+     *
+     * @param int $index     token index
+     * @param int $direction direction for looking, +1 or -1
+     *
+     * @return int|null
+     */
+    private function getNonEmptySibling($index, $direction)
+    {
+        while (true) {
+            $index += $direction;
+
+            if (!$this->offsetExists($index)) {
+                return;
+            }
+
+            if (!$this[$index]->isEmpty()) {
+                return $index;
+            }
+        }
+    }
+
+    /**
      * Get index for closest previous token which is non whitespace.
      *
      * This method is shorthand for getNonWhitespaceSibling method.
@@ -798,7 +821,7 @@ class Tokens extends \SplFixedArray
         }
 
         if (!count($sequence)) {
-            throw new \InvalidArgumentException('Invalid sequence');
+            throw new \InvalidArgumentException('Invalid sequence.');
         }
 
         // make sure the sequence content is "meaningful"
@@ -813,7 +836,7 @@ class Tokens extends \SplFixedArray
                 $token = new Token($token);
             }
             if ($token->isWhitespace() || $token->isComment() || $token->isEmpty()) {
-                throw new \InvalidArgumentException(sprintf('Non-meaningful token at position: %s', $key));
+                throw new \InvalidArgumentException(sprintf('Non-meaningful token at position: %s.', $key));
             }
         }
 
@@ -913,7 +936,7 @@ class Tokens extends \SplFixedArray
     public function isArrayMultiLine($index)
     {
         if (!$this->isArray($index)) {
-            throw new \InvalidArgumentException('Not an array at given index');
+            throw new \InvalidArgumentException(sprintf('Not an array at given index "%d".', $index));
         }
 
         // Skip only when its an array, for short arrays we need the brace for correct
@@ -960,7 +983,7 @@ class Tokens extends \SplFixedArray
         $token = $this[$index];
 
         if (!$token->isGivenKind(T_FUNCTION)) {
-            throw new \LogicException('No T_FUNCTION at given index');
+            throw new \LogicException(sprintf('No T_FUNCTION at given index "%d".', $index));
         }
 
         $nextIndex = $this->getNextMeaningfulToken($index);
@@ -1403,5 +1426,36 @@ class Tokens extends \SplFixedArray
         }
 
         return 0 === count($kinds[T_INLINE_HTML]) + count($hhvmHashBangs) && 1 === count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO]) + count($hhvmOpenTagsWithEcho);
+    }
+
+    /**
+     * Clear token and merge surrounding whitespace tokens.
+     *
+     * @param int $index
+     */
+    public function clearTokenAndMergeSurroundingWhitespace($index)
+    {
+        $count = count($this);
+        $this[$index]->clear();
+
+        if ($index === $count - 1) {
+            return;
+        }
+
+        $nextIndex = $this->getNonEmptySibling($index, 1);
+
+        if (null === $nextIndex || !$this[$nextIndex]->isWhitespace()) {
+            return;
+        }
+
+        $prevIndex = $this->getNonEmptySibling($index, -1);
+
+        if ($this[$prevIndex]->isWhitespace()) {
+            $this[$prevIndex]->setContent($this[$prevIndex]->getContent().$this[$nextIndex]->getContent());
+        } elseif ($this[$prevIndex + 1]->isEmpty()) {
+            $this[$prevIndex + 1]->override(array(T_WHITESPACE, $this[$nextIndex]->getContent(), $this[$prevIndex + 1]->getLine()));
+        }
+
+        $this[$nextIndex]->clear();
     }
 }

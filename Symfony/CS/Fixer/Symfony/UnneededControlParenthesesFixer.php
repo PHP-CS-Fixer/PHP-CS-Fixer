@@ -97,13 +97,13 @@ final class UnneededControlParenthesesFixer extends AbstractFixer
                 }
 
                 if ($tokens[$blockStartIndex - 1]->isWhitespace() || $tokens[$blockStartIndex - 1]->isComment()) {
-                    $this->clearParenthesis($tokens, $blockStartIndex);
+                    $tokens->clearTokenAndMergeSurroundingWhitespace($blockStartIndex);
                 } else {
                     // Adds a space to prevent broken code like `return2`.
                     $tokens->overrideAt($blockStartIndex, array(T_WHITESPACE, ' '));
                 }
 
-                $this->clearParenthesis($tokens, $blockEndIndex);
+                $tokens->clearTokenAndMergeSurroundingWhitespace($blockEndIndex);
             }
         }
 
@@ -126,23 +126,5 @@ final class UnneededControlParenthesesFixer extends AbstractFixer
     public function getPriority()
     {
         return 30;
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $index
-     */
-    private function clearParenthesis(Tokens $tokens, $index)
-    {
-        $tokens[$index]->clear();
-
-        if (
-            isset($tokens[$index - 1], $tokens[$index + 1]) &&
-            $tokens[$index - 1]->isWhitespace() &&
-            $tokens[$index + 1]->isWhitespace()
-        ) {
-            $tokens[$index - 1]->setContent($tokens[$index - 1]->getContent().$tokens[$index + 1]->getContent());
-            $tokens[$index + 1]->clear();
-        }
     }
 }

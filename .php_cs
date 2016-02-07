@@ -22,6 +22,7 @@ return Symfony\CS\Config::create()
         'php_unit_strict',
         'strict',
         'strict_param',
+        'no_useless_return',
     ))
     ->finder(
         Symfony\CS\Finder::create()
