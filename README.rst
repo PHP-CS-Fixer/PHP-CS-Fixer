@@ -447,6 +447,11 @@ Choose from the list of available fixers:
                         Unused use statements must be
                         removed.
 
+* **no_useless_return**
+                        There should not be an empty
+                        return statement at the end of
+                        a function.
+
 * **no_whitespace_before_comma_in_array** [@Symfony]
                         In array declaration, there
                         MUST NOT be a whitespace

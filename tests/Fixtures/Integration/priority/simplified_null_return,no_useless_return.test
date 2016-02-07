@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: simplified_null_return,no_useless_return,
+--CONFIG--
+{"simplified_null_return": true, "no_useless_return": true}
+--EXPECT--
+<?php
+class Test {
+    private static function a($a) {
+        //
+    }
+}
+
+--INPUT--
+<?php
+class Test {
+    private static function a($a) {
+        return null;//
+    }
+}

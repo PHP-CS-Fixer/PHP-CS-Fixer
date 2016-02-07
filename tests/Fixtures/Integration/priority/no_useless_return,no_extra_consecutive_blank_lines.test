@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: no_useless_return,no_extra_consecutive_blank_lines.
+--CONFIG--
+{"no_useless_return": true, "no_extra_consecutive_blank_lines": true}
+--EXPECT--
+<?php
+class Test {
+    private static function a($a) {
+        $a = 1;
+
+    }
+}
+
+--INPUT--
+<?php
+class Test {
+    private static function a($a) {
+        $a = 1;
+
+return;
+    }
+}

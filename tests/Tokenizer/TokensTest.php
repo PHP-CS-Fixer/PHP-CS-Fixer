@@ -261,14 +261,14 @@ final class TokensTest extends \PHPUnit_Framework_TestCase
         $emptyToken->clear();
 
         return array(
-            array('Invalid sequence', array()),
-            array('Non-meaningful token at position: 0', array(
+            array('Invalid sequence.', array()),
+            array('Non-meaningful token at position: 0.', array(
                 array(T_WHITESPACE, '   '),
             )),
-            array('Non-meaningful token at position: 1', array(
+            array('Non-meaningful token at position: 1.', array(
                 '{', array(T_COMMENT, '// Foo'), '}',
             )),
-            array('Non-meaningful token at position: 2', array(
+            array('Non-meaningful token at position: 2.', array(
                 '{', '!', $emptyToken, '}',
             )),
         );
@@ -488,5 +488,134 @@ PHP;
         $this->assertCount(0, $found[T_CLASS]);
         $this->assertCount(1, $found[T_FUNCTION]);
         $this->assertArrayHasKey(9, $found[T_FUNCTION]);
+    }
+
+    /**
+     * @param string  $source
+     * @param Token[] $expected tokens
+     * @param int[]   $indexes  to clear
+     *
+     * @dataProvider getClearTokenAndMergeSurroundingWhitespaceCases
+     */
+    public function testClearTokenAndMergeSurroundingWhitespace($source, array $indexes, array $expected)
+    {
+        $this->doTestClearTokens($source, $indexes, $expected);
+        if (count($indexes) > 1) {
+            $this->doTestClearTokens($source, array_reverse($indexes), $expected);
+        }
+    }
+
+    public function getClearTokenAndMergeSurroundingWhitespaceCases()
+    {
+        $clearToken = new Token(array(null, ''));
+        $clearToken->clear();
+
+        return array(
+            array(
+                '<?php if($a){}else{}',
+                array(7, 8, 9),
+                array(
+                    new Token(array(T_OPEN_TAG, '<?php ')),
+                    new Token(array(T_IF, 'if')),
+                    new Token('('),
+                    new Token(array(T_VARIABLE, '$a')),
+                    new Token(')'),
+                    new Token('{'),
+                    new Token('}'),
+                    $clearToken,
+                    $clearToken,
+                    $clearToken,
+                ),
+            ),
+            array(
+                '<?php $a;/**/;',
+                array(2),
+                array(
+                    // <?php $a /**/;
+                    new Token(array(T_OPEN_TAG, '<?php ')),
+                    new Token(array(T_VARIABLE, '$a')),
+                    $clearToken,
+                    new Token(array(T_COMMENT, '/**/')),
+                    new Token(';'),
+                ),
+            ),
+            array(
+                '<?php ; ; ;',
+                array(3),
+                array(
+                    // <?php ;  ;
+                    new Token(array(T_OPEN_TAG, '<?php ')),
+                    new Token(';'),
+                    new Token(array(T_WHITESPACE, '  ')),
+                    $clearToken,
+                    $clearToken,
+                    new Token(';'),
+                ),
+            ),
+            array(
+                '<?php ; ; ;',
+                array(1, 5),
+                array(
+                    // <?php  ;
+                    new Token(array(T_OPEN_TAG, '<?php ')),
+                    new Token(array(T_WHITESPACE, ' ')),
+                    $clearToken,
+                    new Token(';'),
+                    new Token(array(T_WHITESPACE, ' ')),
+                    $clearToken,
+                ),
+            ),
+            array(
+                '<?php ; ; ;',
+                array(1, 3),
+                array(
+                    // <?php   ;
+                    new Token(array(T_OPEN_TAG, '<?php ')),
+                    new Token(array(T_WHITESPACE, '  ')),
+                    $clearToken,
+                    $clearToken,
+                    $clearToken,
+                    new Token(';'),
+                ),
+            ),
+            array(
+                '<?php ; ; ;',
+                array(1),
+                array(
+                    // <?php  ; ;
+                    new Token(array(T_OPEN_TAG, '<?php ')),
+                    new Token(array(T_WHITESPACE, ' ')),
+                    $clearToken,
+                    new Token(';'),
+                    new Token(array(T_WHITESPACE, ' ')),
+                    new Token(';'),
+                ),
+            ),
+        );
+    }
+
+    /**
+     * @param string  $source
+     * @param int[]   $indexes
+     * @param Token[] $expected
+     */
+    private function doTestClearTokens($source, array $indexes, array $expected)
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($source);
+        foreach ($indexes as $index) {
+            $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+        }
+
+        $this->assertSame(count($expected), $tokens->count());
+        foreach ($expected as $index => $expectedToken) {
+            $token = $tokens[$index];
+            $expectedPrototype = $expectedToken->getPrototype();
+            if (is_array($expectedPrototype)) {
+                unset($expectedPrototype[2]); // don't compare token lines as our token mutations don't deal with line numbers
+            }
+
+            $this->assertTrue($token->equals($expectedPrototype), sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype), $token->toJson()));
+        }
     }
 }

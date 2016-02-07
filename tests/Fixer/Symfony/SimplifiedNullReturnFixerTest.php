@@ -33,7 +33,6 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
     {
         return array(
             // check correct statements aren't changed
-            array('<?php return;'),
             array('<?php return  ;'),
             array('<?php return \'null\';'),
             array('<?php return false;'),
@@ -42,11 +41,11 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
             array('<?php return array() == null ;'),
 
             // check we modified those that can be changed
-            array('<?php return;', '<?php return'.' null;'),
-            array('<?php return;', '<?php return'.' (null);'),
-            array('<?php return;', '<?php return'.' ( null    );'),
-            array('<?php return;', '<?php return'.' ( (( null)));'),
-            array('<?php return /* hello */;', '<?php return /* hello */'.' null  ;'),
+            array('<?php return;', '<?php return null;'),
+            array('<?php return;', '<?php return (null);'),
+            array('<?php return;', '<?php return ( null    );'),
+            array('<?php return;', '<?php return ( (( null)));'),
+            array('<?php return /* hello */;', '<?php return /* hello */ null  ;'),
             array('<?php return;', '<?php return NULL;'),
         );
     }

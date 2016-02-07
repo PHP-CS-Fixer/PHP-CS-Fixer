@@ -24,7 +24,6 @@ abstract class AbstractFixer implements FixerInterface
      */
     public function configure(array $configuration = null)
     {
-        return;
     }
 
     /**

@@ -245,7 +245,7 @@ class Token
     /**
      * Get token's id.
      *
-     * @return int
+     * @return int|null
      */
     public function getId()
     {

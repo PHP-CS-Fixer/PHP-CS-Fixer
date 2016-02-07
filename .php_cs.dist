@@ -16,6 +16,7 @@ return PhpCsFixer\Config::create()
         '@Symfony' => true,
         'header_comment' => array('header' => $header),
         'long_array_syntax' => true,
+        'no_useless_return' => true,
         'ordered_imports' => true,
         'php_unit_construct' => true,
         'php_unit_strict' => true,

@@ -255,6 +255,11 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['unary_operator_spaces'], $fixers['not_operator_with_space']),
             array($fixers['unary_operator_spaces'], $fixers['not_operator_with_successor_space']),
             array($fixers['unix_line_endings'], $fixers['single_blank_line_at_eof']),
+            array($fixers['simplified_null_return'], $fixers['no_useless_return']), // tested also in: simplified_null_return,no_useless_return.test
+            array($fixers['no_duplicate_semicolons'], $fixers['no_useless_return']), // tested also in: no_duplicate_semicolons,no_useless_return.test
+            array($fixers['no_useless_return'], $fixers['no_whitespace_in_blank_lines']), // tested also in: no_useless_return,no_whitespace_in_blank_lines.test
+            array($fixers['no_useless_return'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: no_useless_return,no_extra_consecutive_blank_lines.test
+            array($fixers['no_useless_return'], $fixers['blank_line_before_return']), // tested also in: no_useless_return,blank_line_before_return.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:
