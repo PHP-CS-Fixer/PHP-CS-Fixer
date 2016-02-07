@@ -78,7 +78,10 @@ class Fixer
         }
     }
 
-    public function registerCustomFixers($fixers)
+    /**
+     * @param FixerInterface[] $fixers
+     */
+    public function registerCustomFixers(array $fixers)
     {
         foreach ($fixers as $fixer) {
             $this->addFixer($fixer);
@@ -95,7 +98,7 @@ class Fixer
      */
     public function getFixers()
     {
-        $this->sortFixers();
+        $this->fixers = $this->sortFixers($this->fixers);
 
         return $this->fixers;
     }
@@ -131,13 +134,14 @@ class Fixer
     public function fix(ConfigInterface $config, $dryRun = false, $diff = false)
     {
         $fixers = $this->prepareFixers($config);
-        $changed = array();
+        $fixers = $this->sortFixers($fixers);
 
+        $changed = array();
         if ($this->stopwatch) {
             $this->stopwatch->openSection();
         }
 
-        $fileCacheManager = new FileCacheManager($config->usingCache(), $config->getDir(), $config->getFixers());
+        $fileCacheManager = new FileCacheManager($config->usingCache(), $config->getDir(), $fixers);
 
         $finder = $config->getFinder();
         $finderIterator = $finder instanceof \IteratorAggregate ? $finder->getIterator() : $finder;
@@ -332,13 +336,25 @@ class Fixer
         return $diff;
     }
 
-    private function sortFixers()
+    /**
+     * @param FixerInterface[] $fixers
+     *
+     * @return FixerInterface[]
+     */
+    private function sortFixers(array $fixers)
     {
-        usort($this->fixers, function (FixerInterface $a, FixerInterface $b) {
+        usort($fixers, function (FixerInterface $a, FixerInterface $b) {
             return Utils::cmpInt($b->getPriority(), $a->getPriority());
         });
+
+        return $fixers;
     }
 
+    /**
+     * @param ConfigInterface $config
+     *
+     * @return FixerInterface[]
+     */
     private function prepareFixers(ConfigInterface $config)
     {
         $fixers = $config->getFixers();
