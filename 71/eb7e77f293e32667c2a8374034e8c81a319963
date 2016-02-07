@@ -1,0 +1,62 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-04T08:30:52Z
+
+what was the problem?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-04T08:44:22Z
+
+Inside the `Fixer` class there is a lot of juggling with the fixers it should use, i.e. `$this->fixers` vs. `$fixers` from the configuration etc. I would suggest to make it more clean, i.e. use `$this->fixers` everywhere.
+Because of this currently when you configure a level (on  1.x) and add some fixers, the fixers from the level are sorted but the complete set (level fixers + added fixers) is not. This caused the fixers to be ran in the wrong order.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-04T09:54:42Z
+
+Then please, could you make a utest to cover that?
+I had strong feeling that it would need to be rewritten on 2.x line...
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-04T11:26:23Z
+
+That test should cover the `FixCommand`, `Configuration(Resolver)` and `Fixer` because the provided fail-case did work as integration test, proving even more the complex interaction between the listed 3 parts.
+I might find some time to prove the failure and fix by utest later this week or maybe next.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-04T11:41:27Z
+
+I'm just afraid that if we merge it without utest and then merge 1.12 into 2.x line, which has completely different way preparing fixers (own Factory class), we could lost the fix.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-04T11:41:57Z
+
+Tests would indeed be tricky and even not unit. Could you check if that error is already resolved on 2.x line ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-06T19:07:53Z
+
+ping @SpacePossum
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-07T23:11:20Z
+
+Sorry about letting you wait.
+Running the Fixer on master on the sample code provided with;
+```
+s1@possum:/home/possum/work/PHP-CS-Fixer# php php-cs-fixer fix test.php --rules=@Symfony,phpdoc_order
+```
+
+works as expected. So your factory class seems to work fine :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-07T23:14:31Z
+
+Cool, thank you! Knowing this is very important for merging 1.x->2.x
