@@ -33,12 +33,12 @@ final class UniqueFileIterator extends \FilterIterator
 
         $path = $file->getRealPath();
 
-        if (array_key_exists($path, $this->visitedElements)) {
+        if (isset($this->visitedElements[$path])) {
             return false;
         }
 
-        $this->visitedElements[$path] = null;
+        $this->visitedElements[$path] = true;
 
-        return true;
+        return !$file->isDir() && !$file->isLink();
     }
 }
