@@ -28,10 +28,6 @@ final class UniqueFileIterator extends \FilterIterator
         /** @var SplFileInfo $file */
         $file = $this->current();
 
-        if ($file->isDir() || $file->isLink()) {
-            return false;
-        }
-
         $path = $file->getRealPath();
 
         if (array_key_exists($path, $this->visitedElements)) {
@@ -40,6 +36,6 @@ final class UniqueFileIterator extends \FilterIterator
 
         $this->visitedElements[$path] = null;
 
-        return true;
+        return !$file->isDir() && !$file->isLink();
     }
 }
