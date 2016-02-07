@@ -12,11 +12,9 @@
 
 namespace PhpCsFixer\Tests;
 
-use PhpCsFixer\Fixer\Contrib\Psr0Fixer;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\RuleSet;
-use PhpCsFixer\Test\AccessibleObject;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -69,23 +67,6 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $factory->registerBuiltInFixers();
 
         $this->assertGreaterThan(0, count($factory->getFixers()));
-    }
-
-    /**
-     * @covers PhpCsFixer\FixerFactory::attachConfig
-     */
-    public function testMethodAttachConfig()
-    {
-        $factory = new FixerFactory();
-
-        $fixer = new Psr0Fixer();
-        $factory->registerFixer($fixer);
-
-        $mock = $this->getMock('PhpCsFixer\ConfigInterface');
-        $testInstance = $factory->attachConfig($mock);
-        $property = AccessibleObject::create($fixer)->config;
-
-        $this->assertSame($mock, $property);
     }
 
     /**
