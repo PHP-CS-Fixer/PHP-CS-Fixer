@@ -78,11 +78,6 @@ final class ConfigurationResolver
     private $isDryRun;
 
     /**
-     * @var Fixer
-     */
-    private $fixer;
-
-    /**
      * @var FixerInterface[]
      */
     private $fixers = array();
@@ -262,20 +257,6 @@ final class ConfigurationResolver
     public function setDefaultConfig(ConfigInterface $config)
     {
         $this->defaultConfig = $config;
-
-        return $this;
-    }
-
-    /**
-     * Set fixer instance.
-     *
-     * @param Fixer $fixer
-     *
-     * @return ConfigurationResolver
-     */
-    public function setFixer(Fixer $fixer)
-    {
-        $this->fixer = $fixer;
 
         return $this;
     }

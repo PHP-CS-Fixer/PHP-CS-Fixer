@@ -23,8 +23,6 @@ use PhpCsFixer\RuleSet;
  */
 final class IntegrationCaseFactory
 {
-    private static $builtInFixers;
-
     /**
      * @param string $fileName
      * @param string $content
