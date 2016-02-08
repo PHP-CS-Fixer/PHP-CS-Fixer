@@ -45,13 +45,6 @@ class Config implements ConfigInterface
         return new static();
     }
 
-    public function setDir($dir)
-    {
-        $this->dir = $dir;
-
-        return $this;
-    }
-
     public function setUsingCache($usingCache)
     {
         $this->usingCache = $usingCache;
@@ -66,11 +59,6 @@ class Config implements ConfigInterface
         return $this;
     }
 
-    public function getDir()
-    {
-        return $this->dir;
-    }
-
     public function finder(\Traversable $finder)
     {
         $this->finder = $finder;
@@ -80,10 +68,6 @@ class Config implements ConfigInterface
 
     public function getFinder()
     {
-        if ($this->finder instanceof FinderInterface && $this->dir !== null) {
-            $this->finder->setDir($this->dir);
-        }
-
         return $this->finder;
     }
 

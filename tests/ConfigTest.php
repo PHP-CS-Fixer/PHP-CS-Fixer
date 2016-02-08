@@ -23,9 +23,9 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
 {
     public function testThatFinderWorksWithDirSetOnConfig()
     {
-        $config = Config::create()->setDir(__DIR__.'/Fixtures/FinderDirectory');
+        $config = new Config();
 
-        $iterator = $config->getFinder()->getIterator();
+        $iterator = $config->getFinder()->in(__DIR__.'/Fixtures/FinderDirectory')->getIterator();
         $this->assertSame(1, count($iterator));
         $iterator->rewind();
         $this->assertSame('somefile.php', $iterator->current()->getFilename());
@@ -33,7 +33,7 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function testThatCustomFinderWorks()
     {
-        $finder = Finder::create();
+        $finder = new Finder();
         $finder->in(__DIR__.'/Fixtures/FinderDirectory');
 
         $config = Config::create()->finder($finder);
@@ -46,7 +46,7 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function testThatCustomSymfonyFinderWorks()
     {
-        $finder = SymfonyFinder::create();
+        $finder = new SymfonyFinder();
         $finder->in(__DIR__.'/Fixtures/FinderDirectory');
 
         $config = Config::create()->finder($finder);
@@ -87,7 +87,7 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddCustomFixersWithInvalidArgument()
     {
-        $config = Config::create();
+        $config = new Config();
         $config->addCustomFixers('foo');
     }
 
@@ -96,7 +96,7 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddCustomFixers($expected, $suite)
     {
-        $config = Config::create();
+        $config = new Config();
         $config->addCustomFixers($suite);
 
         $this->assertSame($expected, $config->getCustomFixers());

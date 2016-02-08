@@ -395,7 +395,7 @@ final class ConfigurationResolver
         } elseif ($this->isStdIn) {
             $this->config->finder(new \ArrayIterator(array(new StdinFileInfo())));
         } elseif (null !== $this->path) {
-            $this->config->setDir($this->path);
+            $this->config->getFinder()->in($this->path);
         }
     }
 
