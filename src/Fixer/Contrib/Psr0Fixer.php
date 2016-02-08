@@ -13,8 +13,6 @@
 namespace PhpCsFixer\Fixer\Contrib;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigAwareInterface;
-use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -24,9 +22,23 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Bram Gotink <bram@gotink.me>
  */
-final class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
+final class Psr0Fixer extends AbstractFixer
 {
-    protected $config;
+    private $configuration = array();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration = null)
+    {
+        if (null === $configuration) {
+            return;
+        }
+
+        if (isset($configuration['dir'])) {
+            $this->configuration['dir'] = $configuration['dir'];
+        }
+    }
 
     /**
      * {@inheritdoc}
@@ -85,8 +97,8 @@ final class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
             $path = str_replace('\\', '/', $file->getRealPath());
             $dir = dirname($path);
 
-            if ($this->config) {
-                $dir = substr($dir, strlen(realpath($this->config->getDir())) + 1);
+            if (isset($this->configuration['dir'])) {
+                $dir = substr($dir, strlen(realpath($this->configuration['dir'])) + 1);
                 if (strlen($normNamespace) > strlen($dir)) {
                     if ('' !== $dir) {
                         $normNamespace = substr($normNamespace, -strlen($dir));
@@ -130,14 +142,6 @@ final class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
                 $tokens[$classyIndex]->setContent(str_replace('/', '_', $filename));
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setConfig(ConfigInterface $config)
-    {
-        $this->config = $config;
     }
 
     /**

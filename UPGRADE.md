@@ -115,3 +115,10 @@ unneeded_control_parentheses                   | no_unneeded_control_parentheses
 unused_use                                     | no_unused_imports
 visibility                                     | visibility_required
 whitespacy_lines                               | no_whitespace_in_blank_lines
+
+Changes to Fixers
+-----------------
+
+Fixer | Note
+----- | ----
+psr0  | Fixer no longer takes base dir from `ConfigInterface::getDir`, instead you may configure the fixer with `['dir' => 'my/path']`.
