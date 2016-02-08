@@ -406,32 +406,27 @@ final class ConfigurationResolver
         // - when we don't have valid finder - prepare new iterator
         $iterator = null;
         $currentFinder = $this->config->getFinder();
+        $path = realpath($this->path);
+        $isFile = is_file($path);
+
+        if ($isFile) {
+            $callback = function (\SplFileInfo $current) use ($path) {
+                return $current->getRealPath() === $path;
+            };
+        } else {
+            $path .= DIRECTORY_SEPARATOR;
+            $callback = function (\SplFileInfo $current) use ($path) {
+                return 0 === strpos($current->getRealPath(), $path);
+            };
+        }
 
         try {
-            $currentIteratorItems = array_map(
-                function (\SplFileInfo $current) {
-                    return $current->getRealPath();
-                },
-                iterator_to_array($currentFinder, false)
-            );
-
-            $nestedIterator = is_file($this->path)
-                ? new \ArrayIterator(array(new SymfonySplFileInfo(
-                    $this->path,
-                    substr(dirname($this->path), strlen($this->cwd) + 1),
-                    substr($this->path, strlen($this->cwd) + 1)
-                )))
-                : Finder::create()->in($this->path)->getIterator()
-            ;
-
             $iterator = new \CallbackFilterIterator(
-                $nestedIterator,
-                function (\SplFileInfo $current) use ($currentIteratorItems) {
-                    return in_array($current->getRealPath(), $currentIteratorItems, true);
-                }
+                $currentFinder instanceof \IteratorAggregate ? $currentFinder->getIterator() : $currentFinder,
+                $callback
             );
         } catch (\LogicException $e) {
-            if ($this->path) {
+            if ($isFile) {
                 $iterator = new \ArrayIterator(array(new SymfonySplFileInfo(
                     $this->path,
                     substr(dirname($this->path), strlen($this->cwd) + 1),
