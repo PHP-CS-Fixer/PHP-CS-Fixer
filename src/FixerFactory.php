@@ -54,24 +54,6 @@ final class FixerFactory
     }
 
     /**
-     * Attach config into all fixers that are aware of it.
-     *
-     * @param ConfigInterface $config
-     *
-     * @return $this
-     */
-    public function attachConfig(ConfigInterface $config)
-    {
-        foreach ($this->fixers as $fixer) {
-            if ($fixer instanceof ConfigAwareInterface) {
-                $fixer->setConfig($config);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * Get fixers.
      *
      * @return FixerInterface[]
