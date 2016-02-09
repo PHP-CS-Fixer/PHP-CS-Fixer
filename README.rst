@@ -712,6 +712,10 @@ Choose from the list of available fixers:
                         $strict param. Warning! This
                         could change code behavior.
 
+* **throw** [contrib]
+                        An empty line feed should
+                        precede a throw statement.
+
 
 The ``--config`` option customizes the files to analyse, based
 on some well-known directory structures:
