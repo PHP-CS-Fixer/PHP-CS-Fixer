@@ -40,18 +40,19 @@ class FunctionDeclarationFixer extends AbstractFixer
             $startParenthesisIndex = $tokens->getNextTokenOfKind($index, array('('));
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
             $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, array(';', '{'));
-            $startBraceToken = $tokens[$startBraceIndex];
 
-            if ($startBraceToken->equals('{')) {
-                // fix single-line whitespace before {
-                // eg: `function foo(){}` => `function foo() {}`
-                // eg: `function foo()   {}` => `function foo() {}`
-                if (
+            // fix single-line whitespace before {
+            // eg: `function foo(){}` => `function foo() {}`
+            // eg: `function foo()   {}` => `function foo() {}`
+            if (
+                $tokens[$tokens->getPrevNonWhitespace($startBraceIndex)]->equals(')') &&
+                $tokens[$startBraceIndex]->equals('{') &&
+                (
                     !$tokens[$startBraceIndex - 1]->isWhitespace() ||
                     $tokens[$startBraceIndex - 1]->isWhitespace($this->singleLineWhitespaceOptions)
-                ) {
-                    $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
-                }
+                )
+            ) {
+                $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
             }
 
             $afterParenthesisIndex = $tokens->getNextNonWhitespace($endParenthesisIndex);
