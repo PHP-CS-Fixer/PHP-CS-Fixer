@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by glensc at 2016-02-10T21:33:19Z
+
+so, i removed those silly comments on lines 3&4 (of the gist on referenced issue), but it still gets internal error. what exactly is causing the error?
+
+---------------------------------------------------------------------------
+
+by glensc at 2016-02-10T21:39:27Z
+
+nevemind. mislooked
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-10T21:41:33Z
+
+fixed
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-10T23:06:04Z
+
+Looks like a solid fix :+1:
+I guess 1.x only? (i.e. the line break being dealt with by the transformers on 2.x?)
+Do you know any other fixer might be effected as well?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-10T23:07:29Z
+
+ref https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/1768#issuecomment-182594667
+
+hard to guess
