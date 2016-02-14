@@ -50,22 +50,6 @@ interface ConfigInterface
     public function getFixers();
 
     /**
-     * Sets the root directory of the project.
-     *
-     * @param string $dir The project root directory
-     *
-     * @return $this
-     */
-    public function setDir($dir);
-
-    /**
-     * Returns the root directory of the project.
-     *
-     * @return string The project root directory
-     */
-    public function getDir();
-
-    /**
      * Returns true if progress should be hidden.
      *
      * @return bool

@@ -246,10 +246,10 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     {
         $this->resolver
             ->setCwd(__DIR__)
-            ->setOption('path', 'Foo'.DIRECTORY_SEPARATOR.'Bar')
+            ->setOption('path', 'Command')
             ->resolve();
 
-        $this->assertSame(__DIR__.DIRECTORY_SEPARATOR.'Foo'.DIRECTORY_SEPARATOR.'Bar', $this->resolver->getPath());
+        $this->assertSame(__DIR__.DIRECTORY_SEPARATOR.'Command', $this->resolver->getPath());
     }
 
     public function testResolveIsDryRunViaStdIn()

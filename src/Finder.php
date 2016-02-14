@@ -18,7 +18,7 @@ use Symfony\Component\Finder\Finder as BaseFinder;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class Finder extends BaseFinder implements FinderInterface
+class Finder extends BaseFinder
 {
     public function __construct()
     {
@@ -33,10 +33,5 @@ class Finder extends BaseFinder implements FinderInterface
             ->ignoreVCS(true)
             ->exclude('vendor')
         ;
-    }
-
-    public function setDir($dir)
-    {
-        $this->in($dir);
     }
 }
