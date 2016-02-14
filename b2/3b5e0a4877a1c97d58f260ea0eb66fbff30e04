@@ -1,0 +1,91 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-09T09:43:58Z
+
+`NoEmptyPhpdocFixer` ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-09T11:59:17Z
+
+closing till I figured out how to fix it (https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1765#discussion_r52298636)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-09T12:18:14Z
+
+@SpacePossum , please play with utests so the utests will define everything that should be fixed and how - when it will be done (or it is already?) I will help with regexp
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-09T20:16:56Z
+
+Renamed, replaced the `fail` with `throw exception` (thanks @GrahamCampbell ) and added a bunch of integration tests (include case for removal of `@access` thanks @keradus).
+Given that some of the tests are still running, I think the one thing (and most important thing) is to figure out the rule on which to remove a PHPDoc.
+I like it as is, but I see the point @keradus is making.
+It will be tricky to tweak though, so lets list some cases here.
+I think we agree on these:
+```php
+/** */
+
+/**
+*/
+
+/**
+ *
+ *
+ */
+```
+However, the fixer also removes:
+```php
+/**
+**/
+
+/*******
+ *
+ *****/
+
+/**
+ * *
+ */
+```
+I'm happy with both sets, so let me know were to aim for :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-09T20:23:39Z
+
+For 6 cases you provided I woudn't touch only the last one, in which `*` is summary part of PHPDoc. Odd, not nice, but still valid.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-09T20:25:42Z
+
+I like it as-is.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-13T16:57:05Z
+
+@SpacePossum All cases you provided are also in utests, am I right ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-13T17:10:50Z
+
+@keradus yes I think so, I checked and cannot think of anymore other cases, let me know I you have any in mind.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-13T18:17:14Z
+
+Cool!
+Please, move it to Symfony level
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-14T10:51:00Z
+
+>Please, move it to Symfony level
+
+:+1:  done :)
