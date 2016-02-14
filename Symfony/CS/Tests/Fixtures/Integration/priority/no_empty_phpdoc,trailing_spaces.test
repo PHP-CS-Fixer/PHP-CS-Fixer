@@ -1,0 +1,12 @@
+--TEST--
+Integration of fixers: no_empty_phpdoc,trailing_spaces.
+--CONFIG--
+level=none
+fixers=no_empty_phpdoc,trailing_spaces
+--EXPECT--
+<?php
+echo 1;
+
+--INPUT--
+<?php
+echo 1;            /** */

@@ -25,8 +25,8 @@ abstract class AbstractAnnotationRemovalFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // must be run before the PhpdocSeparationFixer, PhpdocOrderFixer, and
-        // PhpdocTrimFixer
+        // must be run before the PhpdocSeparationFixer, PhpdocOrderFixer,
+        // PhpdocTrimFixer and PhpdocNoEmptyReturnFixer.
         return 10;
     }
 

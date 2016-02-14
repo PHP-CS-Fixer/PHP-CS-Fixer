@@ -411,6 +411,10 @@ Choose from the list of available fixers:
                         lines between docblock and the
                         documented element.
 
+* **no_empty_phpdoc** [symfony]
+                        There should not be empty
+                        PHPDoc blocks.
+
 * **object_operator** [symfony]
                         There should not be space
                         before or after object
