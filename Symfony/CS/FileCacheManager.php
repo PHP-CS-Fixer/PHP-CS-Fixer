@@ -117,7 +117,12 @@ class FileCacheManager
         }
 
         $content = file_get_contents($this->dir.self::CACHE_FILE);
-        $data = unserialize($content);
+        $data = @unserialize($content);
+
+        // ignore corrupted serialized data
+        if (null === $data) {
+            return;
+        }
 
         // BC for old cache without fixers list
         if (!isset($data['fixers'])) {
