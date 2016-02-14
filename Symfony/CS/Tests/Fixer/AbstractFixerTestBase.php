@@ -36,6 +36,9 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
     protected function getFixer()
     {
         $name = 'Symfony\CS\Fixer'.substr(get_called_class(), strlen(__NAMESPACE__), -strlen('Test'));
+        if (!class_exists($name)) {
+            throw new \LogicException(sprintf('Fixer "%s" for test not found.', $name));
+        }
 
         return new $name();
     }

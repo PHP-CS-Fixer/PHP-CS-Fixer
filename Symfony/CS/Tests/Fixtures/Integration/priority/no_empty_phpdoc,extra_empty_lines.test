@@ -1,0 +1,20 @@
+--TEST--
+Integration of fixers: no_empty_phpdoc,extra_empty_lines.
+--CONFIG--
+level=none
+fixers=no_empty_phpdoc,extra_empty_lines
+--EXPECT--
+<?php
+
+echo 1;
+
+echo 2;
+
+--INPUT--
+<?php
+
+echo 1;
+
+/** */
+
+echo 2;

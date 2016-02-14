@@ -215,6 +215,12 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_useless_return'], $fixers['whitespacy_lines']), // tested also in: no_useless_return,whitespacy_lines.test
             array($fixers['no_useless_return'], $fixers['extra_empty_lines']), // tested also in: no_useless_return,extra_empty_lines.test
             array($fixers['no_useless_return'], $fixers['return']), // tested also in: no_useless_return,return.test
+            array($fixers['no_empty_phpdoc'], $fixers['extra_empty_lines']), // tested also in: no_empty_phpdoc,extra_empty_lines.test
+            array($fixers['no_empty_phpdoc'], $fixers['trailing_spaces']), // tested also in: no_empty_phpdoc,trailing_spaces.test
+            array($fixers['no_empty_phpdoc'], $fixers['whitespacy_lines']), // tested also in: no_empty_phpdoc,whitespacy_lines.test
+            array($fixers['phpdoc_no_access'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_access,no_empty_phpdoc.test
+            array($fixers['phpdoc_no_empty_return'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_empty_return,no_empty_phpdoc.test
+            array($fixers['phpdoc_no_package'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_package,no_empty_phpdoc.test
         );
 
         $docFixerNames = array_filter(
