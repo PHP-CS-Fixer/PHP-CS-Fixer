@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: phpdoc_no_access,no_empty_phpdoc.
+--CONFIG--
+{"phpdoc_no_access": true, "no_empty_phpdoc": true}
+--EXPECT--
+<?php
+
+
+
+--INPUT--
+<?php
+
+/**
+ * @access public
+ */

@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: phpdoc_no_empty_return,no_empty_phpdoc.
+--CONFIG--
+{"phpdoc_no_empty_return": true, "no_empty_phpdoc": true}
+--EXPECT--
+<?php
+
+
+
+--INPUT--
+<?php
+
+/**
+ * @return void
+ */

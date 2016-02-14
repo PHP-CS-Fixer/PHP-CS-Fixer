@@ -359,6 +359,10 @@ Choose from the list of available fixers:
 * **no_duplicate_semicolons** [@Symfony]
                         Remove duplicated semicolons.
 
+* **no_empty_phpdoc** [@Symfony]
+                        There should not be empty
+                        PHPDoc blocks.
+
 * **no_extra_consecutive_blank_lines** [@Symfony]
                         Removes extra blank lines
                         and/or blank lines following

@@ -79,7 +79,7 @@ final class NoWhitespaceInBlankLinesFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run after the NoUselessReturnFixer
+        // should be run after the NoUselessReturnFixer and NoEmptyPhpdocFixer.
         return -19;
     }
 }

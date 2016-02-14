@@ -58,7 +58,7 @@ final class NoUselessReturnFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run before ReturnFixer, ExtraEmptyLinesFixer, WhitespacyLinesFixer and after EmptyReturnFixer and DuplicateSemicolonFixer.
+        // should be run before BlankLineBeforeReturnFixer, NoExtraConsecutiveBlankLinesFixer, NoWhitespaceInBlankLinesFixer and after SimplifiedNullReturnFixer and NoDuplicateSemicolonFixer.
         return -18;
     }
 
