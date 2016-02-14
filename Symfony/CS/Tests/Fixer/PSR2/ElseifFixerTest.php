@@ -20,42 +20,69 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 class ElseifFixerTest extends AbstractFixerTestBase
 {
     /**
-     * @covers Symfony\CS\Fixer\PSR2\ElseifFixer::fix
+     * @dataProvider provideTestFixCases
      */
-    public function testThatInvalidElseIfIsFixed()
+    public function testFix($expected, $input = null)
     {
-        $this->makeTest(
-            '<?php if ($some) { $test = true; } else { $test = false; }'
-        );
+        $this->makeTest($expected, $input);
+    }
 
-        $this->makeTest(
-            '<?php if ($some) { $test = true; } elseif ($some !== "test") { $test = false; }',
-            '<?php if ($some) { $test = true; } else if ($some !== "test") { $test = false; }'
-        );
-
-        $this->makeTest(
-            '<?php if ($some) { $test = true; } elseif ($some !== "test") { $test = false; }',
-            '<?php if ($some) { $test = true; } else  if ($some !== "test") { $test = false; }'
-        );
-
-        $this->makeTest(
-            '<?php $js = \'if (foo.a) { foo.a = "OK"; } else if (foo.b) { foo.b = "OK"; }\';'
-        );
-
-        $this->makeTest(
-            '<?php
-if ($a) {
-    $x = 1;
-} elseif ($b) {
-    $x = 2;
-}',
-            '<?php
-if ($a) {
-    $x = 1;
-} else
-if ($b) {
-    $x = 2;
-}'
+    public function provideTestFixCases()
+    {
+        return array(
+            array('<?php if ($some) { $test = true; } else { $test = false; }'),
+            array(
+                '<?php if ($some) { $test = true; } elseif ($some !== "test") { $test = false; }',
+                '<?php if ($some) { $test = true; } else if ($some !== "test") { $test = false; }',
+            ),
+            array(
+                '<?php if ($some) { $test = true; } elseif ($some !== "test") { $test = false; }',
+                '<?php if ($some) { $test = true; } else  if ($some !== "test") { $test = false; }',
+            ),
+            array(
+                '<?php $js = \'if (foo.a) { foo.a = "OK"; } else if (foo.b) { foo.b = "OK"; }\';',
+            ),
+            array(
+                '<?php
+                    if ($a) {
+                        $x = 1;
+                    } elseif ($b) {
+                        $x = 2;
+                    }',
+                '<?php
+                    if ($a) {
+                        $x = 1;
+                    } else
+                    if ($b) {
+                        $x = 2;
+                    }',
+            ),
+            array(
+                '<?php
+                    if ($a) {
+                    } elseif/**/ ($b) {
+                    }
+                ',
+                '<?php
+                    if ($a) {
+                    } else /**/ if ($b) {
+                    }
+                ',
+            ),
+            array(
+                '<?php
+                    if ($a) {
+                    } elseif//
+ ($b) {
+                    }
+                ',
+                '<?php
+                    if ($a) {
+                    } else //
+                        if ($b) {
+                    }
+                ',
+            ),
         );
     }
 }
