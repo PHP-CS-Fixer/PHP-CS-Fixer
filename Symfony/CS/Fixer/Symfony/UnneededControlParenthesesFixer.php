@@ -81,8 +81,7 @@ final class UnneededControlParenthesesFixer extends AbstractFixer
             }
 
             $blockStartIndex = $index;
-            $index = $tokens->getPrevMeaningfulToken($index);
-            $token = $tokens[$index];
+            $token = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
             foreach ($loops as $loop) {
                 if (!$token->isGivenKind($loop['lookupTokens'])) {
