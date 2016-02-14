@@ -21,7 +21,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     public function testThatDefaultFinderWorksWithDirSetOnConfig()
     {
         $config = Config::create();
-        $config->setDir(__DIR__.'/../Fixtures/FinderDirectory');
+        $config->getFinder()->in(__DIR__.'/../Fixtures/FinderDirectory');
 
         $iterator = $config->getFinder()->getIterator();
         $this->assertSame(1, count($iterator));

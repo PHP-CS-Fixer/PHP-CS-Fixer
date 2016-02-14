@@ -48,6 +48,14 @@ class Config implements ConfigInterface
 
     public function setDir($dir)
     {
+        @trigger_error(
+            sprintf(
+                'The "%s" method is deprecated. You should stop using it, as it will soon be removed in 2.0 version. Configure finder instead.',
+                __METHOD__
+            ),
+            E_USER_DEPRECATED
+        );
+
         $this->dir = $dir;
     }
 
@@ -67,6 +75,14 @@ class Config implements ConfigInterface
 
     public function getDir()
     {
+        @trigger_error(
+            sprintf(
+                'The "%s" method is deprecated. You should stop using it, as it will soon be removed in 2.0 version. Use finder instead.',
+                __METHOD__
+            ),
+            E_USER_DEPRECATED
+        );
+
         return $this->dir;
     }
 

@@ -17,13 +17,11 @@ use Symfony\Component\Finder\Finder as BaseFinder;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Finder extends BaseFinder implements FinderInterface
+class Finder extends BaseFinder
 {
     public function __construct()
     {
         parent::__construct();
-
-        $files = $this->getFilesToExclude();
 
         $this
             ->files()
@@ -32,40 +30,6 @@ class Finder extends BaseFinder implements FinderInterface
             ->ignoreDotFiles(true)
             ->ignoreVCS(true)
             ->exclude('vendor')
-            ->filter(
-                function (\SplFileInfo $file) use ($files) {
-                    return !in_array($file->getRelativePathname(), $files, true);
-                }
-            )
         ;
-    }
-
-    public function setDir($dir)
-    {
-        $this->in($this->getDirs($dir));
-    }
-
-    /**
-     * Gets the directories that needs to be scanned for files to validate.
-     *
-     * @param string $dir
-     *
-     * @return string[]
-     */
-    protected function getDirs($dir)
-    {
-        return array($dir);
-    }
-
-    /**
-     * Excludes files because modifying them would break.
-     *
-     * This is mainly useful for fixtures in unit tests.
-     *
-     * @return string[]
-     */
-    protected function getFilesToExclude()
-    {
-        return array();
     }
 }
