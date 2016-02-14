@@ -214,7 +214,6 @@ final class ConfigurationResolver
         $this->resolveRiskyAllowed();
 
         $this->fixerFactory->registerCustomFixers($this->getConfig()->getCustomFixers());
-        $this->fixerFactory->attachConfig($this->getConfig());
 
         $this->resolveRules();
         $this->resolveFixers();

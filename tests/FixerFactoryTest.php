@@ -42,10 +42,6 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $mock->expects($this->any())->method('getRules')->willReturn(array());
         $testInstance = $factory->useRuleSet($mock);
         $this->assertSame($factory, $testInstance);
-
-        $mock = $this->getMock('PhpCsFixer\ConfigInterface');
-        $testInstance = $factory->attachConfig($mock);
-        $this->assertSame($factory, $testInstance);
     }
 
     /**
