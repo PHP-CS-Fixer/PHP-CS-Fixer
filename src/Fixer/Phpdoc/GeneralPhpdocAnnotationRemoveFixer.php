@@ -10,18 +10,44 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer;
+namespace PhpCsFixer\Fixer\Phpdoc;
 
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
- *
- * @internal
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-abstract class AbstractAnnotationRemovalFixer extends AbstractFixer
+final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer
 {
+    /**
+     * @var string[]
+     */
+    protected $configuration;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration = null)
+    {
+        if (null === $configuration) {
+            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Configuration is required.'));
+        }
+
+        $this->configuration = $configuration;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -33,12 +59,9 @@ abstract class AbstractAnnotationRemovalFixer extends AbstractFixer
     }
 
     /**
-     * Make sure the expected number of new lines prefix a namespace.
-     *
-     * @param Tokens   $tokens
-     * @param string[] $type
+     * {@inheritdoc}
      */
-    protected function removeAnnotations(Tokens $tokens, array $type)
+    public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -46,7 +69,7 @@ abstract class AbstractAnnotationRemovalFixer extends AbstractFixer
             }
 
             $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType($type);
+            $annotations = $doc->getAnnotationsOfType($this->configuration);
 
             // nothing to do if there are no annotations
             if (empty($annotations)) {
@@ -59,5 +82,13 @@ abstract class AbstractAnnotationRemovalFixer extends AbstractFixer
 
             $token->setContent($doc->getContent());
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Configured annotations should be omitted from phpdocs.';
     }
 }

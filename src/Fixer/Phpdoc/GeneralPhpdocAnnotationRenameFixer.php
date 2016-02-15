@@ -10,33 +10,35 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer;
+namespace PhpCsFixer\Fixer\Phpdoc;
 
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * This abstract fixer provides a base for fixers to rename tags.
- *
  * @author Graham Campbell <graham@mineuk.com>
- *
- * @internal
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-abstract class AbstractPhpdocTagsFixer extends AbstractFixer
+final class GeneralPhpdocAnnotationRenameFixer extends AbstractFixer
 {
     /**
-     * The tags to search for.
-     *
-     * @var string[]
+     * @var array
      */
-    protected static $search;
+    protected $configuration;
 
     /**
-     * The replacement tag.
-     *
-     * @var string
+     * {@inheritdoc}
      */
-    protected static $replace;
+    public function configure(array $configuration = null)
+    {
+        if (null === $configuration) {
+            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Configuration is required.'));
+        }
+
+        $this->configuration = $configuration;
+    }
 
     /**
      * {@inheritdoc}
@@ -51,19 +53,29 @@ abstract class AbstractPhpdocTagsFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
+        $searchFor = array_keys($this->configuration);
+
         foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
             $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType(static::$search);
+            $annotations = $doc->getAnnotationsOfType($searchFor);
 
             if (empty($annotations)) {
                 continue;
             }
 
             foreach ($annotations as $annotation) {
-                $annotation->getTag()->setName(static::$replace);
+                $annotation->getTag()->setName($this->configuration[$annotation->getTag()->getName()]);
             }
 
             $token->setContent($doc->getContent());
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Configured annotations inside phpdocs should be renamed.';
     }
 }
