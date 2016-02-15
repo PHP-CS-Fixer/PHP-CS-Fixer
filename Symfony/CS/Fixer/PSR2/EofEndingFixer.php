@@ -41,7 +41,7 @@ class EofEndingFixer extends AbstractFixer
         }
 
         $isSingleLineComment = function (Token $token) {
-            return $token->isComment() and '//' === substr($token->getContent(), 0, 2);
+            return $token->isComment() and '/*' !== substr($token->getContent(), 0, 2);
         };
         $clearSingleLineComment = function (Token $token) {
             $content = $token->getContent();
