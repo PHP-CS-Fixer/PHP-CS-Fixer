@@ -75,7 +75,7 @@ class PhpdocParamsFixer extends AbstractFixer
          * annotations are of the correct type, and are grouped correctly
          * before running this fixer.
          */
-        return -10;
+        return -11;
     }
 
     /**
