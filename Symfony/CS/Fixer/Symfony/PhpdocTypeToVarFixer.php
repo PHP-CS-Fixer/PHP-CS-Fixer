@@ -28,7 +28,11 @@ class PhpdocTypeToVarFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens->findGivenKind(T_DOC_COMMENT) as $token) {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
             $doc = new DocBlock($token->getContent());
             $annotations = $doc->getAnnotationsOfType('type');
 
@@ -53,5 +57,14 @@ class PhpdocTypeToVarFixer extends AbstractFixer
     public function getDescription()
     {
         return '@type should always be written as @var.';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be ran before the PhpdocSingleLineVarSpacingFixer.
+        return -9;
     }
 }
