@@ -12,28 +12,24 @@
 
 namespace PhpCsFixer\Fixer\Phpdoc;
 
-use PhpCsFixer\AbstractAnnotationRemovalFixer;
+use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocNoPackageFixer extends AbstractAnnotationRemovalFixer
+final class PhpdocNoPackageFixer extends AbstractProxyFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    protected function createProxyFixer()
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
+        $fixer = new GeneralPhpdocAnnotationRemoveFixer();
+        $fixer->configure(array('package', 'subpackage'));
 
-    /**
-     * {@inheritdoc}
-     */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $this->removeAnnotations($tokens, array('package', 'subpackage'));
+        return $fixer;
     }
 
     /**

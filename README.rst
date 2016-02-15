@@ -267,6 +267,10 @@ Choose from the list of available fixers:
                          function's argument and its
                          typehint.
 
+* **general_phpdoc_annotation_remove**
+                        Configured annotations should
+                        be omitted from phpdocs.
+
 * **hash_to_slash_comment** [@Symfony]
                          Single line comments should
                          use double slashes (//) and
