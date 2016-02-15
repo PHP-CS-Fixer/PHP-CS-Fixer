@@ -102,6 +102,20 @@ inline 1
 <?php
 
 ?>Inline2\r\n", ),
+            array(
+                "<?php return true;\n// A comment\n",
+            ),
+            array(
+                "<?php return true;\n// A comment\n",
+                "<?php return true;\n// A comment",
+            ),
+            array(
+                "<?php return true;\n/*\nA comment\n*/\n",
+            ),
+            array(
+                "<?php return true;\n/*\nA comment\n*/\n",
+                "<?php return true;\n/*\nA comment\n*/",
+            ),
         );
     }
 }

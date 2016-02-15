@@ -43,6 +43,10 @@ class EofEndingFixer extends AbstractFixer
         if ($token->isWhitespace()) {
             $lineBreak = false === strrpos($token->getContent(), "\r") ? "\n" : "\r\n";
             $token->setContent($lineBreak);
+        } elseif ($token->isComment() and '//' === substr($token->getContent(), 0, 2)) {
+            $content = $token->getContent();
+            $content = rtrim($content, "\n")."\n";
+            $token->setContent($content);
         } else {
             $tokens->insertAt($count, new Token(array(T_WHITESPACE, "\n")));
         }
