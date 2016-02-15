@@ -124,7 +124,12 @@ final class FileCacheManager
         }
 
         $content = file_get_contents($this->cacheFile);
-        $data = unserialize($content);
+        $data = @unserialize($content);
+
+        // ignore corrupted serialized data
+        if (null === $data) {
+            return;
+        }
 
         if (!isset($data['version']) || !isset($data['rules'])) {
             return;
