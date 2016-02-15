@@ -1,0 +1,101 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-31T14:20:08Z
+
+:-1:
+I don't want to have 100 fixers on one level.
+
+Instead of it I would prefer to have dirs per type of changes, like dir for PhpDoc fixers, dir for phpunit fixers and so on.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-01-31T14:21:53Z
+
+> Instead of it I would prefer to have dirs per type of changes, like dir for PhpDoc fixers, dir for phpunit fixers and so on.
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-31T14:34:57Z
+
+:-1: for this as is
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-02T00:44:20Z
+
+current state: https://github.com/gharlan/PHP-CS-Fixer/tree/remove-level-subdirs/src/Fixer
+is this the right direction?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-02T08:14:53Z
+
+I assume that `*_` are not-moved-yet fixers.
+I do very like that direction.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-02T08:20:25Z
+
+Also, at the end, I would move `FixerInterface` and `Abstract*Fixer` into `Fixer` dir as well.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-02T08:27:57Z
+
+> I assume that *_ are not-moved-yet fixers.
+
+yes
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-14T23:03:56Z
+
+all classes are moved now: https://github.com/gharlan/PHP-CS-Fixer/tree/remove-level-subdirs/src/Fixer
+please discuss.. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-14T23:24:41Z
+
+Can we not get away with `Return` rather than `ReturnNotation` since php surely only reserves the class `Return`, not the namespace?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-14T23:24:58Z
+
+Same for the others, like `Array`.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-14T23:25:48Z
+
+Could we move the abstract phpdoc fixers into the phpdoc namespace?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-14T23:26:09Z
+
+I'm :+1: on the way this PR is moving btw.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-14T23:33:19Z
+
+> Can we not get away with Return rather than ReturnNotation since php surely only reserves the class Return, not the namespace?
+
+https://3v4l.org/1RWsD
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-14T23:52:37Z
+
+Sigh. I guess I didn't think about how tokenization would work.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-15T21:09:51Z
+
+:+1:
