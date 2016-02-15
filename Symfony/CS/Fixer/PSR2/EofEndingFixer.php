@@ -40,13 +40,25 @@ class EofEndingFixer extends AbstractFixer
             return $content;
         }
 
-        if ($token->isWhitespace()) {
-            $lineBreak = false === strrpos($token->getContent(), "\r") ? "\n" : "\r\n";
-            $token->setContent($lineBreak);
-        } elseif ($token->isComment() and '//' === substr($token->getContent(), 0, 2)) {
+        $isSingleLineComment = function (Token $token) {
+            return $token->isComment() and '//' === substr($token->getContent(), 0, 2);
+        };
+        $clearSingleLineComment = function (Token $token) {
             $content = $token->getContent();
             $content = rtrim($content, "\n")."\n";
             $token->setContent($content);
+        };
+
+        if ($token->isWhitespace()) {
+            if ($count > 1 and $isSingleLineComment($tokens[$count - 2])) {
+                $clearSingleLineComment($tokens[$count - 2]);
+                $token->clear();
+            } else {
+                $lineBreak = false === strrpos($token->getContent(), "\r") ? "\n" : "\r\n";
+                $token->setContent($lineBreak);
+            }
+        } elseif ($isSingleLineComment($token)) {
+            $clearSingleLineComment($token);
         } else {
             $tokens->insertAt($count, new Token(array(T_WHITESPACE, "\n")));
         }
