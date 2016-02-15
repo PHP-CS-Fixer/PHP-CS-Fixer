@@ -1,0 +1,141 @@
+---------------------------------------------------------------------------
+
+by tifabien at 2016-02-03T09:45:46Z
+
+I'll test it asap but at the first look it seems it will solve my problem :)
+Thanks a lot!
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-03T10:37:41Z
+
+General question.
+We could backport this change to 1.x as well (ref https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.12/Symfony/CS/Console/Command/FixCommand.php#L356)
+It may be considered as behaviour change, and for that BC break - because one asked for fixing excluded file and it won't be fixed.
+Also, it may be considered as bug fix, so not BC break - because one asked to fix file, use configuration that exclude this file so finally it should not be changed.
+
+Any thoughts about change itself and then target version ?
+cc @stof @sstok @GrahamCampbell @SpacePossum @gharlan @ceeram and everybody  ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-03T10:41:10Z
+
+I think it's fine on 2.x only.
+
+---------------------------------------------------------------------------
+
+by tifabien at 2016-02-05T09:26:49Z
+
+:+1: I tested my side and it works like a charm :)
+
+Small question, Do you know when you'll plan to release the 2.x?
+
+Thanks a lot !
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-05T17:06:45Z
+
+Great to hear!
+I'm still waiting for some more opinions on this PR.
+
+About release - I won't give you exact date, but I think we are close:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/milestones/v2.0
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-05T20:31:54Z
+
+> Any thoughts about change itself and then target version ?
+
+:+1: for change itself, but only 2.x
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-05T23:01:33Z
+
+Besides https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1742#discussion_r52050731 I would like to have a little explaining about the new behavior if that is ok :)
+(maybe we could at it to the docs somewhere as well?)
+
+If I understand the issue correctly together with the PR; the fixer should only fix the given file / files in the directory passed on by command line argument, but still honor the finder exclude rules set in the config file (and fixers/level)?
+ (and not apply possibly broader finder rules that would be out of the directory passed on by the command line?)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-06T18:42:43Z
+
+@SpacePossum
+it would create an intersection
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1742/files#diff-62b374855f5961454b817b144c531e27R425
+
+So, if you run the tool with both finder in configuration and path as CLI arguments only the files that would be found by both finders will be fixed.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-06T18:52:04Z
+
+Thanks for the explaining :)
+So if one would black list directory `a/b/c` in its config and than run the fixer using `a/b/c` as input path by the command line, what would happen?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-06T18:54:23Z
+
+Intersection would be empty.
+That's the point of @tifabien #1719
+
+If one configure his project to not touch sth, it should not be touched. If one decided to change that configuration - that's what config file is for.
+Also remember that one can't exclude path by CLI.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-06T19:08:17Z
+
+I see, I would like the command line input to be leading in this case. I thought the issue reported was something like;
+- config blacklists dir `a/b/c`
+- run with command line `a/b`
+- `a/b/c` is still being fixed
+
+your PR will fix that, so :+1:  :)
+However as a result of the PR, it will be impossible to fix files in `a/b/c` using the command line without changing the config file. If one would explicitly pass `a/b/c` as command line arg, I would expected the fixer to ran over dir. Its a tricky one, I think both solutions have + and -, so I'm still :+1: for the change as it fixes the issue for some people and +0 for the side effect :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-08T22:52:40Z
+
+Done from my side.
+It would be really nice to close it fast ;)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-09T00:12:13Z
+
+@keradus please take a look at https://github.com/keradus/PHP-CS-Fixer/pull/15
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-10T00:37:52Z
+
+> @keradus please take a look at keradus#15
+
+merged, thank you @gharlan !
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-10T07:57:04Z
+
+looking good :)
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-15T19:01:27Z
+
+looks ready
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-15T22:43:27Z
+
+:+1:
