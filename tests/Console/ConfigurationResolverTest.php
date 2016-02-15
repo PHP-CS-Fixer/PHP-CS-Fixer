@@ -14,8 +14,10 @@ namespace PhpCsFixer\Tests\Console;
 
 use PhpCsFixer\Config;
 use PhpCsFixer\Console\ConfigurationResolver;
+use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer;
 use PhpCsFixer\Test\AccessibleObject;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
@@ -235,8 +237,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolveConfigFileChooseFileWithInvalidFile()
     {
-        $dirBase = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR;
-        $dirBase = realpath($dirBase);
+        $dirBase = realpath(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR);
         $this->resolver
             ->setOption('path', $dirBase.'/case_5')
             ->resolve();
@@ -250,6 +251,159 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->resolve();
 
         $this->assertSame(__DIR__.DIRECTORY_SEPARATOR.'Command', $this->resolver->getPath());
+
+        $this->resolver
+            ->setCwd(dirname(__DIR__))
+            ->setOption('path', basename(__DIR__))
+            ->resolve();
+
+        $this->assertSame(__DIR__, $this->resolver->getPath());
+    }
+
+    public function testResolvePathWithFileThatIsExcludedDirectly()
+    {
+        $this->config->getFinder()
+            ->in(__DIR__)
+            ->notPath(basename(__FILE__));
+
+        $this->resolver
+            ->setOption('path', __FILE__)
+            ->resolve();
+
+        $this->assertCount(0, $this->resolver->getConfig()->getFinder());
+    }
+
+    public function testResolvePathWithFileThatIsExcludedByDir()
+    {
+        $dir = dirname(__DIR__);
+        $this->config->getFinder()
+            ->in($dir)
+            ->exclude(basename(__DIR__));
+
+        $this->resolver
+            ->setOption('path', __FILE__)
+            ->resolve();
+
+        $this->assertCount(0, $this->resolver->getConfig()->getFinder());
+    }
+
+    public function testResolvePathWithFileThatIsNotExcluded()
+    {
+        $dir = __DIR__;
+        $this->config->getFinder()
+            ->in($dir)
+            ->notPath('foo-'.basename(__FILE__));
+
+        $this->resolver
+            ->setOption('path', __FILE__)
+            ->resolve();
+
+        $this->assertCount(1, $this->resolver->getConfig()->getFinder());
+    }
+
+    /**
+     * @dataProvider provideResolveIntersectionOfPathsCases
+     */
+    public function testResolveIntersectionOfPaths($expectedIntersectionItems, $configFinder, $option)
+    {
+        $this->config->finder($configFinder);
+        $this->resolver
+            ->setOption('path', $option)
+            ->resolve()
+        ;
+
+        $intersectionItems = array_map(
+            function (SplFileInfo $file) {
+                return $file->getRealPath();
+            },
+            iterator_to_array($this->resolver->getConfig()->getFinder(), false)
+        );
+
+        sort($expectedIntersectionItems);
+        sort($intersectionItems);
+
+        $this->assertSame($expectedIntersectionItems, $intersectionItems);
+    }
+
+    public function provideResolveIntersectionOfPathsCases()
+    {
+        $dir = __DIR__.'/../Fixtures/ConfigurationResolverPathsIntersection';
+        $cb = function (array $items) use ($dir) {
+            return array_map(
+                function ($item) use ($dir) {
+                    return realpath($dir.'/'.$item);
+                },
+                $items
+            );
+        };
+
+        return array(
+            // configured only by finder
+            array(
+                $cb(array('a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php')),
+                Finder::create()
+                    ->in($dir),
+                null,
+            ),
+            // configured only by argument
+            array(
+                $cb(array('a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php')),
+                Finder::create(),
+                $dir,
+            ),
+            // configured by finder, filtered by argument which is dir
+            array(
+                $cb(array('c/c1.php', 'c/d/cd1.php')),
+                Finder::create()
+                    ->in($dir),
+                $dir.'/c',
+            ),
+            // configured by finder, filtered by argument which is file
+            array(
+                $cb(array('c/c1.php')),
+                Finder::create()
+                    ->in($dir),
+                $dir.'/c/c1.php',
+            ),
+            // finder points to one dir while argument to another, not connected
+            array(
+                array(),
+                Finder::create()
+                    ->in($dir.'/b'),
+                $dir.'/c',
+            ),
+            // finder with excluded dir, argument point to excluded file
+            array(
+                array(),
+                Finder::create()
+                    ->in($dir)
+                    ->exclude('c'),
+                $dir.'/c/d/cd1.php',
+            ),
+            // finder with excluded dir, argument point to excluded parent
+            array(
+                $cb(array('c/c1.php')),
+                Finder::create()
+                    ->in($dir)
+                    ->exclude('c/d'),
+                $dir.'/c',
+            ),
+            // finder with excluded file, argument point to excluded parent
+            array(
+                $cb(array('c/d/cd1.php')),
+                Finder::create()
+                    ->in($dir)
+                    ->notPath('c/c1.php'),
+                $dir.'/c',
+            ),
+            // finder with excluded file, argument point to excluded parent
+            array(
+                $cb(array('b/b1.php', 'b/b2.php')),
+                Finder::create()
+                    ->in($dir),
+                $dir.'/b',
+            ),
+        );
     }
 
     public function testResolveIsDryRunViaStdIn()

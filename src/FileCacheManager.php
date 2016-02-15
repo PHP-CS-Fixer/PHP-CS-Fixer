@@ -33,6 +33,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
 final class FileCacheManager
 {
     private $cacheFile;
+    private $cacheFileRealDirName;
     private $isEnabled;
     private $rules;
     private $newHashes = array();
@@ -49,6 +50,7 @@ final class FileCacheManager
     {
         $this->isEnabled = $isEnabled;
         $this->cacheFile = $cacheFile;
+        $this->cacheFileRealDirName = dirname(realpath($cacheFile));
         $this->rules = $rules;
 
         $this->readFromFile();
@@ -64,6 +66,8 @@ final class FileCacheManager
         if (!$this->isCacheAvailable()) {
             return true;
         }
+
+        $file = $this->getRelativePathname($file);
 
         if (!isset($this->oldHashes[$file])) {
             return true;
@@ -84,6 +88,8 @@ final class FileCacheManager
         if (!$this->isCacheAvailable()) {
             return;
         }
+
+        $file = $this->getRelativePathname($file);
 
         $this->newHashes[$file] = $this->calcHash($fileContent);
     }
@@ -138,6 +144,7 @@ final class FileCacheManager
         // Set hashes only if the cache is fresh, otherwise we need to parse all files
         if (!$this->isCacheStale($data['version'], $data['rules'])) {
             $this->oldHashes = $data['hashes'];
+            $this->newHashes = $this->oldHashes;
         }
     }
 
@@ -158,5 +165,21 @@ final class FileCacheManager
         if (false === @file_put_contents($this->cacheFile, $data, LOCK_EX)) {
             throw new IOException(sprintf('Failed to write file "%s".', $this->cacheFile), 0, null, $this->cacheFile);
         }
+    }
+
+    private function normalizePath($path)
+    {
+        return str_replace(array('\\', '/'), DIRECTORY_SEPARATOR, $path);
+    }
+
+    private function getRelativePathname($file)
+    {
+        $file = $this->normalizePath($file);
+
+        if (0 !== stripos($file, $this->cacheFileRealDirName.DIRECTORY_SEPARATOR)) {
+            return $file;
+        }
+
+        return substr($file, strlen($this->cacheFileRealDirName) + 1);
     }
 }
