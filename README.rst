@@ -578,10 +578,6 @@ Choose from the list of available fixers:
                         for standard PHP types in
                         phpdoc.
 
-* **phpdoc_var_to_type**
-                        @var should always be written
-                        as @type.
-
 * **phpdoc_var_without_name** [@Symfony]
                         @var and @type annotations
                         should not contain the
