@@ -136,11 +136,11 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
         $factory = FixerFactory::create()
             ->registerBuiltInFixers()
-            ->useRuleSet(new RuleSet(array('strict' => true, 'blank_line_before_return' => false)))
+            ->useRuleSet(new RuleSet(array('strict_comparison' => true, 'blank_line_before_return' => false)))
         ;
         $fixers = $factory->getFixers();
         $this->assertCount(1, $fixers);
-        $this->assertSame('strict', $fixers[0]->getName());
+        $this->assertSame('strict_comparison', $fixers[0]->getName());
     }
 
     /**
@@ -156,7 +156,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         ;
         $fixers = $factory->getFixers();
         $this->assertCount(1, $fixers);
-        $this->assertSame('strict', $fixers[0]->getName());
+        $this->assertSame('strict_comparison', $fixers[0]->getName());
     }
 
     public function testFixersPriorityEdgeFixers()
@@ -194,8 +194,6 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['binary_operator_spaces'], $fixers['align_equals']), // tested also in: align_double_arrow,align_equals.test
             array($fixers['class_definition'], $fixers['no_trailing_whitespace']), // tested also in: class_definition,no_trailing_whitespace.test
             array($fixers['concat_without_spaces'], $fixers['concat_with_spaces']),
-            array($fixers['double_arrow_no_multiline_whitespace'], $fixers['align_double_arrow']), // tested also in: double_arrow_no_multiline_whitespace,align_double_arrow.test
-            array($fixers['double_arrow_no_multiline_whitespace'], $fixers['trailing_comma_in_multiline_array']),
             array($fixers['elseif'], $fixers['braces']),
             array($fixers['method_separation'], $fixers['braces']),
             array($fixers['method_separation'], $fixers['no_tab_indentation']),
@@ -205,7 +203,9 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_duplicate_semicolons'], $fixers['no_singleline_whitespace_before_semicolons']),
             array($fixers['no_duplicate_semicolons'], $fixers['switch_case_semicolon_to_colon']),  // tested also in: no_duplicate_semicolons,switch_case_semicolon_to_colon.test
             array($fixers['no_leading_import_slash'], $fixers['ordered_imports']), // tested also in: no_leading_import_slash,ordered_imports.test
-            array($fixers['no_short_bool_cast'], $fixers['spaces_cast']), // tested also in: no_short_bool_cast,spaces_cast.test
+            array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['align_double_arrow']), // tested also in: no_multiline_whitespace_around_double_arrow,align_double_arrow.test
+            array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['trailing_comma_in_multiline_array']),
+            array($fixers['no_short_bool_cast'], $fixers['cast_spaces']), // tested also in: no_short_bool_cast,cast_spaces.test
             array($fixers['no_short_echo_tag'], $fixers['echo_to_print']), // tested also in: echo_to_print,no_short_echo_tag.test
             array($fixers['no_tab_indentation'], $fixers['phpdoc_indent']),
             array($fixers['no_unneeded_control_parentheses'], $fixers['no_trailing_whitespace']), // tested also in: no_trailing_whitespace,no_unneeded_control_parentheses.test

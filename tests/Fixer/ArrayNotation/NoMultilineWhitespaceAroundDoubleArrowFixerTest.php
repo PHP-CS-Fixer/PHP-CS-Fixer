@@ -21,7 +21,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  */
-final class DoubleArrowNoMultilineWhitespaceFixerTest extends AbstractFixerTestCase
+final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases

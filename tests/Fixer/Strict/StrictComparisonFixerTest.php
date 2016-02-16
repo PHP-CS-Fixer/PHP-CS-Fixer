@@ -19,7 +19,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  */
-final class StrictFixerTest extends AbstractFixerTestCase
+final class StrictComparisonFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideTestFixCases

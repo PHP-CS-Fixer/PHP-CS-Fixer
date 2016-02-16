@@ -20,7 +20,7 @@ return PhpCsFixer\Config::create()
         'ordered_imports' => true,
         'php_unit_construct' => true,
         'php_unit_strict' => true,
-        'strict' => true,
+        'strict_comparison' => true,
         'strict_param' => true,
     ))
     ->finder(

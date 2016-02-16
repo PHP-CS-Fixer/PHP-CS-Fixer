@@ -599,7 +599,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     {
         $this->config->setRules(array(
             'braces' => true,
-            'strict' => false,
+            'strict_comparison' => false,
         ));
 
         $this->resolver->resolve();
@@ -630,7 +630,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     {
         $this->config->setRules(array(
             'braces' => true,
-            'strict' => false,
+            'strict_comparison' => false,
         ));
 
         $this->resolver->setOption('rules', 'blank_line_before_return');

@@ -18,7 +18,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class StrictFixer extends AbstractFixer
+final class StrictComparisonFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

@@ -9,7 +9,7 @@ To configure which fixers should be used you must now set rules and sets instead
 
 Default ruleset was changed from Symfony standard to more generic PSR2. You can still use Symfony standard, which in fact extends PSR2.
 
-The term of risky fixers was introduced. Risky fixer is a fixer that may change the meaning of code (like `StrictFixer` fixer, which will change `==` into `===`). No rules that are followed by risky fixers are run by default. You need to explicitly permit risky fixers to run them.
+The term of risky fixers was introduced. Risky fixer is a fixer that may change the meaning of code (like `StrictComparisonFixer` fixer, which will change `==` into `===`). No rules that are followed by risky fixers are run by default. You need to explicitly permit risky fixers to run them.
 
 Default configuraton changes
 ----------------------------
@@ -76,7 +76,7 @@ Old name | New name | Note
 array_element_no_space_before_comma            | no_whitespace_before_comma_in_array
 array_element_white_space_after_comma          | whitespace_after_comma_in_array
 blankline_after_open_tag                       | blank_line_after_opening_tag
-double_arrow_multiline_whitespaces             | double_arrow_no_multiline_whitespace
+double_arrow_multiline_whitespaces             | no_multiline_whitespace_around_double_arrow
 duplicate_semicolon                            | no_duplicate_semicolons
 empty_return                                   | simplified_null_return
 eof_ending                                     | single_blank_line_at_eof
@@ -113,7 +113,9 @@ short_tag                                      | full_opening_tag
 single_array_no_trailing_comma                 | no_trailing_comma_in_singleline_array
 spaces_after_semicolon                         | space_after_semicolon
 spaces_before_semicolon                        | no_singleline_whitespace_before_semicolons
+spaces_cast                                    | cast_spaces
 standardize_not_equal                          | standardize_not_equals
+strict                                         | strict_comparison
 ternary_spaces                                 | ternary_operator_spaces
 trailing_spaces                                | no_trailing_whitespace
 unary_operators_spaces                         | unary_operator_spaces
