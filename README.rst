@@ -751,12 +751,12 @@ to the default list of symfony-level fixers:
 
     <?php
 
-    $finder = Symfony\CS\Finder::create()
+    $finder = Symfony\CS\Finder\DefaultFinder::create()
         ->exclude('somedir')
         ->in(__DIR__)
     ;
 
-    return Symfony\CS\Config::create()
+    return Symfony\CS\Config\Config::create()
         ->fixers(array('strict_param', 'short_array_syntax'))
         ->finder($finder)
     ;
@@ -768,11 +768,11 @@ then specify all fixers to be used:
 
     <?php
 
-    $finder = Symfony\CS\Finder::create()
+    $finder = Symfony\CS\Finder\DefaultFinder::create()
         ->in(__DIR__)
     ;
 
-    return Symfony\CS\Config::create()
+    return Symfony\CS\Config\Config::create()
         ->level(Symfony\CS\FixerInterface::NONE_LEVEL)
         ->fixers(array('trailing_spaces', 'encoding'))
         ->finder($finder)
@@ -786,12 +786,12 @@ Note the additional ``-`` in front of the Fixer name.
 
     <?php
 
-    $finder = Symfony\CS\Finder::create()
+    $finder = Symfony\CS\Finder\DefaultFinder::create()
         ->exclude('somedir')
         ->in(__DIR__)
     ;
 
-    return Symfony\CS\Config::create()
+    return Symfony\CS\Config\Config::create()
         ->fixers(array('-psr0'))
         ->finder($finder)
     ;
@@ -802,7 +802,7 @@ The ``symfony`` level is set by default, you can also change the default level:
 
     <?php
 
-    return Symfony\CS\Config::create()
+    return Symfony\CS\Config\Config::create()
         ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
     ;
 
@@ -827,7 +827,7 @@ speed up further runs.
 
     <?php
 
-    return Symfony\CS\Config::create()
+    return Symfony\CS\Config\Config::create()
         ->setUsingCache(true)
     ;
 
