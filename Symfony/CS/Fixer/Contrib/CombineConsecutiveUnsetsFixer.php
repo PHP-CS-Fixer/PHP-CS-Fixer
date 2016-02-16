@@ -27,10 +27,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
-
-        // Offset start at 5, because any call to 'unset' that can possible be merged is
-        // build up out of at least 4 Tokens; 'unset', '(', '[var]', ')' after at least one ';'.
-        for ($index = $tokens->count() - 5; $index > 5; --$index) {
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             if (!$tokens[$index]->isGivenKind(T_UNSET)) {
                 continue;
             }
@@ -86,7 +83,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should ran before SpacesAfterSemicolonFixer, WhitespacyLinesFixer, TrailingSpacesFixer and ExtraEmptyLinesFixer
+        // should ran before SpacesAfterSemicolonFixer, WhitespacyLinesFixer, TrailingSpacesFixer and ExtraEmptyLinesFixer.
         return 25;
     }
 
@@ -111,7 +108,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
      * * closing brace index
      * * end semicolon index
      *
-     * Or the index to where the method looked for an call
+     * Or the index to where the method looked for an call.
      *
      * @param Tokens $tokens
      * @param int    $index
@@ -162,7 +159,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
      * @param int    $end    Index of the last token to move
      * @param int    $to     Upper boundary index
      *
-     * @return int Number of tokens inserted.
+     * @return int Number of tokens inserted
      */
     private function moveTokens(Tokens $tokens, $start, $end, $to)
     {
