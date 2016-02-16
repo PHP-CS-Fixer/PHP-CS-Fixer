@@ -12,22 +12,27 @@
 
 namespace PhpCsFixer\Fixer\Phpdoc;
 
-use PhpCsFixer\AbstractPhpdocTagsFixer;
+use PhpCsFixer\AbstractProxyFixer;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocPropertyFixer extends AbstractPhpdocTagsFixer
+final class PhpdocPropertyFixer extends AbstractProxyFixer
 {
     /**
      * {@inheritdoc}
      */
-    protected static $search = array('property-read', 'property-write');
+    protected function createProxyFixer()
+    {
+        $fixer = new GeneralPhpdocAnnotationRenameFixer();
+        $fixer->configure(array(
+            'property-read' => 'property',
+            'property-write' => 'property',
+        ));
 
-    /**
-     * {@inheritdoc}
-     */
-    protected static $replace = 'property';
+        return $fixer;
+    }
 
     /**
      * {@inheritdoc}

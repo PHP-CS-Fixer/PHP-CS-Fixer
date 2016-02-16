@@ -271,6 +271,10 @@ Choose from the list of available fixers:
                         Configured annotations should
                         be omitted from phpdocs.
 
+* **general_phpdoc_annotation_rename**
+                        Configured annotations inside
+                        phpdocs should be renamed.
+
 * **hash_to_slash_comment** [@Symfony]
                          Single line comments should
                          use double slashes (//) and

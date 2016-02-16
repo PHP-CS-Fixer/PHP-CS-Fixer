@@ -140,6 +140,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
     {
         static $exceptions = array(
             'PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer',
+            'PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRenameFixer',
         );
 
         $cases = array();
