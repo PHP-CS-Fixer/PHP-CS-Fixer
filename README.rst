@@ -657,6 +657,10 @@ Choose from the list of available fixers:
                         before a namespace
                         declaration.
 
+* **no_useless_continue_count** [contrib]
+                        Continue and break statements
+                        should not use 0 or 1.
+
 * **no_useless_return** [contrib]
                         There should not be an empty
                         return statement at the end of

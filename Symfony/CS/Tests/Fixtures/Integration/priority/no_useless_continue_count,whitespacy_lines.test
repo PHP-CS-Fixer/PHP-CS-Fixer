@@ -1,0 +1,20 @@
+--TEST--
+Integration of fixers: no_useless_continue_count,whitespacy_lines.
+--CONFIG--
+level=none
+fixers=no_useless_continue_count,whitespacy_lines
+--EXPECT--
+<?php
+while(true) {
+    continue
+
+;
+}
+
+--INPUT--
+<?php
+while(true) {
+    continue
+   1
+;
+}

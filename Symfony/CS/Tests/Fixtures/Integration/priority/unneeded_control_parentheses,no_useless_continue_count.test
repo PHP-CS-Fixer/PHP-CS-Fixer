@@ -1,0 +1,16 @@
+--TEST--
+Integration of fixers: unneeded_control_parentheses,no_useless_continue_count.
+--CONFIG--
+level=none
+fixers=unneeded_control_parentheses,no_useless_continue_count
+--EXPECT--
+<?php
+while ($y) {
+    break ;
+}
+
+--INPUT--
+<?php
+while ($y) {
+    break(1);
+}

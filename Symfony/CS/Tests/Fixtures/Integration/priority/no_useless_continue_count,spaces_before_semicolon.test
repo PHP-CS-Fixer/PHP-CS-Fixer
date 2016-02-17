@@ -1,0 +1,16 @@
+--TEST--
+Integration of fixers: no_useless_continue_count,spaces_before_semicolon.
+--CONFIG--
+level=none
+fixers=no_useless_continue_count,spaces_before_semicolon
+--EXPECT--
+<?php
+while(true) {
+    continue;
+}
+
+--INPUT--
+<?php
+while(true) {
+    continue   1;
+}
