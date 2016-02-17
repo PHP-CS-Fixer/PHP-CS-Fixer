@@ -662,6 +662,10 @@ Choose from the list of available fixers:
                         return statement at the end of
                         a function.
 
+* **no_while_as_for_loop** [contrib]
+                        Simple for-loops should be
+                        written as while-loops.
+
 * **ordered_use** [contrib]
                         Ordering use statements.
 
