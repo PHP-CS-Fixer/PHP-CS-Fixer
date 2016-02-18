@@ -65,6 +65,22 @@ $a = 3;
                 "<?php\r\n\$a = 5;\r\n    \r\n",
             ),
             array(
+                // test for not adding a line after a single line comment
+                "<?php\n\$a = 4; // a comment\n",
+                null,
+            ),
+            array(
+                // test for removing lines after a single line comment
+                "<?php\n\$a = 4; // a comment\n",
+                "<?php\n\$a = 4; // a comment\n\n",
+            ),
+            array(
+                // for not adding a line after a single line comment which do
+                // not end with a linebreak
+                "<?php\n\$a = 4; // a comment\n",
+                "<?php\n\$a = 4; // a comment",
+            ),
+            array(
                 '<?php
 $a = 6;
 

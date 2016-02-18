@@ -38,8 +38,17 @@ class EofEndingFixer extends AbstractFixer
         }
 
         if ($token->isWhitespace()) {
-            $lineBreak = false === strrpos($token->getContent(), "\r") ? "\n" : "\r\n";
-            $token->setContent($lineBreak);
+            if ($count > 1 && $this->tokenEndsWithNewline($tokens[$count - 2])) {
+                $token->clear();
+            } else {
+                $lineBreak = false === strrpos($token->getContent(), "\r") ? "\n" : "\r\n";
+                $token->setContent($lineBreak);
+            }
+        } elseif ($token->isComment()) {
+            if ($this->tokenEndsWithNewline($token)) {
+                return $content;
+            }
+            $token->setContent($token->getContent()."\n");
         } else {
             $tokens->insertAt($count, new Token(array(T_WHITESPACE, "\n")));
         }
@@ -62,5 +71,18 @@ class EofEndingFixer extends AbstractFixer
     {
         // must run last to be sure the file is properly formatted before it runs
         return -50;
+    }
+
+    /**
+     * Checks if a Token already ends with an newline.
+     * This can occur e.g. at single line comments.
+     *
+     * @param Token $token
+     *
+     * @return bool
+     */
+    private function tokenEndsWithNewline(Token $token)
+    {
+        return substr($token->getContent(), -1) === "\n";
     }
 }
