@@ -48,7 +48,7 @@ class EofEndingFixer extends AbstractFixer
             if ($this->tokenEndsWithNewline($token)) {
                 return $content;
             }
-            $token->setContent($token->getContent() . "\n");
+            $token->setContent($token->getContent()."\n");
         } else {
             $tokens->insertAt($count, new Token(array(T_WHITESPACE, "\n")));
         }
@@ -78,6 +78,7 @@ class EofEndingFixer extends AbstractFixer
      * This can occur e.g. at single line comments.
      *
      * @param Token $token
+     *
      * @return bool
      */
     private function tokenEndsWithNewline(Token $token)
