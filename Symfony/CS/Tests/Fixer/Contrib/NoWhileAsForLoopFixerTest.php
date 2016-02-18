@@ -67,6 +67,34 @@ final class NoWhileAsForLoopFixerTest extends AbstractFixerTestBase
             array(
                 '<?php for($c=1;$a>1;++$b) echo $a;',
             ),
+            array(
+                '<?php
+                    while(true) {
+                        echo 1;
+                        break;
+                    }
+                ',
+                '<?php
+                    for(;;) {
+                        echo 1;
+                        break;
+                    }
+                ',
+            ),
+            array(
+                '<?php
+                    while(true /* */) {
+                        echo 1;
+                        break;
+                    }
+                ',
+                '<?php
+                    for(; /* */;) {
+                        echo 1;
+                        break;
+                    }
+                ',
+            ),
         );
     }
 }

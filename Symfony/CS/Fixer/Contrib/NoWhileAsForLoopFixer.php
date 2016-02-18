@@ -65,7 +65,12 @@ final class NoWhileAsForLoopFixer extends AbstractFixer
         }
 
         $tokens->overrideAt($index, array(T_WHILE, 'while', $tokens[$index]->getLine()));
-        $tokens->clearTokenAndMergeSurroundingWhitespace($firstSemicolon);
+        if ($secondSemicolon === $tokens->getNextMeaningfulToken($firstSemicolon)) {
+            $tokens->overrideAt($firstSemicolon, array(T_STRING, 'true', $tokens[$firstSemicolon]->getLine()));
+        } else {
+            $tokens->clearTokenAndMergeSurroundingWhitespace($firstSemicolon);
+        }
+
         $tokens->clearTokenAndMergeSurroundingWhitespace($secondSemicolon);
     }
 }
