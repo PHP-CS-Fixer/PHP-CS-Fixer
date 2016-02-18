@@ -609,6 +609,11 @@ Choose from the list of available fixers:
                         Align equals symbols in
                         consecutive lines.
 
+* **combine_consecutive_imports** [contrib]
+                        Calling import on multiple
+                        variables should be done in
+                        one call on one line.
+
 * **concat_with_spaces** [contrib]
                         Concatenation should be used
                         with at least one whitespace
