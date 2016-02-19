@@ -111,6 +111,7 @@ final class FixCommand extends Command
                     new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no)', null),
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file ', null),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
+                    new InputOption('using-xdebug', '', InputOption::VALUE_NONE, 'Suppresses the xdebug warning message'),
                     new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'The rules', null),
                     new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no)', null),
                     new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file'),
@@ -303,7 +304,7 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $stdErr = ($output instanceof ConsoleOutputInterface) ? $output->getErrorOutput() : null;
-        if ($stdErr && extension_loaded('xdebug')) {
+        if (!$input->getOption('using-xdebug') && $stdErr && extension_loaded('xdebug')) {
             $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
         }
 
