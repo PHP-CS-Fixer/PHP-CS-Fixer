@@ -21,7 +21,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <graham@mineuk.com>
  */
-final class DoubleArrowNoMultilineWhitespaceFixer extends AbstractFixer
+final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

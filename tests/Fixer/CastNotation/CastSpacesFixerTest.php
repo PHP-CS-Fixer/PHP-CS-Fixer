@@ -17,7 +17,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 /**
  * @internal
  */
-final class SpacesCastFixerTest extends AbstractFixerTestCase
+final class CastSpacesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider testFixCastsProvider

@@ -78,7 +78,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
             '@PSR1' => true,
             'braces' => true,
             'encoding' => false,
-            'strict' => true,
+            'strict_comparison' => true,
             'unix_line_endings' => true,
         ));
 
@@ -86,7 +86,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
             array(
                 'braces' => true,
                 'full_opening_tag' => true,
-                'strict' => true,
+                'strict_comparison' => true,
                 'unix_line_endings' => true,
             ),
             $ruleSet->getRules()
@@ -97,7 +97,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
     {
         $ruleSet = RuleSet::create(array(
             '@PSR2' => true,
-            'strict' => true,
+            'strict_comparison' => true,
         ));
 
         $this->assertSameRules(
@@ -121,7 +121,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
                 'single_blank_line_at_eof' => true,
                 'single_import_per_statement' => true,
                 'single_line_after_imports' => true,
-                'strict' => true,
+                'strict_comparison' => true,
                 'switch_case_semicolon_to_colon' => true,
                 'switch_case_space' => true,
                 'unix_line_endings' => true,

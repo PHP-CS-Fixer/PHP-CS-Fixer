@@ -19,7 +19,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class SpacesCastFixer extends AbstractFixer
+final class CastSpacesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: no_multiline_whitespace_around_double_arrow,align_double_arrow.
+--CONFIG--
+{"no_multiline_whitespace_around_double_arrow": true, "align_double_arrow": true}
+--EXPECT--
+<?php
+$a = [
+    1  => 2,
+    33 => 44,
+];
+
+--INPUT--
+<?php
+$a = [
+    1 => 2,
+    33
+      =>
+        44,
+];
