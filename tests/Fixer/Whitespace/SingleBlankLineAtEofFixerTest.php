@@ -110,6 +110,30 @@ inline 1
 
 ?>Inline2\r\n",
             ),
+            array(
+                "<?php return true;\n// A comment\n",
+                "<?php return true;\n// A comment",
+            ),
+            array(
+                "<?php return true;\n// A comment\n",
+                "<?php return true;\n// A comment\n\n",
+            ),
+            array(
+                "<?php return true;\n# A comment\n",
+                "<?php return true;\n# A comment",
+            ),
+            array(
+                "<?php return true;\n# A comment\n",
+                "<?php return true;\n# A comment\n\n",
+            ),
+            array(
+                "<?php return true;\n/*\nA comment\n*/\n",
+                "<?php return true;\n/*\nA comment\n*/",
+            ),
+            array(
+                "<?php return true;\n/*\nA comment\n*/\n",
+                "<?php return true;\n/*\nA comment\n*/\n\n",
+            ),
         );
     }
 }
