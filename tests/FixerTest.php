@@ -138,17 +138,10 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
 
     public function provideFixersForFinalCheckCases()
     {
-        static $exceptions = array(
-            'PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer',
-            'PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRenameFixer',
-        );
-
         $cases = array();
 
         foreach ($this->getAllFixers() as $fixer) {
-            if (!in_array(get_class($fixer), $exceptions, true)) {
-                $cases[] = array(new \ReflectionClass($fixer));
-            }
+            $cases[] = array(new \ReflectionClass($fixer));
         }
 
         return $cases;

@@ -21,7 +21,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Graham Campbell <graham@mineuk.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class GeneralPhpdocAnnotationRenameFixer extends AbstractFixer
+final class GeneralPhpdocAnnotationRenameFixer extends AbstractFixer
 {
     /**
      * @var array
