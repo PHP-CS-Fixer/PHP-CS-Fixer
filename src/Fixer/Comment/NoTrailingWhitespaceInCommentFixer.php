@@ -12,13 +12,13 @@
 
 namespace PhpCsFixer\Fixer\Comment;
 
-use PhpCsFixer\AbstractAnnotationRemovalFixer;
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class NoTrailingWhitespaceInCommentFixer extends AbstractAnnotationRemovalFixer
+final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
