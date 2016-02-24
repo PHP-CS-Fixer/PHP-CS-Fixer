@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -24,6 +26,9 @@ abstract class AbstractFixer implements FixerInterface
      */
     public function configure(array $configuration = null)
     {
+        if (null !== $configuration) {
+            throw new InvalidFixerConfigurationException($this->getName(), 'Configuration is not allowed.');
+        }
     }
 
     /**
