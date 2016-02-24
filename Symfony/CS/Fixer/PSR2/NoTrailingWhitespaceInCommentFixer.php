@@ -12,13 +12,13 @@
 
 namespace Symfony\CS\Fixer\PSR2;
 
-use Symfony\CS\AbstractAnnotationRemovalFixer;
+use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class NoTrailingWhitespaceInCommentFixer extends AbstractAnnotationRemovalFixer
+final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
