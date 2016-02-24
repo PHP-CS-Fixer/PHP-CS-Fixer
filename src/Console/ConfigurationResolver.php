@@ -402,11 +402,18 @@ final class ConfigurationResolver
             return;
         }
 
+        $path = realpath($this->path);
+
+        if (false === $path) {
+            $this->config->finder(new \ArrayIterator(array()));
+
+            return;
+        }
+
         // - when we already have a valid finder - create intersection iterator of current finder and provided path
         // - when we don't have valid finder - prepare new iterator
         $iterator = null;
         $currentFinder = $this->config->getFinder();
-        $path = realpath($this->path);
         $isFile = is_file($path);
 
         if ($isFile) {
