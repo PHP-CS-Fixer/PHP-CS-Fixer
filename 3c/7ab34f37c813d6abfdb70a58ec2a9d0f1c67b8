@@ -1,0 +1,124 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-15T11:44:08Z
+
+Thank you for the PR :)
+It seems another fixer is effected with the good'ol linebreak-added-to-comment-token ^-^
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-15T11:46:56Z
+
+Yep, it should already works on 2.x line
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-02-15T11:52:38Z
+
+@SpacePossum all the redundant code I added, like the one you pointed out, is due to the fact that `// A comment[\n]` is a single token, and not 2 separate tokens.
+
+So, I found no other way to pass the 2 tests:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.12/Symfony/CS/Tests/Fixer/AbstractFixerTestBase.php#L87-L92
+because of that way of PHP to tokenize the single line comment.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-15T12:19:01Z
+
+Infos:
+- that 2 tests are important for caching the tokenizer result, and in the end  - speed of whole tool.
+- comment token with trailing new-lines is split into comment + whitespace tokens on 2.x line
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-02-15T12:50:36Z
+
+@keradus Info nr 1: yup, I knew and understand, I was just point out that clearing a comment token and adding a new-line token it is not feasable because after cache clearing they will result in a single comment token with new-line at the end.
+
+So the code can't be simple and clear because we need to fix tokens in the order and appearance they are before fixing.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-02-15T12:52:31Z
+
+To be more clear on the need of // check: https://3v4l.org/VlKOo
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-15T15:31:50Z
+
+please a test for hash comments as well, I think these act the same as `//`
+```php
+<?php
+# comment
+var_dump(token_get_all("<?php # comment\n"));
+```
+
+I think that testing for single line comment can be done by just counting for `\n` in the string and not looking at `\\` vs `#` vs. `/*` , but maybe not?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-15T15:35:57Z
+
+`//` and `#` act the same way
+`/*` is different, as it needs to be closed explicitly by `*/`
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-02-15T15:46:21Z
+
+At the beginning I skipped the `#` comment because of the `HashToSlashCommentFixer` that I think everybody uses. Btw now is considered.
+
+@SpacePossum there is no other way to check between `/*` and `//`.
+Counting new-lines is ineffective: `// comment[\n]` ~ `/* comment[\n]*/`
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-15T15:49:30Z
+
+> At the beginning I skipped the # comment because of the HashToSlashCommentFixer that I think everybody uses. Btw now is considered.
+
+Please do not assume that.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-02-16T07:46:06Z
+
+It seems that Github inline comments don't like rebase: I was expecting the usual `[...] commented on an outdated diff [...]` but your comments are still active on different lines.
+
+Btw as you can see, I committed the changes and rebased the branch.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-16T08:31:45Z
+
+:+1:
+
+Note to myself: extra cautious is needed when merging to 2.x line
+
+---------------------------------------------------------------------------
+
+by langj at 2016-02-23T09:29:11Z
+
+Is there somthing preventing this PR from being merged? I would like to get this fix.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-23T09:46:52Z
+
+I think it is OK, please note that people don't get notifications on commits alone.
+So @keradus might just have missed the fact that @Slamdunk added something to this PR.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-23T09:49:42Z
+
+@SpacePossum that's right ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-23T09:50:45Z
+
+Note to myself:
+- merge to 1.11 instead of targeted 1.12
+- simplify when merging to 2.0 (as it's not needed on 2.x line)
