@@ -372,7 +372,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
                     ->in($dir.'/b'),
                 $dir.'/c',
             ),
-            // finder with excluded dir, argument point to excluded file
+            // finder with excluded dir, argument points to excluded file
             array(
                 array(),
                 Finder::create()
@@ -380,7 +380,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
                     ->exclude('c'),
                 $dir.'/c/d/cd1.php',
             ),
-            // finder with excluded dir, argument point to excluded parent
+            // finder with excluded dir, argument points to excluded parent
             array(
                 $cb(array('c/c1.php')),
                 Finder::create()
@@ -388,7 +388,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
                     ->exclude('c/d'),
                 $dir.'/c',
             ),
-            // finder with excluded file, argument point to excluded parent
+            // finder with excluded file, argument points to excluded parent
             array(
                 $cb(array('c/d/cd1.php')),
                 Finder::create()
@@ -396,12 +396,12 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
                     ->notPath('c/c1.php'),
                 $dir.'/c',
             ),
-            // finder with excluded file, argument point to excluded parent
+            // configured by finder, argument points to not-existing path
             array(
-                $cb(array('b/b1.php', 'b/b2.php')),
+                array(),
                 Finder::create()
                     ->in($dir),
-                $dir.'/b',
+                'non_existing_dir',
             ),
         );
     }
