@@ -124,7 +124,7 @@ final class Linter implements LinterInterface
     private function createProcessForSource($source)
     {
         if (null === $this->temporaryFile) {
-            $this->temporaryFile = tempnam('.', 'tmp');
+            $this->temporaryFile = tempnam('.', 'cs_fixer_tmp_');
         }
 
         if (false === @file_put_contents($this->temporaryFile, $source)) {
