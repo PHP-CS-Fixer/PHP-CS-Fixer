@@ -1,0 +1,89 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-24T14:55:33Z
+
+:-1:
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-02-24T15:04:31Z
+
+Ok this is not a big deal, but let me show you what happens to us.
+`tmp` is too often used everywhere for a temporary file, and in my business we ended up having tons of `tmp` files not cleaned after their use, and we often get stuck in the doubt if we can remove them or not. This happend also with this tool.
+
+I have no preference on what the prefix should be, but we have a bit difficult times when we find untracked orphan `tmp*` files.
+
+May we come to something slightly more verbose than just `tmp`?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-24T15:12:22Z
+
+> having tons of tmp files not cleaned after their use, and we often get stuck in the doubt if we can remove them or not.
+
+aren't tmp files safe to remove, just from their nature?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-02-24T15:17:02Z
+
+@keradus this is true only if you consider all the PHP processes as terminated. In our business we use PHP even for long-running scripts.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-24T15:29:26Z
+
+Then you have the files locked. But indeed, releasing could be messy if process was interrupted.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-02-24T15:34:36Z
+
+I'll let the community decide
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-24T16:24:28Z
+
++1, more clear and I see no drawback from the change
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-25T17:00:07Z
+
+@Slamdunk please squash your commits, I think it is RTM after that.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-25T17:00:09Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-25T17:01:29Z
+
+@Slamdunk please don't squash your commits. It's not needed - if PR has only one autor then commits are automatically squashed during merging.
+(Of course if you really want you can squash them on your side, but that's waste of time)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-25T17:02:41Z
+
+Sorry about that, force of habbit from work I guess.
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-25T17:03:24Z
+
+Teach the people at work that they can squash commits during merging, it's not hard ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-25T17:06:42Z
+
+> Teach the people at work that they can squash commits during merging, it's not hard ;)
+
+It would be nice if GitHub could actually support that during merging from the gui.
