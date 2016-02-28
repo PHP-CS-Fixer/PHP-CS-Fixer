@@ -268,12 +268,12 @@ Choose from the list of available fixers:
                          typehint.
 
 * **general_phpdoc_annotation_remove**
-                        Configured annotations should
-                        be omitted from phpdocs.
+                         Configured annotations should
+                         be omitted from phpdocs.
 
 * **general_phpdoc_annotation_rename**
-                        Configured annotations inside
-                        phpdocs should be renamed.
+                         Configured annotations inside
+                         phpdocs should be renamed.
 
 * **hash_to_slash_comment** [@Symfony]
                          Single line comments should
