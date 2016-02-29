@@ -64,16 +64,14 @@ final class PhpdocSingleLineVarSpacingFixerTest extends AbstractFixerTestBase
                     $test2 = 3;
 
                     class A {
+                        /** @var MyCass4 aa */
+                        public $test4 = 4;
 
-                    /** @var MyCass4 aa */
-                    public $test4 = 4;
+                        /** @var MyCass5 */
+                        public $test5 = 5;
 
-                    /** @var MyCass5 */
-                    public $test5 = 5;
-                    }
-
-                    /** @var MyCass6 */
-                    public $test6 = 6;
+                        /** @var MyCass6 */
+                        public $test6 = 6;
                     }
                 ',
                 '<?php
@@ -87,16 +85,14 @@ final class PhpdocSingleLineVarSpacingFixerTest extends AbstractFixerTestBase
                     $test2 = 3;
 
                     class A {
+                        /**  @var   MyCass4   aa       */
+                        public $test4 = 4;
 
-                    /**  @var   MyCass4   aa       */
-                    public $test4 = 4;
+                        /**     @var		MyCass5       */
+                        public $test5 = 5;
 
-                    /**     @var		MyCass5       */
-                    public $test5 = 5;
-                    }
-
-                    /**     @var		MyCass6*/
-                    public $test6 = 6;
+                        /**     @var		MyCass6*/
+                        public $test6 = 6;
                     }
                 ',
             ),
