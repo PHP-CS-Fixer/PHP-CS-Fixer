@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-06T15:06:34Z
+
+@SpacePossum what is the state of this PR ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-06T17:18:44Z
+
+waiting for https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1705 and this one should be finished after that in no time :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-08T08:34:56Z
+
+ping @keradus (and other reviewers), I think this one is ready
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-08T09:38:07Z
+
+Appveyor is broken, its not the code
