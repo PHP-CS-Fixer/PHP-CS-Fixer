@@ -221,6 +221,11 @@ Choose from the list of available fixers:
                          interfaces definition should
                          be one space.
 
+* **combine_consecutive_unsets**
+                         Calling unset on multiple
+                         items should be done in one
+                         call.
+
 * **concat_with_spaces**
                          Concatenation should be used
                          with at least one whitespace

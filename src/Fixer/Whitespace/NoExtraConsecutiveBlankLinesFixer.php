@@ -111,7 +111,7 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run after the NoUnusedImportsFixer, NoEmptyPhpdocFixer.
+        // should be run after the NoUnusedImportsFixer, NoEmptyPhpdocFixer and CombineConsecutiveUnsetsFixer.
         return -20;
     }
 

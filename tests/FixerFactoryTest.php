@@ -243,6 +243,11 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['phpdoc_no_access'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_access,no_empty_phpdoc.test
             array($fixers['phpdoc_no_empty_return'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_empty_return,no_empty_phpdoc.test
             array($fixers['phpdoc_no_package'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_package,no_empty_phpdoc.test
+            array($fixers['combine_consecutive_unsets'], $fixers['space_after_semicolon']), // tested also in: combine_consecutive_unsets,space_after_semicolon.test
+            array($fixers['combine_consecutive_unsets'], $fixers['no_whitespace_in_blank_lines']), // tested also in: combine_consecutive_unsets,no_whitespace_in_blank_lines.test
+            array($fixers['combine_consecutive_unsets'], $fixers['no_trailing_whitespace']), // tested also in: combine_consecutive_unsets,no_trailing_whitespace.test
+            array($fixers['combine_consecutive_unsets'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: combine_consecutive_unsets,no_extra_consecutive_blank_lines.test
+            array($fixers['no_duplicate_semicolons'], $fixers['combine_consecutive_unsets']), // tested also in: no_duplicate_semicolons,combine_consecutive_unsets.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:

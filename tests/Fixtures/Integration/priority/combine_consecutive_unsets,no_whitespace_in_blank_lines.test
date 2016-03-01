@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: combine_consecutive_unsets,no_whitespace_in_blank_lines.
+--CONFIG--
+{"combine_consecutive_unsets": true, "no_whitespace_in_blank_lines": true}
+--EXPECT--
+<?php
+unset($foo, $bar);
+
+
+--INPUT--
+<?php
+unset($foo);
+   unset($bar);

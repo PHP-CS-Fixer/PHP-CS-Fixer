@@ -14,6 +14,7 @@ return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules(array(
         '@Symfony' => true,
+        'combine_consecutive_unsets' => true,
         'header_comment' => array('header' => $header),
         'long_array_syntax' => true,
         'no_useless_return' => true,

@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: combine_consecutive_unsets,space_after_semicolon.
+--CONFIG--
+{"combine_consecutive_unsets": true, "space_after_semicolon": true}
+--EXPECT--
+<?php
+unset($a, $b,$c/**/); $a;
+
+--INPUT--
+<?php
+unset($a);        unset($b,$c/**/);$a;
