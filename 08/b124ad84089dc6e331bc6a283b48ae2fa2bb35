@@ -1,0 +1,122 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-01T19:28:49Z
+
+I don't like this.
+I often store cache in CI cache and use it across all PHP versions.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-01T19:39:13Z
+
+Well, that's surely incorrect, because the behaviour of fixing a file on php 7 in php-cs-fixer is not the same as fixing on php 5.3.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-01T20:08:34Z
+
+And 5.5.1 vs 5.5.2 is the same.
+PHP7 is totally different case
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-01T21:47:12Z
+
+Well, php 5.5.2 vs 5.5.1 might be different if some of them had a bug affecting it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-01T21:47:39Z
+
+At the very least could we consider the major and minor versions, but not patch?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-01T21:49:03Z
+
+I'm not against it, just say don't like it in current form ;)
+
+Let the others say their opinion ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-03T22:33:05Z
+
+Like the idea :+1:
+Maybe use `PHP_VERSION_ID` over `PHP_VERSION`, it would take out out the extra bit (like RC etc.) I think?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-03T23:09:41Z
+
+> Maybe use PHP_VERSION_ID over PHP_VERSION, it would take out out the extra bit (like RC etc.) I think?
+
+We want that extra part though, because RC1 !== RC2.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-03T23:13:12Z
+
+BTW, having tests would be great ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-19T10:49:27Z
+
+Any other thoughts?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-30T15:42:32Z
+
+Anyone ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-30T18:32:10Z
+
+Maybe a better way might be to select a cache file based on the php version?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-30T19:20:09Z
+
+one can already choose non-default filename for cache file
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-30T19:24:24Z
+
+I was meaning that php-cs-fixer could suffix that name with the php version.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-30T19:24:37Z
+
+To allow easy cashing across different php versions automatically.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-31T11:52:00Z
+
+OK, sounds interesting
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-24T11:12:03Z
+
+Just rebased this, but don't have time to do much else with it, so if you don't like it as is, feel free to just close this. I'm not massively fussed.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-24T11:25:28Z
+
+Actually I was waiting for https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1649#issuecomment-177268279
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-24T11:28:28Z
+
+> Actually I was waiting for #1649 (comment)
+
+Yeh, well, not sure people would actually want that because it means they can't control the filename if we're arbitrarily appending stuff to it.
