@@ -226,6 +226,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['combine_consecutive_unsets'], $fixers['trailing_spaces']), // tested also in: combine_consecutive_unsets,trailing_spaces.test
             array($fixers['combine_consecutive_unsets'], $fixers['extra_empty_lines']), // tested also in: combine_consecutive_unsets,extra_empty_lines.test
             array($fixers['duplicate_semicolon'], $fixers['combine_consecutive_unsets']), // tested also in: duplicate_semicolon,combine_consecutive_unsets.test
+            array($fixers['phpdoc_type_to_var'], $fixers['phpdoc_single_line_var_spacing']), // tested also in: phpdoc_type_to_var,phpdoc_single_line_var_spacing.test
         );
 
         $docFixerNames = array_filter(

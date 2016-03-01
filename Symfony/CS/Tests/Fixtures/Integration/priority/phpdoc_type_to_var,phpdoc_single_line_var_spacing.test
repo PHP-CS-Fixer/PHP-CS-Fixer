@@ -1,0 +1,12 @@
+--TEST--
+Integration of fixers: phpdoc_type_to_var,phpdoc_single_line_var_spacing.
+--CONFIG--
+level=none
+fixers=phpdoc_type_to_var,phpdoc_single_line_var_spacing
+--EXPECT--
+<?php
+/** @var Test $test */
+
+--INPUT--
+<?php
+/** @type   Test  $test    */

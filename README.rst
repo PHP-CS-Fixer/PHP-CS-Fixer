@@ -476,6 +476,10 @@ Choose from the list of available fixers:
                         stop, exclamation mark, or
                         question mark.
 
+* **phpdoc_single_line_var_spacing** [symfony]
+                        Single line @var PHPDoc should
+                        have proper spacing.
+
 * **phpdoc_to_comment** [symfony]
                         Docblocks should only be used
                         on structural elements.
