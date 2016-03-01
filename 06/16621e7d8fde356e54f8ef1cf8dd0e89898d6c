@@ -1,0 +1,121 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-06T11:01:56Z
+
+It doesn't actually check that it IS single line?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-06T11:59:19Z
+
+> It doesn't actually check that it IS single line?
+
+I think it does, the line break in the regex prevents matching anything with a line break in it.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-06T12:22:03Z
+
+One file hit on SF, not worth PR'ing IMHO.
+
+```diff
+diff --git a/src/Symfony/Component/Process/ProcessPipes.php b/src/Symfony/Component/Process/ProcessPipes.php
+index b2d09b8..33700cf 100644
+--- a/src/Symfony/Component/Process/ProcessPipes.php
++++ b/src/Symfony/Component/Process/ProcessPipes.php
+@@ -26,9 +26,9 @@ class ProcessPipes
+     private $fileHandles = array();
+     /** @var array */
+     private $readBytes = array();
+-    /** @var bool    */
++    /** @var bool */
+     private $useFiles;
+-    /** @var bool    */
++    /** @var bool */
+     private $ttyMode;
+
+     const CHUNK_SIZE = 16384;
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-15T21:50:08Z
+
+Fixer should run after `phpdoc_type_to_var`
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-15T22:02:20Z
+
+> Fixer should run after phpdoc_type_to_var
+
+No, it should just recognize `@type` as well as `@var` like all the other fixers do?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-15T22:53:13Z
+
+I don't have need to support non-standard annotation in every single fixer.
+Actually, I just don't know what `@type` annotation is, for me it's custom annotation. This fixer follows PSR5 proposal and fixes one of its §, which says nothing about `@type`. And custom annotation could means anything, so it's better to not mess with it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-15T23:36:42Z
+
+> This fixer follows PSR5 proposal and fixes one of its §, which says nothing about @type.
+
+It did when I originally wrote the fixers though.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-15T23:37:18Z
+
+> And custom annotation could means anything, so it's better to not mess with it.
+
+By that logic, it absolutely must be removed from our tag class then?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-15T23:41:19Z
+
+No, as we support converting it to proper one if one follows old PSR-5 one day.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-15T23:42:37Z
+
+> No, as we support converting it to proper one if one follows old PSR-5 one day.
+
+Well we can't have one rule for one, and one for another. We need to either change this fixer to deal with `@type`, or rip that stuff out the other fixers.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-15T23:49:28Z
+
+It sounds to me like you want to rip it out of the other fixers, but keep the converting fixer?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-16T00:04:42Z
+
+I just don't like to propagate fixing that violates PSR-5 proposal
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-16T08:50:32Z
+
+expecting test to fail because of add test without fix;
+
+> I think we don't want to fix invalid docs with $$$$$$$$var_name in second capturing group
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-28T21:46:07Z
+
+One minor and good to go
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-29T15:32:58Z
+
+Please @SpacePossum , could you handle non-working Travis ?
