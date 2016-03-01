@@ -221,6 +221,11 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['phpdoc_no_access'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_access,no_empty_phpdoc.test
             array($fixers['phpdoc_no_empty_return'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_empty_return,no_empty_phpdoc.test
             array($fixers['phpdoc_no_package'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_package,no_empty_phpdoc.test
+            array($fixers['combine_consecutive_unsets'], $fixers['spaces_after_semicolon']), // tested also in: combine_consecutive_unsets,spaces_after_semicolon.test
+            array($fixers['combine_consecutive_unsets'], $fixers['whitespacy_lines']), // tested also in: combine_consecutive_unsets,whitespacy_lines.test
+            array($fixers['combine_consecutive_unsets'], $fixers['trailing_spaces']), // tested also in: combine_consecutive_unsets,trailing_spaces.test
+            array($fixers['combine_consecutive_unsets'], $fixers['extra_empty_lines']), // tested also in: combine_consecutive_unsets,extra_empty_lines.test
+            array($fixers['duplicate_semicolon'], $fixers['combine_consecutive_unsets']), // tested also in: duplicate_semicolon,combine_consecutive_unsets.test
         );
 
         $docFixerNames = array_filter(

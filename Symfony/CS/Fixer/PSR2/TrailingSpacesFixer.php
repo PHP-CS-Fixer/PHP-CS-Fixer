@@ -71,7 +71,7 @@ class TrailingSpacesFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // must run after NoEmptyPhpdocFixerTest
+        // should be run after NoEmptyPhpdocFixerTest, UnneededControlParenthesesFixer, ClassDefinitionFixer and CombineConsecutiveUnsetsFixer.
         return 0;
     }
 }

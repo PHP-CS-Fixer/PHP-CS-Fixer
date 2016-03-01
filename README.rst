@@ -609,6 +609,11 @@ Choose from the list of available fixers:
                         Align equals symbols in
                         consecutive lines.
 
+* **combine_consecutive_unsets** [contrib]
+                        Calling unset on multiple
+                        items should be done in one
+                        call.
+
 * **concat_with_spaces** [contrib]
                         Concatenation should be used
                         with at least one whitespace
