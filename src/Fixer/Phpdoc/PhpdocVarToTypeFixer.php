@@ -12,22 +12,26 @@
 
 namespace PhpCsFixer\Fixer\Phpdoc;
 
-use PhpCsFixer\AbstractPhpdocTagsFixer;
+use PhpCsFixer\AbstractProxyFixer;
 
 /**
  * @author Graham Campbell <graham@mineuk.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocVarToTypeFixer extends AbstractPhpdocTagsFixer
+final class PhpdocVarToTypeFixer extends AbstractProxyFixer
 {
     /**
      * {@inheritdoc}
      */
-    protected static $search = array('var');
+    protected function createProxyFixer()
+    {
+        $fixer = new GeneralPhpdocAnnotationRenameFixer();
+        $fixer->configure(array(
+            'var' => 'type',
+        ));
 
-    /**
-     * {@inheritdoc}
-     */
-    protected static $replace = 'type';
+        return $fixer;
+    }
 
     /**
      * {@inheritdoc}

@@ -31,7 +31,7 @@ final class HeaderCommentFixer extends AbstractFixer
     public function configure(array $configuration = null)
     {
         if (null === $configuration || !isset($configuration['header'])) {
-            throw new InvalidFixerConfigurationException($this->getName(), 'Configuration is missing.');
+            throw new InvalidFixerConfigurationException($this->getName(), 'Configuration is required.');
         }
 
         $header = $configuration['header'];
