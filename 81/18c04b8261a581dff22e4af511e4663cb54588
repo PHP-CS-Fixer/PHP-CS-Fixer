@@ -1,0 +1,58 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-11T07:17:42Z
+
+Thanks for the review so far all! I'll rework the fixer; check the Tokens from last to first, making it more easy, split it up a bit in some private methods, fix the case were `unset` is used without a semicolon.
+I'll comment if it is ready for re-review :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-08T08:41:34Z
+
+~~I think I got everything to finish this pretty soon.~~
+
+ What should we call this Fixer? `NoConsecutiveUnsetCallsFixer` ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-08T13:20:23Z
+
+maybe sth like `CombineConsecutiveUnsetsFixer` ?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-09T20:42:45Z
+
+please add some test cases for `unset($arr['key'])` and `unset($obj->foo)` etc.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-10T07:59:13Z
+
+>please add some test cases for unset($arr['key']) and unset($obj->foo) etc.
+
+:+1:, done, please see:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1662/files#diff-46c9f36495af0a2ab407f69878c2878fR114
+
+I'm out of ideas so please let me know if you a case in mind that is not covered :)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-10T08:18:42Z
+
+Thanks, that's fine!
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-14T17:32:46Z
+
+the failing test on HHVM are not related with to this PR; https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/109158401
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-14T17:44:02Z
+
+Last build on 1.12 was successful:
+https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/builds/109182719
