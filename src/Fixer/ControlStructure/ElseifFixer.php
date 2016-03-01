@@ -48,11 +48,11 @@ final class ElseifFixer extends AbstractFixer
                 continue;
             }
 
-            $nextIndex = $tokens->getNextNonWhitespace($index);
-            $nextToken = $tokens[$nextIndex];
+            $ifTokenIndex = $tokens->getNextMeaningfulToken($index);
+            $beforeIfTokenIndex = $tokens->getPrevNonWhitespace($ifTokenIndex);
 
             // if next meaning token is not T_IF - continue searching, this is not the case for fixing
-            if (!$nextToken->isGivenKind(T_IF)) {
+            if (!$tokens[$ifTokenIndex]->isGivenKind(T_IF)) {
                 continue;
             }
 
@@ -64,7 +64,12 @@ final class ElseifFixer extends AbstractFixer
             $tokens->overrideAt($index, array(T_ELSEIF, 'elseif'));
 
             // 3. clear succeeding T_IF
-            $nextToken->clear();
+            $tokens[$ifTokenIndex]->clear();
+
+            // 4. clear extra whitespace after T_IF in T_COMMENT,T_WHITESPACE?,T_IF,T_WHITESPACE sequence
+            if ($tokens[$beforeIfTokenIndex]->isComment() && $tokens[$ifTokenIndex + 1]->isWhitespace()) {
+                $tokens[$ifTokenIndex + 1]->clear();
+            }
         }
 
         // handle `T_ELSE T_WHITESPACE T_IF` treated as single `T_ELSEIF` by HHVM
