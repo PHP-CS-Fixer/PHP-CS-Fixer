@@ -30,25 +30,31 @@ class ElseifFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
+        foreach ($tokens as $index => $token) {
+            if (!$tokens[$index]->isGivenKind(T_ELSE)) {
+                continue;
+            }
 
-        foreach ($tokens->findGivenKind(T_ELSE) as $index => $token) {
-            $nextIndex = $tokens->getNextNonWhitespace($index);
-            $nextToken = $tokens[$nextIndex];
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
 
             // if next meaning token is not T_IF - continue searching, this is not the case for fixing
-            if (!$nextToken->isGivenKind(T_IF)) {
+            if (!$tokens[$nextIndex]->isGivenKind(T_IF)) {
                 continue;
             }
 
             // now we have T_ELSE following by T_IF so we could fix this
             // 1. clear whitespaces between T_ELSE and T_IF
-            $tokens[$index + 1]->clear();
+            for ($i = $index + 1; $i < $nextIndex; ++$i) {
+                if ($tokens[$i]->isWhitespace()) {
+                    $tokens[$i]->clear();
+                }
+            }
 
             // 2. change token from T_ELSE into T_ELSEIF
-            $tokens->overrideAt($index, array(T_ELSEIF, 'elseif', $token->getLine()));
+            $tokens->overrideAt($index, array(T_ELSEIF, 'elseif', $tokens[$index]->getLine()));
 
             // 3. clear succeeding T_IF
-            $nextToken->clear();
+            $tokens[$nextIndex]->clear();
         }
 
         // handle `T_ELSE T_WHITESPACE T_IF` treated as single `T_ELSEIF` by HHVM
