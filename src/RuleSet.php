@@ -91,6 +91,7 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_no_access' => true,
             'phpdoc_no_empty_return' => true,
             'phpdoc_no_package' => true,
+            'phpdoc_single_line_var_spacing' => true,
             'phpdoc_scalar' => true,
             'phpdoc_separation' => true,
             'phpdoc_summary' => true,

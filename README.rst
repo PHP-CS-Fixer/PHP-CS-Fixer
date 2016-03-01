@@ -575,6 +575,10 @@ Choose from the list of available fixers:
                          different type are separated
                          by a single blank line.
 
+* **phpdoc_single_line_var_spacing** [@Symfony]
+                         Single line @var PHPDoc
+                         should have proper spacing.
+
 * **phpdoc_summary** [@Symfony]
                          Phpdocs summary should end in
                          either a full stop,
