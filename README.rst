@@ -671,6 +671,10 @@ Choose from the list of available fixers:
                         return statement at the end of
                         a function.
 
+* **order_use_by_length** [contrib]
+                        Ordering use statements by
+                        length.
+
 * **ordered_use** [contrib]
                         Ordering use statements.
 
