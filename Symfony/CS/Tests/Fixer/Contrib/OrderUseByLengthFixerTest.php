@@ -1,8 +1,10 @@
 <?php
+
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -17,7 +19,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  *
  * @internal
  */
-final class OrderUseByLengthFixerTest extends AbstractFixerTestBase {
+final class OrderUseByLengthFixerTest extends AbstractFixerTestBase
+{
     public function testFix()
     {
         $expected = <<<'EOF'
@@ -102,7 +105,6 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
-
 
     public function testFixWithMultipleNamespace()
     {
@@ -312,7 +314,6 @@ EOF;
         $this->makeTest($expected, $input);
     }
 
-
     /**
      * @requires PHP 5.4
      */
@@ -390,8 +391,7 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
-    
-    
+
     /**
      * @requires PHP 5.4
      */
@@ -485,8 +485,6 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
-    
-
 
     public function testFixWithDifferentCases()
     {
@@ -526,7 +524,6 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
-
 
     public function testOrderWithTrailingDigit()
     {
@@ -582,7 +579,6 @@ EOF;
         $this->makeTest($expected, $input);
     }
 
-    
     public function testWithoutUses()
     {
         $expected = <<<'EOF'
