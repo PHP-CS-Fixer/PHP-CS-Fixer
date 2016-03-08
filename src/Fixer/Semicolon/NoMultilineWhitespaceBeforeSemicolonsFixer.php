@@ -39,8 +39,14 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
             }
 
             $previous = $tokens[$index - 1];
+            if (!$previous->isWhitespace() || false === strpos($previous->getContent(), "\n")) {
+                continue;
+            }
 
-            if ($previous->isWhitespace() && false !== strpos($previous->getContent(), "\n")) {
+            $content = $previous->getContent();
+            if (("\n" === $content[0] || "\r" === $content[0]) && $tokens[$index - 2]->isComment()) {
+                $previous->setContent("\r" === $content[0] ? "\r\n" : "\n");
+            } else {
                 $previous->clear();
             }
         }
