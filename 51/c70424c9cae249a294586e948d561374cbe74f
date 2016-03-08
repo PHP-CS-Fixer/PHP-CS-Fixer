@@ -1,0 +1,72 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-08T10:35:33Z
+
+Please fix CS
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-08T12:11:07Z
+
+done :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-08T17:29:15Z
+
+@SpacePossum ? Closed?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-08T19:25:11Z
+
+IMHO this fixer shouldn't be on master in the first place. Using `spaces_after_semicolon` and `extra_empty_lines` will give better results. So I lost my interest beyond the point going through another round of reviews.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-08T19:28:19Z
+
+Only concerns here were to not break fabpot / PHP 5.3. So nothing big.
+So you are saying we don't need this fixer at all?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-08T19:52:39Z
+
+I think this fixer should be merged with `spaces_after_semicolon`, possible with some config options if one really cares, however I don't have the time.
+Test are green now :)
+
+PS. This stops the fixer from breaking stuff, however it would be nice to be tweaked at some point to do;
+expected
+```php
+<?php
+echo $a; // test
+```
+input
+```php
+<?php
+echo $a // test
+
+;
+```
+
+currently fixed to
+```php
+<?php
+echo $a // test
+;
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-08T19:55:56Z
+
+It's good enough then. But I don't think it will be done soon (combining with `spaces_after_semicolon`) as well.
+
+I think it's ready to merge.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-08T20:02:49Z
+
+:+1:
