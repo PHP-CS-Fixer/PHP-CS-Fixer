@@ -36,6 +36,30 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixer
         return array(
             array(
                 '<?php
+                    $foo->bar() // test
+;',
+                '<?php
+                    $foo->bar() // test
+                    ;',
+            ),
+            array(
+                "<?php echo(1) // test\r\n;",
+            ),
+            array(
+                '<?php
+                    $foo->bar() # test
+;',
+                '<?php
+                    $foo->bar() # test
+
+
+                ;',
+            ),
+            array(
+                "<?php\n;",
+            ),
+            array(
+                '<?php
 $this
     ->setName(\'readme1\')
     ->setDescription(\'Generates the README\');
