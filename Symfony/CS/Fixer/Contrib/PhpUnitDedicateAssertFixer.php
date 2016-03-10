@@ -71,12 +71,16 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer
     );
 
     /**
-     * @param string[] $usingMethods
+     * @param array|null $configuration
      */
-    public function configure(array $usingMethods)
+    public function configure(array $configuration = null)
     {
+        if (null === $configuration) {
+            throw new InvalidFixerConfigurationException($this->getName(), 'Configuration is required.');
+        }
+
         $this->configuration = array();
-        foreach ($usingMethods as $method) {
+        foreach ($configuration as $method) {
             if (!array_key_exists($method, $this->fixMap)) {
                 throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration method "%s".', $method));
             }

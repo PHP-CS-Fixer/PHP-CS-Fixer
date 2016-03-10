@@ -197,10 +197,19 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestBase
 
     /**
      * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage [php_unit_dedicate_assert] Unknown configuration method "_unknown_".
+     * @expectedExceptionMessageRegExp /^\[php_unit_dedicate_assert\] Unknown configuration method "_unknown_".$/
      */
     public function testInvalidConfig()
     {
         $this->getFixer()->configure(array('_unknown_'));
+    }
+
+    /**
+     * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessageRegExp /^\[php_unit_dedicate_assert\] Configuration is required.$/
+     */
+    public function testNullConfig()
+    {
+        $this->getFixer()->configure(null);
     }
 }
