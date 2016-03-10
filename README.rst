@@ -689,6 +689,14 @@ Choose from the list of available fixers:
                         This could change code
                         behavior.
 
+* **php_unit_dedicate_assert** [contrib]
+                        PHPUnit assertions like
+                        "assertInternalType",
+                        "assertFileExists", should be
+                        used over "assertTrue".
+                        Warning! This could change
+                        code behavior.
+
 * **php_unit_strict** [contrib]
                         PHPUnit methods like
                         "assertSame" should be used

@@ -1049,7 +1049,7 @@ PHP;
         $tokens = Tokens::fromCode($source);
         /** @var Token[] $found */
         $found = $tokens->findGivenKind(T_CLASS);
-        $this->assertTrue(is_array($found));
+        $this->assertInternalType('array', $found);
         $this->assertCount(1, $found);
         $this->assertArrayHasKey(1, $found);
         $this->assertSame(T_CLASS, $found[1]->getId());
@@ -1058,13 +1058,13 @@ PHP;
         $found = $tokens->findGivenKind(array(T_CLASS, T_FUNCTION));
         $this->assertCount(2, $found);
         $this->assertArrayHasKey(T_CLASS, $found);
-        $this->assertTrue(is_array($found[T_CLASS]));
+        $this->assertInternalType('array', $found[T_CLASS]);
         $this->assertCount(1, $found[T_CLASS]);
         $this->assertArrayHasKey(1, $found[T_CLASS]);
         $this->assertSame(T_CLASS, $found[T_CLASS][1]->getId());
 
         $this->assertArrayHasKey(T_FUNCTION, $found);
-        $this->assertTrue(is_array($found[T_FUNCTION]));
+        $this->assertInternalType('array', $found[T_FUNCTION]);
         $this->assertCount(2, $found[T_FUNCTION]);
         $this->assertArrayHasKey(9, $found[T_FUNCTION]);
         $this->assertSame(T_FUNCTION, $found[T_FUNCTION][9]->getId());
