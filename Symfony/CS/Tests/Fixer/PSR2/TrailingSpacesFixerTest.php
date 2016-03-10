@@ -88,6 +88,14 @@ EOT;
             array(
                 "<?php\necho <<<'EOT'\nInline Il y eut un   \r\nrire éclatant    \n     \n   \r\nEOT;\n\n",
             ),
+            array(
+                "<?php\n\$a = 1; // a",
+                "<?php\n\$a = 1; // a ",
+            ),
+            array(
+                "<?php\n\$a = 1; // a",
+                "<?php\n\$a = 1; // a\t",
+            ),
         );
     }
 }
