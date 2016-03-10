@@ -32,7 +32,7 @@ class TrailingSpacesFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isWhitespace()) {
+            if (!$token->isWhitespace() && !$token->isComment()) {
                 continue;
             }
 
