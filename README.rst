@@ -446,6 +446,13 @@ Choose from the list of available fixers:
                          or function name and the
                          opening parenthesis.
 
+* **no_spaces_inside_ofsset**
+                         There MUST NOT be a space
+                         after the opening offset
+                         square brace. There MUST NOT
+                         be a space before the closing
+                         offset square brace.
+
 * **no_spaces_inside_parenthesis** [@PSR2, @Symfony]
                          There MUST NOT be a space
                          after the opening
