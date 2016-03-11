@@ -43,7 +43,7 @@ final class NoSpacesInsideOfssetFixer extends AbstractFixer
             // remove space after opening `[`
             $this->removeSpaceAroundToken($tokens, $index, 1);
 
-            // remove space after closing `]`
+            // remove space before closing `]`
             $this->removeSpaceAroundToken($tokens, $endIndex, -1);
         }
     }

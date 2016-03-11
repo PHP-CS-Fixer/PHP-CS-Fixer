@@ -88,6 +88,22 @@ $var = $arr[0][0];',
                 '<?php
 $var = $arr[    0        ][ 0  ];',
             ),
+            array(
+                '<?php
+$var = $arr[0][
+     0];',
+                 '<?php
+$var = $arr[0][
+     0 ];',
+            ),
+            array(
+                '<?php
+$var = $arr[0][0
+         ];',
+                 '<?php
+$var = $arr[0][     0
+         ];',
+            ),
         );
     }
 }
