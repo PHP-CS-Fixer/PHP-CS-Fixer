@@ -78,6 +78,18 @@ $arr[ 2    ] = 3;',
             ),
             array(
                 '<?php
+$arr[] = 3;',
+                '<?php
+$arr[  ] = 3;',
+            ),
+            array(
+                '<?php
+$arr[]["some_offset"][] = 3;',
+                '<?php
+$arr[  ][ "some_offset"   ][     ] = 3;',
+            ),
+            array(
+                '<?php
 $var = $arr[0];',
                 '<?php
 $var = $arr[     0   ];',
