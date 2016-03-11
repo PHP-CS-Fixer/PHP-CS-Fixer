@@ -17,8 +17,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
- *
- * @internal
  */
 final class NoSpacesInsideOfssetFixer extends AbstractFixer
 {
@@ -37,13 +35,6 @@ final class NoSpacesInsideOfssetFixer extends AbstractFixer
     {
         foreach ($tokens as $index => $token) {
             if (!$token->equals('[')) {
-                continue;
-            }
-
-            $prevIndex = $tokens->getPrevMeaningfulToken($index);
-
-            // ignore parenthesis for T_ARRAY
-            if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_ARRAY)) {
                 continue;
             }
 
@@ -81,13 +72,6 @@ final class NoSpacesInsideOfssetFixer extends AbstractFixer
         $token = $tokens[$index + $offset];
 
         if ($token->isWhitespace() && false === strpos($token->getContent(), "\n")) {
-            if (isset($tokens[$index + $offset - 1])) {
-                $prevToken = $tokens[$index + $offset - 1];
-                if ($prevToken->isComment() && false !== strpos($prevToken->getContent(), "\n")) {
-                    return;
-                }
-            }
-
             $token->clear();
         }
     }
