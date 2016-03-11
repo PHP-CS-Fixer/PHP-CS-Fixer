@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -41,10 +42,10 @@ final class NoSpacesInsideOfssetFixer extends AbstractFixer
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
 
             // remove space after opening `[`
-            $this->removeSpaceAroundToken($tokens, $index, 1);
+            $this->removeSpaceAroundToken($tokens[$index + 1]);
 
             // remove space before closing `]`
-            $this->removeSpaceAroundToken($tokens, $endIndex, -1);
+            $this->removeSpaceAroundToken($tokens[$endIndex - 1]);
         }
     }
 
@@ -57,20 +58,12 @@ final class NoSpacesInsideOfssetFixer extends AbstractFixer
     }
 
     /**
-     * Remove spaces on one side of the token at a given index.
+     * Remove spaces on one side of the token.
      *
-     * @param Tokens $tokens A collection of code tokens
-     * @param int    $index  The token index
-     * @param int    $offset The offset where to start looking for spaces
+     * @param Token $token
      */
-    private function removeSpaceAroundToken(Tokens $tokens, $index, $offset)
+    private function removeSpaceAroundToken(Token $token)
     {
-        if (!isset($tokens[$index + $offset])) {
-            return;
-        }
-
-        $token = $tokens[$index + $offset];
-
         if ($token->isWhitespace() && false === strpos($token->getContent(), "\n")) {
             $token->clear();
         }
