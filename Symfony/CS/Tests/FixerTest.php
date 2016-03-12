@@ -227,6 +227,10 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['combine_consecutive_unsets'], $fixers['extra_empty_lines']), // tested also in: combine_consecutive_unsets,extra_empty_lines.test
             array($fixers['duplicate_semicolon'], $fixers['combine_consecutive_unsets']), // tested also in: duplicate_semicolon,combine_consecutive_unsets.test
             array($fixers['phpdoc_type_to_var'], $fixers['phpdoc_single_line_var_spacing']), // tested also in: phpdoc_type_to_var,phpdoc_single_line_var_spacing.test
+            array($fixers['phpdoc_to_comment'], $fixers['no_empty_comment']), // tested also in: phpdoc_to_comment,no_empty_comment.test
+            array($fixers['no_empty_comment'], $fixers['extra_empty_lines']), // tested also in: no_empty_comment,extra_empty_lines.test
+            array($fixers['no_empty_comment'], $fixers['trailing_spaces']), // tested also in: no_empty_comment,trailing_spaces.test
+            array($fixers['no_empty_comment'], $fixers['whitespacy_lines']), // tested also in: no_empty_comment,whitespacy_lines.test
         );
 
         $docFixerNames = array_filter(
