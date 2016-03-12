@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: blankline_after_open_tag,no_blank_lines_before_namespace.
+--CONFIG--
+level=none
+fixers=blankline_after_open_tag,no_blank_lines_before_namespace
+--EXPECT--
+<?php
+namespace A;
+
+class A
+{
+}
+
+--INPUT--
+<?php
+
+namespace A;
+
+class A
+{
+}
