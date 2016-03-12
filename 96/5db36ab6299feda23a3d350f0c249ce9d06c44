@@ -1,0 +1,113 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-21T11:39:11Z
+
+SF acceptance PR made; https://github.com/symfony/symfony/pull/17872
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-22T15:37:01Z
+
+What about `assertInstanceOf`?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-22T16:14:22Z
+
+>What about assertInstanceOf?
+
+What about it?
+Oh you mean we can fix those as well...  maybe.. hmm lets me check
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-22T18:04:10Z
+
+TODO list:
+* ~~`assertInfinite`~~
+* `assertInstanceOf`
+* ~~`assertArrayHasKey`~~
+
+there are more that could be done, but those would be complex so I rather leave it with this set.
+
+Note to self; only the following (and the negative) can be fixed:
+```php
+$this->assertTrue($a instanceof $b);
+$this->assertInstanceOf($b, $a);
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-22T19:03:42Z
+
+Oh, now I see your point. I was thinking more about:
+```diff
+-$this->assertSame($a, get_class($b));
++$this->assertInstanceOf($a, $b);
+```
+
+but maybe it's out of scope, what do you think?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-22T23:23:05Z
+
+@keradus I'm going to try some stuff out, but to be honest I don't think I can work on the instance-cases. It feels a bit odd to draw a line somewhere, but it is about time mostly.
+For example I would like to write a fixer to do;
+expected
+```php
+$this->assertSame($a, is_array($b));
+```
+
+input
+```php
+$this->assertTrue($a === is_array($b));
+```
+
+etc. Its just its going to take more time than I've got.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-23T09:47:03Z
+
+Yeah, for sure it's not worth to have the fixer over-complicated.
+It was just "nice to have" ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-28T21:48:44Z
+
+It's Symfony and not.
+No risky fixer should be run by default.
+Please exclude it from Symfony level to avoid that.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-29T16:19:56Z
+
+It might be good to have config options on this one, I've added some PHPUnit 5 only asserts.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-09T21:34:46Z
+
+Processed feedback and added configuration options. Happy to take more notes and ideas about the default config.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-10T09:43:16Z
+
+To be done on 2.x line (after this PR will be merged)
+- Fixer must run after `no_alias_functions`
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-10T09:46:25Z
+
+Please fix 2 minors and :+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-10T12:18:42Z
+
+done, lets see how the tests do :)
