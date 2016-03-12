@@ -60,24 +60,27 @@ final class NoEmptyCommentFixer extends AbstractFixer
     private function fixComment(Tokens $tokens, $index)
     {
         $content = $tokens[$index]->getContent();
+
+        // single line comment starting with '#'
         if ('#' === $content[0]) {
-            if (preg_match('/^#\s*$/', $content)) {
+            if (preg_match('|^#\s*$|', $content)) {
                 $this->clearCommentToken($tokens, $index);
             }
 
             return;
         }
 
+        // single line comment starting with '//'
         if ('/' === $content[1]) {
-            if (preg_match('#^//\s*$#', $content)) {
+            if (preg_match('|^//\s*$|', $content)) {
                 $this->clearCommentToken($tokens, $index);
             }
 
             return;
         }
 
-        // comment of type /*[]*/
-        if (preg_match('#^/\*\s*\*/$#', $content)) {
+        // comment starting with '/*' and ending with '*/' (but not a PHPDoc)
+        if (preg_match('|^/\*\s*\*/$|', $content)) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
         }
     }
