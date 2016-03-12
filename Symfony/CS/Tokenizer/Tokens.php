@@ -952,20 +952,7 @@ class Tokens extends \SplFixedArray
             $nextToken = $this[$nextIndex];
         }
 
-        if (!$nextToken->equals('(')) {
-            return false;
-        }
-
-        $endParenthesisIndex = $this->findBlockEnd(self::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
-
-        $nextIndex = $this->getNextMeaningfulToken($endParenthesisIndex);
-        $nextToken = $this[$nextIndex];
-
-        if (!$nextToken->equalsAny(array('{', array(T_USE)))) {
-            return false;
-        }
-
-        return true;
+        return $nextToken->equals('(');
     }
 
     /**
