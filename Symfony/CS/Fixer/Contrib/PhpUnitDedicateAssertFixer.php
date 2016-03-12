@@ -76,7 +76,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
-            throw new InvalidFixerConfigurationException($this->getName(), 'Configuration is required.');
+            return;
         }
 
         $this->configuration = array();
