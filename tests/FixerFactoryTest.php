@@ -249,6 +249,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['combine_consecutive_unsets'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: combine_consecutive_unsets,no_extra_consecutive_blank_lines.test
             array($fixers['no_duplicate_semicolons'], $fixers['combine_consecutive_unsets']), // tested also in: no_duplicate_semicolons,combine_consecutive_unsets.test
             array($fixers['phpdoc_type_to_var'], $fixers['phpdoc_single_line_var_spacing']), // tested also in: phpdoc_type_to_var,phpdoc_single_line_var_spacing.test
+            array($fixers['blank_line_after_opening_tag'], $fixers['no_blank_lines_before_namespace']), // tested also in: blank_line_after_opening_tag,no_blank_lines_before_namespace.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:

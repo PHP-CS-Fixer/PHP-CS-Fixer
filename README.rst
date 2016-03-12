@@ -513,6 +513,13 @@ Choose from the list of available fixers:
                          "->assertTrue($foo)". (Risky
                          fixer!)
 
+* **php_unit_dedicate_assert**
+                         PHPUnit assertions like
+                         "assertInternalType",
+                         "assertFileExists", should be
+                         used over "assertTrue".
+                         (Risky fixer!)
+
 * **php_unit_strict**
                          PHPUnit methods like
                          "assertSame" should be used

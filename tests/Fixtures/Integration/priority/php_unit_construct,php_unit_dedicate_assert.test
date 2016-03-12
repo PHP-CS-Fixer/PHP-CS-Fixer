@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: php_unit_construct,php_unit_dedicate_assert.
+--CONFIG--
+{"php_unit_construct": true, "php_unit_dedicate_assert": true}
+--EXPECT--
+<?php
+
+$this->assertInternalType('array', $a);
+
+--INPUT--
+<?php
+
+$this->assertSame(true, is_array($a));

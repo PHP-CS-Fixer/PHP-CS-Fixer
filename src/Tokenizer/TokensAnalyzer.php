@@ -314,20 +314,7 @@ final class TokensAnalyzer
             $startParenthesisToken = $tokens[$startParenthesisIndex];
         }
 
-        if (!$startParenthesisToken->equals('(')) {
-            return false;
-        }
-
-        $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
-
-        $nextIndex = $tokens->getNextMeaningfulToken($endParenthesisIndex);
-        $nextToken = $tokens[$nextIndex];
-
-        if (!$nextToken->equalsAny(array('{', array(CT_USE_LAMBDA)))) {
-            return false;
-        }
-
-        return true;
+        return $startParenthesisToken->equals('(');
     }
 
     /**

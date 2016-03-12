@@ -105,10 +105,17 @@ final class PhpUnitConstructFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run after the PhpUnitStrictFixer
+        // should be run after the PhpUnitStrictFixer and before PhpUnitDedicateAssertFixer.
         return -10;
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param string $method
+     *
+     * @return int|null
+     */
     private function fixAssertNegative(Tokens $tokens, $index, $method)
     {
         static $map = array(
@@ -120,6 +127,13 @@ final class PhpUnitConstructFixer extends AbstractFixer
         return $this->fixAssert($map, $tokens, $index, $method);
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param string $method
+     *
+     * @return int|null
+     */
     private function fixAssertPositive(Tokens $tokens, $index, $method)
     {
         static $map = array(
@@ -131,6 +145,14 @@ final class PhpUnitConstructFixer extends AbstractFixer
         return $this->fixAssert($map, $tokens, $index, $method);
     }
 
+    /**
+     * @param array<string, string> $map
+     * @param Tokens                $tokens
+     * @param int                   $index
+     * @param string                $method
+     *
+     * @return int|null
+     */
     private function fixAssert(array $map, Tokens $tokens, $index, $method)
     {
         $sequence = $tokens->findSequence(

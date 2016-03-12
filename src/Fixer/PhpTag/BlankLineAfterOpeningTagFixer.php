@@ -76,4 +76,13 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer
     {
         return 'Ensure there is no code on the same line as the PHP open tag and it is followed by a blankline.';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run before the NoBlankLinesBeforeNamespaceFixer
+        return 1;
+    }
 }
