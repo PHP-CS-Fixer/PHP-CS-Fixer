@@ -90,6 +90,12 @@ $arr[  ][ "some_offset"   ][     ] = 3;',
             ),
             array(
                 '<?php
+$arr[]["some  offset with  spaces"][] = 3;',
+                '<?php
+$arr[  ][ "some  offset with  spaces"   ][     ] = 3;',
+            ),
+            array(
+                '<?php
 $var = $arr[0];',
                 '<?php
 $var = $arr[     0   ];',

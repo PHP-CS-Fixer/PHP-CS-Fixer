@@ -54,7 +54,7 @@ final class NoSpacesInsideOfssetFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'There MUST NOT be a space after the opening offset square brace. There MUST NOT be a space before the closing offset square brace.';
+        return 'There MUST NOT be spaces between the offset square braces and its contained values.';
     }
 
     /**
