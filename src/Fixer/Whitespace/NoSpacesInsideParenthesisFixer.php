@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -51,11 +52,11 @@ final class NoSpacesInsideParenthesisFixer extends AbstractFixer
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
             // remove space after opening `(`
-            $this->removeSpaceAroundToken($tokens, $index, 1);
+            $this->removeSpaceAroundToken($tokens[$index + 1]);
 
-            // remove space after closing `)` if it is not `list($a, $b, )` case
+            // remove space before closing `)` if it is not `list($a, $b, )` case
             if (!$tokens[$tokens->getPrevMeaningfulToken($endIndex)]->equals(',')) {
-                $this->removeSpaceAroundToken($tokens, $endIndex, -1);
+                $this->removeSpaceAroundToken($tokens[$endIndex - 1]);
             }
         }
     }
@@ -69,28 +70,13 @@ final class NoSpacesInsideParenthesisFixer extends AbstractFixer
     }
 
     /**
-     * Remove spaces on one side of the token at a given index.
+     * Remove spaces from token at a given index.
      *
-     * @param Tokens $tokens A collection of code tokens
-     * @param int    $index  The token index
-     * @param int    $offset The offset where to start looking for spaces
+     * @param Token $token
      */
-    private function removeSpaceAroundToken(Tokens $tokens, $index, $offset)
+    private function removeSpaceAroundToken(Token $token)
     {
-        if (!isset($tokens[$index + $offset])) {
-            return;
-        }
-
-        $token = $tokens[$index + $offset];
-
         if ($token->isWhitespace() && false === strpos($token->getContent(), "\n")) {
-            if (isset($tokens[$index + $offset - 1])) {
-                $prevToken = $tokens[$index + $offset - 1];
-                if ($prevToken->isComment() && false !== strpos($prevToken->getContent(), "\n")) {
-                    return;
-                }
-            }
-
             $token->clear();
         }
     }
