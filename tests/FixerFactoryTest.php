@@ -254,6 +254,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_empty_comment'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: no_empty_comment,no_extra_consecutive_blank_lines.test
             array($fixers['no_empty_comment'], $fixers['no_trailing_whitespace']), // tested also in: no_empty_comment,no_trailing_whitespace.test
             array($fixers['no_empty_comment'], $fixers['no_whitespace_in_blank_lines']), // tested also in: no_empty_comment,no_whitespace_in_blank_lines.test
+            array($fixers['no_alias_functions'], $fixers['php_unit_dedicate_assert']), // tested also in: no_alias_functions,php_unit_dedicate_assert.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:

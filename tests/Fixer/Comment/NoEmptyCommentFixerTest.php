@@ -66,10 +66,12 @@ final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
             ),
             array(
                 '<?php
+                echo 2;
                     '.'
 echo 1;
                 ',
                 '<?php
+                echo 2;
                     //
 echo 1;
                 ',
