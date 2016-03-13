@@ -1,0 +1,12 @@
+--TEST--
+Integration of fixers: no_empty_comment,whitespacy_lines.
+--CONFIG--
+level=none
+fixers=no_empty_comment,whitespacy_lines
+--EXPECT--
+<?php
+
+
+--INPUT--
+<?php
+       //

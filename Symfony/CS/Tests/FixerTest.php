@@ -229,6 +229,10 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['phpdoc_type_to_var'], $fixers['phpdoc_single_line_var_spacing']), // tested also in: phpdoc_type_to_var,phpdoc_single_line_var_spacing.test
             array($fixers['blankline_after_open_tag'], $fixers['no_blank_lines_before_namespace']), // tested also in: blankline_after_open_tag,no_blank_lines_before_namespace.test
             array($fixers['php_unit_construct'], $fixers['php_unit_dedicate_assert']), // tested also in: php_unit_construct,php_unit_dedicate_assert.test
+            array($fixers['phpdoc_to_comment'], $fixers['no_empty_comment']), // tested also in: phpdoc_to_comment,no_empty_comment.test
+            array($fixers['no_empty_comment'], $fixers['extra_empty_lines']), // tested also in: no_empty_comment,extra_empty_lines.test
+            array($fixers['no_empty_comment'], $fixers['trailing_spaces']), // tested also in: no_empty_comment,trailing_spaces.test
+            array($fixers['no_empty_comment'], $fixers['whitespacy_lines']), // tested also in: no_empty_comment,whitespacy_lines.test
         );
 
         $docFixerNames = array_filter(
