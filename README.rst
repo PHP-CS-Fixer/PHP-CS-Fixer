@@ -235,6 +235,12 @@ Choose from the list of available fixers:
                          Concatenation should be used
                          without spaces.
 
+* **dir_constant**
+                         Replaces dirname(__FILE__)
+                         expression with equivalent
+                         __DIR__ constant. (Risky
+                         fixer!)
+
 * **echo_to_print**
                          Converts echo language
                          construct to print if
@@ -332,6 +338,13 @@ Choose from the list of available fixers:
 * **method_separation** [@Symfony]
                          Methods must be separated
                          with one blank line.
+
+* **modernize_types_casting**
+                         Replaces intval, floatval,
+                         doubleval, strval, boolval
+                         functions calls with
+                         according type casting
+                         operator. (Risky fixer!)
 
 * **native_function_casing** [@Symfony]
                          Function defined by PHP
@@ -640,6 +653,12 @@ Choose from the list of available fixers:
                          be at least one namespace
                          deep and the class name
                          should match the file name.
+                         (Risky fixer!)
+
+* **random_api_migration**
+                         Replaces rand, srand,
+                         getrandmax functions calls
+                         with their mt_* analogs.
                          (Risky fixer!)
 
 * **self_accessor** [@Symfony]
