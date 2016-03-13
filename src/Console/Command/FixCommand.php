@@ -276,7 +276,7 @@ for PHP CS Fixer cache files and have Travis cache it between builds.
     before_script:
         - mkdir -p "\$HOME/.php-cs-fixer"
     script:
-        - vendor/bin/php-cs-fixer fix --cache-file "\$HOME/.php-cs-fixer/.php_cs.cache" --dry-run --diff --verbose
+        - vendor/bin/php-cs-fixer fix --cache-file "\$HOME/.php-cs-fixer/.php_cs.\$TRAVIS_PHP_VERSION.cache" --dry-run --diff --verbose
 
     ?>
 
