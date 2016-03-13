@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: phpdoc_to_comment,no_empty_comment.
+--CONFIG--
+{"phpdoc_to_comment": true, "no_empty_comment": true}
+--EXPECT--
+<?php
+
+$first = true;// needed because by default first docblock is never fixed.
+
+
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+--INPUT--
+<?php
+
+$first = true;// needed because by default first docblock is never fixed.
+
+/** */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}

@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: no_empty_comment,no_trailing_whitespace.
+--CONFIG--
+{"no_empty_comment": true, "no_trailing_whitespace": true}
+--EXPECT--
+<?php
+$a = 1;
+
+--INPUT--
+<?php
+$a = 1;        //

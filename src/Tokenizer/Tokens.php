@@ -688,7 +688,7 @@ class Tokens extends \SplFixedArray
      *
      * @return int|null
      */
-    private function getNonEmptySibling($index, $direction)
+    public function getNonEmptySibling($index, $direction)
     {
         while (true) {
             $index += $direction;
