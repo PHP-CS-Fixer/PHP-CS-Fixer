@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: no_alias_functions,php_unit_dedicate_assert.
+--CONFIG--
+{"no_alias_functions": true, "php_unit_dedicate_assert": ["is_int"]}
+--EXPECT--
+<?php
+$this->assertInternalType('int', $a);
+
+--INPUT--
+<?php
+$this->assertTrue(is_integer($a));
