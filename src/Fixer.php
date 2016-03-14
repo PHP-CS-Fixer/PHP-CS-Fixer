@@ -23,7 +23,6 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
-use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -61,19 +60,11 @@ class Fixer
      */
     protected $linter;
 
-    /**
-     * Stopwatch instance.
-     *
-     * @var Stopwatch
-     */
-    protected $stopwatch;
-
     public function __construct()
     {
         $this->diff = new Differ();
         $this->errorsManager = new ErrorsManager();
         $this->linter = new NullLinter();
-        $this->stopwatch = new Stopwatch();
     }
 
     /**
@@ -84,16 +75,6 @@ class Fixer
     public function getErrorsManager()
     {
         return $this->errorsManager;
-    }
-
-    /**
-     * Get stopwatch instance.
-     *
-     * @return Stopwatch
-     */
-    public function getStopwatch()
-    {
-        return $this->stopwatch;
     }
 
     /**
@@ -110,8 +91,6 @@ class Fixer
         $changed = array();
         $fixers = $config->getFixers();
 
-        $this->stopwatch->openSection();
-
         $fileCacheManager = new FileCacheManager(
             $config->usingCache(),
             $config->getCacheFile(),
@@ -124,16 +103,10 @@ class Fixer
         foreach (new UniqueFileIterator($finderIterator) as $file) {
             $name = $this->getFileRelativePathname($file);
 
-            $this->stopwatch->start($name);
-
             if ($fixInfo = $this->fixFile($file, $fixers, $dryRun, $diff, $fileCacheManager)) {
                 $changed[$name] = $fixInfo;
             }
-
-            $this->stopwatch->stop($name);
         }
-
-        $this->stopwatch->stopSection('fixFile');
 
         return $changed;
     }
