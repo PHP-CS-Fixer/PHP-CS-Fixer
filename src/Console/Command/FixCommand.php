@@ -26,6 +26,7 @@ use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\NullLinter;
 use PhpCsFixer\Linter\UnavailableLinterException;
+use PhpCsFixer\ReportBuilder;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Runner\Runner;
 use Symfony\Component\Console\Command\Command;
@@ -355,121 +356,23 @@ EOF
 
         $progressOutput->printLegend();
 
-        $i = 1;
+        $reportBuilder = new ReportBuilder();
+        $fixEvent = $this->stopwatch->getEvent('fixFiles');
+        $report = $reportBuilder
+            ->registerBuiltInReports()
+            ->setAddAppliedFixers(OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity())
+            ->setIsDecoratedOutput($output->isDecorated())
+            ->setIsDryRun($resolver->isDryRun())
+            ->setTime($fixEvent->getDuration())
+            ->setMemory($fixEvent->getMemory())
+            ->setFormat($resolver->getFormat())
+            ->setChanged($changed)
+            ->getReport()
+        ;
 
-        switch ($resolver->getFormat()) {
-            case 'txt':
-                $fixerDetailLine = false;
-                if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
-                    $fixerDetailLine = $output->isDecorated() ? ' (<comment>%s</comment>)' : ' %s';
-                }
-
-                foreach ($changed as $file => $fixResult) {
-                    $output->write(sprintf('%4d) %s', $i++, $file));
-
-                    if ($fixerDetailLine) {
-                        $output->write(sprintf($fixerDetailLine, implode(', ', $fixResult['appliedFixers'])));
-                    }
-
-                    if (!empty($fixResult['diff'])) {
-                        $output->writeln('');
-                        $output->writeln('<comment>      ---------- begin diff ----------</comment>');
-                        $output->writeln($fixResult['diff']);
-                        $output->writeln('<comment>      ---------- end diff ----------</comment>');
-                    }
-
-                    $output->writeln('');
-                }
-
-                $fixEvent = $this->stopwatch->getEvent('fixFiles');
-                $output->writeln(sprintf('%s all files in %.3f seconds, %.3f MB memory used', $input->getOption('dry-run') ? 'Checked' : 'Fixed', $fixEvent->getDuration() / 1000, $fixEvent->getMemory() / 1024 / 1024));
-                break;
-            case 'xml':
-                $dom = new \DOMDocument('1.0', 'UTF-8');
-                // new nodes should be added to this or existing children
-                $root = $dom->createElement('report');
-                $dom->appendChild($root);
-
-                $filesXML = $dom->createElement('files');
-                $root->appendChild($filesXML);
-
-                foreach ($changed as $file => $fixResult) {
-                    $fileXML = $dom->createElement('file');
-                    $fileXML->setAttribute('id', $i++);
-                    $fileXML->setAttribute('name', $file);
-                    $filesXML->appendChild($fileXML);
-
-                    if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
-                        $appliedFixersXML = $dom->createElement('applied_fixers');
-                        $fileXML->appendChild($appliedFixersXML);
-
-                        foreach ($fixResult['appliedFixers'] as $appliedFixer) {
-                            $appliedFixerXML = $dom->createElement('applied_fixer');
-                            $appliedFixerXML->setAttribute('name', $appliedFixer);
-                            $appliedFixersXML->appendChild($appliedFixerXML);
-                        }
-                    }
-
-                    if (!empty($fixResult['diff'])) {
-                        $diffXML = $dom->createElement('diff');
-                        $diffXML->appendChild($dom->createCDATASection($fixResult['diff']));
-                        $fileXML->appendChild($diffXML);
-                    }
-                }
-
-                $fixEvent = $this->stopwatch->getEvent('fixFiles');
-
-                $timeXML = $dom->createElement('time');
-                $memoryXML = $dom->createElement('memory');
-                $root->appendChild($timeXML);
-                $root->appendChild($memoryXML);
-
-                $memoryXML->setAttribute('value', round($fixEvent->getMemory() / 1024 / 1024, 3));
-                $memoryXML->setAttribute('unit', 'MB');
-
-                $timeXML->setAttribute('unit', 's');
-                $timeTotalXML = $dom->createElement('total');
-                $timeTotalXML->setAttribute('value', round($fixEvent->getDuration() / 1000, 3));
-                $timeXML->appendChild($timeTotalXML);
-
-                if (OutputInterface::VERBOSITY_DEBUG <= $verbosity) {
-                    $timeFilesXML = $dom->createElement('files');
-                    $timeXML->appendChild($timeFilesXML);
-                }
-
-                $dom->formatOutput = true;
-                $output->write($dom->saveXML());
-                break;
-            case 'json':
-                $jFiles = array();
-
-                foreach ($changed as $file => $fixResult) {
-                    $jfile = array('name' => $file);
-
-                    if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
-                        $jfile['appliedFixers'] = $fixResult['appliedFixers'];
-                    }
-
-                    if (!empty($fixResult['diff'])) {
-                        $jfile['diff'] = $fixResult['diff'];
-                    }
-
-                    $jFiles[] = $jfile;
-                }
-
-                $fixEvent = $this->stopwatch->getEvent('fixFiles');
-
-                $json = array(
-                    'files' => $jFiles,
-                    'memory' => round($fixEvent->getMemory() / 1024 / 1024, 3),
-                    'time' => array(
-                        'total' => round($fixEvent->getDuration() / 1000, 3),
-                    ),
-                );
-
-                $output->write(json_encode($json));
-                break;
-        }
+        $output->write(
+            $report->generate()
+        );
 
         $invalidErrors = $this->errorsManager->getInvalidErrors();
         if (!empty($invalidErrors)) {
@@ -516,7 +419,7 @@ EOF
         $output->writeln('');
         $output->writeln(sprintf(
             'Files that were not fixed due to errors reported during %s:',
-             $process
+            $process
         ));
 
         foreach ($errors as $i => $error) {
