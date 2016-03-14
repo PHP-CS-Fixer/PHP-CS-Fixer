@@ -93,7 +93,7 @@ final class FixCommand extends Command
         $this->fixer = $fixer ?: new Fixer();
 
         $this->errorsManager = $this->fixer->getErrorsManager();
-        $this->stopwatch = $this->fixer->getStopwatch();
+        $this->stopwatch = new Stopwatch();
 
         parent::__construct();
     }
@@ -385,20 +385,6 @@ EOF
                     $output->writeln('');
                 }
 
-                if (OutputInterface::VERBOSITY_DEBUG <= $verbosity) {
-                    $output->writeln('Fixing time per file:');
-
-                    foreach ($this->stopwatch->getSectionEvents('fixFile') as $file => $event) {
-                        if ('__section__' === $file) {
-                            continue;
-                        }
-
-                        $output->writeln(sprintf('[%.3f s] %s', $event->getDuration() / 1000, $file));
-                    }
-
-                    $output->writeln('');
-                }
-
                 $fixEvent = $this->stopwatch->getEvent('fixFiles');
                 $output->writeln(sprintf('%s all files in %.3f seconds, %.3f MB memory used', $input->getOption('dry-run') ? 'Checked' : 'Fixed', $fixEvent->getDuration() / 1000, $fixEvent->getMemory() / 1024 / 1024));
                 break;
@@ -453,19 +439,6 @@ EOF
                 if (OutputInterface::VERBOSITY_DEBUG <= $verbosity) {
                     $timeFilesXML = $dom->createElement('files');
                     $timeXML->appendChild($timeFilesXML);
-                    $eventCounter = 1;
-
-                    foreach ($this->stopwatch->getSectionEvents('fixFile') as $file => $event) {
-                        if ('__section__' === $file) {
-                            continue;
-                        }
-
-                        $timeFileXML = $dom->createElement('file');
-                        $timeFilesXML->appendChild($timeFileXML);
-                        $timeFileXML->setAttribute('id', $eventCounter++);
-                        $timeFileXML->setAttribute('name', $file);
-                        $timeFileXML->setAttribute('value', round($event->getDuration() / 1000, 3));
-                    }
                 }
 
                 $dom->formatOutput = true;
@@ -497,20 +470,6 @@ EOF
                         'total' => round($fixEvent->getDuration() / 1000, 3),
                     ),
                 );
-
-                if (OutputInterface::VERBOSITY_DEBUG <= $verbosity) {
-                    $jFileTime = array();
-
-                    foreach ($this->stopwatch->getSectionEvents('fixFile') as $file => $event) {
-                        if ('__section__' === $file) {
-                            continue;
-                        }
-
-                        $jFileTime[$file] = round($event->getDuration() / 1000, 3);
-                    }
-
-                    $json['time']['files'] = $jFileTime;
-                }
 
                 $output->write(json_encode($json));
                 break;
