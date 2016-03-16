@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  *
  * @internal
  */
-final class ProcessOutput
+final class ProcessOutput implements ProcessOutputInterface
 {
     /**
      * File statuses map.

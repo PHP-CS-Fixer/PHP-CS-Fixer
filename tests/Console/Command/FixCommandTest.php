@@ -13,15 +13,11 @@
 namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Command\FixCommand;
-use PhpCsFixer\Error\Error;
-use PhpCsFixer\Error\ErrorsManager;
-use PhpCsFixer\Fixer;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Stopwatch\Stopwatch;
+use PhpCsFixer\Test\AccessibleObject;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
@@ -42,274 +38,30 @@ final class FixCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($option->getDefault());
     }
 
-    public function testExitCodeDryRun()
-    {
-        $command = new FixCommand();
-
-        $input = $this->getInputMock(array(
-            'dry-run' => true,
-        ));
-
-        $exitCode = $command->run(
-            $input,
-            new NullOutput()
-        );
-
-        $this->assertSame(0, $exitCode);
-    }
-
-    public function testExitCodeActualRun()
-    {
-        $fixer = $this->getFixerMock();
-
-        $command = new FixCommand($fixer);
-
-        $input = $this->getInputMock(array(
-            'dry-run' => false,
-        ));
-
-        $exitCode = $command->run(
-            $input,
-            new NullOutput()
-        );
-
-        $this->assertSame(0, $exitCode);
-    }
-
-    public function testExitCodeDryRunWithChangedFiles()
-    {
-        $fixer = $this->getFixerMock(array(
-            'Changed.php',
-        ));
-
-        $command = new FixCommand($fixer);
-
-        $input = $this->getInputMock(array(
-            'dry-run' => true,
-        ));
-
-        $exitCode = $command->run(
-            $input,
-            new NullOutput()
-        );
-
-        $this->assertSame(8, $exitCode);
-    }
-
-    public function testExitCodeActualRunWithChangedFiles()
-    {
-        $fixer = $this->getFixerMock(array(
-            'Changed.php',
-        ));
-
-        $command = new FixCommand($fixer);
-
-        $input = $this->getInputMock(array(
-            'dry-run' => false,
-        ));
-
-        $exitCode = $command->run(
-            $input,
-            new NullOutput()
-        );
-
-        $this->assertSame(0, $exitCode);
-    }
-
-    public function testExitCodeDryRunWithInvalidFiles()
-    {
-        $errorsManager = new ErrorsManager();
-
-        $errorsManager->report(new Error(
-            Error::TYPE_INVALID,
-            'Invalid.php'
-        ));
-
-        $fixer = $this->getFixerMock(array(), $errorsManager);
-
-        $command = new FixCommand($fixer);
-
-        $input = $this->getInputMock(array(
-            'dry-run' => true,
-        ));
-
-        $exitCode = $command->run(
-            $input,
-            new NullOutput()
-        );
-
-        $this->assertSame(4, $exitCode);
-    }
-
-    public function testExitCodeActualRunWithInvalidFiles()
-    {
-        $errorsManager = new ErrorsManager();
-
-        $errorsManager->report(new Error(
-            Error::TYPE_INVALID,
-            'Invalid.php'
-        ));
-
-        $fixer = $this->getFixerMock(array(), $errorsManager);
-
-        $command = new FixCommand($fixer);
-
-        $input = $this->getInputMock(array(
-            'dry-run' => false,
-        ));
-
-        $exitCode = $command->run(
-            $input,
-            new NullOutput()
-        );
-
-        $this->assertSame(0, $exitCode);
-    }
-
-    public function testExitCodeDryRunWithChangedAndInvalidFiles()
-    {
-        $errorsManager = new ErrorsManager();
-
-        $errorsManager->report(new Error(
-            Error::TYPE_INVALID,
-            'Invalid.php'
-        ));
-
-        $fixer = $this->getFixerMock(
-            array(
-                'Changed.php',
-            ),
-            $errorsManager
-        );
-
-        $command = new FixCommand($fixer);
-
-        $input = $this->getInputMock(array(
-            'dry-run' => true,
-        ));
-
-        $exitCode = $command->run(
-            $input,
-            new NullOutput()
-        );
-
-        $this->assertSame(12, $exitCode);
-    }
-
-    public function testExitCodeActualRunWithChangedAndInvalidFiles()
-    {
-        $errorsManager = new ErrorsManager();
-
-        $errorsManager->report(new Error(
-            Error::TYPE_INVALID,
-            'Invalid.php'
-        ));
-
-        $fixer = $this->getFixerMock(
-            array(
-                'Changed.php',
-            ),
-            $errorsManager
-        );
-
-        $command = new FixCommand($fixer);
-
-        $input = $this->getInputMock(array(
-            'dry-run' => false,
-        ));
-
-        $exitCode = $command->run(
-            $input,
-            new NullOutput()
-        );
-
-        $this->assertSame(0, $exitCode);
-    }
-
     /**
-     * @param array $options
-     *
-     * @return InputInterface
+     * @dataProvider provideCalculateExitStatusCases
      */
-    private function getInputMock(array $options = array())
+    public function testCalculateExitStatus($expected, $isDryRun, $hasChangedFiles, $hasInvalidErrors)
     {
-        $input = $this->getMockBuilder('Symfony\Component\Console\Input\InputInterface')->getMock();
+        $command = new AccessibleObject(new FixCommand());
 
-        $arguments = array(
-            'path' => __DIR__.'/../../Fixtures/FixCommand',
+        $this->assertSame(
+            $expected,
+            $command->calculateExitStatus($isDryRun, $hasChangedFiles, $hasInvalidErrors)
         );
-
-        $input
-            ->expects($this->any())
-            ->method('getArgument')
-            ->willReturnCallback(function ($name) use ($arguments) {
-                if (array_key_exists($name, $arguments)) {
-                    return $arguments[$name];
-                }
-            })
-        ;
-
-        $options = array_merge(
-            array(
-                'config' => __DIR__.'/../../Fixtures/FixCommand/.phpcs',
-                'format' => 'txt',
-            ),
-            $options
-        );
-
-        $input
-            ->expects($this->any())
-            ->method('getOption')
-            ->willReturnCallback(function ($name) use ($options) {
-                if (array_key_exists($name, $options)) {
-                    return $options[$name];
-                }
-            })
-        ;
-
-        return $input;
     }
 
-    /**
-     * @param array         $changed
-     * @param ErrorsManager $errorsManager
-     *
-     * @return Fixer
-     */
-    private function getFixerMock(array $changed = array(), ErrorsManager $errorsManager = null)
+    public function provideCalculateExitStatusCases()
     {
-        $fixer = $this->getMockBuilder('PhpCsFixer\Fixer')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-
-        $fixer
-            ->expects($this->once())
-            ->method('fix')
-            ->with($this->anything())
-            ->willReturn($changed)
-        ;
-
-        $fixer
-            ->expects($this->any())
-            ->method('getConfigs')
-            ->willReturn(array())
-        ;
-
-        $fixer
-            ->expects($this->any())
-            ->method('getStopwatch')
-            ->willReturn(new Stopwatch())
-        ;
-
-        $errorsManager = $errorsManager ?: new ErrorsManager();
-
-        $fixer
-            ->expects($this->any())
-            ->method('getErrorsManager')
-            ->willReturn($errorsManager)
-        ;
-
-        return $fixer;
+        return array(
+            array(0, true, false, false),
+            array(0, false, false, false),
+            array(8, true, true, false),
+            array(0, false, true, false),
+            array(4, true, false, true),
+            array(0, false, false, true),
+            array(12, true, true, true),
+            array(0, false, true, true),
+        );
     }
 }

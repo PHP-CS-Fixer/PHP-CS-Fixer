@@ -327,6 +327,49 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($factory->hasRule('f2'), 'Should have f2 fixer');
     }
 
+    /**
+     * @dataProvider provideFixersDescriptionConsistencyCases
+     */
+    public function testFixersDescriptionConsistency(FixerInterface $fixer)
+    {
+        $this->assertRegExp('/^[A-Z@].*\.$/', $fixer->getDescription(), 'Description must start with capital letter or an @ and end with dot.');
+    }
+
+    public function provideFixersDescriptionConsistencyCases()
+    {
+        foreach ($this->getAllFixers() as $fixer) {
+            $cases[] = array($fixer);
+        }
+
+        return $cases;
+    }
+
+    /**
+     * @dataProvider provideFixersForFinalCheckCases
+     */
+    public function testFixersAreFinal(\ReflectionClass $class)
+    {
+        $this->assertTrue($class->isFinal());
+    }
+
+    public function provideFixersForFinalCheckCases()
+    {
+        $cases = array();
+
+        foreach ($this->getAllFixers() as $fixer) {
+            $cases[] = array(new \ReflectionClass($fixer));
+        }
+
+        return $cases;
+    }
+
+    private function getAllFixers()
+    {
+        $factory = new FixerFactory();
+
+        return $factory->registerBuiltInFixers()->getFixers();
+    }
+
     private function createFixerMock($name, $priority = 0)
     {
         $fixer = $this->getMock('PhpCsFixer\FixerInterface');

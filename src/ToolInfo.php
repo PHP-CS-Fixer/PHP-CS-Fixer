@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Console\Application;
+
 /**
  * Obtain information about using version of tool.
  *
@@ -73,10 +75,10 @@ final class ToolInfo
     public static function getVersion()
     {
         if (self::isInstalledByComposer()) {
-            return Fixer::VERSION.':'.self::getComposerVersion();
+            return Application::VERSION.':'.self::getComposerVersion();
         }
 
-        return Fixer::VERSION;
+        return Application::VERSION;
     }
 
     public static function isInstalledAsPhar()

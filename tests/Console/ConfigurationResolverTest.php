@@ -32,8 +32,6 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $fixer = new Fixer();
-
         $this->config = new Config();
         $this->resolver = new ConfigurationResolver();
         $this->resolver

@@ -27,6 +27,8 @@ final class NullLinter implements LinterInterface
     public function lintFile($path)
     {
         unset($path);
+
+        return new NullLintingResult();
     }
 
     /**
@@ -35,5 +37,7 @@ final class NullLinter implements LinterInterface
     public function lintSource($source)
     {
         unset($source);
+
+        return new NullLintingResult();
     }
 }

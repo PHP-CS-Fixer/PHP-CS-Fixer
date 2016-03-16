@@ -10,14 +10,17 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests;
+namespace PhpCsFixer\Tests\Runner;
 
 use PhpCsFixer\Config;
+use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
+use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Fixer;
-use PhpCsFixer\FixerFactory;
-use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
+use PhpCsFixer\Linter\NullLinter;
+use PhpCsFixer\Runner\Runner;
+use Symfony\Component\Finder\Finder;
 
 /**
  * @internal
@@ -25,14 +28,15 @@ use PhpCsFixer\Linter\Linter;
 final class FixerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers PhpCsFixer\Fixer::fix
-     * @covers PhpCsFixer\Fixer::fixFile
+     * @covers PhpCsFixer\Runner\Runner::fix
+     * @covers PhpCsFixer\Runner\Runner::fixFile
      */
     public function testThatFixSuccessfully()
     {
-        $fixer = new Fixer();
         $config = Config::create()
-            ->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'))
+            ->finder(Finder::create()->in(
+                __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'
+            ))
             ->fixers(array(
                 new Fixer\ClassNotation\VisibilityRequiredFixer(),
                 new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
@@ -40,8 +44,17 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
             ->setUsingCache(false)
         ;
 
-        $changed = $fixer->fix($config, true, true);
-        $pathToInvalidFile = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'.DIRECTORY_SEPARATOR.'somefile.php';
+        $runner = new Runner(
+            $config,
+            new NullDiffer(),
+            null,
+            new ErrorsManager(),
+            new NullLinter(),
+            true
+        );
+
+        $changed = $runner->fix();
+        $pathToInvalidFile = 'somefile.php';
 
         $this->assertCount(1, $changed);
         $this->assertCount(2, $changed[$pathToInvalidFile]);
@@ -50,16 +63,15 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpCsFixer\Fixer::fix
-     * @covers PhpCsFixer\Fixer::fixFile
+     * @covers PhpCsFixer\Runner\Runner::fix
+     * @covers PhpCsFixer\Runner\Runner::fixFile
      */
     public function testThatFixInvalidFileReportsToErrorManager()
     {
-        $fixer = new Fixer();
-        $fixer->setLinter(new Linter());
-
         $config = Config::create()
-            ->finder(new \DirectoryIterator(__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'))
+            ->finder(Finder::create()->in(
+                __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'
+            ))
             ->fixers(array(
                 new Fixer\ClassNotation\VisibilityRequiredFixer(),
                 new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
@@ -67,12 +79,23 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
             ->setUsingCache(false)
         ;
 
-        $changed = $fixer->fix($config, true, true);
-        $pathToInvalidFile = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'.DIRECTORY_SEPARATOR.'somefile.php';
+        $errorsManager = new ErrorsManager();
+
+        $runner = new Runner(
+            $config,
+            new NullDiffer(),
+            null,
+            $errorsManager,
+            new Linter(),
+            true
+        );
+
+        $changed = $runner->fix();
+        $pathToInvalidFile = 'somefile.php';
 
         $this->assertCount(0, $changed);
 
-        $errors = $fixer->getErrorsManager()->getInvalidErrors();
+        $errors = $errorsManager->getInvalidErrors();
 
         $this->assertCount(1, $errors);
 
@@ -82,23 +105,6 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(Error::TYPE_INVALID, $error->getType());
         $this->assertSame($pathToInvalidFile, $error->getFilePath());
-    }
-
-    /**
-     * @dataProvider provideFixersDescriptionConsistencyCases
-     */
-    public function testFixersDescriptionConsistency(FixerInterface $fixer)
-    {
-        $this->assertRegExp('/^[A-Z@].*\.$/', $fixer->getDescription(), 'Description must start with capital letter or an @ and end with dot.');
-    }
-
-    public function provideFixersDescriptionConsistencyCases()
-    {
-        foreach ($this->getAllFixers() as $fixer) {
-            $cases[] = array($fixer);
-        }
-
-        return $cases;
     }
 
     public function testCanFixWithConfigInterfaceImplementation()
@@ -123,34 +129,15 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(new \ArrayIterator(array()))
         ;
 
-        $fixer = new Fixer();
+        $runner = new Runner(
+            $config,
+            new NullDiffer(),
+            null,
+            new ErrorsManager(),
+            new NullLinter(),
+            true
+        );
 
-        $fixer->fix($config);
-    }
-
-    /**
-     * @dataProvider provideFixersForFinalCheckCases
-     */
-    public function testFixersAreFinal(\ReflectionClass $class)
-    {
-        $this->assertTrue($class->isFinal());
-    }
-
-    public function provideFixersForFinalCheckCases()
-    {
-        $cases = array();
-
-        foreach ($this->getAllFixers() as $fixer) {
-            $cases[] = array(new \ReflectionClass($fixer));
-        }
-
-        return $cases;
-    }
-
-    private function getAllFixers()
-    {
-        $factory = new FixerFactory();
-
-        return $factory->registerBuiltInFixers()->getFixers();
+        $runner->fix();
     }
 }

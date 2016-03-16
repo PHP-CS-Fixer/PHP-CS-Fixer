@@ -69,7 +69,7 @@ final class Linter implements LinterInterface
      */
     public function lintFile($path)
     {
-        $this->checkProcess($this->createProcessForFile($path));
+        return new LintingResult($this->createProcessForFile($path));
     }
 
     /**
@@ -77,20 +77,7 @@ final class Linter implements LinterInterface
      */
     public function lintSource($source)
     {
-        $this->checkProcess($this->createProcessForSource($source));
-    }
-
-    /**
-     * Check if linting process was successful and raise LintingException if not.
-     *
-     * @param Process $process
-     */
-    private function checkProcess(Process $process)
-    {
-        if (!$process->isSuccessful()) {
-            // on some systems stderr is used, but on others, it's not
-            throw new LintingException($process->getErrorOutput() ?: $process->getOutput(), $process->getExitCode());
-        }
+        return new LintingResult($this->createProcessForSource($source));
     }
 
     /**
@@ -109,7 +96,7 @@ final class Linter implements LinterInterface
 
         $process = new Process($this->prepareCommand($path));
         $process->setTimeout(null);
-        $process->run();
+        $process->start();
 
         return $process;
     }

@@ -184,7 +184,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
         }
 
         try {
-            static::$linter->lintSource($source);
+            static::$linter->lintSource($source)->check();
         } catch (\Exception $e) {
             return $e->getMessage()."\n\nSource:\n$source";
         }
