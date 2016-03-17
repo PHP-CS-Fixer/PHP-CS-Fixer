@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: ordered_class_elements,no_blank_lines_after_class_opening.
+--CONFIG--
+{"ordered_class_elements": true, "no_blank_lines_after_class_opening": true}
+--EXPECT--
+<?php
+
+class Foo
+{
+    public function bar() {}
+    protected function baz() {}
+}
+
+--INPUT--
+<?php
+
+class Foo
+{
+    protected function baz() {}
+
+    public function bar() {}
+}

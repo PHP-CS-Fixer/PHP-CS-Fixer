@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: no_php4_constructor,ordered_class_elements.
+--CONFIG--
+{"no_php4_constructor": true, "ordered_class_elements": true}
+--EXPECT--
+<?php
+
+class Foo
+{
+    protected function __construct() {}
+    public function bar() {}
+}
+
+--INPUT--
+<?php
+
+class Foo
+{
+    protected function Foo() {}
+    public function bar() {}
+}

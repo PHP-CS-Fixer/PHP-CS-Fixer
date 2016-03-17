@@ -105,6 +105,15 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must run before OrderedClassElementsFixer
+        return 75;
+    }
+
+    /**
      * Fix constructor within a class, if possible.
      *
      * @param Tokens $tokens     the Tokens instance

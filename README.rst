@@ -518,6 +518,10 @@ Choose from the list of available fixers:
                          before or after object
                          T_OBJECT_OPERATOR.
 
+* **ordered_class_elements**
+                         Orders the elements of
+                         classes/interfaces/traits.
+
 * **ordered_imports**
                          Ordering use statements.
 
