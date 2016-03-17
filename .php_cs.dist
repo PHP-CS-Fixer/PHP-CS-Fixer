@@ -18,6 +18,7 @@ return PhpCsFixer\Config::create()
         'header_comment' => array('header' => $header),
         'long_array_syntax' => true,
         'no_useless_return' => true,
+        'ordered_class_elements' => true,
         'ordered_imports' => true,
         'php_unit_construct' => true,
         'php_unit_dedicate_assert' => true,
