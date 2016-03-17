@@ -138,9 +138,9 @@ fixer does not change what is not supposed to change. Thus:
     ...
     public function provideFixCases()
     {
-    	return array(
-    		array('<?php echo "This should not be changed";') // Each sub-array is a test
-    	);
+        return array(
+            array('<?php echo "This should not be changed";') // Each sub-array is a test
+        );
     }
     ...
 ```
@@ -151,12 +151,12 @@ fixer does not change what is not supposed to change. Thus:
     ...
     public function provideFixCases()
     {
-    	return array(
-    		array(
-    			'<?php echo "This should be changed"; ', // This is expected output
-    			'<?php echo "This should be changed"; /* Comment */', // This is input
-    		)
-    	);
+        return array(
+            array(
+                '<?php echo "This should be changed"; ', // This is expected output
+                '<?php echo "This should be changed"; /* Comment */', // This is input
+            )
+        );
     }
     ...
 ```

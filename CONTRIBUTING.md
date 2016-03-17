@@ -27,7 +27,7 @@ You can do some things to increase the chance that your pull request is accepted
 
 ## Making new fixers
 
-There is a [cookbook](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/COOKBOOK-FIXERS.md) with basic instructions on how to build a new fixer. Consider reading it
+There is a [cookbook](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/doc/COOKBOOK-FIXERS.md) with basic instructions on how to build a new fixer. Consider reading it
 before opening a PR.
 
 ## Project's standards
