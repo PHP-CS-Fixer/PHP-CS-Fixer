@@ -1,0 +1,604 @@
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-22T02:04:47Z
+
+WIP (missing many test cases etc.)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-22T02:05:31Z
+
+What do you think generally about the concept?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-22T13:56:50Z
+
+Some examples of possible configurations:
+
+```php
+array(
+    'use_trait',
+    'const',
+    'public', // all public properties and methods; current order of public elements will not be changed
+    'protected', // see public
+    'private', // see public
+)
+```
+
+```php
+array(
+    'use_trait',
+    'const',
+    'property', // all properties; current order will not be changed (regardless of visibility)
+    'method', // see property
+)
+```
+
+```php
+array(
+    'use_trait',
+    'const',
+    'property_public', // public properties
+    'property_protected',
+    'property_private',
+    'construct', // if this is missing, constructor will be handled as normal method
+    'method_public',
+    'method_protected',
+    'method_private',
+)
+```
+
+```php
+array(
+    'use_trait',
+    'const',
+    'property_public_static', // if this is missing, public static properties will be handled like property_public
+    'property_protected_static',
+    'property_private_static',
+    'property_public',
+    'property_protected',
+    'property_private',
+    'construct',
+    'method_public_static',
+    'method_protected_static',
+    'method_private_static',
+    'method_public',
+    'method_protected',
+    'method_private',
+)
+```
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-22T13:58:53Z
+
+If a main category is missing, the correspondent elements will be placed at bottom.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-22T14:26:03Z
+
+I want to use the symfony standard as default configuration.
+
+> - Declare class properties before methods;
+> - Declare public methods first, then protected ones and finally private ones. The exceptions to this rule are the class constructor and the setUp and tearDown methods of PHPUnit tests, which should always be the first methods to increase readability;
+
+So, is this default config correct?
+
+```php
+private static $defaultOrder = array(
+        'use_trait',
+        'const',
+        'property_public',
+        'property_protected',
+        'property_private',
+        'phpunit',
+        'construct',
+        'method_public',
+        'method_protected',
+        'method_private',
+    );
+```
+
+Or are there any (hidden) rules about **static** properties/methods?
+
+---------------------------------------------------------------------------
+
+by sstok at 2015-12-22T16:04:55Z
+
+Wow amazing work so far :clap:
+
+---------------------------------------------------------------------------
+
+by gharlan at 2015-12-22T22:29:30Z
+
+todos:
+
+- [x] test different configurations
+- [x] test interface/trait
+- [x] test multiple classes
+- [x] priority (before `method_separation` and maybe more)
+- [x] integration tests
+- [x] order phpunit methods
+- [x] support const visibilities (php 7.1)
+- [x] decide about default config
+- [x] maybe move to symfony level (answer: **no**)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-01-05T20:26:53Z
+
+should the fixer be renamed to `OrderedClassElementsFixer`?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-17T21:43:36Z
+
+:+1: for rename
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-21T14:23:41Z
+
+ready for review
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-21T16:45:55Z
+
+@SpacePossum where is your comment? I answer anyway.. ;)
+
+Comments are tested here: https://github.com/gharlan/PHP-CS-Fixer/blob/class-elements-order-fixer/tests/Fixer/ClassNotation/OrderedClassElementsFixerTest.php#L146-L173
+But I should add some more tests.
+
+The cut is made before first line feed after `;` or `}`.
+Some examples:
+
+```
+function a() {
+} /* comment */ // comment<CUT>
+// comment
+
+function b() {
+} /* multiline
+comment */<CUT>
+
+function c () {
+}<CUT>
+/* comment */
+
+function d() {}<CUT> function e() {}
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-21T16:48:32Z
+
+I removed the comment because I didn't look correctly, sorry for the noise :(
+Thank you for explaining, I'm trying out the fixer atm, looking good :)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-21T16:56:34Z
+
+Additional note: the cut position is the reason why target branch is master. I need the transformer for `//` and `#` comments (`WhitespacyCommentTransformer`).
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-27T18:16:36Z
+
+I did some testing and I'm wondering about this case.
+Running on your branch with fixers `ordered_class_elements`, `no_blank_lines_after_phpdoc`.
+(I was testing if the order would be important, turns out it isn't :+1: )
+
+expected
+```php
+<?php
+
+class Foo
+{
+    // test
+
+    /**
+     * public
+     */
+    public function bar() {}
+
+    /**
+     * protected
+     */
+    protected function baz() {}
+}
+
+```
+
+input
+```php
+<?php
+
+class Foo
+{
+    // test
+
+    /**
+     * protected
+     */
+
+    protected function baz() {}
+    /**
+     * public
+     */
+
+    public function bar() {}
+}
+```
+
+diff;
+```diff
+@@ @@
+ <?php
+
+ class Foo
+ {
+-    // test
+-
+     /**
+      * public
+      */
+     public function bar() {}
++    // test
+
+     /**
+      * protected
+      */
+     protected function baz() {}
+ }
+
+```
+
+(btw. fabbot.io is wrong, Fixer has been fixed for this case a while back ;)  )
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-27T18:29:00Z
+
+Question: What would you expect with this input:
+
+```php
+<?php
+
+class Foo
+{
+    /**
+     * protected
+     */
+    protected function baz() {}
+
+    // test
+
+    /**
+     * public
+     */
+    public function bar() {}
+}
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-27T18:49:48Z
+
+I was thinking about it because of the method separation fixer findings on SF;
+https://github.com/symfony/symfony/pull/17487/files#diff-a8f7745712c744a53020ed9c09bd68bcR979
+
+These types of comments are tricky and in most of the cases people should be better of merging the comment in the PHPDoc. I'm +0 for leaving such comments at the current place or moving the comments along with the structure. I would like to ask for a utest for this case so the behavior of the fixer is clearly defined (and for all the usual reasons to have a test :) )
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-27T18:54:52Z
+
+the fixer is very greedy. All comments above an element are treated as associated to the next class element.
+So there are not any "neutral" parts between `{` and `}` of class body. Everything belongs to a class element.
+
+We can not avoid some unwanted comment moves here. But in my opinion moving the comments along with the structure is the better choice in most cases.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-27T19:00:13Z
+
+added some more tests with comments
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-27T19:49:20Z
+
+Thanks for the update on the tests and the info!
+
+I've run the fixer on a bunch of projects, including some I know are pretty bad. All fixes were legit, I didn't spot missed cases, performance of the fixer is pretty good. One thing I didn't test thoroughly are all configuration options, but I thrust the utest on it.
+Looking at the TODO list;
+I like the current default config; having it on SF level will be tricky since merging after the changes will be hard; the proof of the pudding is in the eating so maybe PR'ing the changes @ SF will give the conclusion.
+I'm :+1: for the current implementation; impressive fixer : D
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-27T20:04:57Z
+
+thanks for testing! :+1:
+
+> having it on SF level will be tricky since merging after the changes will be hard; the proof of the pudding is in the eating so maybe PR'ing the changes @ SF will give the conclusion.
+
+yeah, I guess the pr will not be merged, but I will open it anyway.
+
+> I'm  for the current implementation; impressive fixer : D
+
+thanks! ;)
+
+---------------------------------------------------------------------------
+
+by slavcodev at 2016-02-28T12:20:17Z
+
+Very useful fixer! Do you think it is worth also add the following rules:
+
++ All magic methods (`__toString`, `__call`, etc) should always be the first methods to increase readability, after the `__constructor`
++ Ordering the overridden methods
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-28T13:01:43Z
+
+>All magic methods
+
++0
+
+>Ordering the overridden methods
+
+fixers have no knowledge about the class/trait hierarchy so this will not be possible
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-28T20:58:50Z
+
+> Ordering the overridden methods
+
+Even if we could I would be against it.
+
+---------------------------------------------------------------------------
+
+by slavcodev at 2016-02-28T21:05:10Z
+
+> Even if we could I would be against it.
+
+Can you comment more about your preference? This could be configurable.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-28T21:07:05Z
+
+I don't like conflicting way of configure the fixer, and I have a strong feeling that it would be one of them.
+But as @SpacePossum said - CS tool can't know about parent class (as it could even be in separated repository), so if one try to implement it there would be a lof of false negative fixes.
+
+---------------------------------------------------------------------------
+
+by slavcodev at 2016-02-28T21:12:23Z
+
+Thanks, Got it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-01T21:08:39Z
+
+@gharlan what do you think about magic methods ?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-01T21:18:17Z
+
+would it be enough to have one special group "magic" which is used for all magic methods except `__construct`?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-01T21:19:46Z
+
+would `__construct` contains `__destruct` ?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-01T21:20:34Z
+
+don't know.
+at the moment: no.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-01T21:23:57Z
+
+Symfony put desctuctor right after constructor
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-01T21:24:29Z
+
+Or do we need something more flexible?
+
+Example:
+
+```
+array(
+        'use_trait',
+        'constant_public',
+        'constant_protected',
+        'constant_private',
+        'property_public',
+        'property_protected',
+        'property_private',
+        ['method', '__construct'],
+        ['method', '__destruct'],
+        'method_public',
+        'method_protected',
+        'method_private',
+        ['method', 'mySpecialMethodWhichShouldBeLastOne'],
+)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-01T21:26:40Z
+
+Symfony uses: __construct, __destruct, __OTHER_MAGIC_METHODS.
+
+I don't think that we need to handle user-input exception of order for methods (and not any element, which would be next exception).
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-01T21:27:41Z
+
+So should we include `__destruct` to "construct" group, and add a new group "magic" with all other magic methods?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-01T21:28:18Z
+
+Or should we add "destruct" as own "group"?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-01T21:32:19Z
+
+Actually I'm fine for both.
+I can see some cases when somebody could want to have it last, but if having it separated would need extra work don't focus on that
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-01T22:20:11Z
+
+:+1: for having the option to set `destructors` at the last position (i.e. own group). I don't expect it in this PR though, please just leave the option open so it can be added later (by whoever has the time) :)
+Could we just not touch the `destructors` in the meantime? as grouping those with the `constructors` will make the fixer less flexible than it is atm.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-02T10:10:10Z
+
+I will add "destruct" and "magic" group!
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-02T10:14:43Z
+
+fixer should stay in contrib level: https://github.com/symfony/symfony/pull/17980
+
+do we want to use the fixer in this repo? Or is too complicated for mergings, too, @keradus?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-02T10:48:04Z
+
+> I will add "destruct" and "magic" group!
+
+Thanks ;)
+
+> do we want to use the fixer in this repo? Or is too complicated for mergings, too, @keradus?
+
+Please do not activate the fixer for this repo by yourself. When it will be merged I will investigate the possibility to easily activate it.
+For now merging a single fixer from 1.x line to 2.x line could take about 30 minutes...
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-05T10:51:42Z
+
+> I will add "destruct" and "magic" group!
+
+Should I add them to default order? `construct, destruct, magic, phpunit`?
+Or maybe only add `destruct`?  `construct, destruct, phpunit`?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-05T11:42:06Z
+
+> I will add "destruct" and "magic" group!
+
+done
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-06T21:42:22Z
+
+> Should I add them to default order? `construct, destruct, magic, phpunit`?
+Or maybe only add destruct? `construct, destruct, phpunit`?
+
+I would do it `construct, destruct, magic, phpunit`
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-07T18:32:41Z
+
+> I would do it construct, destruct, magic, phpunit
+
+I would like to use symfony standard as default even if the fixer is not added to symfony level.
+Do you know if there is any cumulation of placement of magic methods in symfony code?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-07T22:42:28Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1628#issuecomment-190912352
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-07T23:06:57Z
+
+ah ok, sorry, forgot that comment ;)
+
+then I will add "magic" to default config.
+
+Edit: done.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-08T09:02:30Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-16T21:41:02Z
+
+@gharlan please could you rebase? I would like to merge this.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-16T22:57:53Z
+
+:+1:  lets go :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-16T23:06:31Z
+
+@gharlan , is it outside this fixer to sort things also alphabetically in groups, eg:
+
+from
+```php
+class Aaa
+{
+    public function fooC() {}
+    public function fooB() {}
+    private function fooA() {}
+}
+```
+
+into
+```php
+class Aaa
+{
+    public function fooB() {}
+    public function fooC() {}
+    private function fooA() {}
+}
+```
+
+?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-16T23:41:13Z
+
+At the moment it is not in scope of this fixer. Could be added, but in my opinion it should not be the default behavior.
