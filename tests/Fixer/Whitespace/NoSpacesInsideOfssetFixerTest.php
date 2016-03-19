@@ -111,8 +111,7 @@ $var = $arr[    0        ][ 0  ];',
 $var = $arr[$a    [$b]];',
                 '<?php
 $var = $arr[    $a    [ $b    ]  ];',
-            )
-            ,
+            ),
             array(
                 '<?php
 $var = $arr[$a	[$b]];',

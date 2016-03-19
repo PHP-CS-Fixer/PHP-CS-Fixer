@@ -64,7 +64,7 @@ final class NoSpacesInsideOfssetFixer extends AbstractFixer
      */
     private function removeWhitespaceToken(Token $token)
     {
-        if ($token->isWhitespace(" \t") && false === strpos($token->getContent(), "\n")) {
+        if ($token->isWhitespace(" \t")) {
             $token->clear();
         }
     }
