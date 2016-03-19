@@ -24,7 +24,7 @@ final class NoSpacesInsideOfssetFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideCases
      */
-    public function testFixSpaceInsideParenthesis($expected, $input = null)
+    public function testFixSpaceInsideOffset($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
