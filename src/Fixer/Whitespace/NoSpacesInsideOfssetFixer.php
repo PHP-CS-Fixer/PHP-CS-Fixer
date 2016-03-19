@@ -42,10 +42,10 @@ final class NoSpacesInsideOfssetFixer extends AbstractFixer
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
 
             // remove space after opening `[`
-            $this->removeSpaceAroundToken($tokens[$index + 1]);
+            $this->removeWhitespaceToken($tokens[$index + 1]);
 
             // remove space before closing `]`
-            $this->removeSpaceAroundToken($tokens[$endIndex - 1]);
+            $this->removeWhitespaceToken($tokens[$endIndex - 1]);
         }
     }
 
@@ -58,13 +58,13 @@ final class NoSpacesInsideOfssetFixer extends AbstractFixer
     }
 
     /**
-     * Remove spaces on one side of the token.
+     * Removes the token if it is single line whitespace.
      *
      * @param Token $token
      */
-    private function removeSpaceAroundToken(Token $token)
+    private function removeWhitespaceToken(Token $token)
     {
-        if ($token->isWhitespace() && false === strpos($token->getContent(), "\n")) {
+        if ($token->isWhitespace(" \t") && false === strpos($token->getContent(), "\n")) {
             $token->clear();
         }
     }

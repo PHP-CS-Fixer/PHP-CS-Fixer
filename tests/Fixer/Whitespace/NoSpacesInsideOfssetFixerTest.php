@@ -108,6 +108,19 @@ $var = $arr[    0        ][ 0  ];',
             ),
             array(
                 '<?php
+$var = $arr[$a    [$b]];',
+                '<?php
+$var = $arr[    $a    [ $b    ]  ];',
+            )
+            ,
+            array(
+                '<?php
+$var = $arr[$a	[$b]];',
+                '<?php
+$var = $arr[	$a	[	$b	]	];',
+            ),
+            array(
+                '<?php
 $var = $arr[0][
      0];',
                  '<?php
