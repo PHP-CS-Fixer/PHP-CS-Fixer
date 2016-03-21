@@ -40,21 +40,21 @@ $a  =   1;',
             ),
             array(
                 '<?php
-if ( $foo = 9 && $bar != false)',
+if ( $foo = 9 && $bar != false) { return; }',
                 '<?php
-if  ( $foo  = 9 &&  $bar  != false)',
+if  ( $foo  = 9 &&  $bar  != false) { return; }',
             ),
             array(
                 '<?php
 $something = array(
     "foo" => "bar",
     "bar" => "yoghurt",
-)',
+);',
                 '<?php
 $something = array(
     "foo"   => "bar",
     "bar"   =>    "yoghurt",
-)',
+);',
             ),
         );
     }
