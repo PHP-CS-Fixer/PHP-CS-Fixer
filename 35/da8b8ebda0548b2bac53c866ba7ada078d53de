@@ -1,0 +1,122 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-11T01:27:35Z
+
+This is just a proof of concept, if we agreed to go that way it will need more work like filling the docs and fix tests
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-01-11T09:22:09Z
+
+At the moment the linting process is started for all files, regardless if they are cached or not..
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-11T09:25:44Z
+
+:(
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-11T17:48:31Z
+
+> At the moment the linting process is started for all files, regardless if they are cached or not..
+
+Yeh, there's no way this is allowed. ;(
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-11T19:27:54Z
+
+Yeah, as I sad it is a POC, is it worth to go further ?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-01-11T20:01:54Z
+
+> is it worth to go further ?
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-12T00:54:34Z
+
+> At the moment the linting process is started for all files, regardless if they are cached or not..
+
+For the current master we have two *public* methods in main `Fixer` class:
+- `fix` - for fixing everything
+- `fixFile` for fixing single file
+For now, the `fixFile` is taking care of cacheing and linting and `fix` simply iterate over all files and calls `fixFile` for each of them.
+We want to lint one file ahead, so it should be done in `fix` method. But also we don't want to lint if cache is valid, so we need to move cache checking to `fix` as well.
+
+For that I think we should encapsulate `fixFile` method and only expose interface to fix things in bulk process (one could always simply pass collection of files to be fixed with whole one element).
+I have started to move logic from `fixFile` to `fix` and fixed the issue with cache.
+
+It just show the direction, the refactoring of `fix` vs `fixFile` is not done yet.
+
+What do you think ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-14T19:23:53Z
+
+Any thoughts?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-01-14T19:28:43Z
+
+I think, the direction is good! :+1:  ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-14T19:29:19Z
+
+Then `Fixer` class needs a big rewrite...
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-14T19:30:01Z
+
+I would made it more state aware... passing everything to every method as parameter is pointless...
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-07T22:02:51Z
+
+Runner of fixers has been rewritten from scratch.
+A bit more work is still needed for linting in async way
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-08T11:57:53Z
+
+(Please ignore 5.3 for now)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-16T22:02:54Z
+
+Sorry for taking so long.
+I have 5 branches with different approach for this problem. This one works the best.
+
+I updated first post.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-16T22:04:01Z
+
+@gharlan please, could you take a look?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-19T10:54:10Z
+
+looks very well, thanks for the work!
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-19T12:42:46Z
+
+Thank you @gharlan , I applied your comments ;)
