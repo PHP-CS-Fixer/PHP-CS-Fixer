@@ -44,14 +44,6 @@ final class NoExtraWhitespaceFixer extends AbstractFixer
                 if (strlen($space) > 1) {
                     $token->setContent(' ');
                 }
-
-                $next = $tokens[$tokens->getNextNonWhitespace($index)];
-                $next = $next->getContent();
-
-                // Remove whitespace completely from certain annoying areas.
-                if (in_array($next, array(';'), true)) {
-                    $token->clear();
-                }
             }
         }
     }
