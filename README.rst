@@ -400,6 +400,10 @@ Choose from the list of available fixers:
                          and/or blank lines following
                          configuration.
 
+* **no_extra_whitespace**
+                         Remove extra whitespace
+                         buried inside of any SLOC.
+
 * **no_leading_import_slash** [@Symfony]
                          Remove leading slashes in use
                          clauses.
