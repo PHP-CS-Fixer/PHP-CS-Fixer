@@ -12,11 +12,14 @@
 
 namespace PhpCsFixer\Test;
 
+use PhpCsFixer\Config;
+use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Error\Error;
-use PhpCsFixer\FileCacheManager;
-use PhpCsFixer\Fixer;
+use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
+use PhpCsFixer\Linter\NullLinter;
+use PhpCsFixer\Runner\Runner;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -164,16 +167,32 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($this->lintSource($input));
 
-        $fixer = new Fixer();
         $tmpFile = static::getTempFile();
 
         if (false === @file_put_contents($tmpFile, $input)) {
             throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
         }
 
-        $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), $case->getFixers(), false, true, new FileCacheManager(false, null, $case->getFixers()));
+        $errorsManager = new ErrorsManager();
 
-        $errorsManager = $fixer->getErrorsManager();
+        $configProphecy = $this->prophesize('PhpCsFixer\ConfigInterface');
+        $configProphecy->usingCache()->willReturn(false);
+        $configProphecy->getCacheFile()->willReturn(null);
+        $configProphecy->getRules()->willReturn(array());
+        $configProphecy->getFinder()->willReturn(new \ArrayIterator(array(new \SplFileInfo($tmpFile))));
+        $configProphecy->getFixers()->willReturn($case->getFixers());
+
+        $runner = new Runner(
+            $configProphecy->reveal(),
+            new SebastianBergmannDiffer(),
+            null,
+            $errorsManager,
+            new NullLinter(),
+            false
+        );
+
+        $result = $runner->fix();
+        $changed = array_pop($result);
 
         if (!$errorsManager->isEmpty()) {
             $errors = $errorsManager->getExceptionErrors();
@@ -220,7 +239,12 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
                 throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
             }
 
-            $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), array_reverse($case->getFixers()), false, true, new FileCacheManager(false, null, $case->getFixers()));
+            $configProphecy->getFinder()->willReturn(new \ArrayIterator(array(new \SplFileInfo($tmpFile))));
+            $configProphecy->getFixers()->willReturn(array_reverse($case->getFixers()));
+
+            $result = $runner->fix();
+            $changed = array_pop($result);
+
             $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
             $this->assertNotSame($fixedInputCode, $fixedInputCodeWithReversedFixers, 'Set priorities must be significant. If fixers used in reverse order return same output then the integration test is not sufficient or the priority relation between used fixers should not be set.');
         }
@@ -249,7 +273,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
         }
 
         try {
-            static::$linter->lintSource($source);
+            static::$linter->lintSource($source)->check();
         } catch (\Exception $e) {
             return $e->getMessage()."\n\nSource:\n$source";
         }

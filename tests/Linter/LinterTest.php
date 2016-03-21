@@ -58,7 +58,7 @@ final class LinterTest extends \PHPUnit_Framework_TestCase
     public function testLintSourceWithGoodCode()
     {
         $linter = new Linter();
-        $linter->lintSource('<?php echo 123;'); // no exception should be raised
+        $linter->lintSource('<?php echo 123;')->check(); // no exception should be raised
     }
 
     /**
@@ -70,7 +70,7 @@ final class LinterTest extends \PHPUnit_Framework_TestCase
     public function testLintSourceWithBadCode()
     {
         $linter = new Linter();
-        $linter->lintSource('<?php echo echo;');
+        $linter->lintSource('<?php echo echo;')->check();
     }
 
     /**

@@ -25,6 +25,8 @@ use Symfony\Component\Console\Application as BaseApplication;
  */
 final class Application extends BaseApplication
 {
+    const VERSION = '2.0-DEV';
+
     /**
      * Constructor.
      */
@@ -32,7 +34,7 @@ final class Application extends BaseApplication
     {
         error_reporting(-1);
 
-        parent::__construct('PHP CS Fixer', Fixer::VERSION);
+        parent::__construct('PHP CS Fixer', self::VERSION);
 
         $this->add(new FixCommand());
         $this->add(new ReadmeCommand());

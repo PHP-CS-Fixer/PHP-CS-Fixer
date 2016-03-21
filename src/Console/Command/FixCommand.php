@@ -15,15 +15,19 @@ namespace PhpCsFixer\Console\Command;
 use PhpCsFixer\Config;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Console\ConfigurationResolver;
+use PhpCsFixer\Console\Output\NullOutput;
 use PhpCsFixer\Console\Output\ProcessOutput;
+use PhpCsFixer\Differ\NullDiffer;
+use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
-use PhpCsFixer\Fixer;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
+use PhpCsFixer\Linter\NullLinter;
 use PhpCsFixer\Linter\UnavailableLinterException;
 use PhpCsFixer\RuleSet;
+use PhpCsFixer\Runner\Runner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -68,34 +72,20 @@ final class FixCommand extends Command
     protected $stopwatch;
 
     /**
-     * Fixer instance.
-     *
-     * @var Fixer
-     */
-    protected $fixer;
-
-    /**
      * Config instance.
      *
      * @var ConfigInterface
      */
     protected $defaultConfig;
 
-    /**
-     * @param Fixer|null           $fixer
-     * @param ConfigInterface|null $config
-     */
-    public function __construct(Fixer $fixer = null, ConfigInterface $config = null)
+    public function __construct()
     {
-        $this->defaultConfig = $config ?: new Config();
-        $this->eventDispatcher = new EventDispatcher();
-
-        $this->fixer = $fixer ?: new Fixer();
-
-        $this->errorsManager = $this->fixer->getErrorsManager();
-        $this->stopwatch = new Stopwatch();
-
         parent::__construct();
+
+        $this->defaultConfig = new Config();
+        $this->errorsManager = new ErrorsManager();
+        $this->eventDispatcher = new EventDispatcher();
+        $this->stopwatch = new Stopwatch();
     }
 
     /**
@@ -333,10 +323,13 @@ EOF
             $output->writeln(sprintf('Loaded config from "%s"', $configFile));
         }
 
+        $linter = null;
         if ($config->usingLinter()) {
             try {
-                $this->fixer->setLinter(new Linter($config->getPhpExecutable()));
+                $linter = new Linter($config->getPhpExecutable());
             } catch (UnavailableLinterException $e) {
+                $linter = new NullLinter();
+
                 if ($configFile && 'txt' === $input->getOption('format')) {
                     $output->writeln('Unable to use linter, can not find PHP executable');
                 }
@@ -344,20 +337,25 @@ EOF
         }
 
         $showProgress = $resolver->getProgress();
+        $runner = new Runner(
+            $config,
+            $input->getOption('diff') ? new SebastianBergmannDiffer() : new NullDiffer(),
+            $showProgress ? $this->eventDispatcher : null,
+            $this->errorsManager,
+            $linter,
+            $resolver->isDryRun()
+        );
 
-        if ($showProgress) {
-            $this->fixer->setEventDispatcher($this->eventDispatcher);
-            $progressOutput = new ProcessOutput($this->eventDispatcher);
-        }
+        $progressOutput = $showProgress
+            ? new ProcessOutput($this->eventDispatcher)
+            : new NullOutput()
+        ;
 
         $this->stopwatch->start('fixFiles');
-        $changed = $this->fixer->fix($config, $resolver->isDryRun(), $input->getOption('diff'));
+        $changed = $runner->fix();
         $this->stopwatch->stop('fixFiles');
 
-        if ($showProgress) {
-            $progressOutput->printLegend();
-            $this->fixer->setEventDispatcher(null);
-        }
+        $progressOutput->printLegend();
 
         $i = 1;
 
@@ -375,7 +373,7 @@ EOF
                         $output->write(sprintf($fixerDetailLine, implode(', ', $fixResult['appliedFixers'])));
                     }
 
-                    if ($input->getOption('diff')) {
+                    if (!empty($fixResult['diff'])) {
                         $output->writeln('');
                         $output->writeln('<comment>      ---------- begin diff ----------</comment>');
                         $output->writeln($fixResult['diff']);
@@ -414,7 +412,7 @@ EOF
                         }
                     }
 
-                    if ($input->getOption('diff')) {
+                    if (!empty($fixResult['diff'])) {
                         $diffXML = $dom->createElement('diff');
                         $diffXML->appendChild($dom->createCDATASection($fixResult['diff']));
                         $fileXML->appendChild($diffXML);
@@ -454,7 +452,7 @@ EOF
                         $jfile['appliedFixers'] = $fixResult['appliedFixers'];
                     }
 
-                    if ($input->getOption('diff')) {
+                    if (!empty($fixResult['diff'])) {
                         $jfile['diff'] = $fixResult['diff'];
                     }
 
@@ -490,15 +488,20 @@ EOF
             $this->listErrors($output, 'linting after fixing', $lintErrors);
         }
 
+        return $this->calculateExitStatus($resolver->isDryRun(), !empty($changed), !empty($invalidErrors));
+    }
+
+    private function calculateExitStatus($isDryRun, $hasChangedFiles, $hasInvalidErrors)
+    {
         $exitStatus = 0;
 
-        if ($resolver->isDryRun()) {
-            if (!empty($invalidErrors)) {
-                $exitStatus |= self::EXIT_STATUS_FLAG_HAS_INVALID_FILES;
+        if ($isDryRun) {
+            if ($hasChangedFiles) {
+                $exitStatus |= self::EXIT_STATUS_FLAG_HAS_CHANGED_FILES;
             }
 
-            if (!empty($changed)) {
-                $exitStatus |= self::EXIT_STATUS_FLAG_HAS_CHANGED_FILES;
+            if ($hasInvalidErrors) {
+                $exitStatus |= self::EXIT_STATUS_FLAG_HAS_INVALID_FILES;
             }
         }
 

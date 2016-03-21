@@ -13,27 +13,12 @@
 namespace PhpCsFixer\Linter;
 
 /**
- * Interface for PHP code linting process manager.
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-interface LinterInterface
+interface LintingResultInterface
 {
     /**
-     * Lint PHP file.
-     *
-     * @param string $path
-     *
-     * @return LintingResultInterface
+     * Check if linting process was successful and raise LintingException if not.
      */
-    public function lintFile($path);
-
-    /**
-     * Lint PHP code.
-     *
-     * @param string $source
-     *
-     * @return LintingResultInterface
-     */
-    public function lintSource($source);
+    public function check();
 }
