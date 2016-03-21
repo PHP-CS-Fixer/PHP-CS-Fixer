@@ -55,4 +55,10 @@ final class NoExtraWhitespaceFixer extends AbstractFixer
     {
         return 'Remove extra whitespace buried inside of any SLOC.';
     }
+
+    public function getPriority()
+    {
+        // Make sure this is generally run before any other whitespace fixer.
+        return 97;
+    }
 }
