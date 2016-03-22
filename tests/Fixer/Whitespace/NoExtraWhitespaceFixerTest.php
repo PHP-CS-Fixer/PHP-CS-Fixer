@@ -56,6 +56,62 @@ $something = array(
     "bar"   =>    "yoghurt",
 );',
             ),
+            array(
+                '<?php
+$a = 1; // Comment with    whitespace',
+                '<?php
+$a  =   1; // Comment with    whitespace',
+            ),
+            array(
+                '<?php
+$a = 1; // Comment with    whitespace\n\r',
+                '<?php
+$a  =   1; // Comment with    whitespace\n\r',
+            ),
+            array(
+                '<?php
+$a = 1; // Comment with    whitespace\n',
+                '<?php
+$a  =   1; // Comment with    whitespace\n',
+            ),
+            array(
+                '<?php
+if ($var == 5 ) {
+    return $something //    extra   whitespace!!!
+}',
+                '<?php
+if ($var  == 5  ) {
+    return  $something //    extra   whitespace!!!
+}',
+            ),
+            array(
+                '<?php require_once "foo.php" ;',
+                '<?php require_once   "foo.php"  ;',
+            ),
+            array(
+                '<?php $a * -$b;',
+                '<?php $a   *  -$b;',
+            ),
+            array(
+                '<?php  $a = -2/ +5;',
+                '<?php   $a =   -2/  +5;',
+            ),
+            array(
+                '<?php $a = &$b;',
+                '<?php $a  = &$b;',
+            ),
+            array(
+                '<?php  $a++ + $b;',
+                '<?php  $a++   +  $b;',
+            ),
+            array(
+                '<?php __LINE__ - 1; // foo bar    !',
+                '<?php __LINE__       -     1; // foo bar    !',
+            ),
+            array(
+                '<?php  `echo     1` +1;',
+                '<?php   `echo     1`     +1;',
+            ),
         );
     }
 }
