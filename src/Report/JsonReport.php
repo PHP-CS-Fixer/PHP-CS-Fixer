@@ -12,8 +12,6 @@
 
 namespace PhpCsFixer\Report;
 
-use PhpCsFixer\ReportInterface;
-
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
  *
@@ -21,18 +19,6 @@ use PhpCsFixer\ReportInterface;
  */
 final class JsonReport implements ReportInterface
 {
-    /** @var array */
-    private $changed = array();
-
-    /** @var bool */
-    private $addAppliedFixers = false;
-
-    /** @var int */
-    private $time;
-
-    /** @var int */
-    private $memory;
-
     /**
      * {@inheritdoc}
      */
@@ -44,58 +30,14 @@ final class JsonReport implements ReportInterface
     /**
      * {@inheritdoc}
      */
-    public function setChanged(array $changed)
-    {
-        $this->changed = $changed;
-    }
-
-    /**
-     * @param bool $addAppliedFixers
-     *
-     * @return $this
-     */
-    public function setAddAppliedFixers($addAppliedFixers)
-    {
-        $this->addAppliedFixers = $addAppliedFixers;
-
-        return $this;
-    }
-
-    /**
-     * @param int $time
-     *
-     * @return $this
-     */
-    public function setTime($time)
-    {
-        $this->time = $time;
-
-        return $this;
-    }
-
-    /**
-     * @param int $memory
-     *
-     * @return $this
-     */
-    public function setMemory($memory)
-    {
-        $this->memory = $memory;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function generate()
+    public function generate(ReportConfig $reportConfig)
     {
         $jFiles = array();
 
-        foreach ($this->changed as $file => $fixResult) {
+        foreach ($reportConfig->getChanged() as $file => $fixResult) {
             $jfile = array('name' => $file);
 
-            if ($this->addAppliedFixers) {
+            if ($reportConfig->shouldAddAppliedFixers()) {
                 $jfile['appliedFixers'] = $fixResult['appliedFixers'];
             }
 
@@ -110,14 +52,14 @@ final class JsonReport implements ReportInterface
             'files' => $jFiles,
         );
 
-        if ($this->time !== null) {
+        if (null !== $reportConfig->getTime()) {
             $json['time'] = array(
-                'total' => round($this->time / 1000, 3),
+                'total' => round($reportConfig->getTime() / 1000, 3),
             );
         }
 
-        if ($this->memory !== null) {
-            $json['memory'] = round($this->memory / 1024 / 1024, 3);
+        if (null !== $reportConfig->getMemory()) {
+            $json['memory'] = round($reportConfig->getMemory() / 1024 / 1024, 3);
         }
 
         return json_encode($json);

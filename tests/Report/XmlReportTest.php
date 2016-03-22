@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Report;
 
+use PhpCsFixer\Report\ReportConfig;
 use PhpCsFixer\Report\XmlReport;
 
 /**
@@ -48,15 +49,19 @@ final class XmlReportTest extends \PHPUnit_Framework_TestCase
 </report>
 XML;
 
-        $this->report->setChanged(
-            array(
-                'someFile.php' => array(
-                    'appliedFixers' => array('some_fixer_name_here'),
-                ),
+        $this->assertXmlStringEqualsXmlString(
+            $expectedXml,
+            $this->report->generate(
+                ReportConfig::create()
+                    ->setChanged(
+                        array(
+                            'someFile.php' => array(
+                                'appliedFixers' => array('some_fixer_name_here'),
+                            ),
+                        )
+                    )
             )
         );
-
-        $this->assertXmlStringEqualsXmlString($expectedXml, $this->report->generate());
     }
 
     public function testProcessWithDiff()
@@ -72,52 +77,55 @@ XML;
 </report>
 XML;
 
-        $this->report->setChanged(
-            array(
-                'someFile.php' => array(
-                    'appliedFixers' => array('some_fixer_name_here'),
-                    'diff' => 'this text is a diff ;)',
-                ),
+        $this->assertXmlStringEqualsXmlString(
+            $expectedXml,
+            $this->report->generate(
+                ReportConfig::create()
+                    ->setChanged(
+                        array(
+                            'someFile.php' => array(
+                                'appliedFixers' => array('some_fixer_name_here'),
+                                'diff' => 'this text is a diff ;)',
+                            ),
+                        )
+                    )
             )
         );
-
-        $this->assertXmlStringEqualsXmlString($expectedXml, $this->report->generate());
     }
 
     public function testProcessWithAppliedFixers()
     {
-        $this->report->setAddAppliedFixers(true);
-
         $expectedXml = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <report>
   <files>
     <file id="1" name="someFile.php">
       <applied_fixers>
-	<applied_fixer name="some_fixer_name_here"/>
+        <applied_fixer name="some_fixer_name_here"/>
       </applied_fixers>
     </file>
   </files>
 </report>
 XML;
 
-        $this->report->setChanged(
-            array(
-                'someFile.php' => array(
-                    'appliedFixers' => array('some_fixer_name_here'),
-                ),
+        $this->assertXmlStringEqualsXmlString(
+            $expectedXml,
+            $this->report->generate(
+                ReportConfig::create()
+                    ->setAddAppliedFixers(true)
+                    ->setChanged(
+                        array(
+                            'someFile.php' => array(
+                                'appliedFixers' => array('some_fixer_name_here'),
+                            ),
+                        )
+                    )
             )
         );
-
-        $this->assertXmlStringEqualsXmlString($expectedXml, $this->report->generate());
     }
 
     public function testProcessWithTimeAndMemory()
     {
-        $this->report
-            ->setTime(1234)
-            ->setMemory(2.5 * 1024 * 1024);
-
         $expectedXml = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <report>
@@ -131,37 +139,38 @@ XML;
 </report>
 XML;
 
-        $this->report->setChanged(
-            array(
-                'someFile.php' => array(
-                    'appliedFixers' => array('some_fixer_name_here'),
-                ),
+        $this->assertXmlStringEqualsXmlString(
+            $expectedXml,
+            $this->report->generate(
+                ReportConfig::create()
+                    ->setChanged(
+                        array(
+                            'someFile.php' => array(
+                                'appliedFixers' => array('some_fixer_name_here'),
+                            ),
+                        )
+                    )
+                    ->setMemory(2.5 * 1024 * 1024)
+                    ->setTime(1234)
             )
         );
-
-        $this->assertXmlStringEqualsXmlString($expectedXml, $this->report->generate());
     }
 
     public function testProcessComplex()
     {
-        $this->report
-            ->setAddAppliedFixers(true)
-            ->setTime(1234)
-            ->setMemory(2.5 * 1024 * 1024);
-
         $expectedXml = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <report>
   <files>
     <file id="1" name="someFile.php">
       <applied_fixers>
-	<applied_fixer name="some_fixer_name_here"/>
+        <applied_fixer name="some_fixer_name_here"/>
       </applied_fixers>
       <diff>this text is a diff ;)</diff>
     </file>
     <file id="2" name="anotherFile.php">
       <applied_fixers>
-	<applied_fixer name="another_fixer_name_here"/>
+        <applied_fixer name="another_fixer_name_here"/>
       </applied_fixers>
       <diff>another diff here ;)</diff>
     </file>
@@ -172,19 +181,27 @@ XML;
   <memory value="2.5" unit="MB"/>
 </report>
 XML;
-        $this->report->setChanged(
-            array(
-                'someFile.php' => array(
-                    'appliedFixers' => array('some_fixer_name_here'),
-                    'diff' => 'this text is a diff ;)',
-                ),
-                'anotherFile.php' => array(
-                    'appliedFixers' => array('another_fixer_name_here'),
-                    'diff' => 'another diff here ;)',
-                ),
+
+        $this->assertXmlStringEqualsXmlString(
+            $expectedXml,
+            $this->report->generate(
+                ReportConfig::create()
+                    ->setAddAppliedFixers(true)
+                    ->setChanged(
+                        array(
+                            'someFile.php' => array(
+                                'appliedFixers' => array('some_fixer_name_here'),
+                                'diff' => 'this text is a diff ;)',
+                            ),
+                            'anotherFile.php' => array(
+                                'appliedFixers' => array('another_fixer_name_here'),
+                                'diff' => 'another diff here ;)',
+                            ),
+                        )
+                    )
+                    ->setMemory(2.5 * 1024 * 1024)
+                    ->setTime(1234)
             )
         );
-
-        $this->assertXmlStringEqualsXmlString($expectedXml, $this->report->generate());
     }
 }

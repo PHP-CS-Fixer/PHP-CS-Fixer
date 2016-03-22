@@ -12,8 +12,6 @@
 
 namespace PhpCsFixer\Report;
 
-use PhpCsFixer\ReportInterface;
-
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
  *
@@ -21,18 +19,6 @@ use PhpCsFixer\ReportInterface;
  */
 final class XmlReport implements ReportInterface
 {
-    /** @var array */
-    private $changed = array();
-
-    /** @var bool */
-    private $addAppliedFixers = false;
-
-    /** @var int */
-    private $time;
-
-    /** @var int */
-    private $memory;
-
     /**
      * {@inheritdoc}
      */
@@ -44,51 +30,7 @@ final class XmlReport implements ReportInterface
     /**
      * {@inheritdoc}
      */
-    public function setChanged(array $changed)
-    {
-        $this->changed = $changed;
-    }
-
-    /**
-     * @param bool $addAppliedFixers
-     *
-     * @return $this
-     */
-    public function setAddAppliedFixers($addAppliedFixers)
-    {
-        $this->addAppliedFixers = $addAppliedFixers;
-
-        return $this;
-    }
-
-    /**
-     * @param int $time
-     *
-     * @return $this
-     */
-    public function setTime($time)
-    {
-        $this->time = $time;
-
-        return $this;
-    }
-
-    /**
-     * @param int $memory
-     *
-     * @return $this
-     */
-    public function setMemory($memory)
-    {
-        $this->memory = $memory;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function generate()
+    public function generate(ReportConfig $reportConfig)
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         // new nodes should be added to this or existing children
@@ -99,13 +41,13 @@ final class XmlReport implements ReportInterface
         $root->appendChild($filesXML);
 
         $i = 1;
-        foreach ($this->changed as $file => $fixResult) {
+        foreach ($reportConfig->getChanged() as $file => $fixResult) {
             $fileXML = $dom->createElement('file');
             $fileXML->setAttribute('id', $i++);
             $fileXML->setAttribute('name', $file);
             $filesXML->appendChild($fileXML);
 
-            if ($this->addAppliedFixers) {
+            if ($reportConfig->shouldAddAppliedFixers()) {
                 $fileXML->appendChild($this->createAppliedFixersElement($dom, $fixResult));
             }
 
@@ -114,12 +56,12 @@ final class XmlReport implements ReportInterface
             }
         }
 
-        if ($this->time !== null) {
-            $root->appendChild($this->createTimeElement($dom));
+        if (null !== $reportConfig->getTime()) {
+            $root->appendChild($this->createTimeElement($reportConfig->getTime(), $dom));
         }
 
-        if ($this->memory !== null) {
-            $root->appendChild($this->createMemoryElement($dom));
+        if (null !== $reportConfig->getTime()) {
+            $root->appendChild($this->createMemoryElement($reportConfig->getMemory(), $dom));
         }
 
         $dom->formatOutput = true;
@@ -128,13 +70,14 @@ final class XmlReport implements ReportInterface
     }
 
     /**
+     * @param float        $time
      * @param \DOMDocument $dom
      *
      * @return \DOMElement
      */
-    private function createTimeElement(\DOMDocument $dom)
+    private function createTimeElement($time, \DOMDocument $dom)
     {
-        $time = round($this->time / 1000, 3);
+        $time = round($time / 1000, 3);
 
         $timeXML = $dom->createElement('time');
         $timeXML->setAttribute('unit', 's');
@@ -146,13 +89,14 @@ final class XmlReport implements ReportInterface
     }
 
     /**
+     * @param float        $memory
      * @param \DOMDocument $dom
      *
      * @return \DOMElement
      */
-    private function createMemoryElement(\DOMDocument $dom)
+    private function createMemoryElement($memory, \DOMDocument $dom)
     {
-        $memory = round($this->memory / 1024 / 1024, 3);
+        $memory = round($memory / 1024 / 1024, 3);
 
         $memoryXML = $dom->createElement('memory');
         $memoryXML->setAttribute('value', $memory);
@@ -181,7 +125,7 @@ final class XmlReport implements ReportInterface
      *
      * @return \DOMElement
      */
-    private function createAppliedFixersElement($dom, $fixResult)
+    private function createAppliedFixersElement($dom, array $fixResult)
     {
         $appliedFixersXML = $dom->createElement('applied_fixers');
 

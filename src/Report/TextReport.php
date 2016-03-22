@@ -12,8 +12,6 @@
 
 namespace PhpCsFixer\Report;
 
-use PhpCsFixer\ReportInterface;
-
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
  *
@@ -21,24 +19,6 @@ use PhpCsFixer\ReportInterface;
  */
 class TextReport implements ReportInterface
 {
-    /** @var array */
-    private $changed = array();
-
-    /** @var bool */
-    private $addAppliedFixers = false;
-
-    /** @var bool */
-    private $isDryRun = false;
-
-    /** @var bool */
-    private $isDecoratedOutput = false;
-
-    /** @var int */
-    private $time;
-
-    /** @var int */
-    private $memory;
-
     /**
      * {@inheritdoc}
      */
@@ -50,113 +30,41 @@ class TextReport implements ReportInterface
     /**
      * {@inheritdoc}
      */
-    public function setChanged(array $changed)
-    {
-        $this->changed = $changed;
-    }
-
-    /**
-     * @param bool $addAppliedFixers
-     *
-     * @return $this
-     */
-    public function setAddAppliedFixers($addAppliedFixers)
-    {
-        $this->addAppliedFixers = $addAppliedFixers;
-
-        return $this;
-    }
-
-    /**
-     * @param bool $isDryRun
-     *
-     * @return $this
-     */
-    public function setIsDryRun($isDryRun)
-    {
-        $this->isDryRun = $isDryRun;
-
-        return $this;
-    }
-
-    /**
-     * @param bool $isDecoratedOutput
-     *
-     * @return $this
-     */
-    public function setIsDecoratedOutput($isDecoratedOutput)
-    {
-        $this->isDecoratedOutput = $isDecoratedOutput;
-
-        return $this;
-    }
-
-    /**
-     * @param int $time
-     *
-     * @return $this
-     */
-    public function setTime($time)
-    {
-        $this->time = $time;
-
-        return $this;
-    }
-
-    /**
-     * @param int $memory
-     *
-     * @return $this
-     */
-    public function setMemory($memory)
-    {
-        $this->memory = $memory;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function generate()
+    public function generate(ReportConfig $reportConfig)
     {
         $output = '';
 
-        $i = 1;
-        foreach ($this->changed as $file => $fixResult) {
-            $output .= $this->getFile($file, $i++);
-            $output .= $this->getAppliedFixers($fixResult);
-            $output .= $this->getDiff($fixResult);
+        $i = 0;
+        foreach ($reportConfig->getChanged() as $file => $fixResult) {
+            ++$i;
+            $output .= sprintf('%4d) %s', $i, $file);
+
+            if ($reportConfig->shouldAddAppliedFixers()) {
+                $output .= $this->getAppliedFixers($reportConfig->isDecoratedOutput(), $fixResult);
+            }
+
+            $output .= $this->getDiff($reportConfig->isDecoratedOutput(), $fixResult);
             $output .= PHP_EOL;
         }
 
-        $output .= $this->getFooter();
+        $output .= $this->getFooter($reportConfig->getTime(), $reportConfig->getMemory(), $reportConfig->isDryRun());
 
         return $output;
     }
 
     /**
+     * @param bool  $isDecoratedOutput
      * @param array $fixResult
      *
      * @return string
      */
-    private function getFile($file, $i)
+    private function getAppliedFixers($isDecoratedOutput, array $fixResult)
     {
-        return PHP_EOL.sprintf('%4d) %s', $i, $file);
-    }
-
-    /**
-     * @param array $fixResult
-     *
-     * @return string
-     */
-    private function getAppliedFixers($fixResult)
-    {
-        if (!$this->addAppliedFixers || empty($fixResult['appliedFixers'])) {
+        if (empty($fixResult['appliedFixers'])) {
             return '';
         }
 
-        $template = $this->isDecoratedOutput ? ' (<comment>%s</comment>)' : ' (%s)';
+        $template = $isDecoratedOutput ? ' (<comment>%s</comment>)' : ' (%s)';
 
         return sprintf(
             $template,
@@ -165,11 +73,12 @@ class TextReport implements ReportInterface
     }
 
     /**
+     * @param bool  $isDecoratedOutput
      * @param array $fixResult
      *
      * @return string
      */
-    private function getDiff($fixResult)
+    private function getDiff($isDecoratedOutput, array $fixResult)
     {
         if (empty($fixResult['diff'])) {
             return '';
@@ -177,7 +86,7 @@ class TextReport implements ReportInterface
 
         $template = '';
 
-        if ($this->isDecoratedOutput) {
+        if ($isDecoratedOutput) {
             $template .= '<comment>      ---------- begin diff ----------</comment>';
             $template .= PHP_EOL.'%s'.PHP_EOL;
             $template .= '<comment>      ----------- end diff -----------</comment>';
@@ -189,24 +98,28 @@ class TextReport implements ReportInterface
 
         return PHP_EOL.sprintf(
             $template,
-            trim($fixResult['diff'])
-        );
+            $fixResult['diff']
+        ).PHP_EOL;
     }
 
     /**
+     * @param float $time
+     * @param float $memory
+     * @param bool  $isDryRun
+     *
      * @return string
      */
-    private function getFooter()
+    private function getFooter($time, $memory, $isDryRun)
     {
-        if ($this->time === null || $this->memory === null) {
+        if ($time === null || $memory === null) {
             return '';
         }
 
         return PHP_EOL.sprintf(
             '%s all files in %.3f seconds, %.3f MB memory used'.PHP_EOL,
-            $this->isDryRun ? 'Checked' : 'Fixed',
-            $this->time / 1000,
-            $this->memory / 1024 / 1024
+            $isDryRun ? 'Checked' : 'Fixed',
+            $time / 1000,
+            $memory / 1024 / 1024
         );
     }
 }

@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer;
+namespace PhpCsFixer\Report;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -23,14 +23,11 @@ interface ReportInterface
     public function getFormat();
 
     /**
-     * @param array $changed
-     */
-    public function setChanged(array $changed);
-
-    /**
      * Process changed files array. Returns generated report.
+     *
+     * @param ReportConfig $reportConfig
      *
      * @return string
      */
-    public function generate();
+    public function generate(ReportConfig $reportConfig);
 }

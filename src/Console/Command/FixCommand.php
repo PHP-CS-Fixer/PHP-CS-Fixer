@@ -26,7 +26,8 @@ use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\NullLinter;
 use PhpCsFixer\Linter\UnavailableLinterException;
-use PhpCsFixer\ReportBuilder;
+use PhpCsFixer\Report\ReportConfig;
+use PhpCsFixer\Report\ReportFactory;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Runner\Runner;
 use Symfony\Component\Console\Command\Command;
@@ -353,27 +354,29 @@ EOF
         $this->stopwatch->start('fixFiles');
         $changed = $runner->fix();
         $this->stopwatch->stop('fixFiles');
-
+        
         $progressOutput->printLegend();
-
-        $reportBuilder = new ReportBuilder();
+        
         $fixEvent = $this->stopwatch->getEvent('fixFiles');
-        $report = $reportBuilder
-            ->registerBuiltInReports()
+
+        $reportConfig = ReportConfig::create()
+            ->setChanged($changed)
             ->setAddAppliedFixers(OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity())
             ->setIsDecoratedOutput($output->isDecorated())
             ->setIsDryRun($resolver->isDryRun())
-            ->setTime($fixEvent->getDuration())
             ->setMemory($fixEvent->getMemory())
-            ->setFormat($resolver->getFormat())
-            ->setChanged($changed)
-            ->getReport()
+            ->setTime($fixEvent->getDuration())
+        ;
+
+        $report = ReportFactory::create()
+            ->registerBuiltInReports()
+            ->getReport($resolver->getFormat())
         ;
 
         $output->write(
-            $report->generate()
+            $report->generate($reportConfig)
         );
-
+        
         $invalidErrors = $this->errorsManager->getInvalidErrors();
         if (!empty($invalidErrors)) {
             $this->listErrors($output, 'linting before fixing', $invalidErrors);
