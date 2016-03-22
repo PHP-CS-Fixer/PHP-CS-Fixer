@@ -58,9 +58,11 @@ $something = array(
             ),
             array(
                 '<?php
-$a = 1; // Comment with    whitespace',
+$a = 1; // Comment with    whitespace
+return;',
                 '<?php
-$a  =   1; // Comment with    whitespace',
+$a  =   1; // Comment with    whitespace
+return;',
             ),
             array(
                 '<?php
