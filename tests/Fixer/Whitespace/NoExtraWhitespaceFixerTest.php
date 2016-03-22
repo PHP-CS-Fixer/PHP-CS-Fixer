@@ -65,16 +65,12 @@ $a  =   1; // Comment with    whitespace
 return;',
             ),
             array(
-                '<?php
-$a = 1; // Comment with    whitespace\n\r',
-                '<?php
-$a  =   1; // Comment with    whitespace\n\r',
+                "<?php\r\n \$a = 1; // Comment with    whitespace\r\n",
+                "<?php\r\n \$a     =    1; // Comment with    whitespace\r\n",
             ),
             array(
-                '<?php
-$a = 1; // Comment with    whitespace\n',
-                '<?php
-$a  =   1; // Comment with    whitespace\n',
+                "<?php \$a = 1; // Comment with    whitespace\n",
+                "<?php \$a  =   1; // Comment with    whitespace\n",
             ),
             array(
                 '<?php
