@@ -77,11 +77,11 @@ $a  =   1; // Comment with    whitespace\n',
             array(
                 '<?php
 if ($var == 5 ) {
-    return $something //    extra   whitespace!!!
+    return $something; //    extra   whitespace!!!
 }',
                 '<?php
 if ($var  == 5  ) {
-    return  $something //    extra   whitespace!!!
+    return  $something; //    extra   whitespace!!!
 }',
             ),
             array(
