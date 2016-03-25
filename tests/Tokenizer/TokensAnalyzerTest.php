@@ -670,4 +670,79 @@ class TestClass {
 
         return $cases;
     }
+
+    public function testIsWhilePartOfDoWhile()
+    {
+        $source =
+<<<'SRC'
+<?php
+// `not do`
+while(false) {
+}
+while (false);
+while (false)?>
+<?php
+
+if(false){
+}while(false);
+
+if(false){
+}while(false)?><?php
+while(false){}while(false){}
+
+while ($i <= 10):
+    echo $i;
+    $i++;
+endwhile;
+
+?>
+<?php while(false): ?>
+
+<?php endwhile ?>
+
+<?php
+// `do`
+do{
+} while(false);
+
+do{
+} while(false)?>
+<?php
+if (false){}do{}while(false);
+
+// `not do`, `do`
+if(false){}while(false){}do{}while(false);
+SRC;
+
+        $expected = array(
+            3 => false,
+            12 => false,
+            19 => false,
+            34 => false,
+            47 => false,
+            53 => false,
+            59 => false,
+            66 => false,
+            91 => false,
+            112 => true,
+            123 => true,
+            139 => true,
+            153 => false,
+            162 => true,
+        );
+
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_WHILE)) {
+                continue;
+            }
+
+            $this->assertSame(
+                $expected[$index],
+                $tokensAnalyzer->isWhilePartOfDoWhile($index),
+                sprintf('Expected token at index "%d" to be detected as %sa "do-while"-loop.', $index, true === $expected[$index] ? '' : 'not ')
+            );
+        }
+    }
 }
