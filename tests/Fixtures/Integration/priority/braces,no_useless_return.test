@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: braces,no_useless_return.
+--CONFIG--
+{"braces": true, "no_useless_return": true}
+--EXPECT--
+<?php
+class Test {
+    private function a($a)
+    {
+        if ($a) {
+            return;
+        }
+    }
+}
+
+--INPUT--
+<?php
+class Test {
+    private function a($a) {
+        if ($a)
+            return;
+    }
+}

@@ -81,6 +81,6 @@ final class BlankLineBeforeReturnFixer extends AbstractFixer
     public function getPriority()
     {
         // should be run after NoUselessReturnFixer
-        return -19;
+        return -27;
     }
 }
