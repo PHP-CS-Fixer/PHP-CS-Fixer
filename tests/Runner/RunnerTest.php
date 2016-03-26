@@ -16,6 +16,7 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\Fixer;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\NullLinter;
 use PhpCsFixer\Runner\Runner;
