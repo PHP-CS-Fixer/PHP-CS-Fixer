@@ -15,7 +15,6 @@ namespace PhpCsFixer\Console;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\ReadmeCommand;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
-use PhpCsFixer\Fixer;
 use Symfony\Component\Console\Application as BaseApplication;
 
 /**
