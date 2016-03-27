@@ -40,7 +40,7 @@ final class FileFilterIterator extends \FilterIterator
     private $visitedElements = array();
 
     public function __construct(
-        \Traversable $iterator,
+        \Iterator $iterator,
         EventDispatcher $eventDispatcher = null,
         FileCacheManager $cacheManager
     ) {
