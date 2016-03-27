@@ -100,13 +100,13 @@ final class Runner
         $finder = $config->getFinder();
         $finderIterator = $finder instanceof \IteratorAggregate ? $finder->getIterator() : $finder;
 
-        $collection = new FileLintingIterator(
-            new FileFilterIterator(
+        $collection = new FileFilterIterator(
+            new FileLintingIterator(
                 $finderIterator,
-                $this->eventDispatcher,
-                $this->cacheManager
+                $this->linter
             ),
-            $this->linter
+            $this->eventDispatcher,
+            $this->cacheManager
         );
 
         foreach ($collection as $file) {
