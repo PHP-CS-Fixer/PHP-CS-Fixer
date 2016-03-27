@@ -178,6 +178,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
         $configProphecy = $this->prophesize('PhpCsFixer\ConfigInterface');
         $configProphecy->usingCache()->willReturn(false);
         $configProphecy->getCacheFile()->willReturn(null);
+        $configProphecy->usingLinter()->willReturn(false);
         $configProphecy->getRules()->willReturn(array());
         $configProphecy->getFinder()->willReturn(new \ArrayIterator(array(new \SplFileInfo($tmpFile))));
         $configProphecy->getFixers()->willReturn($case->getFixers());
