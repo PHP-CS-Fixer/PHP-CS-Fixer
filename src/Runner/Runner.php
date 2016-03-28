@@ -210,14 +210,16 @@ final class Runner
                     }
                     throw new IOException(sprintf('Failed to write file "%s".', $file->getRealPath()), 0, null, $file->getRealPath());
                 }
-
-                $this->cacheManager->setFile($name, $new);
             }
 
             $fixInfo = array(
                 'appliedFixers' => $appliedFixers,
                 'diff' => $this->differ->diff($old, $new),
             );
+        }
+
+        if (!$this->isDryRun) {
+            $this->cacheManager->setFile($name, $new);
         }
 
         $this->dispatchEvent(
