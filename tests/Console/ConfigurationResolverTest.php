@@ -15,7 +15,6 @@ namespace PhpCsFixer\Tests\Console;
 use PhpCsFixer\Config;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
-use PhpCsFixer\Fixer;
 use PhpCsFixer\Test\AccessibleObject;
 use Symfony\Component\Finder\SplFileInfo;
 
