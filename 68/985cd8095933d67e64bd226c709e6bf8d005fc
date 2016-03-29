@@ -1,0 +1,59 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-28T10:30:11Z
+
+Yes, along with https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1843, I think this should fix it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-28T10:30:16Z
+
+I'll try it out and see.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-28T10:33:32Z
+
+Hmm, looking at your PR, it doesn't look right. dryRun doesn;t indicate if something was changed or not?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-28T10:38:11Z
+
+Oh, wait, sorry. I've missread the diff. It does look good!
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-28T11:20:59Z
+
+Just tested this with my other imports patch, and they work.
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-29T08:27:44Z
+
+Question: why we want to remember that file is fixed when in fact we didn't fix it?
+With this PR:
+- first run, with dry-run, it found that file should be fixed, but didn't fix it, then mark in cache
+- second run, without dry-run, it skipped the file, even while file needs fixing
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-29T08:38:39Z
+
+@keradus good point, updated the pr.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-29T09:07:51Z
+
+great ;)
+@GrahamCampbell is that solves performance issue you have reported?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-29T09:23:30Z
+
+With my import fix PR, yes it does.
