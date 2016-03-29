@@ -28,7 +28,7 @@ class TagComparator
     private static $groups = array(
         array('deprecated', 'link', 'see', 'since'),
         array('author', 'copyright', 'license'),
-        array('package', 'subpackage'),
+        array('category', 'package', 'subpackage'),
         array('property', 'property-read', 'property-write'),
     );
 

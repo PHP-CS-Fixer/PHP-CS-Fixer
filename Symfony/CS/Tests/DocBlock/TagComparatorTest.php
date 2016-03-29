@@ -42,6 +42,7 @@ class TagComparatorTest extends \PHPUnit_Framework_TestCase
             array('author', 'copyright', true),
             array('author', 'since', false),
             array('link', 'see', true),
+            array('category', 'package', true),
         );
     }
 }
