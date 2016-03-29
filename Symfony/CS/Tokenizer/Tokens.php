@@ -972,6 +972,28 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Check if there is an anonymous class under given index.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isAnonymousClass($index)
+    {
+        $token = $this[$index];
+
+        if (!$token->isClassy()) {
+            throw new \LogicException('No classy token at given index');
+        }
+
+        if (!$token->isGivenKind(T_CLASS)) {
+            return false;
+        }
+
+        return $this[$this->getPrevMeaningfulToken($index)]->isGivenKind(T_NEW);
+    }
+
+    /**
      * Check if there is a lambda function under given index.
      *
      * @param int $index

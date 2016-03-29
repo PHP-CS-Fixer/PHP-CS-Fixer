@@ -28,7 +28,7 @@ class SelfAccessorFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         for ($i = 0, $c = $tokens->count(); $i < $c; ++$i) {
-            if (!$tokens[$i]->isClassy()) {
+            if (!$tokens[$i]->isClassy() || $tokens->isAnonymousClass($i)) {
                 continue;
             }
 
@@ -68,8 +68,12 @@ class SelfAccessorFixer extends AbstractFixer
         for ($i = $startIndex; $i < $endIndex; ++$i) {
             $token = $tokens[$i];
 
-            // skip lambda functions (PHP < 5.4 compatibility)
-            if ($token->isGivenKind(T_FUNCTION) && $tokens->isLambda($i)) {
+            if (
+                // skip anonymous classes
+                $token->isGivenKind(T_CLASS) && $tokens->isAnonymousClass($i) ||
+                // skip lambda functions (PHP < 5.4 compatibility)
+                $token->isGivenKind(T_FUNCTION) && $tokens->isLambda($i)
+            ) {
                 $i = $tokens->getNextTokenOfKind($i, array('{'));
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
                 continue;
