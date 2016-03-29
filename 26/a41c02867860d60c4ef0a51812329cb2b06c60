@@ -1,0 +1,46 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-07T20:44:42Z
+
+:+1:
+
+(having a test for something like `$a = new class(new class($d->a) implements B{}) extends C{};` would be a nice to have, but I'm sure it passes ;)  )
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-07T20:49:56Z
+
+> `$a = new class(new class($d->a) implements B{}) extends C{};`
+
+done. and added another test case.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-24T11:49:48Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-24T11:50:14Z
+
+Is this good to merge?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-24T12:14:35Z
+
+Yes, @gharlan please, could you rebase?
+I will try to merge few PRs this weekend
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-24T22:13:38Z
+
+done
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-26T14:58:17Z
+
+I'm inclined to say this is more of a feature and belongs in 1.12.
