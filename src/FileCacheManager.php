@@ -35,6 +35,7 @@ final class FileCacheManager
     private $cacheFile;
     private $cacheFileRealDirName;
     private $isEnabled;
+    private $linting;
     private $rules;
     private $newHashes = array();
     private $oldHashes = array();
@@ -44,13 +45,15 @@ final class FileCacheManager
      *
      * @param bool   $isEnabled is cache enabled
      * @param string $cacheFile cache file
+     * @param bool   $linting   is linting enabled
      * @param array  $rules     array defining rules, format like one for ConfigInterface::setRules
      */
-    public function __construct($isEnabled, $cacheFile, array $rules)
+    public function __construct($isEnabled, $cacheFile, $linting, array $rules)
     {
         $this->isEnabled = $isEnabled;
         $this->cacheFile = $cacheFile;
         $this->cacheFileRealDirName = dirname(realpath($cacheFile));
+        $this->linting = $linting;
         $this->rules = $rules;
 
         $this->readFromFile();
@@ -110,13 +113,13 @@ final class FileCacheManager
         return $result;
     }
 
-    private function isCacheStale($php, $version, $rules)
+    private function isCacheStale($php, $version, $linting, $rules)
     {
         if (!$this->isCacheAvailable()) {
             return true;
         }
 
-        return PHP_VERSION !== $php || ToolInfo::getVersion() !== $version || $this->rules !== $rules;
+        return PHP_VERSION !== $php || ToolInfo::getVersion() !== $version || $this->linting !== $linting || $this->rules !== $rules;
     }
 
     private function readFromFile()
@@ -137,12 +140,12 @@ final class FileCacheManager
             return;
         }
 
-        if (!isset($data['php'], $data['version'], $data['rules'])) {
+        if (!isset($data['php'], $data['version'], $data['linting'], $data['rules'])) {
             return;
         }
 
         // Set hashes only if the cache is fresh, otherwise we need to parse all files
-        if (!$this->isCacheStale($data['php'], $data['version'], $data['rules'])) {
+        if (!$this->isCacheStale($data['php'], $data['version'], $data['linting'], $data['rules'])) {
             $this->oldHashes = $data['hashes'];
             $this->newHashes = $this->oldHashes;
         }
@@ -158,6 +161,7 @@ final class FileCacheManager
             array(
                 'php' => PHP_VERSION,
                 'version' => ToolInfo::getVersion(),
+                'linting' => $this->linting,
                 'rules' => $this->rules,
                 'hashes' => $this->newHashes,
             )

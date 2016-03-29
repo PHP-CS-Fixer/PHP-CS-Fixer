@@ -85,6 +85,7 @@ final class Runner
         $this->cacheManager = new FileCacheManager(
             $config->usingCache(),
             $config->getCacheFile(),
+            $config->usingLinter(),
             $config->getRules()
         );
     }
