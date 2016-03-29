@@ -66,6 +66,44 @@ PHP;
     }
 
     /**
+     * @dataProvider provideIsAnonymousClassCases
+     */
+    public function testIsAnonymousClass($source, array $expected)
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $expectedValue) {
+            $this->assertSame($expectedValue, $tokensAnalyzer->isAnonymousClass($index));
+        }
+    }
+
+    public function provideIsAnonymousClassCases()
+    {
+        return array(
+            array(
+                '<?php class foo () {}',
+                array(1 => false),
+            ),
+            array(
+                '<?php $foo = new class() {};',
+                array(7 => true),
+            ),
+            array(
+                '<?php $foo = new class() extends Foo implements Bar, Baz {};',
+                array(7 => true),
+            ),
+            array(
+                '<?php class Foo { function bar() { return new class() {}; } }',
+                array(1 => false, 19 => true),
+            ),
+            array(
+                '<?php $a = new class(new class($d->a) implements B{}) extends C{};',
+                array(7 => true, 11 => true),
+            ),
+        );
+    }
+
+    /**
      * @dataProvider provideIsLambdaCases
      */
     public function testIsLambda($source, array $expected)

@@ -32,8 +32,10 @@ final class SelfAccessorFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         for ($i = 0, $c = $tokens->count(); $i < $c; ++$i) {
-            if (!$tokens[$i]->isClassy()) {
+            if (!$tokens[$i]->isClassy() || $tokensAnalyzer->isAnonymousClass($i)) {
                 continue;
             }
 
@@ -73,8 +75,12 @@ final class SelfAccessorFixer extends AbstractFixer
         for ($i = $startIndex; $i < $endIndex; ++$i) {
             $token = $tokens[$i];
 
-            // skip lambda functions (PHP < 5.4 compatibility)
-            if ($token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($i)) {
+            if (
+                // skip anonymous classes
+                ($token->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($i)) ||
+                // skip lambda functions (PHP < 5.4 compatibility)
+                ($token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($i))
+            ) {
                 $i = $tokens->getNextTokenOfKind($i, array('{'));
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
                 continue;
