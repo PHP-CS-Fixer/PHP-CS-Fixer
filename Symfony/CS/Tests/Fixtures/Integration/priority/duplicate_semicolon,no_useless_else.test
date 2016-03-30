@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: duplicate_semicolon,no_useless_else.
+--CONFIG--
+level=none
+fixers=duplicate_semicolon,no_useless_else
+--EXPECT--
+<?php
+
+if ($a) {
+    return;
+}   //
+    echo 1;
+
+
+--INPUT--
+<?php
+
+if ($a) {
+    return;;;;
+} else { //
+    echo 1;
+}

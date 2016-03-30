@@ -674,6 +674,10 @@ Choose from the list of available fixers:
                         There should not be an empty
                         comments.
 
+* **no_useless_else** [contrib]
+                        There should not be useless
+                        else cases.
+
 * **no_useless_return** [contrib]
                         There should not be an empty
                         return statement at the end of

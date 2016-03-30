@@ -60,7 +60,7 @@ class DuplicateSemicolonFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run before the BracesFixer, SpacesBeforeSemicolonFixer, MultilineSpacesBeforeSemicolonFixer, SwitchCaseSemicolonToColonFixer and NoUselessReturnFixer.
+        // should be run before the BracesFixer, SpacesBeforeSemicolonFixer, MultilineSpacesBeforeSemicolonFixer, SwitchCaseSemicolonToColonFixer, NoUselessReturnFixer and NoUselessElseFixer.
         return 26;
     }
 }

@@ -1,0 +1,24 @@
+--TEST--
+Integration of fixers: no_useless_else,whitespacy_lines.
+--CONFIG--
+level=none
+fixers=no_useless_else,whitespacy_lines
+--EXPECT--
+<?php
+
+if ($a) {
+    return;
+}
+
+    echo 1;
+
+
+--INPUT--
+<?php
+
+if ($a) {
+    return;
+}
+else {
+    echo 1;
+}

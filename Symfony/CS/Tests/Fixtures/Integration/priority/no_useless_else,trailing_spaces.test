@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: no_useless_else,trailing_spaces.
+--CONFIG--
+level=none
+fixers=no_useless_else,trailing_spaces
+--EXPECT--
+<?php
+
+if ($a) {
+    return;
+}
+    return;
+
+
+--INPUT--
+<?php
+
+if ($a) {
+    return;
+} else {
+    return;
+}

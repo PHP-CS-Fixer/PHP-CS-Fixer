@@ -78,7 +78,7 @@ final class NoUselessElseFixerTest extends AbstractFixerTestBase
                     if (true) {
                         echo 777;
                         if(false) die ?>
-                    <?php 
+                    <?php
                     } else {
                         echo 778;
                     }',
@@ -766,5 +766,37 @@ else?><?php echo 5;',
         }
 
         return $cases;
+    }
+
+    /**
+     * @dataProvider provideAlternativeSyntaxCases
+     */
+    public function testAlternativeSyntax($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideAlternativeSyntaxCases()
+    {
+        return array(
+            array(
+                '<?php
+                    if ($a == 5):
+                        echo 1;
+                    else:
+
+                    endif;
+                ',
+            ),
+            array(
+                '<?php
+                    if ($a == 5):
+                        return 1;
+                    else:
+                        echo "a is neither 5 nor 6";
+                    endif;
+                ',
+            ),
+        );
     }
 }
