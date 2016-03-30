@@ -1,0 +1,61 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-10T21:50:20Z
+
+Nice idea for a fixer! : D
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-03-10T22:15:04Z
+
+Thanks for the feedback @SpacePossum. I've copied the main concept from `NoSpacesInsideParenthesisFixer`, and this is the reason for these undesired issues.
+I'll update the PR with your comments ASAP.
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-03-11T12:44:23Z
+
+PR updated with proposed changes.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-12T20:41:58Z
+
+Please add this rule to `@Symfony` ruleset
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-03-12T20:51:50Z
+
+@keradus, done.
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-03-12T20:57:00Z
+
+Given the last test I've added (string offset with spaces), I'm thinking if a better name could be "trim offsets" or something similar, because actually an offset can contain (internal) spaces.
+What do you think?
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-03-13T00:01:35Z
+
+Rebased master. Ping @keradus.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-13T09:47:43Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-19T11:09:36Z
+
+please add a test case with `$a[ $b[ 1 ] ]`
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-03-19T12:31:37Z
+
+Thank you @gharlan, PR updated.
