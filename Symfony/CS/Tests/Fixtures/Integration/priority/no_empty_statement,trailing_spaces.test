@@ -1,0 +1,12 @@
+--TEST--
+Integration of fixers: no_empty_statement,trailing_spaces.
+--CONFIG--
+level=none
+fixers=no_empty_statement,trailing_spaces
+--EXPECT--
+<?php $foo = 2;
+$a;
+
+--INPUT--
+<?php $foo = 2;
+$a;    ;
