@@ -350,8 +350,12 @@ final class ConfigurationResolver
         $rules = array();
 
         foreach (array_map('trim', explode(',', $this->options['rules'])) as $rule) {
+            if ('' === $rule) {
+                throw new InvalidConfigurationException('Empty rule name is not allowed.');
+            }
+
             if ('-' === $rule[0]) {
-                $rules[ltrim($rule, '-')] = false;
+                $rules[substr($rule, 1)] = false;
             } else {
                 $rules[$rule] = true;
             }
