@@ -78,6 +78,7 @@ final class RuleSet implements RuleSetInterface
             'no_multiline_whitespace_around_double_arrow' => true,
             'no_short_bool_cast' => true,
             'no_singleline_whitespace_before_semicolons' => true,
+            'no_spaces_inside_ofsset' => true,
             'no_trailing_comma_in_list_call' => true,
             'no_trailing_comma_in_singleline_array' => true,
             'no_unneeded_control_parentheses' => true,
