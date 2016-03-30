@@ -395,6 +395,10 @@ Choose from the list of available fixers:
                          There should not be empty
                          PHPDoc blocks.
 
+* **no_empty_statement** [@Symfony]
+                         Remove useless semicolon
+                         statements.
+
 * **no_extra_consecutive_blank_lines** [@Symfony]
                          Removes extra blank lines
                          and/or blank lines following

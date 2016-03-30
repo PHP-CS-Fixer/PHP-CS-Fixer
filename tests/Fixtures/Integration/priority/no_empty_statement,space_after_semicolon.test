@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: no_empty_statement,space_after_semicolon.
+--CONFIG--
+{"no_empty_statement": true, "space_after_semicolon": true}
+--EXPECT--
+<?php
+test9(); $b = 7;
+
+--INPUT--
+<?php
+test9();;$b = 7;

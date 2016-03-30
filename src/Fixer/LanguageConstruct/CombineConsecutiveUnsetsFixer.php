@@ -88,8 +88,8 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should ran before SpacesAfterSemicolonFixer, WhitespacyLinesFixer, TrailingSpacesFixer and ExtraEmptyLinesFixer.
-        return 25;
+        // should ran before SpacesAfterSemicolonFixer, WhitespacyLinesFixer, TrailingSpacesFixer and ExtraEmptyLinesFixer and after NoEmptyStatementFixer.
+        return 24;
     }
 
     /**
