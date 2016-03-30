@@ -1,0 +1,158 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-13T17:23:56Z
+
+TODO; fix HHVM :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-13T17:32:47Z
+
+And 5.3 ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-13T17:34:00Z
+
+ref https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/52ca3f008fffb402400a3db9cad90459c9ac098d/Symfony/CS/Tests/Tokenizer/TokensTest.php#L852
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-19T13:18:48Z
+
+fabbot is wrong on this ;)
+
+TODO check if `T_TRAIT` is defined.. d'oh...
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-06T15:05:47Z
+
+@SpacePossum what is the state of this PR ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-06T17:17:16Z
+
+waiting for `clearTokenAndMergeSurroundingWhitespace` method in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1705  and this one can be cleaned upped (it is as good as finished)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-08T08:27:42Z
+
+done
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-28T21:56:18Z
+
+Could anyone make a final review please?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-01T20:26:06Z
+
+Please add this test case:
+
+```php
+interface TestInterface1 extends TestInterface2, TestInterface3 {
+};
+```
+
+I think it will fail.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-01T23:31:23Z
+
+Nice spotted @gharlan !
+Test added, expecting failures.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-01T23:51:40Z
+
+[...]
+
+(removed a comment, because it contained an invalid test case) ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-02T00:03:58Z
+
+love to, but I'm not sure if it is valid? I tried https://3v4l.org/VXVMg
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-02T00:05:49Z
+
+> I tried https://3v4l.org/VXVMg
+
+`Parse error`, so it is inavlid. ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-02T20:23:25Z
+
+is it done then?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-03T08:31:00Z
+
+~~Proposal for new priority mapping.~~
+removed
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-03T09:09:20Z
+
+Please keep it in separated thread, this is not connected to the feature that this PR adds.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-11T21:53:33Z
+
+what is the state of this PR?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-12T10:07:25Z
+
+one more item (https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1671#discussion_r55608895), I hope/think that is it
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-12T11:37:23Z
+
+reworked to make the code more simple following the idea of @gharlan
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-12T12:35:49Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-13T18:37:43Z
+
+ping @keradus let me know if there is something left todo on this one :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-14T09:46:04Z
+
+:+1: except 2 minors
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-14T12:50:08Z
+
+:+1:  done :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-30T11:09:26Z
+
+:+1:
