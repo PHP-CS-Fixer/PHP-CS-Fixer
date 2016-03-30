@@ -1270,6 +1270,11 @@ PHP;
                 true,
                 false,
             ),
+            array(
+                new Token(array(T_STATIC, 'static', 17)),
+                array(T_STATIC, 'static'),
+                true,
+            ),
         );
     }
 
