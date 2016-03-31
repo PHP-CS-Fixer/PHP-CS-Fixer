@@ -675,6 +675,11 @@ Choose from the list of available fixers:
                          with their mt_* analogs.
                          (Risky fixer!)
 
+* **return_assignment**
+                         Variables should not be
+                         assigned and directly
+                         returned.
+
 * **self_accessor** [@Symfony]
                          Inside a classy element
                          "self" should be preferred to
