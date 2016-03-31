@@ -131,6 +131,16 @@ final class ReturnAssignmentFixerTest extends AbstractFixerTestCase
             ),
             array('
                 <?php
+                    function foo ($bar)
+                    {
+                        $a = 123;
+                        if ($bar)
+                            $a = 12345;
+                        return $a;
+                    }',
+            ),
+            array('
+                <?php
                     echo $a;
                     return $a;
                 ',
