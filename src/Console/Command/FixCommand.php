@@ -323,13 +323,11 @@ EOF
             $output->writeln(sprintf('Loaded config from "%s"', $configFile));
         }
 
-        $linter = null;
+        $linter = new NullLinter();
         if ($config->usingLinter()) {
             try {
                 $linter = new Linter($config->getPhpExecutable());
             } catch (UnavailableLinterException $e) {
-                $linter = new NullLinter();
-
                 if ($configFile && 'txt' === $input->getOption('format')) {
                     $output->writeln('Unable to use linter, can not find PHP executable');
                 }
