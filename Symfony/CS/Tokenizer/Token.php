@@ -101,12 +101,13 @@ class Token
      *
      * If tokens are arrays, then only keys defined in parameter token are checked.
      *
-     * @param Token|array|string $other         token or it's prototype
-     * @param bool               $caseSensitive perform a case sensitive comparison
+     * @param Token|array|string $other               token or it's prototype
+     * @param bool               $caseSensitive       perform a case sensitive comparison
+     * @param bool               $lineNumberSensitive when comparing tokens take line numbers into account
      *
      * @return bool
      */
-    public function equals($other, $caseSensitive = true)
+    public function equals($other, $caseSensitive = true, $lineNumberSensitive = true)
     {
         $otherPrototype = $other instanceof self ? $other->getPrototype() : $other;
 
@@ -122,7 +123,7 @@ class Token
 
         foreach ($otherPrototype as $key => $val) {
             // make sure the token has such key
-            if (!isset($selfPrototype[$key])) {
+            if (!array_key_exists($key, $selfPrototype)) {
                 return false;
             }
 
@@ -131,7 +132,7 @@ class Token
                 if (0 !== strcasecmp($val, $selfPrototype[1])) {
                     return false;
                 }
-            } else {
+            } elseif (2 !== $key || $lineNumberSensitive) {
                 // regular comparison
                 if ($selfPrototype[$key] !== $val) {
                     return false;

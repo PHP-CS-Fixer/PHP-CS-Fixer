@@ -1232,6 +1232,53 @@ PHP;
     }
 
     /**
+     * @dataProvider provideTokenEquals
+     */
+    public function testTokenEquals(Token $token, $compare, $expected, $caseSensitive = true, $lineNumberSensitive = true)
+    {
+        $this->assertSame($expected, $token->equals($compare, $caseSensitive, $lineNumberSensitive));
+    }
+
+    public function provideTokenEquals()
+    {
+        return array(
+            array(
+                new Token(array(T_STATIC, 'static')),
+                new Token(array(T_STATIC, 'static')),
+                true,
+            ),
+            array(
+                new Token(array(T_STATIC, 'static')),
+                new Token(array(T_STATIC, 'STATIC')),
+                false,
+            ),
+            array(
+                new Token(array(T_STATIC, 'static')),
+                new Token(array(T_STATIC, 'STATIC')),
+                true,
+                false,
+            ),
+            array(
+                new Token(array(T_STATIC, 'static', 1)),
+                new Token(array(T_STATIC, 'static', 2)),
+                false,
+            ),
+            array(
+                new Token(array(T_STATIC, 'static', 1)),
+                new Token(array(T_STATIC, 'static', 2)),
+                true,
+                true,
+                false,
+            ),
+            array(
+                new Token(array(T_STATIC, 'static', 17)),
+                array(T_STATIC, 'static'),
+                true,
+            ),
+        );
+    }
+
+    /**
      * @param string  $source
      * @param int[]   $indexes
      * @param Token[] $expected
