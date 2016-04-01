@@ -73,8 +73,9 @@ final class NoEmptyStatementFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run before the BracesFixer, SpacesBeforeSemicolonFixer, SpacesAfterSemicolonFixer, WhitespacyLinesFixer, MultilineSpacesBeforeSemicolonFixer, CombineConsecutiveUnsetsFixer and ExtraEmptyLinesFixer.
-        return 25;
+        // should be run before the BracesFixer, CombineConsecutiveUnsetsFixer, NoExtraConsecutiveBlankLinesFixer, NoMultilineWhitespaceBeforeSemicolonsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer,
+        // NoTrailingCommaInListCallFixer, NoUselessReturnFixer, NoWhitespaceInBlankLinesFixer, SpaceAfterSemicolonFixer, SwitchCaseSemicolonToColonFixer.
+        return 26;
     }
 
     /**

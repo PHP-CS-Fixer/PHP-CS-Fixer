@@ -1,7 +1,7 @@
 --TEST--
-Integration of fixers: no_duplicate_semicolons,no_useless_return.
+Integration of fixers: no_empty_statement,no_useless_return.
 --CONFIG--
-{"no_duplicate_semicolons": true, "no_useless_return": true}
+{"no_empty_statement": true, "no_useless_return": true}
 --EXPECT--
 <?php
 class Test {

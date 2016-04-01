@@ -384,9 +384,6 @@ Choose from the list of available fixers:
                          omitted from files containing
                          only PHP.
 
-* **no_duplicate_semicolons** [@Symfony]
-                         Remove duplicated semicolons.
-
 * **no_empty_comment**
                          There should not be an empty
                          comments.
