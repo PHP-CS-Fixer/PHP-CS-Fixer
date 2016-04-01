@@ -40,8 +40,8 @@ final class ReportFactory
 
             /** @var SplFileInfo $file */
             foreach (SymfonyFinder::create()->files()->name('*Report.php')->in(__DIR__) as $file) {
-                $relativeNamespace = $file->getRelativePath();
-                $builtInReports[] = 'PhpCsFixer\\Report\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
+            $relativeNamespace = $file->getRelativePath();
+            $builtInReports[] = sprintf('%s\\%s%s', __NAMESPACE__, $relativeNamespace ? $relativeNamespace.'\\' : '', $file->getBasename('.php'));
             }
         }
 
@@ -78,7 +78,7 @@ final class ReportFactory
     public function getReport($format)
     {
         if (!isset($this->reports[$format])) {
-            throw new \UnexpectedValueException(sprintf('Report for format "%s" does not registered.', $format));
+            throw new \UnexpectedValueException(sprintf('Report for format "%s" is not registered.', $format));
         }
 
         return $this->reports[$format];

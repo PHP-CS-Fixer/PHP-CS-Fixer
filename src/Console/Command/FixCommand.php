@@ -91,7 +91,7 @@ final class FixCommand extends Command
     }
 
     /**
-     * @see Command
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -294,8 +294,8 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $stdErr = ($output instanceof ConsoleOutputInterface) ? $output->getErrorOutput() : null;
-        if ($stdErr && extension_loaded('xdebug')) {
+        $stdErr = ($output instanceof ConsoleOutputInterface) ? $output->getErrorOutput() : $output;
+        if (extension_loaded('xdebug')) {
             $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
         }
 
@@ -322,7 +322,7 @@ EOF
         $configFile = $resolver->getConfigFile();
 
         if ($configFile && 'txt' === $input->getOption('format')) {
-            $output->writeln(sprintf('Loaded config from "%s"', $configFile));
+            $stdErr->writeln(sprintf('Loaded config from "%s".', $configFile));
         }
 
         $linter = new NullLinter();
@@ -331,7 +331,7 @@ EOF
                 $linter = new Linter($config->getPhpExecutable());
             } catch (UnavailableLinterException $e) {
                 if ($configFile && 'txt' === $input->getOption('format')) {
-                    $output->writeln('Unable to use linter, can not find PHP executable');
+                    $stdErr->writeln('Unable to use linter, can not find PHP executable.');
                 }
             }
         }
@@ -379,19 +379,19 @@ EOF
         
         $invalidErrors = $this->errorsManager->getInvalidErrors();
         if (!empty($invalidErrors)) {
-            $this->listErrors($output, 'linting before fixing', $invalidErrors);
+            $this->listErrors($stdErr, 'linting before fixing', $invalidErrors);
         }
 
         $exceptionErrors = $this->errorsManager->getExceptionErrors();
         if (!empty($exceptionErrors)) {
-            $this->listErrors($output, 'fixing', $exceptionErrors);
+            $this->listErrors($stdErr, 'fixing', $exceptionErrors);
         }
-
+        
         $lintErrors = $this->errorsManager->getLintErrors();
         if (!empty($lintErrors)) {
-            $this->listErrors($output, 'linting after fixing', $lintErrors);
+            $this->listErrors($stdErr, 'linting after fixing', $lintErrors);
         }
-
+        
         return $this->calculateExitStatus($resolver->isDryRun(), !empty($changed), !empty($invalidErrors));
     }
 
