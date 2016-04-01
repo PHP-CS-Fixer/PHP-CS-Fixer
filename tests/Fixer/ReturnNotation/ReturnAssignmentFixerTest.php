@@ -34,6 +34,38 @@ final class ReturnAssignmentFixerTest extends AbstractFixerTestCase
         return array(
             array(
                 '<?php
+                    function a() {
+                          return 1;
+                         '.'
+                    }
+                ',
+                '<?php
+                    function a() {
+                        $a = 1;
+                        return $a;
+                    }
+                ',
+            ),
+            array(
+                '<?php function a($b,$c)  {if($c>1){echo 1;}  return (1 + 2 + $b); }',
+                '<?php function a($b,$c)  {if($c>1){echo 1;} $a= (1 + 2 + $b);return $a;}',
+            ),
+            array(
+                '<?php function a($b,$c)  {return (1 + 2 + $b); }',
+                '<?php function a($b,$c)  {$a= (1 + 2 + $b);return $a;}',
+            ),
+            array(
+                '<?php
+                    function a($zz)
+                    {
+                        $zz = 1 ?><?php
+                        ;
+                        return $zz;
+                    }
+                ',
+            ),
+            array(
+                '<?php
                     function a {
                           return 123;
                          '.'
@@ -47,90 +79,138 @@ final class ReturnAssignmentFixerTest extends AbstractFixerTestCase
                 ',
             ),
             array(
-                '<?php return (1 + 2 + $b); ',
-                '<?php $a= (1 + 2 + $b);return $a;',
-            ),
-            array(
-                '<?php return 1;  ?>',
-                '<?php $b=1;return $b ?>',
-            ),
-            array(
-                '<?php return 2;   ?>',
-                '<?php $c=2; return $c ?>',
-            ),
-            array(
-                '<?php return  3;   ?>',
-                '<?php $c = 3; return $c ?>',
-            ),
-            array(
-                '<?php if ($c > 4){}   return 3;   ?>',
-                '<?php if ($c > 4){} $c = 3; return $c ?>',
+                '<?php
+                    function a {
+                          return 123;
+                          ?> <?php
+                    }
+                ',
+                '<?php
+                    function a {
+                        $a = 123;
+                        return $a ?> <?php
+                    }
+                ',
             ),
             array(
                 '<?php
-                    if ($c) {
-                          return 0;
+                    function a()
+                    {
+                          return $c + 1; // var names are case insensitive
+                            '.'
+                    }',
+                '<?php
+                    function a()
+                    {
+                        $A = $c + 1; // var names are case insensitive
+                        return $a   ;
+                    }',
+            ),
+            array(
+                '<?php
+                    function b() {
+                        if ($c) {
+                              return 0;
+                             '.'
+                        }
+                          return testFunction(123+1);
                          '.'
-                    }
-                      return testFunction(123+1);
-                     '.'
-                ',
+                    }',
                 '<?php
-                    if ($c) {
-                        $b = 0;
-                        return $b;
-                    }
-                    $a = testFunction(123+1);
-                    return $a;
-                ',
-            ),
-            // do not fix the cases below
-            array(
-                '<?php $a1=1;return $a;',
-            ),
-            array(
-                '<?php $a=1;return $a + 1;',
-            ),
-            array(
-                '<?php
-                    $_SERVER["abc"] = 3;
-                    return $_SERVER;
-                ',
-            ),
-            array('
-                <?php
-                    static $b, $a = 1;
-                    return $a
-                ?>
-                ',
-            ),
-            array('
-                <?php
-                    $d = $c && $a = 1;
-                    return $a;
-                ',
-            ),
-            array('
-                <?php
-                    static $a = 1;
-                    return $a;
-                ',
-            ),
-            array('
-                <?php
-                    $a = 1;
-                    $a += 1;
-                    return $a;
-                ',
-            ),
-            array('
-                <?php
-                    if ($a = 1)
+                    function b() {
+                        if ($c) {
+                            $b = 0;
+                            return $b;
+                        }
+                        $a = testFunction(123+1);
                         return $a;
+                    }',
+            ),
+            // no fix cases
+            array(
+                '<?php
+                    function a() {
+                        static $a;
+                        $a = time();
+                        return $a;
+                    }
                 ',
             ),
-            array('
-                <?php
+            array(
+                '<?php
+                    function a() {
+                        global $a;
+                        $a = time();
+                        return $a;
+                    }
+                ',
+            ),
+            array(
+                '<?php
+                function foo(&$var)
+                    {
+                        $var = 1;
+                        return $var;
+                    }
+                ',
+            ),
+            array(
+                '<?php
+                    $a = 1; // var might be global here
+                    return $a;
+                ',
+            ),
+            array(
+                '<?php
+                    function a()
+                    {
+                        $a = 1;
+                        ?>
+                        <?php
+                        ;
+                        return $a;
+                    }
+                ',
+            ),
+            array(
+                '<?php
+                    function a()
+                    {
+                        $a = 1
+                        ?>
+                        <?php
+                        return $a;
+                    }
+                ',
+            ),
+            array(
+                '<?php
+                    $zz = 1 ?><?php
+                    function a($zz)
+                    {
+                        ;
+                        return $zz;
+                    }
+                ',
+            ),
+            array(
+                '<?php
+                    function a($c)
+                    {
+                        $a = 1;
+                        return $a + $c;
+                    }',
+            ),
+            array(
+                '<?php
+                    function a($c)
+                    {
+                        $_SERVER["abc"] = 3;
+                        return $_SERVER;
+                    }',
+            ),
+            array(
+                '<?php
                     function foo ($bar)
                     {
                         $a = 123;
@@ -139,37 +219,63 @@ final class ReturnAssignmentFixerTest extends AbstractFixerTestCase
                         return $a;
                     }',
             ),
-            array('
-                <?php
-                    echo $a;
-                    return $a;
-                ',
+            array(
+                '<?php
+                    function foo ($bar)
+                    {
+                        $a = 123;
+                        if ($bar)
+                            ;
+                        else
+                            $a = 12345;
+                        return $a;
+                    }',
             ),
-            array('
-                <?php
-                    $a = 1;
-                ?>
-                <?php
-                    return $a;
-                ',
+            array(
+                '<?php
+                    function foo ($bar)
+                    {
+                        $a = 123;
+                        if ($bar)
+                            ;
+                        elseif($b)
+                            $a = 12345;
+                        return $a;
+                    }',
             ),
-            array('
-                <?php
-                    $a = 1
-                ?>
-                <?php
-                    ;
-                    return $a;
-                ',
+            array(
+                '<?php
+                    function a($c)
+                    {
+                        $a = 1;
+                        echo $a ."=1";
+                        return $a;
+                    }',
             ),
-            array('
-                <?php
-                    $a = 1;
-                ?>
-                <?php
-                    ;
-                    return $a;
-                ',
+            array(
+                '<?php
+                    function a($c)
+                    {
+                        if ($a = 1)
+                            return $a;
+                    }',
+            ),
+            array(
+                '<?php
+                    function a($c)
+                    {
+                        $a = 1;
+                        $a += 1;
+                        return $a;
+                    }',
+            ),
+            array(
+                '<?php
+                    function a($c)
+                    {
+                        $d = $c && $a = 1;
+                        return $a;
+                    }',
             ),
         );
     }
