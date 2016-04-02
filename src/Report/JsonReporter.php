@@ -17,7 +17,7 @@ namespace PhpCsFixer\Report;
  *
  * @internal
  */
-final class JsonReport implements ReportInterface
+final class JsonReporter implements ReporterInterface
 {
     /**
      * {@inheritdoc}
@@ -30,14 +30,14 @@ final class JsonReport implements ReportInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(ReportConfig $reportConfig)
+    public function generate(ReportSummary $reportSummary)
     {
         $jFiles = array();
 
-        foreach ($reportConfig->getChanged() as $file => $fixResult) {
+        foreach ($reportSummary->getChanged() as $file => $fixResult) {
             $jfile = array('name' => $file);
 
-            if ($reportConfig->shouldAddAppliedFixers()) {
+            if ($reportSummary->shouldAddAppliedFixers()) {
                 $jfile['appliedFixers'] = $fixResult['appliedFixers'];
             }
 
@@ -52,14 +52,14 @@ final class JsonReport implements ReportInterface
             'files' => $jFiles,
         );
 
-        if (null !== $reportConfig->getTime()) {
+        if (null !== $reportSummary->getTime()) {
             $json['time'] = array(
-                'total' => round($reportConfig->getTime() / 1000, 3),
+                'total' => round($reportSummary->getTime() / 1000, 3),
             );
         }
 
-        if (null !== $reportConfig->getMemory()) {
-            $json['memory'] = round($reportConfig->getMemory() / 1024 / 1024, 3);
+        if (null !== $reportSummary->getMemory()) {
+            $json['memory'] = round($reportSummary->getMemory() / 1024 / 1024, 3);
         }
 
         return json_encode($json);

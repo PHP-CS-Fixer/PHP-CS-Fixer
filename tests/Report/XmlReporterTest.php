@@ -12,33 +12,33 @@
 
 namespace PhpCsFixer\Tests\Report;
 
-use PhpCsFixer\Report\ReportConfig;
-use PhpCsFixer\Report\XmlReport;
+use PhpCsFixer\Report\ReportSummary;
+use PhpCsFixer\Report\XmlReporter;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
  *
  * @internal
  */
-final class XmlReportTest extends \PHPUnit_Framework_TestCase
+final class XmlReporterTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var XmlReport */
-    private $report;
+    /** @var XmlReporter */
+    private $reporter;
 
     protected function setUp()
     {
-        $this->report = new XmlReport();
+        $this->reporter = new XmlReporter();
     }
 
     /**
-     * @covers PhpCsFixer\Report\XmlReport::getFormat
+     * @covers PhpCsFixer\Report\XmlReporter::getFormat
      */
     public function testGetFormat()
     {
-        $this->assertSame('xml', $this->report->getFormat());
+        $this->assertSame('xml', $this->reporter->getFormat());
     }
 
-    public function testProcessSimple()
+    public function testGenerateSimple()
     {
         $expectedXml = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -51,8 +51,8 @@ XML;
 
         $this->assertXmlStringEqualsXmlString(
             $expectedXml,
-            $this->report->generate(
-                ReportConfig::create()
+            $this->reporter->generate(
+                ReportSummary::create()
                     ->setChanged(
                         array(
                             'someFile.php' => array(
@@ -64,7 +64,7 @@ XML;
         );
     }
 
-    public function testProcessWithDiff()
+    public function testGenerateWithDiff()
     {
         $expectedXml = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -79,8 +79,8 @@ XML;
 
         $this->assertXmlStringEqualsXmlString(
             $expectedXml,
-            $this->report->generate(
-                ReportConfig::create()
+            $this->reporter->generate(
+                ReportSummary::create()
                     ->setChanged(
                         array(
                             'someFile.php' => array(
@@ -93,7 +93,7 @@ XML;
         );
     }
 
-    public function testProcessWithAppliedFixers()
+    public function testGenerateWithAppliedFixers()
     {
         $expectedXml = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -110,8 +110,8 @@ XML;
 
         $this->assertXmlStringEqualsXmlString(
             $expectedXml,
-            $this->report->generate(
-                ReportConfig::create()
+            $this->reporter->generate(
+                ReportSummary::create()
                     ->setAddAppliedFixers(true)
                     ->setChanged(
                         array(
@@ -124,7 +124,7 @@ XML;
         );
     }
 
-    public function testProcessWithTimeAndMemory()
+    public function testGenerateWithTimeAndMemory()
     {
         $expectedXml = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -141,8 +141,8 @@ XML;
 
         $this->assertXmlStringEqualsXmlString(
             $expectedXml,
-            $this->report->generate(
-                ReportConfig::create()
+            $this->reporter->generate(
+                ReportSummary::create()
                     ->setChanged(
                         array(
                             'someFile.php' => array(
@@ -156,7 +156,7 @@ XML;
         );
     }
 
-    public function testProcessComplex()
+    public function testGenerateComplex()
     {
         $expectedXml = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -184,8 +184,8 @@ XML;
 
         $this->assertXmlStringEqualsXmlString(
             $expectedXml,
-            $this->report->generate(
-                ReportConfig::create()
+            $this->reporter->generate(
+                ReportSummary::create()
                     ->setAddAppliedFixers(true)
                     ->setChanged(
                         array(

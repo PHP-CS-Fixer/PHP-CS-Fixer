@@ -15,7 +15,7 @@ namespace PhpCsFixer\Report;
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
  */
-interface ReportInterface
+interface ReporterInterface
 {
     /**
      * @return string
@@ -25,9 +25,9 @@ interface ReportInterface
     /**
      * Process changed files array. Returns generated report.
      *
-     * @param ReportConfig $reportConfig
+     * @param ReportSummary $reportSummary
      *
      * @return string
      */
-    public function generate(ReportConfig $reportConfig);
+    public function generate(ReportSummary $reportSummary);
 }

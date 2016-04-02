@@ -12,48 +12,44 @@
 
 namespace PhpCsFixer\Tests\Report;
 
-use PhpCsFixer\Report\JsonReport;
-use PhpCsFixer\Report\ReportConfig;
+use PhpCsFixer\Report\ReportSummary;
+use PhpCsFixer\Report\TextReporter;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
  *
  * @internal
  */
-final class JsonReportTest extends \PHPUnit_Framework_TestCase
+final class TextReporterTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var JsonReport */
-    private $report;
+    /** @var TextReporter */
+    private $reporter;
 
     protected function setUp()
     {
-        $this->report = new JsonReport();
+        $this->reporter = new TextReporter();
     }
 
     /**
-     * @covers PhpCsFixer\Report\JsonReport::getFormat
+     * @covers PhpCsFixer\Report\TextReporter::getFormat
      */
     public function testGetFormat()
     {
-        $this->assertSame('json', $this->report->getFormat());
+        $this->assertSame('txt', $this->reporter->getFormat());
     }
 
-    public function testProcessSimple()
+    public function testGenerateSimple()
     {
-        $expectedJson = <<<'JSON'
-{
-    "files":[
-        {
-            "name": "someFile.php"
-        }
-    ]
-}
-JSON;
+        $expectedText = str_replace("\n", PHP_EOL, <<<'TEXT'
+   1) someFile.php
 
-        $this->assertJsonStringEqualsJsonString(
-            $expectedJson,
-            $this->report->generate(
-                ReportConfig::create()
+TEXT
+        );
+
+        $this->assertSame(
+            $expectedText,
+            $this->reporter->generate(
+                ReportSummary::create()
                     ->setChanged(
                         array(
                             'someFile.php' => array(
@@ -65,23 +61,22 @@ JSON;
         );
     }
 
-    public function testProcessWithDiff()
+    public function testGenerateWithDiff()
     {
-        $expectedJson = <<<'JSON'
-{
-    "files":[
-        {
-            "name": "someFile.php",
-            "diff": "this text is a diff ;)"
-        }
-    ]
-}
-JSON;
+        $expectedText = str_replace("\n", PHP_EOL, <<<'TEXT'
+   1) someFile.php
+      ---------- begin diff ----------
+this text is a diff ;)
+      ----------- end diff -----------
 
-        $this->assertJsonStringEqualsJsonString(
-            $expectedJson,
-            $this->report->generate(
-                ReportConfig::create()
+
+TEXT
+        );
+
+        $this->assertSame(
+            $expectedText,
+            $this->reporter->generate(
+                ReportSummary::create()
                     ->setChanged(
                         array(
                             'someFile.php' => array(
@@ -94,23 +89,18 @@ JSON;
         );
     }
 
-    public function testProcessWithAppliedFixers()
+    public function testGenerateWithAppliedFixers()
     {
-        $expectedJson = <<<'JSON'
-{
-    "files":[
-        {
-            "name": "someFile.php",
-            "appliedFixers":["some_fixer_name_here"]
-        }
-    ]
-}
-JSON;
+        $expectedText = str_replace("\n", PHP_EOL, <<<'TEXT'
+   1) someFile.php (some_fixer_name_here)
 
-        $this->assertJsonStringEqualsJsonString(
-            $expectedJson,
-            $this->report->generate(
-                ReportConfig::create()
+TEXT
+        );
+
+        $this->assertSame(
+            $expectedText,
+            $this->reporter->generate(
+                ReportSummary::create()
                     ->setAddAppliedFixers(true)
                     ->setChanged(
                         array(
@@ -123,26 +113,20 @@ JSON;
         );
     }
 
-    public function testProcessWithTimeAndMemory()
+    public function testGenerateWithTimeAndMemory()
     {
-        $expectedJson = <<<'JSON'
-{
-    "files":[
-        {
-            "name": "someFile.php"
-        }
-    ],
-    "memory": 2.5,
-    "time": {
-        "total": 1.234
-    }
-}
-JSON;
+        $expectedText = str_replace("\n", PHP_EOL, <<<'TEXT'
+   1) someFile.php
 
-        $this->assertJsonStringEqualsJsonString(
-            $expectedJson,
-            $this->report->generate(
-                ReportConfig::create()
+Fixed all files in 1.234 seconds, 2.500 MB memory used
+
+TEXT
+        );
+
+        $this->assertSame(
+            $expectedText,
+            $this->reporter->generate(
+                ReportSummary::create()
                     ->setChanged(
                         array(
                             'someFile.php' => array(
@@ -156,33 +140,29 @@ JSON;
         );
     }
 
-    public function testProcessComplex()
+    public function testGenerateComplexWithDecoratedOutput()
     {
-        $expectedJson = <<<'JSON'
-{
-    "files":[
-        {
-            "name": "someFile.php",
-            "appliedFixers":["some_fixer_name_here"],
-            "diff": "this text is a diff ;)"
-        },
-        {
-            "name": "anotherFile.php",
-            "appliedFixers":["another_fixer_name_here"],
-            "diff": "another diff here ;)"
-        }
-    ],
-    "memory": 2.5,
-    "time": {
-        "total": 1.234
-    }
-}
-JSON;
+        $expectedText = str_replace("\n", PHP_EOL, <<<'TEXT'
+   1) someFile.php (<comment>some_fixer_name_here</comment>)
+<comment>      ---------- begin diff ----------</comment>
+this text is a diff ;)
+<comment>      ----------- end diff -----------</comment>
 
-        $this->assertJsonStringEqualsJsonString(
-            $expectedJson,
-            $this->report->generate(
-                ReportConfig::create()
+   2) anotherFile.php (<comment>another_fixer_name_here</comment>)
+<comment>      ---------- begin diff ----------</comment>
+another diff here ;)
+<comment>      ----------- end diff -----------</comment>
+
+
+Checked all files in 1.234 seconds, 2.500 MB memory used
+
+TEXT
+        );
+
+        $this->assertSame(
+            $expectedText,
+            $this->reporter->generate(
+                ReportSummary::create()
                     ->setAddAppliedFixers(true)
                     ->setChanged(
                         array(
@@ -196,6 +176,8 @@ JSON;
                             ),
                         )
                     )
+                    ->setIsDecoratedOutput(true)
+                    ->setIsDryRun(true)
                     ->setMemory(2.5 * 1024 * 1024)
                     ->setTime(1234)
             )

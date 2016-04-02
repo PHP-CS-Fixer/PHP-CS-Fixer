@@ -17,7 +17,7 @@ namespace PhpCsFixer\Report;
  *
  * @internal
  */
-class TextReport implements ReportInterface
+class TextReporter implements ReporterInterface
 {
     /**
      * {@inheritdoc}
@@ -30,24 +30,24 @@ class TextReport implements ReportInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(ReportConfig $reportConfig)
+    public function generate(ReportSummary $reportSummary)
     {
         $output = '';
 
         $i = 0;
-        foreach ($reportConfig->getChanged() as $file => $fixResult) {
+        foreach ($reportSummary->getChanged() as $file => $fixResult) {
             ++$i;
             $output .= sprintf('%4d) %s', $i, $file);
 
-            if ($reportConfig->shouldAddAppliedFixers()) {
-                $output .= $this->getAppliedFixers($reportConfig->isDecoratedOutput(), $fixResult);
+            if ($reportSummary->shouldAddAppliedFixers()) {
+                $output .= $this->getAppliedFixers($reportSummary->isDecoratedOutput(), $fixResult);
             }
 
-            $output .= $this->getDiff($reportConfig->isDecoratedOutput(), $fixResult);
+            $output .= $this->getDiff($reportSummary->isDecoratedOutput(), $fixResult);
             $output .= PHP_EOL;
         }
 
-        $output .= $this->getFooter($reportConfig->getTime(), $reportConfig->getMemory(), $reportConfig->isDryRun());
+        $output .= $this->getFooter($reportSummary->getTime(), $reportSummary->getMemory(), $reportSummary->isDryRun());
 
         return $output;
     }

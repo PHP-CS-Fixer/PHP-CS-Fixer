@@ -17,7 +17,7 @@ namespace PhpCsFixer\Report;
  *
  * @internal
  */
-final class ReportConfig
+final class ReportSummary
 {
     /**
      * @var bool
@@ -49,6 +49,9 @@ final class ReportConfig
      */
     private $time;
 
+    /**
+     * @return ReportSummary
+     */
     public static function create()
     {
         return new self();
@@ -79,11 +82,35 @@ final class ReportConfig
     }
 
     /**
+     * @param array $changed
+     *
+     * @return ReportSummary
+     */
+    public function setChanged(array $changed)
+    {
+        $this->changed = $changed;
+
+        return $this;
+    }
+
+    /**
      * @return float
      */
     public function getMemory()
     {
         return $this->memory;
+    }
+
+    /**
+     * @param float $memory
+     *
+     * @return ReportSummary
+     */
+    public function setMemory($memory)
+    {
+        $this->memory = $memory;
+
+        return $this;
     }
 
     /**
@@ -95,9 +122,21 @@ final class ReportConfig
     }
 
     /**
+     * @param float $time
+     *
+     * @return ReportSummary
+     */
+    public function setTime($time)
+    {
+        $this->time = $time;
+
+        return $this;
+    }
+
+    /**
      * @param bool $addAppliedFixers
      *
-     * @return ReportConfig
+     * @return ReportSummary
      */
     public function setAddAppliedFixers($addAppliedFixers)
     {
@@ -107,21 +146,9 @@ final class ReportConfig
     }
 
     /**
-     * @param array $changed
-     *
-     * @return ReportConfig
-     */
-    public function setChanged(array $changed)
-    {
-        $this->changed = $changed;
-
-        return $this;
-    }
-
-    /**
      * @param bool $isDecoratedOutput
      *
-     * @return ReportConfig
+     * @return ReportSummary
      */
     public function setIsDecoratedOutput($isDecoratedOutput)
     {
@@ -133,35 +160,11 @@ final class ReportConfig
     /**
      * @param bool $isDryRun
      *
-     * @return ReportConfig
+     * @return ReportSummary
      */
     public function setIsDryRun($isDryRun)
     {
         $this->isDryRun = $isDryRun;
-
-        return $this;
-    }
-
-    /**
-     * @param float $memory
-     *
-     * @return ReportConfig
-     */
-    public function setMemory($memory)
-    {
-        $this->memory = $memory;
-
-        return $this;
-    }
-
-    /**
-     * @param float $time
-     *
-     * @return ReportConfig
-     */
-    public function setTime($time)
-    {
-        $this->time = $time;
 
         return $this;
     }

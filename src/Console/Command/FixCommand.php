@@ -26,8 +26,8 @@ use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\NullLinter;
 use PhpCsFixer\Linter\UnavailableLinterException;
-use PhpCsFixer\Report\ReportConfig;
-use PhpCsFixer\Report\ReportFactory;
+use PhpCsFixer\Report\ReporterFactory;
+use PhpCsFixer\Report\ReportSummary;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Runner\Runner;
 use Symfony\Component\Console\Command\Command;
@@ -354,12 +354,12 @@ EOF
         $this->stopwatch->start('fixFiles');
         $changed = $runner->fix();
         $this->stopwatch->stop('fixFiles');
-        
+
         $progressOutput->printLegend();
-        
+
         $fixEvent = $this->stopwatch->getEvent('fixFiles');
 
-        $reportConfig = ReportConfig::create()
+        $reportSummary = ReportSummary::create()
             ->setChanged($changed)
             ->setAddAppliedFixers(OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity())
             ->setIsDecoratedOutput($output->isDecorated())
@@ -368,15 +368,15 @@ EOF
             ->setTime($fixEvent->getDuration())
         ;
 
-        $report = ReportFactory::create()
-            ->registerBuiltInReports()
-            ->getReport($resolver->getFormat())
+        $reporter = ReporterFactory::create()
+            ->registerBuiltInReporters()
+            ->getReporter($resolver->getFormat())
         ;
 
         $output->write(
-            $report->generate($reportConfig)
+            $reporter->generate($reportSummary)
         );
-        
+
         $invalidErrors = $this->errorsManager->getInvalidErrors();
         if (!empty($invalidErrors)) {
             $this->listErrors($stdErr, 'linting before fixing', $invalidErrors);
@@ -386,12 +386,12 @@ EOF
         if (!empty($exceptionErrors)) {
             $this->listErrors($stdErr, 'fixing', $exceptionErrors);
         }
-        
+
         $lintErrors = $this->errorsManager->getLintErrors();
         if (!empty($lintErrors)) {
             $this->listErrors($stdErr, 'linting after fixing', $lintErrors);
         }
-        
+
         return $this->calculateExitStatus($resolver->isDryRun(), !empty($changed), !empty($invalidErrors));
     }
 
