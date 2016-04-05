@@ -83,6 +83,11 @@ final class NoUselessReturnFixer extends AbstractFixer
                 continue;
             }
 
+            $previous = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$previous]->equalsAny(array(array(T_ELSE), ')'))) {
+                continue;
+            }
+
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             $tokens->clearTokenAndMergeSurroundingWhitespace($nextAt);
         }
