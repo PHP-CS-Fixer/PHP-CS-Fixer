@@ -34,6 +34,44 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestBase
         return array(
             array(
                 '<?php
+                    function bar($baz)
+                    {
+                        if ($baz)
+                            return $this->baz();
+                        else
+                            return;
+                    }',
+            ),
+            array(
+                '<?php
+                    function bar($baz)
+                    {
+                        if ($baz)
+                            return $this->baz();
+                        elseif($a)
+                            return;
+                    }',
+            ),
+            array(
+                '<?php
+                    function bar($baz)
+                    {
+                        if ($baz)
+                            return $this->baz();
+                        else if($a)
+                            return;
+                    }',
+            ),
+            array(
+                '<?php
+                    function bar($baz)
+                    {
+                        if ($baz)
+                            return;
+                    }',
+            ),
+            array(
+                '<?php
     function b($b) {
         if ($b) {
             return;
