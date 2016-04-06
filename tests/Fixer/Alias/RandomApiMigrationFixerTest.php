@@ -94,7 +94,7 @@ class SrandClass
 class srand extends SrandClass{
     const srand = "srand";
 }
-', ),
+',),
             array('<?php mt_srand($a);', '<?php srand($a);'),
             array('<?php \\mt_srand($a);', '<?php \\srand($a);'),
             array('<?php $a = &mt_srand($a);', '<?php $a = &srand($a);'),

@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: no_trailing_comma_in_singleline_array,white_space_around_comma.
+--CONFIG--
+{"no_trailing_comma_in_singleline_array": true, "white_space_around_comma": true}
+--EXPECT--
+<?php
+$a = array(1    );
+
+--INPUT--
+<?php
+$a = array(1    ,     );

@@ -78,8 +78,8 @@ Renamed rules
 
 Old name | New name | Note
 -------- | -------- | ----
-array_element_no_space_before_comma            | no_whitespace_before_comma_in_array
-array_element_white_space_after_comma          | whitespace_after_comma_in_array
+array_element_no_space_before_comma            | white_space_around_comma
+array_element_white_space_after_comma          | white_space_around_comma
 blankline_after_open_tag                       | blank_line_after_opening_tag
 double_arrow_multiline_whitespaces             | no_multiline_whitespace_around_double_arrow
 duplicate_semicolon                            | no_empty_statement                                | new one fixes more cases
@@ -95,6 +95,7 @@ list_commas                                    | no_trailing_comma_in_list_call
 logical_not_operators_with_spaces              | not_operator_with_space
 logical_not_operators_with_successor_space     | not_operator_with_successor_space
 method_argument_default_value                  | no_unreachable_default_argument_value
+method_argument_space                          | white_space_around_comma
 multiline_array_trailing_comma                 | trailing_comma_in_multiline_array
 multiline_spaces_before_semicolon              | no_multiline_whitespace_before_semicolons
 multiple_use                                   | single_import_per_statement

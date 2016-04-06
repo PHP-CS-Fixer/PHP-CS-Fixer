@@ -206,7 +206,7 @@ class Aaa implements
     \Ccc,
     \CFdd
 {
-}', ),
+}',),
         );
     }
 

@@ -35,7 +35,6 @@ final class RuleSet implements RuleSetInterface
             'function_declaration' => true,
             'lowercase_constants' => true,
             'lowercase_keywords' => true,
-            'method_argument_space' => true,
             'no_closing_tag' => true,
             'no_spaces_after_function_name' => true,
             'no_spaces_inside_parenthesis' => true,
@@ -84,7 +83,6 @@ final class RuleSet implements RuleSetInterface
             'no_unneeded_control_parentheses' => true,
             'no_unreachable_default_argument_value' => true,
             'no_unused_imports' => true,
-            'no_whitespace_before_comma_in_array' => true,
             'no_whitespace_in_blank_lines' => true,
             'normalize_index_brace' => true,
             'object_operator_without_whitespace' => true,
@@ -119,7 +117,7 @@ final class RuleSet implements RuleSetInterface
             'unalign_double_arrow' => true,
             'unalign_equals' => true,
             'unary_operator_spaces' => true,
-            'whitespace_after_comma_in_array' => true,
+            'white_space_around_comma' => true,
         ),
     );
 

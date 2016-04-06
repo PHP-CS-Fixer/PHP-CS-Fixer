@@ -173,7 +173,7 @@ class SomeClass3
         echo "a";
     }
 }
-', );
+',);
         $cases[] = array(
             '<?php
 class SomeClass1
@@ -249,7 +249,7 @@ class SomeClass1
     {
     }
 }
-', );
+',);
         $cases[] = array('<?php
 class SomeClass
 {
@@ -607,7 +607,7 @@ abstract class MethodTest3
     final private function method321a()
     {
     }
-}', );
+}',);
         // don't change correct code
         $cases[] = array(
             '<?php

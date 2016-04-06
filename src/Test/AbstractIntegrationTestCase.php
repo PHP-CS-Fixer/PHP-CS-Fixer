@@ -243,13 +243,9 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             $configProphecy->getFixers()->willReturn(array_reverse($case->getFixers()));
 
             $runner->fix();
-            $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
 
-            $this->assertNotSame(
-                $fixedInputCode,
-                $fixedInputCodeWithReversedFixers,
-                sprintf('Set priorities must be significant. If fixers used in reverse order return same output then the integration test is not sufficient or the priority relation between used fixers should not be set. In "%s".', $case->getFileName())
-            );
+            $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
+            $this->assertNotSame($fixedInputCode, $fixedInputCodeWithReversedFixers, sprintf("Set priorities must be significant. If fixers used in reverse order return same output then the integration test is not sufficient or the priority relation between used fixers should not be set.\nFor \"%s\" in \"%s", $case->getTitle(), $case->getFileName()));
         }
 
         // run the test again with the `expected` part, this should always stay the same

@@ -75,12 +75,12 @@ final class UtilsTest extends \PHPUnit_Framework_TestCase
     public function provideCmpIntCases()
     {
         return array(
-            array(0,    1,   1),
-            array(0,   -1,  -1),
-            array(-1,  10,  20),
+            array(0, 1, 1),
+            array(0, -1, -1),
+            array(-1, 10, 20),
             array(-1, -20, -10),
-            array(1,   20,  10),
-            array(1,  -10, -20),
+            array(1, 20, 10),
+            array(1, -10, -20),
         );
     }
 
