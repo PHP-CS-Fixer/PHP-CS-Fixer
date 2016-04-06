@@ -19,7 +19,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
  */
-final class NoSpacesInsideOfssetFixer extends AbstractFixer
+final class NoSpacesInsideOffsetFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
