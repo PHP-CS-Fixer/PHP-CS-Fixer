@@ -387,4 +387,22 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
         return $fixer;
     }
+
+    /**
+     * @dataProvider provideConflictingFixersRules
+     * @expectedException \UnexpectedValueException
+     * @expectedExceptionMessageRegExp #^The rules contain conflicting fixers:\n#
+     */
+    public function testConflictingFixers(RuleSet $ruleSet)
+    {
+        FixerFactory::create()->registerBuiltInFixers()->useRuleSet($ruleSet);
+    }
+
+    public function provideConflictingFixersRules()
+    {
+        return array(
+            array(new RuleSet(array('short_array_syntax' => true, 'long_array_syntax' => true))),
+            array(new RuleSet(array('long_array_syntax' => true, 'short_array_syntax' => true))),
+        );
+    }
 }
