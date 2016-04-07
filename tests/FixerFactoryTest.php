@@ -387,4 +387,46 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
         return $fixer;
     }
+
+    /**
+     * @dataProvider provideConflictingFixersRules
+     * @expectedException \UnexpectedValueException
+     * @expectedExceptionMessageRegExp #^Rule contains conflicting fixers:\n#
+     */
+    public function testConflictingFixers(RuleSet $ruleSet)
+    {
+        FixerFactory::create()->registerBuiltInFixers()->useRuleSet($ruleSet);
+    }
+
+    public function provideConflictingFixersRules()
+    {
+        return array(
+            array(new RuleSet(array('short_array_syntax' => true, 'long_array_syntax' => true))),
+            array(new RuleSet(array('long_array_syntax' => true, 'short_array_syntax' => true))),
+        );
+    }
+
+    public function testNoDoubleConflictReporting()
+    {
+        $factory = new FixerFactory();
+        $method = new \ReflectionMethod($factory, 'generateConflictMessage');
+        $method->setAccessible(true);
+        $this->assertSame(
+            'Rule contains conflicting fixers:
+- "a" with "b"
+- "c" with "d", "e", "f"
+- "d" with "g", "h"
+- "e" with "a"',
+            $method->invoke(
+                $factory,
+                array(
+                    'a' => array('b'),
+                    'b' => array('a'),
+                    'c' => array('d', 'e', 'f'),
+                    'd' => array('c', 'g', 'h'),
+                    'e' => array('a'),
+                )
+            )
+        );
+    }
 }
