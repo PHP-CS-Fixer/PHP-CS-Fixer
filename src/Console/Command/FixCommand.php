@@ -294,11 +294,6 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $stdErr = ($output instanceof ConsoleOutputInterface) ? $output->getErrorOutput() : $output;
-        if (extension_loaded('xdebug')) {
-            $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
-        }
-
         $verbosity = $output->getVerbosity();
         $resolver = new ConfigurationResolver();
         $resolver
@@ -318,10 +313,20 @@ EOF
             ->resolve()
         ;
 
+        $reporter = ReporterFactory::create()
+            ->registerBuiltInReporters()
+            ->getReporter($resolver->getFormat())
+        ;
+
+        $stdErr = ($output instanceof ConsoleOutputInterface) ? $output->getErrorOutput() : 'txt' === $reporter->getFormat() ? $output : null;
+        if (null !== $stdErr && extension_loaded('xdebug')) {
+            $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
+        }
+
         $config = $resolver->getConfig();
         $configFile = $resolver->getConfigFile();
 
-        if ($configFile && 'txt' === $input->getOption('format')) {
+        if (null !== $stdErr && $configFile) {
             $stdErr->writeln(sprintf('Loaded config from "%s".', $configFile));
         }
 
@@ -330,7 +335,7 @@ EOF
             try {
                 $linter = new Linter($config->getPhpExecutable());
             } catch (UnavailableLinterException $e) {
-                if ($configFile && 'txt' === $input->getOption('format')) {
+                if (null !== $stdErr && $configFile) {
                     $stdErr->writeln('Unable to use linter, can not find PHP executable.');
                 }
             }
@@ -368,31 +373,30 @@ EOF
             ->setTime($fixEvent->getDuration())
         ;
 
-        $reporter = ReporterFactory::create()
-            ->registerBuiltInReporters()
-            ->getReporter($resolver->getFormat())
-        ;
-
         $output->write(
             $reporter->generate($reportSummary)
         );
 
+        if (null !== $stdErr) {
+            $stdErr = $output;
+        }
+
         $invalidErrors = $this->errorsManager->getInvalidErrors();
-        if (!empty($invalidErrors)) {
+        if (count($invalidErrors) > 0) {
             $this->listErrors($stdErr, 'linting before fixing', $invalidErrors);
         }
 
         $exceptionErrors = $this->errorsManager->getExceptionErrors();
-        if (!empty($exceptionErrors)) {
+        if (count($exceptionErrors) > 0) {
             $this->listErrors($stdErr, 'fixing', $exceptionErrors);
         }
 
         $lintErrors = $this->errorsManager->getLintErrors();
-        if (!empty($lintErrors)) {
+        if (count($lintErrors) > 0) {
             $this->listErrors($stdErr, 'linting after fixing', $lintErrors);
         }
 
-        return $this->calculateExitStatus($resolver->isDryRun(), !empty($changed), !empty($invalidErrors));
+        return $this->calculateExitStatus($resolver->isDryRun(), count($changed) > 0, count($invalidErrors) > 0);
     }
 
     private function calculateExitStatus($isDryRun, $hasChangedFiles, $hasInvalidErrors)
