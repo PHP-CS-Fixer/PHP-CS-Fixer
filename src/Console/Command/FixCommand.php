@@ -51,6 +51,7 @@ final class FixCommand extends Command
     const EXIT_STATUS_FLAG_HAS_CHANGED_FILES = 8;
     const EXIT_STATUS_FLAG_HAS_INVALID_CONFIG = 16;
     const EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG = 32;
+    const EXIT_STATUS_FLAG_EXCEPTION_IN_APP = 64;
 
     /**
      * EventDispatcher instance.
@@ -278,13 +279,14 @@ or are using their free open source plan.
 Exit codes
 ----------
 
-Exit code are build using following bit flags:
+Exit code is build using following bit flags:
 
 *  0 OK
 *  4 Some files have invalid syntax (only in dry-run mode)
 *  8 Some files need fixing (only in dry-run mode)
 * 16 Configuration error of the application
 * 32 Configuration error of a Fixer
+* 64 Exception raised within the application
 EOF
             );
     }
@@ -377,29 +379,33 @@ EOF
             $reporter->generate($reportSummary)
         );
 
-        if (null !== $stdErr) {
-            $stdErr = $output;
-        }
-
         $invalidErrors = $this->errorsManager->getInvalidErrors();
-        if (count($invalidErrors) > 0) {
-            $this->listErrors($stdErr, 'linting before fixing', $invalidErrors);
-        }
-
         $exceptionErrors = $this->errorsManager->getExceptionErrors();
-        if (count($exceptionErrors) > 0) {
-            $this->listErrors($stdErr, 'fixing', $exceptionErrors);
-        }
-
         $lintErrors = $this->errorsManager->getLintErrors();
-        if (count($lintErrors) > 0) {
-            $this->listErrors($stdErr, 'linting after fixing', $lintErrors);
+
+        if (null !== $stdErr) {
+            if (count($invalidErrors) > 0) {
+                $this->listErrors($stdErr, 'linting before fixing', $invalidErrors);
+            }
+
+            if (count($exceptionErrors) > 0) {
+                $this->listErrors($stdErr, 'fixing', $exceptionErrors);
+            }
+
+            if (count($lintErrors) > 0) {
+                $this->listErrors($stdErr, 'linting after fixing', $lintErrors);
+            }
         }
 
-        return $this->calculateExitStatus($resolver->isDryRun(), count($changed) > 0, count($invalidErrors) > 0);
+        return $this->calculateExitStatus(
+            $resolver->isDryRun(),
+            count($changed) > 0,
+            count($invalidErrors) > 0,
+            count($exceptionErrors) > 0
+        );
     }
 
-    private function calculateExitStatus($isDryRun, $hasChangedFiles, $hasInvalidErrors)
+    private function calculateExitStatus($isDryRun, $hasChangedFiles, $hasInvalidErrors, $exceptionInApp)
     {
         $exitStatus = 0;
 
@@ -411,6 +417,10 @@ EOF
             if ($hasInvalidErrors) {
                 $exitStatus |= self::EXIT_STATUS_FLAG_HAS_INVALID_FILES;
             }
+        }
+
+        if ($exceptionInApp) {
+            $exitStatus |= self::EXIT_STATUS_FLAG_EXCEPTION_IN_APP;
         }
 
         return $exitStatus;
