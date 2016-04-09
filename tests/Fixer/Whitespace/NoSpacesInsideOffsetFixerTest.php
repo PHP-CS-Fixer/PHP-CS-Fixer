@@ -19,7 +19,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  */
-final class NoSpacesInsideOfssetFixerTest extends AbstractFixerTestCase
+final class NoSpacesInsideOffsetFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases

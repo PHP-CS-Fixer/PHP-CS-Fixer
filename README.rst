@@ -450,7 +450,7 @@ Choose from the list of available fixers:
                          or function name and the
                          opening parenthesis.
 
-* **no_spaces_inside_ofsset** [@Symfony]
+* **no_spaces_inside_offset** [@Symfony]
                          There MUST NOT be spaces
                          between the offset square
                          braces and its contained
