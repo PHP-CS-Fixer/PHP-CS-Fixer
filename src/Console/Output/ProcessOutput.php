@@ -52,17 +52,9 @@ final class ProcessOutput implements ProcessOutputInterface
      */
     private $output;
 
-    /**
-     * File pointer of type stream.
-     *
-     * @var resource
-     */
-    private $stdErr;
-
-    public function __construct(EventDispatcher $dispatcher)
+    public function __construct(StreamOutput $output, EventDispatcher $dispatcher)
     {
-        $this->stdErr = fopen('php://stderr', 'w');
-        $this->output = new StreamOutput($this->stdErr);
+        $this->output = $output;
         $this->eventDispatcher = $dispatcher;
         $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, array($this, 'onFixerFileProcessed'));
     }
@@ -91,7 +83,6 @@ final class ProcessOutput implements ProcessOutputInterface
 
     public function __destruct()
     {
-        fclose($this->stdErr);
         $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, array($this, 'onFixerFileProcessed'));
     }
 }
