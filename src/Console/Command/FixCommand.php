@@ -51,6 +51,7 @@ final class FixCommand extends Command
     const EXIT_STATUS_FLAG_HAS_CHANGED_FILES = 8;
     const EXIT_STATUS_FLAG_HAS_INVALID_CONFIG = 16;
     const EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG = 32;
+    const EXIT_STATUS_FLAG_EXCEPTION_IN_APP = 64;
 
     /**
      * EventDispatcher instance.
@@ -278,13 +279,14 @@ or are using their free open source plan.
 Exit codes
 ----------
 
-Exit code are build using following bit flags:
+Exit code is build using following bit flags:
 
 *  0 OK
 *  4 Some files have invalid syntax (only in dry-run mode)
 *  8 Some files need fixing (only in dry-run mode)
 * 16 Configuration error of the application
 * 32 Configuration error of a Fixer
+* 64 Exception raised within the application
 EOF
             );
     }
@@ -294,11 +296,6 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $stdErr = ($output instanceof ConsoleOutputInterface) ? $output->getErrorOutput() : $output;
-        if (extension_loaded('xdebug')) {
-            $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
-        }
-
         $verbosity = $output->getVerbosity();
         $resolver = new ConfigurationResolver();
         $resolver
@@ -318,10 +315,20 @@ EOF
             ->resolve()
         ;
 
+        $reporter = ReporterFactory::create()
+            ->registerBuiltInReporters()
+            ->getReporter($resolver->getFormat())
+        ;
+
+        $stdErr = ($output instanceof ConsoleOutputInterface) ? $output->getErrorOutput() : 'txt' === $reporter->getFormat() ? $output : null;
+        if (null !== $stdErr && extension_loaded('xdebug')) {
+            $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
+        }
+
         $config = $resolver->getConfig();
         $configFile = $resolver->getConfigFile();
 
-        if ($configFile && 'txt' === $input->getOption('format')) {
+        if (null !== $stdErr && $configFile) {
             $stdErr->writeln(sprintf('Loaded config from "%s".', $configFile));
         }
 
@@ -330,7 +337,7 @@ EOF
             try {
                 $linter = new Linter($config->getPhpExecutable());
             } catch (UnavailableLinterException $e) {
-                if ($configFile && 'txt' === $input->getOption('format')) {
+                if (null !== $stdErr && $configFile) {
                     $stdErr->writeln('Unable to use linter, can not find PHP executable.');
                 }
             }
@@ -368,34 +375,37 @@ EOF
             ->setTime($fixEvent->getDuration())
         ;
 
-        $reporter = ReporterFactory::create()
-            ->registerBuiltInReporters()
-            ->getReporter($resolver->getFormat())
-        ;
-
         $output->write(
             $reporter->generate($reportSummary)
         );
 
         $invalidErrors = $this->errorsManager->getInvalidErrors();
-        if (!empty($invalidErrors)) {
-            $this->listErrors($stdErr, 'linting before fixing', $invalidErrors);
-        }
-
         $exceptionErrors = $this->errorsManager->getExceptionErrors();
-        if (!empty($exceptionErrors)) {
-            $this->listErrors($stdErr, 'fixing', $exceptionErrors);
-        }
-
         $lintErrors = $this->errorsManager->getLintErrors();
-        if (!empty($lintErrors)) {
-            $this->listErrors($stdErr, 'linting after fixing', $lintErrors);
+
+        if (null !== $stdErr) {
+            if (count($invalidErrors) > 0) {
+                $this->listErrors($stdErr, 'linting before fixing', $invalidErrors);
+            }
+
+            if (count($exceptionErrors) > 0) {
+                $this->listErrors($stdErr, 'fixing', $exceptionErrors);
+            }
+
+            if (count($lintErrors) > 0) {
+                $this->listErrors($stdErr, 'linting after fixing', $lintErrors);
+            }
         }
 
-        return $this->calculateExitStatus($resolver->isDryRun(), !empty($changed), !empty($invalidErrors));
+        return $this->calculateExitStatus(
+            $resolver->isDryRun(),
+            count($changed) > 0,
+            count($invalidErrors) > 0,
+            count($exceptionErrors) > 0
+        );
     }
 
-    private function calculateExitStatus($isDryRun, $hasChangedFiles, $hasInvalidErrors)
+    private function calculateExitStatus($isDryRun, $hasChangedFiles, $hasInvalidErrors, $exceptionInApp)
     {
         $exitStatus = 0;
 
@@ -407,6 +417,10 @@ EOF
             if ($hasInvalidErrors) {
                 $exitStatus |= self::EXIT_STATUS_FLAG_HAS_INVALID_FILES;
             }
+        }
+
+        if ($exceptionInApp) {
+            $exitStatus |= self::EXIT_STATUS_FLAG_EXCEPTION_IN_APP;
         }
 
         return $exitStatus;
