@@ -1,0 +1,182 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-14T16:39:49Z
+
+@SpacePossum please, could you take a deeper look ? I remember once you did sth like this
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-14T17:45:21Z
+
+cool idea :)
+I'm happy to review this in depth.
+For one it is missing utest, which brings me to my own PR https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1654 which will have conflicts on this one. I'll try some stuff :)
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-03-14T18:20:46Z
+
+I'll add unit tests
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-15T19:54:20Z
+
+please don't mention PR number in commits
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-03-17T08:40:59Z
+
+I fixed all issues and added unit tests
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-17T09:34:22Z
+
+> I fixed all issues and added unit tests
+
+not all: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1824/files#r56246828
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-03-17T09:37:59Z
+
+I think that we should not make such a big refactoring in single PR
+
+http://martinfowler.com/books/refactoring.html
+> Refactoring is a controlled technique for improving the design of an existing code base. Its essence is applying a series of small behavior-preserving transformations, each of which "too small to be worth doing".
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-17T09:42:47Z
+
+It's not big.
+#1666 is big
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-17T10:59:55Z
+
+> I think that we should not make such a big refactoring in single PR
+
+Yeh, this is pretty small tbh.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-17T12:00:20Z
+
+@ekho, a proposal.
+
+I could help you a bit with requested changes.
+But if you would like me to help then you will need to wait for #1666 is closed (I can't focus on both at once). So it would delay this PR.
+
+What do you think?
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-03-17T12:40:55Z
+
+@keradus I made changes and squashed commits into single one. Review PR again pls
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-17T13:09:56Z
+
+> I made changes and squashed commits into single one
+
+Please don't squash commits (it's easier to look at newest changes when you could see only at them, not at everything at once).
+Also, please don't refer PR in commit log.
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-03-17T23:37:38Z
+
+@keradus please review my changes
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-21T09:26:52Z
+
+Needs rebasing. ;)
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-03-22T20:26:36Z
+
+@keradus I pushed ReportBuilder commit here
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-22T20:49:44Z
+
+Please fix Travis
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-29T09:37:38Z
+
+I would be nice to have it finished
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-03-29T09:39:12Z
+
+I will try to find time for it on this week
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-31T19:38:13Z
+
+@SpacePossum is there anything more that you will need from this PR ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-01T07:56:24Z
+
+ping @ekho
+please consider https://github.com/bankiru/PHP-CS-Fixer/pull/2
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-01T08:11:07Z
+
+Besides the little naming discussion I think https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1824/files#r57077995 is the last open thing?
+This will close https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1654 as well and a bunch of others.
+@ekho please rebase when you have the time :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-01T08:41:44Z
+
+The naming is last thing.
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-04-02T19:45:38Z
+
+@keradus @SpacePossum all done, plz review again
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-03T19:50:59Z
+
+@ekho, please, could you rebase on master (not merge) ? Then, squashing consecutive commits of same author would be great.
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-04-06T14:33:30Z
+
+@keradus, done
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-04-06T15:11:25Z
+
+@keradus , I'll fix it today evening. And I found mistakes in rebasing
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-04-06T20:46:01Z
+
+@keradus @SpacePossum tabs fixed, mistakes of rebasing too.
