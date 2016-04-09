@@ -227,7 +227,7 @@ final class Runner
     }
 
     /**
-     * Process an exception that occured.
+     * Process an exception that occurred.
      *
      * @param string $name
      */
