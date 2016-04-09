@@ -320,7 +320,11 @@ EOF
             ->getReporter($resolver->getFormat())
         ;
 
-        $stdErr = ($output instanceof ConsoleOutputInterface) ? $output->getErrorOutput() : 'txt' === $reporter->getFormat() ? $output : null;
+        $stdErr = $output instanceof ConsoleOutputInterface
+            ? $output->getErrorOutput()
+            : ('txt' === $reporter->getFormat() ? $output : null)
+        ;
+
         if (null !== $stdErr && extension_loaded('xdebug')) {
             $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
         }
@@ -353,8 +357,8 @@ EOF
             $resolver->isDryRun()
         );
 
-        $progressOutput = $showProgress
-            ? new ProcessOutput($this->eventDispatcher)
+        $progressOutput = $showProgress && $stdErr
+            ? new ProcessOutput($stdErr, $this->eventDispatcher)
             : new NullOutput()
         ;
 
@@ -405,7 +409,15 @@ EOF
         );
     }
 
-    private function calculateExitStatus($isDryRun, $hasChangedFiles, $hasInvalidErrors, $exceptionInApp)
+    /**
+     * @param bool $isDryRun
+     * @param bool $hasChangedFiles
+     * @param bool $hasInvalidErrors
+     * @param bool $hasExceptionErrors
+     *
+     * @return int
+     */
+    private function calculateExitStatus($isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors)
     {
         $exitStatus = 0;
 
@@ -419,7 +431,7 @@ EOF
             }
         }
 
-        if ($exceptionInApp) {
+        if ($hasExceptionErrors) {
             $exitStatus |= self::EXIT_STATUS_FLAG_EXCEPTION_IN_APP;
         }
 

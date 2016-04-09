@@ -41,27 +41,28 @@ final class FixCommandTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideCalculateExitStatusCases
      */
-    public function testCalculateExitStatus($expected, $isDryRun, $hasChangedFiles, $hasInvalidErrors)
+    public function testCalculateExitStatus($expected, $isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors)
     {
         $command = new AccessibleObject(new FixCommand());
 
         $this->assertSame(
             $expected,
-            $command->calculateExitStatus($isDryRun, $hasChangedFiles, $hasInvalidErrors)
+            $command->calculateExitStatus($isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors)
         );
     }
 
     public function provideCalculateExitStatusCases()
     {
         return array(
-            array(0, true, false, false),
-            array(0, false, false, false),
-            array(8, true, true, false),
-            array(0, false, true, false),
-            array(4, true, false, true),
-            array(0, false, false, true),
-            array(12, true, true, true),
-            array(0, false, true, true),
+            array(0, true, false, false, false),
+            array(0, false, false, false, false),
+            array(8, true, true, false, false),
+            array(0, false, true, false, false),
+            array(4, true, false, true, false),
+            array(0, false, false, true, false),
+            array(12, true, true, true, false),
+            array(0, false, true, true, false),
+            array(76, true, true, true, true),
         );
     }
 }
