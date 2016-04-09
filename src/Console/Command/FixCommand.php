@@ -294,7 +294,7 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $stdErr = ($output instanceof ConsoleOutputInterface) ? $output->getErrorOutput() : $output;
+        $stdErr = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
         if (extension_loaded('xdebug')) {
             $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
         }
