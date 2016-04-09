@@ -53,6 +53,7 @@ Exit codes have been change and are build using the following bit flags:
         | 8       | Some files need fixing                  | flag was added, works only in dry-run mode
 16      | 16      | Configuration error of the application  |
 32      | 32      | Configuration error of a Fixer          |
+        | 64      | Exception within the application        | flag was added
 
 Namespace
 ---------
