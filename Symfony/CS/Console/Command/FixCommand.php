@@ -183,6 +183,7 @@ to the default list of symfony-level fixers:
 
     \$finder = Symfony\CS\Finder\DefaultFinder::create()
         ->exclude('somedir')
+        ->notPath('src/Symfony/Component/Translation/Tests/fixtures/resources.php')
         ->in(__DIR__)
     ;
 
@@ -192,6 +193,11 @@ to the default list of symfony-level fixers:
     ;
 
     ?>
+
+**NOTE**: ``exclude`` will work only for directories, so if you need to exclude file, try ``notPath``.
+
+See `Symfony\\\\Finder <http://symfony.com/doc/current/components/finder.html>`_
+online documentation for other `Finder` methods.
 
 If you want complete control over which fixers you use, you may use the empty level and
 then specify all fixers to be used:
