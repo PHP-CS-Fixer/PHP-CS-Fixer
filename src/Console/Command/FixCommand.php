@@ -347,6 +347,13 @@ EOF
             }
         }
 
+        if (null !== $stdErr && $config->usingCache()) {
+            $cacheFile = $config->getCacheFile();
+            if (is_file($cacheFile)) {
+                $stdErr->writeln(sprintf('Using cache file "%s".', $cacheFile));
+            }
+        }
+
         $showProgress = $resolver->getProgress();
         $runner = new Runner(
             $config,
