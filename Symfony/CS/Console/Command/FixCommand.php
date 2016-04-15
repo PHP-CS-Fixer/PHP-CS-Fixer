@@ -287,8 +287,12 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // setup output
-        $stdErr = ($output instanceof ConsoleOutputInterface) ? $output->getErrorOutput() : null;
-        if ($stdErr && extension_loaded('xdebug')) {
+        $stdErr = $output instanceof ConsoleOutputInterface
+            ? $output->getErrorOutput()
+            : ('txt' === $reporter->getFormat() ? $output : null)
+        ;
+
+        if (null !== $stdErr && extension_loaded('xdebug')) {
             $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
         }
 
@@ -346,8 +350,8 @@ EOF
                 throw new InvalidConfigurationException(sprintf('The config file "%s" does not return a "Symfony\CS\ConfigInterface" instance. Got: "%s".', $configFile, is_object($config) ? get_class($config) : gettype($config)));
             }
 
-            if ('txt' === $input->getOption('format')) {
-                $output->writeln(sprintf('Loaded config from "%s"', $configFile));
+            if (null !== $stdErr && $configFile) {
+                $stdErr->writeln(sprintf('Loaded config from "%s".', $configFile));
             }
         } else {
             $config = $this->defaultConfig;
@@ -383,11 +387,11 @@ EOF
             ->resolve();
 
         $config->fixers($resolver->getFixers());
-        $showProgress = $resolver->getProgress();
+        $showProgress = null !== $stdErr && $resolver->getProgress();
 
         if ($showProgress) {
-            $fileProcessedEventListener = function (FixerFileProcessedEvent $event) use ($output) {
-                $output->write($event->getStatusAsString());
+            $fileProcessedEventListener = function (FixerFileProcessedEvent $event) use ($stdErr) {
+                $stdErr->write($event->getStatusAsString());
             };
 
             $this->fixer->setEventDispatcher($this->eventDispatcher);
@@ -401,7 +405,7 @@ EOF
         if ($showProgress) {
             $this->fixer->setEventDispatcher(null);
             $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
-            $output->writeln('');
+            $stdErr->writeln('');
 
             $legend = array();
             foreach (FixerFileProcessedEvent::getStatusMap() as $status) {
@@ -410,7 +414,7 @@ EOF
                 }
             }
 
-            $output->writeln('Legend: '.implode(', ', array_unique($legend)));
+            $stdErr->writeln('Legend: '.implode(', ', array_unique($legend)));
         }
 
         $i = 1;
@@ -534,16 +538,16 @@ EOF
                 break;
         }
 
-        if (!$this->errorsManager->isEmpty()) {
-            $output->writeln('');
-            $output->writeln('Files that were not fixed due to internal error:');
+        if (null !== $stdErr && !$this->errorsManager->isEmpty()) {
+            $stdErr->writeln('');
+            $stdErr->writeln('Files that were not fixed due to internal error:');
 
             foreach ($this->errorsManager->getErrors() as $i => $error) {
-                $output->writeln(sprintf('%4d) %s', $i + 1, $error['filepath']));
+                $stdErr->writeln(sprintf('%4d) %s', $i + 1, $error['filepath']));
             }
         }
 
-        return empty($changed) ? 0 : 1;
+        return 0 === count($changed) ? 0 : 1;
     }
 
     protected function getFixersHelp()
