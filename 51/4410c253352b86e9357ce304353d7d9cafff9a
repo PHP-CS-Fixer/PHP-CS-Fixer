@@ -1,0 +1,202 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-05T11:11:42Z
+
+What about switching to [SymfonyStyle](https://github.com/symfony/symfony/blob/master/src/Symfony/Component/Console/Style/SymfonyStyle.php) ?
+`$io = new SymfonyStyle($input, $output);`
+
+ref https://github.com/symfony/symfony/issues/15986
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-05T11:12:54Z
+
+We'd have to raise our min console version.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-05T11:14:12Z
+
+Raising dep version for just raising it is pointless. but rising it for functionality is OK ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-05T11:15:33Z
+
+BTW, then you won't need to test if console printer works on our end, just rely on vendor code (and it's tests)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-05T11:31:50Z
+
+hmm even more work to be done in symfony/console... ;)
+
+I don't like the current output construction, because if an output is given to a receiver/output writter it has to check if there is another output attached to it that is even more appropriate. This is causing code like this all over the place;
+https://github.com/symfony/symfony/pull/15795/files#diff-425e56e3b866cb257f587805f7b2ee54R41
+why isn't the error output passed to that method in the first place?
+and why not set `hasErrOutput` on the `OutputInterface` that would at least remove the instance checks...?
+
+anyway, `SymfonyStyle::error` still writes to stdout IIRC.. let me check the coming days :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-05T11:41:53Z
+
+> why isn't the error output passed to that method in the first place?
+
+For ensuring that if it is possible the stdErr is used.
+If it would be added to method's prototype then it would break BC, and if not (last & nullable param) then nobody would pass it and stdErr would not be used, and it is not the goal. Bit ugliness for nice output out of the box without changing user code.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-05T11:42:33Z
+
+> anyway, `SymfonyStyle::error` still writes to stdout IIRC.. let me check the coming days :)
+
+yes, and changing it will fix https://github.com/symfony/symfony/issues/15986 ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-05T15:38:03Z
+
+> We'd have to raise our min console version.
+
+To use SymfonyStyle we will need to bump to v2.7, which has raised PHP requirement:
+```diff
+-        "php": ">=5.3.3"
++        "php": ">=5.3.9"
+```
+
+I'm ok with that, since it bump only PATCH version
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-05T15:38:43Z
+
+Maybe 2.x is a better place to make this change?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-05T15:43:34Z
+
+Could you justify that?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-01-05T18:04:25Z
+
+>Could you justify that?
+
+it would safe you the merge hell ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-06T10:25:13Z
+
+There should not be a lot of differences between 1.x and 2.x since the output of both should be the same, but it is fine for me.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-06T10:25:58Z
+
+What about creating our own Style on top of SymfonyStyle, so we could add more things there (like our progress) ?
+
+---------------------------------------------------------------------------
+
+by stof at 2016-01-06T10:33:23Z
+
+SymfonyStyle is about formatting the output. Telling that some styles must go to stdout and some other styles go to stderr is wrong. This is misunderstanding the goal of stderr and stdout (naming them stderr and stdout does not help understand their goal either btw).
+any progress reporting output should also go to stderr, not to stdout (it is not part of the output of the program, which would be piped to another program)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-06T11:05:48Z
+
+Yep, we want to push the progress to stderr.
+@stof, then what about https://github.com/symfony/symfony/issues/15986 ? Is it going to be the proposed way or the issue will be rejected ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-06T17:37:15Z
+
+@SpacePossum I think we won't hear anything about this from Symfony soon.
+Are we able to handle it on our side at low cost?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-07T11:30:27Z
+
+>@SpacePossum I think we won't hear anything about this from Symfony soon.
+
+Why do you think, all members are busy? I'll ping again, its been 10 days since my last proposal, hope I ping the right people ^-^
+I could write a similar fix in the mean time for the fixer, but it would not be handy if my fix over at symfony gets turned down.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-04T09:23:07Z
+
+@SpacePossum , https://github.com/symfony/symfony/pull/15794 has been merged. Would it help us?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-04T12:33:47Z
+
+@keradus that PR addresses some helpers we don't use ATM (and probably won't any time soon).
+I got an answer on 15986 from Fabien that contains enough pointers to finish it, I hope to find some time this weekend to do so.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-22T19:29:13Z
+
+My PR to SF to get testing options for both stdout and stderr has been merged, however it has been done on 3.x line only. I would like to suggest to move on without it by adding a bit of a polyfill until the fixer requirements reach the 3.x line of packages of SF.
+I would really like to wrap this one up to close the issues related to outputting to the wrong stream(s) making it harder than needed to integrate the fixer with other applications. I would like to suggest to rebase and rework this after #1824 has been done as the PRs will have some conflicts among each other. Ping @keradus for thoughts on this :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-22T20:10:28Z
+
+fine for me
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-30T18:20:09Z
+
+ping @SpacePossum
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-30T18:34:46Z
+
+I think a wait out #1824 since it will cover the output format testing. This means the tests here can be removed and this PR can focus on the used output streams only. I'll work on this soon to get the test logic in place we are going to need though :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-09T21:03:56Z
+
+ #1824 is merged. please update
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-13T07:26:16Z
+
+Reworked, please note this PR is now for ^1.12 only.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-13T08:36:30Z
+
+you mean that non of those changes should be merged into 2.x, right?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-13T08:57:25Z
+
+>you mean that non of those changes should be merged into 2.x, right?
+
+indeed, it is all good on 2.x :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-13T08:58:19Z
+
+Cool ;)
