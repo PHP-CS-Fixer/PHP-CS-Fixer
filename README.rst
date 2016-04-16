@@ -58,7 +58,7 @@ To install PHP-CS-Fixer, install Composer and issue the following command:
 
 .. code-block:: bash
 
-    $ ./composer.phar global require fabpot/php-cs-fixer
+    $ ./composer.phar global require friendsofphp/php-cs-fixer
 
 Then make sure you have ``~/.composer/vendor/bin`` in your ``PATH`` and
 you're good to go:
@@ -106,7 +106,7 @@ You can update ``php-cs-fixer`` through this command:
 
 .. code-block:: bash
 
-    $ ./composer.phar global update fabpot/php-cs-fixer
+    $ ./composer.phar global update friendsofphp/php-cs-fixer
 
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
@@ -879,11 +879,11 @@ Cache file can be specified via ``--cache-file`` option or config file:
 Using PHP CS Fixer on Travis
 ----------------------------
 
-Require ``fabpot/php-cs-fixer`` as a `dev`` dependency:
+Require ``friendsofphp/php-cs-fixer`` as a `dev`` dependency:
 
 .. code-block:: bash
 
-    $ ./composer.phar require --dev fabpot/php-cs-fixer
+    $ ./composer.phar require --dev friendsofphp/php-cs-fixer
 
 Create a build file to run ``php-cs-fixer`` on Travis. It's advisable to create a dedicated directory
 for PHP CS Fixer cache files and have Travis cache it between builds.
