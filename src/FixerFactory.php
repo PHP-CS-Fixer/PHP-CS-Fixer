@@ -158,12 +158,7 @@ final class FixerFactory
         }
 
         if (count($fixerConflicts) > 0) {
-            $message = 'The rules contain conflicting fixers:';
-            foreach ($fixerConflicts as $fixer => $fixers) {
-                $message .= sprintf("\n- \"%s\" with \"%s\"", $fixer, implode('", "', $fixers));
-            }
-
-            throw new \UnexpectedValueException($message);
+            throw new \UnexpectedValueException($this->generateConflictMessage($fixerConflicts));
         }
 
         $this->fixers = $fixers;
@@ -231,5 +226,31 @@ final class FixerFactory
         $fixerName = $fixer->getName();
 
         return array_key_exists($fixerName, $conflictMap) ? $conflictMap[$fixerName] : array();
+    }
+
+    /**
+     * @param array<string, string[]> $fixerConflicts
+     *
+     * @return string
+     */
+    private function generateConflictMessage(array $fixerConflicts)
+    {
+        $message = 'Rule contains conflicting fixers:';
+        $report = array();
+        foreach ($fixerConflicts as $fixer => $fixers) {
+            // filter mutual conflicts
+            $report[$fixer] = array_filter(
+                $fixers,
+                function ($candidate) use ($report, $fixer) {
+                    return !array_key_exists($candidate, $report) || !in_array($fixer, $report[$candidate], true);
+                }
+            );
+
+            if (count($report[$fixer]) > 0) {
+                $message .= sprintf("\n- \"%s\" with \"%s\"", $fixer, implode('", "', $report[$fixer]));
+            }
+        }
+
+        return $message;
     }
 }
