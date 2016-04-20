@@ -138,8 +138,10 @@ final class FixerFactory
     {
         $fixers = array();
         $fixersByName = array();
+        $fixerConflicts = array();
 
-        foreach (array_keys($ruleSet->getRules()) as $name) {
+        $fixerNames = array_keys($ruleSet->getRules());
+        foreach ($fixerNames as $name) {
             if (!array_key_exists($name, $this->fixersByName)) {
                 throw new \UnexpectedValueException(sprintf('Rule "%s" does not exist.', $name));
             }
@@ -148,6 +150,15 @@ final class FixerFactory
             $fixer->configure($ruleSet->getRuleConfiguration($name));
             $fixers[] = $fixer;
             $fixersByName[$name] = $fixer;
+
+            $conflicts = array_intersect($this->getFixersConflicts($fixer), $fixerNames);
+            if (count($conflicts) > 0) {
+                $fixerConflicts[$name] = $conflicts;
+            }
+        }
+
+        if (count($fixerConflicts) > 0) {
+            throw new \UnexpectedValueException($this->generateConflictMessage($fixerConflicts));
         }
 
         $this->fixers = $fixers;
@@ -191,5 +202,53 @@ final class FixerFactory
         }, $data);
 
         return $this;
+    }
+
+    /**
+     * @param FixerInterface $fixer
+     *
+     * @return string[]|null
+     */
+    private function getFixersConflicts(FixerInterface $fixer)
+    {
+        static $conflictMap = array(
+            'short_array_syntax' => array('long_array_syntax'),
+            'align_double_arrow' => array('unalign_double_arrow'),
+            'align_equals' => array('unalign_equals'),
+            'concat_with_spaces' => array('concat_without_spaces'),
+            'echo_to_print' => array('print_to_echo'),
+            'no_blank_lines_before_namespace' => array('single_blank_line_before_namespace'),
+            'phpdoc_type_to_var' => array('phpdoc_var_to_type'),
+        );
+
+        $fixerName = $fixer->getName();
+
+        return array_key_exists($fixerName, $conflictMap) ? $conflictMap[$fixerName] : array();
+    }
+
+    /**
+     * @param array<string, string[]> $fixerConflicts
+     *
+     * @return string
+     */
+    private function generateConflictMessage(array $fixerConflicts)
+    {
+        $message = 'Rule contains conflicting fixers:';
+        $report = array();
+        foreach ($fixerConflicts as $fixer => $fixers) {
+            // filter mutual conflicts
+            $report[$fixer] = array_filter(
+                $fixers,
+                function ($candidate) use ($report, $fixer) {
+                    return !array_key_exists($candidate, $report) || !in_array($fixer, $report[$candidate], true);
+                }
+            );
+
+            if (count($report[$fixer]) > 0) {
+                $message .= sprintf("\n- \"%s\" with \"%s\"", $fixer, implode('", "', $report[$fixer]));
+            }
+        }
+
+        return $message;
     }
 }
