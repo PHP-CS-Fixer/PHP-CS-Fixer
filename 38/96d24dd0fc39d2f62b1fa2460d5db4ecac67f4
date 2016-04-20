@@ -1,0 +1,102 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-07T14:16:57Z
+
+ref: https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/1033
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-09T17:04:13Z
+
+We should probably allow fixers themselves to know what they conflict with, otherwise we have incorrect measures in place for when people add custom fixers.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-09T17:04:42Z
+
+Also, we should mark the proxy fixers as conflicting with the fixer they proxy?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-13T07:09:03Z
+
+>We should probably allow fixers themselves to know what they conflict with, otherwise we have incorrect measures in place for when people add custom fixers.
+
+Good point, I had discussed this with @keradus already and while it is an interesting solution it is also harder to make and maintain. If we would build that conflicting fixers would be aware of each other, both ways. This PR provides one solution, but indeed lacks the option to deal with custom fixers.
+
+>Also, we should mark the proxy fixers as conflicting with the fixer they proxy?
+
+I'm not sure what you mean, i.e. what issue is there?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-13T07:56:51Z
+
+well the var to type type to var confict, but the general one could conflict too
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-14T08:39:56Z
+
+General fixers are very generic and could or could not conflict with bunch of fixers depending on configuration of that particular general fixer. I would not bother to mark them as conflicting - if one want to use general fixer he should know what is he doing.
+
+I'm agree that one would be able to generate conflicting ruleset, but that's edge case that would made this PR bigger. I would keep it in few steps.
+- introduce basic conflicts check (this PR)
+- introduce possibility to mark fixers as conflicting in FixerInterface, thanks to which one could handle conflicts of custom fixers
+- introduce heavy logic to check conflicts not by rule names, but also by rule configs
+
+Last two should not be done in this PR, but in new one.
+But only if one day we will decide to do it.
+I have strong feeling that it would take a bit of time that could be used better, eg adding full support for PHP7.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-19T13:07:23Z
+
+2 minors + please rebase + :+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-20T07:49:25Z
+
+ref: https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/1822
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-20T08:49:33Z
+
+> ref: #1822
+
+Like this PR is closing referred one?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-20T08:54:30Z
+
+yes, the report was boiled down to https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/1822#issuecomment-196365979 so this should fix it (IMO)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-20T09:00:20Z
+
+great!
+from first thread:
+> list is not complete
+
+is it still true?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-20T09:34:24Z
+
+>> list is not complete
+
+> is it still true?
+
+I think it is complete, but happy to update (/accept PR's on the branch ;)  )
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-20T09:45:16Z
+
+Great, updated first thread ;)
