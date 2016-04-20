@@ -498,6 +498,12 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestBase
                     ',
             ),
             array(
+                '<?php
+                    $a = new class extends \A implements B\C {
+                    };
+                    ',
+            ),
+            array(
                 '<?php {{}}',
                 '<?php {{}};',
             ),
