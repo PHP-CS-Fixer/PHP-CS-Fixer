@@ -289,7 +289,7 @@ EOF
         // setup output
         $stdErr = $output instanceof ConsoleOutputInterface
             ? $output->getErrorOutput()
-            : ('txt' === $reporter->getFormat() ? $output : null)
+            : ('txt' === $input->getOption('format') ? $output : null)
         ;
 
         if (null !== $stdErr && extension_loaded('xdebug')) {
