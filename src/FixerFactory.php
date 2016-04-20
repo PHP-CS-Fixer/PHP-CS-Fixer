@@ -217,10 +217,8 @@ final class FixerFactory
             'align_equals' => array('unalign_equals'),
             'concat_with_spaces' => array('concat_without_spaces'),
             'echo_to_print' => array('print_to_echo'),
-            'long_array_syntax' => array('short_array_syntax'),
             'no_blank_lines_before_namespace' => array('single_blank_line_before_namespace'),
             'phpdoc_type_to_var' => array('phpdoc_var_to_type'),
-            'psr0' => array('psr4'),
         );
 
         $fixerName = $fixer->getName();
