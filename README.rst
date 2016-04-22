@@ -735,6 +735,11 @@ Choose from the list of available fixers:
                          Functions should be used with
                          $strict param. (Risky fixer!)
 
+* **switch_case_curly_brace**
+                         Removes unneeded curly braces
+                         after case- and default
+                         statements.
+
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
                          A case should be followed by
                          a colon and not a semicolon.
