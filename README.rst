@@ -719,6 +719,12 @@ Choose from the list of available fixers:
                         throws annotations, then
                         return annotations.
 
+* **phpdoc_regular_header** [contrib]
+                        Ensures the header of a file
+                        is not using phpdoc notation
+                        while not containing
+                        annotations.
+
 * **phpdoc_var_to_type** [contrib]
                         @var should always be written
                         as @type.
