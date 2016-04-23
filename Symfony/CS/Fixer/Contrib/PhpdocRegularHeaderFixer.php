@@ -24,7 +24,7 @@ use Symfony\CS\Tokenizer\Tokens;
 class PhpdocRegularHeaderFixer extends AbstractFixer
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function fix(\SplFileInfo $file, $content)
     {
@@ -33,7 +33,7 @@ class PhpdocRegularHeaderFixer extends AbstractFixer
         if (!$tokens->isMonolithicPhp()) {
             return $content;
         }
-        
+
         // Find first non-whitespace element and check if it's a docblock
         $index = $tokens->getNextNonWhitespace(0);
         if (null !== $index && $tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
@@ -50,7 +50,7 @@ class PhpdocRegularHeaderFixer extends AbstractFixer
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getDescription()
     {
