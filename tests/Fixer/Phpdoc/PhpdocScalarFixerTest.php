@@ -108,6 +108,7 @@ EOF;
      *
      * @param int|float $integer
      * @param int|int[] $foo
+     * @param string|null $bar
      *
      * @return string|bool
      */
@@ -121,6 +122,7 @@ EOF;
      *
      * @param integer|real $integer
      * @param int|integer[] $foo
+     * @param str|null $bar
      *
      * @return string|boolean
      */

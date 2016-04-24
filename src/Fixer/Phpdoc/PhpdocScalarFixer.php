@@ -29,6 +29,7 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
         'double' => 'float',
         'integer' => 'int',
         'real' => 'float',
+        'str' => 'string',
     );
 
     /**
