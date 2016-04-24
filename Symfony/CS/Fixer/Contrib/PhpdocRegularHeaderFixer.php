@@ -56,4 +56,15 @@ class PhpdocRegularHeaderFixer extends AbstractFixer
     {
         return 'Ensures the header of a file is not using phpdoc notation while not containing annotations.';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        /*
+         * Must be run before the HeaderCommentFixer if also present to ensure it picks up the header correctly.
+         */
+        return 5;
+    }
 }
