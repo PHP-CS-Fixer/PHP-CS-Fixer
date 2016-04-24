@@ -45,7 +45,7 @@ class PhpdocNoPackageFixer extends AbstractAnnotationRemovalFixer
      */
     public function getPriority()
     {
-        /**
+        /*
          * Needs higher priority than any of the fixers cleaning up empty docblocks or fixing headers.
          */
         return 10;
