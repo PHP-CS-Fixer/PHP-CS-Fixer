@@ -728,6 +728,11 @@ Choose from the list of available fixers:
                          be one blank line after the
                          use statements block.
 
+* **single_property_per_statement** [@PSR2, @Symfony]
+                         There MUST NOT be more than
+                         one property declared per
+                         statement.
+
 * **single_quote** [@Symfony]
                          Convert double quotes to
                          single quotes for simple
