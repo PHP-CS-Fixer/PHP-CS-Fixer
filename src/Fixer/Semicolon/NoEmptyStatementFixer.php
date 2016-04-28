@@ -116,12 +116,12 @@ final class NoEmptyStatementFixer extends AbstractFixer
         // check for namespaces and class, interface and trait definitions
         if ($tokens[$beforeCurlyOpening]->isGivenKind(T_STRING)) {
             $classyTest = $tokens->getPrevMeaningfulToken($beforeCurlyOpening);
-            while ($tokens[$classyTest]->equals(',') || $tokens[$classyTest]->isGivenKind(array(T_STRING, T_EXTENDS, T_IMPLEMENTS))) {
+            while ($tokens[$classyTest]->equals(',') || $tokens[$classyTest]->isGivenKind(array(T_STRING, T_NS_SEPARATOR, T_EXTENDS, T_IMPLEMENTS))) {
                 $classyTest = $tokens->getPrevMeaningfulToken($classyTest);
             }
 
             if (
-                $tokens[$classyTest]->isGivenKind(array(T_NS_SEPARATOR, T_NAMESPACE)) ||
+                $tokens[$classyTest]->isGivenKind(T_NAMESPACE) ||
                 ($tokens[$classyTest]->isClassy() && !$this->isAnonymousClass($tokens, $classyTest))
             ) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
