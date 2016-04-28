@@ -12,8 +12,6 @@
 
 namespace PhpCsFixer;
 
-use Symfony\Component\Filesystem\Exception\IOException;
-
 /**
  * Class supports caching information about state of fixing files.
  *
@@ -32,9 +30,8 @@ use Symfony\Component\Filesystem\Exception\IOException;
  */
 final class FileCacheManager
 {
-    private $cacheFile;
+    private $cacheHandler;
     private $cacheFileRealDirName;
-    private $isEnabled;
     private $linting;
     private $rules;
     private $newHashes = array();
@@ -43,15 +40,14 @@ final class FileCacheManager
     /**
      * Create instance.
      *
-     * @param bool   $isEnabled is cache enabled
-     * @param string $cacheFile cache file
-     * @param bool   $linting   is linting enabled
-     * @param array  $rules     array defining rules, format like one for ConfigInterface::setRules
+     * @param CacheHandler $cacheHandler handles read/write operations
+     * @param string       $cacheFile    cache file
+     * @param bool         $linting      is linting enabled
+     * @param array        $rules        array defining rules, format like one for ConfigInterface::setRules
      */
-    public function __construct($isEnabled, $cacheFile, $linting, array $rules)
+    public function __construct(CacheHandler $cacheHandler, $cacheFile, $linting, array $rules)
     {
-        $this->isEnabled = $isEnabled;
-        $this->cacheFile = $cacheFile;
+        $this->cacheHandler = $cacheHandler;
         $this->cacheFileRealDirName = dirname(realpath($cacheFile));
         $this->linting = $linting;
         $this->rules = $rules;
@@ -104,13 +100,7 @@ final class FileCacheManager
 
     private function isCacheAvailable()
     {
-        static $result;
-
-        if (null === $result) {
-            $result = $this->isEnabled && (ToolInfo::isInstalledAsPhar() || ToolInfo::isInstalledByComposer());
-        }
-
-        return $result;
+        return $this->cacheHandler->willCache();
     }
 
     private function isCacheStale($php, $version, $linting, $rules)
@@ -128,11 +118,7 @@ final class FileCacheManager
             return;
         }
 
-        if (!file_exists($this->cacheFile)) {
-            return;
-        }
-
-        $content = file_get_contents($this->cacheFile);
+        $content = $this->cacheHandler->read();
         $data = @unserialize($content);
 
         // ignore corrupted serialized data
@@ -167,9 +153,7 @@ final class FileCacheManager
             )
         );
 
-        if (false === @file_put_contents($this->cacheFile, $data, LOCK_EX)) {
-            throw new IOException(sprintf('Failed to write file "%s".', $this->cacheFile), 0, null, $this->cacheFile);
-        }
+        $this->cacheHandler->write($data);
     }
 
     private function normalizePath($path)
