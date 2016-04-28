@@ -12,16 +12,20 @@
 
 namespace PhpCsFixer\Runner;
 
+use PhpCsFixer\CacheHandler;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\FileCacheHandler;
 use PhpCsFixer\FileCacheManager;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
+use PhpCsFixer\NullCacheHandler;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\ToolInfo;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -83,11 +87,23 @@ final class Runner
         $this->isDryRun = $isDryRun;
 
         $this->cacheManager = new FileCacheManager(
-            $config->usingCache(),
+            $this->cacheHandler(),
             $config->getCacheFile(),
             $config->usingLinter(),
             $config->getRules()
         );
+    }
+
+    /**
+     * @return CacheHandler
+     */
+    private function cacheHandler()
+    {
+        if ($this->config->usingCache() && (ToolInfo::isInstalledAsPhar() || ToolInfo::isInstalledByComposer())) {
+            return new FileCacheHandler($this->config->getCacheFile());
+        }
+
+        return new NullCacheHandler();
     }
 
     /**
