@@ -1,8 +1,10 @@
 --TEST--
-Symfony test
+Symfony test.
 --CONFIG--
 level=symfony
---INPUT--
+--SETTINGS--
+checkPriority=false
+--EXPECT--
 <?php
 
 /*

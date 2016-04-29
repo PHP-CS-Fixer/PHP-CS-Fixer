@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -16,6 +17,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
+ * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
  */
@@ -25,6 +27,8 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
 
     public static function setUpBeforeClass()
     {
+        parent::setUpBeforeClass();
+
         $controlStatementsProperty = new \ReflectionProperty('Symfony\CS\Fixer\Symfony\UnneededControlParenthesesFixer', 'controlStatements');
         $controlStatementsProperty->setAccessible(true);
         self::$defaultStatements = $controlStatementsProperty->getValue(null);
@@ -33,7 +37,7 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null, $fixStatement = null)
     {
         // PHP <5.5 BC
         if (version_compare(PHP_VERSION, '5.5', '<') && false !== strpos($input, 'yield')) {
@@ -51,9 +55,20 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
         // Test with only one statement
         foreach (self::$defaultStatements as $statement) {
             UnneededControlParenthesesFixer::configure(array($statement));
+
+            $withInput = false;
+            if ($input && (!$fixStatement || $fixStatement === $statement)) {
+                foreach (explode('_', $statement) as $singleStatement) {
+                    if (false !== strpos($input, $singleStatement)) {
+                        $withInput = true;
+                        break;
+                    }
+                }
+            }
+
             $this->makeTest(
                 $expected,
-                $input && false !== strpos($input, $statement) ? $input : null
+                $withInput ? $input : null
             );
         }
     }
@@ -62,45 +77,67 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
+                '<?php while ($x) { break; }',
+            ),
+            array(
+                '<?php while ($x) { while ($y) { break 2; } }',
+                '<?php while ($x) { while ($y) { break (2); } }',
+            ),
+            array(
+                '<?php while ($x) { while ($y) { break 2; } }',
+                '<?php while ($x) { while ($y) { break(2); } }',
+            ),
+            array(
+                '<?php while ($x) { continue; }',
+            ),
+            array(
+                '<?php while ($x) { while ($y) { continue 2; } }',
+                '<?php while ($x) { while ($y) { continue (2); } }',
+            ),
+            array(
+                '<?php while ($x) { while ($y) { continue 2; } }',
+                '<?php while ($x) { while ($y) { continue(2); } }',
+            ),
+            array(
                 '<?php
-                yield "prod";
+                function foo() { yield "prod"; }
                 ',
             ),
             array(
                 '<?php
-                yield (1 + 2) * 10;
+                function foo() { yield (1 + 2) * 10; }
                 ',
             ),
             array(
                 '<?php
-                yield (1 + 2) * 10;
+                function foo() { yield (1 + 2) * 10; }
                 ',
                 '<?php
-                yield ((1 + 2) * 10);
-                ',
-            ),
-            array(
-                '<?php
-                yield "prod";
-                ',
-                '<?php
-                yield ("prod");
+                function foo() { yield ((1 + 2) * 10); }
                 ',
             ),
             array(
                 '<?php
-                yield 2;
+                function foo() { yield "prod"; }
                 ',
                 '<?php
-                yield(2);
+                function foo() { yield ("prod"); }
                 ',
             ),
             array(
                 '<?php
-                $a = (yield $x);
+                function foo() { yield 2; }
                 ',
                 '<?php
-                $a = (yield($x));
+                function foo() { yield(2); }
+                ',
+            ),
+            array(
+                '<?php
+                function foo() { $a = (yield $x); }
+                ',
+                '<?php
+                function foo() { $a = (yield($x)); }
                 ',
             ),
             array(
@@ -160,22 +197,6 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php echo (1 + 2) * 10, "\n" ?>',
-            ),
-            array(
-                '<?php
-                echo (1 + 2) * 10, "\n";
-                ',
-                '<?php
-                echo ((1 + 2) * 10, "\n");
-                ',
-            ),
-            array(
-                '<?php
-                echo (1 + 2) * 10, "\n";
-                ',
-                '<?php
-                echo((1 + 2) * 10, "\n");
-                ',
             ),
             array(
                 '<?php echo "foo" ?>',
@@ -296,21 +317,30 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
                         break;
                 }
                 ',
+                'switch_case',
             ),
             array(
                 '<?php
-                case $x;
+                switch ($a) {
+                    case $x;
+                }
                 ',
                 '<?php
-                case($x);
+                switch ($a) {
+                    case($x);
+                }
                 ',
             ),
             array(
                 '<?php
-                case 2;
+                switch ($a) {
+                    case 2;
+                }
                 ',
                 '<?php
-                case(2);
+                switch ($a) {
+                    case(2);
+                }
                 ',
             ),
             array(
@@ -380,6 +410,7 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
                     }
                 }
                 ',
+                'switch_case',
             ),
         );
     }

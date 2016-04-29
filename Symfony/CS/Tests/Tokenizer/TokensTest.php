@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -258,7 +259,7 @@ preg_replace_callback(
                 array(4 => false),
             ),
             array(
-                '<?php \'foo\'[1];',
+                '<?php "foo"[1];',
                 array(2 => false),
             ),
             array(
@@ -806,14 +807,14 @@ $b;',
         $emptyToken->clear();
 
         return array(
-            array('Invalid sequence', array()),
-            array('Non-meaningful token at position: 0', array(
+            array('Invalid sequence.', array()),
+            array('Non-meaningful token at position: 0.', array(
                 array(T_WHITESPACE, '   '),
             )),
-            array('Non-meaningful token at position: 1', array(
+            array('Non-meaningful token at position: 1.', array(
                 '{', array(T_COMMENT, '// Foo'), '}',
             )),
-            array('Non-meaningful token at position: 2', array(
+            array('Non-meaningful token at position: 2.', array(
                 '{', '!', $emptyToken, '}',
             )),
         );
@@ -997,7 +998,7 @@ PHP;
                 '<?php
                     array(
                         "a" => array(5, 6, 7),
-8 => new \Exception(\'Ellow\')
+8 => new \Exception("Ellow")
                     );
                 ',
                 2, true,
@@ -1007,7 +1008,7 @@ PHP;
                 '<?php
                     array(
                         "a" => [9, 10, 11],
-12 => new \Exception(\'Ellow\')
+12 => new \Exception("Ellow")
                     );
                 ',
                 2, true,
@@ -1064,5 +1065,194 @@ PHP;
         );
 
         return $cases;
+    }
+
+    public function testFindGivenKind()
+    {
+        $source = <<<'PHP'
+<?php
+class FooBar
+{
+    public function foo()
+    {
+        return 'bar';
+    }
+
+    public function bar()
+    {
+        return 'foo';
+    }
+}
+PHP;
+        $tokens = Tokens::fromCode($source);
+        /** @var Token[] $found */
+        $found = $tokens->findGivenKind(T_CLASS);
+        $this->assertInternalType('array', $found);
+        $this->assertCount(1, $found);
+        $this->assertArrayHasKey(1, $found);
+        $this->assertSame(T_CLASS, $found[1]->getId());
+
+        /** @var array $found */
+        $found = $tokens->findGivenKind(array(T_CLASS, T_FUNCTION));
+        $this->assertCount(2, $found);
+        $this->assertArrayHasKey(T_CLASS, $found);
+        $this->assertInternalType('array', $found[T_CLASS]);
+        $this->assertCount(1, $found[T_CLASS]);
+        $this->assertArrayHasKey(1, $found[T_CLASS]);
+        $this->assertSame(T_CLASS, $found[T_CLASS][1]->getId());
+
+        $this->assertArrayHasKey(T_FUNCTION, $found);
+        $this->assertInternalType('array', $found[T_FUNCTION]);
+        $this->assertCount(2, $found[T_FUNCTION]);
+        $this->assertArrayHasKey(9, $found[T_FUNCTION]);
+        $this->assertSame(T_FUNCTION, $found[T_FUNCTION][9]->getId());
+        $this->assertArrayHasKey(26, $found[T_FUNCTION]);
+        $this->assertSame(T_FUNCTION, $found[T_FUNCTION][26]->getId());
+
+        // test offset and limits of the search
+        $found = $tokens->findGivenKind(array(T_CLASS, T_FUNCTION), 10);
+        $this->assertCount(0, $found[T_CLASS]);
+        $this->assertCount(1, $found[T_FUNCTION]);
+        $this->assertArrayHasKey(26, $found[T_FUNCTION]);
+
+        $found = $tokens->findGivenKind(array(T_CLASS, T_FUNCTION), 2, 10);
+        $this->assertCount(0, $found[T_CLASS]);
+        $this->assertCount(1, $found[T_FUNCTION]);
+        $this->assertArrayHasKey(9, $found[T_FUNCTION]);
+    }
+
+    public function testIsMethodNameIsMagic()
+    {
+        $this->assertTrue(Tokens::isMethodNameIsMagic('__construct'));
+        $this->assertFalse(Tokens::isMethodNameIsMagic('testIsMethodNameIsMagic'));
+    }
+
+    /**
+     * @param string  $source
+     * @param Token[] $expected tokens
+     * @param int[]   $indexes  to clear
+     *
+     * @dataProvider getClearTokenAndMergeSurroundingWhitespaceCases
+     */
+    public function testClearTokenAndMergeSurroundingWhitespace($source, array $indexes, array $expected)
+    {
+        $this->doTestClearTokens($source, $indexes, $expected);
+        if (count($indexes) > 1) {
+            $this->doTestClearTokens($source, array_reverse($indexes), $expected);
+        }
+    }
+
+    public function getClearTokenAndMergeSurroundingWhitespaceCases()
+    {
+        $clearToken = new Token(array(null, ''));
+        $clearToken->clear();
+
+        return array(
+            array(
+                '<?php if($a){}else{}',
+                array(7, 8, 9),
+                array(
+                    new Token(array(T_OPEN_TAG, '<?php ')),
+                    new Token(array(T_IF, 'if')),
+                    new Token('('),
+                    new Token(array(T_VARIABLE, '$a')),
+                    new Token(')'),
+                    new Token('{'),
+                    new Token('}'),
+                    $clearToken,
+                    $clearToken,
+                    $clearToken,
+                ),
+            ),
+            array(
+                '<?php $a;/**/;',
+                array(2),
+                array(
+                    // <?php $a /**/;
+                    new Token(array(T_OPEN_TAG, '<?php ')),
+                    new Token(array(T_VARIABLE, '$a')),
+                    $clearToken,
+                    new Token(array(T_COMMENT, '/**/')),
+                    new Token(';'),
+                ),
+            ),
+            array(
+                '<?php ; ; ;',
+                array(3),
+                array(
+                    // <?php ;  ;
+                    new Token(array(T_OPEN_TAG, '<?php ')),
+                    new Token(';'),
+                    new Token(array(T_WHITESPACE, '  ')),
+                    $clearToken,
+                    $clearToken,
+                    new Token(';'),
+                ),
+            ),
+            array(
+                '<?php ; ; ;',
+                array(1, 5),
+                array(
+                    // <?php  ;
+                    new Token(array(T_OPEN_TAG, '<?php ')),
+                    new Token(array(T_WHITESPACE, ' ')),
+                    $clearToken,
+                    new Token(';'),
+                    new Token(array(T_WHITESPACE, ' ')),
+                    $clearToken,
+                ),
+            ),
+            array(
+                '<?php ; ; ;',
+                array(1, 3),
+                array(
+                    // <?php   ;
+                    new Token(array(T_OPEN_TAG, '<?php ')),
+                    new Token(array(T_WHITESPACE, '  ')),
+                    $clearToken,
+                    $clearToken,
+                    $clearToken,
+                    new Token(';'),
+                ),
+            ),
+            array(
+                '<?php ; ; ;',
+                array(1),
+                array(
+                    // <?php  ; ;
+                    new Token(array(T_OPEN_TAG, '<?php ')),
+                    new Token(array(T_WHITESPACE, ' ')),
+                    $clearToken,
+                    new Token(';'),
+                    new Token(array(T_WHITESPACE, ' ')),
+                    new Token(';'),
+                ),
+            ),
+        );
+    }
+
+    /**
+     * @param string  $source
+     * @param int[]   $indexes
+     * @param Token[] $expected
+     */
+    private function doTestClearTokens($source, array $indexes, array $expected)
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($source);
+        foreach ($indexes as $index) {
+            $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+        }
+
+        $this->assertSame(count($expected), $tokens->count());
+        foreach ($expected as $index => $expectedToken) {
+            $token = $tokens[$index];
+            $expectedPrototype = $expectedToken->getPrototype();
+            if (is_array($expectedPrototype)) {
+                unset($expectedPrototype[2]); // don't compare token lines as our token mutations don't deal with line numbers
+            }
+
+            $this->assertTrue($token->equals($expectedPrototype), sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype), $token->toJson()));
+        }
     }
 }

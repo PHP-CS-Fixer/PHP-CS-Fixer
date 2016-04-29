@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -17,7 +18,7 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 class HeaderCommentFixerTest extends AbstractFixerTestBase
 {
     protected static $savedHeader;
-    protected static $testHeader = <<<EOH
+    protected static $testHeader = <<<'EOH'
 This file is part of the PHP CS utility.
 
 (c) Fabien Potencier <fabien@symfony.com>
@@ -196,5 +197,14 @@ EOH;
 
         $input = "<?php\n";
         $this->makeTest($expected, $input);
+    }
+
+    /**
+     * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessage [header_comment] Header configuration is invalid. Expected "string", got "stdClass".
+     */
+    public function testInvalidConfig()
+    {
+        HeaderCommentFixer::setHeader(new \stdClass());
     }
 }

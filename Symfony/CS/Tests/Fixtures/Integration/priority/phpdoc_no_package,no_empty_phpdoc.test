@@ -1,0 +1,29 @@
+--TEST--
+Integration of fixers: no_empty_phpdoc,phpdoc_no_package.
+--CONFIG--
+level=none
+fixers=phpdoc_no_package,no_empty_phpdoc
+--EXPECT--
+<?php
+
+
+
+
+
+
+
+--INPUT--
+<?php
+
+/**
+ * @package Foo\Bar
+ */
+
+/**
+ * @subpackage Foo\Bar\Baz
+ */
+
+/**
+ * @package Foo\Bar
+ * @subpackage Foo\Bar\Baz
+ */

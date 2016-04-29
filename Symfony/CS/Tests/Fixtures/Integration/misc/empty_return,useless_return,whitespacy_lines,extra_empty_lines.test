@@ -1,0 +1,45 @@
+--TEST--
+Integration of fixers: empty_return,no_useless_return,whitespacy_lines,return,extra_empty_lines.
+--CONFIG--
+level=none
+fixers=empty_return,no_useless_return,whitespacy_lines,return,extra_empty_lines
+--EXPECT--
+<?php
+class Test {
+
+    private static function a($a) {
+        if ($a) {
+            return 1;
+        }
+        /**/
+        ++$a; //
+    }
+
+    private static function b($a) {
+        if ($a) {
+            return;
+        }
+
+    }
+}
+
+--INPUT--
+<?php
+class Test {
+
+    private static function a($a) {
+        if ($a) {
+            return 1;
+        }
+        /**/
+        ++$a;return ;//
+    }
+
+    private static function b($a) {
+        if ($a) {
+            return;
+        }
+
+        return null;
+    }
+}

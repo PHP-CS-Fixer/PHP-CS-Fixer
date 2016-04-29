@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -82,7 +83,7 @@ class BracesFixerTest extends AbstractFixerTestBase
                 '<?php
     try {
         echo 1;
-    } catch (Exception $2) {
+    } catch (Exception $e) {
         echo 2;
     }',
                 '<?php
@@ -90,7 +91,7 @@ class BracesFixerTest extends AbstractFixerTestBase
     {
         echo 1;
     }
-    catch (Exception $2)
+    catch (Exception $e)
     {
         echo 2;
     }',
@@ -254,15 +255,15 @@ if (true) {
             ),
             array(
                 '<?php
-for ($i = 1; $i < 10; ++$) {
+for ($i = 1; $i < 10; ++$i) {
     echo $i;
 }
-for ($i = 1; $i < 10; ++$) {
+for ($i = 1; $i < 10; ++$i) {
     echo $i;
 }',
                 '<?php
-for ($i = 1; $i < 10; ++$) echo $i;
-for ($i = 1; $i < 10; ++$) { echo $i; }',
+for ($i = 1; $i < 10; ++$i) echo $i;
+for ($i = 1; $i < 10; ++$i) { echo $i; }',
             ),
             array(
                 '<?php
@@ -386,11 +387,11 @@ if (1) {
             ),
             array(
                 '<?php
-    declare (ticks=1) {
+    declare(ticks=1) {
         $ticks = 1;
     }',
                 '<?php
-    declare (ticks=1) {
+    declare(ticks=1) {
   $ticks = 1;
     }',
             ),
@@ -695,30 +696,6 @@ if(true) if(true) echo 1; else echo 2; else echo 3;',
             ),
             array(
                 '<?php
-if (true) {
-    try {
-        echo 1;
-    } catch (Exception $e) {
-        echo 2;
-    } catch (Exception $e) {
-        echo 3;
-    }
-} else {
-    echo 4;
-}',
-                '<?php
-if (true)
-    try
-        echo 1;
-    catch(Exception $e)
-        echo 2;
-    catch(Exception $e)
-        echo 3;
-else
-    echo 4;',
-            ),
-            array(
-                '<?php
 foreach ($data as $val) {
     // test val
     if ($val === "errors") {
@@ -867,8 +844,6 @@ class Foo
             ),
             array(
                 '<?php
-<?php
-
 abstract class Foo
 {
     public function getProcess($foo)
@@ -1101,7 +1076,7 @@ class Foo
                 '<?php
     filter(function () {
         return true;
-    })
+    });
 ',
             ),
             array(
@@ -1218,18 +1193,26 @@ class Foo
             ),
             array(
                 '<?php
-    $foo = function& () use ($bar) {}',
+    $foo = function& () use ($bar) {};',
                 '<?php
-    $foo = function& ()use($bar){}',
+    $foo = function& ()use($bar){};',
             ),
             array(
                 '<?php
 
 // comment
-declare (ticks = 1);
+declare(strict_types=1);
 
 // comment
 while (true) {
+}',
+            ),
+            array(
+                '<?php
+declare(ticks=1) {
+}',
+                '<?php
+declare   (   ticks   =   1   )   {
 }',
             ),
         );
@@ -1270,34 +1253,6 @@ while (true) {
     finally     {
         echo "finish!";
     }',
-            ),
-            array(
-                '<?php
-try {
-    try {
-        echo 1;
-    } catch (Exception $e) {
-        echo 2;
-    } catch (Exception $e) {
-        echo 3;
-    } finally {
-        echo 4;
-    }
-} catch (Exception $e) {
-    echo 5;
-}',
-                '<?php
-try
-    try
-        echo 1;
-    catch(Exception $e)
-        echo 2;
-    catch(Exception $e)
-        echo 3;
-    finally
-        echo 4;
-catch(Exception $e)
-    echo 5;',
             ),
         );
     }

@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -18,6 +19,35 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  */
 class Php4ConstructorFixerTest extends AbstractFixerTestBase
 {
+    public function testSimpleClass()
+    {
+        $expected = <<<'EOF'
+<?php
+
+class Foo
+{
+    public function __construct($bar)
+    {
+        var_dump(1);
+    }
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+class Foo
+{
+    public function Foo($bar)
+    {
+        var_dump(1);
+    }
+}
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
     public function testNamespaces()
     {
         $expected = <<<'EOF'
@@ -70,53 +100,9 @@ namespace Baz\Qux
         }
     }
 }
-
-class Foo
-{
-    public function __construct($bar)
-    {
-        var_dump(2);
-    }
-}
 EOF;
 
-        $input = <<<'EOF'
-<?php
-
-namespace Baz\Qux
-{
-    class Foo
-    {
-        public function __construct($bar)
-        {
-            var_dump(1);
-        }
-
-        public function Foo($bar)
-        {
-            var_dump(2);
-        }
-    }
-
-    class Bar
-    {
-        public function Bar()
-        {
-            var_dump(3);
-        }
-    }
-}
-
-class Foo
-{
-    public function Foo($bar)
-    {
-        var_dump(2);
-    }
-}
-EOF;
-
-        $this->makeTest($expected, $input);
+        $this->makeTest($expected);
     }
 
     public function testNamespaceGlobal()
@@ -958,23 +944,6 @@ abstract class Foo
     public function __construct()
     {
         $this->baz = 1;
-    }
-}
-EOF;
-
-        $this->makeTest($expected);
-    }
-
-    public function testStatic()
-    {
-        $expected = <<<'EOF'
-<?php
-
-static class Foo
-{
-    static function Foo()
-    {
-        // Do stuff
     }
 }
 EOF;

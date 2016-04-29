@@ -3,11 +3,11 @@ PHP Coding Standards Fixer
 
 The PHP Coding Standards Fixer tool fixes *most* issues in your code when you
 want to follow the PHP coding standards as defined in the PSR-1 and PSR-2
-documents.
+documents and many more.
 
-If you are already using ``PHP_CodeSniffer`` to identify coding standards
-problems in your code, you know that fixing them by hand is tedious, especially
-on large projects. This tool does the job for you.
+If you are already using a linter to identify coding standards problems in your
+code, you know that fixing them by hand is tedious, especially on large
+projects. This tool does not only detect them, but also fixes them for you.
 
 Requirements
 ------------
@@ -31,12 +31,16 @@ your system:
 .. code-block:: bash
 
     $ wget http://get.sensiolabs.org/php-cs-fixer.phar -O php-cs-fixer
+    # With a specific version
+    $ wget http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -O php-cs-fixer
 
 or with curl:
 
 .. code-block:: bash
 
     $ curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
+    # With a specific version
+    $ curl http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -o php-cs-fixer
 
 then:
 
@@ -56,7 +60,7 @@ To install PHP-CS-Fixer, install Composer and issue the following command:
 
     $ ./composer.phar global require fabpot/php-cs-fixer
 
-Then, make sure you have ``~/.composer/vendor/bin`` in your ``PATH``, and
+Then make sure you have ``~/.composer/vendor/bin`` in your ``PATH`` and
 you're good to go:
 
 .. code-block:: bash
@@ -117,14 +121,16 @@ Usage
 -----
 
 The ``fix`` command tries to fix as much coding standards
-problems as possible on a given file or directory:
+problems as possible on a given file or files in a given directory and its subdirectories:
 
 .. code-block:: bash
 
     php php-cs-fixer.phar fix /path/to/dir
     php php-cs-fixer.phar fix /path/to/file
 
-The ``--verbose`` option show applied fixers. When using ``txt`` format (default one) it will also displays progress notification.
+The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``json`` and ``xml``.
+
+The ``--verbose`` option will show the applied fixers. When using the ``txt`` format it will also displays progress notifications.
 
 The ``--level`` option limits the fixers to apply on the
 project:
@@ -197,6 +203,12 @@ Choose from the list of available fixers:
                         placed. Body of braces should
                         be properly indented.
 
+* **class_definition** [PSR-2]
+                        Whitespace around the key
+                        words of a class, trait or
+                        interfaces definition should
+                        be one space.
+
 * **elseif** [PSR-2]
                         The keyword elseif should be
                         used instead of else if so
@@ -254,6 +266,11 @@ Choose from the list of available fixers:
                         There MUST be one use keyword
                         per declaration.
 
+* **no_trailing_whitespace_in_comment** [PSR-2]
+                        There MUST be no trailing
+                        spaces inside comments and
+                        phpdocs.
+
 * **parenthesis** [PSR-2]
                         There MUST NOT be a space
                         after the opening parenthesis.
@@ -271,6 +288,14 @@ Choose from the list of available fixers:
                         its own line and there MUST be
                         one blank line after the use
                         statements block.
+
+* **switch_case_semicolon_to_colon** [PSR-2]
+                        A case should be followed by a
+                        colon and not a semicolon.
+
+* **switch_case_space** [PSR-2]
+                        Removes extra spaces between
+                        colon and case value.
 
 * **trailing_spaces** [PSR-2]
                         Remove trailing whitespace at
@@ -325,11 +350,20 @@ Choose from the list of available fixers:
                         function's argument and its
                         typehint.
 
+* **hash_to_slash_comment** [symfony]
+                        Single line comments should
+                        use double slashes (//) and
+                        not hash (#).
+
+* **heredoc_to_nowdoc** [symfony]
+                        Convert heredoc to nowdoc if
+                        possible.
+
 * **include** [symfony]
-                        Include and file path should
-                        be divided with a single
-                        space. File path should not be
-                        placed under brackets.
+                        Include/Require and file path
+                        should be divided with a
+                        single space. File path should
+                        not be placed under brackets.
 
 * **join_function** [symfony]
                         Implode function should be
@@ -339,6 +373,16 @@ Choose from the list of available fixers:
                         Remove trailing commas in list
                         function calls.
 
+* **lowercase_cast** [symfony]
+                        Cast should be written in
+                        lower case.
+
+* **method_argument_default_value** [symfony]
+                        In method arguments there must
+                        not be arguments with default
+                        values before non-default
+                        ones.
+
 * **multiline_array_trailing_comma** [symfony]
                         PHP multi-line arrays should
                         have a trailing comma.
@@ -347,6 +391,11 @@ Choose from the list of available fixers:
                         The namespace declaration line
                         shouldn't contain leading
                         whitespace.
+
+* **native_function_casing** [symfony]
+                        Function defined by PHP should
+                        be called using the correct
+                        casing.
 
 * **new_with_braces** [symfony]
                         All instances created with new
@@ -361,6 +410,14 @@ Choose from the list of available fixers:
                         There should not be blank
                         lines between docblock and the
                         documented element.
+
+* **no_empty_phpdoc** [symfony]
+                        There should not be empty
+                        PHPDoc blocks.
+
+* **no_empty_statement** [symfony]
+                        Remove useless semicolon
+                        statements.
 
 * **object_operator** [symfony]
                         There should not be space
@@ -378,7 +435,7 @@ Choose from the list of available fixers:
                         subject.
 
 * **phpdoc_inline_tag** [symfony]
-                        Fix PHPDoc inline tags, make
+                        Fix phpdoc inline tags, make
                         inheritdoc always inline.
 
 * **phpdoc_no_access** [symfony]
@@ -422,6 +479,10 @@ Choose from the list of available fixers:
                         should end in either a full
                         stop, exclamation mark, or
                         question mark.
+
+* **phpdoc_single_line_var_spacing** [symfony]
+                        Single line @var PHPDoc should
+                        have proper spacing.
 
 * **phpdoc_to_comment** [symfony]
                         Docblocks should only be used
@@ -478,6 +539,13 @@ Choose from the list of available fixers:
                         exclamation mark should not be
                         used.
 
+* **short_scalar_cast** [symfony]
+                        Cast "(boolean)" and
+                        "(integer)" should be written
+                        as "(bool)" and "(int)".
+                        "(double)" and "(real)" as
+                        "(float)".
+
 * **single_array_no_trailing_comma** [symfony]
                         PHP single-line arrays should
                         not have trailing comma.
@@ -491,6 +559,10 @@ Choose from the list of available fixers:
                         Convert double quotes to
                         single quotes for simple
                         strings.
+
+* **spaces_after_semicolon** [symfony]
+                        Fix whitespace after a
+                        semicolon.
 
 * **spaces_before_semicolon** [symfony]
                         Single-line whitespace before
@@ -545,6 +617,11 @@ Choose from the list of available fixers:
                         Align equals symbols in
                         consecutive lines.
 
+* **combine_consecutive_unsets** [contrib]
+                        Calling unset on multiple
+                        items should be done in one
+                        call.
+
 * **concat_with_spaces** [contrib]
                         Concatenation should be used
                         with at least one whitespace
@@ -593,6 +670,15 @@ Choose from the list of available fixers:
                         before a namespace
                         declaration.
 
+* **no_empty_comment** [contrib]
+                        There should not be an empty
+                        comments.
+
+* **no_useless_return** [contrib]
+                        There should not be an empty
+                        return statement at the end of
+                        a function.
+
 * **ordered_use** [contrib]
                         Ordering use statements.
 
@@ -610,6 +696,14 @@ Choose from the list of available fixers:
                         "->assertTrue($foo)". Warning!
                         This could change code
                         behavior.
+
+* **php_unit_dedicate_assert** [contrib]
+                        PHPUnit assertions like
+                        "assertInternalType",
+                        "assertFileExists", should be
+                        used over "assertTrue".
+                        Warning! This could change
+                        code behavior.
 
 * **php_unit_strict** [contrib]
                         PHPUnit methods like
@@ -686,12 +780,12 @@ to the default list of symfony-level fixers:
 
     <?php
 
-    $finder = Symfony\CS\Finder\DefaultFinder::create()
+    $finder = Symfony\CS\Finder::create()
         ->exclude('somedir')
         ->in(__DIR__)
     ;
 
-    return Symfony\CS\Config\Config::create()
+    return Symfony\CS\Config::create()
         ->fixers(array('strict_param', 'short_array_syntax'))
         ->finder($finder)
     ;
@@ -703,11 +797,11 @@ then specify all fixers to be used:
 
     <?php
 
-    $finder = Symfony\CS\Finder\DefaultFinder::create()
+    $finder = Symfony\CS\Finder::create()
         ->in(__DIR__)
     ;
 
-    return Symfony\CS\Config\Config::create()
+    return Symfony\CS\Config::create()
         ->level(Symfony\CS\FixerInterface::NONE_LEVEL)
         ->fixers(array('trailing_spaces', 'encoding'))
         ->finder($finder)
@@ -721,12 +815,12 @@ Note the additional ``-`` in front of the Fixer name.
 
     <?php
 
-    $finder = Symfony\CS\Finder\DefaultFinder::create()
+    $finder = Symfony\CS\Finder::create()
         ->exclude('somedir')
         ->in(__DIR__)
     ;
 
-    return Symfony\CS\Config\Config::create()
+    return Symfony\CS\Config::create()
         ->fixers(array('-psr0'))
         ->finder($finder)
     ;
@@ -737,7 +831,7 @@ The ``symfony`` level is set by default, you can also change the default level:
 
     <?php
 
-    return Symfony\CS\Config\Config::create()
+    return Symfony\CS\Config::create()
         ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
     ;
 
@@ -762,9 +856,16 @@ speed up further runs.
 
     <?php
 
-    return Symfony\CS\Config\Config::create()
+    return Symfony\CS\Config::create()
         ->setUsingCache(true)
     ;
+
+Exit codes
+----------
+*  0 OK
+*  1 No changes made
+* 16 Configuration error of the application
+* 32 Configuration error of a Fixer
 
 Helpers
 -------

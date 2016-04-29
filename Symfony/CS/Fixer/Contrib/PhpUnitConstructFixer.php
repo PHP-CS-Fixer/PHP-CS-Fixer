@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -12,6 +13,7 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\ConfigurationException\InvalidFixerConfigurationException;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -33,11 +35,14 @@ final class PhpUnitConstructFixer extends AbstractFixer
         'assertNotSame' => 'fixAssertNegative',
     );
 
+    /**
+     * @param array<string, bool> $usingMethods
+     */
     public function configure(array $usingMethods)
     {
         foreach ($usingMethods as $method => $fix) {
-            if (!isset($this->configuration[$method])) {
-                throw new \InvalidArgumentException();
+            if (!array_key_exists($method, $this->configuration)) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Configured method "%s" cannot be fixed by this fixer.', $method));
             }
 
             $this->configuration[$method] = $fix;
@@ -88,10 +93,17 @@ final class PhpUnitConstructFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run after the PhpUnitStrictFixer
+        // should be run after the PhpUnitStrictFixer and before PhpUnitDedicateAssertFixer.
         return -10;
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param string $method
+     *
+     * @return int|null
+     */
     private function fixAssertNegative(Tokens $tokens, $index, $method)
     {
         static $map = array(
@@ -103,6 +115,13 @@ final class PhpUnitConstructFixer extends AbstractFixer
         return $this->fixAssert($map, $tokens, $index, $method);
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param string $method
+     *
+     * @return int|null
+     */
     private function fixAssertPositive(Tokens $tokens, $index, $method)
     {
         static $map = array(
@@ -114,6 +133,14 @@ final class PhpUnitConstructFixer extends AbstractFixer
         return $this->fixAssert($map, $tokens, $index, $method);
     }
 
+    /**
+     * @param array<string, string> $map
+     * @param Tokens                $tokens
+     * @param int                   $index
+     * @param string                $method
+     *
+     * @return int|null
+     */
     private function fixAssert(array $map, Tokens $tokens, $index, $method)
     {
         $sequence = $tokens->findSequence(

@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -12,6 +13,7 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\ConfigurationException\InvalidFixerConfigurationException;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
@@ -34,6 +36,10 @@ class HeaderCommentFixer extends AbstractFixer
      */
     public static function setHeader($header)
     {
+        if (!is_string($header)) {
+            throw new InvalidFixerConfigurationException('header_comment', sprintf('Header configuration is invalid. Expected "string", got "%s".', is_object($header) ? get_class($header) : gettype($header)));
+        }
+
         self::$header = trim((string) $header);
         self::$headerComment = '';
 

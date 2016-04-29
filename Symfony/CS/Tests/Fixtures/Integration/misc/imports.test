@@ -3,16 +3,6 @@ Integration of fixers: multiple_use,remove_leading_slash_use,remove_lines_betwee
 --CONFIG--
 level=none
 fixers=multiple_use,remove_leading_slash_use,remove_lines_between_uses,ordered_use
---INPUT--
-<?php
-
-namespace Acme;
-
-use \Foo;
-use BBB\Bar;
-
-use Abc, \Barr, \Zzzz;
-
 --EXPECT--
 <?php
 
@@ -23,3 +13,13 @@ use Barr;
 use BBB\Bar;
 use Foo;
 use Zzzz;
+
+--INPUT--
+<?php
+
+namespace Acme;
+
+use \Foo;
+use BBB\Bar;
+
+use Abc, \Barr, \Zzzz;

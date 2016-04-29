@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -19,6 +20,30 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  */
 class LowercaseConstantsFixerTest extends AbstractFixerTestBase
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected function isLintException($source)
+    {
+        return in_array($source, array(
+            '<?php Class Null { use True; }',
+            '<?php Class Null { use True; }',
+            '<?php class True {} class False {} class Null {}',
+            '<?php interface True {}',
+            '<?php trait False {}',
+            '<?php use Foo\Null as Null;',
+            '<?php use Foo\Null;',
+            '<?php
+    class Null {
+        use True, False {
+            False::bar insteadof True;
+            True::baz insteadof False;
+            False::baz as Null;
+        }
+    }',
+        ), true);
+    }
+
     /**
      * @dataProvider provideGeneratedCases
      */

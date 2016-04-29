@@ -1,15 +1,18 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
 
 namespace Symfony\CS;
+
+use Symfony\Component\Filesystem\Exception\IOException;
 
 /**
  * Class supports caching information about state of fixing files.
@@ -149,6 +152,8 @@ class FileCacheManager
             )
         );
 
-        file_put_contents($this->dir.self::CACHE_FILE, $data, LOCK_EX);
+        if (false === @file_put_contents($this->dir.self::CACHE_FILE, $data, LOCK_EX)) {
+            throw new IOException(sprintf('Failed to write file "%s".', $this->cacheFile), 0, null, $this->cacheFile);
+        }
     }
 }

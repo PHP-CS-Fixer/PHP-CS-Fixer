@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -39,7 +40,7 @@ class IncludeFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Include and file path should be divided with a single space. File path should not be placed under brackets.';
+        return 'Include/Require and file path should be divided with a single space. File path should not be placed under brackets.';
     }
 
     private function clearIncludies(Tokens $tokens, array $includies)
@@ -74,7 +75,7 @@ class IncludeFixer extends AbstractFixer
 
             if ($nextToken->isWhitespace()) {
                 $nextToken->setContent(' ');
-            } elseif ($braces) {
+            } elseif ($braces || $tokens[$nextIndex]->isGivenKind(array(T_VARIABLE, T_CONSTANT_ENCAPSED_STRING, T_COMMENT))) {
                 $tokens->insertAt($includy['begin'] + 1, new Token(array(T_WHITESPACE, ' ')));
             }
         }

@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -16,6 +17,16 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 class ShortTagFixerTest extends AbstractFixerTestBase
 {
     /**
+     * {@inheritdoc}
+     */
+    protected function isLintException($source)
+    {
+        return in_array($source, array(
+            'foo <?  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
+        ), true);
+    }
+
+    /**
      * @dataProvider provideClosingTagExamples
      */
     public function testOneLineFix($expected, $input = null)
@@ -27,7 +38,7 @@ class ShortTagFixerTest extends AbstractFixerTestBase
     {
         return array(
             array('<?php echo \'Foo\';', '<? echo \'Foo\';'),
-            array('<?= echo \'Foo\';'),
+            array('<?= \'Foo\';'),
             array('<?php echo \'Foo\'; ?> PLAIN TEXT'),
             array('PLAIN TEXT<?php echo \'Foo\'; ?>'),
             array('<?php $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";', '<? $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";'),

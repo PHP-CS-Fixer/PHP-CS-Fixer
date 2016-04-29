@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -18,6 +19,17 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  */
 class UnaryOperatorsSpacesFixerTest extends AbstractFixerTestBase
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected function isLintException($source)
+    {
+        return in_array($source, array(
+            '<?php foo(+ $a, - 2,- $b, & $c);',
+            '<?php foo(+$a, -2,-$b, &$c);',
+        ), true);
+    }
+
     /**
      * @dataProvider provideCases
      */
@@ -79,19 +91,15 @@ class UnaryOperatorsSpacesFixerTest extends AbstractFixerTestBase
                 '<?php function &foo(){}',
                 '<?php function & foo(){}',
             ),
-        );
-
-        if (PHP_VERSION_ID < 50400) {
-            $cases [] = array(
+            array(
                 '<?php function foo(&$a, array &$b, Bar &$c) {}',
                 '<?php function foo(& $a, array & $b, Bar & $c) {}',
-            );
-
-            $cases [] = array(
+            ),
+            array(
                 '<?php foo(+$a, -2,-$b, &$c);',
                 '<?php foo(+ $a, - 2,- $b, & $c);',
-            );
-        }
+            ),
+        );
 
         return $cases;
     }

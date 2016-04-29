@@ -1,0 +1,12 @@
+--TEST--
+Integration of fixers: combine_consecutive_unsets,trailing_spaces.
+--CONFIG--
+level=none
+fixers=combine_consecutive_unsets,trailing_spaces
+--EXPECT--
+<?php
+unset($a, $b);
+
+--INPUT--
+<?php
+unset($a); unset($b);

@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -30,7 +31,7 @@ class LowercaseKeywordsFixerTest extends AbstractFixerTestBase
     {
         return array(
             array('<?php $x = (1 and 2);', '<?php $x = (1 AND 2);'),
-            array('<?php foreach(array(1, 2, 3) as $val) {}', '<?php foreach(array(1, 2, 3) AS $val) {}'),
+            array('<?php foreach(array(1, 2, 3) as $val) {}', '<?php FOREACH(array(1, 2, 3) AS $val) {}'),
             array('<?php echo "GOOD AS NEW";'),
         );
     }

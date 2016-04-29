@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -209,15 +210,17 @@ EOF;
             $ignoreCases[] = array(strtolower($magicConstant).'.php');
         }
 
-        if (PHP_VERSION_ID >= 50400) {
-            $ignoreCases[] = array('callable.php');
-            $ignoreCases[] = array('trait.php');
-            $ignoreCases[] = array('__TRAIT__.php');
-            $ignoreCases[] = array('insteadof.php');
-        }
-
-        if (PHP_VERSION_ID >= 50500) {
-            $ignoreCases[] = array('finally.php');
+        foreach (array(
+            'T_CALLABLE' => 'callable',
+            'T_FINALLY' => 'finally',
+            'T_INSTEADOF' => 'insteadof',
+            'T_TRAIT' => 'trait',
+            'T_TRAIT_C' => '__TRAIT__',
+        ) as $tokenType => $tokenValue) {
+            if (defined($tokenType)) {
+                $ignoreCases[] = array($tokenValue.'.php');
+                $ignoreCases[] = array(strtolower($tokenValue).'.php');
+            }
         }
 
         return $ignoreCases;

@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -36,7 +37,7 @@ class ShortEchoTagFixer extends AbstractFixer
                 continue;
             }
 
-            $token->override(array(T_OPEN_TAG, '<?php ', $token->getLine()));
+            $tokens->overrideAt($i, array(T_OPEN_TAG, '<?php ', $token->getLine()));
 
             if (!$tokens[$nextIndex]->isWhitespace()) {
                 $tokens->insertAt($nextIndex, new Token(array(T_WHITESPACE, ' ')));

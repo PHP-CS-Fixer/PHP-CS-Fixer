@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -13,8 +14,8 @@ namespace Symfony\CS;
 
 use SebastianBergmann\Diff\Differ;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
+use Symfony\Component\Finder\Finder as SymfonyFinder;
+use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Tokenizer\Tokens;
 
@@ -24,7 +25,7 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class Fixer
 {
-    const VERSION = '1.11.3-DEV';
+    const VERSION = '1.12-DEV';
 
     protected $fixers = array();
     protected $configs = array();
@@ -71,7 +72,7 @@ class Fixer
 
     public function registerBuiltInFixers()
     {
-        foreach (Finder::create()->files()->in(__DIR__.'/Fixer') as $file) {
+        foreach (SymfonyFinder::create()->files()->in(__DIR__.'/Fixer') as $file) {
             $relativeNamespace = $file->getRelativePath();
             $class = 'Symfony\\CS\\Fixer\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
             $this->addFixer(new $class());
@@ -105,7 +106,7 @@ class Fixer
 
     public function registerBuiltInConfigs()
     {
-        foreach (Finder::create()->files()->in(__DIR__.'/Config') as $file) {
+        foreach (SymfonyFinder::create()->files()->in(__DIR__.'/Config') as $file) {
             $relativeNamespace = $file->getRelativePath();
             $class = 'Symfony\\CS\\Config\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
             $this->addConfig(new $class());
@@ -169,7 +170,7 @@ class Fixer
 
     public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff, FileCacheManager $fileCacheManager)
     {
-        $new = $old = file_get_contents($file->getRealpath());
+        $new = $old = file_get_contents($file->getRealPath());
 
         if (
             '' === $old
@@ -187,7 +188,7 @@ class Fixer
             return;
         }
 
-        if ($this->lintManager && !$this->lintManager->createProcessForFile($file->getRealpath())->isSuccessful()) {
+        if ($this->lintManager && !$this->lintManager->createProcessForFile($file->getRealPath())->isSuccessful()) {
             if ($this->eventDispatcher) {
                 $this->eventDispatcher->dispatch(
                     FixerFileProcessedEvent::NAME,
@@ -253,7 +254,7 @@ class Fixer
             }
 
             if (!$dryRun) {
-                file_put_contents($file->getRealpath(), $new);
+                file_put_contents($file->getRealPath(), $new);
             }
 
             $fixInfo = array('appliedFixers' => $appliedFixers);
@@ -277,7 +278,7 @@ class Fixer
 
     private function getFileRelativePathname(\SplFileInfo $file)
     {
-        if ($file instanceof FinderSplFileInfo) {
+        if ($file instanceof SymfonySplFileInfo) {
             return $file->getRelativePathname();
         }
 

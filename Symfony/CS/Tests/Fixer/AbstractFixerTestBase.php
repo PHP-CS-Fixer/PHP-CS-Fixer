@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -12,6 +13,7 @@
 namespace Symfony\CS\Tests\Fixer;
 
 use Symfony\CS\FixerInterface;
+use Symfony\CS\LintManager;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -19,9 +21,24 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var LintManager
+     */
+    protected static $linter;
+
+    public static function setUpBeforeClass()
+    {
+        if (getenv('LINT_TEST_CASES')) {
+            static::$linter = new LintManager();
+        }
+    }
+
     protected function getFixer()
     {
         $name = 'Symfony\CS\Fixer'.substr(get_called_class(), strlen(__NAMESPACE__), -strlen('Test'));
+        if (!class_exists($name)) {
+            throw new \LogicException(sprintf('Fixer "%s" for test not found.', $name));
+        }
 
         return new $name();
     }
@@ -63,6 +80,8 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
         $fileIsSupported = $fixer->supports($file);
 
         if (null !== $input) {
+            $this->assertNull($this->lintSource($input));
+
             $fixedCode = $fileIsSupported ? $fixer->fix($file, $input) : $input;
 
             $this->assertSame($expected, $fixedCode);
@@ -73,7 +92,40 @@ abstract class AbstractFixerTestBase extends \PHPUnit_Framework_TestCase
             $this->assertTokens($expectedTokens, $tokens);
         }
 
+        $this->assertNull($this->lintSource($expected));
+
         $this->assertSame($expected, $fileIsSupported ? $fixer->fix($file, $expected) : $expected);
+    }
+
+    /**
+     * @param $source string
+     *
+     * @return string|null
+     */
+    protected function lintSource($source)
+    {
+        if (!isset(static::$linter)) {
+            return;
+        }
+
+        if ($this->isLintException($source)) {
+            return;
+        }
+
+        $lintProcess = static::$linter->createProcessForSource($source);
+        if (!$lintProcess->isSuccessful()) {
+            return $lintProcess->getOutput();
+        }
+    }
+
+    /**
+     * @param $source string
+     *
+     * @return bool
+     */
+    protected function isLintException($source)
+    {
+        return false;
     }
 
     private function assertTokens(Tokens $expectedTokens, Tokens $tokens)

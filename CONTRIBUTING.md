@@ -13,14 +13,14 @@
  * If you are adding functionality or fixing a bug - add a test!
  * Fix project itself: `php php-cs-fixer fix`.
  * Regenerate readme: `php php-cs-fixer readme > README.rst`. Do not modify `README.rst` manually!
- * Check if tests pass: `phpunit` [(4.*)](https://phpunit.de/manual/current/en/installation.html)
+ * Check if tests pass: `phpunit` [(4.x or 5.x)](https://phpunit.de/manual/current/en/installation.html)
 
 ## Opening a pull request
 
 You can do some things to increase the chance that your pull request is accepted the first time:
 
  * Submit one pull request per fix or feature.
- * If your changes are not up to date - rebase your branch on master.
+ * If your changes are not up to date - rebase your branch on the parent branch.
  * Follow the conventions used in the project.
  * Remember about tests and documentation.
  * Don't bump version.
@@ -37,4 +37,5 @@ before opening a PR.
  * [PSR-4: Autoloading Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
  * [PSR-5: PHPDoc (draft)](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md)
  * [Symfony Coding Standards](http://symfony.com/doc/current/contributing/code/standards.html)
+ * [Symfony Documentation Standards](http://symfony.com/doc/current/contributing/documentation/standards.html)
  * Keep the order of class elements: static properties, instance properties, constructor (or setUp for PHPUnit), destructor (or tearDown for PHPUnit), static methods, instance methods, magic static methods, magic instance methods.

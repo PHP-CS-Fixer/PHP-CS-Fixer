@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -74,7 +75,7 @@ class PhpdocParamsFixer extends AbstractFixer
          * annotations are of the correct type, and are grouped correctly
          * before running this fixer.
          */
-        return -10;
+        return -11;
     }
 
     /**
@@ -133,7 +134,7 @@ class PhpdocParamsFixer extends AbstractFixer
                     $line =
                         $item['indent']
                         .' *  '
-                        .str_repeat(' ', ($tagMax + $hintMax + $varMax + ('param' === $currTag ? 3 : 2)))
+                        .str_repeat(' ', $tagMax + $hintMax + $varMax + ('param' === $currTag ? 3 : 2))
                         .$item['desc']
                         ."\n";
 

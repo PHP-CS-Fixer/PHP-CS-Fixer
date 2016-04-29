@@ -1,0 +1,14 @@
+--TEST--
+Integration of fixers: no_empty_phpdoc,whitespacy_lines.
+--CONFIG--
+level=none
+fixers=no_empty_phpdoc,whitespacy_lines
+--EXPECT--
+<?php
+echo 1;
+
+
+--INPUT--
+<?php
+echo 1;
+    /** */

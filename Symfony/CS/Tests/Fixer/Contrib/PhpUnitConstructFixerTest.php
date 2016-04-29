@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -11,6 +12,7 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
+use Symfony\CS\Fixer\Contrib\PhpUnitConstructFixer;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
@@ -18,6 +20,17 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  */
 class PhpUnitConstructFixerTest extends AbstractFixerTestBase
 {
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Configured method "MyTest" cannot be fixed by this fixer.
+     */
+    public function testInvalidConfiguration()
+    {
+        /** @var $fixer PhpUnitConstructFixer */
+        $fixer = $this->getFixer();
+        $fixer->configure(array('MyTest' => 'test'));
+    }
+
     /**
      * @dataProvider provideTestFixCases
      */
@@ -64,6 +77,7 @@ class PhpUnitConstructFixerTest extends AbstractFixerTestBase
     {
         $cases = array(
             array('<?php $sth->assertSame(true, $foo);'),
+            array('<?php $this->assertSame($b, null);'),
             array(
                 '<?php
     $this->assertTrue(
@@ -94,6 +108,17 @@ class PhpUnitConstructFixerTest extends AbstractFixerTestBase
             $this->generateCases('<?php $this->assert%s%s($a); //%s %s', '<?php $this->assert%s(%s, $a); //%s %s'),
             $this->generateCases('<?php $this->assert%s%s($a, "%s", "%s");', '<?php $this->assert%s(%s, $a, "%s", "%s");')
         );
+    }
+
+    /**
+     * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessage Configured method "__TEST__" cannot be fixed by this fixer.
+     */
+    public function testInvalidConfig()
+    {
+        /** @var PhpUnitConstructFixer $fixer */
+        $fixer = $this->getFixer();
+        $fixer->configure(array('__TEST__' => 'abc'));
     }
 
     private function generateCases($expectedTemplate, $inputTemplate)

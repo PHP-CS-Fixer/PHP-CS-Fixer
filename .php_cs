@@ -1,9 +1,10 @@
 <?php
 
-$header = <<<EOF
-This file is part of the PHP CS utility.
+$header = <<<'EOF'
+This file is part of PHP CS Fixer.
 
 (c) Fabien Potencier <fabien@symfony.com>
+    Dariusz Rumiński <dariusz.ruminski@gmail.com>
 
 This source file is subject to the MIT license that is bundled
 with this source code in the file LICENSE.
@@ -11,7 +12,7 @@ EOF;
 
 Symfony\CS\Fixer\Contrib\HeaderCommentFixer::setHeader($header);
 
-return Symfony\CS\Config\Config::create()
+return Symfony\CS\Config::create()
     // use default SYMFONY_LEVEL and extra fixers:
     ->fixers(array(
         'header_comment',
@@ -21,9 +22,11 @@ return Symfony\CS\Config\Config::create()
         'php_unit_strict',
         'strict',
         'strict_param',
+        'no_useless_return',
+        'combine_consecutive_unsets',
     ))
     ->finder(
-        Symfony\CS\Finder\DefaultFinder::create()
+        Symfony\CS\Finder::create()
             ->exclude('Symfony/CS/Tests/Fixtures')
             ->in(__DIR__)
     )

@@ -1,0 +1,14 @@
+--TEST--
+Integration of fixers: combine_consecutive_unsets,whitespacy_lines.
+--CONFIG--
+level=none
+fixers=combine_consecutive_unsets,whitespacy_lines
+--EXPECT--
+<?php
+unset($foo, $bar);
+
+
+--INPUT--
+<?php
+unset($foo);
+   unset($bar);

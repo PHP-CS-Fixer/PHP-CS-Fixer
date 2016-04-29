@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -79,8 +80,8 @@ class SelfAccessorFixerTest extends AbstractFixerTestBase
                 '<?php class Foo { function bar() { function ($a = Foo::BAZ) { new Foo(); }; } }',
             ),
             array(
-                '<?php class Foo { function bar() { 
-                    new class() { function baz() { new Foo(); } }; 
+                '<?php class Foo { function bar() {
+                    new class() { function baz() { new Foo(); } };
                 } }',
             ),
         );

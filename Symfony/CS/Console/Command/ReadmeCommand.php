@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -36,17 +37,17 @@ class ReadmeCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $header = <<<EOF
+        $header = <<<'EOF'
 PHP Coding Standards Fixer
 ==========================
 
 The PHP Coding Standards Fixer tool fixes *most* issues in your code when you
 want to follow the PHP coding standards as defined in the PSR-1 and PSR-2
-documents.
+documents and many more.
 
-If you are already using ``PHP_CodeSniffer`` to identify coding standards
-problems in your code, you know that fixing them by hand is tedious, especially
-on large projects. This tool does the job for you.
+If you are already using a linter to identify coding standards problems in your
+code, you know that fixing them by hand is tedious, especially on large
+projects. This tool does not only detect them, but also fixes them for you.
 
 Requirements
 ------------
@@ -69,20 +70,24 @@ your system:
 
 .. code-block:: bash
 
-    \$ wget http://get.sensiolabs.org/php-cs-fixer.phar -O php-cs-fixer
+    $ wget http://get.sensiolabs.org/php-cs-fixer.phar -O php-cs-fixer
+    # With a specific version
+    $ wget http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -O php-cs-fixer
 
 or with curl:
 
 .. code-block:: bash
 
-    \$ curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
+    $ curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
+    # With a specific version
+    $ curl http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -o php-cs-fixer
 
 then:
 
 .. code-block:: bash
 
-    \$ sudo chmod a+x php-cs-fixer
-    \$ sudo mv php-cs-fixer /usr/local/bin/php-cs-fixer
+    $ sudo chmod a+x php-cs-fixer
+    $ sudo mv php-cs-fixer /usr/local/bin/php-cs-fixer
 
 Then, just run ``php-cs-fixer``.
 
@@ -95,12 +100,12 @@ To install PHP-CS-Fixer, install Composer and issue the following command:
 
     $ ./composer.phar global require fabpot/php-cs-fixer
 
-Then, make sure you have ``~/.composer/vendor/bin`` in your ``PATH``, and
+Then make sure you have ``~/.composer/vendor/bin`` in your ``PATH`` and
 you're good to go:
 
 .. code-block:: bash
 
-    export PATH="\$PATH:\$HOME/.composer/vendor/bin"
+    export PATH="$PATH:$HOME/.composer/vendor/bin"
 
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
@@ -111,7 +116,7 @@ already have it.
 
 .. code-block:: bash
 
-    \$ brew install homebrew/php/php-cs-fixer
+    $ brew install homebrew/php/php-cs-fixer
 
 Update
 ------
@@ -123,7 +128,7 @@ The ``self-update`` command tries to update ``php-cs-fixer`` itself:
 
 .. code-block:: bash
 
-    \$ php php-cs-fixer.phar self-update
+    $ php php-cs-fixer.phar self-update
 
 Globally (manual)
 ~~~~~~~~~~~~~~~~~
@@ -132,7 +137,7 @@ You can update ``php-cs-fixer`` through this command:
 
 .. code-block:: bash
 
-    \$ sudo php-cs-fixer self-update
+    $ sudo php-cs-fixer self-update
 
 Globally (Composer)
 ~~~~~~~~~~~~~~~~~~~
@@ -141,7 +146,7 @@ You can update ``php-cs-fixer`` through this command:
 
 .. code-block:: bash
 
-    \$ ./composer.phar global update fabpot/php-cs-fixer
+    $ ./composer.phar global update fabpot/php-cs-fixer
 
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
@@ -150,14 +155,14 @@ You can update ``php-cs-fixer`` through this command:
 
 .. code-block:: bash
 
-    \$ brew upgrade php-cs-fixer
+    $ brew upgrade php-cs-fixer
 
 Usage
 -----
 
 EOF;
 
-        $footer = <<<EOF
+        $footer = <<<'EOF'
 
 Helpers
 -------
@@ -208,11 +213,19 @@ EOF;
         $help = preg_replace('#^(\s+)``(.+)``$#m', '$1$2', $help);
         $help = preg_replace('#^ \* ``(.+)``#m', '* **$1**', $help);
         $help = preg_replace("#^\n( +)#m", "\n.. code-block:: bash\n\n$1", $help);
-        $help = preg_replace("#^\.\. code-block:: bash\n\n( +<\?php)#m", ".. code-block:: php\n\n$1", $help);
+        $help = preg_replace("#^\.\. code-block:: bash\n\n( +<\?(\w+))#m", ".. code-block:: $2\n\n$1", $help);
         $help = preg_replace_callback(
-            "#^\s*<\?php.*?\?>#ms",
+            "#^\s*<\?(\w+).*?\?>#ms",
             function ($matches) {
-                return preg_replace("#\n\n +\?>#", '', preg_replace("#^\.\. code-block:: bash\n\n#m", '', $matches[0]));
+                $result = preg_replace("#^\.\. code-block:: bash\n\n#m", '', $matches[0]);
+
+                if ('php' !== $matches[1]) {
+                    $result = preg_replace("#<\?{$matches[1]}\s*#", '', $result);
+                }
+
+                $result = preg_replace("#\n\n +\?>#", '', $result);
+
+                return $result;
             },
             $help
         );

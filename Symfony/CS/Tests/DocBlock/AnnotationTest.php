@@ -1,9 +1,10 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -218,7 +219,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      * @expectedExceptionMessage This tag does not support types
      */
     public function testGetTypesOnBadTag()
@@ -229,7 +230,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      * @expectedExceptionMessage This tag does not support types
      */
     public function testSetTypesOnBadTag()
@@ -237,5 +238,15 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
         $tag = new Annotation(array(new Line(' * @author Chuck Norris')));
 
         $tag->setTypes(array('string'));
+    }
+
+    public function testGetTagsWithTypes()
+    {
+        $tags = Annotation::getTagsWithTypes();
+        $this->assertInternalType('array', $tags);
+        foreach ($tags as $tag) {
+            $this->assertInternalType('string', $tag);
+            $this->assertNotEmpty($tag);
+        }
     }
 }
