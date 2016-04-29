@@ -12,7 +12,10 @@
 
 namespace PhpCsFixer;
 
-use Symfony\Component\Filesystem\Exception\IOException;
+use PhpCsFixer\Cache\Cache;
+use PhpCsFixer\Cache\CacheInterface;
+use PhpCsFixer\Cache\HandlerInterface;
+use PhpCsFixer\Cache\SignatureInterface;
 
 /**
  * Class supports caching information about state of fixing files.
@@ -32,144 +35,76 @@ use Symfony\Component\Filesystem\Exception\IOException;
  */
 final class FileCacheManager
 {
-    private $cacheFile;
-    private $cacheFileRealDirName;
-    private $isEnabled;
-    private $linting;
-    private $rules;
-    private $newHashes = array();
-    private $oldHashes = array();
+    /**
+     * @var HandlerInterface
+     */
+    private $handler;
 
     /**
-     * Create instance.
-     *
-     * @param bool   $isEnabled is cache enabled
-     * @param string $cacheFile cache file
-     * @param bool   $linting   is linting enabled
-     * @param array  $rules     array defining rules, format like one for ConfigInterface::setRules
+     * @var SignatureInterface
      */
-    public function __construct($isEnabled, $cacheFile, $linting, array $rules)
-    {
-        $this->isEnabled = $isEnabled;
-        $this->cacheFile = $cacheFile;
-        $this->cacheFileRealDirName = dirname(realpath($cacheFile));
-        $this->linting = $linting;
-        $this->rules = $rules;
+    private $signature;
 
-        $this->readFromFile();
+    /**
+     * @var string
+     */
+    private $cacheFileRealDirName;
+
+    /**
+     * @var CacheInterface
+     */
+    private $cache;
+
+    /**
+     * @param HandlerInterface   $handler
+     * @param SignatureInterface $signature
+     */
+    public function __construct(HandlerInterface $handler, SignatureInterface $signature)
+    {
+        $this->handler = $handler;
+        $this->signature = $signature;
+        $this->cacheFileRealDirName = dirname(realpath($handler->file()));
+
+        $this->readCache();
     }
 
     public function __destruct()
     {
-        $this->saveToFile();
+        $this->writeCache();
+    }
+
+    private function readCache()
+    {
+        $cache = $this->handler->read();
+
+        if (!$cache || !$this->signature->equals($cache->signature())) {
+            $cache = new Cache($this->signature);
+        }
+
+        $this->cache = $cache;
+    }
+
+    private function writeCache()
+    {
+        $this->handler->write($this->cache);
     }
 
     public function needFixing($file, $fileContent)
     {
-        if (!$this->isCacheAvailable()) {
-            return true;
-        }
-
         $file = $this->getRelativePathname($file);
 
-        if (!isset($this->oldHashes[$file])) {
+        if (!$this->cache->has($file) || $this->cache->get($file) !== $this->calcHash($fileContent)) {
             return true;
         }
-
-        if ($this->oldHashes[$file] !== $this->calcHash($fileContent)) {
-            return true;
-        }
-
-        // file do not change - keep hash in new collection
-        $this->newHashes[$file] = $this->oldHashes[$file];
 
         return false;
     }
 
     public function setFile($file, $fileContent)
     {
-        if (!$this->isCacheAvailable()) {
-            return;
-        }
-
         $file = $this->getRelativePathname($file);
 
-        $this->newHashes[$file] = $this->calcHash($fileContent);
-    }
-
-    private function calcHash($content)
-    {
-        return crc32($content);
-    }
-
-    private function isCacheAvailable()
-    {
-        static $result;
-
-        if (null === $result) {
-            $result = $this->isEnabled && (ToolInfo::isInstalledAsPhar() || ToolInfo::isInstalledByComposer());
-        }
-
-        return $result;
-    }
-
-    private function isCacheStale($php, $version, $linting, $rules)
-    {
-        if (!$this->isCacheAvailable()) {
-            return true;
-        }
-
-        return PHP_VERSION !== $php || ToolInfo::getVersion() !== $version || $this->linting !== $linting || $this->rules !== $rules;
-    }
-
-    private function readFromFile()
-    {
-        if (!$this->isCacheAvailable()) {
-            return;
-        }
-
-        if (!file_exists($this->cacheFile)) {
-            return;
-        }
-
-        $content = file_get_contents($this->cacheFile);
-        $data = @unserialize($content);
-
-        // ignore corrupted serialized data
-        if (null === $data) {
-            return;
-        }
-
-        if (!isset($data['php'], $data['version'], $data['linting'], $data['rules'])) {
-            return;
-        }
-
-        // Set hashes only if the cache is fresh, otherwise we need to parse all files
-        if (!$this->isCacheStale($data['php'], $data['version'], $data['linting'], $data['rules'])) {
-            $this->oldHashes = $data['hashes'];
-            $this->newHashes = $this->oldHashes;
-        }
-    }
-
-    private function saveToFile()
-    {
-        if (!$this->isCacheAvailable()) {
-            return;
-        }
-
-        $data = serialize(
-            array(
-                'php' => PHP_VERSION,
-                'version' => ToolInfo::getVersion(),
-                'linting' => $this->linting,
-                'rules' => $this->rules,
-                'hashes' => $this->newHashes,
-            )
-        );
-
-        if (false === @file_put_contents($this->cacheFile, $data, LOCK_EX)) {
-            throw new IOException(sprintf('Failed to write file "%s".', $this->cacheFile), 0, null, $this->cacheFile);
-        }
+        $this->cache->set($file, $this->calcHash($fileContent));
     }
 
     private function normalizePath($path)
@@ -186,5 +121,10 @@ final class FileCacheManager
         }
 
         return substr($file, strlen($this->cacheFileRealDirName) + 1);
+    }
+
+    private function calcHash($content)
+    {
+        return crc32($content);
     }
 }

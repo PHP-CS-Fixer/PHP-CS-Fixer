@@ -12,6 +12,11 @@
 
 namespace PhpCsFixer\Runner;
 
+use PhpCsFixer\Cache\FileHandler;
+use PhpCsFixer\Cache\HandlerInterface;
+use PhpCsFixer\Cache\NullHandler;
+use PhpCsFixer\Cache\Signature;
+use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Error\Error;
@@ -22,6 +27,7 @@ use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\ToolInfo;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -83,8 +89,35 @@ final class Runner
         $this->isDryRun = $isDryRun;
 
         $this->cacheManager = new FileCacheManager(
-            $config->usingCache(),
-            $config->getCacheFile(),
+            $this->cacheHandler($config),
+            $this->signature($config)
+        );
+    }
+
+    /**
+     * @param ConfigInterface $config
+     *
+     * @return HandlerInterface
+     */
+    private function cacheHandler(ConfigInterface $config)
+    {
+        if ($config->usingCache() && (ToolInfo::isInstalledAsPhar() || ToolInfo::isInstalledByComposer())) {
+            return new FileHandler($config->getCacheFile());
+        }
+
+        return new NullHandler();
+    }
+
+    /**
+     * @param ConfigInterface $config
+     *
+     * @return SignatureInterface
+     */
+    private function signature(ConfigInterface $config)
+    {
+        return new Signature(
+            PHP_VERSION,
+            ToolInfo::getVersion(),
             $config->usingLinter(),
             $config->getRules()
         );

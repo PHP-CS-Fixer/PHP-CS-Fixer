@@ -1,0 +1,555 @@
+<?php
+
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace PhpCsFixer\Tests;
+
+use PhpCsFixer\Cache\CacheInterface;
+use PhpCsFixer\Cache\HandlerInterface;
+use PhpCsFixer\Cache\SignatureInterface;
+use PhpCsFixer\FileCacheManager;
+
+/**
+ * @author Andreas Möller <am@localheinz.com>
+ *
+ * @internal
+ */
+final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @see testSetFileSetsHashOfFileContentUsingRelativePath()
+     */
+    protected function setUp()
+    {
+        touch($this->file());
+    }
+
+    /**
+     * @see testSetFileSetsHashOfFileContentUsingRelativePath()
+     */
+    protected function tearDown()
+    {
+        unlink($this->file());
+    }
+
+    public function testCreatesCacheIfHandlerReturnedNoCache()
+    {
+        $signature = $this->signatureMock();
+
+        $signature
+            ->expects($this->never())
+            ->method($this->anything())
+        ;
+
+        $handler = $this->handlerMock();
+
+        $handler
+            ->expects($this->once())
+            ->method('read')
+            ->willReturn(null)
+        ;
+
+        $handler
+            ->expects($this->once())
+            ->method('write')
+            ->with($this->logicalAnd(
+                $this->isInstanceOf('PhpCsFixer\Cache\CacheInterface'),
+                $this->callback(function (CacheInterface $cache) use ($signature) {
+                    return $cache->signature() === $signature;
+                })
+            ))
+        ;
+
+        $manager = new FileCacheManager(
+            $handler,
+            $signature
+        );
+
+        unset($manager);
+    }
+
+    public function testCreatesCacheIfCachedSignatureIsDifferent()
+    {
+        $cachedSignature = $this->signatureMock();
+
+        $cache = $this->cacheMock();
+
+        $cache
+            ->expects($this->once())
+            ->method('signature')
+            ->willReturn($cachedSignature)
+        ;
+
+        $signature = $this->signatureMock();
+
+        $signature
+            ->expects($this->once())
+            ->method('equals')
+            ->with($this->identicalTo($cachedSignature))
+            ->willReturn(false)
+        ;
+
+        $handler = $this->handlerMock();
+
+        $handler
+            ->expects($this->once())
+            ->method('read')
+            ->willReturn($cache)
+        ;
+
+        $handler
+            ->expects($this->once())
+            ->method('write')
+            ->with($this->logicalAnd(
+                $this->isInstanceOf('PhpCsFixer\Cache\CacheInterface'),
+                $this->callback(function (CacheInterface $cache) use ($signature) {
+                    return $cache->signature() === $signature;
+                })
+            ))
+        ;
+
+        $manager = new FileCacheManager(
+            $handler,
+            $signature
+        );
+
+        unset($manager);
+    }
+
+    public function testUsesCacheIfCachedSignatureIsEqual()
+    {
+        $cachedSignature = $this->signatureMock();
+
+        $signature = $this->signatureMock();
+
+        $signature
+            ->expects($this->once())
+            ->method('equals')
+            ->with($this->identicalTo($cachedSignature))
+            ->willReturn(true)
+        ;
+
+        $cache = $this->cacheMock();
+
+        $cache
+            ->expects($this->once())
+            ->method('signature')
+            ->willReturn($cachedSignature)
+        ;
+
+        $handler = $this->handlerMock();
+
+        $handler
+            ->expects($this->once())
+            ->method('read')
+            ->willReturn($cache)
+        ;
+
+        $handler
+            ->expects($this->once())
+            ->method('write')
+            ->with($this->identicalTo($cache))
+        ;
+
+        $manager = new FileCacheManager(
+            $handler,
+            $signature
+        );
+
+        unset($manager);
+    }
+
+    public function testNeedFixingReturnsTrueIfCacheHasNoNash()
+    {
+        $file = 'hello.php';
+        $fileContent = '<?php echo "Hello!"';
+
+        $cachedSignature = $this->signatureMock();
+
+        $signature = $this->signatureMock();
+
+        $signature
+            ->expects($this->once())
+            ->method('equals')
+            ->with($this->identicalTo($cachedSignature))
+            ->willReturn(true)
+        ;
+
+        $cache = $this->cacheMock();
+
+        $cache
+            ->expects($this->once())
+            ->method('signature')
+            ->willReturn($cachedSignature)
+        ;
+
+        $cache
+            ->expects($this->once())
+            ->method('has')
+            ->with($this->identicalTo($file))
+            ->willReturn(false)
+        ;
+
+        $cache
+            ->expects($this->never())
+            ->method('get')
+            ->with($this->anything())
+        ;
+
+        $handler = $this->handlerMock();
+
+        $handler
+            ->expects($this->once())
+            ->method('read')
+            ->willReturn($cache)
+        ;
+
+        $manager = new FileCacheManager(
+            $handler,
+            $signature
+        );
+
+        $this->assertTrue($manager->needFixing($file, $fileContent));
+    }
+
+    public function testNeedFixingReturnsTrueIfCachedHashIsDifferent()
+    {
+        $file = 'hello.php';
+        $fileContent = '<?php echo "Hello!"';
+        $previousFileContent = '<?php echo "Hello, world!"';
+
+        $cachedSignature = $this->signatureMock();
+
+        $signature = $this->signatureMock();
+
+        $signature
+            ->expects($this->once())
+            ->method('equals')
+            ->with($this->identicalTo($cachedSignature))
+            ->willReturn(true)
+        ;
+
+        $cache = $this->cacheMock();
+
+        $cache
+            ->expects($this->once())
+            ->method('signature')
+            ->willReturn($cachedSignature)
+        ;
+
+        $cache
+            ->expects($this->once())
+            ->method('has')
+            ->with($this->identicalTo($file))
+            ->willReturn(true)
+        ;
+
+        $cache
+            ->expects($this->once())
+            ->method('get')
+            ->with($this->identicalTo($file))
+            ->willReturn(crc32($previousFileContent))
+        ;
+
+        $handler = $this->handlerMock();
+
+        $handler
+            ->expects($this->once())
+            ->method('read')
+            ->willReturn($cache)
+        ;
+
+        $manager = new FileCacheManager(
+            $handler,
+            $signature
+        );
+
+        $this->assertTrue($manager->needFixing($file, $fileContent));
+    }
+
+    public function testNeedFixingReturnsFalseIfCachedHashIsIdentical()
+    {
+        $file = 'hello.php';
+        $fileContent = '<?php echo "Hello!"';
+
+        $cachedSignature = $this->signatureMock();
+
+        $signature = $this->signatureMock();
+
+        $signature
+            ->expects($this->once())
+            ->method('equals')
+            ->with($this->identicalTo($cachedSignature))
+            ->willReturn(true)
+        ;
+
+        $cache = $this->cacheMock();
+
+        $cache
+            ->expects($this->once())
+            ->method('signature')
+            ->willReturn($cachedSignature)
+        ;
+
+        $cache
+            ->expects($this->once())
+            ->method('has')
+            ->with($this->identicalTo($file))
+            ->willReturn(true)
+        ;
+
+        $cache
+            ->expects($this->once())
+            ->method('get')
+            ->with($this->identicalTo($file))
+            ->willReturn(crc32($fileContent))
+        ;
+
+        $handler = $this->handlerMock();
+
+        $handler
+            ->expects($this->once())
+            ->method('read')
+            ->willReturn($cache)
+        ;
+
+        $manager = new FileCacheManager(
+            $handler,
+            $signature
+        );
+
+        $this->assertFalse($manager->needFixing($file, $fileContent));
+    }
+
+    public function testNeedFixingUsesNormalizedFilePath()
+    {
+        $cacheFile = $this->file();
+        $file = __DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'hello.php';
+        $normalizedFile = 'src'.DIRECTORY_SEPARATOR.'hello.php';
+        $fileContent = '<?php echo "Hello!"';
+
+        $cachedSignature = $this->signatureMock();
+
+        $signature = $this->signatureMock();
+
+        $signature
+            ->expects($this->once())
+            ->method('equals')
+            ->with($this->identicalTo($cachedSignature))
+            ->willReturn(true)
+        ;
+
+        $cache = $this->cacheMock();
+
+        $cache
+            ->expects($this->once())
+            ->method('signature')
+            ->willReturn($cachedSignature)
+        ;
+
+        $cache
+            ->expects($this->once())
+            ->method('has')
+            ->with($this->identicalTo($normalizedFile))
+            ->willReturn(true)
+        ;
+
+        $cache
+            ->expects($this->once())
+            ->method('get')
+            ->with($this->identicalTo($normalizedFile))
+        ;
+
+        $handler = $this->handlerMock();
+
+        $handler
+            ->expects($this->once())
+            ->method('file')
+            ->willReturn($cacheFile)
+        ;
+
+        $handler
+            ->expects($this->once())
+            ->method('read')
+            ->willReturn($cache)
+        ;
+
+        $manager = new FileCacheManager(
+            $handler,
+            $signature
+        );
+
+        $manager->needFixing($file, $fileContent);
+    }
+
+    public function testSetFileSetsHashOfFileContent()
+    {
+        $cacheFile = $this->file();
+        $file = 'hello.php';
+        $fileContent = '<?php echo "Hello!"';
+
+        $cachedSignature = $this->signatureMock();
+
+        $signature = $this->signatureMock();
+
+        $signature
+            ->expects($this->once())
+            ->method('equals')
+            ->with($this->identicalTo($cachedSignature))
+            ->willReturn(true)
+        ;
+
+        $cache = $this->cacheMock();
+
+        $cache
+            ->expects($this->once())
+            ->method('signature')
+            ->willReturn($cachedSignature)
+        ;
+
+        $cache
+            ->expects($this->never())
+            ->method('has')
+            ->with($this->anything())
+        ;
+
+        $cache
+            ->expects($this->once())
+            ->method('set')
+            ->with(
+                $this->identicalTo($file),
+                $this->identicalTo(crc32($fileContent))
+            )
+        ;
+
+        $handler = $this->handlerMock();
+
+        $handler
+            ->expects($this->once())
+            ->method('file')
+            ->willReturn($cacheFile)
+        ;
+
+        $handler
+            ->expects($this->once())
+            ->method('read')
+            ->willReturn($cache)
+        ;
+
+        $handler
+            ->expects($this->once())
+            ->method('write')
+            ->with($this->identicalTo($cache))
+        ;
+
+        $manager = new FileCacheManager(
+            $handler,
+            $signature
+        );
+
+        $manager->setFile($file, $fileContent);
+    }
+
+    public function testSetFileUsesNormalizedFilePath()
+    {
+        $cacheFile = $this->file();
+        $file = __DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'hello.php';
+        $normalizedFile = 'src'.DIRECTORY_SEPARATOR.'hello.php';
+        $fileContent = '<?php echo "Hello!"';
+
+        $cachedSignature = $this->signatureMock();
+
+        $signature = $this->signatureMock();
+
+        $signature
+            ->expects($this->once())
+            ->method('equals')
+            ->with($this->identicalTo($cachedSignature))
+            ->willReturn(true)
+        ;
+
+        $cache = $this->cacheMock();
+
+        $cache
+            ->expects($this->once())
+            ->method('signature')
+            ->willReturn($cachedSignature)
+        ;
+
+        $cache
+            ->expects($this->once())
+            ->method('set')
+            ->with(
+                $this->identicalTo($normalizedFile),
+                $this->identicalTo(crc32($fileContent))
+            )
+        ;
+
+        $handler = $this->handlerMock();
+
+        $handler
+            ->expects($this->once())
+            ->method('file')
+            ->willReturn($cacheFile)
+        ;
+
+        $handler
+            ->expects($this->once())
+            ->method('read')
+            ->willReturn($cache)
+        ;
+
+        $handler
+            ->expects($this->once())
+            ->method('write')
+            ->with($this->identicalTo($cache))
+        ;
+
+        $manager = new FileCacheManager(
+            $handler,
+            $signature
+        );
+
+        $manager->setFile($file, $fileContent);
+    }
+
+    /**
+     * @return string
+     */
+    private function file()
+    {
+        return __DIR__.'/.php_cs.cache';
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|HandlerInterface
+     */
+    private function handlerMock()
+    {
+        return $this->getMockBuilder('PhpCsFixer\Cache\HandlerInterface')->getMock();
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|CacheInterface
+     */
+    private function cacheMock()
+    {
+        return $this->getMockBuilder('PhpCsFixer\Cache\CacheInterface')->getMock();
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|SignatureInterface
+     */
+    private function signatureMock()
+    {
+        return $this->getMockBuilder('PhpCsFixer\Cache\SignatureInterface')->getMock();
+    }
+}
