@@ -11,9 +11,7 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
-use Symfony\CS\FixerInterface;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
-use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Your name <your@email.com>
