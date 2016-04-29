@@ -18,7 +18,7 @@
         "ext-tokenizer": "*",
         "symfony/console": "^2.3 || ^3.0",
         "symfony/event-dispatcher": "^2.1 || ^3.0",
-        "symfony/filesystem": "^2.1 || ^3.0",
+        "symfony/filesystem": "^2.7 || ^3.0",
         "symfony/finder": "^2.2 || ^3.0",
         "symfony/polyfill-php54": "^1.0",
         "symfony/process": "^2.3 || ^3.0",
