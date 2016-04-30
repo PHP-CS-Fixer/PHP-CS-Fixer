@@ -14,6 +14,8 @@ namespace PhpCsFixer;
 
 use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\CacheInterface;
+use PhpCsFixer\Cache\Directory;
+use PhpCsFixer\Cache\DirectoryInterface;
 use PhpCsFixer\Cache\HandlerInterface;
 use PhpCsFixer\Cache\SignatureInterface;
 
@@ -46,11 +48,6 @@ final class FileCacheManager
     private $signature;
 
     /**
-     * @var string
-     */
-    private $cacheFileRealDirName;
-
-    /**
      * @var CacheInterface
      */
     private $cache;
@@ -61,16 +58,26 @@ final class FileCacheManager
     private $isDryRun;
 
     /**
+     * @var DirectoryInterface
+     */
+    private $cacheDirectory;
+
+    /**
      * @param HandlerInterface   $handler
      * @param SignatureInterface $signature
      * @param bool               $isDryRun
+     * @param DirectoryInterface $cacheDirectory
      */
-    public function __construct(HandlerInterface $handler, SignatureInterface $signature, $isDryRun = false)
-    {
+    public function __construct(
+        HandlerInterface $handler,
+        SignatureInterface $signature,
+        $isDryRun = false,
+        DirectoryInterface $cacheDirectory = null
+    ) {
         $this->handler = $handler;
         $this->signature = $signature;
-        $this->cacheFileRealDirName = dirname(realpath($handler->file()));
         $this->isDryRun = $isDryRun;
+        $this->cacheDirectory = $cacheDirectory ?: new Directory(dirname(realpath($handler->file())));
 
         $this->readCache();
     }
@@ -98,7 +105,7 @@ final class FileCacheManager
 
     public function needFixing($file, $fileContent)
     {
-        $file = $this->getRelativePathname($file);
+        $file = $this->cacheDirectory->relativePathTo($file);
 
         if (!$this->cache->has($file) || $this->cache->get($file) !== $this->calcHash($fileContent)) {
             return true;
@@ -109,7 +116,7 @@ final class FileCacheManager
 
     public function setFile($file, $fileContent)
     {
-        $file = $this->getRelativePathname($file);
+        $file = $this->cacheDirectory->relativePathTo($file);
 
         $hash = $this->calcHash($fileContent);
 
@@ -120,22 +127,6 @@ final class FileCacheManager
         }
 
         $this->cache->set($file, $hash);
-    }
-
-    private function normalizePath($path)
-    {
-        return str_replace(array('\\', '/'), DIRECTORY_SEPARATOR, $path);
-    }
-
-    private function getRelativePathname($file)
-    {
-        $file = $this->normalizePath($file);
-
-        if (0 !== stripos($file, $this->cacheFileRealDirName.DIRECTORY_SEPARATOR)) {
-            return $file;
-        }
-
-        return substr($file, strlen($this->cacheFileRealDirName) + 1);
     }
 
     private function calcHash($content)
