@@ -90,7 +90,8 @@ final class Runner
 
         $this->cacheManager = new FileCacheManager(
             $this->cacheHandler($config),
-            $this->signature($config)
+            $this->signature($config),
+            $isDryRun
         );
     }
 
@@ -252,9 +253,7 @@ final class Runner
             );
         }
 
-        if (!$this->isDryRun) {
-            $this->cacheManager->setFile($name, $new);
-        }
+        $this->cacheManager->setFile($name, $new);
 
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,

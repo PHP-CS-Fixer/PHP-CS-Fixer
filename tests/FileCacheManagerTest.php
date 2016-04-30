@@ -458,6 +458,165 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
         $manager->setFile($file, $fileContent);
     }
 
+    public function testSetFileSetsHashOfFileContentDuringDryRunIfCacheHasNoHash()
+    {
+        $isDryRun = true;
+        $cacheFile = $this->file();
+        $file = 'hello.php';
+        $fileContent = '<?php echo "Hello!"';
+
+        $cachedSignature = $this->signatureMock();
+
+        $signature = $this->signatureMock();
+
+        $signature
+            ->expects($this->once())
+            ->method('equals')
+            ->with($this->identicalTo($cachedSignature))
+            ->willReturn(true)
+        ;
+
+        $cache = $this->cacheMock();
+
+        $cache
+            ->expects($this->once())
+            ->method('signature')
+            ->willReturn($cachedSignature)
+        ;
+
+        $cache
+            ->expects($this->once())
+            ->method('has')
+            ->with($this->identicalTo($file))
+            ->willReturn(false)
+        ;
+
+        $cache
+            ->expects($this->never())
+            ->method('get')
+            ->with($this->anything())
+        ;
+
+        $cache
+            ->expects($this->once())
+            ->method('set')
+            ->with(
+                $this->identicalTo($file),
+                $this->identicalTo(crc32($fileContent))
+            )
+        ;
+
+        $handler = $this->handlerMock();
+
+        $handler
+            ->expects($this->once())
+            ->method('file')
+            ->willReturn($cacheFile)
+        ;
+
+        $handler
+            ->expects($this->once())
+            ->method('read')
+            ->willReturn($cache)
+        ;
+
+        $handler
+            ->expects($this->once())
+            ->method('write')
+            ->with($this->identicalTo($cache))
+        ;
+
+        $manager = new FileCacheManager(
+            $handler,
+            $signature,
+            $isDryRun
+        );
+
+        $manager->setFile($file, $fileContent);
+    }
+
+    public function testSetFileClearsHashDuringDryRunIfCachedHashIsDifferent()
+    {
+        $isDryRun = true;
+        $cacheFile = $this->file();
+        $file = 'hello.php';
+        $fileContent = '<?php echo "Hello!"';
+        $previousFileContent = '<?php echo "Hello, world!"';
+
+        $cachedSignature = $this->signatureMock();
+
+        $signature = $this->signatureMock();
+
+        $signature
+            ->expects($this->once())
+            ->method('equals')
+            ->with($this->identicalTo($cachedSignature))
+            ->willReturn(true)
+        ;
+
+        $cache = $this->cacheMock();
+
+        $cache
+            ->expects($this->once())
+            ->method('signature')
+            ->willReturn($cachedSignature)
+        ;
+
+        $cache
+            ->expects($this->once())
+            ->method('has')
+            ->with($this->identicalTo($file))
+            ->willReturn(true)
+        ;
+
+        $cache
+            ->expects($this->once())
+            ->method('get')
+            ->with($this->identicalTo($file))
+            ->willReturn(crc32($previousFileContent))
+        ;
+
+        $cache
+            ->expects($this->once())
+            ->method('clear')
+            ->with($this->identicalTo($file))
+        ;
+
+        $cache
+            ->expects($this->never())
+            ->method('set')
+            ->with($this->anything())
+        ;
+
+        $handler = $this->handlerMock();
+
+        $handler
+            ->expects($this->once())
+            ->method('file')
+            ->willReturn($cacheFile)
+        ;
+
+        $handler
+            ->expects($this->once())
+            ->method('read')
+            ->willReturn($cache)
+        ;
+
+        $handler
+            ->expects($this->once())
+            ->method('write')
+            ->with($this->identicalTo($cache))
+        ;
+
+        $manager = new FileCacheManager(
+            $handler,
+            $signature,
+            $isDryRun
+        );
+
+        $manager->setFile($file, $fileContent);
+    }
+
     public function testSetFileUsesNormalizedFilePath()
     {
         $cacheFile = $this->file();

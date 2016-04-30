@@ -56,14 +56,21 @@ final class FileCacheManager
     private $cache;
 
     /**
+     * @var bool
+     */
+    private $isDryRun;
+
+    /**
      * @param HandlerInterface   $handler
      * @param SignatureInterface $signature
+     * @param bool               $isDryRun
      */
-    public function __construct(HandlerInterface $handler, SignatureInterface $signature)
+    public function __construct(HandlerInterface $handler, SignatureInterface $signature, $isDryRun = false)
     {
         $this->handler = $handler;
         $this->signature = $signature;
         $this->cacheFileRealDirName = dirname(realpath($handler->file()));
+        $this->isDryRun = $isDryRun;
 
         $this->readCache();
     }
@@ -104,7 +111,15 @@ final class FileCacheManager
     {
         $file = $this->getRelativePathname($file);
 
-        $this->cache->set($file, $this->calcHash($fileContent));
+        $hash = $this->calcHash($fileContent);
+
+        if ($this->isDryRun && $this->cache->has($file) && $this->cache->get($file) !== $hash) {
+            $this->cache->clear($file);
+
+            return;
+        }
+
+        $this->cache->set($file, $hash);
     }
 
     private function normalizePath($path)
