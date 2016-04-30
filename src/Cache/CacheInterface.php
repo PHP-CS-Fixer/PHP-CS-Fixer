@@ -12,14 +12,12 @@
 
 namespace PhpCsFixer\Cache;
 
-use Serializable;
-
 /**
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
  */
-interface CacheInterface extends Serializable
+interface CacheInterface extends \Serializable
 {
     /**
      * @return SignatureInterface

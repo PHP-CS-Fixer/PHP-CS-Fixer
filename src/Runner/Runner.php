@@ -89,8 +89,8 @@ final class Runner
         $this->isDryRun = $isDryRun;
 
         $this->cacheManager = new FileCacheManager(
-            $this->cacheHandler($config),
-            $this->signature($config),
+            $this->createCacheHandler($config),
+            $this->createSignature($config),
             $isDryRun
         );
     }
@@ -100,7 +100,7 @@ final class Runner
      *
      * @return HandlerInterface
      */
-    private function cacheHandler(ConfigInterface $config)
+    private function createCacheHandler(ConfigInterface $config)
     {
         if ($config->usingCache() && (ToolInfo::isInstalledAsPhar() || ToolInfo::isInstalledByComposer())) {
             return new FileHandler($config->getCacheFile());
@@ -114,7 +114,7 @@ final class Runner
      *
      * @return SignatureInterface
      */
-    private function signature(ConfigInterface $config)
+    private function createSignature(ConfigInterface $config)
     {
         return new Signature(
             PHP_VERSION,

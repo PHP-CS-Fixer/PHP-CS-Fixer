@@ -167,7 +167,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
         unset($manager);
     }
 
-    public function testNeedFixingReturnsTrueIfCacheHasNoNash()
+    public function testNeedFixingReturnsTrueIfCacheHasNoHash()
     {
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
