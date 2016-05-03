@@ -18,6 +18,45 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  */
 class BracesFixerTest extends AbstractFixerTestBase
 {
+    public function testXXX()
+    {
+        $this->makeTest(
+'<?php
+$fnc = function ($a, $b) {// sort offsets by -, 0, +
+    return 0;
+};',
+'<?php
+$fnc = function ($a, $b) // sort offsets by -, 0, +
+{
+    return 0;
+};'
+        );
+
+        $this->makeTest(
+'<?php
+$fnc = function ($a, $b) {# sort offsets by -, 0, +
+    return 0;
+};',
+'<?php
+$fnc = function ($a, $b) # sort offsets by -, 0, +
+{
+    return 0;
+};'
+        );
+
+        $this->makeTest(
+'<?php
+$fnc = function ($a, $b) /* sort offsets by -, 0, + */ {
+    return 0;
+};',
+'<?php
+$fnc = function ($a, $b) /* sort offsets by -, 0, + */
+{
+    return 0;
+};'
+        );
+    }
+
     /**
      * @dataProvider provideFixControlContinuationBracesCases
      */
@@ -1141,6 +1180,39 @@ class Foo
             return 1;
         }
     );',
+            ),
+            array(
+                '<?php
+    $fnc = function ($a, $b) {// sort offsets by -, 0, +
+        return 0;
+    };',
+                '<?php
+    $fnc = function ($a, $b) // sort offsets by -, 0, +
+    {
+        return 0;
+    };',
+            ),
+            array(
+                '<?php
+    $fnc = function ($a, $b) {# sort offsets by -, 0, +
+        return 0;
+    };',
+                '<?php
+    $fnc = function ($a, $b) # sort offsets by -, 0, +
+    {
+        return 0;
+    };',
+            ),
+            array(
+                '<?php
+    $fnc = function ($a, $b) /* sort offsets by -, 0, + */ {
+        return 0;
+    };',
+                '<?php
+    $fnc = function ($a, $b) /* sort offsets by -, 0, + */
+    {
+        return 0;
+    };',
             ),
         );
     }
