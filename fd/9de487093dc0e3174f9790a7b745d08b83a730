@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-03T21:45:26Z
+
+Does it break with random phpdoc there too?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-04T06:34:35Z
+
+random phpdoc is closed explicity by */, so no. also, its not T_COMMENT
