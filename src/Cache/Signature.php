@@ -22,17 +22,17 @@ final class Signature implements SignatureInterface
     /**
      * @var string
      */
-    private $php;
+    private $phpVersion;
 
     /**
      * @var string
      */
-    private $version;
+    private $fixerVersion;
 
     /**
      * @var bool
      */
-    private $linting;
+    private $isLintingEnabled;
 
     /**
      * @var array
@@ -40,32 +40,32 @@ final class Signature implements SignatureInterface
     private $rules;
 
     /**
-     * @param string $php
-     * @param string $version
-     * @param bool   $linting
+     * @param string $phpVersion
+     * @param string $fixerVersion
+     * @param bool   $isLintingEnabled
      * @param array  $rules
      */
-    public function __construct($php, $version, $linting, array $rules)
+    public function __construct($phpVersion, $fixerVersion, $isLintingEnabled, array $rules)
     {
-        $this->php = $php;
-        $this->version = $version;
-        $this->linting = $linting;
+        $this->phpVersion = $phpVersion;
+        $this->fixerVersion = $fixerVersion;
+        $this->isLintingEnabled = $isLintingEnabled;
         $this->rules = $rules;
     }
 
-    public function php()
+    public function getPhpVersion()
     {
-        return $this->php;
+        return $this->phpVersion;
     }
 
-    public function version()
+    public function getFixerVersion()
     {
-        return $this->version;
+        return $this->fixerVersion;
     }
 
-    public function linting()
+    public function isLintingEnabled()
     {
-        return $this->linting;
+        return $this->isLintingEnabled;
     }
 
     public function rules()
@@ -76,9 +76,9 @@ final class Signature implements SignatureInterface
     public function equals(SignatureInterface $signature)
     {
         if (
-            $this->php !== $signature->php()
-            || $this->version !== $signature->version()
-            || $this->linting !== $signature->linting()
+            $this->phpVersion !== $signature->getPhpVersion()
+            || $this->fixerVersion !== $signature->getFixerVersion()
+            || $this->isLintingEnabled !== $signature->isLintingEnabled()
             || $this->rules !== $signature->rules()
         ) {
             return false;

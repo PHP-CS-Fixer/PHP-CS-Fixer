@@ -39,16 +39,16 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorSetsValues()
     {
-        $signature = $this->signatureMock();
+        $signature = $this->getSignatureMock();
 
         $cache = new Cache($signature);
 
-        $this->assertSame($signature, $cache->signature());
+        $this->assertSame($signature, $cache->getSignature());
     }
 
     public function testDefaults()
     {
-        $signature = $this->signatureMock();
+        $signature = $this->getSignatureMock();
 
         $cache = new Cache($signature);
 
@@ -62,7 +62,7 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('InvalidArgumentException');
 
-        $signature = $this->signatureMock();
+        $signature = $this->getSignatureMock();
 
         $cache = new Cache($signature);
 
@@ -73,7 +73,7 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
 
     public function testCanSetAndGetValue()
     {
-        $signature = $this->signatureMock();
+        $signature = $this->getSignatureMock();
 
         $cache = new Cache($signature);
 
@@ -88,7 +88,7 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
 
     public function testCanClearValue()
     {
-        $signature = $this->signatureMock();
+        $signature = $this->getSignatureMock();
 
         $cache = new Cache($signature);
 
@@ -123,7 +123,7 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
         /* @var Cache $unserialized */
         $unserialized = unserialize(serialize($cache));
 
-        $this->assertTrue($unserialized->signature()->equals($signature));
+        $this->assertTrue($unserialized->getSignature()->equals($signature));
         $this->assertTrue($unserialized->has($file));
         $this->assertSame($hash, $unserialized->get($file));
     }
@@ -131,7 +131,7 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|SignatureInterface
      */
-    private function signatureMock()
+    private function getSignatureMock()
     {
         return $this->getMockBuilder('PhpCsFixer\Cache\SignatureInterface')->getMock();
     }

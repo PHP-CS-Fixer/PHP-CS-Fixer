@@ -22,17 +22,17 @@ interface SignatureInterface
     /**
      * @return string
      */
-    public function php();
+    public function getPhpVersion();
 
     /**
      * @return string
      */
-    public function version();
+    public function getFixerVersion();
 
     /**
      * @return bool
      */
-    public function linting();
+    public function isLintingEnabled();
 
     /**
      * @return array

@@ -37,7 +37,7 @@ final class Directory implements DirectoryInterface
         return str_replace(array('\\', '/'), DIRECTORY_SEPARATOR, $path);
     }
 
-    public function relativePathTo($file)
+    public function getRelativePathTo($file)
     {
         $file = $this->normalizePath($file);
 

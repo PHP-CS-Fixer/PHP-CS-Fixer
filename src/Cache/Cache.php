@@ -34,7 +34,7 @@ final class Cache implements CacheInterface
         $this->signature = $signature;
     }
 
-    public function signature()
+    public function getSignature()
     {
         return $this->signature;
     }
@@ -56,7 +56,10 @@ final class Cache implements CacheInterface
     public function set($file, $hash)
     {
         if (!is_int($hash)) {
-            throw new \InvalidArgumentException('Value needs to be an integer');
+            throw new \InvalidArgumentException(sprintf(
+                'Value needs to be an integer, got "%s".',
+                is_object($hash) ? get_class($hash) : gettype($hash))
+            );
         }
 
         $this->hashes[$file] = $hash;
@@ -70,10 +73,10 @@ final class Cache implements CacheInterface
     public function serialize()
     {
         return serialize(array(
-            'php' => $this->signature()->php(),
-            'version' => $this->signature()->version(),
-            'linting' => $this->signature()->linting(),
-            'rules' => $this->signature()->rules(),
+            'php' => $this->getSignature()->getPhpVersion(),
+            'version' => $this->getSignature()->getFixerVersion(),
+            'linting' => $this->getSignature()->isLintingEnabled(),
+            'rules' => $this->getSignature()->rules(),
             'hashes' => $this->hashes,
         ));
     }

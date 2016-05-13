@@ -52,9 +52,9 @@ final class SignatureTest extends \PHPUnit_Framework_TestCase
             $rules
         );
 
-        $this->assertSame($php, $signature->php());
-        $this->assertSame($version, $signature->version());
-        $this->assertSame($linting, $signature->linting());
+        $this->assertSame($php, $signature->getPhpVersion());
+        $this->assertSame($version, $signature->getFixerVersion());
+        $this->assertSame($linting, $signature->isLintingEnabled());
         $this->assertSame($rules, $signature->rules());
     }
 

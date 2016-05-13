@@ -77,7 +77,7 @@ final class FileCacheManager
         $this->handler = $handler;
         $this->signature = $signature;
         $this->isDryRun = $isDryRun;
-        $this->cacheDirectory = $cacheDirectory ?: new Directory(dirname(realpath($handler->file())));
+        $this->cacheDirectory = $cacheDirectory ?: new Directory(dirname(realpath($handler->getFile())));
 
         $this->readCache();
     }
@@ -91,7 +91,7 @@ final class FileCacheManager
     {
         $cache = $this->handler->read();
 
-        if (!$cache || !$this->signature->equals($cache->signature())) {
+        if (!$cache || !$this->signature->equals($cache->getSignature())) {
             $cache = new Cache($this->signature);
         }
 
@@ -105,7 +105,7 @@ final class FileCacheManager
 
     public function needFixing($file, $fileContent)
     {
-        $file = $this->cacheDirectory->relativePathTo($file);
+        $file = $this->cacheDirectory->getRelativePathTo($file);
 
         if (!$this->cache->has($file) || $this->cache->get($file) !== $this->calcHash($fileContent)) {
             return true;
@@ -116,7 +116,7 @@ final class FileCacheManager
 
     public function setFile($file, $fileContent)
     {
-        $file = $this->cacheDirectory->relativePathTo($file);
+        $file = $this->cacheDirectory->getRelativePathTo($file);
 
         $hash = $this->calcHash($fileContent);
 

@@ -27,14 +27,14 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreatesCacheIfHandlerReturnedNoCache()
     {
-        $signature = $this->signatureMock();
+        $signature = $this->getSignatureMock();
 
         $signature
             ->expects($this->never())
             ->method($this->anything())
         ;
 
-        $handler = $this->handlerMock();
+        $handler = $this->getHhandlerMock();
 
         $handler
             ->expects($this->once())
@@ -48,7 +48,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->logicalAnd(
                 $this->isInstanceOf('PhpCsFixer\Cache\CacheInterface'),
                 $this->callback(function (CacheInterface $cache) use ($signature) {
-                    return $cache->signature() === $signature;
+                    return $cache->getSignature() === $signature;
                 })
             ))
         ;
@@ -63,17 +63,17 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testCreatesCacheIfCachedSignatureIsDifferent()
     {
-        $cachedSignature = $this->signatureMock();
+        $cachedSignature = $this->getSignatureMock();
 
-        $cache = $this->cacheMock();
+        $cache = $this->getCacheMock();
 
         $cache
             ->expects($this->once())
-            ->method('signature')
+            ->method('getSignature')
             ->willReturn($cachedSignature)
         ;
 
-        $signature = $this->signatureMock();
+        $signature = $this->getSignatureMock();
 
         $signature
             ->expects($this->once())
@@ -82,7 +82,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(false)
         ;
 
-        $handler = $this->handlerMock();
+        $handler = $this->getHhandlerMock();
 
         $handler
             ->expects($this->once())
@@ -96,7 +96,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->logicalAnd(
                 $this->isInstanceOf('PhpCsFixer\Cache\CacheInterface'),
                 $this->callback(function (CacheInterface $cache) use ($signature) {
-                    return $cache->signature() === $signature;
+                    return $cache->getSignature() === $signature;
                 })
             ))
         ;
@@ -111,9 +111,9 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testUsesCacheIfCachedSignatureIsEqual()
     {
-        $cachedSignature = $this->signatureMock();
+        $cachedSignature = $this->getSignatureMock();
 
-        $signature = $this->signatureMock();
+        $signature = $this->getSignatureMock();
 
         $signature
             ->expects($this->once())
@@ -122,15 +122,15 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(true)
         ;
 
-        $cache = $this->cacheMock();
+        $cache = $this->getCacheMock();
 
         $cache
             ->expects($this->once())
-            ->method('signature')
+            ->method('getSignature')
             ->willReturn($cachedSignature)
         ;
 
-        $handler = $this->handlerMock();
+        $handler = $this->getHhandlerMock();
 
         $handler
             ->expects($this->once())
@@ -157,9 +157,9 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $cachedSignature = $this->signatureMock();
+        $cachedSignature = $this->getSignatureMock();
 
-        $signature = $this->signatureMock();
+        $signature = $this->getSignatureMock();
 
         $signature
             ->expects($this->once())
@@ -168,11 +168,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(true)
         ;
 
-        $cache = $this->cacheMock();
+        $cache = $this->getCacheMock();
 
         $cache
             ->expects($this->once())
-            ->method('signature')
+            ->method('getSignature')
             ->willReturn($cachedSignature)
         ;
 
@@ -189,7 +189,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->anything())
         ;
 
-        $handler = $this->handlerMock();
+        $handler = $this->getHhandlerMock();
 
         $handler
             ->expects($this->once())
@@ -211,9 +211,9 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
         $fileContent = '<?php echo "Hello!"';
         $previousFileContent = '<?php echo "Hello, world!"';
 
-        $cachedSignature = $this->signatureMock();
+        $cachedSignature = $this->getSignatureMock();
 
-        $signature = $this->signatureMock();
+        $signature = $this->getSignatureMock();
 
         $signature
             ->expects($this->once())
@@ -222,11 +222,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(true)
         ;
 
-        $cache = $this->cacheMock();
+        $cache = $this->getCacheMock();
 
         $cache
             ->expects($this->once())
-            ->method('signature')
+            ->method('getSignature')
             ->willReturn($cachedSignature)
         ;
 
@@ -244,7 +244,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(crc32($previousFileContent))
         ;
 
-        $handler = $this->handlerMock();
+        $handler = $this->getHhandlerMock();
 
         $handler
             ->expects($this->once())
@@ -265,9 +265,9 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $cachedSignature = $this->signatureMock();
+        $cachedSignature = $this->getSignatureMock();
 
-        $signature = $this->signatureMock();
+        $signature = $this->getSignatureMock();
 
         $signature
             ->expects($this->once())
@@ -276,11 +276,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(true)
         ;
 
-        $cache = $this->cacheMock();
+        $cache = $this->getCacheMock();
 
         $cache
             ->expects($this->once())
-            ->method('signature')
+            ->method('getSignature')
             ->willReturn($cachedSignature)
         ;
 
@@ -298,7 +298,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(crc32($fileContent))
         ;
 
-        $handler = $this->handlerMock();
+        $handler = $this->getHhandlerMock();
 
         $handler
             ->expects($this->once())
@@ -316,23 +316,23 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testNeedFixingUsesPathNormalizer()
     {
-        $cacheFile = $this->file();
+        $cacheFile = $this->getFile();
         $file = '/foo/bar/baz/src/hello.php';
         $relativePathToFile = 'src/hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $directory = $this->directoryMock();
+        $directory = $this->getDirectoryMock();
 
         $directory
             ->expects($this->once())
-            ->method('relativePathTo')
+            ->method('getRelativePathTo')
             ->with($this->identicalTo($file))
             ->willReturn($relativePathToFile)
         ;
 
-        $cachedSignature = $this->signatureMock();
+        $cachedSignature = $this->getSignatureMock();
 
-        $signature = $this->signatureMock();
+        $signature = $this->getSignatureMock();
 
         $signature
             ->expects($this->once())
@@ -341,11 +341,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(true)
         ;
 
-        $cache = $this->cacheMock();
+        $cache = $this->getCacheMock();
 
         $cache
             ->expects($this->once())
-            ->method('signature')
+            ->method('getSignature')
             ->willReturn($cachedSignature)
         ;
 
@@ -362,11 +362,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->identicalTo($relativePathToFile))
         ;
 
-        $handler = $this->handlerMock();
+        $handler = $this->getHhandlerMock();
 
         $handler
             ->expects($this->never())
-            ->method('file')
+            ->method('getFile')
             ->willReturn($cacheFile)
         ;
 
@@ -388,13 +388,13 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testSetFileSetsHashOfFileContent()
     {
-        $cacheFile = $this->file();
+        $cacheFile = $this->getFile();
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $cachedSignature = $this->signatureMock();
+        $cachedSignature = $this->getSignatureMock();
 
-        $signature = $this->signatureMock();
+        $signature = $this->getSignatureMock();
 
         $signature
             ->expects($this->once())
@@ -403,11 +403,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(true)
         ;
 
-        $cache = $this->cacheMock();
+        $cache = $this->getCacheMock();
 
         $cache
             ->expects($this->once())
-            ->method('signature')
+            ->method('getSignature')
             ->willReturn($cachedSignature)
         ;
 
@@ -426,11 +426,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             )
         ;
 
-        $handler = $this->handlerMock();
+        $handler = $this->getHhandlerMock();
 
         $handler
             ->expects($this->once())
-            ->method('file')
+            ->method('getFile')
             ->willReturn($cacheFile)
         ;
 
@@ -457,13 +457,13 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
     public function testSetFileSetsHashOfFileContentDuringDryRunIfCacheHasNoHash()
     {
         $isDryRun = true;
-        $cacheFile = $this->file();
+        $cacheFile = $this->getFile();
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $cachedSignature = $this->signatureMock();
+        $cachedSignature = $this->getSignatureMock();
 
-        $signature = $this->signatureMock();
+        $signature = $this->getSignatureMock();
 
         $signature
             ->expects($this->once())
@@ -472,11 +472,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(true)
         ;
 
-        $cache = $this->cacheMock();
+        $cache = $this->getCacheMock();
 
         $cache
             ->expects($this->once())
-            ->method('signature')
+            ->method('getSignature')
             ->willReturn($cachedSignature)
         ;
 
@@ -502,11 +502,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             )
         ;
 
-        $handler = $this->handlerMock();
+        $handler = $this->getHhandlerMock();
 
         $handler
             ->expects($this->once())
-            ->method('file')
+            ->method('getFile')
             ->willReturn($cacheFile)
         ;
 
@@ -534,14 +534,14 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
     public function testSetFileClearsHashDuringDryRunIfCachedHashIsDifferent()
     {
         $isDryRun = true;
-        $cacheFile = $this->file();
+        $cacheFile = $this->getFile();
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
         $previousFileContent = '<?php echo "Hello, world!"';
 
-        $cachedSignature = $this->signatureMock();
+        $cachedSignature = $this->getSignatureMock();
 
-        $signature = $this->signatureMock();
+        $signature = $this->getSignatureMock();
 
         $signature
             ->expects($this->once())
@@ -550,11 +550,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(true)
         ;
 
-        $cache = $this->cacheMock();
+        $cache = $this->getCacheMock();
 
         $cache
             ->expects($this->once())
-            ->method('signature')
+            ->method('getSignature')
             ->willReturn($cachedSignature)
         ;
 
@@ -584,11 +584,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->anything())
         ;
 
-        $handler = $this->handlerMock();
+        $handler = $this->getHhandlerMock();
 
         $handler
             ->expects($this->once())
-            ->method('file')
+            ->method('getFile')
             ->willReturn($cacheFile)
         ;
 
@@ -615,23 +615,23 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testSetFileUsesNormalizedFilePath()
     {
-        $cacheFile = $this->file();
+        $cacheFile = $this->getFile();
         $file = '/foo/bar/baz/src/hello.php';
         $relativePathToFile = 'src/hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $pathNormalizer = $this->directoryMock();
+        $pathNormalizer = $this->getDirectoryMock();
 
         $pathNormalizer
             ->expects($this->once())
-            ->method('relativePathTo')
+            ->method('getRelativePathTo')
             ->with($this->identicalTo($file))
             ->willReturn($relativePathToFile)
         ;
 
-        $cachedSignature = $this->signatureMock();
+        $cachedSignature = $this->getSignatureMock();
 
-        $signature = $this->signatureMock();
+        $signature = $this->getSignatureMock();
 
         $signature
             ->expects($this->once())
@@ -640,11 +640,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(true)
         ;
 
-        $cache = $this->cacheMock();
+        $cache = $this->getCacheMock();
 
         $cache
             ->expects($this->once())
-            ->method('signature')
+            ->method('getSignature')
             ->willReturn($cachedSignature)
         ;
 
@@ -657,11 +657,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             )
         ;
 
-        $handler = $this->handlerMock();
+        $handler = $this->getHhandlerMock();
 
         $handler
             ->expects($this->never())
-            ->method('file')
+            ->method('getFile')
             ->willReturn($cacheFile)
         ;
 
@@ -690,7 +690,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @return string
      */
-    private function file()
+    private function getFile()
     {
         return __DIR__.'/.php_cs.cache';
     }
@@ -698,7 +698,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|HandlerInterface
      */
-    private function handlerMock()
+    private function getHhandlerMock()
     {
         return $this->getMockBuilder('PhpCsFixer\Cache\HandlerInterface')->getMock();
     }
@@ -706,7 +706,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|CacheInterface
      */
-    private function cacheMock()
+    private function getCacheMock()
     {
         return $this->getMockBuilder('PhpCsFixer\Cache\CacheInterface')->getMock();
     }
@@ -714,7 +714,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|SignatureInterface
      */
-    private function signatureMock()
+    private function getSignatureMock()
     {
         return $this->getMockBuilder('PhpCsFixer\Cache\SignatureInterface')->getMock();
     }
@@ -722,7 +722,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|DirectoryInterface
      */
-    private function directoryMock()
+    private function getDirectoryMock()
     {
         return $this->getMockBuilder('PhpCsFixer\Cache\DirectoryInterface')->getMock();
     }

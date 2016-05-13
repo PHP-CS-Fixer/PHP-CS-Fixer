@@ -25,7 +25,7 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
 {
     protected function tearDown()
     {
-        $file = $this->file();
+        $file = $this->getFile();
 
         if (file_exists($file)) {
             unlink($file);
@@ -34,7 +34,7 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testImplementsHandlerInterface()
     {
-        $file = $this->file();
+        $file = $this->getFile();
 
         $handler = new FileHandler($file);
 
@@ -43,16 +43,16 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorSetsFile()
     {
-        $file = $this->file();
+        $file = $this->getFile();
 
         $handler = new FileHandler($file);
 
-        $this->assertSame($file, $handler->file());
+        $this->assertSame($file, $handler->getFile());
     }
 
     public function testReadReturnsNullIfFileDoesNotExist()
     {
-        $file = $this->file();
+        $file = $this->getFile();
 
         $handler = new FileHandler($file);
 
@@ -61,7 +61,7 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testReadReturnsNullIfContentCanNotBeDeserialized()
     {
-        $file = $this->file();
+        $file = $this->getFile();
 
         file_put_contents($file, 'hello');
 
@@ -72,7 +72,7 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testReadReturnsCache()
     {
-        $file = $this->file();
+        $file = $this->getFile();
 
         $signature = new Signature(
             PHP_VERSION,
@@ -93,7 +93,7 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
         $cached = $handler->read();
 
         $this->assertInstanceOf('PhpCsFixer\Cache\CacheInterface', $cache);
-        $this->assertTrue($cached->signature()->equals($signature));
+        $this->assertTrue($cached->getSignature()->equals($signature));
     }
 
     public function testWriteThrowsIOExceptionIfFileCanNotBeWritten()
@@ -122,7 +122,7 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testWriteWritesCache()
     {
-        $file = $this->file();
+        $file = $this->getFile();
 
         $cache = new Cache(new Signature(
             PHP_VERSION,
@@ -145,7 +145,7 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @return string
      */
-    private function file()
+    private function getFile()
     {
         return __DIR__.'/.php_cs.cache';
     }

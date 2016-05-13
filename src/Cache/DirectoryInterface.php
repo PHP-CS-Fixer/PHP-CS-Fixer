@@ -24,5 +24,5 @@ interface DirectoryInterface
      *
      * @return string
      */
-    public function relativePathTo($file);
+    public function getRelativePathTo($file);
 }

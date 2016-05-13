@@ -35,23 +35,23 @@ final class DirectoryTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($reflection->implementsInterface('PhpCsFixer\Cache\DirectoryInterface'));
     }
 
-    public function testRelativePathToReturnsFileIfAboveLevelOfDirectoryName()
+    public function testGetRelativePathToReturnsFileIfAboveLevelOfDirectoryName()
     {
         $directoryName = __DIR__.DIRECTORY_SEPARATOR.'foo';
         $file = __DIR__.DIRECTORY_SEPARATOR.'hello.php';
 
         $directory = new Directory($directoryName);
 
-        $this->assertSame($file, $directory->relativePathTo($file));
+        $this->assertSame($file, $directory->getRelativePathTo($file));
     }
 
-    public function testRelativePathToReturnsRelativePathIfWithinDirectoryName()
+    public function testGetRelativePathToReturnsRelativePathIfWithinDirectoryName()
     {
         $directoryName = __DIR__.DIRECTORY_SEPARATOR.'foo';
         $file = __DIR__.DIRECTORY_SEPARATOR.'foo'.DIRECTORY_SEPARATOR.'bar'.DIRECTORY_SEPARATOR.'hello.php';
 
         $directory = new Directory($directoryName);
 
-        $this->assertSame('bar'.DIRECTORY_SEPARATOR.'hello.php', $directory->relativePathTo($file));
+        $this->assertSame('bar'.DIRECTORY_SEPARATOR.'hello.php', $directory->getRelativePathTo($file));
     }
 }

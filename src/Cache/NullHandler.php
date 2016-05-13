@@ -19,7 +19,7 @@ namespace PhpCsFixer\Cache;
  */
 final class NullHandler implements HandlerInterface
 {
-    public function file()
+    public function getFile()
     {
     }
 

@@ -34,7 +34,7 @@ final class FileHandler implements HandlerInterface
         $this->file = $file;
     }
 
-    public function file()
+    public function getFile()
     {
         return $this->file;
     }

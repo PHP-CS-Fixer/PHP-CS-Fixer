@@ -22,7 +22,7 @@ interface HandlerInterface
     /**
      * @return string
      */
-    public function file();
+    public function getFile();
 
     /**
      * @return CacheInterface

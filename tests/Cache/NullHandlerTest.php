@@ -33,7 +33,7 @@ final class NullHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $handler = new NullHandler();
 
-        $this->assertNull($handler->file());
+        $this->assertNull($handler->getFile());
     }
 
     public function testReadReturnsNull()
@@ -45,7 +45,7 @@ final class NullHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testWriteDoesNothing()
     {
-        $cache = $this->cacheMock();
+        $cache = $this->getCacheMock();
 
         $cache
             ->expects($this->never())
@@ -60,7 +60,7 @@ final class NullHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|CacheInterface
      */
-    private function cacheMock()
+    private function getCacheMock()
     {
         return $this->getMockBuilder('PhpCsFixer\Cache\CacheInterface')->getMock();
     }

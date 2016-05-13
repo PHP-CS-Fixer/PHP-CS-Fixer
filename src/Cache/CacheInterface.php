@@ -22,7 +22,7 @@ interface CacheInterface extends \Serializable
     /**
      * @return SignatureInterface
      */
-    public function signature();
+    public function getSignature();
 
     /**
      * @param string $file
