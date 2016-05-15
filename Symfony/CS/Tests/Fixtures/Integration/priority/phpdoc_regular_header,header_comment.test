@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: phpdoc_regular_header,header_comment.
+--CONFIG--
+level=none
+fixers=phpdoc_regular_header,header_comment
+--EXPECT--
+<?php
+
+phpinfo();
+
+--INPUT--
+<?php
+/**
+ * Docblock without phpdoc
+ */
+
+phpinfo();

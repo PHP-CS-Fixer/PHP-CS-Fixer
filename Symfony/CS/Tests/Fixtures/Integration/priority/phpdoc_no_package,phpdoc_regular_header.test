@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: phpdoc_regular_header,header_comment.
+--CONFIG--
+level=none
+fixers=phpdoc_no_package,phpdoc_regular_header
+--EXPECT--
+<?php
+/*
+ * Docblock without phpdoc
+ *
+ */
+
+phpinfo();
+
+--INPUT--
+<?php
+/**
+ * Docblock without phpdoc
+ *
+ * @package MyProject
+ */
+
+phpinfo();
