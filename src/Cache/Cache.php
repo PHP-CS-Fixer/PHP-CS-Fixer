@@ -76,7 +76,7 @@ final class Cache implements CacheInterface
             'php' => $this->getSignature()->getPhpVersion(),
             'version' => $this->getSignature()->getFixerVersion(),
             'linting' => $this->getSignature()->isLintingEnabled(),
-            'rules' => $this->getSignature()->rules(),
+            'rules' => $this->getSignature()->getRules(),
             'hashes' => $this->hashes,
         ));
     }

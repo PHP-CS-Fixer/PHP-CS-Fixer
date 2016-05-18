@@ -55,7 +55,7 @@ final class SignatureTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($php, $signature->getPhpVersion());
         $this->assertSame($version, $signature->getFixerVersion());
         $this->assertSame($linting, $signature->isLintingEnabled());
-        $this->assertSame($rules, $signature->rules());
+        $this->assertSame($rules, $signature->getRules());
     }
 
     public function testEqualsReturnsFalseIfValuesAreNotIdentical()

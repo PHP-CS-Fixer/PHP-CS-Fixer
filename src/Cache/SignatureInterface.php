@@ -37,7 +37,7 @@ interface SignatureInterface
     /**
      * @return array
      */
-    public function rules();
+    public function getRules();
 
     /**
      * @param SignatureInterface $signature

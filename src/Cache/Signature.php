@@ -68,7 +68,7 @@ final class Signature implements SignatureInterface
         return $this->isLintingEnabled;
     }
 
-    public function rules()
+    public function getRules()
     {
         return $this->rules;
     }
@@ -79,7 +79,7 @@ final class Signature implements SignatureInterface
             $this->phpVersion !== $signature->getPhpVersion()
             || $this->fixerVersion !== $signature->getFixerVersion()
             || $this->isLintingEnabled !== $signature->isLintingEnabled()
-            || $this->rules !== $signature->rules()
+            || $this->rules !== $signature->getRules()
         ) {
             return false;
         }
