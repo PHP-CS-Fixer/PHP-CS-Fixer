@@ -86,13 +86,13 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
 
         $cache = new Cache($signature);
 
-        file_put_contents($file, serialize($cache));
+        file_put_contents($file, $cache->toJson());
 
         $handler = new FileHandler($file);
 
         $cached = $handler->read();
 
-        $this->assertInstanceOf('PhpCsFixer\Cache\CacheInterface', $cache);
+        $this->assertInstanceOf('PhpCsFixer\Cache\CacheInterface', $cached);
         $this->assertTrue($cached->getSignature()->equals($signature));
     }
 
@@ -139,7 +139,7 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
         $handler->write($cache);
 
         $this->assertFileExists($file);
-        $this->assertSame(serialize($cache), file_get_contents($file));
+        $this->assertSame($cache->toJson(), file_get_contents($file));
     }
 
     /**

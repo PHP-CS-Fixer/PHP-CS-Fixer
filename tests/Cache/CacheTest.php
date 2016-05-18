@@ -101,7 +101,16 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($cache->get($file));
     }
 
-    public function testCanSerializeAndDeserialize()
+    public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsInvalid()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+
+        $json = '{"foo';
+
+        Cache::fromJson($json);
+    }
+
+    public function testCanConvertToAndFromJson()
     {
         $signature = new Signature(
             PHP_VERSION,
@@ -120,12 +129,12 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
 
         $cache->set($file, $hash);
 
-        /* @var Cache $unserialized */
-        $unserialized = unserialize(serialize($cache));
+        /* @var Cache $cached */
+        $cached = Cache::fromJson($cache->toJson());
 
-        $this->assertTrue($unserialized->getSignature()->equals($signature));
-        $this->assertTrue($unserialized->has($file));
-        $this->assertSame($hash, $unserialized->get($file));
+        $this->assertTrue($cached->getSignature()->equals($signature));
+        $this->assertTrue($cached->has($file));
+        $this->assertSame($hash, $cached->get($file));
     }
 
     /**

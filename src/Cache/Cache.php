@@ -70,9 +70,9 @@ final class Cache implements CacheInterface
         unset($this->hashes[$file]);
     }
 
-    public function serialize()
+    public function toJson()
     {
-        return serialize(array(
+        return json_encode(array(
             'php' => $this->getSignature()->getPhpVersion(),
             'version' => $this->getSignature()->getFixerVersion(),
             'linting' => $this->getSignature()->isLintingEnabled(),
@@ -81,17 +81,35 @@ final class Cache implements CacheInterface
         ));
     }
 
-    public function unserialize($serialized)
+    /**
+     * @param string $json
+     *
+     * @return Cache
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function fromJson($json)
     {
-        $data = unserialize($serialized);
+        $data = json_decode($json, true);
 
-        $this->signature = new Signature(
+        if (null === $data && JSON_ERROR_NONE !== json_last_error()) {
+            throw new \InvalidArgumentException(sprintf(
+                'Value needs to be a valid JSON string, got "%s".',
+                is_object($json) ? get_class($json) : gettype($json)
+            ));
+        }
+
+        $signature = new Signature(
             $data['php'],
             $data['version'],
             $data['linting'],
             $data['rules']
         );
 
-        $this->hashes = $data['hashes'];
+        $cache = new self($signature);
+
+        $cache->hashes = $data['hashes'];
+
+        return $cache;
     }
 }

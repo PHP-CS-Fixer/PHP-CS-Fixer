@@ -17,7 +17,7 @@ namespace PhpCsFixer\Cache;
  *
  * @internal
  */
-interface CacheInterface extends \Serializable
+interface CacheInterface
 {
     /**
      * @return SignatureInterface
@@ -48,4 +48,9 @@ interface CacheInterface extends \Serializable
      * @param string $file
      */
     public function clear($file);
+
+    /**
+     * @return string
+     */
+    public function toJson();
 }

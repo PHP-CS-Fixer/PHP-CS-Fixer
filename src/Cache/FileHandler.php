@@ -46,9 +46,10 @@ final class FileHandler implements FileHandlerInterface
         }
 
         $content = file_get_contents($this->file);
-        $cache = @unserialize($content);
 
-        if (!$cache instanceof CacheInterface) {
+        try {
+            $cache = Cache::fromJson($content);
+        } catch (\InvalidArgumentException $exception) {
             return;
         }
 
@@ -57,7 +58,7 @@ final class FileHandler implements FileHandlerInterface
 
     public function write(CacheInterface $cache)
     {
-        $content = serialize($cache);
+        $content = $cache->toJson();
 
         $bytesWritten = @file_put_contents($this->file, $content, LOCK_EX);
 
