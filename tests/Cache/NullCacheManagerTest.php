@@ -12,32 +12,32 @@
 
 namespace PhpCsFixer\Tests\Cache;
 
-use PhpCsFixer\Cache\NullFileCacheManager;
+use PhpCsFixer\Cache\NullCacheManager;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
  */
-final class NullFileCacheManagerTest extends \PHPUnit_Framework_TestCase
+final class NullCacheManagerTest extends \PHPUnit_Framework_TestCase
 {
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\NullFileCacheManager');
+        $reflection = new \ReflectionClass('PhpCsFixer\Cache\NullCacheManager');
 
         $this->assertTrue($reflection->isFinal());
     }
 
-    public function testImplementsFileCacheManagerInterface()
+    public function testImplementsCacheManagerInterface()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\NullFileCacheManager');
+        $reflection = new \ReflectionClass('PhpCsFixer\Cache\NullCacheManager');
 
-        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\Cache\FileCacheManagerInterface'));
+        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\Cache\CacheManagerInterface'));
     }
 
     public function testNeedFixingReturnsTrue()
     {
-        $manager = new NullFileCacheManager();
+        $manager = new NullCacheManager();
 
         $this->assertTrue($manager->needFixing('foo.php', 'bar'));
     }

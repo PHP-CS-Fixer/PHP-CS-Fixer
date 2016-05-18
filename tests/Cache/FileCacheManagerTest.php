@@ -32,11 +32,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($reflection->isFinal());
     }
 
-    public function testImplementsFileCacheManagerInterface()
+    public function testImplementsCacheManagerInterface()
     {
         $reflection = new \ReflectionClass('PhpCsFixer\Cache\FileCacheManager');
 
-        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\Cache\FileCacheManagerInterface'));
+        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\Cache\CacheManagerInterface'));
     }
 
     public function testCreatesCacheIfHandlerReturnedNoCache()

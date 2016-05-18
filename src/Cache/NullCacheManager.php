@@ -17,7 +17,7 @@ namespace PhpCsFixer\Cache;
  *
  * @internal
  */
-final class NullFileCacheManager implements FileCacheManagerInterface
+final class NullCacheManager implements CacheManagerInterface
 {
     public function needFixing($file, $fileContent)
     {

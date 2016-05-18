@@ -28,7 +28,7 @@ namespace PhpCsFixer\Cache;
  *
  * @internal
  */
-final class FileCacheManager implements FileCacheManagerInterface
+final class FileCacheManager implements CacheManagerInterface
 {
     /**
      * @var FileHandlerInterface

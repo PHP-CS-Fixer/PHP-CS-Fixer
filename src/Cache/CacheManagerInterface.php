@@ -13,22 +13,11 @@
 namespace PhpCsFixer\Cache;
 
 /**
- * Class supports caching information about state of fixing files.
- *
- * Cache is supported only for phar version and version installed via composer.
- *
- * File will be processed by PHP CS Fixer only if any of the following conditions is fulfilled:
- *  - cache is not available,
- *  - fixer version changed,
- *  - rules changed,
- *  - file is new,
- *  - file changed.
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-interface FileCacheManagerInterface
+interface CacheManagerInterface
 {
     /**
      * @param string $file

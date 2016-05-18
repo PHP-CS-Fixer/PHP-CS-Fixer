@@ -12,10 +12,10 @@
 
 namespace PhpCsFixer\Runner;
 
+use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\FileCacheManager;
 use PhpCsFixer\Cache\FileHandler;
-use PhpCsFixer\Cache\FileHandlerInterface;
-use PhpCsFixer\Cache\NullFileCacheManager;
+use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Differ\DifferInterface;
@@ -58,7 +58,7 @@ final class Runner
     private $errorsManager;
 
     /**
-     * @var FileCacheManager
+     * @var CacheManagerInterface
      */
     private $cacheManager;
 
@@ -97,7 +97,7 @@ final class Runner
      * @param ConfigInterface $config
      * @param bool            $isDryRun
      *
-     * @return FileHandlerInterface
+     * @return CacheManagerInterface
      */
     private function createCacheManager(ConfigInterface $config, $isDryRun)
     {
@@ -114,7 +114,7 @@ final class Runner
             );
         }
 
-        return new NullFileCacheManager();
+        return new NullCacheManager();
     }
 
     /**

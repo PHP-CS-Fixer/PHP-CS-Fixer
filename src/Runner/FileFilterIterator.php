@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Runner;
 
-use PhpCsFixer\Cache\FileCacheManagerInterface;
+use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\FixerFileProcessedEvent;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -31,7 +31,7 @@ final class FileFilterIterator extends \FilterIterator
     private $eventDispatcher;
 
     /**
-     * @var FileCacheManagerInterface
+     * @var CacheManagerInterface
      */
     private $cacheManager;
 
@@ -43,7 +43,7 @@ final class FileFilterIterator extends \FilterIterator
     public function __construct(
         \Iterator $iterator,
         EventDispatcher $eventDispatcher = null,
-        FileCacheManagerInterface $cacheManager
+        CacheManagerInterface $cacheManager
     ) {
         parent::__construct($iterator);
 
