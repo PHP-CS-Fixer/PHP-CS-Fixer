@@ -1155,6 +1155,50 @@ class Foo
     if (true) {
     }',
             ),
+            array(
+                '<?php
+    $fnc = function ($a, $b) {// random comment
+        return 0;
+    };',
+                '<?php
+    $fnc = function ($a, $b) // random comment
+    {
+        return 0;
+    };',
+            ),
+            array(
+                '<?php
+    $fnc = function ($a, $b) {# random comment
+        return 0;
+    };',
+                '<?php
+    $fnc = function ($a, $b) # random comment
+    {
+        return 0;
+    };',
+            ),
+            array(
+                '<?php
+    $fnc = function ($a, $b) /* random comment */ {
+        return 0;
+    };',
+                '<?php
+    $fnc = function ($a, $b) /* random comment */
+    {
+        return 0;
+    };',
+            ),
+            array(
+                '<?php
+    $fnc = function ($a, $b) /** random comment */ {
+        return 0;
+    };',
+                '<?php
+    $fnc = function ($a, $b) /** random comment */
+    {
+        return 0;
+    };',
+            ),
         );
     }
 
