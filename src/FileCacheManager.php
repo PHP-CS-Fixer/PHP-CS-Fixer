@@ -25,11 +25,11 @@ use PhpCsFixer\Cache\SignatureInterface;
  * Cache is supported only for phar version and version installed via composer.
  *
  * File will be processed by PHP CS Fixer only if any of the following conditions is fulfilled:
- *  - cache is not available,
+ *  - cache is corrupt
  *  - fixer version changed,
  *  - rules changed,
- *  - file is new,
- *  - file changed.
+ *  - file is new
+ *  - file changed
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
