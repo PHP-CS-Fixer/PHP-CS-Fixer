@@ -13,10 +13,8 @@
 namespace PhpCsFixer\Runner;
 
 use PhpCsFixer\Cache\FileHandler;
-use PhpCsFixer\Cache\HandlerInterface;
-use PhpCsFixer\Cache\NullHandler;
+use PhpCsFixer\Cache\FileHandlerInterface;
 use PhpCsFixer\Cache\Signature;
-use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Error\Error;
@@ -26,6 +24,7 @@ use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
+use PhpCsFixer\NullFileCacheManager;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\EventDispatcher\Event;
@@ -88,40 +87,34 @@ final class Runner
         $this->linter = $linter;
         $this->isDryRun = $isDryRun;
 
-        $this->cacheManager = new FileCacheManager(
-            $this->createCacheHandler($config),
-            $this->createSignature($config),
+        $this->cacheManager = $this->createCacheManager(
+            $config,
             $isDryRun
         );
     }
 
     /**
      * @param ConfigInterface $config
+     * @param bool            $isDryRun
      *
-     * @return HandlerInterface
+     * @return FileHandlerInterface
      */
-    private function createCacheHandler(ConfigInterface $config)
+    private function createCacheManager(ConfigInterface $config, $isDryRun)
     {
         if ($config->usingCache() && (ToolInfo::isInstalledAsPhar() || ToolInfo::isInstalledByComposer())) {
-            return new FileHandler($config->getCacheFile());
+            return new FileCacheManager(
+                new FileHandler($config->getCacheFile()),
+                new Signature(
+                    PHP_VERSION,
+                    ToolInfo::getVersion(),
+                    $config->usingLinter(),
+                    $config->getRules()
+                ),
+                $isDryRun
+            );
         }
 
-        return new NullHandler();
-    }
-
-    /**
-     * @param ConfigInterface $config
-     *
-     * @return SignatureInterface
-     */
-    private function createSignature(ConfigInterface $config)
-    {
-        return new Signature(
-            PHP_VERSION,
-            ToolInfo::getVersion(),
-            $config->usingLinter(),
-            $config->getRules()
-        );
+        return new NullFileCacheManager();
     }
 
     /**

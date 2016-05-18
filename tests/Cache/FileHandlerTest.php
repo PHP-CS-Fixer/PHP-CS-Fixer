@@ -38,7 +38,7 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
 
         $handler = new FileHandler($file);
 
-        $this->assertInstanceOf('PhpCsFixer\Cache\HandlerInterface', $handler);
+        $this->assertInstanceOf('PhpCsFixer\Cache\FileHandlerInterface', $handler);
     }
 
     public function testConstructorSetsFile()

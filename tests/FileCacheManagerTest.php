@@ -14,7 +14,7 @@ namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Cache\CacheInterface;
 use PhpCsFixer\Cache\DirectoryInterface;
-use PhpCsFixer\Cache\HandlerInterface;
+use PhpCsFixer\Cache\FileHandlerInterface;
 use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\FileCacheManager;
 
@@ -25,6 +25,20 @@ use PhpCsFixer\FileCacheManager;
  */
 final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
 {
+    public function testIsFinal()
+    {
+        $reflection = new \ReflectionClass('PhpCsFixer\FileCacheManager');
+
+        $this->assertTrue($reflection->isFinal());
+    }
+
+    public function testImplementsFileCacheManagerInterface()
+    {
+        $reflection = new \ReflectionClass('PhpCsFixer\FileCacheManager');
+
+        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\FileCacheManagerInterface'));
+    }
+
     public function testCreatesCacheIfHandlerReturnedNoCache()
     {
         $signature = $this->getSignatureMock();
@@ -34,7 +48,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->method($this->anything())
         ;
 
-        $handler = $this->getHhandlerMock();
+        $handler = $this->getFileHandlerMock();
 
         $handler
             ->expects($this->once())
@@ -82,7 +96,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(false)
         ;
 
-        $handler = $this->getHhandlerMock();
+        $handler = $this->getFileHandlerMock();
 
         $handler
             ->expects($this->once())
@@ -130,7 +144,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($cachedSignature)
         ;
 
-        $handler = $this->getHhandlerMock();
+        $handler = $this->getFileHandlerMock();
 
         $handler
             ->expects($this->once())
@@ -189,7 +203,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->anything())
         ;
 
-        $handler = $this->getHhandlerMock();
+        $handler = $this->getFileHandlerMock();
 
         $handler
             ->expects($this->once())
@@ -244,7 +258,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(crc32($previousFileContent))
         ;
 
-        $handler = $this->getHhandlerMock();
+        $handler = $this->getFileHandlerMock();
 
         $handler
             ->expects($this->once())
@@ -298,7 +312,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(crc32($fileContent))
         ;
 
-        $handler = $this->getHhandlerMock();
+        $handler = $this->getFileHandlerMock();
 
         $handler
             ->expects($this->once())
@@ -362,7 +376,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->identicalTo($relativePathToFile))
         ;
 
-        $handler = $this->getHhandlerMock();
+        $handler = $this->getFileHandlerMock();
 
         $handler
             ->expects($this->never())
@@ -426,7 +440,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             )
         ;
 
-        $handler = $this->getHhandlerMock();
+        $handler = $this->getFileHandlerMock();
 
         $handler
             ->expects($this->once())
@@ -502,7 +516,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             )
         ;
 
-        $handler = $this->getHhandlerMock();
+        $handler = $this->getFileHandlerMock();
 
         $handler
             ->expects($this->once())
@@ -584,7 +598,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->anything())
         ;
 
-        $handler = $this->getHhandlerMock();
+        $handler = $this->getFileHandlerMock();
 
         $handler
             ->expects($this->once())
@@ -657,7 +671,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             )
         ;
 
-        $handler = $this->getHhandlerMock();
+        $handler = $this->getFileHandlerMock();
 
         $handler
             ->expects($this->never())
@@ -696,11 +710,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|HandlerInterface
+     * @return \PHPUnit_Framework_MockObject_MockObject|FileHandlerInterface
      */
-    private function getHhandlerMock()
+    private function getFileHandlerMock()
     {
-        return $this->getMockBuilder('PhpCsFixer\Cache\HandlerInterface')->getMock();
+        return $this->getMockBuilder('PhpCsFixer\Cache\FileHandlerInterface')->getMock();
     }
 
     /**

@@ -16,7 +16,7 @@ use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\CacheInterface;
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\DirectoryInterface;
-use PhpCsFixer\Cache\HandlerInterface;
+use PhpCsFixer\Cache\FileHandlerInterface;
 use PhpCsFixer\Cache\SignatureInterface;
 
 /**
@@ -35,10 +35,10 @@ use PhpCsFixer\Cache\SignatureInterface;
  *
  * @internal
  */
-final class FileCacheManager
+final class FileCacheManager implements FileCacheManagerInterface
 {
     /**
-     * @var HandlerInterface
+     * @var FileHandlerInterface
      */
     private $handler;
 
@@ -63,13 +63,13 @@ final class FileCacheManager
     private $cacheDirectory;
 
     /**
-     * @param HandlerInterface        $handler
+     * @param FileHandlerInterface    $handler
      * @param SignatureInterface      $signature
      * @param bool                    $isDryRun
      * @param DirectoryInterface|null $cacheDirectory
      */
     public function __construct(
-        HandlerInterface $handler,
+        FileHandlerInterface $handler,
         SignatureInterface $signature,
         $isDryRun = false,
         DirectoryInterface $cacheDirectory = null

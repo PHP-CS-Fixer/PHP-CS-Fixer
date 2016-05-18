@@ -17,17 +17,20 @@ namespace PhpCsFixer\Cache;
  *
  * @internal
  */
-final class NullHandler implements HandlerInterface
+interface FileHandlerInterface
 {
-    public function getFile()
-    {
-    }
+    /**
+     * @return string
+     */
+    public function getFile();
 
-    public function read()
-    {
-    }
+    /**
+     * @return CacheInterface
+     */
+    public function read();
 
-    public function write(CacheInterface $cache)
-    {
-    }
+    /**
+     * @param CacheInterface $cache
+     */
+    public function write(CacheInterface $cache);
 }

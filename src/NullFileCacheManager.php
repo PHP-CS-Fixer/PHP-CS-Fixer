@@ -10,27 +10,21 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Cache;
+namespace PhpCsFixer;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
  */
-interface HandlerInterface
+final class NullFileCacheManager implements FileCacheManagerInterface
 {
-    /**
-     * @return string
-     */
-    public function getFile();
+    public function needFixing($file, $fileContent)
+    {
+        return true;
+    }
 
-    /**
-     * @return CacheInterface
-     */
-    public function read();
-
-    /**
-     * @param CacheInterface $cache
-     */
-    public function write(CacheInterface $cache);
+    public function setFile($file, $fileContent)
+    {
+    }
 }

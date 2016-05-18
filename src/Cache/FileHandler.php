@@ -19,7 +19,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
  *
  * @internal
  */
-final class FileHandler implements HandlerInterface
+final class FileHandler implements FileHandlerInterface
 {
     /**
      * @var string
