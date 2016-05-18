@@ -99,6 +99,23 @@ final class Cache implements CacheInterface
             ));
         }
 
+        $requiredKeys = array(
+            'php',
+            'version',
+            'linting',
+            'rules',
+            'hashes',
+        );
+
+        $missingKeys = array_diff_key(array_flip($requiredKeys), $data);
+
+        if (count($missingKeys)) {
+            throw new \InvalidArgumentException(sprintf(
+                'JSON data is missing keys "%s"',
+                implode('", "', $missingKeys)
+            ));
+        }
+
         $signature = new Signature(
             $data['php'],
             $data['version'],

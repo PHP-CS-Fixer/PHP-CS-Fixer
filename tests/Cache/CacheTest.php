@@ -110,6 +110,45 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
         Cache::fromJson($json);
     }
 
+    /**
+     * @dataProvider providerMissingData
+     *
+     * @param mixed $data
+     */
+    public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKey($data)
+    {
+        $this->setExpectedException('InvalidArgumentException');
+
+        $json = json_encode($data);
+
+        Cache::fromJson($json);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerMissingData()
+    {
+        $data = array(
+            'php' => '5.5.5',
+            'version' => '2.0',
+            'linting' => false,
+            'rules' => array(
+                'foo' => true,
+                'bar' => false,
+            ),
+            'hashes' => array(),
+        );
+
+        return array_map(function ($missingKey) use ($data) {
+            unset($data[$missingKey]);
+
+            return array(
+                $data,
+            );
+        }, array_keys($data));
+    }
+
     public function testCanConvertToAndFromJson()
     {
         $signature = new Signature(
