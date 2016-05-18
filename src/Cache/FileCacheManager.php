@@ -19,8 +19,8 @@ namespace PhpCsFixer\Cache;
  *
  * File will be processed by PHP CS Fixer only if any of the following conditions is fulfilled:
  *  - cache is corrupt
- *  - fixer version changed,
- *  - rules changed,
+ *  - fixer version changed
+ *  - rules changed
  *  - file is new
  *  - file changed
  *
