@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Runner;
 
-use PhpCsFixer\FileCacheManagerInterface;
+use PhpCsFixer\Cache\FileCacheManagerInterface;
 use PhpCsFixer\FixerFileProcessedEvent;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;

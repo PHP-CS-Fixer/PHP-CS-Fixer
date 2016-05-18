@@ -10,9 +10,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests;
+namespace PhpCsFixer\Tests\Cache;
 
-use PhpCsFixer\NullFileCacheManager;
+use PhpCsFixer\Cache\NullFileCacheManager;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -23,16 +23,16 @@ final class NullFileCacheManagerTest extends \PHPUnit_Framework_TestCase
 {
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\NullFileCacheManager');
+        $reflection = new \ReflectionClass('PhpCsFixer\Cache\NullFileCacheManager');
 
         $this->assertTrue($reflection->isFinal());
     }
 
     public function testImplementsFileCacheManagerInterface()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\NullFileCacheManager');
+        $reflection = new \ReflectionClass('PhpCsFixer\Cache\NullFileCacheManager');
 
-        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\FileCacheManagerInterface'));
+        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\Cache\FileCacheManagerInterface'));
     }
 
     public function testNeedFixingReturnsTrue()

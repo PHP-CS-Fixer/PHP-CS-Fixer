@@ -10,14 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer;
-
-use PhpCsFixer\Cache\Cache;
-use PhpCsFixer\Cache\CacheInterface;
-use PhpCsFixer\Cache\Directory;
-use PhpCsFixer\Cache\DirectoryInterface;
-use PhpCsFixer\Cache\FileHandlerInterface;
-use PhpCsFixer\Cache\SignatureInterface;
+namespace PhpCsFixer\Cache;
 
 /**
  * Class supports caching information about state of fixing files.

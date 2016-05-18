@@ -12,19 +12,19 @@
 
 namespace PhpCsFixer\Runner;
 
+use PhpCsFixer\Cache\FileCacheManager;
 use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\FileHandlerInterface;
+use PhpCsFixer\Cache\NullFileCacheManager;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
-use PhpCsFixer\FileCacheManager;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
-use PhpCsFixer\NullFileCacheManager;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\EventDispatcher\Event;

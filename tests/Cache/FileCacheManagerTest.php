@@ -10,13 +10,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests;
+namespace PhpCsFixer\Tests\Cache;
 
 use PhpCsFixer\Cache\CacheInterface;
 use PhpCsFixer\Cache\DirectoryInterface;
+use PhpCsFixer\Cache\FileCacheManager;
 use PhpCsFixer\Cache\FileHandlerInterface;
 use PhpCsFixer\Cache\SignatureInterface;
-use PhpCsFixer\FileCacheManager;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -27,16 +27,16 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
 {
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\FileCacheManager');
+        $reflection = new \ReflectionClass('PhpCsFixer\Cache\FileCacheManager');
 
         $this->assertTrue($reflection->isFinal());
     }
 
     public function testImplementsFileCacheManagerInterface()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\FileCacheManager');
+        $reflection = new \ReflectionClass('PhpCsFixer\Cache\FileCacheManager');
 
-        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\FileCacheManagerInterface'));
+        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\Cache\FileCacheManagerInterface'));
     }
 
     public function testCreatesCacheIfHandlerReturnedNoCache()
