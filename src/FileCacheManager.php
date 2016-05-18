@@ -63,10 +63,10 @@ final class FileCacheManager
     private $cacheDirectory;
 
     /**
-     * @param HandlerInterface   $handler
-     * @param SignatureInterface $signature
-     * @param bool               $isDryRun
-     * @param DirectoryInterface $cacheDirectory
+     * @param HandlerInterface        $handler
+     * @param SignatureInterface      $signature
+     * @param bool                    $isDryRun
+     * @param DirectoryInterface|null $cacheDirectory
      */
     public function __construct(
         HandlerInterface $handler,
