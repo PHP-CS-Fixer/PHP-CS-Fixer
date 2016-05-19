@@ -49,7 +49,9 @@ class LintManager
             return $this->createProcessForSource(file_get_contents($path));
         }
 
-        $process = new Process('php -l '.ProcessUtils::escapeArgument($path));
+        $phpBin = PHP_VERSION_ID >= 50400 ? PHP_BINARY : 'php';
+
+        $process = new Process($phpBin.' -l '.ProcessUtils::escapeArgument($path));
         $process->setTimeout(null);
         $process->run();
 
