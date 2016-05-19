@@ -1,0 +1,544 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-26T09:53:22Z
+
+The problem is different.
+With dry-run cache should be read but not stored.
+And that affects not only CI usages.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-26T09:54:08Z
+
+@keradus
+
+What do you suggest to do?
+
+---------------------------------------------------------------------------
+
+by stof at 2016-04-26T10:09:20Z
+
+@localheinz the code updating the cache should be fixed to take the dry-run mode into account (not updating the cache in dry-run mode, but still reading it)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-26T13:42:29Z
+
+@keradus @stof
+
+Realizing that my change doesn't make sense since the exit code when not using `--dry-run` will always be `0`, so we definitely need something different.
+
+The problem with only ever reading from the cache file, but never writing to it when using `--dry-run` in a CI environment the cache file will never contain any useful data, rendering it useless in that context.
+
+I think we have the following options, then
+
+* store hashes for both dry and actual run
+* store the value of the previous run (dry run or actual run?)
+
+Since the former probably doesn't make a lot of sense, how about the latter, than:
+
+* if both the previous and the current run have the same value for `--dry-run`, read from and write to the cache
+* if the previous and current run do not have the same value for `--dry-run`, invalidate the cache
+
+What do you think?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-26T13:52:08Z
+
+consecutive runs with dry-run option must always return same output
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-26T13:55:04Z
+
+@keradus
+
+That renders the whole caching functionality useless, though, at least in a CI context.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-26T13:56:49Z
+
+@keradus
+
+I've amended the PR, what do you think?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-26T13:57:46Z
+
+:-1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-26T13:57:58Z
+
+This overwrites caches for non-dry runs completely.
+
+---------------------------------------------------------------------------
+
+by alucic at 2016-04-26T14:08:23Z
+
+@GrahamCampbell writing 2 comments every time keeps useless email count up, and it's pretty simple to write just one comment.
+
+On the other side, both of your comments are useless, being solution oriented is valued more than spamming thumbs down
+
+Edit:
+This is how you can express yourself without sending me an email, in upper right corner there's an edit button. Some people at Github worked really hard to make this happen, you as a developer should respect that and respect other developers and work they do.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-26T14:13:48Z
+
+@alucic Thanks for your useless comment.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-26T14:16:41Z
+
+> being solution oriented is valued more than spamming thumbs down
+
+No it's not. If I don't think something's suitable, I'll say it. I don't have to provide an alternative. I don't see anything coming from you?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-26T14:24:53Z
+
+The thing is, what are you going to do?
+
+Whatever the context, you either run
+
+```
+vendor/bin/php-cs-fixer fix --dry-run
+```
+
+**or**
+
+```
+vendor/bin/php-cs-fixer fix
+```
+
+but never both, right?
+
+For example:
+
+1. Locally, we just run the former to fix coding style issues (no need to do a dry run first, then followed by an actual run).
+2. In CI, we want to detect coding style issues, but not fix them.
+
+In both cases, we want a quick run, so we really want to be able to use *a* cache without producing invalid results.
+
+The only way in invalid result could be produced would be if we did a dry run followed by an actual run and skipped fixing a file which was detected as having coding style issues in the first run.
+
+@keradus
+
+I agree that a dry run should always produce the same results insofar as that it should always complain about files which need fixing, otherwise, I don't care.
+
+So how about this, then
+
+* ~~we store the value of the `--dry-run` option in the cache~~
+* if ~~both the previous and~~ the current run uses the cache, ~~have the same value for `--dry-run`, ~~ we read from and write to the cache~~
+* ~~if the previous and current run do not have the same value for `--dry-run`, invalidate the cache~~
+* if the current run is a `--dry-run` and a file needs fixing, set the hash to `-1` (or some other value that will never be returned by the hash function used to calculate the hash)
+
+---------------------------------------------------------------------------
+
+by stof at 2016-04-26T14:34:38Z
+
+@localheinz I often run a dry-run locally before running a normal run a bit later.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-26T14:58:14Z
+
+@keradus @stof
+
+Ok, then how about ~~c0597f9~~ ~~c8dc623~~ ~~83152b0~~ 9adc328?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-27T06:50:45Z
+
+@keradus @stof
+
+Care to take a look?
+
+This fix literally shaves off hours of build time for us every day.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-27T11:22:39Z
+
+@stof
+
+Amended!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-27T11:56:58Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-27T13:26:09Z
+
+@localheinz
+do I get it right what you want to achieve ?
+
+In dry run mode:
+File is cached but need a fixing - let us fix it on next non dry-run run.
+File is cached and not need a fixing - do nothing.
+
+Then, if you won't unset the key, but also won't override it, you will have the same effect.
+
+For that, I would have 2 cache implementations - one read only, one read+write. first for dry-run, second for real run. And even 3rd for no-cache functionality available.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-27T13:32:31Z
+
+@keradus
+
+The aim of this PR is to save hours of running
+
+```
+$ vendor/bin/php-cs-fixer fix --dry-run
+```
+
+on Travis by actually caching the results between builds.
+
+Currently, if we run the above command with a cold cache on Travis, we never write to the cache, meaning that we're not actually caching at all.
+
+Now, when we do a `--dry-run` and always cache the hashes of files which do not need fixing (that is, we unset the hash of files which *do* need fixing), we solve the caching problem and still produce the same results on consecutive runs.
+
+Does that help?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-27T13:38:51Z
+
+@keradus
+
+Is this what you suggest?
+
+```php
+// only set the hash if this is not a dry run or the file does not need fixing
+if (!$this->isDryRun || (isset($this->oldHashes[$file]) && $this->oldHashes[$file] === $hash)) {
+    $this->newHashes[$file] = $hash;
+}
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-27T14:06:49Z
+
+If I get it right, you rely on cache builded only on CI. Then, your cache file is always empty, as with dry-run tool never store the cache. For that you want to cache files that doesn't need fixing regardless dry-run mode. I'm fine with it.
+
+You could also change your comment to `do not set the hash in dry-run when file needs fixing`.
+
+Also, please remember to add tests for changed behaviour.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-27T15:28:36Z
+
+@keradus
+
+I've just run the tests with coverage, the only coverage for `FileCacheManager` is accidental - which kind of tests do you expect me to write?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-27T17:45:26Z
+
+As we seen from discussion, it's not obvious when we should store information in cache file and when not.
+Depending on isDryRun/isInOldCache/doesNeedAFixing we save cache information or not. I'm not asking to add utests for whole `CacheManager`, but at least for added part.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-27T21:45:21Z
+
+@keradus
+
+The problem with writing tests for this is that [`FileCacheManager::isCacheAvailable()`](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/FileCacheManager.php#L105-L114) evaluates to `false`  in a test context, regardless of whether caching is enabled or not.
+
+How about adding something like `ToolInfo::isTestContext()` to allow using the cache in a test context?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-28T06:52:05Z
+
+@keradus
+
+How about this:
+
+* you provide tests for the current functionality in `master` and I follow up by rebasing this PR and adding tests for the changed functionality *or*
+* you just merge this, acknowledging that you made a mistake in #1847
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-28T10:34:59Z
+
+As the logic is not obvious and to be sure it works properly and wont be broken by further refactoring I would really want to have that tests.
+After said that, for now I can't make tests for whole caching functionality soon enough, that is why I asked you to add logic only for changed things.
+
+What would you say about decoupling things? Creating sth like
+```php
+interafce CacheDecider
+{
+    public function shouldRead();
+
+    public function shouldWrite();
+}
+```
+
+?
+Then, whole your logic would be actually in very small and easy to test class.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-28T12:54:27Z
+
+@keradus
+
+I'm entirely sold on TDD, so 👍 - let me think about it!
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-28T14:47:44Z
+
+thank you @localheinz ! I'm really glad to hear that ;)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-28T16:18:58Z
+
+@keradus
+
+Here's a suggestion, what do you think about it?
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1890
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-28T16:30:17Z
+
+I'm not sure how you will achieve storing in cache even in dry-run mode the files that don't need to be fixed when you will be able to only choose NullCacheHandler or FileCacheHandler.
+(I don't think it needed to have separate PR, as we don't see the solution and fix at once)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-29T07:13:33Z
+
+@keradus
+
+While I personally prefer small PRs, I don't mind pushing into this branch.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-29T08:21:47Z
+
+usually yes, but having refactoring that will allow to fix a bug and then having separated PR with fix itself is tricky, when you can't see if refactoring indeed will allow for a fix ;) and since current fix is few liner, it won't be big PR when put together.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-29T18:05:24Z
+
+@keradus @stof
+
+How about this as an approach for caching?
+
+Extracted a bunch of objects with focussed responsibilities, got tests.
+
+If you like this, happy to push the fix, too!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-04-30T11:20:14Z
+
+@keradus @stof
+
+Do you have time to take a look?
+
+Build is failing on PHP5.3, maybe you have an idea what to do about it?
+
+See https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/126861509#L226-L241.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-30T17:29:58Z
+
+@localheinz in general, I do very like your approach and big thanks for you for the work you made so far!
+
+Sadly, I have no option for now to check the 5.3 env, I will try to investigate it on week beginnig, as well as playing with your branch (I didn't find sth big that would need a change so far, but I want to check how the code will behave in few cases. Also, I'm not sure about some general method naming like `foo` vs `getFoo`, especially when having general `get` method)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-04-30T17:44:28Z
+
+> Also, I'm not sure about some general method naming like foo vs getFoo, especially when having general get method)
+
+http://symfony.com/doc/current/contributing/code/conventions.html#method-names
+
+So it should be `getFoo`, and I think it is not problematic when also having general `get` method.
+From link above:
+
+> The usage of these methods are only allowed when it is clear that there is a main relation:
+>
+> * a CookieJar has many Cookie objects;
+> * a Service Container has many services and many parameters (as services is the main relation, the naming convention is used for this relation);
+> * a Console Input has many arguments and many options. There is no "main" relation, and so the naming convention does not apply.
+
+We have second case. A class with main relation (`get`), and some other Relations (`getFoo`).
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-05-02T13:27:33Z
+
+@gharlan @keradus @stof
+
+Happy to apply more fixes if needed, please let me know what you think!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-05-07T10:58:09Z
+
+@gharlan @keradus @stof
+
+Any news on this one?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-05-13T08:51:38Z
+
+@gharlan @keradus @stof
+
+Any chance of this getting merged soon?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-05-13T08:52:59Z
+
+I still think all getters should be renamed to `getX`.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-05-13T09:18:19Z
+
+@SpacePossum
+
+Applied the suggestions, and increased the verbosity in `Signature` a bit, too.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-18T07:42:32Z
+
+Please fix AppVeyor/Travis, it's all red.
+Also, please rebase
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-05-18T09:54:48Z
+
+@keradus
+
+> Please fix AppVeyor/Travis, it's all red.
+
+About the failing build, this is it, see https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/131065274#L226:
+
+```
+PHP Fatal error:  Wrong parameters for Exception([string $exception [, long $code [, Exception $previous = NULL]]]) in /home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Cache/FileHandler.php on line 66
+PHP Stack trace:
+PHP   1. {main}() /home/travis/.phpenv/versions/5.3.29/bin/phpunit:0
+PHP   2. PHPUnit_TextUI_Command::main() /home/travis/.phpenv/versions/5.3.29/bin/phpunit:722
+PHP   3. PHPUnit_TextUI_Command->run() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/TextUI/Command.php:104
+PHP   4. PHPUnit_TextUI_TestRunner->doRun() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/TextUI/Command.php:152
+PHP   5. PHPUnit_Framework_TestSuite->run() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/TextUI/TestRunner.php:398
+PHP   6. PHPUnit_Framework_TestSuite->run() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/Framework/TestSuite.php:716
+PHP   7. PHPUnit_Framework_TestCase->run() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/Framework/TestSuite.php:716
+PHP   8. PHPUnit_Framework_TestResult->run() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/Framework/TestCase.php:693
+PHP   9. PHPUnit_Framework_TestCase->runBare() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/Framework/TestResult.php:609
+PHP  10. PHPUnit_Framework_TestCase->runTest() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/Framework/TestCase.php:737
+PHP  11. ReflectionMethod->invokeArgs() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/Framework/TestCase.php:860
+PHP  12. PhpCsFixer\Tests\Cache\FileHandlerTest->testWriteThrowsIOExceptionIfFileCanNotBeWritten() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/Framework/TestCase.php:860
+PHP  13. PhpCsFixer\Cache\FileHandler->write() /home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Cache/FileHandlerTest.php:120
+PHP  14. Exception->__construct() /home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Cache/FileHandler.php:66
+Fatal error: Wrong parameters for Exception([string $exception [, long $code [, Exception $previous = NULL]]]) in /home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Cache/FileHandler.php on line 66
+Call Stack:
+    0.0016     814792   1. {main}() /home/travis/.phpenv/versions/5.3.29/bin/phpunit:0
+    0.0190    1539696   2. PHPUnit_TextUI_Command::main() /home/travis/.phpenv/versions/5.3.29/bin/phpunit:722
+    0.0190    1540448   3. PHPUnit_TextUI_Command->run() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/TextUI/Command.php:104
+    1.1126   60884520   4. PHPUnit_TextUI_TestRunner->doRun() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/TextUI/Command.php:152
+    1.1415   61799808   5. PHPUnit_Framework_TestSuite->run() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/TextUI/TestRunner.php:398
+    4.0079  161249784   6. PHPUnit_Framework_TestSuite->run() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/Framework/TestSuite.php:716
+    4.0819  161660328   7. PHPUnit_Framework_TestCase->run() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/Framework/TestSuite.php:716
+    4.0820  161660328   8. PHPUnit_Framework_TestResult->run() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/Framework/TestCase.php:693
+    4.0825  161661376   9. PHPUnit_Framework_TestCase->runBare() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/Framework/TestResult.php:609
+    4.0833  161702576  10. PHPUnit_Framework_TestCase->runTest() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/Framework/TestCase.php:737
+    4.0834  161704064  11. ReflectionMethod->invokeArgs() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/Framework/TestCase.php:860
+    4.0834  161704096  12. PhpCsFixer\Tests\Cache\FileHandlerTest->testWriteThrowsIOExceptionIfFileCanNotBeWritten() phar:///home/travis/.phpenv/versions/5.3.29/bin/phpunit/phpunit/Framework/TestCase.php:860
+    4.0837  161707184  13. PhpCsFixer\Cache\FileHandler->write() /home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Cache/FileHandlerTest.php:120
+    4.0853  161739728  14. Exception->__construct() /home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Cache/FileHandler.php:66
+```
+
+You mentioned a while ago you would have a look into it - do you have a suggestion?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-18T09:57:56Z
+
+```json
+"symfony/filesystem": "^2.4 || ^3.0",
+```
+will fix error detected by Travis.
+4th argument (file) was added in 2.4, but so far we are supporting 2.1.
+I'm fine with bumping it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-18T14:39:17Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-05-18T14:40:24Z
+
+Thank you, everyone!
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-18T14:40:39Z
+
+after that great work of yours, could you double check if it solves the issue that raised this PR?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-05-18T14:41:29Z
+
+@keradus
+
+Hehe, good one, let me have a look again!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-05-18T15:30:19Z
+
+@keradus
+
+Checked this out right here
+
+* https://github.com/refinery29/php-cs-fixer-config/pull/90
+
+and it's using the cache just fine, see https://travis-ci.org/refinery29/php-cs-fixer-config/jobs/131158829#L311-L317:
+
+```
+$ if [[ "$WITH_CS" == "true" ]]; then vendor/bin/php-cs-fixer fix --config=.php_cs --verbose --diff --dry-run; fi
+Loaded config from ".php_cs".
+Using cache file "/home/travis/.php-cs-fixer/.php_cs.cache".
+SS
+Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error
+Checked all files in 0.002 seconds, 6.500 MB memory used
+```
+
+👍
