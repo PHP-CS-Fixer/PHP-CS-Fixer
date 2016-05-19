@@ -12,16 +12,21 @@
 
 namespace PhpCsFixer\Runner;
 
+use PhpCsFixer\Cache\CacheManagerInterface;
+use PhpCsFixer\Cache\FileCacheManager;
+use PhpCsFixer\Cache\FileHandler;
+use PhpCsFixer\Cache\NullCacheManager;
+use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
-use PhpCsFixer\FileCacheManager;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\ToolInfo;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -53,7 +58,7 @@ final class Runner
     private $errorsManager;
 
     /**
-     * @var FileCacheManager
+     * @var CacheManagerInterface
      */
     private $cacheManager;
 
@@ -82,12 +87,34 @@ final class Runner
         $this->linter = $linter;
         $this->isDryRun = $isDryRun;
 
-        $this->cacheManager = new FileCacheManager(
-            $config->usingCache(),
-            $config->getCacheFile(),
-            $config->usingLinter(),
-            $config->getRules()
+        $this->cacheManager = $this->createCacheManager(
+            $config,
+            $isDryRun
         );
+    }
+
+    /**
+     * @param ConfigInterface $config
+     * @param bool            $isDryRun
+     *
+     * @return CacheManagerInterface
+     */
+    private function createCacheManager(ConfigInterface $config, $isDryRun)
+    {
+        if ($config->usingCache() && (ToolInfo::isInstalledAsPhar() || ToolInfo::isInstalledByComposer())) {
+            return new FileCacheManager(
+                new FileHandler($config->getCacheFile()),
+                new Signature(
+                    PHP_VERSION,
+                    ToolInfo::getVersion(),
+                    $config->usingLinter(),
+                    $config->getRules()
+                ),
+                $isDryRun
+            );
+        }
+
+        return new NullCacheManager();
     }
 
     /**
@@ -219,9 +246,7 @@ final class Runner
             );
         }
 
-        if (!$this->isDryRun) {
-            $this->cacheManager->setFile($name, $new);
-        }
+        $this->cacheManager->setFile($name, $new);
 
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,
