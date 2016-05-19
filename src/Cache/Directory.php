@@ -32,11 +32,6 @@ final class Directory implements DirectoryInterface
         $this->directoryName = $directoryName;
     }
 
-    private function normalizePath($path)
-    {
-        return str_replace(array('\\', '/'), DIRECTORY_SEPARATOR, $path);
-    }
-
     public function getRelativePathTo($file)
     {
         $file = $this->normalizePath($file);
@@ -46,5 +41,10 @@ final class Directory implements DirectoryInterface
         }
 
         return substr($file, strlen($this->directoryName) + 1);
+    }
+
+    private function normalizePath($path)
+    {
+        return str_replace(array('\\', '/'), DIRECTORY_SEPARATOR, $path);
     }
 }
