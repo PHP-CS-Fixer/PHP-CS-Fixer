@@ -1,0 +1,76 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-25T09:35:10Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-04-25T21:58:49Z
+
+> Sending to 2.0 since this is technically a breaking change.
+
+Why this should be a breaking change?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-26T07:34:28Z
+
+> Why this should be a breaking change?
+
+People might have a class named `str`, all lowercase, for some reason.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-21T09:42:12Z
+
+@keradus Is this good to merge?
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-05-21T15:27:47Z
+
+> for some reason.
+
+Is `@param str` a valid phpdoc type? If not, for me this is not a BC break but a fix that should be integrated to 1.x.
+
+@DeeJaVu you voted :-1: on @GrahamCampbell comments. Could you please tell use your opinion?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-21T16:17:57Z
+
+it is if it's your class name
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-05-21T16:19:28Z
+
+> it is if it's your class name
+
+Can you please elaborate? I don't understand. This fixer fix only phpdoc, no?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-21T16:23:45Z
+
+> Is `@param str` a valid phpdoc type?
+
+Yes, it's valid phpdoc type.
+
+```php
+class str {}
+
+/**
+ * @param str $s
+ */
+function (str $s) {}
+```
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-05-21T17:22:51Z
+
+Thanks @keradus, didn't think about this tricky point.
+
+:+1: for in this case.
