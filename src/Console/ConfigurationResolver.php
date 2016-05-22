@@ -14,13 +14,13 @@ namespace PhpCsFixer\Console;
 
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
+use PhpCsFixer\Finder;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
-use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
 
 /**
  * The resolver that resolves configuration to use by command line options and config.
@@ -91,7 +91,7 @@ final class ConfigurationResolver
         'config' => null,
         'dry-run' => null,
         'format' => 'txt',
-        'path' => null,
+        'path' => array(),
         'progress' => null,
         'using-cache' => null,
         'cache-file' => null,
@@ -162,7 +162,7 @@ final class ConfigurationResolver
     /**
      * Returns path.
      *
-     * @return string
+     * @return string[]
      */
     public function getPath()
     {
@@ -314,13 +314,15 @@ final class ConfigurationResolver
         }
 
         $path = $this->path;
-        if (is_file($path) && $dirName = pathinfo($path, PATHINFO_DIRNAME)) {
-            $configDir = $dirName;
-        } elseif ($this->isStdIn || null === $path) {
+
+        if ($this->isStdIn || 0 === count($path)) {
             $configDir = $this->cwd;
-            // path is directory
+        } elseif (1 < count($path)) {
+            throw new InvalidConfigurationException('For multiple paths config parameter is required.');
+        } elseif (is_file($path[0]) && $dirName = pathinfo($path[0], PATHINFO_DIRNAME)) {
+            $configDir = $dirName;
         } else {
-            $configDir = $path;
+            $configDir = $path[0];
         }
 
         $candidates = array(
@@ -401,34 +403,58 @@ final class ConfigurationResolver
             return;
         }
 
-        if (null === $this->path) {
+        if (empty($this->path)) {
             return;
         }
 
-        $path = realpath($this->path);
+        $paths = array_filter(array_map(
+            function ($path) {
+                return realpath($path);
+            },
+            $this->path
+        ));
 
-        if (false === $path) {
+        if (empty($paths)) {
             $this->config->finder(new \ArrayIterator(array()));
 
             return;
+        }
+
+        $pathsByType = array(
+            'file' => array(),
+            'dir' => array(),
+        );
+
+        foreach ($paths as $path) {
+            $isFile = is_file($path);
+
+            if (is_file($path)) {
+                $pathsByType['file'][] = $path;
+            } else {
+                $pathsByType['dir'][] = $path.DIRECTORY_SEPARATOR;
+            }
         }
 
         // - when we already have a valid finder - create intersection iterator of current finder and provided path
         // - when we don't have valid finder - prepare new iterator
         $iterator = null;
         $currentFinder = $this->config->getFinder();
-        $isFile = is_file($path);
 
-        if ($isFile) {
-            $callback = function (\SplFileInfo $current) use ($path) {
-                return $current->getRealPath() === $path;
-            };
-        } else {
-            $path .= DIRECTORY_SEPARATOR;
-            $callback = function (\SplFileInfo $current) use ($path) {
-                return 0 === strpos($current->getRealPath(), $path);
-            };
-        }
+        $callback = function (\SplFileInfo $current) use ($pathsByType) {
+            $currentRealPath = $current->getRealPath();
+
+            if (in_array($currentRealPath, $pathsByType['file'], true)) {
+                return true;
+            }
+
+            foreach ($pathsByType['dir'] as $path) {
+                if (0 === strpos($currentRealPath, $path)) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
 
         try {
             $iterator = new \CallbackFilterIterator(
@@ -436,17 +462,10 @@ final class ConfigurationResolver
                 $callback
             );
         } catch (\LogicException $e) {
-            if ($isFile) {
-                $iterator = new \ArrayIterator(array(new SymfonySplFileInfo(
-                    $this->path,
-                    substr(dirname($this->path), strlen($this->cwd) + 1),
-                    substr($this->path, strlen($this->cwd) + 1)
-                )));
-            } elseif ($currentFinder instanceof SymfonyFinder) {
-                $iterator = $currentFinder->in($this->path);
-            } else {
-                $iterator = Finder::create()->in($this->path);
-            }
+            $iterator = $currentFinder instanceof SymfonyFinder
+                ? $currentFinder
+                : Finder::create();
+            $iterator->in($pathsByType['dir'])->append($pathsByType['file']);
         }
 
         $this->config->finder($iterator);
@@ -519,7 +538,7 @@ final class ConfigurationResolver
      */
     private function resolveIsStdIn()
     {
-        $this->isStdIn = '-' === $this->options['path'];
+        $this->isStdIn = 1 === count($this->options['path']) && '-' === $this->options['path'][0];
     }
 
     /**
@@ -527,16 +546,19 @@ final class ConfigurationResolver
      */
     private function resolvePath()
     {
+        $filesystem = new Filesystem();
         $path = $this->options['path'];
+        $cwd = $this->cwd;
 
-        if (null !== $path) {
-            $filesystem = new Filesystem();
-            if (!$filesystem->isAbsolutePath($path)) {
-                $path = $this->cwd.DIRECTORY_SEPARATOR.$path;
-            }
-        }
-
-        $this->path = $path;
+        $this->path = array_map(
+            function ($path) use ($cwd, $filesystem) {
+                return $filesystem->isAbsolutePath($path)
+                    ? $path
+                    : $cwd.DIRECTORY_SEPARATOR.$path
+                ;
+            },
+            $this->options['path']
+        );
     }
 
     /**

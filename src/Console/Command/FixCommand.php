@@ -100,7 +100,7 @@ final class FixCommand extends Command
             ->setName('fix')
             ->setDefinition(
                 array(
-                    new InputArgument('path', InputArgument::OPTIONAL, 'The path', null),
+                    new InputArgument('path', InputArgument::IS_ARRAY, 'The path', null),
                     new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no)', null),
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file ', null),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
@@ -246,35 +246,18 @@ Cache file can be specified via ``--cache-file`` option or config file:
 
     ?>
 
-Using PHP CS Fixer on Travis
-----------------------------
+Using PHP CS Fixer on CI
+------------------------
 
 Require ``fabpot/php-cs-fixer`` as a `dev`` dependency:
 
     $ ./composer.phar require --dev fabpot/php-cs-fixer
 
-Create a build file to run ``php-cs-fixer`` on Travis. It's advisable to create a dedicated directory
-for PHP CS Fixer cache files and have Travis cache it between builds.
+Then, add the following command to your CI:
 
-    <?yaml
+    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist `git diff --name-only \$COMMIT_RANGE`
 
-    language: php
-    php:
-        - 5.5
-    sudo: false
-    cache:
-        directories:
-            - "\$HOME/.composer/cache"
-            - "\$HOME/.php-cs-fixer"
-    before_script:
-        - mkdir -p "\$HOME/.php-cs-fixer"
-    script:
-        - vendor/bin/php-cs-fixer fix --cache-file "\$HOME/.php-cs-fixer/.php_cs.cache" --dry-run --diff --verbose
-
-    ?>
-
-Note: This will only trigger a build if you have a subscription for Travis
-or are using their free open source plan.
+Where ``\$COMMIT_RANGE`` is your range of commits, eg ``\$TRAVIS_COMMIT_RANGE`` or ``HEAD^^..HEAD``.
 
 Exit codes
 ----------

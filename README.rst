@@ -876,8 +876,8 @@ Cache file can be specified via ``--cache-file`` option or config file:
         ->setCacheFile(__DIR__.'/.php_cs.cache')
     ;
 
-Using PHP CS Fixer on Travis
-----------------------------
+Using PHP CS Fixer on CI
+------------------------
 
 Require ``fabpot/php-cs-fixer`` as a `dev`` dependency:
 
@@ -885,26 +885,13 @@ Require ``fabpot/php-cs-fixer`` as a `dev`` dependency:
 
     $ ./composer.phar require --dev fabpot/php-cs-fixer
 
-Create a build file to run ``php-cs-fixer`` on Travis. It's advisable to create a dedicated directory
-for PHP CS Fixer cache files and have Travis cache it between builds.
+Then, add the following command to your CI:
 
-.. code-block:: yaml
+.. code-block:: bash
 
-    language: php
-    php:
-        - 5.5
-    sudo: false
-    cache:
-        directories:
-            - "$HOME/.composer/cache"
-            - "$HOME/.php-cs-fixer"
-    before_script:
-        - mkdir -p "$HOME/.php-cs-fixer"
-    script:
-        - vendor/bin/php-cs-fixer fix --cache-file "$HOME/.php-cs-fixer/.php_cs.cache" --dry-run --diff --verbose
+    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist `git diff --name-only $COMMIT_RANGE`
 
-Note: This will only trigger a build if you have a subscription for Travis
-or are using their free open source plan.
+Where ``$COMMIT_RANGE`` is your range of commits, eg ``$TRAVIS_COMMIT_RANGE`` or ``HEAD^^..HEAD``.
 
 Exit codes
 ----------
