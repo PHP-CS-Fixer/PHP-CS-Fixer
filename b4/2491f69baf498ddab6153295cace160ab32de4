@@ -1,0 +1,167 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-14T10:37:29Z
+
+Also, Travis is red
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-14T10:38:55Z
+
+that is because of the TODO, the integration tests are not done, just stubbed :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-14T10:40:41Z
+
+OK, cool ;)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-02-14T11:14:28Z
+
+Is there a test case similar to this?
+
+```php
+if ($x) {
+    if ($y) {
+        return 1;
+    } else {
+        return 2;
+    }
+} else {
+    return 3;
+}
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-16T12:18:58Z
+
+TODO:
+HHVM 3.6.1 https://3v4l.org/U2hoG tokenizes diff. than 3.8.1 / PHP Zend
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-16T12:44:09Z
+
+Ref https://github.com/keradus/PHP-CS-Fixer/commit/c6761cd74c6a8ac611936b9abdab6785217674a2
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-18T08:13:47Z
+
+Should stay @ contrib level. I think this one is ready, please play around with it :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-28T21:25:08Z
+
+Could anyone handle the review?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-03-01T19:55:28Z
+
+https://github.com/SpacePossum/PHP-CS-Fixer/pull/11
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-13T10:45:30Z
+
+@SpacePossum could you squash commits of yours into one and then leave @gharlan at the end?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-13T12:10:31Z
+
+>@SpacePossum could you squash commits of yours into one and then leave @gharlan at the end?
+
+Sure thing :)
+I'll work on this a bit more, little refactor, and than squash after the review.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-13T12:12:52Z
+
+Oh, I thought it's ready to merge.
+When done please remove WIP label
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-22T19:21:20Z
+
+Happy to take review comments and thoughts on this one to wrap up it up :)
+ping @gharlan and @keradus and everyone else.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-25T08:14:40Z
+
+updated and squashed
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-21T11:51:33Z
+
+Missing tests for else with colons?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-21T12:18:46Z
+
+wish they killed the alternative syntax in PHP7... oh well.. lets see...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-21T12:21:01Z
+
+#PHP8 :P
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-28T14:52:08Z
+
+>Missing tests for else with colons?
+
+Test and a minor speed gain added. I didn't put effort in detecting / cleanup useless else statements done in the alternative syntax because it is no fun and an edge case anyway.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-05-23T15:12:47Z
+
+Updated, rebased and clean upped.
+The commit history looks a bit odd now with @gharlan being the author of the whole test file, hope he doesn't mind.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-23T18:32:46Z
+
+Please, could you recommit to retrigger Travis? Also, put no_useless_else to .php_cs file
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-23T19:23:03Z
+
+@keradus Or just close and re-open the PR.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-23T19:35:48Z
+
+Didn't know that trick, thanks ;)
+(But it's sad we need to have tricks for Travis :/)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-05-23T19:46:20Z
+
+@keradus you should be able to restart builds because you have write permissions to the repo.
+
+![screenshot 2016-05-23 21 45 41](https://cloud.githubusercontent.com/assets/330436/15482409/c36e7b92-212f-11e6-98df-4f7198a85d81.png)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-23T19:49:31Z
+
+@gharlan usually it is like that and I do it often, sadly this time it wasn't about crashed build, but the build was not triggered at all, so I have no build to restart  - I needed to retrigger it ;)
