@@ -1,0 +1,76 @@
+---------------------------------------------------------------------------
+
+by gharlan at 2016-05-11T20:10:06Z
+
+fixed tests and harmonized comment handling around `{`.
+Please take a look at changed test cases.
+
+input:
+```php
+if (true) // foo
+{
+    bar();
+}
+
+function () // foo
+{
+};
+```
+
+expected before this pr:
+```php
+if (true) {
+    // foo
+
+    bar();
+}
+
+function () {// foo
+};
+```
+
+harmonized result after merging this pr:
+```php
+if (true) { // foo
+    bar();
+}
+
+function () { // foo
+};
+```
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-11T20:15:42Z
+
+I quite liked the comment moving tbh. :P
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-11T20:16:17Z
+
+Seriously though, your new changes do look much better. ;)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-05-19T13:23:18Z
+
+ping :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-19T13:43:21Z
+
+Anyone willing to make a review ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-21T21:46:35Z
+
+I really wish @DeeJaVu would stop spamming this issue. ;(
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-21T21:47:17Z
+
+It does look like GitHub have suspended the account though, so that's good. :)
