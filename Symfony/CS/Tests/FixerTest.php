@@ -242,6 +242,13 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_empty_comment'], $fixers['extra_empty_lines']), // tested also in: no_empty_comment,extra_empty_lines.test
             array($fixers['no_empty_comment'], $fixers['trailing_spaces']), // tested also in: no_empty_comment,trailing_spaces.test
             array($fixers['no_empty_comment'], $fixers['whitespacy_lines']), // tested also in: no_empty_comment,whitespacy_lines.test
+            array($fixers['duplicate_semicolon'], $fixers['no_useless_else']), // tested also in: duplicate_semicolon,no_useless_else.test
+            array($fixers['no_useless_else'], $fixers['braces']),
+            array($fixers['no_useless_else'], $fixers['combine_consecutive_unsets']), // tested also in: no_useless_else,combine_consecutive_unsets.test
+            array($fixers['no_useless_else'], $fixers['extra_empty_lines']), // tested also in: no_useless_else,extra_empty_lines.test
+            array($fixers['no_useless_else'], $fixers['no_useless_return']), // tested also in: no_useless_else,no_useless_return.test
+            array($fixers['no_useless_else'], $fixers['trailing_spaces']), // tested also in: no_useless_else,trailing_spaces.test
+            array($fixers['no_useless_else'], $fixers['whitespacy_lines']), // tested also in: no_useless_else,whitespacy_lines.test
         );
 
         $docFixerNames = array_filter(

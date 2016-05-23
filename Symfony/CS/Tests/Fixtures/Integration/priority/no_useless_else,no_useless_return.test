@@ -1,0 +1,28 @@
+--TEST--
+Integration of fixers: no_useless_else,no_useless_return.
+--CONFIG--
+level=none
+fixers=no_useless_else,no_useless_return
+--EXPECT--
+<?php
+
+function a()
+{
+    if ($a) {
+        return;
+    }   //
+        //
+    //
+}
+
+--INPUT--
+<?php
+
+function a()
+{
+    if ($a) {
+        return;
+    } else { //
+        return;//
+    }//
+}
