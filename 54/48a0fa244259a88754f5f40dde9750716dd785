@@ -1,0 +1,181 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-20T08:10:09Z
+
+Some of these test cases are invalid php.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-20T08:10:22Z
+
+```
+There was 1 failure:
+1) Symfony\CS\Tests\Fixer\Symfony\HeredocToNowdocFixerTest::testFix with data set #8 ('<?php\n$html = <<<'HTML'\na\nHTM...HTML;\n')
+Failed asserting that '
+Parse error: syntax error, unexpected ',' in /home/travis/build/FriendsOfPHP/PHP-CS-Fixer/cs_fixer_tmp_Khtpgj on line 6
+Errors parsing /home/travis/build/FriendsOfPHP/PHP-CS-Fixer/cs_fixer_tmp_Khtpgj
+' is null.
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/Symfony/CS/Tests/Fixer/AbstractFixerTestBase.php:95
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/Symfony/CS/Tests/Fixer/Symfony/HeredocToNowdocFixerTest.php:29
+```
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-04-20T08:59:25Z
+
+I think the fixer should not remove the spaces.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-20T09:02:31Z
+
+> I think the fixer should not remove the spaces.
+
+Not removing the spaces results in a syntax error.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-04-20T09:04:39Z
+
+Oh, ok, didn't know that.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-04-20T09:39:43Z
+
+> Not removing the spaces results in a syntax error.
+
+it is valid: https://3v4l.org/GlPME
+
+So, I still think we should not remove the spaces.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-20T09:42:11Z
+
+> So, I still think we should not remove the spaces.
+
+How come my other test file is getting broken then?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-04-20T09:43:40Z
+
+Because the fixer does not handle the spaces correctly.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-20T09:44:36Z
+
+>How come my other test file is getting broken then?
+
+because the opening quote was misplaced;
+current wrong:
+
+```
+<<< "    HTML"
+```
+
+PR fixes to:
+```
+<<< "HTML"
+```
+suggested is:
+```
+<<<     "HTML"
+```
+input
+```
+<<<     HTML
+```
+
+I guess?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-04-20T09:45:56Z
+
+suggested is:
+
+```php
+<<<     'HTML'
+```
+
+(single quotes)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-20T11:24:09Z
+
+course :)
+updated, I have the feeling the replace can be done more efficient, if so maybe someone can suggest how?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-04-20T11:30:30Z
+
+> I have the feeling the replace can be done more efficient
+
+I don't think so.
+
+👍 🚢
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-21T11:55:14Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-21T10:04:06Z
+
+Is this good to merge @keradus?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-22T16:22:19Z
+
+Yes, please rebase.
+I got falsy impression thanks to our stalker ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-22T17:03:19Z
+
+> I got falsy impression thanks to our stalker ;)
+
+I wonder if I can get gitHub to actually delete all the mess they've made.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-22T17:44:51Z
+
+One one or another please rebase and put your thumb for #1903 ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-05-22T19:41:50Z
+
+rtm :)
+dunno why the test don't run atm btw
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-23T06:20:24Z
+
+why based on #1896 ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-05-23T06:46:27Z
+
+~~I guess I messed up the rebase, wasn't a good weekend for development, lets see~~
+
+fixed
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-23T07:36:54Z
+
+:+1:
