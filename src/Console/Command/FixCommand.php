@@ -180,6 +180,7 @@ The example below will add two fixers to the default list of PSR2 set fixers:
 
     \$finder = PhpCsFixer\Finder::create()
         ->exclude('somedir')
+        ->notPath('src/Symfony/Component/Translation/Tests/fixtures/resources.php')
         ->in(__DIR__)
     ;
 
@@ -193,6 +194,11 @@ The example below will add two fixers to the default list of PSR2 set fixers:
     ;
 
     ?>
+
+**NOTE**: ``exclude`` will work only for directories, so if you need to exclude file, try ``notPath``.
+
+See `Symfony\\\\Finder <http://symfony.com/doc/current/components/finder.html>`_
+online documentation for other `Finder` methods.
 
 You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
 The following example shows how to use all ``Symfony`` Fixers but the ``full_opening_tag`` Fixer.
