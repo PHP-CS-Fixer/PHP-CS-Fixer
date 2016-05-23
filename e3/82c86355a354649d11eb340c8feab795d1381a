@@ -1,0 +1,43 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-11T16:02:52Z
+
+Please read two last points of https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.11/CONTRIBUTING.md#quick-guide
+
+---------------------------------------------------------------------------
+
+by glensc at 2016-04-11T16:29:53Z
+
+> Regenerate readme: php php-cs-fixer readme > README.rst. Do not modify README.rst manually!
+
+blah. annoying. but the changeset itself is okay?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-11T16:37:49Z
+
+not annoying, as we are autogenerating a lot of file's content ;)
+
+---------------------------------------------------------------------------
+
+by glensc at 2016-04-11T16:39:16Z
+
+you omitted answer to question, do i assume `yes` then?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-11T16:41:31Z
+
+My answer is around diff line it concerns
+
+---------------------------------------------------------------------------
+
+by glensc at 2016-04-11T18:54:05Z
+
+updated commit.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-20T07:13:36Z
+
+:+1:
