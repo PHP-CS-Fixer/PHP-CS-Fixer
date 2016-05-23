@@ -28,8 +28,12 @@ abstract class AbstractTransformerTestCase extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             count($expectedTokens),
             array_sum(array_map(
-                function ($item) { return count($item); },
-                $tokens->findGivenKind(array_map(function ($name) { return constant($name); }, $expectedTokens))
+                function ($item) {
+                    return count($item);
+                },
+                $tokens->findGivenKind(array_map(function ($name) {
+                    return constant($name);
+                }, $expectedTokens))
             ))
         );
 
