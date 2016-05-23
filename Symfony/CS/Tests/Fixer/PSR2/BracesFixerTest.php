@@ -502,7 +502,8 @@ function bar()
 
 function & lambda()
 {
-    return function () {};
+    return function () {
+    };
 }',
             ),
             array(
@@ -565,7 +566,6 @@ function mixedComplex()
     if (true) {
         // foo
         // bar
-
         if (true) {
             print("foo");
             print("bar");
@@ -914,6 +914,20 @@ function foo()
             ],
         ];
     }',
+                '<?php
+    function myFunction()
+    {
+        return [
+            [
+                "callback" => function ($data) {
+                        return true;
+                    }
+            ],
+            [
+                "callback" => function ($data) { return true; },
+            ],
+        ];
+    }',
             ),
         );
     }
@@ -931,9 +945,7 @@ function foo()
         return array(
             array(
                 '<?php
-    if ($test) {
-        // foo
-
+    if ($test) { // foo
         echo 1;
     }',
                 '<?php
@@ -941,6 +953,28 @@ function foo()
     {
         echo 1;
     }',
+            ),
+            array(
+                '<?php
+    $foo = function ($x) use ($y) { // foo
+        echo 1;
+    };',
+                '<?php
+    $foo = function ($x) use ($y) // foo
+    {
+        echo 1;
+    };',
+            ),
+            array(
+                '<?php
+    $foo = new class ($a) extends Foo implements Bar { // foo
+        private $x;
+    };',
+                '<?php
+    $foo = new class ($a) extends Foo implements Bar // foo
+    {
+        private $x;
+    };',
             ),
         );
     }
@@ -1081,16 +1115,28 @@ class Foo
             ),
             array(
                 '<?php
-    filter(function   ($a) {});',
+    filter(function   ($a) {
+    });',
                 '<?php
     filter(function   ($a)
     {});',
             ),
             array(
                 '<?php
-    filter(function   ($b) {});',
+    filter(function   ($b) {
+    });',
                 '<?php
     filter(function   ($b){});',
+            ),
+            array(
+                '<?php
+    foo(array_map(function ($object) use ($x, $y) {
+        return array_filter($object->bar(), function ($o) {
+            return $o->isBaz();
+        });
+    }, $collection));',
+                '<?php
+    foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));',
             ),
             array(
                 '<?php
@@ -1119,7 +1165,7 @@ class Foo
             ),
             array(
                 '<?php
-    $fnc = function ($a, $b) {// random comment
+    $fnc = function ($a, $b) { // random comment
         return 0;
     };',
                 '<?php
@@ -1130,7 +1176,7 @@ class Foo
             ),
             array(
                 '<?php
-    $fnc = function ($a, $b) {# random comment
+    $fnc = function ($a, $b) { # random comment
         return 0;
     };',
                 '<?php
@@ -1237,7 +1283,8 @@ class Foo
             ),
             array(
                 '<?php
-    $foo = function& () use ($bar) {};',
+    $foo = function& () use ($bar) {
+    };',
                 '<?php
     $foo = function& ()use($bar){};',
             ),
@@ -1297,6 +1344,50 @@ declare   (   ticks   =   1   )   {
     finally     {
         echo "finish!";
     }',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideAnonymousClassesCases
+     * @requires PHP 7.0
+     */
+    public function testAnonymousClasses($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideAnonymousClassesCases()
+    {
+        return array(
+            array(
+                '<?php
+    function foo($a)
+    {
+        // foo
+        $foo = new class($a) extends Foo {
+            public function bar()
+            {
+            }
+        };
+    }',
+                '<?php
+    function foo($a)
+    {
+        // foo
+        $foo = new class($a) extends Foo { public function bar() {} };
+    }',
+            ),
+            array(
+                '<?php
+    foo(1, new class implements Logger {
+        public function log($message)
+        {
+            log($message);
+        }
+    }, 3);',
+                '<?php
+    foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
             ),
         );
     }
