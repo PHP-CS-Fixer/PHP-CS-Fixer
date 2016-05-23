@@ -16,7 +16,6 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Test\AccessibleObject;
-use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
@@ -48,10 +47,10 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testSetOption()
     {
-        $this->resolver->setOption('path', '.');
+        $this->resolver->setOption('path', array('.'));
         $property = AccessibleObject::create($this->resolver)->options;
 
-        $this->assertSame('.', $property['path']);
+        $this->assertSame(array('.'), $property['path']);
     }
 
     /**
@@ -155,7 +154,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_1';
 
         $this->resolver
-            ->setOption('path', $dir.DIRECTORY_SEPARATOR.'foo.php')
+            ->setOption('path', array($dir.DIRECTORY_SEPARATOR.'foo.php'))
             ->resolve();
 
         $this->assertSame($dir.DIRECTORY_SEPARATOR.'.php_cs.dist', $this->resolver->getConfigFile());
@@ -180,7 +179,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function testResolveConfigFileChooseFile($expectedFile, $expectedClass, $path, $cwdPath = null)
     {
         $resolver = $this->resolver
-            ->setOption('path', $path)
+            ->setOption('path', array($path))
         ;
 
         if (null !== $cwdPath) {
@@ -236,7 +235,28 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     {
         $dirBase = realpath(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR);
         $this->resolver
-            ->setOption('path', $dirBase.'/case_5')
+            ->setOption('path', array($dirBase.'/case_5'))
+            ->resolve();
+    }
+
+    /**
+     * @expectedException              \PhpCsFixer\ConfigurationException\InvalidConfigurationException
+     * @expectedExceptionMessageRegExp /^For multiple paths config parameter is required.$/
+     */
+    public function testResolveConfigFileChooseFileWithPathArrayWithoutConfig()
+    {
+        $dirBase = realpath(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR);
+        $this->resolver
+            ->setOption('path', array($dirBase.'/case_1/.php_cs.dist', $dirBase.'/case_1/foo.php'))
+            ->resolve();
+    }
+
+    public function testResolveConfigFileChooseFileWithPathArrayAndConfig()
+    {
+        $dirBase = realpath(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR);
+        $this->resolver
+            ->setOption('config', $dirBase.'/case_1/.php_cs.dist')
+            ->setOption('path', array($dirBase.'/case_1/.php_cs.dist', $dirBase.'/case_1/foo.php'))
             ->resolve();
     }
 
@@ -244,17 +264,17 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     {
         $this->resolver
             ->setCwd(__DIR__)
-            ->setOption('path', 'Command')
+            ->setOption('path', array('Command'))
             ->resolve();
 
-        $this->assertSame(__DIR__.DIRECTORY_SEPARATOR.'Command', $this->resolver->getPath());
+        $this->assertSame(array(__DIR__.DIRECTORY_SEPARATOR.'Command'), $this->resolver->getPath());
 
         $this->resolver
             ->setCwd(dirname(__DIR__))
-            ->setOption('path', basename(__DIR__))
+            ->setOption('path', array(basename(__DIR__)))
             ->resolve();
 
-        $this->assertSame(__DIR__, $this->resolver->getPath());
+        $this->assertSame(array(__DIR__), $this->resolver->getPath());
     }
 
     public function testResolvePathWithFileThatIsExcludedDirectly()
@@ -264,7 +284,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->notPath(basename(__FILE__));
 
         $this->resolver
-            ->setOption('path', __FILE__)
+            ->setOption('path', array(__FILE__))
             ->resolve();
 
         $this->assertCount(0, $this->resolver->getConfig()->getFinder());
@@ -278,7 +298,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->exclude(basename(__DIR__));
 
         $this->resolver
-            ->setOption('path', __FILE__)
+            ->setOption('path', array(__FILE__))
             ->resolve();
 
         $this->assertCount(0, $this->resolver->getConfig()->getFinder());
@@ -292,7 +312,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->notPath('foo-'.basename(__FILE__));
 
         $this->resolver
-            ->setOption('path', __FILE__)
+            ->setOption('path', array(__FILE__))
             ->resolve();
 
         $this->assertCount(1, $this->resolver->getConfig()->getFinder());
@@ -301,16 +321,17 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideResolveIntersectionOfPathsCases
      */
-    public function testResolveIntersectionOfPaths($expectedIntersectionItems, $configFinder, $option)
+    public function testResolveIntersectionOfPaths($expectedIntersectionItems, $configFinder, array $path, $config = null)
     {
         $this->config->finder($configFinder);
         $this->resolver
-            ->setOption('path', $option)
+            ->setOption('path', $path)
+            ->setOption('config', $config)
             ->resolve()
         ;
 
         $intersectionItems = array_map(
-            function (SplFileInfo $file) {
+            function (\SplFileInfo $file) {
                 return $file->getRealPath();
             },
             iterator_to_array($this->resolver->getConfig()->getFinder(), false)
@@ -337,37 +358,37 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         return array(
             // configured only by finder
             array(
-                $cb(array('a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php')),
+                $cb(array('a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php')),
                 Finder::create()
                     ->in($dir),
-                null,
+                array(),
             ),
             // configured only by argument
             array(
-                $cb(array('a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php')),
+                $cb(array('a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php')),
                 Finder::create(),
-                $dir,
+                array($dir),
             ),
             // configured by finder, filtered by argument which is dir
             array(
                 $cb(array('c/c1.php', 'c/d/cd1.php')),
                 Finder::create()
                     ->in($dir),
-                $dir.'/c',
+                array($dir.'/c'),
             ),
             // configured by finder, filtered by argument which is file
             array(
                 $cb(array('c/c1.php')),
                 Finder::create()
                     ->in($dir),
-                $dir.'/c/c1.php',
+                array($dir.'/c/c1.php'),
             ),
             // finder points to one dir while argument to another, not connected
             array(
                 array(),
                 Finder::create()
                     ->in($dir.'/b'),
-                $dir.'/c',
+                array($dir.'/c'),
             ),
             // finder with excluded dir, argument points to excluded file
             array(
@@ -375,7 +396,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
                 Finder::create()
                     ->in($dir)
                     ->exclude('c'),
-                $dir.'/c/d/cd1.php',
+                array($dir.'/c/d/cd1.php'),
             ),
             // finder with excluded dir, argument points to excluded parent
             array(
@@ -383,7 +404,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
                 Finder::create()
                     ->in($dir)
                     ->exclude('c/d'),
-                $dir.'/c',
+                array($dir.'/c'),
             ),
             // finder with excluded file, argument points to excluded parent
             array(
@@ -391,14 +412,30 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
                 Finder::create()
                     ->in($dir)
                     ->notPath('c/c1.php'),
-                $dir.'/c',
+                array($dir.'/c'),
             ),
             // configured by finder, argument points to not-existing path
             array(
                 array(),
                 Finder::create()
                     ->in($dir),
-                'non_existing_dir',
+                array('non_existing_dir'),
+            ),
+            // configured by finder, filtered by argument which is multiple files
+            array(
+                $cb(array('d/d1.php', 'd/d2.php')),
+                Finder::create()
+                    ->in($dir),
+                array($dir.'/d/d1.php', $dir.'/d/d2.php'),
+                $dir.'/d/.php_cs',
+            ),
+            // configured by finder, filtered by argument which is multiple files and dirs
+            array(
+                $cb(array('d/d1.php', 'd/e/de1.php', 'd/f/df1.php')),
+                Finder::create()
+                    ->in($dir),
+                array($dir.'/d/d1.php', $dir.'/d/e', $dir.'/d/f/'),
+                $dir.'/d/.php_cs',
             ),
         );
     }
@@ -406,7 +443,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function testResolveIsDryRunViaStdIn()
     {
         $this->resolver
-            ->setOption('path', '-')
+            ->setOption('path', array('-'))
             ->setOption('dry-run', false)
             ->resolve();
 
