@@ -78,6 +78,6 @@ final class HeredocToNowdocFixer extends AbstractFixer
      */
     private function convertToNowdoc(Token $token)
     {
-        $token->setContent(preg_replace('/(?<=^<<<)"?(.*?)"?$/', '\'$1\'', $token->getContent()));
+        $token->setContent(preg_replace('/(?<=^<<<)(\s*)"?(.*?)"?$/', '$1\'$2\'', $token->getContent()));
     }
 }

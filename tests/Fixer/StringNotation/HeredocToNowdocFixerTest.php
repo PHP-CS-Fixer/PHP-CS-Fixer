@@ -104,6 +104,34 @@ TEST;
 
 EOF
             ),
+            array(<<<'EOF'
+<?php
+$html = <<<   'HTML'
+a
+HTML;
+
+EOF
+            , <<<'EOF'
+<?php
+$html = <<<   HTML
+a
+HTML;
+
+EOF
+            ),
+            array(<<<'EOF'
+<?php $a = <<<           'TEST'
+Foo
+TEST;
+
+EOF
+            , <<<'EOF'
+<?php $a = <<<           "TEST"
+Foo
+TEST;
+
+EOF
+            ),
         );
     }
 }
