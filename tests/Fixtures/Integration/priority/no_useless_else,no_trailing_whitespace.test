@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: no_useless_else,no_trailing_whitespace.
+--CONFIG--
+{"no_useless_else": true, "no_trailing_whitespace": true}
+--EXPECT--
+<?php
+
+if ($a) {
+    return;
+}
+    return;
+
+
+--INPUT--
+<?php
+
+if ($a) {
+    return;
+} else {
+    return;
+}

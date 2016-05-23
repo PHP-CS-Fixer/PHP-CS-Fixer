@@ -268,6 +268,13 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_empty_statement'], $fixers['switch_case_semicolon_to_colon']),  // tested also in: no_empty_statement,switch_case_semicolon_to_colon.test
             array($fixers['no_empty_statement'], $fixers['no_trailing_whitespace']), // tested also in: no_empty_statement,no_trailing_whitespace.test
             array($fixers['no_empty_statement'], $fixers['no_whitespace_in_blank_lines']), // tested also in: no_empty_statement,no_whitespace_in_blank_lines.test
+            array($fixers['no_duplicate_semicolons'], $fixers['no_useless_else']), // tested also in: no_duplicate_semicolons,no_useless_else.test
+            array($fixers['no_useless_else'], $fixers['braces']),
+            array($fixers['no_useless_else'], $fixers['combine_consecutive_unsets']), // tested also in: no_useless_else,combine_consecutive_unsets.test
+            array($fixers['no_useless_else'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: no_useless_else,no_extra_consecutive_blank_lines.test
+            array($fixers['no_useless_else'], $fixers['no_useless_return']), // tested also in: no_useless_else,no_useless_return.test
+            array($fixers['no_useless_else'], $fixers['no_trailing_whitespace']), // tested also in: no_useless_else,no_trailing_whitespace.test
+            array($fixers['no_useless_else'], $fixers['no_whitespace_in_blank_lines']), // tested also in: no_useless_else,no_whitespace_in_blank_lines.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:

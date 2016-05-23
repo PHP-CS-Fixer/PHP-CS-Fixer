@@ -1,0 +1,29 @@
+--TEST--
+Integration of fixers: no_useless_else,combine_consecutive_unsets.
+--CONFIG--
+{"no_useless_else": true, "combine_consecutive_unsets": true}
+--EXPECT--
+<?php
+
+if ($a) {
+    return;
+}
+
+
+    unset($a, $b);
+
+
+
+
+--INPUT--
+<?php
+
+if ($a) {
+    return;
+}
+else
+{
+    unset($a);
+}
+
+unset($b);

@@ -499,6 +499,10 @@ Choose from the list of available fixers:
                          Unused use statements must be
                          removed.
 
+* **no_useless_else**
+                         There should not be useless
+                         else cases.
+
 * **no_useless_return**
                          There should not be an empty
                          return statement at the end

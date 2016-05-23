@@ -66,7 +66,7 @@ final class NoDuplicateSemicolonsFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run before the BracesFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, NoMultilineWhitespaceBeforeSemicolonsFixer, SwitchCaseSemicolonToColonFixer and NoUselessReturnFixer.
+        // should be run before the BracesFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, NoMultilineWhitespaceBeforeSemicolonsFixer, SwitchCaseSemicolonToColonFixer, NoUselessElseFixer and NoUselessReturnFixer
         return 26;
     }
 }

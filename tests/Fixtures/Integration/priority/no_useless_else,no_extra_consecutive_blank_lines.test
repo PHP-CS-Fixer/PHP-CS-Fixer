@@ -1,0 +1,26 @@
+--TEST--
+Integration of fixers: no_useless_else,no_extra_consecutive_blank_lines.
+--CONFIG--
+{"no_useless_else": true, "no_extra_consecutive_blank_lines": true}
+--EXPECT--
+<?php
+
+if ($a) {
+    return;
+}
+
+    echo 1;
+
+
+--INPUT--
+<?php
+
+if ($a) {
+    return;
+}
+else
+{
+
+
+    echo 1;
+}
