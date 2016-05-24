@@ -312,29 +312,17 @@ class Fixer
         return 'symfony';
     }
 
+    /**
+     * @deprecated Will be removed in the 2.0.
+     *
+     * @param string $old
+     * @param string $new
+     *
+     * @return string
+     */
     protected function stringDiff($old, $new)
     {
-        $diff = $this->diff->diff($old, $new);
-
-        $diff = implode(
-            PHP_EOL,
-            array_map(
-                function ($string) {
-                    $string = preg_replace('/^(\+){3}/', '<info>+++</info>', $string);
-                    $string = preg_replace('/^(\+){1}/', '<info>+</info>', $string);
-
-                    $string = preg_replace('/^(\-){3}/', '<error>---</error>', $string);
-                    $string = preg_replace('/^(\-){1}/', '<error>-</error>', $string);
-
-                    $string = str_repeat(' ', 6).$string;
-
-                    return $string;
-                },
-                explode(PHP_EOL, $diff)
-            )
-        );
-
-        return $diff;
+        return $this->diff->diff($old, $new);
     }
 
     /**

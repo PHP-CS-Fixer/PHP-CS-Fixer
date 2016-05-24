@@ -13,6 +13,7 @@
 namespace Symfony\CS\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -404,8 +405,9 @@ EOF
             $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, $fileProcessedEventListener);
         }
 
+        $isDiff = $input->getOption('diff');
         $this->stopwatch->start('fixFiles');
-        $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $input->getOption('diff'));
+        $changed = $this->fixer->fix($config, $input->getOption('dry-run'), $isDiff);
         $this->stopwatch->stop('fixFiles');
 
         if ($showProgress) {
@@ -440,10 +442,32 @@ EOF
                         $output->write(sprintf($fixerDetailLine, implode(', ', $fixResult['appliedFixers'])));
                     }
 
-                    if ($input->getOption('diff')) {
+                    if ($isDiff) {
                         $output->writeln('');
                         $output->writeln('<comment>      ---------- begin diff ----------</comment>');
-                        $output->writeln($fixResult['diff']);
+
+                        if ($output->isDecorated()) {
+                            $diff = implode(
+                                PHP_EOL,
+                                array_map(
+                                    function ($string) {
+                                        $string = preg_replace('/^(\+){3}/', '<info>+++</info>', $string);
+                                        $string = preg_replace('/^(\+){1}/', '<info>+</info>', $string);
+                                        $string = preg_replace('/^(\-){3}/', '<error>---</error>', $string);
+                                        $string = preg_replace('/^(\-){1}/', '<error>-</error>', $string);
+                                        $string = str_repeat(' ', 6).$string;
+
+                                        return $string;
+                                    },
+                                    explode(PHP_EOL, OutputFormatter::escape($fixResult['diff']))
+                                )
+                            );
+
+                            $output->writeln($diff);
+                        } else {
+                            $output->writeln($fixResult['diff'], OutputInterface::OUTPUT_RAW);
+                        }
+
                         $output->writeln('<comment>      ---------- end diff ----------</comment>');
                     }
 
@@ -489,7 +513,7 @@ EOF
                         }
                     }
 
-                    if ($input->getOption('diff')) {
+                    if ($isDiff) {
                         $diffXML = $dom->createElement('diff');
                         $diffXML->appendChild($dom->createCDATASection($fixResult['diff']));
                         $fileXML->appendChild($diffXML);
@@ -497,7 +521,7 @@ EOF
                 }
 
                 $dom->formatOutput = true;
-                $output->write($dom->saveXML());
+                $output->write($dom->saveXML(), false, OutputInterface::OUTPUT_RAW);
                 break;
             case 'json':
                 $jFiles = array();
@@ -509,7 +533,7 @@ EOF
                         $jfile['appliedFixers'] = $fixResult['appliedFixers'];
                     }
 
-                    if ($input->getOption('diff')) {
+                    if ($isDiff) {
                         $jfile['diff'] = $fixResult['diff'];
                     }
 
@@ -540,7 +564,7 @@ EOF
                     $json['time']['files'] = $jFileTime;
                 }
 
-                $output->write(json_encode($json));
+                $output->write(json_encode($json), false, OutputInterface::OUTPUT_RAW);
                 break;
         }
 
