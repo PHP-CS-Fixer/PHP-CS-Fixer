@@ -101,6 +101,7 @@ final class FixCommand extends Command
             ->setDefinition(
                 array(
                     new InputArgument('path', InputArgument::IS_ARRAY, 'The path', null),
+                    new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be override or intersection)', 'override'),
                     new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no)', null),
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file ', null),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
@@ -261,9 +262,9 @@ Require ``fabpot/php-cs-fixer`` as a `dev`` dependency:
 
 Then, add the following command to your CI:
 
-    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist `git diff --name-only \$COMMIT_RANGE`
+    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist --path-mode=intersection `git diff --name-only \$COMMIT_RANGE`
 
-Where ``\$COMMIT_RANGE`` is your range of commits, eg ``\$TRAVIS_COMMIT_RANGE`` or ``HEAD^^..HEAD``.
+Where ``\$COMMIT_RANGE`` is your range of commits, eg ``\$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
 Exit codes
 ----------
@@ -296,6 +297,7 @@ EOF
                 'dry-run' => $input->getOption('dry-run'),
                 'rules' => $input->getOption('rules'),
                 'path' => $input->getArgument('path'),
+                'path-mode' => $input->getOption('path-mode'),
                 'progress' => (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) && 'txt' === $input->getOption('format'),
                 'using-cache' => $input->getOption('using-cache'),
                 'cache-file' => $input->getOption('cache-file'),
