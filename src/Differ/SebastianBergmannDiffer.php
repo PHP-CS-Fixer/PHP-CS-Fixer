@@ -34,20 +34,6 @@ final class SebastianBergmannDiffer implements DifferInterface
      */
     public function diff($old, $new)
     {
-        return implode(
-            PHP_EOL,
-            array_map(
-                function ($string) {
-                    $string = preg_replace('/^(\+){3}/', '<info>+++</info>', $string);
-                    $string = preg_replace('/^(\+){1}/', '<info>+</info>', $string);
-
-                    $string = preg_replace('/^(\-){3}/', '<error>---</error>', $string);
-                    $string = preg_replace('/^(\-){1}/', '<error>-</error>', $string);
-
-                    return $string;
-                },
-                explode(PHP_EOL, $this->differ->diff($old, $new))
-            )
-        );
+        return $this->differ->diff($old, $new);
     }
 }

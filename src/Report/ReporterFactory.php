@@ -76,6 +76,14 @@ final class ReporterFactory
     }
 
     /**
+     * @return string[]
+     */
+    public function getFormats()
+    {
+        return array_keys($this->reporters);
+    }
+
+    /**
      * @param string $format
      *
      * @return ReporterInterface

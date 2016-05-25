@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer\Report;
 
+use Symfony\Component\Console\Formatter\OutputFormatter;
+
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
  *
@@ -66,7 +68,7 @@ final class XmlReporter implements ReporterInterface
 
         $dom->formatOutput = true;
 
-        return $dom->saveXML();
+        return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($dom->saveXML()) : $dom->saveXML();
     }
 
     /**
