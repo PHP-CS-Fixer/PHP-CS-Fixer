@@ -225,7 +225,7 @@ then specify all fixers to be used:
     ?>
 
 You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
-The following example shows how to use all ``symfony`` Fixers but the ``psr0`` fixer.
+The following example shows how to use all ``symfony`` Fixers but not the ``psr0`` fixer.
 Note the additional <comment>-</comment> in front of the Fixer name.
 
     <?php
