@@ -201,7 +201,7 @@ See `Symfony\\\\Finder <http://symfony.com/doc/current/components/finder.html>`_
 online documentation for other `Finder` methods.
 
 You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
-The following example shows how to use all ``Symfony`` Fixers but the ``full_opening_tag`` Fixer.
+The following example shows how to use all ``Symfony`` Fixers but not the ``full_opening_tag`` Fixer.
 
     <?php
 
