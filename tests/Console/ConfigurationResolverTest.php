@@ -277,7 +277,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array(__DIR__), $this->resolver->getPath());
     }
 
-    public function testResolvePathWithFileThatIsExcludedDirectly()
+    public function testResolvePathWithFileThatIsExcludedDirectlyOverridePathMode()
     {
         $this->config->getFinder()
             ->in(__DIR__)
@@ -287,10 +287,24 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->setOption('path', array(__FILE__))
             ->resolve();
 
+        $this->assertCount(1, $this->resolver->getConfig()->getFinder());
+    }
+
+    public function testResolvePathWithFileThatIsExcludedDirectlyIntersectionPathMode()
+    {
+        $this->config->getFinder()
+            ->in(__DIR__)
+            ->notPath(basename(__FILE__));
+
+        $this->resolver
+            ->setOption('path', array(__FILE__))
+            ->setOption('path-mode', 'intersection')
+            ->resolve();
+
         $this->assertCount(0, $this->resolver->getConfig()->getFinder());
     }
 
-    public function testResolvePathWithFileThatIsExcludedByDir()
+    public function testResolvePathWithFileThatIsExcludedByDirOverridePathMode()
     {
         $dir = dirname(__DIR__);
         $this->config->getFinder()
@@ -299,6 +313,21 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
         $this->resolver
             ->setOption('path', array(__FILE__))
+            ->resolve();
+
+        $this->assertCount(1, $this->resolver->getConfig()->getFinder());
+    }
+
+    public function testResolvePathWithFileThatIsExcludedByDirIntersectionPathMode()
+    {
+        $dir = dirname(__DIR__);
+        $this->config->getFinder()
+            ->in($dir)
+            ->exclude(basename(__DIR__));
+
+        $this->resolver
+            ->setOption('path', array(__FILE__))
+            ->setOption('path-mode', 'intersection')
             ->resolve();
 
         $this->assertCount(0, $this->resolver->getConfig()->getFinder());
@@ -321,14 +350,22 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideResolveIntersectionOfPathsCases
      */
-    public function testResolveIntersectionOfPaths($expectedIntersectionItems, $configFinder, array $path, $config = null)
+    public function testResolveIntersectionOfPaths($expected, $configFinder, array $path, $pathMode, $config = null)
     {
-        $this->config->finder($configFinder);
+        if (null !== $configFinder) {
+            $this->config->finder($configFinder);
+        }
+
         $this->resolver
             ->setOption('path', $path)
+            ->setOption('path-mode', $pathMode)
             ->setOption('config', $config)
             ->resolve()
         ;
+
+        if ($expected instanceof \Exception) {
+            $this->setExpectedException(get_class($expected));
+        }
 
         $intersectionItems = array_map(
             function (\SplFileInfo $file) {
@@ -337,10 +374,10 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             iterator_to_array($this->resolver->getConfig()->getFinder(), false)
         );
 
-        sort($expectedIntersectionItems);
+        sort($expected);
         sort($intersectionItems);
 
-        $this->assertSame($expectedIntersectionItems, $intersectionItems);
+        $this->assertSame($expected, $intersectionItems);
     }
 
     public function provideResolveIntersectionOfPathsCases()
@@ -356,85 +393,111 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         };
 
         return array(
-            // configured only by finder
-            array(
+            'no path at all' => array(
+                new \LogicException(),
+                Finder::create(),
+                array(),
+                'override',
+            ),
+            'configured only by finder' => array(
+                // don't override if the argument is empty
                 $cb(array('a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php')),
                 Finder::create()
                     ->in($dir),
                 array(),
+                'override',
             ),
-            // configured only by argument
-            array(
+            'configured only by argument' => array(
                 $cb(array('a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php')),
                 Finder::create(),
                 array($dir),
+                'override',
             ),
-            // configured by finder, filtered by argument which is dir
-            array(
+            'configured by finder, intersected with empty argument' => array(
+                array(),
+                Finder::create()
+                    ->in($dir),
+                array(),
+                'intersection',
+            ),
+            'configured by finder, intersected with dir' => array(
                 $cb(array('c/c1.php', 'c/d/cd1.php')),
                 Finder::create()
                     ->in($dir),
                 array($dir.'/c'),
+                'intersection',
             ),
-            // configured by finder, filtered by argument which is file
-            array(
+            'configured by finder, intersected with file' => array(
                 $cb(array('c/c1.php')),
                 Finder::create()
                     ->in($dir),
                 array($dir.'/c/c1.php'),
+                'intersection',
             ),
-            // finder points to one dir while argument to another, not connected
-            array(
+            'finder points to one dir while argument to another, not connected' => array(
                 array(),
                 Finder::create()
                     ->in($dir.'/b'),
                 array($dir.'/c'),
+                'intersection',
             ),
-            // finder with excluded dir, argument points to excluded file
-            array(
+            'finder with excluded dir, intersected with excluded file' => array(
                 array(),
                 Finder::create()
                     ->in($dir)
                     ->exclude('c'),
                 array($dir.'/c/d/cd1.php'),
+                'intersection',
             ),
-            // finder with excluded dir, argument points to excluded parent
-            array(
+            'finder with excluded dir, intersected with dir containing excluded one' => array(
                 $cb(array('c/c1.php')),
                 Finder::create()
                     ->in($dir)
                     ->exclude('c/d'),
                 array($dir.'/c'),
+                'intersection',
             ),
-            // finder with excluded file, argument points to excluded parent
-            array(
+            'finder with excluded file, intersected with dir containing excluded one' => array(
                 $cb(array('c/d/cd1.php')),
                 Finder::create()
                     ->in($dir)
                     ->notPath('c/c1.php'),
                 array($dir.'/c'),
+                'intersection',
             ),
-            // configured by finder, argument points to not-existing path
-            array(
+            'configured by finder, intersected with non-existing path' => array(
                 array(),
                 Finder::create()
                     ->in($dir),
                 array('non_existing_dir'),
+                'intersection',
             ),
-            // configured by finder, filtered by argument which is multiple files
-            array(
+            'configured by finder, overriden by multiple files' => array(
                 $cb(array('d/d1.php', 'd/d2.php')),
-                Finder::create()
-                    ->in($dir),
+                null,
                 array($dir.'/d/d1.php', $dir.'/d/d2.php'),
+                'override',
                 $dir.'/d/.php_cs',
             ),
-            // configured by finder, filtered by argument which is multiple files and dirs
-            array(
+            'configured by finder, intersected with multiple files' => array(
+                $cb(array('d/d1.php', 'd/d2.php')),
+                null,
+                array($dir.'/d/d1.php', $dir.'/d/d2.php'),
+                'intersection',
+                $dir.'/d/.php_cs',
+            ),
+            'configured by finder, overriden by multiple files and dirs' => array(
                 $cb(array('d/d1.php', 'd/e/de1.php', 'd/f/df1.php')),
-                Finder::create()
-                    ->in($dir),
+                null,
                 array($dir.'/d/d1.php', $dir.'/d/e', $dir.'/d/f/'),
+                'override',
+                $dir.'/d/.php_cs',
+            ),
+            'configured by finder, intersected with multiple files and dirs' => array(
+                $cb(array('d/d1.php', 'd/e/de1.php', 'd/f/df1.php')),
+                null,
+                array($dir.'/d/d1.php', $dir.'/d/e', $dir.'/d/f/'),
+                'intersection',
                 $dir.'/d/.php_cs',
             ),
         );

@@ -33,6 +33,9 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  */
 final class ConfigurationResolver
 {
+    const PATH_MODE_OVERRIDE = 'override';
+    const PATH_MODE_INTERSECTION = 'intersection';
+
     /**
      * @var bool
      */
@@ -92,6 +95,7 @@ final class ConfigurationResolver
         'dry-run' => null,
         'format' => 'txt',
         'path' => array(),
+        'path-mode' => self::PATH_MODE_OVERRIDE,
         'progress' => null,
         'using-cache' => null,
         'cache-file' => null,
@@ -206,6 +210,7 @@ final class ConfigurationResolver
      */
     public function resolve()
     {
+        $this->resolvePathMode();
         $this->resolvePath();
         $this->resolveIsStdIn();
         $this->resolveIsDryRun();
@@ -403,9 +408,7 @@ final class ConfigurationResolver
             return;
         }
 
-        if (empty($this->path)) {
-            return;
-        }
+        $isIntersectionPathMode = self::PATH_MODE_INTERSECTION === $this->options['path-mode'];
 
         $paths = array_filter(array_map(
             function ($path) {
@@ -415,7 +418,9 @@ final class ConfigurationResolver
         ));
 
         if (empty($paths)) {
-            $this->config->finder(new \ArrayIterator(array()));
+            if ($isIntersectionPathMode) {
+                $this->config->finder(new \ArrayIterator(array()));
+            }
 
             return;
         }
@@ -435,37 +440,45 @@ final class ConfigurationResolver
             }
         }
 
-        // - when we already have a valid finder - create intersection iterator of current finder and provided path
-        // - when we don't have valid finder - prepare new iterator
-        $iterator = null;
         $currentFinder = $this->config->getFinder();
-
-        $callback = function (\SplFileInfo $current) use ($pathsByType) {
-            $currentRealPath = $current->getRealPath();
-
-            if (in_array($currentRealPath, $pathsByType['file'], true)) {
-                return true;
-            }
-
-            foreach ($pathsByType['dir'] as $path) {
-                if (0 === strpos($currentRealPath, $path)) {
-                    return true;
-                }
-            }
-
-            return false;
-        };
+        $nestedFinder = null;
+        $iterator = null;
 
         try {
+            $nestedFinder = $currentFinder instanceof \IteratorAggregate ? $currentFinder->getIterator() : $currentFinder;
+        } catch (\Exception $e) {
+        }
+
+        if ($isIntersectionPathMode) {
+            if (null === $nestedFinder) {
+                throw new InvalidConfigurationException(
+                    'Cannot create intersection with not-fully defined Finder in configuration file.'
+                );
+            }
+
             $iterator = new \CallbackFilterIterator(
-                $currentFinder instanceof \IteratorAggregate ? $currentFinder->getIterator() : $currentFinder,
-                $callback
+                $nestedFinder,
+                function (\SplFileInfo $current) use ($pathsByType) {
+                    $currentRealPath = $current->getRealPath();
+
+                    if (in_array($currentRealPath, $pathsByType['file'], true)) {
+                        return true;
+                    }
+
+                    foreach ($pathsByType['dir'] as $path) {
+                        if (0 === strpos($currentRealPath, $path)) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
             );
-        } catch (\LogicException $e) {
-            $iterator = $currentFinder instanceof SymfonyFinder
-                ? $currentFinder
-                : Finder::create();
-            $iterator->in($pathsByType['dir'])->append($pathsByType['file']);
+        } elseif ($currentFinder instanceof SymfonyFinder && null === $nestedFinder) {
+            // finder from configuration Symfony finder and it is not fully defined, we may fulfill it
+            $iterator = $currentFinder->in($pathsByType['dir'])->append($pathsByType['file']);
+        } else {
+            $iterator = Finder::create()->in($pathsByType['dir'])->append($pathsByType['file']);
         }
 
         $this->config->finder($iterator);
@@ -539,6 +552,23 @@ final class ConfigurationResolver
     private function resolveIsStdIn()
     {
         $this->isStdIn = 1 === count($this->options['path']) && '-' === $this->options['path'][0];
+    }
+
+    private function resolvePathMode()
+    {
+        $modes = array(self::PATH_MODE_OVERRIDE, self::PATH_MODE_INTERSECTION);
+
+        if (!in_array(
+            $this->options['path-mode'],
+            $modes,
+            true
+        )) {
+            throw new InvalidConfigurationException(sprintf(
+                'The path-mode "%s" is not defined, supported are %s.',
+                $this->options['path-mode'],
+                implode(', ', $modes)
+            ));
+        }
     }
 
     /**

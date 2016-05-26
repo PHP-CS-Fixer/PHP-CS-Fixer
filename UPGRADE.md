@@ -20,25 +20,29 @@ Finally, the caching mechanism is enabled by default.
 CLI options
 -----------
 
-1.x           | 2.0           | Description                 | Note
-------------- | ------------- | --------------------------- | ----
-              | --allow-risky | Are risky fixers allowed    |
-              | --cache-file  | The path to the cache file  | option was added
---config      |               | Config class codename       | option was removed
---config-file | --config      | The path to a .php_cs file  | option was renamed
---diff        | --diff        | Show diff                   |
---dry-run     | --dry-run     | Run in dry-run mode         |
---fixers      |               | Coding standard fixers      | options was removed, see --rules
---format      | --format      | Choose format               |
---level       |               | Coding standard level       | options was removed, see --rules
-              | --rules       | Rules to be used            | option was added
-              | --using-cache | Does cache should be used   | option was added
+1.x           | 2.0           | Description                                     | Note
+------------- | ------------- | ----------------------------------------------- | ----
+              | --allow-risky | Are risky fixers allowed                        |
+              | --cache-file  | The path to the cache file                      | option was added
+--config      |               | Config class codename                           | option was removed
+--config-file | --config      | The path to a .php_cs file                      | option was renamed
+--diff        | --diff        | Show diff                                       |
+--dry-run     | --dry-run     | Run in dry-run mode                             |
+--fixers      |               | Coding standard fixers                          | options was removed, see --rules
+--format      | --format      | Choose format                                   |
+--level       |               | Coding standard level                           | options was removed, see --rules
+              | --rules       | Rules to be used                                | option was added
+              | --using-cache | Does cache should be used                       | option was added
+              | --path-mode   | Should the finder from configuration be         | option was added
+              |               | overriden or intersected with `path` argument   |
 
 CLI argument
 ------------
 
-On 1.x line `path` argument allows you to specify the dir/file that will be fixed.
-On 2.x line `path` argument is a bit different. It is a mask for finder you are using (defined in your configuration file or default one). Only files pointed by both finder and CLI `path` argument will be fixed. Also, you may now pass multiple paths.
+On 2.x line `path` argument is an array, so you may pass multiple paths.
+
+Intersection path mode makes the `path` argument a mask for finder you have defined in your configuration file.
+Only files pointed by both finder and CLI `path` argument will be fixed.
 
 Exit codes
 ----------
