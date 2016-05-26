@@ -975,6 +975,7 @@ function foo()
     public function provideFixCommentBeforeBraceCases()
     {
         return array(
+            array('<?php '),
             array(
                 '<?php
     if ($test) { // foo
