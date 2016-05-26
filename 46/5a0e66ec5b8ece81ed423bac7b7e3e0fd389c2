@@ -1,0 +1,66 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-10T00:18:25Z
+
+Looks like the spaceship operator is missing from here too?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-10T14:08:09Z
+
+done @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-10T15:29:42Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-13T07:55:37Z
+
+request to add this to the tests, it makes no sense but is valid PHP ;)
+
+```php
+<?php
+$a = new \stdClass ? $this->a : $this->b;
+var_dump($a);
+die;
+```
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-04-13T08:18:20Z
+
+```php
+foreach (new Collection as $x) {}
+
+$a = [(string) new Foo => 1];
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-13T09:23:50Z
+
+we might want to prep. for `??=` as well (https://github.com/php/php-src/pull/1795) ;)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-04-13T09:28:20Z
+
+could you give us a valid example with `??=` (as next token)? :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-13T09:51:44Z
+
+> we might want to prep. for ??= as well (php/php-src#1795) ;)
+
+Nah. Not yet. It's not merged in yet, and we're not testing on PHP 7.1 yet. We should just make a new issue with PHP 7.1 things todo, like we have for 7.0.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-26T22:10:33Z
+
+@GrahamCampbell please could you create a ticket with 7.1 wishlist and update ticket for 7.0 if needed ?
