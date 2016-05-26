@@ -74,8 +74,8 @@ class BracesFixer extends AbstractFixer
             if ($token->isGivenKind($controlTokens)) {
                 $prevIndex = $this->findParenthesisEnd($tokens, $index);
             } elseif (
-                (!$token->isGivenKind(T_FUNCTION) || !$tokens->isLambda($index)) &&
-                (!$token->isGivenKind(T_CLASS) || !$tokens->isAnonymousClass($index))
+                $token->isGivenKind(T_FUNCTION) && $tokens->isLambda($index) ||
+                $token->isGivenKind(T_CLASS) && $tokens->isAnonymousClass($index)
             ) {
                 $prevIndex = $tokens->getNextTokenOfKind($index, array('{'));
                 $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
