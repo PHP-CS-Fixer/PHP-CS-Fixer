@@ -256,9 +256,9 @@ Cache file can be specified via ``--cache-file`` option or config file:
 Using PHP CS Fixer on CI
 ------------------------
 
-Require ``fabpot/php-cs-fixer`` as a `dev`` dependency:
+Require ``friendsofphp/php-cs-fixer`` as a `dev`` dependency:
 
-    $ ./composer.phar require --dev fabpot/php-cs-fixer
+    $ ./composer.phar require --dev friendsofphp/php-cs-fixer
 
 Then, add the following command to your CI:
 
