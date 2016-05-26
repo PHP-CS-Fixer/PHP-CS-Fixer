@@ -19,9 +19,9 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 class NewWithBracesFixerTest extends AbstractFixerTestBase
 {
     /**
-     * @dataProvider provideStandardCases
+     * @dataProvider provideCases
      */
-    public function testStandard($expected, $input = null)
+    public function testFix($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
@@ -30,12 +30,30 @@ class NewWithBracesFixerTest extends AbstractFixerTestBase
      * @dataProvider provide54Cases
      * @requires PHP 5.4
      */
-    public function test54($expected, $input = null)
+    public function testFix54($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
 
-    public function provideStandardCases()
+    /**
+     * @dataProvider provide56Cases
+     * @requires PHP 5.6
+     */
+    public function testFix56($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    /**
+     * @dataProvider provide70Cases
+     * @requires PHP 7.0
+     */
+    public function testFix70($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideCases()
     {
         return array(
             array(
@@ -123,6 +141,104 @@ class NewWithBracesFixerTest extends AbstractFixerTestBase
                 '<?php $b = new \StdClass() /**/?>',
                 '<?php $b = new \StdClass /**/?>',
             ),
+            array(
+                '<?php $a = new Foo() instanceof Foo;',
+                '<?php $a = new Foo instanceof Foo;',
+            ),
+            array(
+                '<?php
+                    $a = new Foo() + 1;
+                    $a = new Foo() - 1;
+                    $a = new Foo() * 1;
+                    $a = new Foo() / 1;
+                    $a = new Foo() % 1;
+                ',
+                '<?php
+                    $a = new Foo + 1;
+                    $a = new Foo - 1;
+                    $a = new Foo * 1;
+                    $a = new Foo / 1;
+                    $a = new Foo % 1;
+                ',
+            ),
+            array(
+                '<?php
+                    $a = new Foo()++;
+                    $a = new Foo()--;
+                ',
+                '<?php
+                    $a = new Foo++;
+                    $a = new Foo--;
+                ',
+            ),
+            array(
+                '<?php
+                    $a = new Foo() & 1;
+                    $a = new Foo() | 1;
+                    $a = new Foo() ^ 1;
+                    $a = new Foo() << 1;
+                    $a = new Foo() >> 1;
+                ',
+                '<?php
+                    $a = new Foo & 1;
+                    $a = new Foo | 1;
+                    $a = new Foo ^ 1;
+                    $a = new Foo << 1;
+                    $a = new Foo >> 1;
+                ',
+            ),
+            array(
+                '<?php
+                    $a = new Foo() and 1;
+                    $a = new Foo() or 1;
+                    $a = new Foo() xor 1;
+                    $a = new Foo() && 1;
+                    $a = new Foo() || 1;
+                ',
+                '<?php
+                    $a = new Foo and 1;
+                    $a = new Foo or 1;
+                    $a = new Foo xor 1;
+                    $a = new Foo && 1;
+                    $a = new Foo || 1;
+                ',
+            ),
+            array(
+                '<?php
+                    if (new DateTime() > $this->startDate) {}
+                    if (new DateTime() >= $this->startDate) {}
+                    if (new DateTime() < $this->startDate) {}
+                    if (new DateTime() <= $this->startDate) {}
+                    if (new DateTime() == $this->startDate) {}
+                    if (new DateTime() != $this->startDate) {}
+                    if (new DateTime() <> $this->startDate) {}
+                    if (new DateTime() === $this->startDate) {}
+                    if (new DateTime() !== $this->startDate) {}
+                ',
+                '<?php
+                    if (new DateTime > $this->startDate) {}
+                    if (new DateTime >= $this->startDate) {}
+                    if (new DateTime < $this->startDate) {}
+                    if (new DateTime <= $this->startDate) {}
+                    if (new DateTime == $this->startDate) {}
+                    if (new DateTime != $this->startDate) {}
+                    if (new DateTime <> $this->startDate) {}
+                    if (new DateTime === $this->startDate) {}
+                    if (new DateTime !== $this->startDate) {}
+                ',
+            ),
+            array(
+                '<?php $a = new \stdClass() ? $b : $c;',
+                '<?php $a = new \stdClass ? $b : $c;',
+            ),
+            array(
+                '<?php foreach (new Collection() as $x) {}',
+                '<?php foreach (new Collection as $x) {}',
+            ),
+            array(
+                '<?php $a = [(string) new Foo() => 1];',
+                '<?php $a = [(string) new Foo => 1];',
+            ),
         );
     }
 
@@ -136,6 +252,34 @@ class NewWithBracesFixerTest extends AbstractFixerTestBase
             array(
                 '<?php $a = [ "key" => new DateTime() ];',
                 '<?php $a = [ "key" => new DateTime ];',
+            ),
+        );
+    }
+
+    public function provide56Cases()
+    {
+        return array(
+            array(
+                '<?php
+                    $a = new Foo() ** 1;
+                ',
+                '<?php
+                    $a = new Foo ** 1;
+                ',
+            ),
+        );
+    }
+
+    public function provide70Cases()
+    {
+        return array(
+            array(
+                '<?php
+                    $a = new Foo() <=> 1;
+                ',
+                '<?php
+                    $a = new Foo <=> 1;
+                ',
             ),
         );
     }
