@@ -1,0 +1,67 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-02-06T15:38:08Z
+
+not sure is this change good:
+
+```diff
+         switch ($count = count($this->baseUrls)) {
+             case 0:
+                 return '';
+-
+             case 1:
+                 return $this->baseUrls[0];
+-
+             default:
+                 return $this->baseUrls[fmod(hexdec(substr(md5($path), 0, 10)), $count)];
+         }
+```
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-06T18:59:01Z
+
+> not sure is this change good:
+
+I think that change is good.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-02-07T18:51:09Z
+
+>not sure is this change good:
+
+I think it is ^-^
+~~Anyway, it is not a result of the PR, this is current behavior even with the `return fixer` on 1.x I think.
+So please feel free to report as an issue, but I would like to keep it out of this PR if that is ok.~~
+
+hmm... let me take another look ;)
+
+I broke this one as well :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-12T19:07:49Z
+
+ping @SpacePossum
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-03T19:06:29Z
+
+ping @keradus , ready for review :)
+I think we should remove the `after break` configuration setting from SF (looking at the current SF codebase). Another thing to look at is the hack I've put in the configuration method of the fixer, I need the `CT_`'s being defined there; however currently this is not the case since the transformers are loaded later on in the flow.
+Please re-read the description of the PR, I've updated it to reflect the current changes in the PR, thanks!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-28T13:29:20Z
+
+ping @keradus
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-28T14:49:26Z
+
+Anyone willing to make a review ?
+(btw, please rebase)
