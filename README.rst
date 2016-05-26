@@ -337,11 +337,6 @@ Choose from the list of available fixers:
 * **duplicate_semicolon** [symfony]
                         Remove duplicated semicolons.
 
-* **empty_return** [symfony]
-                        A return statement wishing to
-                        return nothing should be
-                        simply "return".
-
 * **extra_empty_lines** [symfony]
                         Removes extra empty lines.
 
@@ -635,6 +630,11 @@ Choose from the list of available fixers:
                         Converts echo language
                         construct to print if
                         possible.
+
+* **empty_return** [contrib]
+                        A return statement wishing to
+                        return nothing should be
+                        simply "return".
 
 * **ereg_to_preg** [contrib]
                         Replace deprecated ereg
