@@ -375,10 +375,6 @@ Choose from the list of available fixers:
                          lines before a namespace
                          declaration.
 
-* **no_blank_lines_between_uses** [@Symfony]
-                         Removes line breaks between
-                         use statements.
-
 * **no_closing_tag** [@PSR2, @Symfony]
                          The closing ?> tag MUST be
                          omitted from files containing

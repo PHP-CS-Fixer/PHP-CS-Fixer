@@ -197,7 +197,6 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['elseif'], $fixers['braces']),
             array($fixers['method_separation'], $fixers['braces']),
             array($fixers['method_separation'], $fixers['no_tab_indentation']),
-            array($fixers['no_blank_lines_between_uses'], $fixers['ordered_imports']),
             array($fixers['no_leading_import_slash'], $fixers['ordered_imports']), // tested also in: no_leading_import_slash,ordered_imports.test
             array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['align_double_arrow']), // tested also in: no_multiline_whitespace_around_double_arrow,align_double_arrow.test
             array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['trailing_comma_in_multiline_array']),
