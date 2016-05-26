@@ -195,12 +195,11 @@ final class Runner
                 }
             }
         } catch (\Exception $e) {
-            $this->dispatchEvent(
-                FixerFileProcessedEvent::NAME,
-                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)
-            );
+            $this->processException($name);
 
-            $this->errorsManager->report(new Error(Error::TYPE_EXCEPTION, $name));
+            return;
+        } catch (\Throwable $e) {
+            $this->processException($name);
 
             return;
         }
@@ -254,6 +253,21 @@ final class Runner
         );
 
         return $fixInfo;
+    }
+
+    /**
+     * Process an exception that occurred.
+     *
+     * @param string $name
+     */
+    private function processException($name)
+    {
+        $this->dispatchEvent(
+            FixerFileProcessedEvent::NAME,
+            FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)
+        );
+
+        $this->errorsManager->report(new Error(Error::TYPE_EXCEPTION, $name));
     }
 
     /**
