@@ -406,6 +406,10 @@ Choose from the list of available fixers:
                         There should be no empty lines
                         after class opening brace.
 
+* **no_empty_comment** [symfony]
+                        There should not be an empty
+                        comments.
+
 * **no_empty_lines_after_phpdocs** [symfony]
                         There should not be blank
                         lines between docblock and the
@@ -669,10 +673,6 @@ Choose from the list of available fixers:
                         There should be no blank lines
                         before a namespace
                         declaration.
-
-* **no_empty_comment** [contrib]
-                        There should not be an empty
-                        comments.
 
 * **no_useless_else** [contrib]
                         There should not be useless

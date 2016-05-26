@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Tests\Fixer\Contrib;
+namespace Symfony\CS\Tests\Fixer\Symfony;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
@@ -139,7 +139,7 @@ echo 1;
             ),
             array(
                 '<?php
-                
+                '.'
                 ',
             ),
         );

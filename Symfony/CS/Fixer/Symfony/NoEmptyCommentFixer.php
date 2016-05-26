@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Symfony\CS\Fixer\Contrib;
+namespace Symfony\CS\Fixer\Symfony;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;
