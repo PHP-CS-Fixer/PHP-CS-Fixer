@@ -78,7 +78,7 @@ array_element_no_space_before_comma            | no_whitespace_before_comma_in_a
 array_element_white_space_after_comma          | whitespace_after_comma_in_array
 blankline_after_open_tag                       | blank_line_after_opening_tag
 double_arrow_multiline_whitespaces             | no_multiline_whitespace_around_double_arrow
-duplicate_semicolon                            | no_duplicate_semicolons
+duplicate_semicolon                            | no_empty_statement                                | new one fixes more cases
 empty_return                                   | simplified_null_return
 eof_ending                                     | single_blank_line_at_eof
 extra_empty_lines                              | no_extra_consecutive_blank_lines

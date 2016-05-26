@@ -75,13 +75,13 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
             array(
                 '<?php
                 switch ($a) {
-                    case 42:;;// NoDuplicateSemicolonsFixer should clean this up (partly)
+                    case 42:;;// NoEmptyStatementFixer should clean this up (partly)
                         break;
                 }
                 ',
                 '<?php
                 switch ($a) {
-                    case 42;;;// NoDuplicateSemicolonsFixer should clean this up (partly)
+                    case 42;;;// NoEmptyStatementFixer should clean this up (partly)
                         break;
                 }
                 ',
