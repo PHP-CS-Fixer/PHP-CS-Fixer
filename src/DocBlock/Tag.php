@@ -28,8 +28,7 @@ class Tag
         'api', 'author', 'category', 'copyright', 'deprecated', 'example',
         'global', 'internal', 'license', 'link', 'method', 'package', 'param',
         'property', 'property-read', 'property-write', 'return', 'see',
-        'since', 'struct', 'subpackage', 'throws', 'todo', 'typedef', 'uses',
-        'var', 'version',
+        'since', 'subpackage', 'throws', 'todo', 'uses', 'var', 'version',
     );
 
     /**
