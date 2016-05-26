@@ -387,7 +387,7 @@ Choose from the list of available fixers:
 * **no_duplicate_semicolons** [@Symfony]
                          Remove duplicated semicolons.
 
-* **no_empty_comment**
+* **no_empty_comment** [@Symfony]
                          There should not be an empty
                          comments.
 
