@@ -142,7 +142,7 @@ final class HeaderCommentFixer extends AbstractFixer
     }
 
     /**
-     * Skips a declare(strict_type=1); statement as it is allowed to be before the header
+     * Skips a declare(strict_type=1); statement as it is allowed to be before the header.
      *
      * @param Tokens $tokens
      * @param int    $index
@@ -163,7 +163,7 @@ final class HeaderCommentFixer extends AbstractFixer
                 $isStrictTypes = true;
             }
             if ($tokens[$index]->getContent() === ';') {
-                $index++;
+                ++$index;
                 break;
             }
         }
@@ -186,7 +186,7 @@ final class HeaderCommentFixer extends AbstractFixer
         ;
 
         while (isset($tokens[$headerEnd + 1]) && ($tokens[$headerEnd + 1]->isWhitespace() || $tokens[$headerEnd + 1]->isGivenKind(T_COMMENT))) {
-            $headerEnd++;
+            ++$headerEnd;
         }
 
         if ('' === $this->headerComment) {

@@ -39,19 +39,19 @@ final class StrictTypesFixer extends AbstractFixer
         }
 
         $declareTokens = array(
-            new Token(array(T_OPEN_TAG, "<?php ")),
+            new Token(array(T_OPEN_TAG, '<?php ')),
             new Token(array(T_DECLARE, 'declare')),
-            new Token("("),
-            new Token(array(T_STRING, "strict_types")),
-            new Token("="),
+            new Token('('),
+            new Token(array(T_STRING, 'strict_types')),
+            new Token('='),
             new Token(array(T_LNUMBER, 1)),
-            new Token(")"),
-            new Token(";"),
+            new Token(')'),
+            new Token(';'),
             new Token(array(T_WHITESPACE, "\n\n")),
         );
 
         // check for valid construct, break on mismatch
-        for ($i = 0;; $i++) {
+        for ($i = 0;; ++$i) {
             if (!$tokens[$i]->equals($declareTokens[$i], true)) {
                 break;
             }
