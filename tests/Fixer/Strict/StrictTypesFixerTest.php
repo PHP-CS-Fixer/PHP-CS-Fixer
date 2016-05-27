@@ -57,8 +57,7 @@ phpinfo();
 EOH;
 
         $input = <<<'EOH'
-<?php
-phpinfo();
+<?php phpinfo();
 EOH;
         $this->doTest($expected, $input);
     }
@@ -89,6 +88,95 @@ EOH;
 
         $input = "<?php\n";
         $this->doTest($expected, $input);
+    }
+
+    public function testFixAddsAboveSingleLineComment()
+    {
+        $expected = <<<'EOH'
+<?php declare(strict_types=1);
+
+// foo
+EOH;
+
+        $input = <<<'EOH'
+<?php
+// foo
+EOH;
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixAddsAbovePHPDoc()
+    {
+        $expected = <<<'EOH'
+<?php declare(strict_types=1);
+
+/**
+ * Foo
+ */
+phpinfo();
+EOH;
+
+        $input = <<<'EOH'
+<?php
+
+/**
+ * Foo
+ */
+phpinfo();
+EOH;
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixAddsAboveComment()
+    {
+        $expected = <<<'EOH'
+<?php declare(strict_types=1);
+
+/*
+ * Foo
+ */
+
+phpinfo();
+EOH;
+
+        $input = <<<'EOH'
+<?php
+
+/*
+ * Foo
+ */
+
+phpinfo();
+EOH;
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixAddsAboveInlineComment()
+    {
+        $expected = <<<'EOH'
+<?php declare(strict_types=1);
+
+/* Foo */
+// Bla
+phpinfo();
+EOH;
+
+        $input = <<<'EOH'
+<?php /* Foo */
+// Bla
+phpinfo();
+EOH;
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixDoNotTouchShortOpenTag()
+    {
+        $input = <<<'EOH'
+<?
+
+phpinfo();
+EOH;
+        $this->doTest($input);
     }
 
     public function testFixDoNotTouchFilesWithSeveralOpenTags()
