@@ -19,229 +19,117 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  */
 final class StrictTypesFixerTest extends AbstractFixerTestCase
 {
-    public function testFixAlreadyThere()
+    /**
+     * @dataProvider provideFixCases
+     */
+    public function testFix($expected, $input = null)
     {
-        $expected = <<<'EOH'
-<?php declare(strict_types=1);
-
-phpinfo();
-EOH;
-
-        $input = <<<'EOH'
-<?php
-
-declare(strict_types = 1);
-
-phpinfo();
-EOH;
         $this->doTest($expected, $input);
     }
 
-    public function testFixAlreadyThere2()
+    public function provideFixCases()
     {
-        $expected = <<<'EOH'
-<?php declare(strict_types=1);
+        return array(
+            array(
+                '<?php declare(strict_types=1);
+',
+                '<?php            declare(strict_types=1);',
+            ),
+            array(
+                '<?php declare(strict_types=1);
+/**/
+                ',
+                '<?php
+                /**/
+                declare(strict_types=1);',
+            ),
+            array(
+                '<?php declare(strict_types=1);
+/**/ /**/ /**/
+                 /* abc */ ',
+                '<?php
+                /**/ /**/ /**/
+                declare /* abc */ (strict_types=1);',
+            ),
+            array(
+                '<?php declare(strict_types=1);
+                phpinfo();',
+                '<?php
 
-phpinfo();
-EOH;
-
-        $input = <<<'EOH'
-<?php
-
-declare(
-    strict_types
-    = 1)
-;
-
-phpinfo();
-EOH;
-        $this->doTest($expected, $input);
-    }
-
-    public function testSkipValidDeclare()
-    {
-        $input = <<<'EOH'
-<?php declare(strict_types=1);
-
-phpinfo();
-EOH;
-
-        $this->doTest($input);
-    }
-
-    public function testFixAddsCorrectly()
-    {
-        $expected = <<<'EOH'
-<?php declare(strict_types=1);
-
-phpinfo();
-EOH;
-
-        $input = <<<'EOH'
-<?php phpinfo();
-EOH;
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixAddsCorrectly2()
-    {
-        $expected = <<<'EOH'
-<?php declare(strict_types=1);
-
-phpinfo();
-EOH;
-
-        $input = <<<'EOH'
-<?php
-
-phpinfo();
-EOH;
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixAddsToEmptyFile()
-    {
-        $expected = <<<'EOH'
-<?php declare(strict_types=1);
-
-
-EOH;
-
-        $input = "<?php\n";
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixAddsAboveSingleLineComment()
-    {
-        $expected = <<<'EOH'
-<?php declare(strict_types=1);
-
-// foo
-EOH;
-
-        $input = <<<'EOH'
-<?php
-// foo
-EOH;
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixHandlesCommentsBeforeDeclare()
-    {
-        $expected = <<<'EOH'
-<?php declare(strict_types=1);
-
-/*test*/echo 123;
-EOH;
-
-        $input = <<<'EOH'
-<?php
-
-            /*test*/declare(strict_types=1)/**/;echo 123;
-EOH;
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixAddsAbovePHPDoc()
-    {
-        $expected = <<<'EOH'
-<?php declare(strict_types=1);
+                phpinfo();',
+            ),
+            array(
+                '<?php declare(strict_types=1);
+/**
+ * Foo
+ */
+phpinfo();',
+                '<?php
 
 /**
  * Foo
  */
-phpinfo();
-EOH;
-
-        $input = <<<'EOH'
-<?php
-
-/**
+phpinfo();',
+            ),
+            array(
+                '<?php declare(strict_types=1);
+/*
  * Foo
  */
-phpinfo();
-EOH;
-        $this->doTest($expected, $input);
-    }
 
-    public function testFixAddsAboveComment()
-    {
-        $expected = <<<'EOH'
-<?php declare(strict_types=1);
+phpinfo();',
+                '<?php
 
 /*
  * Foo
  */
 
-phpinfo();
-EOH;
-
-        $input = <<<'EOH'
-<?php
-
-/*
- * Foo
- */
-
-phpinfo();
-EOH;
-        $this->doTest($expected, $input);
+phpinfo();',
+            ),
+            array(
+                '<?php declare(strict_types=1);
+phpinfo();',
+                '<?php phpinfo();',
+            ),
+            array(
+                '<?php declare(strict_types=1);
+$a = 1;',
+                '<?php declare(strict_types=1);  $a = 1;',
+            ),
+            array(
+                '<?php /**/ /**/ declare(strict_types=1)?>Test',
+                '<?php /**/ /**/ deClarE(STRICT_TYPES=1)?>Test',
+            ),
+            array(
+                '<?php declare(strict_types=1);
+$a = 456;
+',
+                '<?php
+$a = 456;
+',
+            ),
+            array(
+                '<?php declare(strict_types=1);
+/**/',
+                '<?php /**/',
+            ),
+        );
     }
 
-    public function testFixAddsAboveInlineComment()
+    /**
+     * @dataProvider provideDoNotFixCases
+     */
+    public function testDoNotFix($input)
     {
-        $expected = <<<'EOH'
-<?php declare(strict_types=1);
-
-/* Foo */
-// Bla
-phpinfo();
-EOH;
-
-        $input = <<<'EOH'
-<?php /* Foo */
-// Bla
-phpinfo();
-EOH;
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixDoNotTouchShortOpenTag()
-    {
-        $input = <<<'EOH'
-<?
-
-phpinfo();
-EOH;
         $this->doTest($input);
     }
 
-    public function testFixDoNotTouchShortOpenTag2()
+    public function provideDoNotFixCases()
     {
-        $input = <<<'EOH'
-<? //test
-  declare      (
-strict_types  =1
-)
-
-
-
-
-?>
-test
-EOH;
-        $this->doTest($input);
-    }
-
-    public function testFixDoNotTouchFilesWithSeveralOpenTags()
-    {
-        $input = "<?php\nphpinfo();\n?>\n<?";
-        $this->doTest($input);
-    }
-
-    public function testFixDoNotTouchFilesNotStartingWithOpenTag()
-    {
-        $input = " <?php\nphpinfo();\n";
-        $this->doTest($input);
+        return array(
+            array(''),                  // leave empty file empty
+            array('  <?php echo 123;'),
+            array('<?= 123;'),
+        );
     }
 }
