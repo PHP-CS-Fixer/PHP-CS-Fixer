@@ -44,7 +44,7 @@ final class StrictTypesFixer extends AbstractFixer
             new Token('('),
             new Token(array(T_STRING, 'strict_types')),
             new Token('='),
-            new Token(array(T_LNUMBER, 1)),
+            new Token(array(T_LNUMBER, '1')),
             new Token(')'),
             new Token(';'),
             new Token(array(T_WHITESPACE, "\n\n")),
