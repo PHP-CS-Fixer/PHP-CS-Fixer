@@ -51,7 +51,7 @@ final class StrictTypesFixer extends AbstractFixer
         );
 
         // check for valid construct, break on mismatch
-        for ($i = 0;; ++$i) {
+        for ($i = 0; ; ++$i) {
             if (!$tokens[$i]->equals($declareTokens[$i], true)) {
                 break;
             }
@@ -106,6 +106,6 @@ final class StrictTypesFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Force strict types declaration in all files';
+        return 'Force strict types declaration in all files.';
     }
 }
