@@ -37,6 +37,27 @@ EOH;
         $this->doTest($expected, $input);
     }
 
+    public function testFixAlreadyThere2()
+    {
+        $expected = <<<'EOH'
+<?php declare(strict_types=1);
+
+phpinfo();
+EOH;
+
+        $input = <<<'EOH'
+<?php
+
+declare(
+    strict_types
+    = 1)
+;
+
+phpinfo();
+EOH;
+        $this->doTest($expected, $input);
+    }
+
     public function testSkipValidDeclare()
     {
         $input = <<<'EOH'
@@ -101,6 +122,22 @@ EOH;
         $input = <<<'EOH'
 <?php
 // foo
+EOH;
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixHandlesCommentsBeforeDeclare()
+    {
+        $expected = <<<'EOH'
+<?php declare(strict_types=1);
+
+/*test*/echo 123;
+EOH;
+
+        $input = <<<'EOH'
+<?php
+
+            /*test*/declare(strict_types=1)/**/;echo 123;
 EOH;
         $this->doTest($expected, $input);
     }
@@ -175,6 +212,23 @@ EOH;
 <?
 
 phpinfo();
+EOH;
+        $this->doTest($input);
+    }
+
+    public function testFixDoNotTouchShortOpenTag2()
+    {
+        $input = <<<'EOH'
+<? //test
+  declare      (
+strict_types  =1
+)
+
+
+
+
+?>
+test
 EOH;
         $this->doTest($input);
     }

@@ -60,40 +60,45 @@ final class StrictTypesFixer extends AbstractFixer
             }
         }
 
-        $index = $tokens->getNextNonWhitespace(0);
-
         // empty file, just add the tokens
-        if (null === $index) {
+        if (null === $tokens->getNextNonWhitespace(0)) {
             $tokens->overrideRange(0, 0, $declareTokens);
 
             return;
         }
 
-        // find the end of the declare if there is one already so we can replace it
-        if ($tokens[$index]->isGivenKind(T_DECLARE)) {
+        // find the end of the declare if there is one already so we can clear it
+        $firstMeaningful = $tokens->getNextMeaningfulToken(0);
+        if ($firstMeaningful && $tokens[$firstMeaningful]->isGivenKind(T_DECLARE)) {
             $isOpen = false;
             $isStrictTypes = false;
-            $originalIndex = $index;
+            $current = $firstMeaningful;
 
-            while ($index = $tokens->getNextNonWhitespace($index)) {
-                if ($tokens[$index]->getContent() === '(') {
+            while ($current = $tokens->getNextNonWhitespace($current)) {
+                if ($tokens[$current]->getContent() === '(') {
                     $isOpen = true;
                 }
-                if ($isOpen && $tokens[$index]->getContent() === 'strict_types') {
+                if ($isOpen && $tokens[$current]->getContent() === 'strict_types') {
                     $isStrictTypes = true;
                 }
-                if ($tokens[$index]->getContent() === ';') {
-                    $index = $tokens->getNextNonWhitespace($index);
+                if ($tokens[$current]->getContent() === ';') {
                     break;
                 }
             }
 
-            if (!$isStrictTypes) {
-                $index = $originalIndex;
+            if ($isStrictTypes) {
+                // clear the existing declaration
+                $tokens->clearRange($firstMeaningful, $current);
             }
         }
 
-        $tokens->overrideRange(0, $index - 1, $declareTokens);
+        // clear leading whitespace
+        $firstNonWS = $tokens->getNextNonWhitespace(0);
+        if ($firstNonWS > 1) {
+            $tokens->clearRange(1, $firstNonWS - 1);
+        }
+
+        $tokens->overrideRange(0, 0, $declareTokens);
     }
 
     /**
