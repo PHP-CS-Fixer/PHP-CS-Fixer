@@ -163,16 +163,6 @@ class NewWithBracesFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-                    $a = new Foo()++;
-                    $a = new Foo()--;
-                ',
-                '<?php
-                    $a = new Foo++;
-                    $a = new Foo--;
-                ',
-            ),
-            array(
-                '<?php
                     $a = new Foo() & 1;
                     $a = new Foo() | 1;
                     $a = new Foo() ^ 1;
