@@ -68,8 +68,6 @@ final class NewWithBracesFixer extends AbstractFixer
                 array(T_LOGICAL_XOR),
                 array(T_BOOLEAN_AND),
                 array(T_BOOLEAN_OR),
-                array(T_INC),
-                array(T_DEC),
                 array(T_SL),
                 array(T_SR),
                 array(T_INSTANCEOF),
