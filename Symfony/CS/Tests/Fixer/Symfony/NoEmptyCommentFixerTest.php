@@ -142,6 +142,66 @@ echo 1;
                 '.'
                 ',
             ),
+            array(
+                '<?php
+                    // This comment could be nicely formatted.
+                    //
+                    //
+                    // For that, it could have some empty comment lines inside.
+                    '.'
+
+                    ## A 1
+                    ##
+                    ##
+                    ## A 2
+                    '.'
+
+                    // B 1
+                    //
+                    // B 2
+
+                    ## C 1
+                    ##
+                    ## C 2
+
+                    $foo = 1;
+
+                    '.'
+                    // a
+                    '.'
+
+                    $bar = 2;
+                ',
+                '<?php
+                    // This comment could be nicely formatted.
+                    //
+                    //
+                    // For that, it could have some empty comment lines inside.
+                    //
+
+                    ## A 1
+                    ##
+                    ##
+                    ## A 2
+                    ##
+
+                    // B 1
+                    //
+                    // B 2
+
+                    ## C 1
+                    ##
+                    ## C 2
+
+                    $foo = 1;
+
+                    //
+                    // a
+                    //
+
+                    $bar = 2;
+                ',
+            ),
         );
     }
 }
