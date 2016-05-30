@@ -896,7 +896,7 @@ Then, add the following command to your CI:
 
 .. code-block:: bash
 
-    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist --path-mode=intersection `git diff --name-only $COMMIT_RANGE`
+    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`
 
 Where ``$COMMIT_RANGE`` is your range of commits, eg ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
