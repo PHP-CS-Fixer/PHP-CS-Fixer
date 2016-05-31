@@ -77,7 +77,56 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                     4 => 'CT_DYNAMIC_VAR_BRACE_CLOSE',
                 ),
             ),
-            // tests from CurlyCloseTest
+
+            array(
+                '<?php
+                    echo $arr{$index};
+                    echo $arr[$index];
+                    if {}
+                ',
+                array(
+                    5 => 'CT_ARRAY_INDEX_CURLY_BRACE_OPEN',
+                    7 => 'CT_ARRAY_INDEX_CURLY_BRACE_CLOSE',
+                ),
+            ),
+            array(
+                '<?php
+                    echo $nestedArray{$index}{$index2}[$index3]{$index4};
+                ',
+                array(
+                    5 => 'CT_ARRAY_INDEX_CURLY_BRACE_OPEN',
+                    7 => 'CT_ARRAY_INDEX_CURLY_BRACE_CLOSE',
+                    8 => 'CT_ARRAY_INDEX_CURLY_BRACE_OPEN',
+                    10 => 'CT_ARRAY_INDEX_CURLY_BRACE_CLOSE',
+                    14 => 'CT_ARRAY_INDEX_CURLY_BRACE_OPEN',
+                    16 => 'CT_ARRAY_INDEX_CURLY_BRACE_CLOSE',
+                ),
+            ),
+            array(
+                '<?php
+                    echo $array{0}->foo;
+                    echo $collection->items{1}->property;
+                ',
+                array(
+                    5 => 'CT_ARRAY_INDEX_CURLY_BRACE_OPEN',
+                    7 => 'CT_ARRAY_INDEX_CURLY_BRACE_CLOSE',
+                    17 => 'CT_ARRAY_INDEX_CURLY_BRACE_OPEN',
+                    19 => 'CT_ARRAY_INDEX_CURLY_BRACE_CLOSE',
+                ),
+            ),
+            array(
+                '<?php
+                    echo [1]{0};
+                    echo array(1){0};
+                ',
+                array(
+                    7 => 'CT_ARRAY_INDEX_CURLY_BRACE_OPEN',
+                    9 => 'CT_ARRAY_INDEX_CURLY_BRACE_CLOSE',
+                    18 => 'CT_ARRAY_INDEX_CURLY_BRACE_OPEN',
+                    20 => 'CT_ARRAY_INDEX_CURLY_BRACE_CLOSE',
+                ),
+            ),
+
             array(
                 '<?php
                     echo "This is {$great}";
@@ -85,11 +134,8 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                     echo "I\'d like an {${beers::$ale}}\n";
                 ',
             ),
-            // tests from DollarCloseCurlyBracesTest
             array('<?php echo "This is ${great}";'),
-            // tests from DynamicPropBraceTest
             array('<?php $foo->{$bar};'),
-            // extra tests
             array('<?php if (1) {} class Foo{ } function bar{ }'),
         );
     }
