@@ -95,6 +95,8 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $filename
+     *
      * @return \SplFileInfo
      */
     protected function getTestFile($filename = __FILE__)
@@ -204,10 +206,10 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
     {
         foreach ($expectedTokens as $index => $expectedToken) {
             $inputToken = $inputTokens[$index];
-
+            $option = array('JSON_PRETTY_PRINT');
             $this->assertTrue(
                 $expectedToken->equals($inputToken),
-                sprintf('The token at index %d must be %s, got %s', $index, $expectedToken->toJson(), $inputToken->toJson())
+                sprintf("The token at index %d must be:\n%s,\ngot:\n%s.", $index, $expectedToken->toJson($option), $inputToken->toJson($option))
             );
         }
 

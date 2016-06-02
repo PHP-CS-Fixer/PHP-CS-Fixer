@@ -44,7 +44,7 @@ final class EchoToPrintFixer extends AbstractFixer
 
             for ($i = $nextTokenIndex; $i < $endTokenIndex; ++$i) {
                 if ($tokens[$i]->equalsAny(array('(', array(CT_ARRAY_SQUARE_BRACE_OPEN)))) {
-                    $blockType = $tokens->detectBlockType($tokens[$i]);
+                    $blockType = Tokens::detectBlockType($tokens[$i]);
                     $i = $tokens->findBlockEnd($blockType['type'], $i);
                 }
 

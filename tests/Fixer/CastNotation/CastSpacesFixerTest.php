@@ -77,7 +77,7 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
                 "<?php \$bar = (int)\n \$foo;",
             ),
             array(
-                "<?php \$bar = (int)\r \$foo;",
+                "<?php \$bar = (int)\r\n \$foo;",
             ),
         );
     }

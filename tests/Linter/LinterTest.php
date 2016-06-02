@@ -64,7 +64,7 @@ final class LinterTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers PhpCsFixer\Linter\Linter::lintSource
      *
-     * @expectedException PhpCsFixer\Linter\LintingException
+     * @expectedException \PhpCsFixer\Linter\LintingException
      * @expectedExceptionMessageRegExp /syntax error, unexpected (?:'echo' \(T_ECHO\))|(?:T_ECHO)/
      */
     public function testLintSourceWithBadCode()

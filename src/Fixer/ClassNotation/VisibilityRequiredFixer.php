@@ -52,7 +52,7 @@ final class VisibilityRequiredFixer extends AbstractFixer
             } elseif ('property' === $element['type']) {
                 $prevIndex = $tokens->getPrevTokenOfKind($index, array(';', ',', '{'));
 
-                if (!$prevIndex || !$tokens[$prevIndex]->equals(',')) {
+                if (null === $prevIndex || !$tokens[$prevIndex]->equals(',')) {
                     $this->overrideAttribs($tokens, $index, $this->grabAttribsBeforePropertyToken($tokens, $index));
                 }
             }

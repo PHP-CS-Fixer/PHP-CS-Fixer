@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\Test;
 
-use PhpCsFixer\Config;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
@@ -150,7 +149,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
      *
      * @param IntegrationCase $case
      */
-    protected function doTest($case)
+    protected function doTest(IntegrationCase $case)
     {
         if (defined('HHVM_VERSION') && false === $case->getRequirement('hhvm')) {
             $this->markTestSkipped('HHVM is not supported.');
@@ -197,13 +196,13 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 
         if (!$errorsManager->isEmpty()) {
             $errors = $errorsManager->getExceptionErrors();
-            $this->assertEmpty($errors, sprintf('Errors reported during fixing: %s', $this->implodeErrors($errors)));
+            $this->assertEmpty($errors, sprintf('Errors reported during fixing of file "%s": %s', $case->getFileName(), $this->implodeErrors($errors)));
 
             $errors = $errorsManager->getInvalidErrors();
-            $this->assertEmpty($errors, sprintf('Errors reported during linting before fixing: %s.', $this->implodeErrors($errors)));
+            $this->assertEmpty($errors, sprintf('Errors reported during linting before fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
 
             $errors = $errorsManager->getLintErrors();
-            $this->assertEmpty($errors, sprintf('Errors reported during linting after fixing: %s.', $this->implodeErrors($errors)));
+            $this->assertEmpty($errors, sprintf('Errors reported during linting after fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
         }
 
         if (!$case->hasInputCode()) {
@@ -233,7 +232,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
                 $case->getFixers()
             );
 
-            $this->assertNotCount(1, array_unique($priorities), 'All used fixers must not have the same priority, integration tests should cover fixers with different priorities.');
+            $this->assertNotCount(1, array_unique($priorities), sprintf('All used fixers must not have the same priority, integration tests should cover fixers with different priorities. In "%s".', $case->getFileName()));
 
             $tmpFile = static::getTempFile();
             if (false === @file_put_contents($tmpFile, $input)) {
@@ -243,11 +242,14 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             $configProphecy->getFinder()->willReturn(new \ArrayIterator(array(new \SplFileInfo($tmpFile))));
             $configProphecy->getFixers()->willReturn(array_reverse($case->getFixers()));
 
-            $result = $runner->fix();
-            $changed = array_pop($result);
-
+            $runner->fix();
             $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
-            $this->assertNotSame($fixedInputCode, $fixedInputCodeWithReversedFixers, 'Set priorities must be significant. If fixers used in reverse order return same output then the integration test is not sufficient or the priority relation between used fixers should not be set.');
+
+            $this->assertNotSame(
+                $fixedInputCode,
+                $fixedInputCodeWithReversedFixers,
+                sprintf('Set priorities must be significant. If fixers used in reverse order return same output then the integration test is not sufficient or the priority relation between used fixers should not be set. In "%s".', $case->getFileName())
+            );
         }
 
         // run the test again with the `expected` part, this should always stay the same

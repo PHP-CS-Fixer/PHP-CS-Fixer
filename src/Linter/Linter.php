@@ -118,9 +118,7 @@ final class Linter implements LinterInterface
             throw new IOException(sprintf('Failed to write file "%s".', $this->temporaryFile), 0, null, $this->temporaryFile);
         }
 
-        $process = $this->createProcessForFile($this->temporaryFile);
-
-        return $process;
+        return $this->createProcessForFile($this->temporaryFile);
     }
 
     /**

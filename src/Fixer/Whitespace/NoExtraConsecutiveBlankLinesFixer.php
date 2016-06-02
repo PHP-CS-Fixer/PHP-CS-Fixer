@@ -17,7 +17,6 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
-use PhpCsFixer\Tokenizer\Transformers;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -64,10 +63,6 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer
     {
         if (null === $configuration) {
             return;
-        }
-
-        if (!defined('CT_USE_TRAIT')) {
-            Transformers::create(); // TODO could use a better fix
         }
 
         $this->tokenKindCallbackMap = array();

@@ -431,8 +431,6 @@ final class ConfigurationResolver
         );
 
         foreach ($paths as $path) {
-            $isFile = is_file($path);
-
             if (is_file($path)) {
                 $pathsByType['file'][] = $path;
             } else {
@@ -577,7 +575,6 @@ final class ConfigurationResolver
     private function resolvePath()
     {
         $filesystem = new Filesystem();
-        $path = $this->options['path'];
         $cwd = $this->cwd;
 
         $this->path = array_map(
