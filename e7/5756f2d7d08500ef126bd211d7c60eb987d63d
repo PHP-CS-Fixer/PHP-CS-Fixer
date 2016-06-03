@@ -1,0 +1,376 @@
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-09T08:53:10Z
+
+Any chance to have this fixer for `v1.11`?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-12T21:56:01Z
+
+ping
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-14T11:15:08Z
+
+@keradus Done. Also, see https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1503.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-26T19:55:18Z
+
+Just updated to match the psr0 changes.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-06T22:51:17Z
+
+In some discussion you were talking about changing this fixer to have one fixer renaming the class and other handling namespace.
+Could you take care of it here?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-06T23:02:39Z
+
+Yes, sure. ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-06T23:03:10Z
+
+That would be great.
+Also, any chances to have it send to 1.12 line ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-06T23:03:36Z
+
+What exactly do you want sending to 1.12?
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-06T23:04:48Z
+
+New fixers for name and namespace. And then remove old PSR0 fixer on 2.x line (since it will be replaced with new fixers)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-06T23:05:54Z
+
+Ok, right. Makes sense.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-14T11:14:18Z
+
+ping @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-22T15:23:56Z
+
+ping @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-22T15:25:14Z
+
+Honestly, I can't really be bothered to target 1.12 too.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-22T15:50:38Z
+
+Actually I was mentioning this:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1489#issuecomment-162358526
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-22T16:00:06Z
+
+Yeh, I'd be able to do that stuff on the master branch, and remove the psr0 fixer.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-29T14:25:40Z
+
+ping @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-31T16:39:40Z
+
+Going to hold off until https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1621 is done.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-31T16:39:53Z
+
+It'll ultimately save us all time.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-12-31T16:41:00Z
+
+#1621 should be green on all CI now.
+Will wait for it and merge, if not today then tomorrow. So feel free to just rebase your work on top of it
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-12-31T18:43:07Z
+
+Rebased this. Will work on doing the multiple fixer refactor in a bit.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-12T23:48:17Z
+
+is there anything left here @GrahamCampbell  ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-22T11:54:48Z
+
+@GrahamCampbell ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-22T16:36:04Z
+
+> @GrahamCampbell ?
+
+Sorry, I've been totally swamped in stuff to do, and still am atm.
+
+> is there anything left here @GrahamCampbell ?
+
+Yes, if you wanted the psr0/4 fixes splitting into two atomic fixers.
+
+I hope to be able to get to this PR tomorrow or Sunday.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-22T17:10:32Z
+
+Great to hear !
+
+(btw, I will be offline this weekend)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-24T19:38:58Z
+
+ping @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-24T19:40:57Z
+
+Again, no time, so sorry. ;(
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-24T19:44:03Z
+
+Please please please please please?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-24T19:45:24Z
+
+I'll have to push it back till next weekend. Being a student, I can't really prioritize it above my degree work.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-24T19:46:12Z
+
+it's not that big as master thesis ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-01-24T19:47:43Z
+
+> it's not that big as master thesis ;)
+
+Not yet. ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-01-30T15:42:44Z
+
+ping @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-02-15T23:46:54Z
+
+I'll rebase this again shortly. Eventually, I'll work on the changes we actually want here so we can merge this, lol.
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2016-03-08T17:17:52Z
+
+Any help needed here?
+
+I might resend rebased PR if needed. If that's all that needs to be done here.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-08T17:36:53Z
+
+No, it doesn't need rebasing.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-08T17:37:14Z
+
+It needs rewriting so we don't have psr0/4 as described above.
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2016-03-08T19:07:29Z
+
+So the goal is to remove psr0 features from this fixer?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-08T19:36:02Z
+
+No.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-08T19:45:40Z
+
+@TomasVotruba thanks for offering to help out :)
+This PR needs a bit of work aside of rebasing. The goal is not to replace or remove the PSR 0 fixer, however that one will be removed from the default set of Symfony fixers.
+The are few things that need to be done here; one is to split the logic of renaming the class and fixing the namespace.
+Another thing to do would be to deal with classes that are placed in such a way that when these are `fixed` the namespace would become invalid, for example if classes are located in a folder named `array`.
+That is as far as I understand it, but I might be wrong. Maybe some others could correct me or elaborate more about the todo's of this PR so guessing is no longer needed :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-08T23:36:11Z
+
+I'll try and squeeze in the time to fix this at the weekend.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-08T23:36:22Z
+
+It's not too far off now after my previous refactor.
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2016-03-08T23:42:52Z
+
+@GrahamCampbell That would be great. Hope you'll find the time to manage all your priorities.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-30T18:04:25Z
+
+ping @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-30T18:05:22Z
+
+Yeh, I really need to get this done. I'll see if I can do it tonight.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-30T18:06:23Z
+
+Really great to hear!
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-30T19:45:53Z
+
+Sorry, got caught up with something else. I'm going to try to get this done tomorrow instead.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-01T15:15:21Z
+
+PSR0 handle name + namespace
+PSR4 handle name + namespace
+
+Is name handled always in same manner?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-01T15:21:24Z
+
+Well, not quite. I'm wondering if we need to separate these two tbh.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-04-01T15:21:44Z
+
+PSR4 and PSR0 have slightly different rules about what an underscore means I think.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-01T15:30:03Z
+
+I see. Thank you for handling the PR.
+
+Please, could anyone review this ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-26T22:22:50Z
+
+what is the state of this PR @GrahamCampbell ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-26T22:57:10Z
+
+Finished really.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-26T23:18:43Z
+
+please add it for config file and rebase branch
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-28T19:21:20Z
+
+@keradus Rebased and updated our config file. How does this look now?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-28T20:08:28Z
+
+Tests failing due to an unrelated typo fixed in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1930. After merge of that, they will pass.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-03T13:21:13Z
+
+Sorry for delay, I'm havily test this rule.
+Please, could you incorporate pointed PR to this PR?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-03T13:46:54Z
+
+everything is working fine for all my legacy repos.
+please incorporate side-fix and I will merge this PR!
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-03T14:57:46Z
+
+Yes. One moment please.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-03T16:37:52Z
+
+@keradus All done, and tests are green still. :)
