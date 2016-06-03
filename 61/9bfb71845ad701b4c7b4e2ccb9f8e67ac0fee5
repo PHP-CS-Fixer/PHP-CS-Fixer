@@ -1,0 +1,37 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-30T22:01:20Z
+
+cc @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-30T22:27:54Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-31T10:27:34Z
+
+Could we add my other test case as an integration test?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-31T13:28:59Z
+
+you know that it wasn't needed to use second fixer for this bug right ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-31T14:10:02Z
+
+1.11 didn't crash for me on my test case with both fixers enabled.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-31T19:25:58Z
+
+as it didn't crash for every possible code, i took the one that's causing the issues.
+
+not sure if we want to go for every possible failing case and maintain it...
