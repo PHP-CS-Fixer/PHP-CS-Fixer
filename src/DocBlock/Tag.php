@@ -15,7 +15,7 @@ namespace PhpCsFixer\DocBlock;
 /**
  * This represents a tag, as defined by the proposed PSR PHPDoc standard.
  *
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class Tag
 {

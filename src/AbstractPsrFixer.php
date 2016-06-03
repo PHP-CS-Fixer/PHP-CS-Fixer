@@ -19,7 +19,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Bram Gotink <bram@gotink.me>
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 abstract class AbstractPsrFixer extends AbstractFixer
 {

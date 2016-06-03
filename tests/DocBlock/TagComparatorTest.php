@@ -17,7 +17,7 @@ use PhpCsFixer\DocBlock\Tag;
 use PhpCsFixer\DocBlock\TagComparator;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
  */

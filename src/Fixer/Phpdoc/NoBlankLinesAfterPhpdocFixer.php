@@ -18,7 +18,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
 {

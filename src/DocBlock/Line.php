@@ -15,7 +15,7 @@ namespace PhpCsFixer\DocBlock;
 /**
  * This represents a line of a docblock.
  *
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class Line
 {

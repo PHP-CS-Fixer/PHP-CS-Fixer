@@ -15,7 +15,7 @@ namespace PhpCsFixer\Tests\Fixer\NamespaceNotation;
 use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
  */

@@ -16,7 +16,7 @@ use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\DocBlock\Tag;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
  */

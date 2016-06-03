@@ -17,7 +17,7 @@ use PhpCsFixer\Utils;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  * @author Odín del Río <odin.drp@gmail.com>
  *
  * @internal

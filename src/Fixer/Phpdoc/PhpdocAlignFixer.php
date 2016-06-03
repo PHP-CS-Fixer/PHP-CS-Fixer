@@ -20,7 +20,7 @@ use PhpCsFixer\Utils;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class PhpdocAlignFixer extends AbstractFixer

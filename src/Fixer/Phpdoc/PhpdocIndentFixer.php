@@ -18,7 +18,7 @@ use PhpCsFixer\Utils;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 final class PhpdocIndentFixer extends AbstractFixer
 {

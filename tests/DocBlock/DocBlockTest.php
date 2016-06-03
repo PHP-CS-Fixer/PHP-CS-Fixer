@@ -15,7 +15,7 @@ namespace PhpCsFixer\Tests\DocBlock;
 use PhpCsFixer\DocBlock\DocBlock;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
  */

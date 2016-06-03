@@ -15,7 +15,7 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
  */
@@ -87,7 +87,7 @@ namespace Foo;
  * @internal
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
    */
 class Bar {}
 
@@ -106,7 +106,7 @@ namespace Foo;
  * @internal
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  *
     *
   *

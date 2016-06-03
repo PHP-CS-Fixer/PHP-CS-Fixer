@@ -18,7 +18,7 @@ use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 final class PhpdocSummaryFixer extends AbstractFixer
 {
