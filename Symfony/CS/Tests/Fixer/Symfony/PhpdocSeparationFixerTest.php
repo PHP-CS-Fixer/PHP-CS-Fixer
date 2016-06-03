@@ -14,7 +14,7 @@ namespace Symfony\CS\Tests\Fixer\Symfony;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class PhpdocSeparationFixerTest extends AbstractFixerTestBase
 {
@@ -394,7 +394,7 @@ namespace Foo;
  * @subpackage Foo\Bar
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  * @copyright Foo Bar
  * @license MIT
  */
@@ -416,7 +416,7 @@ namespace Foo;
  * @subpackage Foo\Bar
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  *
  * @copyright Foo Bar
  *
@@ -443,7 +443,7 @@ namespace Foo;
 *    @internal
 *
  *          @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
-    *@author Graham Campbell <graham@mineuk.com>
+    *@author Graham Campbell <graham@alt-three.com>
  */
 class Bar {}
 
@@ -464,7 +464,7 @@ namespace Foo;
  *          @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
      *
                              *
-    *@author Graham Campbell <graham@mineuk.com>
+    *@author Graham Campbell <graham@alt-three.com>
  */
 class Bar {}
 

@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * This abstract fixer provides a base for fixers to fix types in phpdoc.
  *
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 abstract class AbstractPhpdocTypesFixer extends AbstractFixer
 {
