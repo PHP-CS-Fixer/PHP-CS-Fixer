@@ -421,7 +421,7 @@ final class BracesFixer extends AbstractFixer
      */
     private function findParenthesisEnd(Tokens $tokens, $structureTokenIndex)
     {
-        $nextIndex = $tokens->getNextNonWhitespace($structureTokenIndex);
+        $nextIndex = $tokens->getNextMeaningfulToken($structureTokenIndex);
         $nextToken = $tokens[$nextIndex];
 
         // return if next token is not opening parenthesis
