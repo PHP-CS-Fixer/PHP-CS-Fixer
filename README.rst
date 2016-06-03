@@ -666,6 +666,10 @@ Choose from the list of available fixers:
                          should match the file name.
                          (Risky fixer!)
 
+* **psr4**
+                         Class names should match the
+                         file name. (Risky fixer!)
+
 * **random_api_migration**
                          Replaces rand, srand,
                          getrandmax functions calls
