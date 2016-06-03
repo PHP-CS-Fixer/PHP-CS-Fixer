@@ -21,7 +21,7 @@ use Symfony\CS\Utils;
  * Fixer for rules defined in PSR2 ¶3.
  *
  * @author Ceeram <ceeram@cakephp.org>
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class SingleLineAfterImportsFixer extends AbstractFixer
 {

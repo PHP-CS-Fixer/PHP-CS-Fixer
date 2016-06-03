@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
 use Symfony\CS\Utils;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class NoEmptyLinesAfterPhpdocsFixer extends AbstractFixer
 {

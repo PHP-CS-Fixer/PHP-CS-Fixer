@@ -15,7 +15,7 @@ namespace Symfony\CS\DocBlock;
 /**
  * This represents an entire annotation from a docblock.
  *
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class Annotation
 {

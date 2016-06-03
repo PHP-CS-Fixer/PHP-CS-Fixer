@@ -15,7 +15,7 @@ namespace Symfony\CS\Tests\Fixer\Contrib;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class PhpdocVarToTypeFixerTest extends AbstractFixerTestBase

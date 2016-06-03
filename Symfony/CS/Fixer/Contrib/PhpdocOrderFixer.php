@@ -17,7 +17,7 @@ use Symfony\CS\DocBlock\DocBlock;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class PhpdocOrderFixer extends AbstractFixer
 {

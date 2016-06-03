@@ -15,7 +15,7 @@ namespace Symfony\CS\Tests\DocBlock;
 use Symfony\CS\DocBlock\Tag;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class TagTest extends \PHPUnit_Framework_TestCase
 {

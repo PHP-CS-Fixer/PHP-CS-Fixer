@@ -16,7 +16,7 @@ use Symfony\CS\DocBlock\DocBlock;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 abstract class AbstractAnnotationRemovalFixer extends AbstractFixer
 {

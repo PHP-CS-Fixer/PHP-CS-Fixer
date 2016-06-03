@@ -15,7 +15,7 @@ namespace Symfony\CS\Fixer\Symfony;
 use Symfony\CS\AbstractPhpdocTypesFixer;
 
 /**
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
 {

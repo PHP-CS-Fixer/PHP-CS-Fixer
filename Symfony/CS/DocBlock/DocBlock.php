@@ -19,7 +19,7 @@ use Symfony\CS\Utils;
  *
  * It internally splits it up into "lines" that we can manipulate.
  *
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class DocBlock
 {

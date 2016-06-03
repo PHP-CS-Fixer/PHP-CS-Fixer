@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Tokens;
  * This abstract fixer is responsible for ensuring that a certain number of
  * lines prefix a namespace declaration.
  *
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer
 {

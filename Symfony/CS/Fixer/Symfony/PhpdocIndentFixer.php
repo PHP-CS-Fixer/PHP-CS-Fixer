@@ -18,7 +18,7 @@ use Symfony\CS\Utils;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
- * @author Graham Campbell <graham@mineuk.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class PhpdocIndentFixer extends AbstractFixer
 {
