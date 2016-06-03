@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Fixer\Basic;
 
-use PhpCsFixer\AbstractPsrFixer;
+use PhpCsFixer\AbstractPsrAutoloadingFixer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -21,7 +21,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Bram Gotink <bram@gotink.me>
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class Psr4Fixer extends AbstractPsrFixer
+final class Psr4Fixer extends AbstractPsrAutoloadingFixer
 {
     /**
      * {@inheritdoc}
