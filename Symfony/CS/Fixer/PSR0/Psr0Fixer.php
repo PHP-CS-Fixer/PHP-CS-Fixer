@@ -161,8 +161,8 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
             return false;
         }
 
-        $tokens = Tokens::fromCode(sprintf('<?php %s {}', $filenameParts[0]));
-        if ($tokens[1]->isKeyword() || $tokens[1]->isMagicConstant()) {
+        $tokens = Tokens::fromCode(sprintf('<?php class %s {}', $filenameParts[0]));
+        if ($tokens[3]->isKeyword() || $tokens[3]->isMagicConstant()) {
             return false;
         }
 
