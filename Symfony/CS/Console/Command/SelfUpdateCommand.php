@@ -116,9 +116,13 @@ EOT
     {
         if ($this->checkIfVersionFileExists($major, $minor, $patch + 1)) {
             return $this->findBestVersion($major, $minor, $patch + 1);
-        } else if ($this->checkIfVersionFileExists($major, $minor + 1, 0)) {
+        }
+
+        if ($this->checkIfVersionFileExists($major, $minor + 1, 0)) {
             return $this->findBestVersion($major, $minor + 1, 0);
-        } else if ($this->checkIfVersionFileExists($major + 1, 0, 0)) {
+        }
+
+        if ($this->checkIfVersionFileExists($major + 1, 0, 0)) {
             return $this->findBestVersion($major + 1, 0, 0);
         }
 
