@@ -24,7 +24,11 @@ final class Psr0FixerTest extends AbstractFixerTestCase
         $fixer = $this->getFixer();
         $fixer->configure(array('dir' => __DIR__));
 
-        $file = $this->getMock('SplFileInfo', array('getRealPath'), array(__DIR__.'/Psr0/Foo/Bar.php'));
+        $file = $this->getMockBuilder('SplFileInfo')
+                     ->setMethods(array('getRealPath'))
+                     ->setConstructorArgs(array(__DIR__.'/Psr0/Foo/Bar.php'))
+                     ->getMock();
+
         $file->expects($this->any())->method('getRealPath')->willReturn(__DIR__.'/Psr0/Foo/Bar.php');
 
         $expected = <<<'EOF'
