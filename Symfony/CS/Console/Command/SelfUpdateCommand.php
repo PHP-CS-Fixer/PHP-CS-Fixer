@@ -136,10 +136,6 @@ EOT
 
     private function buildVersionString($major, $minor, $patch)
     {
-        if (0 === $patch && $major < 2) {
-            return sprintf('%d.%d', $major, $minor);
-        }
-
         return sprintf('%d.%d.%d', $major, $minor, $patch);
     }
 }
