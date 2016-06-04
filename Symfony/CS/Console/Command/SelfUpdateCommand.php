@@ -20,6 +20,7 @@ use Symfony\CS\ToolInfo;
  * @author Igor Wiedler <igor@wiedler.ch>
  * @author Stephane PY <py.stephane1@gmail.com>
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class SelfUpdateCommand extends Command
 {
@@ -54,15 +55,22 @@ EOT
             return 1;
         }
 
-        if (false !== $remoteVersion = @file_get_contents('http://get.sensiolabs.org/php-cs-fixer.version')) {
-            if ($this->getApplication()->getVersion() === $remoteVersion) {
-                $output->writeln('<info>php-cs-fixer is already up to date.</info>');
-
-                return;
-            }
+        $currentVersion = explode('-', $this->getApplication()->getVersion());
+        $currentVersion = $currentVersion[0]; // ignore index #1 if exists (drop non-stable versions like `-DEV`)
+        $currentVersion = explode('.', $currentVersion);
+        if (!isset($currentVersion[2])) {
+            $currentVersion[2] = 0; // fill patch version if missing
         }
 
-        $remoteFilename = 'http://get.sensiolabs.org/php-cs-fixer.phar';
+        list($major, $minor, $patch) = $this->findBestVersion($currentVersion[0], $currentVersion[1], $currentVersion[2]);
+
+        if ($this->getApplication()->getVersion() === $this->buildVersionString($major, $minor, $patch)) {
+            $output->writeln('<info>php-cs-fixer is already up to date.</info>');
+
+            return;
+        }
+
+        $remoteFilename = $this->buildVersionFileUrl($major, $minor, $patch);
         $localFilename = $_SERVER['argv'][0];
         $tempFilename = basename($localFilename, '.phar').'-tmp.phar';
 
@@ -94,5 +102,40 @@ EOT
 
             return 1;
         }
+    }
+
+    private function checkIfVersionFileExists($major, $minor, $patch)
+    {
+        $url = $this->buildVersionFileUrl($major, $minor, $patch);
+        $headers = get_headers($url);
+
+        return stripos($headers[0], '200 OK') ? true : false;
+    }
+
+    private function findBestVersion($major, $minor, $patch)
+    {
+        if ($this->checkIfVersionFileExists($major, $minor, $patch + 1)) {
+            return $this->findBestVersion($major, $minor, $patch + 1);
+        }
+
+        if ($this->checkIfVersionFileExists($major, $minor + 1, 0)) {
+            return $this->findBestVersion($major, $minor + 1, 0);
+        }
+
+        if ($this->checkIfVersionFileExists($major + 1, 0, 0)) {
+            return $this->findBestVersion($major + 1, 0, 0);
+        }
+
+        return array($major, $minor, $patch);
+    }
+
+    private function buildVersionFileUrl($major, $minor, $patch)
+    {
+        return sprintf('http://get.sensiolabs.org/php-cs-fixer-v%s.phar', $this->buildVersionString($major, $minor, $patch));
+    }
+
+    private function buildVersionString($major, $minor, $patch)
+    {
+        return sprintf('%d.%d.%d', $major, $minor, $patch);
     }
 }
