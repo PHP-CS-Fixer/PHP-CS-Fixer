@@ -147,8 +147,8 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
                 $this->assertNull($fixResult, '->fix method must return null.');
             }
 
-            $this->assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
             $this->assertSame($expected, $tokens->generateCode(), 'Code build on input code must match expected code.');
+            $this->assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
 
             Tokens::clearCache();
             $expectedTokens = Tokens::fromCode($expected);
@@ -166,8 +166,8 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
             $this->assertNull($fixResult, '->fix method must return null.');
         }
 
-        $this->assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
         $this->assertSame($expected, $tokens->generateCode(), 'Code build on expected code must not change.');
+        $this->assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
     }
 
     /**
