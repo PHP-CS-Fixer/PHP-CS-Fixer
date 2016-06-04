@@ -727,6 +727,10 @@ Choose from the list of available fixers:
                         @var should always be written
                         as @type.
 
+* **replace_namespace** [contrib]
+                        Replaces the namespace of the
+                        code to match the path.
+
 * **short_array_syntax** [contrib]
                         PHP arrays should use the PHP
                         5.4 short-syntax.
