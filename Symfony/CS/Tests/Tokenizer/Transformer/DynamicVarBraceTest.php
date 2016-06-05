@@ -68,7 +68,7 @@ class DynamicVarBraceTest extends AbstractTransformerTestBase
             // tests from DynamicPropBraceTest
             array('<?php $foo->{$bar};'),
             // extra tests
-            array('<?php if (1) {} class Foo{ } function bar{ }'),
+            array('<?php if (1) {} class Foo{ } function bar(){ }'),
         );
     }
 }
