@@ -177,7 +177,7 @@ TWIG
             array('<?php $x = [[]];'),
             array('<?php $x = ["foo",];'),
             array('<?php $x = bar(["foo",]);'),
-            array("<?php \$x = bar(['foo',\n]]);", "<?php \$x = bar(['foo'\n]]);"),
+            array("<?php \$x = bar(['foo',\n]);", "<?php \$x = bar(['foo'\n]);"),
             array("<?php \$x = ['foo', \n];"),
             array('<?php $x = array([],);'),
             array('<?php $x = [[],];'),
