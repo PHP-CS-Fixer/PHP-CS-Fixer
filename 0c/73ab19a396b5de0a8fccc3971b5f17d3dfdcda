@@ -1,0 +1,105 @@
+---------------------------------------------------------------------------
+
+by ktomk at 2016-05-18T15:43:13Z
+
+Nice, thankfully **OutputFormatter** now supports escaping!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-05-19T13:19:53Z
+
+Once we are happy here with this change I can prep. a version for master as well.
+
+---------------------------------------------------------------------------
+
+by ktomk at 2016-05-19T15:49:06Z
+
+@SpacePossum: Just ping me when you're confident, then I can give this a test-drive for direct feedback in my original scenario.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-05-20T07:14:55Z
+
+I propose to skip the test op Appveyor/Windows because all it adds is testing if the SF console component works correctly on it which is not what this test is for.
+Trying to fix the test to pass on all WIndows versions used by Appveyor is a lot of work with no gain and would require a lot maintenance.
+
+@ktomk this should work, any reports/test results you can provide are welcome :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-20T08:40:35Z
+
+So, this won't work properly on Windows ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-05-20T09:57:20Z
+
+>So, this won't work properly on Windows ?
+
+It will; depending on the SF console component. The issue here is testing only.
+
+In the test I check what we output to the console. If the console supports colors we should escape the diff output itself to prevent the console component from replacing content in the diff. to color characters.
+Which characters the console component uses to decorate the output is not of our concern, so testing one env. is good enough.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-21T17:47:50Z
+
+This is why I don't like that exception.
+
+![1896](https://cloud.githubusercontent.com/assets/2716794/15449939/bd38e162-1f8c-11e6-9606-9c88f38b3c93.jpg)
+It doesn't matter will I use standard System console like `cmd` / `Power Shell` or not, like `cmder`.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-05-21T19:08:34Z
+
+I start to suspect the decorating detecting of the output is not always done on CommandTests.
+I'll see if can rewrite the expect part of the test, to bad as the fix seems to work.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-21T19:18:42Z
+
+How could I check if fix indeed works on Windows?
+
+---------------------------------------------------------------------------
+
+by ktomk at 2016-05-21T19:30:34Z
+
+As long as your Windows is compatible with the color codes, there should be no issue. The tests are most likely not well reflecting the changes, the coloring is done by the Symfony component which is well tested, point in case for this fix is to escape the code output properly so that it does not trigger any of the Symfony console color codes (that are acutally tags).
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-05-24T11:38:11Z
+
+All cases covered, should ran in all consoles on all platforms.
+Feedback welcome from people using a diff. console than Ubuntu default.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-05-24T13:01:53Z
+
+Much better. :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-24T18:49:20Z
+
+so red
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-05-24T20:09:10Z
+
+..and green again, but yes I still have to move the file which is no fun trying to do using the github interface so I'll do it when Im back at some dev. setup ;)  (flagged WIP for the reason)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-25T07:21:52Z
+
+All 6 new assertions were properly executed on my Win10 env with cmd, powershell and cmder consoles.
+Don't focus on that file movement.
+Please, prepare version for 2.x so I will use it during merging 1.12->master.
+Then, I will merge this PR.
