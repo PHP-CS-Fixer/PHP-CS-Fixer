@@ -43,7 +43,7 @@ final class ArraySquareBraceTransformerTest extends AbstractTransformerTestCase
                 ),
             ),
             array(
-                '<?php function foo(array $a = [ ]);',
+                '<?php function foo(array $a = [ ]) {}',
                 array(
                     11 => 'CT_ARRAY_SQUARE_BRACE_OPEN',
                     13 => 'CT_ARRAY_SQUARE_BRACE_CLOSE',
@@ -121,9 +121,6 @@ final class ArraySquareBraceTransformerTest extends AbstractTransformerTestCase
             ),
             array(
                 '<?php "foo"[1];',
-            ),
-            array(
-                '<?php "foo$bar"[1];',
             ),
         );
     }

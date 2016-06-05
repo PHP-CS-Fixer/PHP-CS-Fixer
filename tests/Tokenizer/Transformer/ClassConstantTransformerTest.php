@@ -33,10 +33,14 @@ final class ClassConstantTransformerTest extends AbstractTransformerTestCase
     {
         return array(
             array(
-                '<?php echo X::class',
+                '<?php echo X::class;',
                 array(
                     5 => 'CT_CLASS_CONSTANT',
                 ),
+            ),
+            array(
+                '<?php class X{}',
+                array(),
             ),
         );
     }

@@ -81,7 +81,7 @@ PHP;
     {
         return array(
             array(
-                '<?php class foo () {}',
+                '<?php class foo {}',
                 array(1 => false),
             ),
             array(
@@ -119,19 +119,19 @@ PHP;
     {
         return array(
             array(
-                '<?php function foo () {}',
+                '<?php function foo () {};',
                 array(1 => false),
             ),
             array(
-                '<?php function /** foo */ foo () {}',
+                '<?php function /** foo */ foo () {};',
                 array(1 => false),
             ),
             array(
-                '<?php $foo = function () {}',
+                '<?php $foo = function () {};',
                 array(5 => true),
             ),
             array(
-                '<?php $foo = function /** foo */ () {}',
+                '<?php $foo = function /** foo */ () {};',
                 array(5 => true),
             ),
             array(
@@ -146,7 +146,7 @@ preg_replace_callback(
                 array(7 => true),
             ),
             array(
-                '<?php $foo = function &() {}',
+                '<?php $foo = function &() {};',
                 array(5 => true),
             ),
         );
@@ -176,7 +176,7 @@ preg_replace_callback(
                 array(2 => true),
             ),
             array(
-                '<?php $a--',
+                '<?php $a--;',
                 array(2 => true),
             ),
             array(
@@ -188,19 +188,19 @@ preg_replace_callback(
                 array(2 => true, 4 => false),
             ),
             array(
-                '<?php ${"a"}++',
+                '<?php ${"a"}++;',
                 array(5 => true),
             ),
             array(
-                '<?php $foo->bar++',
+                '<?php $foo->bar++;',
                 array(4 => true),
             ),
             array(
-                '<?php $foo->{"bar"}++',
+                '<?php $foo->{"bar"}++;',
                 array(6 => true),
             ),
             array(
-                '<?php $a["foo"]++',
+                '<?php $a["foo"]++;',
                 array(5 => true),
             ),
         );
@@ -230,7 +230,7 @@ preg_replace_callback(
                 array(1 => true),
             ),
             array(
-                '<?php --$a',
+                '<?php --$a;',
                 array(1 => true),
             ),
             array(
@@ -289,24 +289,24 @@ preg_replace_callback(
     {
         return array(
             array(
-                '<?php function foo($a, ...$b);',
+                '<?php function foo($a, ...$b) {}',
                 array(8 => true),
             ),
             array(
-                '<?php function foo(&...$b);',
+                '<?php function foo(&...$b) {}',
                 array(5 => true, 6 => true),
             ),
             array(
-                '<?php function foo(array ...$b);',
+                '<?php function foo(array ...$b) {}',
                 array(7 => true),
             ),
             array(
-                '<?php foo(...$a);',
-                array(3 => true),
+                '<?php $foo = function(...$a) {};',
+                array(7 => true),
             ),
             array(
-                '<?php foo($a, ...$b);',
-                array(6 => true),
+                '<?php $foo = function($a, ...$b) {};',
+                array(10 => true),
             ),
         );
     }

@@ -302,32 +302,6 @@ class Bar
 }
 EOT
             ),
-            array(
-                <<<'EOT'
-<?php
-
-class Foo
-{
-    public const C1 = 1;
-    const C2 = 2;
-    public const C3 = 3;
-    protected const C4 = 4;
-    private const C5 = 5;
-}
-EOT
-                , <<<'EOT'
-<?php
-
-class Foo
-{
-    private const C5 = 5;
-    public const C1 = 1;
-    protected const C4 = 4;
-    const C2 = 2;
-    public const C3 = 3;
-}
-EOT
-            ),
         );
     }
 
@@ -368,6 +342,47 @@ trait FooTrait
     use BarTrait;
 
     use BazTrait;
+}
+EOT
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideCases71
+     * @requires PHP 7.1
+     */
+    public function testFix71($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideCases71()
+    {
+        return array(
+            array(
+                <<<'EOT'
+<?php
+
+class Foo
+{
+    public const C1 = 1;
+    const C2 = 2;
+    public const C3 = 3;
+    protected const C4 = 4;
+    private const C5 = 5;
+}
+EOT
+                , <<<'EOT'
+<?php
+
+class Foo
+{
+    private const C5 = 5;
+    public const C1 = 1;
+    protected const C4 = 4;
+    const C2 = 2;
+    public const C3 = 3;
 }
 EOT
             ),

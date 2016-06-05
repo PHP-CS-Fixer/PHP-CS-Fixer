@@ -39,9 +39,9 @@ final class UseTransformerTest extends AbstractTransformerTestCase
                 ),
             ),
             array(
-                '<?php function foo() use ($bar) {}',
+                '<?php $foo = function() use ($bar) {};',
                 array(
-                    7 => 'CT_USE_LAMBDA',
+                    9 => 'CT_USE_LAMBDA',
                 ),
             ),
             array(

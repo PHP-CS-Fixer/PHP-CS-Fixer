@@ -90,7 +90,7 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
             // tests from DynamicPropBraceTest
             array('<?php $foo->{$bar};'),
             // extra tests
-            array('<?php if (1) {} class Foo{ } function bar{ }'),
+            array('<?php if (1) {} class Foo{ } function bar(){ }'),
         );
     }
 }

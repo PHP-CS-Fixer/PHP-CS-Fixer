@@ -439,8 +439,8 @@ class Foo
     var $foo2b = ['foo'];
     var $foo3a = array('foo', 'bar');
     var $foo3b = ['foo', 'bar'];
-    var $foo4a = '1a', $foo5a = array(1, 2, 3), $foo6a = 10;
-    var $foo4b = '1b', $foo5b = array(1, 2, 3), $foo6b = 10;
+    public $foo4a = '1a', $foo5a = array(1, 2, 3), $foo6a = 10;
+    public $foo4b = '1b', $foo5b = array(1, 2, 3), $foo6b = 10;
 }
 EOF;
 

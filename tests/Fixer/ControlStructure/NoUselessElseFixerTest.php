@@ -753,7 +753,7 @@ else?><?php echo 5;',
                         echo 2;
                     } else if (false) {
                         echo 3;
-                    } elseif ($1) {
+                    } elseif ($c) {
                         echo 4;
                     } else
                         echo 1;
@@ -762,7 +762,7 @@ else?><?php echo 5;',
         $cases[] = array(array(27, 40), $source, 42);
         if (!defined('HHVM_VERSION')) {
             // HHVM 3.6.x tokenizes in a different way
-            $cases[] = array(array(59, 73), $source, 74);
+            $cases[] = array(array(59, 72), $source, 74);
         }
 
         return $cases;
