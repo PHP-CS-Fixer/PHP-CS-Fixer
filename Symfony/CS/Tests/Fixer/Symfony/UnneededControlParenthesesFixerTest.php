@@ -165,16 +165,10 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
                 '<?php
                 echo (1 + 2) * 10, "\n";
                 ',
-                '<?php
-                echo ((1 + 2) * 10, "\n");
-                ',
             ),
             array(
                 '<?php
                 echo (1 + 2) * 10, "\n";
-                ',
-                '<?php
-                echo((1 + 2) * 10, "\n");
                 ',
             ),
             array(
@@ -299,18 +293,26 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-                case $x;
+                switch ($a) {
+                    case $x;
+                }
                 ',
                 '<?php
-                case($x);
+                switch ($a) {
+                    case($x);
+                }
                 ',
             ),
             array(
                 '<?php
-                case 2;
+                switch ($a) {
+                    case 2;
+                }
                 ',
                 '<?php
-                case(2);
+                switch ($a) {
+                    case(2);
+                }
                 ',
             ),
             array(

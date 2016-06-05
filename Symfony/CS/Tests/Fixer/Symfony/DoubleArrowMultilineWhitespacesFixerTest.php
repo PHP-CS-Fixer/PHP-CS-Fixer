@@ -74,7 +74,7 @@ class DoubleArrowMultilineWhitespacesFixerTest extends AbstractFixerTestBase
         "foo" =>
         // hello there
         "value",
-        "hi"  =>
+        "hi"  => 1,
         /*
          * Description.
          */
