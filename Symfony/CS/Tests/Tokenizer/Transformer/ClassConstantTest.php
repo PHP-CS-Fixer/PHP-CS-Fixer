@@ -44,7 +44,7 @@ class ClassConstantTest extends AbstractTransformerTestBase
             array(
                 '<?php class X{}',
                 array(),
-            )
+            ),
         );
     }
 }
