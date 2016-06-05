@@ -26,7 +26,14 @@ class ClassConstant extends AbstractTransformer
      */
     public function process(Tokens $tokens)
     {
-        foreach ($tokens->findGivenKind(T_CLASS) as $index => $token) {
+        foreach ($tokens as $index => $token) {
+            if (!$token->equalsAny(array(
+                array(T_CLASS, 'class'),
+                array(T_STRING, 'class'),
+            ))) {
+                continue;
+            }
+
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevIndex];
 
