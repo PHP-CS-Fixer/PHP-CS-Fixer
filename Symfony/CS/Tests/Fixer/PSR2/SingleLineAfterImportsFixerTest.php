@@ -30,6 +30,37 @@ class SingleLineAfterImportsFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
+                '<?php use \stdClass;
+use \DateTime?>
+<?php
+$a = new DateTime();
+',
+                '<?php use \stdClass; use \DateTime?>
+<?php
+$a = new DateTime();
+', ),
+            array(
+                '<?php use \DateTime?>
+<?php
+$a = new DateTime();
+',
+            ),
+            array(
+                '<?php namespace Foo;
+
+use Bar\Baz;
+/**
+ * Foo.
+ */',
+                '<?php namespace Foo;
+
+use Bar\Baz;
+
+/**
+ * Foo.
+ */',
+            ),
+            array(
                 '<?php
 namespace A\B;
 
