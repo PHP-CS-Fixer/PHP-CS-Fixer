@@ -38,10 +38,11 @@ final class TextDiffTest extends \PHPUnit_Framework_TestCase
         $commandTester->execute(
             array(
                 'path' => array(__DIR__.'/Fixtures/FixCommand/TextDiffTestInput.php'),
-                '--rules' => 'concat_without_spaces',
-                '--dry-run' => true,
                 '--diff' => true,
+                '--dry-run' => true,
                 '--format' => $format,
+                '--rules' => 'concat_without_spaces',
+                '--using-cache' => 'no',
             ),
             array(
                 'decorated' => $isDecorated,
