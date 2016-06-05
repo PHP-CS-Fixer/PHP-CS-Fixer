@@ -347,6 +347,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function provideFixersDescriptionConsistencyCases()
     {
+        $cases = array();
         foreach ($this->getAllFixers() as $fixer) {
             $cases[] = array($fixer);
         }

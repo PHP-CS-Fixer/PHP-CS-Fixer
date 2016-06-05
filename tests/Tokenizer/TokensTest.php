@@ -32,6 +32,8 @@ final class TokensTest extends \PHPUnit_Framework_TestCase
             $this->assertNull($input);
 
             return;
+        } elseif (null === $input) {
+            $this->fail('While "input" is <null>, "expected" is not.');
         }
 
         $this->assertSame(array_keys($expected), array_keys($input), 'Both arrays need to have same keys.');
@@ -237,6 +239,15 @@ final class TokensTest extends \PHPUnit_Framework_TestCase
                     array(T_VARIABLE, '$X'),
                 ), 0, 1, array(2 => false)),
             ),
+
+            array(
+                '<?php $x = 1;',
+                null,
+                array(array(
+                    array(T_VARIABLE, '$X'),
+                    '=',
+                ), 0, 10),
+            ),
         );
     }
 
@@ -293,9 +304,7 @@ class FooBar
 PHP;
 
         $tokens = Tokens::fromCode($source);
-        $publicIndexes = array_keys($tokens->findGivenKind(T_PUBLIC));
-        $fooIndex = $publicIndexes[0];
-        $barIndex = $publicIndexes[1];
+        list($fooIndex, $barIndex) = array_keys($tokens->findGivenKind(T_PUBLIC));
 
         $tokens->clearRange($fooIndex, $barIndex - 1);
 
@@ -617,5 +626,65 @@ PHP;
 
             $this->assertTrue($token->equals($expectedPrototype), sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype), $token->toJson()));
         }
+    }
+
+    /**
+     * @dataProvider provideTokenOfKindSiblingCases
+     */
+    public function testTokenOfKindSibling(
+        $expectedIndex,
+        $direction,
+        $index,
+        array $findTokens,
+        $caseSensitive = true
+    ) {
+        $source =
+            '<?php
+                $a = function ($b) {
+                    return $b;
+                };
+
+                echo $a(1);
+                // test
+                return 123;';
+
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($source);
+        if (1 === $direction) {
+            $this->assertSame($expectedIndex, $tokens->getNextTokenOfKind($index, $findTokens, $caseSensitive));
+        } else {
+            $this->assertSame($expectedIndex, $tokens->getPrevTokenOfKind($index, $findTokens, $caseSensitive));
+        }
+
+        $this->assertSame($expectedIndex, $tokens->getTokenOfKindSibling($index, $direction, $findTokens, $caseSensitive));
+    }
+
+    public function provideTokenOfKindSiblingCases()
+    {
+        return array(
+            // find next cases
+            array(
+                35, 1, 34, array(';'),
+            ),
+            array(
+                14, 1, 0, array(array(T_RETURN)),
+            ),
+            array(
+                32, 1, 14, array(array(T_RETURN)),
+            ),
+            array(
+                6, 1, 0, array(array(T_RETURN), array(T_FUNCTION)),
+            ),
+            // find previous cases
+            array(
+                14, -1, 32, array(array(T_RETURN), array(T_FUNCTION)),
+            ),
+            array(
+                6, -1, 7, array(array(T_FUNCTION)),
+            ),
+            array(
+                null, -1, 6, array(array(T_FUNCTION)),
+            ),
+        );
     }
 }

@@ -54,6 +54,16 @@ final class ConcatWithoutSpacesFixerTest extends AbstractFixerTestCase
                 '<?php $a = "foobar"
     ."baz";',
             ),
+            array(
+                '<?php $a = "foobar"
+                     //test
+                     ."baz";',
+            ),
+            array(
+                '<?php $a = "foobar"
+                     /* test */
+                     ."baz";',
+            ),
         );
     }
 }

@@ -23,7 +23,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  */
 final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 {
-    private static $defaultStatements = null;
+    private static $defaultStatements;
 
     public static function setUpBeforeClass()
     {

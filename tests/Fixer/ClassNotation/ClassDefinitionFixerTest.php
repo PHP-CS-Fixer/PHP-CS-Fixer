@@ -242,4 +242,49 @@ trait/**/traitTest2//
             ),
         );
     }
+
+    /**
+     * @dataProvider providePHP7Cases
+     * @requires PHP 7.0
+     */
+    public function testFixPHP7($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function providePHP7Cases()
+    {
+        return array(
+            array(
+            '<?php
+$a = new class implements
+    \RFb,
+    \Fcc, '.'
+\GFddZz
+{
+};',
+            '<?php
+$a = new class implements
+    \RFb,
+    \Fcc, \GFddZz
+{
+};',
+            ),
+            array(
+            '<?php
+$a = new class implements
+    \RFb,
+    \Fcc, '.'
+\GFddZz
+{
+}?>',
+            '<?php
+$a = new class implements
+    \RFb,
+    \Fcc, \GFddZz
+{
+}?>',
+            ),
+        );
+    }
 }

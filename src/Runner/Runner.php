@@ -235,6 +235,7 @@ final class Runner
                     if ($error) {
                         throw new IOException(sprintf('Failed to write file "%s", "%s".', $file->getRealPath(), $error['message']), 0, null, $file->getRealPath());
                     }
+
                     throw new IOException(sprintf('Failed to write file "%s".', $file->getRealPath()), 0, null, $file->getRealPath());
                 }
             }

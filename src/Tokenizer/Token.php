@@ -512,12 +512,23 @@ class Token
         );
     }
 
-    public function toJson()
+    /**
+     * @param string[]|null $options JSON encode option
+     *
+     * @return string
+     */
+    public function toJson(array $options = null)
     {
-        static $options = null;
+        static $defaultOptions = null;
 
         if (null === $options) {
-            $options = Utils::calculateBitmask(array('JSON_PRETTY_PRINT', 'JSON_NUMERIC_CHECK'));
+            if (null === $defaultOptions) {
+                $defaultOptions = Utils::calculateBitmask(array('JSON_PRETTY_PRINT', 'JSON_NUMERIC_CHECK'));
+            }
+
+            $options = $defaultOptions;
+        } else {
+            $options = Utils::calculateBitmask($options);
         }
 
         return json_encode($this->toArray(), $options);

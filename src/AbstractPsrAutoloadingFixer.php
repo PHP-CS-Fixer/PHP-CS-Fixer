@@ -20,8 +20,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Bram Gotink <bram@gotink.me>
  * @author Graham Campbell <graham@alt-three.com>
+ *
+ * @internal
  */
-abstract class AbstractPsrFixer extends AbstractFixer
+abstract class AbstractPsrAutoloadingFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

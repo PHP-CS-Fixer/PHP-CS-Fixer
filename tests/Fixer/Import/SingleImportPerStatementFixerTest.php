@@ -140,7 +140,5 @@ namespace Boo {
 EOF
             ),
         );
-
-        $this->doTest($expected, $input);
     }
 }

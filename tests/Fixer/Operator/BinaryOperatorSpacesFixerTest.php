@@ -138,6 +138,15 @@ $b;',
             array(
                 '<?php function foo(&$a, array &$b, Bar &$c) {}',
             ),
+            array(
+                '<?php $a = 1 //
+                    || 2;
+                ',
+            ),
+            array(
+                '<?php $a =
+                    2;',
+            ),
         );
     }
 

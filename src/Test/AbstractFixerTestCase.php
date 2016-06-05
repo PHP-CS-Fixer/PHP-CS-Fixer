@@ -95,6 +95,8 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $filename
+     *
      * @return \SplFileInfo
      */
     protected function getTestFile($filename = __FILE__)
@@ -145,8 +147,8 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
                 $this->assertNull($fixResult, '->fix method must return null.');
             }
 
-            $this->assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
             $this->assertSame($expected, $tokens->generateCode(), 'Code build on input code must match expected code.');
+            $this->assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
 
             Tokens::clearCache();
             $expectedTokens = Tokens::fromCode($expected);
@@ -164,8 +166,8 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
             $this->assertNull($fixResult, '->fix method must return null.');
         }
 
-        $this->assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
         $this->assertSame($expected, $tokens->generateCode(), 'Code build on expected code must not change.');
+        $this->assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
     }
 
     /**
@@ -204,10 +206,10 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
     {
         foreach ($expectedTokens as $index => $expectedToken) {
             $inputToken = $inputTokens[$index];
-
+            $option = array('JSON_PRETTY_PRINT');
             $this->assertTrue(
                 $expectedToken->equals($inputToken),
-                sprintf('The token at index %d must be %s, got %s', $index, $expectedToken->toJson(), $inputToken->toJson())
+                sprintf("The token at index %d must be:\n%s,\ngot:\n%s.", $index, $expectedToken->toJson($option), $inputToken->toJson($option))
             );
         }
 
