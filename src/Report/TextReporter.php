@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Report;
 
+use Symfony\Component\Console\Formatter\OutputFormatter;
+
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
  *
  * @internal
  */
-class TextReporter implements ReporterInterface
+final class TextReporter implements ReporterInterface
 {
     /**
      * {@inheritdoc}
@@ -47,9 +49,7 @@ class TextReporter implements ReporterInterface
             $output .= PHP_EOL;
         }
 
-        $output .= $this->getFooter($reportSummary->getTime(), $reportSummary->getMemory(), $reportSummary->isDryRun());
-
-        return $output;
+        return $output.$this->getFooter($reportSummary->getTime(), $reportSummary->getMemory(), $reportSummary->isDryRun());
     }
 
     /**
@@ -64,10 +64,8 @@ class TextReporter implements ReporterInterface
             return '';
         }
 
-        $template = $isDecoratedOutput ? ' (<comment>%s</comment>)' : ' (%s)';
-
         return sprintf(
-            $template,
+            $isDecoratedOutput ? ' (<comment>%s</comment>)' : ' (%s)',
             implode(', ', $fixResult['appliedFixers'])
         );
     }
@@ -84,22 +82,28 @@ class TextReporter implements ReporterInterface
             return '';
         }
 
-        $template = '';
-
         if ($isDecoratedOutput) {
-            $template .= '<comment>      ---------- begin diff ----------</comment>';
-            $template .= PHP_EOL.'%s'.PHP_EOL;
-            $template .= '<comment>      ----------- end diff -----------</comment>';
+            $template = '<comment>      ---------- begin diff ----------</comment>%s<comment>      ----------- end diff -----------</comment>';
+            $diff = implode(
+                PHP_EOL,
+                array_map(
+                    function ($string) {
+                        $string = preg_replace('/^(\+){3}/', '<info>+++</info>', $string);
+                        $string = preg_replace('/^(\+){1}/', '<info>+</info>', $string);
+                        $string = preg_replace('/^(\-){3}/', '<error>---</error>', $string);
+                        $string = preg_replace('/^(\-){1}/', '<error>-</error>', $string);
+
+                        return $string;
+                    },
+                    explode(PHP_EOL, OutputFormatter::escape($fixResult['diff']))
+                )
+            );
         } else {
-            $template .= '      ---------- begin diff ----------';
-            $template .= PHP_EOL.'%s'.PHP_EOL;
-            $template .= '      ----------- end diff -----------';
+            $template = '      ---------- begin diff ----------%s      ----------- end diff -----------';
+            $diff = $fixResult['diff'];
         }
 
-        return PHP_EOL.sprintf(
-            $template,
-            $fixResult['diff']
-        ).PHP_EOL;
+        return PHP_EOL.sprintf($template, PHP_EOL.$diff.PHP_EOL).PHP_EOL;
     }
 
     /**

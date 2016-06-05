@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer\Report;
 
+use Symfony\Component\Console\Formatter\OutputFormatter;
+
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
  *
@@ -62,6 +64,8 @@ final class JsonReporter implements ReporterInterface
             $json['memory'] = round($reportSummary->getMemory() / 1024 / 1024, 3);
         }
 
-        return json_encode($json);
+        $json = json_encode($json);
+
+        return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($json) : $json;
     }
 }

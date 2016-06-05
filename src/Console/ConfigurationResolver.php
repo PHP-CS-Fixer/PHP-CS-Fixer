@@ -106,6 +106,7 @@ final class ConfigurationResolver
     private $usingCache;
     private $cacheFile;
     private $ruleSet;
+    private $formats = array();
 
     public function __construct()
     {
@@ -431,8 +432,6 @@ final class ConfigurationResolver
         );
 
         foreach ($paths as $path) {
-            $isFile = is_file($path);
-
             if (is_file($path)) {
                 $pathsByType['file'][] = $path;
             } else {
@@ -514,8 +513,6 @@ final class ConfigurationResolver
 
     protected function resolveFormat()
     {
-        static $formats = array('txt', 'xml', 'json');
-
         if (array_key_exists('format', $this->options)) {
             $format = $this->options['format'];
         } elseif (method_exists($this->config, 'getFormat')) {
@@ -524,8 +521,8 @@ final class ConfigurationResolver
             $format = 'txt'; // default
         }
 
-        if (!in_array($format, $formats, true)) {
-            throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are %s.', $format, implode(', ', $formats)));
+        if (!in_array($format, $this->formats, true)) {
+            throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are %s.', $format, implode(', ', $this->formats)));
         }
 
         $this->format = $format;
@@ -577,7 +574,6 @@ final class ConfigurationResolver
     private function resolvePath()
     {
         $filesystem = new Filesystem();
-        $path = $this->options['path'];
         $cwd = $this->cwd;
 
         $this->path = array_map(
@@ -647,5 +643,19 @@ final class ConfigurationResolver
         }
 
         $this->allowRisky = $this->config->getRiskyAllowed();
+    }
+
+    /**
+     * Set registered output formats.
+     *
+     * @param string[] $formats
+     *
+     * @return ConfigurationResolver
+     */
+    public function setFormats(array $formats)
+    {
+        $this->formats = $formats;
+
+        return $this;
     }
 }

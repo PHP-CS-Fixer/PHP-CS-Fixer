@@ -287,6 +287,9 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $verbosity = $output->getVerbosity();
+        $reporterFactory = ReporterFactory::create();
+        $reporterFactory->registerBuiltInReporters();
+
         $resolver = new ConfigurationResolver();
         $resolver
             ->setCwd(getcwd())
@@ -303,13 +306,11 @@ EOF
                 'cache-file' => $input->getOption('cache-file'),
                 'format' => $input->getOption('format'),
             ))
+            ->setFormats($reporterFactory->getFormats())
             ->resolve()
         ;
 
-        $reporter = ReporterFactory::create()
-            ->registerBuiltInReporters()
-            ->getReporter($resolver->getFormat())
-        ;
+        $reporter = $reporterFactory->getReporter($resolver->getFormat());
 
         $stdErr = $output instanceof ConsoleOutputInterface
             ? $output->getErrorOutput()
@@ -377,9 +378,11 @@ EOF
             ->setTime($fixEvent->getDuration())
         ;
 
-        $output->write(
-            $reporter->generate($reportSummary)
-        );
+        if ($output->isDecorated()) {
+            $output->write($reporter->generate($reportSummary));
+        } else {
+            $output->write($reporter->generate($reportSummary), false, OutputInterface::OUTPUT_RAW);
+        }
 
         $invalidErrors = $this->errorsManager->getInvalidErrors();
         $exceptionErrors = $this->errorsManager->getExceptionErrors();
