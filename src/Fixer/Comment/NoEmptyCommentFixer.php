@@ -39,10 +39,6 @@ final class NoEmptyCommentFixer extends AbstractFixer
                 continue;
             }
 
-            if ($tokens[$index]->isWhitespace() && false !== strpos($tokens[$index]->getContent(), "\n")) {
-                --$index;
-            }
-
             for ($i = $blockStart; $i <= $index; ++$i) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($i);
             }
@@ -164,8 +160,6 @@ final class NoEmptyCommentFixer extends AbstractFixer
             case self::TYPE_DOUBLE_SLASH:
                 // single line comment starting with '//'
                 return 1 === preg_match('|^//\s*$|', $content);
-            default:
-                throw new \UnexpectedValueException('Comment type detected failed.');
         }
     }
 }
