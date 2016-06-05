@@ -62,7 +62,7 @@ class SingleLineAfterImportsFixer extends AbstractFixer
             }
 
             $afterSemicolon = $tokens->getNextMeaningfulToken($semicolonIndex);
-            if (!$tokens[$afterSemicolon]->isGivenKind(T_USE)) {
+            if (null !== $afterSemicolon && !$tokens[$afterSemicolon]->isGivenKind(T_USE)) {
                 $newline .= "\n";
             }
 
