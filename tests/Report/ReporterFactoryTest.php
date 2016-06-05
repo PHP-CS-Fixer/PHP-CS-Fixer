@@ -36,7 +36,7 @@ final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
 
     private function createReporterMock($format)
     {
-        $report = $this->getMock('PhpCsFixer\Report\ReporterInterface');
+        $report = $this->getMockBuilder('PhpCsFixer\Report\ReporterInterface')->getMock();
         $report->expects($this->any())->method('getFormat')->willReturn($format);
 
         return $report;

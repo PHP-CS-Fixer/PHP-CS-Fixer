@@ -38,7 +38,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $testInstance = $factory->registerFixer($mock);
         $this->assertSame($factory, $testInstance);
 
-        $mock = $this->getMock('PhpCsFixer\RuleSetInterface');
+        $mock = $this->getMockBuilder('PhpCsFixer\RuleSetInterface')->getMock();
         $mock->expects($this->any())->method('getRules')->willReturn(array());
         $testInstance = $factory->useRuleSet($mock);
         $this->assertSame($factory, $testInstance);
@@ -382,7 +382,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
     private function createFixerMock($name, $priority = 0)
     {
-        $fixer = $this->getMock('PhpCsFixer\FixerInterface');
+        $fixer = $this->getMockBuilder('PhpCsFixer\FixerInterface')->getMock();
         $fixer->expects($this->any())->method('getName')->willReturn($name);
         $fixer->expects($this->any())->method('getPriority')->willReturn($priority);
 
