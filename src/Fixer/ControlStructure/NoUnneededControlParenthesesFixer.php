@@ -39,7 +39,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer
 
     private static $loops = array(
         'break' => array('lookupTokens' => T_BREAK, 'neededSuccessors' => array(';')),
-        'clone' => array('lookupTokens' => T_CLONE, 'neededSuccessors' => array(';', ':', ',', ')')),
+        'clone' => array('lookupTokens' => T_CLONE, 'neededSuccessors' => array(';', ':', ',', ')'), 'forbiddenContents' => array('?', ':')),
         'continue' => array('lookupTokens' => T_CONTINUE, 'neededSuccessors' => array(';')),
         'echo_print' => array('lookupTokens' => array(T_ECHO, T_PRINT), 'neededSuccessors' => array(';', array(T_CLOSE_TAG))),
         'return' => array('lookupTokens' => T_RETURN, 'neededSuccessors' => array(';')),
@@ -110,6 +110,14 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer
 
                 if (!$tokens[$blockEndNextIndex]->equalsAny($loop['neededSuccessors'])) {
                     continue;
+                }
+
+                if (array_key_exists('forbiddenContents', $loop)) {
+                    $forbiddenTokenIndex = $tokens->getNextTokenOfKind($blockStartIndex, $loop['forbiddenContents']);
+                    // A forbidden token is found and is inside the parenthesis.
+                    if (null !== $forbiddenTokenIndex && $forbiddenTokenIndex < $blockEndIndex) {
+                        continue;
+                    }
                 }
 
                 if ($tokens[$blockStartIndex - 1]->isWhitespace() || $tokens[$blockStartIndex - 1]->isComment()) {

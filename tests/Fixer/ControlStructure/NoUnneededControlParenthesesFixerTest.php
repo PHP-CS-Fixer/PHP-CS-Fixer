@@ -157,6 +157,16 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             ),
             array(
                 '<?php
+                $var = clone ($obj1 ?: $obj2);
+                ',
+            ),
+            array(
+                '<?php
+                $var = clone ($obj1 ? $obj1->getSubject() : $obj2);
+                ',
+            ),
+            array(
+                '<?php
                 clone $object;
                 ',
                 '<?php
