@@ -131,13 +131,12 @@ final class BracesFixerTest extends AbstractFixerTestCase
                 ',
             ),
             array(
-            '<?php
+                '<?php
     if (1) {
         do {
             $a = 1;
         } while (true);
-    }
-    ',
+    }',
             ),
             array(
                 '<?php
@@ -145,6 +144,14 @@ final class BracesFixerTest extends AbstractFixerTestCase
     }',
                 '<?php
     if /* 1 */ (2) {}',
+            ),
+            array(
+                '<?php
+                    if (1) {
+                        echo $items{0}->foo;
+                        echo $collection->items{1}->property;
+                    }
+                ',
             ),
         );
     }

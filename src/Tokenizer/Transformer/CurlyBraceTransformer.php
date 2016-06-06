@@ -23,7 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * - closing `}` for T_CURLY_OPEN into CT_CURLY_CLOSE,
  * - closing `}` for T_DOLLAR_OPEN_CURLY_BRACES into CT_DOLLAR_CLOSE_CURLY_BRACES,
  * - in `$foo->{$bar}` into CT_DYNAMIC_PROP_BRACE_OPEN and CT_DYNAMIC_PROP_BRACE_CLOSE,
- * - in `${$foo}` into CT_DYNAMIC_VAR_BRACE_OPEN and CT_DYNAMIC_VAR_BRACE_CLOSE.
+ * - in `${$foo}` into CT_DYNAMIC_VAR_BRACE_OPEN and CT_DYNAMIC_VAR_BRACE_CLOSE,
+ * - in `$array{$index}` into CT_ARRAY_INDEX_CURLY_BRACE_OPEN and CT_ARRAY_INDEX_CURLY_BRACE_CLOSE.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -43,6 +44,8 @@ final class CurlyBraceTransformer extends AbstractTransformer
             'CT_DYNAMIC_PROP_BRACE_CLOSE',
             'CT_DYNAMIC_VAR_BRACE_OPEN',
             'CT_DYNAMIC_VAR_BRACE_CLOSE',
+            'CT_ARRAY_INDEX_CURLY_BRACE_OPEN',
+            'CT_ARRAY_INDEX_CURLY_BRACE_CLOSE',
         );
     }
 
@@ -55,6 +58,7 @@ final class CurlyBraceTransformer extends AbstractTransformer
         $this->transformIntoDollarCloseBrace($tokens, $token, $index);
         $this->transformIntoDynamicPropBraces($tokens, $token, $index);
         $this->transformIntoDynamicVarBraces($tokens, $token, $index);
+        $this->transformIntoCurlyIndexBraces($tokens, $token, $index);
     }
 
     /**
@@ -141,5 +145,47 @@ final class CurlyBraceTransformer extends AbstractTransformer
 
         $openToken->override(array(CT_DYNAMIC_VAR_BRACE_OPEN, '{'));
         $closeToken->override(array(CT_DYNAMIC_VAR_BRACE_CLOSE, '}'));
+    }
+
+    private function transformIntoCurlyIndexBraces(Tokens $tokens, Token $token, $index)
+    {
+        if (!$token->equals('{')) {
+            return;
+        }
+
+        $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+        if (!$tokens[$prevIndex]->equalsAny(array(
+            array(T_STRING),
+            array(T_VARIABLE),
+            array(CT_ARRAY_INDEX_CURLY_BRACE_CLOSE),
+            array(CT_ARRAY_SQUARE_BRACE_CLOSE),
+            ']',
+            ')',
+        ))) {
+            return;
+        }
+
+        if (
+            $tokens[$prevIndex]->isGivenKind(T_STRING)
+            && !$tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isGivenKind(T_OBJECT_OPERATOR)
+        ) {
+            return;
+        }
+
+        if (
+            $tokens[$prevIndex]->equals(')')
+            && !$tokens[$tokens->getPrevMeaningfulToken(
+                $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevIndex, false)
+            )]->isGivenKind(T_ARRAY)
+        ) {
+            return;
+        }
+
+        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+        $closeToken = $tokens[$closeIndex];
+
+        $token->override(array(CT_ARRAY_INDEX_CURLY_BRACE_OPEN, '{'));
+        $closeToken->override(array(CT_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}'));
     }
 }

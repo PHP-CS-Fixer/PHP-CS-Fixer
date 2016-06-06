@@ -74,6 +74,7 @@ final class ArraySquareBraceTransformer extends AbstractTransformer
             array(CT_ARRAY_SQUARE_BRACE_CLOSE),
             array(CT_DYNAMIC_PROP_BRACE_CLOSE),
             array(CT_DYNAMIC_VAR_BRACE_CLOSE),
+            array(CT_ARRAY_INDEX_CURLY_BRACE_CLOSE),
         );
 
         $token = $tokens[$index];
