@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-05T09:30:31Z
+
+nice in between fix :)
+question, wouldn't something like https://github.com/composer/semver help you here?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-05T19:13:45Z
+
+I don't see how.
+We don't need to compare version, `Semver` is not needed for us as well (things like `satisfiedBy`).
+We only need to bump a version and see if it exists or not.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-06T07:01:08Z
+
+Very well :)
+I thought it might help as you don't have to parse the version string and up it yourself.
+
+:+1:
