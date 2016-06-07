@@ -34,7 +34,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
-            // test if we are at a function all
+            // test if we are at a function call
             if (!$tokens[$index]->isGivenKind(T_STRING)) {
                 continue;
             }
@@ -50,7 +50,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
                 continue;
             }
 
-            // do not though the function call if it is to a function in a namespace other than the default
+            // do not touch the function call if it is to a function in a namespace other than the default
             if (
                 $tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR)
                 && $tokens[$tokens->getPrevMeaningfulToken($functionNamePrefix)]->isGivenKind(T_STRING)

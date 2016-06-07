@@ -27,19 +27,19 @@ class NewlineAfterOpenTagFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
+        // ignore files with short open tag
+        if (count($tokens) < 1 || !$tokens[0]->isGivenKind(T_OPEN_TAG)) {
+            return $content;
+        }
+
         // ignore non-monolithic files
         if (!$tokens->isMonolithicPhp()) {
             return $content;
         }
 
-        // ignore files with short open tag
-        if (!$tokens[0]->isGivenKind(T_OPEN_TAG)) {
-            return $content;
-        }
-
         $newlineFound = false;
         foreach ($tokens as $token) {
-            if ($token->isWhitespace(array('whitespaces' => "\n"))) {
+            if ($token->isWhitespace() && false !== strpos($token->getContent(), "\n")) {
                 $newlineFound = true;
                 break;
             }
