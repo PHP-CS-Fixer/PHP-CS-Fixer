@@ -697,7 +697,7 @@ Choose from the list of available fixers:
                          "(double)" and "(real)" as
                          "(float)".
 
-* **simplified_null_return** [@Symfony]
+* **simplified_null_return**
                          A return statement wishing to
                          return nothing should be
                          simply "return".

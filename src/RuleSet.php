@@ -106,7 +106,6 @@ final class RuleSet implements RuleSetInterface
             'print_to_echo' => true,
             'self_accessor' => true,
             'short_scalar_cast' => true,
-            'simplified_null_return' => true,
             'single_blank_line_before_namespace' => true,
             'single_quote' => true,
             'space_after_semicolon' => true,
