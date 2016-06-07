@@ -564,22 +564,14 @@ final class TokensAnalyzer
             throw new \LogicException(sprintf('No T_WHILE at given index %d, got %s', $index, $token->getName()));
         }
 
-        $startParenthesisIndex = $tokens->getNextMeaningfulToken($index);
-        $startParenthesisToken = $tokens[$startParenthesisIndex];
-
-        if (!$startParenthesisToken->equals('(')) {
+        $endIndex = $tokens->getPrevMeaningfulToken($index);
+        if (!$tokens[$endIndex]->equals('}')) {
             return false;
         }
 
-        $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
+        $startIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $endIndex, false);
+        $beforeStartIndex = $tokens->getPrevMeaningfulToken($startIndex);
 
-        $nextIndex = $tokens->getNextMeaningfulToken($endParenthesisIndex);
-        $nextToken = $tokens[$nextIndex];
-
-        if ($nextToken->equals(';')) {
-            return true;
-        }
-
-        return false;
+        return $tokens[$beforeStartIndex]->isGivenKind(T_DO);
     }
 }

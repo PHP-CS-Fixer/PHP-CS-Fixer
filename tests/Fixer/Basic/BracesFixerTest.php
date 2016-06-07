@@ -34,6 +34,20 @@ final class BracesFixerTest extends AbstractFixerTestCase
         return array(
             array(
                 '<?php
+    $a = function() {
+        $a = 1;
+        while (false);
+    };',
+            ),
+            array(
+                '<?php
+    $a = function() {
+        $a = 1;
+        for ($i=0;$i<5;++$i);
+    };',
+            ),
+            array(
+                '<?php
     if (true) {
         $a = 1;
     } else {
