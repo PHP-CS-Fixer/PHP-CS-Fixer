@@ -705,6 +705,58 @@ else?><?php echo 5;',
                         echo 7;
                 ',
             ),
+            array(
+                '<?php
+                    $tmp = function($b){$b();};
+                    $a =1;
+                    return $tmp(function () use ($a) {
+                        if ($a) {
+                            $a++;
+                        } else {
+                            $a--;
+                        }
+                    });
+                ',
+            ),
+            array(
+                '<?php
+                    $tmp = function($b){$b();};
+                    $a =1;
+                    return $tmp(function () use ($a) {
+                        if ($a) {
+                            $a++;
+                        } elseif($a > 2) {
+                            return 1;
+                        } else {
+                            $a--;
+                        }
+                    });
+                ',
+            ),
+            array(
+                '<?php
+                    return function() {
+                        if (false) {
+
+                        } elseif (3 > 2) {
+
+                        } else {
+                            echo 1;
+                        }
+                    };',
+            ),
+            array(
+                '<?php
+                    return function() {
+                        if (false) {
+                            return 1;
+                        } elseif (3 > 2) {
+
+                        } else {
+                            echo 1;
+                        }
+                    };',
+            ),
         );
     }
 
