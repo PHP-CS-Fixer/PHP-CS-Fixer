@@ -510,6 +510,11 @@ Choose from the list of available fixers:
                          Remove trailing whitespace at
                          the end of blank lines.
 
+* **normalize_index_brace** [@Symfony]
+                         Array index should always be
+                         written by using square
+                         braces.
+
 * **not_operator_with_space**
                          Logical NOT operators (!)
                          should have leading and
