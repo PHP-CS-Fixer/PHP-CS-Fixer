@@ -1,0 +1,41 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-05-27T19:35:30Z
+
+@localheinz sorry for messing this up :(
+This is an early opening PR since when it tried to find the problem based on your findings I ran into an `out range exception`, so not a false-positive fix. I've to dig a bit more to see if there is another cause.
+
+If you have the time, could you retest the fixer with the changes in this PR on your code that was fixed incorrectly?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-30T18:40:46Z
+
+A lot of nice celanup, but thanks to them I lost what part is actually a bugfix and what only cleanup
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-05-31T15:49:11Z
+
+@SpacePossum Could you add this to your tests? https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/1923#issuecomment-222731341
+
+Thanks.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-05-31T17:43:46Z
+
+sure thing @Soullivaneuh , sorry for the inconvenience (cc @greg0ire) :(
+while we are talking, could take a look at https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/1942 IIRC your are the author of the fixer?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-01T07:39:35Z
+
+ready for review
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-01T17:00:47Z
+
+:+1:
