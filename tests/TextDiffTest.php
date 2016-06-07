@@ -68,7 +68,7 @@ final class TextDiffTest extends \PHPUnit_Framework_TestCase
 %A$output->writeln('<error>'.'a'.'</error>');%A
 TEST;
         $cases = array();
-        foreach (array('txt', 'xml') as $format) {
+        foreach (array('txt', 'xml', 'junit') as $format) {
             $cases[] = array($expected, $format, true);
             $cases[] = array($expected, $format, false);
         }
@@ -90,7 +90,7 @@ TEST;
         sort($formats);
 
         $this->assertSame(
-            array('json', 'txt', 'xml'),
+            array('json', 'junit', 'txt', 'xml'),
             $formats
         );
     }

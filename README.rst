@@ -128,7 +128,9 @@ problems as possible on a given file or files in a given directory and its subdi
     php php-cs-fixer.phar fix /path/to/dir
     php php-cs-fixer.phar fix /path/to/file
 
-The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``json`` and ``xml``.
+The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml`` and ``junit``.
+
+NOTE: When using ``junit`` format report generates in accordance with JUnit xml schema from Jenkins (see docs/junit-10.xsd).
 
 The ``--verbose`` option will show the applied fixers. When using the ``txt`` format it will also displays progress notifications.
 
