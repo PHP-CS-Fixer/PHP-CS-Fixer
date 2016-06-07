@@ -30,5 +30,10 @@
     "autoload": {
         "psr-4": { "Symfony\\CS\\": "Symfony/CS/" }
     },
+    "config": {
+        "platform": {
+            "php": "5.3.6"
+        }
+    },
     "bin": ["php-cs-fixer"]
 }
