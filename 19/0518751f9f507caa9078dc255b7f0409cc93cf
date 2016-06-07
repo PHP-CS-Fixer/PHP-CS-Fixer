@@ -1,0 +1,274 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-14T16:53:25Z
+
+> This pull request allowes to use php-cs-fixer in CI
+
+?
+It could be used without it as well
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-14T16:53:40Z
+
+(Note: I'm not against adding new format)
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-03-14T17:16:44Z
+
+I mean it allows to view results in CI UI without greping logs
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-03-14T17:44:49Z
+
+I guess you refer to some particular CI service.
+No CI as Continuous Integration service in general.
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-03-14T17:49:29Z
+
+ex Atlassian Bamboo https://confluence.atlassian.com/bamboo/junit-parser-289277056.html
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-03-14T18:13:33Z
+
+For Jenkins too
+https://www.safaribooksonline.com/library/view/jenkins-the-definitive/9781449311155/ch06s03.html
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-21T09:23:59Z
+
+Needs rebasing. ;)
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-03-21T09:25:46Z
+
+@GrahamCampbell Of course. I will rewrite it after #1824 will be approved
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-09T20:28:54Z
+
+#1824 is merged, please rebase
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-04-09T20:34:16Z
+
+@keradus rebased
+
+---------------------------------------------------------------------------
+
+by Anahkiasen at 2016-04-10T06:04:04Z
+
+Would love this, CircleCI also uses JUnit as format, currently doing `php-cs-fixer --dry-run` but yeah, have to look at the logs to see what went wrong in case of failure.
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-04-10T06:29:15Z
+
+@keradus, I fixed title and rebased on master again
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-04-13T08:07:24Z
+
+@keradus up
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-13T08:30:45Z
+
+@ekho you need to collect some thumbs on PR ;)
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-04-13T08:33:05Z
+
+@keradus thumbs? :-O
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-13T09:20:57Z
+
+LGTM
+Just wondering how you are counting number of tests and number of assertions. Wouldn't you want for each time you ran the tool to count as one test ("code style test") with the number of fixers used multiplied by the number of files applied to as assertion count?
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-04-13T11:12:17Z
+
+@SpacePossum I thinked about different variants
+IMO the best variant when we can see files as test cases and applied fixers as failures
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-13T12:56:56Z
+
+@ekho I'm not using JUnit format anywhere. could you make a build from your fork and show how would that report looks like in any CI you mentioned, just for an example ?
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-04-13T13:30:00Z
+
+@keradus in Bamboo it looks like
+* [run with invalid file](http://storage4.static.itmages.com/i/16/0413/h_1460553521_2572197_94b20ea4e5.png)
+* [summary of run with wrong file](http://storage5.static.itmages.com/i/16/0413/h_1460553838_9399727_8ee10320bc.png)
+* [details of run with wrong file](http://storage6.static.itmages.com/i/16/0413/h_1460554136_7629289_42d35a08aa.png)
+* [all ok](http://storage5.static.itmages.com/i/16/0413/h_1460554231_4681156_066881e01e.png)
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-04-13T19:25:17Z
+
+@keradus I updated pr
+
+- removed `class` attribute from `testcase`
+- only one `failure` element per `testcase` which contains applied fixers and diff (more compatible with different CI tools)
+
+note: used latest Jenkins JUnint xml schema (https://svn.jenkins-ci.org/trunk/hudson/dtkit/dtkit-format/dtkit-junit-model/src/main/resources/com/thalesgroup/dtkit/junit/model/xsd/junit-7.xsd)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-04-13T21:58:21Z
+
+LGTM, but the proof of the pudding is in the eating, so if no other users of JUnit-formatted reports do report issues I'm :+1:   :)
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-04-19T03:42:14Z
+
+@keradus I've added comments as I could
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-05-26T22:20:27Z
+
+Any updates on this one?
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-05-27T09:23:53Z
+
+@keradus I'm confused. I do not understand what I should do to finish PR =(((((
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-05-27T09:49:26Z
+
+I think there is this one;
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1825#discussion_r59555969
+
+And it would be nice to make a `doc` folder in the root of the project and add the `.xsd` you follow in there. This way the end-users know what the tool generates. We could also move the `cookbook` into there and update links to it to point there.
+It would be nice to test the output the tool create against the `.xsd` in the doc folder.
+
+Depending on what time https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1910 is done and merged that PR or this one needs updating, I can take care of that.
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-06-06T07:27:15Z
+
+svn.jenkins-ci.org died. Actual Jenkins xunit schemas can be found at https://github.com/jenkinsci/xunit-plugin/tree/master/src/main/resources/org/jenkinsci/plugins/xunit/types/model/xsd .
+I got latest (junit-10.xsd) and put it to `doc` dir. Test updated to use it.
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1825#discussion_r59559150
+I researched several different xunit schemes. No one supports memory. I think because spent time is very common mark for tests but memory is not (like cpu usage, disk io, etc).
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-06-06T12:00:44Z
+
+@SpacePossum fixed. Tests fails as well as in master branch =(  ( @keradus merged branch 1.12 to master https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/builds/135482416 )
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-06T12:06:24Z
+
+Damn it :( I have no way to check every possible env during merging one line to another :( At least it's good that Travis detected it.
+Please, could you work on a fix for broken master ? (as separated PR)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-06T12:10:00Z
+
+The failing test are not related, so no worries.
+Could you remove the line commented here; https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1825/files#r59548663?
+And maybe move this file;
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/COOKBOOK-FIXERS.md
+to the `/doc` folder you created?
+
+~~I've a look at the failing PSR0/4 tests.~~
+This will take more work than I can pick up.
+The failure is because of the `__halt_compiler.php` now correctly being tested as _not_ a valid file PSR filename for a class.
+Skipping the test on PHP 5.3 would make the test pass, however it shows that on PHP 5.3 we would allow it as file name. Not sure if we want that.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-06T12:34:56Z
+
+LGTM :+1:
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-06-06T12:42:36Z
+
+offtopic
+@keradus @SpacePossum did you think about removing support of old php versions (5.3, 5.4) in the 2.0 release ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-06T13:24:06Z
+
+2.0 release will not dorp 5.3. 2.x may.
+too many, to important changes to drop 5.3 without important reason, as 2.x is working on 5.3
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-06T20:31:31Z
+
+Travis restarted
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-07T06:53:01Z
+
+@ekho please rebase
+@SpacePossum please review ;)
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-06-07T06:58:16Z
+
+done
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-07T07:39:40Z
+
+Just a few minors https://github.com/bankiru/PHP-CS-Fixer/pull/4
+
+Tested and looks good to me :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-07T08:16:17Z
+
+if the test are green; :ship: :+1:
+
+---------------------------------------------------------------------------
+
+by ekho at 2016-06-07T13:32:54Z
+
+@keradus @SpacePossum tests are green =)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-07T13:37:53Z
+
+:+1:
