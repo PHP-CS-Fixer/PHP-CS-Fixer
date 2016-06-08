@@ -71,8 +71,15 @@ abstract class AbstractPsrAutoloadingFixer extends AbstractFixer
             return false;
         }
 
-        $tokens = Tokens::fromCode(sprintf('<?php class %s {}', $filenameParts[0]));
-        if ($tokens[3]->isKeyword() || $tokens[3]->isMagicConstant()) {
+        try {
+            $tokens = Tokens::fromCode(sprintf('<?php class %s {}', $filenameParts[0]));
+
+            if ($tokens[3]->isKeyword() || $tokens[3]->isMagicConstant()) {
+                // name can not be a class name - detected by PHP 5.x
+                return false;
+            }
+        } catch (\ParseError $e) {
+            // name can not be a class name - detected by PHP 7.x
             return false;
         }
 

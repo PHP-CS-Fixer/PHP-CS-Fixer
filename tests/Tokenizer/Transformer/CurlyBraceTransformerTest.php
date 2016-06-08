@@ -82,7 +82,7 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                 '<?php
                     echo $arr{$index};
                     echo $arr[$index];
-                    if {}
+                    if (1) {}
                 ',
                 array(
                     5 => 'CT_ARRAY_INDEX_CURLY_BRACE_OPEN',

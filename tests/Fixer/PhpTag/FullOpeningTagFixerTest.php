@@ -30,14 +30,14 @@ final class FullOpeningTagFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideClosingTagExamples
+     * @dataProvider provideFixCases
      */
-    public function testOneLineFix($expected, $input = null)
+    public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideClosingTagExamples()
+    public function provideFixCases()
     {
         return array(
             array('<?php echo \'Foo\';', '<? echo \'Foo\';'),
@@ -61,10 +61,6 @@ echo \'Foo\';
                 "<? if ('<?php' === '<?') { }",
             ),
             array(
-                'foo <?php  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
-                'foo <?  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
-            ),
-            array(
                 "<?php
 '<?
 ';",
@@ -82,6 +78,28 @@ echo \'Foo\';
             ),
             array(
                 "<?php \$this->data = preg_replace('/<\?(?!xml|php)/s', '<?php ',       \$this->data);",
+            ),
+            array(
+                'foo <?php  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideFixCasesLT70
+     * @requires PHP <7.0
+     */
+    public function testFixLT70($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixCasesLT70()
+    {
+        return array(
+            array(
+                'foo <?php  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
+                'foo <?  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
             ),
         );
     }
