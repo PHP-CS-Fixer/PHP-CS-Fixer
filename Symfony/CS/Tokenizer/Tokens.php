@@ -139,18 +139,10 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        $tokens = token_get_all($code);
+        $tokens = new self();
+        $tokens->setCode($code);
 
-        foreach ($tokens as $index => $tokenPrototype) {
-            $tokens[$index] = new Token($tokenPrototype);
-        }
-
-        $collection = self::fromArray($tokens);
-        $transformers = Transformers::create();
-        $transformers->transform($collection);
-        $collection->changeCodeHash($codeHash);
-
-        return $collection;
+        return $tokens;
     }
 
     /**
@@ -1322,7 +1314,10 @@ class Tokens extends \SplFixedArray
         // clear memory
         $this->setSize(0);
 
-        $tokens = token_get_all($code);
+        $tokens = defined('TOKEN_PARSE')
+            ? token_get_all($code, TOKEN_PARSE)
+            : token_get_all($code);
+
         $this->setSize(count($tokens));
 
         foreach ($tokens as $index => $token) {
