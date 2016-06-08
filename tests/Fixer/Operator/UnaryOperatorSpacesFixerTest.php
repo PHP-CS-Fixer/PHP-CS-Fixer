@@ -108,7 +108,7 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
      */
     public function testFixLT70($expected, $input = null)
     {
-        $this->makeTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public function provideCasesLT70()
