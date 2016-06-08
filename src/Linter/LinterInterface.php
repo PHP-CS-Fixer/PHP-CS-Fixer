@@ -20,6 +20,11 @@ namespace PhpCsFixer\Linter;
 interface LinterInterface
 {
     /**
+     * @return bool
+     */
+    public function isAsync();
+
+    /**
      * Lint PHP file.
      *
      * @param string $path

@@ -20,7 +20,7 @@ use PhpCsFixer\Linter\LintingResultInterface;
  *
  * @internal
  */
-final class FileLintingIterator extends \IteratorIterator
+final class FileCachingLintingIterator extends \CachingIterator
 {
     /**
      * @var LintingResultInterface
@@ -31,6 +31,11 @@ final class FileLintingIterator extends \IteratorIterator
      * @var LinterInterface
      */
     private $linter;
+
+    /**
+     * @var LintingResultInterface
+     */
+    private $nextResult;
 
     public function __construct(\Iterator $iterator, LinterInterface $linter)
     {
@@ -48,8 +53,10 @@ final class FileLintingIterator extends \IteratorIterator
     {
         parent::next();
 
-        if ($this->valid()) {
-            $this->currentResult = $this->handleItem($this->current());
+        $this->currentResult = $this->nextResult;
+
+        if ($this->hasNext()) {
+            $this->nextResult = $this->handleItem($this->getInnerIterator()->current());
         }
     }
 
@@ -59,6 +66,10 @@ final class FileLintingIterator extends \IteratorIterator
 
         if ($this->valid()) {
             $this->currentResult = $this->handleItem($this->current());
+        }
+
+        if ($this->hasNext()) {
+            $this->nextResult = $this->handleItem($this->getInnerIterator()->current());
         }
     }
 

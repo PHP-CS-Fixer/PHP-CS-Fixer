@@ -19,9 +19,16 @@ use Symfony\Component\Process\Process;
  *
  * @internal
  */
-final class LintingResult implements LintingResultInterface
+final class ProcessLintingResult implements LintingResultInterface
 {
+    /**
+     * @var bool
+     */
     private $isSuccessful;
+
+    /**
+     * @var Process
+     */
     private $process;
 
     public function __construct(Process $process)

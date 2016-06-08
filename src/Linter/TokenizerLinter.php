@@ -12,31 +12,21 @@
 
 namespace PhpCsFixer\Linter;
 
-use Symfony\Component\Process\Process;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Handle PHP code linting process.
+ * Handle PHP code linting.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class Linter implements LinterInterface
+final class TokenizerLinter implements LinterInterface
 {
-    /**
-     * @var LinterInterface
-     */
-    private $sublinter;
-
-    /**
-     * @param string|null $executable PHP executable, null for autodetection
-     */
     public function __construct($executable = null)
     {
-        try {
-            $this->sublinter = new TokenizerLinter();
-        } catch (UnavailableLinterException $e) {
-            $this->sublinter = new ProcessLinter($executable);
+        if (false === defined('TOKEN_PARSE')) {
+            throw new UnavailableLinterException('Cannot use tokenizer as linter.');
         }
     }
 
@@ -45,7 +35,7 @@ final class Linter implements LinterInterface
      */
     public function isAsync()
     {
-        return $this->sublinter->isAsync();
+        return false;
     }
 
     /**
@@ -53,7 +43,7 @@ final class Linter implements LinterInterface
      */
     public function lintFile($path)
     {
-        return $this->sublinter->lintFile($path);
+        return $this->lintSource(file_get_contents($path));
     }
 
     /**
@@ -61,6 +51,14 @@ final class Linter implements LinterInterface
      */
     public function lintSource($source)
     {
-        return $this->sublinter->lintSource($source);
+        try {
+            // it will throw ParseError on syntax error
+            // if not, it will cache the tokenized version of code, which is great for Runner
+            Tokens::fromCode($source);
+
+            return new TokenizerLintingResult();
+        } catch (\ParseError $e) {
+            return new TokenizerLintingResult($e);
+        }
     }
 }

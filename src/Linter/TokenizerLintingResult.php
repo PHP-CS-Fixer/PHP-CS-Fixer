@@ -13,39 +13,32 @@
 namespace PhpCsFixer\Linter;
 
 /**
- * Dummy linter. No linting is performed. No error is raised.
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class NullLinter implements LinterInterface
+final class TokenizerLintingResult implements LintingResultInterface
 {
     /**
-     * {@inheritdoc}
+     * @var \ParseError|null
      */
-    public function isAsync()
+    private $error;
+
+    /**
+     * @param \ParseError|null $error
+     */
+    public function __construct(\ParseError $error = null)
     {
-        return false;
+        $this->error = $error;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function lintFile($path)
+    public function check()
     {
-        unset($path);
-
-        return new NullLintingResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function lintSource($source)
-    {
-        unset($source);
-
-        return new NullLintingResult();
+        if (null !== $this->error) {
+            throw new LintingException($this->error->getMessage(), $this->error->getCode(), $this->error);
+        }
     }
 }

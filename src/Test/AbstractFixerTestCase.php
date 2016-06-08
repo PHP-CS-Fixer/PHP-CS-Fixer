@@ -15,6 +15,8 @@ namespace PhpCsFixer\Test;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
+use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\Linter\NullLinter;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -26,7 +28,7 @@ use PhpCsFixer\Utils;
 abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Linter|null
+     * @var LinterInterface
      */
     protected static $linter;
 
@@ -37,9 +39,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        if (getenv('LINT_TEST_CASES')) {
-            static::$linter = new Linter();
-        }
+        static::$linter = getenv('LINT_TEST_CASES') ? new Linter() : new NullLinter();
     }
 
     /**
@@ -201,10 +201,6 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function lintSource($source)
     {
-        if (!isset(static::$linter)) {
-            return;
-        }
-
         if ($this->isLintException($source)) {
             return;
         }

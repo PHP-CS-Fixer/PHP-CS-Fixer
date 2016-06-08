@@ -127,15 +127,15 @@ final class Runner
 
         $finder = $config->getFinder();
         $finderIterator = $finder instanceof \IteratorAggregate ? $finder->getIterator() : $finder;
-
-        $collection = new FileLintingIterator(
-            new FileFilterIterator(
-                $finderIterator,
-                $this->eventDispatcher,
-                $this->cacheManager
-            ),
-            $this->linter
+        $fileFilteredFileIterator = new FileFilterIterator(
+            $finderIterator,
+            $this->eventDispatcher,
+            $this->cacheManager
         );
+
+        $collection = $this->linter->isAsync()
+            ? new FileCachingLintingIterator($fileFilteredFileIterator, $this->linter)
+            : new FileLintingIterator($fileFilteredFileIterator, $this->linter);
 
         foreach ($collection as $file) {
             $fixInfo = $this->fixFile($file, $collection->currentLintingResult());
@@ -144,6 +144,9 @@ final class Runner
                 $name = $this->getFileRelativePathname($file);
                 $changed[$name] = $fixInfo;
             }
+
+            // we do not need Tokens to still caching just fixed file - so clear the cache
+            Tokens::clearCache();
         }
 
         return $changed;
@@ -169,15 +172,13 @@ final class Runner
         $fixers = $this->config->getFixers();
 
         $old = file_get_contents($file->getRealPath());
+        $tokens = Tokens::fromCode($old);
+        $oldHash = $tokens->getCodeHash();
+
+        $newHash = $oldHash;
         $new = $old;
 
         $appliedFixers = array();
-
-        // we do not need Tokens to still caching previously fixed file - so clear the cache
-        Tokens::clearCache();
-
-        $tokens = Tokens::fromCode($old);
-        $newHash = $oldHash = $tokens->getCodeHash();
 
         try {
             foreach ($fixers as $fixer) {
