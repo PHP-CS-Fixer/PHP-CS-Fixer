@@ -554,6 +554,13 @@ Choose from the list of available fixers:
                         blank line before a namespace
                         declaration.
 
+* **single_line_function_declaration** [symfony]
+                        Declare all the arguments on
+                        the same line as the
+                        method/function name, no
+                        matter how many arguments
+                        there are.
+
 * **single_quote** [symfony]
                         Convert double quotes to
                         single quotes for simple
