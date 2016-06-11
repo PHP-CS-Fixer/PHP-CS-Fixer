@@ -970,7 +970,10 @@ class Tokens extends \SplFixedArray
         // clear memory
         $this->setSize(0);
 
-        $tokens = token_get_all($code);
+        $tokens = defined('TOKEN_PARSE')
+            ? token_get_all($code, TOKEN_PARSE)
+            : token_get_all($code);
+
         $this->setSize(count($tokens));
 
         foreach ($tokens as $index => $token) {
