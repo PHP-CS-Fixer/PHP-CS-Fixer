@@ -1357,15 +1357,15 @@ declare   (   ticks   =   1   )   {
     }
 
     /**
-     * @dataProvider provideAnonymousClassesCases
+     * @dataProvider provide70Cases
      * @requires PHP 7.0
      */
-    public function testAnonymousClasses($expected, $input = null)
+    public function test70($expected, $input = null)
     {
         $this->makeTest($expected, $input);
     }
 
-    public function provideAnonymousClassesCases()
+    public function provide70Cases()
     {
         return array(
             array(
@@ -1396,6 +1396,15 @@ declare   (   ticks   =   1   )   {
     }, 3);',
                 '<?php
     foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
+            ),
+            array(
+                '<?php
+    class Foo
+    {
+        public function use()
+        {
+        }
+    }',
             ),
         );
     }

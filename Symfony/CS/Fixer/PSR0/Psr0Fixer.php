@@ -158,12 +158,21 @@ class Psr0Fixer extends AbstractFixer implements ConfigAwareInterface
             (!isset($filenameParts[1]) || 'php' !== $filenameParts[1])
             // ignore file with name that cannot be a class name
             || 0 === preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $filenameParts[0])
+            // ignore filename that will halt compiler (and cannot be properly tokenized under PHP 5.3)
+            || '__halt_compiler' === $filenameParts[0]
         ) {
             return false;
         }
 
-        $tokens = Tokens::fromCode(sprintf('<?php class %s {}', $filenameParts[0]));
-        if ($tokens[3]->isKeyword() || $tokens[3]->isMagicConstant()) {
+        try {
+            $tokens = Tokens::fromCode(sprintf('<?php class %s {}', $filenameParts[0]));
+
+            if ($tokens[3]->isKeyword() || $tokens[3]->isMagicConstant()) {
+                // name can not be a class name - detected by PHP 5.x
+                return false;
+            }
+        } catch (\ParseError $e) {
+            // name can not be a class name - detected by PHP 7.x
             return false;
         }
 

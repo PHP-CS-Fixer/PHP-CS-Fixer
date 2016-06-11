@@ -95,13 +95,28 @@ class UnaryOperatorsSpacesFixerTest extends AbstractFixerTestBase
                 '<?php function foo(&$a, array &$b, Bar &$c) {}',
                 '<?php function foo(& $a, array & $b, Bar & $c) {}',
             ),
+        );
+
+        return $cases;
+    }
+
+    /**
+     * @dataProvider provideCasesLT70
+     * @requires PHP <7.0
+     */
+    public function testFixLT70($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideCasesLT70()
+    {
+        return array(
             array(
                 '<?php foo(+$a, -2,-$b, &$c);',
                 '<?php foo(+ $a, - 2,- $b, & $c);',
             ),
         );
-
-        return $cases;
     }
 
     /**
