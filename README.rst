@@ -616,6 +616,11 @@ Choose from the list of available fixers:
                         Align equals symbols in
                         consecutive lines.
 
+* **combine_consecutive_issets** [contrib]
+                        Calling isset on multiple
+                        items should be done in one
+                        call.
+
 * **combine_consecutive_unsets** [contrib]
                         Calling unset on multiple
                         items should be done in one
