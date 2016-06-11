@@ -1301,6 +1301,31 @@ while (true) {
     }
 
     /**
+     * @dataProvider provide70Cases
+     * @requires PHP 7.0
+     */
+    public function test70($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provide70Cases()
+    {
+        return array(
+            array(
+                '<?php
+    class Foo
+    {
+        public function use()
+        {
+        }
+    }
+                ',
+            ),
+        );
+    }
+
+    /**
      * @dataProvider providePreserveLineAfterControlBrace
      */
     public function testPreserveLineAfterControlBrace($expected, $input = null)
