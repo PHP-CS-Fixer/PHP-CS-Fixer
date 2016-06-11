@@ -1,0 +1,359 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-08T21:52:00Z
+
+@GrahamCampbell you were one of those who reported the bug. Could you confirm the fix please?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-09T09:04:48Z
+
+@keradus https://github.com/padraic/mockery/blob/master/tests/Mockery/Fixtures/SemiReservedWordsAsMethods.php might be a good test case. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-09T09:08:48Z
+
+It's min-case is aready there. No need to check every single keyword here,either we properly detecting semi-reserved keywords or not.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-09T09:11:57Z
+
+Seems to work:
+
+```php
+   1) SemiReservedWordsAsMethods.php (trailing_spaces, visibility, braces, eof_ending)
+      ---------- begin diff ----------
+      --- Original
+      +++ New
+      @@ @@
+       <?php
+
+       namespace Mockery\Fixtures;
+
+      -class SemiReservedWordsAsMethods
+      +class SemiReservedWordsAsMethods
+       {
+      -    function callable() {}
+      -    function class() {}
+      -    function trait() {}
+      -    function extends() {}
+      -    function implements() {}
+      -    function static() {}
+      -    function abstract() {}
+      -    function final() {}
+      -    function public() {}
+      -    function protected() {}
+      -    function private() {}
+      -    function const() {}
+      -    function enddeclare() {}
+      -    function endfor() {}
+      -    function endforeach() {}
+      -    function endif() {}
+      -    function endwhile() {}
+      -    function and() {}
+      -    function global() {}
+      -    function goto() {}
+      -    function instanceof() {}
+      -    function insteadof() {}
+      -    function interface() {}
+      -    function namespace() {}
+      -    function new() {}
+      -    function or() {}
+      -    function xor() {}
+      -    function try() {}
+      -    function use() {}
+      -    function var() {}
+      -    function exit() {}
+      -    function list() {}
+      -    function clone() {}
+      -    function include() {}
+      -    function include_once() {}
+      -    function throw() {}
+      -    function array() {}
+      -    function print() {}
+      -    function echo() {}
+      -    function require() {}
+      -    function require_once() {}
+      -    function return() {}
+      -    function else() {}
+      -    function elseif() {}
+      -    function default() {}
+      -    function break() {}
+      -    function continue() {}
+      -    function switch() {}
+      -    function yield() {}
+      -    function function() {}
+      -    function if() {}
+      -    function endswitch() {}
+      -    function finally() {}
+      -    function for() {}
+      -    function foreach() {}
+      -    function declare() {}
+      -    function case() {}
+      -    function do() {}
+      -    function while() {}
+      -    function as() {}
+      -    function catch() {}
+      -    function die() {}
+      -    function self() {}
+      -    function parent() {}
+      +    public function callable()
+      +    {
+      +    }
+      +    public function class()
+      +    {
+      +    }
+      +    public function trait()
+      +    {
+      +    }
+      +    public function extends()
+      +    {
+      +    }
+      +    public function implements()
+      +    {
+      +    }
+      +    public function static()
+      +    {
+      +    }
+      +    public function abstract()
+      +    {
+      +    }
+      +    public function final()
+      +    {
+      +    }
+      +    public function public()
+      +    {
+      +    }
+      +    public function protected()
+      +    {
+      +    }
+      +    public function private()
+      +    {
+      +    }
+      +    public function const()
+      +    {
+      +    }
+      +    public function enddeclare()
+      +    {
+      +    }
+      +    public function endfor()
+      +    {
+      +    }
+      +    public function endforeach()
+      +    {
+      +    }
+      +    public function endif()
+      +    {
+      +    }
+      +    public function endwhile()
+      +    {
+      +    }
+      +    public function and()
+      +    {
+      +    }
+      +    public function global()
+      +    {
+      +    }
+      +    public function goto()
+      +    {
+      +    }
+      +    public function instanceof()
+      +    {
+      +    }
+      +    public function insteadof()
+      +    {
+      +    }
+      +    public function interface()
+      +    {
+      +    }
+      +    public function namespace()
+      +    {
+      +    }
+      +    public function new()
+      +    {
+      +    }
+      +    public function or()
+      +    {
+      +    }
+      +    public function xor()
+      +    {
+      +    }
+      +    public function try()
+      +    {
+      +    }
+      +    public function use()
+      +    {
+      +    }
+      +    public function var()
+      +    {
+      +    }
+      +    public function exit()
+      +    {
+      +    }
+      +    public function list()
+      +    {
+      +    }
+      +    public function clone()
+      +    {
+      +    }
+      +    public function include()
+      +    {
+      +    }
+      +    public function include_once()
+      +    {
+      +    }
+      +    public function throw()
+      +    {
+      +    }
+      +    public function array()
+      +    {
+      +    }
+      +    public function print()
+      +    {
+      +    }
+      +    public function echo()
+      +    {
+      +    }
+      +    public function require()
+      +    {
+      +    }
+      +    public function require_once()
+      +    {
+      +    }
+      +    public function return()
+      +    {
+      +    }
+      +    public function else()
+      +    {
+      +    }
+      +    public function elseif()
+      +    {
+      +    }
+      +    public function default()
+      +    {
+      +    }
+      +    public function break()
+      +    {
+      +    }
+      +    public function continue()
+      +    {
+      +    }
+      +    public function switch()
+      +    {
+      +    }
+      +    public function yield()
+      +    {
+      +    }
+      +    public function function()
+      +    {
+      +    }
+      +    public function if()
+      +    {
+      +    }
+      +    public function endswitch()
+      +    {
+      +    }
+      +    public function finally()
+      +    {
+      +    }
+      +    public function for()
+      +    {
+      +    }
+      +    public function foreach()
+      +    {
+      +    }
+      +    public function declare()
+      +    {
+      +    }
+      +    public function case()
+      +    {
+      +    }
+      +    public function do()
+      +    {
+      +    }
+      +    public function while()
+      +    {
+      +    }
+      +    public function as()
+      +    {
+      +    }
+      +    public function catch()
+      +    {
+      +    }
+      +    public function die()
+      +    {
+      +    }
+      +    public function self()
+      +    {
+      +    }
+      +    public function parent()
+      +    {
+      +    }
+       }
+      -
+
+      ---------- end diff ----------
+```
+
+It is odd that the line with the class definition is changing though, but doesn't appear changed?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-09T09:12:50Z
+
+Oh, wait, I see. It has a bit of trailing whitespace on the definition that the diff didn't show at all. Not even so i could highlight it with my mouse.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-09T09:13:11Z
+
+Tested the 2.x version and it works too. My tests were on php 7.0.7.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-09T09:33:54Z
+
+isn't it general case of `braces` fixer? then, we have second fixer to remove extra trailing spaces.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-09T10:03:26Z
+
+> isn't it general case of braces fixer? then, we have second fixer to remove extra trailing spaces.
+
+I just ran the symfony level. :P
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-09T10:05:33Z
+
+Then please try to reproduce it without this PR as well, as I don't see why this PR could introduce that behaviour
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-09T11:08:22Z
+
+There's no bug, This works fine?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-09T12:49:03Z
+
+didn't you said that you have got some odd whitespaces? or I understand it wrongly?
+so, you confirm the fix ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-09T13:35:53Z
+
+> didn't you said that you have got some odd whitespaces? or I understand it wrongly?
+
+Yeh, then I added that was due to my input having whitespace I didn't know it had.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-09T13:36:15Z
+
+Everything appears to be working fine. Sorry for my ramblings. ;)
