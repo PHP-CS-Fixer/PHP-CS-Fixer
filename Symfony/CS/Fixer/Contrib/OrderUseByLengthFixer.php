@@ -15,10 +15,9 @@ namespace Symfony\CS\Fixer\Contrib;
 use Symfony\CS\AbstractOrderedUseFixer;
 
 /**
- * @author Sebastiaan Stok <s.stok@rollerscapes.net>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Panos Kyriakakis <panos@salix.gr>
  */
-class OrderedUseFixer extends AbstractOrderedUseFixer
+final class OrderUseByLengthFixer extends AbstractOrderedUseFixer
 {
     /**
      * {@inheritdoc}
@@ -32,6 +31,14 @@ class OrderedUseFixer extends AbstractOrderedUseFixer
         $a = str_replace('\\', ' ', $a);
         $b = str_replace('\\', ' ', $b);
 
-        return strcasecmp($a, $b);
+        $al = strlen($a);
+        $bl = strlen($b);
+        if ($al === $bl) {
+            $out = strcasecmp($a, $b);
+        } else {
+            $out = $al > $bl ? 1 : -1;
+        }
+
+        return $out;
     }
 }
