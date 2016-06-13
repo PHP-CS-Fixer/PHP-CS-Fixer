@@ -1333,6 +1333,60 @@ while (true) {
         public function use()
         {
         }
+
+        public function use1(): string
+        {
+        }
+    }
+                ',
+                '<?php
+    class Foo
+    {
+        public function use() {
+        }
+
+        public function use1(): string {
+        }
+    }
+                ',
+            ),
+            array(
+                '<?php
+    $a = function (int $foo): string {
+        echo $foo;
+    };
+
+    $b = function (int $foo) use ($bar): string {
+        echo $foo . $bar;
+    };
+
+    function a()
+    {
+    }
+                ',
+                '<?php
+    $a = function (int $foo): string
+    {
+        echo $foo;
+    };
+
+    $b = function (int $foo) use($bar): string
+    {
+        echo $foo . $bar;
+    };
+
+    function a() {
+    }
+                ',
+            ),
+            array(
+                '<?php
+    class Something
+    {
+        public function test(): string
+        {
+            return function (int $foo) use ($bar): string { return $bar; };
+        }
     }
                 ',
             ),
