@@ -33,6 +33,11 @@ class Php4ConstructorFixer extends AbstractFixer
         for ($i = 0; $i < $numClasses; ++$i) {
             $index = $classes[$i];
 
+            // is it an an anonymous class definition?
+            if ($tokens->isAnonymousClass($index)) {
+                continue;
+            }
+
             // is it inside a namespace?
             $nspIndex = $tokens->getPrevTokenOfKind($index, array(array(T_NAMESPACE, 'namespace')));
             if (null !== $nspIndex) {

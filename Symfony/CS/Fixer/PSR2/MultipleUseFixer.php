@@ -30,11 +30,23 @@ class MultipleUseFixer extends AbstractFixer
         $uses = array_reverse($tokens->getImportUseIndexes());
 
         foreach ($uses as $index) {
-            $endIndex = $tokens->getNextTokenOfKind($index, array(';'));
-            $declarationContent = $tokens->generatePartialCode($index + 1, $endIndex - 1);
+            $endIndex = $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG)));
+            $previous = $tokens->getPrevMeaningfulToken($endIndex);
+            if ($tokens[$previous]->equals('}')) {
+                $start = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $previous, false);
+                $declarationContent = $tokens->generatePartialCode($start + 1, $previous - 1);
+                $prefix = '';
+                for ($i = $index + 1; $i < $start; ++$i) {
+                    $prefix .= $tokens[$i]->getContent();
+                }
+
+                $prefix = ' '.ltrim($prefix);
+            } else {
+                $declarationContent = $tokens->generatePartialCode($index + 1, $endIndex - 1);
+                $prefix = ' ';
+            }
 
             $declarationParts = explode(',', $declarationContent);
-
             if (1 === count($declarationParts)) {
                 continue;
             }
@@ -42,13 +54,17 @@ class MultipleUseFixer extends AbstractFixer
             $declarationContent = array();
 
             foreach ($declarationParts as $declarationPart) {
-                $declarationContent[] = 'use '.trim($declarationPart).';';
+                $declarationContent[] = 'use'.$prefix.trim($declarationPart).';';
             }
 
             $declarationContent = implode("\n".$this->detectIndent($tokens, $index), $declarationContent);
 
-            for ($i = $index; $i <= $endIndex; ++$i) {
+            for ($i = $index; $i < $endIndex; ++$i) {
                 $tokens[$i]->clear();
+            }
+
+            if ($tokens[$endIndex]->equals(';')) {
+                $tokens[$endIndex]->clear();
             }
 
             $declarationTokens = Tokens::fromCode('<?php '.$declarationContent);
@@ -68,6 +84,12 @@ class MultipleUseFixer extends AbstractFixer
         return 'There MUST be one use keyword per declaration.';
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return string
+     */
     private function detectIndent(Tokens $tokens, $index)
     {
         $prevIndex = $index - 1;

@@ -598,4 +598,57 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
+
+    public function testCodeWithCloseTag()
+    {
+        $this->makeTest(
+            '<?php
+                use A\C;
+                use A\D?><?php use B\C; use E\F ?>',
+            '<?php
+                use A\C;
+                use B\C?><?php use A\D; use E\F ?>'
+        );
+    }
+
+    public function testCodeWithComments()
+    {
+        $this->makeTest(
+            '<?php
+                use A\C /* A */;
+                use /* B */ B\C;',
+            '<?php
+                use /* B */ B\C;
+                use A\C /* A */;'
+        );
+    }
+
+    /**
+     * @dataProvider provide70Cases
+     * @requires PHP 7.0
+     */
+    public function test70($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provide70Cases()
+    {
+        return array(
+            array(
+                '<?php
+use A\B;
+use some\a\{ClassA, ClassB, ClassC as C};
+use const some\a\{ConstA, ConstB, ConstC};
+use function some\a\{fn_a, fn_b, fn_c};
+',
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C};
+use function some\a\{fn_a, fn_b, fn_c};
+use A\B;
+use const some\a\{ConstA, ConstB, ConstC};
+',
+            ),
+        );
+    }
 }
