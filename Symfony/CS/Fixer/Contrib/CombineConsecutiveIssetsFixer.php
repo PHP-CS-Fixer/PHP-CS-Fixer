@@ -12,14 +12,14 @@
 
 namespace Symfony\CS\Fixer\Contrib;
 
-use Symfony\CS\AbstractFixer;
+use Symfony\CS\AbstractConsecutiveBuiltInFunctionsFixer;
 use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-final class CombineConsecutiveIssetsFixer extends AbstractFixer
+final class CombineConsecutiveIssetsFixer extends AbstractConsecutiveBuiltInFunctionsFixer
 {
     /**
      * {@inheritdoc}
@@ -28,9 +28,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        foreach ($tokens->findGivenKind(T_ISSET) as $index => $token) {
-            $this->findAndReplaceTrailingIssets($tokens, $index);
-        }
+        $this->combineBuiltInFunctions($tokens, T_ISSET, array(')', array(T_BOOLEAN_AND), array(T_ISSET), '('));
 
         return $tokens->generateCode();
     }
