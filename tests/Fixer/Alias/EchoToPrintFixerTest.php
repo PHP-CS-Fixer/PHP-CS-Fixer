@@ -33,6 +33,9 @@ final class EchoToPrintFixerTest extends AbstractFixerTestCase
     {
         return array(
             array(
+                '<?=$foo?>',
+            ),
+            array(
                 '<?php
                 print "test";
                 ',
