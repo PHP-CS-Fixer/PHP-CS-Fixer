@@ -12,9 +12,12 @@ matrix:
         - php: 5.6
           env: SYMFONY_VERSION="~3.0@dev" COMPOSER_FLAGS="--prefer-stable"
         - php: 7.0
+        - php: hhvm-3.9
         - php: hhvm
 
-sudo: false
+sudo: required
+dist: trusty
+group: edge
 
 cache:
     directories:
