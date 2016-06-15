@@ -36,7 +36,10 @@ class NamespaceFollowsOpeningTagFixerTest extends AbstractFixerTestBase
     {
         return array(
             array('<?php namespace X;'),
-            array('<?php\n\nclass {}'),
+            array("<?php\n\nclass Foo {}"),
+            array('<? namespace X;'),
+            array('<? namespace X;', "<?\n\nnamespace X;"),
+            array('<?= "output"; ?>'),
             array('<?php namespace X;', "<?php\n\n\n\nnamespace X;"),
             array('<?php namespace X;', "<?php\r\n\r\n\r\n\r\nnamespace X;"),
         );

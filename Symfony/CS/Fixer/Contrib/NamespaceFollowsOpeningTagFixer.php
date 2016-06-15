@@ -31,16 +31,23 @@ class NamespaceFollowsOpeningTagFixer extends AbstractFixer
             return $content;
         }
 
-        // ignore files with short open tag
+        // ignore files that begin with an echo
         if (!$tokens[0]->isGivenKind(T_OPEN_TAG)) {
             return $content;
         }
 
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_NAMESPACE)) {
-                $tokens[0]->setContent('<?php ');
+                // respect short open tags
+                $openTag = $tokens[0]->getContent();
+                if (!strpos($openTag, 'php')) {
+                    $tokens[0]->setContent('<? ');
+                }
+                else {
+                    $tokens[0]->setContent('<?php ');
+                }
                 for ($x = 1; $x <= ($index - 1); ++$x) {
-                    $tokens[$x]->setContent('');
+                    $tokens[$x]->clear();
                 }
             }
         }
