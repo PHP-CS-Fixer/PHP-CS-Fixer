@@ -584,6 +584,11 @@ Choose from the list of available fixers:
                         closing semicolon are
                         prohibited.
 
+* **namespace_follows_opening_tag** [contrib]
+                        There should be one space and
+                        no newline between the opening
+                        tag and namespace declaration.
+
 * **newline_after_open_tag** [contrib]
                         Ensure there is no code on the
                         same line as the PHP open tag.
