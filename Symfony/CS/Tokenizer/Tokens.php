@@ -1363,6 +1363,7 @@ class Tokens extends \SplFixedArray
              * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
              *
              * @see https://github.com/facebook/hhvm/issues/4809
+             * @see https://github.com/facebook/hhvm/issues/7161
              */
             $hhvmEchoes = $this->findGivenKind(T_ECHO);
             foreach ($hhvmEchoes as $token) {
