@@ -42,8 +42,7 @@ class NamespaceFollowsOpeningTagFixer extends AbstractFixer
                 $openTag = $tokens[0]->getContent();
                 if (!strpos($openTag, 'php')) {
                     $tokens[0]->setContent('<? ');
-                }
-                else {
+                } else {
                     $tokens[0]->setContent('<?php ');
                 }
                 for ($x = 1; $x <= ($index - 1); ++$x) {
