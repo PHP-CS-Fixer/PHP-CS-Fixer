@@ -32,6 +32,20 @@ class BracesFixerTest extends AbstractFixerTestBase
         return array(
             array(
                 '<?php
+class Foo
+{
+    public function A()
+    {
+        ?>
+        Test<?php echo $foobar; ?>Test
+        <?php
+        $a = 1;
+    }
+}
+',
+            ),
+            array(
+                '<?php
     if (true) {
         $a = 1;
     } else {

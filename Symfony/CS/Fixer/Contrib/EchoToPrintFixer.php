@@ -13,6 +13,7 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -28,6 +29,21 @@ final class EchoToPrintFixer extends AbstractFixer
         $tokens = Tokens::fromCode($content);
 
         $echoTokens = $tokens->findGivenKind(T_ECHO);
+
+        if (defined('HHVM_VERSION')) {
+            /*
+             * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
+             *
+             * @see https://github.com/facebook/hhvm/issues/4809
+             * @see https://github.com/facebook/hhvm/issues/7161
+             */
+            $echoTokens = array_filter(
+                $echoTokens,
+                function (Token $token) {
+                    return 0 !== strpos($token->getContent(), '<?=');
+                }
+            );
+        }
 
         foreach ($echoTokens as $echoIndex => $echoToken) {
             $nextTokenIndex = $tokens->getNextMeaningfulToken($echoIndex);
