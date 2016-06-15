@@ -1,0 +1,41 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-26T11:34:54Z
+
+This will surely break most of our fixers?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-03-26T12:06:44Z
+
+I ran 1.12 with the default configuration of this project on the sample code and only the `BracesFixer` touched the code. Maybe we should add this case to the SF2 integration test, not sure though..
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-03-26T12:38:11Z
+
+When I said "this", I was more referring to that style of code, rather than that specific test case.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-10T07:50:51Z
+
+rebased, RTM if test are green
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-10T08:15:18Z
+
+btw, 1.12 not 1.11? why?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-10T08:32:40Z
+
+my mistake, I tried and the commit can be picked as is on 1.11 without any problems.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-10T10:36:24Z
+
+OK, great !
