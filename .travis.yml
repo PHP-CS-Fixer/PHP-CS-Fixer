@@ -30,7 +30,7 @@ install:
 
 script:
     - cp $HOME/xdebug.ini $HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini || return 0
-    - phpunit --verbose --coverage-clover build/logs/clover.xml
+    - vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
     - phpenv config-rm xdebug.ini || return 0
     - php php-cs-fixer --diff --dry-run -v fix
 
