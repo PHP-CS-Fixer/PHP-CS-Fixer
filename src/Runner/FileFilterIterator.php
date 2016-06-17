@@ -75,7 +75,7 @@ final class FileFilterIterator extends \FilterIterator
             // file uses __halt_compiler() on ~5.3.6 due to broken implementation of token_get_all
             || (PHP_VERSION_ID >= 50306 && PHP_VERSION_ID < 50400 && false !== stripos($content, '__halt_compiler()'))
             // file that does not need fixing due to cache
-            || !$this->cacheManager->needFixing($this->getFileRelativePathname($file), $content)
+            || !$this->cacheManager->needFixing($file->getRealPath(), $content)
         ) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
