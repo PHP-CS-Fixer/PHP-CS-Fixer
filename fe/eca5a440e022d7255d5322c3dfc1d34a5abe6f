@@ -1,0 +1,39 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-16T07:03:57Z
+
+Thanks so much for picking this up!
+I don't know much about the changes you made, I simply don't have the experience :)
+I'll try to learn a bit about it, but looks good!
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-16T10:11:31Z
+
+@SpacePossum please temporary merge this PR into your once that has problems with AppVeyor and let see if it will help
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-16T10:21:59Z
+
+thanks, done over @ https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1949 (please note I made changes because that PR targets master, but as a POC it should be useful for now)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-16T10:56:09Z
+
+So, this fixes AppVeyor bug of #1949 @SpacePossum
+(related Travis fail is due to quick cherry-pick without solving conflicts on .travis.yml)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-16T11:04:49Z
+
+Indeed, AppVeyor is happy, so :ship: this :)
+(Maybe in some other life I try to figure out want went wrong with the previous setup)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-16T11:06:30Z
+
+AppVeyor break it's PHPUnit, I remember that it happens once with Travis as well.
