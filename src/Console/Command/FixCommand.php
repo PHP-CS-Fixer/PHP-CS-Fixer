@@ -19,6 +19,7 @@ use PhpCsFixer\Console\Output\NullOutput;
 use PhpCsFixer\Console\Output\ProcessOutput;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
+use PhpCsFixer\Differ\ShortDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerFactory;
@@ -111,6 +112,7 @@ final class FixCommand extends Command
                     new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file'),
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
+                    new InputOption('differ', '', InputOption::VALUE_REQUIRED, 'Which differ to use', 'txt'),
                 )
             )
             ->setDescription('Fixes a directory or a file')
@@ -352,9 +354,18 @@ EOF
         }
 
         $showProgress = $resolver->getProgress();
+        if($input->getOption('diff')) {
+            if ($input->getOption('differ') == 'short') {
+                $differ = new ShortDiffer();
+            } else {
+                $differ = new SebastianBergmannDiffer();
+            }
+        } else {
+            $differ = new NullDiffer();
+        }
         $runner = new Runner(
             $config,
-            $input->getOption('diff') ? new SebastianBergmannDiffer() : new NullDiffer(),
+            $differ,
             $showProgress ? $this->eventDispatcher : null,
             $this->errorsManager,
             $linter,
