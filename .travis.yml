@@ -21,13 +21,16 @@ cache:
         - $HOME/.composer/cache
 
 before_install:
+    - mv $HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini $HOME/xdebug.ini || return 0
     - 'if [ "$SYMFONY_VERSION" != "" ]; then sed -i "s/\"symfony\/\([^\"]*\)\": \"[^\"]*\"/\"symfony\/\1\": \"$SYMFONY_VERSION\"/g" composer.json; fi'
 
 install:
+    - travis_retry composer global require hirak/prestissimo
     - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction
 
 script:
-    - phpunit --verbose --coverage-clover build/logs/clover.xml
+    - cp $HOME/xdebug.ini $HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini || return 0
+    - vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
     - phpenv config-rm xdebug.ini || return 0
     - php php-cs-fixer --diff --dry-run -v fix
 

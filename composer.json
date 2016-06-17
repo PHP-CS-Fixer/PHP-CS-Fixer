@@ -25,7 +25,8 @@
         "sebastian/diff": "~1.1"
     },
     "require-dev": {
-        "satooshi/php-coveralls": "0.7.*@dev"
+        "phpunit/phpunit": "^4.5|^5",
+        "satooshi/php-coveralls": "^0.7.1"
     },
     "autoload": {
         "psr-4": { "Symfony\\CS\\": "Symfony/CS/" }
