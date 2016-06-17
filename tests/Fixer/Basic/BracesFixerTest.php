@@ -48,6 +48,19 @@ final class BracesFixerTest extends AbstractFixerTestCase
             ),
             array(
                 '<?php
+    class Foo
+    {
+        public function A()
+        {
+            ?>
+            Test<?php echo $foobar; ?>Test
+            <?php
+            $a = 1;
+        }
+    }',
+            ),
+            array(
+                '<?php
     if (true) {
         $a = 1;
     } else {

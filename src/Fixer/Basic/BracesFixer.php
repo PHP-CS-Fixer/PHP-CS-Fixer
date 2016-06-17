@@ -231,8 +231,9 @@ final class BracesFixer extends AbstractFixer
                         !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(array('"', "'", array(T_CONSTANT_ENCAPSED_STRING))))
                     ) {
                         if (
-                            $nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens()) ||
-                            (
+                            $nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens())
+                            || $nextNonWhitespaceNestToken->isGivenKind(T_CLOSE_TAG)
+                            || (
                                 $nextNonWhitespaceNestToken->isGivenKind(T_WHILE) &&
                                 $tokensAnalyzer->isWhilePartOfDoWhile($nextNonWhitespaceNestIndex)
                             )
