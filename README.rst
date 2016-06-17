@@ -718,6 +718,11 @@ Choose from the list of available fixers:
                          blank line before a namespace
                          declaration.
 
+* **single_class_element_per_statement** [@PSR2, @Symfony]
+                         There MUST NOT be more than
+                         one property or constant
+                         declared per statement.
+
 * **single_import_per_statement** [@PSR2, @Symfony]
                          There MUST be one use keyword
                          per declaration.
@@ -727,11 +732,6 @@ Choose from the list of available fixers:
                          its own line and there MUST
                          be one blank line after the
                          use statements block.
-
-* **single_property_per_statement** [@PSR2, @Symfony]
-                         There MUST NOT be more than
-                         one property declared per
-                         statement.
 
 * **single_quote** [@Symfony]
                          Convert double quotes to
