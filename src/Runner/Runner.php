@@ -170,7 +170,6 @@ final class Runner
 
         $old = file_get_contents($file->getRealPath());
         $new = $old;
-        $name = $this->getFileRelativePathname($file);
 
         $appliedFixers = array();
 
