@@ -328,7 +328,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($manager->needFixing($file, $fileContent));
     }
 
-    public function testNeedFixingUsesPathNormalizer()
+    public function testNeedFixingUsesRelativePathToFile()
     {
         $cacheFile = $this->getFile();
         $file = '/foo/bar/baz/src/hello.php';
@@ -627,16 +627,16 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
         $manager->setFile($file, $fileContent);
     }
 
-    public function testSetFileUsesNormalizedFilePath()
+    public function testSetFileUsesRelativePathToFile()
     {
         $cacheFile = $this->getFile();
         $file = '/foo/bar/baz/src/hello.php';
         $relativePathToFile = 'src/hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $pathNormalizer = $this->getDirectoryMock();
+        $directory = $this->getDirectoryMock();
 
-        $pathNormalizer
+        $directory
             ->expects($this->once())
             ->method('getRelativePathTo')
             ->with($this->identicalTo($file))
@@ -695,7 +695,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             $handler,
             $signature,
             false,
-            $pathNormalizer
+            $directory
         );
 
         $manager->setFile($file, $fileContent);
