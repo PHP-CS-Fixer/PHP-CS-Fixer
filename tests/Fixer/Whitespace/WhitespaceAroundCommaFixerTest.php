@@ -21,7 +21,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  */
-final class WhiteSpaceAroundCommaFixerTest extends AbstractFixerTestCase
+final class WhitespaceAroundCommaFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases

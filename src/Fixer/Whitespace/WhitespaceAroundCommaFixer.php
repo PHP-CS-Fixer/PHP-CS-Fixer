@@ -19,7 +19,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author SpacePossum
  */
-final class WhiteSpaceAroundCommaFixer extends AbstractFixer
+final class WhitespaceAroundCommaFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

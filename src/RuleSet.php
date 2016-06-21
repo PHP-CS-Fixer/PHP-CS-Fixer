@@ -117,7 +117,7 @@ final class RuleSet implements RuleSetInterface
             'unalign_double_arrow' => true,
             'unalign_equals' => true,
             'unary_operator_spaces' => true,
-            'white_space_around_comma' => true,
+            'whitespace_around_comma' => true,
         ),
     );
 

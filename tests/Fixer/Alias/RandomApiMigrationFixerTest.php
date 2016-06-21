@@ -79,22 +79,23 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
             array("<?php 'test'.'srand' . 'in concatenation';"),
             array('<?php "test" . "srand"."in concatenation";'),
             array(
-            '<?php
-class SrandClass
-{
-    const srand = 1;
-    public function srand($srand)
+                '<?php
+    class SrandClass
     {
-        if (!defined("srand") || $srand instanceof srand) {
-            echo srand;
+        const srand = 1;
+        public function srand($srand)
+        {
+            if (!defined("srand") || $srand instanceof srand) {
+                echo srand;
+            }
         }
     }
-}
 
-class srand extends SrandClass{
-    const srand = "srand";
-}
-',),
+    class srand extends SrandClass{
+        const srand = "srand";
+    }
+    ',
+            ),
             array('<?php mt_srand($a);', '<?php srand($a);'),
             array('<?php \\mt_srand($a);', '<?php \\srand($a);'),
             array('<?php $a = &mt_srand($a);', '<?php $a = &srand($a);'),

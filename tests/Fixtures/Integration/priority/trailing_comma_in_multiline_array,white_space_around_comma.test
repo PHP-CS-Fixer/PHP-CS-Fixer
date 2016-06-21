@@ -1,7 +1,7 @@
 --TEST--
-Integration of fixers: trailing_comma_in_multiline_array,white_space_around_comma.
+Integration of fixers: trailing_comma_in_multiline_array,whitespace_around_comma.
 --CONFIG--
-{"trailing_comma_in_multiline_array": true, "white_space_around_comma": true}
+{"trailing_comma_in_multiline_array": true, "whitespace_around_comma": true}
 --EXPECT--
 <?php
 $a = array(
