@@ -19,6 +19,10 @@ matrix:
           sudo: required
           dist: trusty
           group: edge
+        - php: hhvm
+          sudo: required
+          dist: trusty
+          group: edge
 
 cache:
     directories:
