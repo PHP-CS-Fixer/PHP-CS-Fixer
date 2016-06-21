@@ -1351,31 +1351,32 @@ class Tokens extends \SplFixedArray
             return false;
         }
 
-        $kinds = $this->findGivenKind(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_INLINE_HTML));
+        $openTagsCounter = 0;
 
-        /*
-         * Fix HHVM incompatibilities
-         */
-        $hhvmOpenTagsWithEcho = array();
+        foreach ($this as $token) {
+            if ($token->isGivenKind(T_INLINE_HTML)) {
+                return false;
+            }
 
-        if (defined('HHVM_VERSION')) {
-            /*
-             * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
-             *
-             * @see https://github.com/facebook/hhvm/issues/4809
-             * @see https://github.com/facebook/hhvm/issues/7161
-             */
-            $hhvmEchoes = $this->findGivenKind(T_ECHO);
-            foreach ($hhvmEchoes as $token) {
-                if (0 === strpos($token->getContent(), '<?=')) {
-                    $hhvmOpenTagsWithEcho[] = $token;
+            if (
+                $token->isGivenKind(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO))
+                || (
+                    /*
+                     * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
+                     *
+                     * @see https://github.com/facebook/hhvm/issues/4809
+                     * @see https://github.com/facebook/hhvm/issues/7161
+                     */
+                    defined('HHVM_VERSION')
+                    && $token->equals(array(T_ECHO, '<?='))
+                )
+            ) {
+                if (++$openTagsCounter > 1) {
+                    return false;
                 }
             }
         }
 
-        return
-            0 === count($kinds[T_INLINE_HTML]) &&
-            1 === (count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO]) + count($hhvmOpenTagsWithEcho))
-        ;
+        return true;
     }
 }
