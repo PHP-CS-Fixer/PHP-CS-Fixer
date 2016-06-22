@@ -1351,15 +1351,9 @@ class Tokens extends \SplFixedArray
             return false;
         }
 
-        $openTagsCounter = 0;
-
-        foreach ($this as $token) {
-            if ($token->isGivenKind(T_INLINE_HTML)) {
-                return false;
-            }
-
+        for ($index = 1; $index < $size; ++$index) {
             if (
-                $token->isGivenKind(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO))
+                $this[$index]->isGivenKind(array(T_INLINE_HTML, T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO))
                 || (
                     /*
                      * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
@@ -1368,12 +1362,10 @@ class Tokens extends \SplFixedArray
                      * @see https://github.com/facebook/hhvm/issues/7161
                      */
                     defined('HHVM_VERSION')
-                    && $token->equals(array(T_ECHO, '<?='))
+                    && $this[$index]->equals(array(T_ECHO, '<?='))
                 )
             ) {
-                if (++$openTagsCounter > 1) {
-                    return false;
-                }
+                return false;
             }
         }
 
