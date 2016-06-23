@@ -75,7 +75,7 @@ or with curl:
 
 .. code-block:: bash
 
-    \$ curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
+    \$ curl -L http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
 
 then:
 
