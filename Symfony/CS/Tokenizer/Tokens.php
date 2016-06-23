@@ -1351,41 +1351,24 @@ class Tokens extends \SplFixedArray
             return false;
         }
 
-        $kinds = $this->findGivenKind(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_INLINE_HTML));
-
-        /*
-         * Fix HHVM incompatibilities
-         */
-        $hhvmOpenTagsWithEcho = array();
-        $hhvmHashBangs = array();
-
-        if (defined('HHVM_VERSION')) {
-            /*
-             * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
-             *
-             * @see https://github.com/facebook/hhvm/issues/4809
-             */
-            $hhvmEchoes = $this->findGivenKind(T_ECHO);
-            foreach ($hhvmEchoes as $token) {
-                if (0 === strpos($token->getContent(), '<?=')) {
-                    $hhvmOpenTagsWithEcho[] = $token;
-                }
-            }
-
-            /*
-             * HHVM parses "#!/usr/bin/env php\n" as T_HASHBANG (not defined in
-             * PHP and T_HASHBANG. Moreover, HHVM does not define T_HASHBANG
-             * as a constant
-             *
-             * @see https://github.com/facebook/hhvm/issues/4810
-             */
-            $tokens = self::fromCode("#!/usr/bin/env php\n");
-            if (!$tokens[0]->isGivenKind(T_INLINE_HTML)) {
-                $hashBangId = $tokens[0]->getId();
-                $hhvmHashBangs = $this->findGivenKind($hashBangId);
+        for ($index = 1; $index < $size; ++$index) {
+            if (
+                $this[$index]->isGivenKind(array(T_INLINE_HTML, T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO))
+                || (
+                    /*
+                     * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
+                     *
+                     * @see https://github.com/facebook/hhvm/issues/4809
+                     * @see https://github.com/facebook/hhvm/issues/7161
+                     */
+                    defined('HHVM_VERSION')
+                    && $this[$index]->equals(array(T_ECHO, '<?='))
+                )
+            ) {
+                return false;
             }
         }
 
-        return 0 === count($kinds[T_INLINE_HTML]) + count($hhvmHashBangs) && 1 === count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO]) + count($hhvmOpenTagsWithEcho);
+        return true;
     }
 }
