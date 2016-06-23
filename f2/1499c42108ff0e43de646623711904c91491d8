@@ -1,0 +1,132 @@
+---------------------------------------------------------------------------
+
+by keradus at 2015-10-27T20:27:09Z
+
+yep, HHVM still failing
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-08T21:35:34Z
+
+The HHVM on travis is really old though. HHVM 3.9 is the current LTS, and 3.10 the latest.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-09T09:21:27Z
+
+Yeah, would be great to be able to set hhvm versions on Travis...
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-09T09:27:29Z
+
+If anyone know how to do that it would be great to share it with me, I can't find out how to do it :(
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2015-11-09T09:29:42Z
+
+> If anyone know how to do that it would be great to share it with me, I can't find out how to do it :(
+
+Yes, this what I was saying: It is not possible AFAIK. :-)
+
+---------------------------------------------------------------------------
+
+by stof at 2015-11-09T14:34:12Z
+
+@Soullivaneuh the issue is that most builds on Travis are still running on Ubuntu Precise (12.04), which is not supported anymore by HHVM in recent versions. And their beta support of Ubuntu Trusty (14.04) does not come with PHP versions pre-installed yet, so I don't know which version of HHVM would get used
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-21T21:13:19Z
+
+LGTM, BUT, not for 1.11 IMO. This would be much better suited to 1.12 since it is not a bug fix as such. It is dropping support for ~15 versions of HHVM.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-21T22:55:52Z
+
+doesn't matter
+patch is for bugfixes, minor is for features.
+refactoring and cleanups could go anywhere
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-22T06:07:56Z
+
+This could be argued as a major breaking change in a patch release. Composer will install this for hhvm 3.6 users, and then it'll just straight up not work anymore.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-22T09:47:24Z
+
+> This could be argued as a major breaking change in a patch release. Composer will install this for hhvm 3.6 users, and then it'll just straight up not work anymore.
+
+Nope, major break is change of interface, here we don't change it. Bumping required PHP (or here - hhvm) version is not a BC breaker due to SEMVER specification.
+
+But it's good point, I know how to specify requested PHP version in `composer.json`, but have no idea how to do this for hhvm
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-22T09:55:31Z
+
+To do it for HHVM, you have to actually require HHVM... so no PHP support...
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-22T10:01:12Z
+
+Then I don't care.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-22T10:02:32Z
+
+:trollface:
+
+---------------------------------------------------------------------------
+
+by stof at 2016-06-22T10:06:33Z
+
+you can use a conflict rule to conflict with ``hhvm < 3.9``
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-22T10:07:42Z
+
+could you conflict with platform and not package ? :D
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-22T10:08:40Z
+
+> you can use a conflict rule to conflict with hhvm < 3.9
+
+That should work, yeh. :)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-22T10:40:45Z
+
+> you can use a conflict rule to conflict with hhvm < 3.9
+
+More info: https://github.com/composer/composer/issues/5442#issuecomment-227652659
+
+---------------------------------------------------------------------------
+
+by stof at 2016-06-22T11:05:37Z
+
+@keradus there is a ``hhvm`` package in composer, provided by the platform when running on HHVM (similar to the ``php`` package available all the time)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-23T15:53:14Z
+
+done
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-23T16:55:27Z
+
+looking good :)
+:ship:
