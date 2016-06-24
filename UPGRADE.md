@@ -127,7 +127,7 @@ unary_operators_spaces                         | unary_operator_spaces
 unneeded_control_parentheses                   | no_unneeded_control_parentheses
 unused_use                                     | no_unused_imports
 visibility                                     | visibility_required
-whitespacy_lines                               | no_whitespace_in_blank_lines
+whitespacy_lines                               | no_whitespace_in_blank_line
 
 Changes to Fixers
 -----------------

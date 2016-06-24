@@ -232,17 +232,17 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['unary_operator_spaces'], $fixers['not_operator_with_successor_space']),
             array($fixers['unix_line_endings'], $fixers['single_blank_line_at_eof']),
             array($fixers['simplified_null_return'], $fixers['no_useless_return']), // tested also in: simplified_null_return,no_useless_return.test
-            array($fixers['no_useless_return'], $fixers['no_whitespace_in_blank_lines']), // tested also in: no_useless_return,no_whitespace_in_blank_lines.test
+            array($fixers['no_useless_return'], $fixers['no_whitespace_in_blank_line']), // tested also in: no_useless_return,no_whitespace_in_blank_line.test
             array($fixers['no_useless_return'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: no_useless_return,no_extra_consecutive_blank_lines.test
             array($fixers['no_useless_return'], $fixers['blank_line_before_return']), // tested also in: no_useless_return,blank_line_before_return.test
             array($fixers['no_empty_phpdoc'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: no_empty_phpdoc,no_extra_consecutive_blank_lines.test
             array($fixers['no_empty_phpdoc'], $fixers['no_trailing_whitespace']), // tested also in: no_empty_phpdoc,no_trailing_whitespace.test
-            array($fixers['no_empty_phpdoc'], $fixers['no_whitespace_in_blank_lines']), // tested also in: no_empty_phpdoc,no_whitespace_in_blank_lines.test
+            array($fixers['no_empty_phpdoc'], $fixers['no_whitespace_in_blank_line']), // tested also in: no_empty_phpdoc,no_whitespace_in_blank_line.test
             array($fixers['phpdoc_no_access'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_access,no_empty_phpdoc.test
             array($fixers['phpdoc_no_empty_return'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_empty_return,no_empty_phpdoc.test
             array($fixers['phpdoc_no_package'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_package,no_empty_phpdoc.test
             array($fixers['combine_consecutive_unsets'], $fixers['space_after_semicolon']), // tested also in: combine_consecutive_unsets,space_after_semicolon.test
-            array($fixers['combine_consecutive_unsets'], $fixers['no_whitespace_in_blank_lines']), // tested also in: combine_consecutive_unsets,no_whitespace_in_blank_lines.test
+            array($fixers['combine_consecutive_unsets'], $fixers['no_whitespace_in_blank_line']), // tested also in: combine_consecutive_unsets,no_whitespace_in_blank_lines.test
             array($fixers['combine_consecutive_unsets'], $fixers['no_trailing_whitespace']), // tested also in: combine_consecutive_unsets,no_trailing_whitespace.test
             array($fixers['combine_consecutive_unsets'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: combine_consecutive_unsets,no_extra_consecutive_blank_lines.test
             array($fixers['phpdoc_type_to_var'], $fixers['phpdoc_single_line_var_spacing']), // tested also in: phpdoc_type_to_var,phpdoc_single_line_var_spacing.test
@@ -250,7 +250,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['phpdoc_to_comment'], $fixers['no_empty_comment']), // tested also in: phpdoc_to_comment,no_empty_comment.test
             array($fixers['no_empty_comment'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: no_empty_comment,no_extra_consecutive_blank_lines.test
             array($fixers['no_empty_comment'], $fixers['no_trailing_whitespace']), // tested also in: no_empty_comment,no_trailing_whitespace.test
-            array($fixers['no_empty_comment'], $fixers['no_whitespace_in_blank_lines']), // tested also in: no_empty_comment,no_whitespace_in_blank_lines.test
+            array($fixers['no_empty_comment'], $fixers['no_whitespace_in_blank_line']), // tested also in: no_empty_comment,no_whitespace_in_blank_line.test
             array($fixers['no_alias_functions'], $fixers['php_unit_dedicate_assert']), // tested also in: no_alias_functions,php_unit_dedicate_assert.test
             array($fixers['no_empty_statement'], $fixers['braces']),
             array($fixers['no_empty_statement'], $fixers['combine_consecutive_unsets']), // tested also in: no_empty_statement,combine_consecutive_unsets.test
@@ -260,7 +260,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_empty_statement'], $fixers['no_trailing_whitespace']), // tested also in: no_empty_statement,no_trailing_whitespace.test
             array($fixers['no_empty_statement'], $fixers['no_useless_else']), // tested also in: no_empty_statement,no_useless_else.test
             array($fixers['no_empty_statement'], $fixers['no_useless_return']), // tested also in: no_empty_statement,no_useless_return.test
-            array($fixers['no_empty_statement'], $fixers['no_whitespace_in_blank_lines']), // tested also in: no_empty_statement,no_whitespace_in_blank_lines.test
+            array($fixers['no_empty_statement'], $fixers['no_whitespace_in_blank_line']), // tested also in: no_empty_statement,no_whitespace_in_blank_line.test
             array($fixers['no_empty_statement'], $fixers['space_after_semicolon']), // tested also in: no_empty_statement,space_after_semicolon.test
             array($fixers['no_empty_statement'], $fixers['switch_case_semicolon_to_colon']), // tested also in: no_empty_statement,switch_case_semicolon_to_colon.test
             array($fixers['no_useless_else'], $fixers['braces']),
@@ -268,7 +268,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_useless_else'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: no_useless_else,no_extra_consecutive_blank_lines.test
             array($fixers['no_useless_else'], $fixers['no_useless_return']), // tested also in: no_useless_else,no_useless_return.test
             array($fixers['no_useless_else'], $fixers['no_trailing_whitespace']), // tested also in: no_useless_else,no_trailing_whitespace.test
-            array($fixers['no_useless_else'], $fixers['no_whitespace_in_blank_lines']), // tested also in: no_useless_else,no_whitespace_in_blank_lines.test
+            array($fixers['no_useless_else'], $fixers['no_whitespace_in_blank_line']), // tested also in: no_useless_else,no_whitespace_in_blank_line.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:

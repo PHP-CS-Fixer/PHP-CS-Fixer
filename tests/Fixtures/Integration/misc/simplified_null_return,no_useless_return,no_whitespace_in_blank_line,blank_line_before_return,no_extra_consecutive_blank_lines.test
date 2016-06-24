@@ -1,10 +1,10 @@
 --TEST--
-Integration of fixers: simplified_null_return,no_useless_return,no_whitespace_in_blank_lines,blank_line_before_return,no_extra_consecutive_blank_lines.
+Integration of fixers: simplified_null_return,no_useless_return,no_whitespace_in_blank_line,blank_line_before_return,no_extra_consecutive_blank_lines.
 --CONFIG--
 {
     "simplified_null_return": true,
     "no_useless_return": true,
-    "no_whitespace_in_blank_lines": true,
+    "no_whitespace_in_blank_line": true,
     "blank_line_before_return": true,
     "no_extra_consecutive_blank_lines": true
 }
