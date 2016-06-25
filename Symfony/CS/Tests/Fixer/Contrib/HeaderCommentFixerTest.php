@@ -197,4 +197,69 @@ EOH;
         $input = "<?php\n";
         $this->makeTest($expected, $input);
     }
+
+    public function testFixAddHeaderFileWithNamespaceAtTop()
+    {
+        $expected = <<<'EOH'
+<?php namespace Foo;
+
+/*
+ * This file is part of the PHP CS utility.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+
+EOH;
+
+        $input = "<?php namespace Foo;\n";
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixAddHeaderFileWithNamespaceJustUnder()
+    {
+        $expected = <<<'EOH'
+<?php
+namespace Foo;
+
+/*
+ * This file is part of the PHP CS utility.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+
+EOH;
+
+        $input = "<?php\nnamespace Foo;\n";
+        $this->makeTest($expected, $input);
+    }
+
+    public function testFixAddHeaderFileWithNamespaceBelow()
+    {
+        $expected = <<<'EOH'
+<?php
+
+/*
+ * This file is part of the PHP CS utility.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace Foo;
+
+EOH;
+
+        $input = "<?php\n\nnamespace Foo;\n";
+        $this->makeTest($expected, $input);
+    }
 }
