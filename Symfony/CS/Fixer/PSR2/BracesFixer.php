@@ -164,8 +164,15 @@ class BracesFixer extends AbstractFixer
                 continue;
             }
 
-            // do not change indent for lambda functions
-            if ($token->isGivenKind(T_FUNCTION) && $tokens->isLambda($index)) {
+            if (
+                $token->isGivenKind(T_FUNCTION)
+                && (
+                    // do not change indent for lambda functions
+                    $tokens->isLambda($index)
+                    // do not change import of functions
+                    || $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_USE)
+                )
+            ) {
                 continue;
             }
 
