@@ -230,7 +230,7 @@ EOF;
     {
         $currentMajor = (int) $this->getApplication()->getVersion();
 
-        $changelog = file_get_contents(__DIR__ . '/../../../../CHANGELOG.md');
+        $changelog = file_get_contents(__DIR__.'/../../../../CHANGELOG.md');
         preg_match('/Changelog for (v'.$currentMajor.'.\d+.\d+)/', $changelog, $matches);
 
         if (2 !== count($matches)) {

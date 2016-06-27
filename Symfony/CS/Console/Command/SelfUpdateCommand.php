@@ -63,7 +63,7 @@ EOT
             return;
         }
 
-        if ('v' . $this->getApplication()->getVersion() === $remoteTag) {
+        if ('v'.$this->getApplication()->getVersion() === $remoteTag) {
             $output->writeln('<info>php-cs-fixer is already up to date.</info>');
 
             return;
