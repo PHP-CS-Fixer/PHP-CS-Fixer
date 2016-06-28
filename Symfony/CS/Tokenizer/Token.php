@@ -148,7 +148,7 @@ class Token
      * @param array       $others        array of tokens or token prototypes
      * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
      *                                   the ones used in $others. If any is missing, the default case-sensitive
-     *                                   comparison is used.
+     *                                   comparison is used
      *
      * @return bool
      */
@@ -170,7 +170,7 @@ class Token
      *
      * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
      *                                   the ones used in $others. If any is missing, the default case-sensitive
-     *                                   comparison is used.
+     *                                   comparison is used
      * @param int         $key           the key of the token that has to be looked up
      *
      * @return bool

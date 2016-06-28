@@ -313,7 +313,7 @@ class Fixer
     }
 
     /**
-     * @deprecated Will be removed in the 2.0.
+     * @deprecated Will be removed in the 2.0
      *
      * @param string $old
      * @param string $new

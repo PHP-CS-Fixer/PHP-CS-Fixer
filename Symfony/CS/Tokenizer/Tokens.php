@@ -601,7 +601,7 @@ class Tokens extends \SplFixedArray
      * @param array       $tokens        possible tokens
      * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
      *                                   the ones used in $others. If any is missing, the default case-sensitive
-     *                                   comparison is used.
+     *                                   comparison is used
      *
      * @return int|null
      */
@@ -682,7 +682,7 @@ class Tokens extends \SplFixedArray
      * @param array       $tokens        possible tokens
      * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
      *                                   the ones used in $others. If any is missing, the default case-sensitive
-     *                                   comparison is used.
+     *                                   comparison is used
      *
      * @return int|null
      */
@@ -699,7 +699,7 @@ class Tokens extends \SplFixedArray
      * @param array       $tokens        possible tokens
      * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
      *                                   the ones used in $others. If any is missing, the default case-sensitive
-     *                                   comparison is used.
+     *                                   comparison is used
      *
      * @return int|null
      */
@@ -801,7 +801,7 @@ class Tokens extends \SplFixedArray
      * @param int        $end           end index, defaulting to the end of the file
      * @param bool|array $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
      *                                  the ones used in $others. If any is missing, the default case-sensitive
-     *                                  comparison is used.
+     *                                  comparison is used
      *
      * @return array|null an array containing the tokens matching the sequence elements, indexed by their position
      */

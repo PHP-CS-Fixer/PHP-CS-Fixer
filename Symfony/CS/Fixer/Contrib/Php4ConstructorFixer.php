@@ -315,7 +315,7 @@ class Php4ConstructorFixer extends AbstractFixer
      *     - endIndex (int): The index of the function/method end.
      *     - bodyIndex (int): The index of the function/method body.
      *     - modifiers (array): The modifiers as array keys and their index as
-     *       the values, e.g. array(T_PUBLIC => 10).
+     *       the values, e.g. array(T_PUBLIC => 10)
      */
     private function findFunction(Tokens $tokens, $name, $startIndex, $endIndex)
     {

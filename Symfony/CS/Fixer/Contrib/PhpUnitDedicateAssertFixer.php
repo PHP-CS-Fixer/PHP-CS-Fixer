@@ -137,9 +137,9 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer
 
     /**
      * @param Tokens $tokens
-     * @param int    $assertCallIndex Token index of assert method call.
+     * @param int    $assertCallIndex Token index of assert method call
      *
-     * @return int|int[] indexes of assert call, test call and positive flag, or last index checked.
+     * @return int|int[] indexes of assert call, test call and positive flag, or last index checked
      */
     private function getAssertCandidate(Tokens $tokens, $assertCallIndex)
     {
