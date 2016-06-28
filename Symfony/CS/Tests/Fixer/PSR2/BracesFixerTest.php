@@ -1367,4 +1367,24 @@ if (true) {
             ),
         );
     }
+
+    /**
+     * @dataProvider provideDontAddNewLineAfterCurlyBraceOfStringCharacterAccess
+     */
+    public function testDontAddNewLineAfterCurlyBraceOfStringCharacterAccess($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideDontAddNewLineAfterCurlyBraceOfStringCharacterAccess()
+    {
+        return array(
+            array(
+                '<?php
+if (true) {
+    $property{0} = strtolower($property{0});
+}',
+            ),
+        );
+    }
 }
