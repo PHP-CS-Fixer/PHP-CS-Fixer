@@ -428,6 +428,11 @@ Choose from the list of available fixers:
                         surrounded by at least one
                         space.
 
+* **phpdoc_annotation_without_dot** [symfony]
+                        Phpdocs annotation
+                        descriptions should not end
+                        with a full stop.
+
 * **phpdoc_indent** [symfony]
                         Docblocks should have the same
                         indentation as the documented
