@@ -33,7 +33,19 @@ class ShortEchoTagFixer extends AbstractFixer
             $token = $tokens[$i];
             $nextIndex = $i + 1;
 
-            if (!$token->isGivenKind(T_OPEN_TAG_WITH_ECHO)) {
+            if (
+                !$token->isGivenKind(T_OPEN_TAG_WITH_ECHO)
+                && !(
+                    /*
+                     * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
+                     *
+                     * @see https://github.com/facebook/hhvm/issues/4809
+                     * @see https://github.com/facebook/hhvm/issues/7161
+                     */
+                    defined('HHVM_VERSION')
+                    && $token->equals(array(T_ECHO, '<?='))
+                )
+            ) {
                 continue;
             }
 
