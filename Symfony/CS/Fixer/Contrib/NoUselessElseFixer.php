@@ -200,7 +200,7 @@ final class NoUselessElseFixer extends AbstractFixer
     /**
      * @param Tokens $tokens
      * @param int    $index           Index of the token to check
-     * @param int    $lowerLimitIndex Lower limit index. Since the token to check will always be in a conditional we must stop checking at this index.
+     * @param int    $lowerLimitIndex Lower limit index. Since the token to check will always be in a conditional we must stop checking at this index
      *
      * @return bool
      */
