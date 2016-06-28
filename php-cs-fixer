@@ -17,8 +17,8 @@
  */
 
 if (defined('HHVM_VERSION_ID')) {
-    if (HHVM_VERSION_ID < 30500) {
-        fwrite(STDERR, "HHVM needs to be a minimum version of HHVM 3.5.0\n");
+    if (HHVM_VERSION_ID < 30900) {
+        fwrite(STDERR, "HHVM needs to be a minimum version of HHVM 3.9.0\n");
         exit(1);
     }
 } elseif (!defined('PHP_VERSION_ID') || PHP_VERSION_ID < 50306) {

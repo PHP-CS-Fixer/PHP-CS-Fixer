@@ -4,8 +4,6 @@ Integration of fixers: no_closing_tag,full_opening_tag.
 {"full_opening_tag": true, "no_closing_tag": true}
 --SETTINGS--
 checkPriority=false
---REQUIREMENTS--
-hhvm=false
 --EXPECT--
 <?php
 $a = 1;
