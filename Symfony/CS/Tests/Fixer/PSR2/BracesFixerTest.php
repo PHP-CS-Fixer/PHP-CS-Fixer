@@ -1369,6 +1369,8 @@ if (true) {
     }
 
     /**
+     * TODO: remove on 2.x line.
+     *
      * @dataProvider provideDontAddNewLineAfterCurlyBraceOfStringCharacterAccess
      */
     public function testDontAddNewLineAfterCurlyBraceOfStringCharacterAccess($expected, $input = null)
@@ -1384,6 +1386,14 @@ if (true) {
 if (true) {
     $property{0} = strtolower($property{0});
 }',
+            ),
+            array(
+                '<?php
+if (1) {
+    echo $items{0}->foo;
+    echo $collection->items{1}->property;
+}
+',
             ),
         );
     }
