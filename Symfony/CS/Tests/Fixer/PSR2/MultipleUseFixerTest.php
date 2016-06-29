@@ -18,9 +18,19 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
  */
 class MultipleUseFixerTest extends AbstractFixerTestBase
 {
-    public function testFix()
+    /**
+     * @dataProvider provideCases
+     */
+    public function testFix($expected, $input = null)
     {
-        $expected = <<<'EOF'
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideCases()
+    {
+        return array(
+            array(
+<<<'EOF'
 use Some, Not, PHP, Like, Use, Statement;
 <?php
 
@@ -52,9 +62,9 @@ namespace Boo {
     use BarZ;
 }
 
-EOF;
-
-        $input = <<<'EOF'
+EOF
+            ,
+<<<'EOF'
 use Some, Not, PHP, Like, Use, Statement;
 <?php
 
@@ -78,8 +88,55 @@ namespace Boo {
     use BarZ;
 }
 
-EOF;
+EOF
+            ),
+                    array(
+                '<?php
+                    use FooA;
+                    use FooB;
+                ',
+                '<?php
+                    use FooA, FooB;
+                ',
+            ),
+            array(
+                '<?php use FooA;
+use FooB;?>',
+                '<?php use FooA, FooB?>',
+            ),
+        );
+    }
 
+    /**
+     * @dataProvider provide70Cases
+     * @requires PHP 7.0
+     */
+    public function test70($expected, $input = null)
+    {
         $this->makeTest($expected, $input);
+    }
+
+    public function provide70Cases()
+    {
+        return array(
+            array(
+                '<?php
+use some\a\ClassA;
+use some\a\ClassB;
+use some\a\ClassC as C;
+use function some\b\fn_a;
+use function some\b\fn_b;
+use function some\b\fn_c;
+use const some\c\ConstA;
+use const some\c\ConstB;
+use const some\c\ConstC;
+                ',
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C};
+use    function some\b\{fn_a, fn_b, fn_c};
+use const some\c\{ConstA, ConstB, ConstC};
+                ',
+            ),
+        );
     }
 }
