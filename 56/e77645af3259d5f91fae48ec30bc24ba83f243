@@ -1,0 +1,210 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-13T15:56:12Z
+
+> Closes #1944
+
+Are you sure it fully closes it? As we don't yet support  group imports in `ordered_use` / `braces` fixers
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-13T21:21:02Z
+
+you are right, closes only a subset, sorry about that
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-14T08:18:50Z
+
+This is very good start though. Thank you!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-16T08:46:59Z
+
+Known fixers that still need work for PHP7 imports:
+`ordered_use`
+`braces`
+`multiple_use`
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-16T09:37:43Z
+
+`ordered_use`, `multiple_use` - for first step I would **ignore** files with PHP7 multi import - this will fix the bug. Then, I would add support for handling them properly only in 2.x line
+
+`braces` - indeed, a fix to skip them is needed, finally it would be a Transformer on 2.x line, right ? :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-20T15:05:22Z
+
+`multiple_use` was easier to fix than to skip ^-^
+
+This PR is getting a bit big, what would be the best way to deal with this?
+Maybe break up the PR in multiple PR's per fixer and do the reviewing there, or do you want a clean commit history of one big commit?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-20T15:46:24Z
+
+Depending on size how big it would be to fix it in total.
+How close is it to be ready for review ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-20T16:54:50Z
+
+The ones to go are:
+`ordered_use` (PHP7 and another bug)
+`braces`
+(and the small RFC from the review so far, thanks man :) )
+
+Not sure how much it will grow, especially since the `braces` fixer is complex and I'm not very familiar with it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-20T16:56:36Z
+
+Is it only fix part there ? Like already have all tests for ordered_use and braces (with that another bug) ?
+What do you exactly mean by that small RFC ?
+
+If not then please made them for `braces` and I will handle it (either ignore, as I suggested before, or fix, if easily possible)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-20T17:05:15Z
+
+>Is it only fix part there ? Like already have all tests for ordered_use and braces (with that another bug) ?
+
+I've got two failing test for the `order_use` fixer;
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1989/files#diff-a9cd1458f8196198c2b7c5377bec09d3R602
+
+For `braces` I didn't add test yet, something like this will show the problem:
+```php
+<?php
+use some\a\{ClassA, ClassB, ClassC as C};
+use function some\a\{fn_a, fn_b, fn_c};
+use const some\a\{ConstA, ConstB, ConstC};
+```
+
+>What do you exactly mean by that small RFC ?
+
+The comments you made, I've processed those, all good now :)
+
+>If not then please made them for braces and I will handle it (either ignore, as I suggested before, or fix, if easily possible)
+
+will do, help with the `braces` fixer is very welcome
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-21T08:41:23Z
+
+All green, I propose to review this PR as is and deal with the other issue of the `braces` in another PR.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-23T18:24:29Z
+
+what about unused_use ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-23T18:24:54Z
+
+Please, add integration test on Symfony level with all PHP7 features
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-23T21:10:54Z
+
+good points :)
+`unused_use` and `braces` are still todo (first one breaking code, second only CS).
+I can look at `unused_use` _maybe_ tomorrow, after that I won't have much time :(
+
+>Please, add integration test on Symfony level with all PHP7 features
+
+good idea :+1:
+Please note that for all changes phpunit test are added. Secondly for some new features of PHP7 SF hasn't got CS-styles defined yet. I'll see what I can come up with.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-23T22:22:00Z
+
+I took Symfony not to define ruleset for it under php7, but as it's decent amount of fixers already there, so we could see how great number of them works with php7 code.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-24T07:53:53Z
+
+rebased and `unused_use` is fixed
+
+>I took Symfony not to define ruleset for it under php7, but as it's decent amount of fixers already there, >so we could see how great number of them works with php7 code
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-28T07:47:26Z
+
+@SpacePossum are you able to rebase / squash ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-28T07:49:04Z
+
+@keradus can I bother you with the squashing? (I don't mind if I'm not the author in the git history)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-28T07:50:22Z
+
+(happy to do it btw. but I won't be able to do it before the end of the work week)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-28T13:26:10Z
+
+yeah, I remember, that's why I ask are you able or not ;)
+I could do it for you if you grant me access to your fork ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-28T13:57:26Z
+
+you got it :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-28T14:03:59Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-29T07:24:14Z
+
+Oh, new commit !
+Is there sth more you want to push here ?
+If not, I would like to merge this PR this evening ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-29T07:52:21Z
+
+I think this should be it for 7.0 for now, new issues can be resolved later of course.
+So yeah, all done, lets get this one merged :)
+
+(btw. I left the 7.1's support out for now and as 7.1 isn't released as stable yet the number of people effected should be very low. And since we don't break 7.1 code after this PR but just the CS we should be fine for a while.)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-29T10:32:09Z
+
+:+1: :ship:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-29T10:32:20Z
+
+Very nice work here!
