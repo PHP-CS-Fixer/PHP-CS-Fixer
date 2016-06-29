@@ -16,6 +16,7 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\RuleSet;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
@@ -150,9 +151,18 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
             $this->assertSame($expected, $tokens->generateCode(), 'Code build on input code must match expected code.');
             $this->assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
 
+            $tokens->clearEmptyTokens();
+
+            $this->assertSame(
+                count($tokens),
+                count(array_unique(array_map(function (Token $token) {
+                    return spl_object_hash($token);
+                }, $tokens->toArray()))),
+                'Token items inside Tokens collection must be unique.'
+            );
+
             Tokens::clearCache();
             $expectedTokens = Tokens::fromCode($expected);
-            $tokens->clearEmptyTokens();
             $this->assertTokens($expectedTokens, $tokens);
         }
 
