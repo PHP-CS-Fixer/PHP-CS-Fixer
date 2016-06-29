@@ -1,0 +1,69 @@
+---------------------------------------------------------------------------
+
+by fabpot at 2016-06-28T07:26:13Z
+
+LGTM
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-28T07:45:14Z
+
+can we ditch other stop characters as well?  (`'.。!?¡¿！？'`)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-28T07:48:30Z
+
+https://github.com/symfony/symfony/pull/19198#issuecomment-228971663
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-28T08:05:56Z
+
+You should also lower case the first letter too then, because it's not a sentence.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-28T08:07:41Z
+
+>You should also lower case the first letter too then, because it's not a sentence.
+
+not all people write English only, so the rule doesn't always apply.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-28T08:17:34Z
+
+What about those people who, like symfony?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-28T08:22:21Z
+
+>What about those people who, like symfony?
+
+the fixer might be used by other people than symfony people
+
+---------------------------------------------------------------------------
+
+by rob006 at 2016-06-28T08:29:54Z
+
+First word might be the name of class, constant, acronym, etc., you can not safely change case of the first letter.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-28T08:42:06Z
+
+Don't make the first word that then. I never do that because of that that exact issue. Allow me to have correctly formatted sentences.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-28T08:45:05Z
+
+you can make an issue out of every new fixer and/or configuration option you don't want, but since no one forces you to use it, what is the point?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-29T07:03:47Z
+
+@GrahamCampbell if you want to put sentence to param description it is great ! Don't use the fixer that force you to not have it ;)
