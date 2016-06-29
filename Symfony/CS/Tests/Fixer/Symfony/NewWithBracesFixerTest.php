@@ -268,6 +268,24 @@ class NewWithBracesFixerTest extends AbstractFixerTestBase
                     $a = new Foo <=> 1;
                 ',
             ),
+            array(
+                '<?php
+                    $a = new class() {use SomeTrait;};
+                    $a = new class() implements Foo{};
+                    $a = new class() /**/ extends Bar1{};
+                    $a = new class()  extends Bar2 implements Foo{};
+                    $a = new class()    extends Bar3 implements Foo, Foo2{};
+                    $a = new class() {}?>
+                ',
+                '<?php
+                    $a = new class {use SomeTrait;};
+                    $a = new class implements Foo{};
+                    $a = new class /**/ extends Bar1{};
+                    $a = new class  extends Bar2 implements Foo{};
+                    $a = new class    extends Bar3 implements Foo, Foo2{};
+                    $a = new class {}?>
+                ',
+            ),
         );
     }
 }

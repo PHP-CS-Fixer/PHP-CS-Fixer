@@ -1418,7 +1418,86 @@ declare   (   ticks   =   1   )   {
         public function use()
         {
         }
+
+        public function use1(): string
+        {
+        }
+    }
+                ',
+                '<?php
+    class Foo
+    {
+        public function use() {
+        }
+
+        public function use1(): string {
+        }
+    }
+                ',
+            ),
+            array(
+                '<?php
+    $a = function (int $foo): string {
+        echo $foo;
+    };
+
+    $b = function (int $foo) use ($bar): string {
+        echo $foo . $bar;
+    };
+
+    function a()
+    {
+    }
+                ',
+                '<?php
+    $a = function (int $foo): string
+    {
+        echo $foo;
+    };
+
+    $b = function (int $foo) use($bar): string
+    {
+        echo $foo . $bar;
+    };
+
+    function a() {
+    }
+                ',
+            ),
+            array(
+                '<?php
+    class Something
+    {
+        public function test(): string
+        {
+            return function (int $foo) use ($bar): string {
+                return $bar;
+            };
+        }
     }',
+                '<?php
+    class Something
+    {
+        public function test(): string
+        {
+            return function (int $foo) use ($bar): string { return $bar; };
+        }
+    }',
+            ),
+            array(
+'<?php
+use function some\a\{
+     test1,
+    test2
+ };
+test();',
+            ),
+            array(
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C};
+use function some\a\{fn_a, fn_b, fn_c};
+use const some\a\{ConstA, ConstB, ConstC};
+',
             ),
         );
     }

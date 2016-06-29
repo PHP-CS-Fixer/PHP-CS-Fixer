@@ -176,6 +176,14 @@ class BracesFixer extends AbstractFixer
                 continue;
             }
 
+            if (
+                $token->isGivenKind(T_FUNCTION)
+                // do not change import of functions
+                && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_USE)
+            ) {
+                continue;
+            }
+
             if ($token->isGivenKind($classyAndFunctionTokens)) {
                 $startBraceIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
                 $startBraceToken = $tokens[$startBraceIndex];
@@ -282,8 +290,11 @@ class BracesFixer extends AbstractFixer
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, "\n".$indent);
             } elseif ($token->isGivenKind(T_FUNCTION) && !$tokens->isLambda($index)) {
                 $closingParenthesisIndex = $tokens->getPrevTokenOfKind($startBraceIndex, array(')'));
-                $prevToken = $tokens[$closingParenthesisIndex - 1];
+                if (null === $closingParenthesisIndex) {
+                    continue;
+                }
 
+                $prevToken = $tokens[$closingParenthesisIndex - 1];
                 if ($prevToken->isWhitespace() && false !== strpos($prevToken->getContent(), "\n")) {
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
                 } else {
