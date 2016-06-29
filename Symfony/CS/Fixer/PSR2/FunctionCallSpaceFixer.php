@@ -96,7 +96,7 @@ class FunctionCallSpaceFixer extends AbstractFixer
     /**
      * Gets the token kinds which can work as function calls.
      *
-     * @return int[] Token names.
+     * @return int[] Token names
      */
     private function getFunctionyTokenKinds()
     {
