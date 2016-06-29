@@ -27,8 +27,8 @@ final class UtilsTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideCamelCaseToUnderscoreCases
      *
-     * @param string $expected Camel case string.
-     * @param string $input    Input string.
+     * @param string $expected Camel case string
+     * @param string $input    Input string
      */
     public function testCamelCaseToUnderscore($expected, $input = null)
     {

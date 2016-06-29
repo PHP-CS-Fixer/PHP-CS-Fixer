@@ -567,6 +567,11 @@ Choose from the list of available fixers:
                          @type phpdoc tags must be
                          aligned vertically.
 
+* **phpdoc_annotation_without_dot** [@Symfony]
+                         Phpdocs annotation
+                         descriptions should not end
+                         with a full stop.
+
 * **phpdoc_indent** [@Symfony]
                          Docblocks should have the
                          same indentation as the

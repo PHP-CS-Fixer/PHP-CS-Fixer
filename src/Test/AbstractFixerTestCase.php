@@ -120,10 +120,10 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
      * This method throws an exception if $expected and $input are equal to prevent test cases that accidentally do
      * not test anything.
      *
-     * @param string              $expected The expected fixer output.
-     * @param string|null         $input    The fixer input, or null if it should intentionally be equal to the output.
-     * @param \SplFileInfo|null   $file     The file to fix, or null if unneeded.
-     * @param FixerInterface|null $fixer    The fixer to be used, or null if it should be inferred from the test name.
+     * @param string              $expected The expected fixer output
+     * @param string|null         $input    The fixer input, or null if it should intentionally be equal to the output
+     * @param \SplFileInfo|null   $file     The file to fix, or null if unneeded
+     * @param FixerInterface|null $fixer    The fixer to be used, or null if it should be inferred from the test name
      */
     protected function doTest($expected, $input = null, \SplFileInfo $file = null, FixerInterface $fixer = null)
     {

@@ -39,7 +39,7 @@ final class FixerFactory
     /**
      * Fixers by name.
      *
-     * @var FixerInterface[] Associative array of fixers with names as keys.
+     * @var FixerInterface[] Associative array of fixers with names as keys
      */
     private $fixersByName = array();
 

@@ -88,6 +88,7 @@ final class RuleSet implements RuleSetInterface
             'normalize_index_brace' => true,
             'object_operator_without_whitespace' => true,
             'phpdoc_align' => true,
+            'phpdoc_annotation_without_dot' => true,
             'phpdoc_indent' => true,
             'phpdoc_inline_tag' => true,
             'phpdoc_no_access' => true,
