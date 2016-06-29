@@ -26,7 +26,13 @@ final class NoShortEchoTagFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_OPEN_TAG_WITH_ECHO);
+        return (
+            $tokens->isTokenKindFound(T_OPEN_TAG_WITH_ECHO)
+            || (
+                defined('HHVM_VERSION')
+                && $tokens->isTokenKindFound(T_ECHO)
+            )
+        );
     }
 
     /**
