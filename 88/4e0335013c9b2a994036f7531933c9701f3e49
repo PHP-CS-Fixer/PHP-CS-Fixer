@@ -1,0 +1,16 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-28T07:28:29Z
+
+Already fixed on 2.x line with #1955
+Please, add the following utest:
+```
+           array(
+                '<?php
+                    if (1) {
+                        echo $items{0}->foo;
+                        echo $collection->items{1}->property;
+                    }
+                ',
+            ),
+```
