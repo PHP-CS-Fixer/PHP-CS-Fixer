@@ -261,7 +261,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param $source string
+     * @param string $source
      *
      * @return string|null
      */
@@ -283,7 +283,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param $source string
+     * @param string $source
      *
      * @return bool
      */

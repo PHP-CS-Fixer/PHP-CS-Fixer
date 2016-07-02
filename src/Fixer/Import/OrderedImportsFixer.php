@@ -42,7 +42,6 @@ final class OrderedImportsFixer extends AbstractFixer
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $namespacesImports = $tokensAnalyzer->getImportUseIndexes(true);
-        $usesOrder = array();
 
         if (0 === count($namespacesImports)) {
             return;
