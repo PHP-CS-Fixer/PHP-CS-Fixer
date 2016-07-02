@@ -33,12 +33,12 @@ class IncludeFixerTest extends AbstractFixerTestBase
         $template = '<?php %s';
         $tests = array();
         foreach (array('require', 'require_once', 'include', 'include_once') as $statement) {
-            $test[] = array(
+            $tests[] = array(
                 sprintf($template.' "foo.php" ?>', $statement),
                 sprintf($template.' ("foo.php") ?>', $statement),
             );
 
-            $test[] = array(
+            $tests[] = array(
                 sprintf($template.' /**/ "foo.php" // test
                     ?>', $statement),
                 sprintf($template.' /**/ ("foo.php") // test
