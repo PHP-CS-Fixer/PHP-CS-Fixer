@@ -35,18 +35,39 @@ final class ConcatWithSpacesFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            $token = $tokens[$index];
-
-            if ($token->equals('.')) {
-                if (!$tokens[$index + 1]->isWhitespace()) {
-                    $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
-                }
-
-                if (!$tokens[$index - 1]->isWhitespace()) {
-                    $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
-                }
+            if (!$tokens[$index]->equals('.')) {
+                continue;
             }
+
+            $this->fixWhiteSpaceAroundConcatToken($tokens, $index, 1);
+            $this->fixWhiteSpaceAroundConcatToken($tokens, $index, -1);
         }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index  Index of concat token
+     * @param int    $offset 1 or -1
+     */
+    private function fixWhiteSpaceAroundConcatToken(Tokens $tokens, $index, $offset)
+    {
+        $offsetIndex = $index + $offset;
+
+        if (!$tokens[$offsetIndex]->isWhitespace()) {
+            $tokens->insertAt($index + (1 === $offset ?: 0), new Token(array(T_WHITESPACE, ' ')));
+
+            return;
+        }
+
+        if (false !== strpos($tokens[$offsetIndex]->getContent(), "\n")) {
+            return;
+        }
+
+        if ($tokens[$index + $offset * 2]->isComment()) {
+            return;
+        }
+
+        $tokens[$offsetIndex]->setContent(' ');
     }
 
     /**

@@ -179,7 +179,18 @@ final class BracesFixer extends AbstractFixer
             }
 
             // do not change indent for `while` in `do ... while ...`
-            if ($token->isGivenKind(T_WHILE) && $tokensAnalyzer->isWhilePartOfDoWhile($index)) {
+            if (
+                $token->isGivenKind(T_WHILE)
+                && $tokensAnalyzer->isWhilePartOfDoWhile($index)
+            ) {
+                continue;
+            }
+
+            // do not change import of functions
+            if (
+                $token->isGivenKind(T_FUNCTION)
+                && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_USE)
+            ) {
                 continue;
             }
 
@@ -294,8 +305,11 @@ final class BracesFixer extends AbstractFixer
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, "\n".$indent);
             } elseif ($token->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index)) {
                 $closingParenthesisIndex = $tokens->getPrevTokenOfKind($startBraceIndex, array(')'));
-                $prevToken = $tokens[$closingParenthesisIndex - 1];
+                if (null === $closingParenthesisIndex) {
+                    continue;
+                }
 
+                $prevToken = $tokens[$closingParenthesisIndex - 1];
                 if ($prevToken->isWhitespace() && false !== strpos($prevToken->getContent(), "\n")) {
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
                 } else {

@@ -34,20 +34,15 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        // ignore non-monolithic files
-        if (!$tokens->isMonolithicPhp()) {
-            return;
-        }
-
-        // ignore files with short open tag
-        if (!$tokens[0]->isGivenKind(T_OPEN_TAG)) {
+        // ignore files with short open tag and ignore non-monolithic files
+        if (!$tokens[0]->isGivenKind(T_OPEN_TAG) || !$tokens->isMonolithicPhp()) {
             return;
         }
 
         $newlineFound = false;
         /** @var Token $token */
         foreach ($tokens as $token) {
-            if ($token->isWhitespace("\n")) {
+            if ($token->isWhitespace() && false !== strpos($token->getContent(), "\n")) {
                 $newlineFound = true;
                 break;
             }

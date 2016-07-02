@@ -51,30 +51,42 @@ final class SingleLineAfterImportsFixer extends AbstractFixer
                 $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$index - 1]);
             }
 
-            $newline = "\n";
+            $semicolonIndex = $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG))); // Handle insert index for inline T_COMMENT with whitespace after semicolon
+            $insertIndex = $semicolonIndex;
 
-            // Handle insert index for inline T_COMMENT with whitespace after semicolon
-            $semicolonIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
-            $insertIndex = $semicolonIndex + 1;
-            if ($tokens[$insertIndex]->isWhitespace(" \t") && $tokens[$insertIndex + 1]->isComment()) {
-                ++$insertIndex;
+            if ($tokens[$semicolonIndex]->isGivenKind(T_CLOSE_TAG)) {
+                if ($tokens[$insertIndex - 1]->isWhitespace()) {
+                    --$insertIndex;
+                }
+
+                $tokens->insertAt($insertIndex, new Token(';'));
             }
 
-            // Increment insert index for inline T_COMMENT or T_DOC_COMMENT
-            if ($tokens[$insertIndex]->isComment()) {
-                ++$insertIndex;
-            }
+            if ($semicolonIndex === count($tokens) - 1) {
+                $tokens->insertAt($insertIndex + 1, new Token(array(T_WHITESPACE, "\n\n".$indent)));
+            } else {
+                $newline = "\n";
+                $tokens[$semicolonIndex]->isGivenKind(T_CLOSE_TAG) ? --$insertIndex : ++$insertIndex;
+                if ($tokens[$insertIndex]->isWhitespace(" \t") && $tokens[$insertIndex + 1]->isComment()) {
+                    ++$insertIndex;
+                }
 
-            $afterSemicolon = $tokens->getNextMeaningfulToken($semicolonIndex);
-            if (!$tokens[$afterSemicolon]->isGivenKind(T_USE)) {
-                $newline .= "\n";
-            }
+                // Increment insert index for inline T_COMMENT or T_DOC_COMMENT
+                if ($tokens[$insertIndex]->isComment()) {
+                    ++$insertIndex;
+                }
 
-            if ($tokens[$insertIndex]->isWhitespace()) {
-                $nextToken = $tokens[$insertIndex];
-                $nextToken->setContent($newline.$indent.ltrim($nextToken->getContent()));
-            } elseif ($newline && $indent) {
-                $tokens->insertAt($insertIndex, new Token(array(T_WHITESPACE, $newline.$indent)));
+                $afterSemicolon = $tokens->getNextMeaningfulToken($semicolonIndex);
+                if (null === $afterSemicolon || !$tokens[$afterSemicolon]->isGivenKind(T_USE)) {
+                    $newline .= "\n";
+                }
+
+                if ($tokens[$insertIndex]->isWhitespace()) {
+                    $nextToken = $tokens[$insertIndex];
+                    $nextToken->setContent($newline.$indent.ltrim($nextToken->getContent()));
+                } else {
+                    $tokens->insertAt($insertIndex, new Token(array(T_WHITESPACE, $newline.$indent)));
+                }
             }
         }
     }

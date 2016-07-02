@@ -534,20 +534,66 @@ EOF
         $this->doTest($expected, $input);
     }
 
-    public function testWithoutUses()
+    /**
+     * @dataProvider provideRemoveLinesBetweenUseStatements70Cases
+     * @requires PHP 7.0
+     */
+    public function testRemoveLinesBetweenUseStatements70($expected, $input = null)
     {
-        $expected = <<<'EOF'
-<?php
+        $this->getFixer()->configure(array('use'));
+        $this->doTest($expected, $input);
+    }
+
+    public function provideRemoveLinesBetweenUseStatements70Cases()
+    {
+        return array(
+            array(
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C};
+use function some\a\{fn_a, fn_b, fn_c};
+use const some\a\{ConstA, ConstB, ConstC};
+',
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C};
+
+use function some\a\{fn_a, fn_b, fn_c};
+
+use const some\a\{ConstA, ConstB, ConstC};
+',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideWithoutUsesCases
+     */
+    public function testWithoutUses($expected)
+    {
+        $this->getFixer()->configure(array('use'));
+        $this->doTest($expected);
+    }
+
+    public function provideWithoutUsesCases()
+    {
+        return array(
+            array(
+                '<?php
 
 $c = 1;
 
 $a = new Baz();
-$a = new Qux();
-EOF
-        ;
-
-        $this->getFixer()->configure(array('use'));
-        $this->doTest($expected);
+$a = new Qux();',
+            ),
+            array(
+                '<?php use A\B;',
+            ),
+            array(
+                '<?php use A\B?>',
+            ),
+            array(
+                '<?php use A\B;?>',
+            ),
+        );
     }
 
     public function testRemoveBetweenUseTraits()

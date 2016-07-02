@@ -21,6 +21,45 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  */
 final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
 {
+    /**
+     * @dataProvider provide70Cases
+     * @requires PHP 7.0
+     */
+    public function testFix70($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provide70Cases()
+    {
+        return array(
+            array(
+                '<?php $a = new class {};',
+            ),
+            array(
+                '<?php $a = new class {}?>',
+            ),
+            array(
+                '<?php
+                    $a = new Foo() <=> 1;
+                    $a = new Foo <=> 1;
+                    $a = new class() {};
+                    $a = new class() implements Foo{};
+                    $a = new class() /**/ extends Bar1{};
+                    $a = new class()  extends Bar2 implements Foo{};
+                    $a = new class()    extends Bar3 implements Foo, Foo2{};
+                    $a = new class() {};
+                    $a = new class {};
+                    $a = new class implements Foo{};
+                    $a = new class /**/ extends Bar1{};
+                    $a = new class  extends Bar2 implements Foo{};
+                    $a = new class    extends Bar3 implements Foo, Foo2{};
+                    $a = new class {}?>
+                ',
+            ),
+        );
+    }
+
     public function testSimpleClass()
     {
         $expected = <<<'EOF'

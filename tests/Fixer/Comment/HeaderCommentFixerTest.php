@@ -155,24 +155,6 @@ EOH;
         $this->doTest($expected, $input, null, $fixer);
     }
 
-    public function testFixDoNotTouchFilesWithSeveralOpenTags()
-    {
-        $input = "<?php\nphpinfo();\n?>\n<?";
-        $this->doTest($input);
-    }
-
-    public function testFixDoNotTouchFilesNotStartingWithOpenTag()
-    {
-        $input = " <?php\nphpinfo();\n";
-        $this->doTest($input);
-    }
-
-    public function testFixDoNotTouchFilesWithInlineHtml()
-    {
-        $input = "<?php\nphpinfo();\n?><hr/>";
-        $this->doTest($input);
-    }
-
     public function testFixAddHeaderToEmptyFile()
     {
         $expected = <<<'EOH'
@@ -202,5 +184,26 @@ EOH;
     {
         $fixer = $this->getFixer();
         $fixer->configure(array('header' => new \stdClass()));
+    }
+
+    /**
+     * @dataProvider provideDoNotTouchCases
+     */
+    public function testDoNotTouch($expected)
+    {
+        $this->doTest($expected);
+    }
+
+    public function provideDoNotTouchCases()
+    {
+        return array(
+            array("<?php\nphpinfo();\n?>\n<?"),
+            array(" <?php\nphpinfo();\n"),
+            array("<?php\nphpinfo();\n?><hr/>"),
+            array("  <?php\n"),
+            array('<?= 1?>'),
+            array('<?= 1?><?php'),
+            array("<?= 1?>\n<?php"),
+        );
     }
 }

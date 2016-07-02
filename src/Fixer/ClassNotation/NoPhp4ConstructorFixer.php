@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Matteo Beccati <matteo@beccati.com>
@@ -42,11 +43,17 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
         $classes = array_keys($tokens->findGivenKind(T_CLASS));
         $numClasses = count($classes);
 
         for ($i = 0; $i < $numClasses; ++$i) {
             $index = $classes[$i];
+
+            // is it an an anonymous class definition?
+            if ($tokensAnalyzer->isAnonymousClass($index)) {
+                continue;
+            }
 
             // is it inside a namespace?
             $nspIndex = $tokens->getPrevTokenOfKind($index, array(array(T_NAMESPACE, 'namespace')));

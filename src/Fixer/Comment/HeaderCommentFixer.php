@@ -56,7 +56,7 @@ final class HeaderCommentFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        if (!$tokens->isMonolithicPhp()) {
+        if (!$tokens[0]->isGivenKind(T_OPEN_TAG) || !$tokens->isMonolithicPhp()) {
             return;
         }
 

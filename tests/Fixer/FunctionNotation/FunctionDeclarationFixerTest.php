@@ -144,4 +144,21 @@ function foo() /* bar */
             ),
         );
     }
+
+    /**
+     * @dataProvider provide70Cases
+     * @requires PHP 7.0
+     */
+    public function test70($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provide70Cases()
+    {
+        return array(
+            array('<?php use function some\test\{fn_a, fn_b, fn_c};'),
+            array('<?php use function some\test\{fn_a, fn_b, fn_c} ?>'),
+        );
+    }
 }

@@ -139,6 +139,53 @@ namespace Boo {
 
 EOF
             ),
+            array(
+                '<?php
+                    use FooA;
+                    use FooB;
+                ',
+                '<?php
+                    use FooA, FooB;
+                ',
+            ),
+            array(
+                '<?php use FooA;
+use FooB;?>',
+                '<?php use FooA, FooB?>',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provide70Cases
+     * @requires PHP 7.0
+     */
+    public function test70($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provide70Cases()
+    {
+        return array(
+            array(
+                '<?php
+use some\a\ClassA;
+use some\a\ClassB;
+use some\a\ClassC as C;
+use function some\b\fn_a;
+use function some\b\fn_b;
+use function some\b\fn_c;
+use const some\c\ConstA;
+use const some\c\ConstB;
+use const some\c\ConstC;
+                ',
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C};
+use    function some\b\{fn_a, fn_b, fn_c};
+use const some\c\{ConstA, ConstB, ConstC};
+                ',
+            ),
         );
     }
 }
