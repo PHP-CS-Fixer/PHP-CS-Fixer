@@ -593,11 +593,11 @@ EOF;
     {
         $this->doTest(
             '<?php
-                use A\C;
-                use A\D?><?php use B\C; use E\F ?>',
+                use A\C1;
+                use A\D?><?php use B\C2; use E\F ?>',
             '<?php
-                use A\C;
-                use B\C?><?php use A\D; use E\F ?>'
+                use A\C1;
+                use B\C2?><?php use A\D; use E\F ?>'
         );
     }
 
@@ -605,11 +605,11 @@ EOF;
     {
         $this->doTest(
             '<?php
-                use A\C /* A */;
-                use /* B */ B\C;',
+                use A\C1 /* A */;
+                use /* B */ B\C2;',
             '<?php
-                use /* B */ B\C;
-                use A\C /* A */;'
+                use /* B */ B\C2;
+                use A\C1 /* A */;'
         );
     }
 
