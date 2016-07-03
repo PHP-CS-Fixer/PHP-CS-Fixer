@@ -429,6 +429,21 @@ class BracesFixer extends AbstractFixer
             if ($prevToken->isGivenKind($goBackTokens)) {
                 return $this->detectIndent($tokens, $prevIndex);
             }
+
+            if ($token->isClassy() && $prevToken->isGivenKind(T_NEW)) {
+                for ($prevIndex = $prevIndex - 1; 0 <= $prevIndex; --$prevIndex) {
+                    $prevToken = $tokens[$prevIndex];
+                    // if token is multiline whitespaces
+                    if ($prevToken->isWhitespace() && !$prevToken->isWhitespace(array('whitespaces' => " \t"))) {
+                        $explodedContent = explode("\n", $prevToken->getContent());
+
+                        return end($explodedContent);
+                    }
+                }
+
+                // no multiline whitespaces has been found, no indent detected
+                return '';
+            }
         }
 
         $prevIndex = $index - 1;
