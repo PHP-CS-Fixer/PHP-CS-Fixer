@@ -25,7 +25,14 @@ use PhpCsFixer\Test\AccessibleObject;
  */
 final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Config
+     */
     protected $config;
+
+    /**
+     * @var ConfigurationResolver
+     */
     protected $resolver;
 
     protected function setUp()

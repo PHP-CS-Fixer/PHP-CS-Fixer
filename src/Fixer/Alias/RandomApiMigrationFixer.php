@@ -77,16 +77,10 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
                     continue 2;
                 }
 
-                list($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
+                list($functionName, $openParenthesis) = $boundaries;
 
                 // analysing cursor shift, so nested calls could be processed
                 $currIndex = $openParenthesis;
-
-                // analyse namespace specification (root one or none) and decide what to do
-                $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionName);
-                if ($tokens[$prevTokenIndex]->isGivenKind(T_NS_SEPARATOR)) {
-                    // do nothing with namespace identity
-                }
 
                 $tokens[$functionName]->setContent($newName);
             }

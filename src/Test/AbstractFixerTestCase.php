@@ -30,6 +30,9 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
      */
     protected static $linter;
 
+    /**
+     * @var FixerInterface|null
+     */
     private $fixer;
 
     public static function setUpBeforeClass()
@@ -181,7 +184,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param $source string
+     * @param string $source
      *
      * @return string|null
      */
@@ -203,7 +206,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param $source string
+     * @param string $source
      *
      * @return bool
      */

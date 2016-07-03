@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\Semicolon;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author SpacePossum
@@ -121,9 +122,11 @@ final class NoEmptyStatementFixer extends AbstractFixer
                 $classyTest = $tokens->getPrevMeaningfulToken($classyTest);
             }
 
+            $tokensAnalyzer = new TokensAnalyzer($tokens);
+
             if (
                 $tokens[$classyTest]->isGivenKind(T_NAMESPACE) ||
-                ($tokens[$classyTest]->isClassy() && !$this->isAnonymousClass($tokens, $classyTest))
+                ($tokens[$classyTest]->isClassy() && !$tokensAnalyzer->isAnonymousClass($classyTest))
             ) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             }
@@ -152,16 +155,5 @@ final class NoEmptyStatementFixer extends AbstractFixer
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index); // implicit return
             }
         }
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $index
-     *
-     * @return bool
-     */
-    private function isAnonymousClass(Tokens $tokens, $index)
-    {
-        return $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_NEW);
     }
 }

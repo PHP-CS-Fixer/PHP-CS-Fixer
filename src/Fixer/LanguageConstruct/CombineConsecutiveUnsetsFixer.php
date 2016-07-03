@@ -45,7 +45,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
                 continue;
             }
 
-            list($previousUnset, $previousUnsetBraceStart, $previousUnsetBraceEnd, $previousUnsetSemicolon) = $previousUnsetCall;
+            list($previousUnset, , $previousUnsetBraceEnd) = $previousUnsetCall;
 
             // Merge the tokens inside the 'unset' call into the previous one 'unset' call.
             $tokensAddCount = $this->moveTokens(

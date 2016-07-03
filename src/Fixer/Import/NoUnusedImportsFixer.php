@@ -35,7 +35,6 @@ final class NoUnusedImportsFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $namespaceDeclarations = $this->getNamespaceDeclarations($tokens);
         $useDeclarationsIndexes = $tokensAnalyzer->getImportUseIndexes();
 
         if (0 === count($useDeclarationsIndexes)) {

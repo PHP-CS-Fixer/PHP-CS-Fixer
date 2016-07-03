@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Console\Output;
 
 use PhpCsFixer\FixerFileProcessedEvent;
-use Symfony\Component\Console\Output\StreamOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -48,11 +48,11 @@ final class ProcessOutput implements ProcessOutputInterface
     /**
      * Stream output instance.
      *
-     * @var StreamOutput
+     * @var OutputInterface
      */
     private $output;
 
-    public function __construct(StreamOutput $output, EventDispatcher $dispatcher)
+    public function __construct(OutputInterface $output, EventDispatcher $dispatcher)
     {
         $this->output = $output;
         $this->eventDispatcher = $dispatcher;

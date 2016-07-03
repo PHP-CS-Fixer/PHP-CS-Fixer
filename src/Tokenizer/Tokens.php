@@ -207,7 +207,7 @@ class Tokens extends \SplFixedArray
      *
      * @param string $code
      *
-     * @return string
+     * @return int
      */
     private static function calculateCodeHash($code)
     {

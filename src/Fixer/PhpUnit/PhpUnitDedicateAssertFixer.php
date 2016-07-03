@@ -217,7 +217,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer
         list(
             $isPositive,
             $assertCallIndex,
-            $assertCallOpenIndex,
+            ,
             $testDefaultNamespaceTokenIndex,
             $testIndex,
             $testOpenIndex,
