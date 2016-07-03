@@ -170,6 +170,9 @@ class Fixer
     public function fixFile(\SplFileInfo $file, array $fixers, $dryRun, $diff, FileCacheManager $fileCacheManager)
     {
         $new = $old = file_get_contents($file->getRealpath());
+        if (!$this->checkEncoding($this->getFileRelativePathname($file), $old)) {
+            return;
+        }
 
         if (
             '' === $old
@@ -406,5 +409,31 @@ class Fixer
     public function setStopwatch(Stopwatch $stopwatch = null)
     {
         $this->stopwatch = $stopwatch;
+    }
+
+    /**
+     * Checks if the file encoding is supported.
+     *
+     * @param string $filename
+     * @param string $string
+     *
+     * @return bool true if the encoding was correctly detected, false otherwise
+     */
+    protected function checkEncoding($filename, $string)
+    {
+        if (!$supportedEncoding = mb_detect_encoding($string)) {
+            if ($this->eventDispatcher) {
+                $this->eventDispatcher->dispatch(
+                    FixerFileProcessedEvent::NAME,
+                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)
+                );
+            }
+
+            if ($this->errorsManager) {
+                $this->errorsManager->report(ErrorsManager::ERROR_TYPE_EXCEPTION, $filename, 'Unknown encoding');
+            }
+        }
+
+        return false !== $supportedEncoding;
     }
 }
