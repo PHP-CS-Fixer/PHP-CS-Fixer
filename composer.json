@@ -16,6 +16,7 @@
     "require": {
         "php": ">=5.3.6",
         "ext-tokenizer": "*",
+        "ext-mbstring": "*",
         "symfony/console": "~2.3|~3.0",
         "symfony/event-dispatcher": "~2.1|~3.0",
         "symfony/filesystem": "~2.1|~3.0",
