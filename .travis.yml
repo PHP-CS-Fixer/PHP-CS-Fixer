@@ -6,7 +6,7 @@ matrix:
     fast_finish: true
     include:
         - php: 5.3
-          env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
+          env: DEPLOY=yes COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
         - php: 7.0
           env: LINT_TEST_CASES=1
         - php: 5.4
@@ -45,3 +45,20 @@ script:
 
 after_success:
     - php vendor/bin/coveralls -v
+
+before_deploy:
+    - 'sed -i "s/^{/\{\n    \"config\": {\"platform\": {\"php\": \"5.3.6\"}},/" composer.json'
+    - curl -LSs http://box-project.github.io/box2/installer.php | php
+    - composer update --no-dev --no-interaction --optimize-autoloader --prefer-stable
+    - php -d phar.readonly=false box.phar build
+
+deploy:
+    provider: releases
+    api_key:
+        secure: K9NKi7X1OPz898fxtVc1RfWrSI+4hTFFYOik932wTz1jC4dQJ64Khh1LV9frA1+JiDS3+R6TvmQtpzbkX3y4L75UrSnP1ADH5wfMYIVmydG3ZjTMo8SWQWHmRMh3ORAKTMMpjl4Q7EkRkLp6RncKe+FAFPP5mgv55mtIMaE4qUk=
+    file: php-cs-fixer.phar
+    skip_cleanup: true
+    on:
+        repo: FriendsOfPHP/PHP-CS-Fixer
+        tags: true
+        condition: $DEPLOY = yes

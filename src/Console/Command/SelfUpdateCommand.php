@@ -58,33 +58,32 @@ EOT
             return 1;
         }
 
-        $currentVersion = explode('-', $this->getApplication()->getVersion());
-        $currentVersion = $currentVersion[0]; // ignore index #1 if exists (drop non-stable versions like `-DEV`)
-        $currentVersion = explode('.', $currentVersion);
-        if (!isset($currentVersion[2])) {
-            $currentVersion[2] = 0; // fill patch version if missing
+        $remoteTag = $this->getRemoteTag();
+
+        if (null === $remoteTag) {
+            $output->writeln('<error>Unable to determine newest version.</error>');
+
+            return;
         }
 
-        list($major, $minor, $patch) = $this->findBestVersion($currentVersion[0], $currentVersion[1], $currentVersion[2]);
-
-        if ($this->getApplication()->getVersion() === $this->buildVersionString($major, $minor, $patch)) {
+        if ('v'.$this->getApplication()->getVersion() === $remoteTag) {
             $output->writeln('<info>php-cs-fixer is already up to date.</info>');
 
             return;
         }
 
-        $remoteFilename = $this->buildVersionFileUrl($major, $minor, $patch);
+        $remoteFilename = $this->buildVersionFileUrl($remoteTag);
         $localFilename = $_SERVER['argv'][0];
         $tempFilename = basename($localFilename, '.phar').'-tmp.phar';
 
-        if (false === @file_get_contents($remoteFilename)) {
-            $output->writeln('<error>Unable to download new versions from the server.</error>');
-
-            return 1;
-        }
-
         try {
-            copy($remoteFilename, $tempFilename);
+            $copyResult = @copy($remoteFilename, $tempFilename);
+            if (false === $copyResult) {
+                $output->writeln('<error>Unable to download new versions from the server.</error>');
+
+                return 1;
+            }
+
             chmod($tempFilename, 0777 & ~umask());
 
             // test the phar validity
@@ -107,38 +106,33 @@ EOT
         }
     }
 
-    private function checkIfVersionFileExists($major, $minor, $patch)
+    private function buildVersionFileUrl($tag)
     {
-        $url = $this->buildVersionFileUrl($major, $minor, $patch);
-        $headers = get_headers($url);
-
-        return stripos($headers[0], '200 OK') ? true : false;
+        return sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar', $tag);
     }
 
-    private function findBestVersion($major, $minor, $patch)
+    private function getRemoteTag()
     {
-        if ($this->checkIfVersionFileExists($major, $minor, $patch + 1)) {
-            return $this->findBestVersion($major, $minor, $patch + 1);
+        $raw = file_get_contents(
+            'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/releases/latest',
+            null,
+            stream_context_create(array(
+                'http' => array(
+                    'header' => 'User-Agent: FriendsOfPHP/PHP-CS-Fixer',
+                ),
+            ))
+        );
+
+        if (false === $raw) {
+            return;
         }
 
-        if ($this->checkIfVersionFileExists($major, $minor + 1, 0)) {
-            return $this->findBestVersion($major, $minor + 1, 0);
+        $json = json_decode($raw, true);
+
+        if (null === $json) {
+            return;
         }
 
-        if ($this->checkIfVersionFileExists($major + 1, 0, 0)) {
-            return $this->findBestVersion($major + 1, 0, 0);
-        }
-
-        return array($major, $minor, $patch);
-    }
-
-    private function buildVersionFileUrl($major, $minor, $patch)
-    {
-        return sprintf('http://get.sensiolabs.org/php-cs-fixer-v%s.phar', $this->buildVersionString($major, $minor, $patch));
-    }
-
-    private function buildVersionString($major, $minor, $patch)
-    {
-        return sprintf('%d.%d.%d', $major, $minor, $patch);
+        return $json['tag_name'];
     }
 }
