@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-04T18:30:28Z
+
+I think that is the best we can do. If `preg_replace` will crash there is not much we can do.
+
+Yes, we could add some fancy logic and do everything on very low level, but it's pointless
