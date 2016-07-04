@@ -430,7 +430,7 @@ class BracesFixer extends AbstractFixer
                 return $this->detectIndent($tokens, $prevIndex);
             }
 
-            if ($token->isClassy() && $prevToken->isGivenKind(T_NEW)) {
+            if ($token->isGivenKind(T_CLASS) && $prevToken->isGivenKind(T_NEW)) {
                 for ($prevIndex = $prevIndex - 1; 0 <= $prevIndex; --$prevIndex) {
                     $prevToken = $tokens[$prevIndex];
                     // if token is multiline whitespaces
