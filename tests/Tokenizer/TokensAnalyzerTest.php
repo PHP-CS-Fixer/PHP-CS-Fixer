@@ -34,6 +34,7 @@ class Foo
     protected $prop1;
     private $prop2 = 1;
     var $prop3 = array(1,2,3);
+    const CONSTANT = 'constant value';
 
     public function bar4()
     {
@@ -50,19 +51,29 @@ class Foo
         $example('hello');
     }
 }
+
+function test(){}
+
+class Foo2
+{
+    const CONSTANT = 'constant value';
+}
+
 PHP;
 
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = array_values($tokensAnalyzer->getClassyElements());
 
-        $this->assertCount(6, $elements);
+        $this->assertCount(8, $elements);
         $this->assertSame('property', $elements[0]['type']);
         $this->assertSame('property', $elements[1]['type']);
         $this->assertSame('property', $elements[2]['type']);
         $this->assertSame('property', $elements[3]['type']);
-        $this->assertSame('method', $elements[4]['type']);
+        $this->assertSame('const', $elements[4]['type']);
         $this->assertSame('method', $elements[5]['type']);
+        $this->assertSame('method', $elements[6]['type']);
+        $this->assertSame('const', $elements[7]['type']);
     }
 
     /**

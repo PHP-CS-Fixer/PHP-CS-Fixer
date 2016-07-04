@@ -98,6 +98,8 @@ final class TokensAnalyzer
 
             if ($token->isGivenKind(T_FUNCTION)) {
                 $elements[$index] = array('token' => $token, 'type' => 'method');
+            } elseif ($token->isGivenKind(T_CONST)) {
+                $elements[$index] = array('token' => $token, 'type' => 'const');
             }
         }
 
