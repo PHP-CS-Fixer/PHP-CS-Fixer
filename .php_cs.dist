@@ -17,6 +17,7 @@ return PhpCsFixer\Config::create()
         'combine_consecutive_unsets' => true,
         'header_comment' => array('header' => $header),
         'long_array_syntax' => true,
+        'no_extra_consecutive_blank_lines' => array('break', 'continue', 'extra', 'return', 'throw', 'use', 'parenthesis_brace_block', 'square_brace_block', 'curly_brace_block'),
         'no_useless_else' => true,
         'no_useless_return' => true,
         'ordered_class_elements' => true,
@@ -27,7 +28,6 @@ return PhpCsFixer\Config::create()
         'psr4' => true,
         'strict_comparison' => true,
         'strict_param' => true,
-        'no_extra_consecutive_blank_lines' => array('break', 'continue', 'extra', 'return', 'throw', 'use', 'curly_brace_open'),
     ))
     ->finder(
         PhpCsFixer\Finder::create()

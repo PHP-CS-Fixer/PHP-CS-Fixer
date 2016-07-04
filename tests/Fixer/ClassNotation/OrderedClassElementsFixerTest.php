@@ -264,7 +264,6 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     }
 }
 EOT
-
             ),
             array(
                 <<<'EOT'

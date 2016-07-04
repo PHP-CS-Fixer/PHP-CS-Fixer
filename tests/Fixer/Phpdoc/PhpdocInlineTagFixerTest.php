@@ -142,7 +142,6 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
      * inheritdocs
      */
 ',
-
         );
 
         // invalid syntax
