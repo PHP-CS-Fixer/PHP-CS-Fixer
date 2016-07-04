@@ -44,7 +44,7 @@ class Foo implements FooInterface
     const FOR = 1;
 
     // array const
-    // const ARR = array(1, 2);
+    const ARR = array(1, 2);
 
     // semi-reserved keyword as function name
     public function list($a, $b)
@@ -143,7 +143,7 @@ class Foo implements FooInterface
     const FOR = 1;
 
     // array const
-    // const ARR = array(1, 2);
+    const ARR = array(1, 2);
 
     // semi-reserved keyword as function name
     public function list($a,$b)

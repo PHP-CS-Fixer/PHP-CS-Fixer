@@ -23,6 +23,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Javier Spagnoletti <phansys@gmail.com>
  * @author SpacePossum
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class SingleClassElementPerStatementFixer extends AbstractFixer
 {
@@ -100,9 +101,31 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer
      */
     private function fixElement(Tokens $tokens, $index)
     {
-        $repeatIndex = $tokens->getNextTokenOfKind($index, array(',', ';'));
-        if (!$tokens[$repeatIndex]->equals(',')) {
-            return; // no repeating found, no fixing needed
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $repeatIndex = $index;
+
+        while (true) {
+            $repeatIndex = $tokens->getNextMeaningfulToken($repeatIndex);
+            $repeatToken = $tokens[$repeatIndex];
+
+            if ($tokensAnalyzer->isArray($repeatIndex)) {
+                if ($repeatToken->isGivenKind(T_ARRAY)) {
+                    $repeatIndex = $tokens->getNextTokenOfKind($repeatIndex, array('('));
+                    $repeatIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $repeatIndex);
+                } else {
+                    $repeatIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $repeatIndex);
+                }
+
+                continue;
+            }
+
+            if ($repeatToken->equals(';')) {
+                return; // no repeating found, no fixing needed
+            }
+
+            if ($repeatToken->equals(',')) {
+                break;
+            }
         }
 
         $start = $tokens->getPrevTokenOfKind($index, array(';', '{', '}'));
@@ -130,11 +153,23 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer
 
         // iterate variables to split up
         for ($i = $endIndex - 1; $i > $startIndex; --$i) {
+            $token = $tokens[$i];
+
+            if ($token->equals(')')) {
+                $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $i, false);
+                continue;
+            }
+
+            if ($token->isGivenKind(CT_ARRAY_SQUARE_BRACE_CLOSE)) {
+                $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $i, false);
+                continue;
+            }
+
             if (!$tokens[$i]->equals(',')) {
                 continue;
             }
 
-            $tokens[$i]->setContent(';');
+            $token->setContent(';');
             if ($tokens[$i + 1]->isWhitespace()) {
                 $tokens[$i + 1]->clear();
             }
@@ -142,6 +177,7 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer
             if ($divisionContent) {
                 $tokens->insertAt($i + 1, new Token(array(T_WHITESPACE, $divisionContent)));
             }
+
             // collect modifiers
             $sequence = $this->getModifiersSequences($tokens, $startIndex, $endIndex);
             $tokens->insertAt($i + 2, $sequence);
