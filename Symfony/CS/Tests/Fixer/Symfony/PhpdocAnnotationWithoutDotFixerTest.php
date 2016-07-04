@@ -62,6 +62,14 @@ class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestBase
      * @SomeCustomAnnotation This is important sentence that must not be modified.
      */',
             ),
+            array(
+                // invalid char inside line won't crash the fixer
+                '<?php
+    /**
+     * @var string This: '.chr(174).' is an odd character.
+     * @var string This: '.chr(174).' is an odd character 2nd time。
+     */',
+            ),
         );
     }
 }
