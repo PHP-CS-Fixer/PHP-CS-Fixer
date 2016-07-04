@@ -1,0 +1,187 @@
+---------------------------------------------------------------------------
+
+by gharlan at 2016-04-28T20:41:29Z
+
+Thanks for working on this!
+
+I would like to see the same for class constants.
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-04-28T23:59:33Z
+
+What do you mean @gharlan? AFAIK this syntax isn't supported for class constants.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-04-29T07:36:05Z
+
+> What do you mean @gharlan? AFAIK this syntax isn't supported for class constants.
+
+https://3v4l.org/jLJiC
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-04-29T14:26:22Z
+
+@gharlan, yesterday when I've read your message I've tested that syntax in 3v4l.org too and I'm sure that failed (I don't know what can I've tested now).
+BTW, that syntax isn't covered by PSR-2, so I guess it can be done later within a contrib fixer.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-29T14:38:38Z
+
+@phansys same fixer, different configuration
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-04-29T14:53:43Z
+
+@keradus, it's possible to attach just a fixer configuration to a ruleset (PSR-2 in this case)?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-29T16:19:03Z
+
+yes
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-04-29T16:20:30Z
+
+```
+'@mySet' => {
+    'fixer_A' => true, // no-settings / default settings
+    'fixer_B' => [ 'some' => 'settings' ],
+}
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-07T07:36:44Z
+
+any news here ?
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-06-08T03:43:30Z
+
+I'm very busy these days @keradus, my apologies. I'll try to find some time on weekend in order to continue this task. BTW, if somebody else wants to put some effort on it, I'll be very glad.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-17T11:39:09Z
+
+@phansys please see https://github.com/phansys/PHP-CS-Fixer/pull/1
+let me know if you think it is helpful
+
+With or without the PR this still needs work on the priorities.
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-06-17T15:49:28Z
+
+Thanks for the time you're dedicating to this @SpacePossum. I totally agree if you want to provide a PR in replacement of mine. Please let me know.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-17T16:17:46Z
+
+@phansys if you able to finish this PR it would be great !
+
+@SpacePossum thanks for your willingness for help, but please focus on currently opened PR of yours, like PHP7 bugfixes for 1.11 line ! I would say it's more important.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-17T16:18:40Z
+
+btw, please regenerate the readme ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-18T09:34:37Z
+
+@phansys I have no time to take this one over, but I'm happy to help out or doing reviewing.
+To wrap this one up I think a few details have to done:
+- in my changes I insert the modifiers sequences without cloning the tokens, we need to make sure this is correct or change the code to do the cloning
+- I can't think of priority issues with the fixer on prio. 0. However to be a bit more sure about it please run the fixer together with others on some projects (of your own and maybe something like Symfony, Twig, etc.). Run the fixer twice, the second time there shouldn't be any changes
+- since it is PSR2 fixer it will be added to the Symfony by default, it would be nice to run the fixer on the Symfony project and if there are any hits please PR it @ Symfony, state it is the result of a new fixer and the goal of the PR is not to get it merged, but more of a heads up
+
+good luck!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-18T09:35:44Z
+
+btw. ping @gharlan I've added your sample case, can you confirm this is what you meant?
+(https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1889/files#diff-35d2bcc89af69c2ad43f99869b477e02R46)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-06-18T09:55:28Z
+
+> btw. ping @gharlan I've added your sample case, can you confirm this is what you meant?
+
+yes, thanks!
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-06-19T21:15:43Z
+
+Test are green now @keradus.
+Since this fixer takes care about class constants too, should we rename it? I propose "single_class_element_per_statement" or something similar.
+I don't know if the same fixer could be used later as base for single variable declarations by instance.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-24T06:50:10Z
+
+fabbot is wrong, what happened to the bot?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-24T09:51:50Z
+
+@phansys
+yes, please rename
+
+@SpacePossum
+please, review and thumb if good to go
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-06-24T12:20:42Z
+
+I'll try to check this fixer today against some projects as @SpacePossum suggested.
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-06-25T05:54:12Z
+
+I've renamed the fixer, added some other tests and opened a [PR](https://github.com/symfony/symfony/issues/19176) against Symfony in order to get some feedback.
+Ping @keradus, @SpacePossum.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-01T09:29:19Z
+
+Could you squash consecutive commits of same author please?
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-07-01T10:46:54Z
+
+Of course @keradus, done.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-01T10:50:12Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-01T11:08:36Z
+
+:+1:
+LGTM
