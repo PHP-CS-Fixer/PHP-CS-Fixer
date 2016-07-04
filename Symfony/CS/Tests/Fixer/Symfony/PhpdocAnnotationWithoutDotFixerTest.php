@@ -66,8 +66,8 @@ class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestBase
                 // invalid char inside line won't crash the fixer
                 '<?php
     /**
-     * @var string This: '.chr(62).' '.chr(174).' '.chr(60).' is and odd character A.
-     * @var string This: '.chr(62).' '.chr(174).' '.chr(60).' is and odd character B。
+     * @var string This: '.chr(174).' is and odd character.
+     * @var string This: '.chr(174).' is and odd character 2nd time。
      */',
             ),
         );
