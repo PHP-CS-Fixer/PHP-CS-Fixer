@@ -1413,6 +1413,36 @@ declare   (   ticks   =   1   )   {
             ),
             array(
                 '<?php
+$message = (new class() implements FooInterface {
+});',
+                '<?php
+$message = (new class() implements FooInterface{});',
+            ),
+            array(
+                '<?php $message = (new class() {
+});',
+                '<?php $message = (new class() {});',
+            ),
+            array(
+                '<?php
+if (1) {
+    $message = (new class() extends Foo {
+        public function bar()
+        {
+            echo 1;
+        }
+    });
+}',
+                '<?php
+if (1) {
+  $message = (new class() extends Foo
+  {
+    public function bar() { echo 1; }
+  });
+}',
+            ),
+            array(
+                '<?php
     class Foo
     {
         public function use()
@@ -1468,7 +1498,7 @@ declare   (   ticks   =   1   )   {
                 '<?php
     class Something
     {
-        public function test(): string
+        public function sth(): string
         {
             return function (int $foo) use ($bar): string {
                 return $bar;
@@ -1478,7 +1508,7 @@ declare   (   ticks   =   1   )   {
                 '<?php
     class Something
     {
-        public function test(): string
+        public function sth(): string
         {
             return function (int $foo) use ($bar): string { return $bar; };
         }
