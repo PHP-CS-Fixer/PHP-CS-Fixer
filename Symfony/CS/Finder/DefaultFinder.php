@@ -13,13 +13,14 @@
 namespace Symfony\CS\Finder;
 
 use Symfony\CS\Finder as BaseFinder;
+use Symfony\CS\FinderInterface;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  *
  * @deprecated
  */
-class DefaultFinder extends BaseFinder
+class DefaultFinder extends BaseFinder implements FinderInterface
 {
     public function __construct()
     {
