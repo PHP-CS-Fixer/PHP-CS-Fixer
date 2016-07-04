@@ -3,8 +3,114 @@ PHP 7 test.
 --CONFIG--
 level=symfony
 fixers=ordered_use
+--SETTINGS--
+checkPriority=false
 --REQUIREMENTS--
 php=7.0
+--EXPECT--
+<?php
+
+// strict types
+declare(strict_types=1);
+
+// new imports
+use some\a\ClassA;
+use some\a\ClassB;
+use some\a\ClassC as C;
+use const some\a\ConstA;
+use const some\a\ConstB;
+use const some\a\ConstC;
+use function some\a\fn_a;
+use function some\a\fn_b;
+use function some\a\fn_c;
+
+function dummyUsage()
+{
+    // class' class const
+    echo ClassA::class.ClassB::class.C::class;
+
+    fn_a(fn_b(fn_c()));
+
+    echo ConstA.ConstB.ConstC;
+}
+
+interface FooInterface
+{
+}
+
+class Foo implements FooInterface
+{
+    // semi-reserved keyword as const
+    const FOR = 1;
+
+    // array const
+    const ARR = array(1, 2);
+
+    // semi-reserved keyword as function name
+    public function list($a, $b)
+    {
+        // combined comparison operator
+        echo $a <=> $b;
+
+        // isset ternary
+        echo $a ?? $b;
+
+        // new random generator
+        // TODO: on 2.x line add random_api_migration usage
+        echo mt_rand(0, 1);
+
+        // uniform variable syntax
+        $a = array('b' => 'c');
+        $c = 'Next step !';
+        echo ${$a['b']};
+
+        // uniform variable syntax on function
+        $this->getFnc()();
+    }
+
+    // scalar typehinting
+    public function bar(int $a): string
+    {
+    }
+
+    public function getFnc()
+    {
+        return function () {
+            echo 1;
+        };
+    }
+
+    public function gen1()
+    {
+        yield 1;
+
+        // generator delegation
+        yield from $this->gen2();
+    }
+
+    public function gen2()
+    {
+        yield 2;
+    }
+}
+
+// anonymous class
+$message = (new class() {
+});
+$message = (new class() implements FooInterface {
+});
+if (1) {
+    $message = (new class() extends Foo {
+        public function bar()
+        {
+            echo 1;
+        }
+    });
+}
+
+// unicode escape
+echo "\u{26C4}";
+
 --INPUT--
 <?php
 
@@ -90,111 +196,6 @@ $message = (new class {});
 $message = (new class() implements FooInterface {});
 if (1) {
   $message = (new class() extends Foo{ public function bar() { echo 1; } });
-}
-
-// unicode escape
-echo "\u{26C4}";
-
---EXPECT--
-<?php
-
-// strict types
-declare (strict_types = 1);
-
-// new imports
-use some\a\ClassA;
-use some\a\ClassB;
-use some\a\ClassC as C;
-use const some\a\ConstA;
-use const some\a\ConstB;
-use const some\a\ConstC;
-use function some\a\fn_a;
-use function some\a\fn_b;
-use function some\a\fn_c;
-
-function dummyUsage()
-{
-    // class' class const
-    echo ClassA::class.ClassB::class.C::class;
-
-    fn_a(fn_b(fn_c()));
-
-    echo ConstA.ConstB.ConstC;
-}
-
-interface FooInterface
-{
-}
-
-class Foo implements FooInterface
-{
-    // semi-reserved keyword as const
-    const FOR = 1;
-
-    // array const
-    const ARR = array(1, 2);
-
-    // semi-reserved keyword as function name
-    public function list($a, $b)
-    {
-        // combined comparison operator
-        echo $a <=> $b;
-
-        // isset ternary
-        echo $a ?? $b;
-
-        // new random generator
-        // TODO: on 2.x line add random_api_migration usage
-        echo mt_rand(0, 1);
-
-        // uniform variable syntax
-        $a = array('b' => 'c');
-        $c = 'Next step !';
-        echo ${$a['b']};
-
-        // uniform variable syntax on function
-        $this->getFnc()();
-    }
-
-    // scalar typehinting
-    public function bar(int $a): string
-    {
-    }
-
-    public function getFnc()
-    {
-        return function () { echo 1; };
-    }
-
-    public function gen1()
-    {
-        yield 1;
-
-        // generator delegation
-        yield from $this->gen2();
-    }
-
-    public function gen2()
-    {
-        yield 2;
-    }
-}
-
-// anonymous class
-$message = (new class()
-{
-});
-$message = (new class() implements FooInterface
-{
-});
-if (1) {
-    $message = (new class() extends Foo
-    {
-        public function bar()
-        {
-            echo 1;
-        }
-    });
 }
 
 // unicode escape
