@@ -62,6 +62,17 @@ class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestBase
      * @SomeCustomAnnotation This is important sentence that must not be modified.
      */',
             ),
+            array(
+                // very fancy non-UTF friendly char in description...
+                '<?php
+    /**
+     * @var string This: '.chr(62).' '.chr(174).' '.chr(60).' is and odd character
+     */',
+                '<?php
+    /**
+     * @var string This: '.chr(62).' '.chr(174).' '.chr(60).' is and odd character.
+     */',
+            ),
         );
     }
 }
