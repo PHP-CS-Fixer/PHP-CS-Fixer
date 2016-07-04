@@ -434,7 +434,7 @@ class BracesFixer extends AbstractFixer
                 for ($prevIndex = $prevIndex - 1; 0 <= $prevIndex; --$prevIndex) {
                     $prevToken = $tokens[$prevIndex];
                     // if token is multiline whitespaces
-                    if ($prevToken->isWhitespace() && !$prevToken->isWhitespace(array('whitespaces' => " \t"))) {
+                    if ($prevToken->isWhitespace() && false !== strpos($prevToken->getContent(), "\n")) {
                         $explodedContent = explode("\n", $prevToken->getContent());
 
                         return end($explodedContent);
