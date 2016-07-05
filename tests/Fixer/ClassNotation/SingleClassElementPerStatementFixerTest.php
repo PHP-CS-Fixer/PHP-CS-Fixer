@@ -32,8 +32,28 @@ final class SingleClassElementPerStatementFixerTest extends AbstractFixerTestCas
     public function provideCases()
     {
         return array(
-                array(
-'<?php
+            array(
+                '<?php
+class Foo
+{
+    private static $bar1 = array(1,2,3);
+    private static $bar2 = [1,2,3];
+    private static $baz1 = array(array(1,2), array(3, 4));
+    private static $baz2 = array(1,2,3);
+    private static $aaa1 = 1;
+    private static $aaa2 = array(2, 2);
+    private static $aaa3 = 3;
+}',
+                '<?php
+class Foo
+{
+    private static $bar1 = array(1,2,3), $bar2 = [1,2,3];
+    private static $baz1 = array(array(1,2), array(3, 4)), $baz2 = array(1,2,3);
+    private static $aaa1 = 1, $aaa2 = array(2, 2), $aaa3 = 3;
+}',
+            ),
+            array(
+                '<?php
 class Foo
 {
     const A = 1;
@@ -42,7 +62,7 @@ class Foo
 
 echo Foo::A, Foo::B;
 ',
-'<?php
+                '<?php
 class Foo
 {
     const A = 1, B = 2;
@@ -50,8 +70,8 @@ class Foo
 
 echo Foo::A, Foo::B;
 ',
-                ),
-                array(
+            ),
+            array(
                 <<<'EOT'
 <?php
 
