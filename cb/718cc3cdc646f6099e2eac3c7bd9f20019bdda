@@ -1,0 +1,34 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-07-05T13:53:06Z
+
+We should probably add a short array syntax test just for completeness too.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-07-05T13:53:18Z
+
+When was this bug introduced btw?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-05T17:01:43Z
+
+2.x line, dunno when, for sure it's not ready to merge PR, but it proves the bug.
+If you have time please deal with it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-05T17:26:03Z
+
+changed
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-05T17:44:22Z
+
+>When was this bug introduced btw?
+
+on merge of the fixer on master https://github.com/FriendsOfPHP/PHP-CS-Fixer/commit/92d7f83737a8cdbe5b82f5c6b30804082e1760fe
+
+thanks for fixing this @keradus !
