@@ -40,6 +40,7 @@ class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestBase
      * @param string $str        Some string
      * @param string $ellipsis1  Ellipsis is this: ...
      * @param string $ellipsis2  Ellipsis is this: 。。。
+     * @param string $ellipsis3  Ellipsis is this: …
      * @param bool   $isStr      Is it a string?
      * @param int    $int        Some multiline
      *                           description. With many dots
@@ -57,6 +58,7 @@ class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestBase
      * @param string $str        Some string.
      * @param string $ellipsis1  Ellipsis is this: ...
      * @param string $ellipsis2  Ellipsis is this: 。。。
+     * @param string $ellipsis3  Ellipsis is this: …
      * @param bool   $isStr      Is it a string?
      * @param int    $int        Some multiline
      *                           description. With many dots.
