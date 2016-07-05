@@ -44,7 +44,7 @@ class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
                 if ($annotation->getTag()->valid()) {
                     $line = $doc->getLine($annotation->getEnd());
 
-                    $content = preg_replace('/[.。](\s+)$/u', '\1', $line->getContent());
+                    $content = preg_replace('/(?<![.。])[.。](\s+)$/u', '\1', $line->getContent());
 
                     if (null !== $content) {
                         $line->setContent($content);
