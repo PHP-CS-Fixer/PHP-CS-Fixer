@@ -509,7 +509,7 @@ Choose from the list of available fixers:
                          MUST NOT be a whitespace
                          before each comma.
 
-* **no_whitespace_in_blank_lines** [@Symfony]
+* **no_whitespace_in_blank_line** [@Symfony]
                          Remove trailing whitespace at
                          the end of blank lines.
 

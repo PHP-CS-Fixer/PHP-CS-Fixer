@@ -1,7 +1,7 @@
 --TEST--
-Integration of fixers: declare_strict_types,no_whitespace_in_blank_lines.
+Integration of fixers: declare_strict_types,no_whitespace_in_blank_line.
 --CONFIG--
-{"declare_strict_types": true, "no_whitespace_in_blank_lines" : true}
+{"declare_strict_types": true, "no_whitespace_in_blank_line" : true}
 --REQUIREMENTS--
 php=7.0
 --EXPECT--

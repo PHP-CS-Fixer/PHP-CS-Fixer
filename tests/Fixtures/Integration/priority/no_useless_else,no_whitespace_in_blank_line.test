@@ -1,7 +1,7 @@
 --TEST--
-Integration of fixers: no_useless_else,no_whitespace_in_blank_lines.
+Integration of fixers: no_useless_else,no_whitespace_in_blank_line.
 --CONFIG--
-{"no_useless_else": true, "no_whitespace_in_blank_lines": true}
+{"no_useless_else": true, "no_whitespace_in_blank_line": true}
 --EXPECT--
 <?php
 
