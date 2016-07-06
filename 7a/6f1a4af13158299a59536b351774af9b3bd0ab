@@ -1,0 +1,246 @@
+---------------------------------------------------------------------------
+
+by Seldaek at 2016-06-03T10:45:06Z
+
+Thanks for taking over :) No hard feelings I just meant that I wasn't going to spend time on all those nitpicks because IMO nobody sane is going to write `declare/* foo*/(...)`, if they do and the tool breaks their code I think they had it coming, but if you want to build it bulletproof I can respect that. I'm sure it's for the best but it takes more time than I have available right now.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-03T11:37:17Z
+
+I follow your reasoning; I've a bunch of custom fixers that don't work on stuff like that. Happy to take over and put some more time in your work to get it merged. All good man :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-03T12:03:18Z
+
+In general.
+It's kinda ok to not properly handle that cases and ignore the file with weird syntax (like we sometimes do, eg with alternative condition syntax with `endif`), but as far as it's ok to ignore it, we should not break that file.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-10T07:30:40Z
+
+replaces https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1297
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-10T10:37:12Z
+
+how does it replaces #1297 ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-10T11:09:51Z
+
+it adds the configuration options to the fixer for;
+- PHPDoc or comment
+- add blank lines around the comment
+
+Those two features are the same as proposed in 1297, only this one is on master using configuration and not (static) methods.
+It also allows for inserting the comment after the open-tag or after the declare strict statement.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-13T06:00:51Z
+
+You [said](https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/1987#issuecomment-225494365) this PR fix the new header comment format too.
+
+What about already present header comments with old format? Will be converted?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-13T06:53:37Z
+
+>What about already present header comments with old format? Will be converted?
+
+yes, if you config the fixer to do so :)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-13T07:44:58Z
+
+> yes, if you config the fixer to do so :)
+
+Is `/*` the default?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-13T07:47:15Z
+
+>Is /* the default?
+
+Yes, as to not break BC when not needed, for ref.:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1949/files#diff-8e3e6de9bd862e63ea1494d19c5b7b5cR269
+
+---------------------------------------------------------------------------
+
+by sharifzadesina at 2016-06-14T10:22:31Z
+
+Merge this plz :D
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-15T19:12:51Z
+
+I can't figure it out why AppVeyor is red :(
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-15T19:32:02Z
+
+```
+............................................................ 3900 / 4523 ( 86%)
+.................................PHP Fatal error:  Class 'Webmozart\Assert\Assert' not found in phar://C:/Tools/phpunit.phar/phpdocumentor-reflection-docblock/DocBlock.php on line 60
+Command exited with code 255
+```
+
+But it marked as conflicting:
+https://github.com/sebastianbergmann/phpunit/blob/master/composer.json#L46
+
+so why is `phpdocumentor` installed in the first place...
+oh we don't use composer to install PHPUnit so the conflict marker is ignored maybe?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-15T19:38:20Z
+
+if it's because `phpdocumentator` on AppVeyor - then why only this PR failes on AppVeyor ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-15T19:42:53Z
+
+my guess for now, I wrote a PHPDoc in some special yet highly illegal format that blew up the setup ;)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-16T11:13:33Z
+
+> I can't figure it out why AppVeyor is red :(
+
+https://github.com/sebastianbergmann/phpunit/issues/2219
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-16T11:48:25Z
+
+yeah, it's some odd way of building the phar, like it couldn't use box...
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-17T08:39:56Z
+
+@SpacePossum please rebase
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-17T11:50:02Z
+
+done, lets see : )
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-22T12:26:04Z
+
+fabbot is wrong again.... does anyone know what version of the fixer fabbot is using and what config?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-23T08:01:53Z
+
+The `strict_fixer` is in conflict with `blank_line_after_opening_tag`, so we need to figure out what to do with that.
+(and the `header_comment` prop. as well with some configuration options)
+
+---------------------------------------------------------------------------
+
+by Seldaek at 2016-06-23T09:13:44Z
+
+Can't you make <?php declare() a valid "opening tag" for the
+blank_line_after_opening_tag fixer?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-23T13:54:25Z
+
+suggestion, merge;
+`blank_line_after_opening_tag` and `linebreak_after_opening_tag` fixers, adding configuration options including what to do with `declare` statements.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-04T23:13:31Z
+
+While executing PHPUnit I got a lot of:
+`Warning: declare(encoding=...) ignored because Zend multibyte feature is turned off by settings in  on line 3`
+:(
+
+my env: http://pastebin.com/6rpV4J8L
+
+------
+
+also, please rebase
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-04T23:21:06Z
+
+Actually, the same on Travis:
+https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/139467436#L1019
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-04T23:38:02Z
+
+I have strong feeling that we shouldn't allow to run StrictTypesFixer  under PHP5
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-05T07:45:23Z
+
+I took the encoding declare out of the test, it was nice to have in but not important enough to go through the trouble. I set a PHP7 check in the `isCandidate` method. + rebase
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-05T08:16:19Z
+
+Travis is very red due to internal errors of fixing codebase itself :(
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-05T10:18:06Z
+
+I messed up the rebase once again
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-05T11:18:52Z
+
+please ping when rebased properly ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-05T12:11:09Z
+
+Will do, but..
+The problem is the `single_class_element_per_statement` not the rebase.
+Not sure if this is on master only. (for ref.: https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/2046)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-05T17:25:25Z
+
+ref #2044
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-05T19:43:08Z
+
+bug from master merged, please continue ;) sorry for interruption
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-05T20:23:01Z
+
+>sorry for interruption
+
+thanks and no worries I messed up that fixer ;P
