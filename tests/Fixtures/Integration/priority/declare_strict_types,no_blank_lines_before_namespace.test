@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: declare_strict_types,no_blank_lines_before_namespace.
+--CONFIG--
+{"declare_strict_types": true, "no_blank_lines_before_namespace" : true}
+--REQUIREMENTS--
+php=7.0
+--EXPECT--
+<?php declare(strict_types=1);
+declare(ticks=1);
+declare(encoding='ISO-8859-1');
+namespace A\B\C;
+class A {
+}
+
+--INPUT--
+<?php
+declare(ticks=1);
+declare(encoding='ISO-8859-1');
+declare(strict_types=1);
+
+namespace A\B\C;
+class A {
+}

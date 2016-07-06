@@ -233,6 +233,11 @@ Choose from the list of available fixers:
                          Concatenation should be used
                          without spaces.
 
+* **declare_strict_types**
+                         Force strict types
+                         declaration in all files.
+                         (Risky fixer!)
+
 * **dir_constant**
                          Replaces dirname(__FILE__)
                          expression with equivalent

@@ -741,13 +741,16 @@ class Tokens extends \SplFixedArray
      */
     public function findSequence(array $sequence, $start = 0, $end = null, $caseSensitive = true)
     {
-        // $end defaults to the end of the collection
-        if (null === $end) {
-            $end = count($this) - 1;
+        $sequenceCount = count($sequence);
+        if (0 === $sequenceCount) {
+            throw new \InvalidArgumentException('Invalid sequence.');
         }
 
-        if (!count($sequence)) {
-            throw new \InvalidArgumentException('Invalid sequence.');
+        // $end defaults to the end of the collection
+        $end = null === $end ? count($this) - 1 : min($end, count($this) - 1);
+
+        if ($start + $sequenceCount - 1 > $end) {
+            return null;
         }
 
         // make sure the sequence content is "meaningful"

@@ -73,6 +73,10 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
             throw new \UnexpectedValueException('Cannot determine fixer class, perhaps you forget to override `getFixerName` or `createFixerFactory` method?');
         }
 
+        if (1 !== count($fixers)) {
+            throw new \UnexpectedValueException(sprintf('Determine fixer class should result in one fixer, got "%d". Perhaps you configured the fixer to "false" ?', count($fixers)));
+        }
+
         $this->fixer = $fixers[0];
 
         return $this->fixer;
@@ -173,6 +177,13 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode($expected);
+
+        $isCandidate = $fixer->isCandidate($tokens);
+        $this->assertFalse($tokens->isChanged(), 'Fixer should not touch Tokens on candidate check.');
+
+        if (!$isCandidate) {
+            return;
+        }
 
         if ($fileIsSupported) {
             $fixResult = $fixer->fix($file, $tokens);

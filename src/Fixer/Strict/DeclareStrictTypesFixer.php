@@ -1,0 +1,188 @@
+<?php
+
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace PhpCsFixer\Fixer\Strict;
+
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
+
+/**
+ * @author Jordi Boggiano <j.boggiano@seld.be>
+ * @author SpacePossum
+ */
+final class DeclareStrictTypesFixer extends AbstractFixer
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        // check if the declaration is already done
+        $searchIndex = $tokens->getNextMeaningfulToken(0);
+        if (null === $searchIndex) {
+            $this->insertSequence($tokens); // declaration not found, insert one
+
+            return;
+        }
+
+        $sequence = $this->getDeclareStrictTypeSequence();
+        $sequenceLocation = $tokens->findSequence($sequence, $searchIndex, null, false);
+        if (null === $sequenceLocation) {
+            $this->insertSequence($tokens); // declaration not found, insert one
+
+            return;
+        }
+
+        // check if the declaration is at the right location
+        reset($sequenceLocation);
+        $sequenceStartIndex = key($sequenceLocation);
+
+        end($sequenceLocation);
+        $sequenceEndIndex = $tokens->getNextMeaningfulToken(key($sequenceLocation));
+
+        if (1 === $sequenceStartIndex) {
+            // declaration already at the correct location, fix CS only
+            $this->fixCodeStyleOfSequence($tokens, $sequenceEndIndex);
+            $this->fixWhiteSpaceAroundSequence($tokens, $sequenceEndIndex);
+
+            return;
+        }
+
+        // Handle end of statement of the sequence; i.e. semicolon vs. close tag. Remove a semicolon as well,
+        // but don't remove a close tag since comment placement might cause invalid code to be created.
+        if (!$tokens[$sequenceEndIndex]->isGivenKind(T_CLOSE_TAG)) {
+            $sequenceLocation[$sequenceEndIndex] = $tokens[$sequenceEndIndex];
+        }
+
+        foreach ($sequenceLocation as $index => $token) {
+            $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+        }
+
+        $this->insertSequence($tokens);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Force strict types declaration in all files.';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must ran before SingleBlankLineBeforeNamespaceFixer, NoBlankLinesBeforeNamespaceFixer, NoExtraConsecutiveBlankLinesFixer, NoWhitespaceInBlankLinesFixer
+        return 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return PHP_VERSION_ID >= 70000 && $tokens[0]->isGivenKind(T_OPEN_TAG);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $endIndex
+     */
+    private function fixCodeStyleOfSequence(Tokens $tokens, $endIndex)
+    {
+        // start index of the sequence is always 1 here, 0 is always open tag
+        for ($i = 1; $i < $endIndex; ++$i) {
+            if ($tokens[$i]->isWhitespace()) {
+                $tokens[$i]->clear();
+            } elseif ($tokens[$i]->isGivenKind(array(T_DECLARE, T_STRING))) {
+                $tokens[$i]->setContent(strtolower($tokens[$i]->getContent()));
+            }
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $endIndex
+     */
+    private function fixWhiteSpaceAroundSequence(Tokens $tokens, $endIndex)
+    {
+        // start index of the sequence is always 1 here, 0 is always open tag
+        // transform "<?php\n" to "<?php " if needed
+        if (false !== strpos($tokens[0]->getContent(), "\n")) {
+            $tokens[0]->setContent(trim($tokens[0]->getContent()).' ');
+        }
+
+        if ($endIndex === count($tokens) - 1) {
+            return; // no more tokens afters sequence, single_blank_line_at_eof might add a line
+        }
+
+        if (!$tokens[1 + $endIndex]->isWhitespace()) {
+            $tokens->insertAt(1 + $endIndex, new Token(array(T_WHITESPACE, "\n")));
+
+            return;
+        }
+
+        $content = $tokens[1 + $endIndex]->getContent();
+        if (false !== strpos($content, "\n")) {
+            return;
+        }
+
+        $tokens[1 + $endIndex]->setContent("\n".ltrim($content));
+    }
+
+    /**
+     * @return Token[]
+     */
+    private function getDeclareStrictTypeSequence()
+    {
+        static $sequence = null;
+
+        // do not look for open tag, closing semicolon or empty lines;
+        // - open tag is tested by isCandidate
+        // - semicolon or end tag must be there to be valid PHP
+        // - empty tokens and comments are dealt with later
+        if (null === $sequence) {
+            $sequence = array(
+                new Token(array(T_DECLARE, 'declare')),
+                new Token('('),
+                new Token(array(T_STRING, 'strict_types')),
+                new Token('='),
+                new Token(array(T_LNUMBER, '1')),
+                new Token(')'),
+            );
+        }
+
+        return $sequence;
+    }
+
+    /**
+     * @param Tokens $tokens
+     */
+    private function insertSequence(Tokens $tokens)
+    {
+        $sequence = $this->getDeclareStrictTypeSequence();
+        $sequence[] = new Token(';');
+        $tokens->insertAt(1, $sequence);
+        $this->fixWhiteSpaceAroundSequence($tokens, count($sequence));
+    }
+}
