@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: whitespace_around_comma,no_whitespace_in_blank_lines.
+--CONFIG--
+{"whitespace_around_comma": true, "no_whitespace_in_blank_lines": true}
+--EXPECT--
+<?php
+$a = array(
+1,
+
+);
+
+--INPUT--
+<?php
+$a = array(
+1
+  ,
+);

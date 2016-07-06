@@ -127,7 +127,9 @@ final class MethodSeparationFixerTest extends AbstractFixerTestCase
     public function provideFixClassesCases()
     {
         $cases = array();
-        $cases[] = array('<?php
+
+        $cases[] = array(
+            '<?php
 class SomeClass1
 {
     // This comment
@@ -137,7 +139,8 @@ class SomeClass1
         echo "a";
     }
 }
-');
+',
+        );
         $cases[] = array(
             '<?php
 class SomeClass2
@@ -173,7 +176,8 @@ class SomeClass3
         echo "a";
     }
 }
-', );
+',
+        );
         $cases[] = array(
             '<?php
 class SomeClass1
@@ -249,8 +253,10 @@ class SomeClass1
     {
     }
 }
-', );
-        $cases[] = array('<?php
+',
+        );
+        $cases[] = array(
+            '<?php
 class SomeClass
 {
     // comment
@@ -259,8 +265,10 @@ class SomeClass
         echo "a";
     }
 }
-');
-        $cases[] = array('<?php
+',
+        );
+        $cases[] = array(
+            '<?php
 class SomeClass
 {
     // This comment
@@ -270,7 +278,8 @@ class SomeClass
         echo "a";
     }
 }
-');
+',
+        );
         $cases[] = array(
         '<?php
 class SomeClass
@@ -607,7 +616,9 @@ abstract class MethodTest3
     final private function method321a()
     {
     }
-}', );
+}',
+        );
+
         // don't change correct code
         $cases[] = array(
             '<?php

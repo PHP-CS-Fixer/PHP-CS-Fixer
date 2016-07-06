@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: trailing_comma_in_multiline_array,whitespace_around_comma.
+--CONFIG--
+{"trailing_comma_in_multiline_array": true, "whitespace_around_comma": true}
+--EXPECT--
+<?php
+$a = array(
+    1,
+    //
+    2, //
+);
+
+--INPUT--
+<?php
+$a = array(
+    1
+    ,//
+    2//
+);

@@ -326,13 +326,6 @@ Choose from the list of available fixers:
                          PHP keywords MUST be in lower
                          case.
 
-* **method_argument_space** [@PSR2, @Symfony]
-                         In method arguments and
-                         method call, there MUST NOT
-                         be a space before each comma
-                         and there MUST be one space
-                         after each comma.
-
 * **method_separation** [@Symfony]
                          Methods must be separated
                          with one blank line.
@@ -498,11 +491,6 @@ Choose from the list of available fixers:
                          There should not be an empty
                          return statement at the end
                          of a function.
-
-* **no_whitespace_before_comma_in_array** [@Symfony]
-                         In array declaration, there
-                         MUST NOT be a whitespace
-                         before each comma.
 
 * **no_whitespace_in_blank_lines** [@Symfony]
                          Remove trailing whitespace at
@@ -795,10 +783,8 @@ Choose from the list of available fixers:
                          declared after the
                          visibility.
 
-* **whitespace_after_comma_in_array** [@Symfony]
-                         In array declaration, there
-                         MUST be a whitespace after
-                         each comma.
+* **whitespace_around_comma** [@Symfony]
+                         Fix whitespace around ','.
 
 
 The ``--dry-run`` option displays the files that need to be

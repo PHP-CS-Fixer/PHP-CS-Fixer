@@ -223,7 +223,7 @@ else?><?php echo 5;',
                     }
                 else
                     echo 4;
-            ', );
+            ',);
 
         $cases[] = array(
             '<?php
@@ -239,7 +239,7 @@ else?><?php echo 5;',
                         return 1;
                 } else
                     echo 4;
-            ', );
+            ',);
 
         return $cases;
     }

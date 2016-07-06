@@ -269,6 +269,12 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_useless_else'], $fixers['no_useless_return']), // tested also in: no_useless_else,no_useless_return.test
             array($fixers['no_useless_else'], $fixers['no_trailing_whitespace']), // tested also in: no_useless_else,no_trailing_whitespace.test
             array($fixers['no_useless_else'], $fixers['no_whitespace_in_blank_lines']), // tested also in: no_useless_else,no_whitespace_in_blank_lines.test
+            array($fixers['no_trailing_comma_in_list_call'], $fixers['whitespace_around_comma']), // no hard dependency; for performance reasons only
+            array($fixers['no_trailing_comma_in_singleline_array'], $fixers['whitespace_around_comma']), // tested also in: no_trailing_comma_in_singleline_array,whitespace_around_comma.test
+            array($fixers['trailing_comma_in_multiline_array'], $fixers['whitespace_around_comma']), // tested also in: trailing_comma_in_multiline_array,whitespace_around_comma.test
+            array($fixers['whitespace_around_comma'], $fixers['no_extra_consecutive_blank_lines']), //  tested also in: whitespace_around_comma,no_extra_consecutive_blank_lines.test
+            array($fixers['whitespace_around_comma'], $fixers['no_trailing_whitespace']), // tested also in: whitespace_around_comma,no_trailing_whitespace.test
+            array($fixers['whitespace_around_comma'], $fixers['no_whitespace_in_blank_lines']), // tested also in: whitespace_around_comma,no_whitespace_in_blank_lines.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:
