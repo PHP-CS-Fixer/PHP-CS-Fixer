@@ -50,12 +50,12 @@ final class NativeFunctionCasingFixer extends AbstractFixer
                 continue;
             }
 
-            // do not though the function call if it is to a function in a namespace other than the default
-            if (
-                $tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR)
-                && $tokens[$tokens->getPrevMeaningfulToken($functionNamePrefix)]->isGivenKind(T_STRING)
-            ) {
-                continue;
+            if ($tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR)) {
+                // skip if the call is to a constructor or to a function in a namespace other than the default
+                $prev = $tokens->getPrevMeaningfulToken($functionNamePrefix);
+                if ($tokens[$prev]->isGivenKind(array(T_STRING, T_NEW))) {
+                    continue;
+                }
             }
 
             // test if the function call is to a native PHP function
@@ -65,7 +65,6 @@ final class NativeFunctionCasingFixer extends AbstractFixer
             }
 
             $tokens[$index]->setContent($nativeFunctionNames[$lower]);
-
             $index = $next;
         }
 
@@ -80,6 +79,9 @@ final class NativeFunctionCasingFixer extends AbstractFixer
         return 'Function defined by PHP should be called using the correct casing.';
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function getNativeFunctionNames()
     {
         $allFunctions = get_defined_functions();
