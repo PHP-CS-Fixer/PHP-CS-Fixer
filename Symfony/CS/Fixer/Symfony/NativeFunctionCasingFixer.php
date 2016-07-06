@@ -51,7 +51,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
             }
 
             if ($tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR)) {
-                // do not touch the function call if it is to a function in a namespace other than the default
+                // skip if the call is to a constructor or to a function in a namespace other than the default
                 $prev = $tokens->getPrevMeaningfulToken($functionNamePrefix);
                 if ($tokens[$prev]->isGivenKind(array(T_STRING, T_NEW))) {
                     continue;
