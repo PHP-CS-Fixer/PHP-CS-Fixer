@@ -176,6 +176,62 @@ EOH;
         $this->doTest($expected, $input);
     }
 
+    public function testFixSkipStrictDeclare()
+    {
+        $expected = <<<'EOH'
+<?php declare ( strict_types = 1) ;
+
+/*
+ * This file is part of the PHP CS utility.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+phpinfo();
+EOH;
+
+        $input = <<<'EOH'
+<?php declare ( strict_types = 1) ;
+
+phpinfo();
+EOH;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixSkipStrictDeclareWithExistingComment()
+    {
+        $expected = <<<'EOH'
+<?php declare(strict_types=1);
+
+/*
+ * This file is part of the PHP CS utility.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+phpinfo();
+EOH;
+
+        $input = <<<'EOH'
+<?php declare(strict_types=1);
+
+/*
+ * Existing comment
+ */
+
+phpinfo();
+EOH;
+
+        $this->doTest($expected, $input);
+    }
+
     /**
      * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
      * @expectedExceptionMessage [header_comment] Header configuration is invalid. Expected "string", got "stdClass".

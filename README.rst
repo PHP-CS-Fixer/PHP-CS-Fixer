@@ -749,6 +749,10 @@ Choose from the list of available fixers:
                          Functions should be used with
                          $strict param. (Risky fixer!)
 
+* **strict_types**
+                         Force strict types
+                         declaration in all files.
+
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
                          A case should be followed by
                          a colon and not a semicolon.

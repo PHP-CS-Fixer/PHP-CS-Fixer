@@ -174,6 +174,12 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
         Tokens::clearCache();
         $tokens = Tokens::fromCode($expected);
 
+        if (!$fixer->isCandidate($tokens)) {
+            $this->assertFalse($tokens->isChanged(), 'Fixer should not touch Token on candidate check.');
+
+            return;
+        }
+
         if ($fileIsSupported) {
             $fixResult = $fixer->fix($file, $tokens);
             $this->assertNull($fixResult, '->fix method must return null.');

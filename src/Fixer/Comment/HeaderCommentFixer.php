@@ -70,7 +70,7 @@ final class HeaderCommentFixer extends AbstractFixer
             return;
         }
 
-        $this->replaceHeaderComment($tokens, $oldHeaderIndex);
+        $this->replaceHeaderComment($tokens, $oldHeaderIndex, $newHeaderIndex);
     }
 
     /**
@@ -101,7 +101,7 @@ final class HeaderCommentFixer extends AbstractFixer
     }
 
     /**
-     * Find the header comment index.
+     * Find the closest whitespace block before the header comment index.
      *
      * @param Tokens $tokens
      *
@@ -110,14 +110,17 @@ final class HeaderCommentFixer extends AbstractFixer
     private function findHeaderCommentIndex(Tokens $tokens)
     {
         $index = $tokens->getNextNonWhitespace(0);
+        if (null !== $index && $tokens[$index]->isGivenKind(T_DECLARE)) {
+            $index = $this->skipDeclare($tokens, $index);
+        }
 
         if (null !== $index && $tokens[$index]->isGivenKind(T_COMMENT)) {
-            return $index;
+            return $index === 2 && $tokens[1]->isWhitespace() ? 1 : $index;
         }
     }
 
     /**
-     * Find the index where the header comment must be inserted.
+     * Find the closest whitespace block where the header comment must be inserted.
      *
      * @param Tokens $tokens
      *
@@ -126,13 +129,46 @@ final class HeaderCommentFixer extends AbstractFixer
     private function findHeaderCommentInsertionIndex(Tokens $tokens)
     {
         $index = $tokens->getNextNonWhitespace(0);
+        if (null !== $index && $tokens[$index]->isGivenKind(T_DECLARE)) {
+            $index = $this->skipDeclare($tokens, $index);
+        }
 
         if (null === $index) {
             // empty file, insert at the end
             $index = $tokens->getSize();
         }
 
-        return $index;
+        return $index === 2 && $tokens[1]->isWhitespace() ? 1 : $index;
+    }
+
+    /**
+     * Skips a declare(strict_type=1); statement as it is allowed to be before the header.
+     *
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return int
+     */
+    private function skipDeclare(Tokens $tokens, $index)
+    {
+        $isOpen = false;
+        $isStrictTypes = false;
+        $originalIndex = $index;
+
+        while ($index = $tokens->getNextNonWhitespace($index)) {
+            if ($tokens[$index]->getContent() === '(') {
+                $isOpen = true;
+            }
+            if ($isOpen && $tokens[$index]->getContent() === 'strict_types') {
+                $isStrictTypes = true;
+            }
+            if ($tokens[$index]->getContent() === ';') {
+                ++$index;
+                break;
+            }
+        }
+
+        return $isStrictTypes ? $index : $originalIndex;
     }
 
     /**
@@ -140,29 +176,34 @@ final class HeaderCommentFixer extends AbstractFixer
      *
      * @param Tokens $tokens
      * @param int    $oldHeaderIndex
+     * @param int    $headerInsertionIndex
      */
-    private function replaceHeaderComment(Tokens $tokens, $oldHeaderIndex)
+    private function replaceHeaderComment(Tokens $tokens, $oldHeaderIndex, $headerInsertionIndex)
     {
+        $headerEnd = null !== $oldHeaderIndex
+            ? $tokens->getNextNonWhitespace($oldHeaderIndex)
+            : $headerInsertionIndex - 1
+        ;
+
+        while (isset($tokens[$headerEnd + 1]) && ($tokens[$headerEnd + 1]->isWhitespace() || $tokens[$headerEnd + 1]->isGivenKind(T_COMMENT))) {
+            ++$headerEnd;
+        }
+
         if ('' === $this->headerComment) {
             if ($oldHeaderIndex) {
-                $tokens->clearRange($oldHeaderIndex, $oldHeaderIndex + 1);
+                $tokens->clearRange($tokens->getNextNonWhitespace($oldHeaderIndex), $headerEnd);
             }
 
             return;
         }
 
         $headCommentTokens = array(
-            new Token(array(T_WHITESPACE, "\n")),
+            new Token(array(T_WHITESPACE, $headerInsertionIndex === 1 ? "\n" : "\n\n")),
             new Token(array(T_COMMENT, $this->headerComment)),
             new Token(array(T_WHITESPACE, "\n\n")),
         );
 
-        $newHeaderIndex = null !== $oldHeaderIndex
-            ? $oldHeaderIndex + 1
-            : $this->findHeaderCommentInsertionIndex($tokens) - 1
-        ;
-
-        $tokens->overrideRange(1, $newHeaderIndex, $headCommentTokens);
+        $tokens->overrideRange($headerInsertionIndex, $headerEnd, $headCommentTokens);
     }
 
     /**
