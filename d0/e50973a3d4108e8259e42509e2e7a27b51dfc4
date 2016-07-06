@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-05T17:50:53Z
+
+cc @gharlan
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-07-05T17:55:09Z
+
+Should we add a test for the single character version too?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-05T18:00:47Z
+
+Like this: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2050/files#diff-4e353d9e86349c0daec425c628ad5688R57 ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-07-05T18:48:20Z
+
+Yeh, looks good.
