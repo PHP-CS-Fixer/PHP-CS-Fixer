@@ -12,234 +12,411 @@
 
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
  */
 final class HeaderCommentFixerTest extends AbstractFixerTestCase
 {
-    protected static $testHeader = <<<'EOH'
-This file is part of the PHP CS utility.
+    private $configuration;
 
-(c) Fabien Potencier <fabien@symfony.com>
-
-This source file is subject to the MIT license that is bundled
-with this source code in the file LICENSE.
-EOH;
-
-    protected function getFixerConfiguration()
+    /**
+     * @dataProvider provideFixCases
+     */
+    public function testFix(array $configuration, $expected, $input)
     {
-        return array('header' => self::$testHeader);
-    }
-
-    public function testFixWithPreviousHeader()
-    {
-        $expected = <<<'EOH'
-<?php
-
-/*
- * This file is part of the PHP CS utility.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
-phpinfo();
-EOH;
-
-        $input = <<<'EOH'
-<?php
-
-
-
-/*
- * Previous Header
- */
-
-phpinfo();
-EOH;
+        $this->configuration = $configuration;
         $this->doTest($expected, $input);
     }
 
-    public function testFixWithoutPreviousHeader()
+    public function provideFixCases()
     {
-        $expected = <<<'EOH'
-<?php
-
-/*
- * This file is part of the PHP CS utility.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
-phpinfo();
-EOH;
-
-        $input = <<<'EOH'
-<?php
+        return array(
+            array(
+                array('header' => ''),
+                '<?php
 
 
-
-phpinfo();
-EOH;
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixWithClassDocblock()
-    {
-        $expected = <<<'EOH'
-<?php
-
-/*
- * This file is part of the PHP CS utility.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
+$a;',
+                '<?php
 
 /**
- * @author Antonio J. García Lagar <aj@garcialagar.es>
+ * new
  */
-class Foo
-{
-}
-EOH;
+$a;',
+            ),
+            array(
+                array(
+                    'header' => 'tmp',
+                    'location' => 'after_declare_strict',
+                ),
+                '<?php
+declare(strict_types=1);
 
-        $input = <<<'EOH'
-<?php
+/*
+ * tmp
+ */
+
+namespace A\B;
+
+echo 1;',
+                '<?php
+declare(strict_types=1);namespace A\B;
+
+echo 1;',
+            ),
+            array(
+                array(
+                    'header' => 'tmp',
+                    'location' => 'after_declare_strict',
+                    'separate' => 'bottom',
+                    'commentType' => 'PHPDoc',
+                ),
+                '<?php
+declare(strict_types=1);
 /**
- * @author Antonio J. García Lagar <aj@garcialagar.es>
+ * tmp
  */
-class Foo
-{
-}
-EOH;
 
-        $this->doTest($expected, $input);
-    }
+namespace A\B;
 
-    public function testFixRemovePreviousHeader()
-    {
-        $expected = <<<'EOH'
-<?php
+echo 1;',
+                '<?php
+declare(strict_types=1);
 
-phpinfo();
-EOH;
+namespace A\B;
 
-        $input = <<<'EOH'
-<?php
+echo 1;',
+            ),
+            array(
+                array(
+                    'header' => 'tmp',
+                    'location' => 'after_open',
+                ),
+                '<?php
 
 /*
- * This file is part of the PHP CS utility.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
+ * tmp
  */
 
-phpinfo();
-EOH;
+declare(strict_types=1);
 
-        $fixer = $this->getFixer();
-        $fixer->configure(array('header' => ''));
+namespace A\B;
 
-        $this->doTest($expected, $input, null, $fixer);
-    }
+echo 1;',
+                '<?php
+declare(strict_types=1);
 
-    public function testFixAddHeaderToEmptyFile()
-    {
-        $expected = <<<'EOH'
-<?php
+namespace A\B;
+
+echo 1;',
+            ),
+            array(
+                array(
+                    'header' => 'new',
+                    'commentType' => 'comment',
+                ),
+                '<?php
 
 /*
- * This file is part of the PHP CS utility.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
+ * new
+ */
+                    '.'
+                ',
+                '<?php
+                    /** test */
+                ',
+            ),
+            array(
+                array(
+                    'header' => 'new',
+                    'commentType' => 'PHPDoc',
+                ),
+                '<?php
+
+/**
+ * new
+ */
+                    '.'
+                ',
+                '<?php
+                    /* test */
+                ',
+            ),
+            array(
+                array(
+                    'header' => 'def',
+                    'commentType' => 'PHPDoc',
+                ),
+                '<?php
+
+/**
+ * def
  */
 
-
-EOH;
-
-        $input = "<?php\n";
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixSkipStrictDeclare()
-    {
-        $expected = <<<'EOH'
-<?php declare ( strict_types = 1) ;
+',
+                '<?php
+',
+            ),
+            array(
+                array('header' => 'xyz'),
+                '<?php
 
 /*
- * This file is part of the PHP CS utility.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
+ * xyz
  */
 
-phpinfo();
-EOH;
+    $b;',
+                '<?php
+    $b;',
+            ),
+            array(
+                array(
+                    'header' => 'xyz123',
+                    'separate' => 'none',
+                ),
+                '<?php
+/*
+ * xyz123
+ */
+    $a;',
+                '<?php
+    $a;',
+            ),
+            array(
+                array(
+                    'header' => 'abc',
+                    'commentType' => 'PHPDoc',
+                ),
+                '<?php
 
-        $input = <<<'EOH'
-<?php declare ( strict_types = 1) ;
+/**
+ * abc
+ */
 
-phpinfo();
-EOH;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixSkipStrictDeclareWithExistingComment()
-    {
-        $expected = <<<'EOH'
-<?php declare(strict_types=1);
+$c;',
+                '<?php
+$c;',
+            ),
+            array(
+                array(
+                    'header' => 'ghi',
+                    'separate' => 'both',
+                ),
+                '<?php
 
 /*
- * This file is part of the PHP CS utility.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
+ * ghi
  */
 
-phpinfo();
-EOH;
-
-        $input = <<<'EOH'
-<?php declare(strict_types=1);
+$d;',
+                '<?php
+$d;',
+             ),
+            array(
+                array(
+                    'header' => 'ghi',
+                    'separate' => 'top',
+                ),
+                '<?php
 
 /*
- * Existing comment
+ * ghi
+ */
+$d;',
+                '<?php
+$d;',
+            ),
+            array(
+                array(
+                    'header' => 'tmp',
+                    'location' => 'after_declare_strict',
+                ),
+                '<?php
+
+/*
+ * tmp
  */
 
-phpinfo();
-EOH;
+declare(ticks=1);
 
-        $this->doTest($expected, $input);
+echo 1;',
+                '<?php
+declare(ticks=1);
+
+echo 1;',
+            ),
+        );
     }
 
     /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage [header_comment] Header configuration is invalid. Expected "string", got "stdClass".
+     * @return bool|array
      */
-    public function testInvalidConfig()
+    protected function getFixerConfiguration()
+    {
+        return null === $this->configuration ? array('header' => '') : $this->configuration;
+    }
+
+    public function testDefaultConfiguration()
     {
         $fixer = $this->getFixer();
-        $fixer->configure(array('header' => new \stdClass()));
+        $method = new \ReflectionMethod($fixer, 'parseConfiguration');
+        $method->setAccessible(true);
+        $this->assertSame(
+            array(
+                "/*\n * a\n */",
+                HeaderCommentFixer::HEADER_COMMENT,
+                HeaderCommentFixer::HEADER_LOCATION_AFTER_DECLARE_STRICT,
+                HeaderCommentFixer::HEADER_LINE_SEPARATION_BOTH,
+            ),
+            $method->invoke($fixer, array('header' => 'a'))
+        );
+    }
+
+    /**
+     * @dataProvider provideMisconfiguration
+     */
+    public function testMisconfiguration($configuration, $exceptionMessage)
+    {
+        $exceptionMatch = false;
+        try {
+            $fixer = $this->getFixer();
+            $fixer->configure($configuration);
+        } catch (InvalidFixerConfigurationException $e) {
+            $this->assertSame('[header_comment] '.$exceptionMessage, $e->getMessage());
+            $exceptionMatch = true;
+        }
+
+        $this->assertTrue($exceptionMatch, sprintf('Expected InvalidFixerConfigurationException with message \"%s\" was not thrown.', $exceptionMessage));
+    }
+
+    public function provideMisconfiguration()
+    {
+        return array(
+            array(null, 'Configuration is required.'),
+            array(array(), 'Configuration is required.'),
+            array(array('header' => 1), 'Header configuration is invalid. Expected "string", got "integer".'),
+            array(
+                array(
+                    'header' => '',
+                    'commentType' => 'foo',
+                ),
+                'Header type configuration is invalid, expected "PHPDoc" or "comment", got "\'foo\'".',
+            ),
+            array(
+                array(
+                    'header' => '',
+                    'commentType' => new \stdClass(),
+                ),
+                'Header type configuration is invalid, expected "PHPDoc" or "comment", got "stdClass".',
+            ),
+            array(
+                array(
+                    'header' => '',
+                    'location' => new \stdClass(),
+                ),
+                'Header location configuration is invalid, expected "after_open" or "after_declare_strict", got "stdClass".',
+            ),
+            array(
+                array(
+                    'header' => '',
+                    'separate' => new \stdClass(),
+                ),
+                'Header separate configuration is invalid, expected "both", "top", "bottom" or "none", got "stdClass".',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideHeaderGenerationCases
+     */
+    public function testHeaderGeneration($expected, $header, $type)
+    {
+        $fixer = $this->getFixer();
+        $method = new \ReflectionMethod($fixer, 'encloseTextInComment');
+        $method->setAccessible(true);
+        $this->assertSame($expected, $method->invoke($fixer, $header, $type));
+    }
+
+    public function provideHeaderGenerationCases()
+    {
+        return array(
+            array(
+                '/*
+ * a
+ */',
+                'a',
+                HeaderCommentFixer::HEADER_COMMENT,
+            ),
+            array(
+                '/**
+ * a
+ */',
+                'a',
+                HeaderCommentFixer::HEADER_PHPDOC,
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideFindHeaderCommentInsertionIndexCases
+     */
+    public function testFindHeaderCommentInsertionIndex($expected, $code, array $config)
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($code);
+
+        $fixer = $this->getFixer();
+        $fixer->configure($config);
+
+        $method = new \ReflectionMethod($fixer, 'findHeaderCommentInsertionIndex');
+        $method->setAccessible(true);
+        $this->assertSame($expected, $method->invoke($fixer, $tokens));
+    }
+
+    public function provideFindHeaderCommentInsertionIndexCases()
+    {
+        $config = array('header' => '');
+        $cases = array(
+            array(1, '<?php #', $config),
+            array(1, '<?php /**/ $bc;', $config),
+            array(1, '<?php $bc;', $config),
+            array(1, "<?php\n\n", $config),
+            array(1, '<?php ', $config),
+        );
+
+        $config['location'] = 'after_declare_strict';
+        $cases[] = array(
+            8,
+            '<?php
+declare(strict_types=1);
+
+namespace A\B;
+
+echo 1;',
+            $config,
+        );
+
+        $cases[] = array(
+            8,
+            '<?php
+declare(strict_types=0);
+echo 1;',
+            $config,
+        );
+
+        $cases[] = array(
+            1,
+            '<?php
+declare(strict_types=1)?>',
+            $config,
+        );
+
+        return $cases;
     }
 
     /**

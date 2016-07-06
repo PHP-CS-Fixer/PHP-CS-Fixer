@@ -80,6 +80,14 @@ final class TokensTest extends \PHPUnit_Framework_TestCase
                 '<?php $x = 1;',
                 null,
                 array(array(
+                    new Token(';'),
+                ), 7),
+            ),
+
+            array(
+                '<?php $x = 1;',
+                null,
+                array(array(
                     array(T_OPEN_TAG),
                     array(T_VARIABLE, '$y'),
                 )),

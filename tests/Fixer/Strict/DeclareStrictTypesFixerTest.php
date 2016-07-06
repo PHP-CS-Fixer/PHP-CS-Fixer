@@ -17,10 +17,11 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 /**
  * @internal
  */
-final class StrictTypesFixerTest extends AbstractFixerTestCase
+final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
+     * @requires PHP 7.0
      */
     public function testFix($expected, $input = null)
     {
@@ -32,8 +33,39 @@ final class StrictTypesFixerTest extends AbstractFixerTestCase
         return array(
             array(
                 '<?php declare(strict_types=1);
+declare(ticks=1);
+//
+
+
+namespace A\B\C;
+class A {
+}',
+                '<?php
+declare(ticks=1);
+//
+declare(strict_types=1);
+
+namespace A\B\C;
+class A {
+}',
+            ),
+            array(
+                '<?php declare/* A b C*/(strict_types=1);
+//abc',
+                '<?php DECLARE/* A b C*/(strict_types=1);      //abc',
+            ),
+            array(
+                '<?php declare/* A b C*/(strict_types=1);',
+            ),
+            array(
+                '<?php declare(strict_types=1);
+/**/ /**/       ?>Test',
+                '<?php /**/ /**/ deClarE  (STRICT_TYPES=1)    ?>Test',
+            ),
+            array(
+                '<?php declare(strict_types=1);
 ',
-                '<?php            declare(strict_types=1);',
+                '<?php            DECLARE  (    strict_types=1   )   ;',
             ),
             array(
                 '<?php declare(strict_types=1);
@@ -97,10 +129,6 @@ $a = 1;',
                 '<?php declare(strict_types=1);  $a = 1;',
             ),
             array(
-                '<?php /**/ /**/ declare(strict_types=1)?>Test',
-                '<?php /**/ /**/ deClarE(STRICT_TYPES=1)?>Test',
-            ),
-            array(
                 '<?php declare(strict_types=1);
 $a = 456;
 ',
@@ -127,9 +155,8 @@ $a = 456;
     public function provideDoNotFixCases()
     {
         return array(
-            array(''),                  // leave empty file empty
-            array('  <?php echo 123;'),
-            array('<?= 123;'),
+            array('  <?php echo 123;'), // first statement must be a open tag
+            array('<?= 123;'), // first token open with echo is not fixed
         );
     }
 }

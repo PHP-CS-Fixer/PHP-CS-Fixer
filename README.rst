@@ -233,6 +233,11 @@ Choose from the list of available fixers:
                          Concatenation should be used
                          without spaces.
 
+* **declare_strict_types**
+                         Force strict types
+                         declaration in all files.
+                         (Risky fixer!)
+
 * **dir_constant**
                          Replaces dirname(__FILE__)
                          expression with equivalent
@@ -748,10 +753,6 @@ Choose from the list of available fixers:
 * **strict_param**
                          Functions should be used with
                          $strict param. (Risky fixer!)
-
-* **strict_types**
-                         Force strict types
-                         declaration in all files.
 
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
                          A case should be followed by

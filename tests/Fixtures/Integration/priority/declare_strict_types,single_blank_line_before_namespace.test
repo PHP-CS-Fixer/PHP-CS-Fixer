@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: declare_strict_types,single_blank_line_before_namespace.
+--CONFIG--
+{"declare_strict_types": true, "single_blank_line_before_namespace" : true}
+--EXPECT--
+<?php declare(strict_types=1);
+declare(ticks=1);
+declare(encoding='ISO-8859-1');
+
+namespace A\B\C;
+class A {
+}
+
+--INPUT--
+<?php
+declare(ticks=1);
+declare(encoding='ISO-8859-1');
+declare(strict_types=1);
+
+namespace A\B\C;
+class A {
+}
