@@ -2,6 +2,8 @@
 Integration of fixers: declare_strict_types,no_extra_consecutive_blank_lines.
 --CONFIG--
 {"declare_strict_types": true, "no_extra_consecutive_blank_lines" : ["extra"]}
+--REQUIREMENTS--
+php=7.0
 --EXPECT--
 <?php declare(strict_types=1);
 declare(ticks=1);

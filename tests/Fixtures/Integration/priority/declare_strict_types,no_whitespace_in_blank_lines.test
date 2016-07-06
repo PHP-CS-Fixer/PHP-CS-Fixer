@@ -2,6 +2,8 @@
 Integration of fixers: declare_strict_types,no_whitespace_in_blank_lines.
 --CONFIG--
 {"declare_strict_types": true, "no_whitespace_in_blank_lines" : true}
+--REQUIREMENTS--
+php=7.0
 --EXPECT--
 <?php declare(strict_types=1);
 declare(ticks=1);

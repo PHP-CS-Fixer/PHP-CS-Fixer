@@ -2,6 +2,8 @@
 Integration of fixers: declare_strict_types,single_blank_line_before_namespace.
 --CONFIG--
 {"declare_strict_types": true, "single_blank_line_before_namespace" : true}
+--REQUIREMENTS--
+php=7.0
 --EXPECT--
 <?php declare(strict_types=1);
 declare(ticks=1);
