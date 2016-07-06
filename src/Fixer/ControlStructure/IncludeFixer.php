@@ -50,7 +50,7 @@ final class IncludeFixer extends AbstractFixer
     private function clearIncludies(Tokens $tokens, array $includies)
     {
         foreach (array_reverse($includies) as $includy) {
-            if ($includy['end']) {
+            if ($includy['end'] && !$tokens[$includy['end']]->isGivenKind(T_CLOSE_TAG)) {
                 $tokens->removeLeadingWhitespace($includy['end']);
             }
 
@@ -59,7 +59,7 @@ final class IncludeFixer extends AbstractFixer
             if ($braces) {
                 $nextToken = $tokens[$tokens->getNextMeaningfulToken($braces['close'])];
 
-                if ($nextToken->equals(';')) {
+                if ($nextToken->equalsAny(array(';', array(T_CLOSE_TAG)))) {
                     $tokens->removeLeadingWhitespace($braces['open']);
                     $tokens->removeTrailingWhitespace($braces['open']);
                     $tokens->removeLeadingWhitespace($braces['close']);
@@ -96,7 +96,7 @@ final class IncludeFixer extends AbstractFixer
                 $includy = array(
                     'begin' => $index,
                     'braces' => null,
-                    'end' => $tokens->getNextTokenOfKind($index, array(';')),
+                    'end' => $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG))),
                 );
 
                 $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
@@ -107,7 +107,7 @@ final class IncludeFixer extends AbstractFixer
                     // Include is also legal as function parameter or condition statement but requires being wrapped then.
                     $braceCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextTokenIndex);
 
-                    if ($tokens[$tokens->getNextMeaningfulToken($braceCloseIndex)]->equals(';')) {
+                    if ($tokens[$tokens->getNextMeaningfulToken($braceCloseIndex)]->equalsAny(array(';', array(T_CLOSE_TAG)))) {
                         $includy['braces'] = array(
                             'open' => $nextTokenIndex,
                             'close' => $braceCloseIndex,

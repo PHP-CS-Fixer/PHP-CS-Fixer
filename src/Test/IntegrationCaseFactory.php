@@ -98,6 +98,7 @@ final class IntegrationCaseFactory
 
         foreach ($lines as $line) {
             $labelValuePair = explode('=', $line);
+
             if (2 !== count($labelValuePair)) {
                 throw new \InvalidArgumentException(sprintf('Invalid REQUIREMENTS line: "%d".', $line));
             }
