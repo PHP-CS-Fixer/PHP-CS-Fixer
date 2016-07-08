@@ -85,6 +85,7 @@ class A {
             ),
             array(
                 '<?php declare(strict_types=1);
+
                 phpinfo();',
                 '<?php
 
@@ -92,6 +93,7 @@ class A {
             ),
             array(
                 '<?php declare(strict_types=1);
+
 /**
  * Foo
  */
@@ -105,6 +107,7 @@ phpinfo();',
             ),
             array(
                 '<?php declare(strict_types=1);
+
 /*
  * Foo
  */
@@ -117,6 +120,20 @@ phpinfo();',
  */
 
 phpinfo();',
+            ),
+            array(
+                '<?php declare(strict_types=1);
+
+// comment after empty line',
+                '<?php
+
+// comment after empty line',
+            ),
+            array(
+                '<?php declare(strict_types=1);
+// comment without empty line before',
+                '<?php
+// comment without empty line before',
             ),
             array(
                 '<?php declare(strict_types=1);
