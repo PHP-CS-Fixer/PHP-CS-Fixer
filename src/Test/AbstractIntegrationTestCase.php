@@ -17,6 +17,7 @@ use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
+use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\NullLinter;
 use PhpCsFixer\Runner\Runner;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -54,15 +55,13 @@ use Symfony\Component\Finder\Finder;
 abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Linter|null
+     * @var LinterInterface
      */
     protected static $linter;
 
     public static function setUpBeforeClass()
     {
-        if (getenv('LINT_TEST_CASES')) {
-            static::$linter = new Linter();
-        }
+        static::$linter = getenv('LINT_TEST_CASES') ? new Linter() : new NullLinter();
 
         $tmpFile = static::getTempFile();
         if (!is_file($tmpFile)) {
@@ -267,10 +266,6 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function lintSource($source)
     {
-        if (!isset(static::$linter)) {
-            return;
-        }
-
         if ($this->isLintException($source)) {
             return;
         }

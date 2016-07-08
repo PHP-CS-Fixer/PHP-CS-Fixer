@@ -750,7 +750,7 @@ class Tokens extends \SplFixedArray
         $end = null === $end ? count($this) - 1 : min($end, count($this) - 1);
 
         if ($start + $sequenceCount - 1 > $end) {
-            return null;
+            return;
         }
 
         // make sure the sequence content is "meaningful"
