@@ -28,8 +28,9 @@ class LineAfterNamespaceFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
+        $lastIndex = $tokens->count() - 1;
 
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+        for ($index = $lastIndex; $index >= 0; --$index) {
             $token = $tokens[$index];
 
             if ($token->isGivenKind(T_NAMESPACE)) {
@@ -40,12 +41,15 @@ class LineAfterNamespaceFixer extends AbstractFixer
                     continue;
                 }
 
-                $nextToken = $tokens[$semicolonIndex + 1];
+                $nextIndex = $semicolonIndex + 1;
+                $nextToken = $tokens[$nextIndex];
 
                 if (!$nextToken->isWhitespace()) {
                     $tokens->insertAt($semicolonIndex + 1, new Token(array(T_WHITESPACE, "\n\n")));
                 } else {
-                    $nextToken->setContent("\n\n".ltrim($nextToken->getContent()));
+                    $nextToken->setContent(
+                        ($nextIndex === $lastIndex ? "\n" : "\n\n").ltrim($nextToken->getContent())
+                    );
                 }
             }
         }
