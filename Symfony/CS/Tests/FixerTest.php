@@ -210,7 +210,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['phpdoc_short_description'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_var_without_name'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_order'], $fixers['phpdoc_trim']),
-            array($fixers['unused_use'], $fixers['line_after_namespace']), // tested also in: unused_use,line_after_namespace.test
+            array($fixers['unused_use'], $fixers['line_after_namespace']), // tested also in: unused_use,line_after_namespace.test and unused_use,line_after_namespace_2.test
             array($fixers['linefeed'], $fixers['eof_ending']),
             array($fixers['php_unit_strict'], $fixers['php_unit_construct']),
             array($fixers['unary_operators_spaces'], $fixers['logical_not_operators_with_spaces']),

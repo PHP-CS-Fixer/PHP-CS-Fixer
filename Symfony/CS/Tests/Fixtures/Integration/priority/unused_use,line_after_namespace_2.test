@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: unused_use,line_after_namespace.
+--CONFIG--
+level=none
+fixers=unused_use,line_after_namespace
+--EXPECT--
+<?php
+namespace Aaa;
+
+class Ddd
+{
+}
+
+--INPUT--
+<?php
+namespace Aaa;
+
+use Aaa\Bbb;
+use Ccc;
+
+class Ddd
+{
+}
