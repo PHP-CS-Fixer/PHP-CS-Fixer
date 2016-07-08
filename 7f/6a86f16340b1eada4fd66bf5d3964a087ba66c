@@ -1,0 +1,73 @@
+---------------------------------------------------------------------------
+
+by gharlan at 2016-06-09T09:28:52Z
+
+What is happening when disabling linter on php 7?
+If I see it correctly the code is linted anyway, because of `TOKEN_PARSE`. But the exception for invalid files is not catched, because `TokenizerLinter` is not used.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-09T09:32:38Z
+
+Remember it's very early preview ;)
+Indeed, on 7.x linter should be enforced.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-06-09T09:34:52Z
+
+I still think linting should be always enforeced and we should never fix invalid files (especially files from higher php versions).
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-09T09:40:04Z
+
+The problem is that for PHP5 you are not always able to enforce linting, as you need to find PHP executable path
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-09T10:03:44Z
+
+I often want to turn off linting so I can debug bad fixers.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-09T10:06:16Z
+
+one way or another for PHP7 linting would be always enabled thanks to Tokenizer change for semi-reserved keywords
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-29T14:54:33Z
+
+What's the status here?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-29T16:23:05Z
+
+I would guess it needs some dev time to be finished
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-07T19:59:36Z
+
+cc @SpacePossum @GrahamCampbell
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-07T20:04:07Z
+
+Also, updated initial PR comment
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-07-07T20:28:02Z
+
+Perhapse a linter factory would be better than having a linter wrapper class?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-07T21:54:45Z
+
+It was my first implementation. Then I got sick of it to replace the usage everywhere so I decided to kept the original name as is and encapsulate decision which linter will be use for component, so one could treat Process/Tokenizer Linters only as private classes for Linter namespace (as if it would be possible in PHP, like in C#)
