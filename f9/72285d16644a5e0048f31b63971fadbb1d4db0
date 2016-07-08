@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-07-07T20:29:21Z
+
+Does travis not allow us to ask for 7.1 rather than nightly?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-07T21:12:24Z
+
+>Does travis not allow us to ask for 7.1 rather than nightly?
+
+I don't think there is an alias setup'ed by Travis of 7.1 to the current PHP build (as was done for 7.0 until 7.0 was released).
+
+Nice idea btw., we could leave the nightly in as is even when 7.1 stable is out right?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-07T21:51:19Z
+
+after 7.1 will be officially added as 7.1 and not nightly then let see what will be the nightly. It 7.2 then great to have, if only just 7.1.X then doesn't matter.
