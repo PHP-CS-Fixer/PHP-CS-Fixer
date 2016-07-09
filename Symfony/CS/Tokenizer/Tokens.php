@@ -617,6 +617,29 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Get index for closest sibling token which is not empty.
+     *
+     * @param int $index     token index
+     * @param int $direction direction for looking, +1 or -1
+     *
+     * @return int|null
+     */
+    public function getNonEmptySibling($index, $direction)
+    {
+        while (true) {
+            $index += $direction;
+
+            if (!$this->offsetExists($index)) {
+                return;
+            }
+
+            if (!$this[$index]->isEmpty()) {
+                return $index;
+            }
+        }
+    }
+
+    /**
      * Get index for closest previous token which is non whitespace.
      *
      * This method is shorthand for getNonWhitespaceSibling method.
@@ -1370,5 +1393,36 @@ class Tokens extends \SplFixedArray
         }
 
         return true;
+    }
+
+    /**
+     * Clear token and merge surrounding whitespace tokens.
+     *
+     * @param int $index
+     */
+    public function clearTokenAndMergeSurroundingWhitespace($index)
+    {
+        $count = count($this);
+        $this[$index]->clear();
+
+        if ($index === $count - 1) {
+            return;
+        }
+
+        $nextIndex = $this->getNonEmptySibling($index, 1);
+
+        if (null === $nextIndex || !$this[$nextIndex]->isWhitespace()) {
+            return;
+        }
+
+        $prevIndex = $this->getNonEmptySibling($index, -1);
+
+        if ($this[$prevIndex]->isWhitespace()) {
+            $this[$prevIndex]->setContent($this[$prevIndex]->getContent().$this[$nextIndex]->getContent());
+        } elseif ($this[$prevIndex + 1]->isEmpty()) {
+            $this[$prevIndex + 1]->override(array(T_WHITESPACE, $this[$nextIndex]->getContent(), $this[$prevIndex + 1]->getLine()));
+        }
+
+        $this[$nextIndex]->clear();
     }
 }

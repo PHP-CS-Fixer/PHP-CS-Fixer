@@ -471,6 +471,35 @@ EOF;
         $this->makeTest($expected, $input);
     }
 
+    public function testFoo()
+    {
+        $expected = <<<'EOF'
+<?php
+namespace Aaa;
+
+
+class Ddd
+{
+}
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+namespace Aaa;
+
+use Aaa\Bbb;
+use Ccc;
+
+class Ddd
+{
+}
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
     /**
      * @dataProvider provideCloseTagCases
      */
