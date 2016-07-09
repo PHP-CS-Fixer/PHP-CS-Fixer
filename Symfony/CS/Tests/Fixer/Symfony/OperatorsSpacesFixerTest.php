@@ -135,6 +135,12 @@ $b;',
             array(
                 '<?php function foo(&$a, array &$b, Bar &$c) {}',
             ),
+            array(
+                '<?php declare(ticks=1);',
+            ),
+            array(
+                '<?php declare(ticks =  1);',
+            ),
         );
     }
 
