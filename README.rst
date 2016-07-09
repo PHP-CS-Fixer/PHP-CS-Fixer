@@ -325,6 +325,11 @@ Choose from the list of available fixers:
                         Concatenation should be used
                         without spaces.
 
+* **declare_equal_normalize** [symfony]
+                        Equal sign in declare
+                        statement should not be
+                        surrounded by spaces.
+
 * **double_arrow_multiline_whitespaces** [symfony]
                         Operator => should not be
                         surrounded by multi-line
