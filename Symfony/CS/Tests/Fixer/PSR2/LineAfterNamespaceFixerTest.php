@@ -30,6 +30,14 @@ class LineAfterNamespaceFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
+                '<?php namespace A\B?>
+                <?php
+                    for($i=0; $i<10; ++$i) {echo $i;}',
+            ),
+            array(
+                '<?php namespace A\B?>', ),
+
+            array(
                 '<?php
 namespace A\B;
 
