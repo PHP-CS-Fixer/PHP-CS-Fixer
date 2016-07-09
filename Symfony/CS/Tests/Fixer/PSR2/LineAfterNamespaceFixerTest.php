@@ -108,6 +108,18 @@ namespace Foo;
 
 ',
             ),
+            array(
+                '<?php
+namespace Foo;
+
+?>',
+                '<?php
+namespace Foo;
+
+
+
+?>',
+            ),
         );
     }
 }
