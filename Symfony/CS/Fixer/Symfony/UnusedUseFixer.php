@@ -192,8 +192,8 @@ class UnusedUseFixer extends AbstractFixer
 
     private function removeUseDeclaration(Tokens $tokens, array $useDeclaration)
     {
-        for ($index = $useDeclaration['start']; $index < $useDeclaration['end']; ++$index) {
-            $tokens[$index]->clear();
+        for ($index = $useDeclaration['end'] - 1; $index >= $useDeclaration['start']; --$index) {
+            $tokens->clearTokenAndMergeSurroundingWhitespace($index);
         }
 
         if ($tokens[$useDeclaration['end']]->equals(';')) {
