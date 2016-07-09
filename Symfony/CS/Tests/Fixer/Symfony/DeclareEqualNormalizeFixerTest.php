@@ -16,8 +16,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
-class DeclareEqualNormalizeFixerTest extends AbstractFixerTestBase
+final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
