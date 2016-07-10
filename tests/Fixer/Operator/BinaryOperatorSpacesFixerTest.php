@@ -147,6 +147,12 @@ $b;',
                 '<?php $a =
                     2;',
             ),
+            array(
+                '<?php declare(ticks=1);',
+            ),
+            array(
+                '<?php declare(ticks =  1);',
+            ),
         );
     }
 

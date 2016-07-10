@@ -5,6 +5,8 @@ PHP 7 test.
     "@Symfony": true,
     "ordered_imports": true
 }
+--SETTINGS--
+checkPriority=false
 --REQUIREMENTS--
 php=7.0
 --EXPECT--

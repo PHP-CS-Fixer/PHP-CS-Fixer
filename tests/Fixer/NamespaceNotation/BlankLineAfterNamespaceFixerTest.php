@@ -33,6 +33,14 @@ final class BlankLineAfterNamespaceFixerTest extends AbstractFixerTestCase
     {
         return array(
             array(
+                '<?php namespace A\B?>
+                <?php
+                    for($i=0; $i<10; ++$i) {echo $i;}',
+            ),
+            array(
+                '<?php namespace A\B?>',
+            ),
+            array(
                 '<?php
 namespace A\B;
 
@@ -107,6 +115,29 @@ namespace A\B;
 namespace\C\func();
 foo();
 ',
+            ),
+            array(
+                '<?php
+namespace Foo;
+',
+                '<?php
+namespace Foo;
+
+
+
+',
+            ),
+            array(
+                '<?php
+namespace Foo;
+
+?>',
+                '<?php
+namespace Foo;
+
+
+
+?>',
             ),
         );
     }

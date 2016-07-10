@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: no_unused_imports,blank_line_after_namespace.
+--CONFIG--
+{"no_unused_imports": true, "blank_line_after_namespace": true}
+--EXPECT--
+<?php
+namespace Aaa;
+
+class Ddd
+{
+}
+
+--INPUT--
+<?php
+namespace Aaa;
+
+use Aaa\Bbb;
+use Ccc;
+
+class Ddd
+{
+}

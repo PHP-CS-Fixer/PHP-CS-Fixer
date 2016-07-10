@@ -42,6 +42,18 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer
                 continue;
             }
 
+            // skip `declare(foo ==bar)`
+            $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$prevMeaningfulIndex]->isGivenKind(T_STRING)) {
+                $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulIndex);
+                if ($tokens[$prevMeaningfulIndex]->equals('(')) {
+                    $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulIndex);
+                    if ($tokens[$prevMeaningfulIndex]->isGivenKind(T_DECLARE)) {
+                        continue;
+                    }
+                }
+            }
+
             if (!$tokens[$index + 1]->isWhitespace()) {
                 $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
             }
