@@ -150,7 +150,7 @@ final class ReportSummary
      *
      * @return ReportSummary
      */
-    public function setIsDecoratedOutput($isDecoratedOutput)
+    public function setDecoratedOutput($isDecoratedOutput)
     {
         $this->isDecoratedOutput = $isDecoratedOutput;
 
@@ -162,7 +162,7 @@ final class ReportSummary
      *
      * @return ReportSummary
      */
-    public function setIsDryRun($isDryRun)
+    public function setDryRun($isDryRun)
     {
         $this->isDryRun = $isDryRun;
 

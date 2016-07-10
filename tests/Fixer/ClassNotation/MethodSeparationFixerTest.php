@@ -272,7 +272,7 @@ class SomeClass
 }
 ');
         $cases[] = array(
-        '<?php
+            '<?php
 class SomeClass
 {
     // comment
@@ -675,7 +675,7 @@ function test2() {
 
         // do not touch well formatted traits
         $cases[] = array(
-    '<?php
+            '<?php
 trait OkTrait
 {
     function getReturnTypeOk()
@@ -692,7 +692,7 @@ trait OkTrait
         );
 
         $cases[] = array(
-    '<?php
+            '<?php
 trait ezcReflectionReturnInfo {
     public $x = 1;
 
@@ -721,7 +721,7 @@ trait ezcReflectionReturnInfo {
         );
 
         $cases[] = array(
-    '<?php
+            '<?php
 trait SomeReturnInfo {
     function getReturnType()
     {

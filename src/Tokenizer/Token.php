@@ -187,7 +187,7 @@ class Token
      */
     public function equalsAny(array $others, $caseSensitive = true)
     {
-        foreach ($others as $key => $other) {
+        foreach ($others as $other) {
             if ($this->equals($other, $caseSensitive)) {
                 return true;
             }
