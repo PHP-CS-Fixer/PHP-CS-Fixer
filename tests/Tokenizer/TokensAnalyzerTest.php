@@ -776,7 +776,7 @@ SRC;
             ),
             array(
                 array(array(1), array(14), array(29)),
-'<?php
+                '<?php
 use T\A;
 namespace A { use D\C; }
 namespace b { use D\C; }
@@ -794,14 +794,14 @@ namespace b { use D\C; }
             ),
             array(
                 array(7, 22),
-'<?php
+                '<?php
 namespace A { use D\C; }
 namespace b { use D\C; }
 ',
             ),
             array(
                 array(3, 10, 34, 45, 54, 59, 77, 95),
- <<<'EOF'
+                <<<'EOF'
 use Zoo\Bar;
 use Foo\Bar;
 use Foo\Zar\Baz;

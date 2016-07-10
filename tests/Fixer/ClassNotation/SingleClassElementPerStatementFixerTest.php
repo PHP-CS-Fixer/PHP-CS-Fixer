@@ -106,7 +106,7 @@ EOT
 class Foo { protected static $foo = 1, $bar,  $baz=2 ; }
 EOT
             ),
-             array(
+            array(
                 <<<'EOT'
 <?php
 
