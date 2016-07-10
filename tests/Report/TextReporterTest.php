@@ -176,8 +176,8 @@ TEXT
                             ),
                         )
                     )
-                    ->setIsDecoratedOutput(true)
-                    ->setIsDryRun(true)
+                    ->setDecoratedOutput(true)
+                    ->setDryRun(true)
                     ->setMemory(2.5 * 1024 * 1024)
                     ->setTime(1234)
             )
