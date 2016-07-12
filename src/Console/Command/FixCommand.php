@@ -377,8 +377,8 @@ EOF
         $reportSummary = ReportSummary::create()
             ->setChanged($changed)
             ->setAddAppliedFixers(OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity())
-            ->setIsDecoratedOutput($output->isDecorated())
-            ->setIsDryRun($resolver->isDryRun())
+            ->setDecoratedOutput($output->isDecorated())
+            ->setDryRun($resolver->isDryRun())
             ->setMemory($fixEvent->getMemory())
             ->setTime($fixEvent->getDuration())
         ;

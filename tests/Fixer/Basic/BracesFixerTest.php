@@ -1573,7 +1573,7 @@ if (1) {
     }',
             ),
             array(
-'<?php
+                '<?php
 use function some\a\{
      test1,
     test2

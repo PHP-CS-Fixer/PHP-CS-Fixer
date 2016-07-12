@@ -12,8 +12,6 @@
 
 namespace PhpCsFixer\Linter;
 
-use Symfony\Component\Process\Process;
-
 /**
  * Handle PHP code linting process.
  *

@@ -63,6 +63,12 @@ final class FileHandler implements FileHandlerInterface
         $bytesWritten = @file_put_contents($this->file, $content, LOCK_EX);
 
         if (false === $bytesWritten) {
+            $error = error_get_last();
+
+            if (null !== $error) {
+                throw new IOException(sprintf('Failed to write file "%s", "%s".', $this->file, $error['message']), 0, null, $this->file);
+            }
+
             throw new IOException(sprintf('Failed to write file "%s".', $this->file), 0, null, $this->file);
         }
     }
