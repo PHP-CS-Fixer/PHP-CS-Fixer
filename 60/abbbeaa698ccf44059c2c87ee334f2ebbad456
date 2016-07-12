@@ -1,0 +1,46 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-09T21:07:15Z
+
+:+1:  LGTM, thanks! just two minor comments :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-09T21:10:13Z
+
+done ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-09T21:15:55Z
+
+thanks & :ship:  :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-07-10T01:30:06Z
+
+👍
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-10T15:08:17Z
+
+could you take out the method;
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Fixer/Strict/DeclareStrictTypesFixer.php#L111
+
+otherwise I'll PR it after this one, we no longer need the method as your fixer does the same :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-10T18:42:57Z
+
+Good point.
+But please do it as separate PR - this one is for 1.12, the one you mention is for 2.x ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-10T19:34:52Z
+
+ah yes, course :)
+I'll put in on my 2.x todo list :+1:
