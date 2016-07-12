@@ -58,6 +58,7 @@ final class RuleSet implements RuleSetInterface
             'blank_line_before_return' => true,
             'cast_spaces' => true,
             'concat_without_spaces' => true,
+            'declare_equal_normalize' => true,
             'function_typehint_space' => true,
             'hash_to_slash_comment' => true,
             'heredoc_to_nowdoc' => true,

@@ -233,6 +233,11 @@ Choose from the list of available fixers:
                          Concatenation should be used
                          without spaces.
 
+* **declare_equal_normalize** [@Symfony]
+                         Equal sign in declare
+                         statement should not be
+                         surrounded by spaces.
+
 * **declare_strict_types**
                          Force strict types
                          declaration in all files.

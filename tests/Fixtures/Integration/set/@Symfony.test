@@ -18,6 +18,8 @@ checkPriority=false
 
 namespace Acme;
 
+declare(ticks=1);
+
 /**
  * Coding standards demonstration.
  */
