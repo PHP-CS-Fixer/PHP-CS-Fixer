@@ -30,7 +30,7 @@ class ClassConstant extends AbstractTransformer
             if (!$token->equalsAny(array(
                 array(T_CLASS, 'class'),
                 array(T_STRING, 'class'),
-            ))) {
+            ), false)) {
                 continue;
             }
 
