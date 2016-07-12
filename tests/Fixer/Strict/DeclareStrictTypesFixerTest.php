@@ -50,7 +50,7 @@ class A {
 }',
             ),
             array(
-                '<?php declare/* A b C*/(strict_types=1);
+                '<?php DECLARE/* A b C*/(strict_types=1);
 //abc',
                 '<?php DECLARE/* A b C*/(strict_types=1);      //abc',
             ),

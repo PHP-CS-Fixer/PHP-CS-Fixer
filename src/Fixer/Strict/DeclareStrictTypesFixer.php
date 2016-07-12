@@ -51,8 +51,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer
         $sequenceEndIndex = $tokens->getNextMeaningfulToken(key($sequenceLocation));
 
         if (1 === $sequenceStartIndex) {
-            // declaration already at the correct location, fix CS only
-            $this->fixCodeStyleOfSequence($tokens, $sequenceEndIndex);
+            // declaration already at the correct location, fix spacing only
             $this->fixWhiteSpaceAroundSequence($tokens, $sequenceEndIndex);
 
             return;
@@ -102,22 +101,6 @@ final class DeclareStrictTypesFixer extends AbstractFixer
     public function isRisky()
     {
         return true;
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $endIndex
-     */
-    private function fixCodeStyleOfSequence(Tokens $tokens, $endIndex)
-    {
-        // start index of the sequence is always 1 here, 0 is always open tag
-        for ($i = 1; $i < $endIndex; ++$i) {
-            if ($tokens[$i]->isWhitespace()) {
-                $tokens[$i]->clear();
-            } elseif ($tokens[$i]->isGivenKind(array(T_DECLARE, T_STRING))) {
-                $tokens[$i]->setContent(strtolower($tokens[$i]->getContent()));
-            }
-        }
     }
 
     /**
