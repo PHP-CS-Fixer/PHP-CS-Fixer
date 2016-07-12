@@ -23,6 +23,7 @@ class ShortEchoTagFixerTest extends AbstractFixerTestBase
      */
     public function testOneLineFix($expected, $input = null)
     {
+        var_dump([50400 < PHP_VERSION_ID, !ini_get('short_open_tag'), 50400 < PHP_VERSION_ID && !ini_get('short_open_tag')]);
         if (50400 < PHP_VERSION_ID && !ini_get('short_open_tag')) {
             // On PHP <5.4 short echo tag is parsed as T_INLINE_HTML if short_open_tag is disabled
             // On PHP >=5.4 short echo tag is always parsed properly regardless of short_open_tag  option
