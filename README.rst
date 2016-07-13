@@ -699,6 +699,10 @@ Choose from the list of available fixers:
                          "self" should be preferred to
                          the class name itself.
 
+* **semicolon_after_instruction**
+                         Instructions must be
+                         terminated with a semicolon.
+
 * **short_array_syntax**
                          PHP arrays should use the PHP
                          5.4 short-syntax.
