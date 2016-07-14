@@ -42,10 +42,10 @@ final class TokenizerLintingResult implements LintingResultInterface
         }
 
         $message = $this->error->getMessage();
-        $trace = $this->error->getTrace();
+        $detail = end($this->error->getTrace());
 
         throw new LintingException(
-            "PHP Parse error:  {$message} in {$trace[0]['file']} on line {$trace[0]['line']}",
+            "PHP Parse error:  {$message} in {$detail['file']} on line {$detail['line']}",
             $this->error->getCode(),
             $this->error
         );
