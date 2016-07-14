@@ -1,0 +1,45 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-12T09:42:29Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-07-12T16:12:45Z
+
+Maybe add one more tokenizer unit test too?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-13T06:03:47Z
+
+like ?
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-07-13T08:18:41Z
+
+> like ?
+
+Maybe `::CLASS`? But I'm not sure about the benefit...
+
+---------------------------------------------------------------------------
+
+by tgabi333 at 2016-07-13T14:28:16Z
+
+@Soullivaneuh There is two test already, one is `::class` and the other is `::cLaSS` in `ClassConstantTest`
+
+As i see another testcase would only test the case sensitve flag of `Token::equalsAny`
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-13T15:13:57Z
+
+you didn't change `equalsAny` so no need to change the tests for it
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-07-14T00:23:34Z
+
+Looks good. 👍
