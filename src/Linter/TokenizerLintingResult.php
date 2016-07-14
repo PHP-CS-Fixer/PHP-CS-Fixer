@@ -37,8 +37,18 @@ final class TokenizerLintingResult implements LintingResultInterface
      */
     public function check()
     {
-        if (null !== $this->error) {
-            throw new LintingException($this->error->getMessage(), $this->error->getCode(), $this->error);
+        if (null === $this->error) {
+            return;
         }
+
+        $message = $this->error->getMessage();
+        $trace = $this->error->getTrace();
+        $detail = end($trace);
+
+        throw new LintingException(
+            "PHP Parse error:  {$message} in {$detail['file']} on line {$detail['line']}",
+            $this->error->getCode(),
+            $this->error
+        );
     }
 }
