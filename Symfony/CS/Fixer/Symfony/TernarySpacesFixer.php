@@ -46,24 +46,24 @@ class TernarySpacesFixer extends AbstractFixer
                     }
                 } else {
                     // for `$a ? $b : $c` ensure space after `?`
-                    $this->ensureWhitespaceExistance($tokens, $index + 1, true);
+                    $this->ensureWhitespaceExistence($tokens, $index + 1, true);
                 }
 
                 // for `$a ? $b : $c` ensure space before `?`
-                $this->ensureWhitespaceExistance($tokens, $index - 1, false);
+                $this->ensureWhitespaceExistence($tokens, $index - 1, false);
 
                 continue;
             }
 
             if ($ternaryLevel && $token->equals(':')) {
                 // for `$a ? $b : $c` ensure space after `:`
-                $this->ensureWhitespaceExistance($tokens, $index + 1, true);
+                $this->ensureWhitespaceExistence($tokens, $index + 1, true);
 
                 $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
 
                 if (!$prevNonWhitespaceToken->equals('?')) {
                     // for `$a ? $b : $c` ensure space before `:`
-                    $this->ensureWhitespaceExistance($tokens, $index - 1, false);
+                    $this->ensureWhitespaceExistence($tokens, $index - 1, false);
                 }
 
                 --$ternaryLevel;
@@ -81,15 +81,25 @@ class TernarySpacesFixer extends AbstractFixer
         return 'Standardize spaces around ternary operator.';
     }
 
-    private function ensureWhitespaceExistance(Tokens $tokens, $index, $after)
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param bool   $after
+     */
+    private function ensureWhitespaceExistence(Tokens $tokens, $index, $after)
     {
-        $indexChange = $after ? 0 : 1;
-        $token = $tokens[$index];
+        if ($tokens[$index]->isWhitespace()) {
+            if (false === strpos($tokens[$index]->getContent(), "\n")) {
+                // comment with trailing line break check, on 1.x line only
+                if (!$tokens[$index - 1]->isComment() || false === strpos($tokens[$index - 1]->getContent(), "\n")) {
+                    $tokens[$index]->setContent(' ');
+                }
+            }
 
-        if ($token->isWhitespace()) {
             return;
         }
 
-        $tokens->insertAt($index + $indexChange, new Token(array(T_WHITESPACE, ' ', $token->getLine())));
+        $indexChange = $after ? 0 : 1;
+        $tokens->insertAt($index + $indexChange, new Token(array(T_WHITESPACE, ' ', $tokens[$index]->getLine())));
     }
 }
