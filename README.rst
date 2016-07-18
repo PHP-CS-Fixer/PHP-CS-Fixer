@@ -579,6 +579,12 @@ Choose from the list of available fixers:
                         Arrays should use the long
                         syntax.
 
+* **mb_str_functions** [contrib]
+                        Replace non multibyte-safe
+                        functions with corresponding
+                        mb function. Warning! This
+                        could change code behavior.
+
 * **multiline_spaces_before_semicolon** [contrib]
                         Multi-line whitespace before
                         closing semicolon are
