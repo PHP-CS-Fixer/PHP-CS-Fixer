@@ -88,17 +88,15 @@ final class ProtectedToPrivateFixer extends AbstractFixer
         }
 
         $extendsIndex = $classOpeningIndex;
-        $extendsPresent = false;
         while ($extendsIndex > $classIndex) {
             --$extendsIndex;
 
             if ($tokens[$extendsIndex]->isGivenKind(T_EXTENDS)) {
-                $extendsPresent = true;
-                break;
+                return true;
             }
         }
 
-        return $extendsPresent;
+        return false;
     }
 
     /**
