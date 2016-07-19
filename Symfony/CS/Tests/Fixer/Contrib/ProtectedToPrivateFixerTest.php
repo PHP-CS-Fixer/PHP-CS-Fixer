@@ -15,8 +15,10 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @internal
  */
-class ProtectedToPrivateFixerTest extends AbstractFixerTestBase
+final class ProtectedToPrivateFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideCases
