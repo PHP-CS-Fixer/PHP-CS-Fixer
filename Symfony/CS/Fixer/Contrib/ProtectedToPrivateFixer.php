@@ -31,6 +31,8 @@ final class ProtectedToPrivateFixer extends AbstractFixer
         end($classyElements);
 
         while ($classIndex = array_pop($classes)) {
+            // Must be done before skipClass() to fill correctly
+            // the possible next $currentClassyElements
             $currentClassyElements = array();
             while (null !== ($index = key($classyElements)) && $index > $classIndex) {
                 $currentClassyElements[$index] = current($classyElements);
@@ -54,10 +56,7 @@ final class ProtectedToPrivateFixer extends AbstractFixer
                     continue;
                 }
 
-                $tokens->overrideAt(
-                    $prevTokenIndex,
-                    array(T_PRIVATE, 'private')
-                );
+                $tokens->overrideAt($prevTokenIndex, array(T_PRIVATE, 'private'));
             }
         }
 
@@ -76,7 +75,7 @@ final class ProtectedToPrivateFixer extends AbstractFixer
         $prevTokenIndex = $tokens->getPrevMeaningfulToken($classIndex);
         $prevToken = $tokens[$prevTokenIndex];
 
-        if ($prevToken->isGivenKind(T_ABSTRACT)) {
+        if ($prevToken->isGivenKind(T_ABSTRACT) or !$prevToken->isGivenKind(T_FINAL)) {
             return true;
         }
 
@@ -89,21 +88,17 @@ final class ProtectedToPrivateFixer extends AbstractFixer
         }
 
         $extendsIndex = $classOpeningIndex;
-
         $extendsPresent = false;
         while ($extendsIndex > $classIndex) {
             --$extendsIndex;
 
             if ($tokens[$extendsIndex]->isGivenKind(T_EXTENDS)) {
                 $extendsPresent = true;
+                break;
             }
         }
 
-        if ($extendsPresent or !$prevToken->isGivenKind(T_FINAL)) {
-            return true;
-        }
-
-        return false;
+        return $extendsPresent;
     }
 
     /**
