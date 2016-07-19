@@ -75,7 +75,7 @@ final class ProtectedToPrivateFixer extends AbstractFixer
         $prevTokenIndex = $tokens->getPrevMeaningfulToken($classIndex);
         $prevToken = $tokens[$prevTokenIndex];
 
-        if ($prevToken->isGivenKind(T_ABSTRACT) or !$prevToken->isGivenKind(T_FINAL)) {
+        if ($prevToken->isGivenKind(T_ABSTRACT) || !$prevToken->isGivenKind(T_FINAL)) {
             return true;
         }
 
