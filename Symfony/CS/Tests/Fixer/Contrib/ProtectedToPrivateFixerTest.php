@@ -30,104 +30,66 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestBase
 
     public function provideCases()
     {
-        $from = function ($text, $traitText = '') {
-            return sprintf('<?php
-
-%s
-{
-    %s
-
-    public $v1;
-    protected $v2;
-    private $v3;
-    public static $v4;
-    protected static $v5;
-    private static $v6;
-    public function f1(){}
-    protected function f2(){}
-    private function f3(){}
-    public static function f4(){}
-    protected static function f5(){}
-    private static function f6(){}
-    // public $v1;
-    // protected $v2;
-    // private $v3;
-    // public static $v4;
-    // protected static $v5;
-    // private static $v6;
-    // public function f1(){}
-    // protected function f2(){}
-    // private function f3(){}
-    // public static function f4(){}
-    // protected static function f5(){}
-    // private static function f6(){}
-}', $text, $traitText);
-        };
-
-        $to = function ($text, $traitText = '') {
-            return sprintf('<?php
-
-%s
-{
-    %s
-
-    public $v1;
-    private $v2;
-    private $v3;
-    public static $v4;
-    private static $v5;
-    private static $v6;
-    public function f1(){}
-    private function f2(){}
-    private function f3(){}
-    public static function f4(){}
-    private static function f5(){}
-    private static function f6(){}
-    // public $v1;
-    // protected $v2;
-    // private $v3;
-    // public static $v4;
-    // protected static $v5;
-    // private static $v6;
-    // public function f1(){}
-    // protected function f2(){}
-    // private function f3(){}
-    // public static function f4(){}
-    // protected static function f5(){}
-    // private static function f6(){}
-}', $text, $traitText);
-        };
+        $attributesAndMethodsOriginal = '
+public $v1;
+protected $v2;
+private $v3;
+public static $v4;
+protected static $v5;
+private static $v6;
+public function f1(){}
+protected function f2(){}
+private function f3(){}
+public static function f4(){}
+protected static function f5(){}
+private static function f6(){}
+';
+        $attributesAndMethodsFixed = str_replace('protected', 'private', $attributesAndMethodsOriginal);
 
         return array(
             'final-extends' => array(
-                $from('final class MyClass extends MyAbstractClass'),
+                "<?php final class MyClass extends MyAbstractClass { $attributesAndMethodsOriginal }",
             ),
             'normal-extends' => array(
-                $from('class MyClass extends MyAbstractClass'),
+                "<?php class MyClass extends MyAbstractClass { $attributesAndMethodsOriginal }",
             ),
             'abstract' => array(
-                $from('abstract class MyAbstractClass'),
+                "<?php abstract class MyAbstractClass { $attributesAndMethodsOriginal }",
             ),
             'normal' => array(
-                $from('class MyClass'),
+                "<?php class MyClass { $attributesAndMethodsOriginal }",
             ),
             'trait' => array(
-                $from('trait MyTrait'),
+                "<?php trait MyTrait { $attributesAndMethodsOriginal }",
             ),
             'final-with-trait' => array(
-                $from('final class MyClass', 'use MyTrait;'),
+                "<?php final class MyClass { use MyTrait; $attributesAndMethodsOriginal }",
+            ),
+            'multiline-comment' => array(
+                "<?php final class MyClass { /* public protected private */ }",
+            ),
+            'inline-comment' => array(
+                "<?php final class MyClass { \n // public protected private \n }",
             ),
             'final' => array(
-                $to('final class MyClass'),
-                $from('final class MyClass'),
+                "<?php final class MyClass { $attributesAndMethodsFixed }",
+                "<?php final class MyClass { $attributesAndMethodsOriginal }",
             ),
             'final-implements' => array(
-                $to('final class MyClass implements MyInterface'),
-                $from('final class MyClass implements MyInterface'),
+                "<?php final class MyClass implements MyInterface { $attributesAndMethodsFixed }",
+                "<?php final class MyClass implements MyInterface { $attributesAndMethodsOriginal }",
             ),
-            'final-use' => array(
-                $to("use stdClass;\nfinal class MyClass"),
-                $from("use stdClass;\nfinal class MyClass"),
+            'final-with-use-before' => array(
+                "<?php use stdClass; final class MyClass { $attributesAndMethodsFixed }",
+                "<?php use stdClass; final class MyClass { $attributesAndMethodsOriginal }",
+            ),
+            'final-with-use-after' => array(
+                "<?php final class MyClass { $attributesAndMethodsFixed } use stdClass;",
+                "<?php final class MyClass { $attributesAndMethodsOriginal } use stdClass;",
+            ),
+            'multiple-classes' => array(
+                "<?php final class MyFirstClass { $attributesAndMethodsFixed } class MySecondClass { $attributesAndMethodsOriginal } final class MyThirdClass { $attributesAndMethodsFixed } ",
+                "<?php final class MyFirstClass { $attributesAndMethodsOriginal } class MySecondClass { $attributesAndMethodsOriginal } final class MyThirdClass { $attributesAndMethodsOriginal } ",
             ),
         );
     }
