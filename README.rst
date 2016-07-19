@@ -563,6 +563,11 @@ Choose from the list of available fixers:
 * **phpdoc_var_to_type** [contrib]
    @var should always be written as @type.
 
+* **protected_to_private** [contrib]
+                        Converts all protected
+                        variables and methods to
+                        private if needed.
+
 * **short_array_syntax** [contrib]
    PHP arrays should use the PHP 5.4 short-syntax.
 
