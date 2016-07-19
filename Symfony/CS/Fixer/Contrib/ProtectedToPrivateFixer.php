@@ -67,6 +67,7 @@ final class ProtectedToPrivateFixer extends AbstractFixer
      * Decide whether or not skip the fix for given class.
      *
      * @param Tokens $tokens the Tokens instance
+     * @param int    $classIndex the class start index
      *
      * @return bool
      */
