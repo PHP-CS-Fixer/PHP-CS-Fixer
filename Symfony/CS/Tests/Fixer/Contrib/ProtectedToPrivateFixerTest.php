@@ -66,7 +66,7 @@ private static function f6(){}
                 "<?php final class MyClass { use MyTrait; $attributesAndMethodsOriginal }",
             ),
             'multiline-comment' => array(
-                "<?php final class MyClass { /* public protected private */ }",
+                '<?php final class MyClass { /* public protected private */ }',
             ),
             'inline-comment' => array(
                 "<?php final class MyClass { \n // public protected private \n }",
