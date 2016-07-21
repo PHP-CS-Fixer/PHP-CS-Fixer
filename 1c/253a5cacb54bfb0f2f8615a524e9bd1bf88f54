@@ -1,0 +1,8 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-15T08:17:42Z
+
+If I remember correctly existing whitespaces was ignored to not break multiline ternaries.
+With your update they are not made single line ;)
+
+:+1:
