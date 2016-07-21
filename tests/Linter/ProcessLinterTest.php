@@ -65,7 +65,7 @@ final class ProcessLinterTest extends \PHPUnit_Framework_TestCase
      * @covers PhpCsFixer\Linter\ProcessLinter::lintSource
      *
      * @expectedException \PhpCsFixer\Linter\LintingException
-     * @expectedExceptionMessageRegExp /syntax error, unexpected (?:'echo' \(T_ECHO\))|(?:T_ECHO)/
+     * @expectedExceptionMessageRegExp /syntax error, unexpected.*T_ECHO/
      */
     public function testLintSourceWithBadCode()
     {
