@@ -1,0 +1,55 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-07-20T15:10:02Z
+
+That doesn't work?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-07-20T15:10:14Z
+
+That gives you the line in our code that threw the error.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-20T15:42:05Z
+
+I don't think so. Code proves the other way
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-07-20T16:36:52Z
+
+Oh, cool. I guess I was a bit drunk when I tested this then. That was the reason I closed my last PR.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-07-20T16:38:39Z
+
+👍 then to the idea, but I'd prefer it if we slightly matched PHP's format more closely - doesn't have to be exactly the same tho. :P
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-07-20T16:42:10Z
+
+How about this?
+
+```php
+throw new LintingException(
+    sprintf('%s on line %d.', $this->error->getMessage(), $this->error->getLine()),
+    $this->error->getCode(),
+    $this->error
+);
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-20T21:51:13Z
+
+doesn't matter...
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-20T22:13:25Z
+
+:+1:  looking good :)
