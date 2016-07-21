@@ -39,6 +39,12 @@ final class ClassConstantTransformerTest extends AbstractTransformerTestCase
                 ),
             ),
             array(
+                '<?php echo X::cLaSS;',
+                array(
+                    5 => 'CT_CLASS_CONSTANT',
+                ),
+            ),
+            array(
                 '<?php echo X::bar;',
                 array(),
             ),

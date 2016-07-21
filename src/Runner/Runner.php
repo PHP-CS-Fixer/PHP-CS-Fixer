@@ -198,6 +198,15 @@ final class Runner
             $this->processException($name);
 
             return;
+        } catch (\ParseError $e) {
+            $this->dispatchEvent(
+                FixerFileProcessedEvent::NAME,
+                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
+            );
+
+            $this->errorsManager->report(new Error(Error::TYPE_LINT, $name));
+
+            return;
         } catch (\Throwable $e) {
             $this->processException($name);
 
