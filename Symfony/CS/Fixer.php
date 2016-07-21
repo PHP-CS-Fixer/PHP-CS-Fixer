@@ -215,6 +215,32 @@ class Fixer
                 }
                 $new = $newest;
             }
+        } catch (\ParseError $e) {
+            if ($this->eventDispatcher) {
+                $this->eventDispatcher->dispatch(
+                    FixerFileProcessedEvent::NAME,
+                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
+                );
+            }
+
+            if ($this->errorsManager) {
+                $this->errorsManager->report(ErrorsManager::ERROR_TYPE_LINT, $this->getFileRelativePathname($file), sprintf('Linting error at line %d: "%s".', $e->getLine(), $e->getMessage()));
+            }
+
+            return;
+        } catch (\Error $e) {
+            if ($this->eventDispatcher) {
+                $this->eventDispatcher->dispatch(
+                    FixerFileProcessedEvent::NAME,
+                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)
+                );
+            }
+
+            if ($this->errorsManager) {
+                $this->errorsManager->report(ErrorsManager::ERROR_TYPE_EXCEPTION, $this->getFileRelativePathname($file), $e->__toString());
+            }
+
+            return;
         } catch (\Exception $e) {
             if ($this->eventDispatcher) {
                 $this->eventDispatcher->dispatch(
