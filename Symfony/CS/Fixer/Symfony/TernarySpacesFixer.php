@@ -82,15 +82,25 @@ class TernarySpacesFixer extends AbstractFixer
         return 'Standardize spaces around ternary operator.';
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param bool   $after
+     */
     private function ensureWhitespaceExistence(Tokens $tokens, $index, $after)
     {
-        $indexChange = $after ? 0 : 1;
-        $token = $tokens[$index];
+        if ($tokens[$index]->isWhitespace()) {
+            if (false === strpos($tokens[$index]->getContent(), "\n")) {
+                // TODO: comment with trailing line break check should be removed on 2.0 line
+                if (!$tokens[$index - 1]->isComment() || false === strpos($tokens[$index - 1]->getContent(), "\n")) {
+                    $tokens[$index]->setContent(' ');
+                }
+            }
 
-        if ($token->isWhitespace()) {
             return;
         }
 
-        $tokens->insertAt($index + $indexChange, new Token(array(T_WHITESPACE, ' ', $token->getLine())));
+        $indexChange = $after ? 0 : 1;
+        $tokens->insertAt($index + $indexChange, new Token(array(T_WHITESPACE, ' ', $tokens[$index]->getLine())));
     }
 }
