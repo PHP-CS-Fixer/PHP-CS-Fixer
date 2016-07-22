@@ -34,20 +34,20 @@ final class LowercaseConstantsFixerTest extends AbstractFixerTestCase
     {
         $cases = array();
         foreach (array('true', 'false', 'null') as $case) {
-            $cases [] = array(
+            $cases[] = array(
                 sprintf('<?php $x = %s;', $case),
                 sprintf('<?php $x = %s;', strtoupper($case)),
             );
 
-            $cases [] = array(
+            $cases[] = array(
                 sprintf('<?php $x = %s;', $case),
                 sprintf('<?php $x = %s;', ucfirst($case)),
             );
 
-            $cases [] = array(sprintf('<?php $x = new %s;', ucfirst($case)));
-            $cases [] = array(sprintf('<?php $x = new %s;', strtoupper($case)));
-            $cases [] = array(sprintf('<?php $x = "%s story";', $case));
-            $cases [] = array(sprintf('<?php $x = "%s";', $case));
+            $cases[] = array(sprintf('<?php $x = new %s;', ucfirst($case)));
+            $cases[] = array(sprintf('<?php $x = new %s;', strtoupper($case)));
+            $cases[] = array(sprintf('<?php $x = "%s story";', $case));
+            $cases[] = array(sprintf('<?php $x = "%s";', $case));
         }
 
         return $cases;
