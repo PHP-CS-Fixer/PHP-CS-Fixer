@@ -808,12 +808,21 @@ class Foo
             ),
             array(
                 '<?php
-class C {
-    public function __construct(
-)
-    //comment
-    {}
-}',
+    class C
+    {
+        public function __construct(
+        )
+        //comment
+        {
+        }
+    }',
+                '<?php
+    class C {
+        public function __construct(
+        )
+        //comment
+        {}
+    }',
             ),
         );
     }
