@@ -1,0 +1,28 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-14T12:49:42Z
+
+Awesome @SpacePossum , please publish the branch with changes for master line, i will use it during merging 1.12->2.x, many thanks !
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-14T12:50:31Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-21T07:08:35Z
+
+> Note @keradus the merge to master is a bit tricky. I did the fix on master first so if you want the 2 files for master let me know.
+
+do you have it somewhere ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-21T09:08:05Z
+
+https://gist.github.com/SpacePossum/07169e6eca3947382a7bf8bf58d30ac0
+
+but kindly note I did that version first, than went to the 1.x line and didn't check back on master... sorry about that..
+let me know if I can help
