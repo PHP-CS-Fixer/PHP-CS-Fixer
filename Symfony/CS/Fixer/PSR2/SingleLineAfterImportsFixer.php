@@ -63,7 +63,8 @@ class SingleLineAfterImportsFixer extends AbstractFixer
                 }
 
                 // Do not add newline after inline T_COMMENT as it is part of T_COMMENT already
-                if ($tokens[$insertIndex]->isGivenKind(T_COMMENT)) {
+                // TODO: remove on 2.x line
+                if ($tokens[$insertIndex]->isGivenKind(T_COMMENT) && false !== strpos($tokens[$insertIndex]->getContent(), "\n")) {
                     $newline = '';
                 }
 
@@ -79,9 +80,19 @@ class SingleLineAfterImportsFixer extends AbstractFixer
 
                 if ($tokens[$insertIndex]->isWhitespace()) {
                     $nextToken = $tokens[$insertIndex];
-                    $nextToken->setContent($newline.$indent.ltrim($nextToken->getContent()));
+                    $nextMeaningfulAfterUseIndex = $tokens->getNextMeaningfulToken($insertIndex);
+                    if (null !== $nextMeaningfulAfterUseIndex && $tokens[$nextMeaningfulAfterUseIndex]->isGivenKind(T_USE)) {
+                        if (substr_count($nextToken->getContent(), "\n") < 2) {
+                            $nextToken->setContent($newline.$indent.ltrim($nextToken->getContent()));
+                        }
+                    } else {
+                        $nextToken->setContent($newline.$indent.ltrim($nextToken->getContent()));
+                    }
                 } else {
-                    $tokens->insertAt($insertIndex, new Token(array(T_WHITESPACE, $newline.$indent)));
+                    // TODO: remove check on 2.x line
+                    if ('' !== $newline.$indent) {
+                        $tokens->insertAt($insertIndex, new Token(array(T_WHITESPACE, $newline.$indent)));
+                    }
                 }
             }
         }

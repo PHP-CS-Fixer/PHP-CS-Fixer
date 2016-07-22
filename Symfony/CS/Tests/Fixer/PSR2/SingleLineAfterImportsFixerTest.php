@@ -31,6 +31,42 @@ class SingleLineAfterImportsFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
+                '<?php
+use D;
+use E;
+use DP;   /**/
+use EZ; //
+use DAZ;
+use EGGGG; /**/
+use A\B;
+
+use C\DE;
+
+
+use E\F;
+
+
+
+use G\H;
+
+',
+                '<?php
+use D;         use E;
+use DP;   /**/      use EZ; //
+use DAZ;         use EGGGG; /**/
+use A\B;
+
+use C\DE;
+
+
+use E\F;
+
+
+
+use G\H;
+',
+            ),
+            array(
                 '<?php use \Exception;
 
 ?>
@@ -256,23 +292,6 @@ use B1;// need to import this !
 use B2;
 
 class C1 {}
-',
-            ),
-            array(
-                '<?php
-    namespace A1;
-    use B1; // need to import this !
-    use B2;
-
-    class C1 {}
-',
-                '<?php
-    namespace A1;
-    use B1; // need to import this !
-
-    use B2;
-
-    class C1 {}
 ',
             ),
             array(
