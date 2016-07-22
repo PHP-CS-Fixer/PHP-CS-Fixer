@@ -3,6 +3,20 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.11.6
+---------------------
+
+* bug #2086 Braces - fix bug with comment in method prototype (keradus)
+* bug #2077 SingleLineAfterImportsFixer - Do not remove lines between use cases (SpacePossum)
+* bug #2079 TernarySpacesFixer - Remove multiple spaces (SpacePossum)
+* bug #2087 Fixer - handle PHP7 Errors as well (keradus)
+* bug #2072 LowercaseKeywordsFixer - handle CT_CLASS_CONSTANT (tgabi333)
+* bug #2066 LineAfterNamespaceFixer - Handle close tag (SpacePossum)
+* bug #2057 LineAfterNamespaceFixer - adding too much extra lines where namespace is last statement (keradus)
+* bug #2059 OperatorsSpacesFixer - handle declare statement (keradus)
+* bug #2060 UnusedUseFixer - fix handling whitespaces around removed import (keradus)
+* minor #2071 ShortEchoTagFixer - allow to run tests on PHP 5.3 (keradus)
+
 Changelog for v1.11.5
 ---------------------
 
