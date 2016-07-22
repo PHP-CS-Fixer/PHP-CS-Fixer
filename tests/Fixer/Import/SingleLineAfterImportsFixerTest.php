@@ -33,6 +33,42 @@ final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
     {
         return array(
             array(
+                '<?php
+use D;
+use E;
+use DP;   /**/
+use EZ; //
+use DAZ;
+use EGGGG; /**/
+use A\B;
+
+use C\DE;
+
+
+use E\F;
+
+
+
+use G\H;
+
+',
+                '<?php
+use D;         use E;
+use DP;   /**/      use EZ; //
+use DAZ;         use EGGGG; /**/
+use A\B;
+
+use C\DE;
+
+
+use E\F;
+
+
+
+use G\H;
+',
+            ),
+            array(
                 '<?php use \Exception;
 
 ?>
@@ -217,11 +253,11 @@ class C {
             ),
             array(
                 '<?php
-    namespace A1;
-    use B1;// need to import this !
-    use B2;
+    namespace A2;
+    use B2;// need to import this !
+    use B3;
 
-    class C1 {}
+    class C4 {}
 ',
             ),
             array(
@@ -262,23 +298,6 @@ class C1 {}
             ),
             array(
                 '<?php
-    namespace A1;
-    use B1; // need to import this !
-    use B2;
-
-    class C1 {}
-',
-                '<?php
-    namespace A1;
-    use B1; // need to import this !
-
-    use B2;
-
-    class C1 {}
-',
-            ),
-            array(
-                '<?php
 namespace Foo;
 
 use Bar;
@@ -298,7 +317,7 @@ class Hello {}
             ),
             array(
                 '<?php
-class Hello {
+class HelloTrait {
     use SomeTrait;
 
     use Another;// ensure use statements for traits are not touched
