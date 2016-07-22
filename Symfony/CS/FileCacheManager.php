@@ -34,6 +34,7 @@ class FileCacheManager
 
     private $dir;
     private $isEnabled;
+    private $isCacheAvailable;
     private $fixers;
     private $newHashes = array();
     private $oldHashes = array();
@@ -61,6 +62,8 @@ class FileCacheManager
             return true;
         }
 
+        $file = $this->getRelativeFilename($file);
+
         if (!isset($this->oldHashes[$file])) {
             return true;
         }
@@ -81,6 +84,8 @@ class FileCacheManager
             return;
         }
 
+        $file = $this->getRelativeFilename($file);
+
         $this->newHashes[$file] = $this->calcHash($fileContent);
     }
 
@@ -91,13 +96,11 @@ class FileCacheManager
 
     private function isCacheAvailable()
     {
-        static $result;
-
-        if (null === $result) {
-            $result = $this->isEnabled && (ToolInfo::isInstalledAsPhar() || ToolInfo::isInstalledByComposer());
+        if (null === $this->isCacheAvailable) {
+            $this->isCacheAvailable = $this->isEnabled && (ToolInfo::isInstalledAsPhar() || ToolInfo::isInstalledByComposer());
         }
 
-        return $result;
+        return $this->isCacheAvailable;
     }
 
     private function isCacheStale($cacheVersion, $fixers)
@@ -155,5 +158,15 @@ class FileCacheManager
         if (false === @file_put_contents($this->dir.self::CACHE_FILE, $data, LOCK_EX)) {
             throw new IOException(sprintf('Failed to write file "%s".', self::CACHE_FILE), 0, null, $this->dir.self::CACHE_FILE);
         }
+    }
+
+    private function getRelativeFilename($file)
+    {
+        $dir = realpath($this->dir);
+        if (0 === strpos($file, $dir)) {
+            return '.'.substr($file, strlen($dir));
+        }
+
+        return $file;
     }
 }
