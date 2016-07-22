@@ -361,6 +361,11 @@ Choose from the list of available fixers:
    When making a method or function call, there MUST NOT be a space between
    the method or function name and the opening parenthesis.
 
+* **no_spaces_between_offset** [@Symfony]
+                         There MUST NOT be spaces
+                         between the offset braces and
+                         its closest expressions.
+
 * **no_spaces_inside_offset** [@Symfony]
    There MUST NOT be spaces between the offset square braces and its
    contained values.
