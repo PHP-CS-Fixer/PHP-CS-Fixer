@@ -19,12 +19,12 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  */
-final class NoSpacesInsideOffsetFixerTest extends AbstractFixerTestCase
+final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases
      */
-    public function testFixSpaceInsideOffset($expected, $input = null)
+    public function testFixSpaceAroundOffset($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
@@ -108,13 +108,13 @@ $var = $arr[    0        ][ 0  ];',
             ),
             array(
                 '<?php
-$var = $arr[$a    [$b]];',
+$var = $arr[$a[$b]];',
                 '<?php
 $var = $arr[    $a    [ $b    ]  ];',
             ),
             array(
                 '<?php
-$var = $arr[$a	[$b]];',
+$var = $arr[$a[$b]];',
                 '<?php
 $var = $arr[	$a	[	$b	]	];',
             ),
@@ -134,6 +134,65 @@ $var = $arr[0][0
 $var = $arr[0][     0
          ];',
             ),
+            array(
+                '<?php
+$var = $arr[0]{0
+         };',
+                 '<?php
+$var = $arr[0]{     0
+         };',
+            ),
         );
+    }
+
+    /**
+     * @dataProvider provideConfigurationCases
+     */
+    public function testFixWithConfiguration(array $configuration, $expected)
+    {
+        static $input = <<<'EOT'
+<?php
+$arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
+EOT;
+
+        $this->getFixer()->configure($configuration);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideConfigurationCases()
+    {
+        return array(
+            array(
+                array('inside', 'around'),
+                <<<'EOT'
+<?php
+$arr1[]["some_offset"][]{"foo"} = 3;
+EOT
+            ),
+            array(
+                array('inside'),
+                <<<'EOT'
+<?php
+$arr1[]  ["some_offset"] [] {"foo"} = 3;
+EOT
+            ),
+            array(
+                array('around'),
+                <<<'EOT'
+<?php
+$arr1[  ][ "some_offset"   ][     ]{ "foo" } = 3;
+EOT
+            ),
+        );
+    }
+
+    /**
+     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessageRegExp /^\[no_spaces_around_offset\] Unknown configuration option "foo"\.$/
+     */
+    public function testWrongConfig()
+    {
+        $this->getFixer()->configure(array('foo'));
     }
 }
