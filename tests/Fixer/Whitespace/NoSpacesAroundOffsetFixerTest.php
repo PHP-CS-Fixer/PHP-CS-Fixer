@@ -22,9 +22,17 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideCases
+     * @dataProvider provideInsideCases
      */
-    public function testFixSpaceAroundOffset($expected, $input = null)
+    public function testFixSpaceInsideOffset($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @dataProvider provideOutsideCases
+     */
+    public function testFixSpaceOutsideOffset($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
@@ -51,7 +59,105 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function provideCases()
+    public function testLeaveCommentsAlone()
+    {
+        $expected = <<<'EOF'
+<?php
+
+$withComments[0] // here is a comment
+    [1] // and here is another
+    [2] = 3;
+EOF;
+        $this->doTest($expected);
+    }
+
+    public function testLeaveComplexString()
+    {
+        $expected = <<<'EOF'
+<?php
+
+echo "I am printing some spaces here    {$foo->bar[1]}     {$foo->bar[1]}.";
+EOF;
+        $this->doTest($expected);
+    }
+
+    public function testLeaveFunctions()
+    {
+        $expected = <<<'EOF'
+<?php
+
+function someFunc()    {   $someVar = [];   }
+EOF;
+        $this->doTest($expected);
+    }
+
+    public function provideOutsideCases()
+    {
+        return array(
+            array(
+                '<?php
+$withComments[0] // here is a comment
+    [1] // and here is another
+    [2][3] = 4;',
+                '<?php
+$withComments [0] // here is a comment
+    [1] // and here is another
+    [2] [3] = 4;',
+            ),
+            array(
+                '<?php
+$c = SOME_CONST[0][1][2];',
+                '<?php
+$c = SOME_CONST [0] [1]   [2];',
+            ),
+            array(
+                '<?php
+$f = someFunc()[0][1][2];',
+                '<?php
+$f = someFunc() [0] [1]   [2];',
+            ),
+            array(
+                '<?php
+$foo[][0][1][2] = 3;',
+                '<?php
+$foo [] [0] [1]   [2] = 3;',
+            ),
+            array(
+                '<?php
+$foo[0][1][2] = 3;',
+                '<?php
+$foo [0] [1]   [2] = 3;',
+            ),
+            array(
+                '<?php
+$bar = $foo[0][1][2];',
+                '<?php
+$bar = $foo [0] [1]   [2];',
+            ),
+            array(
+                '<?php
+$baz[0][1][2] = 3;',
+                '<?php
+$baz [0]
+     [1]
+     [2] = 3;',
+            ),
+            array(
+                '<?php
+$foo{0}{1}{2} = 3;',
+                '<?php
+$foo {0} {1}   {2} = 3;',
+            ),
+            array(
+                '<?php
+$foobar = $foo{0}[1]{2};',
+                '<?php
+$foobar = $foo {0} [1]   {2};',
+            ),
+        );
+    }
+
+    public function provideInsideCases()
     {
         return array(
             array(
