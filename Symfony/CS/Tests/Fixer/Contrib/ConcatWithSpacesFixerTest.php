@@ -31,6 +31,24 @@ class ConcatWithSpacesFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
+                '<?php
+                    $a =   //
+                    $c .   /**/
+                    $d     #
+                    . $e   /**  */
+                    . $f . //
+                    $z;
+                ',
+                '<?php
+                    $a =   //
+                    $c   .   /**/
+                    $d     #
+                    .   $e   /**  */
+                    .   $f   . //
+                    $z;
+                ',
+            ),
+            array(
                 '<?php $foo = "a" . \'b\' . "c" . "d" . $e . ($f + 1);',
                 '<?php $foo = "a" . \'b\' ."c". "d"    .  $e.($f + 1);',
             ),

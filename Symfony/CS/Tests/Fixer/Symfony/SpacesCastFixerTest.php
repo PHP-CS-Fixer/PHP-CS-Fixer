@@ -74,7 +74,7 @@ class SpacesCastFixerTest extends AbstractFixerTestBase
                 "<?php \$bar = (int)\n \$foo;",
             ),
             array(
-                "<?php \$bar = (int)\r \$foo;",
+                "<?php \$bar = (int)\r\n \$foo;",
             ),
         );
     }
