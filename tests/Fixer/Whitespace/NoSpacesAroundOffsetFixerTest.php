@@ -228,7 +228,7 @@ $var = $arr[	$a	[	$b	]	];',
                 '<?php
 $var = $arr[0][
      0];',
-                 '<?php
+                '<?php
 $var = $arr[0][
      0 ];',
             ),
@@ -236,7 +236,7 @@ $var = $arr[0][
                 '<?php
 $var = $arr[0][0
          ];',
-                 '<?php
+                '<?php
 $var = $arr[0][     0
          ];',
             ),
@@ -244,7 +244,7 @@ $var = $arr[0][     0
                 '<?php
 $var = $arr[0]{0
          };',
-                 '<?php
+                '<?php
 $var = $arr[0]{     0
          };',
             ),
