@@ -296,7 +296,9 @@ class BracesFixer extends AbstractFixer
 
                 $prevToken = $tokens[$closingParenthesisIndex - 1];
                 if ($prevToken->isWhitespace() && false !== strpos($prevToken->getContent(), "\n")) {
-                    $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
+                    if (!$tokens[$startBraceIndex - 2]->isComment()) {
+                        $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
+                    }
                 } else {
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, "\n".$indent);
                 }
