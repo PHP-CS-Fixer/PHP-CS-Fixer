@@ -37,6 +37,14 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function getRequiredPhpVersionId()
+    {
+        return 50000;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function process(Tokens $tokens, Token $token, $index)
     {
         if (!$tokens[$index]->equals('(') || !$tokens[$tokens->getNextMeaningfulToken($index)]->equals(array(T_NEW))) {
