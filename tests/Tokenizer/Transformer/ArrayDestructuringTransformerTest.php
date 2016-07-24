@@ -15,23 +15,25 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 use PhpCsFixer\Test\AbstractTransformerTestCase;
 
 /**
- * @author Sebastiaans Stok <s.stok@rollerscapes.net>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestCase
+final class ArrayDestructuringTransformerTest extends AbstractTransformerTestCase
 {
     /**
      * @dataProvider provideProcessCases
+     * @requires PHP 7.1
      */
-    public function testProcess($source, array $expectedTokens)
+    public function testProcess($source, array $expectedTokens = array())
     {
+        $this->markTestIncomplete('Implementation is not there yet');
         $this->doTest(
             $source,
             $expectedTokens,
             array(
-                'CT_BRACE_CLASS_INSTANTIATION_OPEN',
-                'CT_BRACE_CLASS_INSTANTIATION_CLOSE',
+                'CT_DESTRUCTURING_SQUARE_BRACE_OPEN',
+                'CT_DESTRUCTURING_SQUARE_BRACE_CLOSE',
             )
         );
     }
@@ -40,18 +42,14 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     {
         return array(
             array(
-                '<?php echo (new Process())->getOutput();',
+                '<?php [$a, $b, $c] = [1, 2, 3];',
                 array(
-                    3 => 'CT_BRACE_CLASS_INSTANTIATION_OPEN',
-                    9 => 'CT_BRACE_CLASS_INSTANTIATION_CLOSE',
+                    1 => 'CT_DESTRUCTURING_SQUARE_BRACE_OPEN',
+                    9 => 'CT_DESTRUCTURING_SQUARE_BRACE_CLOSE',
                 ),
             ),
             array(
-                '<?php echo (new Process())::getOutput();',
-                array(
-                    3 => 'CT_BRACE_CLASS_INSTANTIATION_OPEN',
-                    9 => 'CT_BRACE_CLASS_INSTANTIATION_CLOSE',
-                ),
+                '<?php $a = [1]; $a[] = 2; $a[1] = 3;',
             ),
         );
     }

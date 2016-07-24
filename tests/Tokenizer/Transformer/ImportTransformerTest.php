@@ -27,7 +27,16 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess($source, array $expectedTokens = array())
     {
-        $this->doTest($source, $expectedTokens);
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            array(
+                'T_CONST',
+                'CT_CONST_IMPORT',
+                'T_FUNCTION',
+                'CT_FUNCTION_IMPORT',
+            )
+        );
     }
 
     public function provideProcessCases()

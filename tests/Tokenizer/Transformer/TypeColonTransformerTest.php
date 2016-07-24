@@ -19,20 +19,19 @@ use PhpCsFixer\Test\AbstractTransformerTestCase;
  *
  * @internal
  */
-final class UseTransformerTest extends AbstractTransformerTestCase
+final class TypeColonTransformerTest extends AbstractTransformerTestCase
 {
     /**
      * @dataProvider provideProcessCases
      */
     public function testProcess($source, array $expectedTokens = array())
     {
+        $this->markTestIncomplete('Implementation is not there yet');
         $this->doTest(
             $source,
             $expectedTokens,
             array(
-                'T_USE',
-                'CT_USE_LAMBDA',
-                'CT_USE_TRAIT',
+                'CT_TYPE_COLON',
             )
         );
     }
@@ -41,30 +40,31 @@ final class UseTransformerTest extends AbstractTransformerTestCase
     {
         return array(
             array(
-                '<?php use Foo;',
+                '<?php function foo(): array { return []; }',
                 array(
-                    1 => 'T_USE',
+                    6 => 'CT_TYPE_COLON',
                 ),
             ),
             array(
-                '<?php $foo = function() use ($bar) {};',
+                '<?php function & foo(): array { return []; }',
                 array(
-                    9 => 'CT_USE_LAMBDA',
+                    8 => 'CT_TYPE_COLON',
                 ),
             ),
             array(
-                '<?php class Foo { use Bar; }',
+                '<?php interface F { public function foo(): array; }',
                 array(
-                    7 => 'CT_USE_TRAIT',
+                    14 => 'CT_TYPE_COLON',
                 ),
             ),
             array(
-                '<?php namespace Aaa; use Bbb; class Foo { use Bar; function baz() { $a=1; return function () use ($a) {}; } }',
+                '<?php $a=1; $f = function () use($a) : array{};',
                 array(
-                    6 => 'T_USE',
-                    17 => 'CT_USE_TRAIT',
-                    42 => 'CT_USE_LAMBDA',
+                    20 => 'CT_TYPE_COLON',
                 ),
+            ),
+            array(
+                '<?php $a = 1 ? [] : [];',
             ),
         );
     }

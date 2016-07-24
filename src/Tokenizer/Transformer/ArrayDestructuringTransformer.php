@@ -17,20 +17,27 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Transform `namespace` operator from T_NAMESPACE into CT_NAMESPACE_OPERATOR.
+ * Transform destructuring brace tokens in `[$a, $b, $c] = [1, 2, 3]`.
  *
- * @author Gregor Harlan <gharlan@web.de>
+ * Performed transformations:
+ * - CT_DESTRUCTURING_SQUARE_BRACE_OPEN for [,
+ * - CT_DESTRUCTURING_SQUARE_BRACE_CLOSE for ].
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-class NamespaceOperatorTransformer extends AbstractTransformer
+class ArrayDestructuringTransformer extends AbstractTransformer
 {
     /**
      * {@inheritdoc}
      */
     public function getCustomTokenNames()
     {
-        return array('CT_NAMESPACE_OPERATOR');
+        return array(
+            'CT_DESTRUCTURING_SQUARE_BRACE_CLOSE',
+            'CT_DESTRUCTURING_SQUARE_BRACE_OPEN',
+        );
     }
 
     /**
@@ -38,7 +45,7 @@ class NamespaceOperatorTransformer extends AbstractTransformer
      */
     public function getRequiredPhpVersionId()
     {
-        return 50300;
+        return 70100;
     }
 
     /**
@@ -46,15 +53,6 @@ class NamespaceOperatorTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, $index)
     {
-        if (!$token->isGivenKind(T_NAMESPACE)) {
-            return;
-        }
-
-        $nextIndex = $tokens->getNextMeaningfulToken($index);
-        $nextToken = $tokens[$nextIndex];
-
-        if ($nextToken->isGivenKind(T_NS_SEPARATOR)) {
-            $token->override(array(CT_NAMESPACE_OPERATOR, $token->getContent()));
-        }
+        // TODO
     }
 }

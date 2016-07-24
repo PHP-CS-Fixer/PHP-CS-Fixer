@@ -24,7 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * - closing `}` for T_DOLLAR_OPEN_CURLY_BRACES into CT_DOLLAR_CLOSE_CURLY_BRACES,
  * - in `$foo->{$bar}` into CT_DYNAMIC_PROP_BRACE_OPEN and CT_DYNAMIC_PROP_BRACE_CLOSE,
  * - in `${$foo}` into CT_DYNAMIC_VAR_BRACE_OPEN and CT_DYNAMIC_VAR_BRACE_CLOSE,
- * - in `$array{$index}` into CT_ARRAY_INDEX_CURLY_BRACE_OPEN and CT_ARRAY_INDEX_CURLY_BRACE_CLOSE.
+ * - in `$array{$index}` into CT_ARRAY_INDEX_CURLY_BRACE_OPEN and CT_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+ * - in `use some\a\{ClassA, ClassB, ClassC as C}` into CT_MULTI_IMPORT_OPEN, CT_MULTI_IMPORT_CLOSE.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -46,6 +47,8 @@ final class CurlyBraceTransformer extends AbstractTransformer
             'CT_DYNAMIC_VAR_BRACE_CLOSE',
             'CT_ARRAY_INDEX_CURLY_BRACE_OPEN',
             'CT_ARRAY_INDEX_CURLY_BRACE_CLOSE',
+            'CT_MULTI_IMPORT_OPEN',
+            'CT_MULTI_IMPORT_CLOSE',
         );
     }
 

@@ -26,7 +26,14 @@ final class ArraySquareBraceTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess($source, array $expectedTokens = array())
     {
-        $this->doTest($source, $expectedTokens);
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            array(
+                'CT_ARRAY_SQUARE_BRACE_OPEN',
+                'CT_ARRAY_SQUARE_BRACE_CLOSE',
+            )
+        );
     }
 
     public function provideProcessCases()
