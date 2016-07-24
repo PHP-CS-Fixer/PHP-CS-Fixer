@@ -42,8 +42,9 @@ final class SingleImportPerStatementFixer extends AbstractFixer
         foreach ($uses as $index) {
             $endIndex = $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG)));
             $previous = $tokens->getPrevMeaningfulToken($endIndex);
-            if ($tokens[$previous]->equals('}')) {
-                $start = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $previous, false);
+
+            if ($tokens[$previous]->isGivenKind(CT_GROUP_IMPORT_BRACE_CLOSE)) {
+                $start = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $previous, false);
                 $declarationContent = $tokens->generatePartialCode($start + 1, $previous - 1);
                 $prefix = '';
                 for ($i = $index + 1; $i < $start; ++$i) {

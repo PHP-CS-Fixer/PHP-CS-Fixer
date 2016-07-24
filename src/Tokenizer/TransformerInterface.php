@@ -34,13 +34,22 @@ interface TransformerInterface
     public function getCustomTokenNames();
 
     /**
-     * Return the name of the fixer.
+     * Return the name of the transformer.
      *
      * The name must be all lowercase and without any spaces.
      *
      * @return string The name of the fixer
      */
     public function getName();
+
+    /**
+     * Returns the priority of the transformer.
+     *
+     * The default priority is 0 and higher priorities are executed first.
+     *
+     * @return int
+     */
+    public function getPriority();
 
     /**
      * Return minimal required PHP version id to transform the code.

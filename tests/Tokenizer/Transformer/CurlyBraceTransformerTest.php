@@ -26,7 +26,50 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess($source, array $expectedTokens = array())
     {
-        $this->doTest($source, $expectedTokens);
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            array(
+                'T_CURLY_OPEN',
+                'CT_CURLY_CLOSE',
+                'T_DOLLAR_OPEN_CURLY_BRACES',
+                'CT_DOLLAR_CLOSE_CURLY_BRACES',
+                'CT_DYNAMIC_PROP_BRACE_OPEN',
+                'CT_DYNAMIC_PROP_BRACE_CLOSE',
+                'CT_DYNAMIC_VAR_BRACE_OPEN',
+                'CT_DYNAMIC_VAR_BRACE_CLOSE',
+                'CT_ARRAY_INDEX_CURLY_BRACE_OPEN',
+                'CT_ARRAY_INDEX_CURLY_BRACE_CLOSE',
+                'CT_GROUP_IMPORT_BRACE_OPEN',
+                'CT_GROUP_IMPORT_BRACE_CLOSE',
+            )
+        );
+    }
+
+    /**
+     * @dataProvider provideProcessCases70
+     * @requires PHP 7.0
+     */
+    public function testProcess70($source, array $expectedTokens = array())
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            array(
+                'T_CURLY_OPEN',
+                'CT_CURLY_CLOSE',
+                'T_DOLLAR_OPEN_CURLY_BRACES',
+                'CT_DOLLAR_CLOSE_CURLY_BRACES',
+                'CT_DYNAMIC_PROP_BRACE_OPEN',
+                'CT_DYNAMIC_PROP_BRACE_CLOSE',
+                'CT_DYNAMIC_VAR_BRACE_OPEN',
+                'CT_DYNAMIC_VAR_BRACE_CLOSE',
+                'CT_ARRAY_INDEX_CURLY_BRACE_OPEN',
+                'CT_ARRAY_INDEX_CURLY_BRACE_CLOSE',
+                'CT_GROUP_IMPORT_BRACE_OPEN',
+                'CT_GROUP_IMPORT_BRACE_CLOSE',
+            )
+        );
     }
 
     public function provideProcessCases()
@@ -50,6 +93,8 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                 '<?php echo "I\'d like an {${beers::$ale}}\n";',
                 array(
                     5 => 'T_CURLY_OPEN',
+                    7 => 'CT_DYNAMIC_VAR_BRACE_OPEN',
+                    11 => 'CT_DYNAMIC_VAR_BRACE_CLOSE',
                     12 => 'CT_CURLY_CLOSE',
                 ),
             ),
@@ -128,15 +173,35 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
             ),
 
             array(
-                '<?php
-                    echo "This is {$great}";
+                '<?php echo "This is {$great}";
                     $a = "a{$b->c()}d";
                     echo "I\'d like an {${beers::$ale}}\n";
                 ',
+                array(
+                    5 => 'T_CURLY_OPEN',
+                    7 => 'CT_CURLY_CLOSE',
+                    17 => 'T_CURLY_OPEN',
+                    23 => 'CT_CURLY_CLOSE',
+                    32 => 'T_CURLY_OPEN',
+                    34 => 'CT_DYNAMIC_VAR_BRACE_OPEN',
+                    38 => 'CT_DYNAMIC_VAR_BRACE_CLOSE',
+                    39 => 'CT_CURLY_CLOSE',
+                ),
             ),
-            array('<?php echo "This is ${great}";'),
-            array('<?php $foo->{$bar};'),
             array('<?php if (1) {} class Foo{ } function bar(){ }'),
+        );
+    }
+
+    public function provideProcessCases70()
+    {
+        return array(
+            array(
+                '<?php use some\a\{ClassA, ClassB, ClassC as C};',
+                array(
+                    7 => 'CT_GROUP_IMPORT_BRACE_OPEN',
+                    19 => 'CT_GROUP_IMPORT_BRACE_CLOSE',
+                ),
+            ),
         );
     }
 }

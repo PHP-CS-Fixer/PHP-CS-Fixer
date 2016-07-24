@@ -334,7 +334,7 @@ final class TokensAnalyzer
         $startParenthesisToken = $tokens[$startParenthesisIndex];
 
         // skip & for `function & () {}` syntax
-        if ($startParenthesisToken->equals('&')) {
+        if ($startParenthesisToken->isGivenKind(CT_RETURN_REF)) {
             $startParenthesisIndex = $tokens->getNextMeaningfulToken($startParenthesisIndex);
             $startParenthesisToken = $tokens[$startParenthesisIndex];
         }
@@ -382,7 +382,7 @@ final class TokensAnalyzer
     {
         static $potentialSuccessorOperator = array(T_INC, T_DEC);
 
-        static $potentialBinaryOperator = array('+', '-', '&');
+        static $potentialBinaryOperator = array('+', '-', '&', array(CT_RETURN_REF));
 
         static $otherOperators;
         if (null === $otherOperators) {

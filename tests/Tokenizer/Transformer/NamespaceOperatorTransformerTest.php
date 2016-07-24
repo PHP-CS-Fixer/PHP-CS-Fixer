@@ -26,7 +26,14 @@ final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess($source, array $expectedTokens)
     {
-        $this->doTest($source, $expectedTokens);
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            array(
+                'T_NAMESPACE',
+                'CT_NAMESPACE_OPERATOR',
+            )
+        );
     }
 
     public function provideProcessCases()

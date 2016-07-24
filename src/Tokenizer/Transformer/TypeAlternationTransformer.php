@@ -17,20 +17,20 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Transform `namespace` operator from T_NAMESPACE into CT_NAMESPACE_OPERATOR.
+ * Transform `|` operator into CT_TYPE_ALTERNATION in `} catch (ExceptionType1 | ExceptionType2 $e) {`.
  *
- * @author Gregor Harlan <gharlan@web.de>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-class NamespaceOperatorTransformer extends AbstractTransformer
+class TypeAlternationTransformer extends AbstractTransformer
 {
     /**
      * {@inheritdoc}
      */
     public function getCustomTokenNames()
     {
-        return array('CT_NAMESPACE_OPERATOR');
+        return array('CT_TYPE_ALTERNATION');
     }
 
     /**
@@ -38,7 +38,7 @@ class NamespaceOperatorTransformer extends AbstractTransformer
      */
     public function getRequiredPhpVersionId()
     {
-        return 50300;
+        return 70100;
     }
 
     /**
@@ -46,15 +46,24 @@ class NamespaceOperatorTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, $index)
     {
-        if (!$token->isGivenKind(T_NAMESPACE)) {
+        if (!$token->equals('|')) {
             return;
         }
 
-        $nextIndex = $tokens->getNextMeaningfulToken($index);
-        $nextToken = $tokens[$nextIndex];
+        $prevIndex = $tokens->getPrevMeaningfulToken($index);
+        $prevToken = $tokens[$prevIndex];
 
-        if ($nextToken->isGivenKind(T_NS_SEPARATOR)) {
-            $token->override(array(CT_NAMESPACE_OPERATOR, $token->getContent()));
+        if (!$prevToken->isGivenKind(T_STRING)) {
+            return;
         }
+
+        $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
+        $prevToken = $tokens[$prevIndex];
+
+        if (!$prevToken->equalsAny(array('(', array(CT_TYPE_ALTERNATION)))) {
+            return;
+        }
+
+        $token->override(array(CT_TYPE_ALTERNATION, '|'));
     }
 }

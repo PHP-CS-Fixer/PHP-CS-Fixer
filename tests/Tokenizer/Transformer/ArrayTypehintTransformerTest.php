@@ -26,7 +26,14 @@ final class ArrayTypehintTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess($source, array $expectedTokens = array())
     {
-        $this->doTest($source, $expectedTokens);
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            array(
+                'T_ARRAY',
+                'CT_ARRAY_TYPEHINT',
+            )
+        );
     }
 
     public function provideProcessCases()

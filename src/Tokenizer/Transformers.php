@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tokenizer;
 
+use PhpCsFixer\Utils;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -43,6 +44,10 @@ final class Transformers
     private function __construct()
     {
         $this->registerBuiltInTransformers();
+
+        usort($this->items, function (TransformerInterface $a, TransformerInterface $b) {
+            return Utils::cmpInt($b->getPriority(), $a->getPriority());
+        });
     }
 
     /**
@@ -90,24 +95,6 @@ final class Transformers
     }
 
     /**
-     * Register Transformer.
-     *
-     * @param TransformerInterface $transformer Transformer
-     */
-    public function registerTransformer(TransformerInterface $transformer)
-    {
-        if (PHP_VERSION_ID >= $transformer->getRequiredPhpVersionId()) {
-            $this->items[] = $transformer;
-        }
-
-        $transformer->registerCustomTokens();
-
-        foreach ($transformer->getCustomTokenNames() as $name) {
-            $this->addCustomToken(constant($name), $name);
-        }
-    }
-
-    /**
      * Transform given Tokens collection through all Transformer classes.
      *
      * @param Tokens $tokens Tokens collection
@@ -118,6 +105,24 @@ final class Transformers
             foreach ($this->items as $transformer) {
                 $transformer->process($tokens, $token, $index);
             }
+        }
+    }
+
+    /**
+     * Register Transformer.
+     *
+     * @param TransformerInterface $transformer Transformer
+     */
+    private function registerTransformer(TransformerInterface $transformer)
+    {
+        if (PHP_VERSION_ID >= $transformer->getRequiredPhpVersionId()) {
+            $this->items[] = $transformer;
+        }
+
+        $transformer->registerCustomTokens();
+
+        foreach ($transformer->getCustomTokenNames() as $name) {
+            $this->addCustomToken(constant($name), $name);
         }
     }
 
