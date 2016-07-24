@@ -42,7 +42,7 @@ final class ImportTransformer extends AbstractTransformer
      */
     public function getRequiredPhpVersionId()
     {
-        return 70000;
+        return 50600;
     }
 
     /**
