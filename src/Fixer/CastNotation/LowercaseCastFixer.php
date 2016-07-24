@@ -34,7 +34,7 @@ final class LowercaseCastFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($index = 0, $count = $tokens->count(); $index  < $count; ++$index) {
+        for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
             if (!$tokens[$index]->isCast()) {
                 continue;
             }

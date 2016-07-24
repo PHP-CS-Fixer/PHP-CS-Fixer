@@ -41,7 +41,7 @@ final class ShortScalarCastFixer extends AbstractFixer
             'real' => 'float',
         );
 
-        for ($index = 0, $count = $tokens->count(); $index  < $count; ++$index) {
+        for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
             if (!$tokens[$index]->isCast()) {
                 continue;
             }

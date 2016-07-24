@@ -54,13 +54,27 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer
                 }
             }
 
-            if (!$tokens[$index + 1]->isWhitespace()) {
+            // fix white space after operator
+            if ($tokens[$index + 1]->isWhitespace()) {
+                $content = $tokens[$index + 1]->getContent();
+                if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
+                    $tokens[$index + 1]->setContent(' ');
+                }
+            } else {
                 $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
             }
 
-            if (!$tokens[$index - 1]->isWhitespace()) {
+            // fix white space before operator
+            if ($tokens[$index - 1]->isWhitespace()) {
+                $content = $tokens[$index - 1]->getContent();
+                if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+                    $tokens[$index - 1]->setContent(' ');
+                }
+            } else {
                 $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
             }
+
+            --$index; // skip check for binary operator on the whitespace token that is fixed.
         }
     }
 

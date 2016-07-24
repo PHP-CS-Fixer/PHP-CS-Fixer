@@ -859,6 +859,24 @@ class Foo
         return \Foo::{$foo}($bar);
     }',
             ),
+            array(
+                '<?php
+    class C
+    {
+        public function __construct(
+        )
+        //comment
+        {
+        }
+    }',
+                '<?php
+    class C {
+        public function __construct(
+        )
+        //comment
+        {}
+    }',
+            ),
         );
     }
 

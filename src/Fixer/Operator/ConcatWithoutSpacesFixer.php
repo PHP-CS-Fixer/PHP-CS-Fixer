@@ -42,7 +42,7 @@ final class ConcatWithoutSpacesFixer extends AbstractFixer
                 $tokens->removeLeadingWhitespace($index, " \t");
             }
 
-            if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
+            if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind(array(T_LNUMBER, T_COMMENT, T_DOC_COMMENT))) {
                 $tokens->removeTrailingWhitespace($index, " \t");
             }
         }
