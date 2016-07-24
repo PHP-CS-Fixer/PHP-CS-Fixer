@@ -34,7 +34,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer
      */
     private static $defaultConfiguration = array(
         'inside',
-        'around',
+        'outside',
     );
 
     /**
@@ -79,7 +79,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer
                 if ($token->equals('[')) {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
                 } else {
-                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index, true);
+                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, $index);
                 }
 
                 // remove space after opening `[` or `{`
@@ -89,7 +89,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer
                 $this->removeWhitespaceToken($tokens[$endIndex - 1]);
             }
 
-            if (in_array('around', $this->configuration, true)) {
+            if (in_array('outside', $this->configuration, true)) {
                 $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($index);
                 if ($tokens[$prevNonWhitespaceIndex]->isComment()) {
                     continue;

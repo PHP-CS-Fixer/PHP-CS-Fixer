@@ -270,7 +270,7 @@ EOT;
     {
         return array(
             array(
-                array('inside', 'around'),
+                array('inside', 'outside'),
                 <<<'EOT'
 <?php
 $arr1[]["some_offset"][]{"foo"} = 3;
@@ -284,7 +284,7 @@ $arr1[]  ["some_offset"] [] {"foo"} = 3;
 EOT
             ),
             array(
-                array('around'),
+                array('outside'),
                 <<<'EOT'
 <?php
 $arr1[  ][ "some_offset"   ][     ]{ "foo" } = 3;
