@@ -77,11 +77,6 @@ final class Transformers
         return $this->customTokens[$value];
     }
 
-    public function getTransformers()
-    {
-        return $this->items;
-    }
-
     /**
      * Check if given custom token was added to collection.
      *
@@ -101,7 +96,9 @@ final class Transformers
      */
     public function registerTransformer(TransformerInterface $transformer)
     {
-        $this->items[] = $transformer;
+        if (PHP_VERSION_ID >= $transformer->getRequiredPhpVersionId()) {
+            $this->items[] = $transformer;
+        }
 
         $transformer->registerCustomTokens();
 

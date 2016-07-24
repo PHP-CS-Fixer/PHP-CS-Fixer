@@ -36,6 +36,14 @@ final class WhitespacyCommentTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function getRequiredPhpVersionId()
+    {
+        return 50000;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function process(Tokens $tokens, Token $token, $index)
     {
         if (!$token->isComment()) {

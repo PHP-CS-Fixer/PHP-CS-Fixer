@@ -23,6 +23,7 @@ final class ClassConstantTransformerTest extends AbstractTransformerTestCase
 {
     /**
      * @dataProvider provideProcessCases
+     * @requires PHP 5.5
      */
     public function testProcess($source, array $expectedTokens = array())
     {

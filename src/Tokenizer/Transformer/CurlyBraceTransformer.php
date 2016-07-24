@@ -52,6 +52,14 @@ final class CurlyBraceTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function getRequiredPhpVersionId()
+    {
+        return 50000;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function process(Tokens $tokens, Token $token, $index)
     {
         $this->transformIntoCurlyCloseBrace($tokens, $token, $index);

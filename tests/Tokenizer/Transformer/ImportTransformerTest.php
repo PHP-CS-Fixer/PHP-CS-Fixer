@@ -23,6 +23,7 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
 {
     /**
      * @dataProvider provideProcessCases
+     * @requires PHP 5.6
      */
     public function testProcess($source, array $expectedTokens = array())
     {
