@@ -696,4 +696,69 @@ PHP;
             ),
         );
     }
+
+    /**
+     * @param int    $expectedIndex
+     * @param string $source
+     * @param int    $type
+     * @param int    $searchIndex
+     *
+     * @dataProvider provideFindBlockEndCases
+     */
+    public function testFindBlockEnd($expectedIndex, $source, $type, $searchIndex)
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($source);
+
+        $this->assertSame($expectedIndex, $tokens->findBlockEnd($type, $searchIndex, true));
+        $this->assertSame($searchIndex, $tokens->findBlockEnd($type, $expectedIndex, false));
+
+        $detectedType = Tokens::detectBlockType($tokens[$searchIndex]);
+        $this->assertInternalType('array', $detectedType);
+        $this->assertArrayHasKey('type', $detectedType);
+        $this->assertArrayHasKey('isStart', $detectedType);
+        $this->assertSame($type, $detectedType['type']);
+        $this->assertTrue($detectedType['isStart']);
+
+        $detectedType = Tokens::detectBlockType($tokens[$expectedIndex]);
+        $this->assertInternalType('array', $detectedType);
+        $this->assertArrayHasKey('type', $detectedType);
+        $this->assertArrayHasKey('isStart', $detectedType);
+        $this->assertSame($type, $detectedType['type']);
+        $this->assertFalse($detectedType['isStart']);
+    }
+
+    public function provideFindBlockEndCases()
+    {
+        return array(
+            array(4, '<?php ${$bar};', Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2),
+            array(4, '<?php test(1);', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2),
+            array(4, '<?php $a{1};', Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, 2),
+            array(4, '<?php $a[1];', Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, 2),
+            array(6, '<?php [1, "foo"];', Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 1),
+            array(5, '<?php $foo->{$bar};', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3),
+        );
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessageRegExp /^Invalid param type: -1\.$/
+     */
+    public function testFindBlockEndInvalidType()
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode('<?php ');
+        $tokens->findBlockEnd(-1, 0);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessageRegExp /^Invalid param \$startIndex - not a proper block start\.$/
+     */
+    public function testFindBlockEndInvalidStart()
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode('<?php ');
+        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 0);
+    }
 }
