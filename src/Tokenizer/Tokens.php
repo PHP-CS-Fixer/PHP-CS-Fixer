@@ -33,6 +33,7 @@ class Tokens extends \SplFixedArray
     const BLOCK_TYPE_ARRAY_SQUARE_BRACE = 4;
     const BLOCK_TYPE_DYNAMIC_PROP_BRACE = 5;
     const BLOCK_TYPE_DYNAMIC_VAR_BRACE = 6;
+    const BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE = 7;
 
     /**
      * Static class cache.
@@ -198,6 +199,10 @@ class Tokens extends \SplFixedArray
             self::BLOCK_TYPE_DYNAMIC_VAR_BRACE => array(
                 'start' => array(CT_DYNAMIC_VAR_BRACE_OPEN, '{'),
                 'end' => array(CT_DYNAMIC_VAR_BRACE_CLOSE, '}'),
+            ),
+            self::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE => array(
+                'start' => array(CT_ARRAY_INDEX_CURLY_BRACE_OPEN, '{'),
+                'end' => array(CT_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}'),
             ),
         );
     }
