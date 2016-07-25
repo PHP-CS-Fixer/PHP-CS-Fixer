@@ -254,15 +254,9 @@ $var = $arr[0]{     0
     /**
      * @dataProvider provideConfigurationCases
      */
-    public function testFixWithConfiguration(array $configuration, $expected)
+    public function testFixWithConfiguration(array $configuration, $expected, $input)
     {
-        static $input = <<<'EOT'
-<?php
-$arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
-EOT;
-
         $this->getFixer()->configure($configuration);
-
         $this->doTest($expected, $input);
     }
 
@@ -275,6 +269,12 @@ EOT;
 <?php
 $arr1[]["some_offset"][]{"foo"} = 3;
 EOT
+                ,
+                <<<'EOT'
+<?php
+$arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
+EOT
+                ,
             ),
             array(
                 array('inside'),
@@ -282,6 +282,12 @@ EOT
 <?php
 $arr1[]  ["some_offset"] [] {"foo"} = 3;
 EOT
+                ,
+                <<<'EOT'
+<?php
+$arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
+EOT
+                ,
             ),
             array(
                 array('outside'),
@@ -289,6 +295,12 @@ EOT
 <?php
 $arr1[  ][ "some_offset"   ][     ]{ "foo" } = 3;
 EOT
+                ,
+                <<<'EOT'
+<?php
+$arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
+EOT
+                ,
             ),
         );
     }
