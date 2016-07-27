@@ -42,10 +42,14 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer
      */
     public function configure(array $configuration = null)
     {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
+        if (!$configuration) {
+            if (null === $configuration) {
+                $this->configuration = self::$defaultConfiguration;
 
-            return;
+                return;
+            }
+
+            throw new InvalidFixerConfigurationException($this->getName(), 'Configuration must be provided.');
         }
 
         foreach ($configuration as $name) {
