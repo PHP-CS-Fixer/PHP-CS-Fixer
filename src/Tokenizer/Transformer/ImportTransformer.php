@@ -40,6 +40,14 @@ final class ImportTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function getRequiredPhpVersionId()
+    {
+        return 50600;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function process(Tokens $tokens, Token $token, $index)
     {
         if (!$token->isGivenKind(array(T_CONST, T_FUNCTION))) {

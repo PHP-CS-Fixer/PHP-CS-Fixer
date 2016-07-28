@@ -40,6 +40,16 @@ final class ArraySquareBraceTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function getRequiredPhpVersionId()
+    {
+        // short array syntax was introduced in PHP 5.4, but the fixer is smart
+        // enough to handel it even before 5.4
+        return 50000;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function process(Tokens $tokens, Token $token, $index)
     {
         if (!$this->isShortArray($tokens, $index)) {

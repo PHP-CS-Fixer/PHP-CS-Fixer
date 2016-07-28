@@ -38,6 +38,14 @@ final class UseTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function getRequiredPhpVersionId()
+    {
+        return 50300;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function process(Tokens $tokens, Token $token, $index)
     {
         if ($token->isGivenKind(T_USE) && $this->isUseForLambda($tokens, $index)) {
