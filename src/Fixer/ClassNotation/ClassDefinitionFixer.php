@@ -73,7 +73,7 @@ final class ClassDefinitionFixer extends AbstractFixer
         $implementsInfo = $this->getMultiLineInfo($tokens, $start, $classyOpen);
 
         // 4.1 The extends and implements keywords MUST be declared on the same line as the class name.
-        if ($implementsInfo['numberOfInterfaces'] > 1 && $implementsInfo['multiLine']) {
+        if ($implementsInfo['multiLine']) {
             $classyOpen += $this->ensureWhiteSpaceSeparation($tokens, $start, $implementsInfo['breakAt']);
             $this->fixMultiLineImplements($tokens, $implementsInfo['breakAt'], $classyOpen);
         } else {
@@ -87,7 +87,6 @@ final class ClassDefinitionFixer extends AbstractFixer
      *
      * Returns array:
      * * int  'breakAt'            index of the Token of type T_IMPLEMENTS for the definition, or 0
-     * * int  'numberOfInterfaces'
      * * bool 'multiLine'
      *
      * @param Tokens $tokens
@@ -98,7 +97,7 @@ final class ClassDefinitionFixer extends AbstractFixer
      */
     private function getMultiLineInfo(Tokens $tokens, $start, $classyOpen)
     {
-        $implementsInfo = array('breakAt' => 0, 'numberOfInterfaces' => 0, 'multiLine' => false);
+        $implementsInfo = array('breakAt' => 0, 'multiLine' => false);
         $breakAtToken = $tokens->findGivenKind($tokens[$start]->isGivenKind(T_INTERFACE) ? T_EXTENDS : T_IMPLEMENTS, $start, $classyOpen);
         if (count($breakAtToken) < 1) {
             return $implementsInfo;
@@ -108,7 +107,6 @@ final class ClassDefinitionFixer extends AbstractFixer
         $classyOpen = $tokens->getPrevNonWhitespace($classyOpen);
         for ($j = $implementsInfo['breakAt'] + 1; $j < $classyOpen; ++$j) {
             if ($tokens[$j]->isGivenKind(T_STRING)) {
-                ++$implementsInfo['numberOfInterfaces'];
                 continue;
             }
 
