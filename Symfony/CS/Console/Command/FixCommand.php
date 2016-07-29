@@ -337,6 +337,7 @@ EOF
         } elseif ($stdin) {
             $config->finder(new \ArrayIterator(array(new StdinFileInfo())));
         } elseif (null !== $path) {
+            $config->finder(new \DirectoryIterator($path));
             $config->setDir($path);
         }
 
