@@ -26,7 +26,6 @@ final class ReturnRefTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess($source, array $expectedTokens = array())
     {
-        $this->markTestIncomplete('Implementation is not there yet');
         $this->doTest(
             $source,
             $expectedTokens,

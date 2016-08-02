@@ -46,9 +46,6 @@ class ReturnRefTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, $index)
     {
-        // TODO
-        return;
-
         if (
             $token->equals('&')
             && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_FUNCTION)
