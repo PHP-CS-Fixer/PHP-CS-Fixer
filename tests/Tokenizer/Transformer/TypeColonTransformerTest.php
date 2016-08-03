@@ -26,7 +26,6 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess($source, array $expectedTokens = array())
     {
-        $this->markTestIncomplete('Implementation is not there yet');
         $this->doTest(
             $source,
             $expectedTokens,
@@ -58,13 +57,23 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
                 ),
             ),
             array(
-                '<?php $a=1; $f = function () use($a) : array{};',
+                '<?php $a=1; $f = function () : array {};',
+                array(
+                    15 => 'CT_TYPE_COLON',
+                ),
+            ),
+            array(
+                '<?php $a=1; $f = function () use($a) : array {};',
                 array(
                     20 => 'CT_TYPE_COLON',
                 ),
             ),
             array(
-                '<?php $a = 1 ? [] : [];',
+                '<?php
+                    $a = 1 ? [] : [];
+                    $b = 1 ? fnc() : [];
+                    $c = 1 ?: [];
+                ',
             ),
         );
     }

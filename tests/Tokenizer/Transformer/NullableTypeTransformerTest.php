@@ -54,7 +54,11 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                 ),
             ),
             array(
-                '<?php $a = 1 ? [] : [];',
+                '<?php
+                    $a = 1 ? [] : [];
+                    $b = 1 ? fnc() : [];
+                    $c = 1 ?: [];
+                ',
             ),
         );
     }

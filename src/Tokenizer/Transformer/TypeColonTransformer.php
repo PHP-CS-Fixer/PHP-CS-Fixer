@@ -55,6 +55,28 @@ class TypeColonTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, $index)
     {
-        // TODO
+        if (!$token->equals(':')) {
+            return;
+        }
+
+        $endIndex = $tokens->getPrevMeaningfulToken($index);
+
+        if (!$tokens[$endIndex]->equals(')')) {
+            return;
+        }
+
+        $startIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endIndex, false);
+        $prevIndex = $tokens->getPrevMeaningfulToken($startIndex);
+        $prevToken = $tokens[$prevIndex];
+
+        // if this could be a function name we need to take one more step
+        if ($prevToken->isGivenKind(T_STRING)) {
+            $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
+            $prevToken = $tokens[$prevIndex];
+        }
+
+        if ($prevToken->isGivenKind(array(T_FUNCTION, CT_RETURN_REF, CT_USE_LAMBDA))) {
+            $token->override(array(CT_TYPE_COLON, ':'));
+        }
     }
 }
