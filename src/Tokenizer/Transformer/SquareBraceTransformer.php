@@ -20,21 +20,28 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Transform discriminate overloaded square braces tokens.
  *
  * Performed transformations:
- * - CT_ARRAY_SQUARE_BRACE_OPEN for [,
- * - CT_ARRAY_SQUARE_BRACE_CLOSE for ].
+ * - in `[1, 2, 3]` into CT_ARRAY_SQUARE_BRACE_OPEN and CT_ARRAY_SQUARE_BRACE_CLOSE,
+ * - in `[$a, $b, $c] = array(1, 2, 3)` into CT_DESTRUCTURING_SQUARE_BRACE_OPEN and CT_DESTRUCTURING_SQUARE_BRACE_CLOSE.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class ArraySquareBraceTransformer extends AbstractTransformer
+final class SquareBraceTransformer extends AbstractTransformer
 {
+    private $cacheOfArraySquareBraceCloseIndex = null;
+
     /**
      * {@inheritdoc}
      */
     public function getCustomTokenNames()
     {
-        return array('CT_ARRAY_SQUARE_BRACE_OPEN', 'CT_ARRAY_SQUARE_BRACE_CLOSE');
+        return array(
+            'CT_ARRAY_SQUARE_BRACE_OPEN',
+            'CT_ARRAY_SQUARE_BRACE_CLOSE',
+            'CT_DESTRUCTURING_SQUARE_BRACE_OPEN',
+            'CT_DESTRUCTURING_SQUARE_BRACE_CLOSE',
+        );
     }
 
     /**
@@ -52,6 +59,17 @@ final class ArraySquareBraceTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, $index)
     {
+        $this->cacheOfArraySquareBraceCloseIndex = null;
+
+        $this->transformIntoArraySquareBrace($tokens, $token, $index);
+
+        if (PHP_VERSION_ID >= 70100) {
+            $this->transformIntoDestructuringSquareBrace($tokens, $token, $index);
+        }
+    }
+
+    private function transformIntoArraySquareBrace(Tokens $tokens, Token $token, $index)
+    {
         if (!$this->isShortArray($tokens, $index)) {
             return;
         }
@@ -60,6 +78,21 @@ final class ArraySquareBraceTransformer extends AbstractTransformer
 
         $token->override(array(CT_ARRAY_SQUARE_BRACE_OPEN, '['));
         $tokens[$endIndex]->override(array(CT_ARRAY_SQUARE_BRACE_CLOSE, ']'));
+
+        $this->cacheOfArraySquareBraceCloseIndex = $endIndex;
+    }
+
+    private function transformIntoDestructuringSquareBrace(Tokens $tokens, Token $token, $index)
+    {
+        if (
+            null === $this->cacheOfArraySquareBraceCloseIndex
+            || !$tokens[$tokens->getNextMeaningfulToken($this->cacheOfArraySquareBraceCloseIndex)]->equals('=')
+        ) {
+            return;
+        }
+
+        $token->override(array(CT_DESTRUCTURING_SQUARE_BRACE_OPEN, '['));
+        $tokens[$this->cacheOfArraySquareBraceCloseIndex]->override(array(CT_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'));
     }
 
     /**
