@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Test\AbstractTransformerTestCase;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -23,10 +24,10 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
 {
     /**
      * @dataProvider provideProcessCases
+     * @requires PHP 7.1
      */
     public function testProcess($source, array $expectedTokens = array())
     {
-        $this->markTestIncomplete('Implementation is not there yet');
         $this->doTest(
             $source,
             $expectedTokens,
@@ -55,7 +56,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
             ),
             array(
                 '<?php
-                    $a = 1 ? [] : [];
+                    $a = 1 ? "aaa" : "bbb";
                     $b = 1 ? fnc() : [];
                     $c = 1 ?: [];
                 ',

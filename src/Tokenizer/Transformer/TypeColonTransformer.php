@@ -39,7 +39,7 @@ class TypeColonTransformer extends AbstractTransformer
     public function getPriority()
     {
         // needs to run after ReturnRefTransformer and UseTransformer
-        return -1;
+        return -10;
     }
 
     /**

@@ -36,6 +36,15 @@ class NullableTypeTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // needs to run after TypeColonTransformer
+        return -20;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRequiredPhpVersionId()
     {
         return 70100;
@@ -46,6 +55,11 @@ class NullableTypeTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, $index)
     {
-        // TODO
+        $prevIndex = $tokens->getPrevMeaningfulToken($index);
+        $prevToken = $tokens[$prevIndex];
+
+        if ($prevToken->equalsAny(array('(', ':', array(CT_TYPE_COLON)))) {
+            $token->override(array(CT_NULLABLE_TYPE, '?'));
+        }
     }
 }
