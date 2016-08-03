@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tokenizer;
 
+use PhpCsFixer\Utils;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -43,6 +44,10 @@ final class Transformers
     private function __construct()
     {
         $this->registerBuiltInTransformers();
+
+        usort($this->items, function (TransformerInterface $a, TransformerInterface $b) {
+            return Utils::cmpInt($b->getPriority(), $a->getPriority());
+        });
     }
 
     /**

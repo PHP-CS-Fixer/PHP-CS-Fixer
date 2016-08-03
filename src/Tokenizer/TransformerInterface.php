@@ -43,6 +43,15 @@ interface TransformerInterface
     public function getName();
 
     /**
+     * Returns the priority of the transformer.
+     *
+     * The default priority is 0 and higher priorities are executed first.
+     *
+     * @return int
+     */
+    public function getPriority();
+
+    /**
      * Return minimal required PHP version id to transform the code.
      *
      * Custom Token kinds from Transformers are always registered, but sometimes

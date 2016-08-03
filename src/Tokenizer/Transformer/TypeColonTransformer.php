@@ -36,6 +36,15 @@ class TypeColonTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // needs to run after ReturnRefTransformer and UseTransformer
+        return -1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRequiredPhpVersionId()
     {
         return 70000;
