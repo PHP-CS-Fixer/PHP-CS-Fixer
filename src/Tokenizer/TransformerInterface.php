@@ -34,7 +34,7 @@ interface TransformerInterface
     public function getCustomTokenNames();
 
     /**
-     * Return the name of the fixer.
+     * Return the name of the transformer.
      *
      * The name must be all lowercase and without any spaces.
      *
