@@ -26,10 +26,6 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess($source, array $expectedTokens = array())
     {
-        if (in_array('CT_MULTI_IMPORT_OPEN', $expectedTokens, true)) {
-            $this->markTestIncomplete('Implementation is not there yet');
-        }
-
         $this->doTest(
             $source,
             $expectedTokens,
@@ -44,8 +40,34 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                 'CT_DYNAMIC_VAR_BRACE_CLOSE',
                 'CT_ARRAY_INDEX_CURLY_BRACE_OPEN',
                 'CT_ARRAY_INDEX_CURLY_BRACE_CLOSE',
-                'CT_MULTI_IMPORT_OPEN',
-                'CT_MULTI_IMPORT_CLOSE',
+                'CT_GROUP_IMPORT_BRACE_OPEN',
+                'CT_GROUP_IMPORT_BRACE_CLOSE',
+            )
+        );
+    }
+
+    /**
+     * @dataProvider provideProcessCases70
+     * @requires PHP 7.0
+     */
+    public function testProcess70($source, array $expectedTokens = array())
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            array(
+                'T_CURLY_OPEN',
+                'CT_CURLY_CLOSE',
+                'T_DOLLAR_OPEN_CURLY_BRACES',
+                'CT_DOLLAR_CLOSE_CURLY_BRACES',
+                'CT_DYNAMIC_PROP_BRACE_OPEN',
+                'CT_DYNAMIC_PROP_BRACE_CLOSE',
+                'CT_DYNAMIC_VAR_BRACE_OPEN',
+                'CT_DYNAMIC_VAR_BRACE_CLOSE',
+                'CT_ARRAY_INDEX_CURLY_BRACE_OPEN',
+                'CT_ARRAY_INDEX_CURLY_BRACE_CLOSE',
+                'CT_GROUP_IMPORT_BRACE_OPEN',
+                'CT_GROUP_IMPORT_BRACE_CLOSE',
             )
         );
     }
@@ -167,11 +189,17 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                 ),
             ),
             array('<?php if (1) {} class Foo{ } function bar(){ }'),
+        );
+    }
+
+    public function provideProcessCases70()
+    {
+        return array(
             array(
                 '<?php use some\a\{ClassA, ClassB, ClassC as C};',
                 array(
-                    7 => 'CT_MULTI_IMPORT_OPEN',
-                    19 => 'CT_MULTI_IMPORT_CLOSE',
+                    7 => 'CT_GROUP_IMPORT_BRACE_OPEN',
+                    19 => 'CT_GROUP_IMPORT_BRACE_CLOSE',
                 ),
             ),
         );
