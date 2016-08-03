@@ -222,5 +222,4 @@ final class CurlyBraceTransformer extends AbstractTransformer
         $token->override(array(CT_GROUP_IMPORT_BRACE_OPEN, '{'));
         $closeToken->override(array(CT_GROUP_IMPORT_BRACE_CLOSE, '}'));
     }
-
 }
