@@ -1,0 +1,43 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-03T12:21:32Z
+
+Maybe I can prove the need for the merge white space tokens in the test of the fixer itself as well (the integration test proves it). Note to myself to check other fixers that call `clear` as well.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-03T13:12:18Z
+
+It would be great ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-03T17:28:07Z
+
+test added :)
+
+I'll check the other fixers later if I can find some time, which won't be soon...  so don't wait for it ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-03T19:56:32Z
+
+👍
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-04T11:17:47Z
+
+this should be it I think :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-04T11:28:03Z
+
+Nice!
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-04T12:11:15Z
+
+Great work !
