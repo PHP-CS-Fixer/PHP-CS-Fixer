@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-04T10:26:53Z
+
+👍
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-04T10:48:27Z
+
+:+1:
+
+(but why not leave nightly in with allow fail, then when 7.1 stable is released we will be testing 7.2 beta's and RC's out of the box...)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-04T10:50:44Z
+
+Little point. I'd recommend just adding in 7.2 in later on when we actually start to care.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-04T10:56:06Z
+
+exactly
+I add it as nightly instead of 7.1 as it was the only option to use 7.1 on travis back there
