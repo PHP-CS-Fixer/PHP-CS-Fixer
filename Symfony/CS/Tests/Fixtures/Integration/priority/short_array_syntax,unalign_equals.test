@@ -1,0 +1,14 @@
+--TEST--
+Integration of fixers: short_array_syntax,unalign_equals.
+--CONFIG--
+level=none
+fixers=short_array_syntax,unalign_equals
+--REQUIREMENTS--
+php=5.4
+--INPUT--
+<?php
+$a =  array  ();
+
+--EXPECT--
+<?php
+$a = [];
