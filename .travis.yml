@@ -14,7 +14,7 @@ matrix:
           env: SYMFONY_VERSION="~2.8"
         - php: 7.0
           env: LINT_TEST_CASES=1
-        - php: nightly
+        - php: 7.1
           env: LINT_TEST_CASES=1
         # Use the newer stack for HHVM as HHVM does not support Precise anymore since a long time and so Precise has an outdated version
         - php: hhvm-3.9
