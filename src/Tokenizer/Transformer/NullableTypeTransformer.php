@@ -55,10 +55,14 @@ class NullableTypeTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, $index)
     {
+        if (!$token->equals('?')) {
+            return;
+        }
+
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
         $prevToken = $tokens[$prevIndex];
 
-        if ($prevToken->equalsAny(array('(', ':', array(CT_TYPE_COLON)))) {
+        if ($prevToken->equalsAny(array('(', ',', array(CT_TYPE_COLON)))) {
             $token->override(array(CT_NULLABLE_TYPE, '?'));
         }
     }
