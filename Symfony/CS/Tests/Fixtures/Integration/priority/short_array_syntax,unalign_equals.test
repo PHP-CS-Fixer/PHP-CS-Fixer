@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: short_array_syntax,unalign_equals.test.
+Integration of fixers: short_array_syntax,unalign_equals.
 --CONFIG--
 level=none
 fixers=short_array_syntax,unalign_equals

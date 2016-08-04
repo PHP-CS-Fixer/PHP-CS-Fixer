@@ -53,7 +53,7 @@ class ShortArraySyntaxFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run before the UnalignEqualsFixer.
+        // should be run before the UnalignEqualsFixer and TernarySpacesFixer.
         return 1;
     }
 }
