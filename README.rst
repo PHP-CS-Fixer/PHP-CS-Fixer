@@ -648,6 +648,11 @@ Choose from the list of available fixers:
                         with preg. Warning! This could
                         change code behavior.
 
+* **function_typehint_default** [contrib]
+                        Function arguments with
+                        defaults should be typehinted.
+                        (Risky fixer!)
+
 * **header_comment** [contrib]
                         Add, replace or remove header
                         comment.
