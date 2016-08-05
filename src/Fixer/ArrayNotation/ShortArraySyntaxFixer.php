@@ -42,10 +42,10 @@ final class ShortArraySyntaxFixer extends AbstractFixer
             $openIndex = $tokens->getNextTokenOfKind($index, array('('));
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
-            $token->clear();
-
             $tokens->overrideAt($openIndex, array(CT_ARRAY_SQUARE_BRACE_OPEN, '['));
             $tokens->overrideAt($closeIndex, array(CT_ARRAY_SQUARE_BRACE_CLOSE, ']'));
+
+            $tokens->clearTokenAndMergeSurroundingWhitespace($index);
         }
     }
 
@@ -55,5 +55,14 @@ final class ShortArraySyntaxFixer extends AbstractFixer
     public function getDescription()
     {
         return 'PHP arrays should use the PHP 5.4 short-syntax.';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run before the UnalignEqualsFixer and TernarySpacesFixer.
+        return 1;
     }
 }
