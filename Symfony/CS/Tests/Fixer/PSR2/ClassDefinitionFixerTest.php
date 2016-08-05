@@ -207,6 +207,7 @@ class Aaa implements
 
     /**
      * @dataProvider provide54Cases
+     * @requires PHP 5.4
      */
     public function testFix54($expected, $input = null)
     {
@@ -215,10 +216,6 @@ class Aaa implements
 
     public function provide54Cases()
     {
-        if (!defined('T_TRAIT')) {
-            $this->markTestSkipped('Test requires traits.');
-        }
-
         return array(
             array(
             '<?php
