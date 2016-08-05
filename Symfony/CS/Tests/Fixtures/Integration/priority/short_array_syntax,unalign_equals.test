@@ -5,10 +5,10 @@ level=none
 fixers=short_array_syntax,unalign_equals
 --REQUIREMENTS--
 php=5.4
---INPUT--
-<?php
-$a =  array  ();
-
 --EXPECT--
 <?php
 $a = [];
+
+--INPUT--
+<?php
+$a =  array  ();
