@@ -394,6 +394,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
     /**
      * @dataProvider provide54Cases
+     * @requires PHP 5.4
      */
     public function testFix54($expected, $input = null)
     {
@@ -402,10 +403,6 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
     public function provide54Cases()
     {
-        if (!defined('T_TRAIT')) {
-            $this->markTestSkipped('Test requires traits.');
-        }
-
         return array(
             array(
                 '<?php
@@ -423,7 +420,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provide54Cases
+     * @dataProvider provide55Cases
+     * @requires PHP 5.5
      */
     public function testFix55($expected, $input = null)
     {
