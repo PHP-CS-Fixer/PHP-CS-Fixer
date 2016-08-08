@@ -545,7 +545,7 @@ Choose from the list of available fixers:
 * **ordered_imports**
                          Ordering use statements.
 
-* **php_unit_construct**
+* **php_unit_construct** [@Symfony:risky]
                          PHPUnit assertion method
                          calls like
                          "->assertSame(true, $foo)"
@@ -554,7 +554,7 @@ Choose from the list of available fixers:
                          "->assertTrue($foo)". (Risky
                          fixer!)
 
-* **php_unit_dedicate_assert**
+* **php_unit_dedicate_assert** [@Symfony:risky]
                          PHPUnit assertions like
                          "assertInternalType",
                          "assertFileExists", should be
@@ -714,7 +714,7 @@ Choose from the list of available fixers:
                          "(double)" and "(real)" as
                          "(float)".
 
-* **silenced_deprecation_error**
+* **silenced_deprecation_error** [@Symfony:risky]
                          Ensures deprecation notices
                          are silenced. (Risky fixer!)
 

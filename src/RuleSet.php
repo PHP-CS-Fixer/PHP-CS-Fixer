@@ -122,6 +122,11 @@ final class RuleSet implements RuleSetInterface
             'unary_operator_spaces' => true,
             'whitespace_after_comma_in_array' => true,
         ),
+        '@Symfony:risky' => array(
+            'php_unit_construct' => true,
+            'php_unit_dedicate_assert' => true,
+            'silenced_deprecation_error' => true,
+        ),
     );
 
     /**
