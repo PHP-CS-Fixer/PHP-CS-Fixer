@@ -1,0 +1,215 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-14T14:56:00Z
+
+I would like a fixer to remove all silences (highly risky), but the other way around? not so sure...
+
+Anyway looking at the implementation I would like to give some pointers.
+Finding the cases is not very efficiently done, something like this is faster;
+```php
+for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+    $token = $tokens[$index];
+    if (!$token->isGivenKind(T_STRING) || 'trigger_error' !== $token->getContent()) {
+        continue;
+    }
+
+    // fixing logic
+}
+```
+
+Looking directly around the token candidate using `+1` and `-1` offset causes missed case like;
+```php
+<?php /**/trigger_error/**/(/**/'',/**/    E_USER_DEPRECATED  /**/ ); ?>
+```
+
+using something like `$tokens->getNextMeaningfulToken` and `$tokens->getPrevMeaningfulToken` will help you.
+...and there is no need to use a description as key for the return test cases ;)
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2016-07-14T15:05:53Z
+
+Ok @SpacePossum, thanks for the review, I work on it :)
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2016-07-14T15:16:59Z
+
+@SpacePossum I've addressed your comments.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-14T16:23:50Z
+
+don't call `getContent` to compare token's content
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2016-07-14T17:20:11Z
+
+@keradus I don't get what you mean.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-14T17:36:54Z
+
+>don't call getContent to compare token's content
+
+Means that is not the best way to check if a token is what you want. Test a token based on its type (if possible, most of them can) using `Token::getType`. Next if you want to know if the content matches _as well_ use `Token:equals`. Check out the PHPDoc of last method, it will help you :)
+(the most powerful and useful for you case it that the `equals` method also has a `$caseSensitive` flag, so you can catch `triGgEr_erRor` and such).
+Please add cases with white space, casing and comment variations and you see for yourself :)
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2016-07-14T18:12:05Z
+
+@SpacePossum ok thanks!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-15T07:56:27Z
+
+Thanks for all the work and time you spend on this fixer.
+Looking at the fixer it will silence errors (which is risky as it will change the behavior of the code) for calls to `trigger_error` while that functions' only responsibility is to trigger an error. You might as well remove the whole `trigger_error` statement. Silencing errors can be done using other PHP functionality, which imo would be better than using a CS fixer to modify the code.
+I see no use case for this fixer and I doubt the Symfony community does, therefor I'm -1 on adding it to the code base.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-15T08:21:04Z
+
+Symfony **does** silent `E_USER_DEPRECATED` error (and not others, as stated in this PR).
+As for regular usage of application you don't want to be noticed by that.
+Then, in PHPUnit Symfony play with this error: https://github.com/symfony/phpunit-bridge/blob/master/DeprecationErrorHandler.php
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-20T21:52:12Z
+
+any news here ?
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2016-07-21T07:21:59Z
+
+@keradus I've missed the time, I'll finish it this week-end. Thanks!
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2016-07-24T09:22:12Z
+
+Ok I've updated using `equals` and removed the duplicated test. Thanks for your reviews!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-24T10:10:56Z
+
+since `trigger_error` is a function, do we want to detect namespaced versions as well?
+i.e.:
+```php
+<?php
+\trigger_error("This is a deprecation warning.", E_USER_DEPRECATED);
+
+\A\B\trigger_error("This is a deprecation warning.", E_USER_DEPRECATED);  // false positive ATM
+?>
+```
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2016-07-24T10:13:03Z
+
+>since trigger_error is a function, do we want to detect namespaced versions as well?
+
+I think we should remain in the symfony scope.
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2016-07-24T11:45:47Z
+
+Comments addressed :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-07-24T12:27:48Z
+
+This fixer must be marked as risky surely. Also, trigger_error could be locally defined too?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-26T18:44:32Z
+
+>This fixer must be marked as risky surely.
+
+:+1:
+
+>could be locally defined too?
+
+it can, so checking and not fixing something like `\A\B\trigger_error(...)` would be nice (i.e. less false positives and less risky)
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2016-07-26T20:59:20Z
+
+I've updated to handle namespaced calls.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-26T21:20:05Z
+
+Looking good, time to wrap it up :)
+
+Please sort the public methods alphabetical and as last add an empty line between the `if` statements (around line 47).
+
+:+1:
+
+Note @ keradus, on the master line this fixer must be marked as risky and therefor needs a re-gen of the readme ;)
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2016-07-26T21:24:52Z
+
+@SpacePossum Done, thanks for your reviews :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-26T22:23:05Z
+
+LGTM :)
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-27T09:41:44Z
+
+> Note @ keradus, on the master line this fixer must be marked as risky and therefor needs a re-gen of the readme ;)
+
+Then `Warning! This could change code behavior.` is missing from fixer descr
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-27T09:51:21Z
+
+Oh, I thought it was added automatically during the readme generation when a fixer is risky.. silly me ;)
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2016-07-27T10:08:07Z
+
+@keradus fixed.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-27T10:12:50Z
+
+@SpacePossum , on 2.x it is. but if we say it's a risky fixer on 1.x we need to handle it manually.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-27T10:14:14Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-27T10:22:10Z
+
+:+1:
