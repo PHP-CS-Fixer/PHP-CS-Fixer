@@ -164,6 +164,86 @@ preg_replace_callback(
     }
 
     /**
+     * @dataProvider provideIsLambdaCases70
+     * @requires PHP 7.0
+     */
+    public function testIsLambda70($source, array $expected)
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $expectedValue) {
+            $this->assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
+        }
+    }
+
+    public function provideIsLambdaCases70()
+    {
+        return array(
+            array(
+                '<?php
+                    $a = function (): array {
+                        return [];
+                    };',
+                array(6 => true),
+            ),
+            array(
+                '<?php
+                    function foo (): array {
+                        return [];
+                    };',
+                array(2 => false),
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideIsLambdaCases71
+     * @requires PHP 7.1
+     */
+    public function testIsLambda71($source, array $expected)
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $expectedValue) {
+            $this->assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
+        }
+    }
+
+    public function provideIsLambdaCases71()
+    {
+        return array(
+            array(
+                '<?php
+                    $a = function (): void {
+                        return [];
+                    };',
+                array(6 => true),
+            ),
+            array(
+                '<?php
+                    function foo (): void {
+                        return [];
+                    };',
+                array(2 => false),
+            ),
+            array(
+                '<?php
+                    $a = function (): ?int {
+                        return [];
+                    };',
+                array(6 => true),
+            ),
+            array(
+                '<?php
+                    function foo (): ?int {
+                        return [];
+                    };',
+                array(2 => false),
+            ),
+        );
+    }
+
+    /**
      * @dataProvider provideIsUnarySuccessorOperator
      */
     public function testIsUnarySuccessorOperator($source, array $expected)
