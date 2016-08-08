@@ -551,6 +551,11 @@ Choose from the list of available fixers:
                         "(double)" and "(real)" as
                         "(float)".
 
+* **silenced_deprecation_error** [symfony]
+                        Ensures deprecation notices
+                        are silenced. Warning! This
+                        could change code behavior.
+
 * **single_array_no_trailing_comma** [symfony]
                         PHP single-line arrays should
                         not have trailing comma.
