@@ -714,6 +714,10 @@ Choose from the list of available fixers:
                          "(double)" and "(real)" as
                          "(float)".
 
+* **silenced_deprecation_error**
+                         Ensures deprecation notices
+                         are silenced. (Risky fixer!)
+
 * **simplified_null_return**
                          A return statement wishing to
                          return nothing should be
