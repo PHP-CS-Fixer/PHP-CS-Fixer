@@ -12,13 +12,13 @@
 
 namespace PhpCsFixer\Fixer\Alias;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
-final class MbStrFunctionsFixer extends AbstractFixer
+final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
 {
     /**
      * @var array the list of the string-related function names and their mb_ equivalent
@@ -59,41 +59,22 @@ final class MbStrFunctionsFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $end = $tokens->count() - 1;
-
-        foreach (self::$functions as $originalName => $mbFunctionName) {
-            // the sequence is the function name, followed by "(" and a quoted string
-            $seq = array(array(T_STRING, $originalName), '(');
-
+        foreach (self::$functions as $functionIdentity => $newName) {
             $currIndex = 0;
             while (null !== $currIndex) {
-                $match = $tokens->findSequence($seq, $currIndex, $end, false);
-
-                // did we find a match?
-                if (null === $match) {
-                    break;
+                // try getting function reference and translate boundaries for humans
+                $boundaries = $this->find($functionIdentity, $tokens, $currIndex, $tokens->count() - 1);
+                if (null === $boundaries) {
+                    // next function search, as current one not found
+                    continue 2;
                 }
 
-                // findSequence also returns the tokens, but we're only interested in the indexes, i.e.:
-                // 0 => function name,
-                // 1 => bracket "("
-                $match = array_keys($match);
+                list($functionName, $openParenthesis) = $boundaries;
 
-                // advance tokenizer cursor
-                $currIndex = $match[1];
+                // analysing cursor shift, so nested calls could be processed
+                $currIndex = $openParenthesis;
 
-                // ensure it's a function call (not a method / static call)
-                $prev = $tokens->getPrevMeaningfulToken($match[0]);
-                if (null === $prev || $tokens[$prev]->isGivenKind(array(T_OBJECT_OPERATOR, T_DOUBLE_COLON, T_NEW))) {
-                    continue;
-                }
-                $prev = $tokens->getPrevMeaningfulToken($prev);
-                if ($tokens[$prev]->isGivenKind(array(T_STRING))) {
-                    continue;
-                }
-
-                // modify function and argument
-                $tokens[$match[0]]->setContent($mbFunctionName);
+                $tokens[$functionName]->setContent($newName);
             }
         }
     }
@@ -103,6 +84,6 @@ final class MbStrFunctionsFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Replace non multibyte-safe functions with corresponding mb function. Warning! This could change code behavior.';
+        return 'Replace non multibyte-safe functions with corresponding mb function.';
     }
 }
