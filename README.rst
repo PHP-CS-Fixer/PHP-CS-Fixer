@@ -336,6 +336,13 @@ Choose from the list of available fixers:
                          PHP keywords MUST be in lower
                          case.
 
+* **mb_str_functions**
+                         Replace non multibyte-safe
+                         functions with corresponding
+                         mb function. Warning! This
+                         could change code behavior.
+                         (Risky fixer!)
+
 * **method_argument_space** [@PSR2, @Symfony]
                          In method arguments and
                          method call, there MUST NOT
