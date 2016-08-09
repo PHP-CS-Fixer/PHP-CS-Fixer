@@ -647,6 +647,12 @@ Choose from the list of available fixers:
                         $strict param. Warning! This
                         could change code behavior.
 
+* **two_empty_lines** [contrib]
+                        Add two empty lines between
+                        class elements with different
+                        visibility or type and between
+                        methods.
+
 
 The ``--config`` option customizes the files to analyse, based
 on some well-known directory structures:
