@@ -17,7 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
-class MbStrFunctionsFixer extends AbstractFixer
+final class MbStrFunctionsFixer extends AbstractFixer
 {
     /**
      * @var array the list of the string-related function names and their mb_ equivalent
