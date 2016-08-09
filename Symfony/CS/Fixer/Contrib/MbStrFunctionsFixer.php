@@ -68,7 +68,11 @@ final class MbStrFunctionsFixer extends AbstractFixer
 
                 // ensure it's a function call (not a method / static call)
                 $prev = $tokens->getPrevMeaningfulToken($match[0]);
-                if (null === $prev || $tokens[$prev]->isGivenKind(array(T_OBJECT_OPERATOR, T_DOUBLE_COLON))) {
+                if (null === $prev || $tokens[$prev]->isGivenKind(array(T_OBJECT_OPERATOR, T_DOUBLE_COLON, T_NEW))) {
+                    continue;
+                }
+                $prev = $tokens->getPrevMeaningfulToken($prev);
+                if ($tokens[$prev]->isGivenKind(array(T_STRING))) {
                     continue;
                 }
 

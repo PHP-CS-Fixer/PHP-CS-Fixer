@@ -33,6 +33,10 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestBase
         return array(
             array('<?php $x = "strlen";'),
             array('<?php $x = Foo::strlen("bar");'),
+            array('<?php $x = new strlen("bar");'),
+            array('<?php $x = new Foo\strlen("bar");'),
+            array('<?php $x = Foo\strlen("bar");'),
+            array('<?php $x = strlen::call("bar");'),
             array('<?php $x = $foo->strlen("bar");'),
 
             array('<?php $x = mb_strlen("bar");', '<?php $x = strlen("bar");'),
