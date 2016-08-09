@@ -1,5 +1,5 @@
 {
-    "name": "fabpot/php-cs-fixer",
+    "name": "friendsofphp/php-cs-fixer",
     "type": "application",
     "description": "A tool to automatically fix PHP code style",
     "license": "MIT",
