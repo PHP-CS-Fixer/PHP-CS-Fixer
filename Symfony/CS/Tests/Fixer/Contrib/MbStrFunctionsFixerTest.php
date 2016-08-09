@@ -34,6 +34,9 @@ class MbStrFunctionsFixerTest extends AbstractFixerTestBase
             array('<?php $x = $foo->strlen("bar");'),
 
             array('<?php $x = mb_strlen("bar");', '<?php $x = strlen("bar");'),
+            array('<?php $x = \mb_strlen("bar");', '<?php $x = \strlen("bar");'),
+            array('<?php $x = mb_strtolower( \mb_strstr ("bar"));', '<?php $x = strtolower( \strstr ("bar"));'),
+            array('<?php $x = mb_substr("bar", 2, 1);', '<?php $x = substr("bar", 2, 1);'),
         );
     }
 }
