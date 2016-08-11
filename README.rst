@@ -620,6 +620,9 @@ Choose from the list of available rules:
 * **ternary_operator_spaces** [@Symfony]
    | Standardize spaces around ternary operator.
 
+* **ternary_to_null_coalescing**
+   | Use null coalescing operator ``??`` wherever possible.
+
 * **trailing_comma_in_multiline_array** [@Symfony]
    | PHP multi-line arrays should have a trailing comma.
 
