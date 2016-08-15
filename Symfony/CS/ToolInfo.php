@@ -20,7 +20,7 @@ namespace Symfony\CS;
 class ToolInfo
 {
     const COMPOSER_INSTALLED_FILE = '/../../composer/installed.json';
-    const COMPOSER_PACKAGE_NAME = 'fabpot/php-cs-fixer';
+    const COMPOSER_PACKAGE_NAME = 'friendsofphp/php-cs-fixer';
 
     public static function getComposerVersion()
     {
