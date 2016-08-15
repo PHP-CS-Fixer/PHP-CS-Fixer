@@ -54,6 +54,12 @@ To install PHP-CS-Fixer, install Composer and issue the following command:
 
 .. code-block:: bash
 
+    $ ./composer.phar global require friendsofphp/php-cs-fixer
+
+Please be aware that before v1.12 package name was different:
+
+.. code-block:: bash
+
     $ ./composer.phar global require fabpot/php-cs-fixer
 
 Then make sure you have ``~/.composer/vendor/bin`` in your ``PATH`` and
@@ -102,7 +108,7 @@ You can update ``php-cs-fixer`` through this command:
 
 .. code-block:: bash
 
-    $ ./composer.phar global update fabpot/php-cs-fixer
+    $ ./composer.phar global update friendsofphp/php-cs-fixer
 
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
