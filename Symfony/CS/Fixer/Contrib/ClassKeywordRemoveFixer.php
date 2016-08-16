@@ -39,6 +39,14 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Converts ::class keywords to FQCN strings.';
+    }
+
+    /**
      * Replaces ::class keyword, namespace by namespace.
      *
      * It uses recursive method to get rid of token index changes.
@@ -190,13 +198,5 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
             array_slice($classImportArray, 0, $classImportLength - $classStringLength + 1),
             $classStringArray
         ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Converts ::class keywords to FQCN strings.';
     }
 }

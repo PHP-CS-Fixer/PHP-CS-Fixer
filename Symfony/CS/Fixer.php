@@ -302,15 +302,6 @@ class Fixer
         return $fixInfo;
     }
 
-    private function getFileRelativePathname(\SplFileInfo $file)
-    {
-        if ($file instanceof SymfonySplFileInfo) {
-            return $file->getRelativePathname();
-        }
-
-        return $file->getPathname();
-    }
-
     public static function getLevelAsString(FixerInterface $fixer)
     {
         $level = $fixer->getLevel();
@@ -336,51 +327,6 @@ class Fixer
         }
 
         return 'symfony';
-    }
-
-    /**
-     * @deprecated Will be removed in the 2.0
-     *
-     * @param string $old
-     * @param string $new
-     *
-     * @return string
-     */
-    protected function stringDiff($old, $new)
-    {
-        return $this->diff->diff($old, $new);
-    }
-
-    /**
-     * @param FixerInterface[] $fixers
-     *
-     * @return FixerInterface[]
-     */
-    private function sortFixers(array $fixers)
-    {
-        usort($fixers, function (FixerInterface $a, FixerInterface $b) {
-            return Utils::cmpInt($b->getPriority(), $a->getPriority());
-        });
-
-        return $fixers;
-    }
-
-    /**
-     * @param ConfigInterface $config
-     *
-     * @return FixerInterface[]
-     */
-    private function prepareFixers(ConfigInterface $config)
-    {
-        $fixers = $config->getFixers();
-
-        foreach ($fixers as $fixer) {
-            if ($fixer instanceof ConfigAwareInterface) {
-                $fixer->setConfig($config);
-            }
-        }
-
-        return $fixers;
     }
 
     /**
@@ -421,5 +367,59 @@ class Fixer
     public function setStopwatch(Stopwatch $stopwatch = null)
     {
         $this->stopwatch = $stopwatch;
+    }
+
+    /**
+     * @deprecated Will be removed in the 2.0
+     *
+     * @param string $old
+     * @param string $new
+     *
+     * @return string
+     */
+    protected function stringDiff($old, $new)
+    {
+        return $this->diff->diff($old, $new);
+    }
+
+    private function getFileRelativePathname(\SplFileInfo $file)
+    {
+        if ($file instanceof SymfonySplFileInfo) {
+            return $file->getRelativePathname();
+        }
+
+        return $file->getPathname();
+    }
+
+    /**
+     * @param FixerInterface[] $fixers
+     *
+     * @return FixerInterface[]
+     */
+    private function sortFixers(array $fixers)
+    {
+        usort($fixers, function (FixerInterface $a, FixerInterface $b) {
+            return Utils::cmpInt($b->getPriority(), $a->getPriority());
+        });
+
+        return $fixers;
+    }
+
+    /**
+     * @param ConfigInterface $config
+     *
+     * @return FixerInterface[]
+     */
+    private function prepareFixers(ConfigInterface $config)
+    {
+        $fixers = $config->getFixers();
+
+        foreach ($fixers as $fixer) {
+            if ($fixer instanceof ConfigAwareInterface) {
+                $fixer->setConfig($config);
+            }
+        }
+
+        return $fixers;
     }
 }

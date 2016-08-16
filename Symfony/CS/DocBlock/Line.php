@@ -37,6 +37,16 @@ class Line
     }
 
     /**
+     * Get the string representation of object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->content;
+    }
+
+    /**
      * Get the content of this line.
      *
      * @return int
@@ -124,15 +134,5 @@ class Line
         preg_match_all('/\ *\*/', $this->content, $matches);
 
         $this->content .= $matches[0][0]."\n";
-    }
-
-    /**
-     * Get the string representation of object.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->content;
     }
 }
