@@ -17,6 +17,7 @@ use Symfony\CS\ErrorsManager;
 use Symfony\CS\FileCacheManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
+use Symfony\CS\ShutdownFileRemoval;
 
 /**
  * Integration test base class.
@@ -54,10 +55,13 @@ use Symfony\CS\FixerInterface;
 abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
 {
     private static $builtInFixers;
+    private static $shutdownFileRemoval;
 
     public static function setUpBeforeClass()
     {
         $tmpFile = static::getTempFile();
+        self::$shutdownFileRemoval = new ShutdownFileRemoval();
+        self::$shutdownFileRemoval->attach($tmpFile);
         if (!is_file($tmpFile)) {
             $dir = dirname($tmpFile);
             if (!is_dir($dir)) {
@@ -69,7 +73,9 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
 
     public static function tearDownAfterClass()
     {
-        @unlink(static::getTempFile());
+        $tmpFile = static::getTempFile();
+        @unlink($tmpFile);
+        self::$shutdownFileRemoval->detach($tmpFile);
     }
 
     /**
