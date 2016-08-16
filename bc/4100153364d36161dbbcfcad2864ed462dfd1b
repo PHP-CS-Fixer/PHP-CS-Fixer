@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-09T19:33:08Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-09T19:33:55Z
+
+Do we need an overall integration test for this ruleset?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-10T09:15:15Z
+
+Symfony integration tests was created on 1.x line with the following reasoning:
+- oh boy, we have so many fixers, some of them may conflicts one another ! or have priority issues ! we don't know
+- we have priority tests, but only for those we know that should be in given order
+- let us create a big integration tests with a lot of fixers
+- oh, most of the fixers are inside Symfony ruleset, let us use it!
+
+So the reasoning was to test most fixers, not to test Symfony ruleset.
+
+Here, the case is different - only 3 rules
