@@ -6,13 +6,13 @@ matrix:
     fast_finish: true
     include:
         - php: 5.3
-          env: DEPLOY=yes COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
+          env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
         - php: 5.4
         - php: 5.5
         - php: 5.6
           env: SYMFONY_VERSION="~2.7"
         - php: 5.6
-          env: SYMFONY_VERSION="~3.0@dev" COMPOSER_FLAGS="--prefer-stable"
+          env: DEPLOY=yes SYMFONY_VERSION="~3.0@dev" COMPOSER_FLAGS="--prefer-stable"
         - php: 7.0
         # Use the newer stack for HHVM as HHVM does not support Precise anymore since a long time and so Precise has an outdated version
         - php: hhvm-3.9
@@ -46,9 +46,15 @@ after_success:
     - php vendor/bin/coveralls -v
 
 before_deploy:
-    - 'sed -i "s/^{/\{\n    \"config\": {\"platform\": {\"php\": \"5.3.6\"}},/" composer.json'
+    # install box2
     - curl -LSs http://box-project.github.io/box2/installer.php | php
+    - php box.phar --version
+    # ensure that deps will work on lowest supported PHP version
+    - |
+      sed -i 's#"config":\s*{#"config": {\n        "platform": {"php": "5.3.6"},#' composer.json
+    # update deps to highest possible for lowest supported PHP version
     - composer update --no-dev --no-interaction --optimize-autoloader --prefer-stable
+    # build phar file
     - php -d phar.readonly=false box.phar build
 
 deploy:
