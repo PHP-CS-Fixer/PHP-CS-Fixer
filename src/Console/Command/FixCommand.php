@@ -415,53 +415,6 @@ EOF
         );
     }
 
-    /**
-     * @param bool $isDryRun
-     * @param bool $hasChangedFiles
-     * @param bool $hasInvalidErrors
-     * @param bool $hasExceptionErrors
-     *
-     * @return int
-     */
-    private function calculateExitStatus($isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors)
-    {
-        $exitStatus = 0;
-
-        if ($isDryRun) {
-            if ($hasChangedFiles) {
-                $exitStatus |= self::EXIT_STATUS_FLAG_HAS_CHANGED_FILES;
-            }
-
-            if ($hasInvalidErrors) {
-                $exitStatus |= self::EXIT_STATUS_FLAG_HAS_INVALID_FILES;
-            }
-        }
-
-        if ($hasExceptionErrors) {
-            $exitStatus |= self::EXIT_STATUS_FLAG_EXCEPTION_IN_APP;
-        }
-
-        return $exitStatus;
-    }
-
-    /**
-     * @param OutputInterface $output
-     * @param string          $process
-     * @param Error[]         $errors
-     */
-    private function listErrors(OutputInterface $output, $process, array $errors)
-    {
-        $output->writeln('');
-        $output->writeln(sprintf(
-            'Files that were not fixed due to errors reported during %s:',
-            $process
-        ));
-
-        foreach ($errors as $i => $error) {
-            $output->writeln(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
-        }
-    }
-
     protected function getFixersHelp()
     {
         $help = '';
@@ -528,5 +481,52 @@ EOF
         }
 
         return $help;
+    }
+
+    /**
+     * @param bool $isDryRun
+     * @param bool $hasChangedFiles
+     * @param bool $hasInvalidErrors
+     * @param bool $hasExceptionErrors
+     *
+     * @return int
+     */
+    private function calculateExitStatus($isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors)
+    {
+        $exitStatus = 0;
+
+        if ($isDryRun) {
+            if ($hasChangedFiles) {
+                $exitStatus |= self::EXIT_STATUS_FLAG_HAS_CHANGED_FILES;
+            }
+
+            if ($hasInvalidErrors) {
+                $exitStatus |= self::EXIT_STATUS_FLAG_HAS_INVALID_FILES;
+            }
+        }
+
+        if ($hasExceptionErrors) {
+            $exitStatus |= self::EXIT_STATUS_FLAG_EXCEPTION_IN_APP;
+        }
+
+        return $exitStatus;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param string          $process
+     * @param Error[]         $errors
+     */
+    private function listErrors(OutputInterface $output, $process, array $errors)
+    {
+        $output->writeln('');
+        $output->writeln(sprintf(
+            'Files that were not fixed due to errors reported during %s:',
+            $process
+        ));
+
+        foreach ($errors as $i => $error) {
+            $output->writeln(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
+        }
     }
 }

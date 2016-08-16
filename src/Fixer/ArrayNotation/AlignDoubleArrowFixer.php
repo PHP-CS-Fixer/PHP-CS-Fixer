@@ -23,14 +23,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class AlignDoubleArrowFixer extends AbstractAlignFixer
 {
     /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOUBLE_ARROW);
-    }
-
-    /**
      * Level counter of the current nest level.
      * So one level alignments are not mixed with
      * other level ones.
@@ -38,6 +30,14 @@ final class AlignDoubleArrowFixer extends AbstractAlignFixer
      * @var int
      */
     private $currentLevel;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOUBLE_ARROW);
+    }
 
     /**
      * {@inheritdoc}

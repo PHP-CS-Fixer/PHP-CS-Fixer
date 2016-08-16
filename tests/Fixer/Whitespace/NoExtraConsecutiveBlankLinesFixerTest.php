@@ -146,22 +146,6 @@ EOF;
         return $tests;
     }
 
-    private function removeLinesFromString($input, array $lineNumbers)
-    {
-        sort($lineNumbers);
-        $lines = explode("\n", $input);
-        $lineCount = count($lines);
-        foreach ($lineNumbers as $lineNumber) {
-            --$lineNumber;
-            if ($lineNumber < 0 || $lineNumber > $lineCount) {
-                throw new \InvalidArgumentException(sprintf('Line number "%d" out of range (0 - %d).', ++$lineNumber, $lineCount));
-            }
-            unset($lines[$lineNumber]);
-        }
-
-        return implode("\n", $lines);
-    }
-
     public function testFix()
     {
         $expected = <<<'EOF'
@@ -649,5 +633,21 @@ $a = new Qux();',
                 "<?php throw new \\Exception('do not import');\n\n",
             ),
         );
+    }
+
+    private function removeLinesFromString($input, array $lineNumbers)
+    {
+        sort($lineNumbers);
+        $lines = explode("\n", $input);
+        $lineCount = count($lines);
+        foreach ($lineNumbers as $lineNumber) {
+            --$lineNumber;
+            if ($lineNumber < 0 || $lineNumber > $lineCount) {
+                throw new \InvalidArgumentException(sprintf('Line number "%d" out of range (0 - %d).', ++$lineNumber, $lineCount));
+            }
+            unset($lines[$lineNumber]);
+        }
+
+        return implode("\n", $lines);
     }
 }

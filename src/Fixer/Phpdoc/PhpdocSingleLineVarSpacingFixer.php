@@ -56,6 +56,23 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Single line @var PHPDoc should have proper spacing.';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be ran after the PhpdocTypeToVarFixer.
+        return -10;
+    }
+
+    /**
      * @param string $content
      *
      * @return string
@@ -78,22 +95,5 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
             },
             $content
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Single line @var PHPDoc should have proper spacing.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // should be ran after the PhpdocTypeToVarFixer.
-        return -10;
     }
 }

@@ -20,11 +20,6 @@ final class AccessibleObject
     private $object;
     private $reflection;
 
-    public static function create($object)
-    {
-        return new self($object);
-    }
-
     /**
      * @param object $object
      */
@@ -79,5 +74,10 @@ final class AccessibleObject
         $property->setAccessible(true);
 
         $property->setValue($this->object, $value);
+    }
+
+    public static function create($object)
+    {
+        return new self($object);
     }
 }

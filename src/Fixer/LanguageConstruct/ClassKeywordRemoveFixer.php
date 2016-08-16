@@ -23,6 +23,11 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class ClassKeywordRemoveFixer extends AbstractFixer
 {
     /**
+     * @var string[]
+     */
+    private $imports = array();
+
+    /**
      * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
@@ -31,16 +36,19 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
     }
 
     /**
-     * @var string[]
-     */
-    private $imports = array();
-
-    /**
      * {@inheritdoc}
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $this->replaceClassKeywords($tokens);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Converts ::class keywords to FQCN strings.';
     }
 
     /**
@@ -196,13 +204,5 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
             array_slice($classImportArray, 0, $classImportLength - $classStringLength + 1),
             $classStringArray
         ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Converts ::class keywords to FQCN strings.';
     }
 }

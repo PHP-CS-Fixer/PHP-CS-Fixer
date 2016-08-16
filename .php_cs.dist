@@ -19,6 +19,7 @@ return PhpCsFixer\Config::create()
         'long_array_syntax' => true,
         'no_useless_else' => true,
         'no_useless_return' => true,
+        'ordered_class_elements' => true,
         'ordered_imports' => true,
         'php_unit_construct' => true,
         'php_unit_dedicate_assert' => true,

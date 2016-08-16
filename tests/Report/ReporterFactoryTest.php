@@ -34,14 +34,6 @@ final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($builder, $testInstance);
     }
 
-    private function createReporterMock($format)
-    {
-        $report = $this->getMockBuilder('PhpCsFixer\Report\ReporterInterface')->getMock();
-        $report->expects($this->any())->method('getFormat')->willReturn($format);
-
-        return $report;
-    }
-
     public function testRegisterBuiltInReports()
     {
         $builder = new ReporterFactory();
@@ -92,5 +84,13 @@ final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
         $builder = new ReporterFactory();
 
         $builder->getReporter('non_registered_format');
+    }
+
+    private function createReporterMock($format)
+    {
+        $report = $this->getMockBuilder('PhpCsFixer\Report\ReporterInterface')->getMock();
+        $report->expects($this->any())->method('getFormat')->willReturn($format);
+
+        return $report;
     }
 }

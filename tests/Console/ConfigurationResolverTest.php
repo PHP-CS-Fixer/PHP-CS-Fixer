@@ -90,15 +90,6 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('foo', $property);
     }
 
-    protected function makeFixersTest($expectedFixers, $resolvedFixers)
-    {
-        $this->assertCount(count($expectedFixers), $resolvedFixers);
-
-        foreach ($expectedFixers as $fixer) {
-            $this->assertContains($fixer, $resolvedFixers);
-        }
-    }
-
     public function testResolveFixersReturnsEmptyArrayByDefault()
     {
         $this->makeFixersTest(array(), $this->resolver->getFixers());
@@ -748,6 +739,15 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ),
             $this->resolver->getRules()
         );
+    }
+
+    protected function makeFixersTest($expectedFixers, $resolvedFixers)
+    {
+        $this->assertCount(count($expectedFixers), $resolvedFixers);
+
+        foreach ($expectedFixers as $fixer) {
+            $this->assertContains($fixer, $resolvedFixers);
+        }
     }
 
     private function assertSameRules(array $expected, array $actual, $message = '')

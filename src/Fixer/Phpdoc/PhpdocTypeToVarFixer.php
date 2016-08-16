@@ -23,6 +23,14 @@ final class PhpdocTypeToVarFixer extends AbstractProxyFixer
     /**
      * {@inheritdoc}
      */
+    public function getDescription()
+    {
+        return '@type should always be written as @var.';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function createProxyFixer()
     {
         $fixer = new GeneralPhpdocAnnotationRenameFixer();
@@ -31,13 +39,5 @@ final class PhpdocTypeToVarFixer extends AbstractProxyFixer
         ));
 
         return $fixer;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return '@type should always be written as @var.';
     }
 }

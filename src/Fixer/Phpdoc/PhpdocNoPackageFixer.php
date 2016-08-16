@@ -23,19 +23,19 @@ final class PhpdocNoPackageFixer extends AbstractProxyFixer
     /**
      * {@inheritdoc}
      */
+    public function getDescription()
+    {
+        return '@package and @subpackage annotations should be omitted from phpdocs.';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function createProxyFixer()
     {
         $fixer = new GeneralPhpdocAnnotationRemoveFixer();
         $fixer->configure(array('package', 'subpackage'));
 
         return $fixer;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return '@package and @subpackage annotations should be omitted from phpdocs.';
     }
 }

@@ -94,30 +94,6 @@ final class Runner
     }
 
     /**
-     * @param ConfigInterface $config
-     * @param bool            $isDryRun
-     *
-     * @return CacheManagerInterface
-     */
-    private function createCacheManager(ConfigInterface $config, $isDryRun)
-    {
-        if ($config->usingCache() && (ToolInfo::isInstalledAsPhar() || ToolInfo::isInstalledByComposer())) {
-            return new FileCacheManager(
-                new FileHandler($config->getCacheFile()),
-                new Signature(
-                    PHP_VERSION,
-                    ToolInfo::getVersion(),
-                    $config->usingLinter(),
-                    $config->getRules()
-                ),
-                $isDryRun
-            );
-        }
-
-        return new NullCacheManager();
-    }
-
-    /**
      * @return array
      */
     public function fix()
@@ -150,6 +126,30 @@ final class Runner
         }
 
         return $changed;
+    }
+
+    /**
+     * @param ConfigInterface $config
+     * @param bool            $isDryRun
+     *
+     * @return CacheManagerInterface
+     */
+    private function createCacheManager(ConfigInterface $config, $isDryRun)
+    {
+        if ($config->usingCache() && (ToolInfo::isInstalledAsPhar() || ToolInfo::isInstalledByComposer())) {
+            return new FileCacheManager(
+                new FileHandler($config->getCacheFile()),
+                new Signature(
+                    PHP_VERSION,
+                    ToolInfo::getVersion(),
+                    $config->usingLinter(),
+                    $config->getRules()
+                ),
+                $isDryRun
+            );
+        }
+
+        return new NullCacheManager();
     }
 
     private function fixFile(\SplFileInfo $file, LintingResultInterface $lintingResult)

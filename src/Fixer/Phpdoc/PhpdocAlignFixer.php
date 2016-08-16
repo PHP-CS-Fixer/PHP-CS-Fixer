@@ -25,14 +25,6 @@ use PhpCsFixer\Utils;
  */
 final class PhpdocAlignFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
-
     private $regex;
     private $regexCommentLine;
 
@@ -47,6 +39,14 @@ final class PhpdocAlignFixer extends AbstractFixer
 
         $this->regex = '/^(?P<indent>(?: {4})*) \* @(?:'.$paramTag.'|'.$otherTags.')'.$desc.'$/';
         $this->regexCommentLine = '/^(?P<indent>(?: {4})*) \*(?! @)(?:\s+(?P<desc>.+))(?<!\*\/)$/';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
     /**

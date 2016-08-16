@@ -50,6 +50,16 @@ class DocBlock
     }
 
     /**
+     * Get the string representation of object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getContent();
+    }
+
+    /**
      * Get this docblock's lines.
      *
      * @return Line[]
@@ -100,29 +110,6 @@ class DocBlock
         }
 
         return $this->annotations;
-    }
-
-    private function findAnnotationLength($start)
-    {
-        $index = $start;
-
-        while ($line = $this->getLine(++$index)) {
-            if ($line->containsATag()) {
-                // we've 100% reached the end of the description if we get here
-                break;
-            }
-
-            if (!$line->containsUsefulContent()) {
-                // if we next line is also non-useful, or contains a tag, then we're done here
-                $next = $this->getLine($index + 1);
-                if (null === $next || !$next->containsUsefulContent() || $next->containsATag()) {
-                    break;
-                }
-                // otherwise, continue, the annotation must have contained a blank line in its description
-            }
-        }
-
-        return $index - $start;
     }
 
     /**
@@ -177,13 +164,26 @@ class DocBlock
         return implode($this->lines);
     }
 
-    /**
-     * Get the string representation of object.
-     *
-     * @return string
-     */
-    public function __toString()
+    private function findAnnotationLength($start)
     {
-        return $this->getContent();
+        $index = $start;
+
+        while ($line = $this->getLine(++$index)) {
+            if ($line->containsATag()) {
+                // we've 100% reached the end of the description if we get here
+                break;
+            }
+
+            if (!$line->containsUsefulContent()) {
+                // if we next line is also non-useful, or contains a tag, then we're done here
+                $next = $this->getLine($index + 1);
+                if (null === $next || !$next->containsUsefulContent() || $next->containsATag()) {
+                    break;
+                }
+                // otherwise, continue, the annotation must have contained a blank line in its description
+            }
+        }
+
+        return $index - $start;
     }
 }

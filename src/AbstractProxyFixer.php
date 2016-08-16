@@ -32,11 +32,6 @@ abstract class AbstractProxyFixer extends AbstractFixer
     }
 
     /**
-     * @return FixerInterface
-     */
-    abstract protected function createProxyFixer();
-
-    /**
      * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
@@ -59,4 +54,9 @@ abstract class AbstractProxyFixer extends AbstractFixer
     {
         $this->proxyFixer->fix($file, $tokens);
     }
+
+    /**
+     * @return FixerInterface
+     */
+    abstract protected function createProxyFixer();
 }

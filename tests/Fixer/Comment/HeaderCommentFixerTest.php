@@ -253,14 +253,6 @@ echo 1;',
         );
     }
 
-    /**
-     * @return bool|array
-     */
-    protected function getFixerConfiguration()
-    {
-        return null === $this->configuration ? array('header' => '') : $this->configuration;
-    }
-
     public function testDefaultConfiguration()
     {
         $fixer = $this->getFixer();
@@ -438,5 +430,13 @@ declare(strict_types=1)?>',
             array('<?= 1?><?php'),
             array("<?= 1?>\n<?php"),
         );
+    }
+
+    /**
+     * @return bool|array
+     */
+    protected function getFixerConfiguration()
+    {
+        return null === $this->configuration ? array('header' => '') : $this->configuration;
     }
 }

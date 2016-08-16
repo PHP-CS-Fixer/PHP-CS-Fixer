@@ -59,6 +59,11 @@ final class ProcessOutput implements ProcessOutputInterface
         $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, array($this, 'onFixerFileProcessed'));
     }
 
+    public function __destruct()
+    {
+        $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, array($this, 'onFixerFileProcessed'));
+    }
+
     public function onFixerFileProcessed(FixerFileProcessedEvent $event)
     {
         $status = self::$eventStatusMap[$event->getStatus()];
@@ -79,10 +84,5 @@ final class ProcessOutput implements ProcessOutputInterface
         }
 
         $this->output->write(sprintf("\nLegend: %s\n", implode(', ', $symbols)));
-    }
-
-    public function __destruct()
-    {
-        $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, array($this, 'onFixerFileProcessed'));
     }
 }

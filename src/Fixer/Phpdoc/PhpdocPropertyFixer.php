@@ -23,6 +23,14 @@ final class PhpdocPropertyFixer extends AbstractProxyFixer
     /**
      * {@inheritdoc}
      */
+    public function getDescription()
+    {
+        return '@property tags should be used rather than other variants.';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function createProxyFixer()
     {
         $fixer = new GeneralPhpdocAnnotationRenameFixer();
@@ -32,13 +40,5 @@ final class PhpdocPropertyFixer extends AbstractProxyFixer
         ));
 
         return $fixer;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return '@property tags should be used rather than other variants.';
     }
 }

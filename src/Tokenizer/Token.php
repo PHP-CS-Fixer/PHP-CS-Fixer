@@ -51,6 +51,23 @@ class Token
     private $changed = false;
 
     /**
+     * Constructor.
+     *
+     * @param string|array $token token prototype
+     */
+    public function __construct($token)
+    {
+        if (is_array($token)) {
+            $this->isArray = true;
+            $this->id = $token[0];
+            $this->content = $token[1];
+        } else {
+            $this->isArray = false;
+            $this->content = $token;
+        }
+    }
+
+    /**
      * Get cast token kinds.
      *
      * @return int[]
@@ -80,41 +97,6 @@ class Token
         }
 
         return $classTokens;
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param string|array $token token prototype
-     */
-    public function __construct($token)
-    {
-        if (is_array($token)) {
-            $this->isArray = true;
-            $this->id = $token[0];
-            $this->content = $token[1];
-        } else {
-            $this->isArray = false;
-            $this->content = $token;
-        }
-    }
-
-    /**
-     * @param string[] $tokenNames
-     *
-     * @return array<int, int>
-     */
-    private static function getTokenKindsForNames(array $tokenNames)
-    {
-        $keywords = array();
-        foreach ($tokenNames as $keywordName) {
-            if (defined($keywordName)) {
-                $keyword = constant($keywordName);
-                $keywords[$keyword] = $keyword;
-            }
-        }
-
-        return $keywords;
     }
 
     /**
@@ -532,5 +514,23 @@ class Token
         }
 
         return json_encode($this->toArray(), $options);
+    }
+
+    /**
+     * @param string[] $tokenNames
+     *
+     * @return array<int, int>
+     */
+    private static function getTokenKindsForNames(array $tokenNames)
+    {
+        $keywords = array();
+        foreach ($tokenNames as $keywordName) {
+            if (defined($keywordName)) {
+                $keyword = constant($keywordName);
+                $keywords[$keyword] = $keyword;
+            }
+        }
+
+        return $keywords;
     }
 }

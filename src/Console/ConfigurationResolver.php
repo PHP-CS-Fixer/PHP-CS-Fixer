@@ -303,6 +303,37 @@ final class ConfigurationResolver
     }
 
     /**
+     * Set registered output formats.
+     *
+     * @param string[] $formats
+     *
+     * @return ConfigurationResolver
+     */
+    public function setFormats(array $formats)
+    {
+        $this->formats = $formats;
+
+        return $this;
+    }
+
+    protected function resolveFormat()
+    {
+        if (array_key_exists('format', $this->options)) {
+            $format = $this->options['format'];
+        } elseif (method_exists($this->config, 'getFormat')) {
+            $format = $this->config->getFormat();
+        } else {
+            $format = 'txt'; // default
+        }
+
+        if (!in_array($format, $this->formats, true)) {
+            throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are %s.', $format, implode(', ', $this->formats)));
+        }
+
+        $this->format = $format;
+    }
+
+    /**
      * Compute file candidates for config file.
      *
      * @return string[]
@@ -511,23 +542,6 @@ final class ConfigurationResolver
         }
     }
 
-    protected function resolveFormat()
-    {
-        if (array_key_exists('format', $this->options)) {
-            $format = $this->options['format'];
-        } elseif (method_exists($this->config, 'getFormat')) {
-            $format = $this->config->getFormat();
-        } else {
-            $format = 'txt'; // default
-        }
-
-        if (!in_array($format, $this->formats, true)) {
-            throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are %s.', $format, implode(', ', $this->formats)));
-        }
-
-        $this->format = $format;
-    }
-
     /**
      * Resolve isDryRun based on isStdIn property and dry-run option.
      */
@@ -643,19 +657,5 @@ final class ConfigurationResolver
         }
 
         $this->allowRisky = $this->config->getRiskyAllowed();
-    }
-
-    /**
-     * Set registered output formats.
-     *
-     * @param string[] $formats
-     *
-     * @return ConfigurationResolver
-     */
-    public function setFormats(array $formats)
-    {
-        $this->formats = $formats;
-
-        return $this;
     }
 }

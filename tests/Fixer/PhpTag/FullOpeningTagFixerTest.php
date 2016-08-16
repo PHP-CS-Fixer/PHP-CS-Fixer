@@ -20,16 +20,6 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class FullOpeningTagFixerTest extends AbstractFixerTestCase
 {
     /**
-     * {@inheritdoc}
-     */
-    protected function isLintException($source)
-    {
-        return in_array($source, array(
-            'foo <?  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
-        ), true);
-    }
-
-    /**
      * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
@@ -102,5 +92,15 @@ echo \'Foo\';
                 'foo <?  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
             ),
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function isLintException($source)
+    {
+        return in_array($source, array(
+            'foo <?  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
+        ), true);
     }
 }

@@ -381,22 +381,6 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         return $cases;
     }
 
-    private function getAllFixers()
-    {
-        $factory = new FixerFactory();
-
-        return $factory->registerBuiltInFixers()->getFixers();
-    }
-
-    private function createFixerMock($name, $priority = 0)
-    {
-        $fixer = $this->getMockBuilder('PhpCsFixer\FixerInterface')->getMock();
-        $fixer->expects($this->any())->method('getName')->willReturn($name);
-        $fixer->expects($this->any())->method('getPriority')->willReturn($priority);
-
-        return $fixer;
-    }
-
     /**
      * @dataProvider provideConflictingFixersRules
      * @expectedException \UnexpectedValueException
@@ -437,5 +421,21 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
                 )
             )
         );
+    }
+
+    private function getAllFixers()
+    {
+        $factory = new FixerFactory();
+
+        return $factory->registerBuiltInFixers()->getFixers();
+    }
+
+    private function createFixerMock($name, $priority = 0)
+    {
+        $fixer = $this->getMockBuilder('PhpCsFixer\FixerInterface')->getMock();
+        $fixer->expects($this->any())->method('getName')->willReturn($name);
+        $fixer->expects($this->any())->method('getPriority')->willReturn($priority);
+
+        return $fixer;
     }
 }

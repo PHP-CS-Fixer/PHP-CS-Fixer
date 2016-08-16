@@ -23,19 +23,19 @@ final class PhpdocNoAccessFixer extends AbstractProxyFixer
     /**
      * {@inheritdoc}
      */
+    public function getDescription()
+    {
+        return '@access annotations should be omitted from phpdocs.';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function createProxyFixer()
     {
         $fixer = new GeneralPhpdocAnnotationRemoveFixer();
         $fixer->configure(array('access'));
 
         return $fixer;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return '@access annotations should be omitted from phpdocs.';
     }
 }

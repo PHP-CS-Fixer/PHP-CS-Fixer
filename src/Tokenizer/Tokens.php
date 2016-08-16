@@ -70,6 +70,16 @@ class Tokens extends \SplFixedArray
     private $foundTokenKinds;
 
     /**
+     * Clone tokens collection.
+     */
+    public function __clone()
+    {
+        foreach ($this as $key => $val) {
+            $this[$key] = clone $val;
+        }
+    }
+
+    /**
      * Clear cache - one position or all of them.
      *
      * @param string|null $key position to clear, when null clear all
@@ -205,57 +215,6 @@ class Tokens extends \SplFixedArray
                 'end' => array(CT_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}'),
             ),
         );
-    }
-
-    /**
-     * Calculate hash for code.
-     *
-     * @param string $code
-     *
-     * @return int
-     */
-    private static function calculateCodeHash($code)
-    {
-        return crc32($code);
-    }
-
-    /**
-     * Get cache value for given key.
-     *
-     * @param string $key item key
-     *
-     * @return Tokens
-     */
-    private static function getCache($key)
-    {
-        if (!self::hasCache($key)) {
-            throw new \OutOfBoundsException(sprintf('Unknown cache key: "%s".', $key));
-        }
-
-        return self::$cache[$key];
-    }
-
-    /**
-     * Check if given key exists in cache.
-     *
-     * @param string $key item key
-     *
-     * @return bool
-     */
-    private static function hasCache($key)
-    {
-        return isset(self::$cache[$key]);
-    }
-
-    /**
-     * Set cache item.
-     *
-     * @param string $key   item key
-     * @param Tokens $value item value
-     */
-    private static function setCache($key, Tokens $value)
-    {
-        self::$cache[$key] = $value;
     }
 
     /**
@@ -1069,16 +1028,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Clone tokens collection.
-     */
-    public function __clone()
-    {
-        foreach ($this as $key => $val) {
-            $this[$key] = clone $val;
-        }
-    }
-
-    /**
      * Clear tokens in the given range.
      *
      * @param int $indexStart
@@ -1153,6 +1102,88 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Clear token and merge surrounding whitespace tokens.
+     *
+     * @param int $index
+     */
+    public function clearTokenAndMergeSurroundingWhitespace($index)
+    {
+        $count = count($this);
+        $this[$index]->clear();
+
+        if ($index === $count - 1) {
+            return;
+        }
+
+        $nextIndex = $this->getNonEmptySibling($index, 1);
+
+        if (null === $nextIndex || !$this[$nextIndex]->isWhitespace()) {
+            return;
+        }
+
+        $prevIndex = $this->getNonEmptySibling($index, -1);
+
+        if ($this[$prevIndex]->isWhitespace()) {
+            $this[$prevIndex]->setContent($this[$prevIndex]->getContent().$this[$nextIndex]->getContent());
+        } elseif ($this[$prevIndex + 1]->isEmpty()) {
+            $this[$prevIndex + 1]->override(array(T_WHITESPACE, $this[$nextIndex]->getContent()));
+        }
+
+        $this[$nextIndex]->clear();
+    }
+
+    /**
+     * Calculate hash for code.
+     *
+     * @param string $code
+     *
+     * @return int
+     */
+    private static function calculateCodeHash($code)
+    {
+        return crc32($code);
+    }
+
+    /**
+     * Get cache value for given key.
+     *
+     * @param string $key item key
+     *
+     * @return Tokens
+     */
+    private static function getCache($key)
+    {
+        if (!self::hasCache($key)) {
+            throw new \OutOfBoundsException(sprintf('Unknown cache key: "%s".', $key));
+        }
+
+        return self::$cache[$key];
+    }
+
+    /**
+     * Check if given key exists in cache.
+     *
+     * @param string $key item key
+     *
+     * @return bool
+     */
+    private static function hasCache($key)
+    {
+        return isset(self::$cache[$key]);
+    }
+
+    /**
+     * Set cache item.
+     *
+     * @param string $key   item key
+     * @param Tokens $value item value
+     */
+    private static function setCache($key, Tokens $value)
+    {
+        self::$cache[$key] = $value;
+    }
+
+    /**
      * Change code hash.
      *
      * Remove old cache and set new one.
@@ -1182,36 +1213,5 @@ class Tokens extends \SplFixedArray
         ;
 
         $this->foundTokenKinds[$tokenKind] = true;
-    }
-
-    /**
-     * Clear token and merge surrounding whitespace tokens.
-     *
-     * @param int $index
-     */
-    public function clearTokenAndMergeSurroundingWhitespace($index)
-    {
-        $count = count($this);
-        $this[$index]->clear();
-
-        if ($index === $count - 1) {
-            return;
-        }
-
-        $nextIndex = $this->getNonEmptySibling($index, 1);
-
-        if (null === $nextIndex || !$this[$nextIndex]->isWhitespace()) {
-            return;
-        }
-
-        $prevIndex = $this->getNonEmptySibling($index, -1);
-
-        if ($this[$prevIndex]->isWhitespace()) {
-            $this[$prevIndex]->setContent($this[$prevIndex]->getContent().$this[$nextIndex]->getContent());
-        } elseif ($this[$prevIndex + 1]->isEmpty()) {
-            $this[$prevIndex + 1]->override(array(T_WHITESPACE, $this[$nextIndex]->getContent()));
-        }
-
-        $this[$nextIndex]->clear();
     }
 }
