@@ -65,7 +65,7 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Your name <your@email.com>
  */
-final class RemoveCommentsFixer extends AbstractFixer 
+final class RemoveCommentsFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
