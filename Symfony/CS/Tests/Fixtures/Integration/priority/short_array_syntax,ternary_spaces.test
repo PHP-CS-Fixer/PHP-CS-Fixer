@@ -1,0 +1,14 @@
+--TEST--
+Integration of fixers: short_array_syntax,ternary_spaces.
+--CONFIG--
+level=none
+fixers=short_array_syntax,ternary_spaces
+--REQUIREMENTS--
+php=5.4
+--INPUT--
+<?php
+$a = $b ?   array ( ): 1;
+
+--EXPECT--
+<?php
+$a = $b ? [ ] : 1;
