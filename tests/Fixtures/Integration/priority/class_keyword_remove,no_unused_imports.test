@@ -1,0 +1,14 @@
+--TEST--
+Integration of fixers: class_keyword_remove,no_unused_imports.
+--CONFIG--
+{"class_keyword_remove": true, "no_unused_imports": true}
+--EXPECT--
+<?php
+
+echo 'Foo\Bar\Thing';
+
+--INPUT--
+<?php
+use Foo\Bar\Thing;
+
+echo Thing::class;

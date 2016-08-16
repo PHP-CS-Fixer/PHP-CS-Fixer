@@ -219,6 +219,10 @@ Choose from the list of available fixers:
                          interfaces definition should
                          be one space.
 
+* **class_keyword_remove**
+                         Converts ::class keywords to
+                         FQCN strings.
+
 * **combine_consecutive_unsets**
                          Calling unset on multiple
                          items should be done in one
