@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.11.7
+---------------------
+
+* bug #2108 ShortArraySyntaxFixer, TernarySpacesFixer, UnalignEqualsFixer - fix priority bug (SpacePossum)
+* bug #2092 ConcatWithoutSpacesFixer, OperatorsSpacesFixer - fix too many spaces, fix incorrect fixing of lines with comments (SpacePossum)
+
 Changelog for v1.11.6
 ---------------------
 
