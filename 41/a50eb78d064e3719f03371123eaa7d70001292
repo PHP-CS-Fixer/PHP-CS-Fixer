@@ -1,0 +1,45 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-16T20:28:55Z
+
+This will break PHP 5.3 and 5.4 support because it uses symfony 3 dependencies.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-16T20:29:11Z
+
+We could easily fix this stuff on PHP 5.3. I'll send a PR.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-16T20:32:53Z
+
+no, it won't use symfony 3 deps
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-16T20:33:15Z
+
+https://github.com/box-project/box2/releases/tag/2.7.3
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-16T20:33:29Z
+
+They dropped support for PHP 5.5.8 and below in that release.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-16T20:34:41Z
+
+@GrahamCampbell again,  box-project/box2#151
+They didn't drop 5.3, if you install project via composer on 5.3 it will work.
+They wrongly created phar file (as we did before we added platform to composer.json during building)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-16T20:37:02Z
+
+> They didn't drop 5.3, if you install project via composer on 5.3 it will work.
+
+Yeh, I know. I'm being a bit :trollface: with my PR to them. It's just to make them aware they messed up.
