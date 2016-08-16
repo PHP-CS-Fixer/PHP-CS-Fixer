@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-08-09T12:43:19Z
+
+- Added more test cases, both positive and negative
+- Marked all classes as final and the test as internal
+- Opened https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2122 for `master` branch
