@@ -21,8 +21,8 @@ if (defined('HHVM_VERSION_ID')) {
         fwrite(STDERR, "HHVM needs to be a minimum version of HHVM 3.9.0\n");
         exit(1);
     }
-} elseif (!defined('PHP_VERSION_ID') || PHP_VERSION_ID < 50306) {
-    fwrite(STDERR, "PHP needs to be a minimum version of PHP 5.3.6\n");
+} elseif (!defined('PHP_VERSION_ID') || PHP_VERSION_ID < 50306 || PHP_VERSION_ID >= 70200) {
+    fwrite(STDERR, "PHP needs to be a minimum version of PHP 5.3.6 and maximum version of PHP 7.1.*\n");
     exit(1);
 }
 
