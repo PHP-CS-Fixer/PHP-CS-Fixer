@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.11.8
+---------------------
+
+* bug #2143 ReadmeCommand - fix running command on phar file (keradus)
+* minor #2129 Add .gitattributes to remove unneeded files (Slamdunk)
+* minor #2141 Move phar building to PHP 5.6 job as newest box.phar is no longer working on 5.3 (keradus)
+
 Changelog for v1.11.7
 ---------------------
 
