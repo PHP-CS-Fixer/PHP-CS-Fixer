@@ -1,0 +1,850 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-11T21:41:53Z
+
+I consider this fixer harmful and encouraging bad habits.
+Changing `Foo\Bar` into `Bar::class` when possible (and that is tricky) would be awesome, but the other way around is not nice.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-12T05:50:33Z
+
+It's not about encouraging bad habits.
+
+`::class` is not supported on PHP 5.3 and 5.4. We have projects with some maintained branches still supporting those versions. Keeping class string instead of `::class` will avoid use merge conflict nightmares between branches.
+
+BTW, the fixer is under the contrib section. So what is the problem? :wink:
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-13T15:18:20Z
+
+I added an integration test case, the PR is ready for review. :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-13T16:38:12Z
+
+It's not - Travis is red
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-13T17:13:05Z
+
+@keradus Should be fixed now.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-13T17:16:48Z
+
+What will happen when I run the fixer on PHP 5.4 ?
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-13T17:18:46Z
+
+> What will happen when I run the fixer on PHP 5.4 ?
+
+https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/137301792
+
+I think it works because I'm looking for `T_DOUBLE_COLON` which exists on 5.4 and then for `class` string.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-13T17:19:23Z
+
+This needs to be risky. I know of a PHP package that accepts partial class names as a paramater.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-13T17:19:31Z
+
+http://gentlero.bitbucket.org/bitbucket-api/
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-13T17:20:11Z
+
+This is broken in the case that a class being imported conflicts with something else already in the namespace...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-13T17:21:22Z
+
+> I consider this fixer harmful
+
+Agreed. It fails on loads of cases and breaks the code too. (not the syntax, but will break when the autoloader starts requiring files)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-13T17:23:48Z
+
+> This needs to be risky. I know of a PHP package that accepts partial class names as a paramater.
+> http://gentlero.bitbucket.org/bitbucket-api/
+
+Could you please give me a sample?
+
+> This is broken in the case that a class being imported conflicts with something else already in the namespace...
+
+Could you elaborate? Or even better, give me a sample to add on tests?
+
+>> I consider this fixer harmful
+
+> Agreed.
+
+Then don't use it. This is why it's on the contrib section. :wink:
+
+> It fails on loads of cases
+
+Which one? I will happy to update tests.
+
+> and breaks the code too. (not the syntax, but will break when the autoloader starts requiring files)
+
+Not sure to understand, sorry. :-/
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-13T17:24:38Z
+
+autoloader... nice catch!
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-13T17:26:52Z
+
+> autoloader... nice catch!
+
+Still didn't understand the problem with the autoloader... ^^
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-13T17:28:30Z
+
+> > What will happen when I run the fixer on PHP 5.4 ?
+
+> https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/137301792
+
+Sorry for that, test are skipped. But they work, I removed the requirement.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-13T17:29:33Z
+
+@Soullivaneuh Consider this case:
+
+FILE: src/Foo/Bar.php
+```php
+<?php
+
+namespace Baz\Foo;
+
+class Bar
+{
+    // such class, much amaze
+}
+```
+
+FILE: src/Foo/Oops.php
+```php
+<?php
+
+namespace Baz\Foo;
+
+class Oops
+{
+    public function lol()
+    {
+        return 'Baz\Bar';
+    }
+}
+```
+
+See how importing `Baz\Bar` will break everything.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-13T17:34:09Z
+
+> See how importing `Baz\Bar` will break everything.
+
+Except... I don't import anything here?
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-13T17:35:15Z
+
+This PR is for `class_keyword_remove` fixer, not `class_keyword`. #1975
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-13T17:45:40Z
+
+Test passed: https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/builds/137307080
+
+I squashed my commits.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-13T19:19:34Z
+
+I added some phpdoc comments.
+
+For my side, the Pull Request is ready.
+
+If you have some tests to give me, tell me! :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-13T19:23:41Z
+
+@GrahamCampbell
+Actually just calling `::class` won't call autoloader.
+What's more, you could do `NonExistingClass::class` and get name of non existing class...
+
+```bash
+keradus@keradus-workLap:~/tmp$ cat A.php
+<?php
+
+class A
+{
+}
+
+echo __FILE__ . "\n";
+
+keradus@keradus-workLap:~/tmp$
+keradus@keradus-workLap:~/tmp$ cat index.php
+<?php
+
+spl_autoload_register(function ($class) { require $class . '.php'; });
+
+new A();
+
+echo __FILE__ . "\n";
+
+keradus@keradus-workLap:~/tmp$
+keradus@keradus-workLap:~/tmp$ php -f index.php
+/home/keradus/tmp/A.php
+/home/keradus/tmp/index.php
+```
+
+```bash
+keradus@keradus-workLap:~/tmp$ cat A.php
+<?php
+
+class A
+{
+}
+
+echo __FILE__ . "\n";
+
+keradus@keradus-workLap:~/tmp$
+keradus@keradus-workLap:~/tmp$ cat index.php
+<?php
+
+spl_autoload_register(function ($class) { require $class . '.php'; });
+
+A::class;
+
+echo __FILE__ . "\n";
+
+keradus@keradus-workLap:~/tmp$
+keradus@keradus-workLap:~/tmp$ php -f index.php
+/home/keradus/tmp/index.php
+```
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-13T19:38:40Z
+
+> What's more, you could do `NonExistingClass::class` and get name of non existing class...
+
+Well, it not out fault if someone is using a non existing class, is it?
+
+BTW, the fixer won't break anything:
+
+```php
+<?php
+
+var_dump(NonExistingClass::class);
+var_dump('NonExistingClass');
+var_dump(NonExistingClass::class === 'NonExistingClass');
+```
+
+```bash
+$ php test.php
+string(16) "NonExistingClass"
+string(16) "NonExistingClass"
+bool(true)
+```
+
+This corresponds to this test case:
+
+```php
+array(
+    "<?php
+    echo 'Thing';
+    ",
+    '<?php
+    echo Thing::class;
+    ',
+),
+```
+
+For the autoload case, AFAIK, `new A();` instantiates a new object, `A::class;` does... nothing special?
+
+So I don't see the risk here, or I don't get the point. ;-)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-13T19:52:56Z
+
+@keradus updated. Is this what you need?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-13T21:24:36Z
+
+> Actually just calling ::class won't call autoloader.
+
+Yeh, I know it won't. I didn't say it would? I'm saying that it could conflcit with existing autoloaded definitions.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-13T21:25:26Z
+
+What if we have `$foo->('Bar\Baz')`, but that is not a class name.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-13T21:26:10Z
+
+To be completely honest, I think this fixer is a horrible idea, sorry.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-13T21:30:45Z
+
+>What if we have $foo->('Bar\Baz'), but that is not a class name.
+
+The fixer is the other way I think, i.e. `$foo->('Bar::class')`?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-13T21:32:01Z
+
+To be honest I wouldn't be using this fixer as it would "help" back porting PHP code, which I hope never to do.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-13T22:13:01Z
+
+> What if we have `$foo->('Bar\Baz')`, but that is not a class name.
+
+This fixer would do **nothing** on this piece of code.
+
+If you want to, I can add it on the test cases, but I think this will be pointless.
+
+> The fixer is the other way I think, i.e. `$foo->('Bar::class')`?
+
+Nearly true. Considering the `Bar\Baz`, it converts `$foo->(Baz::class)` onto `$foo->(`Bar\Baz`)`.
+
+> To be completely honest, I think this fixer is a horrible idea, sorry.
+> To be honest I wouldn't be using this fixer as it would "help" back porting PHP code, which I hope never to do.
+
+Well OK. I love short array syntax and I love `::class` notation, really. This is **not** why I would like to add this fixer.
+
+The only reason I would like to use it is to reduce merge conflict. Imagine two branches of a project: `branch-old` and `branch-new`, both still maintained.
+
+`branch-old` support PHP 5.3+, `branch-new` PHP 5.5+.
+
+If we convert this piece of code present on `branch-old`:
+
+```php
+$result = class_exist('Foo\Bar')
+    ? 'thing'
+    : 'another';
+```
+
+To this on `branch-new`:
+
+```php
+$result = class_exist(Bar::class)
+    ? 'thing'
+    : 'another';
+```
+
+And, for a bugfix or whatever, we have to change the class name on both `branch-old` and `branch-new`, we would start to do this on `branch-old`:
+
+```php
+$result = class_exist('Foo\AnotherBar')
+    ? 'thing'
+    : 'another';
+```
+
+What will happen when I'll merge `branch-old` to `branch-new`? A merge conflict.
+
+And this is just a sample with a 3 lines piece of code. I let you imagine a thousand lines project with all class name replaced by the new `::class` notation on `branch-new`...
+
+That's all. This is the only reason.
+
+And I will stop arguing now. I really don't see why this should be discussed.
+
+The fixer is **technically** acceptable and will not break any code.
+
+You don't like it? Just don't use it, this is why I put it on the contrib section.
+
+This is the case for lot of fixer. For example, some want aligned arrow, some other don't want to. This why we have both on this project and it works very well.
+
+BTW, I would like to work on the reverse of this fixer (re-read #1975, I have two tasks). Because yes, when we will not have any maintained branch supporting PHP <5.5, I would love to get rid of this old and ugly syntax to go on `::class`
+
+I really hope you will understand.
+
+Now please let's concentrate on if the fixer is technically reliable. Another test cases are still welcomed.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-14T10:07:46Z
+
+> The fixer is technically acceptable and will not break any code.
+> You don't like it? Just don't use it
+
+There is other thing. Maintenance. Even if you made hard work to create a fixer, then sb will need to maintain it. That is why we put the fixers that more than one people will use. Because later we need to maintain it. So if we need to make our life harder and maintain more code, we want that code to be useful for more people. That's why we usually discuss/vote about fixers requests/ideas before implementing them.
+I created a lot of my own fixers to do one-time job or have them only in one project, but I know that there is no reason to keep them here.
+
+I would strongly recommend to freeze the work on that fixer and come back to discussing feature request in 1975 itself.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-14T10:23:27Z
+
+> There is other thing. Maintenance. Even if you made hard work to create a fixer, then sb will need to maintain it. That is why we put the fixers that more than one people will use. Because later we need to maintain it.
+
+This fixer will be dispatched on all Sonata projects (https://github.com/sonata-project/dev-kit/issues/166) while PHP 5.3 will be supported.
+
+And it will still be supported for a while (https://github.com/sonata-project/dev-kit/issues/153) so trust me, it will be maintained, at least by me, for a moment.
+
+Plus, this fixer is quite small, no big things to maintain here.
+
+To finish, this fixer can be simply remove once you will drop support for PHP <5.5 on this project, because keeping this one would indedd not making any sense.
+
+I understand you want to merge fixer that will be used. This is the case of this one, for at least 30 projects.
+
+> I created a lot of my own fixers to do one-time job or have them only in one project, but I know that there is no reason to keep them here.
+
+Yeah but in this case there is a public need and it would be great to have this one to use it with additional tools, like StyleCI.
+
+On the other way, is that easy to create/**use** per-project custom fixer? Any documentation for that?
+
+Thanks.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-14T10:25:09Z
+
+I would add that my merge conflict argument for this fixer is receivable. Maybe not liked by everyone but **technically** receivable and can makes sens. Is that not sufficient to accept it?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-14T14:08:59Z
+
+> This fixer will be dispatched on all Sonata projects (sonata-project/dev-kit#166) while PHP 5.3 will be supported.
+
+without changes made by fixer your jobs based on 5.3 will break
+
+-----------------------------------------
+
+Again, let us focus on feature request issue to decide should we or should we not have this fixer.
+Disclaimer: I won't vote, I leave it to community.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-14T14:23:27Z
+
+@keradus My vote is :-1: for allow ANY implementation in. I don't like the idea. Sorry @Soullivaneuh.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-14T14:44:23Z
+
+> without changes made by fixer your jobs based on 5.3 will break
+
+What do you mean? The fixer work under PHP 5.3: https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/137342439
+
+And if the PHP syntax is invalid, the fixer will just flag it as invalid.
+
+The goal is not to avoid `::class` on PHP 5.3 branches but on all branches for the reason I said previously: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1985#issuecomment-225724643
+
+> @keradus My vote is :-1: for allow ANY implementation in. I don't like the idea. Sorry @Soullivaneuh.
+
+As you said, you don't like. But I don't think this is a matter of taste...
+
+@keradus I hope the decision would be based on +1 vote uniquely. Because if 700 persons does not like this feature but 300 peoples want this for example, it's steel 300 persons wanted this feature.
+
+This is also why this kind of fixer is under contrib and, AFAIK, PHP-CS-Fixer is a tool to apply fixer, not to define which CS style we should accept or not, like PSR or Symfony coding standard.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-14T14:55:03Z
+
+> But I don't think this is a matter of taste...
+
+I'm not saying I don't use `::class` in my code, I'm saying it makes no sense to have a fixer to change every occurrence, some of the changes being wrong anyway.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-14T14:56:34Z
+
+> > without changes made by fixer your jobs based on 5.3 will break
+
+> What do you mean?
+
+You say you need a fixer for lower PHP version. If you won't have a fixer your 5.5 code will simply fail on 5.3. It's not about coding standards but language syntax.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-14T14:58:11Z
+
+> This is also why this kind of fixer is under contrib and, AFAIK, PHP-CS-Fixer is a tool to apply fixer, not to define which CS style we should accept or not, like PSR or Symfony coding standard.
+
+And especially for that one could have his own fixers.
+If the rule would be used by many - let them vote and have the rule, awesome. If the rule will be used by few - let them have it locally.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-14T15:00:56Z
+
+> You say you need a fixer for lower PHP version. If you won't have a fixer your 5.5 code will simply fail on 5.3. It's not about coding standards but language syntax.
+
+Please re-read https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1985#issuecomment-225724643.
+
+This is not about the branch with php 5.3+ support, but the new one with php 5.5+ support. This is to avoid some PR with `::class` fixer rename that will produce **merge conflicts**.
+
+> I'm not saying I don't use ::class in my code,
+
+Are you **really** sure you understood the goal of this PR? This one does not add `::class` but **removes** them.
+
+In the case I explained in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1985#issuecomment-225724643, this fixer will be here for **preventive** reason. Because of course, there is actually no `::class` token anywhere on Sonata because we still support PHP 5.3 on **all** branches. But this is gonna be changed.
+
+> I'm saying it makes no sense to have a fixer to change every occurrence, some of the changes being wrong anyway.
+
+Well, change the `long_array_syntax` to `short_array_syntax` on your config, it will do the same thing: Change every occurrence.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-14T15:03:17Z
+
+> If the vote will be used by few - let them have it locally.
+
+* Could you please define "few"? Because I don't think every user are looking for all issues of this project...
+* From https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1985#issuecomment-225840869: On the other way, is that easy to create/use per-project custom fixer? Any documentation for that?
+
+Thanks.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2016-06-14T15:12:42Z
+
+> You say you need a fixer for lower PHP version. If you won't have a fixer your 5.5 code will simply fail on 5.3. It's not about coding standards but language syntax.
+
+Hi! Sonata member here… if I can help shedding a light on this situation : we want to avoid people using `::class` on the unstable branch even if the unstable branch does not support 5.3 anymore. The goal is avoiding unnecessary differences between branches, because these will make changes harder to merge from legacy stable, to stable, end then to unstable.
+
+If someone were to use `::class` in the unstable branch, the build would no fail on 5.3 because unstable has no job for 5.3 at all, so we cannot expect the unit tests to make us notice that. This is why this is needed.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-14T15:19:06Z
+
+Hmmm. I guess I'm actually neutral on having a fixer to remove `::class`, but very, very, very negative on having a fixer to go the other way.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-15T06:57:23Z
+
+I'm still +0, I simply have no need for it. I see there are others that have, I wish them good luck with it. The reason I do not to up vote it is that I've some concerns about the life time of the fixer and the amount of support on maintenance can be expected.
+
+On the topic of `string` to `::class`, I've big reservation about that one. It is simply impossible to do this reliable based on the tokens of a single file. Even a best effort approach will result in a lot of false positives, which in time results in a lot of issues reported. Placing the fixer in contrib and marking it risky will not stop this from happen. I think it would be a great fixer that have, but unfortunately impossible to make.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-15T07:23:18Z
+
+Test request:
+```php
+<?php
+
+namespace A\B {
+
+    class D {
+
+    }
+}
+
+namespace B\B {
+    class D {
+
+    }
+}
+
+namespace C {
+    use A\B\D;
+    var_dump(D::class);
+}
+
+namespace C1 {
+    use B\B\D;
+    var_dump(D::class);
+}
+```
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-15T07:39:52Z
+
+> I've some concerns about the life time of the fixer
+
+Simple: This fixer can be removed when PHP-CS-Fixer will drop support for PHP 5.3 and 5.4.
+
+> and the amount of support on maintenance can be expected.
+
+As I said, we have 30 Sonata projects. All will have legacy and maintained branch supporting PHP 5.3. So the fixer will be maintains at least by us for a while.
+
+And, this is not a complicated fixer, not hard to maintain IMHO.
+
+Thanks for the diff comments and the test request, I'll work on it. :+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-15T07:43:29Z
+
+> This fixer can be removed when PHP-CS-Fixer will drop support for PHP 5.3 and 5.4.
+
+Which is BC break as other might start depend on it, so we need to take into consideration before adding.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-15T07:44:59Z
+
+> Which is BC break as other might start depend on it, so we need to take into consideration before adding.
+
+Dropping PHP version support is BC break according to your rules AFAIK.
+
+So dropping PHP version will be done on a new major. The fixer removal can be done at the same time.
+
+After that, I said it can be removed because it will make no really sense. But this one works great on ANY  PHP version.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-06-15T07:54:11Z
+
+>Dropping PHP version support is BC break according to your rules AFAIK.
+
+Indeed, but introducing one BC break doesn't automatically justify another. Each BC break should be considered on itself.
+
+>After that, I said it can be removed because it will make no really sense. But this one works great on ANY PHP version.
+
+didn't question that :)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-15T08:25:10Z
+
+> Indeed, but introducing one BC break doesn't automatically justify another. Each BC break should be considered on itself.
+
+Not sure to understand. How this cannot be justify? Example for a new major reasons:
+
+* Drop PHP <5.5 support
+* Drop `class_keyword_remove` as this is now irrelevant
+
+And if you think PHP <5.5 support dropping is not a justification to remove this fixer, well just not remove it. :-)
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-15T10:00:21Z
+
+I don't know how to resolve this fail: https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/137739385#L303
+
+If I try this:
+
+```php
+private function replaceClassKeywords(Tokens $tokens)
+{
+    foreach ($tokens->findGivenKind(CT_CLASS_CONSTANT) as $index => $token) {
+        var_dump($tokens[$index]);
+        $this->replaceClassKeyword($tokens, $index);
+    }
+}
+```
+
+I got this:
+
+```
+object(Symfony\CS\Tokenizer\Token)#50 (4) {
+  ["content":"Symfony\CS\Tokenizer\Token":private]=>
+  string(5) "class"
+  ["id":"Symfony\CS\Tokenizer\Token":private]=>
+  int(10004)
+  ["isArray":"Symfony\CS\Tokenizer\Token":private]=>
+  bool(true)
+  ["line":"Symfony\CS\Tokenizer\Token":private]=>
+  int(5)
+}
+object(Symfony\CS\Tokenizer\Token)#56 (4) {
+  ["content":"Symfony\CS\Tokenizer\Token":private]=>
+  string(2) "::"
+  ["id":"Symfony\CS\Tokenizer\Token":private]=>
+  int(384)
+  ["isArray":"Symfony\CS\Tokenizer\Token":private]=>
+  bool(true)
+  ["line":"Symfony\CS\Tokenizer\Token":private]=>
+  int(6)
+}
+```
+
+The second should be `class`, not `::`, should not be?
+
+Any idea of why?
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-15T10:03:43Z
+
+Ok apparently caused by tokens modification. Fixed that with a recursive way.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-15T10:31:29Z
+
+About PHP version.
+If one have a package version 1.1 which reqs PHP:^5.3 he could have package version 1.2 which reqs PHP:^5.4 or even PHP:^7. Bumping requirements is not BC breaker due to official SEMVER.
+I totally could understand the opposite thinking and if it would be up to me I would do it that way, but it's not.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-15T10:33:56Z
+
+@keradus This is why I said "according to **your** rules", but apparently it's not.
+
+In this case, the fixer could stay here after version bumping because it will still working, and remove it on a next major.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2016-06-15T10:34:20Z
+
+> That **would** be considered compatible since it does not affect the public API. Software that explicitly depends on the same dependencies as your package **should** have their own dependency specifications and the author will notice any conflicts. Determining whether the change is a patch level or minor level modification depends on whether you updated your dependencies in order to fix a bug or introduce new functionality. I **would usually** expect additional code for the latter instance, in which case it’s obviously a minor level increment.
+
+Emphasis is mine.
+So this looks a bit up-to-you (no MUST) in fact, doesn't it ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-15T10:41:37Z
+
+@Soullivaneuh I was referring only to bumping php version, not to remove the fixer itself
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-15T10:42:17Z
+
+> @Soullivaneuh I was referring only to bumping php version, not to remove the fixer itself
+
+Yes ofc! This was just a related addition. :wink:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-06-15T10:42:41Z
+
+@greg0ire so for that, bumping deps is not BC breaker ;) and introducing BC break version to only bump deps is pointless.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2016-06-15T10:46:20Z
+
+> bumping deps is not BC breaker
+
+bumping deps **should** not be a BC breaker. It's still up-to you IMO
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-15T10:47:53Z
+
+> @greg0ire so for that, bumping deps is not BC breaker ;) and introducing BC break version to only bump deps is pointless.
+
+This depends of your branch management IMHO. For your case, it's OK because you have one branch per minor.
+
+In Sonata, we dropped this when and we only maintain major branches because of not enough resources for maintenance. So we decide to bump big dependencies like SF or PHP only on new majors.
+
+But you are right, according to semver, we are not forced to do that. :wink:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-15T11:32:21Z
+
+> But you are right, according to semver
+
+How is this related to php-cs-fixer?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-06-15T11:32:41Z
+
+People can do what they want with BC in their own projects. That surely has no bearing on what fixers we implement?
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-15T11:55:26Z
+
+> How is this related to php-cs-fixer?
+
+PHP-CS-Fixer seems to follows semver rules.
+
+> People can do what they want with BC in their own projects. That surely has no bearing on what fixers we implement?
+
+Not sure to understand. We are talking about PHP-CS-Fixer, not own projects.
+
+This is about https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1985#issuecomment-226112782.
+
+BTW, @keradus answer me about that, we should not diverge the debate on this PR. :+1:
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-26T23:10:48Z
+
+I fixed last tests and rebased the PR.
+
+Nothing else to do IMHO.
+
+As you can see with the upvotes on #1975 and this PR, this fixer give some interests.
+
+This contrib fixer can add a real benefit for big project maintainers who care about avoiding merge conflicts and time as possible. This is the case for Sonata projects.
+
+Would be really great to have this merged after review. :+1:
+
+Thanks.
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-06-27T06:05:35Z
+
+AppVeyor fail not related to my PR.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-08T07:57:58Z
+
+@GrahamCampbell what would be your vote after time that passed?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-07-08T16:44:31Z
+
+I'd give it a "meh".
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2016-07-13T08:16:51Z
+
+So we have a "meh" and some :+1:.
+
+@keradus What is your final decision? If you don't want to merge it, could you please at least give me a hint of how to properly integrate custom fixers globally as you said in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1985#issuecomment-225909188?
+
+Thanks.
