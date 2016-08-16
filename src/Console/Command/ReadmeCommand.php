@@ -239,25 +239,29 @@ EOF;
 
     private function getLatestDownloadUrl()
     {
-        $changelog = file_get_contents(__DIR__.'/../../../CHANGELOG.md');
-        $currentMajor = (int) $this->getApplication()->getVersion();
-        $version = null;
+        $version = $this->getApplication()->getVersion();
+        $changelogFile = __DIR__.'/../../../CHANGELOG.md';
 
-        for ($i = $currentMajor; $i > 0; --$i) {
-            preg_match('/Changelog for (v'.$i.'.\d+.\d+)/', $changelog, $matches);
+        if (is_file($changelogFile)) {
+            $currentMajor = (int) $version;
+            $changelog = file_get_contents($changelogFile);
 
-            if (2 === count($matches)) {
-                $version = $matches[1];
-                break;
+            for ($i = $currentMajor; $i > 0; --$i) {
+                preg_match('/Changelog for v('.$i.'.\d+.\d+)/', $changelog, $matches);
+
+                if (2 === count($matches)) {
+                    $version = $matches[1];
+                    break;
+                }
+            }
+
+            if (null === $version) {
+                throw new \RuntimeException('Invalid changelog data!');
             }
         }
 
-        if (null === $version) {
-            throw new \RuntimeException('Invalid changelog data!');
-        }
-
         return sprintf(
-            'https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar',
+            'https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v%s/php-cs-fixer.phar',
             $version
         );
     }
