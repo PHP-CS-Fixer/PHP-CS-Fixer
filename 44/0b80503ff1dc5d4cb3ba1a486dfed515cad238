@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-16T14:22:26Z
+
+Maybe go with `^5.3.6 || ^7.0 <7.2` or `>=5.3.6 <7.2`?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-16T14:25:37Z
+
+First, I wanna have `^5.3.6 || ^7.0 <7.2` but it's not working (https://semver.mwl.be/#?package=symfony%2Fsymfony&version=%5E2%20%7C%7C%20%5E3.0%20%3C3.1&minimum-stability=stable)
+The later one looks ugly for me, like we would support crappy v6 :/
+
+And what do you think about idea itself ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-16T20:23:55Z
+
+:+1: for the idea :)
+it would require at least one new release for each new PHP version, even when no changes are needed in the app. Will you also add runtime checks for the PHP version for the phar releases?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-16T20:46:27Z
+
+done
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-16T20:50:41Z
+
+Lgtm :+1:
