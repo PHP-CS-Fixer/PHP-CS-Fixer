@@ -34,6 +34,11 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
         self::$defaultStatements = $controlStatementsProperty->getValue(null);
     }
 
+    public static function tearDownAfterClass()
+    {
+        UnneededControlParenthesesFixer::configure(self::$defaultStatements);
+    }
+
     /**
      * @dataProvider provideFixCases
      */
@@ -423,10 +428,5 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
                 'switch_case',
             ),
         );
-    }
-
-    public static function tearDownAfterClass()
-    {
-        UnneededControlParenthesesFixer::configure(self::$defaultStatements);
     }
 }

@@ -17,16 +17,6 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 class ShortTagFixerTest extends AbstractFixerTestBase
 {
     /**
-     * {@inheritdoc}
-     */
-    protected function isLintException($source)
-    {
-        return in_array($source, array(
-            'foo <?  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
-        ), true);
-    }
-
-    /**
      * @dataProvider provideClosingTagExamples
      */
     public function testOneLineFix($expected, $input = null)
@@ -81,5 +71,14 @@ echo \'Foo\';
                 "<?php \$this->data = preg_replace('/<\?(?!xml|php)/s', '<?php ',       \$this->data);",
             ),
         );
+    }
+    /**
+     * {@inheritdoc}
+     */
+    protected function isLintException($source)
+    {
+        return in_array($source, array(
+            'foo <?  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
+        ), true);
     }
 }

@@ -53,15 +53,6 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->setConfig($this->config);
     }
 
-    protected function makeFixersTest($expectedFixers, $resolvedFixers)
-    {
-        $this->assertCount(count($expectedFixers), $resolvedFixers);
-
-        foreach ($expectedFixers as $fixer) {
-            $this->assertContains($fixer, $resolvedFixers);
-        }
-    }
-
     public function testResolveFixersReturnsEmptyArrayByDefault()
     {
         $this->makeFixersTest(array(), $this->resolver->getFixers());
@@ -303,5 +294,14 @@ class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->resolver->setOption('progress', true);
 
         $this->assertTrue($this->resolver->getProgress());
+    }
+
+    protected function makeFixersTest($expectedFixers, $resolvedFixers)
+    {
+        $this->assertCount(count($expectedFixers), $resolvedFixers);
+
+        foreach ($expectedFixers as $fixer) {
+            $this->assertContains($fixer, $resolvedFixers);
+        }
     }
 }

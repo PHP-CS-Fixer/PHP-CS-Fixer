@@ -23,28 +23,6 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class TokensTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @param Token[]|null $expected
-     * @param Token[]|null $input
-     */
-    private function assertEqualsTokensArray(array $expected = null, array $input = null)
-    {
-        if (null === $expected) {
-            $this->assertNull($input);
-
-            return;
-        }
-
-        $this->assertSame(array_keys($expected), array_keys($input), 'Both arrays need to have same keys.');
-
-        foreach ($expected as $index => $expectedToken) {
-            $this->assertTrue(
-                $expectedToken->equals($input[$index]),
-                sprintf('The token at index %d should be %s, got %s', $index, $expectedToken->toJson(), $input[$index]->toJson())
-            );
-        }
-    }
-
     public function testGetClassyElements()
     {
         $source = <<<'PHP'
@@ -1309,31 +1287,6 @@ PHP;
     }
 
     /**
-     * @param string  $source
-     * @param int[]   $indexes
-     * @param Token[] $expected
-     */
-    private function doTestClearTokens($source, array $indexes, array $expected)
-    {
-        Tokens::clearCache();
-        $tokens = Tokens::fromCode($source);
-        foreach ($indexes as $index) {
-            $tokens->clearTokenAndMergeSurroundingWhitespace($index);
-        }
-
-        $this->assertSame(count($expected), $tokens->count());
-        foreach ($expected as $index => $expectedToken) {
-            $token = $tokens[$index];
-            $expectedPrototype = $expectedToken->getPrototype();
-            if (is_array($expectedPrototype)) {
-                unset($expectedPrototype[2]); // don't compare token lines as our token mutations don't deal with line numbers
-            }
-
-            $this->assertTrue($token->equals($expectedPrototype), sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype), $token->toJson()));
-        }
-    }
-
-    /**
      * @dataProvider getImportUseIndexesCases
      */
     public function testGetImportUseIndexes(array $expected, $input, $perNamespace = false)
@@ -1435,5 +1388,51 @@ use const some\a\{ConstA, ConstB, ConstC};
                 true,
             ),
         );
+    }
+    /**
+     * @param Token[]|null $expected
+     * @param Token[]|null $input
+     */
+    private function assertEqualsTokensArray(array $expected = null, array $input = null)
+    {
+        if (null === $expected) {
+            $this->assertNull($input);
+
+            return;
+        }
+
+        $this->assertSame(array_keys($expected), array_keys($input), 'Both arrays need to have same keys.');
+
+        foreach ($expected as $index => $expectedToken) {
+            $this->assertTrue(
+                $expectedToken->equals($input[$index]),
+                sprintf('The token at index %d should be %s, got %s', $index, $expectedToken->toJson(), $input[$index]->toJson())
+            );
+        }
+    }
+
+    /**
+     * @param string  $source
+     * @param int[]   $indexes
+     * @param Token[] $expected
+     */
+    private function doTestClearTokens($source, array $indexes, array $expected)
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($source);
+        foreach ($indexes as $index) {
+            $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+        }
+
+        $this->assertSame(count($expected), $tokens->count());
+        foreach ($expected as $index => $expectedToken) {
+            $token = $tokens[$index];
+            $expectedPrototype = $expectedToken->getPrototype();
+            if (is_array($expectedPrototype)) {
+                unset($expectedPrototype[2]); // don't compare token lines as our token mutations don't deal with line numbers
+            }
+
+            $this->assertTrue($token->equals($expectedPrototype), sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype), $token->toJson()));
+        }
     }
 }

@@ -70,6 +70,15 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
     }
 
     /**
+     * Actually normalize the given type.
+     *
+     * @param string $type
+     *
+     * @return string
+     */
+    abstract protected function normalize($type);
+
+    /**
      * Fix the types at the given line.
      *
      * We must be super careful not to modify parts of words.
@@ -120,13 +129,4 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
 
         return $this->normalize($type);
     }
-
-    /**
-     * Actually normalize the given type.
-     *
-     * @param string $type
-     *
-     * @return string
-     */
-    abstract protected function normalize($type);
 }
