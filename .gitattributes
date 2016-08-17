@@ -5,3 +5,5 @@
 .travis.yml export-ignore
 appveyor.yml export-ignore
 phpunit.xml.dist export-ignore
+*.php text eol=lf
+*.test text eol=lf
