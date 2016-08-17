@@ -18,9 +18,36 @@ use Symfony\CS\Tokenizer\Tokens;
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Darius Matulionis <darius@matulionis.lt>
  */
 class OrderedUseFixer extends AbstractFixer
 {
+    /**
+     * Sorting type.
+     *
+     * @var string
+     */
+    private static $sortType = 'alpha';
+
+    /**
+     * List of supported sorting types.
+     *
+     * @var array
+     */
+    private static $supportedSorters = ['alpha', 'length'];
+
+    /**
+     * @param string $sortType
+     */
+    public static function configure($sortType = null)
+    {
+        if (!is_string($sortType) || null === $sortType || !in_array(strtolower($sortType), self::$supportedSorters)) {
+            return;
+        }
+
+        self::$sortType = strtolower($sortType);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -79,7 +106,7 @@ class OrderedUseFixer extends AbstractFixer
     }
 
     /**
-     * This method is used for sorting the uses in a namespace.
+     * This method is used for sorting the uses statements in a namespace in alphabetical order.
      *
      * @param string[] $first
      * @param string[] $second
@@ -88,7 +115,7 @@ class OrderedUseFixer extends AbstractFixer
      *
      * @internal
      */
-    public static function sortingCallBack(array $first, array $second)
+    public static function sortAlphabetically(array $first, array $second)
     {
         $a = trim(preg_replace('%/\*(.*)\*/%s', '', $first[0]));
         $b = trim(preg_replace('%/\*(.*)\*/%s', '', $second[0]));
@@ -98,6 +125,36 @@ class OrderedUseFixer extends AbstractFixer
         $b = str_replace('\\', ' ', $b);
 
         return strcasecmp($a, $b);
+    }
+
+    /**
+     * This method is used for sorting the uses statements in a namespace by length.
+     *
+     * @param string[] $first
+     * @param string[] $second
+     *
+     * @return int
+     *
+     * @internal
+     */
+    public function sortByLength(array $first, array $second)
+    {
+        $a = trim(preg_replace('%/\*(.*)\*/%s', '', $first[0]));
+        $b = trim(preg_replace('%/\*(.*)\*/%s', '', $second[0]));
+
+        // Replace backslashes by spaces before sorting for correct sort order
+        $a = str_replace('\\', ' ', $a);
+        $b = str_replace('\\', ' ', $b);
+
+        $al = strlen($a);
+        $bl = strlen($b);
+        if ($al === $bl) {
+            $out = strcasecmp($a, $b);
+        } else {
+            $out = $al > $bl ? 1 : -1;
+        }
+
+        return $out;
     }
 
     private function getNewOrder(array $uses, Tokens $tokens)
@@ -138,7 +195,15 @@ class OrderedUseFixer extends AbstractFixer
             }
         }
 
-        uasort($indexes, 'self::sortingCallBack');
+        switch (self::$sortType)
+        {
+            case 'length':
+                uasort($indexes, 'self::sortByLength');
+                break;
+            default:
+                uasort($indexes, 'self::sortAlphabetically');
+                break;
+        }
 
         $i = -1;
 
