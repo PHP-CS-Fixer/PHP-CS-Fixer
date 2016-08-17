@@ -599,7 +599,7 @@ EOF;
     protected function sortByLengthFixer()
     {
         $fixer = $this->getFixer();
-        $fixer::configure('length');
+        $fixer::configure($fixer::SORT_LENGTH);
 
         return $fixer;
     }

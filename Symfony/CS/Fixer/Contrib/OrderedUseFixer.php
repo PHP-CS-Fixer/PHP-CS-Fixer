@@ -22,19 +22,23 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class OrderedUseFixer extends AbstractFixer
 {
+    const SORT_ALPHA = 'alpha';
+
+    const SORT_LENGTH = 'length';
+
     /**
      * Sorting type.
      *
      * @var string
      */
-    private static $sortType = 'alpha';
+    private static $sortType = self::SORT_ALPHA;
 
     /**
      * List of supported sorting types.
      *
      * @var array
      */
-    private static $supportedSorters = ['alpha', 'length'];
+    private static $supportedSorters = [self::SORT_ALPHA, self::SORT_LENGTH];
 
     /**
      * @param string $sortType
@@ -197,7 +201,7 @@ class OrderedUseFixer extends AbstractFixer
 
         switch (self::$sortType)
         {
-            case 'length':
+            case self::SORT_LENGTH:
                 uasort($indexes, 'self::sortByLength');
                 break;
             default:
