@@ -38,14 +38,14 @@ class OrderedUseFixer extends AbstractFixer
      *
      * @var array
      */
-    private static $supportedSorters = [self::SORT_ALPHA, self::SORT_LENGTH];
+    private static $supportedSorters = array(self::SORT_ALPHA, self::SORT_LENGTH);
 
     /**
      * @param string $sortType
      */
     public static function configure($sortType = null)
     {
-        if (!is_string($sortType) || null === $sortType || !in_array(strtolower($sortType), self::$supportedSorters)) {
+        if (!is_string($sortType) || null === $sortType || !in_array(strtolower($sortType), self::$supportedSorters, true)) {
             return;
         }
 
@@ -199,8 +199,7 @@ class OrderedUseFixer extends AbstractFixer
             }
         }
 
-        switch (self::$sortType)
-        {
+        switch (self::$sortType) {
             case self::SORT_LENGTH:
                 uasort($indexes, 'self::sortByLength');
                 break;

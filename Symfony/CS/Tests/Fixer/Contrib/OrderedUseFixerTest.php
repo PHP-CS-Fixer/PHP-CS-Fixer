@@ -586,7 +586,6 @@ EOF;
         $this->makeTest($expected, $input);
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Test sorting by length
@@ -606,7 +605,6 @@ EOF;
 
     public function testFixByLength()
     {
-
         $expected = <<<'EOF'
 The normal
 use of this fixer
@@ -692,7 +690,6 @@ EOF;
 
     public function testByLengthFixWithSameLength()
     {
-
         $expected = <<<'EOF'
 <?php
 
@@ -742,7 +739,6 @@ class AnnotatedClass
 EOF;
 
         $this->makeTest($expected, $input, null, $this->sortByLengthFixer());
-
     }
 
     public function testByLengthFixWithMultipleNamespace()
