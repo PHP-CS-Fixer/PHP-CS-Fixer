@@ -12,8 +12,6 @@
 
 namespace Symfony\CS;
 
-use Symfony\CS\Finder\DefaultFinder;
-
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
@@ -37,7 +35,7 @@ class Config implements ConfigInterface
         $this->description = $description;
         $this->level = FixerInterface::SYMFONY_LEVEL;
         $this->fixers = array();
-        $this->finder = new DefaultFinder();
+        $this->finder = new Finder();
         $this->customFixers = array();
     }
 
