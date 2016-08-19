@@ -35,8 +35,7 @@ class OrderedUseFixer extends AbstractFixer
     private static $sortType = self::SORT_ALPHA;
 
     /**
-     * Array of supported sort types:
-     *  alpha, length.
+     * Array of supported sort types: alpha, length.
      *
      * @var array
      */
