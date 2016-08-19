@@ -36,7 +36,7 @@ class OrderedUseFixer extends AbstractFixer
 
     /**
      * Array of supported sort types:
-     *  alpha, length
+     *  alpha, length.
      *
      * @var array
      */
