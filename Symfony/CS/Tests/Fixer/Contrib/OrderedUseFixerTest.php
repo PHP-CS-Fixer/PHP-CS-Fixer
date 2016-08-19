@@ -639,6 +639,24 @@ EOF;
         OrderedUseFixer::configure(array(new \stdClass()));
     }
 
+    /**
+     * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessage [ordered_use] Sort type is invalid. Array should contain only one of the parameter: "alpha", "length"
+     */
+    public function testInvalidConfigWithEmptyArray()
+    {
+        OrderedUseFixer::configure(array());
+    }
+
+    public function testNoConfiguration()
+    {
+        OrderedUseFixer::configure(null);
+        $this->assertTrue(OrderedUseFixer::getSortType() === OrderedUseFixer::SORT_ALPHA);
+
+        OrderedUseFixer::configure();
+        $this->assertTrue(OrderedUseFixer::getSortType() === OrderedUseFixer::SORT_ALPHA);
+    }
+
     public function testFixByLength()
     {
         $this->setSortByLengthConfiguration();

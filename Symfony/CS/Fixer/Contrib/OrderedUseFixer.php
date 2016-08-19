@@ -35,11 +35,11 @@ class OrderedUseFixer extends AbstractFixer
     private static $sortType = self::SORT_ALPHA;
 
     /**
-     * List of supported sorting types.
+     * Array of supported sort types.
      *
      * @var array
      */
-    private static $supportedSorters = array(self::SORT_ALPHA, self::SORT_LENGTH);
+    private static $supportedSortTypes = array(self::SORT_ALPHA, self::SORT_LENGTH);
 
     /**
      * @param array $sortType
@@ -47,20 +47,20 @@ class OrderedUseFixer extends AbstractFixer
     public static function configure(array $sortType = null)
     {
         // If no configuration was passed, stick to default.
-        if (null === $sortType || empty($sortType)) {
+        if (null === $sortType) {
             return;
         }
 
-        // Configuration should contain only one sort type.
-        if (count($sortType) != 1) {
-            throw new InvalidFixerConfigurationException('ordered_use', sprintf('Sort type is invalid. Array should contain only one of the parameter: "%s"', implode('", "', self::$supportedSorters)));
+        // Configuration should contain only one sort type and can not be empty.
+        if (count($sortType) !== 1) {
+            throw new InvalidFixerConfigurationException('ordered_use', sprintf('Sort type is invalid. Array should contain only one of the parameter: "%s"', implode('", "', self::$supportedSortTypes)));
         }
 
         $sortType = array_pop($sortType);
 
         // Check if passed sort type is supported.
-        if (!is_string($sortType) || !in_array(strtolower($sortType), self::$supportedSorters)) {
-            throw new InvalidFixerConfigurationException('ordered_use', sprintf('Sort type is invalid. Array should contain only one of the parameter: "%s"', implode('", "', self::$supportedSorters)));
+        if (!is_string($sortType) || !in_array(strtolower($sortType), self::$supportedSortTypes, true)) {
+            throw new InvalidFixerConfigurationException('ordered_use', sprintf('Sort type is invalid. Array should contain only one of the parameter: "%s"', implode('", "', self::$supportedSortTypes)));
         }
 
         self::$sortType = strtolower($sortType);
