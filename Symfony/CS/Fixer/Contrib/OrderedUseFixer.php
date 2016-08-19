@@ -13,6 +13,7 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\ConfigurationException\InvalidFixerConfigurationException;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -41,15 +42,36 @@ class OrderedUseFixer extends AbstractFixer
     private static $supportedSorters = array(self::SORT_ALPHA, self::SORT_LENGTH);
 
     /**
-     * @param string $sortType
+     * @param array $sortType
      */
-    public static function configure($sortType = null)
+    public static function configure(array $sortType = null)
     {
-        if (!is_string($sortType) || null === $sortType || !in_array(strtolower($sortType), self::$supportedSorters, true)) {
+        // If no configuration was passed, stick to default.
+        if (null === $sortType || empty($sortType)) {
             return;
         }
 
+        // Configuration should contain only one sort type.
+        if (count($sortType) != 1) {
+            throw new InvalidFixerConfigurationException('ordered_use', sprintf('Sort type is invalid. Array should contain only one of the parameter: "%s"', implode('", "', self::$supportedSorters)));
+        }
+
+        $sortType = array_pop($sortType);
+
+        // Check if passed sort type is supported.
+        if (!is_string($sortType) || !in_array(strtolower($sortType), self::$supportedSorters)) {
+            throw new InvalidFixerConfigurationException('ordered_use', sprintf('Sort type is invalid. Array should contain only one of the parameter: "%s"', implode('", "', self::$supportedSorters)));
+        }
+
         self::$sortType = strtolower($sortType);
+    }
+
+    /**
+     * @return string
+     */
+    public static function getSortType()
+    {
+        return self::$sortType;
     }
 
     /**
@@ -146,10 +168,6 @@ class OrderedUseFixer extends AbstractFixer
         $a = trim(preg_replace('%/\*(.*)\*/%s', '', $first[0]));
         $b = trim(preg_replace('%/\*(.*)\*/%s', '', $second[0]));
 
-        // Replace backslashes by spaces before sorting for correct sort order
-        $a = str_replace('\\', ' ', $a);
-        $b = str_replace('\\', ' ', $b);
-
         $al = strlen($a);
         $bl = strlen($b);
         if ($al === $bl) {
@@ -199,7 +217,7 @@ class OrderedUseFixer extends AbstractFixer
             }
         }
 
-        switch (self::$sortType) {
+        switch (self::getSortType()) {
             case self::SORT_LENGTH:
                 uasort($indexes, 'self::sortByLength');
                 break;

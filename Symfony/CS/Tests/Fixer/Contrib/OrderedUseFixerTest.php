@@ -12,10 +12,25 @@
 
 namespace Symfony\CS\Tests\Fixer\Contrib;
 
+use Symfony\CS\Fixer\Contrib\OrderedUseFixer;
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 class OrderedUseFixerTest extends AbstractFixerTestBase
 {
+    protected static $defaultSortType;
+
+    protected function setUp()
+    {
+        parent::setUp();
+        self::$defaultSortType = OrderedUseFixer::getSortType();
+    }
+
+    protected function tearDown()
+    {
+        OrderedUseFixer::configure([self::$defaultSortType]);
+        parent::tearDown();
+    }
+
     public function testFix()
     {
         $expected = <<<'EOF'
@@ -592,19 +607,42 @@ EOF;
     |--------------------------------------------------------------------------
     */
 
-    /**
-     * @return mixed
-     */
-    protected function sortByLengthFixer()
+    protected function setSortByLengthConfiguration()
     {
-        $fixer = $this->getFixer();
-        $fixer::configure($fixer::SORT_LENGTH);
+        OrderedUseFixer::configure([OrderedUseFixer::SORT_LENGTH]);
+    }
 
-        return $fixer;
+    /**
+     * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessage [ordered_use] Sort type is invalid. Array should contain only one of the parameter: "alpha", "length"
+     */
+    public function testInvalidConfigWithNotSupportedSortType()
+    {
+        OrderedUseFixer::configure(['doup']);
+    }
+
+    /**
+     * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessage [ordered_use] Sort type is invalid. Array should contain only one of the parameter: "alpha", "length"
+     */
+    public function testInvalidConfigWithMultipleSortTypes()
+    {
+        OrderedUseFixer::configure([OrderedUseFixer::SORT_ALPHA, OrderedUseFixer::SORT_LENGTH]);
+    }
+
+    /**
+     * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessage [ordered_use] Sort type is invalid. Array should contain only one of the parameter: "alpha", "length"
+     */
+    public function testInvalidConfigWithSortTypeIsNotString()
+    {
+        OrderedUseFixer::configure([new \stdClass()]);
     }
 
     public function testFixByLength()
     {
+        $this->setSortByLengthConfiguration();
+
         $expected = <<<'EOF'
 The normal
 use of this fixer
@@ -685,11 +723,13 @@ class AnnotatedClass
 }
 EOF;
 
-        $this->makeTest($expected, $input, null, $this->sortByLengthFixer());
+        $this->makeTest($expected, $input);
     }
 
     public function testByLengthFixWithSameLength()
     {
+        $this->setSortByLengthConfiguration();
+
         $expected = <<<'EOF'
 <?php
 
@@ -738,11 +778,13 @@ class AnnotatedClass
 }
 EOF;
 
-        $this->makeTest($expected, $input, null, $this->sortByLengthFixer());
+        $this->makeTest($expected, $input);
     }
 
     public function testByLengthFixWithMultipleNamespace()
     {
+        $this->setSortByLengthConfiguration();
+
         $expected = <<<'EOF'
 <?php
 
@@ -861,11 +903,13 @@ namespace BlaRoo {
 }
 EOF;
 
-        $this->makeTest($expected, $input, null, $this->sortByLengthFixer());
+        $this->makeTest($expected, $input);
     }
 
     public function testByLengthFixWithComment()
     {
+        $this->setSortByLengthConfiguration();
+
         $expected = <<<'EOF'
 The normal
 use of this fixer
@@ -946,7 +990,7 @@ class AnnotatedClass
 }
 EOF;
 
-        $this->makeTest($expected, $input, null, $this->sortByLengthFixer());
+        $this->makeTest($expected, $input);
     }
 
     /**
@@ -954,6 +998,8 @@ EOF;
      */
     public function testByLength54()
     {
+        $this->setSortByLengthConfiguration();
+
         $expected = <<<'EOF'
 <?php
 
@@ -1024,7 +1070,7 @@ class AnnotatedClass
 }
 EOF;
 
-        $this->makeTest($expected, $input, null, $this->sortByLengthFixer());
+        $this->makeTest($expected, $input);
     }
 
     /**
@@ -1032,6 +1078,8 @@ EOF;
      */
     public function testByLengthFixWithTraitImports()
     {
+        $this->setSortByLengthConfiguration();
+
         $expected = <<<'EOF'
 The normal
 use of this fixer
@@ -1118,11 +1166,13 @@ class AnnotatedClass
 }
 EOF;
 
-        $this->makeTest($expected, $input, null, $this->sortByLengthFixer());
+        $this->makeTest($expected, $input);
     }
 
     public function testByLengthFixWithDifferentCases()
     {
+        $this->setSortByLengthConfiguration();
+
         $expected = <<<'EOF'
 The normal
 use of this fixer
@@ -1157,11 +1207,13 @@ class Test
 }
 EOF;
 
-        $this->makeTest($expected, $input, null, $this->sortByLengthFixer());
+        $this->makeTest($expected, $input);
     }
 
     public function testByLengthOrderWithTrailingDigit()
     {
+        $this->setSortByLengthConfiguration();
+
         $expected = <<<'EOF'
 <?php
 
@@ -1192,11 +1244,13 @@ class Test
 }
 EOF;
 
-        $this->makeTest($expected, $input, null, $this->sortByLengthFixer());
+        $this->makeTest($expected, $input);
     }
 
     public function testByLengthCodeWithImportsOnly()
     {
+        $this->setSortByLengthConfiguration();
+
         $expected = <<<'EOF'
 <?php
 
@@ -1211,11 +1265,13 @@ use Bbb;
 use Aaa;
 EOF;
 
-        $this->makeTest($expected, $input, null, $this->sortByLengthFixer());
+        $this->makeTest($expected, $input);
     }
 
     public function testByLengthWithoutUses()
     {
+        $this->setSortByLengthConfiguration();
+
         $expected = <<<'EOF'
 <?php
 
@@ -1223,6 +1279,6 @@ $c = 1;
 EOF
         ;
 
-        $this->makeTest($expected, null, null, $this->sortByLengthFixer());
+        $this->makeTest($expected);
     }
 }
