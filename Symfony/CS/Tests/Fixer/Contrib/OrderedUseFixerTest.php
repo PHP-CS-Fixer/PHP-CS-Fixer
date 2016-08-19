@@ -27,7 +27,7 @@ class OrderedUseFixerTest extends AbstractFixerTestBase
 
     protected function tearDown()
     {
-        OrderedUseFixer::configure([self::$defaultSortType]);
+        OrderedUseFixer::configure(array(self::$defaultSortType));
         parent::tearDown();
     }
 
@@ -609,7 +609,7 @@ EOF;
 
     protected function setSortByLengthConfiguration()
     {
-        OrderedUseFixer::configure([OrderedUseFixer::SORT_LENGTH]);
+        OrderedUseFixer::configure(array(OrderedUseFixer::SORT_LENGTH));
     }
 
     /**
@@ -618,7 +618,7 @@ EOF;
      */
     public function testInvalidConfigWithNotSupportedSortType()
     {
-        OrderedUseFixer::configure(['doup']);
+        OrderedUseFixer::configure(array('doup'));
     }
 
     /**
@@ -627,7 +627,7 @@ EOF;
      */
     public function testInvalidConfigWithMultipleSortTypes()
     {
-        OrderedUseFixer::configure([OrderedUseFixer::SORT_ALPHA, OrderedUseFixer::SORT_LENGTH]);
+        OrderedUseFixer::configure(array(OrderedUseFixer::SORT_ALPHA, OrderedUseFixer::SORT_LENGTH));
     }
 
     /**
@@ -636,7 +636,7 @@ EOF;
      */
     public function testInvalidConfigWithSortTypeIsNotString()
     {
-        OrderedUseFixer::configure([new \stdClass()]);
+        OrderedUseFixer::configure(array(new \stdClass()));
     }
 
     public function testFixByLength()
