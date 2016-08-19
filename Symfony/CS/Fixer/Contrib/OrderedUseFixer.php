@@ -35,7 +35,8 @@ class OrderedUseFixer extends AbstractFixer
     private static $sortType = self::SORT_ALPHA;
 
     /**
-     * Array of supported sort types.
+     * Array of supported sort types:
+     *  alpha, length
      *
      * @var array
      */
@@ -64,14 +65,6 @@ class OrderedUseFixer extends AbstractFixer
         }
 
         self::$sortType = strtolower($sortType);
-    }
-
-    /**
-     * @return string
-     */
-    public static function getSortType()
-    {
-        return self::$sortType;
     }
 
     /**
@@ -217,7 +210,7 @@ class OrderedUseFixer extends AbstractFixer
             }
         }
 
-        switch (self::getSortType()) {
+        switch (self::$sortType) {
             case self::SORT_LENGTH:
                 uasort($indexes, 'self::sortByLength');
                 break;

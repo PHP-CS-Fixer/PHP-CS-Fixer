@@ -17,17 +17,17 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
 class OrderedUseFixerTest extends AbstractFixerTestBase
 {
-    protected static $defaultSortType;
+    protected $defaultSortType = OrderedUseFixer::SORT_ALPHA;
 
     protected function setUp()
     {
         parent::setUp();
-        self::$defaultSortType = OrderedUseFixer::getSortType();
+        OrderedUseFixer::configure(array($this->defaultSortType));
     }
 
     protected function tearDown()
     {
-        OrderedUseFixer::configure(array(self::$defaultSortType));
+        OrderedUseFixer::configure(array($this->defaultSortType));
         parent::tearDown();
     }
 
@@ -618,7 +618,7 @@ EOF;
      */
     public function testInvalidConfigWithNotSupportedSortType()
     {
-        OrderedUseFixer::configure(array('doup'));
+        OrderedUseFixer::configure(array('dope'));
     }
 
     /**
@@ -646,15 +646,6 @@ EOF;
     public function testInvalidConfigWithEmptyArray()
     {
         OrderedUseFixer::configure(array());
-    }
-
-    public function testNoConfiguration()
-    {
-        OrderedUseFixer::configure(null);
-        $this->assertTrue(OrderedUseFixer::getSortType() === OrderedUseFixer::SORT_ALPHA);
-
-        OrderedUseFixer::configure();
-        $this->assertTrue(OrderedUseFixer::getSortType() === OrderedUseFixer::SORT_ALPHA);
     }
 
     public function testFixByLength()
