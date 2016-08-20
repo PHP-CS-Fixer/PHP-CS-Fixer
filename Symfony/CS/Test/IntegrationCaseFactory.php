@@ -107,7 +107,7 @@ final class IntegrationCaseFactory
 
                     break;
                 default:
-                    throw new \InvalidArgumentException(sprintf('Unknown CONFIG line: "%d".', $ine));
+                    throw new \InvalidArgumentException(sprintf('Unknown CONFIG line: "%d".', $line));
             }
         }
 
