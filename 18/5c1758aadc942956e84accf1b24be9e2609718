@@ -1,0 +1,34 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-16T21:29:29Z
+
+Nice work so far!
+
+I would move that logic to separated class.
+sth like
+```php
+interface ShutdownFileRemoval
+{
+    public function attach(string $file);
+    public function detach(string $file);
+    public function clean();
+}
+```
+
+Each instance of `ShutdownFileRemoval` would register it's own shutdown function.
+
+Then, you will have no static methods. A lot easier to test.
+
+Also, thanks to this, you will be able to apply same logic in `AbstractIntegrationTest` about `$tmpFile`
+
+---------------------------------------------------------------------------
+
+by adawolfa at 2016-08-16T21:33:26Z
+
+OK, stay tuned.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-16T22:29:14Z
+
+Please update integration test as well ;)
