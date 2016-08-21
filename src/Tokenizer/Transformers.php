@@ -95,6 +95,20 @@ final class Transformers
     }
 
     /**
+     * Transform given Tokens collection through all Transformer classes.
+     *
+     * @param Tokens $tokens Tokens collection
+     */
+    public function transform(Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            foreach ($this->items as $transformer) {
+                $transformer->process($tokens, $token, $index);
+            }
+        }
+    }
+
+    /**
      * Register Transformer.
      *
      * @param TransformerInterface $transformer Transformer
@@ -109,20 +123,6 @@ final class Transformers
 
         foreach ($transformer->getCustomTokenNames() as $name) {
             $this->addCustomToken(constant($name), $name);
-        }
-    }
-
-    /**
-     * Transform given Tokens collection through all Transformer classes.
-     *
-     * @param Tokens $tokens Tokens collection
-     */
-    public function transform(Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            foreach ($this->items as $transformer) {
-                $transformer->process($tokens, $token, $index);
-            }
         }
     }
 
