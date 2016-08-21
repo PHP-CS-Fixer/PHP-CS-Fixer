@@ -71,7 +71,7 @@ EOT
         }
 
         $remoteFilename = $this->buildVersionFileUrl($remoteTag);
-        $localFilename = $_SERVER['argv'][0];
+        $localFilename = realpath($_SERVER['argv'][0]) ?: $_SERVER['argv'][0];
         $tempFilename = basename($localFilename, '.phar').'-tmp.phar';
 
         try {
