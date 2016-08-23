@@ -46,6 +46,14 @@ class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'There should be no empty lines after class opening brace.';
+    }
+
+    /**
      * Cleanup a whitespace token.
      *
      * @param Token $token
@@ -59,13 +67,5 @@ class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer
             $lines = Utils::splitLines($content);
             $token->setContent("\n".end($lines));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'There should be no empty lines after class opening brace.';
     }
 }

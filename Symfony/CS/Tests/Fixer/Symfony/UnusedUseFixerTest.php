@@ -471,4 +471,80 @@ EOF;
 
         $this->makeTest($expected, $input);
     }
+
+    public function testFoo()
+    {
+        $expected = <<<'EOF'
+<?php
+namespace Aaa;
+
+
+class Ddd
+{
+}
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+namespace Aaa;
+
+use Aaa\Bbb;
+use Ccc;
+
+class Ddd
+{
+}
+
+EOF;
+
+        $this->makeTest($expected, $input);
+    }
+
+    /**
+     * @dataProvider provideCloseTagCases
+     */
+    public function testFixABC($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provideCloseTagCases()
+    {
+        return array(
+            array(
+'<?php
+?>inline content<?php ?>',
+'<?php
+     use A\AA;
+     use B\C?>inline content<?php use A\D; use E\F ?>',
+            ),
+            array(
+                '<?php ?>',
+                '<?php use A\B;?>',
+            ),
+            array(
+                '<?php ?>',
+                '<?php use A\B?>',
+            ),
+        );
+    }
+
+    /**
+     * @requires PHP 7.0
+     */
+    public function testPHP70()
+    {
+        $expected = <<<'EOF'
+<?php
+use some\a\{ClassD};
+use some\b\{ClassA, ClassB, ClassC as C};
+use function some\c\{fn_a, fn_b, fn_c};
+use const some\d\{ConstA, ConstB, ConstC};
+
+new CLassD();
+echo fn_a();
+EOF;
+        $this->makeTest($expected);
+    }
 }

@@ -31,6 +31,10 @@ class TernarySpacesFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
+                '<?php $a = $a ? 1 : 0;',
+                '<?php $a = $a  ? 1 : 0;',
+            ),
+            array(
                 '<?php $val = (1===1) ? true : false;',
                 '<?php $val = (1===1)?true:false;',
             ),
@@ -40,8 +44,11 @@ class TernarySpacesFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-$a = $b  ? 2 : 3;
+$a = $b ? 2 : ($bc ? 2 : 3);
 $a = $bc ? 2 : 3;',
+                '<?php
+$a = $b   ?   2  :    ($bc?2:3);
+$a = $bc?2:3;',
             ),
             array(
                 '<?php $config = $config ?: new Config();',
@@ -63,6 +70,16 @@ $a = $b
                 '<?php
 $a = $b
     ?$c
+    :$d;',
+            ),
+            array(
+                '<?php
+$a = $b  //
+    ? $c  /**/
+    : $d;',
+                '<?php
+$a = $b  //
+    ?$c  /**/
     :$d;',
             ),
             array(

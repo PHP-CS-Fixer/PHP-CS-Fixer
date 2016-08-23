@@ -63,7 +63,7 @@ class HeaderCommentFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        if (!$tokens->isMonolithicPhp()) {
+        if (!$tokens[0]->isGivenKind(T_OPEN_TAG) || !$tokens->isMonolithicPhp()) {
             return $content;
         }
 

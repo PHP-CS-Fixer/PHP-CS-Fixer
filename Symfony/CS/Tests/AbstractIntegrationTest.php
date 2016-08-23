@@ -20,6 +20,7 @@ use Symfony\CS\FileCacheManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\LintManager;
+use Symfony\CS\ShutdownFileRemoval;
 use Symfony\CS\Test\IntegrationCase;
 use Symfony\CS\Test\IntegrationCaseFactory;
 
@@ -63,6 +64,11 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
      */
     protected static $linter;
 
+    /*
+     * @var ShutdownFileRemoval
+     */
+    private static $shutdownFileRemoval;
+
     public static function setUpBeforeClass()
     {
         if (getenv('LINT_TEST_CASES')) {
@@ -70,8 +76,12 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
         }
 
         $tmpFile = static::getTempFile();
+        self::$shutdownFileRemoval = new ShutdownFileRemoval();
+        self::$shutdownFileRemoval->attach($tmpFile);
+
         if (!is_file($tmpFile)) {
             $dir = dirname($tmpFile);
+
             if (!is_dir($dir)) {
                 $fs = new Filesystem();
                 $fs->mkdir($dir, 0766);
@@ -81,7 +91,10 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
 
     public static function tearDownAfterClass()
     {
-        @unlink(static::getTempFile());
+        $tmpFile = static::getTempFile();
+
+        @unlink($tmpFile);
+        self::$shutdownFileRemoval->detach($tmpFile);
     }
 
     /**

@@ -38,7 +38,11 @@ class FunctionDeclarationFixer extends AbstractFixer
                 continue;
             }
 
-            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, array('('));
+            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, array('(', ';', array(T_CLOSE_TAG)));
+            if (!$tokens[$startParenthesisIndex]->equals('(')) {
+                continue;
+            }
+
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
             $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, array(';', '{'));
 

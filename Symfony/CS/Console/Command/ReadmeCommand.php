@@ -70,17 +70,13 @@ your system:
 
 .. code-block:: bash
 
-    $ wget http://get.sensiolabs.org/php-cs-fixer.phar -O php-cs-fixer
-    # With a specific version
-    $ wget http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -O php-cs-fixer
+    \$ wget %download.url% -O php-cs-fixer
 
 or with curl:
 
 .. code-block:: bash
 
-    $ curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
-    # With a specific version
-    $ curl http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -o php-cs-fixer
+    \$ curl -L %download.url% -o php-cs-fixer
 
 then:
 
@@ -95,6 +91,12 @@ Globally (Composer)
 ~~~~~~~~~~~~~~~~~~~
 
 To install PHP-CS-Fixer, install Composer and issue the following command:
+
+.. code-block:: bash
+
+    $ ./composer.phar global require friendsofphp/php-cs-fixer
+
+Please be aware that before v1.12 package name was different:
 
 .. code-block:: bash
 
@@ -146,7 +148,7 @@ You can update ``php-cs-fixer`` through this command:
 
 .. code-block:: bash
 
-    $ ./composer.phar global update fabpot/php-cs-fixer
+    $ ./composer.phar global update friendsofphp/php-cs-fixer
 
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
@@ -195,7 +197,7 @@ scanned by the tool when run in the directory of your project. It is useful for
 projects that follow a well-known directory structures (like for Symfony
 projects for instance).
 
-.. _php-cs-fixer.phar: http://get.sensiolabs.org/php-cs-fixer.phar
+.. _php-cs-fixer.phar: %download.url%
 .. _Atom:              https://github.com/Glavin001/atom-beautify
 .. _NetBeans:          http://plugins.netbeans.org/plugin/49042/php-cs-fixer
 .. _PhpStorm:          http://tzfrs.de/2015/01/automatically-format-code-to-match-psr-standards-with-phpstorm
@@ -204,6 +206,8 @@ projects for instance).
 .. _contribute:        https://github.com/FriendsOfPhp/php-cs-fixer/blob/master/CONTRIBUTING.md
 
 EOF;
+
+        $downloadUrl = $this->getLatestDownloadUrl();
 
         $command = $this->getApplication()->get('fix');
         $help = $command->getHelp();
@@ -231,7 +235,32 @@ EOF;
         );
         $help = preg_replace('#^                        #m', '  ', $help);
         $help = preg_replace('#\*\* +\[#', '** [', $help);
+        $header = str_replace('%download.url%', $downloadUrl, $header);
+        $footer = str_replace('%download.url%', $downloadUrl, $footer);
 
         $output->write($header."\n".$help."\n".$footer);
+    }
+
+    private function getLatestDownloadUrl()
+    {
+        $version = $this->getApplication()->getVersion();
+        $changelogFile = __DIR__.'/../../../../CHANGELOG.md';
+
+        if (is_file($changelogFile)) {
+            $currentMajor = (int) $version;
+            $changelog = file_get_contents($changelogFile);
+            preg_match('/Changelog for v('.$currentMajor.'.\d+.\d+)/', $changelog, $matches);
+
+            if (2 !== count($matches)) {
+                throw new \RuntimeException('Invalid changelog data!');
+            }
+
+            $version = $matches[1];
+        }
+
+        return sprintf(
+            'https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v%s/php-cs-fixer.phar',
+            $version
+        );
     }
 }

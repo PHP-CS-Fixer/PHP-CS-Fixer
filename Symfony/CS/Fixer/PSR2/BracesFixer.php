@@ -176,6 +176,14 @@ class BracesFixer extends AbstractFixer
                 continue;
             }
 
+            if (
+                $token->isGivenKind(T_FUNCTION)
+                // do not change import of functions
+                && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_USE)
+            ) {
+                continue;
+            }
+
             if ($token->isGivenKind($classyAndFunctionTokens)) {
                 $startBraceIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
                 $startBraceToken = $tokens[$startBraceIndex];
@@ -220,9 +228,12 @@ class BracesFixer extends AbstractFixer
                         // and it is not a `Foo::{bar}()` situation
                         !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equals('(')) &&
                         // and it is not a `${"a"}->...` and `${"b{$foo}"}->...` situation
-                        !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(array('"', "'", array(T_CONSTANT_ENCAPSED_STRING))))
+                        !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(array('"', "'", array(T_CONSTANT_ENCAPSED_STRING)))) &&
+                        // and it is not a `$var{0} = ` situation (character access on string)
+                        // TODO: remove on 2.x line
+                        !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equalsAny(array('=', array(T_OBJECT_OPERATOR))))
                     ) {
-                        if ($nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens())) {
+                        if ($nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens()) || $nextNonWhitespaceNestToken->isGivenKind(T_CLOSE_TAG)) {
                             $whitespace = ' ';
                         } else {
                             $nextToken = $tokens[$nestIndex + 1];
@@ -279,10 +290,15 @@ class BracesFixer extends AbstractFixer
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, "\n".$indent);
             } elseif ($token->isGivenKind(T_FUNCTION) && !$tokens->isLambda($index)) {
                 $closingParenthesisIndex = $tokens->getPrevTokenOfKind($startBraceIndex, array(')'));
-                $prevToken = $tokens[$closingParenthesisIndex - 1];
+                if (null === $closingParenthesisIndex) {
+                    continue;
+                }
 
+                $prevToken = $tokens[$closingParenthesisIndex - 1];
                 if ($prevToken->isWhitespace() && false !== strpos($prevToken->getContent(), "\n")) {
-                    $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
+                    if (!$tokens[$startBraceIndex - 2]->isComment()) {
+                        $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
+                    }
                 } else {
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, "\n".$indent);
                 }

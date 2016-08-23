@@ -30,17 +30,13 @@ your system:
 
 .. code-block:: bash
 
-    $ wget http://get.sensiolabs.org/php-cs-fixer.phar -O php-cs-fixer
-    # With a specific version
-    $ wget http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -O php-cs-fixer
+    \$ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.12.0/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
 .. code-block:: bash
 
-    $ curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
-    # With a specific version
-    $ curl http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -o php-cs-fixer
+    \$ curl -L https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.12.0/php-cs-fixer.phar -o php-cs-fixer
 
 then:
 
@@ -55,6 +51,12 @@ Globally (Composer)
 ~~~~~~~~~~~~~~~~~~~
 
 To install PHP-CS-Fixer, install Composer and issue the following command:
+
+.. code-block:: bash
+
+    $ ./composer.phar global require friendsofphp/php-cs-fixer
+
+Please be aware that before v1.12 package name was different:
 
 .. code-block:: bash
 
@@ -106,7 +108,7 @@ You can update ``php-cs-fixer`` through this command:
 
 .. code-block:: bash
 
-    $ ./composer.phar global update fabpot/php-cs-fixer
+    $ ./composer.phar global update friendsofphp/php-cs-fixer
 
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
@@ -329,6 +331,11 @@ Choose from the list of available fixers:
                         Concatenation should be used
                         without spaces.
 
+* **declare_equal_normalize** [symfony]
+                        Equal sign in declare
+                        statement should not be
+                        surrounded by spaces.
+
 * **double_arrow_multiline_whitespaces** [symfony]
                         Operator => should not be
                         surrounded by multi-line
@@ -427,6 +434,11 @@ Choose from the list of available fixers:
                         Binary operators should be
                         surrounded by at least one
                         space.
+
+* **phpdoc_annotation_without_dot** [symfony]
+                        Phpdocs annotation
+                        descriptions should not end
+                        with a full stop.
 
 * **phpdoc_indent** [symfony]
                         Docblocks should have the same
@@ -616,6 +628,10 @@ Choose from the list of available fixers:
                         Align equals symbols in
                         consecutive lines.
 
+* **class_keyword_remove** [contrib]
+                        Converts ::class keywords to
+                        FQCN strings.
+
 * **combine_consecutive_unsets** [contrib]
                         Calling unset on multiple
                         items should be done in one
@@ -659,6 +675,12 @@ Choose from the list of available fixers:
 * **long_array_syntax** [contrib]
                         Arrays should use the long
                         syntax.
+
+* **mb_str_functions** [contrib]
+                        Replace non multibyte-safe
+                        functions with corresponding
+                        mb function. Warning! This
+                        could change code behavior.
 
 * **multiline_spaces_before_semicolon** [contrib]
                         Multi-line whitespace before
@@ -734,6 +756,11 @@ Choose from the list of available fixers:
 * **short_echo_tag** [contrib]
                         Replace short-echo <?= with
                         long format <?php echo syntax.
+
+* **silenced_deprecation_error** [contrib]
+                        Ensures deprecation notices
+                        are silenced. Warning! This
+                        could change code behavior.
 
 * **strict** [contrib]
                         Comparison should be strict.
@@ -904,7 +931,7 @@ scanned by the tool when run in the directory of your project. It is useful for
 projects that follow a well-known directory structures (like for Symfony
 projects for instance).
 
-.. _php-cs-fixer.phar: http://get.sensiolabs.org/php-cs-fixer.phar
+.. _php-cs-fixer.phar: https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.12.0/php-cs-fixer.phar
 .. _Atom:              https://github.com/Glavin001/atom-beautify
 .. _NetBeans:          http://plugins.netbeans.org/plugin/49042/php-cs-fixer
 .. _PhpStorm:          http://tzfrs.de/2015/01/automatically-format-code-to-match-psr-standards-with-phpstorm

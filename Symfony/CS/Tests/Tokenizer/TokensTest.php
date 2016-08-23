@@ -19,31 +19,10 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Max Voloshin <voloshin.dp@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
+ * @author SpacePossum
  */
 class TokensTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @param Token[]|null $expected
-     * @param Token[]|null $input
-     */
-    private function assertEqualsTokensArray(array $expected = null, array $input = null)
-    {
-        if (null === $expected) {
-            $this->assertNull($input);
-
-            return;
-        }
-
-        $this->assertSame(array_keys($expected), array_keys($input), 'Both arrays need to have same keys.');
-
-        foreach ($expected as $index => $expectedToken) {
-            $this->assertTrue(
-                $expectedToken->equals($input[$index]),
-                sprintf('The token at index %d should be %s, got %s', $index, $expectedToken->toJson(), $input[$index]->toJson())
-            );
-        }
-    }
-
     public function testGetClassyElements()
     {
         $source = <<<'PHP'
@@ -183,6 +162,86 @@ preg_replace_callback(
             array(
                 '<?php $foo = function &() {};',
                 array(5 => true),
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideIsLambdaCases70
+     * @requires PHP 7.0
+     */
+    public function testIsLambda70($source, array $expected)
+    {
+        $tokens = Tokens::fromCode($source);
+
+        foreach ($expected as $index => $expectedValue) {
+            $this->assertSame($expectedValue, $tokens->isLambda($index));
+        }
+    }
+
+    public function provideIsLambdaCases70()
+    {
+        return array(
+            array(
+                '<?php
+                    $a = function (): array {
+                        return [];
+                    };',
+                array(6 => true),
+            ),
+            array(
+                '<?php
+                    function foo (): array {
+                        return [];
+                    };',
+                array(2 => false),
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideIsLambdaCases71
+     * @requires PHP 7.1
+     */
+    public function testIsLambda71($source, array $expected)
+    {
+        $tokens = Tokens::fromCode($source);
+
+        foreach ($expected as $index => $expectedValue) {
+            $this->assertSame($expectedValue, $tokens->isLambda($index));
+        }
+    }
+
+    public function provideIsLambdaCases71()
+    {
+        return array(
+            array(
+                '<?php
+                    $a = function (): void {
+                        return [];
+                    };',
+                array(6 => true),
+            ),
+            array(
+                '<?php
+                    function foo (): void {
+                        return [];
+                    };',
+                array(2 => false),
+            ),
+            array(
+                '<?php
+                    $a = function (): ?int {
+                        return [];
+                    };',
+                array(6 => true),
+            ),
+            array(
+                '<?php
+                    function foo (): ?int {
+                        return [];
+                    };',
+                array(2 => false),
             ),
         );
     }
@@ -879,9 +938,9 @@ PHP;
      * @dataProvider provideShortOpenTagMonolithicPhpDetection
      *
      * @param string $source
-     * @param bool   $monolitic
+     * @param bool   $monolithic
      */
-    public function testShortOpenTagMonolithicPhpDetection($source, $monolitic)
+    public function testShortOpenTagMonolithicPhpDetection($source, $monolithic)
     {
         /*
          * short_open_tag setting is ignored by HHVM
@@ -889,11 +948,11 @@ PHP;
          */
         if (!ini_get('short_open_tag') && !defined('HHVM_VERSION')) {
             // Short open tag is parsed as T_INLINE_HTML
-            $monolitic = false;
+            $monolithic = false;
         }
 
         $tokens = Tokens::fromCode($source);
-        $this->assertSame($monolitic, $tokens->isMonolithicPhp());
+        $this->assertSame($monolithic, $tokens->isMonolithicPhp());
     }
 
     public function provideShortOpenTagMonolithicPhpDetection()
@@ -915,9 +974,9 @@ PHP;
      * @dataProvider provideShortOpenTagEchoMonolithicPhpDetection
      *
      * @param string $source
-     * @param bool   $monolitic
+     * @param bool   $monolithic
      */
-    public function testShortOpenTagEchoMonolithicPhpDetection($source, $monolitic)
+    public function testShortOpenTagEchoMonolithicPhpDetection($source, $monolithic)
     {
         /*
          * short_open_tag setting is ignored by HHVM
@@ -925,11 +984,11 @@ PHP;
          */
         if (!ini_get('short_open_tag') && 50400 > PHP_VERSION_ID && !defined('HHVM_VERSION')) {
             // Short open tag echo is parsed as T_INLINE_HTML
-            $monolitic = false;
+            $monolithic = false;
         }
 
         $tokens = Tokens::fromCode($source);
-        $this->assertSame($monolitic, $tokens->isMonolithicPhp());
+        $this->assertSame($monolithic, $tokens->isMonolithicPhp());
     }
 
     public function provideShortOpenTagEchoMonolithicPhpDetection()
@@ -1225,6 +1284,131 @@ PHP;
                 ),
             ),
         );
+    }
+
+    /**
+     * @dataProvider getImportUseIndexesCases
+     */
+    public function testGetImportUseIndexes(array $expected, $input, $perNamespace = false)
+    {
+        $tokens = Tokens::fromCode($input);
+        $this->assertSame($expected, $tokens->getImportUseIndexes($perNamespace));
+    }
+
+    public function getImportUseIndexesCases()
+    {
+        return array(
+            array(
+                array(1, 8),
+                '<?php use E\F?><?php use A\B;',
+            ),
+            array(
+                array(array(1), array(14), array(29)),
+'<?php
+use T\A;
+namespace A { use D\C; }
+namespace b { use D\C; }
+',
+                true,
+            ),
+            array(
+                array(array(1, 8)),
+                '<?php use D\B; use A\C?>',
+                true,
+            ),
+            array(
+                array(1, 8),
+                '<?php use D\B; use A\C?>',
+            ),
+            array(
+                array(7, 22),
+'<?php
+namespace A { use D\C; }
+namespace b { use D\C; }
+',
+            ),
+            array(
+                array(3, 10, 34, 45, 54, 59, 77, 95),
+ <<<'EOF'
+use Zoo\Bar;
+use Foo\Bar;
+use Foo\Zar\Baz;
+
+<?php
+
+use Foo\Bar;
+use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
+ use Foo\Bir as FBB;
+use Foo\Zar\Baz;
+use SomeClass;
+   use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
+use Zoo\Bar;
+
+$a = new someclass();
+
+use Zoo\Tar;
+
+class AnnotatedClass
+{
+}
+EOF
+                ,
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider getImportUseIndexesCasesPHP70
+     * @requires PHP 7.0
+     */
+    public function testGetImportUseIndexesPHP70(array $expected, $input, $perNamespace = false)
+    {
+        $tokens = Tokens::fromCode($input);
+        $this->assertSame($expected, $tokens->getImportUseIndexes($perNamespace));
+    }
+
+    public function getImportUseIndexesCasesPHP70()
+    {
+        return array(
+            array(
+                array(1, 22, 41),
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C};
+use function some\a\{fn_a, fn_b, fn_c};
+use const some\a\{ConstA, ConstB, ConstC};
+                ',
+            ),
+            array(
+                array(array(1, 22, 41)),
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C};
+use function some\a\{fn_a, fn_b, fn_c};
+use const some\a\{ConstA, ConstB, ConstC};
+                ',
+                true,
+            ),
+        );
+    }
+    /**
+     * @param Token[]|null $expected
+     * @param Token[]|null $input
+     */
+    private function assertEqualsTokensArray(array $expected = null, array $input = null)
+    {
+        if (null === $expected) {
+            $this->assertNull($input);
+
+            return;
+        }
+
+        $this->assertSame(array_keys($expected), array_keys($input), 'Both arrays need to have same keys.');
+
+        foreach ($expected as $index => $expectedToken) {
+            $this->assertTrue(
+                $expectedToken->equals($input[$index]),
+                sprintf('The token at index %d should be %s, got %s', $index, $expectedToken->toJson(), $input[$index]->toJson())
+            );
+        }
     }
 
     /**

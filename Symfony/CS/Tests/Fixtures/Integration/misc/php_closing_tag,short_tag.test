@@ -5,8 +5,6 @@ level=none
 fixers=php_closing_tag,short_tag
 --SETTINGS--
 checkPriority=false
---REQUIREMENTS--
-hhvm=false
 --EXPECT--
 <?php
 $a = 1;

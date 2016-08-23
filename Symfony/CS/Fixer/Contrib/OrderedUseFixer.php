@@ -20,9 +20,16 @@ use Symfony\CS\Tokenizer\Tokens;
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Darius Matulionis <darius@matulionis.lt>
+ * @author SpacePossum
  */
 class OrderedUseFixer extends AbstractFixer
 {
+    const IMPORT_TYPE_CLASS = 1;
+
+    const IMPORT_TYPE_CONST = 2;
+
+    const IMPORT_TYPE_FUNCTION = 3;
+
     const SORT_ALPHA = 'alpha';
 
     const SORT_LENGTH = 'length';
@@ -72,30 +79,28 @@ class OrderedUseFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
-
         $namespacesImports = $tokens->getImportUseIndexes(true);
-        $usesOrder = array();
 
-        if (!count($namespacesImports)) {
+        if (0 === count($namespacesImports)) {
             return $content;
         }
 
+        $usesOrder = array();
         foreach ($namespacesImports as $uses) {
-            $uses = array_reverse($uses);
-            $usesOrder = array_replace($usesOrder, $this->getNewOrder($uses, $tokens));
+            $usesOrder = array_replace($usesOrder, $this->getNewOrder(array_reverse($uses), $tokens));
         }
 
         // First clean the old content
         // This must be done first as the indexes can be scattered
         foreach ($usesOrder as $use) {
-            $tokens->clearRange($use[1], $use[2]);
+            $tokens->clearRange($use['startIndex'], $use['endIndex']);
         }
 
         $usesOrder = array_reverse($usesOrder, true);
 
         // Now insert the new tokens, starting from the end
         foreach ($usesOrder as $index => $use) {
-            $declarationTokens = Tokens::fromCode('<?php use '.$use[0].';');
+            $declarationTokens = Tokens::fromCode('<?php use '.$use['namespace'].';');
             $declarationTokens->clearRange(0, 2); // clear `<?php use `
             $declarationTokens[count($declarationTokens) - 1]->clear(); // clear `;`
             $declarationTokens->clearEmptyTokens();
@@ -124,7 +129,7 @@ class OrderedUseFixer extends AbstractFixer
     }
 
     /**
-     * This method is used for sorting the uses statements in a namespace in alphabetical order.
+     * This method is used for sorting the uses statements in alphabetical order.
      *
      * @param string[] $first
      * @param string[] $second
@@ -135,14 +140,18 @@ class OrderedUseFixer extends AbstractFixer
      */
     public static function sortAlphabetically(array $first, array $second)
     {
-        $a = trim(preg_replace('%/\*(.*)\*/%s', '', $first[0]));
-        $b = trim(preg_replace('%/\*(.*)\*/%s', '', $second[0]));
+        if ($first['importType'] !== $second['importType']) {
+            return $first['importType'] > $second['importType'] ? 1 : -1;
+        }
+
+        $firstNamespace = trim(preg_replace('%/\*(.*)\*/%s', '', $first['namespace']));
+        $secondNamespace = trim(preg_replace('%/\*(.*)\*/%s', '', $second['namespace']));
 
         // Replace backslashes by spaces before sorting for correct sort order
-        $a = str_replace('\\', ' ', $a);
-        $b = str_replace('\\', ' ', $b);
+        $firstNamespace = str_replace('\\', ' ', $firstNamespace);
+        $secondNamespace = str_replace('\\', ' ', $secondNamespace);
 
-        return strcasecmp($a, $b);
+        return strcasecmp($firstNamespace, $secondNamespace);
     }
 
     /**
@@ -157,18 +166,18 @@ class OrderedUseFixer extends AbstractFixer
      */
     public function sortByLength(array $first, array $second)
     {
-        $a = trim(preg_replace('%/\*(.*)\*/%s', '', $first[0]));
-        $b = trim(preg_replace('%/\*(.*)\*/%s', '', $second[0]));
+        $firstNamespace = trim(preg_replace('%/\*(.*)\*/%s', '', $first['namespace']));
+        $secondNamespace = trim(preg_replace('%/\*(.*)\*/%s', '', $second['namespace']));
 
-        $al = strlen($a);
-        $bl = strlen($b);
-        if ($al === $bl) {
-            $out = strcasecmp($a, $b);
+        $firstNamespaceLength = strlen($firstNamespace);
+        $secondNamespaceLength = strlen($secondNamespace);
+        if ($firstNamespaceLength === $secondNamespaceLength) {
+            $sortResult = strcasecmp($firstNamespace, $secondNamespace);
         } else {
-            $out = $al > $bl ? 1 : -1;
+            $sortResult = $firstNamespaceLength > $secondNamespaceLength ? 1 : -1;
         }
 
-        return $out;
+        return $sortResult;
     }
 
     private function getNewOrder(array $uses, Tokens $tokens)
@@ -179,8 +188,18 @@ class OrderedUseFixer extends AbstractFixer
         $originalIndexes = array();
 
         foreach ($uses as $index) {
-            $endIndex = $tokens->getNextTokenOfKind($index, array(';'));
             $startIndex = $tokens->getTokenNotOfKindSibling($index + 1, 1, array(array(T_WHITESPACE)));
+            $endIndex = $tokens->getNextTokenOfKind($startIndex, array(';', array(T_CLOSE_TAG)));
+            $previous = $tokens->getPrevMeaningfulToken($endIndex);
+
+            $group = $tokens[$previous]->equals('}');
+            if ($tokens[$startIndex]->isGivenKind(array(T_CONST))) {
+                $type = self::IMPORT_TYPE_CONST;
+            } elseif ($tokens[$startIndex]->isGivenKind(array(T_FUNCTION))) {
+                $type = self::IMPORT_TYPE_FUNCTION;
+            } else {
+                $type = self::IMPORT_TYPE_CLASS;
+            }
 
             $namespace = '';
             $index = $startIndex;
@@ -188,8 +207,14 @@ class OrderedUseFixer extends AbstractFixer
             while ($index <= $endIndex) {
                 $token = $tokens[$index];
 
-                if ($index === $endIndex || $token->equals(',')) {
-                    $indexes[$startIndex] = array($namespace, $startIndex, $index - 1);
+                if ($index === $endIndex || (!$group && $token->equals(','))) {
+                    $indexes[$startIndex] = array(
+                        'namespace' => $namespace,
+                        'startIndex' => $startIndex,
+                        'endIndex' => $index - 1,
+                        'importType' => $type,
+                    );
+
                     $originalIndexes[] = $startIndex;
 
                     if ($index === $endIndex) {
@@ -218,13 +243,12 @@ class OrderedUseFixer extends AbstractFixer
                 break;
         }
 
-        $i = -1;
-
+        $index = -1;
         $usesOrder = array();
 
         // Loop trough the index but use original index order
         foreach ($indexes as $v) {
-            $usesOrder[$originalIndexes[++$i]] = $v;
+            $usesOrder[$originalIndexes[++$index]] = $v;
         }
 
         return $usesOrder;

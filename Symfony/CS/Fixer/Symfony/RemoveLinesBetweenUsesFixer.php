@@ -76,10 +76,13 @@ class RemoveLinesBetweenUsesFixer extends AbstractFixer
     private function fixLineBreaksPerImportGroup(Tokens $tokens, array $uses)
     {
         foreach ($uses as $index) {
-            $endIndex = $tokens->getNextTokenOfKind($index, array(';'));
-            $afterSemicolonIndex = $tokens->getNextNonWhitespace($endIndex);
+            $endIndex = $tokens->getNextTokenOfKind($index, array(';', T_CLOSE_TAG));
+            if ($endIndex === count($tokens) - 1) {
+                continue;
+            }
 
-            if (null !== $afterSemicolonIndex && !$tokens[$afterSemicolonIndex]->isGivenKind(T_USE)) {
+            $afterSemicolonIndex = $tokens->getNextNonWhitespace($endIndex);
+            if (null === $afterSemicolonIndex || !$tokens[$afterSemicolonIndex]->isGivenKind(T_USE)) {
                 continue;
             }
 

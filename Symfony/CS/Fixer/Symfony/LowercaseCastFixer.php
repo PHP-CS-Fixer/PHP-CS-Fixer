@@ -27,7 +27,7 @@ final class LowercaseCastFixer extends AbstractFixer
     {
         $tokens = Tokens::fromCode($content);
 
-        for ($index = 0, $count = $tokens->count(); $index  < $count; ++$index) {
+        for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
             if (!$tokens[$index]->isCast()) {
                 continue;
             }

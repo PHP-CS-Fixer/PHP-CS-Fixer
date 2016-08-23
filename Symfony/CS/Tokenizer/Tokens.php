@@ -49,6 +49,16 @@ class Tokens extends \SplFixedArray
     private $codeHash;
 
     /**
+     * Clone tokens collection.
+     */
+    public function __clone()
+    {
+        foreach ($this as $key => $val) {
+            $this[$key] = clone $val;
+        }
+    }
+
+    /**
      * Clear cache - one position or all of them.
      *
      * @param string|null $key position to clear, when null clear all
@@ -146,77 +156,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Return block edge definitions.
-     *
-     * @return array
-     */
-    private static function getBlockEdgeDefinitions()
-    {
-        return array(
-            self::BLOCK_TYPE_CURLY_BRACE => array(
-                'start' => '{',
-                'end' => '}',
-            ),
-            self::BLOCK_TYPE_PARENTHESIS_BRACE => array(
-                'start' => '(',
-                'end' => ')',
-            ),
-            self::BLOCK_TYPE_SQUARE_BRACE => array(
-                'start' => '[',
-                'end' => ']',
-            ),
-            self::BLOCK_TYPE_DYNAMIC_PROP_BRACE => array(
-                'start' => array(CT_DYNAMIC_PROP_BRACE_OPEN, '{'),
-                'end' => array(CT_DYNAMIC_PROP_BRACE_CLOSE, '}'),
-            ),
-            self::BLOCK_TYPE_DYNAMIC_VAR_BRACE => array(
-                'start' => array(CT_DYNAMIC_VAR_BRACE_OPEN, '{'),
-                'end' => array(CT_DYNAMIC_VAR_BRACE_CLOSE, '}'),
-            ),
-        );
-    }
-
-    /**
-     * Calculate hash for code.
-     *
-     * @param string $code
-     *
-     * @return string
-     */
-    private static function calculateCodeHash($code)
-    {
-        return crc32($code);
-    }
-
-    /**
-     * Get cache value for given key.
-     *
-     * @param string $key item key
-     *
-     * @return Tokens
-     */
-    private static function getCache($key)
-    {
-        if (!self::hasCache($key)) {
-            throw new \OutOfBoundsException(sprintf('Unknown cache key: "%s".', $key));
-        }
-
-        return self::$cache[$key];
-    }
-
-    /**
-     * Check if given key exists in cache.
-     *
-     * @param string $key item key
-     *
-     * @return bool
-     */
-    private static function hasCache($key)
-    {
-        return isset(self::$cache[$key]);
-    }
-
-    /**
      * Check whether passed method name is one of magic methods.
      *
      * @param string $name name of method
@@ -231,34 +170,6 @@ class Tokens extends \SplFixedArray
         );
 
         return in_array($name, $magicMethods, true);
-    }
-
-    /**
-     * Set cache item.
-     *
-     * @param string $key   item key
-     * @param Tokens $value item value
-     */
-    private static function setCache($key, Tokens $value)
-    {
-        self::$cache[$key] = $value;
-    }
-
-    /**
-     * Change code hash.
-     *
-     * Remove old cache and set new one.
-     *
-     * @param string $codeHash new code hash
-     */
-    private function changeCodeHash($codeHash)
-    {
-        if (null !== $this->codeHash) {
-            self::clearCache($this->codeHash);
-        }
-
-        $this->codeHash = $codeHash;
-        self::setCache($this->codeHash, $this);
     }
 
     /**
@@ -601,7 +512,7 @@ class Tokens extends \SplFixedArray
      * @param array       $tokens        possible tokens
      * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
      *                                   the ones used in $others. If any is missing, the default case-sensitive
-     *                                   comparison is used.
+     *                                   comparison is used
      *
      * @return int|null
      */
@@ -682,7 +593,7 @@ class Tokens extends \SplFixedArray
      * @param array       $tokens        possible tokens
      * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
      *                                   the ones used in $others. If any is missing, the default case-sensitive
-     *                                   comparison is used.
+     *                                   comparison is used
      *
      * @return int|null
      */
@@ -699,7 +610,7 @@ class Tokens extends \SplFixedArray
      * @param array       $tokens        possible tokens
      * @param bool|bool[] $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
      *                                   the ones used in $others. If any is missing, the default case-sensitive
-     *                                   comparison is used.
+     *                                   comparison is used
      *
      * @return int|null
      */
@@ -801,7 +712,7 @@ class Tokens extends \SplFixedArray
      * @param int        $end           end index, defaulting to the end of the file
      * @param bool|array $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
      *                                  the ones used in $others. If any is missing, the default case-sensitive
-     *                                  comparison is used.
+     *                                  comparison is used
      *
      * @return array|null an array containing the tokens matching the sequence elements, indexed by their position
      */
@@ -1351,16 +1262,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Clone tokens collection.
-     */
-    public function __clone()
-    {
-        foreach ($this as $key => $val) {
-            $this[$key] = clone $val;
-        }
-    }
-
-    /**
      * Clear tokens in the given range.
      *
      * @param int $indexStart
@@ -1394,42 +1295,25 @@ class Tokens extends \SplFixedArray
             return false;
         }
 
-        $kinds = $this->findGivenKind(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_INLINE_HTML));
-
-        /*
-         * Fix HHVM incompatibilities
-         */
-        $hhvmOpenTagsWithEcho = array();
-        $hhvmHashBangs = array();
-
-        if (defined('HHVM_VERSION')) {
-            /*
-             * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
-             *
-             * @see https://github.com/facebook/hhvm/issues/4809
-             */
-            $hhvmEchoes = $this->findGivenKind(T_ECHO);
-            foreach ($hhvmEchoes as $token) {
-                if (0 === strpos($token->getContent(), '<?=')) {
-                    $hhvmOpenTagsWithEcho[] = $token;
-                }
-            }
-
-            /*
-             * HHVM parses "#!/usr/bin/env php\n" as T_HASHBANG (not defined in
-             * PHP and T_HASHBANG. Moreover, HHVM does not define T_HASHBANG
-             * as a constant
-             *
-             * @see https://github.com/facebook/hhvm/issues/4810
-             */
-            $tokens = self::fromCode("#!/usr/bin/env php\n");
-            if (!$tokens[0]->isGivenKind(T_INLINE_HTML)) {
-                $hashBangId = $tokens[0]->getId();
-                $hhvmHashBangs = $this->findGivenKind($hashBangId);
+        for ($index = 1; $index < $size; ++$index) {
+            if (
+                $this[$index]->isGivenKind(array(T_INLINE_HTML, T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO))
+                || (
+                    /*
+                     * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
+                     *
+                     * @see https://github.com/facebook/hhvm/issues/4809
+                     * @see https://github.com/facebook/hhvm/issues/7161
+                     */
+                    defined('HHVM_VERSION')
+                    && $this[$index]->equals(array(T_ECHO, '<?='))
+                )
+            ) {
+                return false;
             }
         }
 
-        return 0 === count($kinds[T_INLINE_HTML]) + count($hhvmHashBangs) && 1 === count($kinds[T_OPEN_TAG]) + count($kinds[T_OPEN_TAG_WITH_ECHO]) + count($hhvmOpenTagsWithEcho);
+        return true;
     }
 
     /**
@@ -1461,5 +1345,104 @@ class Tokens extends \SplFixedArray
         }
 
         $this[$nextIndex]->clear();
+    }
+
+    /**
+     * Return block edge definitions.
+     *
+     * @return array
+     */
+    private static function getBlockEdgeDefinitions()
+    {
+        return array(
+            self::BLOCK_TYPE_CURLY_BRACE => array(
+                'start' => '{',
+                'end' => '}',
+            ),
+            self::BLOCK_TYPE_PARENTHESIS_BRACE => array(
+                'start' => '(',
+                'end' => ')',
+            ),
+            self::BLOCK_TYPE_SQUARE_BRACE => array(
+                'start' => '[',
+                'end' => ']',
+            ),
+            self::BLOCK_TYPE_DYNAMIC_PROP_BRACE => array(
+                'start' => array(CT_DYNAMIC_PROP_BRACE_OPEN, '{'),
+                'end' => array(CT_DYNAMIC_PROP_BRACE_CLOSE, '}'),
+            ),
+            self::BLOCK_TYPE_DYNAMIC_VAR_BRACE => array(
+                'start' => array(CT_DYNAMIC_VAR_BRACE_OPEN, '{'),
+                'end' => array(CT_DYNAMIC_VAR_BRACE_CLOSE, '}'),
+            ),
+        );
+    }
+
+    /**
+     * Calculate hash for code.
+     *
+     * @param string $code
+     *
+     * @return string
+     */
+    private static function calculateCodeHash($code)
+    {
+        return crc32($code);
+    }
+
+    /**
+     * Get cache value for given key.
+     *
+     * @param string $key item key
+     *
+     * @return Tokens
+     */
+    private static function getCache($key)
+    {
+        if (!self::hasCache($key)) {
+            throw new \OutOfBoundsException(sprintf('Unknown cache key: "%s".', $key));
+        }
+
+        return self::$cache[$key];
+    }
+
+    /**
+     * Check if given key exists in cache.
+     *
+     * @param string $key item key
+     *
+     * @return bool
+     */
+    private static function hasCache($key)
+    {
+        return isset(self::$cache[$key]);
+    }
+
+    /**
+     * Set cache item.
+     *
+     * @param string $key   item key
+     * @param Tokens $value item value
+     */
+    private static function setCache($key, Tokens $value)
+    {
+        self::$cache[$key] = $value;
+    }
+
+    /**
+     * Change code hash.
+     *
+     * Remove old cache and set new one.
+     *
+     * @param string $codeHash new code hash
+     */
+    private function changeCodeHash($codeHash)
+    {
+        if (null !== $this->codeHash) {
+            self::clearCache($this->codeHash);
+        }
+
+        $this->codeHash = $codeHash;
+        self::setCache($this->codeHash, $this);
     }
 }

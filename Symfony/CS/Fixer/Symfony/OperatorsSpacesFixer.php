@@ -33,13 +33,39 @@ class OperatorsSpacesFixer extends AbstractFixer
                 continue;
             }
 
-            if (!$tokens[$index + 1]->isWhitespace()) {
+            // skip `declare(foo ==bar)`
+            $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$prevMeaningfulIndex]->isGivenKind(T_STRING)) {
+                $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulIndex);
+                if ($tokens[$prevMeaningfulIndex]->equals('(')) {
+                    $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulIndex);
+                    if ($tokens[$prevMeaningfulIndex]->isGivenKind(T_DECLARE)) {
+                        continue;
+                    }
+                }
+            }
+
+            // fix white space after operator
+            if ($tokens[$index + 1]->isWhitespace()) {
+                $content = $tokens[$index + 1]->getContent();
+                if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
+                    $tokens[$index + 1]->setContent(' ');
+                }
+            } else {
                 $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
             }
 
-            if (!$tokens[$index - 1]->isWhitespace()) {
+            // fix white space before operator
+            if ($tokens[$index - 1]->isWhitespace()) {
+                $content = $tokens[$index - 1]->getContent();
+                if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+                    $tokens[$index - 1]->setContent(' ');
+                }
+            } else {
                 $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
             }
+
+            --$index; // skip check for binary operator on the whitespace token that is fixed.
         }
 
         return $tokens->generateCode();

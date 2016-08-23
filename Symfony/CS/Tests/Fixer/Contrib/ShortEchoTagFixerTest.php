@@ -21,17 +21,16 @@ class ShortEchoTagFixerTest extends AbstractFixerTestBase
 {
     /**
      * @dataProvider provideClosingTagExamples
-     * @requires PHP 5.4
      */
     public function testOneLineFix($expected, $input = null)
     {
-        /*
-         * short_echo_tag setting is ignored by HHVM
-         * @see https://github.com/facebook/hhvm/issues/4809
-         */
-        if (!defined('HHVM_VERSION')) {
-            $this->makeTest($expected, $input);
+        if (50400 > PHP_VERSION_ID && !ini_get('short_open_tag')) {
+            // On PHP <5.4 short echo tag is parsed as T_INLINE_HTML if short_open_tag is disabled
+            // On PHP >=5.4 short echo tag is always parsed properly regardless of short_open_tag  option
+            $this->markTestSkipped('PHP 5.4 (or later) or short_open_tag option is required.');
         }
+
+        $this->makeTest($expected, $input);
     }
 
     public function provideClosingTagExamples()

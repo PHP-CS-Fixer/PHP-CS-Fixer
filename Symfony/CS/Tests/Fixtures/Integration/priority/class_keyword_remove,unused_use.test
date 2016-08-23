@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: class_keyword_remove,unused_use.
+--CONFIG--
+level=none
+fixers=class_keyword_remove,unused_use
+--EXPECT--
+<?php
+
+echo 'Foo\Bar\Thing';
+
+--INPUT--
+<?php
+use Foo\Bar\Thing;
+
+echo Thing::class;

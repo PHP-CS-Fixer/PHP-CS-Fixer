@@ -1,5 +1,5 @@
 {
-    "name": "fabpot/php-cs-fixer",
+    "name": "friendsofphp/php-cs-fixer",
     "type": "application",
     "description": "A tool to automatically fix PHP code style",
     "license": "MIT",
@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "php": "^5.3.6 || ^7.0",
+        "php": "^5.3.6 || >=7.0 <7.2",
         "ext-tokenizer": "*",
         "symfony/console": "^2.3 || ^3.0",
         "symfony/event-dispatcher": "^2.1 || ^3.0",
@@ -25,7 +25,11 @@
         "sebastian/diff": "^1.1"
     },
     "require-dev": {
+        "phpunit/phpunit": "^4.5|^5",
         "satooshi/php-coveralls": "^1.0"
+    },
+    "conflict": {
+        "hhvm": "<3.9"
     },
     "autoload": {
         "psr-4": { "Symfony\\CS\\": "Symfony/CS/" }

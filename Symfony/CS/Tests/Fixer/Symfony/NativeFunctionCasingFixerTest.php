@@ -107,6 +107,16 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
+                    new \STRTOLOWER();
+                ',
+            ),
+            array(
+                '<?php
+                    new \A\B\STRTOLOWER();
+                ',
+            ),
+            array(
+                '<?php
                     a::STRTOLOWER();
                 ',
             ),

@@ -25,7 +25,7 @@ final class UnneededControlParenthesesFixer extends AbstractFixer
     /**
      * To be removed when PHP support will be 5.5+.
      *
-     * @var string[] List of statements to fix.
+     * @var string[] List of statements to fix
      */
     private static $controlStatements = array(
         'break',

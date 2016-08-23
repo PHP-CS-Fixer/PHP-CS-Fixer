@@ -52,6 +52,58 @@ class ConcatWithoutSpacesFixerTest extends AbstractFixerTestBase
                 '<?php $a = "foobar"
     ."baz";',
             ),
+            array(
+                '<?php $a = "foobar" //
+    ."baz";',
+            ),
+            array(
+                '<?php $a = "foobar" //
+                            ."baz"//
+                            ."cex"/**/
+                            ."dev"/**  */
+                            ."baz"      //
+                            ."cex"      /**/
+                            ."ewer23"           '.'
+                            ."dev"      /**  */
+                    ;',
+            ),
+            array(
+                '<?php $a = "foobar" //
+    ."baz" /**/
+    ."something";',
+            ),
+            array(
+                '<?php $a = "foobar"
+    ."baz".      //
+    "something";',
+            ),
+            array(
+                '<?php $a = "foobar"
+    ."baz".      /**  */
+    "something";',
+            ),
+            array(
+                "<?php
+                \$longString = '*'
+                    .'*****'
+                    .'*****'
+                    .'*****'
+                    // Comment about next line
+                    .'*****'
+                    // Other comment
+                    .'*****';
+                ",
+                "<?php
+                \$longString = '*'
+                    . '*****'
+                    .  '*****'
+                    .   '*****'
+                    // Comment about next line
+                    .  '*****'
+                    // Other comment
+                    .  '*****';
+                ",
+            ),
         );
     }
 }

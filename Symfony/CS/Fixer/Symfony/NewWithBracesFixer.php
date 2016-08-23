@@ -48,6 +48,7 @@ class NewWithBracesFixer extends AbstractFixer
                 '&',
                 '^',
                 '|',
+                array(T_CLASS),
                 array(T_IS_SMALLER_OR_EQUAL),
                 array(T_IS_GREATER_OR_EQUAL),
                 array(T_IS_EQUAL),
@@ -88,6 +89,15 @@ class NewWithBracesFixer extends AbstractFixer
             $nextIndex = $tokens->getNextTokenOfKind($index, $nextTokenKinds);
             $nextToken = $tokens[$nextIndex];
 
+            // new anonymous class definition
+            if ($nextToken->isGivenKind(T_CLASS)) {
+                if (!$tokens[$tokens->getNextMeaningfulToken($nextIndex)]->equals('(')) {
+                    $this->insertBracesAfter($tokens, $nextIndex);
+                }
+
+                continue;
+            }
+
             // entrance into array index syntax - need to look for exit
             while ($nextToken->equals('[')) {
                 $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $nextIndex) + 1;
@@ -105,9 +115,7 @@ class NewWithBracesFixer extends AbstractFixer
                 continue;
             }
 
-            $meaningBeforeNextIndex = $tokens->getPrevMeaningfulToken($nextIndex);
-
-            $tokens->insertAt($meaningBeforeNextIndex + 1, array(new Token('('), new Token(')')));
+            $this->insertBracesAfter($tokens, $tokens->getPrevMeaningfulToken($nextIndex));
         }
 
         return $tokens->generateCode();
@@ -119,5 +127,14 @@ class NewWithBracesFixer extends AbstractFixer
     public function getDescription()
     {
         return 'All instances created with new keyword must be followed by braces.';
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function insertBracesAfter(Tokens $tokens, $index)
+    {
+        $tokens->insertAt(++$index, array(new Token('('), new Token(')')));
     }
 }

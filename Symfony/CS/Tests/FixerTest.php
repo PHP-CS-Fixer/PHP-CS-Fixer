@@ -210,7 +210,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['phpdoc_short_description'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_var_without_name'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_order'], $fixers['phpdoc_trim']),
-            array($fixers['unused_use'], $fixers['line_after_namespace']), // tested also in: unused_use,line_after_namespace.test
+            array($fixers['unused_use'], $fixers['line_after_namespace']), // tested also in: unused_use,line_after_namespace.test and unused_use,line_after_namespace_2.test
             array($fixers['linefeed'], $fixers['eof_ending']),
             array($fixers['php_unit_strict'], $fixers['php_unit_construct']),
             array($fixers['unary_operators_spaces'], $fixers['logical_not_operators_with_spaces']),
@@ -249,6 +249,8 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_useless_else'], $fixers['no_useless_return']), // tested also in: no_useless_else,no_useless_return.test
             array($fixers['no_useless_else'], $fixers['trailing_spaces']), // tested also in: no_useless_else,trailing_spaces.test
             array($fixers['no_useless_else'], $fixers['whitespacy_lines']), // tested also in: no_useless_else,whitespacy_lines.test
+            array($fixers['short_array_syntax'], $fixers['unalign_equals']), // tested also in: short_array_syntax,unalign_equals.test
+            array($fixers['short_array_syntax'], $fixers['ternary_spaces']), // tested also in: short_array_syntax,ternary_spaces.test
         );
 
         $docFixerNames = array_filter(

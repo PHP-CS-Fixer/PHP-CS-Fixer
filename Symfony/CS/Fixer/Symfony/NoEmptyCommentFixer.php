@@ -91,7 +91,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
      * @param Tokens $tokens
      * @param int    $index  T_COMMENT index
      *
-     * @deprecated Will be removed in the 2.0.
+     * @deprecated Will be removed in the 2.0
      */
     private function clearCommentToken(Tokens $tokens, $index)
     {
