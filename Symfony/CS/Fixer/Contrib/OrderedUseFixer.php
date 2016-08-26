@@ -66,11 +66,11 @@ class OrderedUseFixer extends AbstractFixer
         $sortType = array_pop($sortType);
 
         // Check if passed sort type is supported.
-        if (!is_string($sortType) || !in_array(strtolower($sortType), self::$supportedSortTypes, true)) {
+        if (!is_string($sortType) || !in_array($sortType, self::$supportedSortTypes, true)) {
             throw new InvalidFixerConfigurationException('ordered_use', sprintf('Sort type is invalid. Array should contain only one of the parameter: "%s"', implode('", "', self::$supportedSortTypes)));
         }
 
-        self::$sortType = strtolower($sortType);
+        self::$sortType = $sortType;
     }
 
     /**
@@ -129,6 +129,18 @@ class OrderedUseFixer extends AbstractFixer
     }
 
     /**
+    * Prepare namespace for sorting.
+    *
+    * @param string $namespace
+    *
+    * @return string
+    */
+    private function prepareNamespace($namespace)
+    {
+      return trim(preg_replace('%/\*(.*)\*/%s', '', $namespace));
+    }
+
+    /**
      * This method is used for sorting the uses statements in alphabetical order.
      *
      * @param string[] $first
@@ -144,8 +156,8 @@ class OrderedUseFixer extends AbstractFixer
             return $first['importType'] > $second['importType'] ? 1 : -1;
         }
 
-        $firstNamespace = trim(preg_replace('%/\*(.*)\*/%s', '', $first['namespace']));
-        $secondNamespace = trim(preg_replace('%/\*(.*)\*/%s', '', $second['namespace']));
+        $firstNamespace = self::prepareNamespace($first['namespace']);
+        $secondNamespace = self::prepareNamespace($second['namespace']);
 
         // Replace backslashes by spaces before sorting for correct sort order
         $firstNamespace = str_replace('\\', ' ', $firstNamespace);
@@ -166,11 +178,12 @@ class OrderedUseFixer extends AbstractFixer
      */
     public function sortByLength(array $first, array $second)
     {
-        $firstNamespace = trim(preg_replace('%/\*(.*)\*/%s', '', $first['namespace']));
-        $secondNamespace = trim(preg_replace('%/\*(.*)\*/%s', '', $second['namespace']));
+        $firstNamespace = self::prepareNamespace($first['namespace']);
+        $secondNamespace = self::prepareNamespace($second['namespace']);
 
         $firstNamespaceLength = strlen($firstNamespace);
         $secondNamespaceLength = strlen($secondNamespace);
+
         if ($firstNamespaceLength === $secondNamespaceLength) {
             $sortResult = strcasecmp($firstNamespace, $secondNamespace);
         } else {

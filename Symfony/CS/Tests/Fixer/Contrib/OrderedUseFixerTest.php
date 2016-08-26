@@ -660,11 +660,6 @@ use const some\a\{ConstA, ConstB, ConstC};
     |--------------------------------------------------------------------------
     */
 
-    protected function setSortByLengthConfiguration()
-    {
-        OrderedUseFixer::configure(array(OrderedUseFixer::SORT_LENGTH));
-    }
-
     /**
      * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
      * @expectedExceptionMessage [ordered_use] Sort type is invalid. Array should contain only one of the parameter: "alpha", "length"
@@ -703,7 +698,7 @@ use const some\a\{ConstA, ConstB, ConstC};
 
     public function testFixByLength()
     {
-        $this->setSortByLengthConfiguration();
+        OrderedUseFixer::configure(array(OrderedUseFixer::SORT_LENGTH));
 
         $expected = <<<'EOF'
 The normal
@@ -790,7 +785,7 @@ EOF;
 
     public function testByLengthFixWithSameLength()
     {
-        $this->setSortByLengthConfiguration();
+        OrderedUseFixer::configure(array(OrderedUseFixer::SORT_LENGTH));
 
         $expected = <<<'EOF'
 <?php
@@ -845,7 +840,7 @@ EOF;
 
     public function testByLengthFixWithMultipleNamespace()
     {
-        $this->setSortByLengthConfiguration();
+        OrderedUseFixer::configure(array(OrderedUseFixer::SORT_LENGTH));
 
         $expected = <<<'EOF'
 <?php
@@ -970,7 +965,7 @@ EOF;
 
     public function testByLengthFixWithComment()
     {
-        $this->setSortByLengthConfiguration();
+        OrderedUseFixer::configure(array(OrderedUseFixer::SORT_LENGTH));
 
         $expected = <<<'EOF'
 The normal
@@ -1060,7 +1055,7 @@ EOF;
      */
     public function testByLength54()
     {
-        $this->setSortByLengthConfiguration();
+        OrderedUseFixer::configure(array(OrderedUseFixer::SORT_LENGTH));
 
         $expected = <<<'EOF'
 <?php
@@ -1140,7 +1135,7 @@ EOF;
      */
     public function testByLengthFixWithTraitImports()
     {
-        $this->setSortByLengthConfiguration();
+        OrderedUseFixer::configure(array(OrderedUseFixer::SORT_LENGTH));
 
         $expected = <<<'EOF'
 The normal
@@ -1233,7 +1228,7 @@ EOF;
 
     public function testByLengthFixWithDifferentCases()
     {
-        $this->setSortByLengthConfiguration();
+        OrderedUseFixer::configure(array(OrderedUseFixer::SORT_LENGTH));
 
         $expected = <<<'EOF'
 The normal
@@ -1274,7 +1269,7 @@ EOF;
 
     public function testByLengthOrderWithTrailingDigit()
     {
-        $this->setSortByLengthConfiguration();
+        OrderedUseFixer::configure(array(OrderedUseFixer::SORT_LENGTH));
 
         $expected = <<<'EOF'
 <?php
@@ -1311,7 +1306,7 @@ EOF;
 
     public function testByLengthCodeWithImportsOnly()
     {
-        $this->setSortByLengthConfiguration();
+        OrderedUseFixer::configure(array(OrderedUseFixer::SORT_LENGTH));
 
         $expected = <<<'EOF'
 <?php
@@ -1332,7 +1327,7 @@ EOF;
 
     public function testByLengthWithoutUses()
     {
-        $this->setSortByLengthConfiguration();
+        OrderedUseFixer::configure(array(OrderedUseFixer::SORT_LENGTH));
 
         $expected = <<<'EOF'
 <?php
@@ -1342,5 +1337,39 @@ EOF
         ;
 
         $this->makeTest($expected);
+    }
+
+    /**
+     * @dataProvider provide70CasesByLength
+     * @requires PHP 7.0
+     */
+    public function test70ByLength($expected, $input = null)
+    {
+        OrderedUseFixer::configure(array(OrderedUseFixer::SORT_LENGTH));
+        $this->makeTest($expected, $input);
+    }
+
+    public function provide70CasesByLength()
+    {
+        return array(
+            array(
+                '<?php
+use A\B;
+use function some\a\{fn_a, fn_b, fn_c};
+use some\a\{ClassA, ClassB, ClassC as C};
+use some\b\{ClassA, ClassB, ClassC as C};
+use const some\a\{ConstA, ConstB, ConstC};
+use const some\a\{ConstB, ConstA, ConstC};
+',
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C};
+use function some\a\{fn_a, fn_b, fn_c};
+use some\b\{ClassA, ClassB, ClassC as C};
+use const some\a\{ConstB, ConstA, ConstC};
+use A\B;
+use const some\a\{ConstA, ConstB, ConstC};
+',
+            ),
+        );
     }
 }
