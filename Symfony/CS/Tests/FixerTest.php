@@ -218,7 +218,6 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['short_echo_tag'], $fixers['echo_to_print']), // tested also in: echo_to_print,short_echo_tag.test
             array($fixers['short_bool_cast'], $fixers['spaces_cast']), // tested also in: short_bool_cast,spaces_cast.test
             array($fixers['unneeded_control_parentheses'], $fixers['trailing_spaces']), // tested also in: trailing_spaces,unneeded_control_parentheses.test
-            array($fixers['class_definition'], $fixers['trailing_spaces']), // tested also in: class_definition,trailing_spaces.test
             array($fixers['empty_return'], $fixers['no_useless_return']), // tested also in: empty_return,no_useless_return.test
             array($fixers['duplicate_semicolon'], $fixers['no_useless_return']), // tested also in: duplicate_semicolon,no_useless_return.test
             array($fixers['no_useless_return'], $fixers['whitespacy_lines']), // tested also in: no_useless_return,whitespacy_lines.test

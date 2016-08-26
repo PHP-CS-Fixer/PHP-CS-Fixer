@@ -3,6 +3,8 @@ Integration of fixers: class_definition, trailing_spaces
 --CONFIG--
 level=none
 fixers=class_definition, trailing_spaces
+--SETTINGS--
+checkPriority=false
 --EXPECT--
 <?php
 class Aaa implements
