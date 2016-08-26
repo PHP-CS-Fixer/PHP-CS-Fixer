@@ -31,7 +31,7 @@ class LintManager
     public function __destruct()
     {
         if (null !== $this->temporaryFile) {
-            unlink($this->temporaryFile);
+            @unlink($this->temporaryFile);
         }
     }
 
