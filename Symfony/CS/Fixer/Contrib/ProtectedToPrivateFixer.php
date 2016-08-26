@@ -17,6 +17,7 @@ use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ * @author SpacePossum
  */
 final class ProtectedToPrivateFixer extends AbstractFixer
 {
@@ -26,79 +27,23 @@ final class ProtectedToPrivateFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
-
-        $classes = array_keys($tokens->findGivenKind(T_CLASS));
-        $classyElements = count($classes) ? $tokens->getClassyElements() : array();
-        end($classyElements);
-
-        while ($classIndex = array_pop($classes)) {
-            // Must be done before skipClass() to fill correctly
-            // the possible next $currentClassyElements
-            $currentClassyElements = array();
-            while (null !== ($index = key($classyElements)) && $index > $classIndex) {
-                $currentClassyElements[$index] = current($classyElements);
-                prev($classyElements);
-            }
-
-            if ($this->skipClass($tokens, $classIndex)) {
+        $end = count($tokens) - 3; // min. number of tokens to form a class candidate to fix
+        for ($index = 0; $index < $end; ++$index) {
+            if (!$tokens[$index]->isGivenKind(T_CLASS)) {
                 continue;
             }
 
-            foreach ($currentClassyElements as $index => $token) {
-                $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
-                $prevToken = $tokens[$prevTokenIndex];
+            $classOpen = $tokens->getNextTokenOfKind($index, array('{'));
+            $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
 
-                if ($prevToken->isGivenKind(T_STATIC)) {
-                    $prevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
-                    $prevToken = $tokens[$prevTokenIndex];
-                }
-
-                if (!$prevToken->isGivenKind(T_PROTECTED)) {
-                    continue;
-                }
-
-                $tokens->overrideAt($prevTokenIndex, array(T_PRIVATE, 'private'));
+            if (!$this->skipClass($tokens, $index, $classOpen, $classClose)) {
+                $this->fixClass($tokens, $index, $classOpen, $classClose);
             }
+
+            $index = $classClose;
         }
 
         return $tokens->generateCode();
-    }
-
-    /**
-     * Decide whether or not skip the fix for given class.
-     *
-     * @param Tokens $tokens     the Tokens instance
-     * @param int    $classIndex the class start index
-     *
-     * @return bool
-     */
-    private function skipClass(Tokens $tokens, $classIndex)
-    {
-        $prevTokenIndex = $tokens->getPrevMeaningfulToken($classIndex);
-        $prevToken = $tokens[$prevTokenIndex];
-
-        if ($prevToken->isGivenKind(T_ABSTRACT) || !$prevToken->isGivenKind(T_FINAL)) {
-            return true;
-        }
-
-        $classOpeningIndex = $tokens->getNextTokenOfKind($classIndex, array('{'));
-        $classCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpeningIndex);
-
-        $useIndex = $tokens->getNextTokenOfKind($classIndex, array(array(T_USE)));
-        if ($useIndex && $useIndex < $classCloseIndex) {
-            return true;
-        }
-
-        $extendsIndex = $classOpeningIndex;
-        while ($extendsIndex > $classIndex) {
-            --$extendsIndex;
-
-            if ($tokens[$extendsIndex]->isGivenKind(T_EXTENDS)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -106,6 +51,59 @@ final class ProtectedToPrivateFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Converts all protected variables and methods to private if needed.';
+        return 'Converts protected variables and methods to private where possible.';
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $classIndex
+     * @param int    $classOpenIndex
+     * @param int    $classCloseIndex
+     */
+    private function fixClass(Tokens $tokens, $classIndex, $classOpenIndex, $classCloseIndex)
+    {
+        for ($index = $classOpenIndex + 1; $index < $classCloseIndex; ++$index) {
+            $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
+            $prevToken = $tokens[$prevTokenIndex];
+
+            if ($prevToken->isGivenKind(T_STATIC)) {
+                $prevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
+                $prevToken = $tokens[$prevTokenIndex];
+            }
+
+            if (!$prevToken->isGivenKind(T_PROTECTED)) {
+                continue;
+            }
+
+            $tokens->overrideAt($prevTokenIndex, array(T_PRIVATE, 'private'));
+        }
+    }
+
+    /**
+     * Decide whether or not skip the fix for given class.
+     *
+     * @param Tokens $tokens
+     * @param int    $classIndex
+     * @param int    $classOpenIndex
+     * @param int    $classCloseIndex
+     *
+     * @return bool
+     */
+    private function skipClass(Tokens $tokens, $classIndex, $classOpenIndex, $classCloseIndex)
+    {
+        $prevToken = $tokens[$tokens->getPrevMeaningfulToken($classIndex)];
+        if ($prevToken->isGivenKind(T_ABSTRACT) || !$prevToken->isGivenKind(T_FINAL)) {
+            return true;
+        }
+
+        for ($i = $classIndex; $i < $classOpenIndex; ++$i) {
+            if ($tokens[$i]->isGivenKind(T_EXTENDS)) {
+                return true;
+            }
+        }
+
+        $useIndex = $tokens->getNextTokenOfKind($classIndex, array(array(T_USE)));
+
+        return $useIndex && $useIndex < $classCloseIndex;
     }
 }
