@@ -129,15 +129,15 @@ class OrderedUseFixer extends AbstractFixer
     }
 
     /**
-    * Prepare namespace for sorting.
-    *
-    * @param string $namespace
-    *
-    * @return string
-    */
-    private function prepareNamespace($namespace)
+     * Prepare namespace for sorting.
+     *
+     * @param string $namespace
+     *
+     * @return string
+     */
+    private static function prepareNamespace($namespace)
     {
-      return trim(preg_replace('%/\*(.*)\*/%s', '', $namespace));
+        return trim(preg_replace('%/\*(.*)\*/%s', '', $namespace));
     }
 
     /**
