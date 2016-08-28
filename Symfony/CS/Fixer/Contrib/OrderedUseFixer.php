@@ -35,42 +35,82 @@ class OrderedUseFixer extends AbstractFixer
     const SORT_LENGTH = 'length';
 
     /**
-     * Sorting type.
+     * Array of import types by which use statements should be ordered. If not defined only sort algorithm will be applied.
      *
-     * @var string
+     * @var null | int[]
      */
-    private static $sortType = self::SORT_ALPHA;
+    private static $sortTypesOrder = null;
 
     /**
      * Array of supported sort types.
      *
      * @var string[]
      */
-    private static $supportedSortTypes = array(self::SORT_ALPHA, self::SORT_LENGTH);
+    private static $supportedSortTypes = array(self::IMPORT_TYPE_CLASS, self::IMPORT_TYPE_CONST, self::IMPORT_TYPE_FUNCTION);
 
     /**
-     * @param array $sortType
+     * Sorting type.
+     *
+     * @var string
      */
-    public static function configure(array $sortType = null)
+    private static $sortAlgorithm = self::SORT_ALPHA;
+
+    /**
+     * Array of supported sort algorithms.
+     *
+     * @var string[]
+     */
+    private static $supportedSortAlgorithms = array(self::SORT_ALPHA, self::SORT_LENGTH);
+
+    /**
+     * @param array $configuration
+     */
+    public static function configure(array $configuration = null)
     {
         // If no configuration was passed, stick to default.
-        if (null === $sortType) {
+        if (null === $configuration) {
             return;
         }
 
-        // Configuration should contain only one sort type and can not be empty.
-        if (count($sortType) !== 1) {
-            throw new InvalidFixerConfigurationException('ordered_use', sprintf('Sort type is invalid. Array should contain only one of the parameter: "%s"', implode('", "', self::$supportedSortTypes)));
+        // Check if configuration has all required parameters.
+        if (!array_key_exists('typesOrder', $configuration) || !array_key_exists('sortAlgorithm', $configuration)) {
+            throw new InvalidFixerConfigurationException('ordered_use', sprintf('Configuration array should be composed of: "typesOrder" and "sortAlgorithm".'));
         }
 
-        $sortType = array_pop($sortType);
+        /*** Sort types order configuration ***/
+
+        $typesOrder = $configuration['typesOrder'];
+
+        // If no import types order was provided, we will sort only by algorithm.
+        if (null !== $typesOrder) {
+            if (!is_array($typesOrder) || count($typesOrder) != count(self::$supportedSortTypes)) {
+                throw new InvalidFixerConfigurationException('ordered_use', sprintf('$configuration["typesOrder"] should be array and should be composed of all import types in desired order.'));
+            }
+
+            // Check if all provided sort types are supported.
+            foreach ($typesOrder as $type) {
+                if (!in_array($type, self::$supportedSortTypes)) {
+                    throw new InvalidFixerConfigurationException('ordered_use', sprintf('$configuration["typesOrder"] should be array and should be composed of all import types in desired order.'));
+                }
+            }
+
+            self::$sortTypesOrder = $typesOrder;
+        }
+
+        /*** Sort algorithm configuration ***/
+
+        $sortAlgorithm = $configuration['sortAlgorithm'];
+        // If no configuration was passed, stick to default.
+        if (null === $sortAlgorithm) {
+            return;
+        }
 
         // Check if passed sort type is supported.
-        if (!is_string($sortType) || !in_array($sortType, self::$supportedSortTypes, true)) {
-            throw new InvalidFixerConfigurationException('ordered_use', sprintf('Sort type is invalid. Array should contain only one of the parameter: "%s"', implode('", "', self::$supportedSortTypes)));
+        if (!is_string($sortAlgorithm) || !in_array($sortAlgorithm, self::$supportedSortAlgorithms, true)) {
+            throw new InvalidFixerConfigurationException('ordered_use', sprintf('Sort algorithm is invalid. Should br one of the: "%s"', implode('", "', self::$supportedSortAlgorithms)));
         }
 
-        self::$sortType = $sortType;
+        self::$sortAlgorithm = $sortAlgorithm;
     }
 
     /**
@@ -152,10 +192,6 @@ class OrderedUseFixer extends AbstractFixer
      */
     public static function sortAlphabetically(array $first, array $second)
     {
-        if ($first['importType'] !== $second['importType']) {
-            return $first['importType'] > $second['importType'] ? 1 : -1;
-        }
-
         $firstNamespace = self::prepareNamespace($first['namespace']);
         $secondNamespace = self::prepareNamespace($second['namespace']);
 
@@ -247,14 +283,35 @@ class OrderedUseFixer extends AbstractFixer
             }
         }
 
-        switch (self::$sortType) {
-            case self::SORT_LENGTH:
-                uasort($indexes, 'self::sortByLength');
-                break;
-            default:
-                uasort($indexes, 'self::sortAlphabetically');
-                break;
+        // Is sort types provided, sorting by groups and each group by algorithm
+        if (self::$sortTypesOrder) {
+
+            // Grouping indexes by import type.
+            $groupedByTypes = array();
+            foreach ($indexes as $startIndex => $item) {
+                $groupedByTypes[$item['importType']][$startIndex] = $item;
+            }
+
+            // Sorting each group by algorithm.
+            foreach ($groupedByTypes as $type => $indexes) {
+                $groupedByTypes[$type] = $this->sortByAlgorithm($indexes);
+            }
+
+            // Ordering groups
+            $sortedGroups = array();
+            foreach (self::$sortTypesOrder as $type) {
+                if (isset($groupedByTypes[$type]) && !empty($groupedByTypes[$type])) {
+                    foreach ($groupedByTypes[$type] as $startIndex => $item) {
+                        $sortedGroups[$startIndex] = $item;
+                    }
+                }
+            }
+            $indexes = $sortedGroups;
+        } else {
+            // Sorting only by algorithm
+            $indexes = $this->sortByAlgorithm($indexes);
         }
+
 
         $index = -1;
         $usesOrder = array();
@@ -265,5 +322,22 @@ class OrderedUseFixer extends AbstractFixer
         }
 
         return $usesOrder;
+    }
+
+    /**
+     * @param $indexes
+     * @return array
+     */
+    private function sortByAlgorithm($indexes)
+    {
+        switch (self::$sortAlgorithm) {
+            case self::SORT_LENGTH:
+                uasort($indexes, 'self::sortByLength');
+                break;
+            default:
+                uasort($indexes, 'self::sortAlphabetically');
+                break;
+        }
+        return $indexes;
     }
 }
