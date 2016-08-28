@@ -687,7 +687,7 @@ use const some\a\{ConstA, ConstB, ConstC};
     public function testInvalidOrderTypesSize()
     {
         OrderedUseFixer::configure(array(
-            'typesOrder' => [1, 2],
+            'typesOrder' => array(1, 2),
             'sortAlgorithm' => OrderedUseFixer::SORT_ALPHA,
         ));
     }
@@ -699,7 +699,7 @@ use const some\a\{ConstA, ConstB, ConstC};
     public function testInvalidOrderType()
     {
         OrderedUseFixer::configure(array(
-            'typesOrder' => [1, 2, 5],
+            'typesOrder' => array(1, 2, 5),
             'sortAlgorithm' => OrderedUseFixer::SORT_ALPHA,
         ));
     }
@@ -1462,7 +1462,7 @@ use some\b\{ClassA, ClassB, ClassC as C};
     public function test70TypesOrderAndLength($expected, $input = null)
     {
         OrderedUseFixer::configure(array(
-            'typesOrder' => [OrderedUseFixer::IMPORT_TYPE_CLASS, OrderedUseFixer::IMPORT_TYPE_CONST, OrderedUseFixer::IMPORT_TYPE_FUNCTION],
+            'typesOrder' => array(OrderedUseFixer::IMPORT_TYPE_CLASS, OrderedUseFixer::IMPORT_TYPE_CONST, OrderedUseFixer::IMPORT_TYPE_FUNCTION),
             'sortAlgorithm' => OrderedUseFixer::SORT_LENGTH,
         ));
 
@@ -1508,7 +1508,7 @@ use function some\a\{fn_a, fn_b};
     public function test70TypesOrderAndAlphabet($expected, $input = null)
     {
         OrderedUseFixer::configure(array(
-            'typesOrder' => [OrderedUseFixer::IMPORT_TYPE_CLASS, OrderedUseFixer::IMPORT_TYPE_CONST, OrderedUseFixer::IMPORT_TYPE_FUNCTION],
+            'typesOrder' => array(OrderedUseFixer::IMPORT_TYPE_CLASS, OrderedUseFixer::IMPORT_TYPE_CONST, OrderedUseFixer::IMPORT_TYPE_FUNCTION),
             'sortAlgorithm' => OrderedUseFixer::SORT_ALPHA,
         ));
 

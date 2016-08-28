@@ -83,13 +83,13 @@ class OrderedUseFixer extends AbstractFixer
 
         // If no import types order was provided, we will sort only by algorithm.
         if (null !== $typesOrder) {
-            if (!is_array($typesOrder) || count($typesOrder) != count(self::$supportedSortTypes)) {
+            if (!is_array($typesOrder) || count($typesOrder) !== count(self::$supportedSortTypes)) {
                 throw new InvalidFixerConfigurationException('ordered_use', sprintf('$configuration["typesOrder"] should be array and should be composed of all import types in desired order.'));
             }
 
             // Check if all provided sort types are supported.
             foreach ($typesOrder as $type) {
-                if (!in_array($type, self::$supportedSortTypes)) {
+                if (!in_array($type, self::$supportedSortTypes, true)) {
                     throw new InvalidFixerConfigurationException('ordered_use', sprintf('$configuration["typesOrder"] should be array and should be composed of all import types in desired order.'));
                 }
             }
@@ -312,7 +312,6 @@ class OrderedUseFixer extends AbstractFixer
             $indexes = $this->sortByAlgorithm($indexes);
         }
 
-
         $index = -1;
         $usesOrder = array();
 
@@ -326,6 +325,7 @@ class OrderedUseFixer extends AbstractFixer
 
     /**
      * @param $indexes
+     *
      * @return array
      */
     private function sortByAlgorithm($indexes)
@@ -338,6 +338,7 @@ class OrderedUseFixer extends AbstractFixer
                 uasort($indexes, 'self::sortAlphabetically');
                 break;
         }
+
         return $indexes;
     }
 }
