@@ -123,7 +123,7 @@ class FileCacheManager
         $data = @unserialize($content);
 
         // ignore corrupted serialized data
-        if (null === $data) {
+        if (!is_array($data)) {
             return;
         }
 
