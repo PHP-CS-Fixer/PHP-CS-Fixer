@@ -2,6 +2,8 @@
 Integration of fixers: class_keyword_remove,no_unused_imports.
 --CONFIG--
 {"class_keyword_remove": true, "no_unused_imports": true}
+--REQUIREMENTS--
+php=5.5
 --EXPECT--
 <?php
 
