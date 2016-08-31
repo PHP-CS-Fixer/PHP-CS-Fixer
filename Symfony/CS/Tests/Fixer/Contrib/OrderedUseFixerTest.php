@@ -1438,17 +1438,17 @@ use function some\a\{fn_a, fn_b, fn_c};
 use some\b\{ClassA, ClassB, ClassC as C};
 use const some\a\{ConstB, ConstA, ConstC};
 use Some\Biz\Barz\Boozz\Foz\Which\Is\Really\Long;
-use const some\a\{ConstA, ConstB, ConstC, ConstF};
-use some\a\{ClassA, ClassB, ClassC as C, NiceClassName};
+use const some\b\{ConstX, ConstY, ConstZ, ConstG};
+use some\c\{ClassR, ClassT, ClassV as V, NiceClassName};
 ',
                 '<?php
-use const some\a\{ConstB, ConstA, ConstC};
 use function some\a\{fn_a, fn_b, fn_c};
-use A\B;
-use some\a\{ClassA, ClassB, ClassC as C, NiceClassName};
 use Foo\Bar\Biz;
+use some\c\{ClassR, ClassT, ClassV as V, NiceClassName};
+use A\B;
 use Some\Biz\Barz\Boozz\Foz\Which\Is\Really\Long;
-use const some\a\{ConstA, ConstB, ConstC, ConstF};
+use const some\a\{ConstB, ConstA, ConstC};
+use const some\b\{ConstX, ConstY, ConstZ, ConstG};
 use some\b\{ClassA, ClassB, ClassC as C};
 ',
             ),
@@ -1475,27 +1475,27 @@ use some\b\{ClassA, ClassB, ClassC as C};
             array(
                 '<?php
 use A\B;
-use SomeClass;
+use SomeBar;
 use Foo\Zar\Baz;
 use some\a\{ClassA, ClassB, ClassC as C};
-use some\b\{ClassA, ClassB, ClassC as C};
+use some\b\{ClassK, ClassL, ClassM as M};
 use const some\a\{ConstA, ConstB, ConstC};
-use const some\a\{ConstB, ConstA, ConstC};
+use const some\b\{ConstD, ConstE, ConstF};
 use function some\a\{fn_a, fn_b};
-use function some\a\{fn_a, fn_b, fn_c};
-use function some\b\{fn_a, fn_b, fn_c};
+use function some\f\{fn_c, fn_d, fn_e};
+use function some\b\{fn_a, fn_b, func_c};
 ',
                 '<?php
-use Foo\Zar\Baz;
-use some\b\{ClassA, ClassB, ClassC as C};
-use SomeClass;
-use function some\b\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
-use A\B;
-use function some\a\{fn_a, fn_b, fn_c};
-use const some\a\{ConstB, ConstA, ConstC};
 use some\a\{ClassA, ClassB, ClassC as C};
+use Foo\Zar\Baz;
+use some\b\{ClassK, ClassL, ClassM as M};
+use A\B;
+use function some\b\{fn_a, fn_b, func_c};
+use SomeBar;
 use function some\a\{fn_a, fn_b};
+use const some\b\{ConstD, ConstE, ConstF};
+use function some\f\{fn_c, fn_d, fn_e};
 ',
             ),
         );
@@ -1525,33 +1525,33 @@ use Aaa\Ccc;
 use Bar\Biz\Boooz\Baz;
 use Foo\Zar\Baz;
 use some\a\{ClassA};
-use some\b\{ClassA, ClassB, ClassC as C};
+use some\b\{ClassD, ClassB, ClassC as C};
 use SomeClass;
 use const some\a\{ConstA};
 use const some\a\{ConstB, ConstC as C};
-use const some\a\{ConstB};
-use const some\b\{ConstB};
+use const some\a\{ConstD};
+use const some\b\{ConstE};
 use function some\a\{fn_a, fn_b};
-use function some\a\{fn_a};
 use function some\b\{fn_a, fn_b, fn_c};
+use function some\c\{fn_g};
 use function some\f\{fn_a, fn_b, fn_c};
 ',
                 '<?php
+use some\b\{ClassD, ClassB, ClassC as C};
+use function some\f\{fn_a, fn_b, fn_c};
 use Bar\Biz\Boooz\Baz;
-use some\a\{ClassA};
-use const some\a\{ConstB};
-use Aaa\Ccc;
-use some\b\{ClassA, ClassB, ClassC as C};
-use Foo\Zar\Baz;
-use function some\a\{fn_a};
-use Aaa\Bbb;
-use const some\a\{ConstB, ConstC as C};
-use function some\b\{fn_a, fn_b, fn_c};
-use const some\b\{ConstB};
 use SomeClass;
 use const some\a\{ConstA};
-use function some\f\{fn_a, fn_b, fn_c};
+use function some\c\{fn_g};
+use Aaa\Bbb;
+use const some\a\{ConstB, ConstC as C};
+use Aaa\Ccc;
+use const some\a\{ConstD};
+use some\a\{ClassA};
+use const some\b\{ConstE};
 use function some\a\{fn_a, fn_b};
+use function some\b\{fn_a, fn_b, fn_c};
+use Foo\Zar\Baz;
 ',
             ),
         );
