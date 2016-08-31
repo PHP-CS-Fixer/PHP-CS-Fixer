@@ -37,7 +37,7 @@ class OrderedUseFixer extends AbstractFixer
     /**
      * Array of import types by which use statements should be ordered. If not defined only sort algorithm will be applied.
      *
-     * @var null | int[]
+     * @var null|int[]
      */
     private static $sortTypesOrder = null;
 
