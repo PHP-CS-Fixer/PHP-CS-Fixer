@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-30T12:40:23Z
+
+@SpacePossum great !
+Please add the same to `priority/class_keyword_remove,no_unused_imports.test` file
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-30T17:11:59Z
+
+good point, done :)
+and all green
