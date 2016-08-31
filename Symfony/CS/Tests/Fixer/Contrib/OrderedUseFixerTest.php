@@ -1522,7 +1522,7 @@ use function some\f\{fn_c, fn_d, fn_e};
                 '<?php
 use Aaa\Bbb;
 use Aaa\Ccc;
-use Bar\Biz\Boooz\Baz;
+use Bar\Biz\Boooz\Bum;
 use Foo\Zar\Baz;
 use some\a\{ClassA};
 use some\b\{ClassD, ClassB, ClassC as C};
@@ -1543,7 +1543,7 @@ use Foo\Zar\Baz;
 use function some\f\{fn_g, fn_h, fn_i};
 use some\a\{ClassA};
 use some\b\{ClassD, ClassB, ClassC as C};
-use Bar\Biz\Boooz\Baz;
+use Bar\Biz\Boooz\Bum;
 use function some\c\{fn_f};
 use const some\a\{ConstD};
 use Some\Cloz;
