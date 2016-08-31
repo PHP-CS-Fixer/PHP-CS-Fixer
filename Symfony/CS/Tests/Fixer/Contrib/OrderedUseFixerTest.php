@@ -1475,7 +1475,7 @@ use some\b\{ClassA, ClassB, ClassC as C};
             array(
                 '<?php
 use A\B;
-use SomeBar;
+use Some\Bar;
 use Foo\Zar\Baz;
 use some\a\{ClassA, ClassB, ClassC as C};
 use some\b\{ClassK, ClassL, ClassM as M};
@@ -1483,7 +1483,7 @@ use const some\a\{ConstA, ConstB, ConstC};
 use const some\b\{ConstD, ConstE, ConstF};
 use function some\a\{fn_a, fn_b};
 use function some\f\{fn_c, fn_d, fn_e};
-use function some\b\{fn_a, fn_b, func_c};
+use function some\b\{fn_k, fn_l, func_m};
 ',
                 '<?php
 use const some\a\{ConstA, ConstB, ConstC};
@@ -1491,8 +1491,8 @@ use some\a\{ClassA, ClassB, ClassC as C};
 use Foo\Zar\Baz;
 use some\b\{ClassK, ClassL, ClassM as M};
 use A\B;
-use function some\b\{fn_a, fn_b, func_c};
-use SomeBar;
+use function some\b\{fn_k, fn_l, func_m};
+use Some\Bar;
 use function some\a\{fn_a, fn_b};
 use const some\b\{ConstD, ConstE, ConstF};
 use function some\f\{fn_c, fn_d, fn_e};
@@ -1526,32 +1526,34 @@ use Bar\Biz\Boooz\Baz;
 use Foo\Zar\Baz;
 use some\a\{ClassA};
 use some\b\{ClassD, ClassB, ClassC as C};
-use SomeClass;
+use Some\Cloz;
 use const some\a\{ConstA};
-use const some\a\{ConstB, ConstC as C};
+use const some\a\{ConstB, ConstC as CC};
 use const some\a\{ConstD};
 use const some\b\{ConstE};
 use function some\a\{fn_a, fn_b};
-use function some\b\{fn_a, fn_b, fn_c};
-use function some\c\{fn_g};
-use function some\f\{fn_a, fn_b, fn_c};
+use function some\a\{fn};
+use function some\b\{fn_c, fn_d, fn_e};
+use function some\c\{fn_f};
+use function some\f\{fn_g, fn_h, fn_i};
 ',
                 '<?php
-use some\b\{ClassD, ClassB, ClassC as C};
-use function some\f\{fn_a, fn_b, fn_c};
-use Bar\Biz\Boooz\Baz;
-use SomeClass;
-use const some\a\{ConstA};
-use function some\c\{fn_g};
-use Aaa\Bbb;
-use const some\a\{ConstB, ConstC as C};
 use Aaa\Ccc;
-use const some\a\{ConstD};
+use Foo\Zar\Baz;
+use function some\f\{fn_g, fn_h, fn_i};
 use some\a\{ClassA};
+use some\b\{ClassD, ClassB, ClassC as C};
+use Bar\Biz\Boooz\Baz;
+use function some\c\{fn_f};
+use const some\a\{ConstD};
+use Some\Cloz;
+use function some\a\{fn};
+use const some\a\{ConstA};
+use function some\b\{fn_c, fn_d, fn_e};
+use const some\a\{ConstB, ConstC as CC};
+use Aaa\Bbb;
 use const some\b\{ConstE};
 use function some\a\{fn_a, fn_b};
-use function some\b\{fn_a, fn_b, fn_c};
-use Foo\Zar\Baz;
 ',
             ),
         );
