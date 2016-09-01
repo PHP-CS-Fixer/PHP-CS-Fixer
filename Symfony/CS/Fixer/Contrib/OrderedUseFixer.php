@@ -35,28 +35,28 @@ class OrderedUseFixer extends AbstractFixer
     const SORT_LENGTH = 'length';
 
     /**
-     * Array of import types by which use statements should be ordered. If not defined only sort algorithm will be applied.
+     * Array of import types by which use statements should be ordered. If not defined in configuration only sort algorithm will be applied.
      *
      * @var null|int[]
      */
     private static $sortTypesOrder = null;
 
     /**
-     * Array of supported sort types.
+     * Array of supported sort types in configuration.
      *
      * @var string[]
      */
     private static $supportedSortTypes = array(self::IMPORT_TYPE_CLASS, self::IMPORT_TYPE_CONST, self::IMPORT_TYPE_FUNCTION);
 
     /**
-     * Sorting type.
+     * Default sort algorithm.
      *
      * @var string
      */
     private static $sortAlgorithm = self::SORT_ALPHA;
 
     /**
-     * Array of supported sort algorithms.
+     * Array of supported sort algorithms in configuration.
      *
      * @var string[]
      */
