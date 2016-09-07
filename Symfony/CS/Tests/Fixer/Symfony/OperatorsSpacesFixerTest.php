@@ -32,12 +32,6 @@ class OperatorsSpacesFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
-                '<?php $d = $c + $a +     //
-                $b;',
-                '<?php $d =    $c+$a+     //
-                $b;',
-            ),
-            array(
                 '<?php $a +      /** */
                 $b;',
                 '<?php $a    +      /** */
@@ -139,11 +133,6 @@ $b;',
                 '<?php "a"xor(2);',
             ),
             array(
-                '<?php $a = array("b" => "c", );',
-                '<?php $a = array("b"=>"c", );',
-            ),
-
-            array(
                 '<?php $a * -$b;',
                 '<?php $a*-$b;',
             ),
@@ -175,6 +164,46 @@ $b;',
             ),
             array(
                 '<?php declare(ticks =  1);',
+            ),
+            array(
+                '<?php $a = 1;declare(ticks =  1);$b = 1;',
+                '<?php $a=1;declare(ticks =  1);$b=1;',
+            ),
+            array(
+                '<?php $a = array("b" => "c", );',
+                '<?php $a = array("b"=>"c", );',
+            ),
+            array(
+                '<?php $a = array("b" => "c", );',
+                '<?php $a = array("b" =>"c", );',
+            ),
+            array(
+                '<?php $a = array("b" => "c", );',
+                '<?php $a = array("b"=> "c", );',
+            ),
+            array(
+                '<?php $a = array("b"      =>      "c", );',
+            ),
+            array(
+                '<?php $a = "c";',
+                '<?php $a="c";',
+            ),
+            array(
+                '<?php $a = "c";',
+                '<?php $a ="c";',
+            ),
+            array(
+                '<?php $a = "c";',
+                '<?php $a= "c";',
+            ),
+            array(
+                '<?php $a        =        "c";',
+            ),
+            array(
+                '<?php $d =    $c + $a +     //
+                $b;',
+                '<?php $d =    $c+$a+     //
+                $b;',
             ),
         );
     }
