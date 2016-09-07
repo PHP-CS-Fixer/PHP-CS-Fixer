@@ -3,6 +3,17 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.12.1
+---------------------
+
+* bug #2144 Remove temporary files not deleted by destructor on failure (adawolfa)
+* bug #2150 SelfUpdateCommand: resolve symlink (julienfalque)
+* bug #2162 Fix issue where an exception is thrown if the cache file exists but is empty. (ikari7789)
+* bug #2164 OperatorsSpacesFixer - Do not unalign double arrow and equals operators (SpacePossum)
+* bug #2167 Rewrite file removal (keradus)
+* minor #2152 Code cleanup (keradus)
+* minor #2154 ShutdownFileRemoval - Fixed file header (GrahamCampbell)
+
 Changelog for v1.12.0
 ---------------------
 
