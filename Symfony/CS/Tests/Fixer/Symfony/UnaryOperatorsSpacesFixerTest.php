@@ -81,6 +81,10 @@ class UnaryOperatorsSpacesFixerTest extends AbstractFixerTestBase
                 '<?php function & foo(){}',
             ),
             array(
+                '<?php function &foo(){}',
+                '<?php function &   foo(){}',
+            ),
+            array(
                 '<?php function foo(&$a, array &$b, Bar &$c) {}',
                 '<?php function foo(& $a, array & $b, Bar & $c) {}',
             ),
