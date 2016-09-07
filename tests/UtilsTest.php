@@ -60,7 +60,6 @@ final class UtilsTest extends \PHPUnit_Framework_TestCase
             array(
                 'utf8_encoder_fixer',
             ),
-
         );
     }
 

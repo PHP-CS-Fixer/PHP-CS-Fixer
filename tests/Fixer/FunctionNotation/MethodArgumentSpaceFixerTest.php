@@ -102,7 +102,6 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
             array(
                 '<?php xyz($a=10, /*comment1*/ $b=2000, /*comment2*/ $c=30);',
                 '<?php xyz($a=10,    /*comment1*/ $b=2000,/*comment2*/ $c=30);',
-
             ),
             // must keep align comments
             array(

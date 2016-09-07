@@ -101,8 +101,8 @@ EOF;
     {
         $tests = array(
             array(
-                array(9, 43, 57),
-                array('curly_brace_open'),
+                array(9, 14, 21, 43, 45, 49, 53, 57),
+                array('curly_brace_block'),
             ),
             array(
                 array(3, 5),
@@ -299,13 +299,13 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixWithCommentWithAQuote()
+    public function testFixWithCommentWithQuote()
     {
         $expected = <<<'EOF'
 <?php
 $a = 'foo';
 
-// my comment's gotta have a quote
+// my comment's must have a quote
 $b = 'foobar';
 
 $c = 'bar';
@@ -316,7 +316,7 @@ EOF;
 $a = 'foo';
 
 
-// my comment's gotta have a quote
+// my comment's must have a quote
 $b = 'foobar';
 
 
@@ -330,7 +330,7 @@ EOF;
     {
         $expected = "
 <?php
-    echo 'ellow';
+    echo 'hello';
 ?>
 
 \$a = 0;
@@ -354,50 +354,58 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testFixWithComments()
+    /**
+     * @dataProvider provideCommentCases
+     */
+    public function testFixWithComments($expected, $input)
     {
-        $expected = <<<'EOF'
-<?php
-//class Test
-$a; //
-
-$b;
-/***/
-
-$c;
-//
-
-$d;
-EOF;
-
-        $input = <<<'EOF'
-<?php
-//class Test
-$a; //
-
-
-
-
-$b;
-/***/
-
-
-
-$c;
-//
-
-
-
-$d;
-EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixWithComments2()
+    public function provideCommentCases()
     {
-        $input = "<?php\n//a\n\n\n\n\$a =1;";
-        $expected = "<?php\n//a\n\n\$a =1;";
-        $this->doTest($expected, $input);
+        return array(
+            array(
+<<<'EOF'
+<?php
+//class Test
+$a; //
+
+$b;
+/***/
+
+$c;
+//
+
+$d;
+EOF
+            ,
+<<<'EOF'
+<?php
+//class Test
+$a; //
+
+
+
+
+$b;
+/***/
+
+
+
+$c;
+//
+
+
+
+$d;
+EOF
+            ),
+            array(
+                "<?php\n//a\n\n\$a =1;",
+                "<?php\n//a\n\n\n\n\$a =1;",
+            ),
+        );
     }
 
     public function testFixWithWindowsLineBreaks()
@@ -584,21 +592,45 @@ $a = new Qux();',
     {
         $this->getFixer()->configure(array('useTrait'));
         $this->doTest(
-                '<?php
-                class Test {
-                    use A;
-                    use B;
+            '<?php
+            namespace T\A;
+            use V;
 
-                    private $a;
-                }',
-                '<?php
-                class Test {
-                    use A;
 
-                    use B;
+            use W;
 
-                    private $a;
-                }'
+            class Test {
+                use A;
+                use B;
+
+                private function test($b) {
+
+                    $a = function() use ($b) { echo $b;};
+
+                    $b = function() use ($b) { echo $b;};
+
+                }
+            }',
+            '<?php
+            namespace T\A;
+            use V;
+
+
+            use W;
+
+            class Test {
+                use A;
+
+                use B;
+
+                private function test($b) {
+
+                    $a = function() use ($b) { echo $b;};
+
+                    $b = function() use ($b) { echo $b;};
+
+                }
+            }'
         );
     }
 
@@ -612,7 +644,9 @@ $a = new Qux();',
                 'continue',
                 'return',
                 'throw',
-                'curly_brace_open',
+                'curly_brace_block',
+                'square_brace_block',
+                'parenthesis_brace_block',
             )
         );
 
@@ -623,7 +657,7 @@ $a = new Qux();',
     {
         return array(
             array(
-                "<?php\n\n\$a = function() use (\$b) { while(3<1)break; while(3<1)continue; if (true) throw \$e; return 1; };\n\n",
+                "<?php\n\n\$a = function() use (\$b) { while(3<1)break; \$c = \$b[1]; while(\$b<1)continue; if (true) throw \$e; return 1; };\n\n",
             ),
             array(
                 "<?php\n\n\$a = new class { public function a () { while(4<1)break; while(3<1)continue; if (true) throw \$e; return 1; }};\n\n",
@@ -632,6 +666,105 @@ $a = new Qux();',
                 "<?php throw new \\Exception('do not import');\n",
                 "<?php throw new \\Exception('do not import');\n\n",
             ),
+            array(
+                "<?php\n\n\$a = \$b{0};\n\n",
+            ),
+            array(
+                "<?php\n\n\$a->{'Test'};\nfunction test(){}\n",
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideBraceCases
+     */
+    public function testBraces($config, $expected, $input = null)
+    {
+        $this->getFixer()->configure(array($config));
+        $this->doTest($expected, $input);
+    }
+
+    public function provideBraceCases()
+    {
+        return array(
+            array(
+                'curly_brace_block',
+                "<?php function test()\n\n{}\n\necho 789;",
+            ),
+            array(
+                'curly_brace_block',
+                "<?php switch(\$a){\ncase 1:echo 789;}",
+                "<?php switch(\$a){\n   \ncase 1:echo 789;}",
+            ),
+            array(
+                'parenthesis_brace_block',
+                '<?php 
+is_int(
+1);
+function test(
+$a,
+$b,
+$c
+)
+{
+
+
+}',
+                '<?php 
+is_int(
+
+1);
+function test(
+
+$a,
+$b,
+$c
+
+
+)
+{
+
+
+}',
+            ),
+            array(
+                'parenthesis_brace_block',
+                "<?php array(\n1,\n2,\n3,\n);",
+                "<?php array(\n  \n1,\n2,\n3,\n\n\n);",
+            ),
+            array(
+                'parenthesis_brace_block',
+                '<?php
+    function a()
+    {
+        $b->d(e(
+        ));
+
+        foreach ($a as $x) {
+        }
+    }',
+            ),
+        );
+    }
+
+    /**
+     * @requires PHP 5.4
+     * @dataProvider provideBraceCases54
+     */
+    public function testBraces54($config, $expected, $input)
+    {
+        $this->getFixer()->configure(array($config));
+        $this->doTest($expected, $input);
+    }
+
+    public function provideBraceCases54()
+    {
+        return array(
+            array(
+                'square_brace_block',
+                "<?php \$c = \$b[0];\n\n\n\$a = [\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
+                "<?php \$c = \$b[0];\n\n\n\$a = [\n\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
+            ),
         );
     }
 
@@ -639,12 +772,9 @@ $a = new Qux();',
     {
         sort($lineNumbers);
         $lines = explode("\n", $input);
-        $lineCount = count($lines);
         foreach ($lineNumbers as $lineNumber) {
             --$lineNumber;
-            if ($lineNumber < 0 || $lineNumber > $lineCount) {
-                throw new \InvalidArgumentException(sprintf('Line number "%d" out of range (0 - %d).', ++$lineNumber, $lineCount));
-            }
+
             unset($lines[$lineNumber]);
         }
 
