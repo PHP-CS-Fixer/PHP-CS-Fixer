@@ -30,13 +30,13 @@ your system:
 
 .. code-block:: bash
 
-    \$ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.12.0/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.12.0/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
 .. code-block:: bash
 
-    \$ curl -L https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.12.0/php-cs-fixer.phar -o php-cs-fixer
+    $ curl -L https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.12.0/php-cs-fixer.phar -o php-cs-fixer
 
 then:
 
@@ -67,7 +67,7 @@ you're good to go:
 
 .. code-block:: bash
 
-    export PATH="$PATH:$HOME/.composer/vendor/bin"
+    $ export PATH="$PATH:$HOME/.composer/vendor/bin"
 
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
@@ -127,8 +127,8 @@ problems as possible on a given file or files in a given directory and its subdi
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/dir
-    php php-cs-fixer.phar fix /path/to/file
+    $ php php-cs-fixer.phar fix /path/to/dir
+    $ php php-cs-fixer.phar fix /path/to/file
 
 The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``json`` and ``xml``.
 
@@ -139,10 +139,10 @@ project:
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/project --level=psr0
-    php php-cs-fixer.phar fix /path/to/project --level=psr1
-    php php-cs-fixer.phar fix /path/to/project --level=psr2
-    php php-cs-fixer.phar fix /path/to/project --level=symfony
+    $ php php-cs-fixer.phar fix /path/to/project --level=psr0
+    $ php php-cs-fixer.phar fix /path/to/project --level=psr1
+    $ php php-cs-fixer.phar fix /path/to/project --level=psr2
+    $ php php-cs-fixer.phar fix /path/to/project --level=symfony
 
 By default, all PSR-2 fixers and some additional ones are run. The "contrib
 level" fixers cannot be enabled via this option; you should instead set them
@@ -153,20 +153,20 @@ apply (the fixer names must be separated by a comma):
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,short_tag,indentation
+    $ php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,short_tag,indentation
 
 You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
 using ``-name_of_fixer``:
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/dir --fixers=-short_tag,-indentation
+    $ php php-cs-fixer.phar fix /path/to/dir --fixers=-short_tag,-indentation
 
 When using combination with exact and blacklist fixers, apply exact fixers along with above blacklisted result:
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,-short_tag
+    $ php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,-short_tag
 
 A combination of ``--dry-run`` and ``--diff`` will
 display summary of proposed fixes, leaving your files unchanged.
@@ -176,7 +176,7 @@ automatically fix anything:
 
 .. code-block:: bash
 
-    cat foo.php | php php-cs-fixer.phar fix --diff -
+    $ cat foo.php | php php-cs-fixer.phar fix --diff -
 
 Choose from the list of available fixers:
 
@@ -779,7 +779,7 @@ on some well-known directory structures:
 .. code-block:: bash
 
     # For the Symfony 2.3+ branch
-    php php-cs-fixer.phar fix /path/to/sf23 --config=sf23
+    $ php php-cs-fixer.phar fix /path/to/sf23 --config=sf23
 
 Choose from the list of available configurations:
 
@@ -794,7 +794,7 @@ fixed but without actually modifying them:
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/code --dry-run
+    $ php php-cs-fixer.phar fix /path/to/code --dry-run
 
 Instead of using command line options to customize the fixer, you can save the
 configuration in a ``.php_cs`` file in the root directory of
