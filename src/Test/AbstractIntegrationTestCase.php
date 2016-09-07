@@ -15,12 +15,12 @@ namespace PhpCsFixer\Test;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\FileRemoval;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\NullLinter;
 use PhpCsFixer\Runner\Runner;
-use PhpCsFixer\ShutdownFileRemoval;
 use PhpCsFixer\Tokenizer\Transformers;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -62,17 +62,17 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
     protected static $linter;
 
     /*
-     * @var ShutdownFileRemoval
+     * @var fileRemoval
      */
-    private static $shutdownFileRemoval;
+    private static $fileRemoval;
 
     public static function setUpBeforeClass()
     {
         static::$linter = getenv('LINT_TEST_CASES') ? new Linter() : new NullLinter();
 
         $tmpFile = static::getTempFile();
-        self::$shutdownFileRemoval = new ShutdownFileRemoval();
-        self::$shutdownFileRemoval->attach($tmpFile);
+        self::$fileRemoval = new FileRemoval();
+        self::$fileRemoval->observe($tmpFile);
 
         if (!is_file($tmpFile)) {
             $dir = dirname($tmpFile);
@@ -88,8 +88,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
     {
         $tmpFile = static::getTempFile();
 
-        @unlink($tmpFile);
-        self::$shutdownFileRemoval->detach($tmpFile);
+        self::$fileRemoval->delete($tmpFile);
     }
 
     /**

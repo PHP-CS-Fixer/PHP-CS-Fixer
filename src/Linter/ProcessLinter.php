@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Linter;
 
-use PhpCsFixer\ShutdownFileRemoval;
+use PhpCsFixer\FileRemoval;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
@@ -42,11 +42,11 @@ final class ProcessLinter implements LinterInterface
     private $executable;
 
     /**
-     * Shutdown files removal handler.
+     * Files removal handler.
      *
-     * @var ShutdownFileRemoval
+     * @var FileRemoval
      */
-    private $shutdownFileRemoval;
+    private $fileRemoval;
 
     /**
      * @param string|null $executable PHP executable, null for autodetection
@@ -64,14 +64,13 @@ final class ProcessLinter implements LinterInterface
 
         $this->executable = $executable;
 
-        $this->shutdownFileRemoval = new ShutdownFileRemoval();
+        $this->fileRemoval = new FileRemoval();
     }
 
     public function __destruct()
     {
         if (null !== $this->temporaryFile) {
-            unlink($this->temporaryFile);
-            $this->shutdownFileRemoval->detach($this->temporaryFile);
+            $this->fileRemoval->delete($this->temporaryFile);
         }
     }
 
@@ -131,7 +130,7 @@ final class ProcessLinter implements LinterInterface
     {
         if (null === $this->temporaryFile) {
             $this->temporaryFile = tempnam('.', 'cs_fixer_tmp_');
-            $this->shutdownFileRemoval->attach($this->temporaryFile);
+            $this->fileRemoval->observe($this->temporaryFile);
         }
 
         if (false === @file_put_contents($this->temporaryFile, $source)) {

@@ -19,6 +19,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author SpacePossum
  */
 final class BinaryOperatorSpacesFixer extends AbstractFixer
 {
@@ -37,44 +38,21 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+        // last and first tokens cannot be an operator
+        for ($index = $tokens->count() - 2; $index >= 0; --$index) {
             if (!$tokensAnalyzer->isBinaryOperator($index)) {
                 continue;
             }
 
-            // skip `declare(foo ==bar)`
-            $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevMeaningfulIndex]->isGivenKind(T_STRING)) {
-                $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulIndex);
-                if ($tokens[$prevMeaningfulIndex]->equals('(')) {
-                    $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulIndex);
-                    if ($tokens[$prevMeaningfulIndex]->isGivenKind(T_DECLARE)) {
-                        continue;
-                    }
-                }
-            }
-
-            // fix white space after operator
-            if ($tokens[$index + 1]->isWhitespace()) {
-                $content = $tokens[$index + 1]->getContent();
-                if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
-                    $tokens[$index + 1]->setContent(' ');
-                }
+            $isDeclare = $this->isDeclareStatement($tokens, $index);
+            if (false !== $isDeclare) {
+                $index = $isDeclare; // skip `declare(foo ==bar)`, see `declare_equal_normalize`
             } else {
-                $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
+                $this->fixWhiteSpaceAroundOperator($tokens, $index);
             }
 
-            // fix white space before operator
-            if ($tokens[$index - 1]->isWhitespace()) {
-                $content = $tokens[$index - 1]->getContent();
-                if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
-                    $tokens[$index - 1]->setContent(' ');
-                }
-            } else {
-                $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
-            }
-
-            --$index; // skip check for binary operator on the whitespace token that is fixed.
+            // previous of binary operator is now never an operator / previous of declare statement cannot be an operator
+            --$index;
         }
     }
 
@@ -84,5 +62,53 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer
     public function getDescription()
     {
         return 'Binary operators should be surrounded by at least one space.';
+    }
+
+    private function fixWhiteSpaceAroundOperator(Tokens $tokens, $index)
+    {
+        // do not change the alignment of `=>` or `=`, see `(un)align_double_arrow`, `(un)align_equals`
+        $preserveAlignment = $tokens[$index]->isGivenKind(T_DOUBLE_ARROW) || $tokens[$index]->equals('=');
+
+        // fix white space after operator
+        if ($tokens[$index + 1]->isWhitespace()) {
+            $content = $tokens[$index + 1]->getContent();
+            if (!$preserveAlignment && ' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
+                $tokens[$index + 1]->setContent(' ');
+            }
+        } else {
+            $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
+        }
+
+        // fix white space before operator
+        if ($tokens[$index - 1]->isWhitespace()) {
+            $content = $tokens[$index - 1]->getContent();
+            if (!$preserveAlignment && ' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+                $tokens[$index - 1]->setContent(' ');
+            }
+        } else {
+            $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return bool|int
+     */
+    private function isDeclareStatement(Tokens $tokens, $index)
+    {
+        $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($index);
+        if ($tokens[$prevMeaningfulIndex]->isGivenKind(T_STRING)) {
+            $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulIndex);
+            if ($tokens[$prevMeaningfulIndex]->equals('(')) {
+                $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulIndex);
+                if ($tokens[$prevMeaningfulIndex]->isGivenKind(T_DECLARE)) {
+                    return $prevMeaningfulIndex;
+                }
+            }
+        }
+
+        return false;
     }
 }
