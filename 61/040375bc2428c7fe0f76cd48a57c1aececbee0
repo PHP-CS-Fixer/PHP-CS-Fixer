@@ -1,0 +1,74 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-09T13:40:37Z
+
+@SpacePossum , is it still WIP ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-11T16:45:24Z
+
+updated the comments and PR description
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-12T07:54:47Z
+
+:+1: for code but comments
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-23T18:15:36Z
+
+I've changed the PR, no it will remove extra blank lines after an opening token and before the related closing token. Checked on SF as well and sure if this is what they want, maybe I should make the before and after token both optional.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-29T10:32:00Z
+
+ready for reviewing
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-29T17:08:33Z
+
+fabbot is wrong
+for the failing tests see https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2163
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-31T16:11:33Z
+
+great work !
+some minors and :+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-06T04:10:52Z
+
+I don't understand why github is warning for the conflicts, the commit applies to current master branch without any issue.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-06T08:37:50Z
+
+maybe your master is outdated ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-06T08:39:33Z
+
+Actually it's not only github.
+both CI are claiming they cannot apply PR patch to master to perform the builds
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-06T08:45:49Z
+
+rebased.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-06T20:00:57Z
+
+awesome, thanks for the correct rebasing!
