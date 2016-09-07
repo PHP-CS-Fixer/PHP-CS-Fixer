@@ -1,0 +1,41 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-29T07:54:54Z
+
+Isn't the problem here: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2162/files#diff-12b3be4cb17c0a53ac8a34fe6e2d8a2cR131
+
+```php
+        // ignore corrupted serialized data
+        if (null === $data) {
+            return;
+        }
+```
+
+as
+```php
+$a = @unserialize(null);
+var_dump($a);
+
+$a = @unserialize('');
+var_dump($a);
+```
+
+all give `false` and not `null`
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-29T09:50:07Z
+
+We should just change the check to `is_array`
+
+---------------------------------------------------------------------------
+
+by ikari7789 at 2016-08-29T10:04:18Z
+
+That seems logical. Don't know how I even missed that. Had the doc open for unserialize and everything.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-29T11:07:02Z
+
+:ship: :+1:
