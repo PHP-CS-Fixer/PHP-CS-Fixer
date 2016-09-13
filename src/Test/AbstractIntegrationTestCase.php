@@ -19,9 +19,9 @@ use PhpCsFixer\FileRemoval;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
-use PhpCsFixer\Linter\NullLinter;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tokenizer\Transformers;
+use Prophecy\Argument;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -59,7 +59,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @var LinterInterface
      */
-    protected static $linter;
+    protected $linter;
 
     /*
      * @var fileRemoval
@@ -68,8 +68,6 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        static::$linter = getenv('LINT_TEST_CASES') ? new Linter() : new NullLinter();
-
         $tmpFile = static::getTempFile();
         self::$fileRemoval = new FileRemoval();
         self::$fileRemoval->observe($tmpFile);
@@ -89,6 +87,11 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
         $tmpFile = static::getTempFile();
 
         self::$fileRemoval->delete($tmpFile);
+    }
+
+    public function setUp()
+    {
+        $this->linter = $this->getLinter();
     }
 
     /**
@@ -178,8 +181,6 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 
         $input = $case->hasInputCode() ? $input : $expected;
 
-        $this->assertNull($this->lintSource($input));
-
         $tmpFile = static::getTempFile();
 
         if (false === @file_put_contents($tmpFile, $input)) {
@@ -191,7 +192,6 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
         $configProphecy = $this->prophesize('PhpCsFixer\ConfigInterface');
         $configProphecy->usingCache()->willReturn(false);
         $configProphecy->getCacheFile()->willReturn(null);
-        $configProphecy->usingLinter()->willReturn(false);
         $configProphecy->getRules()->willReturn(array());
         $configProphecy->getFinder()->willReturn(new \ArrayIterator(array(new \SplFileInfo($tmpFile))));
         $configProphecy->getFixers()->willReturn($case->getFixers());
@@ -201,7 +201,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             new SebastianBergmannDiffer(),
             null,
             $errorsManager,
-            new NullLinter(),
+            $this->linter,
             false
         );
 
@@ -275,34 +275,6 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $source
-     *
-     * @return string|null
-     */
-    protected function lintSource($source)
-    {
-        if ($this->isLintException($source)) {
-            return;
-        }
-
-        try {
-            static::$linter->lintSource($source)->check();
-        } catch (\Exception $e) {
-            return $e->getMessage()."\n\nSource:\n$source";
-        }
-    }
-
-    /**
-     * @param string $source
-     *
-     * @return bool
-     */
-    protected function isLintException($source)
-    {
-        return false;
-    }
-
-    /**
      * @param Error[] $errors
      *
      * @return string
@@ -315,5 +287,34 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
         }
 
         return $errorStr;
+    }
+
+    /**
+     * @return LinterInterface
+     */
+    private function getLinter()
+    {
+        static $linter = null;
+
+        if (null === $linter) {
+            if (getenv('SKIP_LINT_TEST_CASES')) {
+                $linterProphecy = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
+                $linterProphecy
+                    ->lintSource(Argument::type('string'))
+                    ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+                $linterProphecy
+                    ->lintFile(Argument::type('string'))
+                    ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+                $linterProphecy
+                    ->isAsync()
+                    ->willReturn(false);
+
+                $linter = $linterProphecy->reveal();
+            } else {
+                $linter = new Linter();
+            }
+        }
+
+        return $linter;
     }
 }

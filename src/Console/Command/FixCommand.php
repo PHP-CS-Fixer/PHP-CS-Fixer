@@ -24,8 +24,6 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
-use PhpCsFixer\Linter\NullLinter;
-use PhpCsFixer\Linter\UnavailableLinterException;
 use PhpCsFixer\Report\ReporterFactory;
 use PhpCsFixer\Report\ReportSummary;
 use PhpCsFixer\RuleSet;
@@ -333,16 +331,7 @@ EOF
             $stdErr->writeln(sprintf('Loaded config from "%s".', $configFile));
         }
 
-        $linter = new NullLinter();
-        if ($config->usingLinter()) {
-            try {
-                $linter = new Linter($config->getPhpExecutable());
-            } catch (UnavailableLinterException $e) {
-                if (null !== $stdErr && $configFile) {
-                    $stdErr->writeln('Unable to use linter, can not find PHP executable.');
-                }
-            }
-        }
+        $linter = new Linter($config->getPhpExecutable());
 
         if (null !== $stdErr && $config->usingCache()) {
             $cacheFile = $config->getCacheFile();

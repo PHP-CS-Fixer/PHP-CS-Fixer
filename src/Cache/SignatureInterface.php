@@ -30,11 +30,6 @@ interface SignatureInterface
     public function getFixerVersion();
 
     /**
-     * @return bool
-     */
-    public function isLintingEnabled();
-
-    /**
      * @return array
      */
     public function getRules();

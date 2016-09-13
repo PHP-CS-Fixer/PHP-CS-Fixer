@@ -16,11 +16,11 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
-use PhpCsFixer\Linter\NullLinter;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
+use Prophecy\Argument;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -30,16 +30,16 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @var LinterInterface
      */
-    protected static $linter;
+    protected $linter;
 
     /**
      * @var FixerInterface|null
      */
     private $fixer;
 
-    public static function setUpBeforeClass()
+    public function setUp()
     {
-        static::$linter = getenv('LINT_TEST_CASES') ? new Linter() : new NullLinter();
+        $this->linter = $this->getLinter();
     }
 
     /**
@@ -201,25 +201,11 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function lintSource($source)
     {
-        if ($this->isLintException($source)) {
-            return;
-        }
-
         try {
-            static::$linter->lintSource($source)->check();
+            $this->linter->lintSource($source)->check();
         } catch (\Exception $e) {
             return $e->getMessage()."\n\nSource:\n$source";
         }
-    }
-
-    /**
-     * @param string $source
-     *
-     * @return bool
-     */
-    protected function isLintException($source)
-    {
-        return false;
     }
 
     private function assertTokens(Tokens $expectedTokens, Tokens $inputTokens)
@@ -243,5 +229,28 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
                 sprintf('The token kind %s must be found in fixed tokens collection.', $tokenKind)
             );
         }
+    }
+
+    /**
+     * @return LinterInterface
+     */
+    private function getLinter()
+    {
+        static $linter = null;
+
+        if (null === $linter) {
+            if (getenv('SKIP_LINT_TEST_CASES')) {
+                $linterProphecy = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
+                $linterProphecy
+                    ->lintSource(Argument::type('string'))
+                    ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+
+                $linter = $linterProphecy->reveal();
+            } else {
+                $linter = new Linter();
+            }
+        }
+
+        return $linter;
     }
 }

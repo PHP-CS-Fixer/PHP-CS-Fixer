@@ -20,12 +20,12 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideExamplesForAllVersions
+     * @dataProvider provideCases
      *
      * @param string      $expected
      * @param string|null $input
      */
-    public function testFixForAllVersions($expected, $input = null)
+    public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
@@ -33,7 +33,7 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
     /**
      * @return array
      */
-    public function provideExamplesForAllVersions()
+    public function provideCases()
     {
         return array(
             array(
@@ -144,17 +144,38 @@ EOT
                 '<?php function a(&$a = null, $b) {}',
             ),
             array(
-                '<?php function a($a = 1, ...$b) {}',
-            ),
-            array(
-                '<?php function a($a = 1, \SplFileInfo ...$b) {}',
-            ),
-            array(
                 '<?php $fnc = function ($a, $b = 1) use ($c) {};',
             ),
             array(
                 '<?php $fnc = function ($a, $b) use ($c) {};',
                 '<?php $fnc = function ($a = 1, $b) use ($c) {};',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provide56Cases
+     * @requires PHP 5.6
+     *
+     * @param string      $expected
+     * @param string|null $input
+     */
+    public function testFix56($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array
+     */
+    public function provide56cases()
+    {
+        return array(
+            array(
+                '<?php function a($a = 1, ...$b) {}',
+            ),
+            array(
+                '<?php function a($a = 1, \SplFileInfo ...$b) {}',
             ),
         );
     }

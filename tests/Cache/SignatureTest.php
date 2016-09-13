@@ -39,7 +39,6 @@ final class SignatureTest extends \PHPUnit_Framework_TestCase
     {
         $php = PHP_VERSION;
         $version = '2.0';
-        $linting = false;
         $rules = array(
             'foo',
             'bar',
@@ -48,13 +47,11 @@ final class SignatureTest extends \PHPUnit_Framework_TestCase
         $signature = new Signature(
             $php,
             $version,
-            $linting,
             $rules
         );
 
         $this->assertSame($php, $signature->getPhpVersion());
         $this->assertSame($version, $signature->getFixerVersion());
-        $this->assertSame($linting, $signature->isLintingEnabled());
         $this->assertSame($rules, $signature->getRules());
     }
 
@@ -62,7 +59,6 @@ final class SignatureTest extends \PHPUnit_Framework_TestCase
     {
         $php = PHP_VERSION;
         $version = '2.0';
-        $linting = false;
         $rules = array(
             'foo',
             'bar',
@@ -71,14 +67,12 @@ final class SignatureTest extends \PHPUnit_Framework_TestCase
         $signature = new Signature(
             $php,
             $version,
-            $linting,
             $rules
         );
 
         $anotherSignature = new Signature(
             $php,
-            $version,
-            !$linting,
+            $version.'.1',
             $rules
         );
 
@@ -89,7 +83,6 @@ final class SignatureTest extends \PHPUnit_Framework_TestCase
     {
         $php = PHP_VERSION;
         $version = '2.0';
-        $linting = false;
         $rules = array(
             'foo',
             'bar',
@@ -98,14 +91,12 @@ final class SignatureTest extends \PHPUnit_Framework_TestCase
         $signature = new Signature(
             $php,
             $version,
-            $linting,
             $rules
         );
 
         $anotherSignature = new Signature(
             $php,
             $version,
-            $linting,
             $rules
         );
 

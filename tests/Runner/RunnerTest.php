@@ -18,8 +18,8 @@ use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Fixer;
 use PhpCsFixer\Linter\Linter;
-use PhpCsFixer\Linter\NullLinter;
 use PhpCsFixer\Runner\Runner;
+use Prophecy\Argument;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -44,12 +44,23 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
             ->setUsingCache(false)
         ;
 
+        $linterProphecy = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
+        $linterProphecy
+            ->isAsync()
+            ->willReturn(false);
+        $linterProphecy
+            ->lintFile(Argument::type('string'))
+            ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+        $linterProphecy
+            ->lintSource(Argument::type('string'))
+            ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+
         $runner = new Runner(
             $config,
             new NullDiffer(),
             null,
             new ErrorsManager(),
-            new NullLinter(),
+            $linterProphecy->reveal(),
             true
         );
 
@@ -134,7 +145,7 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
             new NullDiffer(),
             null,
             new ErrorsManager(),
-            new NullLinter(),
+            $this->prophesize('PhpCsFixer\Linter\LinterInterface')->reveal(),
             true
         );
 

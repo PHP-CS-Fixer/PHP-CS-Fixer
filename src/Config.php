@@ -26,7 +26,6 @@ class Config implements ConfigInterface
     protected $dir;
     protected $customFixers = array();
     protected $usingCache = true;
-    protected $usingLinter = true;
     protected $hideProgress = false;
     protected $cacheFile = '.php_cs.cache';
     protected $phpExecutable;
@@ -48,13 +47,6 @@ class Config implements ConfigInterface
     public function setUsingCache($usingCache)
     {
         $this->usingCache = $usingCache;
-
-        return $this;
-    }
-
-    public function setUsingLinter($usingLinter)
-    {
-        $this->usingLinter = $usingLinter;
 
         return $this;
     }
@@ -143,11 +135,6 @@ class Config implements ConfigInterface
     public function usingCache()
     {
         return $this->usingCache;
-    }
-
-    public function usingLinter()
-    {
-        return $this->usingLinter;
     }
 
     /**

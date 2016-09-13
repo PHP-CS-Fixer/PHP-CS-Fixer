@@ -23,14 +23,6 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * {@inheritdoc}
-     */
-    public function isLintException($source)
-    {
-        return false !== strpos($source, '/*lintException*/');
-    }
-
-    /**
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
@@ -91,12 +83,12 @@ class '.$alias.' extends '.ucfirst($alias).'ing{
                 "<?php \\$alias(\$a);",
             );
             $cases[] = array(
-                "<?php /*lintException*/ \$ref = &$master(\$a);",
-                "<?php /*lintException*/ \$ref = &$alias(\$a);",
+                "<?php \$ref = &$master(\$a);",
+                "<?php \$ref = &$alias(\$a);",
             );
             $cases[] = array(
-                "<?php /*lintException*/ \$ref = &\\$master(\$a);",
-                "<?php /*lintException*/ \$ref = &\\$alias(\$a);",
+                "<?php \$ref = &\\$master(\$a);",
+                "<?php \$ref = &\\$alias(\$a);",
             );
             $cases[] = array(
                 "<?php $master

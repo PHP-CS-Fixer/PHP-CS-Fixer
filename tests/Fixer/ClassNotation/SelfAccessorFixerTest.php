@@ -22,14 +22,14 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class SelfAccessorFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideExamples
+     * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideExamples()
+    public function provideCases()
     {
         return array(
             array(
@@ -81,6 +81,21 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                 // PHP < 5.4 compatibility: "self" is not available in closures
                 '<?php class Foo { function bar() { function ($a = Foo::BAZ) { new Foo(); }; } }',
             ),
+        );
+    }
+
+    /**
+     * @dataProvider provide70Cases
+     * @requires PHP 7.0
+     */
+    public function testFix70($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provide70Cases()
+    {
+        return array(
             array(
                 '<?php class Foo { function bar() {
                     new class() { function baz() { new Foo(); } };
