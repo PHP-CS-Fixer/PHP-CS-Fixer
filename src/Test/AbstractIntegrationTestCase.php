@@ -68,7 +68,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        static::$linter = getenv('LINT_TEST_CASES') ? new Linter() : new NullLinter();
+        static::$linter = getenv('SKIP_LINT_TEST_CASES') ? new NullLinter() : new Linter();
 
         $tmpFile = static::getTempFile();
         self::$fileRemoval = new FileRemoval();
@@ -178,8 +178,6 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 
         $input = $case->hasInputCode() ? $input : $expected;
 
-        $this->assertNull($this->lintSource($input));
-
         $tmpFile = static::getTempFile();
 
         if (false === @file_put_contents($tmpFile, $input)) {
@@ -200,7 +198,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             new SebastianBergmannDiffer(),
             null,
             $errorsManager,
-            new NullLinter(),
+            static::$linter,
             false
         );
 
@@ -271,34 +269,6 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
                 ->setTitle($case->getTitle().' "--EXPECT-- part run"')
                 ->setInputCode(null)
         );
-    }
-
-    /**
-     * @param string $source
-     *
-     * @return string|null
-     */
-    protected function lintSource($source)
-    {
-        if ($this->isLintException($source)) {
-            return;
-        }
-
-        try {
-            static::$linter->lintSource($source)->check();
-        } catch (\Exception $e) {
-            return $e->getMessage()."\n\nSource:\n$source";
-        }
-    }
-
-    /**
-     * @param string $source
-     *
-     * @return bool
-     */
-    protected function isLintException($source)
-    {
-        return false;
     }
 
     /**

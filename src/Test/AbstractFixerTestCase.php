@@ -39,7 +39,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        static::$linter = getenv('LINT_TEST_CASES') ? new Linter() : new NullLinter();
+        static::$linter = getenv('SKIP_LINT_TEST_CASES') ? new NullLinter() : new Linter();
     }
 
     /**
