@@ -21,7 +21,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractTransformerTestCase extends \PHPUnit_Framework_TestCase
 {
-    protected function doTest($source, array $expectedTokens = array(), $observedKinds = array())
+    protected function doTest($source, array $expectedTokens = array(), array $observedKinds = array())
     {
         $tokens = Tokens::fromCode($source);
 
