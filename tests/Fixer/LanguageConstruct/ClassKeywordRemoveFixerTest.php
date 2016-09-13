@@ -192,7 +192,7 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
      * @dataProvider provideFixCases70
      * @requires PHP 7.0
      */
-    public function testFix0($expected, $input = null)
+    public function testFix70($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
