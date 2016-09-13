@@ -26,7 +26,15 @@ final class UseTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess($source, array $expectedTokens = array())
     {
-        $this->doTest($source, $expectedTokens);
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            array(
+                'T_USE',
+                'CT_USE_LAMBDA',
+                'CT_USE_TRAIT',
+            )
+        );
     }
 
     public function provideProcessCases()

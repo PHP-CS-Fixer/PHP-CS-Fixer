@@ -19,14 +19,41 @@ use PhpCsFixer\Test\AbstractTransformerTestCase;
  *
  * @internal
  */
-final class ArraySquareBraceTransformerTest extends AbstractTransformerTestCase
+final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 {
     /**
      * @dataProvider provideProcessCases
      */
     public function testProcess($source, array $expectedTokens = array())
     {
-        $this->doTest($source, $expectedTokens);
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            array(
+                'CT_ARRAY_SQUARE_BRACE_OPEN',
+                'CT_ARRAY_SQUARE_BRACE_CLOSE',
+                'CT_DESTRUCTURING_SQUARE_BRACE_OPEN',
+                'CT_DESTRUCTURING_SQUARE_BRACE_CLOSE',
+            )
+        );
+    }
+
+    /**
+     * @dataProvider provideProcessCases71
+     * @requires PHP 7.1
+     */
+    public function testProcess71($source, array $expectedTokens = array())
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            array(
+                'CT_ARRAY_SQUARE_BRACE_OPEN',
+                'CT_ARRAY_SQUARE_BRACE_CLOSE',
+                'CT_DESTRUCTURING_SQUARE_BRACE_OPEN',
+                'CT_DESTRUCTURING_SQUARE_BRACE_CLOSE',
+            )
+        );
     }
 
     public function provideProcessCases()
@@ -121,6 +148,28 @@ final class ArraySquareBraceTransformerTest extends AbstractTransformerTestCase
             ),
             array(
                 '<?php "foo"[1];',
+            ),
+        );
+    }
+
+    public function provideProcessCases71()
+    {
+        return array(
+            array(
+                '<?php [$a, $b, $c] = [1, 2, 3];',
+                array(
+                    1 => 'CT_DESTRUCTURING_SQUARE_BRACE_OPEN',
+                    9 => 'CT_DESTRUCTURING_SQUARE_BRACE_CLOSE',
+                    13 => 'CT_ARRAY_SQUARE_BRACE_OPEN',
+                    21 => 'CT_ARRAY_SQUARE_BRACE_CLOSE',
+                ),
+            ),
+            array(
+                '<?php $a = [1]; $a[] = 2; $a[1] = 3;',
+                array(
+                    5 => 'CT_ARRAY_SQUARE_BRACE_OPEN',
+                    7 => 'CT_ARRAY_SQUARE_BRACE_CLOSE',
+                ),
             ),
         );
     }

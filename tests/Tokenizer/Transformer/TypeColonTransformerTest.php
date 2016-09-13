@@ -15,15 +15,15 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 use PhpCsFixer\Test\AbstractTransformerTestCase;
 
 /**
- * @author Gregor Harlan <gharlan@web.de>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class ImportTransformerTest extends AbstractTransformerTestCase
+final class TypeColonTransformerTest extends AbstractTransformerTestCase
 {
     /**
      * @dataProvider provideProcessCases
-     * @requires PHP 5.6
+     * @requires PHP 7.0
      */
     public function testProcess($source, array $expectedTokens = array())
     {
@@ -31,10 +31,7 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             array(
-                'T_CONST',
-                'CT_CONST_IMPORT',
-                'T_FUNCTION',
-                'CT_FUNCTION_IMPORT',
+                'CT_TYPE_COLON',
             )
         );
     }
@@ -43,52 +40,41 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
     {
         return array(
             array(
-                '<?php const FOO = 1;',
+                '<?php function foo(): array { return []; }',
                 array(
-                    1 => 'T_CONST',
+                    6 => 'CT_TYPE_COLON',
                 ),
             ),
             array(
-                '<?php use Foo; const FOO = 1;',
+                '<?php function & foo(): array { return []; }',
                 array(
-                    6 => 'T_CONST',
+                    8 => 'CT_TYPE_COLON',
                 ),
             ),
             array(
-                '<?php class Foo { const BAR = 1; }',
+                '<?php interface F { public function foo(): array; }',
                 array(
-                    7 => 'T_CONST',
+                    14 => 'CT_TYPE_COLON',
                 ),
             ),
             array(
-                '<?php use const Foo\\BAR;',
+                '<?php $a=1; $f = function () : array {};',
                 array(
-                    3 => 'CT_CONST_IMPORT',
+                    15 => 'CT_TYPE_COLON',
                 ),
             ),
             array(
-                '<?php function foo() {}',
+                '<?php $a=1; $f = function () use($a) : array {};',
                 array(
-                    1 => 'T_FUNCTION',
+                    20 => 'CT_TYPE_COLON',
                 ),
             ),
             array(
-                '<?php $a = function () {};',
-                array(
-                    5 => 'T_FUNCTION',
-                ),
-            ),
-            array(
-                '<?php class Foo { function foo() {} }',
-                array(
-                    7 => 'T_FUNCTION',
-                ),
-            ),
-            array(
-                '<?php use function Foo\\bar;',
-                array(
-                    3 => 'CT_FUNCTION_IMPORT',
-                ),
+                '<?php
+                    $a = 1 ? [] : [];
+                    $b = 1 ? fnc() : [];
+                    $c = 1 ?: [];
+                ',
             ),
         );
     }

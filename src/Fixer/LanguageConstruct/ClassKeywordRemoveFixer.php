@@ -100,7 +100,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
 
             $import = '';
             while (($index = $tokens->getNextMeaningfulToken($index))) {
-                if ($tokens[$index]->equalsAny(array(';', '{')) || $tokens[$index]->isGivenKind(T_AS)) {
+                if ($tokens[$index]->equalsAny(array(';', array(CT_GROUP_IMPORT_BRACE_OPEN))) || $tokens[$index]->isGivenKind(T_AS)) {
                     break;
                 }
 
@@ -108,8 +108,8 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
             }
 
             // Imports group (PHP 7 spec)
-            if ($tokens[$index]->equals('{')) {
-                $groupEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+            if ($tokens[$index]->isGivenKind(CT_GROUP_IMPORT_BRACE_OPEN)) {
+                $groupEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $index);
                 $groupImports = array_map(
                     'trim',
                     explode(',', $tokens->generatePartialCode($index + 1, $groupEndIndex - 1))

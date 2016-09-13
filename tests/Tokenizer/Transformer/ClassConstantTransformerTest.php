@@ -27,7 +27,13 @@ final class ClassConstantTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess($source, array $expectedTokens = array())
     {
-        $this->doTest($source, $expectedTokens);
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            array(
+                'CT_CLASS_CONSTANT',
+            )
+        );
     }
 
     public function provideProcessCases()
@@ -47,11 +53,9 @@ final class ClassConstantTransformerTest extends AbstractTransformerTestCase
             ),
             array(
                 '<?php echo X::bar;',
-                array(),
             ),
             array(
                 '<?php class X{}',
-                array(),
             ),
         );
     }

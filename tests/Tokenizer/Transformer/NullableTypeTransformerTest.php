@@ -15,23 +15,23 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 use PhpCsFixer\Test\AbstractTransformerTestCase;
 
 /**
- * @author Sebastiaans Stok <s.stok@rollerscapes.net>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestCase
+final class NullableTypeTransformerTest extends AbstractTransformerTestCase
 {
     /**
      * @dataProvider provideProcessCases
+     * @requires PHP 7.1
      */
-    public function testProcess($source, array $expectedTokens)
+    public function testProcess($source, array $expectedTokens = array())
     {
         $this->doTest(
             $source,
             $expectedTokens,
             array(
-                'CT_BRACE_CLASS_INSTANTIATION_OPEN',
-                'CT_BRACE_CLASS_INSTANTIATION_CLOSE',
+                'CT_NULLABLE_TYPE',
             )
         );
     }
@@ -40,18 +40,25 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     {
         return array(
             array(
-                '<?php echo (new Process())->getOutput();',
+                '<?php function foo(?Barable $barA, ?Barable $barB): ?Fooable {}',
                 array(
-                    3 => 'CT_BRACE_CLASS_INSTANTIATION_OPEN',
-                    9 => 'CT_BRACE_CLASS_INSTANTIATION_CLOSE',
+                    5 => 'CT_NULLABLE_TYPE',
+                    11 => 'CT_NULLABLE_TYPE',
+                    18 => 'CT_NULLABLE_TYPE',
                 ),
             ),
             array(
-                '<?php echo (new Process())::getOutput();',
+                '<?php interface Fooable { function foo(): ?Fooable; }',
                 array(
-                    3 => 'CT_BRACE_CLASS_INSTANTIATION_OPEN',
-                    9 => 'CT_BRACE_CLASS_INSTANTIATION_CLOSE',
+                    14 => 'CT_NULLABLE_TYPE',
                 ),
+            ),
+            array(
+                '<?php
+                    $a = 1 ? "aaa" : "bbb";
+                    $b = 1 ? fnc() : [];
+                    $c = 1 ?: [];
+                ',
             ),
         );
     }
