@@ -333,16 +333,7 @@ EOF
             $stdErr->writeln(sprintf('Loaded config from "%s".', $configFile));
         }
 
-        $linter = new NullLinter();
-        if ($config->usingLinter()) {
-            try {
-                $linter = new Linter($config->getPhpExecutable());
-            } catch (UnavailableLinterException $e) {
-                if (null !== $stdErr && $configFile) {
-                    $stdErr->writeln('Unable to use linter, can not find PHP executable.');
-                }
-            }
-        }
+        $linter = new Linter($config->getPhpExecutable());
 
         if (null !== $stdErr && $config->usingCache()) {
             $cacheFile = $config->getCacheFile();
