@@ -77,7 +77,6 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
         $signature = new Signature(
             PHP_VERSION,
             '2.0',
-            true,
             array(
                 'foo',
                 'bar',
@@ -108,7 +107,6 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
         $cache = new Cache(new Signature(
             PHP_VERSION,
             '2.0',
-            true,
             array(
                 'foo',
                 'bar',
@@ -127,7 +125,6 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
         $cache = new Cache(new Signature(
             PHP_VERSION,
             '2.0',
-            true,
             array(
                 'foo',
                 'bar',
