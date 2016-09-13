@@ -30,13 +30,13 @@ your system:
 
 .. code-block:: bash
 
-    \$ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.12.0/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.12.1/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
 .. code-block:: bash
 
-    \$ curl -L https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.12.0/php-cs-fixer.phar -o php-cs-fixer
+    $ curl -L https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.12.1/php-cs-fixer.phar -o php-cs-fixer
 
 then:
 
@@ -61,7 +61,7 @@ you're good to go:
 
 .. code-block:: bash
 
-    export PATH="$PATH:$HOME/.composer/vendor/bin"
+    $ export PATH="$PATH:$HOME/.composer/vendor/bin"
 
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
@@ -121,8 +121,8 @@ problems as possible on a given file or files in a given directory and its subdi
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/dir
-    php php-cs-fixer.phar fix /path/to/file
+    $ php php-cs-fixer.phar fix /path/to/dir
+    $ php php-cs-fixer.phar fix /path/to/file
 
 The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml`` and ``junit``.
 
@@ -135,7 +135,7 @@ project:
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/project --rules=@PSR2
+    $ php php-cs-fixer.phar fix /path/to/project --rules=@PSR2
 
 By default, all PSR fixers are run.
 
@@ -144,20 +144,20 @@ apply (the fixer names must be separated by a comma):
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/dir --rules=unix_line_endings,full_opening_tag,no_tab_indentation
+    $ php php-cs-fixer.phar fix /path/to/dir --rules=unix_line_endings,full_opening_tag,no_tab_indentation
 
 You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
 using ``-name_of_fixer``:
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/dir --rules=-full_opening_tag,-no_tab_indentation
+    $ php php-cs-fixer.phar fix /path/to/dir --rules=-full_opening_tag,-no_tab_indentation
 
 When using combinations of exact and blacklist fixers, applying exact fixers along with above blacklisted results:
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/project --rules=@Symfony,-@PSR1,-return,strict
+    $ php php-cs-fixer.phar fix /path/to/project --rules=@Symfony,-@PSR1,-return,strict
 
 A combination of ``--dry-run`` and ``--diff`` will
 display a summary of proposed fixes, leaving your files unchanged.
@@ -170,7 +170,7 @@ automatically fix anything:
 
 .. code-block:: bash
 
-    cat foo.php | php php-cs-fixer.phar fix --diff -
+    $ cat foo.php | php php-cs-fixer.phar fix --diff -
 
 Choose from the list of available fixers:
 
@@ -833,7 +833,7 @@ fixed but without actually modifying them:
 
 .. code-block:: bash
 
-    php php-cs-fixer.phar fix /path/to/code --dry-run
+    $ php php-cs-fixer.phar fix /path/to/code --dry-run
 
 Instead of using command line options to customize the fixer, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory
@@ -983,7 +983,7 @@ scanned by the tool when run in the directory of your project. It is useful for
 projects that follow a well-known directory structures (like for Symfony
 projects for instance).
 
-.. _php-cs-fixer.phar: https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.12.0/php-cs-fixer.phar
+.. _php-cs-fixer.phar: https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.12.1/php-cs-fixer.phar
 .. _Atom:              https://github.com/Glavin001/atom-beautify
 .. _NetBeans:          http://plugins.netbeans.org/plugin/49042/php-cs-fixer
 .. _PhpStorm:          http://tzfrs.de/2015/01/automatically-format-code-to-match-psr-standards-with-phpstorm

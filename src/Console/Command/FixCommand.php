@@ -118,8 +118,8 @@ final class FixCommand extends Command
 The <info>%command.name%</info> command tries to fix as much coding standards
 problems as possible on a given file or files in a given directory and its subdirectories:
 
-    <info>php %command.full_name% /path/to/dir</info>
-    <info>php %command.full_name% /path/to/file</info>
+    <info>$ php %command.full_name% /path/to/dir</info>
+    <info>$ php %command.full_name% /path/to/file</info>
 
 The <comment>--format</comment> option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml`` and ``junit``.
 
@@ -130,23 +130,23 @@ The <comment>--verbose</comment> option will show the applied fixers. When using
 The <comment>--rules</comment> option limits the rules to apply on the
 project:
 
-    <info>php %command.full_name% /path/to/project --rules=@PSR2</info>
+    <info>$ php %command.full_name% /path/to/project --rules=@PSR2</info>
 
 By default, all PSR fixers are run.
 
 The <comment>--rules</comment> option lets you choose the exact fixers to
 apply (the fixer names must be separated by a comma):
 
-    <info>php %command.full_name% /path/to/dir --rules=unix_line_endings,full_opening_tag,no_tab_indentation</info>
+    <info>$ php %command.full_name% /path/to/dir --rules=unix_line_endings,full_opening_tag,no_tab_indentation</info>
 
 You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
 using <comment>-name_of_fixer</comment>:
 
-    <info>php %command.full_name% /path/to/dir --rules=-full_opening_tag,-no_tab_indentation</info>
+    <info>$ php %command.full_name% /path/to/dir --rules=-full_opening_tag,-no_tab_indentation</info>
 
 When using combinations of exact and blacklist fixers, applying exact fixers along with above blacklisted results:
 
-    <info>php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-return,strict</info>
+    <info>$ php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-return,strict</info>
 
 A combination of <comment>--dry-run</comment> and <comment>--diff</comment> will
 display a summary of proposed fixes, leaving your files unchanged.
@@ -157,7 +157,7 @@ Risky fixer is a fixer, which could change code behaviour. By default no risky f
 The command can also read from standard input, in which case it won't
 automatically fix anything:
 
-    <info>cat foo.php | php %command.full_name% --diff -</info>
+    <info>$ cat foo.php | php %command.full_name% --diff -</info>
 
 Choose from the list of available fixers:
 
@@ -166,7 +166,7 @@ Choose from the list of available fixers:
 The <comment>--dry-run</comment> option displays the files that need to be
 fixed but without actually modifying them:
 
-    <info>php %command.full_name% /path/to/code --dry-run</info>
+    <info>$ php %command.full_name% /path/to/code --dry-run</info>
 
 Instead of using command line options to customize the fixer, you can save the
 project configuration in a <comment>.php_cs.dist</comment> file in the root directory

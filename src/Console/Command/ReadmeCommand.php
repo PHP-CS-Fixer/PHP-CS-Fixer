@@ -72,13 +72,13 @@ your system:
 
 .. code-block:: bash
 
-    \$ wget %download.url% -O php-cs-fixer
+    $ wget %download.url% -O php-cs-fixer
 
 or with curl:
 
 .. code-block:: bash
 
-    \$ curl -L %download.url% -o php-cs-fixer
+    $ curl -L %download.url% -o php-cs-fixer
 
 then:
 
@@ -103,7 +103,7 @@ you're good to go:
 
 .. code-block:: bash
 
-    export PATH="$PATH:$HOME/.composer/vendor/bin"
+    $ export PATH="$PATH:$HOME/.composer/vendor/bin"
 
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
