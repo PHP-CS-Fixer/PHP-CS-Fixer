@@ -1,0 +1,16 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-07T06:44:41Z
+
+> To be consistent with the symfony docs all commands were prefixed with the dollar sign.
+
+and now:
+> The inline command help in symfony usually does not prefix commands with the dollar sign.
+
+our readme is used to autogenerate the website, `$` is nice.
+
+---------------------------------------------------------------------------
+
+by bcremer at 2016-09-07T06:59:00Z
+
+OK, fixed now.
