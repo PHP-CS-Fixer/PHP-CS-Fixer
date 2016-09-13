@@ -1,0 +1,80 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-04T10:14:25Z
+
+https://wiki.php.net/rfc/multiple-catch needs to be added
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-04T15:23:06Z
+
+done, please review
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-09-10T08:42:41Z
+
+What's the status on this please?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-09-10T08:45:06Z
+
+This PR looks ok to me. Probably merge this and then see what reports come in. :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-10T09:26:43Z
+
+Already marked as RTM.
+Would be great to finish some other PRs and merge this after that.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-09-10T09:36:43Z
+
+Or just merge this first since it's ready. :trollface:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-10T09:57:55Z
+
+easier to rebase this than fix upcoming code during 1.x->2.x merge.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-13T21:22:40Z
+
+~~deleted~~
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-09-13T21:24:08Z
+
+Board seems to be private. :P
+
+![image](https://cloud.githubusercontent.com/assets/2829600/18491949/c669b3d2-7a00-11e6-8d55-2a182847eec9.png)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-13T21:25:53Z
+
+no more comments like those should be made
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-09-13T21:26:41Z
+
+lol - i assumed you put that board there for us to see :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-13T21:27:33Z
+
+updated plugin of service integration did that from mine account
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-09-13T21:29:15Z
+
+Ah. :D
