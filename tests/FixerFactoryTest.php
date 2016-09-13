@@ -190,15 +190,13 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         }
 
         $cases = array(
-            array($fixers['binary_operator_spaces'], $fixers['align_double_arrow']), // tested also in: align_double_arrow,binary_operator_spaces.test
-            array($fixers['binary_operator_spaces'], $fixers['align_equals']), // tested also in: align_double_arrow,align_equals.test
             array($fixers['class_definition'], $fixers['no_trailing_whitespace']), // tested also in: class_definition,no_trailing_whitespace.test
             array($fixers['concat_without_spaces'], $fixers['concat_with_spaces']),
             array($fixers['elseif'], $fixers['braces']),
             array($fixers['method_separation'], $fixers['braces']),
             array($fixers['method_separation'], $fixers['no_tab_indentation']),
             array($fixers['no_leading_import_slash'], $fixers['ordered_imports']), // tested also in: no_leading_import_slash,ordered_imports.test
-            array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['align_double_arrow']), // tested also in: no_multiline_whitespace_around_double_arrow,align_double_arrow.test
+            array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['binary_operator_spaces']), // tested also in: no_multiline_whitespace_around_double_arrow,binary_operator_spaces.test
             array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['trailing_comma_in_multiline_array']),
             array($fixers['no_php4_constructor'], $fixers['ordered_class_elements']), // tested also in: no_php4_constructor,ordered_class_elements.test
             array($fixers['no_short_bool_cast'], $fixers['cast_spaces']), // tested also in: no_short_bool_cast,cast_spaces.test
@@ -278,7 +276,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['declare_strict_types'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: declare_strict_types,no_extra_consecutive_blank_lines.test
             array($fixers['declare_strict_types'], $fixers['no_whitespace_in_blank_line']), // tested also in: declare_strict_types,no_whitespace_in_blank_line.test
             array($fixers['declare_strict_types'], $fixers['single_blank_line_before_namespace']), // tested also in: declare_strict_types,single_blank_line_before_namespace.test
-            array($fixers['short_array_syntax'], $fixers['unalign_equals']), // tested also in: short_array_syntax,unalign_equals.test
+            array($fixers['short_array_syntax'], $fixers['binary_operator_spaces']), // tested also in: short_array_syntax,binary_operator_spaces.test
             array($fixers['short_array_syntax'], $fixers['ternary_operator_spaces']), // tested also in: short_array_syntax,ternary_operator_spaces.test
             array($fixers['class_keyword_remove'], $fixers['no_unused_imports']), // tested also in: class_keyword_remove,no_unused_imports.test
             array($fixers['no_blank_lines_after_phpdoc'], $fixers['single_blank_line_before_namespace']), // tested also in: no_blank_lines_after_phpdoc,single_blank_line_before_namespace.test

@@ -55,7 +55,7 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer
 
         foreach ($configuration as $name) {
             if (!in_array($name, self::$defaultConfiguration, true)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration option "%s".', $name));
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration option "%s". Expected any of "%s".', $name, implode('", "', self::$defaultConfiguration)));
             }
         }
 

@@ -53,7 +53,7 @@ final class RuleSet implements RuleSetInterface
         ),
         '@Symfony' => array(
             '@PSR2' => true,
-            'binary_operator_spaces' => true,
+            'binary_operator_spaces' => array('align_equals' => false, 'align_double_arrow' => false),
             'blank_line_after_opening_tag' => true,
             'blank_line_before_return' => true,
             'cast_spaces' => true,
@@ -118,8 +118,6 @@ final class RuleSet implements RuleSetInterface
             'ternary_operator_spaces' => true,
             'trailing_comma_in_multiline_array' => true,
             'trim_array_spaces' => true,
-            'unalign_double_arrow' => true,
-            'unalign_equals' => true,
             'unary_operator_spaces' => true,
             'whitespace_after_comma_in_array' => true,
         ),

@@ -19,7 +19,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @internal
  */
-abstract class AbstractAlignFixer extends AbstractFixer
+abstract class AbstractAlignFixerHelper
 {
     /**
      * @const Placeholder used as anchor for right alignment.
@@ -33,7 +33,35 @@ abstract class AbstractAlignFixer extends AbstractFixer
      *
      * @var int
      */
-    protected $deepestLevel;
+    protected $deepestLevel = 0;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        // This fixer works partially on Tokens and partially on string representation of code.
+        // During the process of fixing internal state of single Token may be affected by injecting ALIGNABLE_PLACEHOLDER to its content.
+        // The placeholder will be resolved by `replacePlaceholder` method by removing placeholder or changing it into spaces.
+        // That way of fixing the code causes disturbances in marking Token as changed - if code is perfectly valid then placeholder
+        // still be injected and removed, which will cause the `changed` flag to be set.
+        // To handle that unwanted behavior we work on clone of Tokens collection and then override original collection with fixed collection.
+        $tokensClone = clone $tokens;
+
+        $this->injectAlignmentPlaceholders($tokensClone, 0, count($tokens));
+        $content = $this->replacePlaceholder($tokensClone);
+
+        $tokens->setCode($content);
+    }
+
+    /**
+     * Inject into the text placeholders of candidates of vertical alignment.
+     *
+     * @param Tokens $tokens
+     * @param int    $startAt
+     * @param int    $endAt
+     */
+    abstract protected function injectAlignmentPlaceholders(Tokens $tokens, $startAt, $endAt);
 
     /**
      * Look for group of placeholders, and provide vertical alignment.
