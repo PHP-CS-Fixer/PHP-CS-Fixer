@@ -201,25 +201,11 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function lintSource($source)
     {
-        if ($this->isLintException($source)) {
-            return;
-        }
-
         try {
             static::$linter->lintSource($source)->check();
         } catch (\Exception $e) {
             return $e->getMessage()."\n\nSource:\n$source";
         }
-    }
-
-    /**
-     * @param string $source
-     *
-     * @return bool
-     */
-    protected function isLintException($source)
-    {
-        return false;
     }
 
     private function assertTokens(Tokens $expectedTokens, Tokens $inputTokens)
