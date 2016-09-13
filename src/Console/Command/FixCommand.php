@@ -146,7 +146,7 @@ using <comment>-name_of_fixer</comment>:
 
 When using combinations of exact and blacklist fixers, applying exact fixers along with above blacklisted results:
 
-    <info>$ php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-return,strict</info>
+    <info>$ php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_return,strict_comparison</info>
 
 A combination of <comment>--dry-run</comment> and <comment>--diff</comment> will
 display a summary of proposed fixes, leaving your files unchanged.
