@@ -694,7 +694,7 @@ use const some\a\{ConstA, ConstB, ConstC};
 
     /**
      * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage [ordered_use] $configuration["typesOrder"] should be array and should be composed of all import types in desired order.
+     * @expectedExceptionMessage [ordered_use] Unknown type "5" in type order configuration, expected all types ["1","2","3"] to be included in desired order.
      */
     public function testInvalidOrderType()
     {
