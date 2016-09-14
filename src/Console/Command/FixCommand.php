@@ -24,8 +24,6 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
-use PhpCsFixer\Linter\NullLinter;
-use PhpCsFixer\Linter\UnavailableLinterException;
 use PhpCsFixer\Report\ReporterFactory;
 use PhpCsFixer\Report\ReportSummary;
 use PhpCsFixer\RuleSet;
