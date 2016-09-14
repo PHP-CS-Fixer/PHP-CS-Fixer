@@ -642,6 +642,12 @@ Choose from the list of available fixers:
                         with at least one whitespace
                         around.
 
+* **control_structures_parentheses_whitespaces** [contrib]
+                        Add whitespace around
+                        parentheses in declaration of
+                        structure elements like if,
+                        for, etc.
+
 * **echo_to_print** [contrib]
                         Converts echo language
                         construct to print if
