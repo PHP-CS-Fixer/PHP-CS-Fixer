@@ -63,6 +63,11 @@ class OrderedUseFixer extends AbstractFixer
     private static $supportedSortAlgorithms = array(self::SORT_ALPHA, self::SORT_LENGTH);
 
     /**
+     * Configuration settings for sort algorithm and sor types.
+     *
+     * array['sortAlgorithm']   string defines sort algorithm.
+     * array['typesOrder']      int[]|null defines import types order or null to sort only by algorithm.
+     *
      * @param array $configuration
      */
     public static function configure(array $configuration = null)
