@@ -157,7 +157,7 @@ When using combinations of exact and blacklist fixers, applying exact fixers alo
 
 .. code-block:: bash
 
-    $ php php-cs-fixer.phar fix /path/to/project --rules=@Symfony,-@PSR1,-return,strict
+    $ php php-cs-fixer.phar fix /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_return,strict_comparison
 
 A combination of ``--dry-run`` and ``--diff`` will
 display a summary of proposed fixes, leaving your files unchanged.
