@@ -31,21 +31,8 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestBase
 
     public function provideCases()
     {
-        $attributesAndMethodsOriginal = '
-public $v1;
-protected $v2;
-private $v3;
-public static $v4;
-protected static $v5;
-private static $v6;
-public function f1(){}
-protected function f2(){}
-private function f3(){}
-public static function f4(){}
-protected static function f5(){}
-private static function f6(){}
-';
-        $attributesAndMethodsFixed = str_replace('protected', 'private', $attributesAndMethodsOriginal);
+        $attributesAndMethodsOriginal = $this->getAttributesAndMethods(true);
+        $attributesAndMethodsFixed = $this->getAttributesAndMethods(false);
 
         return array(
             'final-extends' => array(
@@ -93,5 +80,74 @@ private static function f6(){}
                 "<?php final class MyFirstClass { $attributesAndMethodsOriginal } class MySecondClass { $attributesAndMethodsOriginal } final class MyThirdClass { $attributesAndMethodsOriginal } ",
             ),
         );
+    }
+
+    /**
+     * @dataProvider provide70Cases
+     * @requires PHP 7.0
+     */
+    public function test70Fix($expected, $input = null)
+    {
+        $this->makeTest($expected, $input);
+    }
+
+    public function provide70Cases()
+    {
+        $attributesAndMethodsOriginal = $this->getAttributesAndMethods(true);
+        $attributesAndMethodsFixed = $this->getAttributesAndMethods(false);
+
+        return array(
+            'anonymous-class-inside' => array(
+                "<?php
+final class Foo
+{
+    $attributesAndMethodsFixed
+
+    private function bar()
+    {
+        new class {
+            $attributesAndMethodsOriginal
+        };
+    }
+}
+",
+                "<?php
+final class Foo
+{
+    $attributesAndMethodsOriginal
+
+    protected function bar()
+    {
+        new class {
+            $attributesAndMethodsOriginal
+        };
+    }
+}
+",
+            ),
+        );
+    }
+
+    private function getAttributesAndMethods($original)
+    {
+        $attributesAndMethodsOriginal = '
+public $v1;
+protected $v2;
+private $v3;
+public static $v4;
+protected static $v5;
+private static $v6;
+public function f1(){}
+protected function f2(){}
+private function f3(){}
+public static function f4(){}
+protected static function f5(){}
+private static function f6(){}
+';
+        if ($original) {
+            return $attributesAndMethodsOriginal;
+        }
+
+        return str_replace('protected', 'private', $attributesAndMethodsOriginal);
     }
 }
