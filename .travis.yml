@@ -31,7 +31,7 @@ matrix:
           group: edge
 
 install:
-    curl -L https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.12.1/php-cs-fixer.phar -o php-cs-fixer.phar
+    curl -L https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.12.0/php-cs-fixer.phar -o php-cs-fixer.phar
 
 script:
     php php-cs-fixer.phar --dry-run -v --config-file=.php_cs fix
