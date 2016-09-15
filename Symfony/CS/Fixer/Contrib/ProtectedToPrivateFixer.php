@@ -92,7 +92,7 @@ final class ProtectedToPrivateFixer extends AbstractFixer
     private function skipClass(Tokens $tokens, $classIndex, $classOpenIndex, $classCloseIndex)
     {
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($classIndex)];
-        if ($prevToken->isGivenKind(T_ABSTRACT) || !$prevToken->isGivenKind(T_FINAL)) {
+        if (!$prevToken->isGivenKind(T_FINAL)) {
             return true;
         }
 
