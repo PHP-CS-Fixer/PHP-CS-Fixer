@@ -63,14 +63,16 @@ final class ProtectedToPrivateFixer extends AbstractFixer
     private function fixClass(Tokens $tokens, $classIndex, $classOpenIndex, $classCloseIndex)
     {
         for ($index = $classOpenIndex + 1; $index < $classCloseIndex; ++$index) {
-            $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
-            $prevToken = $tokens[$prevTokenIndex];
-
-            if (!$prevToken->isGivenKind(T_PROTECTED)) {
+            if ($tokens[$index]->equals('{')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
                 continue;
             }
 
-            $tokens->overrideAt($prevTokenIndex, array(T_PRIVATE, 'private'));
+            if (!$tokens[$index]->isGivenKind(T_PROTECTED)) {
+                continue;
+            }
+
+            $tokens->overrideAt($index, array(T_PRIVATE, 'private'));
         }
     }
 
@@ -91,8 +93,8 @@ final class ProtectedToPrivateFixer extends AbstractFixer
             return true;
         }
 
-        for ($i = $classIndex; $i < $classOpenIndex; ++$i) {
-            if ($tokens[$i]->isGivenKind(T_EXTENDS)) {
+        for ($index = $classIndex; $index < $classOpenIndex; ++$index) {
+            if ($tokens[$index]->isGivenKind(T_EXTENDS)) {
                 return true;
             }
         }
