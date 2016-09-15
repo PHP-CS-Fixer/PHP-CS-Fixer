@@ -84,6 +84,7 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestBase
 
     /**
      * @dataProvider provide70Cases
+     * @requires PHP 7.0
      */
     public function test70Fix($expected, $input = null)
     {
