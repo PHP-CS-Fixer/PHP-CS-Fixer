@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: empty_return,no_useless_return,
+Integration of fixers: empty_return,no_useless_return.
 --CONFIG--
 level=none
 fixers=empty_return,no_useless_return

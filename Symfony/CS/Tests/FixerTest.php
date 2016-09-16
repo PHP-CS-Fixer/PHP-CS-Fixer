@@ -174,7 +174,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['remove_leading_slash_use'], $fixers['ordered_use']), // tested also in: remove_leading_slash_use,ordered_use.test
             array($fixers['remove_lines_between_uses'], $fixers['ordered_use']),
             array($fixers['unused_use'], $fixers['remove_leading_slash_use']),
-            array($fixers['multiple_use'], $fixers['remove_leading_slash_use']),
+            array($fixers['multiple_use'], $fixers['remove_leading_slash_use']), // tested also in: multiple_use,remove_leading_slash_use.test
             array($fixers['concat_without_spaces'], $fixers['concat_with_spaces']),
             array($fixers['elseif'], $fixers['braces']),
             array($fixers['duplicate_semicolon'], $fixers['braces']),
@@ -252,6 +252,10 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['short_array_syntax'], $fixers['unalign_equals']), // tested also in: short_array_syntax,unalign_equals.test
             array($fixers['short_array_syntax'], $fixers['ternary_spaces']), // tested also in: short_array_syntax,ternary_spaces.test
             array($fixers['no_empty_lines_after_phpdocs'], $fixers['single_blank_line_before_namespace']), // tested also in: no_empty_lines_after_phpdocs,single_blank_line_before_namespace.test
+            array($fixers['multiple_use'], $fixers['ordered_use']), // tested also in: multiple_use,ordered_use.test
+            array($fixers['multiple_use'], $fixers['spaces_before_semicolon']), // tested also in: multiple_use,spaces_before_semicolon.test
+            array($fixers['multiple_use'], $fixers['spaces_after_semicolon']), // tested also in: multiple_use,spaces_after_semicolon.test
+            array($fixers['multiple_use'], $fixers['multiline_spaces_before_semicolon']), // multiple_use,multiline_spaces_before_semicolon.test
         );
 
         $docFixerNames = array_filter(
