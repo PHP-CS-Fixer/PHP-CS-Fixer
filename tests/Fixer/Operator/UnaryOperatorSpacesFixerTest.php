@@ -96,20 +96,20 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideCasesLT70
-     * @requires PHP <7.0
+     * @dataProvider provideCasesLT54
+     * @requires PHP <5.4
      */
-    public function testFixLT70($expected, $input = null)
+    public function testFixLT54($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCasesLT70()
+    public function provideCasesLT54()
     {
         return array(
             array(
-                '<?php foo(+$a, -2,-$b, &$c);',
-                '<?php foo(+ $a, - 2,- $b, & $c);',
+                '<?php function foo() {} foo(+$a, -2,-$b, &$c);',
+                '<?php function foo() {} foo(+ $a, - 2,- $b, & $c);',
             ),
         );
     }
@@ -146,16 +146,5 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
                 '<?php foo($a, ... $b);',
             ),
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function isLintException($source)
-    {
-        return in_array($source, array(
-            '<?php foo(+ $a, - 2,- $b, & $c);',
-            '<?php foo(+$a, -2,-$b, &$c);',
-        ), true);
     }
 }

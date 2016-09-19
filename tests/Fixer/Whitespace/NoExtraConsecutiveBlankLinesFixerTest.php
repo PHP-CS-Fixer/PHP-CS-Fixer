@@ -660,9 +660,6 @@ $a = new Qux();',
                 "<?php\n\n\$a = function() use (\$b) { while(3<1)break; \$c = \$b[1]; while(\$b<1)continue; if (true) throw \$e; return 1; };\n\n",
             ),
             array(
-                "<?php\n\n\$a = new class { public function a () { while(4<1)break; while(3<1)continue; if (true) throw \$e; return 1; }};\n\n",
-            ),
-            array(
                 "<?php throw new \\Exception('do not import');\n",
                 "<?php throw new \\Exception('do not import');\n\n",
             ),
@@ -671,6 +668,35 @@ $a = new Qux();',
             ),
             array(
                 "<?php\n\n\$a->{'Test'};\nfunction test(){}\n",
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideOneAndInLine70Cases
+     * @requires PHP 7.0
+     */
+    public function testOneOrInLine70Cases($expected, $input = null)
+    {
+        $this->getFixer()->configure(array(
+                'break',
+                'continue',
+                'return',
+                'throw',
+                'curly_brace_block',
+                'square_brace_block',
+                'parenthesis_brace_block',
+            )
+        );
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideOneAndInLine70Cases()
+    {
+        return array(
+            array(
+                "<?php\n\n\$a = new class { public function a () { while(4<1)break; while(3<1)continue; if (true) throw \$e; return 1; }};\n\n",
             ),
         );
     }

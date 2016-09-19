@@ -126,9 +126,6 @@ foo () {}',
         public function setConfig(ConfigInterface $config);
     }',
             ),
-            array(
-                '<?php use function Foo\bar; bar ( 1 );',
-            ),
             // do not remove multiline space before { when end of previous line is a comment
             array(
                 '<?php
@@ -157,6 +154,7 @@ function foo() /* bar */
     public function provide70Cases()
     {
         return array(
+            array('<?php use function Foo\bar; bar ( 1 );'),
             array('<?php use function some\test\{fn_a, fn_b, fn_c};'),
             array('<?php use function some\test\{fn_a, fn_b, fn_c} ?>'),
         );

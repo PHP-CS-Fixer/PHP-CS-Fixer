@@ -21,6 +21,7 @@ use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tokenizer\Transformers;
+use Prophecy\Argument;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -90,7 +91,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->linter = getenv('SKIP_LINT_TEST_CASES') ? $this->getNullLinter() : new Linter();
+        $this->linter = $this->getLinter();
     }
 
     /**
@@ -291,17 +292,27 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @return LinterInterface
      */
-    private function getNullLinter()
+    private function getLinter()
     {
         static $linter = null;
 
         if (null === $linter) {
-            $linterProphecy = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
-            $linterProphecy
-                ->lintSource(Argument::type('string'))
-                ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+            if (getenv('SKIP_LINT_TEST_CASES')) {
+                $linterProphecy = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
+                $linterProphecy
+                    ->lintSource(Argument::type('string'))
+                    ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+                $linterProphecy
+                    ->lintFile(Argument::type('string'))
+                    ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+                $linterProphecy
+                    ->isAsync()
+                    ->willReturn(false);
 
-            $linter = $linterProphecy->reveal();
+                $linter = $linterProphecy->reveal();
+            } else {
+                $linter = new Linter();
+            }
         }
 
         return $linter;
