@@ -16,11 +16,11 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
-use PhpCsFixer\Linter\NullLinter;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
+use Prophecy\Argument;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -30,16 +30,16 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @var LinterInterface
      */
-    protected static $linter;
+    protected $linter;
 
     /**
      * @var FixerInterface|null
      */
     private $fixer;
 
-    public static function setUpBeforeClass()
+    public function setUp()
     {
-        static::$linter = getenv('SKIP_LINT_TEST_CASES') ? new NullLinter() : new Linter();
+        $this->linter = getenv('SKIP_LINT_TEST_CASES') ? $this->getNullLinter() : new Linter();
     }
 
     /**
@@ -202,7 +202,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
     protected function lintSource($source)
     {
         try {
-            static::$linter->lintSource($source)->check();
+            $this->linter->lintSource($source)->check();
         } catch (\Exception $e) {
             return $e->getMessage()."\n\nSource:\n$source";
         }
@@ -229,5 +229,24 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
                 sprintf('The token kind %s must be found in fixed tokens collection.', $tokenKind)
             );
         }
+    }
+
+    /**
+     * @return LinterInterface
+     */
+    private function getNullLinter()
+    {
+        static $linter = null;
+
+        if (null === $linter) {
+            $linterProphecy = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
+            $linterProphecy
+                ->lintSource(Argument::type('string'))
+                ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+
+            $linter = $linterProphecy->reveal();
+        }
+
+        return $linter;
     }
 }
