@@ -22,14 +22,6 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * {@inheritdoc}
-     */
-    public function isLintException($source)
-    {
-        return false !== strpos($source, 'public const');
-    }
-
-    /**
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)

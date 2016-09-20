@@ -75,7 +75,6 @@ final class Cache implements CacheInterface
         return json_encode(array(
             'php' => $this->getSignature()->getPhpVersion(),
             'version' => $this->getSignature()->getFixerVersion(),
-            'linting' => $this->getSignature()->isLintingEnabled(),
             'rules' => $this->getSignature()->getRules(),
             'hashes' => $this->hashes,
         ));
@@ -102,7 +101,6 @@ final class Cache implements CacheInterface
         $requiredKeys = array(
             'php',
             'version',
-            'linting',
             'rules',
             'hashes',
         );
@@ -119,7 +117,6 @@ final class Cache implements CacheInterface
         $signature = new Signature(
             $data['php'],
             $data['version'],
-            $data['linting'],
             $data['rules']
         );
 

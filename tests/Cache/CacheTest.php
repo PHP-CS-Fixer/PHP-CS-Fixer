@@ -113,9 +113,9 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider providerMissingData
      *
-     * @param mixed $data
+     * @param array $data
      */
-    public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKey($data)
+    public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKey(array $data)
     {
         $this->setExpectedException('InvalidArgumentException');
 
@@ -132,7 +132,6 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
         $data = array(
             'php' => '5.5.5',
             'version' => '2.0',
-            'linting' => false,
             'rules' => array(
                 'foo' => true,
                 'bar' => false,
@@ -154,7 +153,6 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
         $signature = new Signature(
             PHP_VERSION,
             '2.0',
-            true,
             array(
                 'foo',
                 'bar',

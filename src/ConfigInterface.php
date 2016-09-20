@@ -14,6 +14,7 @@ namespace PhpCsFixer;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 interface ConfigInterface
 {
@@ -83,13 +84,6 @@ interface ConfigInterface
      * @return bool
      */
     public function usingCache();
-
-    /**
-     * Returns true if linter should be enabled.
-     *
-     * @return bool
-     */
-    public function usingLinter();
 
     /**
      * Sets the path to the cache file.

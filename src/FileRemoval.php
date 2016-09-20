@@ -34,6 +34,11 @@ final class FileRemoval
         register_shutdown_function(array($this, 'clean'));
     }
 
+    public function __destruct()
+    {
+        $this->clean();
+    }
+
     /**
      * Adds a file to be removed.
      *

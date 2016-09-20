@@ -353,42 +353,6 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     namespace A\B\C;;use D;
                 ',
             ),
-            array(
-                '<?php
-                    namespace A\B\C {
-
-                    }
-                ',
-                '<?php
-                    namespace A\B\C {
-
-                    };
-                ',
-            ),
-            array(
-                '<?php
-                    namespace A{
-
-                    }
-                ',
-                '<?php
-                    namespace A{
-
-                    };
-                ',
-            ),
-            array(
-                '<?php
-                    namespace{
-
-                    }
-                ',
-                '<?php
-                    namespace{
-
-                    };
-                ',
-            ),
         );
     }
 
@@ -504,6 +468,42 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
             array(
                 '<?php {{}}',
                 '<?php {{}};',
+            ),
+            array(
+                '<?php
+                    namespace A\B\C {
+
+                    }
+                ',
+                '<?php
+                    namespace A\B\C {
+
+                    };
+                ',
+            ),
+            array(
+                '<?php
+                    namespace A{
+
+                    }
+                ',
+                '<?php
+                    namespace A{
+
+                    };
+                ',
+            ),
+            array(
+                '<?php
+                    namespace{
+
+                    }
+                ',
+                '<?php
+                    namespace{
+
+                    };
+                ',
             ),
         );
     }

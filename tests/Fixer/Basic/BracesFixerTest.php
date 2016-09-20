@@ -1057,6 +1057,21 @@ function foo()
         echo 1;
     };',
             ),
+        );
+    }
+
+    /**
+     * @dataProvider provideFixCommentBeforeBrace70Cases
+     * @requires PHP 7.0
+     */
+    public function testFixCommentBeforeBrace70($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixCommentBeforeBrace70Cases()
+    {
+        return array(
             array(
                 '<?php
     $foo = new class ($a) extends Foo implements Bar { // foo
@@ -1257,12 +1272,6 @@ class Foo
             ),
             array(
                 '<?php
-    use function Foo\bar;
-    if (true) {
-    }',
-            ),
-            array(
-                '<?php
     $fnc = function ($a, $b) { // random comment
         return 0;
     };',
@@ -1441,6 +1450,27 @@ declare   (   ticks   =   1   )   {
     }
     finally     {
         echo "finish!";
+    }',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provide56Cases
+     * @requires PHP 5.6
+     */
+    public function test56($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provide56Cases()
+    {
+        return array(
+            array(
+                '<?php
+    use function Foo\bar;
+    if (true) {
     }',
             ),
         );

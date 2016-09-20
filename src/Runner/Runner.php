@@ -142,7 +142,6 @@ final class Runner
                 new Signature(
                     PHP_VERSION,
                     ToolInfo::getVersion(),
-                    $config->usingLinter(),
                     $config->getRules()
                 ),
                 $isDryRun
