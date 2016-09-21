@@ -25,23 +25,22 @@ final class AbstractFunctionReferenceFixerTest extends \PHPUnit_Framework_TestCa
     /**
      * @dataProvider provideCases
      */
-    public function testCountArguments($code, $openIndex, $closeIndex, $argumentsCount)
+    public function testCountArguments($code, $openIndex, $closeIndex, $argumentsCount, $arguments)
     {
+        $tokens = Tokens::fromCode($code);
         $mock = new AccessibleObject($this->getMockForAbstractClass('\\PhpCsFixer\\AbstractFunctionReferenceFixer'));
 
-        $this->assertSame(
-            $argumentsCount,
-            $mock->countArguments(Tokens::fromCode($code), $openIndex, $closeIndex)
-        );
+        $this->assertSame($argumentsCount, $mock->countArguments($tokens, $openIndex, $closeIndex));
+        $this->assertSame($arguments, $mock->getArguments($tokens, $openIndex, $closeIndex));
     }
 
     public function provideCases()
     {
         return array(
-            array('<?php fnc();', 2, 3, 0),
-            array('<?php fnc($a);', 2, 4, 1),
-            array('<?php fnc($a, $b);', 2, 7, 2),
-            array('<?php fnc($a, $b = array(1,2), $c = 3);', 2, 23, 3),
+            array('<?php fnc();', 2, 3, 0, array()),
+            array('<?php fnc($a);', 2, 4, 1, array(3 => 3)),
+            array('<?php fnc($a, $b);', 2, 7, 2, array(3 => 3, 5 => 6)),
+            array('<?php fnc($a, $b = array(1,2), $c = 3);', 2, 23, 3, array(3 => 3, 5 => 15, 17 => 22)),
         );
     }
 }

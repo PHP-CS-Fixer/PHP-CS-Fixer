@@ -32,6 +32,20 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
     }
 
     /**
+     * Count amount of parameters in a function/method reference.
+     *
+     * @param Tokens $tokens
+     * @param int    $openParenthesis
+     * @param int    $closeParenthesis
+     *
+     * @return int
+     */
+    protected function countArguments(Tokens $tokens, $openParenthesis, $closeParenthesis)
+    {
+        return count($this->getArguments($tokens, $openParenthesis, $closeParenthesis));
+    }
+
+    /**
      * Looks up Tokens sequence for suitable candidates and delivers boundaries information,
      * which can be supplied by other methods in this abstract class.
      *
@@ -52,7 +66,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
         $matches = $tokens->findSequence($candidateSequence, $start, $end, false);
         if (null === $matches) {
             // not found, simply return without further attempts
-            return;
+            return null;
         }
 
         // translate results for humans
@@ -84,23 +98,30 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
     }
 
     /**
-     * Count amount of parameters in a function/method reference.
+     * Returns start and end token indexes of arguments.
+     *
+     * Return an array which each index being the first token af an
+     * argument and the value the last. Including non-function tokens
+     * such as comments and white space tokens, but without the separation
+     * tokens like '(', ',' and ')'.
      *
      * @param Tokens $tokens
      * @param int    $openParenthesis
      * @param int    $closeParenthesis
      *
-     * @return int
+     * @return array<int, int>
      */
-    protected function countArguments(Tokens $tokens, $openParenthesis, $closeParenthesis)
+    protected function getArguments(Tokens $tokens, $openParenthesis, $closeParenthesis)
     {
+        $arguments = array();
         $firstSensibleToken = $tokens->getNextMeaningfulToken($openParenthesis);
         if ($tokens[$firstSensibleToken]->equals(')')) {
-            return 0;
+            return $arguments;
         }
 
-        $argumentsCount = 1;
-        for ($paramContentIndex = $openParenthesis + 1; $paramContentIndex < $closeParenthesis; ++$paramContentIndex) {
+        $paramContentIndex = $openParenthesis + 1;
+        $argumentsStart = $paramContentIndex;
+        for (; $paramContentIndex < $closeParenthesis; ++$paramContentIndex) {
             $token = $tokens[$paramContentIndex];
 
             // skip nested (), [], {} constructs
@@ -113,10 +134,13 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
 
             // if comma matched, increase arguments counter
             if ($token->equals(',')) {
-                ++$argumentsCount;
+                $arguments[$argumentsStart] = $paramContentIndex - 1;
+                $argumentsStart = $paramContentIndex + 1;
             }
         }
 
-        return $argumentsCount;
+        $arguments[$argumentsStart] = $paramContentIndex - 1;
+
+        return $arguments;
     }
 }

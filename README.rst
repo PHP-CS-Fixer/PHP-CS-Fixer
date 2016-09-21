@@ -501,6 +501,9 @@ Choose from the list of available fixers:
 * **phpdoc_var_without_name** [@Symfony]
    @var and @type annotations should not contain the variable name.
 
+* **pow_to_exponentiation**
+   Converts 'pow()' to '**'. (Risky fixer!)
+
 * **pre_increment** [@Symfony]
    Pre incrementation/decrementation should be used if possible.
 

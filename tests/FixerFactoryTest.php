@@ -226,6 +226,11 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['phpdoc_separation'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_summary'], $fixers['phpdoc_trim']),
             array($fixers['phpdoc_var_without_name'], $fixers['phpdoc_trim']),
+            array($fixers['pow_to_exponentiation'], $fixers['binary_operator_spaces']), // tested also in: pow_to_exponentiation,binary_operator_spaces.test
+            array($fixers['pow_to_exponentiation'], $fixers['method_argument_space']), // no priority issue; for speed only
+            array($fixers['pow_to_exponentiation'], $fixers['native_function_casing']), // no priority issue; for speed only
+            array($fixers['pow_to_exponentiation'], $fixers['no_spaces_after_function_name']), // no priority issue; for speed only
+            array($fixers['pow_to_exponentiation'], $fixers['no_spaces_inside_parenthesis']), // no priority issue; for speed only
             array($fixers['single_import_per_statement'], $fixers['no_leading_import_slash']),
             array($fixers['single_import_per_statement'], $fixers['no_unused_imports']), // tested also in: single_import_per_statement,no_unused_imports.test
             array($fixers['unary_operator_spaces'], $fixers['not_operator_with_space']),

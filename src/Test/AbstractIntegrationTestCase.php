@@ -169,7 +169,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
         }
 
         if (version_compare(PHP_VERSION, $case->getRequirement('php')) < 0) {
-            $this->markTestSkipped(sprintf('PHP %s (or later) is required.', $case->getRequirement('php')));
+            $this->markTestSkipped(sprintf('PHP %s (or later) is required for "%s".', $case->getRequirement('php'), $case->getFileName()));
         }
 
         $input = $case->getInputCode();
