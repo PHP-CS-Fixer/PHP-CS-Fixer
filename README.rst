@@ -749,6 +749,10 @@ Choose from the list of available fixers:
                         @var should always be written
                         as @type.
 
+* **remove_var_dump** [contrib]
+                        Removes var_dump/dump
+                        occurrences.
+
 * **short_array_syntax** [contrib]
                         PHP arrays should use the PHP
                         5.4 short-syntax.
