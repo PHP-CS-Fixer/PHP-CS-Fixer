@@ -102,6 +102,12 @@ $a = $b   [0]    ;',
             ),
             array(
                 '<?php
+$a = array($b[0]     ,   $b[0]  );',
+                '<?php
+$a = array($b      [0]     ,   $b [0]  );',
+            ),
+            array(
+                '<?php
 $withComments[0] // here is a comment
     [1] // and here is another
     [2][3] = 4;',
