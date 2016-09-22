@@ -31,11 +31,22 @@ final class RemoveVarDumpFixerTest extends AbstractFixerTestBase
     public function provideFixCases()
     {
         return array(
-//            array('<?php echo "This should not be changed";'),
+            array('<?php echo "This should not be changed";'),
             array(
                 '<?php echo "This should be changed";',
                 '<?php echo "This should be changed"; var_dump(true);'
-            )
+            ),
+            array(
+                '<?php 
+                $a = 1;
+                $b = 1;',
+
+                '<?php 
+                $a = 1;
+                var_dump($a);
+                $b = 1;
+                dump($b);',
+            ),
         );
     }
 }

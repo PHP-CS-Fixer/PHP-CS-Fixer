@@ -32,12 +32,9 @@ final class RemoveVarDumpFixer extends AbstractFixer
         $end = $tokens->count() - 1;
 
         foreach (['dump', 'var_dump'] as $function) {
-            // the sequence is the function name, followed by "(" and a quoted string
-            $seq = array(array(T_STRING, $function), '(');
-
             $currIndex = 0;
             while (null !== $currIndex) {
-                $match = $tokens->findSequence($seq, $currIndex, $end, false);
+                $match = $tokens->findSequence(array(array(T_STRING, $function), '('), $currIndex, $end, false);
 
                 // did we find a match?
                 if (null === $match) {
@@ -45,10 +42,9 @@ final class RemoveVarDumpFixer extends AbstractFixer
                 }
 
                 $match = array_keys($match);
-                $currIndex = $match[1];
 
-                $funcStart = $tokens->getPrevTokenOfKind($currIndex, array(';'));
-                $funcEnd = $tokens->getNextTokenOfKind($currIndex, array(';'));
+                $funcStart = $tokens->getPrevTokenOfKind($match[1], array(';'));
+                $funcEnd = $tokens->getNextTokenOfKind($match[1], array(';'));
                 for ($i = $funcStart + 1; $i <= $funcEnd; ++$i) {
                     $tokens[$i]->clear();
                 }
