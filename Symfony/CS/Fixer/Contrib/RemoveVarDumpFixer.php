@@ -40,16 +40,15 @@ final class RemoveVarDumpFixer extends AbstractFixer
         foreach ($this->functions as $function) {
             $currIndex = 0;
             while (null !== $currIndex) {
-                $match = $tokens->findSequence(array(array(T_STRING, $function), '('), $currIndex, $end, false);
+                $matches = $tokens->findSequence(array(array(T_STRING, $function), '('), $currIndex, $end, false);
 
-                // did we find a match?
-                if (null === $match) {
+                if (null === $matches) {
                     break;
                 }
+                $match = array_keys($matches);
 
-                $match = array_keys($match);
+                $funcStart = $tokens->getPrevNonWhitespace($match[0]);
 
-                $funcStart = $tokens->getPrevTokenOfKind($match[1], array(';'));
                 $funcEnd = $tokens->getNextTokenOfKind($match[1], array(';'));
                 for ($i = $funcStart + 1; $i <= $funcEnd; ++$i) {
                     $tokens[$i]->clear();

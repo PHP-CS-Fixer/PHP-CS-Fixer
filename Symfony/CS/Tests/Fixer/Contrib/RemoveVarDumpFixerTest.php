@@ -38,15 +38,37 @@ final class RemoveVarDumpFixerTest extends AbstractFixerTestBase
                 '<?php echo "This should be changed"; var_dump(true);',
             ),
             array(
-                '<?php 
-                $a = 1;
-                $b = 1;',
+                '
+<?php 
+$a = 1;
+$b = 1;
+',
 
-                '<?php 
-                $a = 1;
-                var_dump($a);
-                $b = 1;
-                dump($b);',
+                '
+<?php 
+$a = 1;
+var_dump($a);
+$b = 1;
+dump($b);
+',
+            ),
+            array(
+                '<?php
+            if(1 === 1) {
+            }
+            else {
+                echo "The world has changed";
+            }
+            ',
+                '<?php
+            if(1 === 1) {
+                dump(true);
+            }
+            else {
+                echo "The world has changed";
+                var_dump(false);
+            }
+            ',
             ),
         );
     }
