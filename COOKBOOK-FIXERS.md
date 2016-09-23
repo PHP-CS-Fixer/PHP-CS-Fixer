@@ -69,6 +69,22 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 final class RemoveCommentsFixer extends AbstractFixer
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, $content)
+    {
+        // TODO.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        // TODO.
+    }
+
 }
 ```
 
