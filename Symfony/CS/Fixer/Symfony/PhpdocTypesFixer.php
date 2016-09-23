@@ -34,6 +34,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
         'float',
         'int',
         'integer',
+        'iterable',
         'mixed',
         'null',
         'object',
