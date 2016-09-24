@@ -1,0 +1,39 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-21T17:04:39Z
+
+priority issue ? smells like integration tests
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-21T17:21:55Z
+
+>priority issue ? smells like integration tests
+
+could do, but if this PR is merged there is no longer a need ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-22T09:27:47Z
+
+integration tests are to protect us from priority issues we faced once.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-22T09:40:48Z
+
+I cannot create a priority test for `semicolon_after_instruction` and `UnneededControlParenthesesFixer` on 1.12 because `semicolon_after_instruction` is introduced on master.
+The fix however can be done on 1.12.
+How do you want me to proceed?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-22T09:58:00Z
+
+prepare integration test for master only ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-22T10:09:14Z
+
+here you go ;)
