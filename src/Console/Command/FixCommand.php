@@ -407,7 +407,6 @@ EOF
     protected function getFixersHelp()
     {
         $help = '';
-        $maxName = 0;
         $fixerFactory = new FixerFactory();
         $fixers = $fixerFactory->registerBuiltInFixers()->getFixers();
 
@@ -418,12 +417,6 @@ EOF
                 return strcmp($a->getName(), $b->getName());
             }
         );
-
-        foreach ($fixers as $fixer) {
-            if (strlen($fixer->getName()) > $maxName) {
-                $maxName = strlen($fixer->getName());
-            }
-        }
 
         $ruleSets = array();
         foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
@@ -451,17 +444,12 @@ EOF
             if ($fixer->isRisky()) {
                 $description .= ' (Risky fixer!)';
             }
+            $description = str_replace("\n", "\n   ", wordwrap($description, 72, "\n"));
 
             if (!empty($sets)) {
-                $chunks = explode("\n", wordwrap(sprintf("[%s]\n%s", implode(', ', $sets), $description), 72 - $maxName, "\n"));
-                $help .= sprintf(" * <comment>%s</comment>%s %s\n", $fixer->getName(), str_repeat(' ', $maxName - strlen($fixer->getName())), array_shift($chunks));
+                $help .= sprintf(" * <comment>%s</comment> [%s]\n   %s\n", $fixer->getName(), implode(', ', $sets), $description);
             } else {
-                $chunks = explode("\n", wordwrap(sprintf("\n%s", $description), 72 - $maxName, "\n"));
-                $help .= sprintf(" * <comment>%s</comment>%s\n", $fixer->getName(), array_shift($chunks));
-            }
-
-            while ($c = array_shift($chunks)) {
-                $help .= str_repeat(' ', $maxName + 4).$c."\n";
+                $help .= sprintf(" * <comment>%s</comment>\n   %s\n", $fixer->getName(), $description);
             }
 
             if ($count !== $i) {
