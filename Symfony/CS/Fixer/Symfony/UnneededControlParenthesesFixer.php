@@ -42,7 +42,7 @@ final class UnneededControlParenthesesFixer extends AbstractFixer
         'continue' => array('lookupTokens' => T_CONTINUE, 'neededSuccessors' => array(';')),
         'clone' => array('lookupTokens' => T_CLONE, 'neededSuccessors' => array(';', ':', ',', ')'), 'forbiddenContents' => array('?', ':')),
         'echo_print' => array('lookupTokens' => array(T_ECHO, T_PRINT), 'neededSuccessors' => array(';', array(T_CLOSE_TAG))),
-        'return' => array('lookupTokens' => T_RETURN, 'neededSuccessors' => array(';')),
+        'return' => array('lookupTokens' => T_RETURN, 'neededSuccessors' => array(';', array(T_CLOSE_TAG))),
         'switch_case' => array('lookupTokens' => T_CASE, 'neededSuccessors' => array(';', ':')),
     );
 
