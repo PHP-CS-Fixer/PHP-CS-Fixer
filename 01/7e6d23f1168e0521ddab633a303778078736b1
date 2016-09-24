@@ -1,0 +1,18 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-21T07:25:43Z
+
+will this resolve the priority issue (https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/1715#issuecomment-248524932) as well or is that out of scope for this PR?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-21T07:32:02Z
+
+it was raised after my PR was made ;)
+it may not even be an issue - i guess we have proper priority for those 2 fixers, but yeah, integration test would be nice
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-24T20:47:28Z
+
+integrity check added. no priority issue
