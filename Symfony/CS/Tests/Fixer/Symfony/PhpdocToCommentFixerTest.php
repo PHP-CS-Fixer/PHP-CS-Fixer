@@ -216,6 +216,17 @@ $loader = require_once __DIR__."/vendor/autoload.php";
 $first = true;// needed because by default first docblock is never fixed.
 
 /**
+ * @var ClassLoader $loader
+ */
+$loader = require_once __DIR__."/../app/autoload.php";
+',
+        );
+
+        $cases[] = array(
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/**
  * Do not convert this
  *
  * @var Foo
