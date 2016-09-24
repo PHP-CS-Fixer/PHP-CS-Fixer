@@ -24,18 +24,18 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
      * @var array the list of the string-related function names and their mb_ equivalent
      */
     private static $functions = array(
-        'strlen' => 'mb_strlen',
-        'strpos' => 'mb_strpos',
-        'strrpos' => 'mb_strrpos',
-        'substr' => 'mb_substr',
-        'strtolower' => 'mb_strtolower',
-        'strtoupper' => 'mb_strtoupper',
-        'stripos' => 'mb_stripos',
-        'strripos' => 'mb_strripos',
-        'strstr' => 'mb_strstr',
-        'stristr' => 'mb_stristr',
-        'strrchr' => 'mb_strrchr',
-        'substr_count' => 'mb_substr_count',
+        'strlen' => array('alternativeName' => 'mb_strlen', 'argumentCount' => array(1)),
+        'strpos' => array('alternativeName' => 'mb_strpos', 'argumentCount' => array(2, 3)),
+        'strrpos' => array('alternativeName' => 'mb_strrpos', 'argumentCount' => array(2, 3)),
+        'substr' => array('alternativeName' => 'mb_substr', 'argumentCount' => array(2, 3)),
+        'strtolower' => array('alternativeName' => 'mb_strtolower', 'argumentCount' => array(1)),
+        'strtoupper' => array('alternativeName' => 'mb_strtoupper', 'argumentCount' => array(1)),
+        'stripos' => array('alternativeName' => 'mb_stripos', 'argumentCount' => array(2, 3)),
+        'strripos' => array('alternativeName' => 'mb_strripos', 'argumentCount' => array(2, 3)),
+        'strstr' => array('alternativeName' => 'mb_strstr', 'argumentCount' => array(2, 3)),
+        'stristr' => array('alternativeName' => 'mb_stristr', 'argumentCount' => array(2, 3)),
+        'strrchr' => array('alternativeName' => 'mb_strrchr', 'argumentCount' => array(2)),
+        'substr_count' => array('alternativeName' => 'mb_substr_count', 'argumentCount' => array(2, 3, 4)),
     );
 
     /**
@@ -59,7 +59,7 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach (self::$functions as $functionIdentity => $newName) {
+        foreach (self::$functions as $functionIdentity => $functionReplacement) {
             $currIndex = 0;
             while (null !== $currIndex) {
                 // try getting function reference and translate boundaries for humans
@@ -69,12 +69,16 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
                     continue 2;
                 }
 
-                list($functionName, $openParenthesis) = $boundaries;
+                list($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
+                $count = $this->countArguments($tokens, $openParenthesis, $closeParenthesis);
+                if (!in_array($count, $functionReplacement['argumentCount'], true)) {
+                    continue 2;
+                }
 
                 // analysing cursor shift, so nested calls could be processed
                 $currIndex = $openParenthesis;
 
-                $tokens[$functionName]->setContent($newName);
+                $tokens[$functionName]->setContent($functionReplacement['alternativeName']);
             }
         }
     }

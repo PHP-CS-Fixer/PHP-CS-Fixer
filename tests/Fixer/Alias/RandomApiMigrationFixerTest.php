@@ -23,7 +23,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 {
     /**
      * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage [random_api_migration] "is_null" is not handled by the fixer.
+     * @expectedExceptionMessageRegExp #^\[random_api_migration\] "is_null" is not handled by the fixer.$#
      */
     public function testConfigureCheckSearchFunction()
     {
@@ -32,7 +32,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 
     /**
      * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage [random_api_migration] Expected string got "NULL".
+     * @expectedExceptionMessageRegExp #^\[random_api_migration\] Expected string got "NULL".$#
      */
     public function testConfigureCheckReplacementType()
     {
@@ -46,7 +46,10 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 
         /** @var $replacements string[] */
         $replacements = static::getObjectAttribute($this->getFixer(), 'configuration');
-        static::assertSame($config, $replacements);
+        static::assertSame(
+            array('rand' => array('alternativeName' => 'random_int', 'argumentCount' => array(0, 2))),
+            $replacements
+        );
     }
 
     /**
@@ -123,8 +126,9 @@ class srand extends SrandClass{
     public function provideCasesForCustomConfiguration()
     {
         return array(
-            array('<?php random_int(random_int($a));', '<?php rand(rand($a));'),
-            array('<?php random_int(\Other\Scope\mt_rand($a));', '<?php rand(\Other\Scope\mt_rand($a));'),
+            array('<?php rand(rand($a));'),
+            array('<?php random_int($d, random_int($a,$b));', '<?php rand($d, rand($a,$b));'),
+            array('<?php random_int($a, \Other\Scope\mt_rand($a));', '<?php rand($a, \Other\Scope\mt_rand($a));'),
         );
     }
 }

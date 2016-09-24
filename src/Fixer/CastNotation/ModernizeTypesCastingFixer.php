@@ -58,12 +58,9 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                 // analysing cursor shift
                 $currIndex = $openParenthesis;
 
-                // special case: intval with 2 parameters shall not be processed (base conversion)
-                if ('intval' === $functionIdentity) {
-                    $parametersCount = $this->countArguments($tokens, $openParenthesis, $closeParenthesis);
-                    if ($parametersCount > 1) {
-                        continue;
-                    }
+                // indicator that the function is overriden
+                if (1 !== $this->countArguments($tokens, $openParenthesis, $closeParenthesis)) {
+                    continue;
                 }
 
                 // check if something complex passed as an argument and preserve parenthesises then
@@ -90,6 +87,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                     new Token($newToken),
                     new Token(array(T_WHITESPACE, ' ')),
                 );
+
                 if (!$preserveParenthesises) {
                     // closing parenthesis removed with leading spaces
                     $tokens->removeLeadingWhitespace($closeParenthesis);
