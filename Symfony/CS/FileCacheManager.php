@@ -153,7 +153,7 @@ class FileCacheManager
         );
 
         if (false === @file_put_contents($this->dir.self::CACHE_FILE, $data, LOCK_EX)) {
-            throw new IOException(sprintf('Failed to write file "%s".', $this->cacheFile), 0, null, $this->cacheFile);
+            throw new IOException(sprintf('Failed to write file "%s".', self::CACHE_FILE), 0, null, $this->dir.self::CACHE_FILE);
         }
     }
 }
