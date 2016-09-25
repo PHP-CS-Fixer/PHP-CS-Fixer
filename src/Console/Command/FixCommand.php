@@ -444,6 +444,7 @@ EOF
             if ($fixer->isRisky()) {
                 $description .= ' (Risky fixer!)';
             }
+            $description = str_replace("\n", "\n   ", wordwrap($description, 72, "\n"));
 
             $description = str_replace("\n", "\n   ", wordwrap($description, 72, "\n"));
 
