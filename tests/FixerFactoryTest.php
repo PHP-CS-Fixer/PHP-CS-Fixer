@@ -276,6 +276,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['short_array_syntax'], $fixers['unalign_equals']), // tested also in: short_array_syntax,unalign_equals.test
             array($fixers['short_array_syntax'], $fixers['ternary_operator_spaces']), // tested also in: short_array_syntax,ternary_operator_spaces.test
             array($fixers['class_keyword_remove'], $fixers['no_unused_imports']), // tested also in: class_keyword_remove,no_unused_imports.test
+            array($fixers['php_unit_expected_exception_annotation_with_root_namespace'], $fixers['no_unused_imports']), // tested also in: php_unit_expected_exception_annotation_with_root_namespace,no_unused_imports.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:

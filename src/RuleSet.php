@@ -121,6 +121,7 @@ final class RuleSet implements RuleSetInterface
             'unalign_equals' => true,
             'unary_operator_spaces' => true,
             'whitespace_after_comma_in_array' => true,
+            'php_unit_expected_exception_annotation_with_root_namespace' => true,
         ),
         '@Symfony:risky' => array(
             'php_unit_construct' => true,
