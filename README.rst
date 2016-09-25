@@ -516,7 +516,7 @@ Choose from the list of available fixers:
 * **psr4**
    Class names should match the file name. (Risky fixer!)
 
-* **random_api_migration**
+* **random_api_migration** [@PHP70Migration]
    Replaces rand, srand, getrandmax functions calls with their mt_*
    analogs. (Risky fixer!)
 

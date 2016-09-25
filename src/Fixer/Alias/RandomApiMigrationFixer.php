@@ -27,9 +27,10 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
     private $configuration;
 
     private static $defaultConfiguration = array(
+        'getrandmax' => array('alternativeName' => 'mt_getrandmax', 'argumentCount' => array(0)),
+        'mt_rand' => array('alternativeName' => 'mt_rand', 'argumentCount' => array(1, 2)),
         'rand' => array('alternativeName' => 'mt_rand', 'argumentCount' => array(0, 2)),
         'srand' => array('alternativeName' => 'mt_srand', 'argumentCount' => array(0, 1)),
-        'getrandmax' => array('alternativeName' => 'mt_getrandmax', 'argumentCount' => array(0)),
     );
 
     /**
@@ -72,6 +73,10 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($this->configuration as $functionIdentity => $functionReplacement) {
+            if ($functionIdentity === $functionReplacement['alternativeName']) {
+                continue;
+            }
+
             $currIndex = 0;
             while (null !== $currIndex) {
                 // try getting function reference and translate boundaries for humans
