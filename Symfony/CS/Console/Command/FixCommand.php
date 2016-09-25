@@ -583,7 +583,6 @@ EOF
     protected function getFixersHelp()
     {
         $help = '';
-        $maxName = 0;
         $fixers = $this->fixer->getFixers();
 
         // sort fixers by level and name
@@ -599,12 +598,6 @@ EOF
                 return strcmp($a->getName(), $b->getName());
             }
         );
-
-        foreach ($fixers as $fixer) {
-            if (strlen($fixer->getName()) > $maxName) {
-                $maxName = strlen($fixer->getName());
-            }
-        }
 
         $count = count($fixers) - 1;
         foreach ($fixers as $i => $fixer) {
@@ -623,7 +616,6 @@ EOF
     {
         $help = '';
         $maxName = 0;
-
         $configs = $this->fixer->getConfigs();
 
         usort(
