@@ -1,0 +1,50 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-23T12:41:42Z
+
+~~please add missing details here https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/2090~~
+
+oops
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-23T12:43:49Z
+
+isn't it's there? 2nd position of initial comment
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-23T12:45:47Z
+
+Nice !
+
+Could you please add small integration test for 7.1 (like this: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.12/Symfony/CS/Tests/Fixtures/Integration/misc/PHP7.test) ?
+
+I'm not saying to add all 7.1 (which of course would be nice), but at least `iterable`
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-09-25T10:09:34Z
+
+> Could you please add small integration test for 7.1
+
+Why PHP 7.1. This phpdoc type can be used on any version, the same way `string` is used on PHP 5 even though it can't be type hinted until 7.0, and `mixed` isn't even a real type on any version.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-25T10:14:24Z
+
+iterable is not only for typedoc.
+add `function foo(iterable $bar) {}` in integration test like we did for 7.0 syntax changes.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-09-25T10:19:26Z
+
+This fixer change has nothing to do with actual typehints though, so in the interest of keeping this atomic, I shouldn't make an unrelated change.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-25T10:20:59Z
+
+then this PR would make false sense of feeling we support the iterable, even if we would support it only in doctype. big -1 for that
