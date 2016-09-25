@@ -93,6 +93,30 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testIterableFix()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param iterable $foo
+     *
+     * @return Itter
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param Iterable $foo
+     *
+     * @return Itter
+     */
+
+EOF;
+        $this->doTest($expected, $input);
+    }
+
     public function testMethodAndPropertyFix()
     {
         $expected = <<<'EOF'
