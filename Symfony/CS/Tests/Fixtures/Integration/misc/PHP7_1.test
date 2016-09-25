@@ -1,0 +1,20 @@
+--TEST--
+PHP 7.1 test.
+--CONFIG--
+level=symfony
+fixers=ordered_use
+--SETTINGS--
+checkPriority=false
+--REQUIREMENTS--
+php=7.1
+--EXPECT--
+<?php
+
+function iterable_foo(iterable $foo)
+{
+}
+
+--INPUT--
+<?php
+
+function iterable_foo(iterable$foo) {}
