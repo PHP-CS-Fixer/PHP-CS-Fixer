@@ -313,6 +313,14 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             ),
             array(
                 '<?php
+                return 2?>
+                ',
+                '<?php
+                return(2)?>
+                ',
+            ),
+            array(
+                '<?php
                 switch ($a) {
                     case "prod":
                         break;

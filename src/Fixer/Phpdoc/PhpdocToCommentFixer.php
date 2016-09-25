@@ -203,10 +203,6 @@ final class PhpdocToCommentFixer extends AbstractFixer
     {
         $nextIndex = $tokens->getNextMeaningfulToken($variableIndex);
 
-        if (!$tokens[$nextIndex]->equals('=')) {
-            return false;
-        }
-
-        return false !== strpos($docsToken->getContent(), $tokens[$variableIndex]->getContent());
+        return $tokens[$nextIndex]->equals('=');
     }
 }
