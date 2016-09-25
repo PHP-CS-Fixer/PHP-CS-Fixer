@@ -349,6 +349,10 @@ Choose from the list of available fixers:
 * **operators_spaces** [symfony]
    Binary operators should be surrounded by at least one space.
 
+* **php_unit_fqcn_annotation** [symfony]
+   PHPUnit @expectedException annotation should be a FQCN including a root
+   namespace.
+
 * **phpdoc_annotation_without_dot** [symfony]
    Phpdocs annotation descriptions should not end with a full stop.
 

@@ -77,3 +77,13 @@ class FooBar
         return !$value;
     }
 }
+
+class FooBarTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @expectedException \Exception
+     */
+    public function testFooBar()
+    {
+    }
+}

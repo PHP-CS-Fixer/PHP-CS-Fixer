@@ -1,0 +1,29 @@
+--TEST--
+Integration of fixers: php_unit_fqcn_annotation,unused_use.
+--CONFIG--
+level=none
+fixers=php_unit_fqcn_annotation,unused_use
+--EXPECT--
+<?php
+
+class Foo extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @expectedException \Exception
+     */
+    public function testBar()
+    { }
+}
+
+--INPUT--
+<?php
+use Some\Exception;
+
+class Foo extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @expectedException Exception
+     */
+    public function testBar()
+    { }
+}
