@@ -32,18 +32,18 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
     public function testFixProvider()
     {
         return array(
-           // test function call
-           array(
+            // test function call
+            array(
                 '<?php abc($a);',
                 '<?php abc ($a);',
             ),
-           // test method call
-           array(
+            // test method call
+            array(
                 '<?php $o->abc($a);',
                 '<?php $o->abc ($a);',
             ),
-           // test function-like constructs
-           array(
+            // test function-like constructs
+            array(
                 '<?php
     include("something.php");
     include_once("something.php");

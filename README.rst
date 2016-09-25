@@ -520,6 +520,10 @@ Choose from the list of available fixers:
    Replaces rand, srand, getrandmax functions calls with their mt_*
    analogs. (Risky fixer!)
 
+* **return_type_declaration** [@Symfony]
+   There should be no space before colon and one space after it in return
+   type declaration.
+
 * **self_accessor** [@Symfony]
    Inside a classy element "self" should be preferred to the class name
    itself.

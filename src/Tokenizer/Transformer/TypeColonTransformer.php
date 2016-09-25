@@ -17,7 +17,7 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Transform `:` operator into CT_TYPE_COLON in `function foo() : {}`.
+ * Transform `:` operator into CT_TYPE_COLON in `function foo() : int {}`.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
