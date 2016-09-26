@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: semicolon_after_instruction,no_unneeded_control_parentheses.
+--CONFIG--
+{"semicolon_after_instruction": true, "no_unneeded_control_parentheses": true}
+--SETTINGS--
+checkPriority=false
+--EXPECT--
+<?php
+return 1;?>
+
+--INPUT--
+<?php
+return (1)?>
