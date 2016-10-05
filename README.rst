@@ -532,6 +532,10 @@ Choose from the list of available fixers:
 * **no_useless_return** [contrib]
    There should not be an empty return statement at the end of a function.
 
+* **no_yoda_condition** [contrib]
+   No Yoda condition for ==, !=, ===, and !==. Warning! This could change
+   code behavior.
+
 * **ordered_use** [contrib]
    Ordering use statements.
 
