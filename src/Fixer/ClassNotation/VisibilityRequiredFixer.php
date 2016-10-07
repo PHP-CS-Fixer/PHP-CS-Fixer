@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -21,15 +22,43 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * Fixer for rules defined in PSR2 ¶4.3, ¶4.5.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author SpacePossum
  */
 final class VisibilityRequiredFixer extends AbstractFixer
 {
+    private $options = array('property', 'method', 'const');
+    private $configuration = array('property', 'method');
+
     /**
-     * {@inheritdoc}
+     * Any of the class elements 'property', 'method' or 'const' can be configured.
+     *
+     * Note: the 'const' configuration is only valid when running on PHP >= 7.1
+     * Use 'null' for default configuration ('property', 'method').
+     *
+     * @param string[]|null $configuration
      */
-    public function isCandidate(Tokens $tokens)
+    public function configure(array $configuration = null)
     {
-        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+        if (null === $configuration) {
+            return;
+        }
+
+        $this->configuration = array();
+        foreach ($configuration as $item) {
+            if (!is_string($item)) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected string got "%s".', is_object($item) ? get_class($item) : gettype($item)));
+            }
+
+            if (!in_array($item, $this->options, true)) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration item "%s", expected any of "%s".', $item, implode('", "', $this->options)));
+            }
+
+            if ('const' === $item && PHP_VERSION_ID < 70100) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Invalid configuration item "%s" for PHP "%s".', $item, phpversion()));
+            }
+
+            $this->configuration[] = $item;
+        }
     }
 
     /**
@@ -41,20 +70,23 @@ final class VisibilityRequiredFixer extends AbstractFixer
         $elements = $tokensAnalyzer->getClassyElements();
 
         foreach (array_reverse($elements, true) as $index => $element) {
-            if ('method' === $element['type']) {
-                $this->overrideAttribs($tokens, $index, $this->grabAttribsBeforeMethodToken($tokens, $index));
+            if (!in_array($element['type'], $this->configuration, true)) {
+                continue;
+            }
 
-                // force whitespace between function keyword and function name to be single space char
-                $afterToken = $tokens[++$index];
-                if ($afterToken->isWhitespace()) {
-                    $afterToken->setContent(' ');
-                }
-            } elseif ('property' === $element['type']) {
-                $prevIndex = $tokens->getPrevTokenOfKind($index, array(';', ',', '{'));
+            switch ($element['type']) {
+                case 'method':
+                    $this->fixMethodVisibility($tokens, $index);
 
-                if (null === $prevIndex || !$tokens[$prevIndex]->equals(',')) {
-                    $this->overrideAttribs($tokens, $index, $this->grabAttribsBeforePropertyToken($tokens, $index));
-                }
+                    break;
+                case 'property':
+                    $this->fixPropertyVisibility($tokens, $index);
+
+                    break;
+                case 'const':
+                    $this->fixConstVisibility($tokens, $index);
+
+                    break;
             }
         }
     }
@@ -68,37 +100,54 @@ final class VisibilityRequiredFixer extends AbstractFixer
     }
 
     /**
-     * Apply token attributes.
-     *
-     * Token at given index is prepended by attributes.
-     *
-     * @param Tokens $tokens      Tokens collection
-     * @param int    $memberIndex token index
-     * @param array  $attribs     map of grabbed attributes, key is attribute name and value is array of index and clone of Token
+     * {@inheritdoc}
      */
-    private function overrideAttribs(Tokens $tokens, $memberIndex, array $attribs)
+    public function isCandidate(Tokens $tokens)
     {
-        $toOverride = array();
-        $firstAttribIndex = $memberIndex;
+        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+    }
 
-        foreach ($attribs as $attrib) {
-            if (null === $attrib) {
-                continue;
-            }
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function fixMethodVisibility(Tokens $tokens, $index)
+    {
+        $this->overrideAttribs($tokens, $index, $this->grabAttribsBeforeMethodToken($tokens, $index));
 
-            if (null !== $attrib['index']) {
-                $firstAttribIndex = min($firstAttribIndex, $attrib['index']);
-            }
+        // force whitespace between function keyword and function name to be single space char
+        $afterToken = $tokens[++$index];
+        if ($afterToken->isWhitespace()) {
+            $afterToken->setContent(' ');
+        }
+    }
 
-            if (!$attrib['token']->isGivenKind(T_VAR) && '' !== $attrib['token']->getContent()) {
-                $toOverride[] = $attrib['token'];
-                $toOverride[] = new Token(array(T_WHITESPACE, ' '));
-            }
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function fixPropertyVisibility(Tokens $tokens, $index)
+    {
+        $prevIndex = $tokens->getPrevTokenOfKind($index, array(';', ',', '{'));
+
+        if (null === $prevIndex || !$tokens[$prevIndex]->equals(',')) {
+            $this->overrideAttribs($tokens, $index, $this->grabAttribsBeforePropertyToken($tokens, $index));
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function fixConstVisibility(Tokens $tokens, $index)
+    {
+        $prev = $tokens->getPrevMeaningfulToken($index);
+        if ($tokens[$prev]->isGivenKind(array(T_PRIVATE, T_PROTECTED, T_PUBLIC))) {
+            return;
         }
 
-        if (!empty($toOverride)) {
-            $tokens->overrideRange($firstAttribIndex, $memberIndex - 1, $toOverride);
-        }
+        $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
+        $tokens->insertAt($index, new Token(array(T_PUBLIC, 'public')));
     }
 
     /**
@@ -133,6 +182,40 @@ final class VisibilityRequiredFixer extends AbstractFixer
                 'static' => null,
             )
         );
+    }
+
+    /**
+     * Apply token attributes.
+     *
+     * Token at given index is prepended by attributes.
+     *
+     * @param Tokens $tokens      Tokens collection
+     * @param int    $memberIndex token index
+     * @param array  $attribs     map of grabbed attributes, key is attribute name and value is array of index and clone of Token
+     */
+    private function overrideAttribs(Tokens $tokens, $memberIndex, array $attribs)
+    {
+        $toOverride = array();
+        $firstAttribIndex = $memberIndex;
+
+        foreach ($attribs as $attrib) {
+            if (null === $attrib) {
+                continue;
+            }
+
+            if (null !== $attrib['index']) {
+                $firstAttribIndex = min($firstAttribIndex, $attrib['index']);
+            }
+
+            if (!$attrib['token']->isGivenKind(T_VAR) && '' !== $attrib['token']->getContent()) {
+                $toOverride[] = $attrib['token'];
+                $toOverride[] = new Token(array(T_WHITESPACE, ' '));
+            }
+        }
+
+        if (!empty($toOverride)) {
+            $tokens->overrideRange($firstAttribIndex, $memberIndex - 1, $toOverride);
+        }
     }
 
     /**
