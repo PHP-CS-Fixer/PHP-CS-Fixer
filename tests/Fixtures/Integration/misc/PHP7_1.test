@@ -15,7 +15,17 @@ function iterable_foo(iterable $foo)
 {
 }
 
+class A
+{
+    public const b = 1;
+}
+
 --INPUT--
 <?php
 
 function iterable_foo(iterable$foo) {}
+
+class A
+{
+        PUBLIC CONST b = 1;
+}
