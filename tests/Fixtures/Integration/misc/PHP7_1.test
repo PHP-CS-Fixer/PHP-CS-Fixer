@@ -41,8 +41,8 @@ class Implementation implements Contract
     }
 }
 
-list(list("x" => $x1, "y" => $y1), list("x" => $x2, "y" => $y2)) = $points;
-list("first" => list($x1, $y1), "second" => list($x2, $y2)) = $points;
+list(list('x' => $x1, 'y' => $y1), list('x' => $x2, 'y' => $y2)) = $points;
+list('first' => list($x1, $y1), 'second' => list($x2, $y2)) = $points;
 
 --INPUT--
 <?php
