@@ -492,6 +492,28 @@ const F=1; }',
                 '<?php class A { private const B=1; protected const C=2; public const D=4; public $a; function A(){} }',
                 '<?php class A { private const B=1; protected const C=2; const D=4; public $a; function A(){} }',
             ),
+            array(
+                '<?php
+                    class foo 
+                    {
+                        public const A = 1, B =2, C =3;
+                        // As of PHP 5.6.0
+                        public const TWO = ONE * 2;
+                        public const THREE = ONE + self::TWO;
+                        public const SENTENCE = "The value of THREE is ".self::THREE;
+                    }
+                ',
+                '<?php
+                    class foo 
+                    {
+                        const A = 1, B =2, C =3;
+                        // As of PHP 5.6.0
+                        const TWO = ONE * 2;
+                        const THREE = ONE + self::TWO;
+                        const SENTENCE = "The value of THREE is ".self::THREE;
+                    }
+                ',
+            ),
         );
     }
 }
