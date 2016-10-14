@@ -13,6 +13,7 @@
 namespace PhpCsFixer;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\SharedFixerConfig;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -21,6 +22,11 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
  */
 abstract class AbstractFixer implements FixerInterface
 {
+    /**
+     * @var SharedFixerConfig
+     */
+    protected $sharedConfig;
+
     /**
      * {@inheritdoc}
      */
@@ -64,5 +70,10 @@ abstract class AbstractFixer implements FixerInterface
     public function supports(\SplFileInfo $file)
     {
         return true;
+    }
+
+    public function applySharedConfig(SharedFixerConfig $config)
+    {
+        $this->sharedConfig = $config;
     }
 }

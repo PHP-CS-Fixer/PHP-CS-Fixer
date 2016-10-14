@@ -19,6 +19,7 @@ use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
+use PhpCsFixer\WhitespacesFixerConfig;
 use PhpCsFixer\Finder;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
@@ -219,7 +220,10 @@ final class ConfigurationResolver
             $fixerFactory->registerBuiltInFixers();
             $fixerFactory->registerCustomFixers($this->getConfig()->getCustomFixers());
 
-            $this->fixers = $fixerFactory->useRuleSet($this->getRuleSet())->getFixers();
+            $this->fixers = $fixerFactory
+                ->useRuleSet($this->getRuleSet())
+                ->setWhitespacesConfig(new WhitespacesFixerConfig($this->config->getIndent(), $this->config->getLineEnding()))
+                ->getFixers();
 
             if (false === $this->getRiskyAllowed()) {
                 $riskyFixers = array_map(

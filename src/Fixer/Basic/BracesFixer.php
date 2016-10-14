@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\SharedFixerConfigAwareInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -23,7 +24,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class BracesFixer extends AbstractFixer
+final class BracesFixer extends AbstractFixer implements SharedFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}
@@ -214,7 +215,7 @@ final class BracesFixer extends AbstractFixer
             $indent = $this->detectIndent($tokens, $index);
 
             // fix indent near closing brace
-            $tokens->ensureWhitespaceAtIndex($endBraceIndex - 1, 1, "\n".$indent);
+            $tokens->ensureWhitespaceAtIndex($endBraceIndex - 1, 1, $this->sharedConfig->getLineEnding().$indent);
 
             // fix indent between braces
             $lastCommaIndex = $tokens->getPrevTokenOfKind($endBraceIndex - 1, array(';', '}'));
@@ -258,15 +259,20 @@ final class BracesFixer extends AbstractFixer
                             if ($nextToken->isWhitespace()) {
                                 $nextWhitespace = rtrim($nextToken->getContent(), " \t");
 
-                                if (strlen($nextWhitespace) && "\n" === $nextWhitespace[strlen($nextWhitespace) - 1]) {
-                                    $nextWhitespace = substr($nextWhitespace, 0, -1);
+                                if (strlen($nextWhitespace)) {
+                                    $nextWhitespace = preg_replace(
+                                        sprintf('/%s$/', $this->sharedConfig->getLineEnding()),
+                                        '',
+                                        $nextWhitespace,
+                                        1
+                                    );
                                 }
                             }
 
-                            $whitespace = $nextWhitespace."\n".$indent;
+                            $whitespace = $nextWhitespace.$this->sharedConfig->getLineEnding().$indent;
 
                             if (!$nextNonWhitespaceNestToken->equals('}')) {
-                                $whitespace .= '    ';
+                                $whitespace .= $this->sharedConfig->getIndent();
                             }
                         }
 
@@ -287,7 +293,7 @@ final class BracesFixer extends AbstractFixer
 
             // fix indent near opening brace
             if (isset($tokens[$startBraceIndex + 2]) && $tokens[$startBraceIndex + 2]->equals('}')) {
-                $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent);
+                $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, $this->sharedConfig->getLineEnding().$indent);
             } else {
                 $nextToken = $tokens[$startBraceIndex + 1];
                 $nextNonWhitespaceToken = $tokens[$tokens->getNextNonWhitespace($startBraceIndex)];
@@ -298,12 +304,12 @@ final class BracesFixer extends AbstractFixer
                     || !($nextToken->isWhitespace() && $nextToken->isWhitespace(" \t"))
                     && substr_count($nextToken->getContent(), "\n") === 1 // preserve blank lines
                 ) {
-                    $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, "\n".$indent.'    ');
+                    $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, $this->sharedConfig->getLineEnding().$indent.$this->sharedConfig->getIndent());
                 }
             }
 
             if ($token->isGivenKind($classyTokens) && !$tokensAnalyzer->isAnonymousClass($index)) {
-                $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, "\n".$indent);
+                $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $this->sharedConfig->getLineEnding().$indent);
             } elseif ($token->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index)) {
                 $closingParenthesisIndex = $tokens->getPrevTokenOfKind($startBraceIndex, array(')'));
                 if (null === $closingParenthesisIndex) {
@@ -316,7 +322,7 @@ final class BracesFixer extends AbstractFixer
                         $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
                     }
                 } else {
-                    $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, "\n".$indent);
+                    $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $this->sharedConfig->getLineEnding().$indent);
                 }
             } else {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');

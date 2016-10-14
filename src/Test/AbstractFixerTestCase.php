@@ -17,6 +17,8 @@ use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\RuleSet;
+use PhpCsFixer\SharedFixerConfig;
+use PhpCsFixer\SharedFixerConfigAwareInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -53,6 +55,14 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @return SharedFixerConfig
+     */
+    protected function createSharedFixerConfig()
+    {
+        return new SharedFixerConfig('    ', "\n");
+    }
+
+    /**
      * @return FixerInterface
      */
     protected function getFixer()
@@ -78,6 +88,10 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
         }
 
         $this->fixer = $fixers[0];
+
+        if ($this->fixer instanceof SharedFixerConfigAwareInterface) {
+            $this->fixer->applySharedConfig($this->createSharedFixerConfig());
+        }
 
         return $this->fixer;
     }
