@@ -52,6 +52,16 @@ interface ConfigInterface
     public function getHideProgress();
 
     /**
+     * @return string
+     */
+    public function getIndent();
+
+    /**
+     * @return string
+     */
+    public function getLineEnding();
+
+    /**
      * Returns the name of the configuration.
      *
      * The name must be all lowercase and without any spaces.
@@ -126,6 +136,20 @@ interface ConfigInterface
      * @return self
      */
     public function setHideProgress($hideProgress);
+
+    /**
+     * @param string $indent
+     *
+     * @return self
+     */
+    public function setIndent($indent);
+
+    /**
+     * @param string $lineEnding
+     *
+     * @return self
+     */
+    public function setLineEnding($lineEnding);
 
     /**
      * Set PHP executable.

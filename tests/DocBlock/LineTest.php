@@ -210,8 +210,11 @@ final class LineTest extends \PHPUnit_Framework_TestCase
         $line->addBlank();
         $this->assertSame("     * @param \$foo Hi!\n     *\n", $line->getContent());
 
-        $line->setContent("     * test\n");
-        $this->assertSame("     * test\n", $line->getContent());
+        $line->setContent("\t * test\r\n");
+        $this->assertSame("\t * test\r\n", $line->getContent());
+
+        $line->addBlank();
+        $this->assertSame("\t * test\r\n\t *\r\n", $line->getContent());
 
         $line->remove();
         $this->assertSame('', $line->getContent());

@@ -22,6 +22,18 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 abstract class AbstractFixer implements FixerInterface
 {
     /**
+     * @var WhitespacesFixerConfig
+     */
+    protected $whitespacesConfig;
+
+    public function __construct()
+    {
+        if ($this instanceof WhitespacesFixerConfigAwareInterface) {
+            $this->whitespacesConfig = $this->getDefaultWhitespacesFixerConfig();
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configure(array $configuration = null)
@@ -64,5 +76,21 @@ abstract class AbstractFixer implements FixerInterface
     public function supports(\SplFileInfo $file)
     {
         return true;
+    }
+
+    public function setWhitespacesConfig(WhitespacesFixerConfig $config)
+    {
+        $this->whitespacesConfig = $config;
+    }
+
+    private function getDefaultWhitespacesFixerConfig()
+    {
+        static $defaultWhitespacesFixerConfig = null;
+
+        if (null === $defaultWhitespacesFixerConfig) {
+            $defaultWhitespacesFixerConfig = new WhitespacesFixerConfig('    ', "\n");
+        }
+
+        return $defaultWhitespacesFixerConfig;
     }
 }

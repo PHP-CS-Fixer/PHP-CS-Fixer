@@ -14,11 +14,12 @@ namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class NoWhitespaceInBlankLineFixer extends AbstractFixer
+final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}
@@ -39,7 +40,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer
             }
 
             $content = $token->getContent();
-            $lines = preg_split("/([\r\n])/", $content);
+            $lines = preg_split("/(\r\n|\n)/", $content);
 
             if (
                 // fix T_WHITESPACES with at least 3 lines (eg `\n   \n`)
@@ -61,7 +62,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer
                     $lines[$l] = preg_replace('/^\h+$/', '', $lines[$l]);
                 }
 
-                $token->setContent(implode("\n", $lines));
+                $token->setContent(implode($this->whitespacesConfig->getLineEnding(), $lines));
             }
         }
     }

@@ -17,13 +17,14 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * Fixer for part of the rules defined in PSR2 ¶4.1 Extends and Implements.
  *
  * @author SpacePossum
  */
-final class ClassDefinitionFixer extends AbstractFixer
+final class ClassDefinitionFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
      * @var array<string, bool>
@@ -190,12 +191,12 @@ final class ClassDefinitionFixer extends AbstractFixer
         }
 
         if ($tokens[$openIndex - 1]->isWhitespace()) {
-            $tokens[$openIndex - 1]->setContent("\n");
+            $tokens[$openIndex - 1]->setContent($this->whitespacesConfig->getLineEnding());
 
             return $openIndex;
         }
 
-        $tokens->insertAt($openIndex, new Token(array(T_WHITESPACE, "\n")));
+        $tokens->insertAt($openIndex, new Token(array(T_WHITESPACE, $this->whitespacesConfig->getLineEnding())));
 
         return $openIndex + 1;
     }
@@ -324,9 +325,9 @@ final class ClassDefinitionFixer extends AbstractFixer
 
             if (!$isOnOwnLine) {
                 if ($tokens[$breakAtIndex - 1]->isWhitespace()) {
-                    $tokens[$breakAtIndex - 1]->setContent("\n");
+                    $tokens[$breakAtIndex - 1]->setContent($this->whitespacesConfig->getLineEnding().$this->whitespacesConfig->getIndent());
                 } else {
-                    $tokens->insertAt($breakAtIndex, new Token(array(T_WHITESPACE, "\n")));
+                    $tokens->insertAt($breakAtIndex, new Token(array(T_WHITESPACE, $this->whitespacesConfig->getLineEnding().$this->whitespacesConfig->getIndent())));
                 }
             }
 

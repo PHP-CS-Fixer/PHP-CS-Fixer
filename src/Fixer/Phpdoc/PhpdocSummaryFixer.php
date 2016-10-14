@@ -16,11 +16,12 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class PhpdocSummaryFixer extends AbstractFixer
+final class PhpdocSummaryFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}
@@ -48,7 +49,7 @@ final class PhpdocSummaryFixer extends AbstractFixer
                 $content = rtrim($line->getContent());
 
                 if (!$this->isCorrectlyFormatted($content)) {
-                    $line->setContent($content.".\n");
+                    $line->setContent($content.'.'.$this->whitespacesConfig->getLineEnding());
                     $token->setContent($doc->getContent());
                 }
             }

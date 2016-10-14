@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
@@ -689,6 +690,27 @@ EOT
                         public const PUBLIC_CONST_TWO = 0, TEST_71 = 0;
                     }
                 ',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return array(
+            array(
+                "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0;\r\n\t\tconst BBB=1;\r\n\t}",
+                "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0, BBB=1;\r\n\t}",
             ),
         );
     }

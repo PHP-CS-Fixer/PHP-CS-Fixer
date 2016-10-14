@@ -30,7 +30,7 @@ class Foo extends Bar implements FooInterface
 
 class Aaa implements
     Bbb,
-Ccc,
+    Ccc,
     Ddd
 {
 }

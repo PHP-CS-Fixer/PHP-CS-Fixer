@@ -14,13 +14,14 @@ namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * Fixer for rules defined in PSR2 ¶2.4.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class NoTabIndentationFixer extends AbstractFixer
+final class IndentationTypeFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}
@@ -44,12 +45,21 @@ final class NoTabIndentationFixer extends AbstractFixer
                     $content = preg_replace('/^(\ +)?\t/m', '\1    ', $content, -1, $count);
                 }
 
+                // change indent to expected one
+                $content = preg_replace('/^    /m', $this->whitespacesConfig->getIndent(), $content);
+
                 $tokens[$index]->setContent($content);
                 continue;
             }
 
             if ($token->isWhitespace()) {
-                $tokens[$index]->setContent(preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $token->getContent()));
+                // normalize mixed indent
+                $content = preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $token->getContent());
+
+                // change indent to expected one
+                $content = str_replace('    ', $this->whitespacesConfig->getIndent(), $content);
+
+                $tokens[$index]->setContent($content);
             }
         }
     }

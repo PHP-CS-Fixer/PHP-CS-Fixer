@@ -38,6 +38,8 @@ use Symfony\Component\Finder\Finder;
  * Example test description.
  * --RULESET--
  * {"@PSR2": true, "strict": true}
+ * --CONFIG--*
+ * {"indent": "    ", "lineEnding": "\n"}
  * --SETTINGS--*
  * {"checkPriority": true}
  * --REQUIREMENTS--*
@@ -211,7 +213,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             $this->assertEmpty(
                 $changed,
                 sprintf(
-                    "Expected no changes made to test \"%s\" in \"%s\".\nFixers applied:\n\"%s\".\nDiff.:\n\"%s\".",
+                    "Expected no changes made to test \"%s\" in \"%s\".\nFixers applied:\n%s.\nDiff.:\n%s.",
                     $case->getTitle(),
                     $case->getFileName(),
                     $changed === null ? '[None]' : implode(',', $changed['appliedFixers']),
@@ -224,7 +226,16 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($changed, sprintf('Expected changes made to test "%s" in "%s".', $case->getTitle(), $case->getFileName()));
         $fixedInputCode = file_get_contents($tmpFile);
-        $this->assertSame($expected, $fixedInputCode, sprintf('Expected changes do not match result for "%s" in "%s".', $case->getTitle(), $case->getFileName()));
+        $this->assertSame(
+            $expected,
+            $fixedInputCode,
+            sprintf(
+                "Expected changes do not match result for \"%s\" in \"%s\".\nFixers applied:\n%s.",
+                $case->getTitle(),
+                $case->getFileName(),
+                $changed === null ? '[None]' : implode(',', $changed['appliedFixers'])
+            )
+        );
 
         if ($case->shouldCheckPriority()) {
             $priorities = array_map(

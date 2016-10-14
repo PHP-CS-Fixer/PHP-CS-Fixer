@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @internal
@@ -198,7 +199,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
                 array('singleLine' => false, 'singleItemSingleLine' => true),
             ),
             array(
-                "<?php interface TestWithMultiExtendsMultiLine extends\nA,\nAb,\nC,\nD\n{}",
+                "<?php interface TestWithMultiExtendsMultiLine extends\n    A,\nAb,\n    C,\n    D\n{}",
                 "<?php interface TestWithMultiExtendsMultiLine extends A,\nAb,C,D\n{}",
                 array(
                     'singleLine' => false,
@@ -440,7 +441,7 @@ namespace {
 $a = new class implements
     \RFb,
     \Fcc,
-\GFddZz
+    \GFddZz
 {
 };',
             '<?php
@@ -455,7 +456,7 @@ $a = new class implements
 $a = new class implements
     \RFb,
     \Fcc,
-\GFddZz
+    \GFddZz
 {
 }?>',
             '<?php
@@ -464,6 +465,27 @@ $a = new class implements
     \Fcc, \GFddZz
 {
 }?>',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return array(
+            array(
+                "<?php\r\nclass Aaa implements\r\n\tBbb,\r\n\tCcc,\r\n\tDdd\r\n\t{\r\n\t}",
+                "<?php\r\nclass Aaa implements\r\n\tBbb, Ccc,\r\n\tDdd\r\n\t{\r\n\t}",
             ),
         );
     }
@@ -585,7 +607,7 @@ B/*  */implements C{}',
 class Aaa IMPLEMENTS
     \RFb,
     \Fcc,
-\GFddZz
+    \GFddZz
 {
 }',
                 '<?php
@@ -619,9 +641,9 @@ U            //
                 '<?php
 class Aaa implements
     PhpCsFixer\Tests\Fixer,
-\RFb,
+    \RFb,
     \Fcc1,
-\GFdd
+    \GFdd
 {
 }',
                 '<?php
@@ -659,7 +681,7 @@ TestZ
 class X2 IMPLEMENTS
 Z, //
 U,
-D
+    D
 {
 }',
                 '<?php
@@ -702,13 +724,13 @@ extends  /*
             array(
                 '<?php
 class Test extends TestInterface8 implements      /*a*/      /*b*/
-TestInterface1,  /* test */
+    TestInterface1,  /* test */
     TestInterface2,   // test
     '.'
 
 // test
 TestInterface3, /**/
-TestInterface4,
+    TestInterface4,
       TestInterface5,    '.'
         /**/TestInterface6c
 {

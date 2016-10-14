@@ -17,6 +17,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * Fixer for rules defined in PSR2 ¶3.
@@ -24,7 +25,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class SingleImportPerStatementFixer extends AbstractFixer
+final class SingleImportPerStatementFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}
@@ -188,7 +189,8 @@ final class SingleImportPerStatementFixer extends AbstractFixer
             $tokens[$endIndex]->clear();
         }
 
-        $importTokens = Tokens::fromCode('<?php '.implode("\n", $statements));
+        $ending = $this->whitespacesConfig->getLineEnding();
+        $importTokens = Tokens::fromCode('<?php '.implode($ending, $statements));
         $importTokens[0]->clear();
         $importTokens->clearEmptyTokens();
 
@@ -197,6 +199,8 @@ final class SingleImportPerStatementFixer extends AbstractFixer
 
     private function fixMultipleUse(Tokens $tokens, $index, $endIndex)
     {
+        $ending = $this->whitespacesConfig->getLineEnding();
+
         for ($i = $endIndex - 1; $i > $index; --$i) {
             if (!$tokens[$i]->equals(',')) {
                 continue;
@@ -209,13 +213,13 @@ final class SingleImportPerStatementFixer extends AbstractFixer
 
             $indent = $this->detectIndent($tokens, $index);
             if ($tokens[$i - 1]->isWhitespace()) {
-                $tokens[$i - 1]->setContent("\n".$indent);
+                $tokens[$i - 1]->setContent($ending.$indent);
 
                 continue;
             }
 
             if (false === strpos($tokens[$i - 1]->getContent(), "\n")) {
-                $tokens->insertAt($i, new Token(array(T_WHITESPACE, "\n".$indent)));
+                $tokens->insertAt($i, new Token(array(T_WHITESPACE, $ending.$indent)));
             }
         }
     }

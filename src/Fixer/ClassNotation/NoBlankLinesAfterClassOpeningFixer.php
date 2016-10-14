@@ -16,11 +16,12 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
  */
-final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer
+final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}
@@ -69,7 +70,7 @@ final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer
         if (substr_count($content, "\n") > 1) {
             // the final bit of the whitespace must be the next statement's indentation
             $lines = Utils::splitLines($content);
-            $token->setContent("\n".end($lines));
+            $token->setContent($this->whitespacesConfig->getLineEnding().end($lines));
         }
     }
 }

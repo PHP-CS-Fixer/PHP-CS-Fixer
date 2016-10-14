@@ -224,9 +224,12 @@ final class NoUnusedImportsFixer extends AbstractFixer
         if ($nextToken->isWhitespace()) {
             $content = ltrim($nextToken->getContent(), " \t");
 
-            if ($content && "\n" === $content[0]) {
-                $content = substr($content, 1);
-            }
+            $content = preg_replace(
+                "#^\r\n|^\n#",
+                '',
+                $content,
+                1
+            );
 
             $nextToken->setContent($content);
         }

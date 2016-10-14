@@ -15,6 +15,7 @@ namespace PhpCsFixer\Test;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\RuleSet;
+use PhpCsFixer\WhitespacesFixerConfig;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -36,6 +37,7 @@ final class IntegrationCaseFactory
                 '/^
                             --TEST--           \r?\n(?<title>          .*?)
                        \s   --RULESET--        \r?\n(?<ruleset>        .*?)
+                    (?:\s   --CONFIG--         \r?\n(?<config>         .*?))?
                     (?:\s   --SETTINGS--       \r?\n(?<settings>       .*?))?
                     (?:\s   --REQUIREMENTS--   \r?\n(?<requirements>   .*?))?
                     (?:\s   --EXPECT--         \r?\n(?<expect>         .*?\r?\n*))?
@@ -49,6 +51,7 @@ final class IntegrationCaseFactory
 
             $match = array_merge(
                 array(
+                    'config' => null,
                     'settings' => null,
                     'requirements' => null,
                     'expect' => null,
@@ -57,12 +60,14 @@ final class IntegrationCaseFactory
                 $match
             );
 
+            $config = $this->determineConfig($match['config']);
+
             return new IntegrationCase(
                 $file->getRelativePathname(),
                 $match['title'],
                 $this->determineSettings($match['settings']),
                 $this->determineRequirements($match['requirements']),
-                $this->determineFixers($match['ruleset']),
+                $this->determineFixers($match['ruleset'], new WhitespacesFixerConfig($config['indent'], $config['lineEnding'])),
                 $this->determineExpectedCode($match['expect'], $file),
                 $this->determineInputCode($match['input'], $file)
             );
@@ -76,17 +81,34 @@ final class IntegrationCaseFactory
     }
 
     /**
-     * Parses the '--RULESET--' block of a '.test' file and determines what fixers should be used.
+     * Parses the '--CONFIG--' block of a '.test' file.
      *
      * @param string $config
      *
+     * @return array
+     */
+    protected function determineConfig($config)
+    {
+        return $this->parseJson($config, array(
+            'indent' => '    ',
+            'lineEnding' => "\n",
+        ));
+    }
+
+    /**
+     * Parses the '--RULESET--' block of a '.test' file and determines what fixers should be used.
+     *
+     * @param string                 $config
+     * @param WhitespacesFixerConfig $sharedFixerConfig
+     *
      * @return FixerInterface[]
      */
-    protected function determineFixers($config)
+    protected function determineFixers($config, WhitespacesFixerConfig $sharedFixerConfig)
     {
         return FixerFactory::create()
             ->registerBuiltInFixers()
             ->useRuleSet(new RuleSet($this->parseJson($config)))
+            ->setWhitespacesConfig($sharedFixerConfig)
             ->getFixers()
         ;
     }

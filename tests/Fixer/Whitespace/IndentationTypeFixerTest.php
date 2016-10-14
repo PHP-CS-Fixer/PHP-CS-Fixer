@@ -13,47 +13,24 @@
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class NoTabIndentationFixerTest extends AbstractFixerTestCase
+final class IndentationTypeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideIndentationOnly
+     * @dataProvider provideFixCases
      */
-    public function testIndentationOnly($expected, $input = null)
+    public function testFis($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @dataProvider provideIndentationAndAlignment
-     */
-    public function testIndentationAndAlignment($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @dataProvider provideTabInString
-     */
-    public function testTabInString($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @dataProvider provideTabInComment
-     */
-    public function testTabInComment($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideIndentationOnly()
+    public function provideFixCases()
     {
         $cases = array();
 
@@ -148,13 +125,6 @@ final class NoTabIndentationFixerTest extends AbstractFixerTestCase
     \techo NOVEMBER;",
         );
 
-        return $cases;
-    }
-
-    public function provideIndentationAndAlignment()
-    {
-        $cases = array();
-
         $cases[] = array(
             '<?php
          echo OSCAR;',
@@ -176,28 +146,17 @@ final class NoTabIndentationFixerTest extends AbstractFixerTestCase
 \t \t   echo QUEBEC;",
         );
 
-        return $cases;
-    }
+        $cases[] = array(
+            '<?php $x = "a: \t";',
+        );
 
-    public function provideTabInString()
-    {
-        return array(
-            array(
-                '<?php $x = "a: \t";',
-            ),
-            array(
-                "<?php
+        $cases[] = array(
+            "<?php
 \$x = \"
 \tLike
 \ta
 \tdog\";",
-            ),
         );
-    }
-
-    public function provideTabInComment()
-    {
-        $cases = array();
 
         $cases[] = array(
             '<?php
@@ -232,11 +191,11 @@ final class NoTabIndentationFixerTest extends AbstractFixerTestCase
         $cases[] = array(
             '<?php
     /*
-     | Test that tabs in comments are converted to spaces.
+     | Test that tabs in comments are converted to spaces    '."\t".'.
      */',
             "<?php
 \t/*
-\t | Test that tabs in comments are converted to spaces.
+\t | Test that tabs in comments are converted to spaces    \t.
 \t */",
         );
 
@@ -253,23 +212,53 @@ final class NoTabIndentationFixerTest extends AbstractFixerTestCase
 \t */",
         );
 
+        $cases[] = array(
+            "<?php\necho 1;\n?>\r\n\t\$a = ellow;",
+        );
+
         return $cases;
     }
 
     /**
-     * @dataProvider provideTabInInlineHTML
+     * @dataProvider provideMessyWhitespacesCases
      */
-    public function testTabInInlineHTML($expected, $input = null)
+    public function testMessyWhitespaces($expected, $input = null)
     {
-        $this->doTest($expected, $input);
+        $fixer = clone $this->getFixer();
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
     }
 
-    public function provideTabInInlineHTML()
+    public function provideMessyWhitespacesCases()
     {
-        $cases = array(
-            array(
-                "<?php\necho 1;\n?>\r\n\t\$a = ellow;",
-            ),
+        $cases = array();
+
+        $cases[] = array(
+            "<?php
+\t\techo KILO;",
+            '<?php
+        echo KILO;',
+        );
+
+        $cases[] = array(
+            "<?php
+\t\t   echo QUEBEC;",
+            '<?php
+           echo QUEBEC;',
+        );
+
+        $cases[] = array(
+            "<?php
+\t/**
+\t * This variable
+\t * should not be '\t', really!
+\t */",
+            "<?php
+    /**
+     * This variable
+     * should not be '\t', really!
+     */",
         );
 
         return $cases;

@@ -15,11 +15,12 @@ namespace PhpCsFixer\Fixer\ReturnNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class BlankLineBeforeReturnFixer extends AbstractFixer
+final class BlankLineBeforeReturnFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}
@@ -34,6 +35,8 @@ final class BlankLineBeforeReturnFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
+        $lineEnding = $this->whitespacesConfig->getLineEnding();
+
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
@@ -54,12 +57,12 @@ final class BlankLineBeforeReturnFixer extends AbstractFixer
                 $countParts = count($parts);
 
                 if (1 === $countParts) {
-                    $prevToken->setContent(rtrim($prevToken->getContent(), " \t")."\n\n");
+                    $prevToken->setContent(rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding);
                 } elseif (count($parts) <= 2) {
-                    $prevToken->setContent("\n".$prevToken->getContent());
+                    $prevToken->setContent($lineEnding.$prevToken->getContent());
                 }
             } else {
-                $tokens->insertAt($index, new Token(array(T_WHITESPACE, "\n\n")));
+                $tokens->insertAt($index, new Token(array(T_WHITESPACE, $lineEnding.$lineEnding)));
 
                 ++$index;
                 ++$limit;

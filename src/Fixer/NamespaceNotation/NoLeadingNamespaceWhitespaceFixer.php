@@ -15,11 +15,13 @@ namespace PhpCsFixer\Fixer\NamespaceNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Bram Gotink <bram@gotink.me>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer
+final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}
@@ -45,7 +47,7 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer
 
             if (!$beforeNamespace->isWhitespace()) {
                 if (!self::endsWithWhitespace($beforeNamespace->getContent())) {
-                    $tokens->insertAt($index, new Token(array(T_WHITESPACE, "\n")));
+                    $tokens->insertAt($index, new Token(array(T_WHITESPACE, $this->whitespacesConfig->getLineEnding())));
                 }
 
                 continue;
