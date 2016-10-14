@@ -92,7 +92,7 @@ EOT
             unset($phar);
             rename($tempFilename, $localFilename);
 
-            $output->writeln('<info>php-cs-fixer updated.</info>');
+            $output->writeln(sprintf('<info>php-cs-fixer updated</info> (<comment>%s</comment>)', $remoteTag));
         } catch (\Exception $e) {
             if (!$e instanceof \UnexpectedValueException && !$e instanceof \PharException) {
                 throw $e;
