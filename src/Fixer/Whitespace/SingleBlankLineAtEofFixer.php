@@ -18,7 +18,7 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * A file must always end with a UNIX line endings character.
+ * A file must always end with a line endings character.
  *
  * Fixer for rules defined in PSR2 ¶2.2.
  *
@@ -42,21 +42,8 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer implements SharedFix
     {
         $count = $tokens->count();
 
-        if (0 === $count) {
-            return;
-        }
-
-        $token = $tokens[$count - 1];
-        if ($token->isGivenKind(array(T_INLINE_HTML, T_CLOSE_TAG, T_OPEN_TAG))) {
-            return;
-        }
-
-        $ending = $this->sharedConfig->getLineEnding();
-
-        if ($token->isWhitespace()) {
-            $token->setContent($ending);
-        } else {
-            $tokens->insertAt($count, new Token(array(T_WHITESPACE, $ending)));
+        if ($count && !$tokens[$count - 1]->isGivenKind(array(T_INLINE_HTML, T_CLOSE_TAG, T_OPEN_TAG))) {
+            $tokens->ensureWhitespaceAtIndex($count - 1, 1, $this->sharedConfig->getLineEnding());
         }
     }
 
