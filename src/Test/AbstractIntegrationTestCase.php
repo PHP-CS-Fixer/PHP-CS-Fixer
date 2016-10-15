@@ -38,6 +38,8 @@ use Symfony\Component\Finder\Finder;
  * Example test description.
  * --RULESET--
  * {"@PSR2": true, "strict": true}
+ * --CONFIG--*
+ * {"indent": "    ", "lineEnding": "\n"}
  * --SETTINGS--*
  * {"checkPriority": true}
  * --REQUIREMENTS--*

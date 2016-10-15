@@ -17,8 +17,6 @@ use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\RuleSet;
-use PhpCsFixer\SharedFixerConfig;
-use PhpCsFixer\SharedFixerConfigAwareInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;

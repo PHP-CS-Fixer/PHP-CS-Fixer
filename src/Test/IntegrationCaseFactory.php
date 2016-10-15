@@ -15,6 +15,7 @@ namespace PhpCsFixer\Test;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\RuleSet;
+use PhpCsFixer\SharedFixerConfig;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -36,6 +37,7 @@ final class IntegrationCaseFactory
                 '/^
                             --TEST--           \r?\n(?<title>          .*?)
                        \s   --RULESET--        \r?\n(?<ruleset>        .*?)
+                    (?:\s   --CONFIG--         \r?\n(?<config>         .*?))?
                     (?:\s   --SETTINGS--       \r?\n(?<settings>       .*?))?
                     (?:\s   --REQUIREMENTS--   \r?\n(?<requirements>   .*?))?
                     (?:\s   --EXPECT--         \r?\n(?<expect>         .*?\r?\n*))?
@@ -49,6 +51,7 @@ final class IntegrationCaseFactory
 
             $match = array_merge(
                 array(
+                    'config' => null,
                     'settings' => null,
                     'requirements' => null,
                     'expect' => null,
@@ -62,7 +65,7 @@ final class IntegrationCaseFactory
                 $match['title'],
                 $this->determineSettings($match['settings']),
                 $this->determineRequirements($match['requirements']),
-                $this->determineFixers($match['ruleset']),
+                $this->determineFixers($match['ruleset'], $this->determineFixers($match['ruleset'], new SharedFixerConfig($config['indent'], $config['lineEnding']))),
                 $this->determineExpectedCode($match['expect'], $file),
                 $this->determineInputCode($match['input'], $file)
             );
@@ -80,13 +83,29 @@ final class IntegrationCaseFactory
      *
      * @param string $config
      *
+     * @return array
+     */
+    protected function determineConfig($config)
+    {
+        return $this->parseJson($config, array(
+            'indent' => '    ',
+            'lineEnding' => "\n",
+        ));
+    }
+
+    /**
+     * Parses the '--RULESET--' block of a '.test' file and determines what fixers should be used.
+     *
+     * @param string $config
+     *
      * @return FixerInterface[]
      */
-    protected function determineFixers($config)
+    protected function determineFixers($config, SharedFixerConfig $sharedFixerConfig)
     {
         return FixerFactory::create()
             ->registerBuiltInFixers()
             ->useRuleSet(new RuleSet($this->parseJson($config)))
+            ->applySharedConfig($sharedFixerConfig)
             ->getFixers()
         ;
     }
@@ -109,7 +128,8 @@ final class IntegrationCaseFactory
     /**
      * Parses the '--SETTINGS--' block of a '.test' file and determines settings.
      *
-     * @param string $config
+     * @param string            $config
+     * @param SharedFixerConfig $sharedFixerConfig
      *
      * @return array
      */
