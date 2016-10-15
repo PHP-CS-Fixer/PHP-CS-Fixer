@@ -79,7 +79,7 @@ final class IntegrationCaseFactory
     }
 
     /**
-     * Parses the '--RULESET--' block of a '.test' file and determines what fixers should be used.
+     * Parses the '--CONFIG--' block of a '.test' file.
      *
      * @param string $config
      *
