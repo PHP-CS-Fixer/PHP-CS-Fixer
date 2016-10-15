@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
+use PhpCsFixer\SharedFixerConfig;
 use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
@@ -105,6 +106,27 @@ $t = true> 9;       '.'
             array(
                 "<?php\n\n    \$a = 1;\n\n    \$b = 2;",
                 "<?php\n\n    \$a = 1;\n    \n    \$b = 2;",
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->applySharedConfig(new SharedFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return array(
+            array(
+                "<?php\r\n\r\n    \$a = 1;\r\n\r\n    \$b = 2;",
+                "<?php\r\n\r\n    \$a = 1;\r\n    \r\n    \$b = 2;",
             ),
         );
     }
