@@ -13,7 +13,6 @@
 namespace PhpCsFixer;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\SharedFixerConfig;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -26,6 +25,13 @@ abstract class AbstractFixer implements FixerInterface
      * @var SharedFixerConfig
      */
     protected $sharedConfig;
+
+    public function __construct()
+    {
+        if ($this instanceof SharedFixerConfigAwareInterface) {
+            $this->sharedConfig = $this->getDefaultSharedFixerConfig();
+        }
+    }
 
     /**
      * {@inheritdoc}
@@ -75,5 +81,16 @@ abstract class AbstractFixer implements FixerInterface
     public function applySharedConfig(SharedFixerConfig $config)
     {
         $this->sharedConfig = $config;
+    }
+
+    private function getDefaultSharedFixerConfig()
+    {
+        static $defaultSharedFixerConfig = null;
+
+        if (null === $defaultSharedFixerConfig) {
+            $defaultSharedFixerConfig = new SharedFixerConfig('    ', "\n");
+        }
+
+        return $defaultSharedFixerConfig;
     }
 }

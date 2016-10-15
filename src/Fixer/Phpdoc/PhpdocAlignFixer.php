@@ -30,6 +30,8 @@ final class PhpdocAlignFixer extends AbstractFixer
 
     public function __construct()
     {
+        parent::__construct();
+
         // e.g. @param <hint> <$var>
         $paramTag = '(?P<tag>param)\s+(?P<hint>[^$]+?)\s+(?P<var>&?\$[^\s]+)';
         // e.g. @return <hint>

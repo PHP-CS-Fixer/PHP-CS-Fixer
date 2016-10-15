@@ -218,4 +218,49 @@ final class NoTabIndentationFixerTest extends AbstractFixerTestCase
 
         return $cases;
     }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->applySharedConfig(new SharedFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        $cases = array();
+
+        $cases[] = array(
+            "<?php
+\t\techo KILO;",
+            '<?php
+        echo KILO;',
+        );
+
+        $cases[] = array(
+            "<?php
+\t\t   echo QUEBEC;",
+            '<?php
+           echo QUEBEC;',
+        );
+
+        $cases[] = array(
+            "<?php
+\t/**
+\t * This variable
+\t * should not be '\t', really!
+\t */",
+            "<?php
+    /**
+     * This variable
+     * should not be '\t', really!
+     */",
+        );
+
+        return $cases;
+    }
 }

@@ -12,8 +12,6 @@
 
 namespace PhpCsFixer;
 
-use PhpCsFixer\Tokenizer\Tokens;
-
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
