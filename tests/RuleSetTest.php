@@ -79,7 +79,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
             'braces' => true,
             'encoding' => false,
             'strict_comparison' => true,
-            'unix_line_endings' => true,
+            'line_ending' => true,
         ));
 
         $this->assertSameRules(
@@ -87,7 +87,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
                 'braces' => true,
                 'full_opening_tag' => true,
                 'strict_comparison' => true,
-                'unix_line_endings' => true,
+                'line_ending' => true,
             ),
             $ruleSet->getRules()
         );
@@ -125,7 +125,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
                 'strict_comparison' => true,
                 'switch_case_semicolon_to_colon' => true,
                 'switch_case_space' => true,
-                'unix_line_endings' => true,
+                'line_ending' => true,
                 'visibility_required' => true,
             ),
             $ruleSet->getRules()
@@ -163,7 +163,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
                 'single_class_element_per_statement' => array('property'),
                 'switch_case_semicolon_to_colon' => true,
                 'switch_case_space' => true,
-                'unix_line_endings' => true,
+                'line_ending' => true,
                 'visibility_required' => true,
             ),
             $ruleSet->getRules()

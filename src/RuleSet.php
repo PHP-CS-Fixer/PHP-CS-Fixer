@@ -48,7 +48,7 @@ final class RuleSet implements RuleSetInterface
             'single_class_element_per_statement' => array('property'),
             'switch_case_semicolon_to_colon' => true,
             'switch_case_space' => true,
-            'unix_line_endings' => true,
+            'line_ending' => true,
             'visibility_required' => true,
         ),
         '@Symfony' => array(

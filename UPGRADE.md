@@ -92,7 +92,7 @@ function_call_space                            | no_spaces_after_function_name
 indentation                                    | no_tab_indentation
 join_function                                  | no_alias_functions                                | new one fixes more aliases
 line_after_namespace                           | blank_line_after_namespace
-linefeed                                       | unix_line_endings
+linefeed                                       | line_ending                                       | whitespaces type aware
 list_commas                                    | no_trailing_comma_in_list_call
 logical_not_operators_with_spaces              | not_operator_with_space
 logical_not_operators_with_successor_space     | not_operator_with_successor_space

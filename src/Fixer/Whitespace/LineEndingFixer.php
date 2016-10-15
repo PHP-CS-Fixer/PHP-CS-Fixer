@@ -21,8 +21,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author SpacePossum
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class UnixLineEndingsFixer extends AbstractFixer implements SharedFixerConfigAwareInterface
+final class LineEndingFixer extends AbstractFixer implements SharedFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}

@@ -132,7 +132,7 @@ By default, all PSR fixers are run.
 The <comment>--rules</comment> option lets you choose the exact fixers to
 apply (the fixer names must be separated by a comma):
 
-    <info>$ php %command.full_name% /path/to/dir --rules=unix_line_endings,full_opening_tag,indentation_type</info>
+    <info>$ php %command.full_name% /path/to/dir --rules=line_ending,full_opening_tag,indentation_type</info>
 
 You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
 using <comment>-name_of_fixer</comment>:

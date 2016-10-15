@@ -18,10 +18,11 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class UnixLineEndingsFixerTest extends AbstractFixerTestCase
+final class LineEndingFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases

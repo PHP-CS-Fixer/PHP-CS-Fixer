@@ -144,7 +144,7 @@ apply (the fixer names must be separated by a comma):
 
 .. code-block:: bash
 
-    $ php php-cs-fixer.phar fix /path/to/dir --rules=unix_line_endings,full_opening_tag,indentation_type
+    $ php php-cs-fixer.phar fix /path/to/dir --rules=line_ending,full_opening_tag,indentation_type
 
 You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
 using ``-name_of_fixer``:
@@ -266,6 +266,9 @@ Choose from the list of available fixers:
 * **indentation_type** [@PSR2, @Symfony]
    Code MUST use an indent of 4 spaces, and MUST NOT use tabs for
    indenting.
+
+* **line_ending** [@PSR2, @Symfony]
+   All PHP files must use same line ending.
 
 * **linebreak_after_opening_tag**
    Ensure there is no code on the same line as the PHP open tag.
@@ -598,9 +601,6 @@ Choose from the list of available fixers:
 
 * **unary_operator_spaces** [@Symfony]
    Unary operators should be placed adjacent to their operands.
-
-* **unix_line_endings** [@PSR2, @Symfony]
-   All PHP files must use the Unix LF line ending.
 
 * **visibility_required** [@PSR2, @Symfony, @PHP71Migration]
    Visibility MUST be declared on all properties and methods; abstract and

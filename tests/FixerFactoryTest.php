@@ -236,7 +236,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['single_import_per_statement'], $fixers['no_unused_imports']), // tested also in: single_import_per_statement,no_unused_imports.test
             array($fixers['unary_operator_spaces'], $fixers['not_operator_with_space']),
             array($fixers['unary_operator_spaces'], $fixers['not_operator_with_successor_space']),
-            array($fixers['unix_line_endings'], $fixers['single_blank_line_at_eof']),
+            array($fixers['line_ending'], $fixers['single_blank_line_at_eof']),
             array($fixers['simplified_null_return'], $fixers['no_useless_return']), // tested also in: simplified_null_return,no_useless_return.test
             array($fixers['no_useless_return'], $fixers['no_whitespace_in_blank_line']), // tested also in: no_useless_return,no_whitespace_in_blank_line.test
             array($fixers['no_useless_return'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: no_useless_return,no_extra_consecutive_blank_lines.test
