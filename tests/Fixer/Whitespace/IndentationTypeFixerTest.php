@@ -20,7 +20,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  */
-final class NoTabIndentationFixerTest extends AbstractFixerTestCase
+final class IndentationTypeFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases

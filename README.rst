@@ -144,14 +144,14 @@ apply (the fixer names must be separated by a comma):
 
 .. code-block:: bash
 
-    $ php php-cs-fixer.phar fix /path/to/dir --rules=unix_line_endings,full_opening_tag,no_tab_indentation
+    $ php php-cs-fixer.phar fix /path/to/dir --rules=unix_line_endings,full_opening_tag,indentation_type
 
 You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
 using ``-name_of_fixer``:
 
 .. code-block:: bash
 
-    $ php php-cs-fixer.phar fix /path/to/dir --rules=-full_opening_tag,-no_tab_indentation
+    $ php php-cs-fixer.phar fix /path/to/dir --rules=-full_opening_tag,-indentation_type
 
 When using combinations of exact and blacklist fixers, applying exact fixers along with above blacklisted results:
 
@@ -263,6 +263,10 @@ Choose from the list of available fixers:
    Include/Require and file path should be divided with a single space.
    File path should not be placed under brackets.
 
+* **indentation_type** [@PSR2, @Symfony]
+   Code MUST use an indent of 4 spaces, and MUST NOT use tabs for
+   indenting.
+
 * **linebreak_after_opening_tag**
    Ensure there is no code on the same line as the PHP open tag.
 
@@ -361,10 +365,6 @@ Choose from the list of available fixers:
 * **no_spaces_inside_parenthesis** [@PSR2, @Symfony]
    There MUST NOT be a space after the opening parenthesis. There MUST NOT
    be a space before the closing parenthesis.
-
-* **no_tab_indentation** [@PSR2, @Symfony]
-   Code MUST use an indent of 4 spaces, and MUST NOT use tabs for
-   indenting.
 
 * **no_trailing_comma_in_list_call** [@Symfony]
    Remove trailing commas in list function calls.

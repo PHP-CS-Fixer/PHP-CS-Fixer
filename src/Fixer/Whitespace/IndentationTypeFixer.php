@@ -21,7 +21,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class NoTabIndentationFixer extends AbstractFixer implements SharedFixerConfigAwareInterface
+final class IndentationTypeFixer extends AbstractFixer implements SharedFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}
