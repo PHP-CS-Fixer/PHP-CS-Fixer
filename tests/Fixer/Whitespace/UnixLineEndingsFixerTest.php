@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
+use PhpCsFixer\SharedFixerConfig;
 use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
@@ -31,6 +32,53 @@ final class UnixLineEndingsFixerTest extends AbstractFixerTestCase
     }
 
     public function provideCases()
+    {
+        $cases = $this->provideCommonCases();
+
+        $cases[] = array(
+            "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\nAAAAA \n |\nTEST;\n",
+            "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\n", // both cases
+        );
+
+        $cases[] = array(
+            "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\nAAAAA \n |\nTEST;\n",
+            "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \n |\r\nTEST;\r\n", // both cases
+        );
+
+        return $cases;
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->applySharedConfig(new SharedFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        $cases = array_map(function (array $case) {
+            return array_reverse($case);
+        }, $this->provideCommonCases());
+
+        $cases[] = array(
+            "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\r\n",
+            "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\nAAAAA \n |\nTEST;\r\n", // both types
+        );
+
+        $cases[] = array(
+            "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\r\n",
+            "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\nAAAAA \r\n |\nTEST;\n", // both types
+        );
+
+        return $cases;
+    }
+
+    private function provideCommonCases()
     {
         return array(
             // T_OPEN_TAG
@@ -56,20 +104,20 @@ final class UnixLineEndingsFixerTest extends AbstractFixerTestCase
             // T_START_HEREDOC
             array(
                 "<?php \$a = <<<'TEST'\nAA\nTEST;\n",
-                "<?php \$a = <<<'TEST'\r\nAA\nTEST;\n",
+                "<?php \$a = <<<'TEST'\r\nAA\r\nTEST;\r\n",
             ),
             array(
-                "<?php \$a = <<<TEST\nAA\nTEST;\n",
-                "<?php \$a = <<<TEST\r\nAA\nTEST;\n",
+                "<?php \$a = <<<TEST\nAAA\nTEST;\n",
+                "<?php \$a = <<<TEST\r\nAAA\r\nTEST;\r\n",
             ),
             // T_ENCAPSED_AND_WHITESPACE
             array(
-                "<?php \$a = <<<'TEST'\nAA 1\r\n \$b\nTEST;\n",
-                "<?php \$a = <<<'TEST'\r\nAA 1\r\n \$b\r\nTEST;\n",
+                "<?php \$a = <<<'TEST'\nAAAA 1\n \$b\nTEST;\n",
+                "<?php \$a = <<<'TEST'\r\nAAAA 1\r\n \$b\r\nTEST;\r\n",
             ),
             array(
-                "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\nAA \r\n |\nTEST;\n",
-                "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\nAA \r\n |\r\nTEST;\n",
+                "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\nAAAAA \n |\nTEST;\n",
+                "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\r\n",
             ),
             // !T_INLINE_HTML
             array(
