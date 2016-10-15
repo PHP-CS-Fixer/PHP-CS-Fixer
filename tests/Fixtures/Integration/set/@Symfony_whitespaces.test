@@ -1,5 +1,5 @@
 --TEST--
-Integration of @Symfony.
+Integration of @Symfony [whitespace version].
 --RULESET--
 {"@Symfony": true}
 --CONFIG--
