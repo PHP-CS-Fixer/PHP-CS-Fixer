@@ -1,13 +1,13 @@
 --TEST--
 PHP 7.1 test.
---CONFIG--
+--RULESET--
 {
     "@Symfony": true
 }
 --SETTINGS--
-checkPriority=false
+{"checkPriority": false}
 --REQUIREMENTS--
-php=7.1
+{"php": 7.1}
 --EXPECT--
 <?php
 

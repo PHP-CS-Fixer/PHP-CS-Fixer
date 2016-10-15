@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: no_empty_statement,combine_consecutive_unsets.
---CONFIG--
+--RULESET--
 {"no_empty_statement": true, "combine_consecutive_unsets": true}
 --EXPECT--
 <?php

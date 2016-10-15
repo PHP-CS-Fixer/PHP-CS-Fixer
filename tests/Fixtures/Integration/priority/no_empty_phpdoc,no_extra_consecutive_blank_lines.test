@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: no_empty_phpdoc,no_extra_consecutive_blank_lines.
---CONFIG--
+--RULESET--
 {"no_empty_phpdoc": true, "no_extra_consecutive_blank_lines": true}
 --EXPECT--
 <?php

@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: blank_line_after_opening_tag,no_blank_lines_before_namespace.
---CONFIG--
+--RULESET--
 {"blank_line_after_opening_tag": true, "no_blank_lines_before_namespace": true}
 --EXPECT--
 <?php

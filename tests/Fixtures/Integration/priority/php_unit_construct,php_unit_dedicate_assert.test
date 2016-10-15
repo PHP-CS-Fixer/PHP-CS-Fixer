@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: php_unit_construct,php_unit_dedicate_assert.
---CONFIG--
+--RULESET--
 {"php_unit_construct": true, "php_unit_dedicate_assert": true}
 --EXPECT--
 <?php

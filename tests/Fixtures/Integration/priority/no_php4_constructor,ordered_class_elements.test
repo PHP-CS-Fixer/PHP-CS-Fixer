@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: no_php4_constructor,ordered_class_elements.
---CONFIG--
+--RULESET--
 {"no_php4_constructor": true, "ordered_class_elements": true}
 --EXPECT--
 <?php

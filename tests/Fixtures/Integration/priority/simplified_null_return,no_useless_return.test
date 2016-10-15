@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: simplified_null_return,no_useless_return,
---CONFIG--
+--RULESET--
 {"simplified_null_return": true, "no_useless_return": true}
 --EXPECT--
 <?php

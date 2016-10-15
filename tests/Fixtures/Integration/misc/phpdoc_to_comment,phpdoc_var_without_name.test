@@ -1,12 +1,12 @@
 --TEST--
 Integration of fixers: phpdoc_to_comment,phpdoc_var_without_name.
---CONFIG--
+--RULESET--
 {
     "phpdoc_to_comment": true,
     "phpdoc_var_without_name": true
 }
 --SETTINGS--
-checkPriority=false
+{"checkPriority": false}
 --EXPECT--
 <?php
 

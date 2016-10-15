@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: no_empty_phpdoc,no_trailing_whitespace.
---CONFIG--
+--RULESET--
 {"no_empty_phpdoc": true, "no_trailing_whitespace": true}
 --EXPECT--
 <?php

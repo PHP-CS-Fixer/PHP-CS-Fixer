@@ -36,13 +36,12 @@ use Symfony\Component\Finder\Finder;
  *
  * --TEST--
  * Example test description.
- * --CONFIG--
+ * --RULESET--
  * {"@PSR2": true, "strict": true}
  * --SETTINGS--*
- * checkPriority=true
+ * {"checkPriority": true}
  * --REQUIREMENTS--*
- * php=5.4**
- * hhvm=false***
+ * {"php": 5.4**, "hhvm": false***}
  * --EXPECT--
  * Expected code after fixing
  * --INPUT--*
@@ -127,10 +126,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             }
 
             $tests[] = array(
-                $factory->create(
-                    $file->getRelativePathname(),
-                    file_get_contents($file->getRealpath())
-                ),
+                $factory->create($file),
             );
         }
 

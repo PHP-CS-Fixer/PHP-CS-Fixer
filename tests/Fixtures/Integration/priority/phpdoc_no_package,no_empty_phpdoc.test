@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: no_empty_phpdoc,phpdoc_no_package.
---CONFIG--
+--RULESET--
 {"phpdoc_no_package": true, "no_empty_phpdoc": true}
 --EXPECT--
 <?php

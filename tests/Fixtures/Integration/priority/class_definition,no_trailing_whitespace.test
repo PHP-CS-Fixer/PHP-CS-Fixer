@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: class_definition, no_trailing_whitespace.
---CONFIG--
+--RULESET--
 {"class_definition": true, "no_trailing_whitespace": true}
 --EXPECT--
 <?php

@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: no_empty_statement,space_after_semicolon.
---CONFIG--
+--RULESET--
 {"no_empty_statement": true, "space_after_semicolon": true}
 --EXPECT--
 <?php

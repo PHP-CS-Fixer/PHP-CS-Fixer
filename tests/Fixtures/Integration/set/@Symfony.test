@@ -1,9 +1,9 @@
 --TEST--
 Integration of @Symfony.
---CONFIG--
+--RULESET--
 {"@Symfony": true}
 --SETTINGS--
-checkPriority=false
+{"checkPriority": false}
 --EXPECT--
 <?php
 

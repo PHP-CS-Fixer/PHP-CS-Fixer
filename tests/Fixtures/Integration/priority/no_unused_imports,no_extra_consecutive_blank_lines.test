@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: no_unused_imports,no_extra_consecutive_blank_lines.
---CONFIG--
+--RULESET--
 {"no_unused_imports": true, "no_extra_consecutive_blank_lines": true}
 --EXPECT--
 <?php

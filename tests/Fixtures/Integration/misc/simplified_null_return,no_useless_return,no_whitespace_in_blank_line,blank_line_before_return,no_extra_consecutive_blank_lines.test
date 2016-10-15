@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: simplified_null_return,no_useless_return,no_whitespace_in_blank_line,blank_line_before_return,no_extra_consecutive_blank_lines.
---CONFIG--
+--RULESET--
 {
     "simplified_null_return": true,
     "no_useless_return": true,

@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: no_short_bool_cast,cast_spaces.
---CONFIG--
+--RULESET--
 {"no_short_bool_cast": true, "cast_spaces": true}
 --EXPECT--
 <?php

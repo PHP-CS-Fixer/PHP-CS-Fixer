@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: combine_consecutive_unsets,no_whitespace_in_blank_line.
---CONFIG--
+--RULESET--
 {"combine_consecutive_unsets": true, "no_whitespace_in_blank_line": true}
 --EXPECT--
 <?php

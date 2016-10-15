@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: ordered_class_elements,method_separation.
---CONFIG--
+--RULESET--
 {"ordered_class_elements": true, "method_separation": true}
 --EXPECT--
 <?php

@@ -1,9 +1,9 @@
 --TEST--
 Integration of fixers: short_array_syntax,unalign_equals.
---CONFIG--
+--RULESET--
 {"short_array_syntax": true, "unalign_equals": true}
 --REQUIREMENTS--
-php=5.4
+{"php": 5.4}
 --EXPECT--
 <?php
 $a = [];

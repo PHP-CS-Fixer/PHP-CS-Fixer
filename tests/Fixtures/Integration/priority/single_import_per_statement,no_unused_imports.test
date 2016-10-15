@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: single_import_per_statement,no_unused_imports.
---CONFIG--
+--RULESET--
 {"single_import_per_statement": true, "no_unused_imports": true}
 --EXPECT--
 <?php

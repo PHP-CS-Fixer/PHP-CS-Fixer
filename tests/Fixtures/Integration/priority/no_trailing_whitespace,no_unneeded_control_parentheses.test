@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: no_trailing_whitespace,no_unneeded_control_parentheses.
---CONFIG--
+--RULESET--
 {"no_trailing_whitespace": true, "no_unneeded_control_parentheses": true}
 --EXPECT--
 <?php
