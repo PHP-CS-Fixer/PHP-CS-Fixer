@@ -55,14 +55,6 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return SharedFixerConfig
-     */
-    protected function createSharedFixerConfig()
-    {
-        return new SharedFixerConfig('    ', "\n");
-    }
-
-    /**
      * @return FixerInterface
      */
     protected function getFixer()
@@ -88,10 +80,6 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
         }
 
         $this->fixer = $fixers[0];
-
-        if ($this->fixer instanceof SharedFixerConfigAwareInterface) {
-            $this->fixer->applySharedConfig($this->createSharedFixerConfig());
-        }
 
         return $this->fixer;
     }
