@@ -19,6 +19,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Fixer for rules defined in PSR2 ¶2.2.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author SpacePossum
  */
 final class UnixLineEndingsFixer extends AbstractFixer
 {
@@ -35,8 +36,21 @@ final class UnixLineEndingsFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        // [Structure] Use the UNIX line ending character (0x0A) to end lines
-        $tokens->setCode(str_replace("\r\n", "\n", $tokens->generateCode()));
+        for ($index = 0, $count = count($tokens); $index < $count; ++$index) {
+            if ($tokens[$index]->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
+                if ("\r\n" === substr($tokens[$index]->getContent(), -2) && $tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(T_END_HEREDOC)) {
+                    $tokens[$index]->setContent(substr($tokens[$index]->getContent(), 0, -2)."\n");
+                }
+
+                continue;
+            }
+
+            if (!$tokens[$index]->isGivenKind(array(T_OPEN_TAG, T_WHITESPACE, T_COMMENT, T_DOC_COMMENT, T_START_HEREDOC))) {
+                continue;
+            }
+
+            $tokens[$index]->setContent(str_replace("\r\n", "\n", $tokens[$index]->getContent()));
+        }
     }
 
     /**
