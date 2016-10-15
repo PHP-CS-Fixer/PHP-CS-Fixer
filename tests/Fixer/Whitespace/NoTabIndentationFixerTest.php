@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
+use PhpCsFixer\SharedFixerConfig;
 use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
@@ -22,38 +23,14 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class NoTabIndentationFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideIndentationOnly
+     * @dataProvider provideFixCases
      */
-    public function testIndentationOnly($expected, $input = null)
+    public function testFis($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @dataProvider provideIndentationAndAlignment
-     */
-    public function testIndentationAndAlignment($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @dataProvider provideTabInString
-     */
-    public function testTabInString($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @dataProvider provideTabInComment
-     */
-    public function testTabInComment($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideIndentationOnly()
+    public function provideFixCases()
     {
         $cases = array();
 
@@ -148,13 +125,6 @@ final class NoTabIndentationFixerTest extends AbstractFixerTestCase
     \techo NOVEMBER;",
         );
 
-        return $cases;
-    }
-
-    public function provideIndentationAndAlignment()
-    {
-        $cases = array();
-
         $cases[] = array(
             '<?php
          echo OSCAR;',
@@ -176,28 +146,17 @@ final class NoTabIndentationFixerTest extends AbstractFixerTestCase
 \t \t   echo QUEBEC;",
         );
 
-        return $cases;
-    }
+        $cases[] = array(
+            '<?php $x = "a: \t";',
+        );
 
-    public function provideTabInString()
-    {
-        return array(
-            array(
-                '<?php $x = "a: \t";',
-            ),
-            array(
-                "<?php
+        $cases[] = array(
+            "<?php
 \$x = \"
 \tLike
 \ta
 \tdog\";",
-            ),
         );
-    }
-
-    public function provideTabInComment()
-    {
-        $cases = array();
 
         $cases[] = array(
             '<?php
@@ -232,11 +191,11 @@ final class NoTabIndentationFixerTest extends AbstractFixerTestCase
         $cases[] = array(
             '<?php
     /*
-     | Test that tabs in comments are converted to spaces.
+     | Test that tabs in comments are converted to spaces    '."\t".'.
      */',
             "<?php
 \t/*
-\t | Test that tabs in comments are converted to spaces.
+\t | Test that tabs in comments are converted to spaces    \t.
 \t */",
         );
 
@@ -253,23 +212,8 @@ final class NoTabIndentationFixerTest extends AbstractFixerTestCase
 \t */",
         );
 
-        return $cases;
-    }
-
-    /**
-     * @dataProvider provideTabInInlineHTML
-     */
-    public function testTabInInlineHTML($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideTabInInlineHTML()
-    {
-        $cases = array(
-            array(
-                "<?php\necho 1;\n?>\r\n\t\$a = ellow;",
-            ),
+        $cases[] = array(
+            "<?php\necho 1;\n?>\r\n\t\$a = ellow;",
         );
 
         return $cases;
