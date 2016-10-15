@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\SharedFixerConfigAwareInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -24,7 +25,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class SingleBlankLineAtEofFixer extends AbstractFixer
+final class SingleBlankLineAtEofFixer extends AbstractFixer implements SharedFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}
@@ -50,11 +51,12 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer
             return;
         }
 
+        $ending = $this->sharedConfig->getLineEnding();
+
         if ($token->isWhitespace()) {
-            $lineBreak = false === strrpos($token->getContent(), "\r") ? "\n" : "\r\n";
-            $token->setContent($lineBreak);
+            $token->setContent($ending);
         } else {
-            $tokens->insertAt($count, new Token(array(T_WHITESPACE, "\n")));
+            $tokens->insertAt($count, new Token(array(T_WHITESPACE, $ending)));
         }
     }
 
