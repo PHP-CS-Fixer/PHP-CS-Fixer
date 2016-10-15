@@ -1,0 +1,71 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-27T12:18:05Z
+
+then we need a second fixer (risky one) that will fix all the rest...
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-27T13:16:30Z
+
+>then we need a second fixer (risky one) that will fix all the rest...
+
+I think this is a bug fix, so do not need such a fixer for BC reasons. Do you think someone really wants it?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-09-27T13:20:11Z
+
+> Do you think someone really wants it?
+
+I know at least one: me!
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-27T13:34:28Z
+
+me too .actually most of community. the only thing is that it's risky.
+
+we have exactly the same problem with trailing spaces. PSR requires to not have them in non-empty lines - even if it's part of string var. but then it modifies a content, so it's risky. but still, most of us wanna follow that.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-27T13:35:27Z
+
+It's bugfix but also shrinking functionality. Now one cannot fix linefeed inside var content. could you prepare the new fixer as well please? it's really important for us ! :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-27T13:49:35Z
+
+alrighty, would a config flag work as well or you really want a diff. fixer?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-27T23:05:58Z
+
+I was thinking about the config as well, but then you need to dynamically say if the fixer is risky or not depends on config.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-28T11:35:21Z
+
+I'm kind of happy with this PR as is, but if we need another fixer please provide names for both fixers and I'll update this PR :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-28T19:07:20Z
+
+as discussed it could be an option. the only thing to keep in mind is risky vs not risky... depends on used options
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-15T18:58:43Z
+
+OK, I treat it as bugfix after thinking about it. Missing functionality is raised here: #2224
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-15T19:01:58Z
+
+:+1:
