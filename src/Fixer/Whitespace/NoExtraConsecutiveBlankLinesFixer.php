@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\SharedFixerConfigAwareInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -23,7 +24,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum <possumfromspace@gmail.com>
  */
-final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer
+final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements SharedFixerConfigAwareInterface
 {
     /**
      * @var array<int, string> key is token id, value is name of callback
@@ -199,7 +200,7 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer
             }
 
             if ($i !== $last && $count < 3) {
-                $content .= "\n";
+                $content .= $this->sharedConfig->getLineEnding();
             }
         }
 
@@ -265,11 +266,13 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer
                 continue;
             }
 
+            $ending = $this->sharedConfig->getLineEnding();
+
             $pos = strrpos($content, "\n");
             if ($pos + 2 < strlen($content)) { // preserve indenting where possible
-                $this->tokens[$i]->setContent("\n".substr($content, $pos + 1));
+                $this->tokens[$i]->setContent($ending.substr($content, $pos + 1));
             } else {
-                $this->tokens[$i]->setContent("\n");
+                $this->tokens[$i]->setContent($ending);
             }
         }
     }

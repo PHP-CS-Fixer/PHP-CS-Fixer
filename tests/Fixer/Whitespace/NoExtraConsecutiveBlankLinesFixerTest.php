@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
+use PhpCsFixer\SharedFixerConfig;
 use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
@@ -805,5 +806,41 @@ $c
         }
 
         return implode("\n", $lines);
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($config, $expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->applySharedConfig(new SharedFixerConfig("\t", "\r\n"));
+
+        if (null !== $config) {
+            $fixer->configure(array($config));
+        }
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return array(
+            array(
+                null,
+                "<?php\r\nuse AAA;\r\n\r\nuse BBB;\r\n\r\n",
+                "<?php\r\nuse AAA;\r\n\r\n\r\n\r\nuse BBB;\r\n\r\n",
+            ),
+            array(
+                'parenthesis_brace_block',
+                "<?php is_int(\r\n1);",
+                "<?php is_int(\r\n\r\n\r\n\r\n1);",
+            ),
+            array(
+                'square_brace_block',
+                "<?php \$c = \$b[0];\r\n\r\n\r\n\$a = [\r\n   1,\r\n2];\r\necho 1;\r\n\$b = [];\r\n\r\n\r\n//a\r\n",
+                "<?php \$c = \$b[0];\r\n\r\n\r\n\$a = [\r\n\r\n   1,\r\n2];\r\necho 1;\r\n\$b = [];\r\n\r\n\r\n//a\r\n",
+            ),
+        );
     }
 }
