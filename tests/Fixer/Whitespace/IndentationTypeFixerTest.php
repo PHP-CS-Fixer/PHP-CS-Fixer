@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
-use PhpCsFixer\SharedFixerConfig;
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -225,7 +225,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
     public function testMessyWhitespaces($expected, $input = null)
     {
         $fixer = clone $this->getFixer();
-        $fixer->applySharedConfig(new SharedFixerConfig("\t", "\r\n"));
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input, null, $fixer);
     }

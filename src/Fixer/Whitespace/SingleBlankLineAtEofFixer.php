@@ -13,8 +13,8 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\SharedFixerConfigAwareInterface;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * A file must always end with a line endings character.
@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class SingleBlankLineAtEofFixer extends AbstractFixer implements SharedFixerConfigAwareInterface
+final class SingleBlankLineAtEofFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}

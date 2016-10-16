@@ -15,7 +15,7 @@ namespace PhpCsFixer\Test;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\RuleSet;
-use PhpCsFixer\SharedFixerConfig;
+use PhpCsFixer\WhitespacesFixerConfig;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -60,12 +60,14 @@ final class IntegrationCaseFactory
                 $match
             );
 
+            $config = $this->determineConfig($match['config']);
+
             return new IntegrationCase(
                 $file->getRelativePathname(),
                 $match['title'],
                 $this->determineSettings($match['settings']),
                 $this->determineRequirements($match['requirements']),
-                $this->determineFixers($match['ruleset'], $this->determineFixers($match['ruleset'], new SharedFixerConfig($config['indent'], $config['lineEnding']))),
+                $this->determineFixers($match['ruleset'], new WhitespacesFixerConfig($config['indent'], $config['lineEnding'])),
                 $this->determineExpectedCode($match['expect'], $file),
                 $this->determineInputCode($match['input'], $file)
             );
@@ -100,12 +102,12 @@ final class IntegrationCaseFactory
      *
      * @return FixerInterface[]
      */
-    protected function determineFixers($config, SharedFixerConfig $sharedFixerConfig)
+    protected function determineFixers($config, WhitespacesFixerConfig $sharedFixerConfig)
     {
         return FixerFactory::create()
             ->registerBuiltInFixers()
             ->useRuleSet(new RuleSet($this->parseJson($config)))
-            ->applySharedConfig($sharedFixerConfig)
+            ->setWhitespacesConfig($sharedFixerConfig)
             ->getFixers()
         ;
     }
@@ -128,8 +130,8 @@ final class IntegrationCaseFactory
     /**
      * Parses the '--SETTINGS--' block of a '.test' file and determines settings.
      *
-     * @param string            $config
-     * @param SharedFixerConfig $sharedFixerConfig
+     * @param string                 $config
+     * @param WhitespacesFixerConfig $sharedFixerConfig
      *
      * @return array
      */

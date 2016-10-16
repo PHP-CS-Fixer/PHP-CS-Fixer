@@ -13,16 +13,16 @@
 namespace PhpCsFixer\Fixer\NamespaceNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\SharedFixerConfigAwareInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * Fixer for rules defined in PSR2 ¶3.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class BlankLineAfterNamespaceFixer extends AbstractFixer implements SharedFixerConfigAwareInterface
+final class BlankLineAfterNamespaceFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}

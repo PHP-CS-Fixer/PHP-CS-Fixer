@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
-use PhpCsFixer\SharedFixerConfig;
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @internal
@@ -801,7 +801,7 @@ $c
     public function testMessyWhitespaces($config, $expected, $input = null)
     {
         $fixer = clone $this->getFixer();
-        $fixer->applySharedConfig(new SharedFixerConfig("\t", "\r\n"));
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         if (null !== $config) {
             $fixer->configure(array($config));

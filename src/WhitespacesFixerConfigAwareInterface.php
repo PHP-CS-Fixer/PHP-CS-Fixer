@@ -15,7 +15,7 @@ namespace PhpCsFixer;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-interface SharedFixerConfigAwareInterface
+interface WhitespacesFixerConfigAwareInterface
 {
-    public function applySharedConfig(SharedFixerConfig $config);
+    public function setWhitespacesConfig(WhitespacesFixerConfig $config);
 }

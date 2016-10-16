@@ -22,14 +22,14 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 abstract class AbstractFixer implements FixerInterface
 {
     /**
-     * @var SharedFixerConfig
+     * @var WhitespacesFixerConfig
      */
     protected $sharedConfig;
 
     public function __construct()
     {
-        if ($this instanceof SharedFixerConfigAwareInterface) {
-            $this->sharedConfig = $this->getDefaultSharedFixerConfig();
+        if ($this instanceof WhitespacesFixerConfigAwareInterface) {
+            $this->sharedConfig = $this->getDefaultWhitespacesFixerConfig();
         }
     }
 
@@ -78,19 +78,19 @@ abstract class AbstractFixer implements FixerInterface
         return true;
     }
 
-    public function applySharedConfig(SharedFixerConfig $config)
+    public function setWhitespacesConfig(WhitespacesFixerConfig $config)
     {
         $this->sharedConfig = $config;
     }
 
-    private function getDefaultSharedFixerConfig()
+    private function getDefaultWhitespacesFixerConfig()
     {
-        static $defaultSharedFixerConfig = null;
+        static $defaultWhitespacesFixerConfig = null;
 
-        if (null === $defaultSharedFixerConfig) {
-            $defaultSharedFixerConfig = new SharedFixerConfig('    ', "\n");
+        if (null === $defaultWhitespacesFixerConfig) {
+            $defaultWhitespacesFixerConfig = new WhitespacesFixerConfig('    ', "\n");
         }
 
-        return $defaultSharedFixerConfig;
+        return $defaultWhitespacesFixerConfig;
     }
 }

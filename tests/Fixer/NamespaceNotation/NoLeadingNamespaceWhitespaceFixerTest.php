@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\Fixer\NamespaceNotation;
 
-use PhpCsFixer\SharedFixerConfig;
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Bram Gotink <bram@gotink.me>
@@ -123,7 +123,7 @@ namespace Test15a;namespace Test15b;',
     public function testMessyWhitespaces($expected, $input = null)
     {
         $fixer = clone $this->getFixer();
-        $fixer->applySharedConfig(new SharedFixerConfig("\t", "\r\n"));
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input, null, $fixer);
     }

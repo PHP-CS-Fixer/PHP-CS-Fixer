@@ -53,11 +53,11 @@ final class FixerFactory
         return new self();
     }
 
-    public function applySharedConfig(SharedFixerConfig $config)
+    public function setWhitespacesConfig(WhitespacesFixerConfig $config)
     {
         foreach ($this->fixers as $fixer) {
-            if ($fixer instanceof SharedFixerConfigAwareInterface) {
-                $fixer->applySharedConfig($config);
+            if ($fixer instanceof WhitespacesFixerConfigAwareInterface) {
+                $fixer->setWhitespacesConfig($config);
             }
         }
 

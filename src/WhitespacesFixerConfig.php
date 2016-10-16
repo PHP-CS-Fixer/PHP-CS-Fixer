@@ -15,7 +15,7 @@ namespace PhpCsFixer;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class SharedFixerConfig
+final class WhitespacesFixerConfig
 {
     private $indent;
     private $lineEnding;

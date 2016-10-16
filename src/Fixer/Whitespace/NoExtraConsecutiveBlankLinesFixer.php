@@ -14,17 +14,17 @@ namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\SharedFixerConfigAwareInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum <possumfromspace@gmail.com>
  */
-final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements SharedFixerConfigAwareInterface
+final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
      * @var array<int, string> key is token id, value is name of callback
