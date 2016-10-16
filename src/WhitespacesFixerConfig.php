@@ -22,6 +22,14 @@ final class WhitespacesFixerConfig
 
     public function __construct($indent = '    ', $lineEnding = "\n")
     {
+        if (!in_array($indent, array('  ', '    ', "\t"), true)) {
+            throw new \InvalidArgumentException('Invalid "indent" param.');
+        }
+
+        if (!in_array($lineEnding, array("\n", "\r\n"), true)) {
+            throw new \InvalidArgumentException('Invalid "lineEnding" param.');
+        }
+
         $this->indent = $indent;
         $this->lineEnding = $lineEnding;
     }
