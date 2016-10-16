@@ -38,7 +38,7 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesFixerCon
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $ending = $this->sharedConfig->getLineEnding();
+        $ending = $this->whitespacesConfig->getLineEnding();
 
         for ($index = 0, $count = count($tokens); $index < $count; ++$index) {
             $token = $tokens[$index];

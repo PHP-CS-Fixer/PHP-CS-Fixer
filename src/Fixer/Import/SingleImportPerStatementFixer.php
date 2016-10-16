@@ -189,7 +189,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
             $tokens[$endIndex]->clear();
         }
 
-        $ending = $this->sharedConfig->getLineEnding();
+        $ending = $this->whitespacesConfig->getLineEnding();
         $importTokens = Tokens::fromCode('<?php '.implode($ending, $statements));
         $importTokens[0]->clear();
         $importTokens->clearEmptyTokens();
@@ -199,7 +199,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
 
     private function fixMultipleUse(Tokens $tokens, $index, $endIndex)
     {
-        $ending = $this->sharedConfig->getLineEnding();
+        $ending = $this->whitespacesConfig->getLineEnding();
 
         for ($i = $endIndex - 1; $i > $index; --$i) {
             if (!$tokens[$i]->equals(',')) {

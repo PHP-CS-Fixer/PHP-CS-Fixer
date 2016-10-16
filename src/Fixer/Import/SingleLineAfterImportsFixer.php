@@ -40,7 +40,7 @@ final class SingleLineAfterImportsFixer extends AbstractFixer implements Whitesp
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $ending = $this->sharedConfig->getLineEnding();
+        $ending = $this->whitespacesConfig->getLineEnding();
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokensAnalyzer->getImportUseIndexes() as $index) {

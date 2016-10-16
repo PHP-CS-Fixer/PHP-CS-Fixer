@@ -37,7 +37,7 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $ending = $this->sharedConfig->getLineEnding();
+        $ending = $this->whitespacesConfig->getLineEnding();
         $lastIndex = $tokens->count() - 1;
 
         for ($index = $lastIndex; $index >= 0; --$index) {

@@ -200,7 +200,7 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements W
             }
 
             if ($i !== $last && $count < 3) {
-                $content .= $this->sharedConfig->getLineEnding();
+                $content .= $this->whitespacesConfig->getLineEnding();
             }
         }
 
@@ -266,7 +266,7 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements W
                 continue;
             }
 
-            $ending = $this->sharedConfig->getLineEnding();
+            $ending = $this->whitespacesConfig->getLineEnding();
 
             $pos = strrpos($content, "\n");
             if ($pos + 2 < strlen($content)) { // preserve indenting where possible

@@ -46,7 +46,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesFix
                 }
 
                 // change indent to expected one
-                $content = preg_replace('/^    /m', $this->sharedConfig->getIndent(), $content);
+                $content = preg_replace('/^    /m', $this->whitespacesConfig->getIndent(), $content);
 
                 $tokens[$index]->setContent($content);
                 continue;
@@ -57,7 +57,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesFix
                 $content = preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $token->getContent());
 
                 // change indent to expected one
-                $content = str_replace('    ', $this->sharedConfig->getIndent(), $content);
+                $content = str_replace('    ', $this->whitespacesConfig->getIndent(), $content);
 
                 $tokens[$index]->setContent($content);
             }

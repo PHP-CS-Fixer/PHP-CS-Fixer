@@ -62,7 +62,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
                     $lines[$l] = preg_replace('/^\h+$/', '', $lines[$l]);
                 }
 
-                $token->setContent(implode($this->sharedConfig->getLineEnding(), $lines));
+                $token->setContent(implode($this->whitespacesConfig->getLineEnding(), $lines));
             }
         }
     }

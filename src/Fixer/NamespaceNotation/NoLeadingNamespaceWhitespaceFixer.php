@@ -47,7 +47,7 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
 
             if (!$beforeNamespace->isWhitespace()) {
                 if (!self::endsWithWhitespace($beforeNamespace->getContent())) {
-                    $tokens->insertAt($index, new Token(array(T_WHITESPACE, $this->sharedConfig->getLineEnding())));
+                    $tokens->insertAt($index, new Token(array(T_WHITESPACE, $this->whitespacesConfig->getLineEnding())));
                 }
 
                 continue;

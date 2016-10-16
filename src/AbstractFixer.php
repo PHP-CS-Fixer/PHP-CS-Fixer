@@ -24,12 +24,12 @@ abstract class AbstractFixer implements FixerInterface
     /**
      * @var WhitespacesFixerConfig
      */
-    protected $sharedConfig;
+    protected $whitespacesConfig;
 
     public function __construct()
     {
         if ($this instanceof WhitespacesFixerConfigAwareInterface) {
-            $this->sharedConfig = $this->getDefaultWhitespacesFixerConfig();
+            $this->whitespacesConfig = $this->getDefaultWhitespacesFixerConfig();
         }
     }
 
@@ -80,7 +80,7 @@ abstract class AbstractFixer implements FixerInterface
 
     public function setWhitespacesConfig(WhitespacesFixerConfig $config)
     {
-        $this->sharedConfig = $config;
+        $this->whitespacesConfig = $config;
     }
 
     private function getDefaultWhitespacesFixerConfig()
