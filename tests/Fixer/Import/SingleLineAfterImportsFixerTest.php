@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Import;
 
+use PhpCsFixer\SharedFixerConfig;
 use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
@@ -415,6 +416,31 @@ namespace Z\B;
 use const some\test\{ConstA, ConstB, ConstC};
 use A\B\C;
 ',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->applySharedConfig(new SharedFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return array(
+            array(
+                "<?php namespace A\B;\r\n    use D;\r\n\r\n    class C {}",
+                "<?php namespace A\B;\r\n    use D;\r\n\r\n\r\n    class C {}",
+            ),
+            array(
+                "<?php namespace A\B;\r\n    use D;\r\n\r\n    class C {}",
+                "<?php namespace A\B;\r\n    use D;\r\n    class C {}",
             ),
         );
     }
