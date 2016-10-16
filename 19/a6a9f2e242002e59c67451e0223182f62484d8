@@ -1,0 +1,133 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-22T07:51:07Z
+
+nice idea for a fixer :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-23T19:22:31Z
+
+:+1: but please move to `symfony` ruleset
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-07-23T19:36:29Z
+
+Moved.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-23T19:45:12Z
+
+You don't need to squash the commits. I do it during merging.
+
+Please fix CI.
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-07-23T19:59:24Z
+
+I think we should use another name instead "no_spaces_between_offset", since this fixer don't removes only spaces between offsets, also the space between an offset and another valid expression. What about "no_offset_surrounding_spaces" or something similar?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-23T20:29:43Z
+
+what about `no_spaces_outside_offset` ?
+or even combine it with `no_spaces_inside_offset` and create options which spaces should be removed, all by default.
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-07-23T20:36:56Z
+
+Combining both fixers seems to be the better approach, but how can name the resultant fixer? "no_offset_spaces"?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-23T20:38:29Z
+
+or `no_spaces_around_offset`
+I'm fine for both
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-07-23T23:12:03Z
+
+If I allow the curly braces syntax for the "inside" fixer, it throws `InvalidArgumentException: Invalid param $startIndex - not a proper block start`. How can I avoid it?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-24T08:49:09Z
+
+>If I allow the curly braces syntax for the "inside" fixer, it throws InvalidArgumentException: Invalid param $startIndex - not a proper block start. How can I avoid it?
+
+Its because the block type is not added yet to the types for which one can search the end and start. I've added there in this PR: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2093
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-25T07:49:59Z
+
+:+1: except minor comment and if green after dep merge
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-25T07:54:03Z
+
+please update the https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/UPGRADE.md as well since the fixer is renamed/replaced.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-25T07:55:39Z
+
+that was my first thought, but the replaced fixer was introduced on 2.x (even not 1.12), which is not yet released ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-07-25T07:59:36Z
+
+ha, very well! sorry people, Monday morning Im gonna get some coffee and stop spamming wrong review suggestions ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-25T18:20:09Z
+
+please rebase
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-07-25T21:32:06Z
+
+Rebased.
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-07-27T02:44:16Z
+
+CI failures are not related.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-07-27T09:39:36Z
+
+restarted
+
+---------------------------------------------------------------------------
+
+by phansys at 2016-09-16T16:38:22Z
+
+Is there something preventing to merge this PR?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-23T06:13:59Z
+
+tested on the following code bases;
+- Symfony master, one valid fix
+- composer 1.12, zero hits
+- Twig 1.x, zero hits
+- Silex master, zero hits
+
+I'm :+1: for the current version of this PR, nice fixer @phansys  :)
+
+(On a side note, maybe we should open up a meta ticket to normalize the way we do fixer configuration on 2.x before that one gets released)
