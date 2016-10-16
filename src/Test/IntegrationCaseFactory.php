@@ -98,7 +98,8 @@ final class IntegrationCaseFactory
     /**
      * Parses the '--RULESET--' block of a '.test' file and determines what fixers should be used.
      *
-     * @param string $config
+     * @param string                 $config
+     * @param WhitespacesFixerConfig $sharedFixerConfig
      *
      * @return FixerInterface[]
      */
@@ -130,8 +131,7 @@ final class IntegrationCaseFactory
     /**
      * Parses the '--SETTINGS--' block of a '.test' file and determines settings.
      *
-     * @param string                 $config
-     * @param WhitespacesFixerConfig $sharedFixerConfig
+     * @param string $config
      *
      * @return array
      */

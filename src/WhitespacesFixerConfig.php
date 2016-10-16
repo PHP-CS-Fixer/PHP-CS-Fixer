@@ -20,6 +20,10 @@ final class WhitespacesFixerConfig
     private $indent;
     private $lineEnding;
 
+    /**
+     * @param string $indent
+     * @param string $lineEnding
+     */
     public function __construct($indent = '    ', $lineEnding = "\n")
     {
         if (!in_array($indent, array('  ', '    ', "\t"), true)) {
@@ -34,11 +38,17 @@ final class WhitespacesFixerConfig
         $this->lineEnding = $lineEnding;
     }
 
+    /**
+     * @return string
+     */
     public function getIndent()
     {
         return $this->indent;
     }
 
+    /**
+     * @return string
+     */
     public function getLineEnding()
     {
         return $this->lineEnding;

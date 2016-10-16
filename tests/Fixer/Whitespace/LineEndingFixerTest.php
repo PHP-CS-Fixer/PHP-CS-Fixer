@@ -18,7 +18,6 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
