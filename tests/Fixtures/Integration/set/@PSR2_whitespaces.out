@@ -2,6 +2,7 @@
 namespace Vendor\Package;
 
 use FooInterface;
+use FooInterfaceB;
 use BarClass as Bar;
 use OtherVendor\OtherPackage\BazClass;
 
