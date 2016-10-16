@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: phpdoc_no_empty_return,phpdoc_separation.
---CONFIG--
+--RULESET--
 {"phpdoc_no_empty_return": true, "phpdoc_separation": true}
 --EXPECT--
 <?php

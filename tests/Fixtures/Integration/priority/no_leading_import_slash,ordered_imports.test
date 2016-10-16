@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: no_leading_import_slash,ordered_imports.
---CONFIG--
+--RULESET--
 {"no_leading_import_slash": true, "ordered_imports": true}
 --EXPECT--
 <?php

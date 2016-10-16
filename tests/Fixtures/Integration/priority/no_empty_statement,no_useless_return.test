@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: no_empty_statement,no_useless_return.
---CONFIG--
+--RULESET--
 {"no_empty_statement": true, "no_useless_return": true}
 --EXPECT--
 <?php

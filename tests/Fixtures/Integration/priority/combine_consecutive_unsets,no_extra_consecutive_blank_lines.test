@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: combine_consecutive_unsets,no_extra_consecutive_blank_lines.
---CONFIG--
+--RULESET--
 {"combine_consecutive_unsets": true, "no_extra_consecutive_blank_lines": true}
 --EXPECT--
 <?php

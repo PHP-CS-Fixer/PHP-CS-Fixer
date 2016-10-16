@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: phpdoc_to_comment,no_empty_comment.
---CONFIG--
+--RULESET--
 {"phpdoc_to_comment": true, "no_empty_comment": true}
 --EXPECT--
 <?php

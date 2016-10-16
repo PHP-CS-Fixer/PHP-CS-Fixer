@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: no_multiline_whitespace_around_double_arrow,align_double_arrow.
---CONFIG--
+--RULESET--
 {"no_multiline_whitespace_around_double_arrow": true, "align_double_arrow": true}
 --EXPECT--
 <?php

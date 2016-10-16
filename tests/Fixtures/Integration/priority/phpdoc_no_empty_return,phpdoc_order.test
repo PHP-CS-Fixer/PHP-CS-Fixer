@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: phpdoc_no_empty_return,phpdoc_order.
---CONFIG--
+--RULESET--
 {"phpdoc_no_empty_return": true, "phpdoc_order": true}
 --EXPECT--
 <?php

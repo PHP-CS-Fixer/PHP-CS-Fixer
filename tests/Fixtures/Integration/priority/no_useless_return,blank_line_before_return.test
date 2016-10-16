@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: no_useless_return,blank_line_before_return.
---CONFIG--
+--RULESET--
 {"no_useless_return": true, "blank_line_before_return": true}
 --EXPECT--
 <?php

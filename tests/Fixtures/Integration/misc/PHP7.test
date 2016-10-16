@@ -1,14 +1,14 @@
 --TEST--
 PHP 7 test.
---CONFIG--
+--RULESET--
 {
     "@Symfony": true,
     "ordered_imports": true
 }
 --SETTINGS--
-checkPriority=false
+{"checkPriority": false}
 --REQUIREMENTS--
-php=7.0
+{"php": 7.0}
 --EXPECT--
 <?php
 

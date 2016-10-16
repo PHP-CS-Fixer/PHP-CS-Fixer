@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: ordered_class_elements,space_after_semicolon.
---CONFIG--
+--RULESET--
 {"ordered_class_elements": true, "space_after_semicolon": true}
 --EXPECT--
 <?php

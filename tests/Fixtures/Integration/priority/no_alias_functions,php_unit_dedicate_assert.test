@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: no_alias_functions,php_unit_dedicate_assert.
---CONFIG--
+--RULESET--
 {"no_alias_functions": true, "php_unit_dedicate_assert": ["is_int"]}
 --EXPECT--
 <?php

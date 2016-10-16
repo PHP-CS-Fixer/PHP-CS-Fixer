@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: no_useless_else,no_whitespace_in_blank_line.
---CONFIG--
+--RULESET--
 {"no_useless_else": true, "no_whitespace_in_blank_line": true}
 --EXPECT--
 <?php

@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: align_double_arrow,binary_operator_spaces.
---CONFIG--
+--RULESET--
 {"align_double_arrow": true, "binary_operator_spaces": true}
 --EXPECT--
 <?php

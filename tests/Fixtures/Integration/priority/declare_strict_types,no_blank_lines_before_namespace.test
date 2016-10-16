@@ -1,9 +1,9 @@
 --TEST--
 Integration of fixers: declare_strict_types,no_blank_lines_before_namespace.
---CONFIG--
+--RULESET--
 {"declare_strict_types": true, "no_blank_lines_before_namespace" : true}
 --REQUIREMENTS--
-php=7.0
+{"php": 7.0}
 --EXPECT--
 <?php declare(strict_types=1);
 declare(ticks=1);

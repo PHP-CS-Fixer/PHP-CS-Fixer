@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: no_empty_statement,switch_case_semicolon_to_colon.
---CONFIG--
+--RULESET--
 {"no_empty_statement": true, "switch_case_semicolon_to_colon": true}
 --EXPECT--
 <?php

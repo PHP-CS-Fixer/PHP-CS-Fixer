@@ -1,6 +1,6 @@
 --TEST--
 Integration of fixers: align_equals,binary_operator_spaces.
---CONFIG--
+--RULESET--
 {"align_equals": true, "binary_operator_spaces": true}
 --EXPECT--
 <?php
