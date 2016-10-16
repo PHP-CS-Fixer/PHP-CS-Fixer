@@ -795,19 +795,6 @@ $c
         );
     }
 
-    private function removeLinesFromString($input, array $lineNumbers)
-    {
-        sort($lineNumbers);
-        $lines = explode("\n", $input);
-        foreach ($lineNumbers as $lineNumber) {
-            --$lineNumber;
-
-            unset($lines[$lineNumber]);
-        }
-
-        return implode("\n", $lines);
-    }
-
     /**
      * @dataProvider provideMessyWhitespacesCases
      */
@@ -842,5 +829,18 @@ $c
                 "<?php \$c = \$b[0];\r\n\r\n\r\n\$a = [\r\n\r\n   1,\r\n2];\r\necho 1;\r\n\$b = [];\r\n\r\n\r\n//a\r\n",
             ),
         );
+    }
+
+    private function removeLinesFromString($input, array $lineNumbers)
+    {
+        sort($lineNumbers);
+        $lines = explode("\n", $input);
+        foreach ($lineNumbers as $lineNumber) {
+            --$lineNumber;
+
+            unset($lines[$lineNumber]);
+        }
+
+        return implode("\n", $lines);
     }
 }
