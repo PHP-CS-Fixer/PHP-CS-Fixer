@@ -107,6 +107,7 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_var_without_name' => true,
             'pre_increment' => true,
             'print_to_echo' => true,
+            'return_type_declaration' => true,
             'self_accessor' => true,
             'short_scalar_cast' => true,
             'single_blank_line_before_namespace' => true,
