@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\NamespaceNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\SharedFixerConfigAwareInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -21,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class BlankLineAfterNamespaceFixer extends AbstractFixer
+final class BlankLineAfterNamespaceFixer extends AbstractFixer implements SharedFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}
@@ -36,6 +37,7 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
+        $ending = $this->sharedConfig->getLineEnding();
         $lastIndex = $tokens->count() - 1;
 
         for ($index = $lastIndex; $index >= 0; --$index) {
@@ -56,10 +58,10 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer
             $nextToken = $tokens[$nextIndex];
 
             if (!$nextToken->isWhitespace()) {
-                $tokens->insertAt($semicolonIndex + 1, new Token(array(T_WHITESPACE, "\n\n")));
+                $tokens->insertAt($semicolonIndex + 1, new Token(array(T_WHITESPACE, $ending.$ending)));
             } else {
                 $nextToken->setContent(
-                    ($nextIndex === $lastIndex ? "\n" : "\n\n").ltrim($nextToken->getContent())
+                    ($nextIndex === $lastIndex ? $ending : $ending.$ending).ltrim($nextToken->getContent())
                 );
             }
         }
