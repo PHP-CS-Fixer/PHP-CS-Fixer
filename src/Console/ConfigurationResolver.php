@@ -590,12 +590,27 @@ final class ConfigurationResolver
         $filesystem = new Filesystem();
         $cwd = $this->cwd;
 
+        if (1 === count($this->options['path']) && '-' === $this->options['path'][0]) {
+            $this->path = $this->options['path'];
+
+            return;
+        }
+
         $this->path = array_map(
             function ($path) use ($cwd, $filesystem) {
-                return $filesystem->isAbsolutePath($path)
+                $absolutePath = $filesystem->isAbsolutePath($path)
                     ? $path
                     : $cwd.DIRECTORY_SEPARATOR.$path
                 ;
+
+                if (!file_exists($absolutePath)) {
+                    throw new InvalidConfigurationException(sprintf(
+                        'The path "%s" is not readable.',
+                        $path
+                    ));
+                }
+
+                return $absolutePath;
             },
             $this->options['path']
         );

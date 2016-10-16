@@ -351,6 +351,10 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolveIntersectionOfPaths($expected, $configFinder, array $path, $pathMode, $config = null)
     {
+        if ($expected instanceof \Exception) {
+            $this->setExpectedException(get_class($expected));
+        }
+
         if (null !== $configFinder) {
             $this->config->finder($configFinder);
         }
@@ -361,10 +365,6 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ->setOption('config', $config)
             ->resolve()
         ;
-
-        if ($expected instanceof \Exception) {
-            $this->setExpectedException(get_class($expected));
-        }
 
         $intersectionItems = array_map(
             function (\SplFileInfo $file) {
@@ -465,34 +465,62 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
                 'intersection',
             ),
             'configured by finder, intersected with non-existing path' => array(
-                array(),
+                new \LogicException(),
                 Finder::create()
                     ->in($dir),
                 array('non_existing_dir'),
                 'intersection',
             ),
-            'configured by finder, overriden by multiple files' => array(
+            'configured by config file, overriden by multiple files' => array(
                 $cb(array('d/d1.php', 'd/d2.php')),
                 null,
                 array($dir.'/d/d1.php', $dir.'/d/d2.php'),
                 'override',
                 $dir.'/d/.php_cs',
             ),
-            'configured by finder, intersected with multiple files' => array(
+            'configured by config file, intersected with multiple files' => array(
                 $cb(array('d/d1.php', 'd/d2.php')),
                 null,
                 array($dir.'/d/d1.php', $dir.'/d/d2.php'),
                 'intersection',
                 $dir.'/d/.php_cs',
             ),
-            'configured by finder, overriden by multiple files and dirs' => array(
+            'configured by config file, overriden by non-existing dir' => array(
+                new \LogicException(),
+                null,
+                array($dir.'/d/fff'),
+                'override',
+                $dir.'/d/.php_cs',
+            ),
+            'configured by config file, intersected with non-existing dir' => array(
+                new \LogicException(),
+                null,
+                array($dir.'/d/fff'),
+                'intersection',
+                $dir.'/d/.php_cs',
+            ),
+            'configured by config file, overriden by non-existing file' => array(
+                new \LogicException(),
+                null,
+                array($dir.'/d/fff.php'),
+                'override',
+                $dir.'/d/.php_cs',
+            ),
+            'configured by config file, intersected with non-existing file' => array(
+                new \LogicException(),
+                null,
+                array($dir.'/d/fff.php'),
+                'intersection',
+                $dir.'/d/.php_cs',
+            ),
+            'configured by config file, overriden by multiple files and dirs' => array(
                 $cb(array('d/d1.php', 'd/e/de1.php', 'd/f/df1.php')),
                 null,
                 array($dir.'/d/d1.php', $dir.'/d/e', $dir.'/d/f/'),
                 'override',
                 $dir.'/d/.php_cs',
             ),
-            'configured by finder, intersected with multiple files and dirs' => array(
+            'configured by config file, intersected with multiple files and dirs' => array(
                 $cb(array('d/d1.php', 'd/e/de1.php', 'd/f/df1.php')),
                 null,
                 array($dir.'/d/d1.php', $dir.'/d/e', $dir.'/d/f/'),
