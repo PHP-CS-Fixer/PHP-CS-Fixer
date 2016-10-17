@@ -55,8 +55,10 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null, array $config = null)
     {
+        $this->getFixer()->configure($config);
+
         $this->doTest($expected, $input);
     }
 
@@ -107,28 +109,26 @@ class srand extends SrandClass{
             array('<?php a(mt_rand());', '<?php a(rand());'),
             array('<?php a(mt_srand());', '<?php a(srand());'),
             array('<?php a(\\mt_srand());', '<?php a(\\srand());'),
-        );
-    }
-
-    /**
-     * @dataProvider provideCasesForCustomConfiguration
-     */
-    public function testFixForCustomConfiguration($expected, $input = null)
-    {
-        $this->getFixer()->configure(array('rand' => 'random_int'));
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return array[]
-     */
-    public function provideCasesForCustomConfiguration()
-    {
-        return array(
-            array('<?php rand(rand($a));'),
-            array('<?php random_int($d, random_int($a,$b));', '<?php rand($d, rand($a,$b));'),
-            array('<?php random_int($a, \Other\Scope\mt_rand($a));', '<?php rand($a, \Other\Scope\mt_rand($a));'),
+            array(
+                '<?php rand(rand($a));',
+                null,
+                array('rand' => 'random_int'),
+            ),
+            array(
+                '<?php random_int($d, random_int($a,$b));',
+                '<?php rand($d, rand($a,$b));',
+                array('rand' => 'random_int'),
+            ),
+            array(
+                '<?php random_int($a, \Other\Scope\mt_rand($a));',
+                '<?php rand($a, \Other\Scope\mt_rand($a));',
+                array('rand' => 'random_int'),
+            ),
+            array(
+                '<?php $a = random_int(1,2) + random_int(3,4);',
+                '<?php $a = rand(1,2) + mt_rand(3,4);',
+                array('rand' => 'random_int', 'mt_rand' => 'random_int'),
+            ),
         );
     }
 }
