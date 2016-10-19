@@ -13,11 +13,12 @@
 namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Transform `&` operator into CT_RETURN_REF in `function & foo() {}`.
+ * Transform `&` operator into CT::T_RETURN_REF in `function & foo() {}`.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -28,9 +29,9 @@ class ReturnRefTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function getCustomTokens()
     {
-        return array('CT_RETURN_REF');
+        return array(CT::T_RETURN_REF);
     }
 
     /**
@@ -50,7 +51,7 @@ class ReturnRefTransformer extends AbstractTransformer
             $token->equals('&')
             && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_FUNCTION)
         ) {
-            $token->override(array(CT_RETURN_REF, '&'));
+            $token->override(array(CT::T_RETURN_REF, '&'));
         }
     }
 }

@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -151,8 +152,8 @@ final class NoUnreachableDefaultArgumentValueFixer extends AbstractFixer
 
         $variableIndex = $tokens->getPrevMeaningfulToken($index);
 
-        $searchTokens = array(',', '(', array(T_STRING), array(CT_ARRAY_TYPEHINT));
-        $typehintKinds = array(T_STRING, CT_ARRAY_TYPEHINT);
+        $searchTokens = array(',', '(', array(T_STRING), array(CT::T_ARRAY_TYPEHINT));
+        $typehintKinds = array(T_STRING, CT::T_ARRAY_TYPEHINT);
 
         if (defined('T_CALLABLE')) {
             $searchTokens[] = array(T_CALLABLE);

@@ -13,11 +13,12 @@
 namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Transform `?` operator into CT_NULLABLE_TYPE in `function foo(?Bar $b) {}`.
+ * Transform `?` operator into CT::T_NULLABLE_TYPE in `function foo(?Bar $b) {}`.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -28,9 +29,9 @@ class NullableTypeTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function getCustomTokens()
     {
-        return array('CT_NULLABLE_TYPE');
+        return array(CT::T_NULLABLE_TYPE);
     }
 
     /**
@@ -62,8 +63,8 @@ class NullableTypeTransformer extends AbstractTransformer
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
         $prevToken = $tokens[$prevIndex];
 
-        if ($prevToken->equalsAny(array('(', ',', array(CT_TYPE_COLON)))) {
-            $token->override(array(CT_NULLABLE_TYPE, '?'));
+        if ($prevToken->equalsAny(array('(', ',', array(CT::T_TYPE_COLON)))) {
+            $token->override(array(CT::T_NULLABLE_TYPE, '?'));
         }
     }
 }

@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Test\AbstractTransformerTestCase;
+use PhpCsFixer\Tokenizer\CT;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -30,9 +31,9 @@ final class UseTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             array(
-                'T_USE',
-                'CT_USE_LAMBDA',
-                'CT_USE_TRAIT',
+                T_USE,
+                CT::T_USE_LAMBDA,
+                CT::T_USE_TRAIT,
             )
         );
     }
@@ -43,27 +44,27 @@ final class UseTransformerTest extends AbstractTransformerTestCase
             array(
                 '<?php use Foo;',
                 array(
-                    1 => 'T_USE',
+                    1 => T_USE,
                 ),
             ),
             array(
                 '<?php $foo = function() use ($bar) {};',
                 array(
-                    9 => 'CT_USE_LAMBDA',
+                    9 => CT::T_USE_LAMBDA,
                 ),
             ),
             array(
                 '<?php class Foo { use Bar; }',
                 array(
-                    7 => 'CT_USE_TRAIT',
+                    7 => CT::T_USE_TRAIT,
                 ),
             ),
             array(
                 '<?php namespace Aaa; use Bbb; class Foo { use Bar; function baz() { $a=1; return function () use ($a) {}; } }',
                 array(
-                    6 => 'T_USE',
-                    17 => 'CT_USE_TRAIT',
-                    42 => 'CT_USE_LAMBDA',
+                    6 => T_USE,
+                    17 => CT::T_USE_TRAIT,
+                    42 => CT::T_USE_LAMBDA,
                 ),
             ),
         );

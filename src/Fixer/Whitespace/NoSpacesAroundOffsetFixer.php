@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -66,7 +67,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array('[', CT_ARRAY_INDEX_CURLY_BRACE_OPEN));
+        return $tokens->isAnyTokenKindsFound(array('[', CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN));
     }
 
     /**
@@ -75,7 +76,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->equalsAny(array('[', array(CT_ARRAY_INDEX_CURLY_BRACE_OPEN)))) {
+            if (!$token->equalsAny(array('[', array(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN)))) {
                 continue;
             }
 

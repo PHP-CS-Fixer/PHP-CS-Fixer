@@ -13,11 +13,12 @@
 namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Transform `|` operator into CT_TYPE_ALTERNATION in `} catch (ExceptionType1 | ExceptionType2 $e) {`.
+ * Transform `|` operator into CT::T_TYPE_ALTERNATION in `} catch (ExceptionType1 | ExceptionType2 $e) {`.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -28,9 +29,9 @@ class TypeAlternationTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function getCustomTokens()
     {
-        return array('CT_TYPE_ALTERNATION');
+        return array(CT::T_TYPE_ALTERNATION);
     }
 
     /**
@@ -60,10 +61,10 @@ class TypeAlternationTransformer extends AbstractTransformer
         $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
         $prevToken = $tokens[$prevIndex];
 
-        if (!$prevToken->equalsAny(array('(', array(CT_TYPE_ALTERNATION)))) {
+        if (!$prevToken->equalsAny(array('(', array(CT::T_TYPE_ALTERNATION)))) {
             return;
         }
 
-        $token->override(array(CT_TYPE_ALTERNATION, '|'));
+        $token->override(array(CT::T_TYPE_ALTERNATION, '|'));
     }
 }

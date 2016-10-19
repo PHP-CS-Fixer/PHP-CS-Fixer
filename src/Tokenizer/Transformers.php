@@ -119,10 +119,9 @@ final class Transformers
             $this->items[] = $transformer;
         }
 
-        $transformer->registerCustomTokens();
-
-        foreach ($transformer->getCustomTokenNames() as $name) {
-            $this->addCustomToken(constant($name), $name);
+        foreach ($transformer->getCustomTokens() as $name) {
+            // TODO FRS
+            $this->addCustomToken($name, $name);
         }
     }
 

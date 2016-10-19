@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -25,7 +26,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(CT_TYPE_COLON);
+        return PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(CT::T_TYPE_COLON);
     }
 
     /**
@@ -36,7 +37,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(CT_TYPE_COLON)) {
+            if (!$token->isGivenKind(CT::T_TYPE_COLON)) {
                 continue;
             }
 

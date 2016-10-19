@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Casing;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -74,8 +75,8 @@ final class LowercaseConstantsFixer extends AbstractFixer
                 T_NS_SEPARATOR,
                 T_PAAMAYIM_NEKUDOTAYIM,
                 T_USE,
-                CT_USE_TRAIT,
-                CT_USE_LAMBDA,
+                CT::T_USE_TRAIT,
+                CT::T_USE_LAMBDA,
             );
 
             if (defined('T_TRAIT')) {

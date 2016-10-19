@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\ArrayNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -26,7 +27,7 @@ final class NormalizeIndexBraceFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(CT_ARRAY_INDEX_CURLY_BRACE_OPEN);
+        return $tokens->isTokenKindFound(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN);
     }
 
     /**
@@ -35,9 +36,9 @@ final class NormalizeIndexBraceFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(CT_ARRAY_INDEX_CURLY_BRACE_OPEN)) {
+            if ($token->isGivenKind(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN)) {
                 $tokens->overrideAt($index, new Token('['));
-            } elseif ($token->isGivenKind(CT_ARRAY_INDEX_CURLY_BRACE_CLOSE)) {
+            } elseif ($token->isGivenKind(CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE)) {
                 $tokens->overrideAt($index, new Token(']'));
             }
         }

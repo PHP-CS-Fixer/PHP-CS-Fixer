@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Test\AbstractTransformerTestCase;
+use PhpCsFixer\Tokenizer\CT;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -31,7 +32,7 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             array(
-                'CT_TYPE_ALTERNATION',
+                CT::T_TYPE_ALTERNATION,
             )
         );
     }
@@ -42,8 +43,8 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
             array(
                 '<?php try {} catch (ExceptionType1 | ExceptionType2 | ExceptionType3 $e) {}',
                 array(
-                    11 => 'CT_TYPE_ALTERNATION',
-                    15 => 'CT_TYPE_ALTERNATION',
+                    11 => CT::T_TYPE_ALTERNATION,
+                    15 => CT::T_TYPE_ALTERNATION,
                 ),
             ),
             array(

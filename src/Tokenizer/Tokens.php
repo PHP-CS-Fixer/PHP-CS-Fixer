@@ -200,24 +200,24 @@ class Tokens extends \SplFixedArray
                 'end' => ']',
             ),
             self::BLOCK_TYPE_ARRAY_SQUARE_BRACE => array(
-                'start' => array(CT_ARRAY_SQUARE_BRACE_OPEN, '['),
-                'end' => array(CT_ARRAY_SQUARE_BRACE_CLOSE, ']'),
+                'start' => array(CT::T_ARRAY_SQUARE_BRACE_OPEN, '['),
+                'end' => array(CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'),
             ),
             self::BLOCK_TYPE_DYNAMIC_PROP_BRACE => array(
-                'start' => array(CT_DYNAMIC_PROP_BRACE_OPEN, '{'),
-                'end' => array(CT_DYNAMIC_PROP_BRACE_CLOSE, '}'),
+                'start' => array(CT::T_DYNAMIC_PROP_BRACE_OPEN, '{'),
+                'end' => array(CT::T_DYNAMIC_PROP_BRACE_CLOSE, '}'),
             ),
             self::BLOCK_TYPE_DYNAMIC_VAR_BRACE => array(
-                'start' => array(CT_DYNAMIC_VAR_BRACE_OPEN, '{'),
-                'end' => array(CT_DYNAMIC_VAR_BRACE_CLOSE, '}'),
+                'start' => array(CT::T_DYNAMIC_VAR_BRACE_OPEN, '{'),
+                'end' => array(CT::T_DYNAMIC_VAR_BRACE_CLOSE, '}'),
             ),
             self::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE => array(
-                'start' => array(CT_ARRAY_INDEX_CURLY_BRACE_OPEN, '{'),
-                'end' => array(CT_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}'),
+                'start' => array(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{'),
+                'end' => array(CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}'),
             ),
             self::BLOCK_TYPE_GROUP_IMPORT_BRACE => array(
-                'start' => array(CT_GROUP_IMPORT_BRACE_OPEN, '{'),
-                'end' => array(CT_GROUP_IMPORT_BRACE_CLOSE, '}'),
+                'start' => array(CT::T_GROUP_IMPORT_BRACE_OPEN, '{'),
+                'end' => array(CT::T_GROUP_IMPORT_BRACE_CLOSE, '}'),
             ),
         );
     }

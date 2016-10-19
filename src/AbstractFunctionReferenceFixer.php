@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -84,7 +85,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
         if ($functionNamePrecedingToken->isGivenKind(T_NS_SEPARATOR)) {
             $namespaceCandidate = $tokens->getPrevMeaningfulToken($functionNamePrefix);
             $namespaceCandidateToken = $tokens[$namespaceCandidate];
-            if ($namespaceCandidateToken->isGivenKind(array(T_NEW, T_STRING, CT_NAMESPACE_OPERATOR))) {
+            if ($namespaceCandidateToken->isGivenKind(array(T_NEW, T_STRING, CT::T_NAMESPACE_OPERATOR))) {
                 // here can be added complete namespace scan
                 // this expression is differs from expected, resume
                 return $this->find($functionNameToSearch, $tokens, $openParenthesis, $end);

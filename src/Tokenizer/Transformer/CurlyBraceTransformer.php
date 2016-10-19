@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -20,12 +21,12 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Transform discriminate overloaded curly braces tokens.
  *
  * Performed transformations:
- * - closing `}` for T_CURLY_OPEN into CT_CURLY_CLOSE,
- * - closing `}` for T_DOLLAR_OPEN_CURLY_BRACES into CT_DOLLAR_CLOSE_CURLY_BRACES,
- * - in `$foo->{$bar}` into CT_DYNAMIC_PROP_BRACE_OPEN and CT_DYNAMIC_PROP_BRACE_CLOSE,
- * - in `${$foo}` into CT_DYNAMIC_VAR_BRACE_OPEN and CT_DYNAMIC_VAR_BRACE_CLOSE,
- * - in `$array{$index}` into CT_ARRAY_INDEX_CURLY_BRACE_OPEN and CT_ARRAY_INDEX_CURLY_BRACE_CLOSE,
- * - in `use some\a\{ClassA, ClassB, ClassC as C}` into CT_GROUP_IMPORT_BRACE_OPEN, CT_GROUP_IMPORT_BRACE_CLOSE.
+ * - closing `}` for T_CURLY_OPEN into CT::T_CURLY_CLOSE,
+ * - closing `}` for T_DOLLAR_OPEN_CURLY_BRACES into CT::T_DOLLAR_CLOSE_CURLY_BRACES,
+ * - in `$foo->{$bar}` into CT::T_DYNAMIC_PROP_BRACE_OPEN and CT::T_DYNAMIC_PROP_BRACE_CLOSE,
+ * - in `${$foo}` into CT::T_DYNAMIC_VAR_BRACE_OPEN and CT::T_DYNAMIC_VAR_BRACE_CLOSE,
+ * - in `$array{$index}` into CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN and CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+ * - in `use some\a\{ClassA, ClassB, ClassC as C}` into CT::T_GROUP_IMPORT_BRACE_OPEN, CT::T_GROUP_IMPORT_BRACE_CLOSE.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -36,19 +37,19 @@ final class CurlyBraceTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function getCustomTokens()
     {
         return array(
-            'CT_CURLY_CLOSE',
-            'CT_DOLLAR_CLOSE_CURLY_BRACES',
-            'CT_DYNAMIC_PROP_BRACE_OPEN',
-            'CT_DYNAMIC_PROP_BRACE_CLOSE',
-            'CT_DYNAMIC_VAR_BRACE_OPEN',
-            'CT_DYNAMIC_VAR_BRACE_CLOSE',
-            'CT_ARRAY_INDEX_CURLY_BRACE_OPEN',
-            'CT_ARRAY_INDEX_CURLY_BRACE_CLOSE',
-            'CT_GROUP_IMPORT_BRACE_OPEN',
-            'CT_GROUP_IMPORT_BRACE_CLOSE',
+            CT::T_CURLY_CLOSE,
+            CT::T_DOLLAR_CLOSE_CURLY_BRACES,
+            CT::T_DYNAMIC_PROP_BRACE_OPEN,
+            CT::T_DYNAMIC_PROP_BRACE_CLOSE,
+            CT::T_DYNAMIC_VAR_BRACE_OPEN,
+            CT::T_DYNAMIC_VAR_BRACE_CLOSE,
+            CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
+            CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+            CT::T_GROUP_IMPORT_BRACE_OPEN,
+            CT::T_GROUP_IMPORT_BRACE_CLOSE,
         );
     }
 
@@ -77,7 +78,7 @@ final class CurlyBraceTransformer extends AbstractTransformer
     }
 
     /**
-     * Transform closing `}` for T_CURLY_OPEN into CT_CURLY_CLOSE.
+     * Transform closing `}` for T_CURLY_OPEN into CT::T_CURLY_CLOSE.
      *
      * This should be done at very beginning of curly braces transformations.
      *
@@ -109,14 +110,14 @@ final class CurlyBraceTransformer extends AbstractTransformer
             }
         }
 
-        $tokens[$nestIndex]->override(array(CT_CURLY_CLOSE, '}'));
+        $tokens[$nestIndex]->override(array(CT::T_CURLY_CLOSE, '}'));
     }
 
     private function transformIntoDollarCloseBrace(Tokens $tokens, Token $token, $index)
     {
         if ($token->isGivenKind(T_DOLLAR_OPEN_CURLY_BRACES)) {
             $nextIndex = $tokens->getNextTokenOfKind($index, array('}'));
-            $tokens[$nextIndex]->override(array(CT_DOLLAR_CLOSE_CURLY_BRACES, '}'));
+            $tokens[$nextIndex]->override(array(CT::T_DOLLAR_CLOSE_CURLY_BRACES, '}'));
         }
     }
 
@@ -133,8 +134,8 @@ final class CurlyBraceTransformer extends AbstractTransformer
         $openIndex = $index + 1;
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
 
-        $tokens[$openIndex]->override(array(CT_DYNAMIC_PROP_BRACE_OPEN, '{'));
-        $tokens[$closeIndex]->override(array(CT_DYNAMIC_PROP_BRACE_CLOSE, '}'));
+        $tokens[$openIndex]->override(array(CT::T_DYNAMIC_PROP_BRACE_OPEN, '{'));
+        $tokens[$closeIndex]->override(array(CT::T_DYNAMIC_PROP_BRACE_CLOSE, '}'));
     }
 
     private function transformIntoDynamicVarBraces(Tokens $tokens, Token $token, $index)
@@ -158,8 +159,8 @@ final class CurlyBraceTransformer extends AbstractTransformer
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
         $closeToken = $tokens[$closeIndex];
 
-        $openToken->override(array(CT_DYNAMIC_VAR_BRACE_OPEN, '{'));
-        $closeToken->override(array(CT_DYNAMIC_VAR_BRACE_CLOSE, '}'));
+        $openToken->override(array(CT::T_DYNAMIC_VAR_BRACE_OPEN, '{'));
+        $closeToken->override(array(CT::T_DYNAMIC_VAR_BRACE_CLOSE, '}'));
     }
 
     private function transformIntoCurlyIndexBraces(Tokens $tokens, Token $token, $index)
@@ -173,8 +174,8 @@ final class CurlyBraceTransformer extends AbstractTransformer
         if (!$tokens[$prevIndex]->equalsAny(array(
             array(T_STRING),
             array(T_VARIABLE),
-            array(CT_ARRAY_INDEX_CURLY_BRACE_CLOSE),
-            array(CT_ARRAY_SQUARE_BRACE_CLOSE),
+            array(CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE),
+            array(CT::T_ARRAY_SQUARE_BRACE_CLOSE),
             ']',
             ')',
         ))) {
@@ -200,8 +201,8 @@ final class CurlyBraceTransformer extends AbstractTransformer
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
         $closeToken = $tokens[$closeIndex];
 
-        $token->override(array(CT_ARRAY_INDEX_CURLY_BRACE_OPEN, '{'));
-        $closeToken->override(array(CT_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}'));
+        $token->override(array(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{'));
+        $closeToken->override(array(CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}'));
     }
 
     private function transformIntoGroupUseBraces(Tokens $tokens, Token $token, $index)
@@ -219,7 +220,7 @@ final class CurlyBraceTransformer extends AbstractTransformer
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
         $closeToken = $tokens[$closeIndex];
 
-        $token->override(array(CT_GROUP_IMPORT_BRACE_OPEN, '{'));
-        $closeToken->override(array(CT_GROUP_IMPORT_BRACE_CLOSE, '}'));
+        $token->override(array(CT::T_GROUP_IMPORT_BRACE_OPEN, '{'));
+        $closeToken->override(array(CT::T_GROUP_IMPORT_BRACE_CLOSE, '}'));
     }
 }

@@ -31,15 +31,14 @@ abstract class AbstractTransformerTestCase extends \PHPUnit_Framework_TestCase
                 function ($item) {
                     return count($item);
                 },
-                $tokens->findGivenKind(array_map(function ($name) {
-                    return constant($name);
-                }, array_unique(array_merge($observedKinds, array_values($expectedTokens)))))
+                $tokens->findGivenKind(array_unique(array_merge($observedKinds, array_values($expectedTokens))))
             ))
         );
 
         foreach ($expectedTokens as $index => $name) {
-            $this->assertSame($name, $tokens[$index]->getName(), sprintf('Token kind should be the same at index %d.', $index));
-            $this->assertSame(constant($name), $tokens[$index]->getId());
+            // TODO FRS
+            // $this->assertSame($name, $tokens[$index]->getName(), sprintf('Token kind should be the same at index %d.', $index));
+            $this->assertSame($name, $tokens[$index]->getId());
         }
     }
 }

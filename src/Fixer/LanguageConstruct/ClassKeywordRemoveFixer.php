@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -32,7 +33,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(CT_CLASS_CONSTANT);
+        return $tokens->isTokenKindFound(CT::T_CLASS_CONSTANT);
     }
 
     /**
@@ -100,7 +101,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
 
             $import = '';
             while (($index = $tokens->getNextMeaningfulToken($index))) {
-                if ($tokens[$index]->equalsAny(array(';', array(CT_GROUP_IMPORT_BRACE_OPEN))) || $tokens[$index]->isGivenKind(T_AS)) {
+                if ($tokens[$index]->equalsAny(array(';', array(CT::T_GROUP_IMPORT_BRACE_OPEN))) || $tokens[$index]->isGivenKind(T_AS)) {
                     break;
                 }
 
@@ -108,7 +109,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
             }
 
             // Imports group (PHP 7 spec)
-            if ($tokens[$index]->isGivenKind(CT_GROUP_IMPORT_BRACE_OPEN)) {
+            if ($tokens[$index]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                 $groupEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $index);
                 $groupImports = array_map(
                     'trim',
@@ -137,7 +138,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
      */
     private function replaceClassKeywordsSection(Tokens $tokens, $startIndex, $endIndex)
     {
-        $CTClassTokens = $tokens->findGivenKind(CT_CLASS_CONSTANT, $startIndex, $endIndex);
+        $CTClassTokens = $tokens->findGivenKind(CT::T_CLASS_CONSTANT, $startIndex, $endIndex);
         if (!empty($CTClassTokens)) {
             $this->replaceClassKeyword($tokens, current(array_keys($CTClassTokens)));
             $this->replaceClassKeywordsSection($tokens, $startIndex, $endIndex);

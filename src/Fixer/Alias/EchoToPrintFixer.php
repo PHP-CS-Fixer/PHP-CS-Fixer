@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -56,7 +57,7 @@ final class EchoToPrintFixer extends AbstractFixer
             $canBeConverted = true;
 
             for ($i = $nextTokenIndex; $i < $endTokenIndex; ++$i) {
-                if ($tokens[$i]->equalsAny(array('(', array(CT_ARRAY_SQUARE_BRACE_OPEN)))) {
+                if ($tokens[$i]->equalsAny(array('(', array(CT::T_ARRAY_SQUARE_BRACE_OPEN)))) {
                     $blockType = Tokens::detectBlockType($tokens[$i]);
                     $i = $tokens->findBlockEnd($blockType['type'], $i);
                 }

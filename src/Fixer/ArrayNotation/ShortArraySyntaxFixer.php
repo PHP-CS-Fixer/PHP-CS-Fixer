@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\ArrayNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -42,8 +43,8 @@ final class ShortArraySyntaxFixer extends AbstractFixer
             $openIndex = $tokens->getNextTokenOfKind($index, array('('));
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
-            $tokens->overrideAt($openIndex, array(CT_ARRAY_SQUARE_BRACE_OPEN, '['));
-            $tokens->overrideAt($closeIndex, array(CT_ARRAY_SQUARE_BRACE_CLOSE, ']'));
+            $tokens->overrideAt($openIndex, array(CT::T_ARRAY_SQUARE_BRACE_OPEN, '['));
+            $tokens->overrideAt($closeIndex, array(CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'));
 
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
         }
