@@ -72,6 +72,11 @@ class FooBar
 		return !$value;
 	}
 
+	/**
+	 * @param string $text
+	 *
+	 * @return string
+	 */
 	private function printText($text)
 	{
 		echo $text;
