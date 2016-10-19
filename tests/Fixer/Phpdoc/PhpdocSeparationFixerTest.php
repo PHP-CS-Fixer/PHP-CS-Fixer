@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\WhitespacesFixerConfig;
 use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
@@ -569,5 +570,16 @@ EOF;
 EOF;
 
         $this->doTest($expected);
+    }
+
+    public function testMessyWhitespaces()
+    {
+        $expected = "<?php\t/**\r\n\t * @param string \$text\r\n\t *\r\n\t * @return string\r\n\t */";
+        $input = "<?php\t/**\r\n\t * @param string \$text\r\n\t * @return string\r\n\t */";
+
+        $fixer = clone $this->getFixer();
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
     }
 }
