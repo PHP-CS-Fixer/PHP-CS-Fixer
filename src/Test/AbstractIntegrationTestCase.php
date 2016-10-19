@@ -20,7 +20,6 @@ use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Runner\Runner;
-use PhpCsFixer\Tokenizer\Transformers;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -110,8 +109,6 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getTests()
     {
-        Transformers::create();
-
         $fixturesDir = realpath(static::getFixturesDir());
         if (!is_dir($fixturesDir)) {
             throw new \UnexpectedValueException(sprintf('Given fixture dir "%s" is not a directory.', $fixturesDir));
