@@ -27,11 +27,11 @@ namespace PhpCsFixer\Tokenizer;
 interface TransformerInterface
 {
     /**
-     * Get names of custom tokens created by Transformer.
+     * Get tokens created by Transformer.
      *
      * @return array
      */
-    public function getCustomTokenNames();
+    public function getCustomTokens();
 
     /**
      * Return the name of the transformer.
@@ -71,9 +71,4 @@ interface TransformerInterface
      * @param int    $index
      */
     public function process(Tokens $tokens, Token $token, $index);
-
-    /**
-     * Register constants for custom tokens created by Transformer.
-     */
-    public function registerCustomTokens();
 }

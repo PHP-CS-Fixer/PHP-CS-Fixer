@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Test\AbstractTransformerTestCase;
+use PhpCsFixer\Tokenizer\CT;
 
 /**
  * @author Sebastiaans Stok <s.stok@rollerscapes.net>
@@ -30,8 +31,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             $source,
             $expectedTokens,
             array(
-                'CT_BRACE_CLASS_INSTANTIATION_OPEN',
-                'CT_BRACE_CLASS_INSTANTIATION_CLOSE',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
             )
         );
     }
@@ -42,15 +43,15 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             array(
                 '<?php echo (new Process())->getOutput();',
                 array(
-                    3 => 'CT_BRACE_CLASS_INSTANTIATION_OPEN',
-                    9 => 'CT_BRACE_CLASS_INSTANTIATION_CLOSE',
+                    3 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    9 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ),
             ),
             array(
                 '<?php echo (new Process())::getOutput();',
                 array(
-                    3 => 'CT_BRACE_CLASS_INSTANTIATION_OPEN',
-                    9 => 'CT_BRACE_CLASS_INSTANTIATION_CLOSE',
+                    3 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    9 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ),
             ),
         );

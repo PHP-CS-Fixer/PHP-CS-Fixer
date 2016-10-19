@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -139,7 +140,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
                 continue;
             }
 
-            if ($token->isGivenKind(CT_ARRAY_SQUARE_BRACE_CLOSE)) {
+            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index, false);
                 continue;
             }

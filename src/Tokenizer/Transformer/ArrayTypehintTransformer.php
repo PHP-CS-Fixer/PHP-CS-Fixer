@@ -13,11 +13,12 @@
 namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Transform `array` typehint from T_ARRAY into CT_ARRAY_TYPEHINT.
+ * Transform `array` typehint from T_ARRAY into CT::T_ARRAY_TYPEHINT.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -28,9 +29,9 @@ final class ArrayTypehintTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function getCustomTokens()
     {
-        return array('CT_ARRAY_TYPEHINT');
+        return array(CT::T_ARRAY_TYPEHINT);
     }
 
     /**
@@ -54,7 +55,7 @@ final class ArrayTypehintTransformer extends AbstractTransformer
         $nextToken = $tokens[$nextIndex];
 
         if (!$nextToken->equals('(')) {
-            $token->override(array(CT_ARRAY_TYPEHINT, $token->getContent()));
+            $token->override(array(CT::T_ARRAY_TYPEHINT, $token->getContent()));
         }
     }
 }

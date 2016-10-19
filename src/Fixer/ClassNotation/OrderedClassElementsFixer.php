@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -197,7 +198,7 @@ final class OrderedClassElementsFixer extends AbstractFixer
      */
     private function getElements(Tokens $tokens, $startIndex)
     {
-        static $elementTokenKinds = array(CT_USE_TRAIT, T_CONST, T_VARIABLE, T_FUNCTION);
+        static $elementTokenKinds = array(CT::T_USE_TRAIT, T_CONST, T_VARIABLE, T_FUNCTION);
 
         ++$startIndex;
         $elements = array();
@@ -258,7 +259,7 @@ final class OrderedClassElementsFixer extends AbstractFixer
     {
         $token = $tokens[$index];
 
-        if ($token->isGivenKind(CT_USE_TRAIT)) {
+        if ($token->isGivenKind(CT::T_USE_TRAIT)) {
             return 'use_trait';
         }
 

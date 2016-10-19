@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\ArrayNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -25,7 +26,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_ARRAY, CT_ARRAY_SQUARE_BRACE_OPEN));
+        return $tokens->isAnyTokenKindsFound(array(T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN));
     }
 
     /**
@@ -34,7 +35,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if ($tokens[$index]->isGivenKind(array(T_ARRAY, CT_ARRAY_SQUARE_BRACE_OPEN))) {
+            if ($tokens[$index]->isGivenKind(array(T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN))) {
                 $this->fixSpacing($index, $tokens);
             }
         }
@@ -56,7 +57,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer
      */
     private function fixSpacing($index, Tokens $tokens)
     {
-        if ($tokens[$index]->isGivenKind(CT_ARRAY_SQUARE_BRACE_OPEN)) {
+        if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
             $startIndex = $index;
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
         } else {
@@ -91,7 +92,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer
         if ($tokens[$index]->equals(')')) {
             $startIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false);
             $startIndex = $tokens->getPrevMeaningfulToken($startIndex);
-            if (!$tokens[$startIndex]->isGivenKind(array(T_ARRAY, CT_ARRAY_SQUARE_BRACE_OPEN))) {
+            if (!$tokens[$startIndex]->isGivenKind(array(T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN))) {
                 return $startIndex;
             }
         }

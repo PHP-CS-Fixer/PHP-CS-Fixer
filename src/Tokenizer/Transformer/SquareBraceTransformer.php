@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -20,8 +21,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Transform discriminate overloaded square braces tokens.
  *
  * Performed transformations:
- * - in `[1, 2, 3]` into CT_ARRAY_SQUARE_BRACE_OPEN and CT_ARRAY_SQUARE_BRACE_CLOSE,
- * - in `[$a, $b, $c] = array(1, 2, 3)` into CT_DESTRUCTURING_SQUARE_BRACE_OPEN and CT_DESTRUCTURING_SQUARE_BRACE_CLOSE.
+ * - in `[1, 2, 3]` into CT::T_ARRAY_SQUARE_BRACE_OPEN and CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+ * - in `[$a, $b, $c] = array(1, 2, 3)` into CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN and CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -34,13 +35,13 @@ final class SquareBraceTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function getCustomTokens()
     {
         return array(
-            'CT_ARRAY_SQUARE_BRACE_OPEN',
-            'CT_ARRAY_SQUARE_BRACE_CLOSE',
-            'CT_DESTRUCTURING_SQUARE_BRACE_OPEN',
-            'CT_DESTRUCTURING_SQUARE_BRACE_CLOSE',
+            CT::T_ARRAY_SQUARE_BRACE_OPEN,
+            CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+            CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+            CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
         );
     }
 
@@ -76,8 +77,8 @@ final class SquareBraceTransformer extends AbstractTransformer
 
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
 
-        $token->override(array(CT_ARRAY_SQUARE_BRACE_OPEN, '['));
-        $tokens[$endIndex]->override(array(CT_ARRAY_SQUARE_BRACE_CLOSE, ']'));
+        $token->override(array(CT::T_ARRAY_SQUARE_BRACE_OPEN, '['));
+        $tokens[$endIndex]->override(array(CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'));
 
         $this->cacheOfArraySquareBraceCloseIndex = $endIndex;
     }
@@ -91,8 +92,8 @@ final class SquareBraceTransformer extends AbstractTransformer
             return;
         }
 
-        $token->override(array(CT_DESTRUCTURING_SQUARE_BRACE_OPEN, '['));
-        $tokens[$this->cacheOfArraySquareBraceCloseIndex]->override(array(CT_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'));
+        $token->override(array(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '['));
+        $tokens[$this->cacheOfArraySquareBraceCloseIndex]->override(array(CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'));
     }
 
     /**
@@ -114,10 +115,10 @@ final class SquareBraceTransformer extends AbstractTransformer
             array(T_STRING),
             array(T_STRING_VARNAME),
             array(T_VARIABLE),
-            array(CT_ARRAY_SQUARE_BRACE_CLOSE),
-            array(CT_DYNAMIC_PROP_BRACE_CLOSE),
-            array(CT_DYNAMIC_VAR_BRACE_CLOSE),
-            array(CT_ARRAY_INDEX_CURLY_BRACE_CLOSE),
+            array(CT::T_ARRAY_SQUARE_BRACE_CLOSE),
+            array(CT::T_DYNAMIC_PROP_BRACE_CLOSE),
+            array(CT::T_DYNAMIC_VAR_BRACE_CLOSE),
+            array(CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE),
         );
 
         $token = $tokens[$index];

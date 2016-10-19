@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Test\AbstractTransformerTestCase;
+use PhpCsFixer\Tokenizer\CT;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -30,7 +31,7 @@ final class ReturnRefTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             array(
-                'CT_RETURN_REF',
+                CT::T_RETURN_REF,
             )
         );
     }
@@ -41,7 +42,7 @@ final class ReturnRefTransformerTest extends AbstractTransformerTestCase
             array(
                 '<?php function & foo(): array { return []; }',
                 array(
-                    3 => 'CT_RETURN_REF',
+                    3 => CT::T_RETURN_REF,
                 ),
             ),
             array(

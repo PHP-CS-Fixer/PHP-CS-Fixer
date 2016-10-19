@@ -28,7 +28,6 @@ use PhpCsFixer\Report\ReporterFactory;
 use PhpCsFixer\Report\ReportSummary;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Runner\Runner;
-use PhpCsFixer\Tokenizer\Transformers;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -287,8 +286,6 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        Transformers::create(); // make sure all transformers have defined custom tokens since configuration might depend on it
-
         $verbosity = $output->getVerbosity();
         $reporterFactory = ReporterFactory::create();
         $reporterFactory->registerBuiltInReporters();

@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -90,16 +91,16 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer
                     $this->tokenKindCallbackMap[T_USE] = 'removeBetweenUse';
                     break;
                 case 'useTrait':
-                    $this->tokenKindCallbackMap[CT_USE_TRAIT] = 'removeBetweenUse';
+                    $this->tokenKindCallbackMap[CT::T_USE_TRAIT] = 'removeBetweenUse';
                     break;
                 case 'curly_brace_block':
-                    $this->tokenEqualsMap['{'] = 'fixStructureOpenCloseIfMultiLine'; // i.e. not: CT_ARRAY_INDEX_CURLY_BRACE_OPEN
+                    $this->tokenEqualsMap['{'] = 'fixStructureOpenCloseIfMultiLine'; // i.e. not: CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN
                     break;
                 case 'parenthesis_brace_block':
-                    $this->tokenEqualsMap['('] = 'fixStructureOpenCloseIfMultiLine'; // i.e. not: CT_BRACE_CLASS_INSTANTIATION_OPEN
+                    $this->tokenEqualsMap['('] = 'fixStructureOpenCloseIfMultiLine'; // i.e. not: CT::T_BRACE_CLASS_INSTANTIATION_OPEN
                     break;
                 case 'square_brace_block':
-                    $this->tokenKindCallbackMap[CT_ARRAY_SQUARE_BRACE_OPEN] = 'fixStructureOpenCloseIfMultiLine'; // typeless '[' tokens should not be fixed (too rare)
+                    $this->tokenKindCallbackMap[CT::T_ARRAY_SQUARE_BRACE_OPEN] = 'fixStructureOpenCloseIfMultiLine'; // typeless '[' tokens should not be fixed (too rare)
                     break;
                 default:
                     throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration item "%s" passed.', $item));

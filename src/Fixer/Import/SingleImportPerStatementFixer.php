@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -45,7 +46,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer
             $endIndex = $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG)));
             $groupClose = $tokens->getPrevMeaningfulToken($endIndex);
 
-            if ($tokens[$groupClose]->isGivenKind(CT_GROUP_IMPORT_BRACE_CLOSE)) {
+            if ($tokens[$groupClose]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
                 $this->fixGroupUse($tokens, $index, $endIndex);
             } else {
                 $this->fixMultipleUse($tokens, $index, $endIndex);
@@ -95,7 +96,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer
         $groupPrefix = 'use';
         $comment = '';
         for ($i = $index + 1; ; ++$i) {
-            if ($tokens[$i]->isGivenKind(CT_GROUP_IMPORT_BRACE_OPEN)) {
+            if ($tokens[$i]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                 $groupOpenIndex = $i;
 
                 break;
@@ -144,7 +145,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer
         for ($i = $groupOpenIndex + 1; $i <= $groupCloseIndex; ++$i) {
             $token = $tokens[$i];
 
-            if ($token->equalsAny(array(',', array(CT_GROUP_IMPORT_BRACE_CLOSE)))) {
+            if ($token->equalsAny(array(',', array(CT::T_GROUP_IMPORT_BRACE_CLOSE)))) {
                 $statements[] = $statement.';';
                 $statement = $groupPrefix;
 

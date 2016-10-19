@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -71,8 +72,8 @@ final class FunctionDeclarationFixer extends AbstractFixer
             $afterParenthesisIndex = $tokens->getNextNonWhitespace($endParenthesisIndex);
             $afterParenthesisToken = $tokens[$afterParenthesisIndex];
 
-            if ($afterParenthesisToken->isGivenKind(CT_USE_LAMBDA)) {
-                // fix whitespace after CT_USE_LAMBDA (we might add a token, so do this before determining start and end parenthesis)
+            if ($afterParenthesisToken->isGivenKind(CT::T_USE_LAMBDA)) {
+                // fix whitespace after CT:T_USE_LAMBDA (we might add a token, so do this before determining start and end parenthesis)
                 $tokens->ensureWhitespaceAtIndex($afterParenthesisIndex + 1, 0, ' ');
 
                 $useStartParenthesisIndex = $tokens->getNextTokenOfKind($afterParenthesisIndex, array('('));
@@ -81,7 +82,7 @@ final class FunctionDeclarationFixer extends AbstractFixer
                 // remove single-line edge whitespaces inside use parentheses
                 $this->fixParenthesisInnerEdge($tokens, $useStartParenthesisIndex, $useEndParenthesisIndex);
 
-                // fix whitespace before CT_USE_LAMBDA
+                // fix whitespace before CT::T_USE_LAMBDA
                 $tokens->ensureWhitespaceAtIndex($afterParenthesisIndex - 1, 1, ' ');
             }
 

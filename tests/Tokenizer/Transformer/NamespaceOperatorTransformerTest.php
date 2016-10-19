@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Test\AbstractTransformerTestCase;
+use PhpCsFixer\Tokenizer\CT;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
@@ -30,8 +31,8 @@ final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             array(
-                'T_NAMESPACE',
-                'CT_NAMESPACE_OPERATOR',
+                T_NAMESPACE,
+                CT::T_NAMESPACE_OPERATOR,
             )
         );
     }
@@ -45,8 +46,8 @@ namespace Foo;
 namespace\Bar\baz();
 ',
                 array(
-                    1 => 'T_NAMESPACE',
-                    6 => 'CT_NAMESPACE_OPERATOR',
+                    1 => T_NAMESPACE,
+                    6 => CT::T_NAMESPACE_OPERATOR,
                 ),
             ),
         );

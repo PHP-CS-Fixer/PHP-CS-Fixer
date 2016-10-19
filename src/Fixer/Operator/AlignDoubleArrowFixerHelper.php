@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractAlignFixerHelper;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -54,7 +55,7 @@ final class AlignDoubleArrowFixerHelper extends AbstractAlignFixerHelper
                 continue;
             }
 
-            if ($token->isGivenKind(CT_ARRAY_SQUARE_BRACE_OPEN)) {
+            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
                 if ($prevToken->isGivenKind(array(T_STRING, T_VARIABLE))) {
                     continue;
@@ -94,7 +95,7 @@ final class AlignDoubleArrowFixerHelper extends AbstractAlignFixerHelper
                         break;
                     }
 
-                    if ($tokens[$i + 1]->isGivenKind(array(T_ARRAY, CT_ARRAY_SQUARE_BRACE_OPEN))) {
+                    if ($tokens[$i + 1]->isGivenKind(array(T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN))) {
                         $arrayStartIndex = $tokens[$i + 1]->isGivenKind(T_ARRAY)
                             ? $tokens->getNextMeaningfulToken($i + 1)
                             : $i + 1

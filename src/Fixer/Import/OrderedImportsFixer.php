@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -125,10 +126,10 @@ final class OrderedImportsFixer extends AbstractFixer
             $endIndex = $tokens->getNextTokenOfKind($startIndex, array(';', array(T_CLOSE_TAG)));
             $previous = $tokens->getPrevMeaningfulToken($endIndex);
 
-            $group = $tokens[$previous]->isGivenKind(CT_GROUP_IMPORT_BRACE_CLOSE);
-            if ($tokens[$startIndex]->isGivenKind(array(CT_CONST_IMPORT))) {
+            $group = $tokens[$previous]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE);
+            if ($tokens[$startIndex]->isGivenKind(array(CT::T_CONST_IMPORT))) {
                 $type = self::IMPORT_TYPE_CONST;
-            } elseif ($tokens[$startIndex]->isGivenKind(array(CT_FUNCTION_IMPORT))) {
+            } elseif ($tokens[$startIndex]->isGivenKind(array(CT::T_FUNCTION_IMPORT))) {
                 $type = self::IMPORT_TYPE_FUNCTION;
             } else {
                 $type = self::IMPORT_TYPE_CLASS;
