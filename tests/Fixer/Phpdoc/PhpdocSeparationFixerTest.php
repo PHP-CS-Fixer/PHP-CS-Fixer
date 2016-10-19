@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
-use PhpCsFixer\WhitespacesFixerConfig;
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
