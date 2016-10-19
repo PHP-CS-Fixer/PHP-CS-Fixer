@@ -131,8 +131,8 @@ class Line
      */
     public function addBlank()
     {
-        preg_match_all('/\ *\*/', $this->content, $matches);
+        preg_match('/^([ \t]*\*)[^\r\n]*(\r?\n)$/', $this->content, $matches);
 
-        $this->content .= $matches[0][0]."\n";
+        $this->content .= $matches[1].$matches[2];
     }
 }
