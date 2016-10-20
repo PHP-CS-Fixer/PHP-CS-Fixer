@@ -251,6 +251,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_useless_else'], $fixers['whitespacy_lines']), // tested also in: no_useless_else,whitespacy_lines.test
             array($fixers['short_array_syntax'], $fixers['unalign_equals']), // tested also in: short_array_syntax,unalign_equals.test
             array($fixers['short_array_syntax'], $fixers['ternary_spaces']), // tested also in: short_array_syntax,ternary_spaces.test
+            array($fixers['no_empty_lines_after_phpdocs'], $fixers['single_blank_line_before_namespace']), // tested also in: no_empty_lines_after_phpdocs,single_blank_line_before_namespace.test
         );
 
         $docFixerNames = array_filter(
