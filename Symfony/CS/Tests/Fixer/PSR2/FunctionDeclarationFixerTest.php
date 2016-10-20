@@ -77,6 +77,18 @@ foo () {}',
                 '<?php function ($a) use ($b)     {};',
             ),
             array(
+                '<?php $foo = function ($foo) use ($bar, $baz) {};',
+                '<?php $foo = function ($foo) use($bar, $baz) {};',
+            ),
+            array(
+                '<?php $foo = function ($foo) use ($bar, $baz) {};',
+                '<?php $foo = function ($foo)use ($bar, $baz) {};',
+            ),
+            array(
+                '<?php $foo = function ($foo) use ($bar, $baz) {};',
+                '<?php $foo = function ($foo)use($bar, $baz) {};',
+            ),
+            array(
                 '<?php function &foo($a) {}',
                 '<?php function &foo( $a ) {}',
             ),
