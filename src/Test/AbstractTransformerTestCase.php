@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Test;
 
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -35,10 +36,13 @@ abstract class AbstractTransformerTestCase extends \PHPUnit_Framework_TestCase
             ))
         );
 
-        foreach ($expectedTokens as $index => $name) {
-            // TODO FRS
-            // $this->assertSame($name, $tokens[$index]->getName(), sprintf('Token kind should be the same at index %d.', $index));
-            $this->assertSame($name, $tokens[$index]->getId());
+        foreach ($expectedTokens as $index => $tokenId) {
+            $this->assertSame(
+                CT::has($tokenId) ? CT::getName($tokenId) : token_name($tokenId),
+                $tokens[$index]->getName(),
+                sprintf('Token kind should be the same at index %d.', $index)
+            );
+            $this->assertSame($tokenId, $tokens[$index]->getId());
         }
     }
 }

@@ -48,4 +48,48 @@ final class CT
     private function __constructor()
     {
     }
+
+    /**
+     * Get name for custom token.
+     *
+     * @param int $value custom token value
+     *
+     * @return string
+     */
+    public static function getName($value)
+    {
+        if (!self::has($value)) {
+            throw new \InvalidArgumentException(sprintf('No custom token was found for: %s', $value));
+        }
+
+        $tokens = self::getMapById();
+
+        return 'CT::'.$tokens[$value];
+    }
+
+    /**
+     * Check if given custom token exists.
+     *
+     * @param int $value custom token value
+     *
+     * @return bool
+     */
+    public static function has($value)
+    {
+        $tokens = self::getMapById();
+
+        return isset($tokens[$value]);
+    }
+
+    private static function getMapById()
+    {
+        static $constants;
+
+        if (null === $constants) {
+            $reflection = new \ReflectionClass(__CLASS__);
+            $constants = array_flip($reflection->getConstants());
+        }
+
+        return $constants;
+    }
 }

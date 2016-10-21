@@ -245,10 +245,8 @@ class Token
             return;
         }
 
-        $transformers = Transformers::create();
-
-        if ($transformers->hasCustomToken($this->id)) {
-            return $transformers->getCustomToken($this->id);
+        if (CT::has($this->id)) {
+            return CT::getName($this->id);
         }
 
         return token_name($this->id);
