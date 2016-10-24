@@ -110,6 +110,7 @@ class PhpdocToCommentFixer extends AbstractFixer
             T_PRIVATE,
             T_PROTECTED,
             T_PUBLIC,
+            T_VAR,
             T_FUNCTION,
             T_ABSTRACT,
             T_CONST,
