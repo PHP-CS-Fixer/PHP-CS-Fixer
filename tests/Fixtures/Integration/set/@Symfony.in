@@ -31,14 +31,15 @@ class FooBar
     }
 
     /**
-     * @param string $dummy   Some argument description
-     * @param array  $options
+     * @param string $dummy Some argument description
+     * @param array $options
+     * @param string|null $data Foo
      *
      * @return string|null Transformed input
      *
      * @throws \RuntimeException
      */
-    private function transformText($dummy, array $options = array())
+    private function transformText($dummy, array $options = array(),$data=null)
     {
         $mergedOptions = array_merge(
             array(

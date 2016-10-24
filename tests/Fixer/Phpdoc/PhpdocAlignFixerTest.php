@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @internal
@@ -440,5 +441,30 @@ EOF;
 EOF;
 
         $this->doTest($expected, $input);
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return array(
+            array(
+                "<?php\r\n\t/**\r\n\t * @type Type This is a variable.\r\n\t */",
+                "<?php\r\n\t/**\r\n\t * @type   Type   This is a variable.\r\n\t */",
+            ),
+            array(
+                "<?php\r\n/**\r\n * @param int    \$limit\r\n * @param string \$more\r\n *\r\n * @return array\r\n */",
+                "<?php\r\n/**\r\n * @param   int       \$limit\r\n * @param   string       \$more\r\n *\r\n * @return array\r\n */",
+            ),
+        );
     }
 }
