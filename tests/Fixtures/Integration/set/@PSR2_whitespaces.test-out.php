@@ -8,6 +8,9 @@ use OtherVendor\OtherPackage\BazClass;
 
 class Foo extends Bar implements FooInterface
 {
+	public $aaa = 1;
+	public $bbb = 2;
+
 	public function sampleFunction($a, $b = null)
 	{
 		if ($a === $b) {
