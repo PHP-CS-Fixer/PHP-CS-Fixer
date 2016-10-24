@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: no_empty_lines_after_phpdocs,single_blank_line_before_namespace.
+--CONFIG--
+level=none
+fixers=no_empty_lines_after_phpdocs,single_blank_line_before_namespace
+--EXPECT--
+<?php
+/**
+ * Header
+ */
+
+namespace A\B;
+
+class A {}
+
+--INPUT--
+<?php
+/**
+ * Header
+ */
+
+
+namespace A\B;
+
+class A {}
