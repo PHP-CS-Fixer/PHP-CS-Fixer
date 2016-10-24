@@ -128,10 +128,22 @@ final class RuleSet implements RuleSetInterface
             'php_unit_dedicate_assert' => true,
             'silenced_deprecation_error' => true,
         ),
+        '@PHP56Migration' => array(
+            'pow_to_exponentiation' => true,
+        ),
         '@PHP70Migration' => array(
+            '@PHP56Migration' => true,
             'random_api_migration' => array(
                 'rand' => 'random_int',
                 'mt_rand' => 'random_int',
+            ),
+        ),
+        '@PHP71Migration' => array(
+            '@PHP70Migration' => true,
+            'visibility_required' => array(
+                'property',
+                'method',
+                'const',
             ),
         ),
     );
