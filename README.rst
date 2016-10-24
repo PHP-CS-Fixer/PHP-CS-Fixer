@@ -501,7 +501,7 @@ Choose from the list of available fixers:
 * **phpdoc_var_without_name** [@Symfony]
    @var and @type annotations should not contain the variable name.
 
-* **pow_to_exponentiation**
+* **pow_to_exponentiation** [@PHP56Migration, @PHP70Migration, @PHP71Migration]
    Converts 'pow()' to '**'. (Risky fixer!)
 
 * **pre_increment** [@Symfony]
@@ -518,7 +518,7 @@ Choose from the list of available fixers:
 * **psr4**
    Class names should match the file name. (Risky fixer!)
 
-* **random_api_migration** [@PHP70Migration]
+* **random_api_migration** [@PHP70Migration, @PHP71Migration]
    Replaces rand, srand, getrandmax functions calls with their mt_*
    analogs. (Risky fixer!)
 
@@ -606,7 +606,7 @@ Choose from the list of available fixers:
 * **unix_line_endings** [@PSR2, @Symfony]
    All PHP files must use the Unix LF line ending.
 
-* **visibility_required** [@PSR2, @Symfony]
+* **visibility_required** [@PSR2, @Symfony, @PHP71Migration]
    Visibility MUST be declared on all properties and methods; abstract and
    final MUST be declared before the visibility; static MUST be declared
    after the visibility.
