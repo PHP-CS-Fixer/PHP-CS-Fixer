@@ -21,4 +21,10 @@ class Foo extends Bar implements FooInterface{
     // method body
     }
 }
+
+class Aaa implements
+    Bbb, Ccc,
+    Ddd
+    {
+    }
 ?>
