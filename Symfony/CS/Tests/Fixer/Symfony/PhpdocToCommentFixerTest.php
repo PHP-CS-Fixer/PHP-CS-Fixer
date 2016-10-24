@@ -65,6 +65,11 @@ class DocBlocks
     /**
      * Do not convert this
      */
+    var $oldPublicStyle;
+
+    /**
+     * Do not convert this
+     */
     public function test() {}
 
     /**
