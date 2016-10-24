@@ -1,0 +1,54 @@
+---------------------------------------------------------------------------
+
+by gharlan at 2016-09-21T09:23:32Z
+
+`pow(1 + 2, 3 * 4)` -> `(1 + 2) ** (3 * 4)`
+`pow(-1, 2)` -> `(-1) ** 2`
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-22T07:23:04Z
+
+Expect the test to fail.
+I need to find the `pow()`-calls reversed, i.e. last first and iterate back to the first token.
+Will finish when I got some time. Comments on anything else are welcome ^-^
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-30T07:03:52Z
+
+All done I think.
+IMHO fabbot.io is wrong
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-17T18:05:40Z
+
+Please add the fixer to `PHP70Migration` ruleset
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-10-20T07:13:04Z
+
+>Please add the fixer to PHP70Migration ruleset
+
+This feature was added to PHP 5.6, you sure you want it to a PHP7 modernizing set?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-20T09:32:46Z
+
+Oh! Please make PHP56Migration ruleset then :D
+then make 5.6 migration part of 7.0 migration ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-20T11:16:34Z
+
+:+1: except minors
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-24T16:32:32Z
+
+I let myself push some fixes
