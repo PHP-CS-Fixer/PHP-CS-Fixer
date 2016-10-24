@@ -68,6 +68,15 @@ final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be ran before the SingleBlankLineBeforeNamespaceFixer.
+        return 1;
+    }
+
+    /**
      * Cleanup a whitespace token.
      *
      * @param Token $token

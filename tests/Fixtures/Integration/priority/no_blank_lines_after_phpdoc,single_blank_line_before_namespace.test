@@ -1,0 +1,24 @@
+--TEST--
+Integration of fixers: no_blank_lines_after_phpdoc,single_blank_line_before_namespace.
+--RULESET--
+{"no_blank_lines_after_phpdoc": true, "single_blank_line_before_namespace": true}
+--EXPECT--
+<?php
+/**
+ * Header
+ */
+
+namespace A\B;
+
+class A {}
+
+--INPUT--
+<?php
+/**
+ * Header
+ */
+
+
+namespace A\B;
+
+class A {}
