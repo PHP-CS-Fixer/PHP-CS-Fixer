@@ -11,7 +11,7 @@ Default ruleset was changed from Symfony standard to more generic PSR2. You can 
 
 The term of risky fixers was introduced. Risky fixer is a fixer that may change the meaning of code (like `StrictComparisonFixer` fixer, which will change `==` into `===`). No rules that are followed by risky fixers are run by default. You need to explicitly permit risky fixers to run them.
 
-Default configuraton changes
+Default configuration changes
 ----------------------------
 By default, PSR2 rules are used instead of Symfony rules.
 Files that will be fixed are php/phpt/twig instead of php/twig/xml/yml.
@@ -71,7 +71,7 @@ Config and Finder classes
 -------------------------
 All off `Symfony\CS\Config\*` and `Symfony\CS\Finder\*` classes have been removed, instead use `PhpCsFixer\Config` and `PhpCsFixer\Finder`.
 
-For that reason you can not set config class by `--config` CLI argument, from now it is used to set configuration file. Thanks to this the `--config-file` CLI argument is no longer available.
+For that reason you can not set config class by `--config` CLI argument, from now it is used to set configuration file. Therefor the `--config-file` CLI argument is no longer available.
 
 Renamed rules
 -------------
