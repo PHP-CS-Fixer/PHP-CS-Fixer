@@ -31,6 +31,7 @@ class FooBar
     }
 
     /**
+     * Foo
      * @param string $dummy Some argument description
      * @param array $options
      * @param string|null $data Foo
