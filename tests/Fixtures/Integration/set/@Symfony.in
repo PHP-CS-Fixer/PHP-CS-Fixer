@@ -18,6 +18,8 @@ declare(ticks=1);
  */
 class FooBar
 {
+
+
     const SOME_CONST = 42;
 
     private $fooBar;
