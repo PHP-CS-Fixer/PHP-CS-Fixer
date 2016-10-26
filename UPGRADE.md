@@ -78,6 +78,8 @@ Renamed rules
 
 Old name | New name | Note
 -------- | -------- | ----
+align_double_arrow                             | binary_operator_spaces                            | use configuration option 'align_double_arrow: true'
+align_equals                                   | binary_operator_spaces                            | use configuration option 'align_equals: true'
 array_element_no_space_before_comma            | no_whitespace_before_comma_in_array
 array_element_white_space_after_comma          | whitespace_after_comma_in_array
 blankline_after_open_tag                       | blank_line_after_opening_tag
@@ -123,6 +125,8 @@ standardize_not_equal                          | standardize_not_equals
 strict                                         | strict_comparison
 ternary_spaces                                 | ternary_operator_spaces
 trailing_spaces                                | no_trailing_whitespace
+unalign_double_arrow                           | binary_operator_spaces                            | use configuration option 'align_double_arrow: false'
+unalign_equals                                 | binary_operator_spaces                            | use configuration option 'align_equals: false'
 unary_operators_spaces                         | unary_operator_spaces
 unneeded_control_parentheses                   | no_unneeded_control_parentheses
 unused_use                                     | no_unused_imports

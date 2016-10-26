@@ -26,7 +26,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class BinaryOperatorSpacesFixer extends AbstractFixer
 {
     /**
-     * @var array<string, bool>
+     * @var array<string, bool|null>
      */
     private $configuration;
 
@@ -42,7 +42,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer
 
     /**
      * Key any of; 'align_equals', 'align_double_arrow'.
-     * Value 'bool' or 'null'.
+     * Value 'bool': 'false' do unalign, 'true' do align, or 'null': do not modify.
      *
      * @param array<string, bool|null> $configuration
      */
@@ -124,7 +124,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer
 
                 return;
             } elseif (null === $this->configuration['align_double_arrow']) {
-                return; // configured not to touch token
+                return; // configured not to touch the whitespace around the operator
             }
         } elseif ($tokens[$index]->equals('=')) {
             if (true === $this->configuration['align_equals']) {
@@ -134,7 +134,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer
 
                 return;
             } elseif (null === $this->configuration['align_equals']) {
-                return; // configured not to touch token
+                return; // configured not to touch the whitespace around the operator
             }
         }
 
@@ -183,11 +183,6 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer
 
     private function runHelperFixers(\SplFileInfo $file, Tokens $tokens)
     {
-        $helpersToRunCount = count($this->alignFixerHelpers);
-        if (0 === $helpersToRunCount) {
-            return;
-        }
-
         /** @var AbstractAlignFixerHelper $helper */
         foreach ($this->alignFixerHelpers as $helper) {
             if ($tokens->isChanged()) {
