@@ -58,7 +58,6 @@ class FooBar
             if ('values' === $mergedOptions['some_default']) {
                 return substr($dummy, 0, 5);
             }
-
             return ucwords($dummy);
         }
 
