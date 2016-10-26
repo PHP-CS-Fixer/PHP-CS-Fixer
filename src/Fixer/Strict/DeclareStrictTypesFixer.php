@@ -15,12 +15,13 @@ namespace PhpCsFixer\Fixer\Strict;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author SpacePossum
  */
-final class DeclareStrictTypesFixer extends AbstractFixer
+final class DeclareStrictTypesFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}
@@ -109,6 +110,8 @@ final class DeclareStrictTypesFixer extends AbstractFixer
      */
     private function fixWhiteSpaceAroundSequence(Tokens $tokens, $endIndex)
     {
+        $lineEnding = $this->whitespacesConfig->getLineEnding();
+
         // start index of the sequence is always 1 here, 0 is always open tag
         // transform "<?php\n" to "<?php " if needed
         if (false !== strpos($tokens[0]->getContent(), "\n")) {
@@ -120,7 +123,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer
         }
 
         if (!$tokens[1 + $endIndex]->isWhitespace()) {
-            $tokens->insertAt(1 + $endIndex, new Token(array(T_WHITESPACE, "\n")));
+            $tokens->insertAt(1 + $endIndex, new Token(array(T_WHITESPACE, $lineEnding)));
 
             return;
         }
@@ -130,7 +133,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer
             return;
         }
 
-        $tokens[1 + $endIndex]->setContent("\n".ltrim($content));
+        $tokens[1 + $endIndex]->setContent($lineEnding.ltrim($content));
     }
 
     /**
