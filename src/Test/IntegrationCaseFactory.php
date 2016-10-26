@@ -122,7 +122,7 @@ final class IntegrationCaseFactory
 
     protected function determineExpectedCode($code, $file)
     {
-        $code = $this->determineCode($code, $file, '.out');
+        $code = $this->determineCode($code, $file, '-out.php');
 
         if (null === $code) {
             throw new \InvalidArgumentException('Missing expected code.');
@@ -133,22 +133,16 @@ final class IntegrationCaseFactory
 
     protected function determineInputCode($code, $file)
     {
-        return $this->determineCode($code, $file, '.in');
+        return $this->determineCode($code, $file, '-in.php');
     }
 
-    private function determineCode($code, $file, $newExtension)
+    private function determineCode($code, $file, $suffix)
     {
         if (null !== $code) {
             return $code;
         }
 
-        $candidatePath = sprintf(
-            '%s%s%s%s',
-            $file->getPath(),
-            DIRECTORY_SEPARATOR,
-            $file->getBasename('.test'),
-            $newExtension
-        );
+        $candidatePath = $file->getPathname().$suffix;
 
         $candidateFile = new SplFileInfo($candidatePath, '', '');
         if ($candidateFile->isFile()) {
