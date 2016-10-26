@@ -264,9 +264,15 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 
         // run the test again with the `expected` part, this should always stay the same
         $this->testIntegration(
-            $case
-                ->setTitle($case->getTitle().' "--EXPECT-- part run"')
-                ->setInputCode(null)
+            new IntegrationCase(
+                $case->getFileName(),
+                $case->getTitle().' "--EXPECT-- part run"',
+                $case->getSettings(),
+                $case->getRequirements(),
+                $case->getFixers(),
+                $case->getExpectedCode(),
+                null
+            )
         );
     }
 
