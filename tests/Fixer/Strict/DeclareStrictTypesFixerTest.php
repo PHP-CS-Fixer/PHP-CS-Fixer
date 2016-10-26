@@ -163,6 +163,7 @@ $a = 456;
 
     /**
      * @dataProvider provideMessyWhitespacesCases
+     * @requires PHP 7.0
      */
     public function testMessyWhitespaces($expected, $input = null)
     {
