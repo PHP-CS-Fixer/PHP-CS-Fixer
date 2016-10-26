@@ -168,12 +168,12 @@ trait Good
     {
         return array(
             array(
-                "<?php\nabstract class Foo\n{\r\n    public function bar();\n}",
-                "<?php\nabstract class Foo\n{\n\n    public function bar();\n}",
+                "<?php\nclass Foo\n{\r\n    public function bar() {}\n}",
+                "<?php\nclass Foo\n{\n\n    public function bar() {}\n}",
             ),
             array(
-                "<?php\nabstract class Foo\n{\r\n    public function bar();\n}",
-                "<?php\nabstract class Foo\n{\r\n\r\n    public function bar();\n}",
+                "<?php\nclass Foo\n{\r\n    public function bar() {}\n}",
+                "<?php\nclass Foo\n{\r\n\r\n    public function bar() {}\n}",
             ),
         );
     }
