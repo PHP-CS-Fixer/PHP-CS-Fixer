@@ -14,11 +14,12 @@ namespace PhpCsFixer\Fixer\Semicolon;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
+final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}
@@ -33,6 +34,8 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
+        $lineEnding = $this->whitespacesConfig->getLineEnding();
+
         foreach ($tokens as $index => $token) {
             if (!$token->equals(';')) {
                 continue;
@@ -45,7 +48,7 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
 
             $content = $previous->getContent();
             if (("\n" === $content[0] || "\r" === $content[0]) && $tokens[$index - 2]->isComment()) {
-                $previous->setContent("\r" === $content[0] ? "\r\n" : "\n");
+                $previous->setContent($lineEnding);
             } else {
                 $previous->clear();
             }
