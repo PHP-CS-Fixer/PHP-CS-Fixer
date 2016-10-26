@@ -160,7 +160,7 @@ final class Runner
         } catch (LintingException $e) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
-                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_INVALID)
+                new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_INVALID)
             );
 
             $this->errorsManager->report(new Error(Error::TYPE_INVALID, $name));
@@ -200,7 +200,7 @@ final class Runner
         } catch (\ParseError $e) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
-                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
+                new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_LINT)
             );
 
             $this->errorsManager->report(new Error(Error::TYPE_LINT, $name));
@@ -229,7 +229,7 @@ final class Runner
             } catch (LintingException $e) {
                 $this->dispatchEvent(
                     FixerFileProcessedEvent::NAME,
-                    FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_LINT)
+                    new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_LINT)
                 );
 
                 $this->errorsManager->report(new Error(Error::TYPE_LINT, $name));
@@ -258,7 +258,7 @@ final class Runner
 
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,
-            FixerFileProcessedEvent::create()->setStatus($fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES)
+            new FixerFileProcessedEvent($fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES)
         );
 
         return $fixInfo;
@@ -273,7 +273,7 @@ final class Runner
     {
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,
-            FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_EXCEPTION)
+            new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_EXCEPTION)
         );
 
         $this->errorsManager->report(new Error(Error::TYPE_EXCEPTION, $name));

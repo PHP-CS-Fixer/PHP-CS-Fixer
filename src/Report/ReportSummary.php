@@ -40,21 +40,37 @@ final class ReportSummary
     private $isDryRun = false;
 
     /**
-     * @var float
+     * @var int
      */
     private $memory;
 
     /**
-     * @var float
+     * @var int
      */
     private $time;
 
     /**
-     * @return ReportSummary
+     * @param array $changed
+     * @param int   $time              duration in milliseconds
+     * @param int   $memory            memory usage in bytes
+     * @param bool  $addAppliedFixers
+     * @param bool  $isDryRun
+     * @param bool  $isDecoratedOutput
      */
-    public static function create()
-    {
-        return new self();
+    public function __construct(
+        array $changed,
+        $time,
+        $memory,
+        $addAppliedFixers,
+        $isDryRun,
+        $isDecoratedOutput
+    ) {
+        $this->changed = $changed;
+        $this->time = $time;
+        $this->memory = $memory;
+        $this->addAppliedFixers = $addAppliedFixers;
+        $this->isDryRun = $isDryRun;
+        $this->isDecoratedOutput = $isDecoratedOutput;
     }
 
     /**
@@ -82,19 +98,7 @@ final class ReportSummary
     }
 
     /**
-     * @param array $changed
-     *
-     * @return ReportSummary
-     */
-    public function setChanged(array $changed)
-    {
-        $this->changed = $changed;
-
-        return $this;
-    }
-
-    /**
-     * @return float
+     * @return int
      */
     public function getMemory()
     {
@@ -102,71 +106,11 @@ final class ReportSummary
     }
 
     /**
-     * @param float $memory
-     *
-     * @return ReportSummary
-     */
-    public function setMemory($memory)
-    {
-        $this->memory = $memory;
-
-        return $this;
-    }
-
-    /**
-     * @return float
+     * @return time
      */
     public function getTime()
     {
         return $this->time;
-    }
-
-    /**
-     * @param float $time
-     *
-     * @return ReportSummary
-     */
-    public function setTime($time)
-    {
-        $this->time = $time;
-
-        return $this;
-    }
-
-    /**
-     * @param bool $addAppliedFixers
-     *
-     * @return ReportSummary
-     */
-    public function setAddAppliedFixers($addAppliedFixers)
-    {
-        $this->addAppliedFixers = $addAppliedFixers;
-
-        return $this;
-    }
-
-    /**
-     * @param bool $isDecoratedOutput
-     *
-     * @return ReportSummary
-     */
-    public function setDecoratedOutput($isDecoratedOutput)
-    {
-        $this->isDecoratedOutput = $isDecoratedOutput;
-
-        return $this;
-    }
-
-    /**
-     * @param bool $isDryRun
-     *
-     * @return ReportSummary
-     */
-    public function setDryRun($isDryRun)
-    {
-        $this->isDryRun = $isDryRun;
-
-        return $this;
     }
 
     /**

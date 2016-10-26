@@ -50,8 +50,14 @@ final class JunitReporterTest extends \PHPUnit_Framework_TestCase
 XML;
 
         $actualXml = $this->reporter->generate(
-            ReportSummary::create()
-                ->setChanged(array())
+            new ReportSummary(
+                array(),
+                0,
+                0,
+                false,
+                false,
+                false
+            )
         );
 
         $this->assertJunitXmlSchema($actualXml);
@@ -72,14 +78,18 @@ XML;
 XML;
 
         $actualXml = $this->reporter->generate(
-            ReportSummary::create()
-                ->setChanged(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                        ),
-                    )
-                )
+            new ReportSummary(
+                array(
+                    'someFile.php' => array(
+                        'appliedFixers' => array('some_fixer_name_here'),
+                    ),
+                ),
+                0,
+                0,
+                false,
+                false,
+                false
+            )
         );
 
         $this->assertJunitXmlSchema($actualXml);
@@ -105,15 +115,19 @@ this text is a diff ;)]]></failure>
 XML;
 
         $actualXml = $this->reporter->generate(
-            ReportSummary::create()
-                ->setChanged(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                            'diff' => 'this text is a diff ;)',
-                        ),
-                    )
-                )
+            new ReportSummary(
+                array(
+                    'someFile.php' => array(
+                        'appliedFixers' => array('some_fixer_name_here'),
+                        'diff' => 'this text is a diff ;)',
+                    ),
+                ),
+                0,
+                0,
+                false,
+                false,
+                false
+            )
         );
 
         $this->assertJunitXmlSchema($actualXml);
@@ -137,15 +151,18 @@ XML;
 XML;
 
         $actualXml = $this->reporter->generate(
-            ReportSummary::create()
-                ->setAddAppliedFixers(true)
-                ->setChanged(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here_1', 'some_fixer_name_here_2'),
-                        ),
-                    )
-                )
+            new ReportSummary(
+                array(
+                    'someFile.php' => array(
+                        'appliedFixers' => array('some_fixer_name_here_1', 'some_fixer_name_here_2'),
+                    ),
+                ),
+                0,
+                0,
+                true,
+                false,
+                false
+            )
         );
 
         $this->assertJunitXmlSchema($actualXml);
@@ -166,15 +183,18 @@ XML;
 XML;
 
         $actualXml = $this->reporter->generate(
-            ReportSummary::create()
-                ->setChanged(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                        ),
-                    )
-                )
-                ->setTime(1234)
+            new ReportSummary(
+                array(
+                    'someFile.php' => array(
+                        'appliedFixers' => array('some_fixer_name_here'),
+                    ),
+                ),
+                1234,
+                0,
+                false,
+                false,
+                false
+            )
         );
 
         $this->assertJunitXmlSchema($actualXml);
@@ -213,21 +233,23 @@ another diff here ;)</failure>
 XML;
 
         $actualXml = $this->reporter->generate(
-            ReportSummary::create()
-                ->setAddAppliedFixers(true)
-                ->setChanged(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here_1', 'some_fixer_name_here_2'),
-                            'diff' => 'this text is a diff ;)',
-                        ),
-                        'anotherFile.php' => array(
-                            'appliedFixers' => array('another_fixer_name_here'),
-                            'diff' => 'another diff here ;)',
-                        ),
-                    )
-                )
-                ->setTime(1234)
+            new ReportSummary(
+                array(
+                    'someFile.php' => array(
+                        'appliedFixers' => array('some_fixer_name_here_1', 'some_fixer_name_here_2'),
+                        'diff' => 'this text is a diff ;)',
+                    ),
+                    'anotherFile.php' => array(
+                        'appliedFixers' => array('another_fixer_name_here'),
+                        'diff' => 'another diff here ;)',
+                    ),
+                ),
+                1234,
+                0,
+                true,
+                true,
+                false
+            )
         );
 
         $this->assertJunitXmlSchema($actualXml);

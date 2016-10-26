@@ -52,14 +52,18 @@ XML;
         $this->assertXmlStringEqualsXmlString(
             $expectedXml,
             $this->reporter->generate(
-                ReportSummary::create()
-                    ->setChanged(
-                        array(
-                            'someFile.php' => array(
-                                'appliedFixers' => array('some_fixer_name_here'),
-                            ),
-                        )
-                    )
+                new ReportSummary(
+                    array(
+                        'someFile.php' => array(
+                            'appliedFixers' => array('some_fixer_name_here'),
+                        ),
+                    ),
+                    0,
+                    0,
+                    false,
+                    false,
+                    false
+                )
             )
         );
     }
@@ -80,15 +84,19 @@ XML;
         $this->assertXmlStringEqualsXmlString(
             $expectedXml,
             $this->reporter->generate(
-                ReportSummary::create()
-                    ->setChanged(
-                        array(
-                            'someFile.php' => array(
-                                'appliedFixers' => array('some_fixer_name_here'),
-                                'diff' => 'this text is a diff ;)',
-                            ),
-                        )
-                    )
+                new ReportSummary(
+                    array(
+                        'someFile.php' => array(
+                            'appliedFixers' => array('some_fixer_name_here'),
+                            'diff' => 'this text is a diff ;)',
+                        ),
+                    ),
+                    0,
+                    0,
+                    false,
+                    false,
+                    false
+                )
             )
         );
     }
@@ -111,15 +119,18 @@ XML;
         $this->assertXmlStringEqualsXmlString(
             $expectedXml,
             $this->reporter->generate(
-                ReportSummary::create()
-                    ->setAddAppliedFixers(true)
-                    ->setChanged(
-                        array(
-                            'someFile.php' => array(
-                                'appliedFixers' => array('some_fixer_name_here'),
-                            ),
-                        )
-                    )
+                new ReportSummary(
+                    array(
+                        'someFile.php' => array(
+                            'appliedFixers' => array('some_fixer_name_here'),
+                        ),
+                    ),
+                    0,
+                    0,
+                    true,
+                    false,
+                    false
+                )
             )
         );
     }
@@ -142,16 +153,18 @@ XML;
         $this->assertXmlStringEqualsXmlString(
             $expectedXml,
             $this->reporter->generate(
-                ReportSummary::create()
-                    ->setChanged(
-                        array(
-                            'someFile.php' => array(
-                                'appliedFixers' => array('some_fixer_name_here'),
-                            ),
-                        )
-                    )
-                    ->setMemory(2.5 * 1024 * 1024)
-                    ->setTime(1234)
+                new ReportSummary(
+                    array(
+                        'someFile.php' => array(
+                            'appliedFixers' => array('some_fixer_name_here'),
+                        ),
+                    ),
+                    1234,
+                    2.5 * 1024 * 1024,
+                    false,
+                    false,
+                    false
+                )
             )
         );
     }
@@ -185,22 +198,23 @@ XML;
         $this->assertXmlStringEqualsXmlString(
             $expectedXml,
             $this->reporter->generate(
-                ReportSummary::create()
-                    ->setAddAppliedFixers(true)
-                    ->setChanged(
-                        array(
-                            'someFile.php' => array(
-                                'appliedFixers' => array('some_fixer_name_here'),
-                                'diff' => 'this text is a diff ;)',
-                            ),
-                            'anotherFile.php' => array(
-                                'appliedFixers' => array('another_fixer_name_here'),
-                                'diff' => 'another diff here ;)',
-                            ),
-                        )
-                    )
-                    ->setMemory(2.5 * 1024 * 1024)
-                    ->setTime(1234)
+                new ReportSummary(
+                    array(
+                        'someFile.php' => array(
+                            'appliedFixers' => array('some_fixer_name_here'),
+                            'diff' => 'this text is a diff ;)',
+                        ),
+                        'anotherFile.php' => array(
+                            'appliedFixers' => array('another_fixer_name_here'),
+                            'diff' => 'another diff here ;)',
+                        ),
+                    ),
+                    1234,
+                    2.5 * 1024 * 1024,
+                    true,
+                    false,
+                    false
+                )
             )
         );
     }

@@ -44,13 +44,11 @@ final class FixerFileProcessedEvent extends Event
     private $status = self::STATUS_UNKNOWN;
 
     /**
-     * Create instance.
-     *
-     * @return FixerFileProcessedEvent
+     * @param int $status
      */
-    public static function create()
+    public function __construct($status)
     {
-        return new static();
+        $this->status = $status;
     }
 
     /**
@@ -61,19 +59,5 @@ final class FixerFileProcessedEvent extends Event
     public function getStatus()
     {
         return $this->status;
-    }
-
-    /**
-     * Set status.
-     *
-     * @param int $status
-     *
-     * @return FixerFileProcessedEvent
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
     }
 }
