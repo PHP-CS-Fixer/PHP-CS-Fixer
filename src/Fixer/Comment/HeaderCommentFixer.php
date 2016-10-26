@@ -16,12 +16,13 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Antonio J. García Lagar <aj@garcialagar.es>
  * @author SpacePossum
  */
-final class HeaderCommentFixer extends AbstractFixer
+final class HeaderCommentFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     const HEADER_PHPDOC = 'PHPDoc';
     const HEADER_COMMENT = 'comment';
@@ -62,7 +63,8 @@ final class HeaderCommentFixer extends AbstractFixer
             $this->headerComment,
             $this->headerCommentType,
             $this->headerLocation,
-            $this->headerLineSeparation) = $this->parseConfiguration($configuration);
+            $this->headerLineSeparation
+        ) = $this->parseConfiguration($configuration);
     }
 
     /**
@@ -122,10 +124,12 @@ final class HeaderCommentFixer extends AbstractFixer
      */
     private function encloseTextInComment($header, $type)
     {
-        $comment = self::HEADER_COMMENT === $type ? "/*\n" : "/**\n";
+        $lineEnding = $this->whitespacesConfig->getLineEnding();
+
+        $comment = (self::HEADER_COMMENT === $type ? '/*' : '/**').$lineEnding;
         $lines = explode("\n", str_replace("\r", '', $header));
         foreach ($lines as $line) {
-            $comment .= rtrim(' * '.$line)."\n";
+            $comment .= rtrim(' * '.$line).$lineEnding;
         }
 
         return $comment.' */';
@@ -208,15 +212,17 @@ final class HeaderCommentFixer extends AbstractFixer
      */
     private function fixWhiteSpaceAroundHeader(Tokens $tokens, $headerIndex)
     {
+        $lineEnding = $this->whitespacesConfig->getLineEnding();
+
         // fix lines after header comment
         $expectedLineCount = self::HEADER_LINE_SEPARATION_BOTH === $this->headerLineSeparation || self::HEADER_LINE_SEPARATION_BOTTOM === $this->headerLineSeparation ? 2 : 1;
         if ($headerIndex === count($tokens) - 1) {
-            $tokens->insertAt($headerIndex + 1, new Token(array(T_WHITESPACE, str_repeat("\n", $expectedLineCount))));
+            $tokens->insertAt($headerIndex + 1, new Token(array(T_WHITESPACE, str_repeat($lineEnding, $expectedLineCount))));
         } else {
             $afterCommentIndex = $tokens->getNextNonWhitespace($headerIndex);
             $lineBreakCount = $this->getLineBreakCount($tokens, $headerIndex + 1, null === $afterCommentIndex ? count($tokens) : $afterCommentIndex);
             if ($lineBreakCount < $expectedLineCount) {
-                $missing = str_repeat("\n", $expectedLineCount - $lineBreakCount);
+                $missing = str_repeat($lineEnding, $expectedLineCount - $lineBreakCount);
                 if ($tokens[$headerIndex + 1]->isWhitespace()) {
                     $tokens[$headerIndex + 1]->setContent($missing.$tokens[$headerIndex + 1]->getContent());
                 } else {
@@ -230,7 +236,7 @@ final class HeaderCommentFixer extends AbstractFixer
         $lineBreakCount = $this->getLineBreakCount($tokens, $tokens->getPrevNonWhitespace($headerIndex), $headerIndex);
         if ($lineBreakCount < $expectedLineCount) {
             // because of the way the insert index was determined for header comment there cannot be an empty token here
-            $tokens->insertAt($headerIndex, new Token(array(T_WHITESPACE, str_repeat("\n", $expectedLineCount - $lineBreakCount))));
+            $tokens->insertAt($headerIndex, new Token(array(T_WHITESPACE, str_repeat($lineEnding, $expectedLineCount - $lineBreakCount))));
         }
     }
 
