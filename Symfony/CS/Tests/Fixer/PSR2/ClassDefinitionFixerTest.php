@@ -47,10 +47,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestBase
         $defaultConfigProperty = new \ReflectionProperty('Symfony\CS\Fixer\PSR2\ClassDefinitionFixer', 'defaultConfig');
         $defaultConfigProperty->setAccessible(true);
 
-        $configProperty = new \ReflectionProperty('Symfony\CS\Fixer\PSR2\ClassDefinitionFixer', 'config');
-        $configProperty->setAccessible(true);
-
-        $this->assertSame($defaultConfigProperty->getValue(), $configProperty->getValue());
+        $this->assertAttributeEquals($defaultConfigProperty->getValue(), 'config', $this->getFixer());
     }
 
     /**
