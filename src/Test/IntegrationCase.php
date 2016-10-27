@@ -16,8 +16,6 @@ use PhpCsFixer\FixerInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
  */
 final class IntegrationCase
 {
