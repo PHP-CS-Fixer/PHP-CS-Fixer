@@ -363,14 +363,14 @@ EOF
 
         $fixEvent = $this->stopwatch->getEvent('fixFiles');
 
-        $reportSummary = ReportSummary::create()
-            ->setChanged($changed)
-            ->setAddAppliedFixers(OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity())
-            ->setDecoratedOutput($output->isDecorated())
-            ->setDryRun($resolver->isDryRun())
-            ->setMemory($fixEvent->getMemory())
-            ->setTime($fixEvent->getDuration())
-        ;
+        $reportSummary = new ReportSummary(
+            $changed,
+            $fixEvent->getDuration(),
+            $fixEvent->getMemory(),
+            OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity(),
+            $resolver->isDryRun(),
+            $output->isDecorated()
+        );
 
         if ($output->isDecorated()) {
             $output->write($reporter->generate($reportSummary));
