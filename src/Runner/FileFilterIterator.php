@@ -79,7 +79,7 @@ final class FileFilterIterator extends \FilterIterator
         ) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
-                FixerFileProcessedEvent::create()->setStatus(FixerFileProcessedEvent::STATUS_SKIPPED)
+                new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_SKIPPED)
             );
 
             return false;

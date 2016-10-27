@@ -57,15 +57,15 @@ final class IntegrationCaseFactory
                 $match
             );
 
-            return IntegrationCase::create()
-                ->setFileName($file->getRelativePathname())
-                ->setTitle($match['title'])
-                ->setFixers($this->determineFixers($match['ruleset']))
-                ->setRequirements($this->determineRequirements($match['requirements']))
-                ->setSettings($this->determineSettings($match['settings']))
-                ->setExpectedCode($this->determineExpectedCode($match['expect'], $file))
-                ->setInputCode($this->determineInputCode($match['input'], $file))
-            ;
+            return new IntegrationCase(
+                $file->getRelativePathname(),
+                $match['title'],
+                $this->determineSettings($match['settings']),
+                $this->determineRequirements($match['requirements']),
+                $this->determineFixers($match['ruleset']),
+                $this->determineExpectedCode($match['expect'], $file),
+                $this->determineInputCode($match['input'], $file)
+            );
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException(
                 sprintf('%s Test file: "%s".', $e->getMessage(), $file->getRelativePathname()),

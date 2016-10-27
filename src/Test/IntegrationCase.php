@@ -58,6 +58,33 @@ final class IntegrationCase
      */
     private $title;
 
+    /**
+     * @param string           $fileName
+     * @param string           $title
+     * @param array            $settings
+     * @param array            $requirements
+     * @param FixerInterface[] $fixers
+     * @param string           $expectedCode
+     * @param string|null      $inputCode
+     */
+    public function __construct(
+        $fileName,
+        $title,
+        array $settings,
+        array $requirements,
+        array $fixers,
+        $expectedCode,
+        $inputCode
+    ) {
+        $this->fileName = $fileName;
+        $this->title = $title;
+        $this->settings = $settings;
+        $this->requirements = $requirements;
+        $this->fixers = $fixers;
+        $this->expectedCode = $expectedCode;
+        $this->inputCode = $inputCode;
+    }
+
     public static function create()
     {
         return new self();
@@ -106,55 +133,6 @@ final class IntegrationCase
     public function getTitle()
     {
         return $this->title;
-    }
-
-    public function setExpectedCode($expectedCode)
-    {
-        $this->expectedCode = $expectedCode;
-
-        return $this;
-    }
-
-    public function setFileName($fileName)
-    {
-        $this->fileName = $fileName;
-
-        return $this;
-    }
-
-    public function setFixers(array $fixers)
-    {
-        $this->fixers = $fixers;
-
-        return $this;
-    }
-
-    public function setInputCode($inputCode)
-    {
-        $this->inputCode = $inputCode;
-
-        return $this;
-    }
-
-    public function setRequirements(array $requirements)
-    {
-        $this->requirements = $requirements;
-
-        return $this;
-    }
-
-    public function setSettings($settings)
-    {
-        $this->settings = $settings;
-
-        return $this;
-    }
-
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
     }
 
     public function shouldCheckPriority()
