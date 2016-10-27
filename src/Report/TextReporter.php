@@ -115,7 +115,7 @@ final class TextReporter implements ReporterInterface
      */
     private function getFooter($time, $memory, $isDryRun)
     {
-        if ($time === 0 || $memory === 0) {
+        if (0 === $time || 0 === $memory) {
             return '';
         }
 
