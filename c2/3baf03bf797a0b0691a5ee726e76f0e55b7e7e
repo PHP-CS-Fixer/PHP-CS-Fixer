@@ -1,0 +1,55 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-13T23:07:37Z
+
+Not sure if introducing possibility to align operators inside `BinaryOperatorSpaces` is good idea.
+It makes `BinaryOperatorSpaces` more complex. We could unalign all operators in same way, but we cannot do it easily for aligning them.
+
+Even with single fixer one could don't want to unalign `=`, but also don't want to align `=`, as he is using different logic. For now he dont have option to leave `=` as is and don't touch it.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-14T07:54:01Z
+
+So I misread your suggestion to add configuration, no problem.
+If I understand correctly I would suggest to apply https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2164 to master after all and than merge the unalign and the align counter part fixers and add configuration to those?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-14T10:18:46Z
+
+> So I misread your suggestion to add configuration, no problem.
+
+no no, the configuration should be there
+
+> If I understand correctly I would suggest to apply #2164 to master after all and than merge the unalign and the align counter part fixers and add configuration to those?
+
+for sure unaligning fixers should be combined and then configurable.
+not sure what to do with alignment ones, as both of them have very specific logic.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-10-26T14:36:30Z
+
+>Even with single fixer one could don't want to unalign =, but also don't want to align =, as he is using different logic. For now he dont have option to leave = as is and don't touch it.
+
+fixed, by allowing `null` as configuration value of an item (`align_double_arrow` and/or `align_equals`)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-26T14:44:43Z
+
+aaah, that's the thing.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-26T14:57:04Z
+
+Upgrade guide needs to be updated
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-10-26T16:58:23Z
+
+Done...
+damn this PR got big, lucky this one is the biggest of merging conflicting Fixers ;)
