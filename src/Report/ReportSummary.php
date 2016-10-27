@@ -51,8 +51,8 @@ final class ReportSummary
 
     /**
      * @param array $changed
-     * @param int   $time              milliseconds
-     * @param int   $memory            bytes
+     * @param int   $time              duration in milliseconds
+     * @param int   $memory            memory usage in bytes
      * @param bool  $addAppliedFixers
      * @param bool  $isDryRun
      * @param bool  $isDecoratedOutput
