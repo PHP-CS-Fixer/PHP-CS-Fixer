@@ -10,9 +10,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Fixer\ArrayNotation;
+namespace PhpCsFixer\Fixer\Operator;
 
-use PhpCsFixer\AbstractAlignFixer;
+use PhpCsFixer\AbstractAlignFixerHelper;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -20,7 +20,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class AlignDoubleArrowFixer extends AbstractAlignFixer
+final class AlignDoubleArrowFixerHelper extends AbstractAlignFixerHelper
 {
     /**
      * Level counter of the current nest level.
@@ -29,65 +29,12 @@ final class AlignDoubleArrowFixer extends AbstractAlignFixer
      *
      * @var int
      */
-    private $currentLevel;
+    private $currentLevel = 0;
 
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOUBLE_ARROW);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $this->currentLevel = 0;
-        $this->deepestLevel = 0;
-
-        // This fixer works partially on Tokens and partially on string representation of code.
-        // During the process of fixing internal state of single Token may be affected by injecting ALIGNABLE_PLACEHOLDER to its content.
-        // The placeholder will be resolved by `replacePlaceholder` method by removing placeholder or changing it into spaces.
-        // That way of fixing the code causes disturbances in marking Token as changed - if code is perfectly valid then placeholder
-        // still be injected and removed, which will cause the `changed` flag to be set.
-        // To handle that unwanted behavior we work on clone of Tokens collection and then override original collection with fixed collection.
-        $tokensClone = clone $tokens;
-
-        $this->injectAlignmentPlaceholders($tokensClone, 0, count($tokens));
-        $content = $this->replacePlaceholder($tokensClone);
-
-        $tokens->setCode($content);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Align double arrow symbols in consecutive lines.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // should be run after the BinaryOperatorSpacesFixer
-        return -10;
-    }
-
-    /**
-     * Inject into the text placeholders of candidates of vertical alignment.
-     *
-     * @param Tokens $tokens
-     * @param int    $startAt
-     * @param int    $endAt
-     *
-     * @return array($code, $context_counter)
-     */
-    private function injectAlignmentPlaceholders(Tokens $tokens, $startAt, $endAt)
+    protected function injectAlignmentPlaceholders(Tokens $tokens, $startAt, $endAt)
     {
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];

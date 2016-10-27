@@ -17,12 +17,17 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
+ * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
+ * @author SpacePossum
  *
  * @internal
  */
 final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param string|null $input
+     *
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
@@ -192,9 +197,23 @@ $b;',
                 '<?php $a = array("b" => "c", );',
                 '<?php $a = array("b"=> "c", );',
             ),
-            array(
-                '<?php $a = array("b"      =>      "c", );',
-            ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param string|null $input
+     *
+     * @dataProvider provideUnalignEqualsCases
+     */
+    public function testUnalignEquals($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideUnalignEqualsCases()
+    {
+        return array(
             array(
                 '<?php $a = "c";',
                 '<?php $a="c";',
@@ -208,15 +227,138 @@ $b;',
                 '<?php $a= "c";',
             ),
             array(
-                '<?php $a        =        "c";',
-            ),
-            array(
-                '<?php $d =    $c + $a +     //
+                '<?php $d = $c + $a +     //
                 $b;',
                 '<?php $d =    $c+$a+     //
                 $b;',
             ),
+            array(
+                '<?php
+    $a = 1;
+    $bbbb = \'
+    $cccccccc = 3;
+    \';',
+                '<?php
+    $a    = 1;
+    $bbbb = \'
+    $cccccccc = 3;
+    \';',
+            ),
+            array(
+                '<?php
+    $ccc = 1;
+    $bb = 1;
+    $a = 1;
+
+    /*
+    Others alignments
+     */
+    $a[$b = 1] = 1;
+    $ab[$bc = 1] = 1;
+    $abc[$bcd = 1] = 1;
+    $a[$b] = 1;
+    $ab[$bc] = 1;
+    $abc[$bcd] = 1;
+
+    if ($a = 1) {
+        $ccc = 1;
+        $bb = 1;
+        $a = 1;
+    }
+
+    function a($a = 1, $b = 2, $c = 3)
+    {
+        $a[$b = 1] = 1;
+        $ab[$bc = 1] = 1;
+        $abc[$bcd = 1] = 1;
+    }
+
+    function b(
+        $a = 1,
+        $bbb = 2,
+        $c = 3
+    ) {
+        $a[$b = 1] = 1;
+        $ab[$bc = 1] = 1;
+        $abc[$bcd = 1] = 1;
+    }
+
+    while (false) {
+        $aa = 2;
+        $a[$b] = array();
+    }
+
+    for ($i = 0; $i < 10; $i++) {
+        $aa = 2;
+        $a[$b] = array();
+    }',
+                '<?php
+    $ccc = 1;
+    $bb  = 1;
+    $a   = 1;
+
+    /*
+    Others alignments
+     */
+    $a[$b = 1]     = 1;
+    $ab[$bc = 1]   = 1;
+    $abc[$bcd = 1] = 1;
+    $a[$b]         = 1;
+    $ab[$bc]       = 1;
+    $abc[$bcd]     = 1;
+
+    if ($a = 1) {
+        $ccc = 1;
+        $bb  = 1;
+        $a   = 1;
+    }
+
+    function a($a = 1, $b = 2, $c = 3)
+    {
+        $a[$b = 1]     = 1;
+        $ab[$bc = 1]   = 1;
+        $abc[$bcd = 1] = 1;
+    }
+
+    function b(
+        $a = 1,
+        $bbb = 2,
+        $c = 3
+    ) {
+        $a[$b = 1]     = 1;
+        $ab[$bc = 1]   = 1;
+        $abc[$bcd = 1] = 1;
+    }
+
+    while (false) {
+        $aa    = 2;
+        $a[$b] = array();
+    }
+
+    for ($i = 0; $i < 10; $i++) {
+        $aa    = 2;
+        $a[$b] = array();
+    }',
+            ),
         );
+    }
+
+    /**
+     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessageRegExp /^\[binary_operator_spaces\] Unknown configuration option "foo"\. Expected any of "align_equals", "align_double_arrow"\.$/
+     */
+    public function testWrongConfigItem()
+    {
+        $this->getFixer()->configure(array('foo' => true));
+    }
+
+    /**
+     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessageRegExp /^\[binary_operator_spaces\] Invalid value type for configuration option "align_double_arrow"\. Expected "bool" or "null" got "integer"\.$/
+     */
+    public function testWrongConfigValue()
+    {
+        $this->getFixer()->configure(array('align_double_arrow' => 123));
     }
 
     /**
@@ -245,6 +387,1104 @@ $b;',
                 '<?php [1, 2]   + //   '.'
                 [3, 4];',
             ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param string|null $input
+     *
+     * @dataProvider provideUnalignDoubleArrowCases
+     */
+    public function testUnalignDoubleArrow($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideUnalignDoubleArrowCases()
+    {
+        return array(
+            array(
+                '<?php
+    $data = [
+        "foo" => "Bar",
+        "main" => array(
+            [
+                "baz" => "Test",
+                "bazaa" => $a->{"Test"},
+                "bazaa" => $a["Test"],
+                "bazaaaa" => b("Test"),
+            ]
+        ),
+        "bar" => array(),
+    ];',
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => array(
+            [
+                "baz"     => "Test",
+                "bazaa"   => $a->{"Test"},
+                "bazaa"   => $a["Test"],
+                "bazaaaa" => b("Test"),
+            ]
+        ),
+        "bar"  => array(),
+    ];',
+            ),
+            array(
+                '<?php
+    $data = [
+        "foo" => "Bar",
+        "main" => [array("baz" => "Test")],
+        "bar" => array(),
+    ];
+    $data = array(
+        "foo" => "Bar",
+        "main" => array("baz" => "Test"),
+        "bar" => array(),
+    );
+    $var = [];
+    foreach ($foo as $i => $bar) {
+        $var[] = /* Comment */ [$i => $bar];
+    }',
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => [array("baz" => "Test")],
+        "bar"  => array(),
+    ];
+    $data = array(
+        "foo"  => "Bar",
+        "main" => array("baz" => "Test"),
+        "bar"  => array(),
+    );
+    $var = [];
+    foreach ($foo as $i => $bar) {
+        $var[] = /* Comment */ [$i => $bar];
+    }',
+            ),
+            array(
+                '<?php
+    $data = [
+        "foo" => "Bar",
+        "main" => [array("baz" => "Test")],
+        "bar" => array(),
+    ];',
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => [array("baz" => "Test")],
+        "bar"  => array(),
+    ];',
+            ),
+            array(
+                '<?php
+    $data = array(
+        "foo" => "Bar",
+        "main" => array("baz" => "Test"),
+        "bar" => array(),
+    );',
+                '<?php
+    $data = array(
+        "foo"  => "Bar",
+        "main" => array("baz" => "Test"),
+        "bar"  => array(),
+    );',
+            ),
+            array(
+                '<?php
+    $data = array(
+        "foo" => "Bar",
+        "main" => array(array("baz" => "Test")),
+        "bar" => array(),
+    );',
+                '<?php
+    $data = array(
+        "foo"  => "Bar",
+        "main" => array(array("baz" => "Test")),
+        "bar"  => array(),
+    );',
+            ),
+            array(
+                '<?php
+    $var = [];
+    foreach ($foo as $i => $bar) {
+        $var[] = /* Comment */ [$i => $bar];
+    }',
+                '<?php
+    $var = [];
+    foreach ($foo as $i  =>  $bar) {
+        $var[] = /* Comment */ [$i  =>  $bar];
+    }',
+            ),
+            array(
+                '<?php
+    $var = [];
+    foreach ($foo as $i => $bar) {
+        $var[] = [$i => $bar];
+    }',
+            ),
+            array(
+                '<?php
+    $var = [];
+    foreach ([1 => 2] as $k => $v) {
+        $var[] = [$i => $bar];
+    }',
+            ),
+            array(
+                '<?php
+    $var = [];
+    foreach (fncCall() as $k => $v){
+        $var[] = [$i => $bar];
+    }',
+            ),
+            array(
+                '<?php
+    $var = [];
+    foreach ($foo as $bar) {
+        $var[] = [
+            $i => $bar,
+            $iaaa => $bar,
+        ];
+    }',
+                '<?php
+    $var = [];
+    foreach ($foo as $bar) {
+        $var[] = [
+            $i    => $bar,
+            $iaaa => $bar,
+        ];
+    }',
+            ),
+            array(
+                '<?php
+    $data = [
+        "foo" => "Bar",
+        "main" => [["baz" => "Test", "bar" => "Test2"]],
+        "bar" => [],
+    ];',
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => [["baz" => "Test", "bar" => "Test2"]],
+        "bar"  => [],
+    ];',
+            ),
+            array(
+                '<?php
+    $a = [
+        0 => 1,
+        10 /*Comment*/ => [
+            1 => 2,
+            22 => 3,
+        ],
+        100 => [
+            1 => 2,
+            22 => 3,
+        ]
+    ];',
+                '<?php
+    $a = [
+        0  => 1,
+        10 /*Comment*/ => [
+            1  => 2,
+            22 => 3,
+        ],
+        100 => [
+            1  => 2,
+            22 => 3,
+        ]
+    ];',
+            ),
+            array(
+                '<?php
+    $a = array(
+        0 => 1,
+        10 => array(
+            1 => 2,
+            22 => 3,
+        ),
+        100 => array(
+            1 => 2,
+            22 => 3,
+        )
+    );',
+                '<?php
+    $a = array(
+        0  => 1,
+        10 => array(
+            1  => 2,
+            22 => 3,
+        ),
+        100 => array(
+            1  => 2,
+            22 => 3,
+        )
+    );',
+            ),
+            array(
+                '<?php
+    $arr = array(
+        $a => 1,
+        $bbbb => \'
+        $cccccccc = 3;
+        \',
+    );',
+                '<?php
+    $arr = array(
+        $a    => 1,
+        $bbbb => \'
+        $cccccccc = 3;
+        \',
+    );',
+            ),
+            array(
+                '<?php
+    $arr = [
+        $a => 1,
+        $bbbb => \'
+        $cccccccc = 3;
+        \',
+    ];',
+                '<?php
+    $arr = [
+        $a    => 1,
+        $bbbb => \'
+        $cccccccc = 3;
+        \',
+    ];',
+            ),
+            array(
+                '<?php
+    foreach($arr as $k => $v){
+        $arr = array($k => 1,
+            $a => 1,
+            $bbbb => \'
+            $cccccccc = 3;
+            \',
+        );
+    }',
+                '<?php
+    foreach($arr as $k => $v){
+        $arr = array($k => 1,
+            $a          => 1,
+            $bbbb       => \'
+            $cccccccc = 3;
+            \',
+        );
+    }',
+            ),
+            array(
+                '<?php
+    $a = array(
+        10 => 11,
+        20 => 22,
+        30 => 33,
+        40
+            =>
+                44,
+    );',
+                '<?php
+    $a = array(
+        10    => 11,
+        20    => 22,
+        30=>33,
+        40
+            =>
+                44,
+    );',
+            ),
+            array(
+                '<?php
+    return array(
+        " " => "",    "\t" => "",
+        "\n" => "", "\r" => "",
+        "\0" => "", "\x0B" => "",
+    );',
+                '<?php
+    return array(
+        " "   => "",    "\t"    => "",
+        "\n"   => "", "\r"   => "",
+        "\0"  => "", "\x0B"    => "",
+    );',
+            ),
+            array(
+                '<?php
+    return $this->grabAttribsBeforeToken(
+        $tokens,
+        $index,
+        $tokenAttribsMap,
+        array(
+            "abstract" => null,
+            "final" => null,
+            "visibility" => new Token(array(T_PUBLIC, "public")),
+            "static" => null,
+        )
+    );',
+                '<?php
+    return $this->grabAttribsBeforeToken(
+        $tokens,
+        $index,
+        $tokenAttribsMap,
+        array(
+            "abstract"   => null,
+            "final"      => null,
+            "visibility" => new Token(array(T_PUBLIC, "public")),
+            "static"     => null,
+        )
+    );',
+            ),
+            array(
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN_0 => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID_0 => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN_0 => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID_0    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+            ),
+            array(
+                '<?php
+    $array = array(
+        "bazab" => b(array(
+            1 => 2,
+            5 => [
+                6 => 7,
+                8 => 9,
+            ],
+            3 => 4,
+            10 => 11,
+        )),
+    );',
+                '<?php
+    $array = array(
+        "bazab" => b(array(
+            1 => 2,
+            5     => [
+                6 => 7,
+                8     => 9,
+            ],
+            3    => 4,
+            10      => 11,
+        )),
+    );',
+            ),
+            array(
+                '<?php
+    Foo::test()->aaa(array(1 => 2))->bbb("a", "b");
+',
+            ),
+            array(
+                '<?php
+    function foo() {
+        yield 1 => 2;
+    }',
+            ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param string|null $input
+     *
+     * @dataProvider provideAlignEqualsCases
+     */
+    public function testFixAlignEquals($expected, $input = null)
+    {
+        $this->getFixer()->configure(array('align_equals' => true));
+        $this->doTest($expected, $input);
+    }
+
+    public function provideAlignEqualsCases()
+    {
+        return array(
+            array(
+                '<?php
+    $a    = 1;
+    $bbbb = \'
+    $ddcccccc1 = 3;
+    \';',
+                '<?php
+    $a = 1;
+    $bbbb = \'
+    $ddcccccc1 = 3;
+    \';',
+            ),
+            array(
+                '<?php
+    $ccc = 1;
+    $bb  = 1;
+    $a   = 1;
+
+    /*
+    Others alignments
+     */
+    $a[$b = 1]     = 1;
+    $ab[$bc = 1]   = 1;
+    $abc[$bcd = 1] = 1;
+    $a[$b]         = 1;
+    $ab[$bc]       = 1;
+    $abc[$bcd]     = 1;
+
+    if ($a = 1) {
+        $ccc = 1;
+        $bb  = 1;
+        $a   = 1;
+    }
+
+    function a($a = 1, $b = 2, $c = 3)
+    {
+        $a[$b = 1]     = 1;
+        $ab[$bc = 1]   = 1;
+        $abc[$bcd = 1] = 1;
+    }
+
+    function b(
+        $a = 1,
+        $bbb = 2,
+        $c = 3
+    ) {
+        $a[$b = 1]     = 1;
+        $ab[$bc = 1]   = 1;
+        $abc[$bcd = 1] = 1;
+    }
+
+    while (false) {
+        $aa    = 2;
+        $a[$b] = array();
+    }
+
+    for ($i = 0; $i < 10; $i++) {
+        $aa    = 2;
+        $a[$b] = array();
+    }',
+                '<?php
+    $ccc = 1;
+    $bb = 1;
+    $a = 1;
+
+    /*
+    Others alignments
+     */
+    $a[$b = 1] = 1;
+    $ab[$bc = 1] = 1;
+    $abc[$bcd = 1] = 1;
+    $a[$b] = 1;
+    $ab[$bc] = 1;
+    $abc[$bcd] = 1;
+
+    if ($a = 1) {
+        $ccc = 1;
+        $bb = 1;
+        $a = 1;
+    }
+
+    function a($a = 1, $b = 2, $c = 3)
+    {
+        $a[$b = 1] = 1;
+        $ab[$bc = 1] = 1;
+        $abc[$bcd = 1] = 1;
+    }
+
+    function b(
+        $a = 1,
+        $bbb = 2,
+        $c = 3
+    ) {
+        $a[$b = 1] = 1;
+        $ab[$bc = 1] = 1;
+        $abc[$bcd = 1] = 1;
+    }
+
+    while (false) {
+        $aa = 2;
+        $a[$b] = array();
+    }
+
+    for ($i = 0; $i < 10; $i++) {
+        $aa = 2;
+        $a[$b] = array();
+    }',
+            ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param string|null $input
+     *
+     * @dataProvider provideAlignDoubleArrowCases
+     */
+    public function testFixAlignDoubleArrow($expected, $input = null)
+    {
+        $this->getFixer()->configure(array('align_double_arrow' => true));
+        $this->doTest($expected, $input);
+    }
+
+    public function provideAlignDoubleArrowCases()
+    {
+        return array(
+            array(
+                '<?php
+                switch ($a) {
+                    case "prod":
+                        break;
+                }
+                ',
+            ),
+            array(
+                '<?php
+    $array = array(
+        "closure" => function ($param1, $param2) {
+            return;
+        }
+    );',
+            ),
+            array(
+                '<?php
+    return new JsonResponse(array(
+        "result" => "OK",
+        "html"   => 1, array(
+            "foo"    => "bar",
+            "foofoo" => array(
+                "a"  => 1,
+                "b"  => 2
+            )
+        ),)
+    );',
+                '<?php
+    return new JsonResponse(array(
+        "result" => "OK",
+        "html" => 1, array(
+            "foo" => "bar",
+            "foofoo" => array(
+                "a" => 1,
+                "b"  =>  2
+            )
+        ),)
+    );',
+            ),
+            array(
+                '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html"   => renderView("views/my_view.html.twig", array(
+            "foo"    => "bar",
+            "foofoo" => 43,
+        )),
+    ]);',
+                '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html" =>    renderView("views/my_view.html.twig", array(
+            "foo" => "bar",
+            "foofoo" => 43,
+        )),
+    ]);',
+            ),
+            array(
+                '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html"   => renderView("views/my_view.html.twig", [
+            "foo"    => "bar",
+            "foofoo" => 42,
+        ]),
+        "baz" => "OK",
+    ]);',
+                '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html" =>    renderView("views/my_view.html.twig", [
+            "foo" =>   "bar",
+            "foofoo" =>    42,
+        ]),
+        "baz" => "OK",
+    ]);',
+            ),
+            array(
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => array(
+            [
+                "baz"     => "Test",
+                "bazaa"   => $a->{"Test"},
+                "bazaa"   => $a["Test"],
+                "bazaaaa" => b("Test"),
+            ]
+        ),
+        "bar"  => array(),
+    ];',
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => array(
+            [
+                "baz" => "Test",
+                "bazaa" => $a->{"Test"},
+                "bazaa" => $a["Test"],
+                "bazaaaa" => b("Test"),
+            ]
+        ),
+        "bar"  => array(),
+    ];',
+            ),
+            array(
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => [array("baz" => "Test")],
+        "bar"  => array(),
+    ];
+    $data = array(
+        "foo"  => "Bar",
+        "main" => array("baz" => "Test"),
+        "bar"  => array(),
+    );
+    $var = [];
+    foreach ($foo as $i => $bar) {
+        $var[] = /* Comment */ [$i => $bar];
+    }',
+            ),
+            array(
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => [array("baz" => "Test")],
+        "bar"  => array(),
+    ];',
+            ),
+            array(
+                '<?php
+    $data = array(
+        "foo"  => "Bar",
+        "main" => array("baz" => "Test"),
+        "bar"  => array(),
+    );',
+            ),
+            array(
+                '<?php
+    $data = array(
+        "foo"  => "Bar",
+        "main" => array(array("baz" => "Test")),
+        "bar"  => array(),
+    );',
+            ),
+            array(
+                '<?php
+    $var = [];
+    foreach ($foo as $i => $bar) {
+        $var[] = /* Comment */ [$i => $bar];
+    }',
+            ),
+            array(
+                '<?php
+    $var = [];
+    foreach ($foo as $i => $bar) {
+        $var[] = [$i => $bar];
+    }',
+            ),
+            array(
+                '<?php
+    $var = [];
+    foreach ([1 => 2] as $k => $v) {
+        $var[] = [$i => $bar];
+    }',
+            ),
+            array(
+                '<?php
+    $var = [];
+    foreach (fncCall() as $k => $v){
+        $var[] = [$i => $bar];
+    }',
+            ),
+            array(
+                '<?php
+    $var = [];
+    foreach ($foo as $bar) {
+        $var[] = [
+            $i    => $bar,
+            $iaaa => $bar,
+        ];
+    }',
+            ),
+            array(
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => [["baz" => "Test", "bar" => "Test2"]],
+        "bar"  => [],
+    ];',
+            ),
+            array(
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => ["baz" => "Test"],
+        "bar"  => [],
+    ];',
+            ),
+            array(
+                '<?php
+    $a = [
+        0              => 1,
+        10 /*Comment*/ => [
+            1  => 2,
+            22 => 3,
+        ],
+        100 => [
+            1  => 2,
+            22 => 3,
+        ]
+    ];',
+                '<?php
+    $a = [
+        0  => 1,
+        10 /*Comment*/ => [
+            1  => 2,
+            22 => 3,
+        ],
+        100 => [
+            1  => 2,
+            22 => 3,
+        ]
+    ];',
+            ),
+            array(
+                '<?php
+    $a = array(
+        0  => 1,
+        10 => array(
+            1  => 2,
+            22 => 3,
+        ),
+        100 => array(
+            1  => 2,
+            22 => 3,
+        )
+    );',
+            ),
+            array(
+                '<?php
+    $arr = array(
+        $a    => 1,
+        $bbbb => \'
+        $cccccccc2 = 3;
+        \',
+    );',
+                '<?php
+    $arr = array(
+        $a => 1,
+        $bbbb => \'
+        $cccccccc2 = 3;
+        \',
+    );',
+            ),
+            array(
+                '<?php
+    $arr = [
+        $a    => 1,
+        $bbbb => \'
+        $cccccccc3 = 3;
+        \',
+    ];',
+                '<?php
+    $arr = [
+        $a => 1,
+        $bbbb => \'
+        $cccccccc3 = 3;
+        \',
+    ];',
+            ),
+            array(
+                '<?php
+    foreach($arr as $k => $v){
+        $arr = array($k => 1,
+            $a          => 1,
+            $bbbb       => \'
+            $cccccccc4 = 3;
+            \',
+        );
+    }',
+            ),
+            array(
+                '<?php
+    $a = array(
+        10    => 11,
+        20    => 22,
+        30    => 33,
+        40
+            =>
+                44,
+    );',
+                '<?php
+    $a = array(
+        10    =>    11,
+        20  =>    22,
+        30=>33,
+        40
+            =>
+                44,
+    );',
+            ),
+            array(
+                '<?php
+    return array(
+        " "    => "",    "\t"    => "",
+        "\n"   => "", "\r"   => "",
+        "\0"   => "", "\x0B"    => "",
+    );',
+                '<?php
+    return array(
+        " "   => "",    "\t"    => "",
+        "\n"   => "", "\r"   => "",
+        "\0"  => "", "\x0B"    => "",
+    );',
+            ),
+            array(
+                '<?php
+    return $this->grabAttribsBeforeToken(
+        $tokens,
+        $index,
+        $tokenAttribsMap,
+        array(
+            "abstract"   => null,
+            "final"      => null,
+            "visibility" => new Token(array(T_PUBLIC, "public")),
+            "static"     => null,
+        )
+    );',
+                '<?php
+    return $this->grabAttribsBeforeToken(
+        $tokens,
+        $index,
+        $tokenAttribsMap,
+        array(
+            "abstract" => null,
+            "final" => null,
+            "visibility" => new Token(array(T_PUBLIC, "public")),
+            "static" => null,
+        )
+    );',
+            ),
+            array(
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN_1    => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID_1    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN_1 => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID_1    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+            ),
+            array(
+                '<?php
+    $array = array(
+        "bazab" => b(array(
+            1     => 2,
+            5     => [
+                6     => 7,
+                8     => 9,
+            ],
+            3       => 4,
+            10      => 11,
+        )),
+    );',
+                '<?php
+    $array = array(
+        "bazab" => b(array(
+            1 => 2,
+            5     => [
+                6 => 7,
+                8     => 9,
+            ],
+            3    => 4,
+            10      => 11,
+        )),
+    );',
+            ),
+            array(
+                '<?php
+    Foo::test()->aaa(array(1 => 2))->bbb("a", "b");
+',
+            ),
+            array(
+                '<?php
+    $inflect_male = array(
+        "aitė\b" => "as",
+        "ytė\b"  => "is",
+        "iūtė\b" => "ius",
+        "utė\b"  => "us",
+    );',
+                '<?php
+    $inflect_male = array(
+        "aitė\b" => "as",
+        "ytė\b" => "is",
+        "iūtė\b" => "ius",
+        "utė\b" => "us",
+    );',
+            ),
+            array(
+                '<?php
+                $formMapper
+                    ->add(\'foo\', null, [\'required\' => false])
+                    ->add(\'dummy_field\', null, [\'required\' => false])
+                ;
+                ',
+            ),
+            array(
+                '<?php
+                $formMapper
+                    ->add(\'foo\', null, array(\'required\' => false))
+                    ->add(\'dummy_field\', null, array(\'required\' => false))
+                ;
+                ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(["server1" => $object], ["addedAt" => "DESC"], 5);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(["server2" => $object], ["checkedAt" => "desc"], 50);
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array("server1" => $object), array("addedAt" => "DESC"), 5);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array("server2" => $object), array("checkedAt" => "desc"), 50);
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy($foo[123]);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy($foo[123]);
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy((1 + 2));
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy((1 + 2));
+    ',
+            ),
+            array(
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array(1, 2));
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array(1, 2));
+    ',
+            ),
+            array(
+                '<?php
+
+    function foo() {}
+
+    $bar = 42;
+
+    $foo = [
+        "test123" => "foo",
+        "foo"     => $bar[123],
+        "a"       => foo(),
+        "b"       => 1,
+    ];
+    ',
+                '<?php
+
+    function foo() {}
+
+    $bar = 42;
+
+    $foo = [
+        "test123" => "foo",
+        "foo" => $bar[123],
+        "a" => foo(),
+        "b" => 1,
+    ];
+    ',
+            ),
+            array(
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN_2    => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID_2    => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN_2 => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID_2    => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+            ),
+            array(
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN_3    => array((1 + 11)=> "?", "description" => "unknown"),
+        self::STATUS_INVALID_3    => array((2 + 3)=> "III", "description" => "invalid file syntax, file ignored"),
+    );',
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN_3 => array((1+11)=> "?", "description" => "unknown"),
+        self::STATUS_INVALID_3    => array((2+3)=> "III", "description" => "invalid file syntax, file ignored"),
+    );',
+            ),
+            array(
+                '<?php
+    return [
+        self::STATUS_UNKNOWN_4    => ["symbol" => "?", "description" => "unknown"],
+        self::STATUS_INVALID_4    => ["symbol123" => "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+                '<?php
+    return [
+        self::STATUS_UNKNOWN_4 => ["symbol" => "?", "description" => "unknown"],
+        self::STATUS_INVALID_4    => ["symbol123" => "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+            ),
+            array(
+                '<?php
+    return [
+        self::STATUS_UNKNOWN_7    => [(1 + 11)=> "?", "description" => "unknown"],
+        self::STATUS_INVALID_7    => [(2 + 3)=> "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+                '<?php
+    return [
+        self::STATUS_UNKNOWN_7 => [(1+11)=> "?", "description" => "unknown"],
+        self::STATUS_INVALID_7    => [(2+3)=> "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+            ),
+        );
+    }
+
+    public function testDoNotTouchEqualsAndArrawByConfig()
+    {
+        $fixer = $this->getFixer();
+        $fixer->configure(array(
+            'align_equals' => null,
+            'align_double_arrow' => null,
+        ));
+
+        $this->doTest(
+            '<?php
+                $a = 1;
+                $aa = 1;
+                $aaa   =  1;
+                $aaB  =  1;
+                array(
+                    1  => 5,
+                    2 => 4,
+                    3   => 3,
+                    4   =>   2,
+                    5 =>  1,
+                     6 => 7,
+                );
+            '
         );
     }
 }

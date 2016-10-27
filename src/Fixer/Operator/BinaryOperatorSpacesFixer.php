@@ -12,7 +12,9 @@
 
 namespace PhpCsFixer\Fixer\Operator;
 
+use PhpCsFixer\AbstractAlignFixerHelper;
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -24,11 +26,45 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class BinaryOperatorSpacesFixer extends AbstractFixer
 {
     /**
-     * {@inheritdoc}
+     * @var array<string, bool|null>
      */
-    public function isCandidate(Tokens $tokens)
+    private $configuration;
+
+    private static $defaultConfiguration = array(
+        'align_equals' => false,
+        'align_double_arrow' => false,
+    );
+
+    /**
+     * @var AbstractAlignFixerHelper[]
+     */
+    private $alignFixerHelpers = array();
+
+    /**
+     * Key any of; 'align_equals', 'align_double_arrow'.
+     * Value 'bool': 'false' do unalign, 'true' do align, or 'null': do not modify.
+     *
+     * @param array<string, bool|null> $configuration
+     */
+    public function configure(array $configuration = null)
     {
-        return true;
+        if (null === $configuration) {
+            $this->configuration = self::$defaultConfiguration;
+
+            return;
+        }
+
+        foreach ($configuration as $name => $value) {
+            if (!array_key_exists($name, self::$defaultConfiguration)) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration option "%s". Expected any of "%s".', $name, implode('", "', array_keys(self::$defaultConfiguration))));
+            }
+
+            if (null !== $value && !is_bool($value)) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Invalid value type for configuration option "%s". Expected "bool" or "null" got "%s".', $name, is_object($value) ? get_class($value) : gettype($value)));
+            }
+        }
+
+        $this->configuration = array_merge(self::$defaultConfiguration, $configuration);
     }
 
     /**
@@ -54,6 +90,8 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer
             // previous of binary operator is now never an operator / previous of declare statement cannot be an operator
             --$index;
         }
+
+        $this->runHelperFixers($file, $tokens);
     }
 
     /**
@@ -64,15 +102,46 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer
         return 'Binary operators should be surrounded by at least one space.';
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return true;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
     private function fixWhiteSpaceAroundOperator(Tokens $tokens, $index)
     {
-        // do not change the alignment of `=>` or `=`, see `(un)align_double_arrow`, `(un)align_equals`
-        $preserveAlignment = $tokens[$index]->isGivenKind(T_DOUBLE_ARROW) || $tokens[$index]->equals('=');
+        if ($tokens[$index]->isGivenKind(T_DOUBLE_ARROW)) {
+            if (true === $this->configuration['align_double_arrow']) {
+                if (!isset($this->alignFixerHelpers['align_double_arrow'])) {
+                    $this->alignFixerHelpers['align_double_arrow'] = new AlignDoubleArrowFixerHelper();
+                }
+
+                return;
+            } elseif (null === $this->configuration['align_double_arrow']) {
+                return; // configured not to touch the whitespace around the operator
+            }
+        } elseif ($tokens[$index]->equals('=')) {
+            if (true === $this->configuration['align_equals']) {
+                if (!isset($this->alignFixerHelpers['align_equals'])) {
+                    $this->alignFixerHelpers['align_equals'] = new AlignEqualsFixerHelper();
+                }
+
+                return;
+            } elseif (null === $this->configuration['align_equals']) {
+                return; // configured not to touch the whitespace around the operator
+            }
+        }
 
         // fix white space after operator
         if ($tokens[$index + 1]->isWhitespace()) {
             $content = $tokens[$index + 1]->getContent();
-            if (!$preserveAlignment && ' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
+            if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
                 $tokens[$index + 1]->setContent(' ');
             }
         } else {
@@ -82,7 +151,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer
         // fix white space before operator
         if ($tokens[$index - 1]->isWhitespace()) {
             $content = $tokens[$index - 1]->getContent();
-            if (!$preserveAlignment && ' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+            if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
                 $tokens[$index - 1]->setContent(' ');
             }
         } else {
@@ -94,7 +163,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer
      * @param Tokens $tokens
      * @param int    $index
      *
-     * @return bool|int
+     * @return false|int
      */
     private function isDeclareStatement(Tokens $tokens, $index)
     {
@@ -110,5 +179,17 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer
         }
 
         return false;
+    }
+
+    private function runHelperFixers(\SplFileInfo $file, Tokens $tokens)
+    {
+        /** @var AbstractAlignFixerHelper $helper */
+        foreach ($this->alignFixerHelpers as $helper) {
+            if ($tokens->isChanged()) {
+                $tokens->clearEmptyTokens();
+            }
+
+            $helper->fix($file, $tokens);
+        }
     }
 }

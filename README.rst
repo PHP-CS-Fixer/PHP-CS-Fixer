@@ -174,12 +174,6 @@ automatically fix anything:
 
 Choose from the list of available fixers:
 
-* **align_double_arrow**
-   Align double arrow symbols in consecutive lines.
-
-* **align_equals**
-   Align equals symbols in consecutive lines.
-
 * **binary_operator_spaces** [@Symfony]
    Binary operators should be surrounded by at least one space.
 
@@ -593,12 +587,6 @@ Choose from the list of available fixers:
 * **trim_array_spaces** [@Symfony]
    Arrays should be formatted like function/method arguments, without
    leading or trailing single line space.
-
-* **unalign_double_arrow** [@Symfony]
-   Unalign double arrow symbols.
-
-* **unalign_equals** [@Symfony]
-   Unalign equals symbols.
 
 * **unary_operator_spaces** [@Symfony]
    Unary operators should be placed adjacent to their operands.

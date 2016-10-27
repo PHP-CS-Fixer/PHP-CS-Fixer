@@ -79,7 +79,10 @@ final class FixerFactory
 
             foreach (SymfonyFinder::create()->files()->in(__DIR__.'/Fixer') as $file) {
                 $relativeNamespace = $file->getRelativePath();
-                $builtInFixers[] = 'PhpCsFixer\\Fixer\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
+                $fixerClass = 'PhpCsFixer\\Fixer\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
+                if ('Fixer' === substr($fixerClass, -5)) {
+                    $builtInFixers[] = $fixerClass;
+                }
             }
         }
 
@@ -213,8 +216,6 @@ final class FixerFactory
     {
         static $conflictMap = array(
             'short_array_syntax' => array('long_array_syntax'),
-            'align_double_arrow' => array('unalign_double_arrow'),
-            'align_equals' => array('unalign_equals'),
             'concat_with_spaces' => array('concat_without_spaces'),
             'echo_to_print' => array('print_to_echo'),
             'no_blank_lines_before_namespace' => array('single_blank_line_before_namespace'),

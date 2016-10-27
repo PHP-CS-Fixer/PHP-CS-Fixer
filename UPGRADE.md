@@ -11,7 +11,7 @@ Default ruleset was changed from Symfony standard to more generic PSR2. You can 
 
 The term of risky fixers was introduced. Risky fixer is a fixer that may change the meaning of code (like `StrictComparisonFixer` fixer, which will change `==` into `===`). No rules that are followed by risky fixers are run by default. You need to explicitly permit risky fixers to run them.
 
-Default configuraton changes
+Default configuration changes
 ----------------------------
 By default, PSR2 rules are used instead of Symfony rules.
 Files that will be fixed are php/phpt/twig instead of php/twig/xml/yml.
@@ -71,13 +71,15 @@ Config and Finder classes
 -------------------------
 All off `Symfony\CS\Config\*` and `Symfony\CS\Finder\*` classes have been removed, instead use `PhpCsFixer\Config` and `PhpCsFixer\Finder`.
 
-For that reason you can not set config class by `--config` CLI argument, from now it is used to set configuration file. Thanks to this the `--config-file` CLI argument is no longer available.
+For that reason you can not set config class by `--config` CLI argument, from now it is used to set configuration file. Therefor the `--config-file` CLI argument is no longer available.
 
 Renamed rules
 -------------
 
 Old name | New name | Note
 -------- | -------- | ----
+align_double_arrow                             | binary_operator_spaces                            | use configuration option 'align_double_arrow: true'
+align_equals                                   | binary_operator_spaces                            | use configuration option 'align_equals: true'
 array_element_no_space_before_comma            | no_whitespace_before_comma_in_array
 array_element_white_space_after_comma          | whitespace_after_comma_in_array
 blankline_after_open_tag                       | blank_line_after_opening_tag
@@ -123,6 +125,8 @@ standardize_not_equal                          | standardize_not_equals
 strict                                         | strict_comparison
 ternary_spaces                                 | ternary_operator_spaces
 trailing_spaces                                | no_trailing_whitespace
+unalign_double_arrow                           | binary_operator_spaces                            | use configuration option 'align_double_arrow: false'
+unalign_equals                                 | binary_operator_spaces                            | use configuration option 'align_equals: false'
 unary_operators_spaces                         | unary_operator_spaces
 unneeded_control_parentheses                   | no_unneeded_control_parentheses
 unused_use                                     | no_unused_imports
