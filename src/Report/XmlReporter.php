@@ -62,7 +62,7 @@ final class XmlReporter implements ReporterInterface
             $root->appendChild($this->createTimeElement($reportSummary->getTime(), $dom));
         }
 
-        if (null !== $reportSummary->getTime()) {
+        if (null !== $reportSummary->getMemory()) {
             $root->appendChild($this->createMemoryElement($reportSummary->getMemory(), $dom));
         }
 
