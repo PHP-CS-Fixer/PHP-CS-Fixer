@@ -201,7 +201,15 @@ class Aaa implements
     \Ccc,
     \CFdd
 {
-}', ),
+}',
+            ),
+            array(
+                '<?php
+class Aaa implements
+    \CFb
+{
+}',
+            ),
         );
     }
 
