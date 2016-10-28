@@ -23,8 +23,6 @@ use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
-use PhpCsFixer\Linter\Linter;
-use PhpCsFixer\Report\ReporterFactory;
 use PhpCsFixer\Report\ReportSummary;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Runner\Runner;
@@ -192,7 +190,7 @@ The example below will add two fixers to the default list of PSR2 set fixers:
             'strict_param' => true,
             'short_array_syntax' => true,
         ))
-        ->finder(\$finder)
+        ->setFinder(\$finder)
     ;
 
     ?>
@@ -217,7 +215,7 @@ The following example shows how to use all ``Symfony`` Fixers but the ``full_ope
             '@Symfony' => true,
             'full_opening_tag' => false,
         ))
-        ->finder(\$finder)
+        ->setFinder(\$finder)
     ;
 
     ?>
@@ -290,14 +288,10 @@ EOF
         Transformers::create(); // make sure all transformers have defined custom tokens since configuration might depend on it
 
         $verbosity = $output->getVerbosity();
-        $reporterFactory = ReporterFactory::create();
-        $reporterFactory->registerBuiltInReporters();
 
-        $resolver = new ConfigurationResolver();
-        $resolver
-            ->setCwd(getcwd())
-            ->setDefaultConfig($this->defaultConfig)
-            ->setOptions(array(
+        $resolver = new ConfigurationResolver(
+            $this->defaultConfig,
+            array(
                 'allow-risky' => $input->getOption('allow-risky'),
                 'config' => $input->getOption('config'),
                 'dry-run' => $input->getOption('dry-run'),
@@ -308,12 +302,12 @@ EOF
                 'using-cache' => $input->getOption('using-cache'),
                 'cache-file' => $input->getOption('cache-file'),
                 'format' => $input->getOption('format'),
-            ))
-            ->setFormats($reporterFactory->getFormats())
-            ->resolve()
-        ;
+                'diff' => $input->getOption('diff'),
+            ),
+            getcwd()
+        );
 
-        $reporter = $reporterFactory->getReporter($resolver->getFormat());
+        $reporter = $resolver->getReporter();
 
         $stdErr = $output instanceof ConsoleOutputInterface
             ? $output->getErrorOutput()
@@ -324,17 +318,14 @@ EOF
             $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
         }
 
-        $config = $resolver->getConfig();
         $configFile = $resolver->getConfigFile();
 
         if (null !== $stdErr && $configFile) {
             $stdErr->writeln(sprintf('Loaded config from "%s".', $configFile));
         }
 
-        $linter = new Linter($config->getPhpExecutable());
-
-        if (null !== $stdErr && $config->usingCache()) {
-            $cacheFile = $config->getCacheFile();
+        if (null !== $stdErr && $resolver->getUsingCache()) {
+            $cacheFile = $resolver->getCacheFile();
             if (is_file($cacheFile)) {
                 $stdErr->writeln(sprintf('Using cache file "%s".', $cacheFile));
             }
@@ -342,12 +333,14 @@ EOF
 
         $showProgress = $resolver->getProgress();
         $runner = new Runner(
-            $config,
+            $resolver->getFinder(),
+            $resolver->getFixers(),
             $input->getOption('diff') ? new SebastianBergmannDiffer() : new NullDiffer(),
             $showProgress ? $this->eventDispatcher : null,
             $this->errorsManager,
-            $linter,
-            $resolver->isDryRun()
+            $resolver->getLinter(),
+            $resolver->isDryRun(),
+            $resolver->getCacheManager()
         );
 
         $progressOutput = $showProgress && $stdErr

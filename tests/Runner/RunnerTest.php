@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Runner;
 
-use PhpCsFixer\Config;
+use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
@@ -33,17 +33,6 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatFixSuccessfully()
     {
-        $config = Config::create()
-            ->finder(Finder::create()->in(
-                __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'
-            ))
-            ->fixers(array(
-                new Fixer\ClassNotation\VisibilityRequiredFixer(),
-                new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
-            ))
-            ->setUsingCache(false)
-        ;
-
         $linterProphecy = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
         $linterProphecy
             ->isAsync()
@@ -56,12 +45,19 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
 
         $runner = new Runner(
-            $config,
+            Finder::create()->in(
+                __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'
+            ),
+            array(
+                new Fixer\ClassNotation\VisibilityRequiredFixer(),
+                new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
+            ),
             new NullDiffer(),
             null,
             new ErrorsManager(),
             $linterProphecy->reveal(),
-            true
+            true,
+            new NullCacheManager()
         );
 
         $changed = $runner->fix();
@@ -79,26 +75,22 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatFixInvalidFileReportsToErrorManager()
     {
-        $config = Config::create()
-            ->finder(Finder::create()->in(
-                __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'
-            ))
-            ->fixers(array(
-                new Fixer\ClassNotation\VisibilityRequiredFixer(),
-                new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
-            ))
-            ->setUsingCache(false)
-        ;
-
         $errorsManager = new ErrorsManager();
 
         $runner = new Runner(
-            $config,
+            Finder::create()->in(
+                __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid'
+            ),
+            array(
+                new Fixer\ClassNotation\VisibilityRequiredFixer(),
+                new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
+            ),
             new NullDiffer(),
             null,
             $errorsManager,
             new Linter(),
-            true
+            true,
+            new NullCacheManager()
         );
 
         $changed = $runner->fix();
@@ -116,39 +108,5 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(Error::TYPE_INVALID, $error->getType());
         $this->assertSame($pathToInvalidFile, $error->getFilePath());
-    }
-
-    public function testCanFixWithConfigInterfaceImplementation()
-    {
-        $config = $this->getMockBuilder('PhpCsFixer\ConfigInterface')->getMock();
-
-        $config
-            ->expects($this->any())
-            ->method('getFixers')
-            ->willReturn(array())
-        ;
-
-        $config
-            ->expects($this->any())
-            ->method('getRules')
-            ->willReturn(array())
-        ;
-
-        $config
-            ->expects($this->any())
-            ->method('getFinder')
-            ->willReturn(new \ArrayIterator(array()))
-        ;
-
-        $runner = new Runner(
-            $config,
-            new NullDiffer(),
-            null,
-            new ErrorsManager(),
-            $this->prophesize('PhpCsFixer\Linter\LinterInterface')->reveal(),
-            true
-        );
-
-        $runner->fix();
     }
 }

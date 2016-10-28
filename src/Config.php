@@ -22,7 +22,7 @@ class Config implements ConfigInterface
     protected $name;
     protected $description;
     protected $finder;
-    protected $fixers = array();
+    protected $format = 'txt';
     protected $dir;
     protected $customFixers = array();
     protected $usingCache = true;
@@ -36,115 +36,14 @@ class Config implements ConfigInterface
     {
         $this->name = $name;
         $this->description = $description;
-        $this->finder = new Finder();
     }
 
+    /**
+     * @return static
+     */
     public static function create()
     {
         return new static();
-    }
-
-    public function setUsingCache($usingCache)
-    {
-        $this->usingCache = $usingCache;
-
-        return $this;
-    }
-
-    public function finder(\Traversable $finder)
-    {
-        $this->finder = $finder;
-
-        return $this;
-    }
-
-    public function getFinder()
-    {
-        return $this->finder;
-    }
-
-    /**
-     * Set fixers.
-     *
-     * @param FixerInterface[] $fixers
-     *
-     * @return $this
-     */
-    public function fixers(array $fixers)
-    {
-        $this->fixers = $fixers;
-
-        return $this;
-    }
-
-    public function getFixers()
-    {
-        return $this->fixers;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    public function getHideProgress()
-    {
-        return $this->hideProgress;
-    }
-
-    public function addCustomFixer(FixerInterface $fixer)
-    {
-        $this->customFixers[] = $fixer;
-
-        return $this;
-    }
-
-    public function addCustomFixers($fixers)
-    {
-        if (false === is_array($fixers) && false === $fixers instanceof \Traversable) {
-            throw new \InvalidArgumentException(sprintf(
-                'Argument must be an array or a Traversable, got "%s".',
-                is_object($fixers) ? get_class($fixers) : gettype($fixers)
-            ));
-        }
-
-        foreach ($fixers as $fixer) {
-            $this->addCustomFixer($fixer);
-        }
-
-        return $this;
-    }
-
-    public function getCustomFixers()
-    {
-        return $this->customFixers;
-    }
-
-    public function hideProgress($hideProgress)
-    {
-        $this->hideProgress = $hideProgress;
-
-        return $this;
-    }
-
-    public function usingCache()
-    {
-        return $this->usingCache;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCacheFile($cacheFile)
-    {
-        $this->cacheFile = $cacheFile;
-
-        return $this;
     }
 
     /**
@@ -156,17 +55,55 @@ class Config implements ConfigInterface
     }
 
     /**
-     * Set PHP executable.
-     *
-     * @param string|null $phpExecutable
-     *
-     * @return Config
+     * {@inheritdoc}
      */
-    public function setPhpExecutable($phpExecutable)
+    public function getCustomFixers()
     {
-        $this->phpExecutable = $phpExecutable;
+        return $this->customFixers;
+    }
 
-        return $this;
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFinder()
+    {
+        if (null === $this->finder) {
+            $this->finder = new Finder();
+        }
+
+        return $this->finder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFormat()
+    {
+        return $this->format;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHideProgress()
+    {
+        return $this->hideProgress;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
@@ -183,6 +120,98 @@ class Config implements ConfigInterface
     public function getRiskyAllowed()
     {
         return $this->isRiskyAllowed;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRules()
+    {
+        return $this->rules;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUsingCache()
+    {
+        return $this->usingCache;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerCustomFixers($fixers)
+    {
+        if (false === is_array($fixers) && false === $fixers instanceof \Traversable) {
+            throw new \InvalidArgumentException(sprintf(
+                'Argument must be an array or a Traversable, got "%s".',
+                is_object($fixers) ? get_class($fixers) : gettype($fixers)
+            ));
+        }
+
+        foreach ($fixers as $fixer) {
+            $this->addCustomFixer($fixer);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCacheFile($cacheFile)
+    {
+        $this->cacheFile = $cacheFile;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFinder($finder)
+    {
+        if (false === is_array($finder) && false === $finder instanceof \Traversable) {
+            throw new \InvalidArgumentException(sprintf(
+                'Argument must be an array or a Traversable, got "%s".',
+                is_object($finder) ? get_class($finder) : gettype($finder)
+            ));
+        }
+
+        $this->finder = $finder;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFormat($format)
+    {
+        $this->format = $format;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setHideProgress($hideProgress)
+    {
+        $this->hideProgress = $hideProgress;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPhpExecutable($phpExecutable)
+    {
+        $this->phpExecutable = $phpExecutable;
+
+        return $this;
     }
 
     /**
@@ -208,8 +237,15 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getRules()
+    public function setUsingCache($usingCache)
     {
-        return $this->rules;
+        $this->usingCache = $usingCache;
+
+        return $this;
+    }
+
+    private function addCustomFixer(FixerInterface $fixer)
+    {
+        $this->customFixers[] = $fixer;
     }
 }

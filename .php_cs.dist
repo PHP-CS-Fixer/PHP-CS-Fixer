@@ -29,7 +29,7 @@ return PhpCsFixer\Config::create()
         'strict_comparison' => true,
         'strict_param' => true,
     ))
-    ->finder(
+    ->setFinder(
         PhpCsFixer\Finder::create()
             ->exclude('tests/Fixtures')
             ->in(__DIR__)

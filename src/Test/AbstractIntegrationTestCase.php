@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Test;
 
+use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
@@ -184,21 +185,15 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
         }
 
         $errorsManager = new ErrorsManager();
-
-        $configProphecy = $this->prophesize('PhpCsFixer\ConfigInterface');
-        $configProphecy->usingCache()->willReturn(false);
-        $configProphecy->getCacheFile()->willReturn(null);
-        $configProphecy->getRules()->willReturn(array());
-        $configProphecy->getFinder()->willReturn(new \ArrayIterator(array(new \SplFileInfo($tmpFile))));
-        $configProphecy->getFixers()->willReturn($case->getFixers());
-
         $runner = new Runner(
-            $configProphecy->reveal(),
+            new \ArrayIterator(array(new \SplFileInfo($tmpFile))),
+            $case->getFixers(),
             new SebastianBergmannDiffer(),
             null,
             $errorsManager,
             $this->linter,
-            false
+            false,
+            new NullCacheManager()
         );
 
         $result = $runner->fix();
@@ -249,8 +244,16 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
                 throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
             }
 
-            $configProphecy->getFinder()->willReturn(new \ArrayIterator(array(new \SplFileInfo($tmpFile))));
-            $configProphecy->getFixers()->willReturn(array_reverse($case->getFixers()));
+            $runner = new Runner(
+                new \ArrayIterator(array(new \SplFileInfo($tmpFile))),
+                array_reverse($case->getFixers()),
+                new SebastianBergmannDiffer(),
+                null,
+                $errorsManager,
+                $this->linter,
+                false,
+                new NullCacheManager()
+            );
 
             $runner->fix();
             $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);

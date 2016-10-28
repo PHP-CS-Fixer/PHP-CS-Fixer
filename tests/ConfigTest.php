@@ -36,7 +36,7 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
         $finder = new Finder();
         $finder->in(__DIR__.'/Fixtures/FinderDirectory');
 
-        $config = Config::create()->finder($finder);
+        $config = Config::create()->setFinder($finder);
 
         $iterator = $config->getFinder()->getIterator();
         $this->assertSame(1, count($iterator));
@@ -49,7 +49,7 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
         $finder = new SymfonyFinder();
         $finder->in(__DIR__.'/Fixtures/FinderDirectory');
 
-        $config = Config::create()->finder($finder);
+        $config = Config::create()->setFinder($finder);
 
         $iterator = $config->getFinder()->getIterator();
         $this->assertSame(1, count($iterator));
@@ -85,19 +85,19 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
      * @expectedException              \InvalidArgumentException
      * @expectedExceptionMessageRegExp /^Argument must be an array or a Traversable, got "\w+"\.$/
      */
-    public function testAddCustomFixersWithInvalidArgument()
+    public function testRegisterCustomFixersWithInvalidArgument()
     {
         $config = new Config();
-        $config->addCustomFixers('foo');
+        $config->registerCustomFixers('foo');
     }
 
     /**
-     * @dataProvider provideAddCustomFixersCases
+     * @dataProvider provideRegisterCustomFixersCases
      */
-    public function testAddCustomFixers($expected, $suite)
+    public function testRegisterCustomFixers($expected, $suite)
     {
         $config = new Config();
-        $config->addCustomFixers($suite);
+        $config->registerCustomFixers($suite);
 
         $this->assertSame($expected, $config->getCustomFixers());
     }
@@ -105,7 +105,7 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function provideAddCustomFixersCases()
+    public function provideRegisterCustomFixersCases()
     {
         $fixers = array(
             new \PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer(),

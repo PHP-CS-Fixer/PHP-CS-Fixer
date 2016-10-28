@@ -13,20 +13,15 @@
 namespace PhpCsFixer\Runner;
 
 use PhpCsFixer\Cache\CacheManagerInterface;
-use PhpCsFixer\Cache\FileCacheManager;
-use PhpCsFixer\Cache\FileHandler;
-use PhpCsFixer\Cache\NullCacheManager;
-use PhpCsFixer\Cache\Signature;
-use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\ToolInfo;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -37,11 +32,6 @@ use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
  */
 final class Runner
 {
-    /**
-     * @var ConfigInterface
-     */
-    private $config;
-
     /**
      * @var DifferInterface
      */
@@ -72,25 +62,34 @@ final class Runner
      */
     private $linter;
 
+    /**
+     * @var \Traversable
+     */
+    private $finder;
+
+    /**
+     * @var FixerInterface[]
+     */
+    private $fixers;
+
     public function __construct(
-        ConfigInterface $config,
+        $finder,
+        array $fixers,
         DifferInterface $differ,
         EventDispatcher $eventDispatcher = null,
         ErrorsManager $errorsManager,
         LinterInterface $linter,
-        $isDryRun
+        $isDryRun,
+        CacheManagerInterface $cacheManager
     ) {
-        $this->config = $config;
+        $this->finder = $finder;
+        $this->fixers = $fixers;
         $this->differ = $differ;
         $this->eventDispatcher = $eventDispatcher;
         $this->errorsManager = $errorsManager;
         $this->linter = $linter;
         $this->isDryRun = $isDryRun;
-
-        $this->cacheManager = $this->createCacheManager(
-            $config,
-            $isDryRun
-        );
+        $this->cacheManager = $cacheManager;
     }
 
     /**
@@ -99,9 +98,8 @@ final class Runner
     public function fix()
     {
         $changed = array();
-        $config = $this->config;
 
-        $finder = $config->getFinder();
+        $finder = $this->finder;
         $finderIterator = $finder instanceof \IteratorAggregate ? $finder->getIterator() : $finder;
         $fileFilteredFileIterator = new FileFilterIterator(
             $finderIterator,
@@ -128,29 +126,6 @@ final class Runner
         return $changed;
     }
 
-    /**
-     * @param ConfigInterface $config
-     * @param bool            $isDryRun
-     *
-     * @return CacheManagerInterface
-     */
-    private function createCacheManager(ConfigInterface $config, $isDryRun)
-    {
-        if ($config->usingCache() && (ToolInfo::isInstalledAsPhar() || ToolInfo::isInstalledByComposer())) {
-            return new FileCacheManager(
-                new FileHandler($config->getCacheFile()),
-                new Signature(
-                    PHP_VERSION,
-                    ToolInfo::getVersion(),
-                    $config->getRules()
-                ),
-                $isDryRun
-            );
-        }
-
-        return new NullCacheManager();
-    }
-
     private function fixFile(\SplFileInfo $file, LintingResultInterface $lintingResult)
     {
         $name = $this->getFileRelativePathname($file);
@@ -168,8 +143,6 @@ final class Runner
             return;
         }
 
-        $fixers = $this->config->getFixers();
-
         $old = file_get_contents($file->getRealPath());
         $tokens = Tokens::fromCode($old);
         $oldHash = $tokens->getCodeHash();
@@ -180,7 +153,7 @@ final class Runner
         $appliedFixers = array();
 
         try {
-            foreach ($fixers as $fixer) {
+            foreach ($this->fixers as $fixer) {
                 if (!$fixer->supports($file) || !$fixer->isCandidate($tokens)) {
                     continue;
                 }
