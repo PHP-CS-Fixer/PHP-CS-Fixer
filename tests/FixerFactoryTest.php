@@ -228,7 +228,11 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['pow_to_exponentiation'], $fixers['native_function_casing']), // no priority issue; for speed only
             array($fixers['pow_to_exponentiation'], $fixers['no_spaces_after_function_name']), // no priority issue; for speed only
             array($fixers['pow_to_exponentiation'], $fixers['no_spaces_inside_parenthesis']), // no priority issue; for speed only
-            array($fixers['single_import_per_statement'], $fixers['no_leading_import_slash']),
+            array($fixers['single_import_per_statement'], $fixers['ordered_imports']), // tested also in: single_import_per_statement,ordered_imports.test
+            array($fixers['single_import_per_statement'], $fixers['no_singleline_whitespace_before_semicolons']), // tested also in: single_import_per_statement,no_singleline_whitespace_before_semicolons.test
+            array($fixers['single_import_per_statement'], $fixers['space_after_semicolon']), // tested also in: single_import_per_statement,space_after_semicolon.test
+            array($fixers['single_import_per_statement'], $fixers['no_multiline_whitespace_before_semicolons']), // single_import_per_statement,no_multiline_whitespace_before_semicolons.test
+            array($fixers['single_import_per_statement'], $fixers['no_leading_import_slash']), // tested also in: single_import_per_statement,no_leading_import_slash.test
             array($fixers['single_import_per_statement'], $fixers['no_unused_imports']), // tested also in: single_import_per_statement,no_unused_imports.test
             array($fixers['unary_operator_spaces'], $fixers['not_operator_with_space']),
             array($fixers['unary_operator_spaces'], $fixers['not_operator_with_successor_space']),

@@ -1,0 +1,14 @@
+--TEST--
+Integration of fixers: single_import_per_statement,no_leading_import_slash.
+--RULESET--
+{"single_import_per_statement": true, "no_leading_import_slash": true}
+--EXPECT--
+<?php
+namespace NS;
+use A\B;
+use C\D;
+
+--INPUT--
+<?php
+namespace NS;
+use \A\B,\C\D;

@@ -16,6 +16,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author SpacePossum
  *
  * @internal
  */
@@ -150,8 +151,55 @@ EOF
             ),
             array(
                 '<?php use FooA;
-use FooB;?>',
+use FooB?>',
                 '<?php use FooA, FooB?>',
+            ),
+            array(
+                '<?php
+use B;
+use C;
+    use E;
+    use F;
+        use G;
+        use H;
+',
+                '<?php
+use B,C;
+    use E,F;
+        use G,H;
+',
+            ),
+            array(
+                '<?php
+use B;
+/*
+*/use C;
+',
+                '<?php
+use B,
+/*
+*/C;
+',
+            ),
+            array(
+                '<?php
+use A;
+use B;
+//,{} use ; :
+#,{} use ; :
+/*,{} use ; :*/
+use C  ; ',
+                '<?php
+use A,B,
+//,{} use ; :
+#,{} use ; :
+/*,{} use ; :*/
+C  ; ',
+            ),
+            array(
+                '<?php use Z ;
+use X ?><?php new X(); // run before white space around semicolon',
+                '<?php use Z , X ?><?php new X(); // run before white space around semicolon',
             ),
         );
     }
@@ -176,14 +224,22 @@ use some\a\ClassC as C;
 use function some\b\fn_a;
 use function some\b\fn_b;
 use function some\b\fn_c;
-use const some\c\ConstA;
-use const some\c\ConstB;
-use const some\c\ConstC;
+use const some\c\ConstA/**/as/**/E; /* group comment */
+use const some\c\ConstB as D;
+use const some\c\// use.,{}
+ConstC;
+use A\{B};
+use D\E;
+use D\F;
                 ',
                 '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use    function some\b\{fn_a, fn_b, fn_c};
-use const some\c\{ConstA, ConstB, ConstC};
+use const/* group comment */some\c\{ConstA/**/as/**/ E   ,    ConstB   AS    D, '.'
+// use.,{}
+ConstC};
+use A\{B};
+use D\{E,F};
                 ',
             ),
         );

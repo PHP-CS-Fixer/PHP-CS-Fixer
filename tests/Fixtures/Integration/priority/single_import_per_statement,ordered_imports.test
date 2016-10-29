@@ -1,0 +1,12 @@
+--TEST--
+Integration of fixers: single_import_per_statement,ordered_imports.
+--RULESET--
+{"single_import_per_statement": true, "ordered_imports": true}
+--EXPECT--
+<?php
+use some\A;
+use some\Z;
+
+--INPUT--
+<?php
+use some\{Z, A};

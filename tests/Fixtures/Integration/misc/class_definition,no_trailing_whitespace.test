@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: class_definition, no_trailing_whitespace
+Integration of fixers: class_definition, no_trailing_whitespace.
 --RULESET--
 {
     "class_definition": true,

@@ -1,0 +1,10 @@
+--TEST--
+Integration of fixers: single_import_per_statement,no_singleline_whitespace_before_semicolons.
+--RULESET--
+{"single_import_per_statement": true, "no_singleline_whitespace_before_semicolons": true}
+--EXPECT--
+<?php use Z;/**/
+use X ?><?php new X(); // run before white space around semicolon
+
+--INPUT--
+<?php use Z ,/**/X ?><?php new X(); // run before white space around semicolon

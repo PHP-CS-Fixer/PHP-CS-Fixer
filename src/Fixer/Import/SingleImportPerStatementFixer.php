@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -20,6 +21,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * Fixer for rules defined in PSR2 ¶3.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author SpacePossum
  */
 final class SingleImportPerStatementFixer extends AbstractFixer
 {
@@ -41,48 +43,13 @@ final class SingleImportPerStatementFixer extends AbstractFixer
 
         foreach ($uses as $index) {
             $endIndex = $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG)));
-            $previous = $tokens->getPrevMeaningfulToken($endIndex);
+            $groupClose = $tokens->getPrevMeaningfulToken($endIndex);
 
-            if ($tokens[$previous]->isGivenKind(CT_GROUP_IMPORT_BRACE_CLOSE)) {
-                $start = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $previous, false);
-                $declarationContent = $tokens->generatePartialCode($start + 1, $previous - 1);
-                $prefix = '';
-                for ($i = $index + 1; $i < $start; ++$i) {
-                    $prefix .= $tokens[$i]->getContent();
-                }
-
-                $prefix = ' '.ltrim($prefix);
+            if ($tokens[$groupClose]->isGivenKind(CT_GROUP_IMPORT_BRACE_CLOSE)) {
+                $this->fixGroupUse($tokens, $index, $endIndex);
             } else {
-                $declarationContent = $tokens->generatePartialCode($index + 1, $endIndex - 1);
-                $prefix = ' ';
+                $this->fixMultipleUse($tokens, $index, $endIndex);
             }
-
-            $declarationParts = explode(',', $declarationContent);
-            if (1 === count($declarationParts)) {
-                continue;
-            }
-
-            $declarationContent = array();
-
-            foreach ($declarationParts as $declarationPart) {
-                $declarationContent[] = 'use'.$prefix.trim($declarationPart).';';
-            }
-
-            $declarationContent = implode("\n".$this->detectIndent($tokens, $index), $declarationContent);
-
-            for ($i = $index; $i < $endIndex; ++$i) {
-                $tokens[$i]->clear();
-            }
-
-            if ($tokens[$endIndex]->equals(';')) {
-                $tokens[$endIndex]->clear();
-            }
-
-            $declarationTokens = Tokens::fromCode('<?php '.$declarationContent);
-            $declarationTokens[0]->clear();
-            $declarationTokens->clearEmptyTokens();
-
-            $tokens->insertAt($index, $declarationTokens);
         }
     }
 
@@ -94,6 +61,12 @@ final class SingleImportPerStatementFixer extends AbstractFixer
         return 'There MUST be one use keyword per declaration.';
     }
 
+    public function getPriority()
+    {
+        // must be run before RemoveLeadingSlashUseFuxer, NoSinglelineWhitespaceBeforeSemicolonsFixer, SpaceAfterSemicolonFixer, MultilineSpacesBeforeSemicolonFixer, NoLeadingImportSlashFixer
+        return 1;
+    }
+
     /**
      * @param Tokens $tokens
      * @param int    $index
@@ -102,16 +75,148 @@ final class SingleImportPerStatementFixer extends AbstractFixer
      */
     private function detectIndent(Tokens $tokens, $index)
     {
-        $prevIndex = $index - 1;
-        $prevToken = $tokens[$prevIndex];
-
-        // if can not detect indent:
-        if (!$prevToken->isWhitespace()) {
-            return '';
+        if (!$tokens[$index - 1]->isWhitespace()) {
+            return ''; // cannot detect indent
         }
 
-        $explodedContent = explode("\n", $prevToken->getContent());
+        $explodedContent = explode("\n", $tokens[$index - 1]->getContent());
 
         return end($explodedContent);
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return array
+     */
+    private function getGroupDeclaration(Tokens $tokens, $index)
+    {
+        $groupPrefix = 'use';
+        $comment = '';
+        for ($i = $index + 1; ; ++$i) {
+            if ($tokens[$i]->isGivenKind(CT_GROUP_IMPORT_BRACE_OPEN)) {
+                $groupOpenIndex = $i;
+
+                break;
+            }
+
+            if ($tokens[$i]->isComment()) {
+                $comment .= $tokens[$i]->getContent();
+                if (!$tokens[$i - 1]->isWhitespace() && !$tokens[$i + 1]->isWhitespace()) {
+                    $groupPrefix .= ' ';
+                }
+
+                continue;
+            }
+
+            if ($tokens[$i]->isWhitespace()) {
+                $groupPrefix .= ' ';
+
+                continue;
+            }
+
+            $groupPrefix .= $tokens[$i]->getContent();
+        }
+
+        return array(
+            $groupPrefix,
+            $groupOpenIndex,
+            $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $groupOpenIndex),
+            $comment,
+        );
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param string $groupPrefix
+     * @param int    $groupOpenIndex
+     * @param int    $groupCloseIndex
+     * @param string $comment
+     *
+     * @return string[]
+     */
+    private function getGroupStatements(Tokens $tokens, $groupPrefix, $groupOpenIndex, $groupCloseIndex, $comment)
+    {
+    
+        $statements = array();
+        $statement = $groupPrefix;
+
+        for ($i = $groupOpenIndex + 1; $i <= $groupCloseIndex; ++$i) {
+            $token = $tokens[$i];
+
+            if ($token->equalsAny(array(',', array(CT_GROUP_IMPORT_BRACE_CLOSE)))) {
+                $statements[] = $statement.';';
+                $statement = $groupPrefix;
+
+                continue;
+            }
+
+            if ($token->isWhitespace()) {
+                $j = $tokens->getNextMeaningfulToken($i);
+                if ($tokens[$j]->equals(array(T_AS))) {
+                    $statement .= ' as ';
+                    $i += 2;
+                }
+
+                if ($token->isWhitespace(" \t") || '//' !== substr($tokens[$i - 1]->getContent(), 0, 2)) {
+                    continue;
+                }
+            }
+
+            $statement .= $token->getContent();
+        }
+
+        if ('' !== $comment) {
+            $statements[0] .= ' '.$comment;
+        }
+
+        return $statements;
+    }
+
+    private function fixGroupUse(Tokens $tokens, $index, $endIndex)
+    {
+        list($groupPrefix, $groupOpenIndex, $groupCloseIndex, $comment) = $this->getGroupDeclaration($tokens, $index);
+        $statements = $this->getGroupStatements($tokens, $groupPrefix, $groupOpenIndex, $groupCloseIndex, $comment);
+
+        if (count($statements) < 2) {
+            return;
+        }
+
+        $tokens->clearRange($index, $groupCloseIndex);
+        if ($tokens[$endIndex]->equals(';')) {
+            $tokens[$endIndex]->clear();
+        }
+
+        $importTokens = Tokens::fromCode('<?php '.implode("\n", $statements));
+        $importTokens[0]->clear();
+        $importTokens->clearEmptyTokens();
+
+        $tokens->insertAt($index, $importTokens);
+    }
+
+    private function fixMultipleUse(Tokens $tokens, $index, $endIndex)
+    {
+        for ($i = $endIndex - 1; $i > $index; --$i) {
+            if (!$tokens[$i]->equals(',')) {
+                continue;
+            }
+
+            $tokens->overrideAt($i, new Token(';'));
+            $i = $tokens->getNextMeaningfulToken($i);
+            $tokens->insertAt($i, new Token(array(T_USE, 'use')));
+            $tokens->insertAt($i + 1, new Token(array(T_WHITESPACE, ' ')));
+
+            $indent = $this->detectIndent($tokens, $index);
+            if ($tokens[$i - 1]->isWhitespace()) {
+                $tokens[$i - 1]->setContent("\n".$indent);
+
+                continue;
+            }
+
+            if (false === strpos($tokens[$i - 1]->getContent(), "\n")) {
+                $tokens->insertAt($i, new Token(array(T_WHITESPACE, "\n".$indent)));
+            }
+        }
     }
 }

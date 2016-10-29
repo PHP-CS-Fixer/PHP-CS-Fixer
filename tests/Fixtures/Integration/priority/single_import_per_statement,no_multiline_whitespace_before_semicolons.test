@@ -1,0 +1,16 @@
+--TEST--
+Integration of fixers: single_import_per_statement,no_multiline_whitespace_before_semicolons.
+--RULESET--
+{"single_import_per_statement": true, "no_multiline_whitespace_before_semicolons": true}
+--EXPECT--
+<?php
+use A;
+use B;
+
+--INPUT--
+<?php
+use A
+
+
+,
+B;
