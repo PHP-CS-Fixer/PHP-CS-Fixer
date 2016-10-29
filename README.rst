@@ -436,6 +436,12 @@ Choose from the list of available fixers:
 * **single_blank_line_before_namespace** [symfony]
    There should be exactly one blank line before a namespace declaration.
 
+* **single_line_class_definition** [symfony]
+                        Declare the class inheritance
+                        and all the implemented
+                        interfaces on the same line as
+                        the class name.
+
 * **single_quote** [symfony]
    Convert double quotes to single quotes for simple strings.
 
