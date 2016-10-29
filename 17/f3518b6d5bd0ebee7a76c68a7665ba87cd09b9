@@ -1,0 +1,130 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-26T08:37:48Z
+
+Why delete that integration test?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-26T08:39:12Z
+
+The new fixer doesn't have the priority issue the current one has, so the test has become false.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-26T09:18:55Z
+
+Would be good to keep the test though to prove it still works.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-26T09:27:11Z
+
+we don't have a test to prove there is _not_ a priority issue, as the possible combinations with all the fixers against each would be extreme
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-26T11:00:17Z
+
+Actually, we have:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/tree/1.12/Symfony/CS/Tests/Fixtures/Integration/misc
+
+For sure it's not needed to have all combinations, but in rare cases when we want to check if bunch of fixers are working properly together, even without priority issue, we still could do that.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-26T13:03:34Z
+
+For now I get;
+```
+1) Symfony\CS\Tests\IntegrationTest::testIntegration with data set #43 (Symfony\CS\Test\IntegrationCase Object (...))
+Set priorities must be significant. If fixers used in reverse order return same output then the integration test is not sufficient or the priority relation between used fixers should not be set.
+Failed asserting that two strings are not identical.
+```
+
+so that makes it legit to remove the priority test.
+But sure I can make something else if it is needed.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-26T16:10:39Z
+
+I didn't go that deep, I am not saying is it needed in this case or not.
+But it's possible, eg: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1.12/Symfony/CS/Tests/Fixtures/Integration/misc/php_closing_tag%2Cshort_tag.test#L7
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-08-29T09:10:10Z
+
+ready for review
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-26T10:53:12Z
+
+Please validate the input to configuration.
+Having all false is pointless, having conflicting settings is bad as well.
+
+BTW, the RuleSet will need to be updated on 2.x line. Also, default setting on 2.x should be pure PSR2 as usuall.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-10-26T11:57:34Z
+
+>Having all false is pointless
+
+It is not, the fixer will still fix the spacing between keywords following PSR2. It will however not fix multiline/single line, it will not touch that part of classy definitions.
+
+> having conflicting settings is bad [sic].
+
+Good point, I'll update the configuration check.
+
+>BTW, the RuleSet will need to be updated on 2.x line. Also, default setting on 2.x should be pure PSR2 as usuall.
+
+Yes, making a master version of this has been on the TODO list of the PR since it was opened, I'll follow up on that as soon as 1.x has been done :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-28T07:20:41Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-28T13:18:07Z
+
+@SpacePossum is something still needed here? Is this PR a WIP or not ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-10-28T13:31:15Z
+
+IMHO this is RTM :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-10-29T11:55:55Z
+
+I thought PSR-2 was a strict subset of Symfony, so how come symfony have not followed psr-2 in that one case we have here?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-29T12:47:06Z
+
+PSR2: **if** you would write it in many lines, then ...
+Symfony: don't write it in many lines
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-10-29T12:50:06Z
+
+PSR 2
+>Lists of implements MAY be split across multiple line
+
+SF doesn't want that, so they do follow PSR2, but you can configure the fixer to follow PSR2 in another way
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-10-29T14:07:24Z
+
+Ah, I see. :+1:
