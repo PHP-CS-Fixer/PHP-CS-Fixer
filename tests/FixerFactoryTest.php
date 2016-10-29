@@ -190,7 +190,6 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         }
 
         $cases = array(
-            array($fixers['class_definition'], $fixers['no_trailing_whitespace']), // tested also in: class_definition,no_trailing_whitespace.test
             array($fixers['concat_without_spaces'], $fixers['concat_with_spaces']),
             array($fixers['elseif'], $fixers['braces']),
             array($fixers['method_separation'], $fixers['braces']),

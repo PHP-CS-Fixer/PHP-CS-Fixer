@@ -1,0 +1,26 @@
+--TEST--
+Integration of fixers: class_definition, no_trailing_whitespace
+--RULESET--
+{
+    "class_definition": true,
+    "no_trailing_whitespace": true
+}
+--SETTINGS--
+{"checkPriority": false}
+--EXPECT--
+<?php
+class Aaa implements
+    Symfony\CS\Tests\Fixer,
+\RFb,
+    \Fcc1,
+\GFdd
+{
+}
+
+--INPUT--
+<?php
+class Aaa implements
+    Symfony\CS\Tests\Fixer,\RFb,
+    \Fcc1, \GFdd
+{
+}
