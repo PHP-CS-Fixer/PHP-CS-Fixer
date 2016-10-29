@@ -5,3 +5,10 @@
 .travis.yml export-ignore
 appveyor.yml export-ignore
 phpunit.xml.dist export-ignore
+*       text=auto eol=lf
+*.php   text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4 diff=php
+*.json  text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4
+*.yml   text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4
+*.md    text whitespace=blank-at-eol,blank-at-eof
+*.rst   text whitespace=blank-at-eol,blank-at-eof
+/tests/Fixtures/**/* -text

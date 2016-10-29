@@ -138,7 +138,6 @@ final class SingleImportPerStatementFixer extends AbstractFixer
      */
     private function getGroupStatements(Tokens $tokens, $groupPrefix, $groupOpenIndex, $groupCloseIndex, $comment)
     {
-    
         $statements = array();
         $statement = $groupPrefix;
 
