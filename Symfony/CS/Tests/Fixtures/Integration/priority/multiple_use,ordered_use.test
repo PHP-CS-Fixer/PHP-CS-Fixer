@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: multiple_use,ordered_use.
+--CONFIG--
+level=none
+fixers=multiple_use,ordered_use
+--EXPECT--
+<?php
+use some\A;
+use some\Z;
+
+--INPUT--
+<?php
+use some\{Z, A};

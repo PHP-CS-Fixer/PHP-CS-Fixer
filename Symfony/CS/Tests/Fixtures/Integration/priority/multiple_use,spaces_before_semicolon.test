@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: multiple_use,spaces_before_semicolon.
+--CONFIG--
+level=none
+fixers=multiple_use,spaces_before_semicolon
+--EXPECT--
+<?php use Z;/**/
+use X ?><?php new X(); // run before white space around semicolon
+
+--INPUT--
+<?php use Z ,/**/X ?><?php new X(); // run before white space around semicolon
