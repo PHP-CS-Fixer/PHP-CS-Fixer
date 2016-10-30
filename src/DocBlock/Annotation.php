@@ -184,6 +184,11 @@ class Annotation
         return implode($this->lines);
     }
 
+    public function supportTypes()
+    {
+        return in_array($this->getTag()->getName(), self::$tags, true);
+    }
+
     /**
      * Get the current types content.
      *
@@ -196,7 +201,7 @@ class Annotation
         if (null === $this->typesContent) {
             $name = $this->getTag()->getName();
 
-            if (!in_array($name, self::$tags, true)) {
+            if (!$this->supportTypes()) {
                 throw new \RuntimeException('This tag does not support types');
             }
 

@@ -439,7 +439,7 @@ Choose from the list of available fixers:
    must be aligned vertically.
 
 * **phpdoc_annotation_without_dot** [@Symfony]
-   Phpdocs annotation descriptions should not end with a full stop.
+   Phpdocs annotation descriptions should not be a sentence.
 
 * **phpdoc_indent** [@Symfony]
    Docblocks should have the same indentation as the documented subject.

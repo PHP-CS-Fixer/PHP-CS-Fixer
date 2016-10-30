@@ -21,6 +21,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
 {
+    private $configuration = array(
+        'tags' => array('throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type'),
+    );
+
     /**
      * {@inheritdoc}
      */
@@ -47,16 +51,35 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
             }
 
             foreach ($annotations as $annotation) {
-                if ($annotation->getTag()->valid()) {
-                    $line = $doc->getLine($annotation->getEnd());
-
-                    $content = preg_replace('/(?<![.。])[.。](\s+)$/u', '\1', $line->getContent());
-
-                    if (null !== $content) {
-                        $line->setContent($content);
-                    }
+                if (
+                    !$annotation->getTag()->valid()
+                    || !in_array($annotation->getTag()->getName(), $this->configuration['tags'], true)
+                ) {
+                    continue;
                 }
+
+                $content = $annotation->getContent();
+
+                if (
+                    1 !== preg_match('/[.。]$/u', $content)
+                    || 0 !== preg_match('/[.。](?!$)/u', $content, $matches)
+                ) {
+                    continue;
+                }
+
+                $endLine = $doc->getLine($annotation->getEnd());
+                $endLine->setContent(preg_replace('/(?<![.。])[.。](\s+)$/u', '\1', $endLine->getContent()));
+
+                $startLine = $doc->getLine($annotation->getStart());
+                $optionalTypeRegEx = $annotation->supportTypes()
+                    ? sprintf('(?:%s\s+(?:\$\w+\s+)?)?', preg_quote(implode('|', $annotation->getTypes())))
+                    : '';
+                $content = preg_replace_callback('/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(.*)$/', function (array $matches) {
+                    return $matches[1].lcfirst($matches[2]);
+                }, $startLine->getContent(), 1);
+                $startLine->setContent($content);
             }
+
             $token->setContent($doc->getContent());
         }
     }
@@ -66,6 +89,6 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'Phpdocs annotation descriptions should not end with a full stop.';
+        return 'Phpdocs annotation descriptions should not be a sentence.';
     }
 }
