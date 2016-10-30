@@ -3,6 +3,19 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.12.3
+---------------------
+
+* bug #2155 ClassDefinitionFixer - overhaul (SpacePossum)
+* bug #2187 MultipleUseFixer - Fix handling comments (SpacePossum)
+* bug #2209 LinefeedFixer - Fix in a safe way (SpacePossum)
+* bug #2228 NoEmptyLinesAfterPhpdocs, SingleBlankLineBeforeNamespace - Fix priority (SpacePossum)
+* bug #2230 FunctionDeclarationFixer - Fix T_USE case (SpacePossum)
+* bug #2232 Add a test for style of varaible decalration : var (daiglej)
+* bug #2246 Fix itest requirements (keradus)
+* minor #2238 .gitattributes - specified line endings (keradus)
+* minor #2239 IntegrationCase - no longer internal (keradus)
+
 Changelog for v1.12.2
 ---------------------
 
