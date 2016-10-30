@@ -2,6 +2,8 @@
 Integration of fixers: single_import_per_statement,ordered_imports.
 --RULESET--
 {"single_import_per_statement": true, "ordered_imports": true}
+--REQUIREMENTS--
+{"php": 7.0}
 --EXPECT--
 <?php
 use some\A;
