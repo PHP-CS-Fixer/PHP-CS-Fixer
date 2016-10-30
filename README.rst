@@ -557,6 +557,10 @@ Choose from the list of available rules:
 * **single_blank_line_before_namespace** [@Symfony]
    There should be exactly one blank line before a namespace declaration.
 
+* **single_blank_line_before_phpdoc**
+   Adds a blank line before phpdoc, if preceded by a ";" or a "}" or a
+   comment or a docblock, unless that docblock is an inline @var
+
 * **single_class_element_per_statement** [@PSR2, @Symfony]
    There MUST NOT be more than one property or constant declared per
    statement.
