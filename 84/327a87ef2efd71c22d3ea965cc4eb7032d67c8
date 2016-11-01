@@ -1,0 +1,107 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-26T20:53:25Z
+
+>  Only fix classes extending \PHPUnit_Framework_TestCase
+
+Nope, we don't do that assumption in any of our PHPUnit fixer.
+`PHPUnit_Framework_TestCase` could not be used directly but custom child of it is used.
+Eg we are using `PhpCsFixer\Test\AbstractFixerTestCase` in most of our tests files.
+
+---------------------------------------------------------------------------
+
+by ro0NL at 2016-09-26T20:56:46Z
+
+`is_subclass_of`? I mean.. we shouldnt just update every call to `setExpectedException` in every file... right?
+
+> Only fix sub classes from \PHPUnit_Framework_TestCase
+
+:)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-26T20:59:06Z
+
+When you fix a code you have only file-level context.
+
+If given class is defined outside of file, you have no idea what it is. It may be even defined in different repo
+
+---------------------------------------------------------------------------
+
+by ro0NL at 2016-09-26T21:00:26Z
+
+Yeah.. but we should verify the class/file we're updating is actually a test class/file or am i missing something..
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-26T21:21:34Z
+
+>Normalize setExpectedException('Some\Exception'); to '\Some\Exception'
+
+I would do that in another fixer, its use will be limited because of: https://github.com/sebastianbergmann/phpunit/issues/2074#issuecomment-183472385 (i.e. it will be removed from PHPUnit itself)
+
+> Only fix sub classes from \PHPUnit_Framework_TestCase
+
+I agree with @keradus here, there is no way solid figuring out if a class (or some include / trait) is part of a `PHPUnit_Framework_TestCase`-class inherence by looking at the tokens of that single file.
+
+> Rename to PhpUnitExpectedExceptionFixer
+
+only if your fixer also fixes the casing ;) (I would like that feature btw., but still think it is out of scope)
+
+(btw. nice to see a fellow Dutchy here :) )
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-26T21:33:42Z
+
+> Rename to `PhpUnitExpectedExceptionFixer`
+
+as we don't modifying `->expectException` I would name it `PhpUnitFqcnAnnotationFixer`.
+changing string passed to method is different thing and it should be separated fixer/PR.
+
+---------------------------------------------------------------------------
+
+by ro0NL at 2016-09-27T08:27:16Z
+
+:+1: lets keep things simple.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-27T12:18:22Z
+
+raname and ready to merge ?
+
+---------------------------------------------------------------------------
+
+by ro0NL at 2016-09-27T12:28:44Z
+
+Worst idea ever.. but i think it's ok :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-27T13:40:08Z
+
+> Worst idea ever..
+
+the name? it was just a proposal to have it short and not connected to function call with same name that annotation.
+propose better one ;)
+
+---------------------------------------------------------------------------
+
+by ro0NL at 2016-09-27T13:41:35Z
+
+I meant renaming via github :smile:
+
+This is ready :tada:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-28T09:27:35Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-28T09:46:56Z
+
+:+1: :ship: thanks @ro0NL
