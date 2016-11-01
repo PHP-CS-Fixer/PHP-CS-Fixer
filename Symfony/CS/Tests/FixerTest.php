@@ -255,6 +255,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['multiple_use'], $fixers['spaces_before_semicolon']), // tested also in: multiple_use,spaces_before_semicolon.test
             array($fixers['multiple_use'], $fixers['spaces_after_semicolon']), // tested also in: multiple_use,spaces_after_semicolon.test
             array($fixers['multiple_use'], $fixers['multiline_spaces_before_semicolon']), // multiple_use,multiline_spaces_before_semicolon.test
+            array($fixers['php_unit_fqcn_annotation'], $fixers['unused_use']), // tested also in: php_unit_fqcn_annotation,unused_use.test
         );
 
         $docFixerNames = array_filter(
