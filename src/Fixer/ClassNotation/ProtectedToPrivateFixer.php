@@ -60,6 +60,12 @@ final class ProtectedToPrivateFixer extends AbstractFixer
         return 'Converts protected variables and methods to private where possible.';
     }
 
+    public function getPriority()
+    {
+        // must run before OrderedClassElementsFixer.
+        return 66;
+    }
+
     /**
      * @param Tokens $tokens
      * @param int    $classIndex

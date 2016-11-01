@@ -63,7 +63,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer
 
     public function getPriority()
     {
-        // must be run before RemoveLeadingSlashUseFuxer, NoSinglelineWhitespaceBeforeSemicolonsFixer, SpaceAfterSemicolonFixer, MultilineSpacesBeforeSemicolonFixer, NoLeadingImportSlashFixer
+        // must be run before NoLeadingImportSlashFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, SpaceAfterSemicolonFixer, NoMultilineWhitespaceBeforeSemicolonsFixer, NoLeadingImportSlashFixer.
         return 1;
     }
 
