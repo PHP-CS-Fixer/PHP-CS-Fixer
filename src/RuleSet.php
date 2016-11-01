@@ -57,6 +57,7 @@ final class RuleSet implements RuleSetInterface
             'blank_line_after_opening_tag' => true,
             'blank_line_before_return' => true,
             'cast_spaces' => true,
+            'class_definition' => array('singleLine' => true),
             'concat_without_spaces' => true,
             'declare_equal_normalize' => true,
             'function_typehint_space' => true,
