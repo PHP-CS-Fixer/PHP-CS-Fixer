@@ -86,7 +86,15 @@ class FooBar
     }
 }
 
-class FooBarTest extends \PHPUnit_Framework_TestCase
+interface Test1Interface
+{
+}
+
+interface Test2Interface
+{
+}
+
+class FooBarTest extends \PHPUnit_Framework_TestCase implements Test1Interface, Test2Interface
 {
     /**
      * @expectedException \Exception
