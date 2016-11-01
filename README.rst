@@ -508,6 +508,9 @@ Choose from the list of available fixers:
 * **print_to_echo** [@Symfony]
    Converts print language construct to echo if possible.
 
+* **protected_to_private**
+   Converts protected variables and methods to private where possible.
+
 * **psr0**
    Classes must be in a path that matches their namespace, be at least one
    namespace deep and the class name should match the file name. (Risky
