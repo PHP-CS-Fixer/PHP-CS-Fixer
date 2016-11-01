@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-01T16:47:22Z
+
+does default configuration of fixer match PSR-2 ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-01T17:37:17Z
+
+>does default configuration of fixer match PSR-2 ?
+
+yes, on a side note all other options of the fixer are PSR2 compliant. However the configuration options deals with parts of PSR-2 that state _may_ and not _must_ (which is what the Fixer does on default) :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-01T20:50:56Z
+
+sure, but the default option must not  change PSR-2 valid into another PSR-2 valid syntax.
+Great !
