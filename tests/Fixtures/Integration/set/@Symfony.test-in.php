@@ -84,3 +84,13 @@ class FooBar
         echo $text;
     }
 }
+
+class FooBarTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @expectedException Exception
+     */
+    public function testFooBar()
+    {
+    }
+}

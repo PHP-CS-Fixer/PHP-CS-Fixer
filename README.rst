@@ -426,6 +426,10 @@ Choose from the list of available fixers:
    PHPUnit assertions like "assertInternalType", "assertFileExists", should
    be used over "assertTrue". (Risky fixer!)
 
+* **php_unit_fqcn_annotation** [@Symfony]
+   PHPUnit @expectedException annotation should be a FQCN including a root
+   namespace.
+
 * **php_unit_strict**
    PHPUnit methods like "assertSame" should be used instead of
    "assertEquals". (Risky fixer!)

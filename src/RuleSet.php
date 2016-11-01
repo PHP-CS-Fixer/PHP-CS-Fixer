@@ -105,6 +105,7 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_type_to_var' => true,
             'phpdoc_types' => true,
             'phpdoc_var_without_name' => true,
+            'php_unit_fqcn_annotation' => true,
             'pre_increment' => true,
             'print_to_echo' => true,
             'return_type_declaration' => true,
