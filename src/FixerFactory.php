@@ -53,6 +53,17 @@ final class FixerFactory
         return new self();
     }
 
+    public function setWhitespacesConfig(WhitespacesFixerConfig $config)
+    {
+        foreach ($this->fixers as $fixer) {
+            if ($fixer instanceof WhitespacesFixerConfigAwareInterface) {
+                $fixer->setWhitespacesConfig($config);
+            }
+        }
+
+        return $this;
+    }
+
     /**
      * Get fixers.
      *
@@ -151,6 +162,7 @@ final class FixerFactory
 
             $fixer = $this->fixersByName[$name];
             $fixer->configure($ruleSet->getRuleConfiguration($name));
+
             $fixers[] = $fixer;
             $fixersByName[$name] = $fixer;
 

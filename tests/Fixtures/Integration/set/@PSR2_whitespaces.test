@@ -1,0 +1,8 @@
+--TEST--
+Integration of @PSR2 [whitespace version].
+--RULESET--
+{"@PSR2": true}
+--CONFIG--
+{"indent": "\t", "lineEnding": "\r\n"}
+--SETTINGS--
+{"checkPriority": false}

@@ -28,6 +28,8 @@ abstract class AbstractProxyFixer extends AbstractFixer
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->proxyFixer = $this->createProxyFixer();
     }
 

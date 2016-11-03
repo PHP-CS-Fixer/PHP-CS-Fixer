@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -364,5 +365,26 @@ EOF;
 EOF;
 
         $this->doTest($expected);
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return array(
+            array(
+                "<?php\r\n\t/**\r\n\t * Hello there.\r\n\t */",
+                "<?php\r\n\t/**\r\n\t * Hello there\r\n\t */",
+            ),
+        );
     }
 }

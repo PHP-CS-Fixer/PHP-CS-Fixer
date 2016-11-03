@@ -176,8 +176,8 @@ Dedicated plugins exist for:
 Contribute
 ----------
 
-The tool comes with quite a few built-in fixers and finders, but everyone is
-more than welcome to `contribute`_ more of them.
+The tool comes with quite a few built-in fixers, but everyone is more than
+welcome to `contribute`_ more of them.
 
 Fixers
 ~~~~~~

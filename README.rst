@@ -128,7 +128,7 @@ The ``--format`` option for the output format. Supported formats are ``txt`` (de
 
 NOTE: When using ``junit`` format report generates in accordance with JUnit xml schema from Jenkins (see docs/junit-10.xsd).
 
-The ``--verbose`` option will show the applied fixers. When using the ``txt`` format it will also displays progress notifications.
+The ``--verbose`` option will show the applied rules. When using the ``txt`` format it will also displays progress notifications.
 
 The ``--rules`` option limits the rules to apply on the
 project:
@@ -137,23 +137,23 @@ project:
 
     $ php php-cs-fixer.phar fix /path/to/project --rules=@PSR2
 
-By default, all PSR fixers are run.
+By default, all PSR rules are run.
 
-The ``--rules`` option lets you choose the exact fixers to
-apply (the fixer names must be separated by a comma):
+The ``--rules`` option lets you choose the exact rules to
+apply (the rule names must be separated by a comma):
 
 .. code-block:: bash
 
-    $ php php-cs-fixer.phar fix /path/to/dir --rules=unix_line_endings,full_opening_tag,no_tab_indentation
+    $ php php-cs-fixer.phar fix /path/to/dir --rules=line_ending,full_opening_tag,indentation_type
 
-You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
+You can also blacklist the rules you don't want by placing a dash in front of the rule name, if this is more convenient,
 using ``-name_of_fixer``:
 
 .. code-block:: bash
 
-    $ php php-cs-fixer.phar fix /path/to/dir --rules=-full_opening_tag,-no_tab_indentation
+    $ php php-cs-fixer.phar fix /path/to/dir --rules=-full_opening_tag,-indentation_type
 
-When using combinations of exact and blacklist fixers, applying exact fixers along with above blacklisted results:
+When using combinations of exact and blacklist rules, applying exact ruless along with above blacklisted results:
 
 .. code-block:: bash
 
@@ -162,8 +162,8 @@ When using combinations of exact and blacklist fixers, applying exact fixers alo
 A combination of ``--dry-run`` and ``--diff`` will
 display a summary of proposed fixes, leaving your files unchanged.
 
-The ``--allow-risky`` option allows you to set whether riskys fixer may run. Default value is taken from config file.
-Risky fixer is a fixer, which could change code behaviour. By default no risky fixers are run.
+The ``--allow-risky`` option allows you to set whether riskys rule may run. Default value is taken from config file.
+Risky rule is a rule, which could change code behaviour. By default no risky rules are run.
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
@@ -172,7 +172,7 @@ automatically fix anything:
 
     $ cat foo.php | php php-cs-fixer.phar fix --diff -
 
-Choose from the list of available fixers:
+Choose from the list of available rules:
 
 * **binary_operator_spaces** [@Symfony]
    Binary operators should be surrounded by at least one space.
@@ -214,11 +214,11 @@ Choose from the list of available fixers:
    Equal sign in declare statement should not be surrounded by spaces.
 
 * **declare_strict_types**
-   Force strict types declaration in all files. (Risky fixer!)
+   Force strict types declaration in all files. (Risky rule!)
 
 * **dir_constant**
    Replaces dirname(__FILE__) expression with equivalent __DIR__ constant.
-   (Risky fixer!)
+   (Risky rule!)
 
 * **echo_to_print**
    Converts echo language construct to print if possible.
@@ -232,7 +232,7 @@ Choose from the list of available fixers:
 
 * **ereg_to_preg**
    Replace deprecated ereg regular expression functions with preg. (Risky
-   fixer!)
+   rule!)
 
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
    PHP code must use the long <?php ?> tags or the short-echo <?= ?> tags;
@@ -263,6 +263,13 @@ Choose from the list of available fixers:
    Include/Require and file path should be divided with a single space.
    File path should not be placed under brackets.
 
+* **indentation_type** [@PSR2, @Symfony]
+   Code MUST use an indent of 4 spaces, and MUST NOT use tabs for
+   indenting.
+
+* **line_ending** [@PSR2, @Symfony]
+   All PHP files must use same line ending.
+
 * **linebreak_after_opening_tag**
    Ensure there is no code on the same line as the PHP open tag.
 
@@ -280,7 +287,7 @@ Choose from the list of available fixers:
 
 * **mb_str_functions**
    Replace non multibyte-safe functions with corresponding mb function.
-   (Risky fixer!)
+   (Risky rule!)
 
 * **method_argument_space** [@PSR2, @Symfony]
    In method arguments and method call, there MUST NOT be a space before
@@ -291,7 +298,7 @@ Choose from the list of available fixers:
 
 * **modernize_types_casting**
    Replaces intval, floatval, doubleval, strval, boolval functions calls
-   with according type casting operator. (Risky fixer!)
+   with according type casting operator. (Risky rule!)
 
 * **native_function_casing** [@Symfony]
    Function defined by PHP should be called using the correct casing.
@@ -340,7 +347,7 @@ Choose from the list of available fixers:
    Multi-line whitespace before closing semicolon are prohibited.
 
 * **no_php4_constructor**
-   Convert PHP4-style constructors to __construct. (Risky fixer!)
+   Convert PHP4-style constructors to __construct. (Risky rule!)
 
 * **no_short_bool_cast** [@Symfony]
    Short cast bool using double exclamation mark should not be used.
@@ -361,10 +368,6 @@ Choose from the list of available fixers:
 * **no_spaces_inside_parenthesis** [@PSR2, @Symfony]
    There MUST NOT be a space after the opening parenthesis. There MUST NOT
    be a space before the closing parenthesis.
-
-* **no_tab_indentation** [@PSR2, @Symfony]
-   Code MUST use an indent of 4 spaces, and MUST NOT use tabs for
-   indenting.
 
 * **no_trailing_comma_in_list_call** [@Symfony]
    Remove trailing commas in list function calls.
@@ -420,11 +423,11 @@ Choose from the list of available fixers:
 
 * **php_unit_construct** [@Symfony:risky]
    PHPUnit assertion method calls like "->assertSame(true, $foo)" should be
-   written with dedicated method like "->assertTrue($foo)". (Risky fixer!)
+   written with dedicated method like "->assertTrue($foo)". (Risky rule!)
 
 * **php_unit_dedicate_assert** [@Symfony:risky]
    PHPUnit assertions like "assertInternalType", "assertFileExists", should
-   be used over "assertTrue". (Risky fixer!)
+   be used over "assertTrue". (Risky rule!)
 
 * **php_unit_fqcn_annotation** [@Symfony]
    PHPUnit @expectedException annotation should be a FQCN including a root
@@ -432,7 +435,7 @@ Choose from the list of available fixers:
 
 * **php_unit_strict**
    PHPUnit methods like "assertSame" should be used instead of
-   "assertEquals". (Risky fixer!)
+   "assertEquals". (Risky rule!)
 
 * **phpdoc_align** [@Symfony]
    All items of the @param, @throws, @return, @var, and @type phpdoc tags
@@ -500,7 +503,7 @@ Choose from the list of available fixers:
    @var and @type annotations should not contain the variable name.
 
 * **pow_to_exponentiation** [@PHP56Migration, @PHP70Migration, @PHP71Migration]
-   Converts 'pow()' to '**'. (Risky fixer!)
+   Converts 'pow()' to '**'. (Risky rule!)
 
 * **pre_increment** [@Symfony]
    Pre incrementation/decrementation should be used if possible.
@@ -514,14 +517,14 @@ Choose from the list of available fixers:
 * **psr0**
    Classes must be in a path that matches their namespace, be at least one
    namespace deep and the class name should match the file name. (Risky
-   fixer!)
+   rule!)
 
 * **psr4**
-   Class names should match the file name. (Risky fixer!)
+   Class names should match the file name. (Risky rule!)
 
 * **random_api_migration** [@PHP70Migration, @PHP71Migration]
    Replaces rand, srand, getrandmax functions calls with their mt_*
-   analogs. (Risky fixer!)
+   analogs. (Risky rule!)
 
 * **return_type_declaration** [@Symfony]
    There should be no space before colon and one space after it in return
@@ -542,11 +545,11 @@ Choose from the list of available fixers:
    "(int)". "(double)" and "(real)" as "(float)".
 
 * **silenced_deprecation_error** [@Symfony:risky]
-   Ensures deprecation notices are silenced. (Risky fixer!)
+   Ensures deprecation notices are silenced. (Risky rule!)
 
 * **simplified_null_return**
    A return statement wishing to return nothing should be simply "return".
-   (Risky fixer!)
+   (Risky rule!)
 
 * **single_blank_line_at_eof** [@PSR2, @Symfony]
    A file must always end with a single empty line feed.
@@ -575,10 +578,10 @@ Choose from the list of available fixers:
    Replace all <> with !=.
 
 * **strict_comparison**
-   Comparison should be strict. (Risky fixer!)
+   Comparison should be strict. (Risky rule!)
 
 * **strict_param**
-   Functions should be used with $strict param. (Risky fixer!)
+   Functions should be used with $strict param. (Risky rule!)
 
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
    A case should be followed by a colon and not a semicolon.
@@ -599,9 +602,6 @@ Choose from the list of available fixers:
 * **unary_operator_spaces** [@Symfony]
    Unary operators should be placed adjacent to their operands.
 
-* **unix_line_endings** [@PSR2, @Symfony]
-   All PHP files must use the Unix LF line ending.
-
 * **visibility_required** [@PSR2, @Symfony, @PHP71Migration]
    Visibility MUST be declared on all properties and methods; abstract and
    final MUST be declared before the visibility; static MUST be declared
@@ -618,7 +618,7 @@ fixed but without actually modifying them:
 
     $ php php-cs-fixer.phar fix /path/to/code --dry-run
 
-Instead of using command line options to customize the fixer, you can save the
+Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory
 of your project. The file must return an instance of ``PhpCsFixer\ConfigInterface``,
 which lets you configure the rules, the files and directories that
@@ -628,7 +628,7 @@ is a good practice to add that file into your ``.gitignore`` file.
 With the ``--config`` option you can specify the path to the
 ``.php_cs`` file.
 
-The example below will add two fixers to the default list of PSR2 set fixers:
+The example below will add two rules to the default list of PSR2 set rules:
 
 .. code-block:: php
 
@@ -654,8 +654,8 @@ The example below will add two fixers to the default list of PSR2 set fixers:
 See `Symfony\\Finder <http://symfony.com/doc/current/components/finder.html>`_
 online documentation for other `Finder` methods.
 
-You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
-The following example shows how to use all ``Symfony`` Fixers but the ``full_opening_tag`` Fixer.
+You may also use a blacklist for the rules instead of the above shown whitelist approach.
+The following example shows how to use all ``Symfony`` rules but the ``full_opening_tag`` rule.
 
 .. code-block:: php
 
@@ -674,6 +674,19 @@ The following example shows how to use all ``Symfony`` Fixers but the ``full_ope
         ->setFinder($finder)
     ;
 
+You may want to use non-linux whitespaces in your project. Then you need to
+configure them in your config file. Please be aware that this feature is
+experimental.
+
+.. code-block:: php
+
+    <?php
+
+    return PhpCsFixer\Config::create()
+        ->setIndent("\t")
+        ->setLineEnding("\r\n")
+    ;
+
 By using ``--using-cache`` option with yes or no you can set if the caching
 mechanism should be used.
 
@@ -682,7 +695,7 @@ Caching
 
 The caching mechanism is enabled by default. This will speed up further runs by
 fixing only files that were modified since the last run. The tool will fix all
-files if the tool version has changed or the list of fixers has changed.
+files if the tool version has changed or the list of rules has changed.
 Cache is supported only for tool downloaded as phar file or installed via
 composer.
 
@@ -749,8 +762,8 @@ Dedicated plugins exist for:
 Contribute
 ----------
 
-The tool comes with quite a few built-in fixers and finders, but everyone is
-more than welcome to `contribute`_ more of them.
+The tool comes with quite a few built-in fixers, but everyone is more than
+welcome to `contribute`_ more of them.
 
 Fixers
 ~~~~~~

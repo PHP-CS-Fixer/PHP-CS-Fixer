@@ -92,7 +92,7 @@ function_call_space                            | no_spaces_after_function_name
 indentation                                    | no_tab_indentation
 join_function                                  | no_alias_functions                                | new one fixes more aliases
 line_after_namespace                           | blank_line_after_namespace
-linefeed                                       | unix_line_endings
+linefeed                                       | line_ending                                       | whitespaces type aware
 list_commas                                    | no_trailing_comma_in_list_call
 logical_not_operators_with_spaces              | not_operator_with_space
 logical_not_operators_with_successor_space     | not_operator_with_successor_space
@@ -103,6 +103,7 @@ multiple_use                                   | single_import_per_statement
 namespace_no_leading_whitespace                | no_leading_namespace_whitespace
 newline_after_open_tag                         | linebreak_after_opening_tag
 no_empty_lines_after_phpdocs                   | no_blank_lines_after_phpdoc
+no_tab_indentation                             | indentation_type                                  | whitespaces type aware
 object_operator                                | object_operator_without_whitespace
 operators_spaces                               | binary_operator_spaces
 ordered_use                                    | ordered_imports

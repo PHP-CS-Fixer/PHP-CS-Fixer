@@ -51,6 +51,8 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer
      */
     public function __construct()
     {
+        parent::__construct();
+
         // To be moved back on static when PHP support will be 5.5+
         if (defined('T_YIELD')) {
             self::$loops['yield'] = array('lookupTokens' => T_YIELD, 'neededSuccessors' => array(';', ')'));

@@ -24,7 +24,9 @@ class Config implements ConfigInterface
     private $finder;
     private $format = 'txt';
     private $hideProgress = false;
+    private $indent = '    ';
     private $isRiskyAllowed = false;
+    private $lineEnding = "\n";
     private $name;
     private $phpExecutable;
     private $rules = array('@PSR2' => true);
@@ -85,6 +87,22 @@ class Config implements ConfigInterface
     public function getHideProgress()
     {
         return $this->hideProgress;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIndent()
+    {
+        return $this->indent;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLineEnding()
+    {
+        return $this->lineEnding;
     }
 
     /**
@@ -189,6 +207,26 @@ class Config implements ConfigInterface
     public function setHideProgress($hideProgress)
     {
         $this->hideProgress = $hideProgress;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIndent($indent)
+    {
+        $this->indent = $indent;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLineEnding($lineEnding)
+    {
+        $this->lineEnding = $lineEnding;
 
         return $this;
     }

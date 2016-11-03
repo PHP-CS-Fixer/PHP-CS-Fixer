@@ -324,9 +324,12 @@ class Tokens extends \SplFixedArray
             if (1 === $indexOffset && $token->isComment()) {
                 $content = $token->getContent();
 
-                if ("\n" === $content[strlen($content) - 1]) {
-                    $token->setContent(substr($content, 0, -1));
-                }
+                $token->setContent(preg_replace(
+                    "#\r\n$|\n$#",
+                    '',
+                    $token->getContent(),
+                    1
+                ));
             }
         };
 

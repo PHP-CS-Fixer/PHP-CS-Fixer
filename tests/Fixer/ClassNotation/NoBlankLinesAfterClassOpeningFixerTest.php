@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
@@ -150,5 +151,30 @@ trait Good
         );
 
         return $cases;
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return array(
+            array(
+                "<?php\nclass Foo\n{\r\n    public function bar() {}\n}",
+                "<?php\nclass Foo\n{\n\n    public function bar() {}\n}",
+            ),
+            array(
+                "<?php\nclass Foo\n{\r\n    public function bar() {}\n}",
+                "<?php\nclass Foo\n{\r\n\r\n    public function bar() {}\n}",
+            ),
+        );
     }
 }

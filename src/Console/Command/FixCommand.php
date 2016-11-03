@@ -120,41 +120,41 @@ The <comment>--format</comment> option for the output format. Supported formats 
 
 NOTE: When using ``junit`` format report generates in accordance with JUnit xml schema from Jenkins (see docs/junit-10.xsd).
 
-The <comment>--verbose</comment> option will show the applied fixers. When using the ``txt`` format it will also displays progress notifications.
+The <comment>--verbose</comment> option will show the applied rules. When using the ``txt`` format it will also displays progress notifications.
 
 The <comment>--rules</comment> option limits the rules to apply on the
 project:
 
     <info>$ php %command.full_name% /path/to/project --rules=@PSR2</info>
 
-By default, all PSR fixers are run.
+By default, all PSR rules are run.
 
-The <comment>--rules</comment> option lets you choose the exact fixers to
-apply (the fixer names must be separated by a comma):
+The <comment>--rules</comment> option lets you choose the exact rules to
+apply (the rule names must be separated by a comma):
 
-    <info>$ php %command.full_name% /path/to/dir --rules=unix_line_endings,full_opening_tag,no_tab_indentation</info>
+    <info>$ php %command.full_name% /path/to/dir --rules=line_ending,full_opening_tag,indentation_type</info>
 
-You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
+You can also blacklist the rules you don't want by placing a dash in front of the rule name, if this is more convenient,
 using <comment>-name_of_fixer</comment>:
 
-    <info>$ php %command.full_name% /path/to/dir --rules=-full_opening_tag,-no_tab_indentation</info>
+    <info>$ php %command.full_name% /path/to/dir --rules=-full_opening_tag,-indentation_type</info>
 
-When using combinations of exact and blacklist fixers, applying exact fixers along with above blacklisted results:
+When using combinations of exact and blacklist rules, applying exact ruless along with above blacklisted results:
 
     <info>$ php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_return,strict_comparison</info>
 
 A combination of <comment>--dry-run</comment> and <comment>--diff</comment> will
 display a summary of proposed fixes, leaving your files unchanged.
 
-The <comment>--allow-risky</comment> option allows you to set whether riskys fixer may run. Default value is taken from config file.
-Risky fixer is a fixer, which could change code behaviour. By default no risky fixers are run.
+The <comment>--allow-risky</comment> option allows you to set whether riskys rule may run. Default value is taken from config file.
+Risky rule is a rule, which could change code behaviour. By default no risky rules are run.
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
 
     <info>$ cat foo.php | php %command.full_name% --diff -</info>
 
-Choose from the list of available fixers:
+Choose from the list of available rules:
 
 {$this->getFixersHelp()}
 
@@ -163,7 +163,7 @@ fixed but without actually modifying them:
 
     <info>$ php %command.full_name% /path/to/code --dry-run</info>
 
-Instead of using command line options to customize the fixer, you can save the
+Instead of using command line options to customize the rule, you can save the
 project configuration in a <comment>.php_cs.dist</comment> file in the root directory
 of your project. The file must return an instance of ``PhpCsFixer\ConfigInterface``,
 which lets you configure the rules, the files and directories that
@@ -173,7 +173,7 @@ is a good practice to add that file into your <comment>.gitignore</comment> file
 With the <comment>--config</comment> option you can specify the path to the
 <comment>.php_cs</comment> file.
 
-The example below will add two fixers to the default list of PSR2 set fixers:
+The example below will add two rules to the default list of PSR2 set rules:
 
     <?php
 
@@ -199,8 +199,8 @@ The example below will add two fixers to the default list of PSR2 set fixers:
 See `Symfony\\\\Finder <http://symfony.com/doc/current/components/finder.html>`_
 online documentation for other `Finder` methods.
 
-You may also use a blacklist for the Fixers instead of the above shown whitelist approach.
-The following example shows how to use all ``Symfony`` Fixers but the ``full_opening_tag`` Fixer.
+You may also use a blacklist for the rules instead of the above shown whitelist approach.
+The following example shows how to use all ``Symfony`` rules but the ``full_opening_tag`` rule.
 
     <?php
 
@@ -219,6 +219,19 @@ The following example shows how to use all ``Symfony`` Fixers but the ``full_ope
 
     ?>
 
+You may want to use non-linux whitespaces in your project. Then you need to
+configure them in your config file. Please be aware that this feature is
+experimental.
+
+    <?php
+
+    return PhpCsFixer\Config::create()
+        ->setIndent("\\t")
+        ->setLineEnding("\\r\\n")
+    ;
+
+    ?>
+
 By using ``--using-cache`` option with yes or no you can set if the caching
 mechanism should be used.
 
@@ -227,7 +240,7 @@ Caching
 
 The caching mechanism is enabled by default. This will speed up further runs by
 fixing only files that were modified since the last run. The tool will fix all
-files if the tool version has changed or the list of fixers has changed.
+files if the tool version has changed or the list of rules has changed.
 Cache is supported only for tool downloaded as phar file or installed via
 composer.
 
@@ -432,7 +445,7 @@ EOF
             $description = $fixer->getDescription();
 
             if ($fixer->isRisky()) {
-                $description .= ' (Risky fixer!)';
+                $description .= ' (Risky rule!)';
             }
 
             $description = str_replace("\n", "\n   ", wordwrap($description, 72, "\n"));

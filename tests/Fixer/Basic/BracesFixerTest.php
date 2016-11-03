@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -1663,6 +1664,37 @@ if (true) {
             ),
             array(
                 "<?php if (true) {\r\n\r\n// CRLF newline\n}",
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return array(
+            array(
+                '<?php
+if (true) {'."\r\n"
+    ."\t".'if (true) {'."\r\n"
+        ."\t\t".'echo 1;'."\r\n"
+    ."\t".'} elseif (true) {'."\r\n"
+        ."\t\t".'echo 2;'."\r\n"
+    ."\t".'} else {'."\r\n"
+        ."\t\t".'echo 3;'."\r\n"
+    ."\t".'}'."\r\n"
+.'}',
+                '<?php
+if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
             ),
         );
     }

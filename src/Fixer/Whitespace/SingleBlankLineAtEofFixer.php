@@ -13,18 +13,18 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
- * A file must always end with a UNIX line endings character.
+ * A file must always end with a line endings character.
  *
  * Fixer for rules defined in PSR2 ¶2.2.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class SingleBlankLineAtEofFixer extends AbstractFixer
+final class SingleBlankLineAtEofFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}
@@ -41,20 +41,8 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer
     {
         $count = $tokens->count();
 
-        if (0 === $count) {
-            return;
-        }
-
-        $token = $tokens[$count - 1];
-        if ($token->isGivenKind(array(T_INLINE_HTML, T_CLOSE_TAG, T_OPEN_TAG))) {
-            return;
-        }
-
-        if ($token->isWhitespace()) {
-            $lineBreak = false === strrpos($token->getContent(), "\r") ? "\n" : "\r\n";
-            $token->setContent($lineBreak);
-        } else {
-            $tokens->insertAt($count, new Token(array(T_WHITESPACE, "\n")));
+        if ($count && !$tokens[$count - 1]->isGivenKind(array(T_INLINE_HTML, T_CLOSE_TAG, T_OPEN_TAG))) {
+            $tokens->ensureWhitespaceAtIndex($count - 1, 1, $this->whitespacesConfig->getLineEnding());
         }
     }
 

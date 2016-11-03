@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\NamespaceNotation;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -138,6 +139,31 @@ namespace Foo;
 
 
 ?>',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return array(
+            array(
+                "<?php namespace A\B;\r\n\r\nclass C {}",
+                "<?php namespace A\B;  class C {}",
+            ),
+            array(
+                "<?php namespace A\B;\r\n\r\nclass C {}",
+                "<?php namespace A\B;\r\n\r\n\r\n\r\n\r\n\r\nclass C {}",
             ),
         );
     }

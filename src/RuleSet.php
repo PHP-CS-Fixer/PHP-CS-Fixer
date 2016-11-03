@@ -39,7 +39,7 @@ final class RuleSet implements RuleSetInterface
             'no_closing_tag' => true,
             'no_spaces_after_function_name' => true,
             'no_spaces_inside_parenthesis' => true,
-            'no_tab_indentation' => true,
+            'indentation_type' => true,
             'no_trailing_whitespace' => true,
             'no_trailing_whitespace_in_comment' => true,
             'single_blank_line_at_eof' => true,
@@ -48,7 +48,7 @@ final class RuleSet implements RuleSetInterface
             'single_class_element_per_statement' => array('property'),
             'switch_case_semicolon_to_colon' => true,
             'switch_case_space' => true,
-            'unix_line_endings' => true,
+            'line_ending' => true,
             'visibility_required' => true,
         ),
         '@Symfony' => array(

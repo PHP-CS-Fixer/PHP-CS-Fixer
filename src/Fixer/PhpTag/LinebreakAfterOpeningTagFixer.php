@@ -14,11 +14,12 @@ namespace PhpCsFixer\Fixer\PhpTag;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
  */
-final class LinebreakAfterOpeningTagFixer extends AbstractFixer
+final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}
@@ -52,7 +53,7 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer
         }
 
         $token = $tokens[0];
-        $token->setContent(rtrim($token->getContent())."\n");
+        $token->setContent(rtrim($token->getContent()).$this->whitespacesConfig->getLineEnding());
     }
 
     /**

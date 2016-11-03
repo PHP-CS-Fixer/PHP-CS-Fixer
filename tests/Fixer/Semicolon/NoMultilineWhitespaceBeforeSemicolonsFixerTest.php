@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\Semicolon;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author John Kelly <wablam@gmail.com>
@@ -43,7 +44,7 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixer
                     ;',
             ),
             array(
-                "<?php echo(1) // test\r\n;",
+                "<?php echo(1) // test\n;",
             ),
             array(
                 '<?php
@@ -114,6 +115,26 @@ $this
     ->example()
 
     ;',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return array(
+            array(
+                "<?php echo(1) // test\r\n;",
             ),
         );
     }

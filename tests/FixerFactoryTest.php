@@ -193,14 +193,14 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['concat_without_spaces'], $fixers['concat_with_spaces']),
             array($fixers['elseif'], $fixers['braces']),
             array($fixers['method_separation'], $fixers['braces']),
-            array($fixers['method_separation'], $fixers['no_tab_indentation']),
+            array($fixers['method_separation'], $fixers['indentation_type']),
             array($fixers['no_leading_import_slash'], $fixers['ordered_imports']), // tested also in: no_leading_import_slash,ordered_imports.test
             array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['binary_operator_spaces']), // tested also in: no_multiline_whitespace_around_double_arrow,binary_operator_spaces.test
             array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['trailing_comma_in_multiline_array']),
             array($fixers['no_php4_constructor'], $fixers['ordered_class_elements']), // tested also in: no_php4_constructor,ordered_class_elements.test
             array($fixers['no_short_bool_cast'], $fixers['cast_spaces']), // tested also in: no_short_bool_cast,cast_spaces.test
             array($fixers['no_short_echo_tag'], $fixers['echo_to_print']), // tested also in: echo_to_print,no_short_echo_tag.test
-            array($fixers['no_tab_indentation'], $fixers['phpdoc_indent']),
+            array($fixers['indentation_type'], $fixers['phpdoc_indent']),
             array($fixers['no_unneeded_control_parentheses'], $fixers['no_trailing_whitespace']), // tested also in: no_trailing_whitespace,no_unneeded_control_parentheses.test
             array($fixers['no_unused_imports'], $fixers['blank_line_after_namespace']), // tested also in: no_unused_imports,blank_line_after_namespace.test and no_unused_imports,blank_line_after_namespace_2.test
             array($fixers['no_unused_imports'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: no_unused_imports,no_extra_consecutive_blank_lines.test
@@ -236,7 +236,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['single_import_per_statement'], $fixers['no_unused_imports']), // tested also in: single_import_per_statement,no_unused_imports.test
             array($fixers['unary_operator_spaces'], $fixers['not_operator_with_space']),
             array($fixers['unary_operator_spaces'], $fixers['not_operator_with_successor_space']),
-            array($fixers['unix_line_endings'], $fixers['single_blank_line_at_eof']),
+            array($fixers['line_ending'], $fixers['single_blank_line_at_eof']),
             array($fixers['simplified_null_return'], $fixers['no_useless_return']), // tested also in: simplified_null_return,no_useless_return.test
             array($fixers['no_useless_return'], $fixers['no_whitespace_in_blank_line']), // tested also in: no_useless_return,no_whitespace_in_blank_line.test
             array($fixers['no_useless_return'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: no_useless_return,no_extra_consecutive_blank_lines.test

@@ -16,6 +16,7 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
 use PhpCsFixer\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @internal
@@ -429,6 +430,34 @@ declare(strict_types=1)?>',
             array('<?= 1?>'),
             array('<?= 1?><?php'),
             array("<?= 1?>\n<?php"),
+        );
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces(array $configuration, $expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        $fixer->configure($configuration);
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return array(
+            array(
+                array(
+                    'header' => 'whitemess',
+                    'location' => 'after_declare_strict',
+                    'separate' => 'bottom',
+                    'commentType' => 'PHPDoc',
+                ),
+                "<?php\r\ndeclare(strict_types=1);\r\n/**\r\n * whitemess\r\n */\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
+                "<?php\r\ndeclare(strict_types=1);\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
+            ),
         );
     }
 

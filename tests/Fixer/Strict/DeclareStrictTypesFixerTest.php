@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\Strict;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @internal
@@ -157,6 +158,32 @@ $a = 456;
         return array(
             array('  <?php echo 123;'), // first statement must be a open tag
             array('<?= 123;'), // first token open with echo is not fixed
+        );
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     * @requires PHP 7.0
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return array(
+            array(
+                "<?php declare(strict_types=1);\r\nphpinfo();",
+                "<?php\r\n\tphpinfo();",
+            ),
+            array(
+                "<?php declare(strict_types=1);\r\nphpinfo();",
+                "<?php\nphpinfo();",
+            ),
         );
     }
 }

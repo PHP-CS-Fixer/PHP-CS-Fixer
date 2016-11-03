@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -66,9 +67,7 @@ $a = 3;
                 "<?php\r\n\$a = 4;",
             ),
             array(
-                // test not changing line break characters,
-                // this is not the responsibility of this fixer
-                "<?php\r\n\$a = 5;\r\n",
+                "<?php\r\n\$a = 5;\n",
                 "<?php\r\n\$a = 5;\r\n    \r\n",
             ),
             array(
@@ -133,6 +132,31 @@ inline 1
             array(
                 "<?php return true;\n/*\nA comment\n*/\n",
                 "<?php return true;\n/*\nA comment\n*/\n\n",
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return array(
+            array(
+                "<?php\r\n\$a = 4;\r\n",
+                "<?php\r\n\$a = 4;",
+            ),
+            array(
+                "<?php\r\n\$a = 5;\r\n",
+                "<?php\r\n\$a = 5;\r\n    \r\n",
             ),
         );
     }

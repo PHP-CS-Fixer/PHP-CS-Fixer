@@ -37,6 +37,8 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
      */
     public function __construct()
     {
+        parent::__construct();
+
         $this->tags = Annotation::getTagsWithTypes();
     }
 

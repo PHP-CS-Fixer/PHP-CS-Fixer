@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\PhpTag;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
@@ -74,12 +75,6 @@ $a = function(){
 
 $foo = true;
 ?>',
-            ),
-            array(
-                '<?php
-
-$foo = true;
-?>',
                 '<?php
 $foo = true;
 ?>',
@@ -120,6 +115,31 @@ Html here
                 '<?= $bar;
 $foo = $bar;
 ?>',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $fixer = clone $this->getFixer();
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input, null, $fixer);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return array(
+            array(
+                "<?php\r\n\r\n\$foo = true;\r\n",
+                "<?php \$foo = true;\r\n",
+            ),
+            array(
+                "<?php\r\n\r\n\$foo = true;\r\n",
+                "<?php\r\n\$foo = true;\r\n",
             ),
         );
     }

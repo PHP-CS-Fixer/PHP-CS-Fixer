@@ -17,6 +17,7 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use PhpCsFixer\Utils;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * Fixer for rules defined in PSR2 ¶3.
@@ -24,7 +25,7 @@ use PhpCsFixer\Utils;
  * @author Ceeram <ceeram@cakephp.org>
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class SingleLineAfterImportsFixer extends AbstractFixer
+final class SingleLineAfterImportsFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
      * {@inheritdoc}
@@ -39,6 +40,7 @@ final class SingleLineAfterImportsFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
+        $ending = $this->whitespacesConfig->getLineEnding();
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokensAnalyzer->getImportUseIndexes() as $index) {
@@ -63,9 +65,9 @@ final class SingleLineAfterImportsFixer extends AbstractFixer
             }
 
             if ($semicolonIndex === count($tokens) - 1) {
-                $tokens->insertAt($insertIndex + 1, new Token(array(T_WHITESPACE, "\n\n".$indent)));
+                $tokens->insertAt($insertIndex + 1, new Token(array(T_WHITESPACE, $ending.$ending.$indent)));
             } else {
-                $newline = "\n";
+                $newline = $ending;
                 $tokens[$semicolonIndex]->isGivenKind(T_CLOSE_TAG) ? --$insertIndex : ++$insertIndex;
                 if ($tokens[$insertIndex]->isWhitespace(" \t") && $tokens[$insertIndex + 1]->isComment()) {
                     ++$insertIndex;
@@ -78,7 +80,7 @@ final class SingleLineAfterImportsFixer extends AbstractFixer
 
                 $afterSemicolon = $tokens->getNextMeaningfulToken($semicolonIndex);
                 if (null === $afterSemicolon || !$tokens[$afterSemicolon]->isGivenKind(T_USE)) {
-                    $newline .= "\n";
+                    $newline .= $ending;
                 }
 
                 if ($tokens[$insertIndex]->isWhitespace()) {
