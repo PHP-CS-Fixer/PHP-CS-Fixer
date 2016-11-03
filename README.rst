@@ -500,6 +500,7 @@ Choose from the list of available fixers:
 
 * **empty_return** [contrib]
    A return statement wishing to return nothing should be simply "return".
+   Warning! This could change code behavior.
 
 * **ereg_to_preg** [contrib]
    Replace deprecated ereg regular expression functions with preg. Warning!
