@@ -1,0 +1,65 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-16T09:37:43Z
+
+@dereuromark , you may be interested in this, wanna take a look ?
+
+---------------------------------------------------------------------------
+
+by dereuromark at 2016-10-16T20:10:40Z
+
+Nice 👍
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-10-17T08:20:20Z
+
+Missing support for the phpdoc fixers I think? Does the annotation split fixer work correctly?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-17T09:03:48Z
+
+not sure what do you mean, could you contribute ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-19T20:34:18Z
+
+I guess I know what you guess by this. Check newest changes. If not then extend your thought,
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-10-20T09:28:48Z
+
+These fixers insert Unix linebreaks, I guess these should be updated to insert the configured linebreak style?
+
+- [x] [MethodSeparationFixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Fixer/ClassNotation/MethodSeparationFixer.php#L225) & [L236](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Fixer/ClassNotation/MethodSeparationFixer.php#L236) & [L243](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Fixer/ClassNotation/MethodSeparationFixer.php#L243) & [L253](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Fixer/ClassNotation/MethodSeparationFixer.php#L253)
+- [x] [HeaderCommentFixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Fixer/Comment/HeaderCommentFixer.php#L128) & [L214](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Fixer/Comment/HeaderCommentFixer.php#L214) & [L219](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Fixer/Comment/HeaderCommentFixer.php#L219) &[L233](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Fixer/Comment/HeaderCommentFixer.php#L233)
+- [x] [ClassDefinitionFixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Fixer/ClassNotation/ClassDefinitionFixer.php#L209)
+- [x] [NoBlankLinesAfterClassOpeningFixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Fixer/ClassNotation/NoBlankLinesAfterClassOpeningFixer.php#L72)
+- [x] PhpdocAlignFixer
+- [x] [PhpdocSummaryFixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Fixer/Phpdoc/PhpdocSummaryFixer.php#L51)
+- [x] BlankLineAfterOpeningTagFixer
+- [x] [LinebreakAfterOpeningTagFixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Fixer/PhpTag/LinebreakAfterOpeningTagFixer.php#L55)
+- [x] BlankLineBeforeReturnFixer
+- [x] DeclareStrictTypesFixer
+- [x] NoMultilineWhitespaceBeforeSemicolonsFixer (Simplify)
+- [x] SingleClassElementPerStatementFixer (Test for)
+
+let me know if I assume correcty, I can help out than :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-20T09:38:20Z
+
+Good catch !
+Some of them yes (like ClassDefinition), some of them not (IMO aligning in PhpdocAlignFixer should be by spaces, it's not indenting), some of them probably works already (PhpdocSummaryFixer, but deserves tests to prove it).
+
+I updated your list to have checkboxes what is there.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-26T20:44:32Z
+
+@SpacePossum , updated
