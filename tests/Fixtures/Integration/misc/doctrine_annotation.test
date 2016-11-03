@@ -1,0 +1,80 @@
+--TEST--
+Integration of doctrine_annotation_* fixers.
+--RULESET--
+{
+    "doctrine_annotation_braces": true,
+    "doctrine_annotation_indentation": true,
+    "doctrine_annotation_spaces": true
+}
+--SETTINGS--
+{"checkPriority": false}
+--EXPECT--
+<?php
+
+/**
+ * Foo class.
+ *
+ * @Foo(
+ *     "foo"=true,
+ *     "bar"={"baz" = 1}
+ * )
+ * @Bar
+ */
+class Foo
+{
+    /**
+     * foo property.
+     *
+     * @var string[]
+     *
+     * @Bar("foo", "bar")
+     */
+    public $foo;
+
+    /**
+     * Returns foo.
+     *
+     * @param bool $bar
+     *
+     * @Baz\Bar
+     */
+    public function getFoo($bar)
+    {
+    }
+}
+
+--INPUT--
+<?php
+
+/**
+ * Foo class.
+ *
+ *  @Foo
+ *  (
+ *    "foo" = true ,
+ *    "bar" = {"baz"= 1}
+ *    )
+ *  @Bar( )
+ */
+class Foo
+{
+    /**
+     * foo property.
+     *
+     * @var string[]
+     *
+     * @Bar ( "foo" ,"bar" )
+     */
+    public $foo;
+
+    /**
+     * Returns foo.
+     *
+     * @param bool $bar
+     *
+     * @Baz\Bar ( )
+     */
+    public function getFoo($bar)
+    {
+    }
+}

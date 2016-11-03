@@ -302,6 +302,97 @@ Choose from the list of available rules:
 
   *Risky rule: risky when the function ``dirname()`` is overridden.*
 
+* **doctrine_annotation_braces**
+
+  Doctrine annotations without arguments must use the configured syntax.
+
+  Configuration options:
+
+  - ``ignored_tags`` (``array``): list of tags that must not be treated as Doctrine
+    Annotations; defaults to ``['abstract', 'access', 'code', 'deprec',
+    'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc',
+    'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar',
+    'staticVar', 'throw', 'api', 'author', 'category', 'copyright',
+    'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal',
+    'license', 'link', 'method', 'package', 'param', 'property',
+    'property-read', 'property-write', 'return', 'see', 'since', 'source',
+    'subpackage', 'throws', 'todo', 'TODO', 'usedBy', 'uses', 'var',
+    'version', 'after', 'afterClass', 'backupGlobals',
+    'backupStaticAttributes', 'before', 'beforeClass',
+    'codeCoverageIgnore', 'codeCoverageIgnoreStart',
+    'codeCoverageIgnoreEnd', 'covers', 'coversDefaultClass',
+    'coversNothing', 'dataProvider', 'depends', 'expectedException',
+    'expectedExceptionCode', 'expectedExceptionMessage',
+    'expectedExceptionMessageRegExp', 'group', 'large', 'medium',
+    'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses',
+    'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
+    'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
+    'startuml', 'fix', 'FIXME', 'fixme', 'override']``
+  - ``syntax`` (``'with_braces'``, ``'without_braces'``): whether to add or remove
+    braces; defaults to ``'without_braces'``
+
+* **doctrine_annotation_indentation**
+
+  Doctrine annotations must be indented with four spaces.
+
+  Configuration options:
+
+  - ``ignored_tags`` (``array``): list of tags that must not be treated as Doctrine
+    Annotations; defaults to ``['abstract', 'access', 'code', 'deprec',
+    'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc',
+    'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar',
+    'staticVar', 'throw', 'api', 'author', 'category', 'copyright',
+    'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal',
+    'license', 'link', 'method', 'package', 'param', 'property',
+    'property-read', 'property-write', 'return', 'see', 'since', 'source',
+    'subpackage', 'throws', 'todo', 'TODO', 'usedBy', 'uses', 'var',
+    'version', 'after', 'afterClass', 'backupGlobals',
+    'backupStaticAttributes', 'before', 'beforeClass',
+    'codeCoverageIgnore', 'codeCoverageIgnoreStart',
+    'codeCoverageIgnoreEnd', 'covers', 'coversDefaultClass',
+    'coversNothing', 'dataProvider', 'depends', 'expectedException',
+    'expectedExceptionCode', 'expectedExceptionMessage',
+    'expectedExceptionMessageRegExp', 'group', 'large', 'medium',
+    'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses',
+    'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
+    'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
+    'startuml', 'fix', 'FIXME', 'fixme', 'override']``
+
+* **doctrine_annotation_spaces**
+
+  Fixes spaces in Doctrine annotations.
+
+  Configuration options:
+
+  - ``around_argument_assignments`` (``bool``): whether to fix spaces around
+    argument assignment operator; defaults to ``true``
+  - ``around_array_assignments`` (``bool``): whether to fix spaces around array
+    assignment operators; defaults to ``true``
+  - ``around_commas`` (``bool``): whether to fix spaces around commas; defaults to
+    ``true``
+  - ``around_parentheses`` (``bool``): whether to fix spaces around parentheses;
+    defaults to ``true``
+  - ``ignored_tags`` (``array``): list of tags that must not be treated as Doctrine
+    Annotations; defaults to ``['abstract', 'access', 'code', 'deprec',
+    'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc',
+    'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar',
+    'staticVar', 'throw', 'api', 'author', 'category', 'copyright',
+    'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal',
+    'license', 'link', 'method', 'package', 'param', 'property',
+    'property-read', 'property-write', 'return', 'see', 'since', 'source',
+    'subpackage', 'throws', 'todo', 'TODO', 'usedBy', 'uses', 'var',
+    'version', 'after', 'afterClass', 'backupGlobals',
+    'backupStaticAttributes', 'before', 'beforeClass',
+    'codeCoverageIgnore', 'codeCoverageIgnoreStart',
+    'codeCoverageIgnoreEnd', 'covers', 'coversDefaultClass',
+    'coversNothing', 'dataProvider', 'depends', 'expectedException',
+    'expectedExceptionCode', 'expectedExceptionMessage',
+    'expectedExceptionMessageRegExp', 'group', 'large', 'medium',
+    'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses',
+    'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
+    'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
+    'startuml', 'fix', 'FIXME', 'fixme', 'override']``
+
 * **elseif** [@PSR2, @Symfony]
 
   The keyword ``elseif`` should be used instead of ``else if`` so that all

@@ -1,0 +1,133 @@
+<?php
+
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace PhpCsFixer\Fixer\DoctrineAnnotation;
+
+use Doctrine\Common\Annotations\DocLexer;
+use PhpCsFixer\AbstractDoctrineAnnotationFixer;
+use PhpCsFixer\Doctrine\Annotation\Tokens;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
+
+/**
+ * Fixes Doctrine annotations indentation.
+ */
+final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotationFixer
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Doctrine annotations must be indented with four spaces.',
+            array(
+                new CodeSample("<?php\n/**\n *  @Foo(\n *   foo=\"foo\"\n *  )\n */\nclass Bar {}"),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function fixAnnotations(Tokens $tokens)
+    {
+        $previousLineBracesDelta = 0;
+        $indentLevel = 0;
+        foreach ($tokens as $index => $token) {
+            $annotationEndIndex = $tokens->getAnnotationEnd($index);
+            if (null === $annotationEndIndex) {
+                return;
+            }
+
+            if (!$token->isType(DocLexer::T_NONE) || false === strpos($token->getContent(), "\n")) {
+                continue;
+            }
+
+            if (!$this->indentationCanBeFixed($tokens, $index)) {
+                continue;
+            }
+
+            $currentLineDelta = $this->getLineBracesDelta($tokens, $index);
+
+            if ($previousLineBracesDelta > 0) {
+                ++$indentLevel;
+            }
+            if ($currentLineDelta < 0) {
+                --$indentLevel;
+            }
+
+            $previousLineBracesDelta = $currentLineDelta;
+
+            $token->setContent(preg_replace(
+                '/(\n( +\*)?) *$/',
+                '$1'.str_repeat(' ', 4 * $indentLevel + 1),
+                $token->getContent()
+            ));
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return int
+     */
+    private function getLineBracesDelta(Tokens $tokens, $index)
+    {
+        $lineBracesDelta = 0;
+        while (isset($tokens[++$index])) {
+            $token = $tokens[$index];
+            if ($token->isType(DocLexer::T_NONE) && false !== strpos($token->getContent(), "\n")) {
+                break;
+            }
+
+            if ($token->isType(array(DocLexer::T_OPEN_PARENTHESIS, DocLexer::T_OPEN_CURLY_BRACES))) {
+                ++$lineBracesDelta;
+                continue;
+            }
+
+            if ($token->isType(array(DocLexer::T_CLOSE_PARENTHESIS, DocLexer::T_CLOSE_CURLY_BRACES))) {
+                --$lineBracesDelta;
+                continue;
+            }
+        }
+
+        return $lineBracesDelta;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $newLineTokenIndex
+     *
+     * @return bool
+     */
+    private function indentationCanBeFixed(Tokens $tokens, $newLineTokenIndex)
+    {
+        $atIndex = $tokens->getPreviousTokenOfType(DocLexer::T_AT, $newLineTokenIndex);
+        if (null !== $atIndex && $tokens->getAnnotationEnd($atIndex) > $newLineTokenIndex) {
+            return true;
+        }
+
+        for ($index = $newLineTokenIndex + 1, $max = count($tokens); $index < $max; ++$index) {
+            $token = $tokens[$index];
+
+            if (false !== strpos($token->getContent(), "\n")) {
+                return false;
+            }
+
+            return $tokens[$index]->isType(DocLexer::T_AT);
+        }
+
+        return false;
+    }
+}
