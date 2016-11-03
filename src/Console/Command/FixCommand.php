@@ -14,6 +14,7 @@ namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Config;
 use PhpCsFixer\ConfigInterface;
+use PhpCsFixer\ConfigurationException\UnallowedFixerConfigurationException;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\NullOutput;
 use PhpCsFixer\Console\Output\ProcessOutput;
@@ -444,16 +445,27 @@ EOF
 
             $description = $fixer->getDescription();
 
+            $attributes = array();
+
             if ($fixer->isRisky()) {
-                $description .= ' (Risky rule!)';
+                $attributes[] = 'risky';
             }
 
-            $description = str_replace("\n", "\n   ", wordwrap($description, 72, "\n"));
+            if ($this->isFixerConfigurable($fixer)) {
+                $attributes[] = 'configurable';
+            }
+
+            $description = wordwrap($description, 72, "\n   | ");
 
             if (!empty($sets)) {
-                $help .= sprintf(" * <comment>%s</comment> [%s]\n   %s\n", $fixer->getName(), implode(', ', $sets), $description);
+                $help .= sprintf(" * <comment>%s</comment> [%s]\n   | %s\n", $fixer->getName(), implode(', ', $sets), $description);
             } else {
-                $help .= sprintf(" * <comment>%s</comment>\n   %s\n", $fixer->getName(), $description);
+                $help .= sprintf(" * <comment>%s</comment>\n   | %s\n", $fixer->getName(), $description);
+            }
+
+            if (count($attributes)) {
+                sort($attributes);
+                $help .= sprintf("   | *Rule is: %s.*\n", implode(', ', $attributes));
             }
 
             if ($count !== $i) {
@@ -508,6 +520,24 @@ EOF
 
         foreach ($errors as $i => $error) {
             $output->writeln(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
+        }
+    }
+
+    /**
+     * @param FixerInterface $fixer
+     *
+     * @return bool
+     */
+    private function isFixerConfigurable(FixerInterface $fixer)
+    {
+        try {
+            $fixer->configure(array());
+
+            return true;
+        } catch (UnallowedFixerConfigurationException $e) {
+            return false;
+        } catch (\Exception $e) {
+            return true;
         }
     }
 }
