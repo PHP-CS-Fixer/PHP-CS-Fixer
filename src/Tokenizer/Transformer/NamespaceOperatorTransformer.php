@@ -13,11 +13,12 @@
 namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Transform `namespace` operator from T_NAMESPACE into CT_NAMESPACE_OPERATOR.
+ * Transform `namespace` operator from T_NAMESPACE into CT::T_NAMESPACE_OPERATOR.
  *
  * @author Gregor Harlan <gharlan@web.de>
  *
@@ -28,9 +29,9 @@ class NamespaceOperatorTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function getCustomTokens()
     {
-        return array('CT_NAMESPACE_OPERATOR');
+        return array(CT::T_NAMESPACE_OPERATOR);
     }
 
     /**
@@ -54,7 +55,7 @@ class NamespaceOperatorTransformer extends AbstractTransformer
         $nextToken = $tokens[$nextIndex];
 
         if ($nextToken->isGivenKind(T_NS_SEPARATOR)) {
-            $token->override(array(CT_NAMESPACE_OPERATOR, $token->getContent()));
+            $token->override(array(CT::T_NAMESPACE_OPERATOR, $token->getContent()));
         }
     }
 }

@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -163,8 +164,8 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     {
         static $allowedKinds = array(
             T_DNUMBER, T_LNUMBER, T_VARIABLE, T_STRING, T_OBJECT_OPERATOR, T_CONSTANT_ENCAPSED_STRING, T_DOUBLE_CAST,
-            T_INT_CAST, T_INC, T_DEC, T_NS_SEPARATOR, T_WHITESPACE, T_DOUBLE_COLON, CT_NAMESPACE_OPERATOR, T_LINE,
-            T_COMMENT, T_DOC_COMMENT,
+            T_INT_CAST, T_INC, T_DEC, T_NS_SEPARATOR, T_WHITESPACE, T_DOUBLE_COLON, T_LINE, T_COMMENT, T_DOC_COMMENT,
+            CT::T_NAMESPACE_OPERATOR,
         );
 
         for ($i = $argumentStartIndex; $i <= $argumentEndIndex; ++$i) {
@@ -180,7 +181,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
 
             if ($tokens[$i]->equals('$')) {
                 $i = $tokens->getNextMeaningfulToken($i);
-                if ($tokens[$i]->isGivenKind(CT_DYNAMIC_VAR_BRACE_OPEN)) {
+                if ($tokens[$i]->isGivenKind(CT::T_DYNAMIC_VAR_BRACE_OPEN)) {
                     $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, $i);
 
                     continue;

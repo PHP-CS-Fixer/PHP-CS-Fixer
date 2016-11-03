@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -235,7 +236,7 @@ final class BracesFixer extends AbstractFixer
                         // next Token is not a comment
                         !$nextNonWhitespaceNestToken->isComment() &&
                         // and it is not a `$foo = function () {};` situation
-                        !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equalsAny(array(';', ',', ']', array(CT_ARRAY_SQUARE_BRACE_CLOSE)))) &&
+                        !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equalsAny(array(';', ',', ']', array(CT::T_ARRAY_SQUARE_BRACE_CLOSE)))) &&
                         // and it is not a `Foo::{bar}()` situation
                         !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equals('(')) &&
                         // and it is not a `${"a"}->...` and `${"b{$foo}"}->...` situation
@@ -379,7 +380,7 @@ final class BracesFixer extends AbstractFixer
             // Declare tokens don't follow the same rules are other control statements
             if ($token->isGivenKind(T_DECLARE)) {
                 $this->fixDeclareStatement($tokens, $index);
-            } elseif ($token->isGivenKind($controlTokens) || $token->isGivenKind(CT_USE_LAMBDA)) {
+            } elseif ($token->isGivenKind($controlTokens) || $token->isGivenKind(CT::T_USE_LAMBDA)) {
                 $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($index);
 
                 if (!$tokens[$nextNonWhitespaceIndex]->equals(':')) {

@@ -13,11 +13,12 @@
 namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Transform `:` operator into CT_TYPE_COLON in `function foo() : int {}`.
+ * Transform `:` operator into CT::T_TYPE_COLON in `function foo() : int {}`.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -28,9 +29,9 @@ class TypeColonTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function getCustomTokens()
     {
-        return array('CT_TYPE_COLON');
+        return array(CT::T_TYPE_COLON);
     }
 
     /**
@@ -75,8 +76,8 @@ class TypeColonTransformer extends AbstractTransformer
             $prevToken = $tokens[$prevIndex];
         }
 
-        if ($prevToken->isGivenKind(array(T_FUNCTION, CT_RETURN_REF, CT_USE_LAMBDA))) {
-            $token->override(array(CT_TYPE_COLON, ':'));
+        if ($prevToken->isGivenKind(array(T_FUNCTION, CT::T_RETURN_REF, CT::T_USE_LAMBDA))) {
+            $token->override(array(CT::T_TYPE_COLON, ':'));
         }
     }
 }

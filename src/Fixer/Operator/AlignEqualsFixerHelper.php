@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractAlignFixerHelper;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -49,7 +50,7 @@ final class AlignEqualsFixerHelper extends AbstractAlignFixerHelper
                 continue;
             }
 
-            if ($token->isGivenKind(CT_ARRAY_SQUARE_BRACE_OPEN)) {
+            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
                 continue;
             }

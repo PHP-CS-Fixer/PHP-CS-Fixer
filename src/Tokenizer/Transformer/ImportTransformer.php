@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -20,8 +21,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Transform const/function import tokens.
  *
  * Performed transformations:
- * - T_CONST into CT_CONST_IMPORT
- * - T_FUNCTION into CT_FUNCTION_IMPORT
+ * - T_CONST into CT::T_CONST_IMPORT
+ * - T_FUNCTION into CT::T_FUNCTION_IMPORT
  *
  * @author Gregor Harlan <gharlan@web.de>
  *
@@ -32,9 +33,9 @@ final class ImportTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function getCustomTokens()
     {
-        return array('CT_CONST_IMPORT', 'CT_FUNCTION_IMPORT');
+        return array(CT::T_CONST_IMPORT, CT::T_FUNCTION_IMPORT);
     }
 
     /**
@@ -58,7 +59,7 @@ final class ImportTransformer extends AbstractTransformer
 
         if ($prevToken->isGivenKind(T_USE)) {
             $token->override(array(
-                $token->isGivenKind(T_FUNCTION) ? CT_FUNCTION_IMPORT : CT_CONST_IMPORT,
+                $token->isGivenKind(T_FUNCTION) ? CT::T_FUNCTION_IMPORT : CT::T_CONST_IMPORT,
                 $token->getContent(),
             ));
         }

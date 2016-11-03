@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Test\AbstractTransformerTestCase;
+use PhpCsFixer\Tokenizer\CT;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -31,7 +32,7 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             array(
-                'CT_TYPE_COLON',
+                CT::T_TYPE_COLON,
             )
         );
     }
@@ -42,31 +43,31 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
             array(
                 '<?php function foo(): array { return []; }',
                 array(
-                    6 => 'CT_TYPE_COLON',
+                    6 => CT::T_TYPE_COLON,
                 ),
             ),
             array(
                 '<?php function & foo(): array { return []; }',
                 array(
-                    8 => 'CT_TYPE_COLON',
+                    8 => CT::T_TYPE_COLON,
                 ),
             ),
             array(
                 '<?php interface F { public function foo(): array; }',
                 array(
-                    14 => 'CT_TYPE_COLON',
+                    14 => CT::T_TYPE_COLON,
                 ),
             ),
             array(
                 '<?php $a=1; $f = function () : array {};',
                 array(
-                    15 => 'CT_TYPE_COLON',
+                    15 => CT::T_TYPE_COLON,
                 ),
             ),
             array(
                 '<?php $a=1; $f = function () use($a) : array {};',
                 array(
-                    20 => 'CT_TYPE_COLON',
+                    20 => CT::T_TYPE_COLON,
                 ),
             ),
             array(

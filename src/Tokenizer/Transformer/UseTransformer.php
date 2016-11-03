@@ -13,13 +13,14 @@
 namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Transform T_USE into:
- * - CT_USE_TRAIT for imports,
- * - CT_USE_LAMBDA for lambda variable uses.
+ * - CT::T_USE_TRAIT for imports,
+ * - CT::T_USE_LAMBDA for lambda variable uses.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -30,9 +31,9 @@ final class UseTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function getCustomTokens()
     {
-        return array('CT_USE_TRAIT', 'CT_USE_LAMBDA');
+        return array(CT::T_USE_TRAIT, CT::T_USE_LAMBDA);
     }
 
     /**
@@ -49,7 +50,7 @@ final class UseTransformer extends AbstractTransformer
     public function process(Tokens $tokens, Token $token, $index)
     {
         if ($token->isGivenKind(T_USE) && $this->isUseForLambda($tokens, $index)) {
-            $token->override(array(CT_USE_LAMBDA, $token->getContent()));
+            $token->override(array(CT::T_USE_LAMBDA, $token->getContent()));
         }
 
         if (!$token->isClassy()) {
@@ -77,9 +78,9 @@ final class UseTransformer extends AbstractTransformer
             }
 
             if ($this->isUseForLambda($tokens, $index)) {
-                $token->override(array(CT_USE_LAMBDA, $token->getContent()));
+                $token->override(array(CT::T_USE_LAMBDA, $token->getContent()));
             } else {
-                $token->override(array(CT_USE_TRAIT, $token->getContent()));
+                $token->override(array(CT::T_USE_TRAIT, $token->getContent()));
             }
         }
     }

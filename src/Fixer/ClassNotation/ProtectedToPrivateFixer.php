@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -105,7 +106,7 @@ final class ProtectedToPrivateFixer extends AbstractFixer
             }
         }
 
-        $useIndex = $tokens->getNextTokenOfKind($classIndex, array(array(CT_USE_TRAIT)));
+        $useIndex = $tokens->getNextTokenOfKind($classIndex, array(array(CT::T_USE_TRAIT)));
 
         return $useIndex && $useIndex < $classCloseIndex;
     }

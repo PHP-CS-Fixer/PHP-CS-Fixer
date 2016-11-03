@@ -28,7 +28,7 @@ final class WhitespacyCommentTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function getCustomTokens()
     {
         return array();
     }

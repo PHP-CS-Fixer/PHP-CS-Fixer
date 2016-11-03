@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Test\AbstractTransformerTestCase;
+use PhpCsFixer\Tokenizer\CT;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -30,8 +31,8 @@ final class ArrayTypehintTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             array(
-                'T_ARRAY',
-                'CT_ARRAY_TYPEHINT',
+                T_ARRAY,
+                CT::T_ARRAY_TYPEHINT,
             )
         );
     }
@@ -46,8 +47,8 @@ function foo (array /** @type array */ $bar)
 {
 }',
                 array(
-                    5 => 'T_ARRAY',
-                    22 => 'CT_ARRAY_TYPEHINT',
+                    5 => T_ARRAY,
+                    22 => CT::T_ARRAY_TYPEHINT,
                 ),
             ),
         );

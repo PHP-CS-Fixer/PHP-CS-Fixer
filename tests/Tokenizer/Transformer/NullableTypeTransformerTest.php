@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Test\AbstractTransformerTestCase;
+use PhpCsFixer\Tokenizer\CT;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -31,7 +32,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             array(
-                'CT_NULLABLE_TYPE',
+                CT::T_NULLABLE_TYPE,
             )
         );
     }
@@ -42,15 +43,15 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
             array(
                 '<?php function foo(?Barable $barA, ?Barable $barB): ?Fooable {}',
                 array(
-                    5 => 'CT_NULLABLE_TYPE',
-                    11 => 'CT_NULLABLE_TYPE',
-                    18 => 'CT_NULLABLE_TYPE',
+                    5 => CT::T_NULLABLE_TYPE,
+                    11 => CT::T_NULLABLE_TYPE,
+                    18 => CT::T_NULLABLE_TYPE,
                 ),
             ),
             array(
                 '<?php interface Fooable { function foo(): ?Fooable; }',
                 array(
-                    14 => 'CT_NULLABLE_TYPE',
+                    14 => CT::T_NULLABLE_TYPE,
                 ),
             ),
             array(

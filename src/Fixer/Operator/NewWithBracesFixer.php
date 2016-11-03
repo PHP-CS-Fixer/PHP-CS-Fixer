@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -74,10 +75,10 @@ final class NewWithBracesFixer extends AbstractFixer
                 array(T_INSTANCEOF),
                 array(T_AS),
                 array(T_DOUBLE_ARROW),
-                array(CT_ARRAY_SQUARE_BRACE_OPEN),
-                array(CT_ARRAY_SQUARE_BRACE_CLOSE),
-                array(CT_BRACE_CLASS_INSTANTIATION_OPEN),
-                array(CT_BRACE_CLASS_INSTANTIATION_CLOSE),
+                array(CT::T_ARRAY_SQUARE_BRACE_OPEN),
+                array(CT::T_ARRAY_SQUARE_BRACE_CLOSE),
+                array(CT::T_BRACE_CLASS_INSTANTIATION_OPEN),
+                array(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE),
             );
             if (defined('T_POW')) {
                 $nextTokenKinds[] = array(T_POW);

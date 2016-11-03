@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\ArrayNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -26,7 +27,7 @@ final class LongArraySyntaxFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(CT_ARRAY_SQUARE_BRACE_OPEN);
+        return $tokens->isTokenKindFound(CT::T_ARRAY_SQUARE_BRACE_OPEN);
     }
 
     /**
@@ -37,7 +38,7 @@ final class LongArraySyntaxFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(CT_ARRAY_SQUARE_BRACE_OPEN)) {
+            if (!$token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
                 continue;
             }
 

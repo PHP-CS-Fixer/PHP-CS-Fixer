@@ -13,12 +13,13 @@
 namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Transform braced class instantiation braces in `(new Foo())` into CT_BRACE_CLASS_INSTANTIATION_OPEN
- * and CT_BRACE_CLASS_INSTANTIATION_CLOSE.
+ * Transform braced class instantiation braces in `(new Foo())` into CT::T_BRACE_CLASS_INSTANTIATION_OPEN
+ * and CT::T_BRACE_CLASS_INSTANTIATION_CLOSE.
  *
  * @author Sebastiaans Stok <s.stok@rollerscapes.net>
  *
@@ -29,9 +30,9 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokenNames()
+    public function getCustomTokens()
     {
-        return array('CT_BRACE_CLASS_INSTANTIATION_OPEN', 'CT_BRACE_CLASS_INSTANTIATION_CLOSE');
+        return array(CT::T_BRACE_CLASS_INSTANTIATION_OPEN, CT::T_BRACE_CLASS_INSTANTIATION_CLOSE);
     }
 
     /**
@@ -57,7 +58,7 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
             return;
         }
 
-        $tokens[$index]->override(array(CT_BRACE_CLASS_INSTANTIATION_OPEN, '('));
-        $tokens[$closeIndex]->override(array(CT_BRACE_CLASS_INSTANTIATION_CLOSE, ')'));
+        $tokens[$index]->override(array(CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('));
+        $tokens[$closeIndex]->override(array(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'));
     }
 }
