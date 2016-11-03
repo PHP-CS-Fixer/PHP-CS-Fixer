@@ -546,6 +546,7 @@ Choose from the list of available fixers:
 
 * **simplified_null_return**
    A return statement wishing to return nothing should be simply "return".
+   (Risky fixer!)
 
 * **single_blank_line_at_eof** [@PSR2, @Symfony]
    A file must always end with a single empty line feed.
