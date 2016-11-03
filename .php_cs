@@ -16,6 +16,7 @@ return Symfony\CS\Config::create()
     // use default SYMFONY_LEVEL and extra fixers:
     ->fixers(array(
         'combine_consecutive_unsets',
+        'empty_return',
         'header_comment',
         'long_array_syntax',
         'no_useless_else',
