@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-10-20T08:34:46Z
+
+:+1: awesome :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-10-26T16:54:40Z
+
+I'm actually not so sure this is needed? Why does this matter if this is just a tool?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-10-26T16:54:53Z
+
+Surely it's just making branch merges really hard now?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-26T17:52:33Z
+
+To not pollute global namespace with some constants at one, quite random runtime execution point.
+So basically fix https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2227#discussion_r84184603
