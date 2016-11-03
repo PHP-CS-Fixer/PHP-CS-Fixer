@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-02T08:09:56Z
+
+Why don't we disable fabbot.io for the project?
+We do already ready run the fixer as part of the required tests to pass so there is no real value and we would lose the false negatives on PRs passing.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-02T10:48:19Z
+
+it's funny way for me to guess which version of CS Fixer it is using ;)
