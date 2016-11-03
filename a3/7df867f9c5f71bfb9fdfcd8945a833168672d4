@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-10-28T14:59:25Z
+
+thanks for picking this up, will be a great improvement : )
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-01T13:37:49Z
+
+Out of curiosity, do the attr. of the `Config` class need to be/stay `protected`? It feels like hard endpoints to maintain (BC) without a lot of gain.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-01T13:38:55Z
+
+Valid question.
+I want to make a Config a DTO object without many deps, clean it up from unneeded props and then let us see.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-03T17:21:37Z
+
+https://github.com/keradus/PHP-CS-Fixer/pull/16 is merged into this PR
