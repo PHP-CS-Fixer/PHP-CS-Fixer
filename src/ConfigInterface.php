@@ -19,57 +19,11 @@ namespace PhpCsFixer;
 interface ConfigInterface
 {
     /**
-     * Returns the name of the configuration.
+     * Returns the path to the cache file.
      *
-     * The name must be all lowercase and without any spaces.
-     *
-     * @return string The name of the configuration
+     * @return string|null Returns null if not using cache
      */
-    public function getName();
-
-    /**
-     * Returns the description of the configuration.
-     *
-     * A short one-line description for the configuration.
-     *
-     * @return string The description of the configuration
-     */
-    public function getDescription();
-
-    /**
-     * Returns an iterator of files to scan.
-     *
-     * @return \Traversable A \Traversable instance that returns \SplFileInfo instances
-     */
-    public function getFinder();
-
-    /**
-     * Returns the fixers to run.
-     *
-     * @return FixerInterface[]
-     */
-    public function getFixers();
-
-    /**
-     * Returns true if progress should be hidden.
-     *
-     * @return bool
-     */
-    public function getHideProgress();
-
-    /**
-     * Adds an instance of a custom fixer.
-     *
-     * @param FixerInterface $fixer
-     */
-    public function addCustomFixer(FixerInterface $fixer);
-
-    /**
-     * Adds a suite of custom fixers.
-     *
-     * @param FixerInterface[]|\Traversable $fixers
-     */
-    public function addCustomFixers($fixers);
+    public function getCacheFile();
 
     /**
      * Returns the custom fixers to use.
@@ -79,27 +33,32 @@ interface ConfigInterface
     public function getCustomFixers();
 
     /**
-     * Returns true if caching should be enabled.
+     * Returns files to scan.
+     *
+     * @return iterable|\Traversable|string[]
+     */
+    public function getFinder();
+
+    /**
+     * @return string
+     */
+    public function getFormat();
+
+    /**
+     * Returns true if progress should be hidden.
      *
      * @return bool
      */
-    public function usingCache();
+    public function getHideProgress();
 
     /**
-     * Sets the path to the cache file.
+     * Returns the name of the configuration.
      *
-     * @param string $cacheFile
+     * The name must be all lowercase and without any spaces.
      *
-     * @return ConfigInterface
+     * @return string The name of the configuration
      */
-    public function setCacheFile($cacheFile);
-
-    /**
-     * Returns the path to the cache file.
-     *
-     * @return string
-     */
-    public function getCacheFile();
+    public function getName();
 
     /**
      * Get configured PHP executable, if any.
@@ -116,15 +75,6 @@ interface ConfigInterface
     public function getRiskyAllowed();
 
     /**
-     * Set if it is allowed to run risky fixers.
-     *
-     * @param bool $isRiskyAllowed
-     *
-     * @return $this
-     */
-    public function setRiskyAllowed($isRiskyAllowed);
-
-    /**
      * Get rules.
      *
      * Keys of array are names of fixers/sets, values are true/false.
@@ -132,6 +82,68 @@ interface ConfigInterface
      * @return array
      */
     public function getRules();
+
+    /**
+     * Returns true if caching should be enabled.
+     *
+     * @return bool
+     */
+    public function getUsingCache();
+
+    /**
+     * Adds a suite of custom fixers.
+     *
+     * @param iterable|\Traversable|FixerInterface[] $fixers
+     */
+    public function registerCustomFixers($fixers);
+
+    /**
+     * Sets the path to the cache file.
+     *
+     * @param string $cacheFile
+     *
+     * @return self
+     */
+    public function setCacheFile($cacheFile);
+
+    /**
+     * @param iterable|\Traversable|string[] $finder
+     *
+     * @return self
+     */
+    public function setFinder($finder);
+
+    /**
+     * @param string $format
+     *
+     * @return self
+     */
+    public function setFormat($format);
+
+    /**
+     * @param bool $hideProgress
+     *
+     * @return self
+     */
+    public function setHideProgress($hideProgress);
+
+    /**
+     * Set PHP executable.
+     *
+     * @param string|null $phpExecutable
+     *
+     * @return self
+     */
+    public function setPhpExecutable($phpExecutable);
+
+    /**
+     * Set if it is allowed to run risky fixers.
+     *
+     * @param bool $isRiskyAllowed
+     *
+     * @return self
+     */
+    public function setRiskyAllowed($isRiskyAllowed);
 
     /**
      * Set rules.
@@ -143,7 +155,14 @@ interface ConfigInterface
      *
      * @param array $rules
      *
-     * @return $this
+     * @return self
      */
     public function setRules(array $rules);
+
+    /**
+     * @param bool $usingCache
+     *
+     * @return self
+     */
+    public function setUsingCache($usingCache);
 }

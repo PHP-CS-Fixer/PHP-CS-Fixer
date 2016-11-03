@@ -646,7 +646,7 @@ The example below will add two fixers to the default list of PSR2 set fixers:
             'strict_param' => true,
             'short_array_syntax' => true,
         ))
-        ->finder($finder)
+        ->setFinder($finder)
     ;
 
 **NOTE**: ``exclude`` will work only for directories, so if you need to exclude file, try ``notPath``.
@@ -671,7 +671,7 @@ The following example shows how to use all ``Symfony`` Fixers but the ``full_ope
             '@Symfony' => true,
             'full_opening_tag' => false,
         ))
-        ->finder($finder)
+        ->setFinder($finder)
     ;
 
 By using ``--using-cache`` option with yes or no you can set if the caching
