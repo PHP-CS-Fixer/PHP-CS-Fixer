@@ -41,7 +41,7 @@ class EmptyReturnFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'A return statement wishing to return nothing should be simply "return".';
+        return 'A return statement wishing to return nothing should be simply "return". Warning! This could change code behavior.';
     }
 
     /**
