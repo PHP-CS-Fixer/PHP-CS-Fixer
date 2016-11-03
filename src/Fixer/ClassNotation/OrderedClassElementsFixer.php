@@ -186,7 +186,8 @@ final class OrderedClassElementsFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // must run before MethodSeparationFixer, NoBlankLinesAfterClassOpeningFixer and SpaceAfterSemicolonFixer
+        // must run before MethodSeparationFixer, NoBlankLinesAfterClassOpeningFixer and SpaceAfterSemicolonFixer.
+        // must run after ProtectedToPrivateFixer.
         return 65;
     }
 

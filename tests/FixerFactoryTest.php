@@ -284,6 +284,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['class_keyword_remove'], $fixers['no_unused_imports']), // tested also in: class_keyword_remove,no_unused_imports.test
             array($fixers['no_blank_lines_after_phpdoc'], $fixers['single_blank_line_before_namespace']), // tested also in: no_blank_lines_after_phpdoc,single_blank_line_before_namespace.test
             array($fixers['php_unit_fqcn_annotation'], $fixers['no_unused_imports']), // tested also in: php_unit_fqcn_annotation,unused_use.test
+            array($fixers['protected_to_private'], $fixers['ordered_class_elements']), // tested also in: protected_to_private,ordered_class_elements.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:

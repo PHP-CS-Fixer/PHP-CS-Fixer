@@ -67,7 +67,7 @@ final class NoUselessElseFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run before NoDuplicateSemicolonsFixer, NoWhitespaceInBlankLineFixer, NoExtraConsecutiveBlankLinesFixer and BracesFixer.
+        // should be run before NoWhitespaceInBlankLineFixer, NoExtraConsecutiveBlankLinesFixer, BracesFixer and after NoEmptyStatementFixer.
         return 25;
     }
 
