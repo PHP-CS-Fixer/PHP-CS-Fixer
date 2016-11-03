@@ -19,23 +19,20 @@ namespace PhpCsFixer;
  */
 class Config implements ConfigInterface
 {
-    protected $name;
-    protected $description;
-    protected $finder;
-    protected $format = 'txt';
-    protected $dir;
-    protected $customFixers = array();
-    protected $usingCache = true;
-    protected $hideProgress = false;
-    protected $cacheFile = '.php_cs.cache';
-    protected $phpExecutable;
-    protected $isRiskyAllowed = false;
-    protected $rules = array('@PSR2' => true);
+    private $cacheFile = '.php_cs.cache';
+    private $customFixers = array();
+    private $finder;
+    private $format = 'txt';
+    private $hideProgress = false;
+    private $isRiskyAllowed = false;
+    private $name;
+    private $phpExecutable;
+    private $rules = array('@PSR2' => true);
+    private $usingCache = true;
 
-    public function __construct($name = 'default', $description = 'A default configuration')
+    public function __construct($name = 'default')
     {
         $this->name = $name;
-        $this->description = $description;
     }
 
     /**
@@ -60,14 +57,6 @@ class Config implements ConfigInterface
     public function getCustomFixers()
     {
         return $this->customFixers;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return $this->description;
     }
 
     /**

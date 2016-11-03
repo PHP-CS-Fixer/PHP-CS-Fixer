@@ -106,7 +106,7 @@ final class ReportSummary
     }
 
     /**
-     * @return time
+     * @return int
      */
     public function getTime()
     {

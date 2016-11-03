@@ -13,7 +13,10 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Config;
+use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Finder;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 /**
@@ -21,6 +24,28 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  */
 final class ConfigTest extends \PHPUnit_Framework_TestCase
 {
+    public function testCustomConfig()
+    {
+        $customConfigFile = __DIR__.'/Fixtures/.php_cs_custom.php';
+        $command = new FixCommand();
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+            array(
+                'path' => array($customConfigFile),
+                '--dry-run' => true,
+                '--config' => $customConfigFile,
+            ),
+            array(
+                'decorated' => false,
+                'verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE,
+            )
+        );
+        $this->assertStringMatchesFormat(
+            sprintf('%%ALoaded config custom_config_test from "%s".%%A', $customConfigFile),
+            $commandTester->getDisplay(true)
+        );
+    }
+
     public function testThatFinderWorksWithDirSetOnConfig()
     {
         $config = new Config();
