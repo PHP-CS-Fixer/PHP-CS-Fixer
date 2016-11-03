@@ -154,13 +154,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
                 $fixResult = $fixer->fix($file, $tokens);
                 $this->assertNull($fixResult, '->fix method must return null.');
             }
-            if($expected !== $tokens->generateCode()) {
-                var_dump([
-                    str_replace(["\n", "\r", "\t"], ['N', 'R', 'T'], $expected),
-                    str_replace(["\n", "\r", "\t"], ['N', 'R', 'T'], $tokens->generateCode()),
-                ]);
-//                die;
-            }
+
             $this->assertSame($expected, $tokens->generateCode(), 'Code build on input code must match expected code.');
             $this->assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
 
