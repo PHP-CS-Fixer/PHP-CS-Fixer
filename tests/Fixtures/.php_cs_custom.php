@@ -66,6 +66,22 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
+    public function getIndent()
+    {
+        return '  ';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLineEnding()
+    {
+        return "\n";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'custom_config_test';
@@ -138,6 +154,22 @@ final class CustomConfig implements ConfigInterface
      * {@inheritdoc}
      */
     public function setHideProgress($hideProgress)
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIndent($indent)
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLineEnding($lineEnding)
     {
         return $this;
     }
