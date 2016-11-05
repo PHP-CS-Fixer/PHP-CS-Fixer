@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-05T15:31:11Z
+
+could those exceptions be `InvalidConfigurationException`? If not I happy with the current PR as well :)
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-05T15:34:07Z
+
+I say it would RuleSet should not be aware about configuration.
+It may be catch during creation via resolver and then rethrow as configuration error
