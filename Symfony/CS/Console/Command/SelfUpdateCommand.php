@@ -23,6 +23,7 @@ use Symfony\CS\ToolInfo;
  * @author Stephane PY <py.stephane1@gmail.com>
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author SpacePossum
  */
 class SelfUpdateCommand extends Command
 {
@@ -63,43 +64,39 @@ EOT
             return 1;
         }
 
-        $remoteTag = $this->getRemoteTag();
-
+        $remoteTag = $this->getLatestTag();
         if (null === $remoteTag) {
             $output->writeln('<error>Unable to determine newest version.</error>');
 
-            return;
+            return 0;
         }
 
         $currentVersion = 'v'.$this->getApplication()->getVersion();
         if ($currentVersion === $remoteTag) {
             $output->writeln('<info>php-cs-fixer is already up to date.</info>');
 
-            return;
+            return 0;
         }
 
-        $remoteVersionExploded = $this->parseVersion($remoteTag);
-        $currentVersionExploded = $this->parseVersion($currentVersion);
+        $remoteVersionParsed = $this->parseVersion($remoteTag);
+        $currentVersionParsed = $this->parseVersion($currentVersion);
 
-        if ($remoteVersionExploded[0] > $currentVersionExploded[0] && true !== $input->getOption('force')) {
+        if ($remoteVersionParsed[0] > $currentVersionParsed[0] && true !== $input->getOption('force')) {
             $output->writeln(sprintf('<info>A new major version of php-cs-fixer is available</info> (<comment>%s</comment>)', $remoteTag));
             $output->writeln(sprintf('<info>Before upgrading please read</info> https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/%d.%d/UPGRADE.md', $remoteTag[0], $remoteTag[1]));
             $output->writeln('<info>If you are ready to upgrade run this command with</info> <comment>-f</comment>');
+            $output->writeln('<info>Checking for new minor/patch version...</info>');
 
             // test if there is a new minor version available
-            $remoteTag = sprintf('v%d.%d.%d', $currentVersionExploded[0], $currentVersionExploded[1] + 1, $currentVersionExploded[0]);
-            if (!$this->hasRemoteTag($remoteTag)) {
-                // test if there is a new patch version available
-                $remoteTag = sprintf('v%d.%d.%d', $currentVersionExploded[0], $currentVersionExploded[1], $currentVersionExploded[0] + 1);
-                if (!$this->hasRemoteTag($remoteTag)) {
-                    $output->writeln('<info>php-cs-fixer is already up to date.</info>');
+            $remoteTag = $this->getLatestNotMajorUpdateTag($currentVersion);
+            if ($currentVersion === $remoteTag) {
+                $output->writeln('<info>no minor update for php-cs-fixer.</info>');
 
-                    return;
-                }
+                return 0;
             }
         }
 
-        $remoteFilename = $this->buildVersionFileUrl($remoteTag);
+        $remoteFilename = sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar', $remoteTag);
         $localFilename = realpath($_SERVER['argv'][0]) ?: $_SERVER['argv'][0];
         $tempFilename = basename($localFilename, '.phar').'-tmp.phar';
 
@@ -134,13 +131,70 @@ EOT
     }
 
     /**
-     * @param string $tag
-     *
-     * @return string
+     * @return string|null
      */
-    private function buildVersionFileUrl($tag)
+    private function getLatestTag()
     {
-        return sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar', $tag);
+        $raw = file_get_contents(
+            'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/releases/latest',
+            null,
+            stream_context_create($this->getStreamContextOptions())
+        );
+
+        if (false === $raw) {
+            return null;
+        }
+
+        $json = json_decode($raw, true);
+
+        if (null === $json) {
+            return null;
+        }
+
+        return $json['tag_name'];
+    }
+
+    /**
+     * @param string $currentTag in format v?\d.\d.\d
+     *
+     * @return string in format v?\d.\d.\d
+     */
+    private function getLatestNotMajorUpdateTag($currentTag)
+    {
+        $currentTagParsed = $this->parseVersion($currentTag);
+        $nextVersionParsed = $currentTagParsed;
+        do {
+            $nextTag = sprintf('v%d.%d.%d', $nextVersionParsed[0], ++$nextVersionParsed[1], 0);
+        } while ($this->hasRemoteTag($nextTag));
+
+        $nextVersionParsed = $this->parseVersion($nextTag);
+        --$nextVersionParsed[1];
+
+        // check if new minor found, otherwise start looking for new patch from the current patch number
+        if ($currentTagParsed[1] === $nextVersionParsed[1]) {
+            $nextVersionParsed[2] = $currentTagParsed[2];
+        }
+
+        do {
+            $nextTag = sprintf('v%d.%d.%d', $nextVersionParsed[0], $nextVersionParsed[1], ++$nextVersionParsed[2]);
+        } while ($this->hasRemoteTag($nextTag));
+
+        return sprintf('v%d.%d.%d', $nextVersionParsed[0], $nextVersionParsed[1], $nextVersionParsed[2] - 1);
+    }
+
+    /**
+     * @param string $method HTTP method
+     *
+     * @return array
+     */
+    private function getStreamContextOptions($method = 'GET')
+    {
+        return array(
+            'http' => array(
+                'header' => 'User-Agent: FriendsOfPHP/PHP-CS-Fixer',
+                'method' => $method,
+            ),
+        );
     }
 
     /**
@@ -161,45 +215,6 @@ EOT
         }
 
         return 1 === preg_match('#^HTTP\/\d.\d 200#', $headers[0]);
-    }
-
-    /**
-     * @return string|null
-     */
-    private function getRemoteTag()
-    {
-        $raw = file_get_contents(
-            'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/releases/latest',
-            null,
-            stream_context_create($this->getStreamContextOptions())
-        );
-
-        if (false === $raw) {
-            return;
-        }
-
-        $json = json_decode($raw, true);
-
-        if (null === $json) {
-            return;
-        }
-
-        return $json['tag_name'];
-    }
-
-    /**
-     * @param string $method HTTP method
-     *
-     * @return array
-     */
-    private function getStreamContextOptions($method = 'GET')
-    {
-        return array(
-            'http' => array(
-                'header' => 'User-Agent: FriendsOfPHP/PHP-CS-Fixer',
-                'method' => $method,
-            ),
-        );
     }
 
     /**
