@@ -3,7 +3,7 @@ Integration of fixers: protected_to_private,ordered_class_elements.
 --RULESET--
 {"protected_to_private": true, "ordered_class_elements": true}
 --REQUIREMENTS--
-{"php": 5.4}
+{"php": "50400"}
 --EXPECT--
 <?php
 final class C

@@ -124,7 +124,7 @@ final class IntegrationCaseFactory
     {
         return $this->parseJson($config, array(
             'hhvm' => true,
-            'php' => PHP_VERSION,
+            'php' => PHP_VERSION_ID,
         ));
     }
 

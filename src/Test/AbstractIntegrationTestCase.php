@@ -43,7 +43,7 @@ use Symfony\Component\Finder\Finder;
  * --SETTINGS--*
  * {"checkPriority": true}
  * --REQUIREMENTS--*
- * {"php": 5.4**, "hhvm": false***}
+ * {"php": "50600"**, "hhvm": false***}
  * --EXPECT--
  * Expected code after fixing
  * --INPUT--*
@@ -168,7 +168,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('HHVM is not supported.');
         }
 
-        if (version_compare(PHP_VERSION, $case->getRequirement('php')) < 0) {
+        if (PHP_VERSION_ID < $case->getRequirement('php')) {
             $this->markTestSkipped(sprintf('PHP %s (or later) is required for "%s".', $case->getRequirement('php'), $case->getFileName()));
         }
 

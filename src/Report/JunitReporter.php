@@ -65,13 +65,13 @@ final class JunitReporter implements ReporterInterface
     {
         $testcase = $dom->createElement('testcase');
         $testcase->setAttribute('name', 'All OK');
-        $testcase->setAttribute('assertions', 1);
+        $testcase->setAttribute('assertions', '1');
 
         $testsuite->appendChild($testcase);
-        $testsuite->setAttribute('tests', 1);
-        $testsuite->setAttribute('assertions', 1);
-        $testsuite->setAttribute('failures', 0);
-        $testsuite->setAttribute('errors', 0);
+        $testsuite->setAttribute('tests', '1');
+        $testsuite->setAttribute('assertions', '1');
+        $testsuite->setAttribute('failures', '0');
+        $testsuite->setAttribute('errors', '0');
     }
 
     /**
@@ -93,10 +93,10 @@ final class JunitReporter implements ReporterInterface
             $assertionsCount += (int) $testcase->getAttribute('assertions');
         }
 
-        $testsuite->setAttribute('tests', count($reportSummary->getChanged()));
-        $testsuite->setAttribute('assertions', $assertionsCount);
-        $testsuite->setAttribute('failures', $assertionsCount);
-        $testsuite->setAttribute('errors', 0);
+        $testsuite->setAttribute('tests', (string) count($reportSummary->getChanged()));
+        $testsuite->setAttribute('assertions', (string) $assertionsCount);
+        $testsuite->setAttribute('failures', (string) $assertionsCount);
+        $testsuite->setAttribute('errors', '0');
     }
 
     /**
@@ -116,7 +116,7 @@ final class JunitReporter implements ReporterInterface
         $testcase = $dom->createElement('testcase');
         $testcase->setAttribute('name', $testName);
         $testcase->setAttribute('file', $file);
-        $testcase->setAttribute('assertions', $appliedFixersCount);
+        $testcase->setAttribute('assertions', (string) $appliedFixersCount);
 
         $failure = $dom->createElement('failure');
         $failure->setAttribute('type', 'code_style');
