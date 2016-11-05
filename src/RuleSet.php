@@ -169,6 +169,12 @@ final class RuleSet implements RuleSetInterface
 
     public function __construct(array $set = array())
     {
+        foreach ($set as $key => $value) {
+            if (is_int($key)) {
+                throw new \InvalidArgumentException(sprintf('Missing value for "%s" rule/set.', $value));
+            }
+        }
+
         $this->set = $set;
         $this->resolveSet();
     }
@@ -192,7 +198,7 @@ final class RuleSet implements RuleSetInterface
     public function getRuleConfiguration($rule)
     {
         if (!$this->hasRule($rule)) {
-            throw new \UnexpectedValueException(sprintf('Rule "%s" is not in the set.', $rule));
+            throw new \InvalidArgumentException(sprintf('Rule "%s" is not in the set.', $rule));
         }
 
         if ($this->rules[$rule] === true) {
@@ -228,7 +234,7 @@ final class RuleSet implements RuleSetInterface
     private function getSetDefinition($name)
     {
         if (!isset($this->setDefinitions[$name])) {
-            throw new \UnexpectedValueException(sprintf('Set "%s" does not exist.', $name));
+            throw new \InvalidArgumentException(sprintf('Set "%s" does not exist.', $name));
         }
 
         return $this->setDefinitions[$name];
