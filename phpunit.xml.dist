@@ -12,37 +12,23 @@
          syntaxCheck="false"
 >
     <testsuites>
-        <testsuite name="general">
-            <directory>./Symfony/CS/Tests/</directory>
-            <exclude>
-                <directory>./Symfony/CS/Tests/Fixer/</directory>
-                <directory>./Symfony/CS/Tests/Fixtures/</directory>
-                <directory>./Symfony/CS/Tests/Tokenizer/</directory>
-            </exclude>
-        </testsuite>
-        <testsuite name="fixer">
-            <directory>./Symfony/CS/Tests/Fixer/</directory>
-        </testsuite>
-        <testsuite name="tokenizer">
-            <directory>./Symfony/CS/Tests/Tokenizer/</directory>
-        </testsuite>
-        <testsuite name="docblock">
-            <directory>./Symfony/CS/Tests/DocBlock/</directory>
+        <testsuite>
+            <directory>./tests</directory>
+            <exclude>./tests/Standalone</exclude>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>./Symfony/CS</directory>
+            <directory>./src</directory>
             <exclude>
-                <directory>./Symfony/CS/Resources</directory>
-                <directory>./Symfony/CS/Tests</directory>
+                <directory>./src/Resources</directory>
             </exclude>
         </whitelist>
     </filter>
 
     <php>
         <ini name="zend.enable_gc" value="0"/>
-        <env name="LINT_TEST_CASES" value="0"/>
+        <env name="SKIP_LINT_TEST_CASES" value="0"/>
     </php>
 </phpunit>

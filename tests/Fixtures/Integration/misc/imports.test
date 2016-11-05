@@ -1,0 +1,29 @@
+--TEST--
+Integration of fixers: single_import_per_statement,no_leading_import_slash,no_extra_consecutive_blank_lines,ordered_imports.
+--RULESET--
+{
+    "single_import_per_statement": true,
+    "no_leading_import_slash": true,
+    "no_extra_consecutive_blank_lines": ["use"],
+    "ordered_imports": true
+}
+--EXPECT--
+<?php
+
+namespace Acme;
+
+use Abc;
+use Barr;
+use BBB\Bar;
+use Foo;
+use Zzzz;
+
+--INPUT--
+<?php
+
+namespace Acme;
+
+use \Foo;
+use BBB\Bar;
+
+use Abc, \Barr, \Zzzz;

@@ -1,4 +1,4 @@
-/Symfony/CS/Tests export-ignore
+/tests export-ignore
 .editorconfig export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
@@ -11,4 +11,4 @@ phpunit.xml.dist export-ignore
 *.yml   text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4
 *.md    text whitespace=blank-at-eol,blank-at-eof
 *.rst   text whitespace=blank-at-eol,blank-at-eof
-/Symfony/CS/Tests/Fixtures/**/* -text
+/tests/Fixtures/**/* -text

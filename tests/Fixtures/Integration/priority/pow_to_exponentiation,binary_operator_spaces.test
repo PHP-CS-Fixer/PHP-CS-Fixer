@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: pow_to_exponentiation,binary_operator_spaces.
+--RULESET--
+{"pow_to_exponentiation": true, "binary_operator_spaces": true}
+--REQUIREMENTS--
+{"php": 5.6}
+--EXPECT--
+<?php
+1 ** 2;
+
+--INPUT--
+<?php
+pow(1,2);

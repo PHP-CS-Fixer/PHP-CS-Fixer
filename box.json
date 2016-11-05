@@ -12,10 +12,10 @@
         {
             "name": ["*.php"],
             "exclude": ["Tests", "tests"],
-            "in": ["vendor", "Symfony"]
+            "in": ["vendor", "src"]
         }
     ],
     "git-commit": "git-commit",
-    "stub": "Symfony/CS/Resources/phar-stub.php",
+    "stub": "src/Resources/phar-stub.php",
     "web": false
 }

@@ -1,0 +1,66 @@
+<?php
+
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace PhpCsFixer\Fixer\PhpTag;
+
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
+
+/**
+ * @author Ceeram <ceeram@cakephp.org>
+ */
+final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_OPEN_TAG);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        // ignore files with short open tag and ignore non-monolithic files
+        if (!$tokens[0]->isGivenKind(T_OPEN_TAG) || !$tokens->isMonolithicPhp()) {
+            return;
+        }
+
+        $newlineFound = false;
+        foreach ($tokens as $token) {
+            if ($token->isWhitespace() && false !== strpos($token->getContent(), "\n")) {
+                $newlineFound = true;
+                break;
+            }
+        }
+
+        // ignore one-line files
+        if (!$newlineFound) {
+            return;
+        }
+
+        $token = $tokens[0];
+        $token->setContent(rtrim($token->getContent()).$this->whitespacesConfig->getLineEnding());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'Ensure there is no code on the same line as the PHP open tag.';
+    }
+}

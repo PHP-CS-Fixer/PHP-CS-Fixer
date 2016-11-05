@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: no_empty_statement,no_useless_return.
+--RULESET--
+{"no_empty_statement": true, "no_useless_return": true}
+--EXPECT--
+<?php
+class Test {
+    private static function a($a) {
+        $a = 1;
+        //
+    }
+}
+
+--INPUT--
+<?php
+class Test {
+    private static function a($a) {
+        $a = 1;
+        return;;;//
+    }
+}

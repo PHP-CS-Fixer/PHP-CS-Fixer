@@ -1,0 +1,13 @@
+<?php
+
+$config = PhpCsFixer\Config::create();
+
+$finder = $config->getFinder()->in(__DIR__);
+
+return $config
+    ->setUsingCache(false)
+    ->setUsingLinter(true)
+    ->setRules(array(
+        'full_opening_tag' => true,
+    ))
+;

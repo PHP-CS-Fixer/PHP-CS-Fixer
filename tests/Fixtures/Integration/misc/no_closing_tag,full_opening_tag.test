@@ -1,0 +1,14 @@
+--TEST--
+Integration of fixers: no_closing_tag,full_opening_tag.
+--RULESET--
+{"full_opening_tag": true, "no_closing_tag": true}
+--SETTINGS--
+{"checkPriority": false}
+--EXPECT--
+<?php
+$a = 1;
+--INPUT--
+<?
+$a = 1;
+
+?>
