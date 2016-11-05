@@ -362,6 +362,22 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * @param Token[] $tokens
+     *
+     * @return string
+     */
+    public static function generatePartialCodeFromTokens(array $tokens)
+    {
+        $code = '';
+
+        foreach ($tokens as $token) {
+            $code .= $token->getContent();
+        }
+
+        return $code;
+    }
+
+    /**
      * Get indexes of methods and properties in classy code (classes, interfaces and traits).
      *
      * @return array

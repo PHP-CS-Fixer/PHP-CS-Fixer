@@ -13,6 +13,7 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
@@ -59,6 +60,17 @@ class OrderedUseFixer extends AbstractFixer
             $declarationTokens->clearEmptyTokens();
 
             $tokens->insertAt($index, $declarationTokens);
+            if ($use['group']) {
+                // a group import must start with `use` and cannot be part of comma separated import list
+                $prev = $tokens->getPrevMeaningfulToken($index);
+                if ($tokens[$prev]->equals(',')) {
+                    $tokens[$prev]->setContent(';');
+                    $tokens->insertAt($prev + 1, new Token(array(T_USE, 'use')));
+                    if (!$tokens[$prev + 2]->isWhitespace()) {
+                        $tokens->insertAt($prev + 2, new Token(array(T_WHITESPACE, ' ')));
+                    }
+                }
+            }
         }
 
         return $tokens->generateCode();
@@ -101,20 +113,20 @@ class OrderedUseFixer extends AbstractFixer
         $secondNamespace = trim(preg_replace('%/\*(.*)\*/%s', '', $second['namespace']));
 
         // Replace backslashes by spaces before sorting for correct sort order
-        $firstNamespace = str_replace('\\', ' ', $firstNamespace);
-        $secondNamespace = str_replace('\\', ' ', $secondNamespace);
-
-        return strcasecmp($firstNamespace, $secondNamespace);
+        return strcasecmp(
+            str_replace('\\', ' ', $firstNamespace),
+            str_replace('\\', ' ', $secondNamespace)
+        );
     }
 
     private function getNewOrder(array $uses, Tokens $tokens)
     {
-        $uses = array_reverse($uses);
-
         $indexes = array();
         $originalIndexes = array();
 
-        foreach ($uses as $index) {
+        for ($i = count($uses) - 1; $i >= 0; --$i) {
+            $index = $uses[$i];
+
             $startIndex = $tokens->getTokenNotOfKindSibling($index + 1, 1, array(array(T_WHITESPACE)));
             $endIndex = $tokens->getNextTokenOfKind($startIndex, array(';', array(T_CLOSE_TAG)));
             $previous = $tokens->getPrevMeaningfulToken($endIndex);
@@ -128,18 +140,77 @@ class OrderedUseFixer extends AbstractFixer
                 $type = self::IMPORT_TYPE_CLASS;
             }
 
-            $namespace = '';
+            $namespaceTokens = array();
             $index = $startIndex;
 
             while ($index <= $endIndex) {
                 $token = $tokens[$index];
 
                 if ($index === $endIndex || (!$group && $token->equals(','))) {
+                    if ($group) {
+                        // if group import, sort the items within the group definition
+
+                        // figure out where the list of namespace parts within the group def. starts
+                        $namespaceTokensCount = count($namespaceTokens) - 1;
+                        $namespace = '';
+                        for ($k = 0; $k < $namespaceTokensCount; ++$k) {
+                            if ($namespaceTokens[$k]->equals('{')) {
+                                $namespace .= '{';
+                                break;
+                            }
+
+                            $namespace .= $namespaceTokens[$k]->getContent();
+                        }
+
+                        // fetch all parts, split up in an array of strings, move comments to the end
+                        $parts = array();
+                        for ($k1 = $k + 1; $k1 < $namespaceTokensCount; ++$k1) {
+                            $comment = '';
+                            $namespacePart = '';
+                            for ($k2 = $k1; ; ++$k2) {
+                                if ($namespaceTokens[$k2]->equalsAny(array(',', '}'))) {
+                                    break;
+                                }
+
+                                if ($namespaceTokens[$k2]->isComment()) {
+                                    $comment .= $namespaceTokens[$k2]->getContent();
+
+                                    continue;
+                                }
+
+                                $namespacePart .= $namespaceTokens[$k2]->getContent();
+                            }
+
+                            $namespacePart = trim($namespacePart);
+                            $comment = trim($comment);
+                            if ('' !== $comment) {
+                                $namespacePart .= ' '.$comment;
+                            }
+
+                            $parts[] = $namespacePart.', ';
+
+                            $k1 = $k2;
+                        }
+
+                        $sortedParts = $parts;
+                        sort($parts);
+
+                        // check if the order needs to be updated, otherwise don't touch as we might change valid CS (to other valid CS).
+                        if ($sortedParts === $parts) {
+                            $namespace = Tokens::generatePartialCodeFromTokens($namespaceTokens);
+                        } else {
+                            $namespace .= substr(implode('', $parts), 0, -2).'}';
+                        }
+                    } else {
+                        $namespace = Tokens::generatePartialCodeFromTokens($namespaceTokens);
+                    }
+
                     $indexes[$startIndex] = array(
                         'namespace' => $namespace,
                         'startIndex' => $startIndex,
                         'endIndex' => $index - 1,
                         'importType' => $type,
+                        'group' => $group,
                     );
 
                     $originalIndexes[] = $startIndex;
@@ -148,7 +219,7 @@ class OrderedUseFixer extends AbstractFixer
                         break;
                     }
 
-                    $namespace = '';
+                    $namespaceTokens = array();
                     $nextPartIndex = $tokens->getTokenNotOfKindSibling($index, 1, array(array(','), array(T_WHITESPACE)));
                     $startIndex = $nextPartIndex;
                     $index = $nextPartIndex;
@@ -156,7 +227,7 @@ class OrderedUseFixer extends AbstractFixer
                     continue;
                 }
 
-                $namespace .= $token->getContent();
+                $namespaceTokens[] = $token;
                 ++$index;
             }
         }
