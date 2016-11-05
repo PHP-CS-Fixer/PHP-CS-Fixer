@@ -83,7 +83,7 @@ EOT
 
         if ($remoteVersionParsed[0] > $currentVersionParsed[0] && true !== $input->getOption('force')) {
             $output->writeln(sprintf('<info>A new major version of php-cs-fixer is available</info> (<comment>%s</comment>)', $remoteTag));
-            $output->writeln(sprintf('<info>Before upgrading please read</info> https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/%d.%d/UPGRADE.md', $remoteTag[0], $remoteTag[1]));
+            $output->writeln(sprintf('<info>Before upgrading please read</info> https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/%d.%d/UPGRADE.md', $remoteVersionParsed[0], $remoteVersionParsed[1]));
             $output->writeln('<info>If you are ready to upgrade run this command with</info> <comment>-f</comment>');
             $output->writeln('<info>Checking for new minor/patch version...</info>');
 
