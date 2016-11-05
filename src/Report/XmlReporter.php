@@ -45,7 +45,7 @@ final class XmlReporter implements ReporterInterface
         $i = 1;
         foreach ($reportSummary->getChanged() as $file => $fixResult) {
             $fileXML = $dom->createElement('file');
-            $fileXML->setAttribute('id', $i++);
+            $fileXML->setAttribute('id', (string) $i++);
             $fileXML->setAttribute('name', $file);
             $filesXML->appendChild($fileXML);
 
@@ -117,7 +117,7 @@ final class XmlReporter implements ReporterInterface
         $timeXML = $dom->createElement('time');
         $timeXML->setAttribute('unit', 's');
         $timeTotalXML = $dom->createElement('total');
-        $timeTotalXML->setAttribute('value', $time);
+        $timeTotalXML->setAttribute('value', (string) $time);
         $timeXML->appendChild($timeTotalXML);
 
         return $timeXML;
@@ -134,7 +134,7 @@ final class XmlReporter implements ReporterInterface
         $memory = round($memory / 1024 / 1024, 3);
 
         $memoryXML = $dom->createElement('memory');
-        $memoryXML->setAttribute('value', $memory);
+        $memoryXML->setAttribute('value', (string) $memory);
         $memoryXML->setAttribute('unit', 'MB');
 
         return $memoryXML;

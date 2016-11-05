@@ -7,7 +7,7 @@ PHP 7.1 test.
 --SETTINGS--
 {"checkPriority": false}
 --REQUIREMENTS--
-{"php": 7.1}
+{"php": "70100"}
 --EXPECT--
 <?php
 

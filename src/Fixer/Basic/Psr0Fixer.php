@@ -82,6 +82,11 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer
 
             if (isset($this->configuration['dir'])) {
                 $dir = substr($dir, strlen(realpath($this->configuration['dir'])) + 1);
+
+                if (false === $dir) {
+                    $dir = '';
+                }
+
                 if (strlen($normNamespace) > strlen($dir)) {
                     if ('' !== $dir) {
                         $normNamespace = substr($normNamespace, -strlen($dir));

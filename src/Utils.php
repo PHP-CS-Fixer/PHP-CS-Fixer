@@ -115,6 +115,15 @@ final class Utils
             throw new \InvalidArgumentException(sprintf('The given token must be whitespace, got "%s".', $token->getName()));
         }
 
-        return ltrim(strrchr(str_replace(array("\r\n", "\r"), "\n", $token->getContent()), 10), "\n");
+        $str = strrchr(
+            str_replace(array("\r\n", "\r"), "\n", $token->getContent()),
+            "\n"
+        );
+
+        if (false === $str) {
+            return '';
+        }
+
+        return ltrim($str, "\n");
     }
 }

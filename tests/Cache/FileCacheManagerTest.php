@@ -67,6 +67,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ))
         ;
 
+        $handler
+            ->method('getFile')
+            ->willReturn($this->getFile())
+        ;
+
         $manager = new FileCacheManager(
             $handler,
             $signature
@@ -115,6 +120,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ))
         ;
 
+        $handler
+            ->method('getFile')
+            ->willReturn($this->getFile())
+        ;
+
         $manager = new FileCacheManager(
             $handler,
             $signature
@@ -156,6 +166,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('write')
             ->with($this->identicalTo($cache))
+        ;
+
+        $handler
+            ->method('getFile')
+            ->willReturn($this->getFile())
         ;
 
         $manager = new FileCacheManager(
@@ -209,6 +224,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('read')
             ->willReturn($cache)
+        ;
+
+        $handler
+            ->method('getFile')
+            ->willReturn($this->getFile())
         ;
 
         $manager = new FileCacheManager(
@@ -266,6 +286,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($cache)
         ;
 
+        $handler
+            ->method('getFile')
+            ->willReturn($this->getFile())
+        ;
+
         $manager = new FileCacheManager(
             $handler,
             $signature
@@ -318,6 +343,11 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('read')
             ->willReturn($cache)
+        ;
+
+        $handler
+            ->method('getFile')
+            ->willReturn($this->getFile())
         ;
 
         $manager = new FileCacheManager(
@@ -706,7 +736,7 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
      */
     private function getFile()
     {
-        return __DIR__.'/.php_cs.cache';
+        return __DIR__.'/../Fixtures/.php_cs.empty-cache';
     }
 
     /**
