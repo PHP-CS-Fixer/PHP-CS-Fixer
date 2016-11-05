@@ -269,7 +269,13 @@ final class RuleSet implements RuleSetInterface
         } while ($hasSet);
 
         // filter out all rules that are off
-        $rules = array_filter($rules);
+        $rules = array_filter(
+            $rules,
+            function($name) use ($rules) {
+                return '-' !== $name[0] && $rules[$name] && !array_key_exists('-'.$name, $rules);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
 
         $this->rules = $rules;
 

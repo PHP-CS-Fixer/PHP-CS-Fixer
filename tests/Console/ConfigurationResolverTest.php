@@ -50,7 +50,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetOptionWithUndefinedOption()
     {
-        $resolver = new ConfigurationResolver(
+        new ConfigurationResolver(
             $this->config,
             array('foo' => 'bar'),
             ''
@@ -847,6 +847,25 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ),
             $resolver->getRules()
         );
+    }
+
+    public function testResolveRulesWithConfigWithNegative()
+    {
+        $this->config->setRules(array(
+            '@Symfony' => true,
+            '-braces' => true,
+        ));
+
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            array(),
+            ''
+        );
+
+        $rules = $resolver->getRules();
+
+        $this->assertArrayNotHasKey('braces', $rules);
+        $this->assertArrayNotHasKey('-braces', $rules);
     }
 
     protected function makeFixersTest($expectedFixers, $resolvedFixers)
