@@ -21,8 +21,8 @@ contribute, and to detect bugs ([Linus'
 Law](http://en.wikipedia.org/wiki/Linus%27s_Law)).
 
 If possible, try to get acquainted with the public interface for the
-[Symfony/CS/Tokenizer/Tokens.php](Symfony/CS/Tokenizer/Tokens.php)
-and [Symfony/CS/Tokenizer/Token.php](Symfony/CS/Tokenizer/Token.php)
+[Tokens class](Symfony/CS/Tokenizer/Tokens.php)
+and [Token class](Symfony/CS/Tokenizer/Token.php)
 classes.
 
 ## Assumptions
@@ -30,9 +30,8 @@ classes.
 * You are familiar with Test Driven Development.
 * Forked FriendsOfPHP/PHP-CS-Fixer into your own Github Account.
 * Cloned your forked repository locally.
-* Downloaded PHP CS Fixer and have executed `php composer.phar
-install`.
-* You have read [`CONTRIBUTING.md`](CONTRIBUTING.md)
+* Installed the dependencies of PHP CS Fixer using [Composer](https://getcomposer.org/).
+* You have read [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## Step by step
 
@@ -69,6 +68,21 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 final class RemoveCommentsFixer extends AbstractFixer
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function fix(\SplFileInfo $file, $content)
+    {
+        // Add the fixing logic of the fixer here.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        // Return a short description of the Fixer, it will be used in the README.rst.
+    }
 }
 ```
 
@@ -123,7 +137,7 @@ The files are created, one thing is still missing though: we need to
 update the README.md. Fortunately, PHP CS Fixer can help you here.
 Execute the following command in your command shell:
 
-`# php php-cs-fixer readme > README.rst`
+`$ php php-cs-fixer readme > README.rst`
 
 ### Step 2 - Using tests to define fixers behavior
 
@@ -248,7 +262,8 @@ final class RemoveCommentsFixer extends AbstractFixer
 }
 ```
 
-Run `vendor/bin/phpunit`. You are going to see that the tests fails.
+Run `$ phpunit Symfony/CS/Tests/Fixer/Contrib/RemoveCommentsFixerTest.php`.
+You are going to see that the tests fails.
 
 ### Break
 Now we have pretty much a cradle to work with. A file with a failing

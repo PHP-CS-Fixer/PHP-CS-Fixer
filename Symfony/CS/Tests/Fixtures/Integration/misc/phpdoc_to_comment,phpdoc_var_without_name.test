@@ -1,0 +1,26 @@
+--TEST--
+Integration of fixers: phpdoc_to_comment,phpdoc_var_without_name.
+--CONFIG--
+level=none
+fixers=phpdoc_to_comment,phpdoc_var_without_name
+--SETTINGS--
+checkPriority=false
+--EXPECT--
+<?php
+
+$first = true;// needed because by default first docblock is never fixed.
+
+/**
+ * @var ClassLoader
+ */
+$loader = require_once __DIR__.'/../app/autoload.php';
+
+--INPUT--
+<?php
+
+$first = true;// needed because by default first docblock is never fixed.
+
+/**
+ * @var ClassLoader $loader
+ */
+$loader = require_once __DIR__.'/../app/autoload.php';

@@ -122,8 +122,8 @@ class FixCommand extends Command
 The <info>%command.name%</info> command tries to fix as much coding standards
 problems as possible on a given file or files in a given directory and its subdirectories:
 
-    <info>php %command.full_name% /path/to/dir</info>
-    <info>php %command.full_name% /path/to/file</info>
+    <info>$ php %command.full_name% /path/to/dir</info>
+    <info>$ php %command.full_name% /path/to/file</info>
 
 The <comment>--format</comment> option for the output format. Supported formats are ``txt`` (default one), ``json`` and ``xml``.
 
@@ -132,10 +132,10 @@ The <comment>--verbose</comment> option will show the applied fixers. When using
 The <comment>--level</comment> option limits the fixers to apply on the
 project:
 
-    <info>php %command.full_name% /path/to/project --level=psr0</info>
-    <info>php %command.full_name% /path/to/project --level=psr1</info>
-    <info>php %command.full_name% /path/to/project --level=psr2</info>
-    <info>php %command.full_name% /path/to/project --level=symfony</info>
+    <info>$ php %command.full_name% /path/to/project --level=psr0</info>
+    <info>$ php %command.full_name% /path/to/project --level=psr1</info>
+    <info>$ php %command.full_name% /path/to/project --level=psr2</info>
+    <info>$ php %command.full_name% /path/to/project --level=symfony</info>
 
 By default, all PSR-2 fixers and some additional ones are run. The "contrib
 level" fixers cannot be enabled via this option; you should instead set them
@@ -144,16 +144,16 @@ manually by their name via the <comment>--fixers</comment> option.
 The <comment>--fixers</comment> option lets you choose the exact fixers to
 apply (the fixer names must be separated by a comma):
 
-    <info>php %command.full_name% /path/to/dir --fixers=linefeed,short_tag,indentation</info>
+    <info>$ php %command.full_name% /path/to/dir --fixers=linefeed,short_tag,indentation</info>
 
 You can also blacklist the fixers you don't want by placing a dash in front of the fixer name, if this is more convenient,
 using <comment>-name_of_fixer</comment>:
 
-    <info>php %command.full_name% /path/to/dir --fixers=-short_tag,-indentation</info>
+    <info>$ php %command.full_name% /path/to/dir --fixers=-short_tag,-indentation</info>
 
 When using combination with exact and blacklist fixers, apply exact fixers along with above blacklisted result:
 
-    <info>php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,-short_tag</info>
+    <info>$ php php-cs-fixer.phar fix /path/to/dir --fixers=linefeed,-short_tag</info>
 
 A combination of <comment>--dry-run</comment> and <comment>--diff</comment> will
 display summary of proposed fixes, leaving your files unchanged.
@@ -161,7 +161,7 @@ display summary of proposed fixes, leaving your files unchanged.
 The command can also read from standard input, in which case it won't
 automatically fix anything:
 
-    <info>cat foo.php | php %command.full_name% --diff -</info>
+    <info>$ cat foo.php | php %command.full_name% --diff -</info>
 
 Choose from the list of available fixers:
 
@@ -171,7 +171,7 @@ The <comment>--config</comment> option customizes the files to analyse, based
 on some well-known directory structures:
 
     <comment># For the Symfony 2.3+ branch</comment>
-    <info>php %command.full_name% /path/to/sf23 --config=sf23</info>
+    <info>$ php %command.full_name% /path/to/sf23 --config=sf23</info>
 
 Choose from the list of available configurations:
 
@@ -179,7 +179,7 @@ Choose from the list of available configurations:
 The <comment>--dry-run</comment> option displays the files that need to be
 fixed but without actually modifying them:
 
-    <info>php %command.full_name% /path/to/code --dry-run</info>
+    <info>$ php %command.full_name% /path/to/code --dry-run</info>
 
 Instead of using command line options to customize the fixer, you can save the
 configuration in a <comment>.php_cs</comment> file in the root directory of
@@ -583,7 +583,6 @@ EOF
     protected function getFixersHelp()
     {
         $help = '';
-        $maxName = 0;
         $fixers = $this->fixer->getFixers();
 
         // sort fixers by level and name
@@ -600,19 +599,10 @@ EOF
             }
         );
 
-        foreach ($fixers as $fixer) {
-            if (strlen($fixer->getName()) > $maxName) {
-                $maxName = strlen($fixer->getName());
-            }
-        }
-
         $count = count($fixers) - 1;
         foreach ($fixers as $i => $fixer) {
-            $chunks = explode("\n", wordwrap(sprintf("[%s]\n%s", $this->fixer->getLevelAsString($fixer), $fixer->getDescription()), 72 - $maxName, "\n"));
-            $help .= sprintf(" * <comment>%s</comment>%s %s\n", $fixer->getName(), str_repeat(' ', $maxName - strlen($fixer->getName())), array_shift($chunks));
-            while ($c = array_shift($chunks)) {
-                $help .= str_repeat(' ', $maxName + 4).$c."\n";
-            }
+            $description = str_replace("\n", "\n   ", wordwrap($fixer->getDescription(), 72, "\n"));
+            $help .= sprintf(" * <comment>%s</comment> [%s]\n   %s\n", $fixer->getName(), $this->fixer->getLevelAsString($fixer), $description);
 
             if ($count !== $i) {
                 $help .= "\n";
@@ -626,7 +616,6 @@ EOF
     {
         $help = '';
         $maxName = 0;
-
         $configs = $this->fixer->getConfigs();
 
         usort(

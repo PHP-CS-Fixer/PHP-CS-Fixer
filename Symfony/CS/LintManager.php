@@ -30,22 +30,21 @@ class LintManager
     private $temporaryFile;
 
     /**
-     * Shutdown files removal handler.
+     * Files removal handler.
      *
-     * @var ShutdownFileRemoval
+     * @var FileRemoval
      */
-    private $shutdownFileRemoval;
+    private $fileRemoval;
 
     public function __construct()
     {
-        $this->shutdownFileRemoval = new ShutdownFileRemoval();
+        $this->fileRemoval = new FileRemoval();
     }
 
     public function __destruct()
     {
         if (null !== $this->temporaryFile) {
-            unlink($this->temporaryFile);
-            $this->shutdownFileRemoval->detach($this->temporaryFile);
+            $this->fileRemoval->delete($this->temporaryFile);
         }
     }
 
@@ -81,7 +80,7 @@ class LintManager
     {
         if (null === $this->temporaryFile) {
             $this->temporaryFile = tempnam('.', 'cs_fixer_tmp_');
-            $this->shutdownFileRemoval->attach($this->temporaryFile);
+            $this->fileRemoval->observe($this->temporaryFile);
         }
 
         file_put_contents($this->temporaryFile, $source);

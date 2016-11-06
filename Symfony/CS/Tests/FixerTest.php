@@ -174,7 +174,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['remove_leading_slash_use'], $fixers['ordered_use']), // tested also in: remove_leading_slash_use,ordered_use.test
             array($fixers['remove_lines_between_uses'], $fixers['ordered_use']),
             array($fixers['unused_use'], $fixers['remove_leading_slash_use']),
-            array($fixers['multiple_use'], $fixers['remove_leading_slash_use']),
+            array($fixers['multiple_use'], $fixers['remove_leading_slash_use']), // tested also in: multiple_use,remove_leading_slash_use.test
             array($fixers['concat_without_spaces'], $fixers['concat_with_spaces']),
             array($fixers['elseif'], $fixers['braces']),
             array($fixers['duplicate_semicolon'], $fixers['braces']),
@@ -218,7 +218,6 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['short_echo_tag'], $fixers['echo_to_print']), // tested also in: echo_to_print,short_echo_tag.test
             array($fixers['short_bool_cast'], $fixers['spaces_cast']), // tested also in: short_bool_cast,spaces_cast.test
             array($fixers['unneeded_control_parentheses'], $fixers['trailing_spaces']), // tested also in: trailing_spaces,unneeded_control_parentheses.test
-            array($fixers['class_definition'], $fixers['trailing_spaces']), // tested also in: class_definition,trailing_spaces.test
             array($fixers['empty_return'], $fixers['no_useless_return']), // tested also in: empty_return,no_useless_return.test
             array($fixers['duplicate_semicolon'], $fixers['no_useless_return']), // tested also in: duplicate_semicolon,no_useless_return.test
             array($fixers['no_useless_return'], $fixers['whitespacy_lines']), // tested also in: no_useless_return,whitespacy_lines.test
@@ -251,6 +250,11 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_useless_else'], $fixers['whitespacy_lines']), // tested also in: no_useless_else,whitespacy_lines.test
             array($fixers['short_array_syntax'], $fixers['unalign_equals']), // tested also in: short_array_syntax,unalign_equals.test
             array($fixers['short_array_syntax'], $fixers['ternary_spaces']), // tested also in: short_array_syntax,ternary_spaces.test
+            array($fixers['no_empty_lines_after_phpdocs'], $fixers['single_blank_line_before_namespace']), // tested also in: no_empty_lines_after_phpdocs,single_blank_line_before_namespace.test
+            array($fixers['multiple_use'], $fixers['ordered_use']), // tested also in: multiple_use,ordered_use.test
+            array($fixers['multiple_use'], $fixers['spaces_before_semicolon']), // tested also in: multiple_use,spaces_before_semicolon.test
+            array($fixers['multiple_use'], $fixers['spaces_after_semicolon']), // tested also in: multiple_use,spaces_after_semicolon.test
+            array($fixers['multiple_use'], $fixers['multiline_spaces_before_semicolon']), // multiple_use,multiline_spaces_before_semicolon.test
         );
 
         $docFixerNames = array_filter(

@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: multiple_use,remove_leading_slash_use.
+--CONFIG--
+level=none
+fixers=multiple_use,remove_leading_slash_use
+--EXPECT--
+<?php
+namespace NS;
+use A\B;
+use C\D;
+
+--INPUT--
+<?php
+namespace NS;
+use \A\B,\C\D;

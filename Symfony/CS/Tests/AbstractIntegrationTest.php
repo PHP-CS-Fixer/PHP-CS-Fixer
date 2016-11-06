@@ -17,10 +17,10 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\CS\ErrorsManager;
 use Symfony\CS\FileCacheManager;
+use Symfony\CS\FileRemoval;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\LintManager;
-use Symfony\CS\ShutdownFileRemoval;
 use Symfony\CS\Test\IntegrationCase;
 use Symfony\CS\Test\IntegrationCaseFactory;
 
@@ -65,9 +65,9 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
     protected static $linter;
 
     /*
-     * @var ShutdownFileRemoval
+     * @var fileRemoval
      */
-    private static $shutdownFileRemoval;
+    private static $fileRemoval;
 
     public static function setUpBeforeClass()
     {
@@ -76,8 +76,8 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
         }
 
         $tmpFile = static::getTempFile();
-        self::$shutdownFileRemoval = new ShutdownFileRemoval();
-        self::$shutdownFileRemoval->attach($tmpFile);
+        self::$fileRemoval = new FileRemoval();
+        self::$fileRemoval->observe($tmpFile);
 
         if (!is_file($tmpFile)) {
             $dir = dirname($tmpFile);
@@ -93,8 +93,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
     {
         $tmpFile = static::getTempFile();
 
-        @unlink($tmpFile);
-        self::$shutdownFileRemoval->detach($tmpFile);
+        self::$fileRemoval->delete($tmpFile);
     }
 
     /**

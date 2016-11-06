@@ -13,16 +13,17 @@
 namespace Symfony\CS;
 
 /**
- * Handles left over temporary files removal.
+ * Handles files removal with possibility to remove them on shutdown.
  *
  * @author Adam Klvač <adam@klva.cz>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class ShutdownFileRemoval
+final class FileRemoval
 {
     /**
-     * List of files to be removed.
+     * List of observed files to be removed.
      *
      * @var array
      */
@@ -38,9 +39,9 @@ final class ShutdownFileRemoval
      *
      * @param string $path
      */
-    public function attach($path)
+    public function observe($path)
     {
-        $this->files[] = $path;
+        $this->files[$path] = true;
     }
 
     /**
@@ -48,13 +49,13 @@ final class ShutdownFileRemoval
      *
      * @param string $path
      */
-    public function detach($path)
+    public function delete($path)
     {
-        $key = array_search($path, $this->files, true);
-
-        if ($key) {
-            unset($this->files[$key]);
+        if (isset($this->files[$path])) {
+            unset($this->files[$path]);
         }
+
+        $this->unlink($path);
     }
 
     /**
@@ -62,10 +63,15 @@ final class ShutdownFileRemoval
      */
     public function clean()
     {
-        foreach ($this->files as $file) {
-            @unlink($file); // @ - file might be deleted already
+        foreach ($this->files as $file => $value) {
+            $this->unlink($file);
         }
 
         $this->files = array();
+    }
+
+    private function unlink($path)
+    {
+        @unlink($path);
     }
 }
