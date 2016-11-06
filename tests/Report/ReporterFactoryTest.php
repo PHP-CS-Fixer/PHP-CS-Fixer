@@ -29,8 +29,8 @@ final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
         $testInstance = $builder->registerBuiltInReporters();
         $this->assertSame($builder, $testInstance);
 
-        $mock = $this->createReporterMock('r1');
-        $testInstance = $builder->registerReporter($mock);
+        $double = $this->createReporterDouble('r1');
+        $testInstance = $builder->registerReporter($double);
         $this->assertSame($builder, $testInstance);
     }
 
@@ -48,9 +48,9 @@ final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $builder = new ReporterFactory();
 
-        $r1 = $this->createReporterMock('r1');
-        $r2 = $this->createReporterMock('r2');
-        $r3 = $this->createReporterMock('r3');
+        $r1 = $this->createReporterDouble('r1');
+        $r2 = $this->createReporterDouble('r2');
+        $r3 = $this->createReporterDouble('r3');
 
         $builder->registerReporter($r1);
         $builder->registerReporter($r2);
@@ -69,8 +69,8 @@ final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = new ReporterFactory();
 
-        $r1 = $this->createReporterMock('non_unique_name');
-        $r2 = $this->createReporterMock('non_unique_name');
+        $r1 = $this->createReporterDouble('non_unique_name');
+        $r2 = $this->createReporterDouble('non_unique_name');
         $factory->registerReporter($r1);
         $factory->registerReporter($r2);
     }
@@ -86,11 +86,11 @@ final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
         $builder->getReporter('non_registered_format');
     }
 
-    private function createReporterMock($format)
+    private function createReporterDouble($format)
     {
-        $report = $this->getMockBuilder('PhpCsFixer\Report\ReporterInterface')->getMock();
-        $report->expects($this->any())->method('getFormat')->willReturn($format);
+        $reporter = $this->prophesize('PhpCsFixer\Report\ReporterInterface');
+        $reporter->getFormat()->willReturn($format);
 
-        return $report;
+        return $reporter->reveal();
     }
 }
