@@ -13,18 +13,110 @@
 namespace Symfony\CS\Fixer\Contrib;
 
 use Symfony\CS\AbstractFixer;
+use Symfony\CS\ConfigurationException\InvalidFixerConfigurationException;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Darius Matulionis <darius@matulionis.lt>
  * @author SpacePossum
  */
 class OrderedUseFixer extends AbstractFixer
 {
-    const IMPORT_TYPE_CLASS = 1;
-    const IMPORT_TYPE_CONST = 2;
-    const IMPORT_TYPE_FUNCTION = 3;
+    const IMPORT_TYPE_CLASS = '1';
+
+    const IMPORT_TYPE_CONST = '2';
+
+    const IMPORT_TYPE_FUNCTION = '3';
+
+    const SORT_ALPHA = 'alpha';
+
+    const SORT_LENGTH = 'length';
+
+    /**
+     * Array of import types by which use statements should be ordered. If not defined in configuration only sort algorithm will be applied.
+     *
+     * @var null|int[]
+     */
+    private static $sortTypesOrder = null;
+
+    /**
+     * Array of supported sort types in configuration.
+     *
+     * @var string[]
+     */
+    private static $supportedSortTypes = array(self::IMPORT_TYPE_CLASS, self::IMPORT_TYPE_CONST, self::IMPORT_TYPE_FUNCTION);
+
+    /**
+     * Default sort algorithm.
+     *
+     * @var string
+     */
+    private static $sortAlgorithm = self::SORT_ALPHA;
+
+    /**
+     * Array of supported sort algorithms in configuration.
+     *
+     * @var string[]
+     */
+    private static $supportedSortAlgorithms = array(self::SORT_ALPHA, self::SORT_LENGTH);
+
+    /**
+     * Configuration settings for sort algorithm and sor types.
+     *
+     * array['sortAlgorithm']   string defines sort algorithm
+     * array['typesOrder']      int[]|null defines import types order or null to sort only by algorithm
+     *
+     * @param array $configuration
+     */
+    public static function configure(array $configuration = null)
+    {
+        // If no configuration was passed, stick to default.
+        if (null === $configuration) {
+            return;
+        }
+
+        /* Sort types order configuration */
+
+        // If no import types order was provided, we will sort only by algorithm.
+        if (array_key_exists('typesOrder', $configuration) && null !== $configuration['typesOrder']) {
+            $typesOrder = $configuration['typesOrder'];
+
+            if (!is_array($typesOrder) || count($typesOrder) !== count(self::$supportedSortTypes)) {
+                throw new InvalidFixerConfigurationException('ordered_use', sprintf('$configuration["typesOrder"] should be array and should be composed of all import types in desired order.'));
+            }
+
+            // Check if all provided sort types are supported.
+            foreach ($typesOrder as $type) {
+                if (!in_array($type, self::$supportedSortTypes, true)) {
+                    throw new InvalidFixerConfigurationException('ordered_use', sprintf('Unknown type "%s" in type order configuration, expected all types ["%s"] to be included in desired order.', $type, implode('","', self::$supportedSortTypes)));
+                }
+            }
+
+            self::$sortTypesOrder = $typesOrder;
+        }
+
+        /* Sort algorithm configuration */
+
+        // Check if sort algorithm is defined.
+        if (!array_key_exists('sortAlgorithm', $configuration)) {
+            throw new InvalidFixerConfigurationException('ordered_use', sprintf('Configuration array should have defined "sortAlgorithm".'));
+        }
+
+        $sortAlgorithm = $configuration['sortAlgorithm'];
+        // If no configuration was passed, stick to default.
+        if (null === $sortAlgorithm) {
+            return;
+        }
+
+        // Check if passed sort type is supported.
+        if (!is_string($sortAlgorithm) || !in_array($sortAlgorithm, self::$supportedSortAlgorithms, true)) {
+            throw new InvalidFixerConfigurationException('ordered_use', sprintf('Sort algorithm is invalid. Should br one of the: "%s"', implode('", "', self::$supportedSortAlgorithms)));
+        }
+
+        self::$sortAlgorithm = $sortAlgorithm;
+    }
 
     /**
      * {@inheritdoc}
@@ -82,7 +174,19 @@ class OrderedUseFixer extends AbstractFixer
     }
 
     /**
-     * This method is used for sorting the uses in a namespace.
+     * Prepare namespace for sorting.
+     *
+     * @param string $namespace
+     *
+     * @return string
+     */
+    private static function prepareNamespace($namespace)
+    {
+        return trim(preg_replace('%/\*(.*)\*/%s', '', $namespace));
+    }
+
+    /**
+     * This method is used for sorting the uses statements in alphabetical order.
      *
      * @param string[] $first
      * @param string[] $second
@@ -91,20 +195,43 @@ class OrderedUseFixer extends AbstractFixer
      *
      * @internal
      */
-    public static function sortingCallBack(array $first, array $second)
+    public static function sortAlphabetically(array $first, array $second)
     {
-        if ($first['importType'] !== $second['importType']) {
-            return $first['importType'] > $second['importType'] ? 1 : -1;
-        }
-
-        $firstNamespace = trim(preg_replace('%/\*(.*)\*/%s', '', $first['namespace']));
-        $secondNamespace = trim(preg_replace('%/\*(.*)\*/%s', '', $second['namespace']));
+        $firstNamespace = self::prepareNamespace($first['namespace']);
+        $secondNamespace = self::prepareNamespace($second['namespace']);
 
         // Replace backslashes by spaces before sorting for correct sort order
         $firstNamespace = str_replace('\\', ' ', $firstNamespace);
         $secondNamespace = str_replace('\\', ' ', $secondNamespace);
 
         return strcasecmp($firstNamespace, $secondNamespace);
+    }
+
+    /**
+     * This method is used for sorting the uses statements in a namespace by length.
+     *
+     * @param string[] $first
+     * @param string[] $second
+     *
+     * @return int
+     *
+     * @internal
+     */
+    public function sortByLength(array $first, array $second)
+    {
+        $firstNamespace = self::prepareNamespace($first['namespace']);
+        $secondNamespace = self::prepareNamespace($second['namespace']);
+
+        $firstNamespaceLength = strlen($firstNamespace);
+        $secondNamespaceLength = strlen($secondNamespace);
+
+        if ($firstNamespaceLength === $secondNamespaceLength) {
+            $sortResult = strcasecmp($firstNamespace, $secondNamespace);
+        } else {
+            $sortResult = $firstNamespaceLength > $secondNamespaceLength ? 1 : -1;
+        }
+
+        return $sortResult;
     }
 
     private function getNewOrder(array $uses, Tokens $tokens)
@@ -161,7 +288,34 @@ class OrderedUseFixer extends AbstractFixer
             }
         }
 
-        uasort($indexes, 'self::sortingCallBack');
+        // Is sort types provided, sorting by groups and each group by algorithm
+        if (self::$sortTypesOrder) {
+
+            // Grouping indexes by import type.
+            $groupedByTypes = array();
+            foreach ($indexes as $startIndex => $item) {
+                $groupedByTypes[$item['importType']][$startIndex] = $item;
+            }
+
+            // Sorting each group by algorithm.
+            foreach ($groupedByTypes as $type => $indexes) {
+                $groupedByTypes[$type] = $this->sortByAlgorithm($indexes);
+            }
+
+            // Ordering groups
+            $sortedGroups = array();
+            foreach (self::$sortTypesOrder as $type) {
+                if (isset($groupedByTypes[$type]) && !empty($groupedByTypes[$type])) {
+                    foreach ($groupedByTypes[$type] as $startIndex => $item) {
+                        $sortedGroups[$startIndex] = $item;
+                    }
+                }
+            }
+            $indexes = $sortedGroups;
+        } else {
+            // Sorting only by algorithm
+            $indexes = $this->sortByAlgorithm($indexes);
+        }
 
         $index = -1;
         $usesOrder = array();
@@ -172,5 +326,24 @@ class OrderedUseFixer extends AbstractFixer
         }
 
         return $usesOrder;
+    }
+
+    /**
+     * @param $indexes
+     *
+     * @return array
+     */
+    private function sortByAlgorithm($indexes)
+    {
+        switch (self::$sortAlgorithm) {
+            case self::SORT_LENGTH:
+                uasort($indexes, 'self::sortByLength');
+                break;
+            default:
+                uasort($indexes, 'self::sortAlphabetically');
+                break;
+        }
+
+        return $indexes;
     }
 }
