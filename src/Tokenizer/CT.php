@@ -45,7 +45,7 @@ final class CT
     const T_USE_LAMBDA = 10026;
     const T_USE_TRAIT = 10027;
 
-    private function __constructor()
+    private function __construct()
     {
     }
 
