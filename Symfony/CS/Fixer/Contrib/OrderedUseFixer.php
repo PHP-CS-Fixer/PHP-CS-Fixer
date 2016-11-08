@@ -66,6 +66,9 @@ class OrderedUseFixer extends AbstractFixer
                 if ($tokens[$prev]->equals(',')) {
                     $tokens[$prev]->setContent(';');
                     $tokens->insertAt($prev + 1, new Token(array(T_USE, 'use')));
+                    if (!$tokens[$prev + 2]->isWhitespace()) {
+                        $tokens->insertAt($prev + 2, new Token(array(T_WHITESPACE, ' ')));
+                    }
                 }
             }
         }

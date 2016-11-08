@@ -676,6 +676,14 @@ use Foo\Bar\Baz, Foo\Bir;
 use Foo\Bar\{ClassC, ClassB, ClassA};
 ',
             ),
+            array(
+                '<?php
+use A\A;use Foo3\Bar\{ClassA};use G\G;use H\H;use Ioo2\Bar\{ClassB};use J\J;use K\K;use Loo1\Bar\{ClassC};use M\M;
+',
+                '<?php
+use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;use Loo1\Bar\{ClassC};
+',
+            ),
         );
     }
 }
