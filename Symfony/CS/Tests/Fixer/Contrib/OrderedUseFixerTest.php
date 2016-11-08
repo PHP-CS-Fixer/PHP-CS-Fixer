@@ -670,14 +670,11 @@ use const some\a\{ConstA, ConstB, ConstC};
 
     /**
      * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage [ordered_use] Configuration array should be composed of: "typesOrder" and "sortAlgorithm".
+     * @expectedExceptionMessage [ordered_use] Configuration array should have defined "sortAlgorithm".
      */
     public function testInvalidConfigWithWrongParameters()
     {
-        OrderedUseFixer::configure(array(
-            'types' => null,
-            'algorithm' => OrderedUseFixer::SORT_ALPHA,
-        ));
+        OrderedUseFixer::configure(array());
     }
 
     /**
@@ -687,7 +684,7 @@ use const some\a\{ConstA, ConstB, ConstC};
     public function testInvalidOrderTypesSize()
     {
         OrderedUseFixer::configure(array(
-            'typesOrder' => array(1, 2),
+            'typesOrder' => array('1', '2'),
             'sortAlgorithm' => OrderedUseFixer::SORT_ALPHA,
         ));
     }

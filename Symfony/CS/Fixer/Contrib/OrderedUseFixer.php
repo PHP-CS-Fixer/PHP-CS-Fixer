@@ -65,8 +65,8 @@ class OrderedUseFixer extends AbstractFixer
     /**
      * Configuration settings for sort algorithm and sor types.
      *
-     * array['sortAlgorithm']   string defines sort algorithm.
-     * array['typesOrder']      int[]|null defines import types order or null to sort only by algorithm.
+     * array['sortAlgorithm']   string defines sort algorithm
+     * array['typesOrder']      int[]|null defines import types order or null to sort only by algorithm
      *
      * @param array $configuration
      */
@@ -77,24 +77,19 @@ class OrderedUseFixer extends AbstractFixer
             return;
         }
 
-        // Check if configuration has all required parameters.
-        if (!array_key_exists('typesOrder', $configuration) || !array_key_exists('sortAlgorithm', $configuration)) {
-            throw new InvalidFixerConfigurationException('ordered_use', sprintf('Configuration array should be composed of: "typesOrder" and "sortAlgorithm".'));
-        }
-
         /* Sort types order configuration */
 
-        $typesOrder = $configuration['typesOrder'];
-
         // If no import types order was provided, we will sort only by algorithm.
-        if (null !== $typesOrder) {
+        if (array_key_exists('typesOrder', $configuration) && null !== $configuration['typesOrder']) {
+            $typesOrder = $configuration['typesOrder'];
+
             if (!is_array($typesOrder) || count($typesOrder) !== count(self::$supportedSortTypes)) {
                 throw new InvalidFixerConfigurationException('ordered_use', sprintf('$configuration["typesOrder"] should be array and should be composed of all import types in desired order.'));
             }
 
             // Check if all provided sort types are supported.
             foreach ($typesOrder as $type) {
-                if (!in_array($type, self::$supportedSortTypes, true)) {
+                if (!in_array($type, self::$supportedSortTypes)) {
                     throw new InvalidFixerConfigurationException('ordered_use', sprintf('Unknown type "%s" in type order configuration, expected all types ["%s"] to be included in desired order.', $type, implode('","', self::$supportedSortTypes)));
                 }
             }
@@ -102,7 +97,12 @@ class OrderedUseFixer extends AbstractFixer
             self::$sortTypesOrder = $typesOrder;
         }
 
-        /*** Sort algorithm configuration ***/
+        /* Sort algorithm configuration */
+
+        // Check if sort algorithm is defined.
+        if (!array_key_exists('sortAlgorithm', $configuration)) {
+            throw new InvalidFixerConfigurationException('ordered_use', sprintf('Configuration array should have defined "sortAlgorithm".'));
+        }
 
         $sortAlgorithm = $configuration['sortAlgorithm'];
         // If no configuration was passed, stick to default.
