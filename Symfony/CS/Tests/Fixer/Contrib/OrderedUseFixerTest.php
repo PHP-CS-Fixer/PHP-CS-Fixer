@@ -696,7 +696,7 @@ use const some\a\{ConstA, ConstB, ConstC};
     public function testInvalidOrderType()
     {
         OrderedUseFixer::configure(array(
-            'typesOrder' => array(1, 2, 5),
+            'typesOrder' => array('1', '2', '5'),
             'sortAlgorithm' => OrderedUseFixer::SORT_ALPHA,
         ));
     }

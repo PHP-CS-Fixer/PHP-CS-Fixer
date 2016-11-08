@@ -24,11 +24,11 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class OrderedUseFixer extends AbstractFixer
 {
-    const IMPORT_TYPE_CLASS = 1;
+    const IMPORT_TYPE_CLASS = '1';
 
-    const IMPORT_TYPE_CONST = 2;
+    const IMPORT_TYPE_CONST = '2';
 
-    const IMPORT_TYPE_FUNCTION = 3;
+    const IMPORT_TYPE_FUNCTION = '3';
 
     const SORT_ALPHA = 'alpha';
 
@@ -89,7 +89,7 @@ class OrderedUseFixer extends AbstractFixer
 
             // Check if all provided sort types are supported.
             foreach ($typesOrder as $type) {
-                if (!in_array($type, self::$supportedSortTypes)) {
+                if (!in_array($type, self::$supportedSortTypes, true)) {
                     throw new InvalidFixerConfigurationException('ordered_use', sprintf('Unknown type "%s" in type order configuration, expected all types ["%s"] to be included in desired order.', $type, implode('","', self::$supportedSortTypes)));
                 }
             }
