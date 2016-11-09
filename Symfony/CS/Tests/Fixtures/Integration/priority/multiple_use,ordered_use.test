@@ -3,6 +3,8 @@ Integration of fixers: multiple_use,ordered_use.
 --CONFIG--
 level=none
 fixers=multiple_use,ordered_use
+--SETTINGS--
+checkPriority=false
 --REQUIREMENTS--
 php=7.0
 --EXPECT--
