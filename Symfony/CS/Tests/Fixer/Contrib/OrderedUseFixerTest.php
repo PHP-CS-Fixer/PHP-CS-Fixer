@@ -627,7 +627,7 @@ EOF;
 use A\B;
 use some\a\{ClassA, ClassB, ClassC as C};
 use some\b\{
-    ClassF, 
+    ClassF,
     ClassG
 };
 use const some\a\{ConstA, ConstB, ConstC};
@@ -639,7 +639,7 @@ use function some\a\{fn_a, fn_b, fn_c};
 use A\B;
 use const some\a\{ConstA, ConstB, ConstC};
 use some\b\{
-    ClassF, 
+    ClassF,
     ClassG
 };
 ',
