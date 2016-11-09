@@ -375,6 +375,9 @@ final class ConfigurationResolver
         return $this->cacheFile;
     }
 
+    /**
+     * @return bool
+     */
     public function getRiskyAllowed()
     {
         if (null === $this->allowRisky) {
@@ -554,7 +557,6 @@ final class ConfigurationResolver
         }
 
         $nestedFinder = null;
-        $iterator = null;
         $currentFinder = $this->iterableToTraversable($this->getConfig()->getFinder());
 
         try {
@@ -597,6 +599,9 @@ final class ConfigurationResolver
         return Finder::create()->in($pathsByType['dir'])->append($pathsByType['file']);
     }
 
+    /**
+     * @return bool
+     */
     private function isStdIn()
     {
         if (null === $this->isStdIn) {

@@ -89,12 +89,10 @@ final class FunctionDeclarationFixer extends AbstractFixer
             // remove single-line edge whitespaces inside parameters list parentheses
             $this->fixParenthesisInnerEdge($tokens, $startParenthesisIndex, $endParenthesisIndex);
 
-            if (!$tokensAnalyzer->isLambda($index)) {
-                // remove whitespace before (
-                // eg: `function foo () {}` => `function foo() {}`
-                if ($tokens[$startParenthesisIndex - 1]->isWhitespace()) {
-                    $tokens[$startParenthesisIndex - 1]->clear();
-                }
+            // remove whitespace before (
+            // eg: `function foo () {}` => `function foo() {}`
+            if (!$tokensAnalyzer->isLambda($index) && $tokens[$startParenthesisIndex - 1]->isWhitespace()) {
+                $tokens[$startParenthesisIndex - 1]->clear();
             }
 
             // fix whitespace after T_FUNCTION

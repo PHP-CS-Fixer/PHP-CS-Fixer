@@ -88,6 +88,8 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
 
     /**
      * @param Tokens $tokens
+     * @param int    $startIndex
+     * @param int    $endIndex
      */
     private function storeImports(Tokens $tokens, $startIndex, $endIndex)
     {
@@ -100,7 +102,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
             }
 
             $import = '';
-            while (($index = $tokens->getNextMeaningfulToken($index))) {
+            while ($index = $tokens->getNextMeaningfulToken($index)) {
                 if ($tokens[$index]->equalsAny(array(';', array(CT::T_GROUP_IMPORT_BRACE_OPEN))) || $tokens[$index]->isGivenKind(T_AS)) {
                     break;
                 }
@@ -135,6 +137,8 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
 
     /**
      * @param Tokens $tokens
+     * @param int    $startIndex
+     * @param int    $endIndex
      */
     private function replaceClassKeywordsSection(Tokens $tokens, $startIndex, $endIndex)
     {

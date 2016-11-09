@@ -322,8 +322,6 @@ class Tokens extends \SplFixedArray
         $removeLastCommentLine = function (Token $token, $indexOffset) {
             // because comments tokens are greedy and may consume single \n if we are putting whitespace after it let trim that \n
             if (1 === $indexOffset && $token->isComment()) {
-                $content = $token->getContent();
-
                 $token->setContent(preg_replace(
                     "#\r\n$|\n$#",
                     '',

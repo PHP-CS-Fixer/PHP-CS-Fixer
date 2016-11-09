@@ -30,7 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SquareBraceTransformer extends AbstractTransformer
 {
-    private $cacheOfArraySquareBraceCloseIndex = null;
+    private $cacheOfArraySquareBraceCloseIndex;
 
     /**
      * {@inheritdoc}
