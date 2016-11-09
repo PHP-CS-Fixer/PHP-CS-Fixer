@@ -1,0 +1,39 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-03T10:18:18Z
+
+~~replaces https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2235~~
+replaces https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2234
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-03T10:46:29Z
+
+@SpacePossum , please fix what this PR replaces, as it's linking itself ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-03T10:56:05Z
+
+>please fix what this PR replaces, as it's linking itself ;)
+
+: D
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-03T10:56:36Z
+
+Still WIP ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-03T10:57:05Z
+
+yes, I've fixed the sort of elements within a group, but not the other bug :(
+[TODO](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2235/files#diff-a9cd1458f8196198c2b7c5377bec09d3R669)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-05T09:10:40Z
+
+ready for review
