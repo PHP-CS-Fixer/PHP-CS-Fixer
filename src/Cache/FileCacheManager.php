@@ -84,11 +84,7 @@ final class FileCacheManager implements CacheManagerInterface
     {
         $file = $this->cacheDirectory->getRelativePathTo($file);
 
-        if (!$this->cache->has($file) || $this->cache->get($file) !== $this->calcHash($fileContent)) {
-            return true;
-        }
-
-        return false;
+        return !$this->cache->has($file) || $this->cache->get($file) !== $this->calcHash($fileContent);
     }
 
     public function setFile($file, $fileContent)

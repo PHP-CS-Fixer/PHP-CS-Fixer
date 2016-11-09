@@ -27,12 +27,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     /**
      * @var Config
      */
-    protected $config;
-
-    /**
-     * @var ConfigurationResolver
-     */
-    protected $resolver;
+    private $config;
 
     protected function setUp()
     {
@@ -50,7 +45,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetOptionWithUndefinedOption()
     {
-        $resolver = new ConfigurationResolver(
+        new ConfigurationResolver(
             $this->config,
             array('foo' => 'bar'),
             ''
@@ -847,15 +842,6 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ),
             $resolver->getRules()
         );
-    }
-
-    protected function makeFixersTest($expectedFixers, $resolvedFixers)
-    {
-        $this->assertCount(count($expectedFixers), $resolvedFixers);
-
-        foreach ($expectedFixers as $fixer) {
-            $this->assertContains($fixer, $resolvedFixers);
-        }
     }
 
     private function assertSameRules(array $expected, array $actual, $message = '')

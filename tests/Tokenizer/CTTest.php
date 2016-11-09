@@ -12,8 +12,6 @@
 
 namespace PhpCsFixer\Tests\Tokenizer;
 
-use PhpCsFixer\Tokenizer\CT;
-
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -33,7 +31,7 @@ final class CTTest extends \PHPUnit_Framework_TestCase
     public function testConstants($name, $value)
     {
         $this->assertGreaterThan(10000, $value);
-        $this->assertNull(@constant($name), 'The CT name must not use native T_* name');
+        $this->assertNull(@constant($name), 'The CT name must not use native T_* name.');
     }
 
     public function provideCTs()
@@ -52,7 +50,7 @@ final class CTTest extends \PHPUnit_Framework_TestCase
         static $constants;
 
         if (null === $constants) {
-            $reflection = new \ReflectionClass("PhpCsFixer\Tokenizer\CT");
+            $reflection = new \ReflectionClass('PhpCsFixer\Tokenizer\CT');
             $constants = $reflection->getConstants();
         }
 
