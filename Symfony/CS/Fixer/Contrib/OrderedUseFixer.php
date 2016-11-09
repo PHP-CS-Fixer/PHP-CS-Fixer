@@ -197,12 +197,12 @@ class OrderedUseFixer extends AbstractFixer
 
                         // check if the order needs to be updated, otherwise don't touch as we might change valid CS (to other valid CS).
                         if ($sortedParts === $parts) {
-                            $namespace = Tokens::generatePartialCodeFromTokens($namespaceTokens);
+                            $namespace = Tokens::fromArray($namespaceTokens)->generateCode();
                         } else {
                             $namespace .= substr(implode('', $parts), 0, -2).'}';
                         }
                     } else {
-                        $namespace = Tokens::generatePartialCodeFromTokens($namespaceTokens);
+                        $namespace = Tokens::fromArray($namespaceTokens)->generateCode();
                     }
 
                     $indexes[$startIndex] = array(
