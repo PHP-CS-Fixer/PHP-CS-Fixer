@@ -725,7 +725,7 @@ $a = new Qux();',
             ),
             array(
                 'parenthesis_brace_block',
-                '<?php 
+                '<?php
 is_int(
 1);
 function test(
@@ -737,7 +737,7 @@ $c
 
 
 }',
-                '<?php 
+                '<?php
 is_int(
 
 1);

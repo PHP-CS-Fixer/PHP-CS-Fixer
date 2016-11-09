@@ -629,6 +629,10 @@ EOF;
                 '<?php
 use A\B;
 use some\a\{ClassA, ClassB, ClassC as C};
+use some\b\{
+    ClassF,
+    ClassG
+};
 use const some\a\{ConstA, ConstB, ConstC};
 use function some\a\{fn_a, fn_b, fn_c};
 ',
@@ -637,6 +641,50 @@ use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use A\B;
 use const some\a\{ConstA, ConstB, ConstC};
+use some\b\{
+    ClassF,
+    ClassG
+};
+',
+            ),
+            array(
+                '<?php
+use A\B;
+use some\a\{ClassA as A /*z*/, ClassB, ClassC};
+use const some\a\{
+    ConstA,
+    ConstB,
+    ConstC
+};
+use function some\a\{fn_a, fn_b, fn_c};
+',
+                '<?php
+use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
+use function some\a\{fn_c,  fn_a,fn_b   };
+use A\B;
+use const some\a\{
+    ConstA,
+    ConstB,
+    ConstC
+};
+',
+            ),
+            array(
+                '<?php
+use Foo\Bar\Baz;use Foo\Bar\{ClassA, ClassB, ClassC};
+use Foo\Bir;
+',
+                '<?php
+use Foo\Bar\Baz, Foo\Bir;
+use Foo\Bar\{ClassC, ClassB, ClassA};
+',
+            ),
+            array(
+                '<?php
+use A\A;use Foo3\Bar\{ClassA};use G\G;use H\H;use Ioo2\Bar\{ClassB};use J\J;use K\K;use Loo1\Bar\{ClassC};use M\M;
+',
+                '<?php
+use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;use Loo1\Bar\{ClassC};
 ',
             ),
         );

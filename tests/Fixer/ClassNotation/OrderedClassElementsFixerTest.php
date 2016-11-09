@@ -118,20 +118,20 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     const C2 = 2;
 
     public $fooPublic;
-    
+
     // comment 3
 
     protected $fooProtected = array(1, 2);
     // comment 1
-    
+
     private $fooPrivate;
 
     protected function __construct()
     {
     }
-    
+
     public function __destruct() {}
-    
+
     public function __clone() {}
 
     public static function setUpBeforeClass() {}
@@ -156,7 +156,7 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     {
         return $foo->foo2();
     } /* comment 1 */ /* comment 2 */
-    
+
     // comment
 
     /**
@@ -184,13 +184,13 @@ EOT
 abstract class Foo extends FooParent implements FooInterface1, FooInterface2
 {
     // comment 1
-    
+
     private $fooPrivate;
 
     abstract public function foo1($a, $b = 1);
 
     protected function tearDown() {}
-    
+
     public function __clone() {}
 
     const C1 = 1;
@@ -202,7 +202,7 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     }
 
     public static function setUpBeforeClass() {}
-    
+
     public function __destruct() {}
 
     use Bar;
@@ -211,7 +211,7 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     {
         return $foo->foo2();
     } /* comment 1 */ /* comment 2 */
-    
+
     // comment 3
 
     protected $fooProtected = array(1, 2);
@@ -238,7 +238,7 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     protected function __construct()
     {
     }
-    
+
     // comment
 
     /**

@@ -494,7 +494,7 @@ const F=1; }',
             ),
             array(
                 '<?php
-                    class foo 
+                    class foo
                     {
                         public const A = 1, B =2, C =3;
                         // As of PHP 5.6.0
@@ -504,7 +504,7 @@ const F=1; }',
                     }
                 ',
                 '<?php
-                    class foo 
+                    class foo
                     {
                         const A = 1, B =2, C =3;
                         // As of PHP 5.6.0

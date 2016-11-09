@@ -172,14 +172,14 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
                 '<?php $b = pow(3, __LINE__);',
             ),
             array(
-                '<?php 
+                '<?php
                     ($a-$b)**(
                     ($a-$b)**(
                     ($a-$b)**(
                     ($a-$b)**(
                     ($a-$b)**($a-$b)
                 ))));',
-                '<?php 
+                '<?php
                     pow($a-$b,
                     pow($a-$b,
                     pow($a-$b,
