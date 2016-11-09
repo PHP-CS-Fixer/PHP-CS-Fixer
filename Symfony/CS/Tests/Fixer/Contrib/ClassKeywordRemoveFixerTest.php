@@ -45,12 +45,12 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestBase
             array(
                 "<?php
                 use Foo\Bar;
-            
+
                 echo 'Foo\Bar\Thing';
                 ",
                 "<?php
                 use Foo\Bar;
-            
+
                 echo Bar\Thing::class;
                 ",
             ),
