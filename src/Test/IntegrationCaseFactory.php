@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\Test;
 
-use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\WhitespacesFixerConfig;
@@ -67,7 +66,8 @@ final class IntegrationCaseFactory
                 $match['title'],
                 $this->determineSettings($match['settings']),
                 $this->determineRequirements($match['requirements']),
-                $this->determineFixers($match['ruleset'], new WhitespacesFixerConfig($config['indent'], $config['lineEnding'])),
+                $this->determineConfig($match['config']),
+                $this->determineRuleset($match['ruleset']),
                 $this->determineExpectedCode($match['expect'], $file),
                 $this->determineInputCode($match['input'], $file)
             );
@@ -96,24 +96,6 @@ final class IntegrationCaseFactory
     }
 
     /**
-     * Parses the '--RULESET--' block of a '.test' file and determines what fixers should be used.
-     *
-     * @param string                 $config
-     * @param WhitespacesFixerConfig $sharedFixerConfig
-     *
-     * @return FixerInterface[]
-     */
-    protected function determineFixers($config, WhitespacesFixerConfig $sharedFixerConfig)
-    {
-        return FixerFactory::create()
-            ->registerBuiltInFixers()
-            ->useRuleSet(new RuleSet($this->parseJson($config)))
-            ->setWhitespacesConfig($sharedFixerConfig)
-            ->getFixers()
-        ;
-    }
-
-    /**
      * Parses the '--REQUIREMENTS--' block of a '.test' file and determines requirements.
      *
      * @param string $config
@@ -126,6 +108,19 @@ final class IntegrationCaseFactory
             'hhvm' => true,
             'php' => PHP_VERSION_ID,
         ));
+    }
+
+    /**
+     * Parses the '--RULESET--' block of a '.test' file and determines what fixers should be used.
+     *
+     * @param string                 $config
+     * @param WhitespacesFixerConfig $sharedFixerConfig
+     *
+     * @return FixerInterface[]
+     */
+    protected function determineRuleset($config)
+    {
+        return new RuleSet($this->parseJson($config));
     }
 
     /**
