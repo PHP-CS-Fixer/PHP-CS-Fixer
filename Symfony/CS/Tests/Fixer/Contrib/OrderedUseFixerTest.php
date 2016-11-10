@@ -684,19 +684,19 @@ use const some\a\{ConstA, ConstB, ConstC};
     public function testInvalidOrderTypesSize()
     {
         OrderedUseFixer::configure(array(
-            'typesOrder' => array('1', '2'),
+            'typesOrder' => array('class', 'const'),
             'sortAlgorithm' => OrderedUseFixer::SORT_ALPHA,
         ));
     }
 
     /**
      * @expectedException \Symfony\CS\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage [ordered_use] Unknown type "5" in type order configuration, expected all types ["1","2","3"] to be included in desired order.
+     * @expectedExceptionMessage [ordered_use] Unknown type "bar" in type order configuration, expected all types ["class","const","function"] to be included in desired order.
      */
     public function testInvalidOrderType()
     {
         OrderedUseFixer::configure(array(
-            'typesOrder' => array('1', '2', '5'),
+            'typesOrder' => array('const', 'function', 'bar'),
             'sortAlgorithm' => OrderedUseFixer::SORT_ALPHA,
         ));
     }

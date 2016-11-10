@@ -24,11 +24,11 @@ use Symfony\CS\Tokenizer\Tokens;
  */
 class OrderedUseFixer extends AbstractFixer
 {
-    const IMPORT_TYPE_CLASS = '1';
+    const IMPORT_TYPE_CLASS = 'class';
 
-    const IMPORT_TYPE_CONST = '2';
+    const IMPORT_TYPE_CONST = 'const';
 
-    const IMPORT_TYPE_FUNCTION = '3';
+    const IMPORT_TYPE_FUNCTION = 'function';
 
     const SORT_ALPHA = 'alpha';
 
