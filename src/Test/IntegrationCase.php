@@ -12,13 +12,18 @@
 
 namespace PhpCsFixer\Test;
 
-use PhpCsFixer\FixerInterface;
+use PhpCsFixer\RuleSet;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class IntegrationCase
 {
+    /**
+     * @var array
+     */
+    private $config = array();
+
     /**
      * @var string
      */
@@ -28,11 +33,6 @@ final class IntegrationCase
      * @var string
      */
     private $fileName;
-
-    /**
-     * @var FixerInterface[]
-     */
-    private $fixers = array();
 
     /**
      * @var string|null
@@ -47,6 +47,11 @@ final class IntegrationCase
     private $requirements = array();
 
     /**
+     * @var RuleSet
+     */
+    private $ruleset;
+
+    /**
      * Settings how to perform the test (possible keys: checkPriority).
      *
      * @var array
@@ -59,20 +64,22 @@ final class IntegrationCase
     private $title;
 
     /**
-     * @param string           $fileName
-     * @param string           $title
-     * @param array            $settings
-     * @param array            $requirements
-     * @param FixerInterface[] $fixers
-     * @param string           $expectedCode
-     * @param string|null      $inputCode
+     * @param string      $fileName
+     * @param string      $title
+     * @param array       $settings
+     * @param array       $requirements
+     * @param array       $config
+     * @param RulesSet    $ruleset
+     * @param string      $expectedCode
+     * @param string|null $inputCode
      */
     public function __construct(
         $fileName,
         $title,
         array $settings,
         array $requirements,
-        array $fixers,
+        array $config,
+        RuleSet $ruleset,
         $expectedCode,
         $inputCode
     ) {
@@ -80,7 +87,8 @@ final class IntegrationCase
         $this->title = $title;
         $this->settings = $settings;
         $this->requirements = $requirements;
-        $this->fixers = $fixers;
+        $this->config = $config;
+        $this->ruleset = $ruleset;
         $this->expectedCode = $expectedCode;
         $this->inputCode = $inputCode;
     }
@@ -95,6 +103,10 @@ final class IntegrationCase
         return null !== $this->inputCode;
     }
 
+    public function getConfig()
+    {
+        return $this->config;
+    }
     public function getExpectedCode()
     {
         return $this->expectedCode;
@@ -103,11 +115,6 @@ final class IntegrationCase
     public function getFileName()
     {
         return $this->fileName;
-    }
-
-    public function getFixers()
-    {
-        return $this->fixers;
     }
 
     public function getInputCode()
@@ -125,6 +132,10 @@ final class IntegrationCase
         return $this->requirements;
     }
 
+    public function getRuleset()
+    {
+        return $this->ruleset;
+    }
     public function getSettings()
     {
         return $this->settings;
