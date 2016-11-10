@@ -17,10 +17,13 @@ use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FileRemoval;
+use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\RuleSet;
 use PhpCsFixer\Runner\Runner;
+use PhpCsFixer\WhitespacesFixerConfig;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -184,9 +187,10 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
         }
 
         $errorsManager = new ErrorsManager();
+        $fixers = $this->createFixers($case);
         $runner = new Runner(
             new \ArrayIterator(array(new \SplFileInfo($tmpFile))),
-            $case->getFixers(),
+            $fixers,
             new SebastianBergmannDiffer(),
             null,
             $errorsManager,
@@ -242,7 +246,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
                 function (FixerInterface $fixer) {
                     return $fixer->getPriority();
                 },
-                $case->getFixers()
+                $fixers
             );
 
             $this->assertNotCount(1, array_unique($priorities), sprintf('All used fixers must not have the same priority, integration tests should cover fixers with different priorities. In "%s".', $case->getFileName()));
@@ -254,7 +258,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 
             $runner = new Runner(
                 new \ArrayIterator(array(new \SplFileInfo($tmpFile))),
-                array_reverse($case->getFixers()),
+                array_reverse($fixers),
                 new SebastianBergmannDiffer(),
                 null,
                 $errorsManager,
@@ -280,11 +284,30 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
                 $case->getTitle().' "--EXPECT-- part run"',
                 $case->getSettings(),
                 $case->getRequirements(),
-                $case->getFixers(),
+                $case->getConfig(),
+                $case->getRuleset(),
                 $case->getExpectedCode(),
                 null
             )
         );
+    }
+
+    /**
+     * @param IntegrationCase $case
+     *
+     * @return FixerInterface[]
+     */
+    private function createFixers(IntegrationCase $case)
+    {
+        $config = $case->getConfig();
+
+        return FixerFactory::create()
+            ->registerBuiltInFixers()
+            ->useRuleSet($case->getRuleset())
+            ->setWhitespacesConfig(
+                new WhitespacesFixerConfig($config['indent'], $config['lineEnding'])
+            )
+            ->getFixers();
     }
 
     /**
