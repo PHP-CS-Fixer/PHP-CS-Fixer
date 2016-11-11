@@ -813,7 +813,7 @@ class Tokens extends \SplFixedArray
 
         for ($i = 0; $i < $itemsCnt; ++$i) {
             if ('' === $items[$i]->getContent()) {
-                throw new \InvalidArgumentException('Must not add empty item to collection');
+                throw new \InvalidArgumentException('Must not add empty token to collection.');
             }
 
             $this[$i + $index] = $items[$i];

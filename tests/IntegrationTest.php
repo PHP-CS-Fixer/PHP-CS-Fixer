@@ -17,7 +17,7 @@ use PhpCsFixer\Test\AbstractIntegrationTestCase;
 /**
  * Test that parses and runs the fixture '*.test' files found in '/Fixtures/Integration'.
  *
- * @author SpacePossum <possumfromspace@gmail.com>
+ * @author SpacePossum
  *
  * @internal
  */
