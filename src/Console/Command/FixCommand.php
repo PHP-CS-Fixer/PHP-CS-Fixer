@@ -188,7 +188,7 @@ The example below will add two rules to the default list of PSR2 set rules:
         ->setRules(array(
             '@PSR2' => true,
             'strict_param' => true,
-            'short_array_syntax' => true,
+            'array_syntax' => array('syntax' => 'short'),
         ))
         ->setFinder(\$finder)
     ;
