@@ -251,7 +251,10 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements W
         // find the line break
         $tokenCount = count($this->tokens);
         for ($end = $index; $end < $tokenCount; ++$end) {
-            if (false !== strpos($this->tokens[$end]->getContent(), "\n")) {
+            if (
+                $this->tokens[$end]->equals('}')
+                || false !== strpos($this->tokens[$end]->getContent(), "\n")
+            ) {
                 break;
             }
         }
