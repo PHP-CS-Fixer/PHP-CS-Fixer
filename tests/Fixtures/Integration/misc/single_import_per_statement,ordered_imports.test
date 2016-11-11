@@ -5,7 +5,7 @@ Integration of fixers: single_import_per_statement,ordered_imports.
 --SETTINGS--
 {"checkPriority": false}
 --REQUIREMENTS--
-{"php": "70000"}
+{"php": 70000}
 --EXPECT--
 <?php
 use some\A;

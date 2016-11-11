@@ -17,10 +17,13 @@ use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FileRemoval;
+use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\RuleSet;
 use PhpCsFixer\Runner\Runner;
+use PhpCsFixer\WhitespacesFixerConfig;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -43,7 +46,7 @@ use Symfony\Component\Finder\Finder;
  * --SETTINGS--*
  * {"checkPriority": true}
  * --REQUIREMENTS--*
- * {"php": "50600"**, "hhvm": false***}
+ * {"php": 50600**, "hhvm": false***}
  * --EXPECT--
  * Expected code after fixing
  * --INPUT--*
@@ -53,7 +56,7 @@ use Symfony\Component\Finder\Finder;
  *  ** PHP minimum version. Default to current running php version (no effect).
  * *** HHVM compliant flag. Default to true. Set to false to skip test under HHVM.
  *
- * @author SpacePossum <possumfromspace@gmail.com>
+ * @author SpacePossum
  */
 abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -62,9 +65,6 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
      */
     protected $linter;
 
-    /*
-     * @var fileRemoval
-     */
     private static $fileRemoval;
 
     public static function setUpBeforeClass()
@@ -169,7 +169,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
         }
 
         if (PHP_VERSION_ID < $case->getRequirement('php')) {
-            $this->markTestSkipped(sprintf('PHP %s (or later) is required for "%s".', $case->getRequirement('php'), $case->getFileName()));
+            $this->markTestSkipped(sprintf('PHP %d (or later) is required for "%s", current "%d".', $case->getRequirement('php'), $case->getFileName(), PHP_VERSION_ID));
         }
 
         $input = $case->getInputCode();
@@ -184,9 +184,10 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
         }
 
         $errorsManager = new ErrorsManager();
+        $fixers = $this->createFixers($case);
         $runner = new Runner(
             new \ArrayIterator(array(new \SplFileInfo($tmpFile))),
-            $case->getFixers(),
+            $fixers,
             new SebastianBergmannDiffer(),
             null,
             $errorsManager,
@@ -242,7 +243,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
                 function (FixerInterface $fixer) {
                     return $fixer->getPriority();
                 },
-                $case->getFixers()
+                $fixers
             );
 
             $this->assertNotCount(1, array_unique($priorities), sprintf('All used fixers must not have the same priority, integration tests should cover fixers with different priorities. In "%s".', $case->getFileName()));
@@ -254,7 +255,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 
             $runner = new Runner(
                 new \ArrayIterator(array(new \SplFileInfo($tmpFile))),
-                array_reverse($case->getFixers()),
+                array_reverse($fixers),
                 new SebastianBergmannDiffer(),
                 null,
                 $errorsManager,
@@ -280,11 +281,30 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
                 $case->getTitle().' "--EXPECT-- part run"',
                 $case->getSettings(),
                 $case->getRequirements(),
-                $case->getFixers(),
+                $case->getConfig(),
+                $case->getRuleset(),
                 $case->getExpectedCode(),
                 null
             )
         );
+    }
+
+    /**
+     * @param IntegrationCase $case
+     *
+     * @return FixerInterface[]
+     */
+    private function createFixers(IntegrationCase $case)
+    {
+        $config = $case->getConfig();
+
+        return FixerFactory::create()
+            ->registerBuiltInFixers()
+            ->useRuleSet($case->getRuleset())
+            ->setWhitespacesConfig(
+                new WhitespacesFixerConfig($config['indent'], $config['lineEnding'])
+            )
+            ->getFixers();
     }
 
     /**
