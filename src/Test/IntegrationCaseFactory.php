@@ -12,9 +12,7 @@
 
 namespace PhpCsFixer\Test;
 
-use PhpCsFixer\FixerInterface;
 use PhpCsFixer\RuleSet;
-use PhpCsFixer\WhitespacesFixerConfig;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -59,8 +57,6 @@ final class IntegrationCaseFactory
                 $match
             );
 
-            $config = $this->determineConfig($match['config']);
-
             return new IntegrationCase(
                 $file->getRelativePathname(),
                 $match['title'],
@@ -89,10 +85,26 @@ final class IntegrationCaseFactory
      */
     protected function determineConfig($config)
     {
-        return $this->parseJson($config, array(
+        $parsed = $this->parseJson($config, array(
             'indent' => '    ',
             'lineEnding' => "\n",
         ));
+
+        if (!is_string($parsed['indent'])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected string value for "indent", got "%s".',
+                is_object($parsed['indent']) ? get_class($parsed['indent']) : gettype($parsed['indent']).'#'.$parsed['indent'])
+            );
+        }
+
+        if (!is_string($parsed['lineEnding'])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected string value for "lineEnding", got "%s".',
+                is_object($parsed['lineEnding']) ? get_class($parsed['lineEnding']) : gettype($parsed['lineEnding']).'#'.$parsed['lineEnding'])
+            );
+        }
+
+        return $parsed;
     }
 
     /**
@@ -104,19 +116,34 @@ final class IntegrationCaseFactory
      */
     protected function determineRequirements($config)
     {
-        return $this->parseJson($config, array(
+        $parsed = $this->parseJson($config, array(
             'hhvm' => true,
             'php' => PHP_VERSION_ID,
         ));
+
+        if (!is_int($parsed['php']) || $parsed['php'] < 50306) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected int >= 50306 value for "php", got "%s".',
+                is_object($parsed['php']) ? get_class($parsed['php']) : gettype($parsed['php']).'#'.$parsed['php'])
+            );
+        }
+
+        if (!is_bool($parsed['hhvm'])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected bool value for "hhvm", got "%s".',
+                is_object($parsed['hhvm']) ? get_class($parsed['hhvm']) : gettype($parsed['hhvm']).'#'.$parsed['hhvm'])
+            );
+        }
+
+        return $parsed;
     }
 
     /**
      * Parses the '--RULESET--' block of a '.test' file and determines what fixers should be used.
      *
-     * @param string                 $config
-     * @param WhitespacesFixerConfig $sharedFixerConfig
+     * @param string $config
      *
-     * @return FixerInterface[]
+     * @return RuleSet
      */
     protected function determineRuleset($config)
     {
@@ -132,12 +159,27 @@ final class IntegrationCaseFactory
      */
     protected function determineSettings($config)
     {
-        return $this->parseJson($config, array(
+        $parsed = $this->parseJson($config, array(
             'checkPriority' => true,
         ));
+
+        if (!is_bool($parsed['checkPriority'])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected bool value for "checkPriority", got "%s".',
+                is_object($parsed['checkPriority']) ? get_class($parsed['checkPriority']) : gettype($parsed['checkPriority']).'#'.$parsed['checkPriority'])
+            );
+        }
+
+        return $parsed;
     }
 
-    protected function determineExpectedCode($code, $file)
+    /**
+     * @param string|null $code
+     * @param SplFileInfo $file
+     *
+     * @return string
+     */
+    protected function determineExpectedCode($code, SplFileInfo $file)
     {
         $code = $this->determineCode($code, $file, '-out.php');
 
@@ -148,36 +190,53 @@ final class IntegrationCaseFactory
         return $code;
     }
 
-    protected function determineInputCode($code, $file)
+    /**
+     * @param string|null $code
+     * @param SplFileInfo $file
+     *
+     * @return string|null
+     */
+    protected function determineInputCode($code, SplFileInfo $file)
     {
         return $this->determineCode($code, $file, '-in.php');
     }
 
-    private function determineCode($code, $file, $suffix)
+    /**
+     * @param string|null $code
+     * @param SplFileInfo $file
+     * @param string      $suffix
+     *
+     * @return string|null
+     */
+    private function determineCode($code, SplFileInfo $file, $suffix)
     {
         if (null !== $code) {
             return $code;
         }
 
-        $candidatePath = $file->getPathname().$suffix;
-
-        $candidateFile = new SplFileInfo($candidatePath, '', '');
+        $candidateFile = new SplFileInfo($file->getPathname().$suffix, '', '');
         if ($candidateFile->isFile()) {
             return $candidateFile->getContents();
         }
     }
 
+    /**
+     * @param string|null $encoded
+     * @param array|null  $template
+     *
+     * @return array
+     */
     private function parseJson($encoded, array $template = null)
     {
         // content is optional if template is provided
         if (!$encoded && null !== $template) {
-            $encoded = '[]';
-        }
+            $decoded = array();
+        } else {
+            $decoded = json_decode($encoded, true);
 
-        $decoded = json_decode($encoded, true);
-
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new \InvalidArgumentException(sprintf('Malformed JSON: "%s".', $encoded));
+            if (JSON_ERROR_NONE !== json_last_error()) {
+                throw new \InvalidArgumentException(sprintf('Malformed JSON: "%s".', $encoded));
+            }
         }
 
         if (null !== $template) {

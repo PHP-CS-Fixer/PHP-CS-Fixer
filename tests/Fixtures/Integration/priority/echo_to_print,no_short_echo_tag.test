@@ -3,7 +3,7 @@ Integration of fixers: echo_to_print,no_short_echo_tag.
 --RULESET--
 {"echo_to_print": true, "no_short_echo_tag": true}
 --REQUIREMENTS--
-{"php": "50400", "hhvm": false}
+{"php": 50400, "hhvm": false}
 --EXPECT--
 <div><?php print "test" ?></div>
 

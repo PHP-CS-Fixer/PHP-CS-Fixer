@@ -46,7 +46,7 @@ use Symfony\Component\Finder\Finder;
  * --SETTINGS--*
  * {"checkPriority": true}
  * --REQUIREMENTS--*
- * {"php": "50600"**, "hhvm": false***}
+ * {"php": 50600**, "hhvm": false***}
  * --EXPECT--
  * Expected code after fixing
  * --INPUT--*
@@ -56,7 +56,7 @@ use Symfony\Component\Finder\Finder;
  *  ** PHP minimum version. Default to current running php version (no effect).
  * *** HHVM compliant flag. Default to true. Set to false to skip test under HHVM.
  *
- * @author SpacePossum <possumfromspace@gmail.com>
+ * @author SpacePossum
  */
 abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -65,9 +65,6 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
      */
     protected $linter;
 
-    /*
-     * @var fileRemoval
-     */
     private static $fileRemoval;
 
     public static function setUpBeforeClass()
@@ -172,7 +169,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
         }
 
         if (PHP_VERSION_ID < $case->getRequirement('php')) {
-            $this->markTestSkipped(sprintf('PHP %s (or later) is required for "%s".', $case->getRequirement('php'), $case->getFileName()));
+            $this->markTestSkipped(sprintf('PHP %d (or later) is required for "%s", current "%d".', $case->getRequirement('php'), $case->getFileName(), PHP_VERSION_ID));
         }
 
         $input = $case->getInputCode();

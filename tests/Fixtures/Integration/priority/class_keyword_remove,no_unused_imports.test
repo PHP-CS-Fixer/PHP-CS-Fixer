@@ -3,7 +3,7 @@ Integration of fixers: class_keyword_remove,no_unused_imports.
 --RULESET--
 {"class_keyword_remove": true, "no_unused_imports": true}
 --REQUIREMENTS--
-{"php": "50500"}
+{"php": 50500}
 --EXPECT--
 <?php
 

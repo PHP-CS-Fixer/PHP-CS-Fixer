@@ -3,7 +3,7 @@ Integration of fixers: short_array_syntax,ternary_operator_spaces.
 --RULESET--
 {"short_array_syntax": true, "ternary_operator_spaces": true}
 --REQUIREMENTS--
-{"php": "50400"}
+{"php": 50400}
 --EXPECT--
 <?php
 $a = $b ? [ ] : 1;

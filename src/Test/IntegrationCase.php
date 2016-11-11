@@ -69,7 +69,7 @@ final class IntegrationCase
      * @param array       $settings
      * @param array       $requirements
      * @param array       $config
-     * @param RulesSet    $ruleset
+     * @param RuleSet     $ruleset
      * @param string      $expectedCode
      * @param string|null $inputCode
      */
@@ -107,6 +107,7 @@ final class IntegrationCase
     {
         return $this->config;
     }
+
     public function getExpectedCode()
     {
         return $this->expectedCode;
@@ -122,8 +123,26 @@ final class IntegrationCase
         return $this->inputCode;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
     public function getRequirement($name)
     {
+        if (!is_string($name)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Requirement key must be a string, got "%s".',
+                is_object($name) ? get_class($name) : gettype($name).'#'.$name));
+        }
+
+        if (!array_key_exists($name, $this->requirements)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Unknown requirement key "%s", expected any of "%s".',
+                $name, implode('","', array_keys($this->requirements)))
+            );
+        }
+
         return $this->requirements[$name];
     }
 
@@ -136,6 +155,7 @@ final class IntegrationCase
     {
         return $this->ruleset;
     }
+
     public function getSettings()
     {
         return $this->settings;
@@ -146,6 +166,9 @@ final class IntegrationCase
         return $this->title;
     }
 
+    /**
+     * @return bool
+     */
     public function shouldCheckPriority()
     {
         return $this->settings['checkPriority'];
