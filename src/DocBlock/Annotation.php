@@ -202,7 +202,7 @@ class Annotation
             $name = $this->getTag()->getName();
 
             if (!$this->supportTypes()) {
-                throw new \RuntimeException('This tag does not support types');
+                throw new \RuntimeException('This tag does not support types.');
             }
 
             $tagSplit = preg_split('/\s*\@'.$name.'\s*/', $this->lines[0]->getContent(), 2);

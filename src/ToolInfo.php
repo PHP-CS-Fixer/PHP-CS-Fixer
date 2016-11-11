@@ -31,7 +31,7 @@ final class ToolInfo
         static $result;
 
         if (!self::isInstalledByComposer()) {
-            throw new \LogicException('Can not get composer version for tool not installed by composer.');
+            throw new \LogicException('Cannot get composer version for tool not installed by composer.');
         }
 
         if (null === $result) {
