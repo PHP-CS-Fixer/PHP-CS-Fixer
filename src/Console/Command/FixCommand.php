@@ -106,7 +106,7 @@ final class FixCommand extends Command
                     new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no)', null),
                     new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file'),
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
-                    new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', 'txt'),
+                    new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', null),
                 )
             )
             ->setDescription('Fixes a directory or a file')
