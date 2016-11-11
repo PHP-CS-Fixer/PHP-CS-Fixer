@@ -1,0 +1,65 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-09T19:35:29Z
+
+nice so far ;)
+(btw, please check gitter)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-10T06:35:09Z
+
+problem here is that the integration test will resolve the fixers _and_ configure those before checking the requirements set in the test.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-10T06:36:59Z
+
+Why it is a problem ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-10T06:51:40Z
+
+I check if the configuration of the fixer makes sense based on the env., so this will fail:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2274/files#diff-00016b9c4b10354d36ed225366173552R58
+
+even if I set the requirements of the test on 5.4
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-10T06:57:41Z
+
+then why not simply check requirements before creating fixers? (what actually makes perfect sense)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-10T09:21:26Z
+
+>then why not simply check requirements before creating fixers? (what actually makes perfect sense)
+
+thats the plan :)   :+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-10T09:48:27Z
+
+This PR also fixes using `setFormat()` in a configuration file as it was not used by the Fixer (i.e. it would always run with the value given on commandline or fall back on 'txt').
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-10T18:02:56Z
+
+could we separated that fix? PR getting bigger and bigger already, and that bugfix is not directly related
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-11T10:41:01Z
+
+Expect Travis PHP5.3 to fail because of https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2285
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-11T22:30:33Z
+
+rebased
