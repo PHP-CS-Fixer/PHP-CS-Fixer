@@ -103,7 +103,7 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_summary' => true,
             'phpdoc_to_comment' => true,
             'phpdoc_trim' => true,
-            'phpdoc_type_to_var' => true,
+            'phpdoc_no_alias_tag' => array('type' => 'var'),
             'phpdoc_types' => true,
             'phpdoc_var_without_name' => true,
             'php_unit_fqcn_annotation' => true,

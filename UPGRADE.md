@@ -89,6 +89,7 @@ empty_return                                   | simplified_null_return
 eof_ending                                     | single_blank_line_at_eof
 extra_empty_lines                              | no_extra_consecutive_blank_lines
 function_call_space                            | no_spaces_after_function_name
+general_phpdoc_annotation_rename               | phpdoc_no_alias_tag                               | use configuration option [property-read' => 'property', 'property-write' => 'property']
 indentation                                    | no_tab_indentation
 join_function                                  | no_alias_functions                                | new one fixes more aliases
 line_after_namespace                           | blank_line_after_namespace
@@ -112,7 +113,10 @@ parenthesis                                    | no_spaces_inside_parenthesis
 php4_constructor                               | no_php4_constructor
 php_closing_tag                                | no_closing_tag
 phpdoc_params                                  | phpdoc_align
+phpdoc_property                                | phpdoc_no_alias_tag                               | use configuration option ['type' => 'var']
 phpdoc_short_description                       | phpdoc_summary
+phpdoc_type_to_var                             | phpdoc_no_alias_tag                               | use configuration option ['type' => 'var']
+phpdoc_var_to_type                             | phpdoc_no_alias_tag                               | use configuration option ['var' => 'type']
 remove_leading_slash_use                       | no_leading_import_slash
 remove_lines_between_uses                      | no_extra_consecutive_blank_lines                  | use configuration option 'use'
 return                                         | blank_line_before_return
