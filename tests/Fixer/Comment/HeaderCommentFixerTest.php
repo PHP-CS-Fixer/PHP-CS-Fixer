@@ -23,14 +23,12 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class HeaderCommentFixerTest extends AbstractFixerTestCase
 {
-    private $configuration;
-
     /**
      * @dataProvider provideFixCases
      */
     public function testFix(array $configuration, $expected, $input)
     {
-        $this->configuration = $configuration;
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
@@ -256,8 +254,7 @@ echo 1;',
 
     public function testDefaultConfiguration()
     {
-        $fixer = $this->getFixer();
-        $method = new \ReflectionMethod($fixer, 'parseConfiguration');
+        $method = new \ReflectionMethod($this->fixer, 'parseConfiguration');
         $method->setAccessible(true);
         $this->assertSame(
             array(
@@ -266,7 +263,7 @@ echo 1;',
                 HeaderCommentFixer::HEADER_LOCATION_AFTER_DECLARE_STRICT,
                 HeaderCommentFixer::HEADER_LINE_SEPARATION_BOTH,
             ),
-            $method->invoke($fixer, array('header' => 'a'))
+            $method->invoke($this->fixer, array('header' => 'a'))
         );
     }
 
@@ -277,8 +274,7 @@ echo 1;',
     {
         $exceptionMatch = false;
         try {
-            $fixer = $this->getFixer();
-            $fixer->configure($configuration);
+            $this->fixer->configure($configuration);
         } catch (InvalidFixerConfigurationException $e) {
             $this->assertSame('[header_comment] '.$exceptionMessage, $e->getMessage());
             $exceptionMatch = true;
@@ -329,10 +325,9 @@ echo 1;',
      */
     public function testHeaderGeneration($expected, $header, $type)
     {
-        $fixer = $this->getFixer();
-        $method = new \ReflectionMethod($fixer, 'encloseTextInComment');
+        $method = new \ReflectionMethod($this->fixer, 'encloseTextInComment');
         $method->setAccessible(true);
-        $this->assertSame($expected, $method->invoke($fixer, $header, $type));
+        $this->assertSame($expected, $method->invoke($this->fixer, $header, $type));
     }
 
     public function provideHeaderGenerationCases()
@@ -363,12 +358,11 @@ echo 1;',
         Tokens::clearCache();
         $tokens = Tokens::fromCode($code);
 
-        $fixer = $this->getFixer();
-        $fixer->configure($config);
+        $this->fixer->configure($config);
 
-        $method = new \ReflectionMethod($fixer, 'findHeaderCommentInsertionIndex');
+        $method = new \ReflectionMethod($this->fixer, 'findHeaderCommentInsertionIndex');
         $method->setAccessible(true);
-        $this->assertSame($expected, $method->invoke($fixer, $tokens));
+        $this->assertSame($expected, $method->invoke($this->fixer, $tokens));
     }
 
     public function provideFindHeaderCommentInsertionIndexCases()
@@ -438,11 +432,10 @@ declare(strict_types=1)?>',
      */
     public function testMessyWhitespaces(array $configuration, $expected, $input = null)
     {
-        $fixer = clone $this->getFixer();
-        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-        $fixer->configure($configuration);
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        $this->fixer->configure($configuration);
 
-        $this->doTest($expected, $input, null, $fixer);
+        $this->doTest($expected, $input);
     }
 
     public function provideMessyWhitespacesCases()
@@ -466,6 +459,6 @@ declare(strict_types=1)?>',
      */
     protected function getFixerConfiguration()
     {
-        return null === $this->configuration ? array('header' => '') : $this->configuration;
+        return array('header' => '');
     }
 }

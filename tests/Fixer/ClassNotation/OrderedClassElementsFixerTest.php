@@ -419,7 +419,7 @@ class Foo
 }
 EOT;
 
-        $this->getFixer()->configure($configuration);
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -562,6 +562,6 @@ EOT
      */
     public function testWrongConfig()
     {
-        $this->getFixer()->configure(array('foo'));
+        $this->fixer->configure(array('foo'));
     }
 }

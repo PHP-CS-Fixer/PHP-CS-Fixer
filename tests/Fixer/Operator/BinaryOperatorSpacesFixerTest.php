@@ -349,7 +349,7 @@ $b;',
      */
     public function testWrongConfigItem()
     {
-        $this->getFixer()->configure(array('foo' => true));
+        $this->fixer->configure(array('foo' => true));
     }
 
     /**
@@ -358,7 +358,7 @@ $b;',
      */
     public function testWrongConfigValue()
     {
-        $this->getFixer()->configure(array('align_double_arrow' => 123));
+        $this->fixer->configure(array('align_double_arrow' => 123));
     }
 
     /**
@@ -795,7 +795,7 @@ $b;',
      */
     public function testFixAlignEquals($expected, $input = null)
     {
-        $this->getFixer()->configure(array('align_equals' => true));
+        $this->fixer->configure(array('align_equals' => true));
         $this->doTest($expected, $input);
     }
 
@@ -921,7 +921,7 @@ $b;',
      */
     public function testFixAlignDoubleArrow($expected, $input = null)
     {
-        $this->getFixer()->configure(array('align_double_arrow' => true));
+        $this->fixer->configure(array('align_double_arrow' => true));
         $this->doTest($expected, $input);
     }
 
@@ -1464,8 +1464,7 @@ $b;',
 
     public function testDoNotTouchEqualsAndArrawByConfig()
     {
-        $fixer = $this->getFixer();
-        $fixer->configure(array(
+        $this->fixer->configure(array(
             'align_equals' => null,
             'align_double_arrow' => null,
         ));

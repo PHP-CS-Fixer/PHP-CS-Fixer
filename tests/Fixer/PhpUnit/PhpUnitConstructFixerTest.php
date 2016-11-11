@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
-use PhpCsFixer\Fixer\PhpUnit\PhpUnitConstructFixer;
 use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
@@ -28,9 +27,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
      */
     public function testInvalidConfiguration()
     {
-        /** @var $fixer PhpUnitConstructFixer */
-        $fixer = $this->getFixer();
-        $fixer->configure(array('MyTest'));
+        $this->fixer->configure(array('MyTest'));
     }
 
     /**
@@ -38,26 +35,22 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
      */
     public function testFix($expected, $input = null)
     {
-        $fixer = $this->getFixer();
-
-        $fixer->configure(array(
+        $this->fixer->configure(array(
             'assertEquals',
             'assertSame',
             'assertNotEquals',
             'assertNotSame',
         ));
-        $this->doTest($expected, $input, null, $fixer);
+        $this->doTest($expected, $input);
 
-        $fixer->configure(array());
-        $this->doTest($input ?: $expected, null, null, $fixer);
+        $this->fixer->configure(array());
+        $this->doTest($input ?: $expected, null);
 
         foreach (array('assertSame', 'assertEquals', 'assertNotEquals', 'assertNotSame') as $method) {
-            $fixer->configure(array($method));
+            $this->fixer->configure(array($method));
             $this->doTest(
                 $expected,
-                $input && false !== strpos($input, $method) ? $input : null,
-                null,
-                $fixer
+                $input && false !== strpos($input, $method) ? $input : null
             );
         }
     }
@@ -105,9 +98,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
      */
     public function testInvalidConfig()
     {
-        /** @var \PhpCsFixer\Fixer\PhpUnit\PhpUnitConstructFixer $fixer */
-        $fixer = $this->getFixer();
-        $fixer->configure(array('__TEST__'));
+        $this->fixer->configure(array('__TEST__'));
     }
 
     private function generateCases($expectedTemplate, $inputTemplate)

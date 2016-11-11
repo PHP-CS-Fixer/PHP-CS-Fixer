@@ -32,10 +32,9 @@ final class MethodSeparationFixerTest extends AbstractFixerTestCase
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($code);
-        $fixer = $this->getFixer();
-        $method = new \ReflectionMethod($fixer, 'findCommentBlockStart');
+        $method = new \ReflectionMethod($this->fixer, 'findCommentBlockStart');
         $method->setAccessible(true);
-        if ($expected !== $result = $method->invoke($fixer, $tokens, $index)) {
+        if ($expected !== $result = $method->invoke($this->fixer, $tokens, $index)) {
             $this->fail(sprintf('Expected index %d (%s) got index %d (%s).', $expected, $tokens[$expected]->toJson(), $result, $tokens[$result]->toJson()));
         }
     }
@@ -844,10 +843,9 @@ class ezcReflectionMethod extends ReflectionMethod {
      */
     public function testMessyWhitespaces($expected, $input = null)
     {
-        $fixer = clone $this->getFixer();
-        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
-        $this->doTest($expected, $input, null, $fixer);
+        $this->doTest($expected, $input);
     }
 
     public function provideMessyWhitespacesCases()

@@ -600,7 +600,7 @@ class Foo
 }
 EOT;
 
-        $this->getFixer()->configure($configuration);
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -657,7 +657,7 @@ EOT
      */
     public function testWrongConfig()
     {
-        $this->getFixer()->configure(array('foo'));
+        $this->fixer->configure(array('foo'));
     }
 
     /**
@@ -699,10 +699,9 @@ EOT
      */
     public function testMessyWhitespaces($expected, $input = null)
     {
-        $fixer = clone $this->getFixer();
-        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
-        $this->doTest($expected, $input, null, $fixer);
+        $this->doTest($expected, $input);
     }
 
     public function provideMessyWhitespacesCases()

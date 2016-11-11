@@ -73,10 +73,9 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      */
     public function testFixingClassesWithConfig($expected, $input, array $config)
     {
-        $fixer = $this->getFixer();
-        $fixer->configure($config);
+        $this->fixer->configure($config);
 
-        $this->doTest($expected, $input, null, $fixer);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -263,11 +262,10 @@ TestInterface3, /**/     TestInterface4   ,
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
 
-        $fixer = $this->getFixer();
-        $method = new \ReflectionMethod($fixer, 'getClassyDefinitionInfo');
+        $method = new \ReflectionMethod($this->fixer, 'getClassyDefinitionInfo');
         $method->setAccessible(true);
 
-        $result = $method->invoke($fixer, $tokens, $expected['classy']);
+        $result = $method->invoke($this->fixer, $tokens, $expected['classy']);
 
         $this->assertSame($expected, $result);
     }
@@ -348,11 +346,10 @@ TestInterface3, /**/     TestInterface4   ,
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
 
-        $fixer = $this->getFixer();
-        $method = new \ReflectionMethod($fixer, 'getClassyInheritanceInfo');
+        $method = new \ReflectionMethod($this->fixer, 'getClassyInheritanceInfo');
         $method->setAccessible(true);
 
-        $result = $method->invoke($fixer, $tokens, $expected['start'], $classOpenIndex, $label);
+        $result = $method->invoke($this->fixer, $tokens, $expected['start'], $classOpenIndex, $label);
 
         $this->assertSame($expected, $result);
     }
@@ -474,10 +471,9 @@ $a = new class implements
      */
     public function testMessyWhitespaces($expected, $input = null)
     {
-        $fixer = clone $this->getFixer();
-        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
-        $this->doTest($expected, $input, null, $fixer);
+        $this->doTest($expected, $input);
     }
 
     public function provideMessyWhitespacesCases()

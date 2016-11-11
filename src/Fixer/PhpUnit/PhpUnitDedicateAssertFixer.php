@@ -46,7 +46,10 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer
         'is_string' => true,
     );
 
-    private $configuration = array(
+    /**
+     * @var string[]
+     */
+    private static $defaultConfiguration = array(
         'array_key_exists',
         'empty',
         'file_exists',
@@ -71,11 +74,18 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer
     );
 
     /**
+     * @var string[]
+     */
+    private $configuration;
+
+    /**
      * @param array|null $configuration
      */
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
+            $this->configuration = self::$defaultConfiguration;
+
             return;
         }
 

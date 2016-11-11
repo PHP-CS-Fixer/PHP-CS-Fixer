@@ -435,7 +435,7 @@ EOF;
      */
     public function testInvalidConfigurationType()
     {
-        $this->getFixer()->configure(array(null));
+        $this->fixer->configure(array(null));
     }
 
     /**
@@ -444,7 +444,7 @@ EOF;
      */
     public function testInvalidConfigurationValue()
     {
-        $this->getFixer()->configure(array('_unknown_'));
+        $this->fixer->configure(array('_unknown_'));
     }
 
     /**
@@ -457,7 +457,7 @@ EOF;
             $this->markTestSkipped('PHP version to high.');
         }
 
-        $this->getFixer()->configure(array('const'));
+        $this->fixer->configure(array('const'));
     }
 
     /**
@@ -469,7 +469,7 @@ EOF;
      */
     public function testFixClassConst($expected, $input)
     {
-        $this->getFixer()->configure(array('const'));
+        $this->fixer->configure(array('const'));
         $this->doTest($expected, $input);
     }
 

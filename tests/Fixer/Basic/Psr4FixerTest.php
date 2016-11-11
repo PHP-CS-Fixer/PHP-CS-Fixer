@@ -23,8 +23,6 @@ final class Psr4FixerTest extends AbstractFixerTestCase
 {
     public function testFixCase()
     {
-        $fixer = $this->getFixer();
-
         $file = $this->getMockBuilder('SplFileInfo')
                      ->setMethods(array('getRealPath'))
                      ->setConstructorArgs(array(__DIR__.'/Psr4/Foo/Bar.php'))
@@ -43,7 +41,7 @@ namespace Psr4\foo;
 class bar {}
 EOF;
 
-        $this->doTest($expected, $input, $file, $fixer);
+        $this->doTest($expected, $input, $file);
 
         $expected = <<<'EOF'
 <?php
@@ -139,8 +137,6 @@ EOF;
 
     public function testHandlePartialNamespaces()
     {
-        $fixer = $this->getFixer();
-
         $file = $this->getTestFile(__DIR__.'/../../../src/Fixer/Basic/Psr4Fixer.php');
 
         $expected = <<<'EOF'
@@ -148,21 +144,21 @@ EOF;
 namespace Foo\Bar\Baz\FIXER\Basic;
 class Psr4Fixer {}
 EOF;
-        $this->doTest($expected, null, $file, $fixer);
+        $this->doTest($expected, null, $file);
 
         $expected = <<<'EOF'
 <?php
 namespace /* hi there */ Foo\Bar\Baz\FIXER\Basic;
 class /* hi there */ Psr4Fixer {}
 EOF;
-        $this->doTest($expected, null, $file, $fixer);
+        $this->doTest($expected, null, $file);
 
         $expected = <<<'EOF'
 <?php
 namespace Foo\Bar\Baz;
 class Psr4Fixer {}
 EOF;
-        $this->doTest($expected, null, $file, $fixer);
+        $this->doTest($expected, null, $file);
     }
 
     /**

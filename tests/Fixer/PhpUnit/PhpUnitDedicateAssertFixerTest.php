@@ -179,8 +179,7 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
 
     public function testConfig()
     {
-        $fixer = $this->getFixer();
-        $fixer->configure(array('file_exists'));
+        $this->fixer->configure(array('file_exists'));
         $this->doTest(
             '<?php
                     $this->assertFileExists($a);
@@ -189,9 +188,7 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
             '<?php
                     $this->assertTrue(file_exists($a));
                     $this->assertTrue(is_infinite($a));
-            ',
-            null,
-            $fixer
+            '
         );
     }
 
@@ -201,6 +198,6 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
      */
     public function testInvalidConfig()
     {
-        $this->getFixer()->configure(array('_unknown_'));
+        $this->fixer->configure(array('_unknown_'));
     }
 }

@@ -141,10 +141,9 @@ inline 1
      */
     public function testMessyWhitespaces($expected, $input = null)
     {
-        $fixer = clone $this->getFixer();
-        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
-        $this->doTest($expected, $input, null, $fixer);
+        $this->doTest($expected, $input);
     }
 
     public function provideMessyWhitespacesCases()

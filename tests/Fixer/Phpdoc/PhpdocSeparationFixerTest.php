@@ -577,9 +577,8 @@ EOF;
         $expected = "<?php\t/**\r\n\t * @param string \$text\r\n\t *\r\n\t * @return string\r\n\t */";
         $input = "<?php\t/**\r\n\t * @param string \$text\r\n\t * @return string\r\n\t */";
 
-        $fixer = clone $this->getFixer();
-        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
-        $this->doTest($expected, $input, null, $fixer);
+        $this->doTest($expected, $input);
     }
 }

@@ -268,7 +268,7 @@ $var = $arr[0]{     0
      */
     public function testFixWithConfiguration(array $configuration, $expected, $input)
     {
-        $this->getFixer()->configure($configuration);
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
@@ -323,7 +323,7 @@ EOT
      */
     public function testWrongConfig()
     {
-        $this->getFixer()->configure(array('foo'));
+        $this->fixer->configure(array('foo'));
     }
 
     /**
@@ -332,6 +332,6 @@ EOT
      */
     public function testWrongEmptyConfig()
     {
-        $this->getFixer()->configure(array());
+        $this->fixer->configure(array());
     }
 }

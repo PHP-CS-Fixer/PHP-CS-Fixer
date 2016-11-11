@@ -28,7 +28,7 @@ final class NoExtraConsecutiveBlankLinesFixerTest extends AbstractFixerTestCase
      */
     public function testWithConfig(array $lineNumberRemoved, array $config = null)
     {
-        $this->getFixer()->configure($config);
+        $this->fixer->configure($config);
         $template = <<<'EOF'
 <?php
 use \DateTime;
@@ -422,7 +422,7 @@ EOF
      */
     public function testWrongConfig()
     {
-        $this->getFixer()->configure(array('__TEST__'));
+        $this->fixer->configure(array('__TEST__'));
     }
 
     /**
@@ -430,7 +430,7 @@ EOF
      */
     public function testBetweenUse($expected, $input = null)
     {
-        $this->getFixer()->configure(array('use'));
+        $this->fixer->configure(array('use'));
         $this->doTest($expected, $input);
     }
 
@@ -523,7 +523,7 @@ $a = new Qux();
 EOF
         ;
 
-        $this->getFixer()->configure(array('use'));
+        $this->fixer->configure(array('use'));
         $this->doTest($expected, $input);
     }
 
@@ -533,7 +533,7 @@ EOF
      */
     public function testRemoveLinesBetweenUseStatements70($expected, $input = null)
     {
-        $this->getFixer()->configure(array('use'));
+        $this->fixer->configure(array('use'));
         $this->doTest($expected, $input);
     }
 
@@ -562,7 +562,7 @@ use const some\a\{ConstA, ConstB, ConstC};
      */
     public function testWithoutUses($expected)
     {
-        $this->getFixer()->configure(array('use'));
+        $this->fixer->configure(array('use'));
         $this->doTest($expected);
     }
 
@@ -591,7 +591,7 @@ $a = new Qux();',
 
     public function testRemoveBetweenUseTraits()
     {
-        $this->getFixer()->configure(array('useTrait'));
+        $this->fixer->configure(array('useTrait'));
         $this->doTest(
             '<?php
             namespace T\A;
@@ -640,7 +640,7 @@ $a = new Qux();',
      */
     public function testOneOrInLineCases($expected, $input = null)
     {
-        $this->getFixer()->configure(array(
+        $this->fixer->configure(array(
                 'break',
                 'continue',
                 'return',
@@ -679,7 +679,7 @@ $a = new Qux();',
      */
     public function testOneOrInLine70Cases($expected, $input = null)
     {
-        $this->getFixer()->configure(array(
+        $this->fixer->configure(array(
                 'break',
                 'continue',
                 'return',
@@ -705,9 +705,9 @@ $a = new Qux();',
     /**
      * @dataProvider provideBraceCases
      */
-    public function testBraces($config, $expected, $input = null)
+    public function testBraces(array $config = null, $expected, $input = null)
     {
-        $this->getFixer()->configure(array($config));
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -715,16 +715,16 @@ $a = new Qux();',
     {
         return array(
             array(
-                'curly_brace_block',
+                array('curly_brace_block'),
                 "<?php function test()\n\n{}\n\necho 789;",
             ),
             array(
-                'curly_brace_block',
+                array('curly_brace_block'),
                 "<?php switch(\$a){\ncase 1:echo 789;}",
                 "<?php switch(\$a){\n   \ncase 1:echo 789;}",
             ),
             array(
-                'parenthesis_brace_block',
+                array('parenthesis_brace_block'),
                 '<?php
 is_int(
 1);
@@ -755,12 +755,12 @@ $c
 }',
             ),
             array(
-                'parenthesis_brace_block',
+                array('parenthesis_brace_block'),
                 "<?php array(\n1,\n2,\n3,\n);",
                 "<?php array(\n  \n1,\n2,\n3,\n\n\n);",
             ),
             array(
-                'parenthesis_brace_block',
+                array('parenthesis_brace_block'),
                 '<?php
     function a()
     {
@@ -778,9 +778,9 @@ $c
      * @requires PHP 5.4
      * @dataProvider provideBraceCases54
      */
-    public function testBraces54($config, $expected, $input)
+    public function testBraces54(array $config = null, $expected, $input)
     {
-        $this->getFixer()->configure(array($config));
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -788,7 +788,7 @@ $c
     {
         return array(
             array(
-                'square_brace_block',
+                array('square_brace_block'),
                 "<?php \$c = \$b[0];\n\n\n\$a = [\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
                 "<?php \$c = \$b[0];\n\n\n\$a = [\n\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
             ),
@@ -798,16 +798,12 @@ $c
     /**
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($config, $expected, $input = null)
+    public function testMessyWhitespaces(array $config = null, $expected, $input = null)
     {
-        $fixer = clone $this->getFixer();
-        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        $this->fixer->configure($config);
 
-        if (null !== $config) {
-            $fixer->configure(array($config));
-        }
-
-        $this->doTest($expected, $input, null, $fixer);
+        $this->doTest($expected, $input);
     }
 
     public function provideMessyWhitespacesCases()
@@ -819,12 +815,12 @@ $c
                 "<?php\r\nuse AAA;\r\n\r\n\r\n\r\nuse BBB;\r\n\r\n",
             ),
             array(
-                'parenthesis_brace_block',
+                array('parenthesis_brace_block'),
                 "<?php is_int(\r\n1);",
                 "<?php is_int(\r\n\r\n\r\n\r\n1);",
             ),
             array(
-                'square_brace_block',
+                array('square_brace_block'),
                 "<?php \$c = \$b[0];\r\n\r\n\r\n\$a = [\r\n   1,\r\n2];\r\necho 1;\r\n\$b = [];\r\n\r\n\r\n//a\r\n",
                 "<?php \$c = \$b[0];\r\n\r\n\r\n\$a = [\r\n\r\n   1,\r\n2];\r\necho 1;\r\n\$b = [];\r\n\r\n\r\n//a\r\n",
             ),

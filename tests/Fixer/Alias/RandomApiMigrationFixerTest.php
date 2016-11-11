@@ -27,7 +27,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
      */
     public function testConfigureCheckSearchFunction()
     {
-        $this->getFixer()->configure(array('is_null' => 'random_int'));
+        $this->fixer->configure(array('is_null' => 'random_int'));
     }
 
     /**
@@ -36,16 +36,16 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
      */
     public function testConfigureCheckReplacementType()
     {
-        $this->getFixer()->configure(array('rand' => null));
+        $this->fixer->configure(array('rand' => null));
     }
 
     public function testConfigure()
     {
         $config = array('rand' => 'random_int');
-        $this->getFixer()->configure($config);
+        $this->fixer->configure($config);
 
         /** @var $replacements string[] */
-        $replacements = static::getObjectAttribute($this->getFixer(), 'configuration');
+        $replacements = static::getObjectAttribute($this->fixer, 'configuration');
         static::assertSame(
             array('rand' => array('alternativeName' => 'random_int', 'argumentCount' => array(0, 2))),
             $replacements
@@ -57,7 +57,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
      */
     public function testFix($expected, $input = null, array $config = null)
     {
-        $this->getFixer()->configure($config);
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
