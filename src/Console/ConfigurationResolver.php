@@ -267,7 +267,10 @@ final class ConfigurationResolver
             try {
                 $this->reporter = $reporterFactory->getReporter($format);
             } catch (\UnexpectedValueException $e) {
-                throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are %s.', $format, implode(', ', $reporterFactory->getFormats())));
+                $formats = $reporterFactory->getFormats();
+                sort($formats);
+
+                throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are %s.', $format, implode(', ', $formats)));
             }
         }
 
