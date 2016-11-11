@@ -517,7 +517,7 @@ final class BracesFixer extends AbstractFixer implements WhitespacesFixerConfigA
             }
         }
 
-        throw new \RuntimeException('Statement end not found');
+        throw new \RuntimeException('Statement end not found.');
     }
 
     private function getControlTokens()

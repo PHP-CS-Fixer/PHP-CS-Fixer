@@ -61,7 +61,7 @@ final class StdinFileInfo extends \SplFileInfo
 
     public function getFileInfo($class_name = null)
     {
-        throw new \RuntimeException('Not implemented');
+        throw new \BadMethodCallException(sprintf('Method "%s" is not implemented.', __METHOD__));
     }
 
     public function getFilename()
@@ -108,7 +108,7 @@ final class StdinFileInfo extends \SplFileInfo
 
     public function getPathInfo($class_name = null)
     {
-        throw new \RuntimeException('Not implemented');
+        throw new \BadMethodCallException(sprintf('Method "%s" is not implemented.', __METHOD__));
     }
 
     public function getPathname()
@@ -163,7 +163,7 @@ final class StdinFileInfo extends \SplFileInfo
 
     public function openFile($open_mode = 'r', $use_include_path = false, $context = null)
     {
-        throw new \RuntimeException('Not implemented');
+        throw new \BadMethodCallException(sprintf('Method "%s" is not implemented.', __METHOD__));
     }
 
     public function setFileClass($class_name = null)

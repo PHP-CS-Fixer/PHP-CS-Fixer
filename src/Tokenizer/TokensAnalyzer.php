@@ -176,7 +176,7 @@ final class TokensAnalyzer
     public function isArrayMultiLine($index)
     {
         if (!$this->isArray($index)) {
-            throw new \InvalidArgumentException('Not an array at given index');
+            throw new \InvalidArgumentException(sprintf('Not an array at given index %d.', $index));
         }
 
         $tokens = $this->tokens;
@@ -232,7 +232,7 @@ final class TokensAnalyzer
         $token = $tokens[$index];
 
         if (!$token->isGivenKind(T_FUNCTION)) {
-            throw new \LogicException(sprintf('No T_FUNCTION at given index %d, got %s', $index, $token->getName()));
+            throw new \LogicException(sprintf('No T_FUNCTION at given index %d, got %s.', $index, $token->getName()));
         }
 
         $attributes = array(
@@ -304,7 +304,7 @@ final class TokensAnalyzer
         $token = $tokens[$index];
 
         if (!$token->isClassy()) {
-            throw new \LogicException('No classy token at given index');
+            throw new \LogicException(sprintf('No classy token at given index %d.', $index));
         }
 
         if (!$token->isGivenKind(T_CLASS)) {
@@ -327,7 +327,7 @@ final class TokensAnalyzer
         $token = $tokens[$index];
 
         if (!$token->isGivenKind(T_FUNCTION)) {
-            throw new \LogicException(sprintf('No T_FUNCTION at given index %d, got %s', $index, $token->getName()));
+            throw new \LogicException(sprintf('No T_FUNCTION at given index %d, got %s.', $index, $token->getName()));
         }
 
         $startParenthesisIndex = $tokens->getNextMeaningfulToken($index);
@@ -563,7 +563,7 @@ final class TokensAnalyzer
         $token = $tokens[$index];
 
         if (!$token->isGivenKind(T_WHILE)) {
-            throw new \LogicException(sprintf('No T_WHILE at given index %d, got %s', $index, $token->getName()));
+            throw new \LogicException(sprintf('No T_WHILE at given index %d, got %s.', $index, $token->getName()));
         }
 
         $endIndex = $tokens->getPrevMeaningfulToken($index);

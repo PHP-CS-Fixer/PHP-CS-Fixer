@@ -22,7 +22,7 @@ use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum <possumfromspace@gmail.com>
+ * @author SpacePossum
  */
 final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
 {
