@@ -26,7 +26,7 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
     {
         parent::setUp();
 
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => null,
             'sortAlgorithm' => $this->defaultSortAlgorithm,
         ));
@@ -34,7 +34,7 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
 
     protected function tearDown()
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => null,
             'sortAlgorithm' => $this->defaultSortAlgorithm,
         ));
@@ -728,7 +728,7 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
      */
     public function testInvalidConfigWithWrongParameters()
     {
-        OrderedImportsFixer::configure(array());
+        $this->getFixer()->configure(array());
     }
 
     /**
@@ -737,7 +737,7 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
      */
     public function testInvalidOrderTypesSize()
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => array('class', 'const'),
             'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
         ));
@@ -749,7 +749,7 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
      */
     public function testInvalidOrderType()
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => array('const', 'function', 'bar'),
             'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
         ));
@@ -761,7 +761,7 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
      */
     public function testInvalidConfigWithNotSupportedSortAlgorithm()
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => null,
             'sortAlgorithm' => 'dope',
         ));
@@ -773,7 +773,7 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
      */
     public function testInvalidConfigWithMultipleSortAlgorithm()
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => null,
             'sortAlgorithm' => array(OrderedImportsFixer::SORT_ALPHA, OrderedImportsFixer::SORT_LENGTH),
         ));
@@ -785,7 +785,7 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
      */
     public function testInvalidConfigWithSortAlgorithmIsNotString()
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => null,
             'sortAlgorithm' => new \stdClass(),
         ));
@@ -793,7 +793,7 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
 
     public function testFixByLength()
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => null,
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
         ));
@@ -883,7 +883,7 @@ EOF;
 
     public function testByLengthFixWithSameLength()
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => null,
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
         ));
@@ -941,7 +941,7 @@ EOF;
 
     public function testByLengthFixWithMultipleNamespace()
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => null,
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
         ));
@@ -1069,7 +1069,7 @@ EOF;
 
     public function testByLengthFixWithComment()
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => null,
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
         ));
@@ -1162,7 +1162,7 @@ EOF;
      */
     public function testByLength54()
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => null,
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
         ));
@@ -1245,7 +1245,7 @@ EOF;
      */
     public function testByLengthFixWithTraitImports()
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => null,
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
         ));
@@ -1341,7 +1341,7 @@ EOF;
 
     public function testByLengthFixWithDifferentCases()
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => null,
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
         ));
@@ -1385,7 +1385,7 @@ EOF;
 
     public function testByLengthOrderWithTrailingDigit()
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => null,
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
         ));
@@ -1425,7 +1425,7 @@ EOF;
 
     public function testByLengthCodeWithImportsOnly()
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => null,
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
         ));
@@ -1449,7 +1449,7 @@ EOF;
 
     public function testByLengthWithoutUses()
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => null,
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
         ));
@@ -1470,7 +1470,7 @@ EOF
      */
     public function test70ByLength($expected, $input = null)
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => null,
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
         ));
@@ -1522,7 +1522,7 @@ use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
      */
     public function test70TypesOrderAndLength($expected, $input = null)
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => array(OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION),
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
         ));
@@ -1578,7 +1578,7 @@ use function some\f\{fn_c, fn_d, fn_e};
      */
     public function test70TypesOrderAndAlphabet($expected, $input = null)
     {
-        OrderedImportsFixer::configure(array(
+        $this->getFixer()->configure(array(
             'typesOrder' => array(OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION),
             'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
         ));
