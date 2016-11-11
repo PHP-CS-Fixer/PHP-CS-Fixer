@@ -161,7 +161,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function provideResolveConfigFileDefaultCases()
     {
-        $dirBase = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR;
+        $dirBase = $this->getFixtureDir();
 
         return array(
             array(
@@ -200,11 +200,11 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolveConfigFileChooseFileWithInvalidFile()
     {
-        $dirBase = realpath(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR);
+        $dirBase = $this->getFixtureDir();
 
         $resolver = new ConfigurationResolver(
             $this->config,
-            array('path' => array($dirBase.'/case_5')),
+            array('path' => array($dirBase.'case_5')),
             ''
         );
 
@@ -213,15 +213,32 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException              \PhpCsFixer\ConfigurationException\InvalidConfigurationException
+     * @expectedExceptionMessageRegExp /^The format "xls" is not defined, supported are json, junit, txt, xml.$/
+     */
+    public function testResolveConfigFileChooseFileWithInvalidFormat()
+    {
+        $dirBase = $this->getFixtureDir();
+
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            array('path' => array($dirBase.'case_7')),
+            ''
+        );
+
+        $resolver->getReporter();
+    }
+
+    /**
+     * @expectedException              \PhpCsFixer\ConfigurationException\InvalidConfigurationException
      * @expectedExceptionMessageRegExp /^For multiple paths config parameter is required.$/
      */
     public function testResolveConfigFileChooseFileWithPathArrayWithoutConfig()
     {
-        $dirBase = realpath(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR);
+        $dirBase = $this->getFixtureDir();
 
         $resolver = new ConfigurationResolver(
             $this->config,
-            array('path' => array($dirBase.'/case_1/.php_cs.dist', $dirBase.'/case_1/foo.php')),
+            array('path' => array($dirBase.'case_1/.php_cs.dist', $dirBase.'case_1/foo.php')),
             ''
         );
 
@@ -230,13 +247,13 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveConfigFileChooseFileWithPathArrayAndConfig()
     {
-        $dirBase = realpath(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR);
+        $dirBase = $this->getFixtureDir();
 
         new ConfigurationResolver(
             $this->config,
             array(
-                'config' => $dirBase.'/case_1/.php_cs.dist',
-                'path' => array($dirBase.'/case_1/.php_cs.dist', $dirBase.'/case_1/foo.php'),
+                'config' => $dirBase.'case_1/.php_cs.dist',
+                'path' => array($dirBase.'case_1/.php_cs.dist', $dirBase.'case_1/foo.php'),
             ),
             ''
         );
@@ -850,5 +867,10 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         ksort($actual);
 
         $this->assertSame($expected, $actual, $message);
+    }
+
+    private function getFixtureDir()
+    {
+        return realpath(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR).'/';
     }
 }

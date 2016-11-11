@@ -24,6 +24,7 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Report\ReporterFactory;
+use PhpCsFixer\Report\ReporterInterface;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\ToolInfo;
@@ -97,7 +98,7 @@ final class ConfigurationResolver
         'allow-risky' => null,
         'config' => null,
         'dry-run' => null,
-        'format' => 'txt',
+        'format' => null,
         'path' => array(),
         'path-mode' => self::PATH_MODE_OVERRIDE,
         'progress' => null,
@@ -247,13 +248,17 @@ final class ConfigurationResolver
         return $this->fixers;
     }
 
+    /**
+     * @return ReporterInterface
+     */
     public function getReporter()
     {
         if (null === $this->reporter) {
             $reporterFactory = ReporterFactory::create();
             $reporterFactory->registerBuiltInReporters();
 
-            if (array_key_exists('format', $this->options)) {
+            if (null !== $this->options['format']) {
+                // explicit set (through the command line)
                 $format = $this->options['format'];
             } else {
                 $format = $this->getConfig()->getFormat();
@@ -262,6 +267,9 @@ final class ConfigurationResolver
             try {
                 $this->reporter = $reporterFactory->getReporter($format);
             } catch (\UnexpectedValueException $e) {
+                $formats = $reporterFactory->getFormats();
+                sort($formats);
+
                 throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are %s.', $format, implode(', ', $formats)));
             }
         }
