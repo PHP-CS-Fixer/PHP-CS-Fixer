@@ -96,6 +96,7 @@ linefeed                                       | line_ending                    
 list_commas                                    | no_trailing_comma_in_list_call
 logical_not_operators_with_spaces              | not_operator_with_space
 logical_not_operators_with_successor_space     | not_operator_with_successor_space
+long_array_syntax                              | array_syntax                                      | use configuration ['syntax' => 'long']
 method_argument_default_value                  | no_unreachable_default_argument_value
 multiline_array_trailing_comma                 | trailing_comma_in_multiline_array
 multiline_spaces_before_semicolon              | no_multiline_whitespace_before_semicolons
@@ -115,6 +116,7 @@ phpdoc_short_description                       | phpdoc_summary
 remove_leading_slash_use                       | no_leading_import_slash
 remove_lines_between_uses                      | no_extra_consecutive_blank_lines                  | use configuration option 'use'
 return                                         | blank_line_before_return
+short_array_syntax                             | array_syntax                                      | use configuration ['syntax' => 'short']
 short_bool_cast                                | no_short_bool_cast
 short_echo_tag                                 | no_short_echo_tag
 short_tag                                      | full_opening_tag

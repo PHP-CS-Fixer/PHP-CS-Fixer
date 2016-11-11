@@ -284,8 +284,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['declare_strict_types'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: declare_strict_types,no_extra_consecutive_blank_lines.test
             array($fixers['declare_strict_types'], $fixers['no_whitespace_in_blank_line']), // tested also in: declare_strict_types,no_whitespace_in_blank_line.test
             array($fixers['declare_strict_types'], $fixers['single_blank_line_before_namespace']), // tested also in: declare_strict_types,single_blank_line_before_namespace.test
-            array($fixers['short_array_syntax'], $fixers['binary_operator_spaces']), // tested also in: short_array_syntax,binary_operator_spaces.test
-            array($fixers['short_array_syntax'], $fixers['ternary_operator_spaces']), // tested also in: short_array_syntax,ternary_operator_spaces.test
+            array($fixers['array_syntax'], $fixers['binary_operator_spaces']), // tested also in: array_syntax,binary_operator_spaces.test
+            array($fixers['array_syntax'], $fixers['ternary_operator_spaces']), // tested also in: array_syntax,ternary_operator_spaces.test
             array($fixers['class_keyword_remove'], $fixers['no_unused_imports']), // tested also in: class_keyword_remove,no_unused_imports.test
             array($fixers['no_blank_lines_after_phpdoc'], $fixers['single_blank_line_before_namespace']), // tested also in: no_blank_lines_after_phpdoc,single_blank_line_before_namespace.test
             array($fixers['php_unit_fqcn_annotation'], $fixers['no_unused_imports']), // tested also in: php_unit_fqcn_annotation,unused_use.test
@@ -408,8 +408,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     public function provideConflictingFixersRules()
     {
         return array(
-            array(new RuleSet(array('short_array_syntax' => true, 'long_array_syntax' => true))),
-            array(new RuleSet(array('long_array_syntax' => true, 'short_array_syntax' => true))),
+            array(new RuleSet(array('concat_with_spaces' => true, 'concat_without_spaces' => true))),
+            array(new RuleSet(array('concat_without_spaces' => true, 'concat_with_spaces' => true))),
         );
     }
 

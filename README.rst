@@ -174,6 +174,10 @@ automatically fix anything:
 
 Choose from the list of available rules:
 
+* **array_syntax**
+   | PHP arrays should be declared using the configured syntax.
+   | *Rule is: configurable.*
+
 * **binary_operator_spaces** [@Symfony]
    | Binary operators should be surrounded by at least one space.
    | *Rule is: configurable.*
@@ -278,9 +282,6 @@ Choose from the list of available rules:
 
 * **linebreak_after_opening_tag**
    | Ensure there is no code on the same line as the PHP open tag.
-
-* **long_array_syntax**
-   | Arrays should use the long syntax.
 
 * **lowercase_cast** [@Symfony]
    | Cast should be written in lower case.
@@ -555,9 +556,6 @@ Choose from the list of available rules:
 * **semicolon_after_instruction**
    | Instructions must be terminated with a semicolon.
 
-* **short_array_syntax**
-   | PHP arrays should use the PHP 5.4 short-syntax.
-
 * **short_scalar_cast** [@Symfony]
    | Cast "(boolean)" and "(integer)" should be written as "(bool)" and
    | "(int)". "(double)" and "(real)" as "(float)".
@@ -667,7 +665,7 @@ The example below will add two rules to the default list of PSR2 set rules:
         ->setRules(array(
             '@PSR2' => true,
             'strict_param' => true,
-            'short_array_syntax' => true,
+            'array_syntax' => array('syntax' => 'short'),
         ))
         ->setFinder($finder)
     ;
