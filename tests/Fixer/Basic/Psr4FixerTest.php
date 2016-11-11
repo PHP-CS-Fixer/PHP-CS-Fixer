@@ -25,12 +25,10 @@ final class Psr4FixerTest extends AbstractFixerTestCase
     {
         $fixer = $this->getFixer();
 
-        $file = $this->getMockBuilder('SplFileInfo')
-                     ->setMethods(array('getRealPath'))
-                     ->setConstructorArgs(array(__DIR__.'/Psr4/Foo/Bar.php'))
-                     ->getMock();
-
-        $file->expects($this->any())->method('getRealPath')->willReturn(__DIR__.'/Psr4/Foo/Bar.php');
+        $fileProphecy = $this->prophesize('SplFileInfo');
+        $fileProphecy->getBasename()->willReturn('Bar.php');
+        $fileProphecy->getRealPath()->willReturn(__DIR__.'/Psr4/Foo/Bar.php');
+        $file = $fileProphecy->reveal();
 
         $expected = <<<'EOF'
 <?php

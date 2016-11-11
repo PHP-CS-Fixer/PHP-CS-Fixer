@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\RuleSet;
+use Prophecy\Argument;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -30,17 +31,21 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $testInstance = $factory->registerBuiltInFixers();
         $this->assertSame($factory, $testInstance);
 
-        $mocks = array($this->createFixerMock('f1'), $this->createFixerMock('f2'));
-        $testInstance = $factory->registerCustomFixers($mocks);
+        $testInstance = $factory->registerCustomFixers(
+            array($this->createFixerDouble('f1'), $this->createFixerDouble('f2'))
+        );
         $this->assertSame($factory, $testInstance);
 
-        $mock = $this->createFixerMock('f3');
-        $testInstance = $factory->registerFixer($mock);
+        $testInstance = $factory->registerFixer(
+            $this->createFixerDouble('f3')
+        );
         $this->assertSame($factory, $testInstance);
 
-        $mock = $this->getMockBuilder('PhpCsFixer\RuleSetInterface')->getMock();
-        $mock->expects($this->any())->method('getRules')->willReturn(array());
-        $testInstance = $factory->useRuleSet($mock);
+        $ruleSetProphecy = $this->prophesize('PhpCsFixer\RuleSetInterface');
+        $ruleSetProphecy->getRules()->willReturn(array());
+        $testInstance = $factory->useRuleSet(
+            $ruleSetProphecy->reveal()
+        );
         $this->assertSame($factory, $testInstance);
     }
 
@@ -73,10 +78,10 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = new FixerFactory();
         $fxs = array(
-            $this->createFixerMock('f1', 0),
-            $this->createFixerMock('f2', -10),
-            $this->createFixerMock('f3', 10),
-            $this->createFixerMock('f4', -10),
+            $this->createFixerDouble('f1', 0),
+            $this->createFixerDouble('f2', -10),
+            $this->createFixerDouble('f3', 10),
+            $this->createFixerDouble('f4', -10),
         );
 
         foreach ($fxs as $fx) {
@@ -96,9 +101,9 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = new FixerFactory();
 
-        $f1 = $this->createFixerMock('f1');
-        $f2 = $this->createFixerMock('f2');
-        $f3 = $this->createFixerMock('f3');
+        $f1 = $this->createFixerDouble('f1');
+        $f2 = $this->createFixerDouble('f2');
+        $f3 = $this->createFixerDouble('f3');
 
         $factory->registerFixer($f1);
         $factory->registerCustomFixers(array($f2, $f3));
@@ -117,8 +122,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = new FixerFactory();
 
-        $f1 = $this->createFixerMock('non_unique_name');
-        $f2 = $this->createFixerMock('non_unique_name');
+        $f1 = $this->createFixerDouble('non_unique_name');
+        $f2 = $this->createFixerDouble('non_unique_name');
         $factory->registerFixer($f1);
         $factory->registerFixer($f2);
     }
@@ -324,9 +329,9 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = new FixerFactory();
 
-        $f1 = $this->createFixerMock('f1');
-        $f2 = $this->createFixerMock('f2');
-        $f3 = $this->createFixerMock('f3');
+        $f1 = $this->createFixerDouble('f1');
+        $f2 = $this->createFixerDouble('f2');
+        $f3 = $this->createFixerDouble('f3');
         $factory->registerFixer($f1);
         $factory->registerCustomFixers(array($f2, $f3));
 
@@ -340,8 +345,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = new FixerFactory();
 
-        $f1 = $this->createFixerMock('f1');
-        $f2 = $this->createFixerMock('f2');
+        $f1 = $this->createFixerDouble('f1');
+        $f2 = $this->createFixerDouble('f2');
         $factory->registerFixer($f1);
         $factory->registerFixer($f2);
 
@@ -439,12 +444,13 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         return $factory->registerBuiltInFixers()->getFixers();
     }
 
-    private function createFixerMock($name, $priority = 0)
+    private function createFixerDouble($name, $priority = 0)
     {
-        $fixer = $this->getMockBuilder('PhpCsFixer\FixerInterface')->getMock();
-        $fixer->expects($this->any())->method('getName')->willReturn($name);
-        $fixer->expects($this->any())->method('getPriority')->willReturn($priority);
+        $fixer = $this->prophesize('PhpCsFixer\FixerInterface');
+        $fixer->getName()->willReturn($name);
+        $fixer->getPriority()->willReturn($priority);
+        $fixer->configure(Argument::is(null))->willReturn(null);
 
-        return $fixer;
+        return $fixer->reveal();
     }
 }
