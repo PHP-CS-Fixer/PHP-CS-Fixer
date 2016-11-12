@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
@@ -72,6 +73,10 @@ final class HeaderCommentFixer extends AbstractFixer implements WhitespacesFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
+        if (null === $this->headerComment) {
+            throw new RequiredFixerConfigurationException($this->getName(), 'Configuration is required.');
+        }
+
         // figure out where the comment should be placed
         $headerNewIndex = $this->findHeaderCommentInsertionIndex($tokens);
 
@@ -274,7 +279,7 @@ final class HeaderCommentFixer extends AbstractFixer implements WhitespacesFixer
     private function parseConfiguration(array $configuration = null)
     {
         if (null === $configuration || !array_key_exists('header', $configuration)) {
-            throw new InvalidFixerConfigurationException($this->getName(), 'Configuration is required.');
+            throw new RequiredFixerConfigurationException($this->getName(), 'Configuration is required.');
         }
 
         $header = $configuration['header'];

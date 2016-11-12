@@ -29,6 +29,7 @@ final class HeaderCommentFixerTest extends AbstractFixerTestCase
     public function testFix(array $configuration, $expected, $input)
     {
         $this->fixer->configure($configuration);
+
         $this->doTest($expected, $input);
     }
 
@@ -452,13 +453,5 @@ declare(strict_types=1)?>',
                 "<?php\r\ndeclare(strict_types=1);\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
             ),
         );
-    }
-
-    /**
-     * @return bool|array
-     */
-    protected function getFixerConfiguration()
-    {
-        return array('header' => '');
     }
 }

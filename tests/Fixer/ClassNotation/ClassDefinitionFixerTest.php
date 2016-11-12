@@ -50,6 +50,8 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      */
     public function testFixingAnonymousClasses($expected, $input)
     {
+        $this->fixer->configure(self::$defaultTestConfig);
+
         $this->doTest($expected, $input);
     }
 
@@ -61,6 +63,8 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      */
     public function testFixingClasses($expected, $input)
     {
+        $this->fixer->configure(self::$defaultTestConfig);
+
         $this->doTest($expected, $input);
     }
 
@@ -86,6 +90,8 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      */
     public function testFixingInterfaces($expected, $input)
     {
+        $this->fixer->configure(self::$defaultTestConfig);
+
         $this->doTest($expected, $input);
     }
 
@@ -100,6 +106,8 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
         if (!defined('T_TRAIT')) {
             $this->markTestSkipped('Test requires traits.');
         }
+
+        $this->fixer->configure(self::$defaultTestConfig);
 
         $this->doTest($expected, $input);
     }
@@ -427,6 +435,8 @@ namespace {
      */
     public function testFixPHP7($expected, $input = null)
     {
+        $this->fixer->configure(self::$defaultTestConfig);
+
         $this->doTest($expected, $input);
     }
 
@@ -472,6 +482,7 @@ $a = new class implements
     public function testMessyWhitespaces($expected, $input = null)
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        $this->fixer->configure(self::$defaultTestConfig);
 
         $this->doTest($expected, $input);
     }
@@ -484,11 +495,6 @@ $a = new class implements
                 "<?php\r\nclass Aaa implements\r\n\tBbb, Ccc,\r\n\tDdd\r\n\t{\r\n\t}",
             ),
         );
-    }
-
-    protected function getFixerConfiguration()
-    {
-        return self::$defaultTestConfig;
     }
 
     private function provideClassyCases($classy)

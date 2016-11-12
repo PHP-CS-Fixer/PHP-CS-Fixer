@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -34,7 +33,7 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
-            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Configuration is required.'));
+            $this->configuration = array();
         }
 
         $this->configuration = $configuration;
@@ -63,6 +62,10 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
+        if (!count($this->configuration)) {
+            return;
+        }
+
         foreach ($tokens as $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
