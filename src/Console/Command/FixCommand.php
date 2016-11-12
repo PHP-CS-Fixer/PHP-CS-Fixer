@@ -309,11 +309,11 @@ EOF
                 'rules' => $input->getOption('rules'),
                 'path' => $input->getArgument('path'),
                 'path-mode' => $input->getOption('path-mode'),
-                'progress' => (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) && 'txt' === $input->getOption('format'),
                 'using-cache' => $input->getOption('using-cache'),
                 'cache-file' => $input->getOption('cache-file'),
                 'format' => $input->getOption('format'),
                 'diff' => $input->getOption('diff'),
+                'verbosity' => $verbosity,
             ),
             getcwd()
         );

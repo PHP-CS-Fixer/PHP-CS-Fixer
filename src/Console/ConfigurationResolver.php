@@ -29,6 +29,7 @@ use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\ToolInfo;
 use PhpCsFixer\WhitespacesFixerConfig;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
@@ -101,21 +102,22 @@ final class ConfigurationResolver
         'format' => null,
         'path' => array(),
         'path-mode' => self::PATH_MODE_OVERRIDE,
-        'progress' => null,
         'using-cache' => null,
         'cache-file' => null,
         'rules' => null,
         'diff' => null,
+        'verbosity' => null,
     );
 
+    private $cacheFile;
+    private $cacheManager;
+    private $finder;
+    private $format;
+    private $linter;
     private $path;
     private $progress;
-    private $usingCache;
-    private $cacheFile;
     private $ruleSet;
-    private $finder;
-    private $linter;
-    private $cacheManager;
+    private $usingCache;
 
     /**
      * ConfigurationResolver constructor.
@@ -257,12 +259,7 @@ final class ConfigurationResolver
             $reporterFactory = ReporterFactory::create();
             $reporterFactory->registerBuiltInReporters();
 
-            if (null !== $this->options['format']) {
-                // explicit set (through the command line)
-                $format = $this->options['format'];
-            } else {
-                $format = $this->getConfig()->getFormat();
-            }
+            $format = $this->getFormat();
 
             try {
                 $this->reporter = $reporterFactory->getReporter($format);
@@ -322,7 +319,10 @@ final class ConfigurationResolver
     public function getProgress()
     {
         if (null === $this->progress) {
-            $this->progress = $this->options['progress'] && !$this->getConfig()->getHideProgress();
+            $this->progress =
+                OutputInterface::VERBOSITY_VERBOSE <= $this->options['verbosity']
+                && 'txt' === $this->getFormat()
+                && !$this->getConfig()->getHideProgress();
         }
 
         return $this->progress;
@@ -430,6 +430,20 @@ final class ConfigurationResolver
         }
 
         $this->options[$name] = $value;
+    }
+
+    /**
+     * @return string
+     */
+    private function getFormat()
+    {
+        if (null === $this->format) {
+            $this->format = null !== $this->options['format']
+                ? $format = $this->options['format']
+                : $format = $this->getConfig()->getFormat();
+        }
+
+        return $this->format;
     }
 
     private function getRuleSet()

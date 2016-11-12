@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\Console;
 use PhpCsFixer\Config;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
@@ -58,7 +59,10 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
         $resolver = new ConfigurationResolver(
             $this->config,
-            array('progress' => true),
+            array(
+                'format' => 'txt',
+                'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
+            ),
             ''
         );
 
@@ -71,7 +75,10 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
         $resolver = new ConfigurationResolver(
             $this->config,
-            array('progress' => false),
+            array(
+                'format' => 'txt',
+                'verbosity' => OutputInterface::VERBOSITY_NORMAL,
+            ),
             ''
         );
 
@@ -84,7 +91,10 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
         $resolver = new ConfigurationResolver(
             $this->config,
-            array('progress' => true),
+            array(
+                'format' => 'txt',
+                'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
+            ),
             ''
         );
 
@@ -97,7 +107,10 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
         $resolver = new ConfigurationResolver(
             $this->config,
-            array('progress' => false),
+            array(
+                'format' => 'txt',
+                'verbosity' => OutputInterface::VERBOSITY_NORMAL,
+            ),
             ''
         );
 
