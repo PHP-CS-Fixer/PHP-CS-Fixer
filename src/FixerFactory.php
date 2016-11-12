@@ -161,7 +161,11 @@ final class FixerFactory
             }
 
             $fixer = $this->fixersByName[$name];
-            $fixer->configure($ruleSet->getRuleConfiguration($name));
+
+            $config = $ruleSet->getRuleConfiguration($name);
+            if (null !== $config) {
+                $fixer->configure($config);
+            }
 
             $fixers[] = $fixer;
             $fixersByName[$name] = $fixer;

@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
 use PhpCsFixer\ConfigurationException\UnallowedFixerConfigurationException;
 
 /**
@@ -28,6 +29,12 @@ abstract class AbstractFixer implements FixerInterface
 
     public function __construct()
     {
+        try {
+            $this->configure(null);
+        } catch (RequiredFixerConfigurationException $e) {
+            // ignore
+        }
+
         if ($this instanceof WhitespacesFixerConfigAwareInterface) {
             $this->whitespacesConfig = $this->getDefaultWhitespacesFixerConfig();
         }

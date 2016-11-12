@@ -20,7 +20,6 @@ use PhpCsFixer\RuleSet;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
-use PhpCsFixer\WhitespacesFixerConfig;
 use Prophecy\Argument;
 
 /**
@@ -57,16 +56,6 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
         $fixerClassName = $this->getFixerClassName();
         $fixer = new $fixerClassName();
 
-        $fixer->configure(
-            is_array($this->getFixerConfiguration())
-                ? $this->getFixerConfiguration()
-                : null
-        );
-
-        if ($fixer instanceof WhitespacesFixerConfigAwareInterface) {
-            $fixer->setWhitespacesConfig($this->getDefaultWhitespacesFixerConfig());
-        }
-
         return $fixer;
     }
 
@@ -78,14 +67,6 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
     protected function createFixerFactory()
     {
         return FixerFactory::create()->registerBuiltInFixers();
-    }
-
-    /**
-     * @return bool|array
-     */
-    protected function getFixerConfiguration()
-    {
-        return true;
     }
 
     /**
@@ -250,17 +231,6 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
         return $linter;
     }
 
-    private function getDefaultWhitespacesFixerConfig()
-    {
-        static $defaultWhitespacesFixerConfig = null;
-
-        if (null === $defaultWhitespacesFixerConfig) {
-            $defaultWhitespacesFixerConfig = new WhitespacesFixerConfig('    ', "\n");
-        }
-
-        return $defaultWhitespacesFixerConfig;
-    }
-
     /**
      * @return string
      */
@@ -270,12 +240,9 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
             return $this->fixerClassName;
         }
 
-        $name = $this->getFixerName();
-        $configuration = $this->getFixerConfiguration();
-
         try {
             $fixers = $this->createFixerFactory()
-                ->useRuleSet(new RuleSet(array($name => $configuration)))
+                ->useRuleSet(new RuleSet(array($this->getFixerName() => true)))
                 ->getFixers()
             ;
         } catch (\UnexpectedValueException $e) {
