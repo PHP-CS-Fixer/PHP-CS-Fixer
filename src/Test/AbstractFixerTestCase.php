@@ -20,6 +20,7 @@ use PhpCsFixer\RuleSet;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
+use PhpCsFixer\WhitespacesFixerConfig;
 use Prophecy\Argument;
 
 /**
@@ -33,13 +34,40 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
     protected $linter;
 
     /**
-     * @var FixerInterface|null
+     * @var null|FixerInterface
      */
-    private $fixer;
+    protected $fixer;
+
+    /**
+     * @var null|string
+     */
+    private $fixerClassName;
 
     public function setUp()
     {
         $this->linter = $this->getLinter();
+        $this->fixer = $this->createFixer();
+    }
+
+    /**
+     * @return FixerInterface
+     */
+    protected function createFixer()
+    {
+        $fixerClassName = $this->getFixerClassName();
+        $fixer = new $fixerClassName();
+
+        $fixer->configure(
+            is_array($this->getFixerConfiguration())
+                ? $this->getFixerConfiguration()
+                : null
+        );
+
+        if ($fixer instanceof WhitespacesFixerConfigAwareInterface) {
+            $fixer->setWhitespacesConfig($this->getDefaultWhitespacesFixerConfig());
+        }
+
+        return $fixer;
     }
 
     /**
@@ -50,36 +78,6 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
     protected function createFixerFactory()
     {
         return FixerFactory::create()->registerBuiltInFixers();
-    }
-
-    /**
-     * @return FixerInterface
-     */
-    protected function getFixer()
-    {
-        if (null !== $this->fixer) {
-            return $this->fixer;
-        }
-
-        $name = $this->getFixerName();
-        $configuration = $this->getFixerConfiguration();
-
-        try {
-            $fixers = $this->createFixerFactory()
-                ->useRuleSet(new RuleSet(array($name => $configuration)))
-                ->getFixers()
-            ;
-        } catch (\UnexpectedValueException $e) {
-            throw new \UnexpectedValueException('Cannot determine fixer class, perhaps you forget to override `getFixerName` or `createFixerFactory` method?');
-        }
-
-        if (1 !== count($fixers)) {
-            throw new \UnexpectedValueException(sprintf('Determine fixer class should result in one fixer, got "%d". Perhaps you configured the fixer to "false" ?', count($fixers)));
-        }
-
-        $this->fixer = $fixers[0];
-
-        return $this->fixer;
     }
 
     /**
@@ -128,20 +126,18 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
      * This method throws an exception if $expected and $input are equal to prevent test cases that accidentally do
      * not test anything.
      *
-     * @param string              $expected The expected fixer output
-     * @param string|null         $input    The fixer input, or null if it should intentionally be equal to the output
-     * @param \SplFileInfo|null   $file     The file to fix, or null if unneeded
-     * @param FixerInterface|null $fixer    The fixer to be used, or null if it should be inferred from the test name
+     * @param string            $expected The expected fixer output
+     * @param string|null       $input    The fixer input, or null if it should intentionally be equal to the output
+     * @param \SplFileInfo|null $file     The file to fix, or null if unneeded
      */
-    protected function doTest($expected, $input = null, \SplFileInfo $file = null, FixerInterface $fixer = null)
+    protected function doTest($expected, $input = null, \SplFileInfo $file = null)
     {
         if ($expected === $input) {
             throw new \InvalidArgumentException('Input parameter must not be equal to expected parameter.');
         }
 
-        $fixer = $fixer ?: $this->getFixer();
         $file = $file ?: $this->getTestFile();
-        $fileIsSupported = $fixer->supports($file);
+        $fileIsSupported = $this->fixer->supports($file);
 
         if (null !== $input) {
             $this->assertNull($this->lintSource($input));
@@ -150,8 +146,8 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
             $tokens = Tokens::fromCode($input);
 
             if ($fileIsSupported) {
-                $this->assertTrue($fixer->isCandidate($tokens), 'Fixer must be a candidate for input code.');
-                $fixResult = $fixer->fix($file, $tokens);
+                $this->assertTrue($this->fixer->isCandidate($tokens), 'Fixer must be a candidate for input code.');
+                $fixResult = $this->fixer->fix($file, $tokens);
                 $this->assertNull($fixResult, '->fix method must return null.');
             }
 
@@ -178,7 +174,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
         Tokens::clearCache();
         $tokens = Tokens::fromCode($expected);
 
-        $isCandidate = $fixer->isCandidate($tokens);
+        $isCandidate = $this->fixer->isCandidate($tokens);
         $this->assertFalse($tokens->isChanged(), 'Fixer should not touch Tokens on candidate check.');
 
         if (!$isCandidate) {
@@ -186,7 +182,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
         }
 
         if ($fileIsSupported) {
-            $fixResult = $fixer->fix($file, $tokens);
+            $fixResult = $this->fixer->fix($file, $tokens);
             $this->assertNull($fixResult, '->fix method must return null.');
         }
 
@@ -252,5 +248,46 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
         }
 
         return $linter;
+    }
+
+    private function getDefaultWhitespacesFixerConfig()
+    {
+        static $defaultWhitespacesFixerConfig = null;
+
+        if (null === $defaultWhitespacesFixerConfig) {
+            $defaultWhitespacesFixerConfig = new WhitespacesFixerConfig('    ', "\n");
+        }
+
+        return $defaultWhitespacesFixerConfig;
+    }
+
+    /**
+     * @return string
+     */
+    private function getFixerClassName()
+    {
+        if (null !== $this->fixerClassName) {
+            return $this->fixerClassName;
+        }
+
+        $name = $this->getFixerName();
+        $configuration = $this->getFixerConfiguration();
+
+        try {
+            $fixers = $this->createFixerFactory()
+                ->useRuleSet(new RuleSet(array($name => $configuration)))
+                ->getFixers()
+            ;
+        } catch (\UnexpectedValueException $e) {
+            throw new \UnexpectedValueException('Cannot determine fixer class, perhaps you forget to override `getFixerName` or `createFixerFactory` method?');
+        }
+
+        if (1 !== count($fixers)) {
+            throw new \UnexpectedValueException(sprintf('Determine fixer class should result in one fixer, got "%d". Perhaps you configured the fixer to "false" ?', count($fixers)));
+        }
+
+        $this->fixerClassName = get_class($fixers[0]);
+
+        return $this->fixerClassName;
     }
 }

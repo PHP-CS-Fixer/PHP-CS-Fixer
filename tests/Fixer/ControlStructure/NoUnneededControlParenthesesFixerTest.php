@@ -30,6 +30,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         parent::setUpBeforeClass();
 
         $fixer = new NoUnneededControlParenthesesFixer();
+        $fixer->configure(null);
         $controlStatementsProperty = new \ReflectionProperty($fixer, 'controlStatements');
         $controlStatementsProperty->setAccessible(true);
         self::$defaultStatements = $controlStatementsProperty->getValue($fixer);
@@ -40,20 +41,18 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
      */
     public function testFix($expected, $input = null, $fixStatement = null)
     {
-        $fixer = $this->getFixer();
-
         // PHP <5.5 BC
         if (version_compare(PHP_VERSION, '5.5', '<') && false !== strpos($input, 'yield')) {
             $input = null;
         }
 
         // Default config. Fixes all statements.
-        $fixer->configure(self::$defaultStatements);
-        $this->doTest($expected, $input, null, $fixer);
+        $this->fixer->configure(self::$defaultStatements);
+        $this->doTest($expected, $input);
 
         // Empty array config. Should not fix anything.
-        $fixer->configure(array());
-        $this->doTest($expected, null, null, $fixer);
+        $this->fixer->configure(array());
+        $this->doTest($expected, null);
 
         // Test with only one statement
         foreach (self::$defaultStatements as $statement) {
@@ -68,12 +67,10 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 }
             }
 
-            $fixer->configure(array($statement));
+            $this->fixer->configure(array($statement));
             $this->doTest(
                 $expected,
-                $withInput ? $input : null,
-                null,
-                $fixer
+                $withInput ? $input : null
             );
         }
     }

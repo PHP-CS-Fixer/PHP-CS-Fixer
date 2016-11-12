@@ -21,12 +21,20 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpUnitConstructFixer extends AbstractFixer
 {
-    private $configuration = array(
+    /**
+     * @var string[]
+     */
+    private static $defaultConfiguration = array(
         'assertSame',
         'assertEquals',
         'assertNotEquals',
         'assertNotSame',
     );
+
+    /**
+     * @var string[]
+     */
+    private $configuration;
 
     private $assertionFixers = array(
         'assertSame' => 'fixAssertPositive',
@@ -41,6 +49,8 @@ final class PhpUnitConstructFixer extends AbstractFixer
     public function configure(array $usingMethods = null)
     {
         if (null === $usingMethods) {
+            $this->configuration = self::$defaultConfiguration;
+
             return;
         }
 

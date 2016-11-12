@@ -31,6 +31,8 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
+            $this->configuration = array();
+
             return;
         }
 

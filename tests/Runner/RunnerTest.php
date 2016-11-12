@@ -44,14 +44,20 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
             ->lintSource(Argument::type('string'))
             ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
 
+        $fixers = array(
+            new Fixer\ClassNotation\VisibilityRequiredFixer(),
+            new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
+        );
+
+        foreach ($fixers as $fixer) {
+            $fixer->configure(null);
+        }
+
         $runner = new Runner(
             Finder::create()->in(
                 __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix'
             ),
-            array(
-                new Fixer\ClassNotation\VisibilityRequiredFixer(),
-                new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
-            ),
+            $fixers,
             new NullDiffer(),
             null,
             new ErrorsManager(),

@@ -23,11 +23,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NoUnneededControlParenthesesFixer extends AbstractFixer
 {
     /**
-     * To be removed when PHP support will be 5.5+.
-     *
-     * @var string[] List of statements to fix
+     * @var string[]
      */
-    private $controlStatements = array(
+    private static $defaultConfiguration = array(
         'break',
         'clone',
         'continue',
@@ -36,6 +34,11 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer
         'switch_case',
         'yield',
     );
+
+    /**
+     * @var string[] List of statements to fix
+     */
+    private $controlStatements;
 
     private static $loops = array(
         'break' => array('lookupTokens' => T_BREAK, 'neededSuccessors' => array(';')),
@@ -53,7 +56,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer
     {
         parent::__construct();
 
-        // To be moved back on static when PHP support will be 5.5+
+        // To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 5.5+
         if (defined('T_YIELD')) {
             self::$loops['yield'] = array('lookupTokens' => T_YIELD, 'neededSuccessors' => array(';', ')'));
         }
@@ -65,6 +68,8 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer
     public function configure(array $controlStatements = null)
     {
         if (null === $controlStatements) {
+            $this->controlStatements = self::$defaultConfiguration;
+
             return;
         }
 

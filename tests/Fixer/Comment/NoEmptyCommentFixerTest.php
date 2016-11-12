@@ -208,11 +208,10 @@ echo 1;
         $tokens = Tokens::fromCode($source);
         $this->assertTrue($tokens[$startIndex]->isComment(), sprintf('Misconfiguration of test, expected comment token at index "%d".', $startIndex));
 
-        $fixer = $this->getFixer();
-        $method = new \ReflectionMethod($fixer, 'getCommentBlock');
+        $method = new \ReflectionMethod($this->fixer, 'getCommentBlock');
         $method->setAccessible(true);
 
-        list($foundStart, $foundEnd, $foundIsEmpty) = $method->invoke($fixer, $tokens, $startIndex);
+        list($foundStart, $foundEnd, $foundIsEmpty) = $method->invoke($this->fixer, $tokens, $startIndex);
 
         $this->assertSame($startIndex, $foundStart, 'Find start index of block failed.');
         $this->assertSame($endIndex, $foundEnd, 'Find end index of block failed.');

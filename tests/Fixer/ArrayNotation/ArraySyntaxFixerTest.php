@@ -29,14 +29,12 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
      */
     public function testInvalidConfiguration()
     {
-        $fixer = $this->getFixer();
-        $fixer->configure(array('a' => 1));
+        $this->fixer->configure(array('a' => 1));
     }
 
     public function testFixWithDefaultConfiguration()
     {
-        $fixer = $this->getFixer();
-        $fixer->configure(null);
+        $this->fixer->configure(null);
         $this->doTest(
             '<?php $a = array(); $b = array();',
             '<?php $a = array(); $b = [];'
@@ -48,8 +46,7 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
      */
     public function testFixLongSyntax($expected, $input = null)
     {
-        $fixer = $this->getFixer();
-        $fixer->configure(array('syntax' => 'long'));
+        $this->fixer->configure(array('syntax' => 'long'));
         $this->doTest($expected, $input);
     }
 
@@ -86,8 +83,7 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
      */
     public function testFixShortSyntax($expected, $input = null)
     {
-        $fixer = $this->getFixer();
-        $fixer->configure(array('syntax' => 'short'));
+        $this->fixer->configure(array('syntax' => 'short'));
         $this->doTest($expected, $input);
     }
 

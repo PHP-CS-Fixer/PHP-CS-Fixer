@@ -27,7 +27,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class VisibilityRequiredFixer extends AbstractFixer
 {
     private $options = array('property', 'method', 'const');
-    private $configuration = array('property', 'method');
+    private static $defaultConfiguration = array('property', 'method');
+    private $configuration;
 
     /**
      * Any of the class elements 'property', 'method' or 'const' can be configured.
@@ -40,6 +41,8 @@ final class VisibilityRequiredFixer extends AbstractFixer
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
+            $this->configuration = self::$defaultConfiguration;
+
             return;
         }
 

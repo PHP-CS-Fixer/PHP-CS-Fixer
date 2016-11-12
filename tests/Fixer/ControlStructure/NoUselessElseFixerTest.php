@@ -718,11 +718,10 @@ else?><?php echo 5;',
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
 
-        $fixer = $this->getFixer();
-        $method = new \ReflectionMethod($fixer, 'getPreviousBlock');
+        $method = new \ReflectionMethod($this->fixer, 'getPreviousBlock');
         $method->setAccessible(true);
 
-        $result = $method->invoke($fixer, $tokens, $index);
+        $result = $method->invoke($this->fixer, $tokens, $index);
 
         $this->assertSame($expected, $result);
     }
