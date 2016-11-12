@@ -34,6 +34,8 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer
     {
         if (null === $configuration) {
             $this->configuration = array();
+
+            return;
         }
 
         $this->configuration = $configuration;
