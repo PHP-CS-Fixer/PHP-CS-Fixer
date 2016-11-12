@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-12T00:45:33Z
+
+cc @SpacePossum
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-12T09:10:50Z
+
+:+1: nice fix!
+
+In another PR I'll prep. some unit tests to test all CLI input with and without a config file input to check the resolver
