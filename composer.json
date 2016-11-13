@@ -35,14 +35,6 @@
         "psr-4": { "Symfony\\CS\\": "Symfony/CS/" }
     },
     "bin": ["php-cs-fixer"],
-    "scripts": {
-        "test": [
-            "phpunit"
-        ],
-        "test-ci": [
-            "phpunit --verbose --coverage-clover build/logs/clover.xml"
-        ]
-    },
     "config": {
         "process-timeout": 0
     }
