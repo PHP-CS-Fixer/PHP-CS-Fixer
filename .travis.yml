@@ -2,21 +2,27 @@ language: php
 
 sudo: false
 
+git:
+    depth: 1
+
+env:
+    global:
+        - TASK_TESTS=1
+        - TASK_TESTS_COVERAGE=0
+        - TASK_CS=1
+
 matrix:
     fast_finish: true
     include:
+        - php: 7.0
+          env: DEPLOY=yes TASK_TESTS_COVERAGE=1 LINT_TEST_CASES=1
         - php: 5.3
           env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
         - php: 5.4
         - php: 5.5
         - php: 5.6
-          env: DEPLOY=yes
-        - php: 7.0
-          env: SYMFONY_VERSION="~2.8"
-        - php: 7.0
-          env: LINT_TEST_CASES=1
         - php: 7.1
-          env: LINT_TEST_CASES=1
+          env: LINT_TEST_CASES=1 SYMFONY_VERSION="^2.8"
         # Use the newer stack for HHVM as HHVM does not support Precise anymore since a long time and so Precise has an outdated version
         - php: hhvm-3.9
           sudo: required
@@ -32,39 +38,49 @@ cache:
         - $HOME/.composer/cache
 
 before_install:
-    - git config --global github.accesstoken 5e7538aa415005c606ea68de2bbbade0409b4b8c
-    - |
-      if [ $TRAVIS_TAG ]; then
-          # for tag building for release we don't need to collect code coverage, let us turn off xdebug completely
-          phpenv config-rm xdebug.ini || return 0
-      else
-          # for regular build we care about collecting code coverage, let us turn off xdebug only for installation part
-          mv $HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini $HOME/xdebug.ini || return 0
-      fi
+    # XDebug preparation:
+    # - for tag building for release we don't need to collect code coverage, let us turn off xdebug completely
+    # - for regular build we care about collecting code coverage, let us turn off xdebug only for installation part
+    - if [ $TRAVIS_TAG ]; then phpenv config-rm xdebug.ini || return 0; fi
+    - if [ -z $TRAVIS_TAG ]; then mv $HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini $HOME/xdebug.ini || return 0; fi
+
+    # for building a tag release we don't need to collect code coverage or self-fix CS
+    - if [ $TRAVIS_TAG ]; then export TASK_TESTS_COVERAGE=0; fi
+    - if [ $TRAVIS_TAG ]; then export TASK_CS=0; fi
+
+    # Composer: boost installation
     - travis_retry composer global require hirak/prestissimo
-    - 'if [ "$SYMFONY_VERSION" != "" ]; then sed -i "s/\"symfony\/\([^\"]*\)\": \"[^\"]*\"/\"symfony\/\1\": \"$SYMFONY_VERSION\"/g" composer.json; fi'
+
+    # Composer: enforce given Symfony components version
+    - 'if [ "$SYMFONY_VERSION" != "" ]; then sed -i "s/\"symfony\/\([^\"]*\)\": \"^2[^\"]*\"/\"symfony\/\1\": \"$SYMFONY_VERSION\"/g" composer.json; fi'
+
+    # display tasks configuration for a job
+    - set | grep ^TASK | sort
 
 install:
     - travis_retry composer update $COMPOSER_FLAGS --no-interaction
 
 script:
-    - cp $HOME/xdebug.ini $HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini || return 0
-    - composer test-ci
-    - phpenv config-rm xdebug.ini || return 0
-    - php php-cs-fixer --diff --dry-run -v fix
+    - if [ $TASK_TESTS_COVERAGE == 1 ]; then phpenv config-add $HOME/xdebug.ini || return 0; fi
+    - if [ $TASK_TESTS == 1 ]; then vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml; fi
+    - if [ $TASK_TESTS_COVERAGE == 1 ]; then phpenv config-rm $HOME/xdebug.ini || return 0; fi
+
+    - if [ $TASK_CS == 1 ]; then php php-cs-fixer --diff --dry-run -v fix; fi
 
 after_success:
-    - php vendor/bin/coveralls -v
+    - if [ $TASK_TESTS_COVERAGE == 1 ]; then php vendor/bin/coveralls -v; fi
 
 before_deploy:
     # install box2
     - curl -LSs http://box-project.github.io/box2/installer.php | php
     - php box.phar --version
+
     # ensure that deps will work on lowest supported PHP version
     - |
       sed -i 's#"config":\s*{#"config": {\n        "platform": {"php": "5.3.6"},#' composer.json
     # update deps to highest possible for lowest supported PHP version
     - composer update --no-dev --no-interaction --optimize-autoloader --prefer-stable
+
     # build phar file
     - php -d phar.readonly=false box.phar build
 
