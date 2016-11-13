@@ -210,6 +210,12 @@ Choose from the list of available rules:
 * **combine_consecutive_unsets**
    | Calling unset on multiple items should be done in one call.
 
+* **classy_definition**
+                        White space around the key
+                        words of a class, trait or
+                        interfaces definition should
+                        be one space.
+
 * **concat_with_spaces**
    | Concatenation should be used with at least one whitespace around.
 
