@@ -38,11 +38,14 @@ cache:
         - $HOME/.composer/cache
 
 before_install:
-    # XDebug preparation:
-    # - for tag building for release we don't need to collect code coverage, let us turn off xdebug completely
-    # - for regular build we care about collecting code coverage, let us turn off xdebug only for installation part
-    - if [ $TRAVIS_TAG ]; then phpenv config-rm xdebug.ini || return 0; fi
-    - if [ -z $TRAVIS_TAG ]; then mv $HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini $HOME/xdebug.ini || return 0; fi
+    # check phpdbg
+    - phpdbg --version 2> /dev/null || { echo 'No phpdbg'; export TASK_TESTS_COVERAGE=0; }
+
+    # turn off XDebug
+    - phpenv config-rm xdebug.ini || return 0
+
+    # validate tasks configuration
+    - if [ $TASK_TESTS == 0 ] && [ $TASK_TESTS_COVERAGE == 1 ]; then travis_terminate 1; fi
 
     # for building a tag release we don't need to collect code coverage or self-fix CS
     - if [ $TRAVIS_TAG ]; then export TASK_TESTS_COVERAGE=0; fi
@@ -59,11 +62,11 @@ before_install:
 
 install:
     - travis_retry composer update $COMPOSER_FLAGS --no-interaction
+    - composer info -D | sort
 
 script:
-    - if [ $TASK_TESTS_COVERAGE == 1 ]; then phpenv config-add $HOME/xdebug.ini || return 0; fi
-    - if [ $TASK_TESTS == 1 ]; then vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml; fi
-    - if [ $TASK_TESTS_COVERAGE == 1 ]; then phpenv config-rm $HOME/xdebug.ini || return 0; fi
+    - if [ $TASK_TESTS == 1 ] && [ $TASK_TESTS_COVERAGE == 0 ]; then vendor/bin/phpunit; fi
+    - if [ $TASK_TESTS == 1 ] && [ $TASK_TESTS_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml; fi
 
     - if [ $TASK_CS == 1 ]; then php php-cs-fixer --diff --dry-run -v fix; fi
 
@@ -78,8 +81,10 @@ before_deploy:
     # ensure that deps will work on lowest supported PHP version
     - |
       sed -i 's#"config":\s*{#"config": {\n        "platform": {"php": "5.3.6"},#' composer.json
+
     # update deps to highest possible for lowest supported PHP version
     - composer update --no-dev --no-interaction --optimize-autoloader --prefer-stable
+    - composer info -D | sort
 
     # build phar file
     - php -d phar.readonly=false box.phar build
