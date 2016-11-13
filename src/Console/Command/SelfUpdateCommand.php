@@ -15,6 +15,7 @@ namespace PhpCsFixer\Console\Command;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -22,6 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Stephane PY <py.stephane1@gmail.com>
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author SpacePossum
  *
  * @internal
  */
@@ -35,10 +37,16 @@ final class SelfUpdateCommand extends Command
         $this
             ->setName('self-update')
             ->setAliases(array('selfupdate'))
+            ->setDefinition(
+                array(
+                    new InputOption('--force', '-f', InputOption::VALUE_NONE, 'Force update to next major version if available.'),
+                )
+            )
             ->setDescription('Update php-cs-fixer.phar to the latest stable version.')
             ->setHelp(<<<'EOT'
 The <info>%command.name%</info> command replace your php-cs-fixer.phar by the
-latest version from cs.sensiolabs.org.
+latest version released on:
+<comment>https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases</comment>
 
 <info>$ php php-cs-fixer.phar %command.name%</info>
 
@@ -58,28 +66,46 @@ EOT
             return 1;
         }
 
-        $remoteTag = $this->getRemoteTag();
-
+        $remoteTag = $this->getLatestTag();
         if (null === $remoteTag) {
             $output->writeln('<error>Unable to determine newest version.</error>');
 
-            return;
+            return 0;
         }
 
-        if ('v'.$this->getApplication()->getVersion() === $remoteTag) {
+        $currentVersion = 'v'.$this->getApplication()->getVersion();
+        if ($currentVersion === $remoteTag) {
             $output->writeln('<info>php-cs-fixer is already up to date.</info>');
 
-            return;
+            return 0;
         }
 
-        $remoteFilename = $this->buildVersionFileUrl($remoteTag);
+        $remoteVersionParsed = $this->parseVersion($remoteTag);
+        $currentVersionParsed = $this->parseVersion($currentVersion);
+
+        if ($remoteVersionParsed[0] > $currentVersionParsed[0] && true !== $input->getOption('force')) {
+            $output->writeln(sprintf('<info>A new major version of php-cs-fixer is available</info> (<comment>%s</comment>)', $remoteTag));
+            $output->writeln(sprintf('<info>Before upgrading please read</info> https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/%s/UPGRADE.md', $remoteTag));
+            $output->writeln('<info>If you are ready to upgrade run this command with</info> <comment>-f</comment>');
+            $output->writeln('<info>Checking for new minor/patch version...</info>');
+
+            // test if there is a new minor version available
+            $remoteTag = $this->getLatestNotMajorUpdateTag($currentVersion);
+            if ($currentVersion === $remoteTag) {
+                $output->writeln('<info>no minor update for php-cs-fixer.</info>');
+
+                return 0;
+            }
+        }
+
+        $remoteFilename = sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar', $remoteTag);
         $localFilename = realpath($_SERVER['argv'][0]) ?: $_SERVER['argv'][0];
         $tempFilename = basename($localFilename, '.phar').'-tmp.phar';
 
         try {
             $copyResult = @copy($remoteFilename, $tempFilename);
             if (false === $copyResult) {
-                $output->writeln('<error>Unable to download new versions from the server.</error>');
+                $output->writeln(sprintf('<error>Unable to download new version %s from the server.</error>', $remoteTag));
 
                 return 1;
             }
@@ -99,40 +125,112 @@ EOT
             }
 
             unlink($tempFilename);
-            $output->writeln(sprintf('<error>The download is corrupt (%s).</error>', $e->getMessage()));
+            $output->writeln(sprintf('<error>The download of %s is corrupt (%s).</error>', $remoteTag, $e->getMessage()));
             $output->writeln('<error>Please re-run the self-update command to try again.</error>');
 
             return 1;
         }
     }
 
-    private function buildVersionFileUrl($tag)
-    {
-        return sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar', $tag);
-    }
-
-    private function getRemoteTag()
+    /**
+     * @return string|null
+     */
+    private function getLatestTag()
     {
         $raw = file_get_contents(
             'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/releases/latest',
             null,
-            stream_context_create(array(
-                'http' => array(
-                    'header' => 'User-Agent: FriendsOfPHP/PHP-CS-Fixer',
-                ),
-            ))
+            stream_context_create($this->getStreamContextOptions())
         );
 
         if (false === $raw) {
-            return;
+            return null;
         }
 
         $json = json_decode($raw, true);
 
         if (null === $json) {
-            return;
+            return null;
         }
 
         return $json['tag_name'];
+    }
+
+    /**
+     * @param string $currentTag in format v?\d.\d.\d
+     *
+     * @return string in format v?\d.\d.\d
+     */
+    private function getLatestNotMajorUpdateTag($currentTag)
+    {
+        $currentTagParsed = $this->parseVersion($currentTag);
+        $nextVersionParsed = $currentTagParsed;
+        do {
+            $nextTag = sprintf('v%d.%d.%d', $nextVersionParsed[0], ++$nextVersionParsed[1], 0);
+        } while ($this->hasRemoteTag($nextTag));
+
+        $nextVersionParsed = $this->parseVersion($nextTag);
+        --$nextVersionParsed[1];
+
+        // check if new minor found, otherwise start looking for new patch from the current patch number
+        if ($currentTagParsed[1] === $nextVersionParsed[1]) {
+            $nextVersionParsed[2] = $currentTagParsed[2];
+        }
+
+        do {
+            $nextTag = sprintf('v%d.%d.%d', $nextVersionParsed[0], $nextVersionParsed[1], ++$nextVersionParsed[2]);
+        } while ($this->hasRemoteTag($nextTag));
+
+        return sprintf('v%d.%d.%d', $nextVersionParsed[0], $nextVersionParsed[1], $nextVersionParsed[2] - 1);
+    }
+
+    /**
+     * @param string $method HTTP method
+     *
+     * @return array
+     */
+    private function getStreamContextOptions($method = 'GET')
+    {
+        return array(
+            'http' => array(
+                'header' => 'User-Agent: FriendsOfPHP/PHP-CS-Fixer',
+                'method' => $method,
+            ),
+        );
+    }
+
+    /**
+     * @param string $tag
+     *
+     * @return bool
+     */
+    private function hasRemoteTag($tag)
+    {
+        $url = 'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/releases/tags/'.$tag;
+        stream_context_set_default(
+            $this->getStreamContextOptions('HEAD')
+        );
+
+        $headers = get_headers($url);
+        if (!is_array($headers) || count($headers) < 1) {
+            throw new \RuntimeException(sprintf('Failed to get headers for "%s".', $url));
+        }
+
+        return 1 === preg_match('#^HTTP\/\d.\d 200#', $headers[0]);
+    }
+
+    /**
+     * @param string $tag version in format v?\d.\d.\d
+     *
+     * @return int[]
+     */
+    private function parseVersion($tag)
+    {
+        $tag = explode('.', $tag);
+        if ('v' === $tag[0][0]) {
+            $tag[0] = substr($tag[0], 1);
+        }
+
+        return array((int) $tag[0], (int) $tag[1], (int) $tag[2]);
     }
 }
