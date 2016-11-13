@@ -82,7 +82,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
                 return sprintf(
                     '%s\\%s%s%s',
                     __NAMESPACE__,
-                    $file->getRelativePath(),
+                    strtr($file->getRelativePath(), DIRECTORY_SEPARATOR, "\\"),
                     $file->getRelativePath() ? '\\' : '',
                     $file->getBasename('.'.$file->getExtension())
                 );
