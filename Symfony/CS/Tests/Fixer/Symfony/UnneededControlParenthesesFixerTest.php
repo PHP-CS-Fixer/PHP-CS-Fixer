@@ -82,6 +82,30 @@ final class UnneededControlParenthesesFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
+                '<?php
+                switch ($a) {
+                    case 2 :
+                        echo 1;
+                        break;
+                    case 3 : {
+                        echo "fix 2";
+                        break;
+                    }
+                }
+                ',
+                '<?php
+                switch ($a) {
+                    case (2) :
+                        echo 1;
+                        break;
+                    case (3) : {
+                        echo "fix 2";
+                        break;
+                    }
+                }
+                ',
+            ),
+            array(
                 '<?php while ($x) { break; }',
             ),
             array(
