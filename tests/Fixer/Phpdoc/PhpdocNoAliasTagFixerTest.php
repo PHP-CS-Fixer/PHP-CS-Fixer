@@ -29,7 +29,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
      */
     public function testInvalidConfigCase1()
     {
-        $this->getFixer()->configure(array(1 => 'abc'));
+        $this->fixer->configure(array(1 => 'abc'));
     }
 
     /**
@@ -38,7 +38,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
      */
     public function testInvalidConfigCase2()
     {
-        $this->getFixer()->configure(array('a' => null));
+        $this->fixer->configure(array('a' => null));
     }
 
     /**
@@ -47,7 +47,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
      */
     public function testInvalidConfigCase3()
     {
-        $this->getFixer()->configure(array('see' => 'link*/'));
+        $this->fixer->configure(array('see' => 'link*/'));
     }
 
     /**
@@ -56,12 +56,11 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
      */
     public function testInvalidConfigCase4()
     {
-        $config = array(
+        $this->fixer->configure(array(
             'see' => 'link',
             'a' => 'b',
             'link' => 'see',
-        );
-        $this->getFixer()->configure($config);
+        ));
     }
 
     /**
@@ -70,12 +69,11 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
      */
     public function testInvalidConfigCase5()
     {
-        $config = array(
+        $this->fixer->configure(array(
             'see' => 'link',
             'link' => 'b',
             'b' => 'see',
-        );
-        $this->getFixer()->configure($config);
+        ));
     }
 
     /**
@@ -83,10 +81,11 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
      */
     public function testPropertyFix($expected, $input = null)
     {
-        $this->getFixer()->configure(array(
+        $this->fixer->configure(array(
             'property-read' => 'property',
             'property-write' => 'property',
         ));
+
         $this->doTest($expected, $input);
     }
 
@@ -121,9 +120,10 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
      */
     public function testTypeToVarFix($expected, $input = null)
     {
-        $this->getFixer()->configure(array(
+        $this->fixer->configure(array(
             'type' => 'var',
         ));
+
         $this->doTest($expected, $input);
     }
 
@@ -178,9 +178,10 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
      */
     public function testVarToTypeFix($expected, $input = null)
     {
-        $this->getFixer()->configure(array(
+        $this->fixer->configure(array(
             'var' => 'type',
         ));
+
         $this->doTest($expected, $input);
     }
 
@@ -232,9 +233,10 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
 
     public function testLinkToSee()
     {
-        $this->getFixer()->configure(array(
+        $this->fixer->configure(array(
             'link' => 'see',
         ));
+
         $this->doTest(
             '<?php /** @see  https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md#710-link-deprecated */',
             '<?php /** @link  https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md#710-link-deprecated */'
