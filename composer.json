@@ -39,16 +39,6 @@
         "psr-4": { "PhpCsFixer\\Tests\\": "tests/" }
     },
     "bin": ["php-cs-fixer"],
-    "scripts": {
-        "test": [
-            "phpunit",
-            "phpunit tests/Standalone/ProjectCodeTest.php"
-        ],
-        "test-ci": [
-            "phpunit --verbose --coverage-clover build/logs/clover.xml",
-            "phpunit tests/Standalone/ProjectCodeTest.php"
-        ]
-    },
     "config": {
         "process-timeout": 0
     },

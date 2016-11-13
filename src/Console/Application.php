@@ -19,12 +19,13 @@ use Symfony\Component\Console\Application as BaseApplication;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.0-DEV';
+    const VERSION = '2.0.0-DEV';
 
     /**
      * Constructor.
