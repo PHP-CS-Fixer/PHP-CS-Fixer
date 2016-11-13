@@ -73,7 +73,6 @@ script:
 
     - if [ $TASK_TESTS_COVERAGE == 1 ]; then phpenv config-add $HOME/xdebug.ini || return 0; fi
     - if [ $TASK_TESTS == 1 ]; then vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml; fi
-    - if [ $TASK_TESTS == 1 ]; then vendor/bin/phpunit tests/Standalone/ProjectCodeTest.php; fi
     - if [ $TASK_TESTS_COVERAGE == 1 ]; then phpenv config-rm $HOME/xdebug.ini || return 0; fi
 
     - if [ $TASK_SCA == 1 ]; then git checkout . -q; fi
