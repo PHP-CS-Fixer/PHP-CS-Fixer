@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class ReadmeCommand extends Command
 {
     /**
-     * @see Command
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -35,7 +35,7 @@ final class ReadmeCommand extends Command
     }
 
     /**
-     * @see Command
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

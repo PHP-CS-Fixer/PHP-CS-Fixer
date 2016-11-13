@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Finder;
+namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Finder;
 
