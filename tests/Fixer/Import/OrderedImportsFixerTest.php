@@ -20,28 +20,6 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  */
 final class OrderedImportsFixerTest extends AbstractFixerTestCase
 {
-    protected $defaultSortAlgorithm = OrderedImportsFixer::SORT_ALPHA;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->fixer->configure(array(
-            'typesOrder' => null,
-            'sortAlgorithm' => $this->defaultSortAlgorithm,
-        ));
-    }
-
-    protected function tearDown()
-    {
-        $this->fixer->configure(array(
-            'typesOrder' => null,
-            'sortAlgorithm' => $this->defaultSortAlgorithm,
-        ));
-
-        parent::tearDown();
-    }
-
     public function testFix()
     {
         $expected = <<<'EOF'
