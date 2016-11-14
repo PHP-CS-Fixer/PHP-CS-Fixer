@@ -63,7 +63,7 @@ install:
 script:
     - if [ $TASK_TESTS_COVERAGE == 1 ]; then phpenv config-add $HOME/xdebug.ini || return 0; fi
     - if [ $TASK_TESTS == 1 ]; then vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml; fi
-    - if [ $TASK_TESTS_COVERAGE == 1 ]; then phpenv config-rm $HOME/xdebug.ini || return 0; fi
+    - if [ $TASK_TESTS_COVERAGE == 1 ]; then phpenv config-rm xdebug.ini || return 0; fi
 
     - if [ $TASK_CS == 1 ]; then php php-cs-fixer --diff --dry-run -v fix; fi
 
