@@ -53,6 +53,7 @@ final class RuleSet implements RuleSetInterface
         ),
         '@Symfony' => array(
             '@PSR2' => true,
+            'array_syntax' => array('syntax' => 'long'),
             'binary_operator_spaces' => array('align_equals' => false, 'align_double_arrow' => false),
             'blank_line_after_opening_tag' => true,
             'blank_line_before_return' => true,
