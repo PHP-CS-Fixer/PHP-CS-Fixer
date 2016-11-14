@@ -18,8 +18,6 @@ use PhpCsFixer\ConfigurationException\UnallowedFixerConfigurationException;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\NullOutput;
 use PhpCsFixer\Console\Output\ProcessOutput;
-use PhpCsFixer\Differ\NullDiffer;
-use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerFactory;
@@ -97,16 +95,16 @@ final class FixCommand extends Command
             ->setName('fix')
             ->setDefinition(
                 array(
-                    new InputArgument('path', InputArgument::IS_ARRAY, 'The path', null),
+                    new InputArgument('path', InputArgument::IS_ARRAY, 'The path'),
                     new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be override or intersection)', 'override'),
-                    new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no)', null),
-                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file ', null),
+                    new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no)'),
+                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file '),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
-                    new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'The rules', null),
-                    new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no)', null),
+                    new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'The rules'),
+                    new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no)'),
                     new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file'),
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
-                    new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats', null),
+                    new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats'),
                 )
             )
             ->setDescription('Fixes a directory or a file')
@@ -147,7 +145,7 @@ When using combinations of exact and blacklist rules, applying exact ruless alon
 A combination of <comment>--dry-run</comment> and <comment>--diff</comment> will
 display a summary of proposed fixes, leaving your files unchanged.
 
-The <comment>--allow-risky</comment> option allows you to set whether riskys rule may run. Default value is taken from config file.
+The <comment>--allow-risky</comment> option allows you to set whether risky rules may run. Default value is taken from config file.
 Risky rule is a rule, which could change code behaviour. By default no risky rules are run.
 
 The command can also read from standard input, in which case it won't
@@ -346,7 +344,7 @@ EOF
         $runner = new Runner(
             $resolver->getFinder(),
             $resolver->getFixers(),
-            $input->getOption('diff') ? new SebastianBergmannDiffer() : new NullDiffer(),
+            $resolver->getDiffer(),
             $showProgress ? $this->eventDispatcher : null,
             $this->errorsManager,
             $resolver->getLinter(),

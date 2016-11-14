@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Console;
 
 use PhpCsFixer\Config;
+use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -872,6 +873,62 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ),
             $resolver->getRules()
         );
+    }
+
+    public function testResolveCommandLineInputOverridesDefault()
+    {
+        $command = new FixCommand();
+        $definition = $command->getDefinition();
+        $arguments = $definition->getArguments();
+        $this->assertCount(1, $arguments, 'Expected one argument, possibly test needs updating.');
+        $this->assertArrayHasKey('path', $arguments);
+
+        $options = $definition->getOptions('');
+        $this->assertSame(
+            array('path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format'),
+            array_keys($options),
+            'Expected options mismatch, possibly test needs updating.'
+        );
+
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            array(
+                'path-mode' => 'intersection',
+                'allow-risky' => 'yes',
+                'config' => null,
+                'dry-run' => true,
+                'rules' => 'php_unit_construct',
+                'using-cache' => false,
+                'diff' => true,
+                'format' => 'json',
+            ),
+            ''
+        );
+
+        $this->assertTrue($resolver->getRiskyAllowed());
+        $this->assertTrue($resolver->isDryRun());
+        $this->assertSame(array('php_unit_construct' => true), $resolver->getRules());
+        $this->assertFalse($resolver->getUsingCache());
+        $this->assertNull($resolver->getCacheFile());
+        $this->assertInstanceOf('\PhpCsFixer\Differ\SebastianBergmannDiffer', $resolver->getDiffer());
+        $this->assertSame('json', $resolver->getReporter()->getFormat());
+    }
+
+    public function testResolveConfigFileOverridesDefault()
+    {
+        $dir = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_8';
+
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            array('path' => array($dir.DIRECTORY_SEPARATOR.'.php_cs')),
+            ''
+        );
+
+        $this->assertTrue($resolver->getRiskyAllowed());
+        $this->assertSame(array('php_unit_construct' => true), $resolver->getRules());
+        $this->assertFalse($resolver->getUsingCache());
+        $this->assertNull($resolver->getCacheFile());
+        $this->assertSame('xml', $resolver->getReporter()->getFormat());
     }
 
     private function assertSameRules(array $expected, array $actual, $message = '')

@@ -162,7 +162,7 @@ When using combinations of exact and blacklist rules, applying exact ruless alon
 A combination of ``--dry-run`` and ``--diff`` will
 display a summary of proposed fixes, leaving your files unchanged.
 
-The ``--allow-risky`` option allows you to set whether riskys rule may run. Default value is taken from config file.
+The ``--allow-risky`` option allows you to set whether risky rules may run. Default value is taken from config file.
 Risky rule is a rule, which could change code behaviour. By default no risky rules are run.
 
 The command can also read from standard input, in which case it won't
