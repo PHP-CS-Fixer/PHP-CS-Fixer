@@ -39,9 +39,6 @@
         "psr-4": { "PhpCsFixer\\Tests\\": "tests/" }
     },
     "bin": ["php-cs-fixer"],
-    "config": {
-        "process-timeout": 0
-    },
     "extra": {
         "branch-alias": {
             "dev-master": "2.0-dev"
