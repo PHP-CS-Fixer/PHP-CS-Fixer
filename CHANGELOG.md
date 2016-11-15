@@ -3,6 +3,17 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.12.4
+---------------------
+
+* bug #2235 OrderedImportsFixer - PHP 7 group imports support (SpacePossum)
+* minor #2276 Tokens cleanup (keradus)
+* minor #2277 Remove trailing spaces (keradus)
+* minor #2294 Improve Travis configuration (keradus)
+* minor #2297 Use phpdbg instead of xdebug (keradus)
+* minor #2299 Travis: proper xdebug disabling (keradus)
+* minor #2301 Travis: update platform adjusting (keradus)
+
 Changelog for v1.12.3
 ---------------------
 
