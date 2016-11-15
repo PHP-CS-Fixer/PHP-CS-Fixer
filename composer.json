@@ -34,8 +34,5 @@
     "autoload": {
         "psr-4": { "Symfony\\CS\\": "Symfony/CS/" }
     },
-    "bin": ["php-cs-fixer"],
-    "config": {
-        "process-timeout": 0
-    }
+    "bin": ["php-cs-fixer"]
 }
