@@ -133,7 +133,7 @@ final class ClassDefinitionFixer extends AbstractFixer
         // 4.1 The extends and implements keywords MUST be declared on the same line as the class name.
         $this->makeClassyDefinitionSingleLine(
             $tokens,
-            $tokens->isAnonymousClass($classyIndex) ? $tokens->getPrevMeaningfulToken($classyIndex) : $classDefInfo['start'],
+            $classDefInfo['anonymousClass'] ? $tokens->getPrevMeaningfulToken($classyIndex) : $classDefInfo['start'],
             $end
         );
     }
@@ -206,6 +206,8 @@ final class ClassDefinitionFixer extends AbstractFixer
 
         $extends = false;
         $implements = false;
+        $anonymousClass = false;
+
         if (!(defined('T_TRAIT') && $tokens[$classyIndex]->isGivenKind(T_TRAIT))) {
             $extends = $tokens->findGivenKind(T_EXTENDS, $classyIndex, $openIndex);
             $extends = count($extends) ? $this->getClassyInheritanceInfo($tokens, key($extends), $openIndex, 'numberOfExtends') : false;
@@ -213,6 +215,7 @@ final class ClassDefinitionFixer extends AbstractFixer
             if (!$tokens[$classyIndex]->isGivenKind(T_INTERFACE)) {
                 $implements = $tokens->findGivenKind(T_IMPLEMENTS, $classyIndex, $openIndex);
                 $implements = count($implements) ? $this->getClassyInheritanceInfo($tokens, key($implements), $openIndex, 'numberOfImplements') : false;
+                $anonymousClass = $tokens->isAnonymousClass($classyIndex);
             }
         }
 
@@ -222,6 +225,7 @@ final class ClassDefinitionFixer extends AbstractFixer
             'open' => $openIndex,
             'extends' => $extends,
             'implements' => $implements,
+            'anonymousClass' => $anonymousClass,
         );
     }
 
@@ -259,7 +263,7 @@ final class ClassDefinitionFixer extends AbstractFixer
      */
     private function makeClassyDefinitionSingleLine(Tokens $tokens, $startIndex, $endIndex)
     {
-        for ($i = $endIndex - 1; $i >= $startIndex; --$i) {
+        for ($i = $endIndex; $i >= $startIndex; --$i) {
             if ($tokens[$i]->isWhitespace()) {
                 if ($tokens[$i + 1]->equalsAny(array(',', '(', ')')) || $tokens[$i - 1]->equals('(')) {
                     $tokens[$i]->clear();
@@ -271,12 +275,22 @@ final class ClassDefinitionFixer extends AbstractFixer
                 continue;
             }
 
-            if (
-                !$tokens[$i + 1]->equalsAny(array(',', '(', ')', array(T_NS_SEPARATOR)))
-                && !$tokens[$i]->equalsAny(array('(', array(T_NS_SEPARATOR)))
-                && false === strpos($tokens[$i]->getContent(), "\n")
-            ) {
+            if ($tokens[$i]->equals(',') && !$tokens[$i + 1]->isWhitespace()) {
                 $tokens->insertAt($i + 1, new Token(array(T_WHITESPACE, ' ')));
+
+                continue;
+            }
+
+            if (!$tokens[$i]->isComment()) {
+                continue;
+            }
+
+            if (!$tokens[$i + 1]->isWhitespace() && !$tokens[$i + 1]->isComment() && false === strpos($tokens[$i]->getContent(), "\n")) {
+                $tokens->insertAt($i + 1, new Token(array(T_WHITESPACE, ' ')));
+            }
+
+            if (!$tokens[$i - 1]->isWhitespace() && !$tokens[$i - 1]->isComment()) {
+                $tokens->insertAt($i, new Token(array(T_WHITESPACE, ' ')));
             }
         }
     }
