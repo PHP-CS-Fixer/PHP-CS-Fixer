@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-14T09:15:26Z
+
+nice idea :)
+btw. why `TASK_TESTS` this is always set and on `TASK_SCA` do we detect `null`-able vs. `void` as well?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-14T09:42:25Z
+
+> TASK_TESTS
+
+yes, it's always set, but as one of our task type, it could be disable on any env in the future
+
+> TASK_SCA
+
+no, currently it is just checking run with declare...strict... (that's why we need utests when we do SCA),
+not easy to check null vs void when there is no return type in prototype at source.
