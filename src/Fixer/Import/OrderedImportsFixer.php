@@ -26,6 +26,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
+ * @author Darius Matulionis <darius@matulionis.lt>
  */
 final class OrderedImportsFixer extends AbstractFixer
 {
