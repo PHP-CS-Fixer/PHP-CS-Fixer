@@ -60,6 +60,19 @@ final class ProcessLinter implements LinterInterface
             if (false === $executable) {
                 throw new UnavailableLinterException('Cannot find PHP executable.');
             }
+
+            if ('phpdbg' === PHP_SAPI) {
+                if (false === strpos($executable, 'phpdbg')) {
+                    throw new UnavailableLinterException('Automatically found PHP executable is non-standard phpdbg. Could not find proper PHP executable.');
+                }
+
+                // automatically found executable is `phpdbg`, let us try to fallback to regular `php`
+                $executable = str_replace('phpdbg', 'php', $executable);
+
+                if (!is_executable($executable)) {
+                    throw new UnavailableLinterException('Automatically found PHP executable is phpdbg. Could not find proper PHP executable.');
+                }
+            }
         }
 
         $this->executable = $executable;
