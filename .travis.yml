@@ -7,6 +7,7 @@ git:
 
 env:
     global:
+        - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-progress --optimize-autoloader"
         - TASK_TESTS=1
         - TASK_TESTS_COVERAGE=0
         - TASK_CS=1
@@ -60,7 +61,7 @@ before_install:
     - if [ $TRAVIS_TAG ]; then export TASK_CS=0; fi
 
     # Composer: boost installation
-    - travis_retry composer global require hirak/prestissimo
+    - travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
 
     # Composer: enforce given Symfony components version
     - 'if [ "$SYMFONY_VERSION" != "" ]; then sed -i "s/\"symfony\/\([^\"]*\)\": \"^2[^\"]*\"/\"symfony\/\1\": \"$SYMFONY_VERSION\"/g" composer.json; fi'
@@ -69,7 +70,7 @@ before_install:
     - set | grep ^TASK | sort
 
 install:
-    - travis_retry composer update $COMPOSER_FLAGS --no-interaction
+    - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
     - composer info -D | sort
 
 script:
@@ -94,7 +95,7 @@ before_deploy:
     - composer config platform.php 2> /dev/null || composer config platform.php 5.3.6
 
     # update deps to highest possible for lowest supported PHP version
-    - composer update --no-dev --no-interaction --optimize-autoloader --prefer-stable
+    - composer update $DEFAULT_COMPOSER_FLAGS --no-dev --prefer-stable
     - composer info -D | sort
 
     # build phar file
