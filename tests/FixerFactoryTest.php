@@ -282,9 +282,6 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_useless_else'], $fixers['no_useless_return']), // tested also in: no_useless_else,no_useless_return.test
             array($fixers['no_useless_else'], $fixers['no_trailing_whitespace']), // tested also in: no_useless_else,no_trailing_whitespace.test
             array($fixers['no_useless_else'], $fixers['no_whitespace_in_blank_line']), // tested also in: no_useless_else,no_whitespace_in_blank_line.test
-            array($fixers['declare_strict_types'], $fixers['no_blank_lines_before_namespace']), // tested also in: declare_strict_types,no_blank_lines_before_namespace.test
-            array($fixers['declare_strict_types'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: declare_strict_types,no_extra_consecutive_blank_lines.test
-            array($fixers['declare_strict_types'], $fixers['no_whitespace_in_blank_line']), // tested also in: declare_strict_types,no_whitespace_in_blank_line.test
             array($fixers['declare_strict_types'], $fixers['single_blank_line_before_namespace']), // tested also in: declare_strict_types,single_blank_line_before_namespace.test
             array($fixers['array_syntax'], $fixers['binary_operator_spaces']), // tested also in: array_syntax,binary_operator_spaces.test
             array($fixers['array_syntax'], $fixers['ternary_operator_spaces']), // tested also in: array_syntax,ternary_operator_spaces.test

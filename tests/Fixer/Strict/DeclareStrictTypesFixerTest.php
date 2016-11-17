@@ -17,6 +17,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @internal
+ *
+ * @author SpacePossum
  */
 final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
 {
@@ -36,14 +38,6 @@ final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
     {
         return array(
             array(
-                '<?php declare(strict_types=1);
-declare(ticks=1);
-//
-
-
-namespace A\B\C;
-class A {
-}',
                 '<?php
 declare(ticks=1);
 //
@@ -54,41 +48,22 @@ class A {
 }',
             ),
             array(
-                '<?php DECLARE/* A b C*/(strict_types=1);
-//abc',
-                '<?php DECLARE/* A b C*/(strict_types=1);      //abc',
-            ),
-            array(
                 '<?php declare/* A b C*/(strict_types=1);',
             ),
             array(
-                '<?php declare(strict_types=1);
-/**/ /**/       ?>Test',
+                '<?php /**/ /**/ deClarE  (strict_types=1)    ?>Test',
                 '<?php /**/ /**/ deClarE  (STRICT_TYPES=1)    ?>Test',
             ),
             array(
-                '<?php declare(strict_types=1);
-',
                 '<?php            DECLARE  (    strict_types=1   )   ;',
             ),
             array(
-                '<?php declare(strict_types=1);
-/**/
-                ',
                 '<?php
                 /**/
                 declare(strict_types=1);',
             ),
             array(
                 '<?php declare(strict_types=1);
-/**/ /**/ /**/
-                 /* abc */ ',
-                '<?php
-                /**/ /**/ /**/
-                declare /* abc */ (strict_types=1);',
-            ),
-            array(
-                '<?php declare(strict_types=1);
                 phpinfo();',
                 '<?php
 
@@ -105,32 +80,12 @@ phpinfo();',
 /**
  * Foo
  */
-phpinfo();',
-            ),
-            array(
-                '<?php declare(strict_types=1);
-/*
- * Foo
- */
-
-phpinfo();',
-                '<?php
-
-/*
- * Foo
- */
-
 phpinfo();',
             ),
             array(
                 '<?php declare(strict_types=1);
 phpinfo();',
                 '<?php phpinfo();',
-            ),
-            array(
-                '<?php declare(strict_types=1);
-$a = 1;',
-                '<?php declare(strict_types=1);  $a = 1;',
             ),
             array(
                 '<?php declare(strict_types=1);
