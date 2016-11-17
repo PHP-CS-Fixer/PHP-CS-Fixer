@@ -1,0 +1,66 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-11-16T18:51:57Z
+
+Ha. I guess the implementation for searching for php from phpdbg doesn't need to be sophisticated. The use case there is so restricted, it could be only the project's own test suite that needs it!
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-16T18:53:17Z
+
+I see no benefits on doing this on tests only.
+Same time, I can see benefits when one want to debug tool runtime and during that the tool is freezing.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-11-16T18:58:26Z
+
+Ah yes, fair point.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-16T22:06:00Z
+
+Looks good to me, granted that PHP_SAPI is the best we got for checking exec. env.
+(However ATM [appveyor](https://ci.appveyor.com/project/keradus/php-cs-fixer/build/dev-3728) seems stalled while happy after last step?)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-17T10:26:55Z
+
+So, appveyor looks to be frozen
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-17T16:19:35Z
+
+wow, AppVeyor finally green
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-17T16:20:41Z
+
+:tada: how long did it run?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-17T17:14:04Z
+
+~~no, it just had be restarted few times, issue on AppVeyor side~~
+it just had to be restarted few times, issue on AppVeyor side
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-17T17:19:19Z
+
+>>how long?
+
+>no
+
+? : D
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-17T17:33:51Z
+
+CI changes extracted here: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2310
