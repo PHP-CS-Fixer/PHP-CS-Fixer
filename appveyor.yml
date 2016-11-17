@@ -3,15 +3,11 @@ version: dev-{build}
 shallow_clone: false
 clone_folder: C:\projects\php-cs-fixer
 
-environment:
-    matrix:
-        - php_ver: 5.6.3
-
 cache:
     - '%APPDATA%\Composer'
 
 install:
-    - choco install -y php -version %php_ver%
+    - choco install -y php
     - SET PATH=C:\tools\php;%PATH%
     - cd C:\tools\php
     - copy php.ini-production php.ini
@@ -27,7 +23,7 @@ install:
 
 before_test:
     - cd C:\projects\php-cs-fixer
-    - php C:\tools\composer.phar update --no-interaction
+    - php C:\tools\composer.phar update --no-interaction --no-progress --optimize-autoloader --prefer-stable --no-ansi
 
 test_script:
     - cd C:\projects\php-cs-fixer
