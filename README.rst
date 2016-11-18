@@ -174,7 +174,7 @@ automatically fix anything:
 
 Choose from the list of available rules:
 
-* **array_syntax** [@Symfony]
+* **array_syntax**
    | PHP arrays should be declared using the configured syntax.
    | *Rule is: configurable.*
 
