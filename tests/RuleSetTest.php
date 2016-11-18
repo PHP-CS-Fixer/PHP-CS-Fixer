@@ -181,11 +181,94 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @dataProvider providerSetDefinitionNames
+     *
+     * @param string $setDefinitionName
+     */
+    public function testSetDefinitionsAreSorted($setDefinitionName)
+    {
+        $ruleSet = RuleSet::create();
+
+        $method = new \ReflectionMethod(
+            'PhpCsFixer\RuleSet',
+            'getSetDefinition'
+        );
+
+        $method->setAccessible(true);
+
+        $setDefinition = $method->invoke(
+            $ruleSet,
+            $setDefinitionName
+        );
+
+        $sortedSetDefinition = $setDefinition;
+
+        $this->sort($sortedSetDefinition);
+
+        $this->assertSame($sortedSetDefinition, $setDefinition, sprintf(
+            'Failed to assert that the set definition for "%s" is sorted by key',
+            $setDefinitionName
+        ));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerSetDefinitionNames()
+    {
+        $setDefinitionNames = RuleSet::create()->getSetDefinitionNames();
+
+        return array_map(function ($setDefinitionName) {
+            return array($setDefinitionName);
+        }, $setDefinitionNames);
+    }
+
     private function assertSameRules(array $expected, array $actual, $message = '')
     {
         ksort($expected);
         ksort($actual);
 
         $this->assertSame($expected, $actual, $message);
+    }
+
+    /**
+     * Sorts an array of rule set definitions recursively.
+     *
+     * Sometimes keys are all string, sometimes they are integers - we need to account for that.
+     *
+     * @param array $data
+     */
+    private function sort(array &$data)
+    {
+        $keys = array_keys($data);
+
+        if ($this->allInteger($keys)) {
+            sort($data);
+        } else {
+            ksort($data);
+        }
+
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $this->sort($data[$key]);
+            }
+        }
+    }
+
+    /**
+     * @param array $values
+     *
+     * @return bool
+     */
+    private function allInteger(array $values)
+    {
+        foreach ($values as $value) {
+            if (!is_int($value)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
