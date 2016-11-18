@@ -31,6 +31,9 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideTestFixCases
      */
     public function testFix($expected, $input = null)

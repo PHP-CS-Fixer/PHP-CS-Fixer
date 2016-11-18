@@ -26,7 +26,7 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider provideCases
      */
@@ -202,7 +202,7 @@ $b;',
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider provideUnalignEqualsCases
      */
@@ -362,6 +362,9 @@ $b;',
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCases54
      * @requires PHP 5.4
      */
@@ -392,7 +395,7 @@ $b;',
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider provideUnalignDoubleArrowCases
      */
@@ -789,7 +792,7 @@ $b;',
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider provideAlignEqualsCases
      */
@@ -915,7 +918,7 @@ $b;',
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider provideAlignDoubleArrowCases
      */

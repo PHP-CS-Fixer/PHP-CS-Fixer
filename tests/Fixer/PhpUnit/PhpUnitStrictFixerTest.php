@@ -23,6 +23,9 @@ use PhpCsFixer\Test\AccessibleObject;
 final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideTestFixCases
      */
     public function testFix($expected, $input = null)

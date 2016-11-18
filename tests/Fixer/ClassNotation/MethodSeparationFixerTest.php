@@ -117,6 +117,9 @@ final class MethodSeparationFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFixClassesCases
      */
     public function testFixClasses($expected, $input = null)
@@ -661,6 +664,9 @@ function test2() {
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @requires PHP 5.4
      * @dataProvider provideFixTraitsCases
      */
@@ -756,6 +762,9 @@ trait SomeReturnInfo {
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFixInterfaces
      */
     public function testFixInterfaces($expected, $input = null)
@@ -839,6 +848,9 @@ class ezcReflectionMethod extends ReflectionMethod {
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces($expected, $input = null)

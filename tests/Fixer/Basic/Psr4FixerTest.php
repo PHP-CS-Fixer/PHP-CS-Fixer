@@ -160,6 +160,8 @@ EOF;
     }
 
     /**
+     * @param string $filename
+     *
      * @dataProvider provideIgnoredCases
      */
     public function testIgnoreWrongNames($filename)

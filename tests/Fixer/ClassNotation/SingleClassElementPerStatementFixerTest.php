@@ -23,6 +23,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class SingleClassElementPerStatementFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
@@ -586,6 +589,8 @@ EOT
     }
 
     /**
+     * @param string $expected
+     *
      * @dataProvider provideConfigurationCases
      */
     public function testFixWithConfiguration(array $configuration, $expected)
@@ -661,6 +666,9 @@ EOT
     }
 
     /**
+     * @param string $expected
+     * @param string $input
+     *
      * @dataProvider providePHP71Cases
      * @requires PHP 7.1
      */
@@ -695,6 +703,9 @@ EOT
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces($expected, $input = null)

@@ -39,6 +39,12 @@ final class FixCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param int  $expected
+     * @param bool $isDryRun
+     * @param bool $hasChangedFiles
+     * @param bool $hasInvalidErrors
+     * @param bool $hasExceptionErrors
+     *
      * @dataProvider provideCalculateExitStatusCases
      */
     public function testCalculateExitStatus($expected, $isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors)

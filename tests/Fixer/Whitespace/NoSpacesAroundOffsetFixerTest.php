@@ -22,6 +22,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideInsideCases
      */
     public function testFixSpaceInsideOffset($expected, $input = null)
@@ -30,6 +33,9 @@ final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideOutsideCases
      */
     public function testFixSpaceOutsideOffset($expected, $input = null)
@@ -264,6 +270,9 @@ $var = $arr[0]{     0
     }
 
     /**
+     * @param string $expected
+     * @param string $input
+     *
      * @dataProvider provideConfigurationCases
      */
     public function testFixWithConfiguration(array $configuration, $expected, $input)

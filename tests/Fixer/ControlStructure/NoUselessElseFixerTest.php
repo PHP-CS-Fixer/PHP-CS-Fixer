@@ -23,6 +23,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NoUselessElseFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider providePHPCloseTagCases
      */
     public function testCloseTagCases($expected, $input = null)
@@ -123,6 +126,9 @@ else?><?php echo 5;',
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFixIfElseIfElseCases
      */
     public function testFixIfElseIfElse($expected, $input = null)
@@ -245,6 +251,9 @@ else?><?php echo 5;',
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFixIfElseCases
      */
     public function testFixIfElse($expected, $input = null)
@@ -352,6 +361,9 @@ else?><?php echo 5;',
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFixNestedIfs
      */
     public function testFixNestedIfs($expected, $input = null)
@@ -390,6 +402,9 @@ else?><?php echo 5;',
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideBefore54FixCases
      */
     public function testBefore54Fix($expected, $input = null)
@@ -449,6 +464,9 @@ else?><?php echo 5;',
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFixEmptyElseCases
      */
     public function testFixEmptyElse($expected, $input = null)
@@ -541,6 +559,8 @@ else?><?php echo 5;',
     }
 
     /**
+     * @param string $expected
+     *
      * @dataProvider provideNegativeCases
      */
     public function testNegativeCases($expected)
@@ -711,6 +731,9 @@ else?><?php echo 5;',
     }
 
     /**
+     * @param string $source
+     * @param int    $index
+     *
      * @dataProvider provideBlockDetectionCases
      */
     public function testBlockDetection(array $expected, $source, $index)
@@ -770,6 +793,9 @@ else?><?php echo 5;',
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideAlternativeSyntaxCases
      */
     public function testAlternativeSyntax($expected, $input = null)
@@ -803,7 +829,7 @@ else?><?php echo 5;',
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @return array<string, string>
      */

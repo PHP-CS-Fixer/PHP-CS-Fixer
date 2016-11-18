@@ -23,6 +23,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class AbstractFunctionReferenceFixerTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @param string $code
+     * @param int    $openIndex
+     * @param int    $closeIndex
+     * @param array  $arguments
+     *
      * @dataProvider provideCases
      */
     public function testCountArguments($code, $openIndex, $closeIndex, array $arguments)

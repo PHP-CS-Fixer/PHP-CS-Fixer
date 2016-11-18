@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\Config;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Finder;
+use PhpCsFixer\FixerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
@@ -117,9 +118,12 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param FixerInterface[] $expected
+     * @param iterable         $suite
+     *
      * @dataProvider provideRegisterCustomFixersCases
      */
-    public function testRegisterCustomFixers($expected, $suite)
+    public function testRegisterCustomFixers(array $expected, $suite)
     {
         $config = new Config();
         $config->registerCustomFixers($suite);

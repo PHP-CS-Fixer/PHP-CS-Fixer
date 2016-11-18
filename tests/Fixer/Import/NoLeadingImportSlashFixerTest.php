@@ -22,6 +22,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
@@ -30,6 +33,9 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFix54Cases
      * @requires PHP 5.4
      */

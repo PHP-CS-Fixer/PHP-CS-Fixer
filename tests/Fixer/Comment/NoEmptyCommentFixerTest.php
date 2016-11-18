@@ -23,6 +23,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)

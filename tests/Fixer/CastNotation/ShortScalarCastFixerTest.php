@@ -22,6 +22,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class ShortScalarCastFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
@@ -64,6 +67,8 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string $expected
+     *
      * @dataProvider provideNoFixCases
      */
     public function testNoFix($expected)

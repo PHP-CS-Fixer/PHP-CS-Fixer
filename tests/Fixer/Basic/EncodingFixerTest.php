@@ -22,6 +22,10 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class EncodingFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string $expected
+     * @param string $input
+     * @param string $file
+     *
      * @dataProvider provideExamples
      */
     public function testFix($expected, $input, $file)

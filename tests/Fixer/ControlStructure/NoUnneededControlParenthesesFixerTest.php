@@ -37,6 +37,10 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|string $fixStatement
+     *
      * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null, $fixStatement = null)

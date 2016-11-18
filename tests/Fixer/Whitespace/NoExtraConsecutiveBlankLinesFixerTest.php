@@ -22,7 +22,7 @@ final class NoExtraConsecutiveBlankLinesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param int[]         $lineNumberRemoved Line numbers expected to be removed after fixing
-     * @param string[]|null $config
+     * @param null|string[] $config
      *
      * @dataProvider provideConfigTests
      */
@@ -356,6 +356,9 @@ EOF;
     }
 
     /**
+     * @param string $expected
+     * @param string $input
+     *
      * @dataProvider provideCommentCases
      */
     public function testFixWithComments($expected, $input)
@@ -426,6 +429,9 @@ EOF
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideBetweenUseCases
      */
     public function testBetweenUse($expected, $input = null)
@@ -528,6 +534,9 @@ EOF
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideRemoveLinesBetweenUseStatements70Cases
      * @requires PHP 7.0
      */
@@ -558,6 +567,8 @@ use const some\a\{ConstA, ConstB, ConstC};
     }
 
     /**
+     * @param string $expected
+     *
      * @dataProvider provideWithoutUsesCases
      */
     public function testWithoutUses($expected)
@@ -636,6 +647,9 @@ $a = new Qux();',
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideOneAndInLineCases
      */
     public function testOneOrInLineCases($expected, $input = null)
@@ -674,6 +688,9 @@ $a = new Qux();',
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideOneAndInLine70Cases
      * @requires PHP 7.0
      */
@@ -703,6 +720,9 @@ $a = new Qux();',
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideBraceCases
      */
     public function testBraces(array $config = null, $expected, $input = null)
@@ -795,6 +815,9 @@ class Foo
     }
 
     /**
+     * @param string $expected
+     * @param string $input
+     *
      * @requires PHP 5.4
      * @dataProvider provideBraceCases54
      */
@@ -816,6 +839,9 @@ class Foo
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces(array $config = null, $expected, $input = null)

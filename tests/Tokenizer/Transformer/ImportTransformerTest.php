@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\CT;
 final class ImportTransformerTest extends AbstractTransformerTestCase
 {
     /**
+     * @param string $source
+     *
      * @dataProvider provideProcessCases
      * @requires PHP 5.6
      */

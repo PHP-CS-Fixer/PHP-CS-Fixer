@@ -40,6 +40,9 @@ final class TokensTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $source
+     * @param string $expected
+     *
      * @dataProvider provideFindSequence
      */
     public function testFindSequence($source, $expected, array $params)
@@ -237,10 +240,13 @@ final class TokensTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $message
+     * @param array  $sequence
+     *
      * @expectedException \InvalidArgumentException
      * @dataProvider provideFindSequenceExceptions
      */
-    public function testFindSequenceException($message, $sequence)
+    public function testFindSequenceException($message, array $sequence)
     {
         $tokens = Tokens::fromCode('<?php $x = 1;');
         try {
@@ -589,6 +595,12 @@ PHP;
     }
 
     /**
+     * @param int   $expectedIndex
+     * @param int   $direction
+     * @param int   $index
+     * @param array $findTokens
+     * @param bool  $caseSensitive
+     *
      * @dataProvider provideTokenOfKindSiblingCases
      */
     public function testTokenOfKindSibling(
@@ -714,8 +726,8 @@ PHP;
     }
 
     /**
-     * @param Token[]|null $expected
-     * @param Token[]|null $input
+     * @param null|Token[] $expected
+     * @param null|Token[] $input
      */
     private function assertEqualsTokensArray(array $expected = null, array $input = null)
     {

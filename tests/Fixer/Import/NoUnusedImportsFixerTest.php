@@ -402,6 +402,9 @@ EOF;
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider providerUseInString
      */
     public function testUseInString($expected, $input = null)
@@ -505,6 +508,9 @@ EOF;
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCloseTagCases
      */
     public function testFixABC($expected, $input = null)

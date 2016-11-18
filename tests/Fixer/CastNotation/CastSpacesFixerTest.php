@@ -20,6 +20,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class CastSpacesFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider testFixCastsProvider
      */
     public function testFixCasts($expected, $input = null)

@@ -158,6 +158,11 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string      $expectedFile
+     * @param string      $expectedClass
+     * @param string      $path
+     * @param null|string $cwdPath
+     *
      * @dataProvider provideResolveConfigFileDefaultCases
      */
     public function testResolveConfigFileChooseFile($expectedFile, $expectedClass, $path, $cwdPath = null)
@@ -379,6 +384,11 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param array|Exception $expected
+     * @param null|Finder     $configFinder
+     * @param string          $pathMode
+     * @param null|string     $config
+     *
      * @dataProvider provideResolveIntersectionOfPathsCases
      */
     public function testResolveIntersectionOfPaths($expected, $configFinder, array $path, $pathMode, $config = null)

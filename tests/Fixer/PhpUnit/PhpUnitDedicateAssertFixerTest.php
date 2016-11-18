@@ -22,6 +22,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideInternalTypeMethods
      */
     public function testInternalTypeMethods($expected, $input = null)
@@ -58,6 +61,9 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideDedicatedAssertsCases
      */
     public function testDedicatedAsserts($expected, $input = null)
@@ -148,6 +154,8 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string $expected
+     *
      * @dataProvider provideNotFixCases
      */
     public function testNotFix($expected)

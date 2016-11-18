@@ -23,6 +23,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class IndentationTypeFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFixCases
      */
     public function testFis($expected, $input = null)
@@ -220,6 +223,9 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces($expected, $input = null)

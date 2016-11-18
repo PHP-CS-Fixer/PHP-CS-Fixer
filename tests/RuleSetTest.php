@@ -30,6 +30,8 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $rule
+     *
      * @dataProvider provideAllRulesFromSets
      */
     public function testIfAllRulesInSetsExists($rule)

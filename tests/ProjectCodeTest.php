@@ -24,6 +24,8 @@ use Symfony\Component\Finder\SplFileInfo;
 final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @param string $className
+     *
      * @dataProvider provideTestClasses
      */
     public function testThatTestClassesAreAbstractOrFinal($className)
@@ -37,6 +39,8 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $className
+     *
      * @dataProvider provideTestClasses
      */
     public function testThatTestClassesAreInternal($className)

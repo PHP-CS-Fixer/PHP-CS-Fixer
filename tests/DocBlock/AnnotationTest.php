@@ -80,6 +80,9 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
     private static $tags = array('param', 'param', 'param', 'throws', 'return');
 
     /**
+     * @param int    $index
+     * @param string $content
+     *
      * @dataProvider provideContent
      */
     public function testGetContent($index, $content)
@@ -103,6 +106,9 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param int $index
+     * @param int $start
+     *
      * @dataProvider provideStartCases
      */
     public function testStart($index, $start)
@@ -125,6 +131,9 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param int $index
+     * @param int $end
+     *
      * @dataProvider provideEndCases
      */
     public function testEnd($index, $end)
@@ -147,6 +156,9 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param int    $index
+     * @param string $tag
+     *
      * @dataProvider provideTags
      */
     public function testGetTag($index, $tag)
@@ -169,6 +181,10 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param int $index
+     * @param int $start
+     * @param int $end
+     *
      * @dataProvider provideRemoveCases
      */
     public function testRemove($index, $start, $end)
@@ -194,6 +210,11 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string[] $expected
+     * @param string[] $new
+     * @param string   $input
+     * @param string   $output
+     *
      * @dataProvider provideTypesCases
      */
     public function testTypes($expected, $new, $input, $output)

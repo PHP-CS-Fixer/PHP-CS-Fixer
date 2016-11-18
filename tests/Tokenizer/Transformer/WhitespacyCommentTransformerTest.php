@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
 {
     /**
+     * @param string $source
+     *
      * @dataProvider provideProcessCases
      */
     public function testProcess($source, array $expectedTokens)
