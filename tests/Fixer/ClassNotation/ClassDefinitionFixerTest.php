@@ -155,6 +155,14 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
                 "<?php \$a = new class(10) extends SomeClass implements SomeInterface, D\n{};",
                 "<?php \$a = new    class(10)     extends\nSomeClass\timplements    SomeInterface, D {};",
             ),
+            array(
+                "<?php \$a = new class(\$this->prop)\n{};",
+                '<?php $a = new class(   $this->prop   ){};',
+            ),
+            array(
+                "<?php \$a = new class(\$this->prop, \$v[3], 4)\n{};",
+                '<?php $a = new class(   $this->prop,$v[3],   4){};',
+            ),
         );
     }
 
@@ -289,6 +297,7 @@ TestInterface3, /**/     TestInterface4   ,
                     'open' => 4,
                     'extends' => false,
                     'implements' => false,
+                    'anonymousClass' => false,
                 ),
             ),
             array(
@@ -299,6 +308,7 @@ TestInterface3, /**/     TestInterface4   ,
                     'open' => 6,
                     'extends' => false,
                     'implements' => false,
+                    'anonymousClass' => false,
                 ),
             ),
             array(
@@ -309,6 +319,7 @@ TestInterface3, /**/     TestInterface4   ,
                     'open' => 8,
                     'extends' => false,
                     'implements' => false,
+                    'anonymousClass' => false,
                 ),
             ),
             array(
@@ -323,6 +334,7 @@ TestInterface3, /**/     TestInterface4   ,
                             'multiLine' => false,
                         ),
                     'implements' => false,
+                    'anonymousClass' => false,
                 ),
             ),
             array(
@@ -337,6 +349,7 @@ TestInterface3, /**/     TestInterface4   ,
                             'multiLine' => false,
                         ),
                     'implements' => false,
+                    'anonymousClass' => false,
                 ),
             ),
         );
@@ -542,7 +555,7 @@ $a = new class implements
    A
 {}
 
-%s/**/B//
+%s/**/B //
 /**/ {}', $classy, $classy
                 ),
             ),
