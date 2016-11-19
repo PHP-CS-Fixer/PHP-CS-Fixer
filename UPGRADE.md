@@ -31,10 +31,11 @@ CLI options
 --fixers      |               | Coding standard fixers                          | options was removed, see --rules
 --format      | --format      | Choose format                                   |
 --level       |               | Coding standard level                           | options was removed, see --rules
-              | --rules       | Rules to be used                                | option was added
-              | --using-cache | Does cache should be used                       | option was added
               | --path-mode   | Should the finder from configuration be         | option was added
               |               | overriden or intersected with `path` argument   |
+              | --rules       | Rules to be used                                | option was added
+              | --using-cache | Does cache should be used                       | option was added
+
 
 CLI argument
 ------------
@@ -83,6 +84,8 @@ align_equals                                   | binary_operator_spaces         
 array_element_no_space_before_comma            | no_whitespace_before_comma_in_array
 array_element_white_space_after_comma          | whitespace_after_comma_in_array
 blankline_after_open_tag                       | blank_line_after_opening_tag
+concat_with_spaces                             | concat_space                                      | use configuration option ['spacing' => 'one']
+concat_without_spaces                          | concat_space                                      | use configuration option ['spacing' => 'none']
 double_arrow_multiline_whitespaces             | no_multiline_whitespace_around_double_arrow
 duplicate_semicolon                            | no_empty_statement                                | new one fixes more cases
 empty_return                                   | simplified_null_return
