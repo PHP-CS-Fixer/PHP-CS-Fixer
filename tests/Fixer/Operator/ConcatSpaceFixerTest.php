@@ -16,23 +16,43 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author SpacePossum
  *
  * @internal
  */
-final class ConcatWithoutSpacesFixerTest extends AbstractFixerTestCase
+final class ConcatSpaceFixerTest extends AbstractFixerTestCase
 {
+    /**
+     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessageRegExp #^\[concat_space\] Missing "spacing" configuration.$#
+     */
+    public function testInvalidConfigMissingKey()
+    {
+        $this->fixer->configure(array('a' => 1));
+    }
+
+    /**
+     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessageRegExp #^\[concat_space\] "spacing" configuration must be "one" or "none".$#
+     */
+    public function testInvalidConfigValue()
+    {
+        $this->fixer->configure(array('spacing' => 'tabs'));
+    }
+
     /**
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideWithoutSpaceCases
      */
-    public function testFix($expected, $input = null)
+    public function testFixWithoutSpace($expected, $input = null)
     {
+        $this->fixer->configure(array('spacing' => 'none'));
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideWithoutSpaceCases()
     {
         return array(
             array(
@@ -118,6 +138,74 @@ final class ConcatWithoutSpacesFixerTest extends AbstractFixerTestCase
                     // Other comment
                     .  '*****';
                 ",
+            ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideWithSpaceCases
+     */
+    public function testFixWithSpace($expected, $input = null)
+    {
+        $this->fixer->configure(array('spacing' => 'one'));
+        $this->doTest($expected, $input);
+    }
+
+    public function provideWithSpaceCases()
+    {
+        return array(
+            array(
+                '<?php
+                    $a =   //
+                    $c .   /**/
+                    $d     #
+                    . $e   /**  */
+                    . $f . //
+                    $z;
+                ',
+                '<?php
+                    $a =   //
+                    $c   .   /**/
+                    $d     #
+                    .   $e   /**  */
+                    .   $f   . //
+                    $z;
+                ',
+            ),
+            array(
+                '<?php $foo = "a" . \'b\' . "c" . "d" . $e . ($f + 1);',
+                '<?php $foo = "a" . \'b\' ."c". "d"    .  $e.($f + 1);',
+            ),
+            array(
+                '<?php $foo = "a" .
+"b";',
+                '<?php $foo = "a".
+"b";',
+            ),
+            array(
+                '<?php $a = "foobar"
+    . "baz";',
+                '<?php $a = "foobar"
+    ."baz";',
+            ),
+            array(
+                '<?php echo $a . $b;
+                    echo $d . $e .   //
+                        $f;
+                    echo $a . $b?>
+                 <?php
+                    echo $c;
+                ',
+                '<?php echo $a.$b;
+                    echo $d    .            $e          .   //
+                        $f;
+                    echo $a   .                  $b?>
+                 <?php
+                    echo $c;
+                ',
             ),
         );
     }

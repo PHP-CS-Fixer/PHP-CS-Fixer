@@ -210,11 +210,9 @@ Choose from the list of available rules:
 * **combine_consecutive_unsets**
    | Calling unset on multiple items should be done in one call.
 
-* **concat_with_spaces**
-   | Concatenation should be used with at least one whitespace around.
-
-* **concat_without_spaces** [@Symfony]
-   | Concatenation should be used without spaces.
+* **concat_space** [@Symfony]
+   | Concatenation should be spaced according configuration.
+   | *Rule is: configurable.*
 
 * **declare_equal_normalize** [@Symfony]
    | Equal sign in declare statement should not be surrounded by spaces.

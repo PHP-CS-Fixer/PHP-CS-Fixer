@@ -41,7 +41,7 @@ final class TextDiffTest extends \PHPUnit_Framework_TestCase
                 '--diff' => true,
                 '--dry-run' => true,
                 '--format' => $format,
-                '--rules' => 'concat_without_spaces',
+                '--rules' => 'cast_spaces',
                 '--using-cache' => 'no',
             ),
             array(
@@ -64,8 +64,8 @@ final class TextDiffTest extends \PHPUnit_Framework_TestCase
     public function provideDiffReporting()
     {
         $expected = <<<'TEST'
-%A$output->writeln('<error>' . 'a' . '</error>');%A
-%A$output->writeln('<error>'.'a'.'</error>');%A
+%A$output->writeln('<error>'.(int)$output.'</error>');%A
+%A$output->writeln('<error>'.(int) $output.'</error>');%A
 TEST;
         $cases = array();
         foreach (array('txt', 'xml', 'junit') as $format) {

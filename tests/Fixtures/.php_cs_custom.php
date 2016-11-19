@@ -108,7 +108,7 @@ final class CustomConfig implements ConfigInterface
      */
     public function getRules()
     {
-        return array('concat_without_spaces' => true);
+        return array('concat_space' => array('spacing' => 'none'));
     }
 
     /**

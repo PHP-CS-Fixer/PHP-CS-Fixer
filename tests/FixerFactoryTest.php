@@ -195,7 +195,6 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         }
 
         $cases = array(
-            array($fixers['concat_without_spaces'], $fixers['concat_with_spaces']),
             array($fixers['elseif'], $fixers['braces']),
             array($fixers['method_separation'], $fixers['braces']),
             array($fixers['method_separation'], $fixers['indentation_type']),
@@ -408,8 +407,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     public function provideConflictingFixersRules()
     {
         return array(
-            array(new RuleSet(array('concat_with_spaces' => true, 'concat_without_spaces' => true))),
-            array(new RuleSet(array('concat_without_spaces' => true, 'concat_with_spaces' => true))),
+            array(new RuleSet(array('echo_to_print' => true, 'print_to_echo' => true))),
+            array(new RuleSet(array('print_to_echo' => true, 'echo_to_print' => true))),
         );
     }
 

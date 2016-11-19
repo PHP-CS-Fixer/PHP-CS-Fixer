@@ -19,8 +19,8 @@
  */
 final class TextDiffTestInput
 {
-    private function foo($output)
+    public function foo($output)
     {
-        $output->writeln('<error>' . 'a' . '</error>');
+        $output->writeln('<error>'.(int)$output.'</error>');
     }
 }

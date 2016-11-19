@@ -231,7 +231,6 @@ final class FixerFactory
     private function getFixersConflicts(FixerInterface $fixer)
     {
         static $conflictMap = array(
-            'concat_with_spaces' => array('concat_without_spaces'),
             'echo_to_print' => array('print_to_echo'),
             'no_blank_lines_before_namespace' => array('single_blank_line_before_namespace'),
         );
