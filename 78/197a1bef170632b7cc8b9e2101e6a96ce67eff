@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-18T17:48:34Z
+
+LGTM :)
+With 2.x not being released yet this shouldn't cause merging issues I think, so why not.
+Should we add a test to make sure the sets will stay sorted or would that be a bit of an overkill?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-18T21:42:45Z
+
+actually, the current, master form is kinda sorted if you would follow original names, like the content was not reordered when one changed the name of fixer to not have issues with merging 1.x->2.x
