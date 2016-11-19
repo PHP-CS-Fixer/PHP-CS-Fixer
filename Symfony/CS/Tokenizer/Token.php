@@ -205,9 +205,9 @@ class Token
     }
 
     /**
-     * @deprecated Will be removed in the 2.0
-     *
      * Get token's line.
+     *
+     * @deprecated Will be removed in the 2.0
      *
      * @return int
      */
