@@ -142,6 +142,38 @@ echo 1;
                 '.'
                 ',
             ),
+            array(
+                '<?php
+                    '.'
+                    # paragraph one
+                    #
+                    # paragraph two
+                    '.'
+                ',
+                '<?php
+                    #
+                    # paragraph one
+                    #
+                    # paragraph two
+                    #
+                ',
+            ),
+            array(
+                '<?php
+                    '.'
+                    // paragraph one
+                    //
+                    // paragraph two
+                    '.'
+                ',
+                '<?php
+                    //
+                    // paragraph one
+                    //
+                    // paragraph two
+                    //
+                ',
+            ),
         );
     }
 }

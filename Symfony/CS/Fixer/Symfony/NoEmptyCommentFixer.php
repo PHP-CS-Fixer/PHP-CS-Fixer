@@ -41,7 +41,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'There should not be an empty comments.';
+        return 'There should not be an empty comment.';
     }
 
     /**
@@ -64,6 +64,10 @@ final class NoEmptyCommentFixer extends AbstractFixer
         // single line comment starting with '#'
         if ('#' === $content[0]) {
             if (preg_match('|^#\s*$|', $content)) {
+                if ($this->isSurroundedBySingleLineComments($tokens, $index)) {
+                    return;
+                }
+
                 $this->clearCommentToken($tokens, $index);
             }
 
@@ -73,6 +77,10 @@ final class NoEmptyCommentFixer extends AbstractFixer
         // single line comment starting with '//'
         if ('/' === $content[1]) {
             if (preg_match('|^//\s*$|', $content)) {
+                if ($this->isSurroundedBySingleLineComments($tokens, $index)) {
+                    return;
+                }
+
                 $this->clearCommentToken($tokens, $index);
             }
 
@@ -124,5 +132,42 @@ final class NoEmptyCommentFixer extends AbstractFixer
         // else
         // override with whitespace token linebreak
         $tokens->overrideAt($index, array(T_WHITESPACE, "\n", $tokens[$index]->getLine()));
+    }
+
+    private function isSurroundedBySingleLineComments(Tokens $tokens, $index)
+    {
+        $line = $tokens[$index]->getLine();
+        $prev = $tokens->getPrevNonWhitespace($index);
+        $next = $tokens->getNextNonWhitespace($index);
+
+        return $this->isSingleLineCommentOnLine($tokens, $prev, $line - 1) &&
+               $this->isSingleLineCommentOnLine($tokens, $next, $line + 1);
+    }
+
+    private function isSingleLineCommentOnLine(Tokens $tokens, $index, $line)
+    {
+        if ($index === null) {
+            return false;
+        }
+
+        $token = $tokens[$index];
+
+        if (false === $token->isComment()) {
+            return false;
+        }
+
+        if ($line !== $token->getLine()) {
+            return false;
+        }
+
+        if ($token->getContent()[0] === '#') {
+            return true;
+        }
+
+        if ($token->getContent()[1] === '/') {
+            return true;
+        }
+
+        return false;
     }
 }
