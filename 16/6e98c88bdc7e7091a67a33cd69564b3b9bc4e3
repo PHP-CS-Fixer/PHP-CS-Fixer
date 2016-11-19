@@ -1,0 +1,30 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-11T08:50:12Z
+
+fabbot.io is wrong, PR is ready
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-17T10:37:06Z
+
+Sadly 5.3 is failing, same reason for which i didn't merge phpmd branch :/
+please fix
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-17T14:28:39Z
+
+Sorry, i don't like it. just use the ugly previous form of `$this->$callback`, and then we will clean this up properly without that delegator while dropping 5.3
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-17T14:55:43Z
+
+(as told, I didn't like it either)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-19T23:02:19Z
+
+rebased + added upgrade guide
