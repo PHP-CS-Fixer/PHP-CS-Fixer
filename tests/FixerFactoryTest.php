@@ -256,7 +256,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['combine_consecutive_unsets'], $fixers['no_whitespace_in_blank_line']), // tested also in: combine_consecutive_unsets,no_whitespace_in_blank_line.test
             array($fixers['combine_consecutive_unsets'], $fixers['no_trailing_whitespace']), // tested also in: combine_consecutive_unsets,no_trailing_whitespace.test
             array($fixers['combine_consecutive_unsets'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: combine_consecutive_unsets,no_extra_consecutive_blank_lines.test
-            array($fixers['phpdoc_type_to_var'], $fixers['phpdoc_single_line_var_spacing']), // tested also in: phpdoc_type_to_var,phpdoc_single_line_var_spacing.test
+            array($fixers['phpdoc_no_alias_tag'], $fixers['phpdoc_single_line_var_spacing']), // tested also in: phpdoc_no_alias_tag,phpdoc_single_line_var_spacing.test
             array($fixers['blank_line_after_opening_tag'], $fixers['no_blank_lines_before_namespace']), // tested also in: blank_line_after_opening_tag,no_blank_lines_before_namespace.test
             array($fixers['phpdoc_to_comment'], $fixers['no_empty_comment']), // tested also in: phpdoc_to_comment,no_empty_comment.test
             array($fixers['no_empty_comment'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: no_empty_comment,no_extra_consecutive_blank_lines.test

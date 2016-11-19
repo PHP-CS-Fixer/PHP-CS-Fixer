@@ -255,10 +255,6 @@ Choose from the list of available rules:
    | Configured annotations should be omitted from phpdocs.
    | *Rule is: configurable.*
 
-* **general_phpdoc_annotation_rename**
-   | Configured annotations inside phpdocs should be renamed.
-   | *Rule is: configurable.*
-
 * **hash_to_slash_comment** [@Symfony]
    | Single line comments should use double slashes (//) and not hash (#).
 
@@ -469,6 +465,10 @@ Choose from the list of available rules:
 * **phpdoc_no_access** [@Symfony]
    | @access annotations should be omitted from phpdocs.
 
+* **phpdoc_no_alias_tag** [@Symfony]
+   | No alias PHPDoc tags should be used.
+   | *Rule is: configurable.*
+
 * **phpdoc_no_empty_return** [@Symfony]
    | @return void and @return null annotations should be omitted from
    | phpdocs.
@@ -479,9 +479,6 @@ Choose from the list of available rules:
 * **phpdoc_order**
    | Annotations in phpdocs should be ordered so that param annotations come
    | first, then throws annotations, then return annotations.
-
-* **phpdoc_property**
-   | @property tags should be used rather than other variants.
 
 * **phpdoc_scalar** [@Symfony]
    | Scalar types should always be written in the same form. "int", not
@@ -506,14 +503,8 @@ Choose from the list of available rules:
    | Phpdocs should start and end with content, excluding the very first and
    | last line of the docblocks.
 
-* **phpdoc_type_to_var** [@Symfony]
-   | @type should always be written as @var.
-
 * **phpdoc_types** [@Symfony]
    | The correct case must be used for standard PHP types in phpdoc.
-
-* **phpdoc_var_to_type**
-   | @var should always be written as @type.
 
 * **phpdoc_var_without_name** [@Symfony]
    | @var and @type annotations should not contain the variable name.
