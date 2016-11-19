@@ -136,43 +136,26 @@ final class NoEmptyCommentFixer extends AbstractFixer
 
     private function isSurroundedBySingleLineComments(Tokens $tokens, $index)
     {
-        $line = $tokens[$index]->getLine();
-
-        $prev = $tokens->getPrevNonWhitespace($index);
-        if (false === $this->isSingleLineCommentOnLine($tokens, $prev, $line - 1)) {
-            return false;
-        }
-
-        $next = $tokens->getNextNonWhitespace($index);
-
-        return $this->isSingleLineCommentOnLine($tokens, $next, $line + 1);
+        return $this->hasSingleLineCommentSibling($tokens, $index, -1) &&
+               $this->hasSingleLineCommentSibling($tokens, $index,  1);
     }
 
-    private function isSingleLineCommentOnLine(Tokens $tokens, $index, $line)
+    private function hasSingleLineCommentSibling(Tokens $tokens, $index, $direction)
     {
-        if ($index === null) {
-            return false;
-        }
+        do {
+            $index += $direction;
+            if (false === isset($tokens[$index])) {
+                return false;
+            }
 
-        $token = $tokens[$index];
+            $token = $tokens[$index];
+            $content = $token->getContent();
+        } while (false === strpos($content, "\n"));
 
         if (false === $token->isComment()) {
             return false;
         }
 
-        if ($line !== $token->getLine()) {
-            return false;
-        }
-
-        $content = $token->getContent();
-        if ('#' === $content[0]) {
-            return true;
-        }
-
-        if ('/' === $content[1]) {
-            return true;
-        }
-
-        return false;
+        return '#' === $content[0] || '/' === $content[1];
     }
 }

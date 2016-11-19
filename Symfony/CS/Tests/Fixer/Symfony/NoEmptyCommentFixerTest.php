@@ -174,6 +174,56 @@ echo 1;
                     //
                 ',
             ),
+            array(
+                '<?php
+                    '.'
+                    // comment one
+                    '.'
+                    /*
+                       comment two
+                    */
+                ',
+                '<?php
+                    //
+                    // comment one
+                    //
+                    /*
+                       comment two
+                    */
+                ',
+            ),
+            array(
+                '<?php
+                    '.'
+                    // comment one
+                    '.'
+                    // comment two
+                    '.'
+                ',
+                '<?php
+                    //
+                    // comment one
+                    '.'
+                    // comment two
+                    //
+                ',
+            ),
+            array(
+                '<?php
+                    // $a
+                    '.'
+                    '.'
+                    '.'
+                    '.'
+                ',
+                '<?php
+                    // $a
+                    '.'
+                    //
+                    '.'
+                    //
+                ',
+            ),
         );
     }
 }
