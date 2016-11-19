@@ -19,10 +19,14 @@ use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
+use PhpCsFixer\Differ\DifferInterface;
+use PhpCsFixer\Differ\NullDiffer;
+use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Finder;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
+use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Report\ReporterFactory;
 use PhpCsFixer\Report\ReporterInterface;
 use PhpCsFixer\RuleSet;
@@ -111,6 +115,7 @@ final class ConfigurationResolver
 
     private $cacheFile;
     private $cacheManager;
+    private $differ;
     private $finder;
     private $format;
     private $linter;
@@ -137,6 +142,26 @@ final class ConfigurationResolver
         foreach ($options as $name => $value) {
             $this->setOption($name, $value);
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCacheFile()
+    {
+        if (!$this->getUsingCache()) {
+            return null;
+        }
+
+        if (null === $this->cacheFile) {
+            if (null === $this->options['cache-file']) {
+                $this->cacheFile = $this->getConfig()->getCacheFile();
+            } else {
+                $this->cacheFile = $this->options['cache-file'];
+            }
+        }
+
+        return $this->cacheFile;
     }
 
     /**
@@ -212,6 +237,18 @@ final class ConfigurationResolver
     }
 
     /**
+     * @return DifferInterface
+     */
+    public function getDiffer()
+    {
+        if (null === $this->differ) {
+            $this->differ = false === $this->options['diff'] ? new NullDiffer() : new SebastianBergmannDiffer();
+        }
+
+        return $this->differ;
+    }
+
+    /**
      * Returns fixers.
      *
      * @return FixerInterface[] An array of FixerInterface
@@ -251,27 +288,15 @@ final class ConfigurationResolver
     }
 
     /**
-     * @return ReporterInterface
+     * @return LinterInterface
      */
-    public function getReporter()
+    public function getLinter()
     {
-        if (null === $this->reporter) {
-            $reporterFactory = ReporterFactory::create();
-            $reporterFactory->registerBuiltInReporters();
-
-            $format = $this->getFormat();
-
-            try {
-                $this->reporter = $reporterFactory->getReporter($format);
-            } catch (\UnexpectedValueException $e) {
-                $formats = $reporterFactory->getFormats();
-                sort($formats);
-
-                throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are %s.', $format, implode(', ', $formats)));
-            }
+        if (null === $this->linter) {
+            $this->linter = new Linter($this->getConfig()->getPhpExecutable());
         }
 
-        return $this->reporter;
+        return $this->linter;
     }
 
     /**
@@ -329,6 +354,46 @@ final class ConfigurationResolver
     }
 
     /**
+     * @return ReporterInterface
+     */
+    public function getReporter()
+    {
+        if (null === $this->reporter) {
+            $reporterFactory = ReporterFactory::create();
+            $reporterFactory->registerBuiltInReporters();
+
+            $format = $this->getFormat();
+
+            try {
+                $this->reporter = $reporterFactory->getReporter($format);
+            } catch (\UnexpectedValueException $e) {
+                $formats = $reporterFactory->getFormats();
+                sort($formats);
+
+                throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are %s.', $format, implode(', ', $formats)));
+            }
+        }
+
+        return $this->reporter;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getRiskyAllowed()
+    {
+        if (null === $this->allowRisky) {
+            if (null !== $this->options['allow-risky']) {
+                $this->allowRisky = 'yes' === $this->options['allow-risky'];
+            } else {
+                $this->allowRisky = $this->getConfig()->getRiskyAllowed();
+            }
+        }
+
+        return $this->allowRisky;
+    }
+
+    /**
      * Returns rules.
      *
      * @return array
@@ -336,6 +401,31 @@ final class ConfigurationResolver
     public function getRules()
     {
         return $this->getRuleSet()->getRules();
+    }
+
+    /**
+     * @return bool
+     */
+    public function getUsingCache()
+    {
+        if (null === $this->usingCache) {
+            if (null === $this->options['using-cache']) {
+                $this->usingCache = $this->getConfig()->getUsingCache();
+            } else {
+                $this->usingCache = 'yes' === $this->options['using-cache'];
+            }
+        }
+
+        return $this->usingCache;
+    }
+
+    public function getFinder()
+    {
+        if (null === $this->finder) {
+            $this->finder = $this->resolveFinder();
+        }
+
+        return $this->finder;
     }
 
     /**
@@ -355,104 +445,6 @@ final class ConfigurationResolver
         }
 
         return $this->isDryRun;
-    }
-
-    public function getUsingCache()
-    {
-        if (null === $this->usingCache) {
-            if (null !== $this->options['using-cache']) {
-                $this->usingCache = 'yes' === $this->options['using-cache'];
-            } else {
-                $this->usingCache = $this->getConfig()->getUsingCache();
-            }
-        }
-
-        return $this->usingCache;
-    }
-
-    public function getCacheFile()
-    {
-        if (null === $this->cacheFile) {
-            if (null !== $this->options['cache-file']) {
-                $this->cacheFile = $this->options['cache-file'];
-            } else {
-                $this->cacheFile = $this->getConfig()->getCacheFile();
-            }
-        }
-
-        return $this->cacheFile;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getRiskyAllowed()
-    {
-        if (null === $this->allowRisky) {
-            if (null !== $this->options['allow-risky']) {
-                $this->allowRisky = 'yes' === $this->options['allow-risky'];
-            } else {
-                $this->allowRisky = $this->getConfig()->getRiskyAllowed();
-            }
-        }
-
-        return $this->allowRisky;
-    }
-
-    public function getFinder()
-    {
-        if (null === $this->finder) {
-            $this->finder = $this->resolveFinder();
-        }
-
-        return $this->finder;
-    }
-
-    public function getLinter()
-    {
-        if (null === $this->linter) {
-            $this->linter = new Linter($this->getConfig()->getPhpExecutable());
-        }
-
-        return $this->linter;
-    }
-
-    /**
-     * Set option that will be resolved.
-     *
-     * @param string $name
-     * @param mixed  $value
-     */
-    private function setOption($name, $value)
-    {
-        if (!array_key_exists($name, $this->options)) {
-            throw new InvalidConfigurationException(sprintf('Unknown option name: "%s".', $name));
-        }
-
-        $this->options[$name] = $value;
-    }
-
-    /**
-     * @return string
-     */
-    private function getFormat()
-    {
-        if (null === $this->format) {
-            $this->format = null !== $this->options['format']
-                ? $format = $this->options['format']
-                : $format = $this->getConfig()->getFormat();
-        }
-
-        return $this->format;
-    }
-
-    private function getRuleSet()
-    {
-        if (null === $this->ruleSet) {
-            $this->ruleSet = new RuleSet($this->parseRules());
-        }
-
-        return $this->ruleSet;
     }
 
     /**
@@ -495,6 +487,51 @@ final class ConfigurationResolver
         }
 
         return $candidates;
+    }
+
+    /**
+     * @return string
+     */
+    private function getFormat()
+    {
+        if (null === $this->format) {
+            $this->format = null === $this->options['format']
+                ? $format = $this->getConfig()->getFormat()
+                : $format = $this->options['format'];
+        }
+
+        return $this->format;
+    }
+
+    private function getRuleSet()
+    {
+        if (null === $this->ruleSet) {
+            $this->ruleSet = new RuleSet($this->parseRules());
+        }
+
+        return $this->ruleSet;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isStdIn()
+    {
+        if (null === $this->isStdIn) {
+            $this->isStdIn = 1 === count($this->options['path']) && '-' === $this->options['path'][0];
+        }
+
+        return $this->isStdIn;
+    }
+
+    /**
+     * @param iterable $iterable
+     *
+     * @return \Traversable
+     */
+    private function iterableToTraversable($iterable)
+    {
+        return is_array($iterable) ? new \ArrayIterator($iterable) : $iterable;
     }
 
     /**
@@ -622,24 +659,17 @@ final class ConfigurationResolver
     }
 
     /**
-     * @return bool
+     * Set option that will be resolved.
+     *
+     * @param string $name
+     * @param mixed  $value
      */
-    private function isStdIn()
+    private function setOption($name, $value)
     {
-        if (null === $this->isStdIn) {
-            $this->isStdIn = 1 === count($this->options['path']) && '-' === $this->options['path'][0];
+        if (!array_key_exists($name, $this->options)) {
+            throw new InvalidConfigurationException(sprintf('Unknown option name: "%s".', $name));
         }
 
-        return $this->isStdIn;
-    }
-
-    /**
-     * @param iterable $iterable
-     *
-     * @return \Traversable
-     */
-    private function iterableToTraversable($iterable)
-    {
-        return is_array($iterable) ? new \ArrayIterator($iterable) : $iterable;
+        $this->options[$name] = $value;
     }
 }
