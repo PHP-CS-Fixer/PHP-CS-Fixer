@@ -207,6 +207,8 @@ class Token
     /**
      * Get token's line.
      *
+     * @deprecated Will be removed in the 2.0
+     *
      * @return int
      */
     public function getLine()
