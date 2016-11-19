@@ -22,6 +22,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class PhpdocIndentFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideDocblocks
      */
     public function testFixIndent($expected, $input = null)

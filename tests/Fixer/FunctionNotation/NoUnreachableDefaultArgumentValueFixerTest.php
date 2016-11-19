@@ -23,7 +23,7 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
      * @dataProvider provideCases
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFix($expected, $input = null)
     {
@@ -158,7 +158,7 @@ EOT
      * @requires PHP 5.6
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFix56($expected, $input = null)
     {

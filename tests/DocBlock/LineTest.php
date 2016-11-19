@@ -113,6 +113,9 @@ final class LineTest extends \PHPUnit_Framework_TestCase
     );
 
     /**
+     * @param int    $pos
+     * @param string $content
+     *
      * @dataProvider provideLines
      */
     public function testPosAndContent($pos, $content)
@@ -124,6 +127,8 @@ final class LineTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param int $pos
+     *
      * @dataProvider provideLines
      */
     public function testStarOrEndPos($pos)
@@ -158,6 +163,9 @@ final class LineTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param int  $pos
+     * @param bool $useful
+     *
      * @dataProvider provideLinesWithUseful
      */
     public function testUseful($pos, $useful)
@@ -180,6 +188,9 @@ final class LineTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param int  $pos
+     * @param bool $tag
+     *
      * @dataProvider provideLinesWithTag
      */
     public function testTag($pos, $tag)

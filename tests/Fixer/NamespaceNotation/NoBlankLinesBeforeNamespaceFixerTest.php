@@ -25,7 +25,7 @@ final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
      * @dataProvider provideExamples
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFix($expected, $input = null)
     {

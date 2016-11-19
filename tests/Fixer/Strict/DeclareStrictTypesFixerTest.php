@@ -21,6 +21,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFixCases
      * @requires PHP 7.0
      */
@@ -146,6 +149,8 @@ $a = 456;
     }
 
     /**
+     * @param string $input
+     *
      * @dataProvider provideDoNotFixCases
      */
     public function testDoNotFix($input)
@@ -162,6 +167,9 @@ $a = 456;
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideMessyWhitespacesCases
      * @requires PHP 7.0
      */

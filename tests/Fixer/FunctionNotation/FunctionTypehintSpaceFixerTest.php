@@ -22,6 +22,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
@@ -103,6 +106,9 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCases56
      * @requires PHP 5.6
      */
@@ -132,6 +138,9 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provide70Cases
      * @requires PHP 7.0
      */

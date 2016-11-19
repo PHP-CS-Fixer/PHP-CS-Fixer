@@ -24,6 +24,10 @@ use PhpCsFixer\DocBlock\TagComparator;
 final class TagComparatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @param string $first
+     * @param string $second
+     * @param bool   $expected
+     *
      * @dataProvider provideComparatorCases
      */
     public function testComparatorTogether($first, $second, $expected)

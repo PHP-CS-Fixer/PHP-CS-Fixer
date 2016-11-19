@@ -26,6 +26,9 @@ final class CTTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $name
+     * @param int    $value
+     *
      * @dataProvider provideCTs
      */
     public function testConstants($name, $value)

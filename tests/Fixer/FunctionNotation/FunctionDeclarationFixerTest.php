@@ -23,6 +23,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
@@ -155,6 +158,9 @@ function foo() /* bar */
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provide70Cases
      * @requires PHP 7.0
      */

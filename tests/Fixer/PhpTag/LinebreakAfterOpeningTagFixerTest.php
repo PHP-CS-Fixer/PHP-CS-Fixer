@@ -24,6 +24,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class LinebreakAfterOpeningTagFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
@@ -32,6 +35,9 @@ final class LinebreakAfterOpeningTagFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @requires PHP 5.4
      * @dataProvider provideCases54
      */
@@ -95,6 +101,9 @@ $foo = $bar;
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces($expected, $input = null)

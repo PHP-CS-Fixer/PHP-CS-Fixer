@@ -22,6 +22,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCases
      */
     public function testFixSpaceInsideParenthesis($expected, $input = null)

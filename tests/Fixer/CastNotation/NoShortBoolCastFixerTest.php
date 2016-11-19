@@ -20,7 +20,10 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class NoShortBoolCastFixerTest extends AbstractFixerTestCase
 {
     /**
-     * * @dataProvider provideCases
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideCases
      */
     public function testFixer($expected, $input = null)
     {

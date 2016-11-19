@@ -22,6 +22,10 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class WhitespacesFixerConfigTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @param string      $indent
+     * @param string      $lineEnding
+     * @param null|string $exceptionRegExp
+     *
      * @dataProvider provideTestCases
      */
     public function testCases($indent, $lineEnding, $exceptionRegExp = null)

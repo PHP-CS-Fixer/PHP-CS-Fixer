@@ -42,6 +42,9 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideLongSyntaxCases
      */
     public function testFixLongSyntax($expected, $input = null)
@@ -78,6 +81,9 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @requires PHP 5.4
      * @dataProvider provideShortSyntaxCases
      */

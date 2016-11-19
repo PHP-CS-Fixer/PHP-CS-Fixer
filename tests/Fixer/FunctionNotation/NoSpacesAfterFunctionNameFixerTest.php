@@ -22,6 +22,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider testFixProvider
      */
     public function testFix($expected, $input = null)
@@ -125,6 +128,9 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider testFixProvider
      * @requires PHP 5.4
      */

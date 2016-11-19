@@ -23,6 +23,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideNoEmptyStatementsCases
      */
     public function testNoEmptyStatements($expected, $input = null)
@@ -357,6 +360,9 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provide54Cases
      * @requires PHP 5.4
      */
@@ -384,6 +390,9 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provide55Cases
      * @requires PHP 5.5
      */
@@ -417,6 +426,9 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider providePHP7Cases
      * @requires PHP 7.0
      */
@@ -509,6 +521,9 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCasesWithShortOpenTag
      */
     public function testCasesWithShortOpenTag($expected, $input = null)
@@ -549,6 +564,9 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFixMultipleSemicolonsCases
      */
     public function testFixMultipleSemicolons($expected, $input = null)

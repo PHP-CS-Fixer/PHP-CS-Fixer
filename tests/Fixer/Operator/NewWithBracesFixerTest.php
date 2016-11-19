@@ -22,6 +22,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class NewWithBracesFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
@@ -30,6 +33,9 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provide54Cases
      * @requires PHP 5.4
      */
@@ -39,6 +45,9 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provide56Cases
      * @requires PHP 5.6
      */
@@ -48,6 +57,9 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provide70Cases
      * @requires PHP 7.0
      */

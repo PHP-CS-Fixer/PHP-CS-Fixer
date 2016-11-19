@@ -23,6 +23,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)

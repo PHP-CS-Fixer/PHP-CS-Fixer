@@ -345,6 +345,7 @@ TestInterface3, /**/     TestInterface4   ,
     /**
      * @param string $source         PHP source code
      * @param int    $classOpenIndex classy curly brace open index
+     * @param string $label
      * @param array  $expected
      *
      * @dataProvider provideClassyImplementsInfoCases
@@ -430,6 +431,9 @@ namespace {
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider providePHP7Cases
      * @requires PHP 7.0
      */
@@ -477,6 +481,9 @@ $a = new class implements
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces($expected, $input = null)

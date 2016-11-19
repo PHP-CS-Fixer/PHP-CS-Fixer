@@ -23,6 +23,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class LowercaseConstantsFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideGeneratedCases
      */
     public function testFixGeneratedCases($expected, $input = null)
@@ -54,6 +57,9 @@ final class LowercaseConstantsFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
@@ -124,6 +130,9 @@ final class LowercaseConstantsFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provide54Cases
      * @requires PHP 5.4
      */

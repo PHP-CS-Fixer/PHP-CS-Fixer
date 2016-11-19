@@ -23,6 +23,10 @@ use PhpCsFixer\DocBlock\Tag;
 final class TagTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @param string $expected
+     * @param string $new
+     * @param string $input
+     *
      * @dataProvider provideNameCases
      */
     public function testName($expected, $new, $input)
@@ -57,6 +61,9 @@ final class TagTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param bool   $expected
+     * @param string $input
+     *
      * @dataProvider provideValidCases
      */
     public function testValid($expected, $input)

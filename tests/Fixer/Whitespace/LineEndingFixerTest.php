@@ -24,6 +24,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class LineEndingFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
@@ -49,6 +52,9 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces($expected, $input = null)

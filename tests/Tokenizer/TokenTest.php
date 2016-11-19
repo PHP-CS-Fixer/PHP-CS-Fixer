@@ -66,9 +66,12 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param Token $token
+     * @param bool  $isCast
+     *
      * @dataProvider provideIsCastCases
      */
-    public function testIsCast($token, $isCast)
+    public function testIsCast(Token $token, $isCast)
     {
         $this->assertSame($isCast, $token->isCast());
     }
@@ -89,9 +92,12 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param Token $token
+     * @param bool  $isClassy
+     *
      * @dataProvider provideIsClassyCases
      */
-    public function testIsClassy($token, $isClassy)
+    public function testIsClassy(Token $token, $isClassy)
     {
         $this->assertSame($isClassy, $token->isClassy());
     }
@@ -113,9 +119,12 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param Token $token
+     * @param bool  $isComment
+     *
      * @dataProvider provideIsCommentCases
      */
-    public function testIsComment($token, $isComment)
+    public function testIsComment(Token $token, $isComment)
     {
         $this->assertSame($isComment, $token->isComment());
     }
@@ -218,9 +227,12 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param Token $token
+     * @param bool  $isNativeConstant
+     *
      * @dataProvider provideIsNativeConstantCases
      */
-    public function testIsNativeConstant($token, $isNativeConstant)
+    public function testIsNativeConstant(Token $token, $isNativeConstant)
     {
         $this->assertSame($isNativeConstant, $token->isNativeConstant());
     }
@@ -239,9 +251,13 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param Token       $token
+     * @param bool        $isWhitespace
+     * @param null|string $whitespaces
+     *
      * @dataProvider provideIsWhitespaceCases
      */
-    public function testIsWhitespace($token, $isWhitespace, $whitespaces = null)
+    public function testIsWhitespace(Token $token, $isWhitespace, $whitespaces = null)
     {
         if (null !== $whitespaces) {
             $this->assertSame($isWhitespace, $token->isWhitespace($whitespaces));
@@ -295,6 +311,11 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param Token              $token
+     * @param string             $equals
+     * @param Token|array|string $other
+     * @param bool               $caseSensitive
+     *
      * @dataProvider provideEquals
      */
     public function testEquals(Token $token, $equals, $other, $caseSensitive = true)
@@ -347,9 +368,13 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param bool  $equalsAny
+     * @param array $other
+     * @param bool  $caseSensitive
+     *
      * @dataProvider provideEqualsAny
      */
-    public function testEqualsAny($equalsAny, $other, $caseSensitive = true)
+    public function testEqualsAny($equalsAny, array $other, $caseSensitive = true)
     {
         $token = new Token(array(T_FUNCTION, 'function', 1));
 
@@ -374,6 +399,10 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param bool       $isKeyCaseSensitive
+     * @param bool|array $caseSensitive
+     * @param int        $key
+     *
      * @dataProvider provideIsKeyCaseSensitive
      */
     public function testIsKeyCaseSensitive($isKeyCaseSensitive, $caseSensitive, $key)

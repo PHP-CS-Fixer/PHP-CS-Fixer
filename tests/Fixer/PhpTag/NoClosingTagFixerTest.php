@@ -20,6 +20,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class NoClosingTagFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCasesWithFullOpenTag
      */
     public function testCasesWithFullOpenTag($expected, $input = null)
@@ -28,6 +31,9 @@ final class NoClosingTagFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCasesWithShortOpenTag
      */
     public function testCasesWithShortOpenTag($expected, $input = null)

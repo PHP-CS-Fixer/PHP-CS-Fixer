@@ -22,6 +22,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
@@ -297,6 +300,9 @@ EOT
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCases54
      * @requires PHP 5.4
      */
@@ -340,6 +346,9 @@ EOT
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCases71
      * @requires PHP 7.1
      */
@@ -381,6 +390,8 @@ EOT
     }
 
     /**
+     * @param string $expected
+     *
      * @dataProvider provideConfigurationCases
      */
     public function testFixWithConfiguration(array $configuration, $expected)

@@ -235,6 +235,9 @@ EOF;
     /**
      * Empty line between typehinting docs and return statement should be preserved.
      *
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideInlineTypehintingDocsBeforeFlowBreakCases
      */
     public function testInlineTypehintingDocsBeforeFlowBreak($expected, $input = null)

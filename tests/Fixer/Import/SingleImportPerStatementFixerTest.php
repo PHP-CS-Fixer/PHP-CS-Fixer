@@ -24,6 +24,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideCases
      */
     public function testFix($expected, $input = null)
@@ -206,6 +209,9 @@ use X ?><?php new X(); // run before white space around semicolon',
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provide70Cases
      * @requires PHP 7.0
      */
@@ -247,6 +253,9 @@ use D\{E,F};
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces($expected, $input = null)

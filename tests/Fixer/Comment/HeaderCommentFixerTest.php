@@ -24,6 +24,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class HeaderCommentFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string $expected
+     * @param string $input
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(array $configuration, $expected, $input)
@@ -269,6 +272,9 @@ echo 1;',
     }
 
     /**
+     * @param null|array $configuration
+     * @param string     $exceptionMessage
+     *
      * @dataProvider provideMisconfiguration
      */
     public function testMisconfiguration($configuration, $exceptionMessage)
@@ -322,6 +328,10 @@ echo 1;',
     }
 
     /**
+     * @param string $expected
+     * @param string $header
+     * @param string $type
+     *
      * @dataProvider provideHeaderGenerationCases
      */
     public function testHeaderGeneration($expected, $header, $type)
@@ -352,6 +362,9 @@ echo 1;',
     }
 
     /**
+     * @param int    $expected
+     * @param string $code
+     *
      * @dataProvider provideFindHeaderCommentInsertionIndexCases
      */
     public function testFindHeaderCommentInsertionIndex($expected, $code, array $config)
@@ -408,6 +421,8 @@ declare(strict_types=1)?>',
     }
 
     /**
+     * @param string $expected
+     *
      * @dataProvider provideDoNotTouchCases
      */
     public function testDoNotTouch($expected)
@@ -429,6 +444,9 @@ declare(strict_types=1)?>',
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces(array $configuration, $expected, $input = null)

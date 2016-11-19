@@ -24,6 +24,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class NoLeadingNamespaceWhitespaceFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideExamples
      */
     public function testFix($expected, $input = null)
@@ -118,6 +121,9 @@ namespace Test15a;namespace Test15b;',
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces($expected, $input = null)

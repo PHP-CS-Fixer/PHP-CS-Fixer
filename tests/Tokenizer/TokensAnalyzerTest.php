@@ -77,6 +77,8 @@ PHP;
     }
 
     /**
+     * @param string $source
+     *
      * @dataProvider provideIsAnonymousClassCases
      */
     public function testIsAnonymousClass($source, array $expected)
@@ -115,6 +117,8 @@ PHP;
     }
 
     /**
+     * @param string $source
+     *
      * @dataProvider provideIsLambdaCases
      */
     public function testIsLambda($source, array $expected)
@@ -164,6 +168,8 @@ preg_replace_callback(
     }
 
     /**
+     * @param string $source
+     *
      * @dataProvider provideIsLambdaCases70
      * @requires PHP 7.0
      */
@@ -197,6 +203,8 @@ preg_replace_callback(
     }
 
     /**
+     * @param string $source
+     *
      * @dataProvider provideIsLambdaCases71
      * @requires PHP 7.1
      */
@@ -244,6 +252,8 @@ preg_replace_callback(
     }
 
     /**
+     * @param string $source
+     *
      * @dataProvider provideIsUnarySuccessorOperator
      */
     public function testIsUnarySuccessorOperator($source, array $expected)
@@ -298,6 +308,8 @@ preg_replace_callback(
     }
 
     /**
+     * @param string $source
+     *
      * @dataProvider provideIsUnaryPredecessorOperator
      */
     public function testIsUnaryPredecessorOperator($source, array $expected)
@@ -360,6 +372,8 @@ preg_replace_callback(
     }
 
     /**
+     * @param string $source
+     *
      * @dataProvider provideIsUnaryPredecessorOperator56
      * @requires PHP 5.6
      */
@@ -403,6 +417,8 @@ preg_replace_callback(
     }
 
     /**
+     * @param string $source
+     *
      * @dataProvider provideIsBinaryOperator
      */
     public function testIsBinaryOperator($source, array $expected)
@@ -521,6 +537,8 @@ $b;',
     }
 
     /**
+     * @param string $source
+     *
      * @dataProvider provideIsBinaryOperator56
      * @requires PHP 5.6
      */
@@ -552,6 +570,8 @@ $b;',
     }
 
     /**
+     * @param string $source
+     *
      * @dataProvider provideIsBinaryOperator70
      * @requires PHP 7.0
      */
@@ -583,6 +603,10 @@ $b;',
     }
 
     /**
+     * @param string $source
+     * @param int    $tokenIndex
+     * @param bool   $isMultilineArray
+     *
      * @dataProvider provideIsArray
      * @requires PHP 5.4
      */
@@ -661,6 +685,9 @@ $b;',
     }
 
     /**
+     * @param string $source
+     * @param int    $tokenIndex
+     *
      * @dataProvider provideArrayExceptions
      */
     public function testIsNotArray($source, $tokenIndex)
@@ -671,6 +698,9 @@ $b;',
     }
 
     /**
+     * @param string $source
+     * @param int    $tokenIndex
+     *
      * @expectedException \InvalidArgumentException
      * @dataProvider provideArrayExceptions
      */
@@ -694,9 +724,13 @@ $b;',
     }
 
     /**
+     * @param string $source
+     * @param int    $index
+     * @param array  $expected
+     *
      * @dataProvider provideGetFunctionProperties
      */
-    public function testGetFunctionProperties($source, $index, $expected)
+    public function testGetFunctionProperties($source, $index, array $expected)
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -838,6 +872,9 @@ SRC;
     }
 
     /**
+     * @param string $input
+     * @param bool   $perNamespace
+     *
      * @dataProvider getImportUseIndexesCases
      */
     public function testGetImportUseIndexes(array $expected, $input, $perNamespace = false)
@@ -910,6 +947,9 @@ EOF
     }
 
     /**
+     * @param string $input
+     * @param bool   $perNamespace
+     *
      * @dataProvider getImportUseIndexesCasesPHP70
      * @requires PHP 7.0
      */

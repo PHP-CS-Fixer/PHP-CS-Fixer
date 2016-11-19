@@ -22,6 +22,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFixCases
      * @requires PHP 5.5
      */
@@ -189,6 +192,9 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFixCases70
      * @requires PHP 7.0
      */

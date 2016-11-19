@@ -614,6 +614,9 @@ EOF;
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provide70Cases
      * @requires PHP 7.0
      */
