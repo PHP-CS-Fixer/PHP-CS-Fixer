@@ -164,11 +164,12 @@ final class NoEmptyCommentFixer extends AbstractFixer
             return false;
         }
 
-        if ($token->getContent()[0] === '#') {
+        $content = $token->getContent();
+        if ('#' === $content[0]) {
             return true;
         }
 
-        if ($token->getContent()[1] === '/') {
+        if ('/' === $content[1]) {
             return true;
         }
 
