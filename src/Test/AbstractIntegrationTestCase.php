@@ -90,7 +90,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
         self::$fileRemoval->delete($tmpFile);
     }
 
-    public function setUp()
+    protected function setUp()
     {
         $this->linter = $this->getLinter();
     }

@@ -42,7 +42,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
      */
     private $fixerClassName;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->linter = $this->getLinter();
         $this->fixer = $this->createFixer();
