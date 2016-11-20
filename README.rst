@@ -447,6 +447,10 @@ Choose from the list of available rules:
    | "assertEquals".
    | *Rule is: configurable, risky.*
 
+* **phpdoc_add_missing_param_annotation**
+   | Phpdoc should contain @param for all params.
+   | *Rule is: configurable.*
+
 * **phpdoc_align** [@Symfony]
    | All items of the @param, @throws, @return, @var, and @type phpdoc tags
    | must be aligned vertically.

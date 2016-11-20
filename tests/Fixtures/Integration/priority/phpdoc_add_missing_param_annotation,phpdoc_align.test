@@ -1,0 +1,20 @@
+--TEST--
+Integration of fixers: phpdoc_add_missing_param_annotation,phpdoc_align.
+--RULESET--
+{"phpdoc_add_missing_param_annotation": true, "phpdoc_align": true}
+--EXPECT--
+<?php
+/**
+ * @param inTeGer $fo  fo descr
+ * @param float   $bar fo descr
+ * @param mixed   $qux
+ */
+function foo ($fo, $bar, array $baz, $qux) {}
+
+--INPUT--
+<?php
+/**
+ * @param inTeGer $fo fo descr
+ * @param float $bar fo descr
+ */
+function foo ($fo, $bar, array $baz, $qux) {}
