@@ -143,7 +143,7 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     } /* multiline
     comment */
 
-    public function setUp() {}
+    protected function setUp() {}
 
     protected function tearDown() {}
 
@@ -236,7 +236,7 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     {
     } // end foo5
 
-    public function setUp() {}
+    protected function setUp() {}
 
     protected function __construct()
     {
