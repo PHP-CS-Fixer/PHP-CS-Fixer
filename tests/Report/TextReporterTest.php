@@ -38,6 +38,26 @@ final class TextReporterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('txt', $this->reporter->getFormat());
     }
 
+    public function testGenerateNoErrors()
+    {
+        $expectedText = <<<'TEXT'
+TEXT;
+
+        $this->assertSame(
+            $expectedText,
+            $this->reporter->generate(
+                new ReportSummary(
+                    array(),
+                    0,
+                    0,
+                    false,
+                    false,
+                    false
+                )
+            )
+        );
+    }
+
     public function testGenerateSimple()
     {
         $expectedText = str_replace("\n", PHP_EOL, <<<'TEXT'

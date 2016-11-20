@@ -12,22 +12,20 @@
 
 namespace PhpCsFixer\Tests\Linter;
 
-use PhpCsFixer\Linter\TokenizerLinter;
+use PhpCsFixer\Linter\Linter;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  *
- * @requires PHP 7.0
- * @covers PhpCsFixer\Linter\TokenizerLinter
- * @covers PhpCsFixer\Linter\TokenizerLintingResult
+ * @covers PhpCsFixer\Linter\Linter
  */
-final class TokenizerLinterTest extends AbstractLinterTestCase
+final class LinterTest extends AbstractLinterTestCase
 {
     public function testIsAsync()
     {
-        $this->assertFalse($this->createLinter()->isAsync());
+        $this->assertSame(!defined('TOKEN_PARSE'), $this->createLinter()->isAsync());
     }
 
     /**
@@ -35,6 +33,6 @@ final class TokenizerLinterTest extends AbstractLinterTestCase
      */
     protected function createLinter()
     {
-        return new TokenizerLinter();
+        return new Linter();
     }
 }

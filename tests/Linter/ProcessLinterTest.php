@@ -20,9 +20,17 @@ use Symfony\Component\Process\ProcessUtils;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers PhpCsFixer\Linter\ProcessLinter
+ * @covers PhpCsFixer\Linter\ProcessLintingResult
  */
-final class ProcessLinterTest extends \PHPUnit_Framework_TestCase
+final class ProcessLinterTest extends AbstractLinterTestCase
 {
+    public function testIsAsync()
+    {
+        $this->assertTrue($this->createLinter()->isAsync());
+    }
+
     public function testPrepareCommandOnPhp()
     {
         if (defined('HHVM_VERSION')) {
@@ -53,24 +61,11 @@ final class ProcessLinterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpCsFixer\Linter\ProcessLinter::lintSource
+     * {@inheritdoc}
      */
-    public function testLintSourceWithGoodCode()
+    protected function createLinter()
     {
-        $linter = new ProcessLinter();
-        $linter->lintSource('<?php echo 123;')->check(); // no exception should be raised
-    }
-
-    /**
-     * @covers PhpCsFixer\Linter\ProcessLinter::lintSource
-     *
-     * @expectedException \PhpCsFixer\Linter\LintingException
-     * @expectedExceptionMessageRegExp /syntax error, unexpected.*T_ECHO/
-     */
-    public function testLintSourceWithBadCode()
-    {
-        $linter = new ProcessLinter();
-        $linter->lintSource('<?php echo echo;')->check();
+        return new ProcessLinter();
     }
 
     /**

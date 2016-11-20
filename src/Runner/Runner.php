@@ -213,11 +213,13 @@ final class Runner
             if (!$this->isDryRun) {
                 if (false === @file_put_contents($file->getRealPath(), $new)) {
                     $error = error_get_last();
-                    if (null !== $error) {
-                        throw new IOException(sprintf('Failed to write file "%s", "%s".', $file->getRealPath(), $error['message']), 0, null, $file->getRealPath());
-                    }
 
-                    throw new IOException(sprintf('Failed to write file "%s".', $file->getRealPath()), 0, null, $file->getRealPath());
+                    throw new IOException(
+                        sprintf('Failed to write file "%s", "%s".', $this->file, $error ? $error['message'] : 'no reason available'),
+                        0,
+                        null,
+                        $file->getRealPath()
+                    );
                 }
             }
 

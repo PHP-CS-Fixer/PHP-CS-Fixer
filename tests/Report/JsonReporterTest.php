@@ -38,6 +38,34 @@ final class JsonReporterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('json', $this->reporter->getFormat());
     }
 
+    public function testGenerateNoErrors()
+    {
+        $expectedJson = <<<'JSON'
+{
+    "files": [
+    ],
+    "time": {
+        "total": 0
+    },
+    "memory": 0
+}
+JSON;
+
+        $this->assertJsonStringEqualsJsonString(
+            $expectedJson,
+            $this->reporter->generate(
+                new ReportSummary(
+                    array(),
+                    0,
+                    0,
+                    false,
+                    false,
+                    false
+                )
+            )
+        );
+    }
+
     public function testGenerateSimple()
     {
         $expectedJson = <<<'JSON'
