@@ -43,16 +43,16 @@ final class SemicolonAfterInstructionFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Instructions must be terminated with a semicolon.';
+        return $tokens->isTokenKindFound(T_CLOSE_TAG);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    protected function getDescription()
     {
-        return $tokens->isTokenKindFound(T_CLOSE_TAG);
+        return 'Instructions must be terminated with a semicolon.';
     }
 }

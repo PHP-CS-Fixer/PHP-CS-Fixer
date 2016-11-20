@@ -49,7 +49,7 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Equal sign in declare statement should not be surrounded by spaces.';
     }

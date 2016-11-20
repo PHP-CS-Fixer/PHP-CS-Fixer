@@ -97,17 +97,17 @@ final class VisibilityRequiredFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Visibility MUST be declared on all properties and methods; abstract and final MUST be declared before the visibility; static MUST be declared after the visibility.';
+        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    protected function getDescription()
     {
-        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+        return 'Visibility MUST be declared on all properties and methods; abstract and final MUST be declared before the visibility; static MUST be declared after the visibility.';
     }
 
     /**

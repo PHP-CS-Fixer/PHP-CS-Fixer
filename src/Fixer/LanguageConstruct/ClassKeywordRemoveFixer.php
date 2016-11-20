@@ -47,7 +47,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Converts ::class keywords to FQCN strings.';
     }

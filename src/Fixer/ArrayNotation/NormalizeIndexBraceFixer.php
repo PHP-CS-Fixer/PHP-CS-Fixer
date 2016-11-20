@@ -47,7 +47,7 @@ final class NormalizeIndexBraceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Array index should always be written by using square braces.';
     }

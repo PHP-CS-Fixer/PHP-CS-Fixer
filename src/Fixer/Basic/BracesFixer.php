@@ -50,18 +50,18 @@ final class BracesFixer extends AbstractFixer implements WhitespacesFixerConfigA
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.';
+        // should be run after the ElseIfFixer, NoEmptyStatementFixer and NoUselessElseFixer
+        return -25;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run after the ElseIfFixer, NoEmptyStatementFixer and NoUselessElseFixer
-        return -25;
+        return 'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.';
     }
 
     private function fixCommentBeforeBrace(Tokens $tokens)

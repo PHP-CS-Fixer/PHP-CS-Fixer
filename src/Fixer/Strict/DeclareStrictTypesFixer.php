@@ -74,14 +74,6 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'Force strict types declaration in all files.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // must ran before SingleBlankLineBeforeNamespaceFixer, NoBlankLinesBeforeNamespaceFixer, NoExtraConsecutiveBlankLinesFixer, NoWhitespaceInBlankLinesFixer
@@ -102,6 +94,14 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Force strict types declaration in all files.';
     }
 
     /**

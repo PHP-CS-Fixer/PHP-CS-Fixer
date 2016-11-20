@@ -53,7 +53,7 @@ final class LowercaseConstantsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'The PHP constants true, false, and null MUST be in lower case.';
     }

@@ -70,17 +70,17 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Remove trailing whitespace at the end of blank lines.';
+        // should be run after the NoUselessReturnFixer, NoEmptyPhpdocFixer and NoUselessElseFixer.
+        return -19;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run after the NoUselessReturnFixer, NoEmptyPhpdocFixer and NoUselessElseFixer.
-        return -19;
+        return 'Remove trailing whitespace at the end of blank lines.';
     }
 }

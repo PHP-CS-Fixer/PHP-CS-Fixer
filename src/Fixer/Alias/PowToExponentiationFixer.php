@@ -70,18 +70,18 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Converts \'pow()\' to \'**\'.';
+        // must be run before BinaryOperatorSpacesFixer
+        return 1;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // must be run before BinaryOperatorSpacesFixer
-        return 1;
+        return 'Converts \'pow()\' to \'**\'.';
     }
 
     /**

@@ -72,7 +72,7 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'The namespace declaration line shouldn\'t contain leading whitespace.';
     }

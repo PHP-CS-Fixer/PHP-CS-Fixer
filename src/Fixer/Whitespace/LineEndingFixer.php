@@ -68,16 +68,16 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesFixerCon
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'All PHP files must use same line ending.';
+        return 50;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        return 50;
+        return 'All PHP files must use same line ending.';
     }
 }

@@ -60,7 +60,7 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'There MUST be no trailing spaces inside comments and phpdocs.';
     }

@@ -31,14 +31,6 @@ final class NoTrailingCommaInListCallFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'Remove trailing commas in list function calls.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
@@ -65,5 +57,13 @@ final class NoTrailingCommaInListCallFixer extends AbstractFixer
                 );
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Remove trailing commas in list function calls.';
     }
 }

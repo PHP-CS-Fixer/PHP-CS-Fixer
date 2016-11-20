@@ -103,7 +103,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Replaces rand, srand, getrandmax functions calls with their mt_* analogs.';
     }

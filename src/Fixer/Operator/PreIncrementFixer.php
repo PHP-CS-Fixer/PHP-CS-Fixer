@@ -61,7 +61,7 @@ final class PreIncrementFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Pre incrementation/decrementation should be used if possible.';
     }

@@ -66,14 +66,6 @@ final class ArraySyntaxFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'PHP arrays should be declared using the configured syntax.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $callback = $this->fixCallback;
@@ -99,6 +91,14 @@ final class ArraySyntaxFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound($this->candidateTokenKind);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'PHP arrays should be declared using the configured syntax.';
     }
 
     /**

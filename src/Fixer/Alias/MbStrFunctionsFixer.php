@@ -86,7 +86,7 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Replace non multibyte-safe functions with corresponding mb function.';
     }

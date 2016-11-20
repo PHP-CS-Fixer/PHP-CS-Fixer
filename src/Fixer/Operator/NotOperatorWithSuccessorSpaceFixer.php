@@ -50,17 +50,17 @@ final class NotOperatorWithSuccessorSpaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Logical NOT operators (!) should have one trailing whitespace.';
+        // should be run after the UnaryOperatorSpacesFixer
+        return -10;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run after the UnaryOperatorSpacesFixer
-        return -10;
+        return 'Logical NOT operators (!) should have one trailing whitespace.';
     }
 }

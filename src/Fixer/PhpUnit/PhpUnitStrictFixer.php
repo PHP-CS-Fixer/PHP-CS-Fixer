@@ -113,7 +113,7 @@ final class PhpUnitStrictFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'PHPUnit methods like "assertSame" should be used instead of "assertEquals".';
     }

@@ -65,7 +65,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'A case should be followed by a colon and not a semicolon.';
     }

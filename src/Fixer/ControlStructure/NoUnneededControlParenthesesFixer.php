@@ -140,14 +140,6 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Removes unneeded parentheses around control statements.';
-    }
-
-    /**
      * Should be run before no_trailing_whitespace.
      *
      * {@inheritdoc}
@@ -155,5 +147,13 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer
     public function getPriority()
     {
         return 30;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Removes unneeded parentheses around control statements.';
     }
 }

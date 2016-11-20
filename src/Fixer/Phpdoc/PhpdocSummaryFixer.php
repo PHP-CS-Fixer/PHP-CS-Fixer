@@ -59,7 +59,7 @@ final class PhpdocSummaryFixer extends AbstractFixer implements WhitespacesFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Phpdocs summary should end in either a full stop, exclamation mark, or question mark.';
     }

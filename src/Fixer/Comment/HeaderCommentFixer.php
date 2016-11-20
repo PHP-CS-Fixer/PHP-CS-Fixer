@@ -106,17 +106,17 @@ final class HeaderCommentFixer extends AbstractFixer implements WhitespacesFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Add, replace or remove header comment.';
+        return $tokens[0]->isGivenKind(T_OPEN_TAG) && $tokens->isMonolithicPhp();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    protected function getDescription()
     {
-        return $tokens[0]->isGivenKind(T_OPEN_TAG) && $tokens->isMonolithicPhp();
+        return 'Add, replace or remove header comment.';
     }
 
     /**

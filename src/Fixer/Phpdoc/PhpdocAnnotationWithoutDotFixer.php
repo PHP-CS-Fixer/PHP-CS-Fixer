@@ -87,7 +87,7 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Phpdocs annotation descriptions should not be a sentence.';
     }

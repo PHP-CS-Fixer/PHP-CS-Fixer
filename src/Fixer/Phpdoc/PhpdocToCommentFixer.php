@@ -25,14 +25,6 @@ final class PhpdocToCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'Docblocks should only be used on structural elements.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
@@ -101,6 +93,14 @@ final class PhpdocToCommentFixer extends AbstractFixer
 
             $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Docblocks should only be used on structural elements.';
     }
 
     /**

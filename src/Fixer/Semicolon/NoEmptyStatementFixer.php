@@ -64,19 +64,19 @@ final class NoEmptyStatementFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'Remove useless semicolon statements.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // should be run before the BracesFixer, CombineConsecutiveUnsetsFixer, NoExtraConsecutiveBlankLinesFixer, NoMultilineWhitespaceBeforeSemicolonsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer,
         // NoTrailingCommaInListCallFixer, NoUselessReturnFixer, NoWhitespaceInBlankLineFixer, SpaceAfterSemicolonFixer, SwitchCaseSemicolonToColonFixer.
         return 26;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Remove useless semicolon statements.';
     }
 
     /**

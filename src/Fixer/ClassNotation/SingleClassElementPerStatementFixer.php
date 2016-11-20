@@ -83,17 +83,17 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'There MUST NOT be more than one property or constant declared per statement.';
+        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    protected function getDescription()
     {
-        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+        return 'There MUST NOT be more than one property or constant declared per statement.';
     }
 
     /**

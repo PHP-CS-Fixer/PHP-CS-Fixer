@@ -113,7 +113,7 @@ final class PhpdocNoAliasTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'No alias PHPDoc tags should be used.';
     }

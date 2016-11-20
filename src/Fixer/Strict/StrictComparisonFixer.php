@@ -64,7 +64,7 @@ final class StrictComparisonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Comparison should be strict.';
     }

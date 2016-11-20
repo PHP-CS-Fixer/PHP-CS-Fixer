@@ -81,7 +81,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Replaces dirname(__FILE__) expression with equivalent __DIR__ constant.';
     }

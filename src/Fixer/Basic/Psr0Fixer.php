@@ -137,7 +137,7 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.';
     }

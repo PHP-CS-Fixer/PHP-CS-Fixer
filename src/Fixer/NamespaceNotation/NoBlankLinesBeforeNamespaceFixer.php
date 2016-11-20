@@ -47,7 +47,7 @@ final class NoBlankLinesBeforeNamespaceFixer extends AbstractLinesBeforeNamespac
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'There should be no blank lines before a namespace declaration.';
     }

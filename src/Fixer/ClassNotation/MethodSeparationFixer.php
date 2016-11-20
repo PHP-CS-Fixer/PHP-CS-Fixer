@@ -66,19 +66,19 @@ final class MethodSeparationFixer extends AbstractFixer implements WhitespacesFi
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'Methods must be separated with one blank line.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // Must run before BracesFixer and IndentationTypeFixer fixers because this fixer
         // might add line breaks to the code without indenting.
         return 55;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Methods must be separated with one blank line.';
     }
 
     /**

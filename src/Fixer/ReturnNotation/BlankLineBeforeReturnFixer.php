@@ -73,17 +73,17 @@ final class BlankLineBeforeReturnFixer extends AbstractFixer implements Whitespa
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'An empty line feed should precede a return statement.';
+        // should be run after NoUselessReturnFixer
+        return -19;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run after NoUselessReturnFixer
-        return -19;
+        return 'An empty line feed should precede a return statement.';
     }
 }

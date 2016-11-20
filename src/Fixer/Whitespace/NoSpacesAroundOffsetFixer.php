@@ -108,7 +108,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'There MUST NOT be spaces around offset braces.';
     }

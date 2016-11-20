@@ -55,18 +55,18 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'A return statement wishing to return nothing should be simply "return".';
+        // should be run before NoUselessReturnFixer
+        return -17;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run before NoUselessReturnFixer
-        return -17;
+        return 'A return statement wishing to return nothing should be simply "return".';
     }
 
     /**

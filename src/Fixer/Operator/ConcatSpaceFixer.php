@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -69,12 +70,29 @@ final class ConcatSpaceFixer extends AbstractFixer
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
+    public function getDefinition()
     {
-        return 'Concatenation should be spaced according configuration.';
+        return new FixerDefinition(
+            $this->getDescription(),
+            null,
+            array(
+                array(
+                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
+                    null,
+                ),
+                array(
+                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
+                    array('spacing' => 'none'),
+                ),
+                array(
+                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
+                    array('spacing' => 'one'),
+                ),
+            ),
+            "Configuration must have one element 'spacing' with value 'none' (default) or 'one'.",
+            array('spacing' => 'none'),
+            null
+        );
     }
 
     /**
@@ -83,6 +101,14 @@ final class ConcatSpaceFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound('.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Concatenation should be spaced according configuration.';
     }
 
     /**

@@ -44,7 +44,7 @@ final class TrimArraySpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Arrays should be formatted like function/method arguments, without leading or trailing single line space.';
     }

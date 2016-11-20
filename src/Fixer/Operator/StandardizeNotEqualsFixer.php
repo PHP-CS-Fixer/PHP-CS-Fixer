@@ -43,7 +43,7 @@ final class StandardizeNotEqualsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Replace all <> with !=.';
     }

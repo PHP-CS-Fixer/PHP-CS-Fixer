@@ -176,19 +176,19 @@ final class OrderedClassElementsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'Orders the elements of classes/interfaces/traits.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // must run before MethodSeparationFixer, NoBlankLinesAfterClassOpeningFixer and SpaceAfterSemicolonFixer.
         // must run after ProtectedToPrivateFixer.
         return 65;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Orders the elements of classes/interfaces/traits.';
     }
 
     /**

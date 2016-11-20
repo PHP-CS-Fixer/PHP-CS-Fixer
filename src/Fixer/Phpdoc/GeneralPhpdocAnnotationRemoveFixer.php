@@ -92,7 +92,7 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Configured annotations should be omitted from phpdocs.';
     }

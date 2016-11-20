@@ -55,7 +55,7 @@ final class SelfAccessorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Inside a classy element "self" should be preferred to the class name itself.';
     }

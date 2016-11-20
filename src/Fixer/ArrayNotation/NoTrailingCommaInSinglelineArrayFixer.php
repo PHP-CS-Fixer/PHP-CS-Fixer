@@ -48,7 +48,7 @@ final class NoTrailingCommaInSinglelineArrayFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'PHP single-line arrays should not have trailing comma.';
     }

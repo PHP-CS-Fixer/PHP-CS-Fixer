@@ -95,7 +95,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements WhitespacesFix
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Whitespace around the key words of a class, trait or interfaces definition should be one space.';
     }

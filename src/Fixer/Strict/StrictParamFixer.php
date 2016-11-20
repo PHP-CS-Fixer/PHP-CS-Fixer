@@ -69,7 +69,7 @@ final class StrictParamFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Functions should be used with $strict param.';
     }

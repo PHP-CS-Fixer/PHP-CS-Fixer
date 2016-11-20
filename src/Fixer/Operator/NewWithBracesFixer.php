@@ -132,7 +132,7 @@ final class NewWithBracesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'All instances created with new keyword must be followed by braces.';
     }

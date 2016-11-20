@@ -31,14 +31,6 @@ final class NoUnreachableDefaultArgumentValueFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'In method arguments there must not be arguments with default values before non-default ones.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($i = 0, $l = $tokens->count(); $i < $l; ++$i) {
@@ -51,6 +43,14 @@ final class NoUnreachableDefaultArgumentValueFixer extends AbstractFixer
 
             $this->fixFunctionDefinition($tokens, $startIndex, $i);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'In method arguments there must not be arguments with default values before non-default ones.';
     }
 
     /**

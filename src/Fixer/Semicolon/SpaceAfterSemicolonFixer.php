@@ -58,7 +58,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Fix whitespace after a semicolon.';
     }

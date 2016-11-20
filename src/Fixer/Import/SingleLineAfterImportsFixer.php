@@ -103,7 +103,7 @@ final class SingleLineAfterImportsFixer extends AbstractFixer implements Whitesp
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Each namespace use MUST go on its own line and there MUST be one blank line after the use statements block.';
     }

@@ -70,17 +70,17 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Ensure there is no code on the same line as the PHP open tag and it is followed by a blankline.';
+        // should be run before the NoBlankLinesBeforeNamespaceFixer
+        return 1;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run before the NoBlankLinesBeforeNamespaceFixer
-        return 1;
+        return 'Ensure there is no code on the same line as the PHP open tag and it is followed by a blankline.';
     }
 }

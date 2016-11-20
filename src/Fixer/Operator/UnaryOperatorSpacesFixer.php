@@ -52,7 +52,7 @@ final class UnaryOperatorSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Unary operators should be placed adjacent to their operands.';
     }

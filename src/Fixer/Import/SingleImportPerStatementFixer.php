@@ -55,18 +55,18 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'There MUST be one use keyword per declaration.';
-    }
-
     public function getPriority()
     {
         // must be run before NoLeadingImportSlashFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, SpaceAfterSemicolonFixer, NoMultilineWhitespaceBeforeSemicolonsFixer, NoLeadingImportSlashFixer.
         return 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'There MUST be one use keyword per declaration.';
     }
 
     /**

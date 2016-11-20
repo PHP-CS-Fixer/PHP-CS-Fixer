@@ -41,18 +41,18 @@ final class NoShortBoolCastFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Short cast bool using double exclamation mark should not be used.';
+        // should be run before the CastSpacesFixer
+        return -9;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run before the CastSpacesFixer
-        return -9;
+        return 'Short cast bool using double exclamation mark should not be used.';
     }
 
     private function fixShortCast(Tokens $tokens, $index)

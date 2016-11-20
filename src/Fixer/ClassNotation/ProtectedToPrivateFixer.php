@@ -53,18 +53,18 @@ final class ProtectedToPrivateFixer extends AbstractFixer
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Converts protected variables and methods to private where possible.';
-    }
-
     public function getPriority()
     {
         // must run before OrderedClassElementsFixer.
         return 66;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Converts protected variables and methods to private where possible.';
     }
 
     /**

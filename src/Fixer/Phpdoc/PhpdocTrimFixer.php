@@ -51,14 +51,6 @@ final class PhpdocTrimFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'Phpdocs should start and end with content, excluding the very first and last line of the docblocks.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         /*
@@ -67,6 +59,14 @@ final class PhpdocTrimFixer extends AbstractFixer
          * lines this fixer would have otherwise cleaned up.
          */
         return -5;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Phpdocs should start and end with content, excluding the very first and last line of the docblocks.';
     }
 
     /**

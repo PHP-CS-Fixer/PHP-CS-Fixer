@@ -49,7 +49,7 @@ final class TrailingCommaInMultilineArrayFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'PHP multi-line arrays should have a trailing comma.';
     }

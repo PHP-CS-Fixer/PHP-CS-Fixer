@@ -90,6 +90,13 @@ abstract class AbstractFixer implements FixerInterface
         $this->whitespacesConfig = $config;
     }
 
+    public function getDefinition()
+    {
+        return new ShortFixerDefinition(
+            $this->getDescription()
+        );
+    }
+
     private function getDefaultWhitespacesFixerConfig()
     {
         static $defaultWhitespacesFixerConfig = null;

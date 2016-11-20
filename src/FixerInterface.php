@@ -71,13 +71,11 @@ interface FixerInterface
     public function fix(\SplFileInfo $file, Tokens $tokens);
 
     /**
-     * Returns the description of the fixer.
+     * Returns the definition of the fixer.
      *
-     * A short one-line description of what the fixer does.
-     *
-     * @return string The description of the fixer
+     * @return FixerDefinitionInterface
      */
-    public function getDescription();
+    public function getDefinition();
 
     /**
      * Returns the name of the fixer.

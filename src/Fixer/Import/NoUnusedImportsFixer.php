@@ -53,14 +53,6 @@ final class NoUnusedImportsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'Unused use statements must be removed.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // should be run after the SingleImportPerStatementFixer
@@ -82,6 +74,14 @@ final class NoUnusedImportsFixer extends AbstractFixer
         }
 
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Unused use statements must be removed.';
     }
 
     /**

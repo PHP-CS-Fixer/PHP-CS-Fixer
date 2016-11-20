@@ -67,16 +67,16 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesFix
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting.';
+        return 50;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        return 50;
+        return 'Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting.';
     }
 }

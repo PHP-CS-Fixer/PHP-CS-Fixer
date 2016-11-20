@@ -117,7 +117,7 @@ final class EregToPregFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Replace deprecated ereg regular expression functions with preg.';
     }

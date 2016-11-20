@@ -59,7 +59,7 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Ensure there is no code on the same line as the PHP open tag.';
     }

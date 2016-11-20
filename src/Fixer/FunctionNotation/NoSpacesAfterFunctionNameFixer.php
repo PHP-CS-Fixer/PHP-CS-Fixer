@@ -78,7 +78,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.';
     }

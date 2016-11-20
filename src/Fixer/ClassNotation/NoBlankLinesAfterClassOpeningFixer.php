@@ -53,7 +53,7 @@ final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer implements 
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'There should be no empty lines after class opening brace.';
     }

@@ -73,7 +73,7 @@ final class PhpdocInlineTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Fix phpdoc inline tags, make inheritdoc always inline.';
     }

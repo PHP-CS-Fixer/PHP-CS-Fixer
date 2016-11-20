@@ -58,7 +58,7 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imp
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Multi-line whitespace before closing semicolon are prohibited.';
     }

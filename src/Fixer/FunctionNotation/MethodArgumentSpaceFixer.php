@@ -27,14 +27,6 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound('(');
@@ -95,6 +87,14 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
         if (!$this->isCommentLastLineToken($tokens, $index + 1)) {
             $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma.';
     }
 
     /**

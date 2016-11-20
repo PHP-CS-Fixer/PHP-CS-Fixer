@@ -72,7 +72,7 @@ final class Psr4Fixer extends AbstractPsrAutoloadingFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Class names should match the file name.';
     }

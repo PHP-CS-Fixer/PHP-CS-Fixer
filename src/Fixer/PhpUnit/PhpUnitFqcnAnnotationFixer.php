@@ -43,17 +43,17 @@ final class PhpUnitFqcnAnnotationFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'PHPUnit @expectedException annotation should be a FQCN including a root namespace.';
+        // should be run before NoUnusedImportsFixer
+        return -9;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run before NoUnusedImportsFixer
-        return -9;
+        return 'PHPUnit @expectedException annotation should be a FQCN including a root namespace.';
     }
 }

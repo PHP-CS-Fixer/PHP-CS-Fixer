@@ -49,17 +49,17 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer implements Whitespac
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'A file must always end with a single empty line feed.';
+        // must run last to be sure the file is properly formatted before it runs
+        return -50;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // must run last to be sure the file is properly formatted before it runs
-        return -50;
+        return 'A file must always end with a single empty line feed.';
     }
 }

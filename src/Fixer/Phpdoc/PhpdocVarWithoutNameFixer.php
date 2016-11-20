@@ -63,7 +63,7 @@ final class PhpdocVarWithoutNameFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return '@var and @type annotations should not contain the variable name.';
     }

@@ -45,7 +45,7 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNames
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'There should be exactly one blank line before a namespace declaration.';
     }

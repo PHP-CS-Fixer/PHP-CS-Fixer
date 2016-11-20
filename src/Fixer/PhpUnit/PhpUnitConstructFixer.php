@@ -105,18 +105,18 @@ final class PhpUnitConstructFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'PHPUnit assertion method calls like "->assertSame(true, $foo)" should be written with dedicated method like "->assertTrue($foo)".';
+        // should be run after the PhpUnitStrictFixer and before PhpUnitDedicateAssertFixer.
+        return -10;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run after the PhpUnitStrictFixer and before PhpUnitDedicateAssertFixer.
-        return -10;
+        return 'PHPUnit assertion method calls like "->assertSame(true, $foo)" should be written with dedicated method like "->assertTrue($foo)".';
     }
 
     /**

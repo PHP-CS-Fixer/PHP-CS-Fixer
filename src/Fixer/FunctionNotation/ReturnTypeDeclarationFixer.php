@@ -53,7 +53,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'There should be no space before colon and one space after it in return type declaration.';
     }

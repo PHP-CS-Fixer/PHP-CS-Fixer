@@ -145,18 +145,18 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements W
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Removes extra blank lines and/or blank lines following configuration.';
+        // should be run after the NoUnusedImportsFixer, NoEmptyPhpdocFixer, CombineConsecutiveUnsetsFixer and NoUselessElseFixer
+        return -20;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run after the NoUnusedImportsFixer, NoEmptyPhpdocFixer, CombineConsecutiveUnsetsFixer and NoUselessElseFixer
-        return -20;
+        return 'Removes extra blank lines and/or blank lines following configuration.';
     }
 
     private function fixByToken(Token $token, $index)

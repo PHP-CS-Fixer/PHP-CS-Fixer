@@ -97,17 +97,17 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Binary operators should be surrounded by at least one space.';
+        return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    protected function getDescription()
     {
-        return true;
+        return 'Binary operators should be surrounded by at least one space.';
     }
 
     /**

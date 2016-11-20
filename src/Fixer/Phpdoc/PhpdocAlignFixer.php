@@ -68,14 +68,6 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesFixerCo
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'All items of the @param, @throws, @return, @var, and @type phpdoc tags must be aligned vertically.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         /*
@@ -86,6 +78,14 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesFixerCo
          * before running this fixer.
          */
         return -11;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'All items of the @param, @throws, @return, @var, and @type phpdoc tags must be aligned vertically.';
     }
 
     /**
