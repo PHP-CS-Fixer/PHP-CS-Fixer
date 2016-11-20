@@ -31,7 +31,7 @@ final class ReadmeCommand extends Command
     {
         $this
             ->setName('readme')
-            ->setDescription('Generates the README content, based on the fix command help')
+            ->setDescription('Generates the README content, based on the fix command help.')
         ;
     }
 
