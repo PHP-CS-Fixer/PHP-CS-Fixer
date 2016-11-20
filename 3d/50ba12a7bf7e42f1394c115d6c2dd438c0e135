@@ -1,0 +1,48 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-20T17:47:22Z
+
+good idea. please do it globally:
+
+```bash
+D:\GIT\fork\PHP-CS-Fixer (master)
+λ grep -r "function setUp" src tests | grep "public"
+src/Test/AbstractFixerTestCase.php:    public function setUp()
+src/Test/AbstractIntegrationTestCase.php:    public static function setUpBeforeClass()
+src/Test/AbstractIntegrationTestCase.php:    public function setUp()
+tests/Fixer/ClassNotation/OrderedClassElementsFixerTest.php:    public static function setUpBeforeClass() {}
+tests/Fixer/ClassNotation/OrderedClassElementsFixerTest.php:    public function setUp() {}
+tests/Fixer/ClassNotation/OrderedClassElementsFixerTest.php:    public static function setUpBeforeClass() {}
+tests/Fixer/ClassNotation/OrderedClassElementsFixerTest.php:    public function setUp() {}
+tests/Fixer/ControlStructure/NoUnneededControlParenthesesFixerTest.php:    public static function setUpBeforeClass()
+
+D:\GIT\fork\PHP-CS-Fixer (master)
+λ grep -r "function tearDown" src tests | grep "public"
+src/Test/AbstractIntegrationTestCase.php:    public static function tearDownAfterClass()
+```
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-11-20T18:34:45Z
+
+@keradus
+
+The methods `setupBeforeClass()` and `tearDownAfterClass()` also have `public` visibility on the parent class, see
+
+* [`PHPUnit_Framework_TestCase::setupBeforeClass()`](https://github.com/sebastianbergmann/phpunit/blob/5.6/src/Framework/TestCase.php#L2249-L2256)
+* [`PHPUnit_Framework_TestCase::tearDownAfterClass()`](https://github.com/sebastianbergmann/phpunit/blob/5.6/src/Framework/TestCase.php#L2298-L2305)
+
+The other examples are from test case code examples, and there's no clear relation to the code examples extending `PHPUnit_Framework_TestCase` - shall I change them anyway?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-20T18:38:13Z
+
+oh damn
+sure, in that case please change it in fixture as well, so I won't get that false positive next time ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-20T21:34:06Z
+
+:+1:
