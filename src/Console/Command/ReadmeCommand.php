@@ -31,7 +31,7 @@ final class ReadmeCommand extends Command
     {
         $this
             ->setName('readme')
-            ->setDescription('Generates the README content, based on the fix command help')
+            ->setDescription('Generates the README content, based on the fix command help.')
         ;
     }
 
@@ -200,7 +200,7 @@ projects for instance).
 .. _PhpStorm:          http://tzfrs.de/2015/01/automatically-format-code-to-match-psr-standards-with-phpstorm
 .. _Sublime Text:      https://github.com/benmatselby/sublime-phpcs
 .. _Vim:               https://github.com/stephpy/vim-php-cs-fixer
-.. _contribute:        https://github.com/FriendsOfPhp/php-cs-fixer/blob/master/CONTRIBUTING.md
+.. _contribute:        https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/CONTRIBUTING.md
 
 EOF;
 
