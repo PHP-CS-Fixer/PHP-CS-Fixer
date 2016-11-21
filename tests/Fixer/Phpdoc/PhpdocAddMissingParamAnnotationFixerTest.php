@@ -173,19 +173,6 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
                 '<?php
     /**
      * @param int $bar
-     * @param string $foo
-     */
-    function f8(string $foo = "null", $bar) {}',
-                '<?php
-    /**
-     * @param int $bar
-     */
-    function f8(string $foo = "null", $bar) {}',
-            ),
-            array(
-                '<?php
-    /**
-     * @param int $bar
      * @param mixed $baz
      *
      * @return void
@@ -203,18 +190,52 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
             array(
                 '<?php
     /**
-     * @{inheritdoc}
-     */
-    function f10(string $foo = "null", $bar) {}',
-            ),
-            array(
-                '<?php
-    /**
      * @param bool|bool[] $caseSensitive Line 1
      *                                   Line 2
      */
      function f11($caseSensitive) {}
 ',
+            ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|array  $config
+     *
+     * @dataProvider provideCases70
+     * @requires PHP 7.0
+     */
+    public function testFix70($expected, $input = null, array $config = null)
+    {
+        $this->fixer->configure($config ? $config : array('only_untyped' => false));
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideCases70()
+    {
+        return array(
+            array(
+                '<?php
+    /**
+     * @param int $bar
+     * @param string $foo
+     */
+    function f8(string $foo = "null", $bar) {}',
+                '<?php
+    /**
+     * @param int $bar
+     */
+    function f8(string $foo = "null", $bar) {}',
+            ),
+            array(
+                '<?php
+    /**
+     * @{inheritdoc}
+     */
+    function f10(string $foo = "null", $bar) {}',
             ),
         );
     }
