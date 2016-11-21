@@ -24,7 +24,7 @@ use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferenceFixer implements WhitespacesFixerConfigAwareInterface
 {
     /**
-     * @var array
+     * @var array<string, bool>
      */
     private $configuration;
 
