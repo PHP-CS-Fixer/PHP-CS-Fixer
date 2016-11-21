@@ -134,12 +134,33 @@ final class NoEmptyCommentFixer extends AbstractFixer
         $tokens->overrideAt($index, array(T_WHITESPACE, "\n", $tokens[$index]->getLine()));
     }
 
+    /**
+     * isSurroundedBySingleLineComments checks whether the preceding and
+     * succeeding lines of the token at $index contain a single-line comment.
+     *
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return bool
+     */
     private function isSurroundedBySingleLineComments(Tokens $tokens, $index)
     {
         return $this->hasSingleLineCommentSibling($tokens, $index, -1) &&
                $this->hasSingleLineCommentSibling($tokens, $index,  1);
     }
 
+    /**
+     * hasSingleLineCommentSibling checks whether the preceding or succeeding
+     * line of the token at $index contains a single-line comment. Which line
+     * is checked depends on $direction.
+     *
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param int    $direction either -1 to check the preceding line, or +1 to
+     *                          check the succeeding line
+     *
+     * @return bool
+     */
     private function hasSingleLineCommentSibling(Tokens $tokens, $index, $direction)
     {
         do {
