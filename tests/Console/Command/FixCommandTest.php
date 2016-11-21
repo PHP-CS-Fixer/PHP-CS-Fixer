@@ -23,21 +23,6 @@ use PhpCsFixer\Test\AccessibleObject;
  */
 final class FixCommandTest extends \PHPUnit_Framework_TestCase
 {
-    public function testCommandHasCacheFileOption()
-    {
-        $command = new FixCommand();
-        $definition = $command->getDefinition();
-
-        $this->assertTrue($definition->hasOption('cache-file'));
-
-        $option = $definition->getOption('cache-file');
-
-        $this->assertNull($option->getShortcut());
-        $this->assertTrue($option->isValueRequired());
-        $this->assertSame('The path to the cache file', $option->getDescription());
-        $this->assertNull($option->getDefault());
-    }
-
     /**
      * @param int  $expected
      * @param bool $isDryRun
