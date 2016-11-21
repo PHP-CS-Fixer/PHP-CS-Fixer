@@ -14,13 +14,14 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author SpacePossum
  */
-final class PhpUnitDedicateAssertFixer extends AbstractFixer
+final class PhpUnitDedicateAssertFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private $fixMap = array(
         'array_key_exists' => array('assertArrayNotHasKey', 'assertArrayHasKey'),

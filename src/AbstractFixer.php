@@ -13,14 +13,16 @@
 namespace PhpCsFixer;
 
 use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
-use PhpCsFixer\ConfigurationException\UnallowedFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\DescribedFixerInterface;
+use PhpCsFixer\Fixer\FixerInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-abstract class AbstractFixer implements FixerInterface
+abstract class AbstractFixer implements FixerInterface, DescribedFixerInterface
 {
     /**
      * @var WhitespacesFixerConfig
@@ -29,24 +31,16 @@ abstract class AbstractFixer implements FixerInterface
 
     public function __construct()
     {
-        try {
-            $this->configure(null);
-        } catch (RequiredFixerConfigurationException $e) {
-            // ignore
+        if ($this instanceof ConfigurableFixerInterface) {
+            try {
+                $this->configure(null);
+            } catch (RequiredFixerConfigurationException $e) {
+                // ignore
+            }
         }
 
         if ($this instanceof WhitespacesFixerConfigAwareInterface) {
             $this->whitespacesConfig = $this->getDefaultWhitespacesFixerConfig();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configure(array $configuration = null)
-    {
-        if (null !== $configuration) {
-            throw new UnallowedFixerConfigurationException($this->getName(), 'Configuration is not allowed.');
         }
     }
 

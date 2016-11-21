@@ -87,7 +87,7 @@ final class RemoveCommentsFixer extends AbstractFixer
 ```
 
 Note how the class and file name match. Also keep in mind that all
-fixers must implement `FixerInterface`. In this case, the fixer is
+fixers must implement `Fixer\FixerInterface`. In this case, the fixer is
 inheriting from `AbstractFixer`, which fulfills the interface with some
 default behavior.
 

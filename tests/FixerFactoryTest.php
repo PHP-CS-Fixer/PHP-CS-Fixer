@@ -12,9 +12,10 @@
 
 namespace PhpCsFixer\Tests;
 
-use PhpCsFixer\FixerDefinitionInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\DescribedFixerInterface;
+use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
-use PhpCsFixer\FixerInterface;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\ShortFixerDefinition;
 use Prophecy\Argument;
@@ -362,10 +363,15 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param FixerInterface $fixer
+     *
      * @dataProvider provideFixerDefinitionsCases
      */
     public function testFixerDefinitions(FixerInterface $fixer)
     {
+        $this->assertInstanceOf('PhpCsFixer\Fixer\DescribedFixerInterface', $fixer);
+
+        /** @var DescribedFixerInterface $fixer */
         $definition = $fixer->getDefinition();
 
         $this->assertRegExp('/^[A-Z@].*\.$/', $definition->getSummary(), 'Description must start with capital letter or an @ and end with dot.');
@@ -376,7 +382,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($definition->getCodeSamples(), 'Code samples are required.');
 
-        if ($this->isFixerConfigurable($fixer)) {
+        if ($fixer instanceof ConfigurableFixerInterface) {
             $this->assertNotEmpty($definition->getConfigurationDescription(), 'Configuration description is required.');
             $this->assertNotEmpty($definition->getDefaultConfiguration(), 'Default configuration is required.');
         }
@@ -424,11 +430,14 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(
             $guard,
             array_filter(array_map(function (FixerInterface $fixer) {
-                return $fixer->getDefinition() instanceof ShortFixerDefinition;
+                return
+                    !$fixer instanceof DescribedFixerInterface
+                    || $fixer->getDefinition() instanceof ShortFixerDefinition
+                ;
             }, $this->getAllFixers())),
             implode("\n", array(
                 'Not valid amount of fixers using ShortFixerDefinition.',
-                'If this test is failing it means one of those scenario occured:',
+                'If this test is failing it means one of those scenario occurred:',
                 '- you introduced new Fixer using `ShortFixerDefinition`, you should use `FixerDefinition` instead,',
                 '- you update the Fixer to stop using `ShortFixerDefinition`, you should decrease the guard value.',
             ))
@@ -486,32 +495,12 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
     private function createFixerDouble($name, $priority = 0)
     {
-        $fixer = $this->prophesize('PhpCsFixer\FixerInterface');
+        /** @var FixerInterface $fixer */
+        $fixer = $this->prophesize('PhpCsFixer\Fixer\FixerInterface');
         $fixer->getName()->willReturn($name);
         $fixer->getPriority()->willReturn($priority);
-        $fixer->configure(Argument::is(null))->willReturn(null);
+        //$fixer->configure(Argument::is(null))->willReturn(null); Needed?
 
         return $fixer->reveal();
-    }
-
-    /**
-     * @param FixerInterface $fixer
-     *
-     * @return bool
-     *
-     * @todo There is no need to have it at FixerInterface, but there are 3 places with this code copy-pasted,
-     *       it needs to be extracted to service.
-     */
-    private function isFixerConfigurable(FixerInterface $fixer)
-    {
-        try {
-            $fixer->configure(array());
-
-            return true;
-        } catch (UnallowedFixerConfigurationException $e) {
-            return false;
-        } catch (\Exception $e) {
-            return true;
-        }
     }
 }

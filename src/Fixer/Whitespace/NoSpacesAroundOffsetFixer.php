@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -21,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
  */
-final class NoSpacesAroundOffsetFixer extends AbstractFixer
+final class NoSpacesAroundOffsetFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @var string[]
@@ -43,14 +44,10 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer
      */
     public function configure(array $configuration = null)
     {
-        if (!$configuration) {
-            if (null === $configuration) {
-                $this->configuration = self::$defaultConfiguration;
+        if (null === $configuration) {
+            $this->configuration = self::$defaultConfiguration;
 
-                return;
-            }
-
-            throw new InvalidFixerConfigurationException($this->getName(), 'Configuration must be provided.');
+            return;
         }
 
         foreach ($configuration as $name) {

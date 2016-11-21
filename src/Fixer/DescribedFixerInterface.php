@@ -10,13 +10,20 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\ConfigurationException;
+namespace PhpCsFixer\Fixer;
+
+use PhpCsFixer\FixerDefinitionInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
+ * @author SpacePossum
  */
-final class UnallowedFixerConfigurationException extends InvalidFixerConfigurationException
+interface DescribedFixerInterface
 {
+    /**
+     * Returns the definition of the fixer.
+     *
+     * @return FixerDefinitionInterface
+     */
+    public function getDefinition();
 }

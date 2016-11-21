@@ -24,9 +24,8 @@ final class ShortFixerDefinition implements FixerDefinitionInterface
     /**
      * @param string $summary
      */
-    public function __construct(
-        $summary
-    ) {
+    public function __construct($summary)
+    {
         $this->summary = $summary;
     }
 

@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -24,7 +25,7 @@ use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
  *
  * @author SpacePossum
  */
-final class ClassDefinitionFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesFixerConfigAwareInterface
 {
     /**
      * @var array<string, bool>
@@ -50,7 +51,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements WhitespacesFix
      */
     public function configure(array $configuration = null)
     {
-        if (null === $configuration || count($configuration) < 1) {
+        if (null === $configuration) {
             $this->config = self::$defaultConfig;
 
             return;

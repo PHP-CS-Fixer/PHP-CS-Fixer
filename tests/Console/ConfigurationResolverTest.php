@@ -385,10 +385,10 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array|Exception $expected
-     * @param null|Finder     $configFinder
-     * @param string          $pathMode
-     * @param null|string     $config
+     * @param array|\Exception $expected
+     * @param null|Finder      $configFinder
+     * @param string           $pathMode
+     * @param null|string      $config
      *
      * @dataProvider provideResolveIntersectionOfPathsCases
      */
@@ -893,7 +893,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $arguments, 'Expected one argument, possibly test needs updating.');
         $this->assertArrayHasKey('path', $arguments);
 
-        $options = $definition->getOptions('');
+        $options = $definition->getOptions();
         $this->assertSame(
             array('path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format'),
             array_keys($options),

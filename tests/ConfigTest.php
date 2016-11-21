@@ -15,7 +15,7 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\Config;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Finder;
-use PhpCsFixer\FixerInterface;
+use PhpCsFixer\Fixer\FixerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Finder\Finder as SymfonyFinder;

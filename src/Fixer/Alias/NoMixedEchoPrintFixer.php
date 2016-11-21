@@ -15,13 +15,14 @@ namespace PhpCsFixer\Fixer\Alias;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  * @author SpacePossum
  */
-final class NoMixedEchoPrintFixer extends AbstractFixer
+final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     public static $defaultConfig = array('use' => 'echo');
 

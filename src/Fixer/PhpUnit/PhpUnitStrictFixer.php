@@ -14,12 +14,13 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitStrictFixer extends AbstractFixer
+final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @var string[]
@@ -46,21 +47,21 @@ final class PhpUnitStrictFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function configure(array $usingMethods = null)
+    public function configure(array $configuration = null)
     {
-        if (null === $usingMethods) {
+        if (null === $configuration) {
             $this->configuration = self::$defaultConfiguration;
 
             return;
         }
 
-        foreach ($usingMethods as $method) {
+        foreach ($configuration as $method) {
             if (!array_key_exists($method, $this->assertionMap)) {
                 throw new InvalidFixerConfigurationException($this->getName(), sprintf('Configured method "%s" cannot be fixed by this fixer.', $method));
             }
         }
 
-        $this->configuration = $usingMethods;
+        $this->configuration = $configuration;
     }
 
     /**

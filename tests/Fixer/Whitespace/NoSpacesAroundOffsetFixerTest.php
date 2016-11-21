@@ -334,13 +334,4 @@ EOT
     {
         $this->fixer->configure(array('foo'));
     }
-
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp /^\[no_spaces_around_offset\] Configuration must be provided\.$/
-     */
-    public function testWrongEmptyConfig()
-    {
-        $this->fixer->configure(array());
-    }
 }
