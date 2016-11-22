@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Test;
 
+use GeckoPackages\PHPUnit\Constraints\SameStringsConstraint;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Error\Error;
@@ -227,9 +228,9 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($changed, sprintf('Expected changes made to test "%s" in "%s".', $case->getTitle(), $case->getFileName()));
         $fixedInputCode = file_get_contents($tmpFile);
-        $this->assertSame(
-            $expected,
+        $this->assertThat(
             $fixedInputCode,
+            new SameStringsConstraint($expected),
             sprintf(
                 "Expected changes do not match result for \"%s\" in \"%s\".\nFixers applied:\n%s.",
                 $case->getTitle(),
