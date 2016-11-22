@@ -735,7 +735,7 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
 
     /**
      * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage [ordered_use] Sort algorithm is invalid. Should br one of the: "alpha", "length"
+     * @expectedExceptionMessage [ordered_use] Sort algorithm is invalid. Should be one of the: "alpha", "length"
      */
     public function testInvalidConfigWithNotSupportedSortAlgorithm()
     {
@@ -747,7 +747,7 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
 
     /**
      * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage [ordered_use] Sort algorithm is invalid. Should br one of the: "alpha", "length"
+     * @expectedExceptionMessage [ordered_use] Sort algorithm is invalid. Should be one of the: "alpha", "length"
      */
     public function testInvalidConfigWithMultipleSortAlgorithm()
     {
@@ -759,7 +759,7 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
 
     /**
      * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage [ordered_use] Sort algorithm is invalid. Should br one of the: "alpha", "length"
+     * @expectedExceptionMessage [ordered_use] Sort algorithm is invalid. Should be one of the: "alpha", "length"
      */
     public function testInvalidConfigWithSortAlgorithmIsNotString()
     {
