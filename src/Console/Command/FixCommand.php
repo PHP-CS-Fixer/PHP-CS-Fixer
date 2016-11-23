@@ -95,19 +95,19 @@ final class FixCommand extends Command
             ->setName('fix')
             ->setDefinition(
                 array(
-                    new InputArgument('path', InputArgument::IS_ARRAY, 'The path'),
-                    new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be override or intersection)', 'override'),
-                    new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no)'),
-                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file '),
-                    new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified'),
-                    new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'The rules'),
-                    new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no)'),
-                    new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file'),
-                    new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file'),
-                    new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats'),
+                    new InputArgument('path', InputArgument::IS_ARRAY, 'The path.'),
+                    new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be override or intersection).', 'override'),
+                    new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no).'),
+                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file.'),
+                    new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
+                    new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'The rules.'),
+                    new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no).'),
+                    new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
+                    new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file.'),
+                    new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
                 )
             )
-            ->setDescription('Fixes a directory or a file')
+            ->setDescription('Fixes a directory or a file.')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> command tries to fix as much coding standards
 problems as possible on a given file or files in a given directory and its subdirectories:
