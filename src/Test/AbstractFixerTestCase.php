@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Test;
 
+use GeckoPackages\PHPUnit\Constraints\SameStringsConstraint;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
@@ -132,7 +133,11 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
                 $this->assertNull($fixResult, '->fix method must return null.');
             }
 
-            $this->assertSame($expected, $tokens->generateCode(), 'Code build on input code must match expected code.');
+            $this->assertThat(
+                $tokens->generateCode(),
+                new SameStringsConstraint($expected),
+                'Code build on input code must match expected code.'
+            );
             $this->assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
 
             $tokens->clearEmptyTokens();
@@ -167,7 +172,11 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
             $this->assertNull($fixResult, '->fix method must return null.');
         }
 
-        $this->assertSame($expected, $tokens->generateCode(), 'Code build on expected code must not change.');
+        $this->assertThat(
+            $tokens->generateCode(),
+            new SameStringsConstraint($expected),
+            'Code build on expected code must not change.'
+        );
         $this->assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
     }
 
