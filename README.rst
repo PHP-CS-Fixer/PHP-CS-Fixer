@@ -752,7 +752,7 @@ Exit codes
 Exit code is build using following bit flags:
 
 *  0 OK.
-*  1 PHP/HHVM minimal requirement not matched.
+*  1 General error (or PHP/HHVM minimal requirement not matched).
 *  4 Some files have invalid syntax (only in dry-run mode).
 *  8 Some files need fixing (only in dry-run mode).
 * 16 Configuration error of the application.
