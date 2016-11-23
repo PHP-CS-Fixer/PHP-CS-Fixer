@@ -60,10 +60,6 @@ final class TextReporter implements ReporterInterface
      */
     private function getAppliedFixers($isDecoratedOutput, array $fixResult)
     {
-        if (empty($fixResult['appliedFixers'])) {
-            return '';
-        }
-
         return sprintf(
             $isDecoratedOutput ? ' (<comment>%s</comment>)' : ' (%s)',
             implode(', ', $fixResult['appliedFixers'])

@@ -22,6 +22,13 @@ use PhpCsFixer\Test\AccessibleObject;
  */
 final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
 {
+    public function testCreate()
+    {
+        $factory = ReporterFactory::create();
+
+        $this->assertInstanceOf('PhpCsFixer\Report\ReporterFactory', $factory);
+    }
+
     public function testInterfaceIsFluent()
     {
         $builder = new ReporterFactory();
@@ -59,6 +66,21 @@ final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($r1, $builder->getReporter('r1'));
         $this->assertSame($r2, $builder->getReporter('r2'));
         $this->assertSame($r3, $builder->getReporter('r3'));
+    }
+
+    public function testGetFormats()
+    {
+        $builder = new ReporterFactory();
+
+        $r1 = $this->createReporterDouble('r1');
+        $r2 = $this->createReporterDouble('r2');
+        $r3 = $this->createReporterDouble('r3');
+
+        $builder->registerReporter($r1);
+        $builder->registerReporter($r2);
+        $builder->registerReporter($r3);
+
+        $this->assertSame(array('r1', 'r2', 'r3'), $builder->getFormats());
     }
 
     /**
