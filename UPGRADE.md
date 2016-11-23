@@ -50,15 +50,15 @@ Exit codes
 
 Exit codes have been change and are build using the following bit flags:
 
-1.x bit | 2.0 bit | Description                             | Note
--------:| -------:| --------------------------------------- | ----
-0       | 0       | OK                                      |
-1       | 1       | PHP/HHVM version not matched            | no longer used for other states, never combined with other flags
-        | 4       | Some files have invalid syntax          | flag was added, works only in dry-run mode
-        | 8       | Some files need fixing                  | flag was added, works only in dry-run mode
-16      | 16      | Configuration error of the application  |
-32      | 32      | Configuration error of a Fixer          |
-        | 64      | Exception within the application        | flag was added
+1.x bit | 2.0 bit | Description                                                 | Note
+-------:| -------:| ----------------------------------------------------------- | ----
+0       | 0       | OK                                                          |
+1       | 1       | General error (or PHP/HHVM minimal requirement not matched) | no longer used for other states, never combined with other flags
+        | 4       | Some files have invalid syntax                              | flag was added, works only in dry-run mode
+        | 8       | Some files need fixing                                      | flag was added, works only in dry-run mode
+16      | 16      | Configuration error of the application                      |
+32      | 32      | Configuration error of a Fixer                              |
+        | 64      | Exception within the application                            | flag was added
 
 Namespace
 ---------
