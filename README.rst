@@ -225,9 +225,6 @@ Choose from the list of available rules:
    | Replaces dirname(__FILE__) expression with equivalent __DIR__ constant.
    | *Rule is: risky.*
 
-* **echo_to_print**
-   | Converts echo language construct to print if possible.
-
 * **elseif** [@PSR2, @Symfony]
    | The keyword elseif should be used instead of else if so that all control
    | keywords look like single words.
@@ -342,6 +339,10 @@ Choose from the list of available rules:
 
 * **no_leading_namespace_whitespace** [@Symfony]
    | The namespace declaration line shouldn't contain leading whitespace.
+
+* **no_mixed_echo_print** [@Symfony]
+   | Either language construct `print` or `echo` should be used.
+   | *Rule is: configurable.*
 
 * **no_multiline_whitespace_around_double_arrow** [@Symfony]
    | Operator => should not be surrounded by multi-line whitespaces.
@@ -513,9 +514,6 @@ Choose from the list of available rules:
 
 * **pre_increment** [@Symfony]
    | Pre incrementation/decrementation should be used if possible.
-
-* **print_to_echo** [@Symfony]
-   | Converts print language construct to echo if possible.
 
 * **protected_to_private**
    | Converts protected variables and methods to private where possible.
