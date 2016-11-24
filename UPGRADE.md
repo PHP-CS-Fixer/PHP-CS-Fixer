@@ -28,9 +28,9 @@ CLI options
 --config-file | --config      | The path to a .php_cs file                      | option was renamed
 --diff        | --diff        | Show diff                                       |
 --dry-run     | --dry-run     | Run in dry-run mode                             |
---fixers      |               | Coding standard fixers                          | options was removed, see --rules
+--fixers      |               | Coding standard fixers                          | option was removed, see --rules
 --format      | --format      | Choose format                                   |
---level       |               | Coding standard level                           | options was removed, see --rules
+--level       |               | Coding standard level                           | option was removed, see --rules
               | --path-mode   | Should the finder from configuration be         | option was added
               |               | overriden or intersected with `path` argument   |
               | --rules       | Rules to be used                                | option was added
@@ -79,20 +79,21 @@ Renamed rules
 
 Old name | New name | Note
 -------- | -------- | ----
-align_double_arrow                             | binary_operator_spaces                            | use configuration option 'align_double_arrow: true'
-align_equals                                   | binary_operator_spaces                            | use configuration option 'align_equals: true'
+align_double_arrow                             | binary_operator_spaces                            | use configuration ['align_double_arrow' => 'true']
+align_equals                                   | binary_operator_spaces                            | use configuration ['align_equals' => 'true']
 array_element_no_space_before_comma            | no_whitespace_before_comma_in_array
 array_element_white_space_after_comma          | whitespace_after_comma_in_array
 blankline_after_open_tag                       | blank_line_after_opening_tag
-concat_with_spaces                             | concat_space                                      | use configuration option ['spacing' => 'one']
-concat_without_spaces                          | concat_space                                      | use configuration option ['spacing' => 'none']
+concat_with_spaces                             | concat_space                                      | use configuration ['spacing' => 'one']
+concat_without_spaces                          | concat_space                                      | use configuration ['spacing' => 'none']
 double_arrow_multiline_whitespaces             | no_multiline_whitespace_around_double_arrow
 duplicate_semicolon                            | no_empty_statement                                | new one fixes more cases
 empty_return                                   | simplified_null_return
+echo_to_print                                  | no_mixed_echo_print                               | use configuration ['use' => 'print']
 eof_ending                                     | single_blank_line_at_eof
 extra_empty_lines                              | no_extra_consecutive_blank_lines
 function_call_space                            | no_spaces_after_function_name
-general_phpdoc_annotation_rename               | phpdoc_no_alias_tag                               | use configuration option [property-read' => 'property', 'property-write' => 'property']
+general_phpdoc_annotation_rename               | phpdoc_no_alias_tag                               | use configuration ['property-read' => 'property', 'property-write' => 'property']
 indentation                                    | no_tab_indentation
 join_function                                  | no_alias_functions                                | new one fixes more aliases
 line_after_namespace                           | blank_line_after_namespace
@@ -108,7 +109,7 @@ multiple_use                                   | single_import_per_statement
 namespace_no_leading_whitespace                | no_leading_namespace_whitespace
 newline_after_open_tag                         | linebreak_after_opening_tag
 no_empty_lines_after_phpdocs                   | no_blank_lines_after_phpdoc
-no_tab_indentation                             | indentation_type                                  | whitespaces type aware
+no_tab_indentation                             | indentation_type
 object_operator                                | object_operator_without_whitespace
 operators_spaces                               | binary_operator_spaces
 ordered_use                                    | ordered_imports
@@ -116,12 +117,13 @@ parenthesis                                    | no_spaces_inside_parenthesis
 php4_constructor                               | no_php4_constructor
 php_closing_tag                                | no_closing_tag
 phpdoc_params                                  | phpdoc_align
-phpdoc_property                                | phpdoc_no_alias_tag                               | use configuration option ['type' => 'var']
+phpdoc_property                                | phpdoc_no_alias_tag                               | use configuration ['type' => 'var']
 phpdoc_short_description                       | phpdoc_summary
-phpdoc_type_to_var                             | phpdoc_no_alias_tag                               | use configuration option ['type' => 'var']
-phpdoc_var_to_type                             | phpdoc_no_alias_tag                               | use configuration option ['var' => 'type']
+phpdoc_type_to_var                             | phpdoc_no_alias_tag                               | use configuration ['type' => 'var']
+phpdoc_var_to_type                             | phpdoc_no_alias_tag                               | use configuration ['var' => 'type']
+print_to_echo                                  | no_mixed_echo_print                               | use configuration ['use' => 'echo']
 remove_leading_slash_use                       | no_leading_import_slash
-remove_lines_between_uses                      | no_extra_consecutive_blank_lines                  | use configuration option 'use'
+remove_lines_between_uses                      | no_extra_consecutive_blank_lines                  | use configuration ['use']
 return                                         | blank_line_before_return
 short_array_syntax                             | array_syntax                                      | use configuration ['syntax' => 'short']
 short_bool_cast                                | no_short_bool_cast
@@ -135,8 +137,8 @@ standardize_not_equal                          | standardize_not_equals
 strict                                         | strict_comparison
 ternary_spaces                                 | ternary_operator_spaces
 trailing_spaces                                | no_trailing_whitespace
-unalign_double_arrow                           | binary_operator_spaces                            | use configuration option 'align_double_arrow: false'
-unalign_equals                                 | binary_operator_spaces                            | use configuration option 'align_equals: false'
+unalign_double_arrow                           | binary_operator_spaces                            | use configuration ['align_double_arrow' => false]
+unalign_equals                                 | binary_operator_spaces                            | use configuration ['align_equals' => false]
 unary_operators_spaces                         | unary_operator_spaces
 unneeded_control_parentheses                   | no_unneeded_control_parentheses
 unused_use                                     | no_unused_imports

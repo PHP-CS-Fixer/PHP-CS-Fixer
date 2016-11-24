@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -32,6 +33,8 @@ interface FixerInterface
      * Finally, some fixers need configuration to work, eg `header_comment`.
      *
      * @param array|null $configuration configuration depends on Fixer
+     *
+     * @throws InvalidFixerConfigurationException
      */
     public function configure(array $configuration = null);
 
