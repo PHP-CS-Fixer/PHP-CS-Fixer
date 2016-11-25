@@ -265,7 +265,7 @@ echo 1;',
         $this->assertInternalType('array', $resolved);
         $this->assertCount(4, $resolved);
         $this->assertSame($resolved[0], "/*\n * a\n */");
-        $this->assertInstanceOf(Token::class, $resolved[1]);
+        $this->assertInstanceOf('PhpCsFixer\Tokenizer\Token', $resolved[1]);
         $this->assertTrue($resolved[1]->equals(new Token(array(T_COMMENT, "/*\n * a\n */"))));
         $this->assertSame($resolved[2], HeaderCommentFixer::HEADER_LOCATION_AFTER_DECLARE_STRICT);
         $this->assertSame($resolved[3], HeaderCommentFixer::HEADER_LINE_SEPARATION_BOTH);
