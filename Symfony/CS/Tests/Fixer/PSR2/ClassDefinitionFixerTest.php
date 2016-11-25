@@ -17,6 +17,8 @@ use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
+ * @author SpacePossum
+ *
  * @internal
  */
 final class ClassDefinitionFixerTest extends AbstractFixerTestBase
@@ -135,19 +137,19 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestBase
     {
         return array(
             array(
-                "<?php \$a = new class\n{};",
+                '<?php $a = new class {};',
                 '<?php $a = new class{};',
             ),
             array(
-                "<?php \$a = new class()\n{};",
+                '<?php $a = new class() {};',
                 "<?php \$a = new\n class  (  ){};",
             ),
             array(
-                "<?php \$a = new class(10, 1, /**/ 2)\n{};",
+                '<?php $a = new class(10, 1, /**/ 2) {};',
                 '<?php $a = new class(  10, 1,/**/2  ){};',
             ),
             array(
-                "<?php \$a = new class(10)\n{};",
+                '<?php $a = new class(10) {};',
                 '<?php $a = new    class(10){};',
             ),
             array(
@@ -155,12 +157,45 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestBase
                 "<?php \$a = new    class(10)     extends\nSomeClass\timplements    SomeInterface, D {};",
             ),
             array(
-                "<?php \$a = new class(\$this->prop)\n{};",
+                '<?php $a = new class($this->prop) {};',
                 '<?php $a = new class(   $this->prop   ){};',
             ),
             array(
-                "<?php \$a = new class(\$this->prop, \$v[3], 4)\n{};",
-                '<?php $a = new class(   $this->prop,$v[3],   4){};',
+                '<?php $a = new class($this->prop, $v[3], 4) {};',
+                '<?php $a = new class(   $this->prop,$v[3],   4)         {};',
+            ),
+            'PSR-12 Extends/Implements Parenthesis on the next line.' => array(
+                '<?php
+$instance = new class extends \Foo implements
+\ArrayAccess,
+\Countable,
+\Serializable
+{};',
+                '<?php
+$instance = new class extends \Foo implements
+\ArrayAccess,\Countable,\Serializable{};',
+            ),
+            'PSR-12 Implements Parenthesis on the next line.' => array(
+                '<?php
+$instance = new class implements
+\ArrayAccess,
+\Countable,
+\Serializable
+{};',
+                '<?php
+$instance = new class implements
+\ArrayAccess,\Countable,\Serializable{};',
+            ),
+            'PSR-12 Extends Parenthesis on the next line.' => array(
+                '<?php
+$instance = new class extends
+ArrayAccess
+{};',
+                '<?php
+$instance = new class 
+extends
+ArrayAccess
+{};',
             ),
         );
     }

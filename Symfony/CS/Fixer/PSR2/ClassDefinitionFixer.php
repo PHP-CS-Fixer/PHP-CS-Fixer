@@ -18,7 +18,7 @@ use Symfony\CS\Tokenizer\Token;
 use Symfony\CS\Tokenizer\Tokens;
 
 /**
- * Fixer for part of the rules defined in PSR2 ¶4.1 Extends and Implements.
+ * Fixer for part of the rules defined in PSR2 ¶4.1 Extends and Implements and PSR12 ¶8. Anonymous Classes.
  *
  * @author SpacePossum
  */
@@ -107,11 +107,7 @@ final class ClassDefinitionFixer extends AbstractFixer
         // PSR2 4.1 Lists of implements MAY be split across multiple lines, where each subsequent line is indented once.
         // When doing so, the first item in the list MUST be on the next line, and there MUST be only one interface per line.
         if (false !== $classDefInfo['implements']) {
-            $this->fixClassyDefinitionImplements(
-                $tokens,
-                $classDefInfo['open'],
-                $classDefInfo['implements']
-            );
+            $this->fixClassyDefinitionImplements($tokens, $classDefInfo);
         }
 
         if (false !== $classDefInfo['extends']) {
@@ -126,6 +122,8 @@ final class ClassDefinitionFixer extends AbstractFixer
             $end = $classDefInfo['implements']['start'];
         } elseif ($classDefInfo['extends']) {
             $end = $classDefInfo['extends']['start'];
+        } elseif ($classDefInfo['anonymousClass']) {
+            $end = $classDefInfo['open'];
         } else {
             $end = $tokens->getPrevNonWhitespace($classDefInfo['open']);
         }
@@ -153,19 +151,23 @@ final class ClassDefinitionFixer extends AbstractFixer
 
     /**
      * @param Tokens $tokens
-     * @param int    $classOpenIndex
-     * @param array  $classImplementsInfo
+     * @param array  $classDefInfo
      */
-    private function fixClassyDefinitionImplements(Tokens $tokens, $classOpenIndex, array $classImplementsInfo)
+    private function fixClassyDefinitionImplements(Tokens $tokens, array $classDefInfo)
     {
-        $endIndex = $tokens->getPrevNonWhitespace($classOpenIndex);
+        $classImplementsInfo = $classDefInfo['implements'];
+        $endIndex = $tokens->getPrevNonWhitespace($classDefInfo['open']);
 
         if (self::$config['singleLine'] || false === $classImplementsInfo['multiLine']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classImplementsInfo['start'], $endIndex);
         } elseif (self::$config['singleItemSingleLine'] && 1 === $classImplementsInfo['numberOfImplements']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classImplementsInfo['start'], $endIndex);
         } else {
-            $this->makeClassyInheritancePartMultiLine($tokens, $classImplementsInfo['start'], $endIndex);
+            $this->makeClassyInheritancePartMultiLine(
+                $tokens,
+                $classImplementsInfo['start'],
+                $classDefInfo['anonymousClass'] ? $tokens->getPrevMeaningfulToken($endIndex) : $endIndex
+            );
         }
     }
 
