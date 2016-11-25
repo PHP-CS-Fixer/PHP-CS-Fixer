@@ -31,6 +31,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     public function testFixEchoToPrint($expected, $input = null)
     {
         $this->fixer->configure(array('use' => 'print'));
+
         $this->doTest($expected, $input);
     }
 
@@ -144,6 +145,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     public function testFixPrintToEcho($expected, $input = null)
     {
         $this->fixer->configure(array('use' => 'echo'));
+
         $this->doTest($expected, $input);
     }
 
@@ -272,6 +274,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     public function testDefaultConfig()
     {
         $this->fixer->configure(null);
+
         $this->assertAttributeSame(T_PRINT, 'candidateTokenType', $this->fixer);
     }
 
@@ -282,8 +285,11 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
      */
     public function testWrongConfig($wrongConfig)
     {
-        $this->expectException('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
-        $this->expectExceptionMessageRegExp('#^\[no_mixed_echo_print\] Expected array of element \"use\" with value \"echo\" or \"print\", got \"array \([\S\s]*\)\".$#');
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '#^\[no_mixed_echo_print\] Expected array of element \"use\" with value \"echo\" or \"print\", got \"array \([\S\s]*\)\".$#'
+        );
+
         $this->fixer->configure($wrongConfig);
     }
 
