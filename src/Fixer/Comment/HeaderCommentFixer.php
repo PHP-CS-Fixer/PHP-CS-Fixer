@@ -39,8 +39,8 @@ final class HeaderCommentFixer extends AbstractFixer implements WhitespacesFixer
     /** @var string */
     private $headerComment;
 
-    /** @var int */
-    private $headerCommentType;
+    /** @var Token $headerToken */
+    private $headerToken;
 
     /** @var int */
     private $headerLocation;
@@ -62,7 +62,7 @@ final class HeaderCommentFixer extends AbstractFixer implements WhitespacesFixer
     {
         list(
             $this->headerComment,
-            $this->headerCommentType,
+            $this->headerToken,
             $this->headerLocation,
             $this->headerLineSeparation
         ) = $this->parseConfiguration($configuration);
@@ -178,31 +178,19 @@ final class HeaderCommentFixer extends AbstractFixer implements WhitespacesFixer
             return 1;
         }
 
-        $next = $tokens->getNextMeaningfulToken($index);
-        if (null === $next || !$tokens[$next]->equals('(')) {
-            return 1;
-        }
-
+        $next = $tokens->getNextMeaningfulToken($index); // $tokens[$next]->equals('('))
         $next = $tokens->getNextMeaningfulToken($next);
-        if (null === $next || !$tokens[$next]->equals(array(T_STRING, 'strict_types'), false)) {
+        if (!$tokens[$next]->equals(array(T_STRING, 'strict_types'), false)) {
             return 1;
         }
 
+        $next = $tokens->getNextMeaningfulToken($next); // $tokens[$next]->equals('=')
         $next = $tokens->getNextMeaningfulToken($next);
-        if (null === $next || !$tokens[$next]->equals('=')) {
+        if (!$tokens[$next]->isGivenKind(T_LNUMBER)) {
             return 1;
         }
 
-        $next = $tokens->getNextMeaningfulToken($next);
-        if (null === $next || !$tokens[$next]->isGivenKind(T_LNUMBER)) {
-            return 1;
-        }
-
-        $next = $tokens->getNextMeaningfulToken($next);
-        if (null === $next || !$tokens[$next]->equals(')')) {
-            return 1;
-        }
-
+        $next = $tokens->getNextMeaningfulToken($next); // $tokens[$next]->equals(')')
         $next = $tokens->getNextMeaningfulToken($next);
         if (null === $next || !$tokens[$next]->equals(';')) { // don't insert after close tag
             return 1;
@@ -268,7 +256,7 @@ final class HeaderCommentFixer extends AbstractFixer implements WhitespacesFixer
      */
     private function insertHeader(Tokens $tokens, $index)
     {
-        $tokens->insertAt($index, new Token(array(self::HEADER_COMMENT === $this->headerCommentType ? T_COMMENT : T_DOC_COMMENT, $this->headerComment)));
+        $tokens->insertAt($index, clone $this->headerToken);
     }
 
     /**
@@ -296,7 +284,23 @@ final class HeaderCommentFixer extends AbstractFixer implements WhitespacesFixer
             $commentType = self::HEADER_COMMENT;
         }
 
-        $header = '' === trim($header) ? '' : $this->encloseTextInComment($header, $commentType);
+        if ('' === trim($header)) {
+            $header = '';
+            $headerToken = null;
+        } else {
+            $header = $this->encloseTextInComment($header, $commentType);
+            try {
+                $testTokens = Tokens::fromCode('<?php '.$header);
+            } catch (\ParseError $e) {
+                throw new InvalidFixerConfigurationException($this->getName(), 'Invalid header configured.');
+            }
+
+            if (2 !== count($testTokens)) {
+                throw new InvalidFixerConfigurationException($this->getName(), 'Invalid header configured.');
+            }
+
+            $headerToken = $testTokens[1];
+        }
 
         if (array_key_exists('location', $configuration)) {
             $location = $configuration['location'];
@@ -338,7 +342,7 @@ final class HeaderCommentFixer extends AbstractFixer implements WhitespacesFixer
 
         return array(
             $header,
-            $commentType,
+            $headerToken,
             $location,
             $headerLineSeparation,
         );

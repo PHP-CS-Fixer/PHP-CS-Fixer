@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\Fixer\Comment;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -260,15 +261,14 @@ echo 1;',
     {
         $method = new \ReflectionMethod($this->fixer, 'parseConfiguration');
         $method->setAccessible(true);
-        $this->assertSame(
-            array(
-                "/*\n * a\n */",
-                HeaderCommentFixer::HEADER_COMMENT,
-                HeaderCommentFixer::HEADER_LOCATION_AFTER_DECLARE_STRICT,
-                HeaderCommentFixer::HEADER_LINE_SEPARATION_BOTH,
-            ),
-            $method->invoke($this->fixer, array('header' => 'a'))
-        );
+        $resolved = $method->invoke($this->fixer, array('header' => 'a'));
+        $this->assertInternalType('array', $resolved);
+        $this->assertCount(4, $resolved);
+        $this->assertSame($resolved[0], "/*\n * a\n */");
+        $this->assertInstanceOf(Token::class, $resolved[1]);
+        $this->assertTrue($resolved[1]->equals(new Token(array(T_COMMENT, "/*\n * a\n */"))));
+        $this->assertSame($resolved[2], HeaderCommentFixer::HEADER_LOCATION_AFTER_DECLARE_STRICT);
+        $this->assertSame($resolved[3], HeaderCommentFixer::HEADER_LINE_SEPARATION_BOTH);
     }
 
     /**
@@ -323,6 +323,24 @@ echo 1;',
                     'separate' => new \stdClass(),
                 ),
                 'Header separate configuration is invalid, expected "both", "top", "bottom" or "none", got "stdClass".',
+            ),
+            array(
+                array(
+                    'header' => '*/ $a; /**',
+                    'location' => 'after_declare_strict',
+                    'separate' => 'bottom',
+                    'commentType' => 'PHPDoc',
+                ),
+                'Invalid header configured.',
+            ),
+            array(
+                array(
+                    'header' => '*/ $a;',
+                    'location' => 'after_declare_strict',
+                    'separate' => 'bottom',
+                    'commentType' => 'PHPDoc',
+                ),
+                'Invalid header configured.',
             ),
         );
     }
