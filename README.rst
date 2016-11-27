@@ -712,6 +712,8 @@ Exit codes
 * 16 Configuration error of the application.
 * 32 Configuration error of a Fixer.
 
+(applies to exit codes of the `fix` command only)
+
 Helpers
 -------
 
