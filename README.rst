@@ -759,6 +759,8 @@ Exit code is build using following bit flags:
 * 32 Configuration error of a Fixer.
 * 64 Exception raised within the application.
 
+(applies to exit codes of the `fix` command only)
+
 Helpers
 -------
 
