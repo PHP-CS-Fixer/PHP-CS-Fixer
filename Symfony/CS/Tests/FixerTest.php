@@ -19,7 +19,7 @@ use Symfony\CS\FixerInterface;
 class FixerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers Symfony\CS\Fixer::sortFixers
+     * @covers \Symfony\CS\Fixer::sortFixers
      */
     public function testThatFixersAreSorted()
     {
@@ -47,7 +47,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\Fixer::registerBuiltInFixers
+     * @covers \Symfony\CS\Fixer::registerBuiltInFixers
      */
     public function testThatRegisterBuiltInFixers()
     {
@@ -59,7 +59,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\Fixer::registerBuiltInConfigs
+     * @covers \Symfony\CS\Fixer::registerBuiltInConfigs
      */
     public function testThatRegisterBuiltInConfigs()
     {
@@ -71,8 +71,8 @@ class FixerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\Fixer::addFixer
-     * @covers Symfony\CS\Fixer::getFixers
+     * @covers \Symfony\CS\Fixer::addFixer
+     * @covers \Symfony\CS\Fixer::getFixers
      */
     public function testThatCanAddAndGetFixers()
     {
@@ -88,8 +88,8 @@ class FixerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\Fixer::addConfig
-     * @covers Symfony\CS\Fixer::getConfigs
+     * @covers \Symfony\CS\Fixer::addConfig
+     * @covers \Symfony\CS\Fixer::getConfigs
      */
     public function testThatCanAddAndGetConfigs()
     {
@@ -104,9 +104,9 @@ class FixerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\Fixer::fix
-     * @covers Symfony\CS\Fixer::fixFile
-     * @covers Symfony\CS\Fixer::prepareFixers
+     * @covers \Symfony\CS\Fixer::fix
+     * @covers \Symfony\CS\Fixer::fixFile
+     * @covers \Symfony\CS\Fixer::prepareFixers
      */
     public function testThatFixSuccessfully()
     {
@@ -127,7 +127,7 @@ class FixerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\CS\Fixer::getLevelAsString
+     * @covers \Symfony\CS\Fixer::getLevelAsString
      * @dataProvider getFixerLevels
      */
     public function testThatCanGetFixerLevelString($level, $expectedLevelString)
