@@ -48,7 +48,7 @@ Only files pointed by both finder and CLI `path` argument will be fixed.
 Exit codes
 ----------
 
-Exit codes have been change and are build using the following bit flags:
+Exit codes for `fix` command have been changed and are build using the following bit flags:
 
 1.x bit | 2.0 bit | Description                                                 | Note
 -------:| -------:| ----------------------------------------------------------- | ----
