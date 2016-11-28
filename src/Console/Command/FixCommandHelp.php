@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\Fixer\DescribedFixerInterface;
+use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
@@ -260,7 +260,7 @@ EOF
         foreach ($fixers as $i => $fixer) {
             $sets = $getSetsWithRule($fixer->getName());
 
-            if ($fixer instanceof DescribedFixerInterface) {
+            if ($fixer instanceof DefinedFixerInterface) {
                 $description = $fixer->getDefinition()->getSummary();
             } else {
                 $description = '[n/a]';

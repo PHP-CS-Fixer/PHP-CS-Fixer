@@ -15,7 +15,8 @@ namespace PhpCsFixer\Fixer\Operator;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\FixerDefinition;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -77,17 +78,17 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
             $this->getDescription(),
             null,
             array(
-                array(
+                new CodeSample(
                     "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
-                    null,
+                    null
                 ),
-                array(
+                new CodeSample(
                     "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
-                    array('spacing' => 'none'),
+                    array('spacing' => 'none')
                 ),
-                array(
+                new CodeSample(
                     "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
-                    array('spacing' => 'one'),
+                    array('spacing' => 'one')
                 ),
             ),
             "Configuration must have one element 'spacing' with value 'none' (default) or 'one'.",

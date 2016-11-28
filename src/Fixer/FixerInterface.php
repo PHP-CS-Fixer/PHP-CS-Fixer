@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\Fixer;
 
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**

@@ -10,12 +10,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer;
+namespace PhpCsFixer\FixerDefinition;
 
 /**
  * Temporary, short Fixer definition until all fixers will be described.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class ShortFixerDefinition implements FixerDefinitionInterface
 {

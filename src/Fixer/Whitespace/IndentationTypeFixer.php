@@ -13,15 +13,15 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * Fixer for rules defined in PSR2 ¶2.4.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class IndentationTypeFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}

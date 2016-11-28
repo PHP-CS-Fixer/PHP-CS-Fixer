@@ -15,13 +15,12 @@ namespace PhpCsFixer\Console\Command;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\Fixer\DescribedFixerInterface;
+use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\FixerDefinition;
-use PhpCsFixer\FixerDefinitionInterface;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\FixerDefinition\ShortFixerDefinition;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
-use PhpCsFixer\ShortFixerDefinition;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Console\Command\Command;
@@ -102,10 +101,10 @@ final class DescribeCommand extends Command
 
         /** @var FixerInterface $fixer */
         $fixer = $fixers[$name];
-        if ($fixer instanceof DescribedFixerInterface) {
+        if ($fixer instanceof DefinedFixerInterface) {
             $definition = $fixer->getDefinition();
         } else {
-            $definition = new FixerDefinition('[n/a]', '[n/a]', array(), null);
+            $definition = new ShortFixerDefinition('Description is not availble.');
         }
 
         $output->writeln(sprintf('<info>Description of</info> %s <info>rule</info>.', $name));
@@ -150,20 +149,20 @@ final class DescribeCommand extends Command
             ));
 
             foreach ($definition->getCodeSamples() as $index => $codeSample) {
-                $old = $codeSample[0];
+                $old = $codeSample->getCode();
                 $tokens = Tokens::fromCode($old);
                 if ($fixer instanceof ConfigurableFixerInterface) {
-                    $fixer->configure($codeSample[1]);
+                    $fixer->configure($codeSample->getConfiguration());
                 }
 
                 $fixer->fix(new StdinFileInfo(), $tokens);
                 $new = $tokens->generateCode();
                 $diff = $differ->diff($old, $new);
 
-                if (null === $codeSample[1]) {
+                if (null === $codeSample->getConfiguration()) {
                     $output->writeln(sprintf(' * Example #%d.', $index + 1));
                 } else {
-                    $output->writeln(sprintf(' * Example #%d. Fixing with configuration: <comment>%s</comment>.', $index + 1, $this->arrayToText($codeSample[1])));
+                    $output->writeln(sprintf(' * Example #%d. Fixing with configuration: <comment>%s</comment>.', $index + 1, $this->arrayToText($codeSample->getConfiguration())));
                 }
                 $output->writeln($diffFormatter->format($diff, '   %s'));
                 $output->writeln('');

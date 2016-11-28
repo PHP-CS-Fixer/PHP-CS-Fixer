@@ -13,11 +13,11 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\Fixer\DescribedFixerInterface;
+use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerDefinition\ShortFixerDefinition;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
-use PhpCsFixer\ShortFixerDefinition;
 use Prophecy\Argument;
 
 /**
@@ -369,9 +369,9 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testFixerDefinitions(FixerInterface $fixer)
     {
-        $this->assertInstanceOf('PhpCsFixer\Fixer\DescribedFixerInterface', $fixer);
+        $this->assertInstanceOf('PhpCsFixer\Fixer\DefinedFixerInterface', $fixer);
 
-        /** @var DescribedFixerInterface $fixer */
+        /** @var DefinedFixerInterface $fixer */
         $definition = $fixer->getDefinition();
 
         $this->assertRegExp('/^[A-Z@].*\.$/', $definition->getSummary(), 'Description must start with capital letter or an @ and end with dot.');
@@ -431,7 +431,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             $guard,
             array_filter(array_map(function (FixerInterface $fixer) {
                 return
-                    !$fixer instanceof DescribedFixerInterface
+                    !$fixer instanceof DefinedFixerInterface
                     || $fixer->getDefinition() instanceof ShortFixerDefinition
                 ;
             }, $this->getAllFixers())),

@@ -18,7 +18,7 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-interface ConfigurableFixerInterface
+interface ConfigurableFixerInterface extends FixerInterface
 {
     /**
      * Set configuration.

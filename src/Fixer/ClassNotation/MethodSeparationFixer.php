@@ -13,10 +13,10 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 use SplFileInfo;
 
 /**
@@ -26,7 +26,7 @@ use SplFileInfo;
  *
  * @author SpacePossum
  */
-final class MethodSeparationFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class MethodSeparationFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}

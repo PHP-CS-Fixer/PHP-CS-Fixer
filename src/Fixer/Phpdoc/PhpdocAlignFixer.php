@@ -13,9 +13,9 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -24,7 +24,7 @@ use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
  * @author Graham Campbell <graham@alt-three.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     private $regex;
     private $regexCommentLine;

@@ -12,18 +12,12 @@
 
 namespace PhpCsFixer\Fixer;
 
-use PhpCsFixer\FixerDefinitionInterface;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  */
-interface DescribedFixerInterface
+interface WhitespacesAwareFixerInterface extends FixerInterface
 {
-    /**
-     * Returns the definition of the fixer.
-     *
-     * @return FixerDefinitionInterface
-     */
-    public function getDefinition();
+    public function setWhitespacesConfig(WhitespacesFixerConfig $config);
 }

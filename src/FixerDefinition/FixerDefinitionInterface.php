@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer;
+namespace PhpCsFixer\FixerDefinition;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -45,7 +45,7 @@ interface FixerDefinitionInterface
     /**
      * Array of samples, where single sample is [code, configuration].
      *
-     * @return array
+     * @return CodeSampleInterface[]
      */
     public function getCodeSamples();
 }
