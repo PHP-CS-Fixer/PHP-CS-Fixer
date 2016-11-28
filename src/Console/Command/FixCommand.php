@@ -42,6 +42,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
  */
 final class FixCommand extends Command
 {
+    // Exit status 1 is reserved for environment constraints not matched.
     const EXIT_STATUS_FLAG_HAS_INVALID_FILES = 4;
     const EXIT_STATUS_FLAG_HAS_CHANGED_FILES = 8;
     const EXIT_STATUS_FLAG_HAS_INVALID_CONFIG = 16;
@@ -281,12 +282,15 @@ Exit codes
 
 Exit code is build using following bit flags:
 
-*  0 OK
-*  4 Some files have invalid syntax (only in dry-run mode)
-*  8 Some files need fixing (only in dry-run mode)
-* 16 Configuration error of the application
-* 32 Configuration error of a Fixer
-* 64 Exception raised within the application
+*  0 OK.
+*  1 General error (or PHP/HHVM minimal requirement not matched).
+*  4 Some files have invalid syntax (only in dry-run mode).
+*  8 Some files need fixing (only in dry-run mode).
+* 16 Configuration error of the application.
+* 32 Configuration error of a Fixer.
+* 64 Exception raised within the application.
+
+(applies to exit codes of the `fix` command only)
 EOF
             );
     }
