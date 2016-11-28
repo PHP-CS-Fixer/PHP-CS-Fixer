@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Report;
 
-use Symfony\Component\Console\Formatter\OutputFormatter;
+use PhpCsFixer\Differ\DiffConsoleFormatter;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -78,28 +78,13 @@ final class TextReporter implements ReporterInterface
             return '';
         }
 
-        if ($isDecoratedOutput) {
-            $template = '<comment>      ---------- begin diff ----------</comment>%s<comment>      ----------- end diff -----------</comment>';
-            $diff = implode(
-                PHP_EOL,
-                array_map(
-                    function ($string) {
-                        $string = preg_replace('/^(\+){3}/', '<info>+++</info>', $string);
-                        $string = preg_replace('/^(\+){1}/', '<info>+</info>', $string);
-                        $string = preg_replace('/^(\-){3}/', '<error>---</error>', $string);
-                        $string = preg_replace('/^(\-){1}/', '<error>-</error>', $string);
+        $diffFormatter = new DiffConsoleFormatter($isDecoratedOutput, sprintf(
+            '<comment>      ---------- begin diff ----------</comment>%s%%s%s<comment>      ----------- end diff -----------</comment>',
+            PHP_EOL,
+            PHP_EOL
+        ));
 
-                        return $string;
-                    },
-                    explode(PHP_EOL, OutputFormatter::escape($fixResult['diff']))
-                )
-            );
-        } else {
-            $template = '      ---------- begin diff ----------%s      ----------- end diff -----------';
-            $diff = $fixResult['diff'];
-        }
-
-        return PHP_EOL.sprintf($template, PHP_EOL.$diff.PHP_EOL).PHP_EOL;
+        return PHP_EOL.$diffFormatter->format($fixResult['diff']).PHP_EOL;
     }
 
     /**
