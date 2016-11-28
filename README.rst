@@ -707,10 +707,12 @@ speed up further runs.
 
 Exit codes
 ----------
-*  0 OK
-*  1 No changes made
-* 16 Configuration error of the application
-* 32 Configuration error of a Fixer
+*  0 OK.
+*  1 Changes made (or dry-run was used and files need changes) or PHP/HHVM minimal requirement to run the Fixer not match.
+* 16 Configuration error of the application.
+* 32 Configuration error of a Fixer.
+
+(applies to exit codes of the `fix` command only)
 
 Helpers
 -------
