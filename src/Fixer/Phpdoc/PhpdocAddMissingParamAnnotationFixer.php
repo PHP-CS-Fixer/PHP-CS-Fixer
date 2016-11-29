@@ -61,6 +61,15 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // must be run after PhpdocNoAliasTagFixer and before PhpdocAlignFixer
+        return -5;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
