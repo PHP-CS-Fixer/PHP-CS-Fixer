@@ -33,6 +33,11 @@ final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestBase
          * @expectedException \Some\Exception\ClassName
  * @expectedExceptionCode 123
      * @expectedExceptionMessage Foo bar
+     *
+     * @covers \Foo
+     * @covers ::fooMethod
+     * @coversDefaultClass \Bar
+     * @uses \Baz
      */
 EOF;
         $input = <<<'EOF'
@@ -45,6 +50,11 @@ EOF;
          * @expectedException Some\Exception\ClassName
  * @expectedExceptionCode 123
      * @expectedExceptionMessage Foo bar
+     *
+     * @covers Foo
+     * @covers ::fooMethod
+     * @coversDefaultClass Bar
+     * @uses Baz
      */
 EOF;
 
