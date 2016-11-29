@@ -1,0 +1,48 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-17T18:55:41Z
+
+The main part is there.
+
+What's missing is integration tests (for priority fixes) and apply the tool for codebase (actually, tests folder only)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-18T05:55:29Z
+
+nice idea :)
+
+~~do you think of having the configuration option `non-type-only => true` would be of value, it seems the SF community tends to move that way~~ ignore
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-18T11:21:48Z
+
+what do you mean by `non-type-only` ?
+`'only_untyped' => true` will make fixer to add annotation for parameters that are not typed in prototype
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-18T11:24:02Z
+
+I meant the exact thing you described, thanks! : )
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-20T16:34:35Z
+
+Thanks for review @SpacePossum , I think it's ready now. Please, could you take a look again ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-20T21:55:00Z
+
+btw. tests are failing.
+Don't we have a fixer to sort `@params` to match the order of params as defined but the function/method signature?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-21T00:15:31Z
+
+Not yet, but this is natural direction after this one is released ;)
+The issue is that first we need to fix bug in our DocBlock module...
