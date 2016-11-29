@@ -77,7 +77,7 @@ final class FunctionTypehintSpaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Add missing space between function\'s argument and its typehint.';
     }

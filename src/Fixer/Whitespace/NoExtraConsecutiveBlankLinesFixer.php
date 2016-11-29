@@ -14,17 +14,18 @@ namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * @var array<int, string> key is token id, value is name of callback
@@ -145,18 +146,18 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements W
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Removes extra blank lines and/or blank lines following configuration.';
+        // should be run after the NoUnusedImportsFixer, NoEmptyPhpdocFixer, CombineConsecutiveUnsetsFixer and NoUselessElseFixer
+        return -20;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run after the NoUnusedImportsFixer, NoEmptyPhpdocFixer, CombineConsecutiveUnsetsFixer and NoUselessElseFixer
-        return -20;
+        return 'Removes extra blank lines and/or blank lines following configuration.';
     }
 
     private function fixByToken(Token $token, $index)

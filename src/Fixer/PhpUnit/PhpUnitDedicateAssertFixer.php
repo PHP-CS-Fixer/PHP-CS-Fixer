@@ -14,13 +14,14 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author SpacePossum
  */
-final class PhpUnitDedicateAssertFixer extends AbstractFixer
+final class PhpUnitDedicateAssertFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private $fixMap = array(
         'array_key_exists' => array('assertArrayNotHasKey', 'assertArrayHasKey'),
@@ -143,18 +144,18 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'PHPUnit assertions like "assertInternalType", "assertFileExists", should be used over "assertTrue".';
+        // should be run after the PhpUnitConstructFixer.
+        return -15;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run after the PhpUnitConstructFixer.
-        return -15;
+        return 'PHPUnit assertions like "assertInternalType", "assertFileExists", should be used over "assertTrue".';
     }
 
     /**

@@ -48,7 +48,7 @@ final class LowercaseKeywordsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'PHP keywords MUST be in lower case.';
     }

@@ -13,14 +13,14 @@
 namespace PhpCsFixer\Fixer\ReturnNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class BlankLineBeforeReturnFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class BlankLineBeforeReturnFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -73,17 +73,17 @@ final class BlankLineBeforeReturnFixer extends AbstractFixer implements Whitespa
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'An empty line feed should precede a return statement.';
+        // should be run after NoUselessReturnFixer
+        return -19;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run after NoUselessReturnFixer
-        return -19;
+        return 'An empty line feed should precede a return statement.';
     }
 }

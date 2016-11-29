@@ -48,14 +48,6 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
         '$this',
     );
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'The correct case must be used for standard PHP types in phpdoc.';
-    }
-
     public function getPriority()
     {
         /*
@@ -67,6 +59,14 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
          * the phpdoc_scalar_fixer so that it can make changes after us.
          */
         return 16;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'The correct case must be used for standard PHP types in phpdoc.';
     }
 
     /**

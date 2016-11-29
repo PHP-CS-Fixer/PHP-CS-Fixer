@@ -14,12 +14,13 @@ namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
-final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
+final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer implements ConfigurableFixerInterface
 {
     /**
      * @var array
@@ -103,7 +104,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Replaces rand, srand, getrandmax functions calls with their mt_* analogs.';
     }

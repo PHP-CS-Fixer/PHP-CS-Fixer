@@ -53,14 +53,6 @@ final class PhpdocOrderFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'Annotations in phpdocs should be ordered so that param annotations come first, then throws annotations, then return annotations.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // must be run before the PhpdocSeparationFixer
@@ -71,6 +63,14 @@ final class PhpdocOrderFixer extends AbstractFixer
          * about, we're still ok.
          */
         return 5;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Annotations in phpdocs should be ordered so that param annotations come first, then throws annotations, then return annotations.';
     }
 
     /**

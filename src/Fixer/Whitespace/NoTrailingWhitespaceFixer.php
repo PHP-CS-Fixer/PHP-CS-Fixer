@@ -65,17 +65,17 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Remove trailing whitespace at the end of non-blank lines.';
+        // should be run after NoEmptyPhpdocFixer, NoUnneededControlParenthesesFixer, ClassDefinitionFixer, CombineConsecutiveUnsetsFixer, NoEmptyStatementFixer and NoUselessElseFixer.
+        return 0;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run after NoEmptyPhpdocFixer, NoUnneededControlParenthesesFixer, ClassDefinitionFixer, CombineConsecutiveUnsetsFixer, NoEmptyStatementFixer and NoUselessElseFixer.
-        return 0;
+        return 'Remove trailing whitespace at the end of non-blank lines.';
     }
 }

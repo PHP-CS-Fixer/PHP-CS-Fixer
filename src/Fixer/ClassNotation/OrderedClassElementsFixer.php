@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -21,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Gregor Harlan <gharlan@web.de>
  */
-final class OrderedClassElementsFixer extends AbstractFixer
+final class OrderedClassElementsFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @var array Array containing all class element base types (keys) and their parent types (values)
@@ -176,19 +177,19 @@ final class OrderedClassElementsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'Orders the elements of classes/interfaces/traits.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // must run before MethodSeparationFixer, NoBlankLinesAfterClassOpeningFixer and SpaceAfterSemicolonFixer.
         // must run after ProtectedToPrivateFixer.
         return 65;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Orders the elements of classes/interfaces/traits.';
     }
 
     /**

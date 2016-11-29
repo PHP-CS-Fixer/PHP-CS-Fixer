@@ -82,7 +82,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Standardize spaces around ternary operator.';
     }

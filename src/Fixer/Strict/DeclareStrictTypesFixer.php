@@ -13,15 +13,15 @@
 namespace PhpCsFixer\Fixer\Strict;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author SpacePossum
  */
-final class DeclareStrictTypesFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class DeclareStrictTypesFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -74,14 +74,6 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'Force strict types declaration in all files.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // must ran before SingleBlankLineBeforeNamespaceFixer, NoBlankLinesBeforeNamespaceFixer, NoExtraConsecutiveBlankLinesFixer, NoWhitespaceInBlankLinesFixer
@@ -102,6 +94,14 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Force strict types declaration in all files.';
     }
 
     /**

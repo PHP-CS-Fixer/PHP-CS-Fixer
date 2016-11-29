@@ -13,15 +13,15 @@
 namespace PhpCsFixer\Fixer\NamespaceNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Bram Gotink <bram@gotink.me>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -72,7 +72,7 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'The namespace declaration line shouldn\'t contain leading whitespace.';
     }

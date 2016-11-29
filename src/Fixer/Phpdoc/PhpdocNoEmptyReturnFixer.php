@@ -58,18 +58,18 @@ final class PhpdocNoEmptyReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return '@return void and @return null annotations should be omitted from phpdocs.';
+        // must be run before the PhpdocSeparationFixer and PhpdocOrderFixer
+        return 10;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // must be run before the PhpdocSeparationFixer and PhpdocOrderFixer
-        return 10;
+        return '@return void and @return null annotations should be omitted from phpdocs.';
     }
 
     /**

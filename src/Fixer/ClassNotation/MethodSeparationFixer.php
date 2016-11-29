@@ -13,10 +13,10 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 use SplFileInfo;
 
 /**
@@ -26,7 +26,7 @@ use SplFileInfo;
  *
  * @author SpacePossum
  */
-final class MethodSeparationFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class MethodSeparationFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -66,19 +66,19 @@ final class MethodSeparationFixer extends AbstractFixer implements WhitespacesFi
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'Methods must be separated with one blank line.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // Must run before BracesFixer and IndentationTypeFixer fixers because this fixer
         // might add line breaks to the code without indenting.
         return 55;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Methods must be separated with one blank line.';
     }
 
     /**

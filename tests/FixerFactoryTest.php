@@ -12,8 +12,11 @@
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\DefinedFixerInterface;
+use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerDefinition\ShortFixerDefinition;
 use PhpCsFixer\FixerFactory;
-use PhpCsFixer\FixerInterface;
 use PhpCsFixer\RuleSet;
 use Prophecy\Argument;
 
@@ -360,21 +363,40 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider provideFixersDescriptionConsistencyCases
+     * @param FixerInterface $fixer
+     *
+     * @dataProvider provideFixerDefinitionsCases
      */
-    public function testFixersDescriptionConsistency(FixerInterface $fixer)
+    public function testFixerDefinitions(FixerInterface $fixer)
     {
-        $this->assertRegExp('/^[A-Z@].*\.$/', $fixer->getDescription(), 'Description must start with capital letter or an @ and end with dot.');
-    }
+        $this->assertInstanceOf('PhpCsFixer\Fixer\DefinedFixerInterface', $fixer);
 
-    public function provideFixersDescriptionConsistencyCases()
-    {
-        $cases = array();
-        foreach ($this->getAllFixers() as $fixer) {
-            $cases[] = array($fixer);
+        /** @var DefinedFixerInterface $fixer */
+        $definition = $fixer->getDefinition();
+
+        $this->assertRegExp('/^[A-Z@].*\.$/', $definition->getSummary(), 'Description must start with capital letter or an @ and end with dot.');
+
+        if ($definition instanceof ShortFixerDefinition) {
+            $this->markTestIncomplete('ShortFixerDefinition does not contains all needed information.');
         }
 
-        return $cases;
+        $this->assertNotEmpty($definition->getCodeSamples(), 'Code samples are required.');
+
+        if ($fixer instanceof ConfigurableFixerInterface) {
+            $this->assertNotEmpty($definition->getConfigurationDescription(), 'Configuration description is required.');
+            $this->assertNotEmpty($definition->getDefaultConfiguration(), 'Default configuration is required.');
+        }
+
+        if ($fixer->isRisky()) {
+            $this->assertNotEmpty($definition->getRiskyDescription(), 'Risky reasoning is required.');
+        }
+    }
+
+    public function provideFixerDefinitionsCases()
+    {
+        return array_map(function (FixerInterface $fixer) {
+            return array($fixer);
+        }, $this->getAllFixers());
     }
 
     /**
@@ -394,6 +416,32 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         }
 
         return $cases;
+    }
+
+    /**
+     * This method is a guard to not introduce new Fixer using `ShortFixerDefinition`.
+     *
+     * Will be removed with `ShortFixerDefinition` removal.
+     */
+    public function testShortFixerDefinition()
+    {
+        $guard = 126;
+
+        $this->assertCount(
+            $guard,
+            array_filter(array_map(function (FixerInterface $fixer) {
+                return
+                    !$fixer instanceof DefinedFixerInterface
+                    || $fixer->getDefinition() instanceof ShortFixerDefinition
+                ;
+            }, $this->getAllFixers())),
+            implode("\n", array(
+                'Not valid amount of fixers using ShortFixerDefinition.',
+                'If this test is failing it means one of those scenario occurred:',
+                '- you introduced new Fixer using `ShortFixerDefinition`, you should use `FixerDefinition` instead,',
+                '- you update the Fixer to stop using `ShortFixerDefinition`, you should decrease the guard value.',
+            ))
+        );
     }
 
     /**
@@ -447,10 +495,11 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
     private function createFixerDouble($name, $priority = 0)
     {
-        $fixer = $this->prophesize('PhpCsFixer\FixerInterface');
+        /** @var FixerInterface $fixer */
+        $fixer = $this->prophesize('PhpCsFixer\Fixer\FixerInterface');
         $fixer->getName()->willReturn($name);
         $fixer->getPriority()->willReturn($priority);
-        $fixer->configure(Argument::is(null))->willReturn(null);
+        //$fixer->configure(Argument::is(null))->willReturn(null); Needed?
 
         return $fixer->reveal();
     }

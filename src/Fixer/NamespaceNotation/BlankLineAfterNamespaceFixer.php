@@ -13,16 +13,16 @@
 namespace PhpCsFixer\Fixer\NamespaceNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * Fixer for rules defined in PSR2 ¶3.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class BlankLineAfterNamespaceFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class BlankLineAfterNamespaceFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -70,17 +70,17 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'There MUST be one blank line after the namespace declaration.';
+        // should be run after the NoUnusedImportsFixer
+        return -20;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run after the NoUnusedImportsFixer
-        return -20;
+        return 'There MUST be one blank line after the namespace declaration.';
     }
 }

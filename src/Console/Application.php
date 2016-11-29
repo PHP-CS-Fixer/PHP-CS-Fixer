@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Console;
 
+use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\ReadmeCommand;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
@@ -36,6 +37,7 @@ final class Application extends BaseApplication
 
         parent::__construct('PHP CS Fixer', self::VERSION);
 
+        $this->add(new DescribeCommand());
         $this->add(new FixCommand());
         $this->add(new ReadmeCommand());
         $this->add(new SelfUpdateCommand());

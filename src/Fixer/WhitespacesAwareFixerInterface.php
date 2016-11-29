@@ -10,13 +10,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\ConfigurationException;
+namespace PhpCsFixer\Fixer;
+
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
  */
-final class UnallowedFixerConfigurationException extends InvalidFixerConfigurationException
+interface WhitespacesAwareFixerInterface extends FixerInterface
 {
+    public function setWhitespacesConfig(WhitespacesFixerConfig $config);
 }

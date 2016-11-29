@@ -106,18 +106,18 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Convert PHP4-style constructors to __construct.';
+        // must run before OrderedClassElementsFixer
+        return 75;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // must run before OrderedClassElementsFixer
-        return 75;
+        return 'Convert PHP4-style constructors to __construct.';
     }
 
     /**

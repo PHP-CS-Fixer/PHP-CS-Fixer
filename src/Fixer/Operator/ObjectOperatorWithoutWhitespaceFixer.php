@@ -55,7 +55,7 @@ final class ObjectOperatorWithoutWhitespaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'There should not be space before or after object T_OBJECT_OPERATOR.';
     }

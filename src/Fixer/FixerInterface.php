@@ -10,34 +10,16 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer;
+namespace PhpCsFixer\Fixer;
 
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Fabien Potencier <fabien@symfony.com>
  */
 interface FixerInterface
 {
-    /**
-     * Set configuration.
-     *
-     * New configuration must override current one, not patch it.
-     * Using `null` makes fixer to use default configuration (or reset configuration from previously configured back
-     * to default one).
-     *
-     * Some fixers may have no configuration, then - simply pass null.
-     * Other ones may have configuration that will change behavior of fixer,
-     * eg `php_unit_strict` fixer allows to configure which methods should be fixed.
-     * Finally, some fixers need configuration to work, eg `header_comment`.
-     *
-     * @param array|null $configuration configuration depends on Fixer
-     *
-     * @throws InvalidFixerConfigurationException
-     */
-    public function configure(array $configuration = null);
-
     /**
      * Check if the fixer is a candidate for given Tokens collection.
      *
@@ -69,15 +51,6 @@ interface FixerInterface
      * @param Tokens       $tokens Tokens collection
      */
     public function fix(\SplFileInfo $file, Tokens $tokens);
-
-    /**
-     * Returns the description of the fixer.
-     *
-     * A short one-line description of what the fixer does.
-     *
-     * @return string The description of the fixer
-     */
-    public function getDescription();
 
     /**
      * Returns the name of the fixer.

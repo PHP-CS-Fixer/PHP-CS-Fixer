@@ -78,18 +78,18 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Calling unset on multiple items should be done in one call.';
+        // should ran before SpaceAfterSemicolonFixer, NoWhitespaceInBlankLineFixer, NoTrailingWhitespaceFixer and NoExtraConsecutiveBlankLinesFixer and after NoEmptyStatementFixer.
+        return 24;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should ran before SpaceAfterSemicolonFixer, NoWhitespaceInBlankLineFixer, NoTrailingWhitespaceFixer and NoExtraConsecutiveBlankLinesFixer and after NoEmptyStatementFixer.
-        return 24;
+        return 'Calling unset on multiple items should be done in one call.';
     }
 
     /**

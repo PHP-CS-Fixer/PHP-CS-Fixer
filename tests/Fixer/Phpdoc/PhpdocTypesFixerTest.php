@@ -21,7 +21,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  */
 final class PhpdocTypesFixerTest extends AbstractFixerTestCase
 {
-    public function testConvesion()
+    public function testConversion()
     {
         $expected = <<<'EOF'
 <?php

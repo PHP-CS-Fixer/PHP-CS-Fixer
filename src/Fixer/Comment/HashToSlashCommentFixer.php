@@ -45,7 +45,7 @@ final class HashToSlashCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Single line comments should use double slashes (//) and not hash (#).';
     }

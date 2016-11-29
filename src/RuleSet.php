@@ -273,7 +273,7 @@ final class RuleSet implements RuleSetInterface
                     $set = $this->getSetDefinition($name);
 
                     foreach ($set as $nestedName => $nestedValue) {
-                        // if set value is falsy then disable all fixers in set, if not then get value from set item
+                        // if set value is false then disable all fixers in set, if not then get value from set item
                         $rules[$nestedName] = $value ? $nestedValue : false;
                     }
 

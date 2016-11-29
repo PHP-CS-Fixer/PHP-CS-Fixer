@@ -71,14 +71,6 @@ final class PhpdocIndentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'Docblocks should have the same indentation as the documented subject.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         /*
@@ -90,6 +82,14 @@ final class PhpdocIndentFixer extends AbstractFixer
          * comments.
          */
         return 20;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Docblocks should have the same indentation as the documented subject.';
     }
 
     /**

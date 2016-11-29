@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Fixer\FixerInterface;
+
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

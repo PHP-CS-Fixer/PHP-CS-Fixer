@@ -86,14 +86,6 @@ final class OrderedImportsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'Ordering use statements.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // should be run after the NoLeadingImportSlashFixer
@@ -124,6 +116,14 @@ final class OrderedImportsFixer extends AbstractFixer
             str_replace('\\', ' ', $firstNamespace),
             str_replace('\\', ' ', $secondNamespace)
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Ordering use statements.';
     }
 
     private function getNewOrder(array $uses, Tokens $tokens)

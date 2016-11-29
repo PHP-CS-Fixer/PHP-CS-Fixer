@@ -14,13 +14,14 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer
+final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @var string[]
@@ -92,7 +93,7 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Configured annotations should be omitted from phpdocs.';
     }

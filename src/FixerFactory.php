@@ -12,6 +12,10 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 /**
@@ -56,7 +60,7 @@ final class FixerFactory
     public function setWhitespacesConfig(WhitespacesFixerConfig $config)
     {
         foreach ($this->fixers as $fixer) {
-            if ($fixer instanceof WhitespacesFixerConfigAwareInterface) {
+            if ($fixer instanceof WhitespacesAwareFixerInterface) {
                 $fixer->setWhitespacesConfig($config);
             }
         }
@@ -164,7 +168,15 @@ final class FixerFactory
 
             $config = $ruleSet->getRuleConfiguration($name);
             if (null !== $config) {
-                $fixer->configure($config);
+                if ($fixer instanceof ConfigurableFixerInterface) {
+                    if (!is_array($config) || !count($config)) {
+                        throw new InvalidFixerConfigurationException($fixer->getName(), 'Configuration must be an array and may not be empty.');
+                    }
+
+                    $fixer->configure($config);
+                } else {
+                    throw new InvalidFixerConfigurationException($fixer->getName(), 'Is not configurable.');
+                }
             }
 
             $fixers[] = $fixer;

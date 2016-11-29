@@ -13,15 +13,15 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * Fixer for rules defined in PSR2 ¶2.4.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class IndentationTypeFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -67,16 +67,16 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesFix
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting.';
+        return 50;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        return 50;
+        return 'Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting.';
     }
 }

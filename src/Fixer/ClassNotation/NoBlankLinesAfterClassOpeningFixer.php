@@ -13,15 +13,15 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
  */
-final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -53,7 +53,7 @@ final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer implements 
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'There should be no empty lines after class opening brace.';
     }

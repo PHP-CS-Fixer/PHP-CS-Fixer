@@ -46,7 +46,7 @@ final class LowercaseCastFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Cast should be written in lower case.';
     }

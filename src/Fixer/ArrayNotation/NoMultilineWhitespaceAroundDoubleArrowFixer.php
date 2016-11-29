@@ -52,18 +52,18 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Operator => should not be surrounded by multi-line whitespaces.';
+        // should be run before the TrailingCommaInMultilineArrayFixer and BinaryOperatorSpacesFixer.
+        return 1;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run before the TrailingCommaInMultilineArrayFixer and BinaryOperatorSpacesFixer.
-        return 1;
+        return 'Operator => should not be surrounded by multi-line whitespaces.';
     }
 
     private function fixWhitespace(Token $token)

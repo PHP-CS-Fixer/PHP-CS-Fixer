@@ -66,7 +66,7 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Removes extra spaces between colon and case value.';
     }

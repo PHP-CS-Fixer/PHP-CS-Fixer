@@ -13,8 +13,8 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * A file must always end with a line endings character.
@@ -24,7 +24,7 @@ use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class SingleBlankLineAtEofFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class SingleBlankLineAtEofFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -49,17 +49,17 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer implements Whitespac
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'A file must always end with a single empty line feed.';
+        // must run last to be sure the file is properly formatted before it runs
+        return -50;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // must run last to be sure the file is properly formatted before it runs
-        return -50;
+        return 'A file must always end with a single empty line feed.';
     }
 }

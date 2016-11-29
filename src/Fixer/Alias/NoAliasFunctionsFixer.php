@@ -93,7 +93,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Master functions shall be used instead of aliases.';
     }

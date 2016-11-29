@@ -62,7 +62,7 @@ final class NoClosingTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'The closing ?> tag MUST be omitted from files containing only PHP.';
     }

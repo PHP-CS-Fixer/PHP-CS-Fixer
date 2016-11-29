@@ -14,6 +14,9 @@ namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -21,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class ConcatSpaceFixer extends AbstractFixer
+final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private $fixCallback;
 
@@ -69,12 +72,29 @@ final class ConcatSpaceFixer extends AbstractFixer
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
+    public function getDefinition()
     {
-        return 'Concatenation should be spaced according configuration.';
+        return new FixerDefinition(
+            $this->getDescription(),
+            null,
+            array(
+                new CodeSample(
+                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
+                    null
+                ),
+                new CodeSample(
+                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
+                    array('spacing' => 'none')
+                ),
+                new CodeSample(
+                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
+                    array('spacing' => 'one')
+                ),
+            ),
+            "Configuration must have one element 'spacing' with value 'none' (default) or 'one'.",
+            array('spacing' => 'none'),
+            null
+        );
     }
 
     /**
@@ -83,6 +103,14 @@ final class ConcatSpaceFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound('.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Concatenation should be spaced according configuration.';
     }
 
     /**

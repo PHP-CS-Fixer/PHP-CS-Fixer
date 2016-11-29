@@ -48,18 +48,18 @@ final class NoUselessReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'There should not be an empty return statement at the end of a function.';
+        // should be run before BlankLineBeforeReturnFixer, NoExtraConsecutiveBlankLinesFixer, NoWhitespaceInBlankLineFixer and after SimplifiedNullReturnFixer and NoEmptyStatementFixer.
+        return -18;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run before BlankLineBeforeReturnFixer, NoExtraConsecutiveBlankLinesFixer, NoWhitespaceInBlankLineFixer and after SimplifiedNullReturnFixer and NoEmptyStatementFixer.
-        return -18;
+        return 'There should not be an empty return statement at the end of a function.';
     }
 
     /**

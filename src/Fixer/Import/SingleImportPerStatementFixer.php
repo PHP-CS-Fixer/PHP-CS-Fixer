@@ -13,11 +13,11 @@
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * Fixer for rules defined in PSR2 ¶3.
@@ -25,7 +25,7 @@ use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class SingleImportPerStatementFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class SingleImportPerStatementFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -55,18 +55,18 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'There MUST be one use keyword per declaration.';
-    }
-
     public function getPriority()
     {
         // must be run before NoLeadingImportSlashFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, SpaceAfterSemicolonFixer, NoMultilineWhitespaceBeforeSemicolonsFixer, NoLeadingImportSlashFixer.
         return 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'There MUST be one use keyword per declaration.';
     }
 
     /**

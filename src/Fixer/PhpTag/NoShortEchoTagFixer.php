@@ -80,7 +80,7 @@ final class NoShortEchoTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Replace short-echo <?= with long format <?php echo syntax.';
     }

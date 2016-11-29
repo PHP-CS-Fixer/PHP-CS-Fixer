@@ -66,7 +66,7 @@ final class HeredocToNowdocFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Convert heredoc to nowdoc if possible.';
     }

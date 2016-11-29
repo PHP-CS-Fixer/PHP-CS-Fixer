@@ -15,15 +15,16 @@ namespace PhpCsFixer\Fixer\Comment;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Antonio J. García Lagar <aj@garcialagar.es>
  * @author SpacePossum
  */
-final class HeaderCommentFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     const HEADER_PHPDOC = 'PHPDoc';
     const HEADER_COMMENT = 'comment';
@@ -106,17 +107,17 @@ final class HeaderCommentFixer extends AbstractFixer implements WhitespacesFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Add, replace or remove header comment.';
+        return $tokens[0]->isGivenKind(T_OPEN_TAG) && $tokens->isMonolithicPhp();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    protected function getDescription()
     {
-        return $tokens[0]->isGivenKind(T_OPEN_TAG) && $tokens->isMonolithicPhp();
+        return 'Add, replace or remove header comment.';
     }
 
     /**

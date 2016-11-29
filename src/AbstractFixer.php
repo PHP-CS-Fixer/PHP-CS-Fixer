@@ -13,14 +13,18 @@
 namespace PhpCsFixer;
 
 use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
-use PhpCsFixer\ConfigurationException\UnallowedFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\DefinedFixerInterface;
+use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\ShortFixerDefinition;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-abstract class AbstractFixer implements FixerInterface
+abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
 {
     /**
      * @var WhitespacesFixerConfig
@@ -29,24 +33,16 @@ abstract class AbstractFixer implements FixerInterface
 
     public function __construct()
     {
-        try {
-            $this->configure(null);
-        } catch (RequiredFixerConfigurationException $e) {
-            // ignore
+        if ($this instanceof ConfigurableFixerInterface) {
+            try {
+                $this->configure(null);
+            } catch (RequiredFixerConfigurationException $e) {
+                // ignore
+            }
         }
 
-        if ($this instanceof WhitespacesFixerConfigAwareInterface) {
+        if ($this instanceof WhitespacesAwareFixerInterface) {
             $this->whitespacesConfig = $this->getDefaultWhitespacesFixerConfig();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configure(array $configuration = null)
-    {
-        if (null !== $configuration) {
-            throw new UnallowedFixerConfigurationException($this->getName(), 'Configuration is not allowed.');
         }
     }
 
@@ -88,6 +84,13 @@ abstract class AbstractFixer implements FixerInterface
     public function setWhitespacesConfig(WhitespacesFixerConfig $config)
     {
         $this->whitespacesConfig = $config;
+    }
+
+    public function getDefinition()
+    {
+        return new ShortFixerDefinition(
+            $this->getDescription()
+        );
     }
 
     private function getDefaultWhitespacesFixerConfig()

@@ -32,14 +32,6 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
         'str' => 'string',
     );
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return 'Scalar types should always be written in the same form. "int", not "integer"; "bool", not "boolean"; "float", not "real" or "double".';
-    }
-
     public function getPriority()
     {
         /*
@@ -52,6 +44,14 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
          * we can fix.
          */
         return 15;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Scalar types should always be written in the same form. "int", not "integer"; "bool", not "boolean"; "float", not "real" or "double".';
     }
 
     /**

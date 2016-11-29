@@ -13,13 +13,13 @@
 namespace PhpCsFixer\Fixer\Semicolon;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -58,7 +58,7 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imp
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Multi-line whitespace before closing semicolon are prohibited.';
     }

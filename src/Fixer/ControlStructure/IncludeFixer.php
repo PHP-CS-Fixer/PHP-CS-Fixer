@@ -42,7 +42,7 @@ final class IncludeFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Include/Require and file path should be divided with a single space. File path should not be placed under brackets.';
     }

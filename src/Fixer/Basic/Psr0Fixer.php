@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractPsrAutoloadingFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -21,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Bram Gotink <bram@gotink.me>
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class Psr0Fixer extends AbstractPsrAutoloadingFixer
+final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements ConfigurableFixerInterface
 {
     private $configuration = array();
 
@@ -137,7 +138,7 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.';
     }

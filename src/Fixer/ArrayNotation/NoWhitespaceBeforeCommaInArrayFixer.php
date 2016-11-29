@@ -44,7 +44,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'In array declaration, there MUST NOT be a whitespace before each comma.';
     }

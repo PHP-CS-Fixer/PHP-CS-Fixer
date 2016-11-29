@@ -78,7 +78,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Function defined by PHP should be called using the correct casing.';
     }

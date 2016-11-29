@@ -50,7 +50,9 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
         );
 
         foreach ($fixers as $fixer) {
-            $fixer->configure(null);
+            if ($fixer instanceof Fixer\ConfigurableFixerInterface) {
+                $fixer->configure(null);
+            }
         }
 
         $runner = new Runner(

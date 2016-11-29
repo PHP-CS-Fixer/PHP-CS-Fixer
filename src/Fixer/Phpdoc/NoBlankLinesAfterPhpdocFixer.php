@@ -62,18 +62,18 @@ final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'There should not be blank lines between docblock and the documented element.';
+        // should be ran before the SingleBlankLineBeforeNamespaceFixer.
+        return 1;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be ran before the SingleBlankLineBeforeNamespaceFixer.
-        return 1;
+        return 'There should not be blank lines between docblock and the documented element.';
     }
 
     /**

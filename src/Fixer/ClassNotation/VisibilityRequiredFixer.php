@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -24,7 +25,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class VisibilityRequiredFixer extends AbstractFixer
+final class VisibilityRequiredFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private $options = array('property', 'method', 'const');
     private static $defaultConfiguration = array('property', 'method');
@@ -97,17 +98,17 @@ final class VisibilityRequiredFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Visibility MUST be declared on all properties and methods; abstract and final MUST be declared before the visibility; static MUST be declared after the visibility.';
+        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    protected function getDescription()
     {
-        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+        return 'Visibility MUST be declared on all properties and methods; abstract and final MUST be declared before the visibility; static MUST be declared after the visibility.';
     }
 
     /**

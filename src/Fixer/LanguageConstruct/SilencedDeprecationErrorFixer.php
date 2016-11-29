@@ -58,16 +58,16 @@ final class SilencedDeprecationErrorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function isRisky()
     {
-        return 'Ensures deprecation notices are silenced.';
+        return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    protected function getDescription()
     {
-        return true;
+        return 'Ensures deprecation notices are silenced.';
     }
 }

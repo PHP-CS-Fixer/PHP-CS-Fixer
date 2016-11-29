@@ -52,7 +52,7 @@ final class NoSinglelineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Single-line whitespace before closing semicolon are prohibited.';
     }

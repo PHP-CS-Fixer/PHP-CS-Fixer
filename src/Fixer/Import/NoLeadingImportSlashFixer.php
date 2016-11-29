@@ -70,7 +70,7 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Remove leading slashes in use clauses.';
     }

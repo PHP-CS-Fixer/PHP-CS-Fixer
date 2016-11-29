@@ -62,17 +62,17 @@ final class CastSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'A single space should be between cast and variable.';
+        // should be ran after the NoShortBoolCastFixer
+        return -10;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be ran after the NoShortBoolCastFixer
-        return -10;
+        return 'A single space should be between cast and variable.';
     }
 }

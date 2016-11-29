@@ -104,7 +104,7 @@ final class FunctionDeclarationFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Spaces should be properly placed in a function declaration.';
     }

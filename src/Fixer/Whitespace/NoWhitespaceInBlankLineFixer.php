@@ -13,13 +13,13 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -70,17 +70,17 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Remove trailing whitespace at the end of blank lines.';
+        // should be run after the NoUselessReturnFixer, NoEmptyPhpdocFixer and NoUselessElseFixer.
+        return -19;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run after the NoUselessReturnFixer, NoEmptyPhpdocFixer and NoUselessElseFixer.
-        return -19;
+        return 'Remove trailing whitespace at the end of blank lines.';
     }
 }

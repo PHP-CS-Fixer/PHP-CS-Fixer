@@ -15,13 +15,14 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferenceFixer implements WhitespacesFixerConfigAwareInterface
+final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferenceFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * @var array<string, bool>

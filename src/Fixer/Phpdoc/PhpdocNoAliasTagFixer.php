@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -24,7 +25,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class PhpdocNoAliasTagFixer extends AbstractFixer
+final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @var array<string, string>
@@ -113,7 +114,7 @@ final class PhpdocNoAliasTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'No alias PHPDoc tags should be used.';
     }

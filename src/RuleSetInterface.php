@@ -26,15 +26,6 @@ interface RuleSetInterface
     public static function create(array $set = array());
 
     /**
-     * Check given rule is in rules set.
-     *
-     * @param string $rule name of rule
-     *
-     * @return bool
-     */
-    public function hasRule($rule);
-
-    /**
      * Get configuration for given rule.
      *
      * @param string $rule name of rule
@@ -56,4 +47,13 @@ interface RuleSetInterface
      * @return string[]
      */
     public function getSetDefinitionNames();
+
+    /**
+     * Check given rule is in rules set.
+     *
+     * @param string $rule name of rule
+     *
+     * @return bool
+     */
+    public function hasRule($rule);
 }

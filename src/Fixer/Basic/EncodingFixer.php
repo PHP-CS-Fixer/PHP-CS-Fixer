@@ -61,17 +61,17 @@ final class EncodingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'PHP code MUST use only UTF-8 without BOM (remove BOM).';
+        // must run first (at least before Fixers that using Tokens) - for speed reason of whole fixing process
+        return 100;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // must run first (at least before Fixers that using Tokens) - for speed reason of whole fixing process
-        return 100;
+        return 'PHP code MUST use only UTF-8 without BOM (remove BOM).';
     }
 }

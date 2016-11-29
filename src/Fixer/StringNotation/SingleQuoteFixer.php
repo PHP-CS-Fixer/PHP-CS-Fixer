@@ -55,7 +55,7 @@ final class SingleQuoteFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Convert double quotes to single quotes for simple strings.';
     }

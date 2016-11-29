@@ -14,17 +14,18 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
-use PhpCsFixer\WhitespacesFixerConfigAwareInterface;
 
 /**
  * Fixer for part of the rules defined in PSR2 ¶4.1 Extends and Implements.
  *
  * @author SpacePossum
  */
-final class ClassDefinitionFixer extends AbstractFixer implements WhitespacesFixerConfigAwareInterface
+final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * @var array<string, bool>
@@ -50,7 +51,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements WhitespacesFix
      */
     public function configure(array $configuration = null)
     {
-        if (null === $configuration || count($configuration) < 1) {
+        if (null === $configuration) {
             $this->config = self::$defaultConfig;
 
             return;
@@ -95,7 +96,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements WhitespacesFix
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Whitespace around the key words of a class, trait or interfaces definition should be one space.';
     }

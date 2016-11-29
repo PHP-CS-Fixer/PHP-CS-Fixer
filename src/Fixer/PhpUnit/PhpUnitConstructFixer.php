@@ -14,12 +14,13 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitConstructFixer extends AbstractFixer
+final class PhpUnitConstructFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @var string[]
@@ -46,21 +47,21 @@ final class PhpUnitConstructFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function configure(array $usingMethods = null)
+    public function configure(array $configuration = null)
     {
-        if (null === $usingMethods) {
+        if (null === $configuration) {
             $this->configuration = self::$defaultConfiguration;
 
             return;
         }
 
-        foreach ($usingMethods as $method) {
+        foreach ($configuration as $method) {
             if (!array_key_exists($method, $this->assertionFixers)) {
                 throw new InvalidFixerConfigurationException($this->getName(), sprintf('Configured method "%s" cannot be fixed by this fixer.', $method));
             }
         }
 
-        $this->configuration = $usingMethods;
+        $this->configuration = $configuration;
     }
 
     /**
@@ -105,18 +106,18 @@ final class PhpUnitConstructFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'PHPUnit assertion method calls like "->assertSame(true, $foo)" should be written with dedicated method like "->assertTrue($foo)".';
+        // should be run after the PhpUnitStrictFixer and before PhpUnitDedicateAssertFixer.
+        return -10;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should be run after the PhpUnitStrictFixer and before PhpUnitDedicateAssertFixer.
-        return -10;
+        return 'PHPUnit assertion method calls like "->assertSame(true, $foo)" should be written with dedicated method like "->assertTrue($foo)".';
     }
 
     /**
