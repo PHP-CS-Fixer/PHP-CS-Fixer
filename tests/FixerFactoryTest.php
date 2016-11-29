@@ -289,6 +289,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_blank_lines_after_phpdoc'], $fixers['single_blank_line_before_namespace']), // tested also in: no_blank_lines_after_phpdoc,single_blank_line_before_namespace.test
             array($fixers['php_unit_fqcn_annotation'], $fixers['no_unused_imports']), // tested also in: php_unit_fqcn_annotation,unused_use.test
             array($fixers['protected_to_private'], $fixers['ordered_class_elements']), // tested also in: protected_to_private,ordered_class_elements.test
+            array($fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_align']), // tested also in: phpdoc_add_missing_param_annotation,phpdoc_align.test
+            array($fixers['phpdoc_no_alias_tag'], $fixers['phpdoc_add_missing_param_annotation']), // tested also in: phpdoc_no_alias_tag,phpdoc_add_missing_param_annotation.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:
