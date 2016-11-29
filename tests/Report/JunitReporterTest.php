@@ -31,7 +31,7 @@ final class JunitReporterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpCsFixer\Report\JunitReporter::getFormat
+     * @covers \PhpCsFixer\Report\JunitReporter::getFormat
      */
     public function testGetFormat()
     {

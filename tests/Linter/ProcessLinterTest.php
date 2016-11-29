@@ -21,8 +21,8 @@ use Symfony\Component\Process\ProcessUtils;
  *
  * @internal
  *
- * @covers PhpCsFixer\Linter\ProcessLinter
- * @covers PhpCsFixer\Linter\ProcessLintingResult
+ * @covers \PhpCsFixer\Linter\ProcessLinter
+ * @covers \PhpCsFixer\Linter\ProcessLintingResult
  */
 final class ProcessLinterTest extends AbstractLinterTestCase
 {

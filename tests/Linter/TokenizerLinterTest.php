@@ -20,8 +20,8 @@ use PhpCsFixer\Linter\TokenizerLinter;
  * @internal
  *
  * @requires PHP 7.0
- * @covers PhpCsFixer\Linter\TokenizerLinter
- * @covers PhpCsFixer\Linter\TokenizerLintingResult
+ * @covers \PhpCsFixer\Linter\TokenizerLinter
+ * @covers \PhpCsFixer\Linter\TokenizerLintingResult
  */
 final class TokenizerLinterTest extends AbstractLinterTestCase
 {

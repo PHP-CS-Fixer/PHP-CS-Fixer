@@ -31,7 +31,7 @@ final class XmlReporterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpCsFixer\Report\XmlReporter::getFormat
+     * @covers \PhpCsFixer\Report\XmlReporter::getFormat
      */
     public function testGetFormat()
     {

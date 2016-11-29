@@ -31,7 +31,7 @@ final class JsonReporterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpCsFixer\Report\JsonReporter::getFormat
+     * @covers \PhpCsFixer\Report\JsonReporter::getFormat
      */
     public function testGetFormat()
     {

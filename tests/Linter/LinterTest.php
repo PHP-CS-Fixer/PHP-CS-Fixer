@@ -19,7 +19,7 @@ use PhpCsFixer\Linter\Linter;
  *
  * @internal
  *
- * @covers PhpCsFixer\Linter\Linter
+ * @covers \PhpCsFixer\Linter\Linter
  */
 final class LinterTest extends AbstractLinterTestCase
 {

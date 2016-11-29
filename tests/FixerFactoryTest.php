@@ -53,7 +53,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpCsFixer\FixerFactory::create
+     * @covers \PhpCsFixer\FixerFactory::create
      */
     public function testCreate()
     {
@@ -63,7 +63,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpCsFixer\FixerFactory::registerBuiltInFixers
+     * @covers \PhpCsFixer\FixerFactory::registerBuiltInFixers
      */
     public function testRegisterBuiltInFixers()
     {
@@ -74,8 +74,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpCsFixer\FixerFactory::getFixers
-     * @covers PhpCsFixer\FixerFactory::sortFixers
+     * @covers \PhpCsFixer\FixerFactory::getFixers
+     * @covers \PhpCsFixer\FixerFactory::sortFixers
      */
     public function testThatFixersAreSorted()
     {
@@ -96,9 +96,9 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpCsFixer\FixerFactory::getFixers
-     * @covers PhpCsFixer\FixerFactory::registerCustomFixers
-     * @covers PhpCsFixer\FixerFactory::registerFixer
+     * @covers \PhpCsFixer\FixerFactory::getFixers
+     * @covers \PhpCsFixer\FixerFactory::registerCustomFixers
+     * @covers \PhpCsFixer\FixerFactory::registerFixer
      */
     public function testThatCanRegisterAndGetFixers()
     {
@@ -117,7 +117,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpCsFixer\FixerFactory::registerFixer
+     * @covers \PhpCsFixer\FixerFactory::registerFixer
      * @expectedException        \UnexpectedValueException
      * @expectedExceptionMessage Fixer named "non_unique_name" is already registered.
      */
@@ -132,7 +132,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpCsFixer\FixerFactory::useRuleSet
+     * @covers \PhpCsFixer\FixerFactory::useRuleSet
      */
     public function testUseRuleSet()
     {
@@ -152,7 +152,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpCsFixer\FixerFactory::useRuleSet
+     * @covers \PhpCsFixer\FixerFactory::useRuleSet
      * @expectedException        \UnexpectedValueException
      * @expectedExceptionMessage Rule "non_existing_rule" does not exist.
      */

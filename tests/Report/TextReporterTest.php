@@ -31,7 +31,7 @@ final class TextReporterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpCsFixer\Report\TextReporter::getFormat
+     * @covers \PhpCsFixer\Report\TextReporter::getFormat
      */
     public function testGetFormat()
     {

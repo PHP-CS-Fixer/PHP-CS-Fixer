@@ -28,8 +28,8 @@ use Symfony\Component\Finder\Finder;
 final class RunnerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers PhpCsFixer\Runner\Runner::fix
-     * @covers PhpCsFixer\Runner\Runner::fixFile
+     * @covers \PhpCsFixer\Runner\Runner::fix
+     * @covers \PhpCsFixer\Runner\Runner::fixFile
      */
     public function testThatFixSuccessfully()
     {
@@ -78,8 +78,8 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpCsFixer\Runner\Runner::fix
-     * @covers PhpCsFixer\Runner\Runner::fixFile
+     * @covers \PhpCsFixer\Runner\Runner::fix
+     * @covers \PhpCsFixer\Runner\Runner::fixFile
      */
     public function testThatFixInvalidFileReportsToErrorManager()
     {
