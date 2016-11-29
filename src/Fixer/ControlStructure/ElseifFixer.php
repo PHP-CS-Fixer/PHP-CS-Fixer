@@ -27,12 +27,6 @@ final class ElseifFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        // handle `T_ELSE T_WHITESPACE T_IF` treated as single `T_ELSEIF` by HHVM
-        // see https://github.com/facebook/hhvm/issues/4796
-        if (defined('HHVM_VERSION') && $tokens->isTokenKindFound(T_ELSEIF)) {
-            return true;
-        }
-
         return $tokens->isAllTokenKindsFound(array(T_IF, T_ELSE));
     }
 
