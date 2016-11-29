@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\ArrayNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -80,6 +82,29 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'PHP arrays should be declared using the configured syntax (requires PHP >= 5.4 for short syntax).',
+            null,
+            array(
+                new CodeSample(
+                    "<?php\n[1,2];",
+                    array('syntax' => 'long')
+                ),
+                new CodeSample(
+                    "<?php\narray(1,2);",
+                    array('syntax' => 'short')
+                ),
+            ),
+            'Configure to use "long" or "short" array declaration syntax.',
+            array('syntax' => 'long')
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run before the BinaryOperatorSpacesFixer and TernaryOperatorSpacesFixer.
@@ -92,14 +117,6 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound($this->candidateTokenKind);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDescription()
-    {
-        return 'PHP arrays should be declared using the configured syntax.';
     }
 
     /**

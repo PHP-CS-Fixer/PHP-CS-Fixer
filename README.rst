@@ -175,7 +175,8 @@ automatically fix anything:
 Choose from the list of available rules:
 
 * **array_syntax**
-   | PHP arrays should be declared using the configured syntax.
+   | PHP arrays should be declared using the configured syntax (requires PHP
+   | >= 5.4 for short syntax).
    | *Rule is: configurable.*
 
 * **binary_operator_spaces** [@Symfony]
@@ -218,7 +219,7 @@ Choose from the list of available rules:
    | Equal sign in declare statement should not be surrounded by spaces.
 
 * **declare_strict_types**
-   | Force strict types declaration in all files.
+   | Force strict types declaration in all files. Requires PHP >= 7.0.
    | *Rule is: risky.*
 
 * **dir_constant**
@@ -512,7 +513,7 @@ Choose from the list of available rules:
    | @var and @type annotations should not contain the variable name.
 
 * **pow_to_exponentiation** [@PHP56Migration, @PHP70Migration, @PHP71Migration]
-   | Converts 'pow()' to '**'.
+   | Converts 'pow()' to '**' operator. Requires PHP > 5.6.
    | *Rule is: risky.*
 
 * **pre_increment** [@Symfony]
