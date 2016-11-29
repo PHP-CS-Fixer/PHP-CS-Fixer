@@ -3,6 +3,22 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.13.0
+---------------------
+
+* bug #2303 ClassDefinitionFixer - Anonymous classes fixing (SpacePossum)
+* feature #2208 Added fixer for PHPUnit's @expectedException annotation (ro0NL)
+* feature #2249 Added ProtectedToPrivateFixer (Slamdunk, SpacePossum)
+* feature #2264 SelfUpdateCommand - Do not update to next major version by default (SpacePossum)
+* feature #2328 ClassDefinitionFixer - Anonymous classes format by PSR12 (SpacePossum)
+* feature #2333 PhpUnitFqcnAnnotationFixer - support more annotations (keradus)
+* minor #2256 EmptyReturnFixer - it's now risky fixer due to null vs void (keradus)
+* minor #2281 Add issue template (SpacePossum)
+* minor #2307 Update .editorconfig (SpacePossum)
+* minor #2310 CI: update AppVeyor to use newest PHP, silence the composer (keradus)
+* minor #2315 Token - Deprecate getLine() (SpacePossum)
+* minor #2320 Clear up status code on 1.x (SpacePossum)
+
 Changelog for v1.12.4
 ---------------------
 
