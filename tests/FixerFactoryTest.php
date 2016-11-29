@@ -36,12 +36,13 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($factory, $testInstance);
 
         $testInstance = $factory->registerCustomFixers(
-            array($this->createFixerDouble('f1'), $this->createFixerDouble('f2'))
+            array($this->createFixerDouble('Foo/f1'), $this->createFixerDouble('Foo/f2'))
         );
         $this->assertSame($factory, $testInstance);
 
         $testInstance = $factory->registerFixer(
-            $this->createFixerDouble('f3')
+            $this->createFixerDouble('f3'),
+            false
         );
         $this->assertSame($factory, $testInstance);
 
@@ -89,7 +90,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         );
 
         foreach ($fxs as $fx) {
-            $factory->registerFixer($fx);
+            $factory->registerFixer($fx, false);
         }
 
         // There are no rules that forces $fxs[1] to be prioritized before $fxs[3]. We should not test against that
@@ -106,10 +107,10 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new FixerFactory();
 
         $f1 = $this->createFixerDouble('f1');
-        $f2 = $this->createFixerDouble('f2');
-        $f3 = $this->createFixerDouble('f3');
+        $f2 = $this->createFixerDouble('Foo/f2');
+        $f3 = $this->createFixerDouble('Foo/f3');
 
-        $factory->registerFixer($f1);
+        $factory->registerFixer($f1, false);
         $factory->registerCustomFixers(array($f2, $f3));
 
         $this->assertTrue(in_array($f1, $factory->getFixers(), true));
@@ -128,8 +129,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
         $f1 = $this->createFixerDouble('non_unique_name');
         $f2 = $this->createFixerDouble('non_unique_name');
-        $factory->registerFixer($f1);
-        $factory->registerFixer($f2);
+        $factory->registerFixer($f1, false);
+        $factory->registerFixer($f2, false);
     }
 
     /**
@@ -332,14 +333,14 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new FixerFactory();
 
         $f1 = $this->createFixerDouble('f1');
-        $f2 = $this->createFixerDouble('f2');
-        $f3 = $this->createFixerDouble('f3');
-        $factory->registerFixer($f1);
+        $f2 = $this->createFixerDouble('Foo/f2');
+        $f3 = $this->createFixerDouble('Foo/f3');
+        $factory->registerFixer($f1, false);
         $factory->registerCustomFixers(array($f2, $f3));
 
         $this->assertTrue($factory->hasRule('f1'), 'Should have f1 fixer');
-        $this->assertTrue($factory->hasRule('f2'), 'Should have f2 fixer');
-        $this->assertTrue($factory->hasRule('f3'), 'Should have f3 fixer');
+        $this->assertTrue($factory->hasRule('Foo/f2'), 'Should have f2 fixer');
+        $this->assertTrue($factory->hasRule('Foo/f3'), 'Should have f3 fixer');
         $this->assertFalse($factory->hasRule('dummy'), 'Should not have dummy fixer');
     }
 
@@ -349,8 +350,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
         $f1 = $this->createFixerDouble('f1');
         $f2 = $this->createFixerDouble('f2');
-        $factory->registerFixer($f1);
-        $factory->registerFixer($f2);
+        $factory->registerFixer($f1, false);
+        $factory->registerFixer($f2, false);
 
         $this->assertTrue($factory->hasRule('f1'), 'Should have f1 fixer');
         $this->assertTrue($factory->hasRule('f2'), 'Should have f2 fixer');

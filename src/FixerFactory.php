@@ -34,6 +34,11 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
 final class FixerFactory
 {
     /**
+     * @var FixerNameValidator
+     */
+    private $nameValidator;
+
+    /**
      * Fixers.
      *
      * @var FixerInterface[]
@@ -46,6 +51,11 @@ final class FixerFactory
      * @var FixerInterface[] Associative array of fixers with names as keys
      */
     private $fixersByName = array();
+
+    public function __construct()
+    {
+        $this->nameValidator = new FixerNameValidator();
+    }
 
     /**
      * Create instance.
@@ -102,7 +112,7 @@ final class FixerFactory
         }
 
         foreach ($builtInFixers as $class) {
-            $this->registerFixer(new $class());
+            $this->registerFixer(new $class(), false);
         }
 
         return $this;
@@ -118,7 +128,7 @@ final class FixerFactory
     public function registerCustomFixers(array $fixers)
     {
         foreach ($fixers as $fixer) {
-            $this->registerFixer($fixer);
+            $this->registerFixer($fixer, true);
         }
 
         return $this;
@@ -128,15 +138,20 @@ final class FixerFactory
      * Register fixer.
      *
      * @param FixerInterface $fixer
+     * @param bool           $isCustom
      *
      * @return $this
      */
-    public function registerFixer(FixerInterface $fixer)
+    public function registerFixer(FixerInterface $fixer, $isCustom)
     {
         $name = $fixer->getName();
 
         if (isset($this->fixersByName[$name])) {
             throw new \UnexpectedValueException(sprintf('Fixer named "%s" is already registered.', $name));
+        }
+
+        if (!$this->nameValidator->isValid($name, $isCustom)) {
+            throw new \UnexpectedValueException(sprintf('Fixer named "%s" has invalid name.', $name));
         }
 
         $this->fixers[] = $fixer;
