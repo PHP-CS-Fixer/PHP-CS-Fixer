@@ -175,7 +175,8 @@ automatically fix anything:
 Choose from the list of available rules:
 
 * **array_syntax**
-   | PHP arrays should be declared using the configured syntax.
+   | PHP arrays should be declared using the configured syntax (requires PHP
+   | >= 5.4 for short syntax).
    | *Rule is: configurable.*
 
 * **binary_operator_spaces** [@Symfony]
@@ -218,7 +219,7 @@ Choose from the list of available rules:
    | Equal sign in declare statement should not be surrounded by spaces.
 
 * **declare_strict_types**
-   | Force strict types declaration in all files.
+   | Force strict types declaration in all files. Requires PHP >= 7.0.
    | *Rule is: risky.*
 
 * **dir_constant**
@@ -512,7 +513,7 @@ Choose from the list of available rules:
    | @var and @type annotations should not contain the variable name.
 
 * **pow_to_exponentiation** [@PHP56Migration, @PHP70Migration, @PHP71Migration]
-   | Converts 'pow()' to '**'.
+   | Converts 'pow()' to '**' operator. Requires PHP >= 5.6.
    | *Rule is: risky.*
 
 * **pre_increment** [@Symfony]
@@ -555,7 +556,7 @@ Choose from the list of available rules:
    | *Rule is: risky.*
 
 * **simplified_null_return**
-   | A return statement wishing to return nothing should be simply "return".
+   | A return statement wishing to return "void" should not return "null".
    | *Rule is: risky.*
 
 * **single_blank_line_at_eof** [@PSR2, @Symfony]
@@ -586,7 +587,7 @@ Choose from the list of available rules:
    | Replace all <> with !=.
 
 * **strict_comparison**
-   | Comparison should be strict.
+   | Comparisons should be strict.
    | *Rule is: risky.*
 
 * **strict_param**

@@ -72,11 +72,13 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDefinition()
     {
         return new FixerDefinition(
-            $this->getDescription(),
-            null,
+            'Concatenation should be spaced according configuration.',
             array(
                 new CodeSample(
                     "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
@@ -91,9 +93,9 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
                     array('spacing' => 'one')
                 ),
             ),
+            null,
             "Configuration must have one element 'spacing' with value 'none' (default) or 'one'.",
-            array('spacing' => 'none'),
-            null
+            array('spacing' => 'none')
         );
     }
 
@@ -103,14 +105,6 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound('.');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDescription()
-    {
-        return 'Concatenation should be spaced according configuration.';
     }
 
     /**

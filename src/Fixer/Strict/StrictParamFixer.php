@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Strict;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -25,22 +27,6 @@ final class StrictParamFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         static $map = null;
@@ -49,10 +35,10 @@ final class StrictParamFixer extends AbstractFixer
             $trueToken = new Token(array(T_STRING, 'true'));
 
             $map = array(
-                'in_array' => array(null, null, $trueToken),
-                'base64_decode' => array(null, $trueToken),
-                'array_search' => array(null, null, $trueToken),
                 'array_keys' => array(null, null, $trueToken),
+                'array_search' => array(null, null, $trueToken),
+                'base64_decode' => array(null, $trueToken),
+                'in_array' => array(null, null, $trueToken),
                 'mb_detect_encoding' => array(null, array(new Token(array(T_STRING, 'mb_detect_order')), new Token('('), new Token(')')), $trueToken),
             );
         }
@@ -69,9 +55,32 @@ final class StrictParamFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Functions should be used with $strict param.';
+        return new FixerDefinition(
+            'Functions should be used with $strict param.',
+            array(new CodeSample("<?php\n\$a = array_keys(\$b);\n\$a = array_search(\$b, \$c);\n\$a = base64_decode(\$b);\n\$a = in_array(\$b, \$c);\n\$a = mb_detect_encoding(\$b, \$c);\n")),
+            'The functions "array_keys", "array_search", "base64_decode", "in_array" and "mb_detect_encoding" should be used with $strict param.',
+            null,
+            null,
+            'Risky when the function fixed is overridden or if the code relies on non-strict usage.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
     }
 
     private function fixFunction(Tokens $tokens, $functionIndex, array $functionParams)
