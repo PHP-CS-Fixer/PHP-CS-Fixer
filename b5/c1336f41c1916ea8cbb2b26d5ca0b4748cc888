@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-29T19:12:51Z
+
+:+1:
+on a side note, with non of the release phars working on HHVM do we want to keep supporting it all?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-29T19:18:29Z
+
+For now I would keep it with minimal support.
+If it's installable via composer but not phar - this is problem of hhvm and we won't fix it.
+If feature is working everywhere  but not on hhvm due to hhvm bugs - let us try to disable feature for hhvm only.
+Also, I'm intrested in keeping that minimal support only for newest hhvm we could check at CI.
