@@ -22,6 +22,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testApplication()
     {
         $app = new Application();
-        $this->assertStringMatchesFormat('<info>PHP CS Fixer</info> version <comment>%d.%d%s</comment> by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>', $app->getLongVersion());
+        $this->assertStringMatchesFormat('%s by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>', $app->getLongVersion());
     }
 }
