@@ -28,7 +28,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     public function isCandidate(Tokens $tokens)
     {
         // minimal candidate to fix is seven tokens: pow(x,x);
-        return PHP_VERSION_ID > 50600 && $tokens->count() > 7 && $tokens->isTokenKindFound(T_STRING);
+        return PHP_VERSION_ID >= 50600 && $tokens->count() > 7 && $tokens->isTokenKindFound(T_STRING);
     }
 
     /**
