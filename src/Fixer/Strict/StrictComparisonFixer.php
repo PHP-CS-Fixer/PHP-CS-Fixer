@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Strict;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -20,22 +22,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class StrictComparisonFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(array(T_IS_EQUAL, T_IS_NOT_EQUAL));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return true;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -61,11 +47,31 @@ final class StrictComparisonFixer extends AbstractFixer
         }
     }
 
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Comparisons should be strict.',
+            array(new CodeSample("<?php\n\$a = 1== \$b;")),
+            null,
+            null,
+            null,
+            'Changing comparisons to strict might change code behavior.'
+        );
+    }
+
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Comparison should be strict.';
+        return $tokens->isAnyTokenKindsFound(array(T_IS_EQUAL, T_IS_NOT_EQUAL));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
     }
 }

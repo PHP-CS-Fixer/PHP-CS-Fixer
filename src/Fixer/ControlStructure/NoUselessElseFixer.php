@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\ControlStructure;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -57,18 +59,23 @@ final class NoUselessElseFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getDefinition()
     {
-        // should be run before NoWhitespaceInBlankLineFixer, NoExtraConsecutiveBlankLinesFixer, BracesFixer and after NoEmptyStatementFixer.
-        return 25;
+        return new FixerDefinition(
+            'There should not be useless else cases.',
+            array(
+                new CodeSample("<?php\nif (\$a) {\n    return 1;\n} else {\n    return 2;\n}"),
+            )
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getPriority()
     {
-        return 'There should not be useless else cases.';
+        // should be run before NoWhitespaceInBlankLineFixer, NoExtraConsecutiveBlankLinesFixer, BracesFixer and after NoEmptyStatementFixer.
+        return 25;
     }
 
     /**

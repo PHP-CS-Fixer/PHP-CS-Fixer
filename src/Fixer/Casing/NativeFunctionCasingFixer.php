@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Casing;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -20,14 +22,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NativeFunctionCasingFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -78,9 +72,20 @@ final class NativeFunctionCasingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Function defined by PHP should be called using the correct casing.';
+        return new FixerDefinition(
+            'Function defined by PHP should be called using the correct casing.',
+            array(new CodeSample("<?php\nSTRLEN(\$str);"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
     }
 
     /**

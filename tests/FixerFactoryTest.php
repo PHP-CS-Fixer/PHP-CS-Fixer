@@ -18,7 +18,8 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\ShortFixerDefinition;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
-use Prophecy\Argument;
+use PhpCsFixer\StdinFileInfo;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -368,24 +369,54 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('PhpCsFixer\Fixer\DefinedFixerInterface', $fixer);
 
-        /** @var DefinedFixerInterface $fixer */
         $definition = $fixer->getDefinition();
 
-        $this->assertRegExp('/^[A-Z@].*\.$/', $definition->getSummary(), 'Description must start with capital letter or an @ and end with dot.');
+        $this->assertRegExp('/^[A-Z@].*\.$/', $definition->getSummary(), sprintf('[%s] Description must start with capital letter or an @ and end with dot.', $fixer->getName()));
 
         if ($definition instanceof ShortFixerDefinition) {
-            $this->markTestIncomplete('ShortFixerDefinition does not contains all needed information.');
+            $this->markTestIncomplete(sprintf('[%s] ShortFixerDefinition does not contains all needed information.', $fixer->getName()));
         }
 
-        $this->assertNotEmpty($definition->getCodeSamples(), 'Code samples are required.');
+        $samples = $definition->getCodeSamples();
+        $this->assertNotEmpty($samples, sprintf('[%s] Code samples are required.', $fixer->getName()));
+
+        $dummyFileInfo = new StdinFileInfo();
+        $sampleCounter = 0;
+        foreach ($samples as $sample) {
+            ++$sampleCounter;
+            $this->assertInstanceOf('PhpCsFixer\FixerDefinition\CodeSampleInterface', $sample, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
+            $code = $sample->getCode();
+            $this->assertStringIsNotEmpty($code, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
+            $config = $sample->getConfiguration();
+            if (null !== $config) {
+                $this->assertInternalType('array', $config, sprintf('[%s] Sample #%d configuration must be an array or null.', $fixer->getName(), $sampleCounter));
+                if ($fixer instanceof ConfigurableFixerInterface) {
+                    $fixer->configure($config);
+                } else {
+                    $this->assertInternalType('array', $config, sprintf('[%s] Sample #%d has configuration, but the fixer is not configurable.', $fixer->getName(), $sampleCounter));
+                }
+            }
+
+            Tokens::clearCache();
+            $tokens = Tokens::fromCode($code);
+            $fixer->fix($dummyFileInfo, $tokens);
+            $this->assertTrue($tokens->isChanged(), sprintf('[%s] Sample #%d is not changed during fixing.', $fixer->getName(), $sampleCounter));
+        }
 
         if ($fixer instanceof ConfigurableFixerInterface) {
-            $this->assertNotEmpty($definition->getConfigurationDescription(), 'Configuration description is required.');
-            $this->assertNotEmpty($definition->getDefaultConfiguration(), 'Default configuration is required.');
+            $this->assertStringIsNotEmpty($definition->getConfigurationDescription(), sprintf('[%s] Configuration description is required.', $fixer->getName()));
+            $default = $definition->getDefaultConfiguration();
+            $this->assertInternalType('array', $default, sprintf('[%s] Default configuration must be an array.', $fixer->getName()));
+            $this->assertNotEmpty('array', $default, sprintf('[%s] Default configuration is required.', $fixer->getName()));
+        } else {
+            $this->assertNull($definition->getConfigurationDescription(), sprintf('[%s] No configuration description expected.', $fixer->getName()));
+            $this->assertNull($definition->getDefaultConfiguration(), sprintf('[%s] No default configuration expected.', $fixer->getName()));
         }
 
         if ($fixer->isRisky()) {
-            $this->assertNotEmpty($definition->getRiskyDescription(), 'Risky reasoning is required.');
+            $this->assertStringIsNotEmpty($definition->getRiskyDescription(), sprintf('[%s] Risky reasoning is required.', $fixer->getName()));
+        } else {
+            $this->assertNull($definition->getRiskyDescription(), sprintf('[%s] Fixer is not risky so no description of it expected.', $fixer->getName()));
         }
     }
 
@@ -422,7 +453,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testShortFixerDefinition()
     {
-        $guard = 126;
+        $guard = 118;
 
         $this->assertCount(
             $guard,
@@ -499,5 +530,17 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         //$fixer->configure(Argument::is(null))->willReturn(null); Needed?
 
         return $fixer->reveal();
+    }
+
+    /**
+     * copy paste from GeckoPackages/GeckoPHPUnit StringsAssertTrait, to replace with Trait when possible.
+     *
+     * @param mixed $actual
+     * @param mixed $message
+     */
+    private static function assertStringIsNotEmpty($actual, $message = '')
+    {
+        self::assertThat($actual, new \PHPUnit_Framework_Constraint_IsType('string'), $message);
+        self::assertNotEmpty($actual, $message);
     }
 }

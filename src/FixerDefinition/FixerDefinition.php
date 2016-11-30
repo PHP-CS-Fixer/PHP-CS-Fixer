@@ -26,23 +26,23 @@ final class FixerDefinition implements FixerDefinitionInterface
 
     /**
      * @param string                $summary
-     * @param null|string           $description
      * @param CodeSampleInterface[] $codeSamples              array of samples, where single sample is [code, configuration]
+     * @param null|string           $description
      * @param null|string           $configurationDescription null for non-configurable fixer
      * @param null|array            $defaultConfiguration     null for non-configurable fixer
      * @param null|string           $riskyDescription         null for non-risky fixer
      */
     public function __construct(
         $summary,
-        $description,
         array $codeSamples,
-        $configurationDescription,
+        $description = null,
+        $configurationDescription = null,
         array $defaultConfiguration = null,
-        $riskyDescription
+        $riskyDescription = null
     ) {
         $this->summary = $summary;
-        $this->description = $description;
         $this->codeSamples = $codeSamples;
+        $this->description = $description;
         $this->configurationDescription = $configurationDescription;
         $this->defaultConfiguration = $defaultConfiguration;
         $this->riskyDescription = $riskyDescription;

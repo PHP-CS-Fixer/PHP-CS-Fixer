@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\Strict;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -50,6 +52,21 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Force strict types declaration in all files. Requires PHP >= 7.0.',
+            array(new CodeSample('<?php')),
+            null,
+            null,
+            null,
+            'Forcing strict types will stop non script code from working.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // must ran before SingleBlankLineBeforeNamespaceFixer.
@@ -73,11 +90,35 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     }
 
     /**
-     * {@inheritdoc}
+     * @param Tokens $tokens
+     * @param int    $endIndex
      */
-    protected function getDescription()
+    private function fixWhiteSpaceAroundSequence(Tokens $tokens, $endIndex)
     {
-        return 'Force strict types declaration in all files.';
+        $lineEnding = $this->whitespacesConfig->getLineEnding();
+
+        // start index of the sequence is always 1 here, 0 is always open tag
+        // transform "<?php\n" to "<?php " if needed
+        if (false !== strpos($tokens[0]->getContent(), "\n")) {
+            $tokens[0]->setContent(trim($tokens[0]->getContent()).' ');
+        }
+
+        if ($endIndex === count($tokens) - 1) {
+            return; // no more tokens afters sequence, single_blank_line_at_eof might add a line
+        }
+
+        if (!$tokens[1 + $endIndex]->isWhitespace()) {
+            $tokens->insertAt(1 + $endIndex, new Token(array(T_WHITESPACE, $lineEnding)));
+
+            return;
+        }
+
+        $content = $tokens[1 + $endIndex]->getContent();
+        if (false !== strpos($content, "\n")) {
+            return;
+        }
+
+        $tokens[1 + $endIndex]->setContent($lineEnding.ltrim($content));
     }
 
     /**
