@@ -556,7 +556,7 @@ Choose from the list of available rules:
    | *Rule is: risky.*
 
 * **simplified_null_return**
-   | A return statement wishing to return nothing should be simply "return".
+   | A return statement wishing to return "void" should not return "null".
    | *Rule is: risky.*
 
 * **single_blank_line_at_eof** [@PSR2, @Symfony]
