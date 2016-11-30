@@ -369,7 +369,6 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('PhpCsFixer\Fixer\DefinedFixerInterface', $fixer);
 
-        /** @var DefinedFixerInterface $fixer */
         $definition = $fixer->getDefinition();
 
         $this->assertRegExp('/^[A-Z@].*\.$/', $definition->getSummary(), sprintf('[%s] Description must start with capital letter or an @ and end with dot.', $fixer->getName()));
