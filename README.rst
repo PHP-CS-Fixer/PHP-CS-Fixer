@@ -587,7 +587,7 @@ Choose from the list of available rules:
    | Replace all <> with !=.
 
 * **strict_comparison**
-   | Comparison should be strict.
+   | Comparisons should be strict.
    | *Rule is: risky.*
 
 * **strict_param**
