@@ -3,11 +3,15 @@ version: dev-{build}
 shallow_clone: false
 clone_folder: C:\projects\php-cs-fixer
 
+environment:
+    matrix:
+        - php_ver: 7.0.9
+
 cache:
     - '%APPDATA%\Composer'
 
 install:
-    - choco install -y php
+    - choco install -y php -version %php_ver%
     - SET PATH=C:\tools\php;%PATH%
     - cd C:\tools\php
     - copy php.ini-production php.ini
