@@ -91,10 +91,12 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
                     "<?php\n[1,2];",
                     array('syntax' => 'long')
                 ),
+                /* @TODO That code should be in use, but for now it will fail on lower PHP version...
                 new CodeSample(
                     "<?php\narray(1,2);",
                     array('syntax' => 'short')
                 ),
+                */
             ),
             null,
             'Configure to use "long" or "short" array declaration syntax.',

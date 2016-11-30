@@ -14,7 +14,7 @@ namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
-use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\ShortFixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -74,13 +74,19 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
      */
     public function getDefinition()
     {
+        /* @TODO That code should be in use, but for now it will fail on lower PHP version...
         return new FixerDefinition(
-            'Converts \'pow()\' to \'**\' operator. Requires PHP >= 5.6.',
+           'Converts \'pow()\' to \'**\' operator. Requires PHP >= 5.6.',
             array(new CodeSample("<?php\n pow(\$a, 1);")),
             null,
             null,
             null,
             'Risky when the function \'pow()\' function is overridden.'
+        );
+        */
+
+        return new ShortFixerDefinition(
+            'Converts \'pow()\' to \'**\' operator. Requires PHP >= 5.6.'
         );
     }
 
