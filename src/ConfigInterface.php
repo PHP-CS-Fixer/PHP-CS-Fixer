@@ -105,6 +105,8 @@ interface ConfigInterface
     /**
      * Adds a suite of custom fixers.
      *
+     * Name of custom fixer should follow `VendorName/rule_name` convention.
+     *
      * @param iterable|\Traversable|FixerInterface[] $fixers
      */
     public function registerCustomFixers($fixers);
