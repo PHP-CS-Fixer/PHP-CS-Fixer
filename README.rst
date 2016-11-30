@@ -513,7 +513,7 @@ Choose from the list of available rules:
    | @var and @type annotations should not contain the variable name.
 
 * **pow_to_exponentiation** [@PHP56Migration, @PHP70Migration, @PHP71Migration]
-   | Converts 'pow()' to '**' operator. Requires PHP > 5.6.
+   | Converts 'pow()' to '**' operator. Requires PHP >= 5.6.
    | *Rule is: risky.*
 
 * **pre_increment** [@Symfony]

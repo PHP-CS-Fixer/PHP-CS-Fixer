@@ -86,7 +86,6 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     {
         return new FixerDefinition(
             'PHP arrays should be declared using the configured syntax (requires PHP >= 5.4 for short syntax).',
-            null,
             array(
                 new CodeSample(
                     "<?php\n[1,2];",
@@ -97,6 +96,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
                     array('syntax' => 'short')
                 ),
             ),
+            null,
             'Configure to use "long" or "short" array declaration syntax.',
             array('syntax' => 'long')
         );

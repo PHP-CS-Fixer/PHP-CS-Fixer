@@ -79,7 +79,6 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
     {
         return new FixerDefinition(
             'Concatenation should be spaced according configuration.',
-            null,
             array(
                 new CodeSample(
                     "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
@@ -94,9 +93,9 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
                     array('spacing' => 'one')
                 ),
             ),
+            null,
             "Configuration must have one element 'spacing' with value 'none' (default) or 'one'.",
-            array('spacing' => 'none'),
-            null
+            array('spacing' => 'none')
         );
     }
 

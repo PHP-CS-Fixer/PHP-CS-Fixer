@@ -56,8 +56,8 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     {
         return new FixerDefinition(
             'Force strict types declaration in all files. Requires PHP >= 7.0.',
-            null,
             array(new CodeSample('<?php')),
+            null,
             null,
             null,
             'Forcing strict types will stop non script code from working.'

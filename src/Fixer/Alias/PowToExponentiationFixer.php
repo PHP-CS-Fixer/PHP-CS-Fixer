@@ -75,9 +75,9 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Converts \'pow()\' to \'**\' operator. Requires PHP > 5.6.',
-            null,
+            'Converts \'pow()\' to \'**\' operator. Requires PHP >= 5.6.',
             array(new CodeSample("<?php\n pow(\$a, 1);")),
+            null,
             null,
             null,
             'Risky when the function \'pow()\' function is overridden.'

@@ -45,8 +45,8 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'A return statement wishing to return "void" should not return "null".',
-            null,
             array(new CodeSample('<?php return null;')),
+            null,
             null,
             null,
             'Risky as of PHP 7.1 as since than a difference between returning "null" and "void" can be hinted as return type.'

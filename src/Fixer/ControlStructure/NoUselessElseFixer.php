@@ -63,7 +63,6 @@ final class NoUselessElseFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There should not be useless else cases.',
-            null,
             array(
                 new CodeSample("<?php\nif (\$a) {\n    return 1;\n} else {\n    return 2;\n}"),
             )
