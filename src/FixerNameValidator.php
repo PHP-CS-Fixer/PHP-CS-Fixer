@@ -20,7 +20,7 @@ namespace PhpCsFixer;
 final class FixerNameValidator
 {
     /**
-     * @param strnig $name
+     * @param string $name
      * @param bool   $isCustom
      *
      * @return bool

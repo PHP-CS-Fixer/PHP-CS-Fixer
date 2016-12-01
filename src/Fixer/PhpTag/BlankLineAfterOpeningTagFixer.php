@@ -81,6 +81,6 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
      */
     protected function getDescription()
     {
-        return 'Ensure there is no code on the same line as the PHP open tag and it is followed by a blankline.';
+        return 'Ensure there is no code on the same line as the PHP open tag and it is followed by a blank line.';
     }
 }
