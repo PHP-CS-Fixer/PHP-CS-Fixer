@@ -17,6 +17,7 @@ use Symfony\CS\Console\Command\FixCommand;
 use Symfony\CS\Console\Command\ReadmeCommand;
 use Symfony\CS\Console\Command\SelfUpdateCommand;
 use Symfony\CS\Fixer;
+use Symfony\CS\ToolInfo;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -34,7 +35,9 @@ class Application extends BaseApplication
 
         $this->add(new FixCommand());
         $this->add(new ReadmeCommand());
-        $this->add(new SelfUpdateCommand());
+        if (ToolInfo::isInstalledAsPhar()) {
+            $this->add(new SelfUpdateCommand());
+        }
     }
 
     public function getLongVersion()
