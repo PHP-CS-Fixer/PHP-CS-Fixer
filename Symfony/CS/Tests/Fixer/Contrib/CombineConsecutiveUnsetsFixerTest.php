@@ -34,10 +34,8 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestBase
         return array(
             array(
                 '<?php //1
-                    unset($foo/*;*/, /*;*/$bar, $c , $foobar  ,  $foobar2);
-                     //test
-                     /* more comment test*/
-                    '.'
+                    unset($foo/*;*/, /*;*/$bar, $c , $foobar  ,   $foobar2);//test
+/* more comment test*/
                 ',
                 '<?php //1
                     unset($foo/*;*/);
@@ -47,11 +45,11 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestBase
                 ',
             ),
             array(
-                '<?php unset($d , $e);/*unset(    $d2);unset($e   );;*/    ',
+                '<?php unset($d , $e);/*unset(    $d2);unset($e   );;*/',
                 '<?php unset($d );/*unset(    $d2);unset($e   );;*/    uNseT($e);',
             ),
             array(
-                '<?php UNSET($a, $b,$c/**/); ',
+                '<?php UNSET($a, $b,$c/**/);',
                 '<?php UNSET($a); unset($b,$c/**/);',
             ),
             array(
