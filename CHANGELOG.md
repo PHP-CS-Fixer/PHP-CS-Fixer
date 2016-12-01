@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.13.1
+---------------------
+
+* minor #2342 Application - adjust test to not depend on symfony/console version (keradus)
+* minor #2344 AppVeyor: enforce PHP version (keradus)
+
 Changelog for v1.13.0
 ---------------------
 
