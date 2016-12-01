@@ -41,7 +41,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
      */
     public function getDescription()
     {
-        return 'There should not be an empty comments.';
+        return 'There should not be any empty comments.';
     }
 
     /**
@@ -64,6 +64,10 @@ final class NoEmptyCommentFixer extends AbstractFixer
         // single line comment starting with '#'
         if ('#' === $content[0]) {
             if (preg_match('|^#\s*$|', $content)) {
+                if ($this->isSurroundedBySingleLineComments($tokens, $index)) {
+                    return;
+                }
+
                 $this->clearCommentToken($tokens, $index);
             }
 
@@ -73,6 +77,10 @@ final class NoEmptyCommentFixer extends AbstractFixer
         // single line comment starting with '//'
         if ('/' === $content[1]) {
             if (preg_match('|^//\s*$|', $content)) {
+                if ($this->isSurroundedBySingleLineComments($tokens, $index)) {
+                    return;
+                }
+
                 $this->clearCommentToken($tokens, $index);
             }
 
@@ -124,5 +132,51 @@ final class NoEmptyCommentFixer extends AbstractFixer
         // else
         // override with whitespace token linebreak
         $tokens->overrideAt($index, array(T_WHITESPACE, "\n", $tokens[$index]->getLine()));
+    }
+
+    /**
+     * isSurroundedBySingleLineComments checks whether the preceding and
+     * succeeding lines of the token at $index contain a single-line comment.
+     *
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return bool
+     */
+    private function isSurroundedBySingleLineComments(Tokens $tokens, $index)
+    {
+        return $this->hasSingleLineCommentSibling($tokens, $index, -1) &&
+               $this->hasSingleLineCommentSibling($tokens, $index,  1);
+    }
+
+    /**
+     * hasSingleLineCommentSibling checks whether the preceding or succeeding
+     * line of the token at $index contains a single-line comment. Which line
+     * is checked depends on $direction.
+     *
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param int    $direction either -1 to check the preceding line, or +1 to
+     *                          check the succeeding line
+     *
+     * @return bool
+     */
+    private function hasSingleLineCommentSibling(Tokens $tokens, $index, $direction)
+    {
+        do {
+            $index += $direction;
+            if (false === isset($tokens[$index])) {
+                return false;
+            }
+
+            $token = $tokens[$index];
+            $content = $token->getContent();
+        } while (false === strpos($content, "\n"));
+
+        if (false === $token->isComment()) {
+            return false;
+        }
+
+        return '#' === $content[0] || '/' === $content[1];
     }
 }

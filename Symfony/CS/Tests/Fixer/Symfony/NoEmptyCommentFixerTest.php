@@ -142,6 +142,88 @@ echo 1;
                 '.'
                 ',
             ),
+            array(
+                '<?php
+                    '.'
+                    # paragraph one
+                    #
+                    # paragraph two
+                    '.'
+                ',
+                '<?php
+                    #
+                    # paragraph one
+                    #
+                    # paragraph two
+                    #
+                ',
+            ),
+            array(
+                '<?php
+                    '.'
+                    // paragraph one
+                    //
+                    // paragraph two
+                    '.'
+                ',
+                '<?php
+                    //
+                    // paragraph one
+                    //
+                    // paragraph two
+                    //
+                ',
+            ),
+            array(
+                '<?php
+                    '.'
+                    // comment one
+                    '.'
+                    /*
+                       comment two
+                    */
+                ',
+                '<?php
+                    //
+                    // comment one
+                    //
+                    /*
+                       comment two
+                    */
+                ',
+            ),
+            array(
+                '<?php
+                    '.'
+                    // comment one
+                    '.'
+                    // comment two
+                    '.'
+                ',
+                '<?php
+                    //
+                    // comment one
+                    '.'
+                    // comment two
+                    //
+                ',
+            ),
+            array(
+                '<?php
+                    // $a
+                    '.'
+                    '.'
+                    '.'
+                    '.'
+                ',
+                '<?php
+                    // $a
+                    '.'
+                    //
+                    '.'
+                    //
+                ',
+            ),
         );
     }
 }

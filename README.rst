@@ -331,7 +331,7 @@ Choose from the list of available fixers:
    There should be no empty lines after class opening brace.
 
 * **no_empty_comment** [symfony]
-   There should not be an empty comments.
+   There should not be any empty comments.
 
 * **no_empty_lines_after_phpdocs** [symfony]
    There should not be blank lines between docblock and the documented
