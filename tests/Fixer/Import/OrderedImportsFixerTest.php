@@ -1445,6 +1445,7 @@ EOF
     /**
      * @dataProvider provide70CasesByLength
      * @requires PHP 7.0
+     *
      * @param mixed      $expected
      * @param null|mixed $input
      */
@@ -1499,6 +1500,7 @@ use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
     /**
      * @dataProvider provide70TypesOrderAndLength
      * @requires PHP 7.0
+     *
      * @param mixed      $expected
      * @param null|mixed $input
      */
@@ -1557,6 +1559,7 @@ use function some\f\{fn_c, fn_d, fn_e};
     /**
      * @dataProvider provide70TypesOrderAndAlphabet
      * @requires PHP 7.0
+     *
      * @param mixed      $expected
      * @param null|mixed $input
      */
