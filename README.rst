@@ -538,8 +538,9 @@ Choose from the list of available rules:
    | *Rule is: configurable, risky.*
 
 * **return_type_declaration** [@Symfony]
-   | There should be no space before colon and one space after it in return
-   | type declaration. Requires PHP >= 7.
+   | There should be one or no space before colon, and one space after it in
+   | return type declarations, according to configuration.
+   | *Rule is: configurable.*
 
 * **self_accessor** [@Symfony]
    | Inside a classy element "self" should be preferred to the class name
