@@ -194,7 +194,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    protected function getDescription()
     {
         return 'Phpdoc should contain @param for all params.';
     }
