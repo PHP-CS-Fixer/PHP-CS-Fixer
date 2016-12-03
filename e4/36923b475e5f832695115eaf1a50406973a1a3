@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-02T18:40:41Z
+
+sure, shipit :)
+the goal is to have all those method removed anyway ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-12-03T15:10:43Z
+
+Maybe we should also add an internal test to check the visibility of this method?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-03T15:28:11Z
+
+no need for doing that:
+- they are outside the interface, if one uses them it is his risk
+- with time, we will remove all of them
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-12-03T16:08:11Z
+
+Makes sense. :)
