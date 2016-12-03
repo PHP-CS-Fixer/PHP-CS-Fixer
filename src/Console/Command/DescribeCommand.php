@@ -19,6 +19,7 @@ use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\ShortFixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
@@ -149,6 +150,10 @@ final class DescribeCommand extends Command
             ));
 
             foreach ($definition->getCodeSamples() as $index => $codeSample) {
+                if ($codeSample instanceof VersionSpecificCodeSampleInterface && !$codeSample->isSuitableFor(PHP_VERSION_ID)) {
+                    continue;
+                }
+
                 $old = $codeSample->getCode();
                 $tokens = Tokens::fromCode($old);
                 if ($fixer instanceof ConfigurableFixerInterface) {
