@@ -1446,8 +1446,8 @@ EOF
      * @dataProvider provide70CasesByLength
      * @requires PHP 7.0
      *
-     * @param mixed      $expected
-     * @param null|mixed $input
+     * @param mixed $expected
+     * @param mixed $input
      */
     public function test70ByLength($expected, $input = null)
     {
@@ -1560,8 +1560,8 @@ use function some\f\{fn_c, fn_d, fn_e};
      * @dataProvider provide70TypesOrderAndAlphabet
      * @requires PHP 7.0
      *
-     * @param mixed      $expected
-     * @param null|mixed $input
+     * @param mixed $expected
+     * @param mixed $input
      */
     public function test70TypesOrderAndAlphabet($expected, $input = null)
     {
