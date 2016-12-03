@@ -153,7 +153,7 @@ using ``-name_of_fixer``:
 
     $ php php-cs-fixer.phar fix /path/to/dir --rules=-full_opening_tag,-indentation_type
 
-When using combinations of exact and blacklist rules, applying exact ruless along with above blacklisted results:
+When using combinations of exact and blacklist rules, applying exact rules along with above blacklisted results:
 
 .. code-block:: bash
 
@@ -188,7 +188,7 @@ Choose from the list of available rules:
 
 * **blank_line_after_opening_tag** [@Symfony]
    | Ensure there is no code on the same line as the PHP open tag and it is
-   | followed by a blankline.
+   | followed by a blank line.
 
 * **blank_line_before_return** [@Symfony]
    | An empty line feed should precede a return statement.

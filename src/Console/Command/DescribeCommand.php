@@ -104,7 +104,7 @@ final class DescribeCommand extends Command
         if ($fixer instanceof DefinedFixerInterface) {
             $definition = $fixer->getDefinition();
         } else {
-            $definition = new ShortFixerDefinition('Description is not availble.');
+            $definition = new ShortFixerDefinition('Description is not available.');
         }
 
         $output->writeln(sprintf('<info>Description of</info> %s <info>rule</info>.', $name));
