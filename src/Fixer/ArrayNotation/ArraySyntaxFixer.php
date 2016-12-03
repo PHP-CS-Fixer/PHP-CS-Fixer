@@ -17,6 +17,8 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -91,12 +93,11 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
                     "<?php\n[1,2];",
                     array('syntax' => 'long')
                 ),
-                /* @TODO That code should be in use, but for now it will fail on lower PHP version...
-                new CodeSample(
+                new VersionSpecificCodeSample(
                     "<?php\narray(1,2);",
+                    new VersionSpecification(50400),
                     array('syntax' => 'short')
                 ),
-                */
             ),
             null,
             'Configure to use "long" or "short" array declaration syntax.',

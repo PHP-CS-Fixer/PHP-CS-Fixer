@@ -16,6 +16,7 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\ShortFixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
@@ -388,6 +389,11 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('PhpCsFixer\FixerDefinition\CodeSampleInterface', $sample, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
             $code = $sample->getCode();
             $this->assertStringIsNotEmpty($code, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
+
+            if ($sample instanceof VersionSpecificCodeSampleInterface && !$sample->isSuitableFor(PHP_VERSION_ID)) {
+                continue;
+            }
+
             $config = $sample->getConfiguration();
             if (null !== $config) {
                 $this->assertInternalType('array', $config, sprintf('[%s] Sample #%d configuration must be an array or null.', $fixer->getName(), $sampleCounter));
@@ -454,7 +460,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testShortFixerDefinition()
     {
-        $guard = 118;
+        $guard = 117;
 
         $this->assertCount(
             $guard,
