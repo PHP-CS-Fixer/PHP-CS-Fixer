@@ -63,7 +63,7 @@ using <comment>-name_of_fixer</comment>:
 
     <info>$ php %command.full_name% /path/to/dir --rules=-full_opening_tag,-indentation_type</info>
 
-When using combinations of exact and blacklist rules, applying exact ruless along with above blacklisted results:
+When using combinations of exact and blacklist rules, applying exact rules along with above blacklisted results:
 
     <info>$ php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_return,strict_comparison</info>
 
