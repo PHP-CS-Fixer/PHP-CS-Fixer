@@ -79,18 +79,18 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getPriority()
     {
-        return 'Either language construct `print` or `echo` should be used.';
+        // should run after NoShortEchoTagFixer.
+        return -10;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function getDescription()
     {
-        // should run after NoShortEchoTagFixer.
-        return -10;
+        return 'Either language construct `print` or `echo` should be used.';
     }
 
     /**
