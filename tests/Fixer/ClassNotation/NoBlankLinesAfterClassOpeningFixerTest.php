@@ -73,7 +73,7 @@ class Good
 class Good
 {
     /**
-     * Also no blankline before DocBlock
+     * Also no blank line before DocBlock
      */
     public function firstMethod()
     {
@@ -85,7 +85,7 @@ class Good
 {
 
     /**
-     * Also no blankline before DocBlock
+     * Also no blank line before DocBlock
      */
     public function firstMethod()
     {
@@ -99,7 +99,7 @@ class Good
 interface Good
 {
     /**
-     * Also no blankline before DocBlock
+     * Also no blank line before DocBlock
      */
     public function firstMethod();
 }',
@@ -108,7 +108,7 @@ interface Good
 {
 
     /**
-     * Also no blankline before DocBlock
+     * Also no blank line before DocBlock
      */
     public function firstMethod();
 }',
@@ -141,7 +141,7 @@ class Good
 trait Good
 {
     /**
-     * Also no blankline before DocBlock
+     * Also no blank line before DocBlock
      */
     public function firstMethod() {}
 }',
@@ -150,7 +150,7 @@ trait Good
 {
 
     /**
-     * Also no blankline before DocBlock
+     * Also no blank line before DocBlock
      */
     public function firstMethod() {}
 }',
