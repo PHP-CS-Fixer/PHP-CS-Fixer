@@ -480,6 +480,9 @@ Choose from the list of available rules:
 * **phpdoc_no_package** [@Symfony]
    | @package and @subpackage annotations should be omitted from phpdocs.
 
+* **phpdoc_no_useless_inheritdoc**
+   | Classy that does not inherit must not have inheritdoc tags.
+
 * **phpdoc_order**
    | Annotations in phpdocs should be ordered so that param annotations come
    | first, then throws annotations, then return annotations.
