@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Console;
 
 use PhpCsFixer\Cache\CacheManagerInterface;
+use PhpCsFixer\Cache\Directory;
+use PhpCsFixer\Cache\DirectoryInterface;
 use PhpCsFixer\Cache\FileCacheManager;
 use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\NullCacheManager;
@@ -116,6 +118,7 @@ final class ConfigurationResolver
     private $cacheFile;
     private $cacheManager;
     private $differ;
+    private $directory;
     private $finder;
     private $format;
     private $linter;
@@ -178,7 +181,8 @@ final class ConfigurationResolver
                         ToolInfo::getVersion(),
                         $this->getRules()
                     ),
-                    $this->isDryRun()
+                    $this->isDryRun(),
+                    $this->getDirectory()
                 );
             } else {
                 $this->cacheManager = new NullCacheManager();
@@ -246,6 +250,25 @@ final class ConfigurationResolver
         }
 
         return $this->differ;
+    }
+
+    /**
+     * @return DirectoryInterface
+     */
+    public function getDirectory()
+    {
+        if (null === $this->directory) {
+            $path = $this->getCacheFile();
+            $filesystem = new Filesystem();
+
+            $absolutePath = $filesystem->isAbsolutePath($path)
+                ? $path
+                : $this->cwd.DIRECTORY_SEPARATOR.$path;
+
+            $this->directory = new Directory(dirname($absolutePath));
+        }
+
+        return $this->directory;
     }
 
     /**

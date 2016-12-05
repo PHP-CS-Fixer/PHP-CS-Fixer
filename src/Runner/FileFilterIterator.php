@@ -16,7 +16,6 @@ use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\FixerFileProcessedEvent;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -75,7 +74,7 @@ final class FileFilterIterator extends \FilterIterator
             // file uses __halt_compiler() on ~5.3.6 due to broken implementation of token_get_all
             || (PHP_VERSION_ID >= 50306 && PHP_VERSION_ID < 50400 && false !== stripos($content, '__halt_compiler()'))
             // file that does not need fixing due to cache
-            || !$this->cacheManager->needFixing($this->getFileRelativePathname($file), $content)
+            || !$this->cacheManager->needFixing($file->getPathname(), $content)
         ) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
@@ -101,14 +100,5 @@ final class FileFilterIterator extends \FilterIterator
         }
 
         $this->eventDispatcher->dispatch($name, $event);
-    }
-
-    private function getFileRelativePathname(\SplFileInfo $file)
-    {
-        if ($file instanceof SymfonySplFileInfo) {
-            return $file->getRelativePathname();
-        }
-
-        return $file->getPathname();
     }
 }

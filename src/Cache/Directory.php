@@ -36,7 +36,10 @@ final class Directory implements DirectoryInterface
     {
         $file = $this->normalizePath($file);
 
-        if (0 !== stripos($file, $this->directoryName.DIRECTORY_SEPARATOR)) {
+        if (
+            '' === $this->directoryName
+            || 0 !== stripos($file, $this->directoryName.DIRECTORY_SEPARATOR)
+        ) {
             return $file;
         }
 
