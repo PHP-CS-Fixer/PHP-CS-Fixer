@@ -300,6 +300,9 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['protected_to_private'], $fixers['ordered_class_elements']), // tested also in: protected_to_private,ordered_class_elements.test
             array($fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_align']), // tested also in: phpdoc_add_missing_param_annotation,phpdoc_align.test
             array($fixers['phpdoc_no_alias_tag'], $fixers['phpdoc_add_missing_param_annotation']), // tested also in: phpdoc_no_alias_tag,phpdoc_add_missing_param_annotation.test
+            array($fixers['phpdoc_no_useless_inheritdoc'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_useless_inheritdoc,no_empty_phpdoc.test
+            array($fixers['phpdoc_no_useless_inheritdoc'], $fixers['phpdoc_inline_tag']), // tested also in: phpdoc_no_useless_inheritdoc,phpdoc_inline_tag.test
+            array($fixers['phpdoc_to_comment'], $fixers['phpdoc_no_useless_inheritdoc']), // tested also in: phpdoc_to_comment,phpdoc_no_useless_inheritdoc.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:
