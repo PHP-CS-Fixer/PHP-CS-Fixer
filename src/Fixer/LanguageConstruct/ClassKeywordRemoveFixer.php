@@ -159,7 +159,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
         $classBeginIndex = $classEndIndex;
         while ($tokens[--$classBeginIndex]->isGivenKind(array(T_NS_SEPARATOR, T_STRING)));
         ++$classBeginIndex;
-        $classString = $tokens->generatePartialCode($classBeginIndex, $classEndIndex);
+        $classString = ltrim($tokens->generatePartialCode($classBeginIndex, $classEndIndex), '\\');
 
         $classImport = false;
         foreach ($this->imports as $alias => $import) {
