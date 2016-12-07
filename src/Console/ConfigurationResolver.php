@@ -529,7 +529,10 @@ final class ConfigurationResolver
     private function getRuleSet()
     {
         if (null === $this->ruleSet) {
-            $this->ruleSet = new RuleSet($this->parseRules());
+            $rules = $this->parseRules();
+            $this->validateRules($rules);
+
+            $this->ruleSet = new RuleSet($rules);
         }
 
         return $this->ruleSet;
@@ -583,6 +586,48 @@ final class ConfigurationResolver
         }
 
         return $rules;
+    }
+
+    /**
+     * @param array $rules
+     *
+     * @throws InvalidConfigurationException
+     */
+    private function validateRules(array $rules)
+    {
+        /**
+         * Create a ruleset that contains all configured rules, even when they originally have been disabled.
+         *
+         * @see RuleSet::resolveSet()
+         */
+        $ruleSet = RuleSet::create(array_map(function () {
+            return true;
+        }, $rules));
+
+        /* @var string[] $availableFixers */
+        $configuredFixers = array_keys($ruleSet->getRules());
+
+        $fixerFactory = new FixerFactory();
+        $fixerFactory->registerBuiltInFixers();
+        $fixerFactory->registerCustomFixers($this->getConfig()->getCustomFixers());
+
+        $reflection = new \ReflectionProperty('PhpCsFixer\FixerFactory', 'fixersByName');
+        $reflection->setAccessible(true);
+
+        /* @var string[] $availableFixers */
+        $availableFixers = array_keys($reflection->getValue($fixerFactory));
+
+        $unknownFixers = array_diff(
+            $configuredFixers,
+            $availableFixers
+        );
+
+        if (count($unknownFixers)) {
+            throw new InvalidConfigurationException(sprintf(
+                'The rules contain unknown fixers (%s).',
+                implode(', ', $unknownFixers)
+            ));
+        }
     }
 
     /**
