@@ -868,6 +868,21 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @expectedException \PhpCsFixer\ConfigurationException\InvalidConfigurationException
+     * @expectedExceptionMessage The rules contain unknown fixers (foo, bar).
+     */
+    public function testResolveRulesWithUnknownRules()
+    {
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            array('rules' => 'foo,-bar'),
+            ''
+        );
+
+        $resolver->getRules();
+    }
+
     public function testResolveRulesWithConfigAndOption()
     {
         $this->config->setRules(array(
