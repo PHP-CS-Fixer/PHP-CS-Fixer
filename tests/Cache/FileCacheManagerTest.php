@@ -242,6 +242,40 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
         $manager->needFixing($file, $fileContent);
     }
 
+    public function testNeedFixingUsesRelativePathToFileWhenCacheFileDoesNotExist()
+    {
+        $cacheFile = $this->getNonExistentFile();
+        $file = '/foo/bar/baz/src/hello.php';
+        $relativePathToFile = 'src/hello.php';
+        $fileContent = '<?php echo "Hello!"';
+
+        $cachedSignature = $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
+
+        $signatureProphecy = $this->prophesize('PhpCsFixer\Cache\SignatureInterface');
+        $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
+        $signature = $signatureProphecy->reveal();
+
+        $cacheProphecy = $this->prophesize('PhpCsFixer\Cache\CacheInterface');
+        $cacheProphecy->getSignature()->willReturn($cachedSignature);
+        $cacheProphecy->has(Argument::is($relativePathToFile))->willReturn(true);
+        $cacheProphecy->has(Argument::is($relativePathToFile))->willReturn(0);
+        $cache = $cacheProphecy->reveal();
+
+        $handlerProphecy = $this->prophesize('PhpCsFixer\Cache\FileHandlerInterface');
+        $handlerProphecy->read()->willReturn($cache);
+        $handlerProphecy->getFile()->willReturn($cacheFile);
+        $handlerProphecy->write(Argument::is($cache))->willReturn(null);
+        $handler = $handlerProphecy->reveal();
+
+        $manager = new FileCacheManager(
+            $handler,
+            $signature,
+            false
+        );
+
+        $manager->needFixing($file, $fileContent);
+    }
+
     public function testSetFileSetsHashOfFileContent()
     {
         $cacheFile = $this->getFile();
@@ -380,11 +414,52 @@ final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
         $manager->setFile($file, $fileContent);
     }
 
+    public function testSetFileUsesRelativePathToFileWhenCacheFileDoesNotExist()
+    {
+        $cacheFile = $this->getNonExistentFile();
+        $file = '/foo/bar/baz/src/hello.php';
+        $relativePathToFile = 'src/hello.php';
+        $fileContent = '<?php echo "Hello!"';
+
+        $cachedSignature = $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
+
+        $signatureProphecy = $this->prophesize('PhpCsFixer\Cache\SignatureInterface');
+        $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
+        $signature = $signatureProphecy->reveal();
+
+        $cacheProphecy = $this->prophesize('PhpCsFixer\Cache\CacheInterface');
+        $cacheProphecy->getSignature()->willReturn($cachedSignature);
+        $cacheProphecy->set(Argument::is($relativePathToFile), Argument::is(crc32($fileContent)))->shouldBeCalled();
+        $cache = $cacheProphecy->reveal();
+
+        $handlerProphecy = $this->prophesize('PhpCsFixer\Cache\FileHandlerInterface');
+        $handlerProphecy->read()->willReturn($cache);
+        $handlerProphecy->getFile()->willReturn($cacheFile);
+        $handlerProphecy->write(Argument::is($cache))->willReturn(null);
+        $handler = $handlerProphecy->reveal();
+
+        $manager = new FileCacheManager(
+            $handler,
+            $signature,
+            false
+        );
+
+        $manager->setFile($file, $fileContent);
+    }
+
     /**
      * @return string
      */
     private function getFile()
     {
         return __DIR__.'/../Fixtures/.php_cs.empty-cache';
+    }
+
+    /**
+     * @return string
+     */
+    private function getNonExistentFile()
+    {
+        return '/foo/bar/baz/.php_cs.non-existent';
     }
 }
