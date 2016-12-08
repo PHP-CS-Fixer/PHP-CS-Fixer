@@ -62,10 +62,6 @@ final class VersionSpecificCodeSample implements VersionSpecificCodeSampleInterf
      */
     public function isSuitableFor($version)
     {
-        if (null === $this->versionSpecification) {
-            return true;
-        }
-
         return $this->versionSpecification->isSatisfiedBy($version);
     }
 }
