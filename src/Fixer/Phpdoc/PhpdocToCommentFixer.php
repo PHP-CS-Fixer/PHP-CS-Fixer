@@ -77,7 +77,7 @@ final class PhpdocToCommentFixer extends AbstractFixer
                 continue;
             }
 
-            if ($nextToken->isGivenKind(T_VARIABLE) && $this->isValidVariable($tokens, $token, $nextIndex)) {
+            if ($nextToken->isGivenKind(T_VARIABLE) && $this->isValidVariable($tokens, $nextIndex)) {
                 continue;
             }
 
@@ -195,12 +195,11 @@ final class PhpdocToCommentFixer extends AbstractFixer
      * Checks variable assignments for correct docblock usage.
      *
      * @param Tokens $tokens
-     * @param Token  $docsToken     docs Token
      * @param int    $variableIndex index of variable Token
      *
      * @return bool
      */
-    private function isValidVariable(Tokens $tokens, Token $docsToken, $variableIndex)
+    private function isValidVariable(Tokens $tokens, $variableIndex)
     {
         $nextIndex = $tokens->getNextMeaningfulToken($variableIndex);
 

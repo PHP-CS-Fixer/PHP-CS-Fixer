@@ -65,6 +65,9 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
      */
     protected $linter;
 
+    /**
+     * @var FileRemoval
+     */
     private static $fileRemoval;
 
     public static function setUpBeforeClass()
