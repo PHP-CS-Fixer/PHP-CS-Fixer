@@ -22,6 +22,51 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCase
 {
+    public function testConfigureRejectsUnknownConfigurationKey()
+    {
+        $key = 'foo';
+
+        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException', sprintf(
+            '"%s" is not handled by the fixer.',
+            $key
+        ));
+
+        $this->fixer->configure(array(
+            $key => 'bar',
+        ));
+    }
+
+    /**
+     * @dataProvider providerInvalidConfigurationValue
+     *
+     * @param mixed $value
+     */
+    public function testConfigureRejectsInvalidConfigurationValue($value)
+    {
+        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException', sprintf(
+            'Expected boolean got "%s".',
+            is_object($value) ? get_class($value) : gettype($value)
+        ));
+
+        $this->fixer->configure(array(
+            'only_untyped' => $value,
+        ));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerInvalidConfigurationValue()
+    {
+        return array(
+            'null' => array(null),
+            'int' => array(1),
+            'array' => array(array()),
+            'float' => array(0.1),
+            'object' => array(new \stdClass()),
+        );
+    }
+
     /**
      * @param string      $expected
      * @param null|string $input
