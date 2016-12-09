@@ -31,7 +31,7 @@ CLI options
 --fixers        |                 | Coding standard fixers                                                    | option was removed, see --rules
 --format        | --format        | Choose format                                                             |
 --level         |                 | Coding standard level                                                     | option was removed, see --rules
-                | --path-mode     | Should the finder from config be overriden or intersected with `path` arg | option was added
+                | --path-mode     | Should the finder from config be <br/>overriden or intersected with `path` arg | option was added
                 | --rules         | Rules to be used                                                          | option was added
                 | --using-cache   | Does cache should be used                                                 | option was added
 
