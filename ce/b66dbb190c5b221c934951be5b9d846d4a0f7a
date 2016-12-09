@@ -1,0 +1,43 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-08T08:04:36Z
+
+:+1: looking good :)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-12-08T11:59:31Z
+
+@GrahamCampbell @keradus @SpacePossum
+
+I think I implemented all of your suggestions, let me know what you think!
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-08T13:14:06Z
+
+@localheinz please don't squash the commits.
+now instead of taking a look at changes only we need to read whole PR again
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-09T13:07:12Z
+
+:+1: for PR , I like your codestyle @localheinz
+I treat this as documentation-related change, therefore I gonna merge this into 2.0.x line. Anything against ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-09T13:13:19Z
+
+looks good to me! Love to see this merged as I'm having more and more cases where I need this : D
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-12-09T13:21:07Z
+
+Thank you, @GrahamCampbell, @keradus and @SpacePossum!
+
+> 👍 for PR , I like your codestyle @localheinz
+
+Thank you, I appreciate it, @keradus!
