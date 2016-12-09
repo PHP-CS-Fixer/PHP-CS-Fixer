@@ -21,35 +21,34 @@ use PhpCsFixer\FixerDefinition\VersionSpecification;
  */
 final class VersionSpecificationTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testConstructorRequiresEitherMinimumOrMaximum()
     {
+        $this->setExpectedException('InvalidArgumentException');
+
         new VersionSpecification();
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     *
      * @dataProvider providerInvalidVersion
      *
      * @param mixed $minimum
      */
     public function testConstructorRejectsInvalidMinimum($minimum)
     {
+        $this->setExpectedException('InvalidArgumentException');
+
         new VersionSpecification($minimum);
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     *
      * @dataProvider providerInvalidVersion
      *
      * @param mixed $maximum
      */
     public function testConstructorRejectsInvalidMaximum($maximum)
     {
+        $this->setExpectedException('InvalidArgumentException');
+
         new VersionSpecification(
             PHP_VERSION_ID,
             $maximum
@@ -72,11 +71,10 @@ final class VersionSpecificationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testConstructorRejectsMaximumLessThanMinimum()
     {
+        $this->setExpectedException('InvalidArgumentException');
+
         new VersionSpecification(
             PHP_VERSION_ID,
             PHP_VERSION_ID - 1
