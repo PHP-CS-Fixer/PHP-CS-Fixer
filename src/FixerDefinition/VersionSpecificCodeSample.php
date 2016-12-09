@@ -23,7 +23,7 @@ final class VersionSpecificCodeSample implements VersionSpecificCodeSampleInterf
     private $codeSample;
 
     /**
-     * @var null|VersionSpecificationInterface
+     * @var VersionSpecificationInterface
      */
     private $versionSpecification;
 
