@@ -34,7 +34,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
     /**
      * @var array<string, bool>
      */
-    private static $defaultConfig = array(
+    private static $defaultConfiguration = array(
         // put class declaration on one line
         'singleLine' => false,
         // if a classy extends or implements only one element than put it on the same line
@@ -56,16 +56,16 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
-            $this->config = self::$defaultConfig;
+            $this->config = self::$defaultConfiguration;
 
             return;
         }
 
-        $configuration = array_merge(self::$defaultConfig, $configuration);
+        $configuration = array_merge(self::$defaultConfiguration, $configuration);
 
         foreach ($configuration as $item => $value) {
-            if (!array_key_exists($item, self::$defaultConfig)) {
-                throw new InvalidFixerConfigurationException('class_definition', sprintf('Unknown configuration item "%s", expected any of "%s".', $item, implode(', ', array_keys(self::$defaultConfig))));
+            if (!array_key_exists($item, self::$defaultConfiguration)) {
+                throw new InvalidFixerConfigurationException('class_definition', sprintf('Unknown configuration item "%s", expected any of "%s".', $item, implode(', ', array_keys(self::$defaultConfiguration))));
             }
 
             if (!is_bool($value)) {
@@ -159,7 +159,7 @@ interface Bar extends
             ),
             null,
             'Configure to have extra whitespace around the keywords of a class, trait or interface definition removed.',
-            self::$defaultConfig
+            self::$defaultConfiguration
         );
     }
 
