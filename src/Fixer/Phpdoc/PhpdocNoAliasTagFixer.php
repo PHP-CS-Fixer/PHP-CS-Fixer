@@ -32,6 +32,9 @@ final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurableF
      */
     private $configuration;
 
+    /**
+     * @var array
+     */
     private static $defaultConfiguration = array(
         'property-read' => 'property',
         'property-write' => 'property',

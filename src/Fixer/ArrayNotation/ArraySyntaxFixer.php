@@ -31,6 +31,13 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @var array
+     */
+    private static $defaultConfiguration = array(
+        'syntax' => 'long',
+    );
+
     private $config = array();
     private $candidateTokenKind;
     private $fixCallback;
@@ -45,11 +52,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
-            $this->config = 'long';
-            $this->resolveCandidateTokenKind();
-            $this->resolveFixCallback();
-
-            return;
+            $configuration = self::$defaultConfiguration;
         }
 
         if (!array_key_exists('syntax', $configuration) || !in_array($configuration['syntax'], array('long', 'short'), true)) {
@@ -101,7 +104,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
             ),
             null,
             'Configure to use "long" or "short" array declaration syntax.',
-            array('syntax' => 'long')
+            self::$defaultConfiguration
         );
     }
 

@@ -32,14 +32,11 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
-     * @var array<int, string> key is token id, value is name of callback
+     * @var array
      */
-    private static $defaultTokenKindCallbackMap = array(T_WHITESPACE => 'removeMultipleBlankLines');
-
-    /**
-     * @var array<string, string> token prototype, value is name of callback
-     */
-    private static $defaultTokenEqualsMap = array();
+    private static $defaultConfiguration = array(
+        'extra',
+    );
 
     /**
      * @var array<int, string> key is token id, value is name of callback
@@ -81,10 +78,7 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
-            $this->tokenKindCallbackMap = self::$defaultTokenKindCallbackMap;
-            $this->tokenEqualsMap = self::$defaultTokenEqualsMap;
-
-            return;
+            $configuration = self::$defaultConfiguration;
         }
 
         $this->tokenKindCallbackMap = array();

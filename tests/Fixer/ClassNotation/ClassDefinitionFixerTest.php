@@ -36,10 +36,10 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
         $fixer->configure(self::$defaultTestConfig);
         $fixer->configure(null);
 
-        $defaultConfigProperty = new \ReflectionProperty('PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer', 'defaultConfig');
+        $defaultConfigProperty = new \ReflectionProperty('PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer', 'defaultConfiguration');
         $defaultConfigProperty->setAccessible(true);
 
-        $this->assertAttributeSame($defaultConfigProperty->getValue(), 'config', $fixer);
+        $this->assertAttributeSame($defaultConfigProperty->getValue($fixer), 'config', $fixer);
     }
 
     /**
