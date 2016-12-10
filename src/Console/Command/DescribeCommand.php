@@ -17,6 +17,7 @@ use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\ShortFixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
@@ -139,7 +140,20 @@ final class DescribeCommand extends Command
             $output->writeln('');
         }
 
-        if ($definition->getCodeSamples()) {
+        $codeSamples = array_filter($definition->getCodeSamples(), function (CodeSampleInterface $codeSample) {
+            if ($codeSample instanceof VersionSpecificCodeSampleInterface) {
+                return $codeSample->isSuitableFor(PHP_VERSION_ID);
+            }
+
+            return true;
+        });
+
+        if (!count($codeSamples)) {
+            $output->writeln(array(
+                'Fixing examples can not be demonstrated on the current PHP version.',
+                '',
+            ));
+        } else {
             $output->writeln('Fixing examples:');
 
             $differ = new SebastianBergmannDiffer();
@@ -149,11 +163,7 @@ final class DescribeCommand extends Command
                 PHP_EOL
             ));
 
-            foreach ($definition->getCodeSamples() as $index => $codeSample) {
-                if ($codeSample instanceof VersionSpecificCodeSampleInterface && !$codeSample->isSuitableFor(PHP_VERSION_ID)) {
-                    continue;
-                }
-
+            foreach ($codeSamples as $index => $codeSample) {
                 $old = $codeSample->getCode();
                 $tokens = Tokens::fromCode($old);
                 if ($fixer instanceof ConfigurableFixerInterface) {
