@@ -65,7 +65,7 @@ final class SquareBraceTransformer extends AbstractTransformer
         $this->transformIntoArraySquareBrace($tokens, $token, $index);
 
         if (PHP_VERSION_ID >= 70100) {
-            $this->transformIntoDestructuringSquareBrace($tokens, $token, $index);
+            $this->transformIntoDestructuringSquareBrace($tokens, $token);
         }
     }
 
@@ -83,7 +83,7 @@ final class SquareBraceTransformer extends AbstractTransformer
         $this->cacheOfArraySquareBraceCloseIndex = $endIndex;
     }
 
-    private function transformIntoDestructuringSquareBrace(Tokens $tokens, Token $token, $index)
+    private function transformIntoDestructuringSquareBrace(Tokens $tokens, Token $token)
     {
         if (
             null === $this->cacheOfArraySquareBraceCloseIndex

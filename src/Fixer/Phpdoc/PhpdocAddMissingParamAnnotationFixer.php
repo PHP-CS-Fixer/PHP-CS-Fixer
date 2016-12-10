@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
@@ -215,7 +216,6 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
         );
 
         $sawName = false;
-        $sawEq = false;
 
         for ($index = $start; $index <= $end; ++$index) {
             $token = $tokens[$index];
@@ -232,8 +232,6 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
             }
 
             if ($token->equals('=')) {
-                $sawEq = true;
-
                 continue;
             }
 

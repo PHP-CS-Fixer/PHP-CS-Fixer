@@ -46,7 +46,7 @@ final class ProtectedToPrivateFixer extends AbstractFixer
             $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
 
             if (!$this->skipClass($tokens, $index, $classOpen, $classClose)) {
-                $this->fixClass($tokens, $index, $classOpen, $classClose);
+                $this->fixClass($tokens, $classOpen, $classClose);
             }
 
             $index = $classClose;
@@ -69,11 +69,10 @@ final class ProtectedToPrivateFixer extends AbstractFixer
 
     /**
      * @param Tokens $tokens
-     * @param int    $classIndex
      * @param int    $classOpenIndex
      * @param int    $classCloseIndex
      */
-    private function fixClass(Tokens $tokens, $classIndex, $classOpenIndex, $classCloseIndex)
+    private function fixClass(Tokens $tokens, $classOpenIndex, $classCloseIndex)
     {
         for ($index = $classOpenIndex + 1; $index < $classCloseIndex; ++$index) {
             if ($tokens[$index]->equals('{')) {
