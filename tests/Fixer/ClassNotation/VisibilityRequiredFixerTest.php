@@ -429,33 +429,36 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp /^\[visibility_required\] Expected string got "NULL".$/
-     */
     public function testInvalidConfigurationType()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '/^\[visibility_required\] Expected string got "NULL".$/'
+        );
+
         $this->fixer->configure(array(null));
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp /^\[visibility_required\] Unknown configuration item "_unknown_", expected any of "property", "method", "const".$/
-     */
     public function testInvalidConfigurationValue()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '/^\[visibility_required\] Unknown configuration item "_unknown_", expected any of "property", "method", "const".$/'
+        );
+
         $this->fixer->configure(array('_unknown_'));
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp /^\[visibility_required\] Invalid configuration item "const" for PHP ".+".$/
-     */
     public function testInvalidConfigurationValueForPHPVersion()
     {
         if (PHP_VERSION_ID >= 70100) {
             $this->markTestSkipped('PHP version to high.');
         }
+
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '/^\[visibility_required\] Invalid configuration item "const" for PHP ".+".$/'
+        );
 
         $this->fixer->configure(array('const'));
     }

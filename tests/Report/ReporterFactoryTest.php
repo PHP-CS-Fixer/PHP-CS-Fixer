@@ -83,12 +83,13 @@ final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array('r1', 'r2', 'r3'), $builder->getFormats());
     }
 
-    /**
-     * @expectedException        \UnexpectedValueException
-     * @expectedExceptionMessage Reporter for format "non_unique_name" is already registered.
-     */
     public function testRegisterReportWithOccupiedFormat()
     {
+        $this->setExpectedException(
+            'UnexpectedValueException',
+            'Reporter for format "non_unique_name" is already registered.'
+        );
+
         $factory = new ReporterFactory();
 
         $r1 = $this->createReporterDouble('non_unique_name');
@@ -97,12 +98,13 @@ final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
         $factory->registerReporter($r2);
     }
 
-    /**
-     * @expectedException        \UnexpectedValueException
-     * @expectedExceptionMessage Reporter for format "non_registered_format" is not registered.
-     */
     public function testGetNonRegisteredReport()
     {
+        $this->setExpectedException(
+            'UnexpectedValueException',
+            'Reporter for format "non_registered_format" is not registered.'
+        );
+
         $builder = new ReporterFactory();
 
         $builder->getReporter('non_registered_format');

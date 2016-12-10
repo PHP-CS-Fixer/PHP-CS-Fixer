@@ -243,18 +243,17 @@ final class TokensTest extends \PHPUnit_Framework_TestCase
      * @param string $message
      * @param array  $sequence
      *
-     * @expectedException \InvalidArgumentException
      * @dataProvider provideFindSequenceExceptions
      */
     public function testFindSequenceException($message, array $sequence)
     {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            $message
+        );
+
         $tokens = Tokens::fromCode('<?php $x = 1;');
-        try {
-            $tokens->findSequence($sequence);
-        } catch (\InvalidArgumentException $e) {
-            $this->assertSame($message, $e->getMessage());
-            throw $e;
-        }
+        $tokens->findSequence($sequence);
     }
 
     public function provideFindSequenceExceptions()
@@ -703,23 +702,25 @@ PHP;
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessageRegExp /^Invalid param type: -1\.$/
-     */
     public function testFindBlockEndInvalidType()
     {
+        $this->setExpectedExceptionRegExp(
+            'InvalidArgumentException',
+            '/^Invalid param type: -1\.$/'
+        );
+
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');
         $tokens->findBlockEnd(-1, 0);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessageRegExp /^Invalid param \$startIndex - not a proper block start\.$/
-     */
     public function testFindBlockEndInvalidStart()
     {
+        $this->setExpectedExceptionRegExp(
+            'InvalidArgumentException',
+            '/^Invalid param \$startIndex - not a proper block start\.$/'
+        );
+
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');
         $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 0);

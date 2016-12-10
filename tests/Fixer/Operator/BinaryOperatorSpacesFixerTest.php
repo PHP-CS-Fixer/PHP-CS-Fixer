@@ -343,21 +343,23 @@ $b;',
         );
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp /^\[binary_operator_spaces\] Unknown configuration option "foo"\. Expected any of "align_equals", "align_double_arrow"\.$/
-     */
     public function testWrongConfigItem()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '/^\[binary_operator_spaces\] Unknown configuration option "foo"\. Expected any of "align_equals", "align_double_arrow"\.$/'
+        );
+
         $this->fixer->configure(array('foo' => true));
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp /^\[binary_operator_spaces\] Invalid value type for configuration option "align_double_arrow"\. Expected "bool" or "null" got "integer"\.$/
-     */
     public function testWrongConfigValue()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '/^\[binary_operator_spaces\] Invalid value type for configuration option "align_double_arrow"\. Expected "bool" or "null" got "integer"\.$/'
+        );
+
         $this->fixer->configure(array('align_double_arrow' => 123));
     }
 

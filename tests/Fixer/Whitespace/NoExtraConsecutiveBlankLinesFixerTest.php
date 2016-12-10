@@ -419,12 +419,13 @@ EOF
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage [no_extra_consecutive_blank_lines] Unknown configuration item "__TEST__" passed.
-     */
     public function testWrongConfig()
     {
+        $this->setExpectedException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '[no_extra_consecutive_blank_lines] Unknown configuration item "__TEST__" passed.'
+        );
+
         $this->fixer->configure(array('__TEST__'));
     }
 

@@ -22,21 +22,23 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  */
 final class ConcatSpaceFixerTest extends AbstractFixerTestCase
 {
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp #^\[concat_space\] Missing "spacing" configuration.$#
-     */
     public function testInvalidConfigMissingKey()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '#^\[concat_space\] Missing "spacing" configuration.$#'
+        );
+
         $this->fixer->configure(array('a' => 1));
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp #^\[concat_space\] "spacing" configuration must be "one" or "none".$#
-     */
     public function testInvalidConfigValue()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '#^\[concat_space\] "spacing" configuration must be "one" or "none".$#'
+        );
+
         $this->fixer->configure(array('spacing' => 'tabs'));
     }
 

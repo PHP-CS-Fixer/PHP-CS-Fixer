@@ -121,11 +121,14 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers \PhpCsFixer\FixerFactory::registerFixer
-     * @expectedException        \UnexpectedValueException
-     * @expectedExceptionMessage Fixer named "non_unique_name" is already registered.
      */
     public function testRegisterFixerWithOccupiedName()
     {
+        $this->setExpectedException(
+                 'UnexpectedValueException',
+            'Fixer named "non_unique_name" is already registered.'
+        );
+
         $factory = new FixerFactory();
 
         $f1 = $this->createFixerDouble('non_unique_name');
@@ -156,11 +159,14 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers \PhpCsFixer\FixerFactory::useRuleSet
-     * @expectedException        \UnexpectedValueException
-     * @expectedExceptionMessage Rule "non_existing_rule" does not exist.
      */
     public function testUseRuleSetWithNonExistingRule()
     {
+        $this->setExpectedException(
+            'UnexpectedValueException',
+            'Rule "non_existing_rule" does not exist.'
+        );
+
         $factory = FixerFactory::create()
             ->registerBuiltInFixers()
             ->useRuleSet(new RuleSet(array('non_existing_rule' => true)))
@@ -481,11 +487,14 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider provideConflictingFixersRules
-     * @expectedException \UnexpectedValueException
-     * @expectedExceptionMessageRegExp #^Rule contains conflicting fixers:\n#
      */
     public function testConflictingFixers(RuleSet $ruleSet)
     {
+        $this->setExpectedExceptionRegExp(
+            'UnexpectedValueException',
+            '#^Rule contains conflicting fixers:\n#'
+        );
+
         FixerFactory::create()->registerBuiltInFixers()->useRuleSet($ruleSet);
     }
 

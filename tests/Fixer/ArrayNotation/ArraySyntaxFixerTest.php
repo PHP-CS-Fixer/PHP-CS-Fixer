@@ -23,12 +23,13 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  */
 final class ArraySyntaxFixerTest extends AbstractFixerTestCase
 {
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp #^\[array_syntax\] Configuration must define "syntax" being "short" or "long".$#
-     */
     public function testInvalidConfiguration()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '#^\[array_syntax\] Configuration must define "syntax" being "short" or "long".$#'
+        );
+
         $this->fixer->configure(array('a' => 1));
     }
 

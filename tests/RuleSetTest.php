@@ -63,23 +63,25 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @expectedException        \InvalidArgumentException
-     * @expectedExceptionMessage Set "@foo" does not exist.
-     */
     public function testResolveRulesWithInvalidSet()
     {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            'Set "@foo" does not exist.'
+        );
+
         RuleSet::create(array(
             '@foo' => true,
         ));
     }
 
-    /**
-     * @expectedException        \InvalidArgumentException
-     * @expectedExceptionMessage Missing value for "braces" rule/set.
-     */
     public function testResolveRulesWithMissingRuleValue()
     {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            'Missing value for "braces" rule/set.'
+        );
+
         RuleSet::create(array(
             'braces',
         ));
