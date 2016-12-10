@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @requires PHP 7.0
  */
 final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
 {
@@ -36,8 +38,6 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
      *
      * @param string      $expected
      * @param null|string $input
-     *
-     * @requires PHP 7.0
      */
     public function testFixWithDefaultConfiguration($expected, $input = null)
     {
@@ -51,8 +51,6 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
      *
      * @param string      $expected
      * @param null|string $input
-     *
-     * @requires PHP 7.0
      */
     public function testFixWithSpaceBeforeNone($expected, $input = null)
     {
@@ -93,8 +91,6 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
      *
      * @param string      $expected
      * @param null|string $input
-     *
-     * @requires PHP 7.0
      */
     public function testFixWithSpaceBeforeOne($expected, $input = null)
     {
