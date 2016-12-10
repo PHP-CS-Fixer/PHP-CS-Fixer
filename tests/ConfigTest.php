@@ -107,12 +107,13 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($config, $config->setCacheFile('some-directory/some.file'));
     }
 
-    /**
-     * @expectedException              \InvalidArgumentException
-     * @expectedExceptionMessageRegExp /^Argument must be an array or a Traversable, got "\w+"\.$/
-     */
     public function testRegisterCustomFixersWithInvalidArgument()
     {
+        $this->setExpectedExceptionRegExp(
+            'InvalidArgumentException',
+            '/^Argument must be an array or a Traversable, got "\w+"\.$/'
+        );
+
         $config = new Config();
         $config->registerCustomFixers('foo');
     }

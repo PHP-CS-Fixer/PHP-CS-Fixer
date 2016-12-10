@@ -200,12 +200,13 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
         );
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp /^\[php_unit_dedicate_assert\] Unknown configuration method "_unknown_".$/
-     */
     public function testInvalidConfig()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '/^\[php_unit_dedicate_assert\] Unknown configuration method "_unknown_".$/'
+        );
+
         $this->fixer->configure(array('_unknown_'));
     }
 }

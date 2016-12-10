@@ -21,21 +21,23 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  */
 final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 {
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp #^\[random_api_migration\] "is_null" is not handled by the fixer.$#
-     */
     public function testConfigureCheckSearchFunction()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '#^\[random_api_migration\] "is_null" is not handled by the fixer.$#'
+        );
+
         $this->fixer->configure(array('is_null' => 'random_int'));
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp #^\[random_api_migration\] Expected string got "NULL".$#
-     */
     public function testConfigureCheckReplacementType()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '#^\[random_api_migration\] Expected string got "NULL".$#'
+        );
+
         $this->fixer->configure(array('rand' => null));
     }
 
