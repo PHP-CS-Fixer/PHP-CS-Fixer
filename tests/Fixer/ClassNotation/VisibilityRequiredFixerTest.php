@@ -460,7 +460,6 @@ EOF;
             '/^\[visibility_required\] Invalid configuration item "const" for PHP ".+".$/'
         );
 
-
         $this->fixer->configure(array('const'));
     }
 
