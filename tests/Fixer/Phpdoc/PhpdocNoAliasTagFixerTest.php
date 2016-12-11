@@ -23,39 +23,43 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  */
 final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
 {
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp #^\[phpdoc_no_alias_tag\] Tag to replace must be a string.$#
-     */
     public function testInvalidConfigCase1()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '#^\[phpdoc_no_alias_tag\] Tag to replace must be a string.$#'
+        );
+
         $this->fixer->configure(array(1 => 'abc'));
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp #^\[phpdoc_no_alias_tag\] Tag to replace to from "a" must be a string.$#
-     */
     public function testInvalidConfigCase2()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '#^\[phpdoc_no_alias_tag\] Tag to replace to from "a" must be a string.$#'
+        );
+
         $this->fixer->configure(array('a' => null));
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp #^\[phpdoc_no_alias_tag\] Tag "see" cannot be replaced by invalid tag "link\*\/".$#
-     */
     public function testInvalidConfigCase3()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '#^\[phpdoc_no_alias_tag\] Tag "see" cannot be replaced by invalid tag "link\*\/".$#'
+        );
+
         $this->fixer->configure(array('see' => 'link*/'));
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp #^\[phpdoc_no_alias_tag\] Cannot change tag "link" to tag "see", as the tag is set configured to be replaced to "link".$#
-     */
     public function testInvalidConfigCase4()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '#^\[phpdoc_no_alias_tag\] Cannot change tag "link" to tag "see", as the tag is set configured to be replaced to "link".$#'
+        );
+
         $this->fixer->configure(array(
             'see' => 'link',
             'a' => 'b',
@@ -63,12 +67,13 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         ));
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp #^\[phpdoc_no_alias_tag\] Cannot change tag "b" to tag "see", as the tag is set configured to be replaced to "link".$#
-     */
     public function testInvalidConfigCase5()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '#^\[phpdoc_no_alias_tag\] Cannot change tag "b" to tag "see", as the tag is set configured to be replaced to "link".$#'
+        );
+
         $this->fixer->configure(array(
             'see' => 'link',
             'link' => 'b',

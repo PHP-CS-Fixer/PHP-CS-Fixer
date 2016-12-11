@@ -701,11 +701,12 @@ $b;',
      * @param string $source
      * @param int    $tokenIndex
      *
-     * @expectedException \InvalidArgumentException
      * @dataProvider provideArrayExceptions
      */
     public function testIsMultiLineArrayException($source, $tokenIndex)
     {
+        $this->setExpectedException('InvalidArgumentException');
+
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $tokensAnalyzer->isArrayMultiLine($tokenIndex);

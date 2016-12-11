@@ -326,12 +326,13 @@ EOT
         );
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp /^\[no_spaces_around_offset\] Unknown configuration option "foo"\.$/
-     */
     public function testWrongConfig()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '/^\[no_spaces_around_offset\] Unknown configuration option "foo"\.$/'
+        );
+
         $this->fixer->configure(array('foo'));
     }
 }

@@ -21,12 +21,13 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  */
 final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Configured method "MyTest" cannot be fixed by this fixer.
-     */
     public function testInvalidConfiguration()
     {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            'Configured method "MyTest" cannot be fixed by this fixer.'
+        );
+
         $this->fixer->configure(array('MyTest'));
     }
 
@@ -95,12 +96,13 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         );
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage [php_unit_construct] Configured method "__TEST__" cannot be fixed by this fixer.
-     */
     public function testInvalidConfig()
     {
+        $this->setExpectedException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '[php_unit_construct] Configured method "__TEST__" cannot be fixed by this fixer.'
+        );
+
         $this->fixer->configure(array('__TEST__'));
     }
 

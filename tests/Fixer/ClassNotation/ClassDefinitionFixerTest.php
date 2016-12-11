@@ -112,22 +112,24 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp /^\[class_definition\] Unknown configuration item "a", expected any of "singleLine, singleItemSingleLine, multiLineExtendsEachSingleLine".$/
-     */
     public function testInvalidConfigurationKey()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '/^\[class_definition\] Unknown configuration item "a", expected any of "singleLine, singleItemSingleLine, multiLineExtendsEachSingleLine".$/'
+        );
+
         $fixer = new ClassDefinitionFixer();
         $fixer->configure(array('a' => false));
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessageRegExp /^\[class_definition\] Configuration value for item "singleLine" must be a bool, got "string".$/
-     */
     public function testInvalidConfigurationValueType()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '/^\[class_definition\] Configuration value for item "singleLine" must be a bool, got "string".$/'
+        );
+
         $fixer = new ClassDefinitionFixer();
         $fixer->configure(array('singleLine' => 'z'));
     }

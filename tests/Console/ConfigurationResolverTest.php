@@ -41,12 +41,13 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         unset($this->config);
     }
 
-    /**
-     * @expectedException              \PhpCsFixer\ConfigurationException\InvalidConfigurationException
-     * @expectedExceptionMessageRegExp /^Unknown option name: "foo"\.$/
-     */
     public function testSetOptionWithUndefinedOption()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            '/^Unknown option name: "foo"\.$/'
+        );
+
         new ConfigurationResolver(
             $this->config,
             array('foo' => 'bar'),
@@ -213,12 +214,13 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @expectedException              \PhpCsFixer\ConfigurationException\InvalidConfigurationException
-     * @expectedExceptionMessageRegExp /^The config file: ".+[\/\\]Fixtures[\/\\]ConfigurationResolverConfigFile[\/\\]case_5[\/\\].php_cs.dist" does not return a "PhpCsFixer\\ConfigInterface" instance\. Got: "string"\.$/
-     */
     public function testResolveConfigFileChooseFileWithInvalidFile()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            '#^The config file: ".+[\/\\\]Fixtures[\/\\\]ConfigurationResolverConfigFile[\/\\\]case_5[\/\\\]\.php_cs.dist" does not return a "PhpCsFixer\\\ConfigInterface" instance\. Got: "string"\.$#'
+        );
+
         $dirBase = $this->getFixtureDir();
 
         $resolver = new ConfigurationResolver(
@@ -230,12 +232,13 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $resolver->getConfig();
     }
 
-    /**
-     * @expectedException              \PhpCsFixer\ConfigurationException\InvalidConfigurationException
-     * @expectedExceptionMessageRegExp /^The format "xls" is not defined, supported are json, junit, txt, xml.$/
-     */
     public function testResolveConfigFileChooseFileWithInvalidFormat()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            '/^The format "xls" is not defined, supported are json, junit, txt, xml.$/'
+        );
+
         $dirBase = $this->getFixtureDir();
 
         $resolver = new ConfigurationResolver(
@@ -247,12 +250,13 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $resolver->getReporter();
     }
 
-    /**
-     * @expectedException              \PhpCsFixer\ConfigurationException\InvalidConfigurationException
-     * @expectedExceptionMessageRegExp /^For multiple paths config parameter is required.$/
-     */
     public function testResolveConfigFileChooseFileWithPathArrayWithoutConfig()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            '/^For multiple paths config parameter is required.$/'
+        );
+
         $dirBase = $this->getFixtureDir();
 
         $resolver = new ConfigurationResolver(

@@ -241,23 +241,25 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage This tag does not support types
-     */
     public function testGetTypesOnBadTag()
     {
+        $this->setExpectedException(
+            'RuntimeException',
+            'This tag does not support types'
+        );
+
         $tag = new Annotation(array(new Line(' * @deprecated since 1.2')));
 
         $tag->getTypes();
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage This tag does not support types
-     */
     public function testSetTypesOnBadTag()
     {
+        $this->setExpectedException(
+            'RuntimeException',
+            'This tag does not support types'
+        );
+
         $tag = new Annotation(array(new Line(' * @author Chuck Norris')));
 
         $tag->setTypes(array('string'));

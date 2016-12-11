@@ -567,12 +567,13 @@ EOT
         );
     }
 
-    /**
-     * @expectedException \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage [ordered_class_elements] Unknown class element type "foo".
-     */
     public function testWrongConfig()
     {
+        $this->setExpectedException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '[ordered_class_elements] Unknown class element type "foo".'
+        );
+
         $this->fixer->configure(array('foo'));
     }
 }
