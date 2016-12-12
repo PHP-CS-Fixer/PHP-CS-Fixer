@@ -131,7 +131,11 @@ class Line
      */
     public function addBlank()
     {
-        preg_match('/^([ \t]*\*)[^\r\n]*(\r?\n)$/', $this->content, $matches);
+        $matched = preg_match('/^([ \t]*\*)[^\r\n]*(\r?\n)$/', $this->content, $matches);
+
+        if (1 !== $matched) {
+            return;
+        }
 
         $this->content .= $matches[1].$matches[2];
     }
