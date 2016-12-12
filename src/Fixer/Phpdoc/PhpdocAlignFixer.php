@@ -41,8 +41,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
         // optional <desc>
         $desc = '(?:\s+(?P<desc>\V*))';
 
-        $this->regex = '/^'.$indent.' \* @(?:'.$paramTag.'|'.$otherTags.')'.$desc.'\s*$/';
-        $this->regexCommentLine = '/^'.$indent.' \*(?! @)(?:\s+(?P<desc>\V+))(?<!\*\/)$/';
+        $this->regex = '/^'.$indent.' \* @(?:'.$paramTag.'|'.$otherTags.')'.$desc.'\s*$/u';
+        $this->regexCommentLine = '/^'.$indent.' \*(?! @)(?:\s+(?P<desc>\V+))(?<!\*\/)$/u';
     }
 
     /**
