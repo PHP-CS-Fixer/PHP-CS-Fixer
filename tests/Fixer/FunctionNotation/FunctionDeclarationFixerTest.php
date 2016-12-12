@@ -161,6 +161,36 @@ function foo() /* bar */
      * @param string      $expected
      * @param null|string $input
      *
+     * @dataProvider provide54Cases
+     * @requires PHP 5.4
+     */
+    public function test54($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provide54Cases()
+    {
+        return array(
+            array(
+                '<?php
+                    $b = static function ($a) {
+                        echo $a;
+                    };
+                ',
+                '<?php
+                    $b = static     function( $a )   {
+                        echo $a;
+                    };
+                ',
+            ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provide70Cases
      * @requires PHP 7.0
      */
