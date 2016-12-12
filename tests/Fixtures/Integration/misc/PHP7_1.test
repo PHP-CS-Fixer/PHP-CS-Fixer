@@ -11,7 +11,7 @@ PHP 7.1 test.
 --EXPECT--
 <?php
 
-function iterable_foo(iterable $foo)
+function iterable_foo(iterable $foo): void
 {
     try {
         $str = 'abcdef';
@@ -30,12 +30,12 @@ class A
 
 interface Contract
 {
-    public function method(?Foo $foo): bool;
+    public function method(?Foo $foo): ?bool;
 }
 
 class Implementation implements Contract
 {
-    public function method(?Foo $foo = null): bool
+    public function method(?Foo $foo = null): ?bool
     {
         return is_null($foo);
     }
@@ -44,10 +44,12 @@ class Implementation implements Contract
 list(list('x' => $x1, 'y' => $y1), list('x' => $x2, 'y' => $y2)) = $points;
 list('first' => list($x1, $y1), 'second' => list($x2, $y2)) = $points;
 
+[$a, $b, $c] = [1, 2, 3];
+
 --INPUT--
 <?php
 
-function iterable_foo(iterable$foo) {try{$str='abcdef'; echo $str[ -2  ];    } catch (ExceptionType1 | ExceptionType2 $e) {
+function iterable_foo(iterable$foo) : void {try{$str='abcdef'; echo $str[ -2  ];    } catch (ExceptionType1 | ExceptionType2 $e) {
         // Code to handle the exception
     } catch (\Exception $e) {
         // ...
@@ -59,11 +61,11 @@ class A
 }
 
 interface Contract {
-    public function method(?Foo $foo): bool;
+    public function method(?Foo $foo): ?bool;
 }
 
 class Implementation implements Contract {
-    public function method(?Foo $foo = null): bool
+    public function method(?Foo $foo = null): ?bool
     {
         return is_null($foo);
     }
@@ -71,3 +73,5 @@ class Implementation implements Contract {
 
 list(list("x" => $x1, "y" => $y1), list("x" => $x2, "y" => $y2)) = $points;
 list("first" => list($x1, $y1), "second" => list($x2, $y2)) = $points;
+
+[$a, $b, $c] = [1, 2, 3];
