@@ -77,8 +77,6 @@ EOF
                 '<?php $a = "foo \\\\(\$bar8)";',
             ),
             array('<?php $a = "foo \\" \\$$bar";'),
-            array('<?php $a = \'foo bar\';'),
-            array('<?php $a = \'foo "bar"\';'),
             array('<?php $a = "foo \'bar\'";'),
             array('<?php $a = "foo $bar";'),
             array('<?php $a = "foo ${bar}";'),

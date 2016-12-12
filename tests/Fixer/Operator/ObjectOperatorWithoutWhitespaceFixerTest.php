@@ -60,9 +60,6 @@ final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCa
                 '<?php $object	->	method();',
             ),
             array(
-                '<?php $object->method();',
-            ),
-            array(
                 '<?php echo "use it as -> you want";',
             ),
             // Ensure that doesn't break chained multi-line statements
