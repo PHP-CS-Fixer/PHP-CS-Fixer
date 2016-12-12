@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-12-09T17:11:22Z
+
+Ah, thank you. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-12-12T11:18:17Z
+
+Well, I mean, naively just reverting to the original algorithm if the new one doesn't match the correct number of items works:
+
+![image](https://cloud.githubusercontent.com/assets/2829600/21097494/98fda3e8-c05c-11e6-9e4f-be0b292d58f6.png)
+
+![image](https://cloud.githubusercontent.com/assets/2829600/21097497/9ed29198-c05c-11e6-9edb-5898bbe96628.png)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-12T12:02:13Z
+
+:+1:  however it would be nice if we could avoid the second `preg_match*` though
