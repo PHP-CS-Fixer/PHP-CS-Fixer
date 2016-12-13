@@ -48,6 +48,16 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \n |\r\nTEST;\r\n", // both cases
         );
 
+        // !T_INLINE_HTML
+        $cases[] = array(
+            "<?php ?>\r\n<?php ?>\r\n",
+        );
+
+        // !T_CONSTANT_ENCAPSED_STRING
+        $cases[] = array(
+            "<?php \$a=\"a\r\n\";",
+        );
+
         return $cases;
     }
 
@@ -123,14 +133,6 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
             array(
                 "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\nAAAAA \n |\nTEST;\n",
                 "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\r\n",
-            ),
-            // !T_INLINE_HTML
-            array(
-                "<?php ?>\r\n<?php ?>\r\n",
-            ),
-            // !T_CONSTANT_ENCAPSED_STRING
-            array(
-                "<?php \$a=\"a\r\n\";",
             ),
         );
     }

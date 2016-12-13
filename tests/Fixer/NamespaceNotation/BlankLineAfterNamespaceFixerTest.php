@@ -64,13 +64,6 @@ namespace A\B;
 
 class C {}
 ',
-            ),
-            array(
-                '<?php
-namespace A\B;
-
-class C {}
-',
                 '<?php
 namespace A\B;
 class C {}

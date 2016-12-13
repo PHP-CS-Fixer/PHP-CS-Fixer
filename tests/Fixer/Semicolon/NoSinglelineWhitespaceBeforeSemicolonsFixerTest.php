@@ -90,9 +90,6 @@ $this
     ;',
             ),
             array(
-                '<?php $this->foo();',
-            ),
-            array(
                 '<?php $this->foo("with semicolon in string) ; ");',
             ),
         );

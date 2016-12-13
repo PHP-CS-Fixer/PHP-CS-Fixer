@@ -131,7 +131,7 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider testFixProvider
+     * @dataProvider provide54Cases
      * @requires PHP 5.4
      */
     public function test54($expected, $input = null)
