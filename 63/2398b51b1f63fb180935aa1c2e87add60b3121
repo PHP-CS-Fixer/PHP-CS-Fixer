@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-12-12T18:28:47Z
+
+I think it's fine to have extra tests even if they basically duplicate another one, so long as there's not too many.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-12T18:33:24Z
+
+they do not test something similar, they test the exact same thing
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-12T21:56:31Z
+
+while it makes sense, i hope that you did not look for it manually...
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-12T23:38:57Z
+
+>you did not look for it manually...
+
+I found those while playing around with a test-test-tool, while most of these are harmless there was one nice find I think : )
