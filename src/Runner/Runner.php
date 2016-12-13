@@ -229,7 +229,7 @@ final class Runner
             );
         }
 
-        $this->cacheManager->setFile($name, $new);
+        $this->cacheManager->setFile($file->getRealPath(), $new);
 
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,
