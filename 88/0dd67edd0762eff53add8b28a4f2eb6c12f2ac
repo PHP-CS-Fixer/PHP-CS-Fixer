@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-12T18:07:09Z
+
+:+1:
+(but please regenerate the README, @ see contributing ;) ;)  wondering why this passes on 5.3 though :P)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-12T21:50:57Z
+
+i fixed the readme file directly, then i thought i should fix it in php generator, then i commited only later :D
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-12T21:53:24Z
+
+because it's skipped:
+> Unsupported symfony/console version, Symfony\Component\Console\Output\BufferedOutput was added in 2.4.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-12T23:40:32Z
+
+>i fixed the readme file directly, then i thought i should fix it in php generator, then i commited only later :D
+
+nice one : D
