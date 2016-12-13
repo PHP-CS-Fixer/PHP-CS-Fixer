@@ -167,7 +167,8 @@ final class FixCommand extends Command
             $this->errorsManager,
             $resolver->getLinter(),
             $resolver->isDryRun(),
-            $resolver->getCacheManager()
+            $resolver->getCacheManager(),
+            $resolver->getDirectory()
         );
 
         $progressOutput = $showProgress && $stdErr

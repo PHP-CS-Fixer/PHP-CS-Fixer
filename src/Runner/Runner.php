@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Runner;
 
 use PhpCsFixer\Cache\CacheManagerInterface;
+use PhpCsFixer\Cache\Directory;
+use PhpCsFixer\Cache\DirectoryInterface;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
@@ -25,7 +27,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -36,6 +37,11 @@ final class Runner
      * @var DifferInterface
      */
     private $differ;
+
+    /**
+     * @var DirectoryInterface
+     */
+    private $directory;
 
     /**
      * @var EventDispatcher|null
@@ -80,7 +86,8 @@ final class Runner
         ErrorsManager $errorsManager,
         LinterInterface $linter,
         $isDryRun,
-        CacheManagerInterface $cacheManager
+        CacheManagerInterface $cacheManager,
+        DirectoryInterface $directory = null
     ) {
         $this->finder = $finder;
         $this->fixers = $fixers;
@@ -90,6 +97,7 @@ final class Runner
         $this->linter = $linter;
         $this->isDryRun = $isDryRun;
         $this->cacheManager = $cacheManager;
+        $this->directory = $directory ?: new Directory('');
     }
 
     /**
@@ -115,7 +123,7 @@ final class Runner
             $fixInfo = $this->fixFile($file, $collection->currentLintingResult());
 
             if ($fixInfo) {
-                $name = $this->getFileRelativePathname($file);
+                $name = $this->directory->getRelativePathTo($file);
                 $changed[$name] = $fixInfo;
             }
 
@@ -128,7 +136,7 @@ final class Runner
 
     private function fixFile(\SplFileInfo $file, LintingResultInterface $lintingResult)
     {
-        $name = $this->getFileRelativePathname($file);
+        $name = $file->getPathname();
 
         try {
             $lintingResult->check();
@@ -267,14 +275,5 @@ final class Runner
         }
 
         $this->eventDispatcher->dispatch($name, $event);
-    }
-
-    private function getFileRelativePathname(\SplFileInfo $file)
-    {
-        if ($file instanceof SymfonySplFileInfo) {
-            return $file->getRelativePathname();
-        }
-
-        return $file->getPathname();
     }
 }

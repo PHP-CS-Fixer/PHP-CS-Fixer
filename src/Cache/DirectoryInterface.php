@@ -14,8 +14,6 @@ namespace PhpCsFixer\Cache;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
  */
 interface DirectoryInterface
 {
