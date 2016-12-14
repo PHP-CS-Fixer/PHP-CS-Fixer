@@ -36,7 +36,6 @@ final class NoTrailingCommaInSinglelineArrayFixerTest extends AbstractFixerTestC
     {
         return array(
             array('<?php $x = array();'),
-            array('<?php $x = array("foo");'),
             array(
                 '<?php $x = array("foo");',
                 '<?php $x = array("foo", );',
