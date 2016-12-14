@@ -735,43 +735,41 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
         ));
     }
 
-    public function testInvalidConfigWithNotSupportedSortAlgorithm()
+    /**
+     * @dataProvider provideInvalidSortAlgorithmConfiguration
+     *
+     * @param mixed $typesOrder
+     * @param mixed $sortAlgorithm
+     */
+    public function testInvalidSortAlgorithm($typesOrder, $sortAlgorithm)
     {
         $this->setExpectedException(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[ordered_imports] Sort algorithm is invalid. Should be one of the: "alpha", "length"'
+            '[ordered_imports] Sort algorithm is invalid. Should be one of the: "alpha", "length".'
         );
 
         $this->fixer->configure(array(
-            'typesOrder' => null,
-            'sortAlgorithm' => 'dope',
+            'typesOrder' => $typesOrder,
+            'sortAlgorithm' => $sortAlgorithm,
         ));
     }
 
-    public function testInvalidConfigWithMultipleSortAlgorithm()
+    public function provideInvalidSortAlgorithmConfiguration()
     {
-        $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[ordered_imports] Sort algorithm is invalid. Should be one of the: "alpha", "length"'
+        return array(
+            array(
+                'typesOrder' => null,
+                'sortAlgorithm' => 'dope',
+            ),
+            array(
+                'typesOrder' => null,
+                'sortAlgorithm' => array(OrderedImportsFixer::SORT_ALPHA, OrderedImportsFixer::SORT_LENGTH),
+            ),
+            array(
+                'typesOrder' => null,
+                'sortAlgorithm' => new \stdClass(),
+            ),
         );
-
-        $this->fixer->configure(array(
-            'typesOrder' => null,
-            'sortAlgorithm' => array(OrderedImportsFixer::SORT_ALPHA, OrderedImportsFixer::SORT_LENGTH),
-        ));
-    }
-
-    public function testInvalidConfigWithSortAlgorithmIsNotString()
-    {
-        $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[ordered_imports] Sort algorithm is invalid. Should be one of the: "alpha", "length"'
-        );
-
-        $this->fixer->configure(array(
-            'typesOrder' => null,
-            'sortAlgorithm' => new \stdClass(),
-        ));
     }
 
     public function testFixByLength()
