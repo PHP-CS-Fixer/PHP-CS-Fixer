@@ -253,7 +253,7 @@ Choose from the list of available rules:
    | *Rule is: configurable.*
 
 * **hash_to_slash_comment** [@Symfony]
-   | Single line comments should use double slashes (//) and not hash (#).
+   | Single line comments should use double slashes `//` and not hash `#`.
 
 * **header_comment**
    | Add, replace or remove header comment.

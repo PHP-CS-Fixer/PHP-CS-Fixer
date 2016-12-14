@@ -73,6 +73,13 @@ final class HashToSlashCommentFixerTest extends AbstractFixerTestCase
                     # test 4
                 ',
             ),
+            array(
+                '<?php // a',
+                '<?php # a',
+            ),
+            array(
+                '<?php# a',
+            ),
         );
     }
 }
