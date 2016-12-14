@@ -323,7 +323,7 @@ Choose from the list of available rules:
    | The closing ?> tag MUST be omitted from files containing only PHP.
 
 * **no_empty_comment** [@Symfony]
-   | There should not be an empty comments.
+   | There should not be any empty comments.
 
 * **no_empty_phpdoc** [@Symfony]
    | There should not be empty PHPDoc blocks.
