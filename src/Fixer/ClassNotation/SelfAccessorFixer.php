@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -22,11 +24,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class SelfAccessorFixer extends AbstractFixer
 {
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -55,9 +52,34 @@ final class SelfAccessorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Inside a classy element "self" should be preferred to the class name itself.';
+        return new FixerDefinition(
+            'Inside a classy element "self" should be preferred to the class name itself.',
+            array(
+                new CodeSample(
+                    '<?php
+class Sample
+{
+    const BAZ = 1;
+    const BAR = Sample::BAZ;
+    
+    public function getBar()
+    {
+        return Sample::BAR;
+    }
+}'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
 
     /**

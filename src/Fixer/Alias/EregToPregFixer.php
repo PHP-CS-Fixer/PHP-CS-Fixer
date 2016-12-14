@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
@@ -38,22 +40,6 @@ final class EregToPregFixer extends AbstractFixer
      * @var array the list of preg delimiters, in order of preference
      */
     private static $delimiters = array('/', '#', '!');
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return true;
-    }
 
     /**
      * {@inheritdoc}
@@ -117,9 +103,32 @@ final class EregToPregFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Replace deprecated ereg regular expression functions with preg.';
+        return new FixerDefinition(
+            'Replace deprecated `ereg` regular expression functions with preg.',
+            array(new CodeSample('<?php $x = ereg(\'[A-Z]\');')),
+            null,
+            null,
+            null,
+            'Risky if the `ereg` funcion is overridden.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
     }
 
     /**

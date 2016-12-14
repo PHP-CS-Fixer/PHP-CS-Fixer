@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -20,14 +22,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class StandardizeNotEqualsFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_IS_NOT_EQUAL);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -43,8 +37,19 @@ final class StandardizeNotEqualsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Replace all <> with !=.';
+        return new FixerDefinition(
+            'Replace all `<>` with `!=`.',
+            array(new CodeSample("<?php\n\$a = \$b <> \$c;"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_IS_NOT_EQUAL);
     }
 }

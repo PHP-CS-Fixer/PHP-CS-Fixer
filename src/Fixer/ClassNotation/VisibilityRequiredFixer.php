@@ -15,6 +15,10 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -98,17 +102,47 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurabl
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function getDefinition()
     {
-        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+        return new FixerDefinition(
+            'Visibility MUST be declared on all properties and methods; abstract and final MUST be declared before the visibility; static MUST be declared after the visibility.',
+            array(
+                new CodeSample(
+'<?php
+class Sample
+{
+    var $a;
+    static protected $var_foo2;
+
+    function A()
+    {
+    }
+}
+'
+                ),
+                new VersionSpecificCodeSample(
+'<?php
+class Sample
+{
+    const SAMPLE = 1;
+}
+',
+                    new VersionSpecification(70100),
+                    array('const')
+                ),
+            ),
+            null,
+            'The following type of properties can be configured to fix `property`, `method` and `const`. For `const` PHP >= 7.1 is required.',
+            array('property', 'method')
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Visibility MUST be declared on all properties and methods; abstract and final MUST be declared before the visibility; static MUST be declared after the visibility.';
+        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
 
     /**

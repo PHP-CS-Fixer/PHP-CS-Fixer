@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -24,14 +26,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class MethodArgumentSpaceFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound('(');
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -53,6 +47,66 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
      * @param int    $index
      */
     public function fixSpace(Tokens $tokens, $index)
+    {
+        @trigger_error(sprintf('%s::%s is deprecated and will be removed in 3.0', __CLASS__, __METHOD__), E_USER_DEPRECATED);
+        $this->fixSpace2($tokens, $index);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma.',
+            array(new CodeSample("<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound('(');
+    }
+
+    /**
+     * Fix arguments spacing for given function.
+     *
+     * @param Tokens $tokens             Tokens to handle
+     * @param int    $startFunctionIndex Start parenthesis position
+     */
+    private function fixFunction(Tokens $tokens, $startFunctionIndex)
+    {
+        $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
+
+        for ($index = $endFunctionIndex - 1; $index > $startFunctionIndex; --$index) {
+            $token = $tokens[$index];
+
+            if ($token->equals(')')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false);
+                continue;
+            }
+
+            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index, false);
+                continue;
+            }
+
+            if ($token->equals(',')) {
+                $this->fixSpace2($tokens, $index);
+            }
+        }
+    }
+
+    /**
+     * Method to insert space after comma and remove space before comma.
+     *
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function fixSpace2(Tokens $tokens, $index)
     {
         // remove space before comma if exist
         if ($tokens[$index - 1]->isWhitespace()) {
@@ -90,14 +144,6 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function getDescription()
-    {
-        return 'In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma.';
-    }
-
-    /**
      * Check if last item of current line is a comment.
      *
      * @param Tokens $tokens tokens to handle
@@ -120,34 +166,5 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
         $content = $nextToken->getContent();
 
         return $content !== ltrim($content, "\r\n");
-    }
-
-    /**
-     * Fix arguments spacing for given function.
-     *
-     * @param Tokens $tokens             Tokens to handle
-     * @param int    $startFunctionIndex Start parenthesis position
-     */
-    private function fixFunction(Tokens $tokens, $startFunctionIndex)
-    {
-        $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
-
-        for ($index = $endFunctionIndex - 1; $index > $startFunctionIndex; --$index) {
-            $token = $tokens[$index];
-
-            if ($token->equals(')')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false);
-                continue;
-            }
-
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index, false);
-                continue;
-            }
-
-            if ($token->equals(',')) {
-                $this->fixSpace($tokens, $index);
-            }
-        }
     }
 }

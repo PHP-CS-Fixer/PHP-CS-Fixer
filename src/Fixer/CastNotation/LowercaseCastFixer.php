@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\CastNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -21,14 +23,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class LowercaseCastFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(Token::getCastTokenKinds());
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -46,8 +40,37 @@ final class LowercaseCastFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Cast should be written in lower case.';
+        return new FixerDefinition(
+            'Cast should be written in lower case.',
+            array(
+                new CodeSample(
+'<?php
+    $a = (BOOLEAN) $b;
+    $a = (BOOL) $b;
+    $a = (INTEGER) $b;
+    $a = (INT) $b;
+    $a = (DOUBLE) $b;
+    $a = (FLoaT) $b;
+    $a = (reaL) $b;
+    $a = (flOAT) $b;
+    $a = (sTRING) $b;
+    $a = (ARRAy) $b;
+    $a = (OBJect) $b;
+    $a = (UNset) $b;
+    $a = (Binary) $b;
+'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(Token::getCastTokenKinds());
     }
 }

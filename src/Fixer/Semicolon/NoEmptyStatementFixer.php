@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Semicolon;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -22,14 +24,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class NoEmptyStatementFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(';');
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -64,6 +58,17 @@ final class NoEmptyStatementFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Remove useless semicolon statements.',
+            array(new CodeSample('<?php $a = 1;;'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run before the BracesFixer, CombineConsecutiveUnsetsFixer, NoExtraConsecutiveBlankLinesFixer, NoMultilineWhitespaceBeforeSemicolonsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer,
@@ -74,9 +79,9 @@ final class NoEmptyStatementFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Remove useless semicolon statements.';
+        return $tokens->isTokenKindFound(';');
     }
 
     /**
