@@ -379,6 +379,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
         $definition = $fixer->getDefinition();
 
+        $this->assertInternalType('string', $definition->getSummary(), sprintf('[%s] Description must be a string.', $fixer->getName()));
         $this->assertRegExp('/^[A-Z@].*\.$/', $definition->getSummary(), sprintf('[%s] Description must start with capital letter or an @ and end with dot.', $fixer->getName()));
 
         if ($definition instanceof ShortFixerDefinition) {
@@ -466,7 +467,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testShortFixerDefinition()
     {
-        $guard = 117;
+        $guard = 50;
 
         $this->assertCount(
             $guard,
@@ -528,6 +529,60 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
                 )
             )
         );
+    }
+
+    public function testFixerEndPoints()
+    {
+        $factory = new FixerFactory();
+        $factory->registerBuiltInFixers();
+        $fixers = $factory->getFixers();
+
+        $interfacedMethods = array_merge(
+            $this->getPublicMethodNames('PhpCsFixer\Fixer\ConfigurableFixerInterface'),
+            $this->getPublicMethodNames('PhpCsFixer\Fixer\DefinedFixerInterface'),
+            $this->getPublicMethodNames('PhpCsFixer\Fixer\FixerInterface'),
+            $this->getPublicMethodNames('PhpCsFixer\Fixer\WhitespacesAwareFixerInterface')
+        );
+
+        $interfacedMethods[] = '__construct';
+
+        $problems = array();
+        foreach ($fixers as $fixer) {
+            $methods = $this->getPublicMethodNames($fixer);
+            $methods = array_filter(
+                $methods,
+                function ($method) use ($interfacedMethods) {
+                    return !in_array($method, $interfacedMethods, true);
+                }
+            );
+
+            if (count($methods)) {
+                $problems[$fixer->getName()] = $methods;
+            }
+        }
+
+        if (count($problems)) {
+            $list = '';
+            foreach ($problems as $fixerName => $methodNames) {
+                $list .= sprintf("\nFixer: %s\n%s\n", $fixerName, implode("\n", $methodNames));
+            }
+
+            $this->fail(sprintf("Fixers should not have public methods that are not part of the interfaces.\nViolations:%s", $list));
+        }
+    }
+
+    private function getPublicMethodNames($item)
+    {
+        $reflection = new \ReflectionClass($item);
+        $methodNames = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
+        array_walk(
+            $methodNames,
+            function (\ReflectionMethod &$method) {
+                $method = $method->getName();
+            }
+        );
+
+        return $methodNames;
     }
 
     private function getAllFixers()
