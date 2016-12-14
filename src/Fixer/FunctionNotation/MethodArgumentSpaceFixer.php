@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -24,14 +26,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class MethodArgumentSpaceFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound('(');
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -54,72 +48,27 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
      */
     public function fixSpace(Tokens $tokens, $index)
     {
-        // remove space before comma if exist
-        if ($tokens[$index - 1]->isWhitespace()) {
-            $prevIndex = $tokens->getPrevNonWhitespace($index - 1);
-
-            if (!$tokens[$prevIndex]->equalsAny(array(',', array(T_END_HEREDOC)))) {
-                $tokens[$index - 1]->clear();
-            }
-        }
-
-        $nextToken = $tokens[$index + 1];
-
-        // Two cases for fix space after comma (exclude multiline comments)
-        //  1) multiple spaces after comma
-        //  2) no space after comma
-        if ($nextToken->isWhitespace()) {
-            if ($this->isCommentLastLineToken($tokens, $index + 2)) {
-                return;
-            }
-
-            $newContent = ltrim($nextToken->getContent(), " \t");
-
-            if ('' === $newContent) {
-                $newContent = ' ';
-            }
-
-            $nextToken->setContent($newContent);
-
-            return;
-        }
-
-        if (!$this->isCommentLastLineToken($tokens, $index + 1)) {
-            $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
-        }
+        @trigger_error(sprintf('%s::%s is deprecated and will be removed in 3.0', __CLASS__, __METHOD__), E_USER_DEPRECATED);
+        $this->fixSpace2($tokens, $index);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma.';
+        return new FixerDefinition(
+            'In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma.',
+            array(new CodeSample("<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);"))
+        );
     }
 
     /**
-     * Check if last item of current line is a comment.
-     *
-     * @param Tokens $tokens tokens to handle
-     * @param int    $index  index of token
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    private function isCommentLastLineToken(Tokens $tokens, $index)
+    public function isCandidate(Tokens $tokens)
     {
-        if (!$tokens[$index]->isComment()) {
-            return false;
-        }
-
-        $nextToken = $tokens[$index + 1];
-
-        if (!$nextToken->isWhitespace()) {
-            return false;
-        }
-
-        $content = $nextToken->getContent();
-
-        return $content !== ltrim($content, "\r\n");
+        return $tokens->isTokenKindFound('(');
     }
 
     /**
@@ -146,8 +95,65 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
             }
 
             if ($token->equals(',')) {
-                $this->fixSpace($tokens, $index);
+                $this->fixSpace2($tokens, $index);
             }
         }
+    }
+
+    /**
+     * Method to insert space after comma and remove space before comma.
+     *
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function fixSpace2(Tokens $tokens, $index)
+    {
+        // remove space before comma if exist
+        if ($tokens[$index - 1]->isWhitespace()) {
+            $prevIndex = $tokens->getPrevNonWhitespace($index - 1);
+
+            if (!$tokens[$prevIndex]->equalsAny(array(',', array(T_END_HEREDOC)))) {
+                $tokens[$index - 1]->clear();
+            }
+        }
+
+        $nextToken = $tokens[$index + 1];
+
+        // Two cases for fix space after comma (exclude multiline comments)
+        //  1) multiple spaces after comma
+        //  2) no space after comma
+        if ($nextToken->isWhitespace()) {
+            if ($this->isCommentLastLineToken($tokens, $index + 2)) {
+                return;
+            }
+
+            $newContent = ltrim($nextToken->getContent(), " \t");
+            $nextToken->setContent('' === $newContent ? ' ' : $newContent);
+
+            return;
+        }
+
+        if (!$this->isCommentLastLineToken($tokens, $index + 1)) {
+            $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
+        }
+    }
+
+    /**
+     * Check if last item of current line is a comment.
+     *
+     * @param Tokens $tokens tokens to handle
+     * @param int    $index  index of token
+     *
+     * @return bool
+     */
+    private function isCommentLastLineToken(Tokens $tokens, $index)
+    {
+        if (!$tokens[$index]->isComment() || !$tokens[$index + 1]->isWhitespace()) {
+            return false;
+        }
+
+        $content = $tokens[$index + 1]->getContent();
+
+        return $content !== ltrim($content, "\r\n");
     }
 }

@@ -225,4 +225,26 @@ EOTXTb
             ),
         );
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 5.6
+     * @dataProvider provideFix56Cases
+     */
+    public function testFix56($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix56Cases()
+    {
+        return array(
+            array(
+                '<?php function A($c, ...$a){}',
+                '<?php function A($c ,...$a){}',
+            ),
+        );
+    }
 }
