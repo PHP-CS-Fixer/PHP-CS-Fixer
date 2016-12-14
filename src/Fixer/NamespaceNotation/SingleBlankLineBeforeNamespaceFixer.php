@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\NamespaceNotation;
 
 use PhpCsFixer\AbstractLinesBeforeNamespaceFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -20,14 +22,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNamespaceFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_NAMESPACE);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -45,8 +39,22 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNames
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'There should be exactly one blank line before a namespace declaration.';
+        return new FixerDefinition(
+            'There should be exactly one blank line before a namespace declaration.',
+            array(
+                new CodeSample('<?php  namespace A {}'),
+                new CodeSample("<?php\n\n\nnamespace A{}"),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_NAMESPACE);
     }
 }

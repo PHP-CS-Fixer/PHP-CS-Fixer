@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\ControlStructure;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -20,14 +22,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoTrailingCommaInListCallFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_LIST);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -62,8 +56,19 @@ final class NoTrailingCommaInListCallFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Remove trailing commas in list function calls.';
+        return new FixerDefinition(
+            'Remove trailing commas in list function calls.',
+            array(new CodeSample("<?php\nlist(\$a, \$b,) = foo();"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_LIST);
     }
 }

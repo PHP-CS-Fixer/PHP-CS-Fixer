@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\ReturnNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -22,14 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class BlankLineBeforeReturnFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_RETURN);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -73,6 +67,17 @@ final class BlankLineBeforeReturnFixer extends AbstractFixer implements Whitespa
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'An empty line feed should precede a return statement.',
+            array(new CodeSample("<?php\nfunction A()\n{\n    echo 1;\n    return 1;\n}"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run after NoUselessReturnFixer
@@ -82,8 +87,8 @@ final class BlankLineBeforeReturnFixer extends AbstractFixer implements Whitespa
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'An empty line feed should precede a return statement.';
+        return $tokens->isTokenKindFound(T_RETURN);
     }
 }

@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -21,14 +23,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class NoUnusedImportsFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_USE);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -53,10 +47,29 @@ final class NoUnusedImportsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Unused use statements must be removed.',
+            array(new CodeSample("<?php\nuse \\DateTime;\nuse \\Exception;\n\nnew DateTime();"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run after the SingleImportPerStatementFixer
         return -10;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_USE);
     }
 
     /**
@@ -74,14 +87,6 @@ final class NoUnusedImportsFixer extends AbstractFixer
         }
 
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDescription()
-    {
-        return 'Unused use statements must be removed.';
     }
 
     /**

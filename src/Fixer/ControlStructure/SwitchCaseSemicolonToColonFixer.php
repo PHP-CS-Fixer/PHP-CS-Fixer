@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\ControlStructure;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -22,14 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(array(T_CASE, T_DEFAULT));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -65,8 +59,30 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'A case should be followed by a colon and not a semicolon.';
+        return new FixerDefinition(
+            'A case should be followed by a colon and not a semicolon.',
+            array(
+                new CodeSample(
+'<?php
+    switch ($a) {
+        case 1;
+            break;
+        default;
+            break;
+    }
+'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array(T_CASE, T_DEFAULT));
     }
 }

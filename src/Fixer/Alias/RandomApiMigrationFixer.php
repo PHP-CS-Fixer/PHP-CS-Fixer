@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\Alias;
 use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -63,14 +65,6 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($this->configuration as $functionIdentity => $functionReplacement) {
@@ -104,8 +98,31 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Replaces rand, srand, getrandmax functions calls with their mt_* analogs.';
+        return new FixerDefinition(
+            'Replaces `rand`, `mt_rand`, `srand`, `getrandmax` functions calls with their `mt_*` analogs.',
+            array(
+                new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();"),
+                new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();", array('getrandmax' => 'mt_getrandmax')),
+            ),
+            null,
+            'Configure any of the functions `getrandmax`, `rand` and `srand` to be replaced with modern versions.',
+            array(
+                'getrandmax' => 'mt_getrandmax',
+                'rand' => 'mt_rand',
+                'mt_rand' => 'mt_rand',
+                'srand' => 'mt_srand',
+            ),
+            'Risky when the configured functions are overridden.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
     }
 }

@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\NamespaceNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -24,14 +26,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class BlankLineAfterNamespaceFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_NAMESPACE);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -70,6 +64,20 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'There MUST be one blank line after the namespace declaration.',
+            array(
+                new CodeSample("<?php\nnamespace Sample\\Sample;\n\n\n\$a;"),
+                new CodeSample("<?php\nnamespace Sample\\Sample;\nClass Test{}"),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run after the NoUnusedImportsFixer
@@ -79,8 +87,8 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'There MUST be one blank line after the namespace declaration.';
+        return $tokens->isTokenKindFound(T_NAMESPACE);
     }
 }

@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Semicolon;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -21,14 +23,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SpaceAfterSemicolonFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(';');
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -58,8 +52,26 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Fix whitespace after a semicolon.';
+        return new FixerDefinition(
+            'Fix whitespace after a semicolon.',
+            array(new CodeSample(
+                '<?php
+                    sample();     $test = 1;
+                    sample();$test = 2;
+                    for ( ;;++$sample) {
+                    }
+                '
+            ))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(';');
     }
 }

@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\PhpTag;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -21,14 +23,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_OPEN_TAG);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -59,8 +53,19 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Ensure there is no code on the same line as the PHP open tag.';
+        return new FixerDefinition(
+            'Ensure there is no code on the same line as the PHP open tag.',
+            array(new CodeSample("<?php \$a = 1;\n\$b = 3;"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_OPEN_TAG);
     }
 }
