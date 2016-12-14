@@ -50,6 +50,7 @@ final class NoClosingTagFixerTest extends AbstractFixerTestCase
     public function provideCasesWithFullOpenTag()
     {
         return array(
+            array("<?php class A{}?>\n"),
             array('<?php echo \'Foo\';', '<?php echo \'Foo\'; ?>'),
             array('<?php echo \'Foo\';', '<?php echo \'Foo\';?>'),
             array('<?php echo \'Foo\'; ?> PLAIN TEXT'),
