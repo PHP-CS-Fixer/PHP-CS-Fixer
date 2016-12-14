@@ -67,7 +67,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
      */
     protected function getDescription()
     {
-        return 'There should not be an empty comments.';
+        return 'There should not be any empty comments.';
     }
 
     /**
