@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\ControlStructure;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -22,14 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ElseifFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAllTokenKindsFound(array(T_IF, T_ELSE));
-    }
-
     /**
      * Replace all `else if` (T_ELSE T_IF) with `elseif` (T_ELSEIF).
      *
@@ -70,8 +64,19 @@ final class ElseifFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'The keyword elseif should be used instead of else if so that all control keywords look like single words.';
+        return new FixerDefinition(
+            'The keyword `elseif` should be used instead of `else if` so that all control keywords look like single words.',
+            array(new CodeSample("<?php\nif (\$a) {\n} else if (\$b) {\n}"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAllTokenKindsFound(array(T_IF, T_ELSE));
     }
 }

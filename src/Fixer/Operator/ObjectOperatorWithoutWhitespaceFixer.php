@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -21,14 +23,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ObjectOperatorWithoutWhitespaceFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_OBJECT_OPERATOR);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -55,8 +49,19 @@ final class ObjectOperatorWithoutWhitespaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'There should not be space before or after object T_OBJECT_OPERATOR.';
+        return new FixerDefinition(
+            'There should not be space before or after object T_OBJECT_OPERATOR.',
+            array(new CodeSample('<?php $a  ->  b;'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_OBJECT_OPERATOR);
     }
 }

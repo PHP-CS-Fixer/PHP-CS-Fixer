@@ -13,19 +13,13 @@
 namespace PhpCsFixer\Fixer\CastNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 final class NoShortBoolCastFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound('!');
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -50,11 +44,28 @@ final class NoShortBoolCastFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Short cast bool using double exclamation mark should not be used.';
+        return new FixerDefinition(
+            'Short cast `bool` using double exclamation mark should not be used.',
+            array(new CodeSample("<?php\n\$a = !!\$b;"))
+        );
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound('!');
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return int
+     */
     private function fixShortCast(Tokens $tokens, $index)
     {
         for ($i = $index - 1; $i > 1; --$i) {
@@ -71,6 +82,11 @@ final class NoShortBoolCastFixer extends AbstractFixer
         return $i;
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $start
+     * @param int    $end
+     */
     private function fixShortCastToBoolCast(Tokens $tokens, $start, $end)
     {
         for (; $start <= $end; ++$start) {

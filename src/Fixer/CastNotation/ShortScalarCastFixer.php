@@ -57,7 +57,7 @@ final class ShortScalarCastFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Cast "(boolean)" and "(integer)" should be written as "(bool)" and "(int)". "(double)" and "(real)" as "(float)".',
+            'Cast `(boolean)` and `(integer)` should be written as `(bool)` and `(int)`, `(double)` and `(real)` as `(float)`.',
             array(new CodeSample("<?php\n\$a = (boolean) \$b;\n\$a = (integer) \$b;\n\$a = (double) \$b;\n\$a = (real) \$b;"))
         );
     }

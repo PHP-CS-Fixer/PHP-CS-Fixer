@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -21,14 +23,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class DirConstantFixer extends AbstractFunctionReferenceFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_FILE);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -81,8 +75,23 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Replaces dirname(__FILE__) expression with equivalent __DIR__ constant.';
+        return new FixerDefinition(
+            'Replaces `dirname(__FILE__)` expression with equivalent `__DIR__` constant.',
+            array(new CodeSample("<?php\n\$a = dirname(__FILE__);")),
+            null,
+            null,
+            null,
+            'Risky when the function `dirname()` is overridden.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_FILE);
     }
 }

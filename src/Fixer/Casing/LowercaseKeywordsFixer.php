@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Casing;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -24,14 +26,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class LowercaseKeywordsFixer extends AbstractFixer
 {
     private static $excludedTokens = array(T_HALT_COMPILER);
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(Token::getKeywords());
-    }
 
     /**
      * {@inheritdoc}
@@ -48,8 +42,34 @@ final class LowercaseKeywordsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'PHP keywords MUST be in lower case.';
+        return new FixerDefinition(
+            'PHP keywords MUST be in lower case.',
+            array(
+                new CodeSample(
+'<?php
+    FOREACH($a AS $B) {
+        TRY {
+            NEW $C($a, ISSET($B));
+            WHILE($B) {
+                INCLUDE "test.php";
+            }
+        } CATCH(\Exception $e) {
+            EXIT(1);
+        }
+    }
+'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(Token::getKeywords());
     }
 }
