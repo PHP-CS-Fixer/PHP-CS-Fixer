@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -25,14 +27,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoTrailingWhitespaceFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return true;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -65,6 +59,17 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Remove trailing whitespace at the end of non-blank lines.',
+            array(new CodeSample("<?php\n\$a = 1;     \n"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run after NoEmptyPhpdocFixer, NoUnneededControlParenthesesFixer, ClassDefinitionFixer, CombineConsecutiveUnsetsFixer, NoEmptyStatementFixer and NoUselessElseFixer.
@@ -74,8 +79,8 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Remove trailing whitespace at the end of non-blank lines.';
+        return true;
     }
 }

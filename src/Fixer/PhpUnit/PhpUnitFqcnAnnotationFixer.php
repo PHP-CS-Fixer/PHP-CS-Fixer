@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -20,14 +22,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpUnitFqcnAnnotationFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -46,6 +40,32 @@ final class PhpUnitFqcnAnnotationFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'PHPUnit annotations should be a FQCNs including a root namespace.',
+            array(new CodeSample(
+'<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @expectedException InvalidArgumentException
+     * @covers Project\NameSpace\Something
+     * @coversDefaultClass Project\Default
+     * @uses Project\Test\Util
+     */
+    public function testSomeTest()
+    {
+    }
+}
+'
+            ))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run before NoUnusedImportsFixer
@@ -55,8 +75,8 @@ final class PhpUnitFqcnAnnotationFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'PHPUnit annotations should be a FQCNs including a root namespace.';
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 }

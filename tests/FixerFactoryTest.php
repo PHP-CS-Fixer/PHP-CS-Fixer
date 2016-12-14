@@ -379,6 +379,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
         $definition = $fixer->getDefinition();
 
+        $this->assertInternalType('string', $definition->getSummary(), sprintf('[%s] Description must be a string.', $fixer->getName()));
         $this->assertRegExp('/^[A-Z@].*\.$/', $definition->getSummary(), sprintf('[%s] Description must start with capital letter or an @ and end with dot.', $fixer->getName()));
 
         if ($definition instanceof ShortFixerDefinition) {
@@ -441,14 +442,16 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider provideFixersForFinalCheckCases
+     * @param \ReflectionClass $class
+     *
+     * @dataProvider provideAllFixersReflected
      */
     public function testFixersAreFinal(\ReflectionClass $class)
     {
         $this->assertTrue($class->isFinal());
     }
 
-    public function provideFixersForFinalCheckCases()
+    public function provideAllFixersReflected()
     {
         $cases = array();
 
@@ -466,7 +469,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testShortFixerDefinition()
     {
-        $guard = 117;
+        $guard = 50;
 
         $this->assertCount(
             $guard,
@@ -528,6 +531,63 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
                 )
             )
         );
+    }
+
+    /**
+     * @param \ReflectionClass $class
+     *
+     * @dataProvider provideAllFixersReflected
+     */
+    public function testFixerEndPoints(\ReflectionClass $class)
+    {
+        static $interfacedMethods = null;
+
+        if (null === $interfacedMethods) {
+            $interfacedMethods = array_merge(
+                $this->getPublicMethodNames(new \ReflectionClass('PhpCsFixer\Fixer\ConfigurableFixerInterface')),
+                $this->getPublicMethodNames(new \ReflectionClass('PhpCsFixer\Fixer\DefinedFixerInterface')),
+                $this->getPublicMethodNames(new \ReflectionClass('PhpCsFixer\Fixer\FixerInterface')),
+                $this->getPublicMethodNames(new \ReflectionClass('PhpCsFixer\Fixer\WhitespacesAwareFixerInterface'))
+            );
+
+            $interfacedMethods[] = '__construct';
+        }
+
+        $methods = $this->getPublicMethodNames($class);
+        $methods = array_filter(
+            $methods,
+            function ($method) use ($interfacedMethods) {
+                return !in_array($method, $interfacedMethods, true);
+            }
+        );
+
+        $this->assertCount(
+            0,
+            $methods,
+            sprintf(
+                "Fixer %s should not have public methods that are not part of the PhpCsFixer\\Fixer interfaces.\nViolations:\n%s",
+                $class->getName(),
+                implode("\n", $methods)
+            )
+        );
+    }
+
+    /**
+     * @param \ReflectionClass $item
+     *
+     * @return string[]
+     */
+    private function getPublicMethodNames(\ReflectionClass $item)
+    {
+        $methodNames = $item->getMethods(\ReflectionMethod::IS_PUBLIC);
+        array_walk(
+            $methodNames,
+            function (\ReflectionMethod &$method) {
+                $method = $method->getName();
+            }
+        );
+
+        return $methodNames;
     }
 
     private function getAllFixers()

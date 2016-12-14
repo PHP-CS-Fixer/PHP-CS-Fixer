@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -20,14 +22,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class DeclareEqualNormalizeFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DECLARE);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -49,8 +43,19 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Equal sign in declare statement should not be surrounded by spaces.';
+        return new FixerDefinition(
+            'Equal sign in declare statement should not be surrounded by spaces.',
+            array(new CodeSample("<?php\ndeclare(ticks =  1);"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DECLARE);
     }
 }

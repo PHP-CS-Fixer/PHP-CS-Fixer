@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -67,22 +69,6 @@ final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurableFixe
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($this->configuration as $methodBefore) {
@@ -114,8 +100,51 @@ final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurableFixe
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'PHPUnit methods like "assertSame" should be used instead of "assertEquals".';
+        return new FixerDefinition(
+            'PHPUnit methods like `assertSame` should be used instead of `assertEquals`.',
+            array(
+                new CodeSample(
+'<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testSomeTest()
+    {
+        $this->assertAttributeEquals(a(), b());
+        $this->assertAttributeNotEquals(a(), b());
+        $this->assertEquals(a(), b());
+        $this->assertNotEquals(a(), b());
+    }
+}
+'
+                ),
+            ),
+            null,
+            'Configure which of the following functions should be replaced `assertAttributeEquals`, `assertAttributeNotEquals`, `assertEquals`, `assertNotEquals`',
+            array(
+                'assertAttributeEquals',
+                'assertAttributeNotEquals',
+                'assertEquals',
+                'assertNotEquals',
+            ),
+            'Risky when the any of functions are overridden.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
     }
 }

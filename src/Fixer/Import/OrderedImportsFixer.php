@@ -13,6 +13,10 @@
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -28,14 +32,6 @@ final class OrderedImportsFixer extends AbstractFixer
     const IMPORT_TYPE_CLASS = 1;
     const IMPORT_TYPE_CONST = 2;
     const IMPORT_TYPE_FUNCTION = 3;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_USE);
-    }
 
     /**
      * {@inheritdoc}
@@ -86,10 +82,35 @@ final class OrderedImportsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Ordering use statements.',
+            array(
+                new CodeSample("<?php\nuse Z; use A;"),
+                new VersionSpecificCodeSample(
+                    "<?php\nuse function AAA;\nuse const AAB;\nuse AAC;",
+                    new VersionSpecification(70000)
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run after the NoLeadingImportSlashFixer
         return -30;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_USE);
     }
 
     /**
@@ -116,14 +137,6 @@ final class OrderedImportsFixer extends AbstractFixer
             str_replace('\\', ' ', $firstNamespace),
             str_replace('\\', ' ', $secondNamespace)
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDescription()
-    {
-        return 'Ordering use statements.';
     }
 
     private function getNewOrder(array $uses, Tokens $tokens)

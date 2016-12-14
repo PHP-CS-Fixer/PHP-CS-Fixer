@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -21,14 +23,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class PreIncrementFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(array(T_INC, T_DEC));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -61,9 +55,20 @@ final class PreIncrementFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Pre incrementation/decrementation should be used if possible.';
+        return new FixerDefinition(
+            'Pre incrementation/decrementation should be used if possible.',
+            array(new CodeSample("<?php\n\$a++;\n\$b--;"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array(T_INC, T_DEC));
     }
 
     /**

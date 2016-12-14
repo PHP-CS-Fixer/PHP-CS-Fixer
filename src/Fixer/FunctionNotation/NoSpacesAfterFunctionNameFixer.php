@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -23,14 +25,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(array_merge($this->getFunctionyTokenKinds(), array(T_STRING)));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -78,9 +72,20 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.';
+        return new FixerDefinition(
+            'When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.',
+            array(new CodeSample("<?php\nrequire ('sample.php');\necho (test (3));\nexit  (1);"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array_merge($this->getFunctionyTokenKinds(), array(T_STRING)));
     }
 
     /**
@@ -104,25 +109,21 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     private function getFunctionyTokenKinds()
     {
-        static $tokens = null;
-
-        if (null === $tokens) {
-            $tokens = array(
-                T_ARRAY,
-                T_ECHO,
-                T_EMPTY,
-                T_EVAL,
-                T_EXIT,
-                T_INCLUDE,
-                T_INCLUDE_ONCE,
-                T_ISSET,
-                T_LIST,
-                T_PRINT,
-                T_REQUIRE,
-                T_REQUIRE_ONCE,
-                T_UNSET,
-            );
-        }
+        static $tokens = array(
+            T_ARRAY,
+            T_ECHO,
+            T_EMPTY,
+            T_EVAL,
+            T_EXIT,
+            T_INCLUDE,
+            T_INCLUDE_ONCE,
+            T_ISSET,
+            T_LIST,
+            T_PRINT,
+            T_REQUIRE,
+            T_REQUIRE_ONCE,
+            T_UNSET,
+        );
 
         return $tokens;
     }

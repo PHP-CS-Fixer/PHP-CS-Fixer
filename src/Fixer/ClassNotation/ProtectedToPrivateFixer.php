@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -23,14 +25,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ProtectedToPrivateFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -53,6 +47,30 @@ final class ProtectedToPrivateFixer extends AbstractFixer
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Converts protected variables and methods to private where possible.',
+            array(
+                new CodeSample(
+                '<?php
+final class Sample
+{
+    protected $a;
+    
+    protected function test()
+    {
+    }
+}
+'
+                ),
+            )
+        );
+    }
+
     public function getPriority()
     {
         // must run before OrderedClassElementsFixer.
@@ -62,9 +80,9 @@ final class ProtectedToPrivateFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Converts protected variables and methods to private where possible.';
+        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
 
     /**

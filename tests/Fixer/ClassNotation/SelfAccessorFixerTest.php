@@ -67,7 +67,6 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                 '<?php interface Foo { const BAR = self::BAZ; function bar($a = self::BAR); }',
                 '<?php interface Foo { const BAR = Foo::BAZ; function bar($a = Foo::BAR); }',
             ),
-
             array(
                 '<?php class Foo { const Foo = 1; }',
             ),
@@ -115,9 +114,9 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
      */
     public function testFix54()
     {
-        $expected = '<?php trait Foo { function bar() { self::bar(); } }';
-        $input = '<?php trait Foo { function bar() { Foo::bar(); } }';
-
-        $this->doTest($expected, $input);
+        $this->doTest(
+            '<?php trait Foo { function bar() { self::bar(); } }',
+            '<?php trait Foo { function bar() { Foo::bar(); } }'
+        );
     }
 }

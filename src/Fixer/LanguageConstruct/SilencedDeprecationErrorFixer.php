@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -21,11 +23,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SilencedDeprecationErrorFixer extends AbstractFixer
 {
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -58,16 +55,31 @@ final class SilencedDeprecationErrorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function getDefinition()
     {
-        return true;
+        return new FixerDefinition(
+            'Ensures deprecation notices are silenced.',
+            array(new CodeSample("<?php\ntrigger_error('Warning.', E_USER_DEPRECATED);")),
+            null,
+            null,
+            null,
+            'Silencing of deprecation errors might cause changes to code behaviour.'
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Ensures deprecation notices are silenced.';
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
     }
 }

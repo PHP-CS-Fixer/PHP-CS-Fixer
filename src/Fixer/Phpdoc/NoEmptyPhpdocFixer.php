@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -20,14 +22,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoEmptyPhpdocFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -47,6 +41,17 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'There should not be empty PHPDoc blocks.',
+            array(new CodeSample('<?php /**  */'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run before NoExtraConsecutiveBlankLinesFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer and
@@ -57,8 +62,8 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'There should not be empty PHPDoc blocks.';
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 }

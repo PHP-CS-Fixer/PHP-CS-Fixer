@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\ControlStructure;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -22,14 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SwitchCaseSpaceFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(array(T_CASE, T_DEFAULT));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -66,8 +60,30 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Removes extra spaces between colon and case value.';
+        return new FixerDefinition(
+            'Removes extra spaces between colon and case value.',
+            array(
+                new CodeSample(
+'<?php
+    switch($a) {
+        case 1   :
+            break;
+        default     :
+            return 2;
+    }
+'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array(T_CASE, T_DEFAULT));
     }
 }
