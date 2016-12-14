@@ -307,8 +307,9 @@ Choose from the list of available rules:
 * **new_with_braces** [@Symfony]
    | All instances created with new keyword must be followed by braces.
 
-* **no_alias_functions** [@Symfony]
+* **no_alias_functions** [@Symfony:risky]
    | Master functions shall be used instead of aliases.
+   | *Rule is: risky.*
 
 * **no_blank_lines_after_class_opening** [@Symfony]
    | There should be no empty lines after class opening brace.
