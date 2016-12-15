@@ -79,8 +79,8 @@ Renamed rules
 
 Old name | New name | Note
 -------- | -------- | ----
-align_double_arrow                             | binary_operator_spaces                            | use configuration ['align_double_arrow' => 'true']
-align_equals                                   | binary_operator_spaces                            | use configuration ['align_equals' => 'true']
+align_double_arrow                             | binary_operator_spaces                            | use configuration ['align_double_arrow' => true]
+align_equals                                   | binary_operator_spaces                            | use configuration ['align_equals' => true]
 array_element_no_space_before_comma            | no_whitespace_before_comma_in_array
 array_element_white_space_after_comma          | whitespace_after_comma_in_array
 blankline_after_open_tag                       | blank_line_after_opening_tag
