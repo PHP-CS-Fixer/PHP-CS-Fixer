@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @internal
  */
-class NamespaceOperatorTransformer extends AbstractTransformer
+final class NamespaceOperatorTransformer extends AbstractTransformer
 {
     /**
      * {@inheritdoc}

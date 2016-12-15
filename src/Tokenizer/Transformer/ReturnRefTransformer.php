@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @internal
  */
-class ReturnRefTransformer extends AbstractTransformer
+final class ReturnRefTransformer extends AbstractTransformer
 {
     /**
      * {@inheritdoc}

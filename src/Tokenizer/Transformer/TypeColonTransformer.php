@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @internal
  */
-class TypeColonTransformer extends AbstractTransformer
+final class TypeColonTransformer extends AbstractTransformer
 {
     /**
      * {@inheritdoc}
