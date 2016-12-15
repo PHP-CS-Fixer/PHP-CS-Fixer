@@ -67,6 +67,17 @@ class Token
         }
     }
 
+    public function __debugInfo()
+    {
+        return array(
+            "\0+\0content" => $this->content,
+            "\0+\0id" => $this->id,
+            "\0+\0isArray" => $this->isArray,
+            "\0+\0changed" => $this->changed,
+            'name' => $this->getName(),
+        );
+    }
+
     /**
      * Get cast token kinds.
      *

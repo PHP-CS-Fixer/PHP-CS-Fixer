@@ -428,4 +428,19 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
             array(false, array(1 => false), 1),
         );
     }
+
+    public function testDebugInfo()
+    {
+        $token = $this->getForeachToken();
+        $this->assertSame(
+            array(
+                "\0+\0content" => $token->getContent(),
+                "\0+\0id" => $token->getId(),
+                "\0+\0isArray" => $token->isArray(),
+                "\0+\0changed" => false,
+                'name' => $token->getName(),
+            ),
+            $token->__debugInfo()
+        );
+    }
 }
