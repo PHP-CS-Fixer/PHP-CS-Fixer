@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\PhpTag;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -23,14 +25,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoClosingTagFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_CLOSE_TAG);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -62,8 +56,19 @@ final class NoClosingTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'The closing ?> tag MUST be omitted from files containing only PHP.';
+        return new FixerDefinition(
+            'The closing `?>` tag MUST be omitted from files containing only PHP.',
+            array(new CodeSample("<?php\nclass Sample\n{\n}\n?>"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_CLOSE_TAG);
     }
 }

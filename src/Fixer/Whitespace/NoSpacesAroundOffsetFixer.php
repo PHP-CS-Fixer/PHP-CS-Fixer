@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\Whitespace;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -62,14 +64,6 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(array('[', CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
@@ -105,9 +99,27 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'There MUST NOT be spaces around offset braces.';
+        return new FixerDefinition(
+            'There MUST NOT be spaces around offset braces.',
+            array(
+                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];"),
+                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];", array('inside')),
+                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];", array('outside')),
+            ),
+            null,
+            'Configure if the fixer must fix spaces inside or outside the offset braces or both (default).',
+            self::$defaultConfiguration
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array('[', CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN));
     }
 
     /**

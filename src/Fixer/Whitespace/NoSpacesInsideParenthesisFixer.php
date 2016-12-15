@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -24,14 +26,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoSpacesInsideParenthesisFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound('(');
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -64,9 +58,27 @@ final class NoSpacesInsideParenthesisFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.';
+        return new FixerDefinition(
+            'There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.',
+            array(
+                new CodeSample("<?php\nif ( \$a ) {\n    foo( );\n}"),
+                new CodeSample('<?php
+function foo( $bar, $baz )
+{
+}'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound('(');
     }
 
     /**

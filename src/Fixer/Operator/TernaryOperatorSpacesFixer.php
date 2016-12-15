@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -21,14 +23,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class TernaryOperatorSpacesFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAllTokenKindsFound(array('?', ':'));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -82,9 +76,20 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Standardize spaces around ternary operator.';
+        return new FixerDefinition(
+            'Standardize spaces around ternary operator.',
+            array(new CodeSample('<?php $a = $a   ?1 :0;'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAllTokenKindsFound(array('?', ':'));
     }
 
     /**

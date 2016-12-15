@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -29,7 +31,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($index = 0, $count = count($tokens); $index < $count; ++$index) {
+        for ($index = 1, $count = count($tokens); $index < $count; ++$index) {
             if (!$tokens[$index]->isGivenKind(T_COMMENT)) {
                 continue;
             }
@@ -57,17 +59,20 @@ final class NoEmptyCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function getDefinition()
     {
-        return $tokens->isTokenKindFound(T_COMMENT);
+        return new FixerDefinition(
+            'There should not be an empty comments.',
+            array(new CodeSample("<?php\n//\n#\n/* */\n"))
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'There should not be an empty comments.';
+        return $tokens->isTokenKindFound(T_COMMENT);
     }
 
     /**

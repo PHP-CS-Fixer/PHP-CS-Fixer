@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -29,14 +31,6 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer implements Whitespac
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $count = $tokens->count();
@@ -44,6 +38,17 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer implements Whitespac
         if ($count && !$tokens[$count - 1]->isGivenKind(array(T_INLINE_HTML, T_CLOSE_TAG, T_OPEN_TAG))) {
             $tokens->ensureWhitespaceAtIndex($count - 1, 1, $this->whitespacesConfig->getLineEnding());
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'A PHP file without end tag must always end with a single empty line feed.',
+            array(new CodeSample("<?php\n\$a = 1;"))
+        );
     }
 
     /**
@@ -58,8 +63,8 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer implements Whitespac
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'A file must always end with a single empty line feed.';
+        return true;
     }
 }

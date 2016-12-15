@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Semicolon;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -43,16 +45,19 @@ final class SemicolonAfterInstructionFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function getDefinition()
     {
-        return $tokens->isTokenKindFound(T_CLOSE_TAG);
+        return new FixerDefinition(
+            'Instructions must be terminated with a semicolon.',
+            array(new CodeSample('<?php echo 1 ?>'))
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Instructions must be terminated with a semicolon.';
+        return $tokens->isTokenKindFound(T_CLOSE_TAG);
     }
 }

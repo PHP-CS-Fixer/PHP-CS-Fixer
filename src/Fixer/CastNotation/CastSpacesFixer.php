@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\CastNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -21,14 +23,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class CastSpacesFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(Token::getCastTokenKinds());
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -62,6 +56,17 @@ final class CastSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'A single space should be between cast and variable.',
+            array(new CodeSample("<?php\n\$bar = ( string )  \$a;\n\$foo = (int)\$b;"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be ran after the NoShortBoolCastFixer
@@ -71,8 +76,8 @@ final class CastSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'A single space should be between cast and variable.';
+        return $tokens->isAnyTokenKindsFound(Token::getCastTokenKinds());
     }
 }
