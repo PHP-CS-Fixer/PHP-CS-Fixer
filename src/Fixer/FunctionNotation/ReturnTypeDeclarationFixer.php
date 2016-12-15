@@ -13,6 +13,9 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -21,14 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ReturnTypeDeclarationFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(CT::T_TYPE_COLON);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -53,8 +48,24 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'There should be no space before colon and one space after it in return type declaration.';
+        return new FixerDefinition(
+            'There should be no space before colon and one space after it in return type declaration. Requires PHP >= 7.',
+            array(
+                new VersionSpecificCodeSample(
+                    '<?php function foo(int $a):string {}',
+                    new VersionSpecification(70000)
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(CT::T_TYPE_COLON);
     }
 }

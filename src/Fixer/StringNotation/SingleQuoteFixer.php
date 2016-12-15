@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\StringNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -20,14 +22,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SingleQuoteFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_CONSTANT_ENCAPSED_STRING);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -55,8 +49,19 @@ final class SingleQuoteFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Convert double quotes to single quotes for simple strings.';
+        return new FixerDefinition(
+            'Convert double quotes to single quotes for simple strings.',
+            array(new CodeSample('<?php $a = "sample";'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_CONSTANT_ENCAPSED_STRING);
     }
 }

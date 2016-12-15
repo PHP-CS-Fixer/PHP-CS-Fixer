@@ -14,8 +14,9 @@ namespace PhpCsFixer\Fixer\Strict;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
-use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -56,7 +57,12 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     {
         return new FixerDefinition(
             'Force strict types declaration in all files. Requires PHP >= 7.0.',
-            array(new CodeSample('<?php')),
+            array(
+                new VersionSpecificCodeSample(
+                    '<?php ',
+                    new VersionSpecification(70000)
+                ),
+            ),
             null,
             null,
             null,

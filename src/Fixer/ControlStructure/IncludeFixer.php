@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\ControlStructure;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -25,26 +27,37 @@ final class IncludeFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $this->clearIncludies($tokens, $this->findIncludies($tokens));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Include/Require and file path should be divided with a single space. File path should not be placed under brackets.',
+            array(
+                new CodeSample(
+'<?php
+require ("sample1.php");
+require_once  "sample2.php";
+include       "sample3.php";
+include_once("sample4.php");
+'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound(array(T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $includies = $this->findIncludies($tokens);
-        $this->clearIncludies($tokens, $includies);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDescription()
-    {
-        return 'Include/Require and file path should be divided with a single space. File path should not be placed under brackets.';
     }
 
     private function clearIncludies(Tokens $tokens, array $includies)

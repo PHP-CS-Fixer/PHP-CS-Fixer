@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -37,22 +39,6 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
         'strrchr' => array('alternativeName' => 'mb_strrchr', 'argumentCount' => array(2)),
         'substr_count' => array('alternativeName' => 'mb_substr_count', 'argumentCount' => array(2, 3, 4)),
     );
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return true;
-    }
 
     /**
      * {@inheritdoc}
@@ -86,8 +72,48 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Replace non multibyte-safe functions with corresponding mb function.';
+        return new FixerDefinition(
+            'Replace non multibyte-safe functions with corresponding mb function.',
+            array(
+                new CodeSample(
+'<?php
+$a = strlen($a);
+$a = strpos($a, $b);
+$a = strrpos($a, $b);
+$a = substr($a, $b);
+$a = strtolower($a);
+$a = strtoupper($a);
+$a = stripos($a, $b);
+$a = strripos($a, $b);
+$a = strstr($a, $b);
+$a = stristr($a, $b);
+$a = strrchr($a, $b);
+$a = substr_count($a, $b);
+'
+                ),
+            ),
+            null,
+            null,
+            null,
+            'Risky when the any of functions are overridden.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
     }
 }
