@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-14T08:33:13Z
+
+Thanks for PR'ing this typo!
+The README.rst is generated so the fix should be done within the fixer itself as well.
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Fixer/Comment/NoEmptyCommentFixer.php#L70
+Let me know if you've the time to do this, otherwise I can pick it up later.
+
+---------------------------------------------------------------------------
+
+by fritz-c at 2016-12-14T08:56:34Z
+
+Yeah, I can get that spot tomorrow (Japan time).
+
+---------------------------------------------------------------------------
+
+by fritz-c at 2016-12-14T23:59:20Z
+
+Updated.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-15T06:20:04Z
+
+:+1: thanks :)
