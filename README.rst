@@ -534,7 +534,7 @@ Choose from the list of available rules:
 
 * **random_api_migration** [@PHP70Migration, @PHP71Migration]
    | Replaces `rand`, `mt_rand`, `srand`, `getrandmax` functions calls with
-   | their mt_* analogs.
+   | their `mt_*` analogs.
    | *Rule is: configurable, risky.*
 
 * **return_type_declaration** [@Symfony]

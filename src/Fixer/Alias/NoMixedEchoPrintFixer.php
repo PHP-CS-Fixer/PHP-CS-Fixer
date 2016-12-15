@@ -82,7 +82,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
                 new CodeSample('<?php echo(\'example\');', array('use' => 'print')),
             ),
             null,
-            'The fixer can be configured to change `print` to `echo` `[\'use\' => \'echo\']` or `echo` to `print` `[\'use\' => \'print\']`.',
+            "The fixer can be configured to change `print` to `echo` `['use' => 'echo']` or `echo` to `print` `['use' => 'print']`.",
             self::$defaultConfig
         );
     }

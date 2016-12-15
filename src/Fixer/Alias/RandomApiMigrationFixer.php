@@ -101,7 +101,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Replaces `rand`, `mt_rand`, `srand`, `getrandmax` functions calls with their mt_* analogs.',
+            'Replaces `rand`, `mt_rand`, `srand`, `getrandmax` functions calls with their `mt_*` analogs.',
             array(
                 new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();"),
                 new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();", array('getrandmax' => 'mt_getrandmax')),
