@@ -18,6 +18,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
+ * @author SpacePossum
+ *
  * @internal
  */
 final class ClassDefinitionFixerTest extends AbstractFixerTestCase
@@ -41,16 +43,17 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string $expected PHP source code
-     * @param string $input    PHP source code
+     * @param string                   $expected PHP source code
+     * @param string                   $input    PHP source code
+     * @param null|array<string, bool> $config
      *
      * @dataProvider provideAnonymousClassesCases
      *
      * @requires PHP 7.0
      */
-    public function testFixingAnonymousClasses($expected, $input)
+    public function testFixingAnonymousClasses($expected, $input, array $config = null)
     {
-        $this->fixer->configure(self::$defaultTestConfig);
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
@@ -138,32 +141,83 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     {
         return array(
             array(
-                "<?php \$a = new class\n{};",
+                '<?php $a = new class(0) extends SomeClass implements SomeInterface, D {};',
+                "<?php \$a = new    class(0)     extends\nSomeClass\timplements    SomeInterface, D {};",
+            ),
+            array(
+                '<?php $a = new class(1) extends SomeClass implements SomeInterface, D {};',
+                "<?php \$a = new    class(1)     extends\nSomeClass\timplements    SomeInterface, D {};",
+                array('singleLine' => true),
+            ),
+            array(
+                "<?php \$a = new class('1a') implements\nA\n{};",
+                "<?php \$a = new class('1a')   implements\nA{};",
+            ),
+            array(
+                "<?php \$a = new class('1a') implements A {};",
+                "<?php \$a = new class('1a')   implements\nA{};",
+                array('singleItemSingleLine' => true),
+            ),
+            array(
+                '<?php $a = new class {};',
                 '<?php $a = new class{};',
             ),
             array(
-                "<?php \$a = new class()\n{};",
+                '<?php $a = new class {};',
+                "<?php \$a = new class\n{};",
+            ),
+            array(
+                '<?php $a = new class() {};',
                 "<?php \$a = new\n class  (  ){};",
             ),
             array(
-                "<?php \$a = new class(10, 1, /**/ 2)\n{};",
+                '<?php $a = new class(10, 1, /**/ 2) {};',
                 '<?php $a = new class(  10, 1,/**/2  ){};',
             ),
             array(
-                "<?php \$a = new class(10)\n{};",
-                '<?php $a = new    class(10){};',
+                '<?php $a = new class(2) {};',
+                '<?php $a = new    class(2){};',
             ),
             array(
-                "<?php \$a = new class(10) extends SomeClass implements SomeInterface, D\n{};",
-                "<?php \$a = new    class(10)     extends\nSomeClass\timplements    SomeInterface, D {};",
-            ),
-            array(
-                "<?php \$a = new class(\$this->prop)\n{};",
+                '<?php $a = new class($this->prop) {};',
                 '<?php $a = new class(   $this->prop   ){};',
             ),
             array(
-                "<?php \$a = new class(\$this->prop, \$v[3], 4)\n{};",
-                '<?php $a = new class(   $this->prop,$v[3],   4){};',
+                '<?php $a = new class($this->prop, $v[3], 4) {};',
+                '<?php $a = new class(   $this->prop,$v[3],   4)         {};',
+            ),
+            'PSR-12 Extends/Implements Parenthesis on the next line.' => array(
+                '<?php
+$instance = new class extends \Foo implements
+\ArrayAccess,
+    \Countable,
+    \Serializable
+{};',
+                '<?php
+$instance = new class extends \Foo implements
+\ArrayAccess,\Countable,\Serializable{};',
+            ),
+            'PSR-12 Implements Parenthesis on the next line.' => array(
+                '<?php
+$instance = new class implements
+\ArrayAccess,
+    \Countable,
+    \Serializable
+{};',
+                '<?php
+$instance = new class implements
+\ArrayAccess,\Countable,\Serializable{};',
+            ),
+            'PSR-12 Extends Parenthesis on the next line.' => array(
+                '<?php
+$instance = new class extends
+ArrayAccess
+{};',
+                '<?php
+$instance = new class
+extends
+ArrayAccess
+{};',
             ),
         );
     }
@@ -206,8 +260,8 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
                 array('singleLine' => true),
             ),
             array(
-                "<?php class configA4 extends D implements B, //\nC\n{}",
-                "<?php class configA4\n extends\nD\n\t implements\nB,//\nC{}",
+                "<?php class configA4 extends D implements B, #\nC\n{}",
+                "<?php class configA4\n extends\nD\n\t implements\nB,#\nC{}",
                 array('singleLine' => true),
             ),
             array(
@@ -358,22 +412,39 @@ TestInterface3, /**/     TestInterface4   ,
     }
 
     /**
-     * @param string $source         PHP source code
-     * @param int    $classOpenIndex classy curly brace open index
+     * @param string $source   PHP source code
      * @param string $label
      * @param array  $expected
      *
      * @dataProvider provideClassyImplementsInfoCases
      */
-    public function testClassyInheritanceInfo($source, $classOpenIndex, $label, array $expected)
+    public function testClassyInheritanceInfo($source, $label, array $expected)
+    {
+        $this->doTestClassyInheritanceInfo($source, $label, $expected);
+    }
+
+    /**
+     * @param string $source   PHP source code
+     * @param string $label
+     * @param array  $expected
+     *
+     * @requires PHP 7.0
+     * @dataProvider provideClassyImplementsInfoCases7
+     */
+    public function testClassyInheritanceInfo7($source, $label, array $expected)
+    {
+        $this->doTestClassyInheritanceInfo($source, $label, $expected);
+    }
+
+    public function doTestClassyInheritanceInfo($source, $label, array $expected)
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
-
+        $this->assertTrue($tokens[$expected['start']]->isGivenKind(array(T_IMPLEMENTS, T_EXTENDS)), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
         $method = new \ReflectionMethod($this->fixer, 'getClassyInheritanceInfo');
         $method->setAccessible(true);
 
-        $result = $method->invoke($this->fixer, $tokens, $expected['start'], $classOpenIndex, $label);
+        $result = $method->invoke($this->fixer, $tokens, $expected['start'], $label);
 
         $this->assertSame($expected, $result);
     }
@@ -386,7 +457,6 @@ TestInterface3, /**/     TestInterface4   ,
 class X11 implements    Z   , T,R
 {
 }',
-                15,
                 'numberOfImplements',
                 array('start' => 5, 'numberOfImplements' => 3, 'multiLine' => false),
             ),
@@ -395,25 +465,21 @@ class X11 implements    Z   , T,R
 class X10 implements    Z   , T,R    //
 {
 }',
-                16,
                 'numberOfImplements',
                 array('start' => 5, 'numberOfImplements' => 3, 'multiLine' => false),
             ),
             array(
                 '<?php class A implements B {}',
-                9,
                 'numberOfImplements',
                 array('start' => 5, 'numberOfImplements' => 1, 'multiLine' => false),
             ),
             array(
                 "<?php class A implements B,\n C{}",
-                11,
                 'numberOfImplements',
                 array('start' => 5, 'numberOfImplements' => 2, 'multiLine' => true),
             ),
             array(
                 "<?php class A implements Z\\C\\B,C,D  {\n\n\n}",
-                17,
                 'numberOfImplements',
                 array('start' => 5, 'numberOfImplements' => 3, 'multiLine' => false),
             ),
@@ -438,9 +504,29 @@ namespace {
     $a = new A();
     $a->test();
 }',
-                48,
                 'numberOfImplements',
                 array('start' => 36, 'numberOfImplements' => 2, 'multiLine' => true),
+            ),
+        );
+    }
+
+    public function provideClassyImplementsInfoCases7()
+    {
+        return array(
+            array(
+                "<?php \$a = new    class(3)     extends\nSomeClass\timplements    SomeInterface, D {};",
+                'numberOfExtends',
+                array('start' => 12, 'numberOfExtends' => 1, 'multiLine' => true),
+            ),
+            array(
+                "<?php \$a = new class(4) extends\nSomeClass\timplements SomeInterface, D\n\n{};",
+                'numberOfImplements',
+                array('start' => 16, 'numberOfImplements' => 2, 'multiLine' => false),
+            ),
+            array(
+                "<?php \$a = new class(5) extends SomeClass\nimplements    SomeInterface, D {};",
+                'numberOfExtends',
+                array('start' => 12, 'numberOfExtends' => 1, 'multiLine' => true),
             ),
         );
     }
