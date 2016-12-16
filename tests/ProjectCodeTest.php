@@ -26,6 +26,79 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $className
      *
+     * @dataProvider provideSrcClasses
+     */
+    public function testThatSrcClassesNotAbuseInterfaces($className)
+    {
+        $rc = new \ReflectionClass($className);
+        $doc = new DocBlock($rc->getDocComment());
+
+        if (
+            $rc->isInterface()
+            || count($doc->getAnnotationsOfType('internal'))
+            || 0 === count($rc->getInterfaces())
+            || in_array($className, array(
+                'PhpCsFixer\Finder',
+                'PhpCsFixer\Test\AbstractFixerTestCase',
+                'PhpCsFixer\Test\AbstractIntegrationTestCase',
+                'PhpCsFixer\Tokenizer\Tokens',
+            ), true)
+        ) {
+            return;
+        }
+
+        $allowedMethods = array_map(
+            function (\ReflectionClass $interface) {
+                return $this->getPublicMethodNames($interface);
+            },
+            $rc->getInterfaces()
+        );
+
+        if (count($allowedMethods)) {
+            $allowedMethods = array_unique(call_user_func_array('array_merge', $allowedMethods));
+        }
+
+        $allowedMethods[] = '__construct';
+        $allowedMethods[] = '__destruct';
+        $allowedMethods[] = '__wakeup';
+
+        $exceptionMethods = array(
+            'setWhitespacesConfig', // due to AbstractFixer::setWhitespacesConfig
+        );
+
+        // @TODO: should be removed at 3.0
+        $exceptionMethodsPerClass = array(
+            'PhpCsFixer\Config' => array('create'),
+            'PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer' => array('fixSpace'),
+            'PhpCsFixer\Fixer\Import\OrderedImportsFixer' => array('sortingCallBack'),
+        );
+
+        $definedMethods = $this->getPublicMethodNames($rc);
+
+        $extraMethods = array_diff(
+            $definedMethods,
+            $allowedMethods,
+            $exceptionMethods,
+            isset($exceptionMethodsPerClass[$className]) ? $exceptionMethodsPerClass[$className] : array()
+        );
+
+        sort($extraMethods);
+
+        $this->assertEmpty(
+            $extraMethods,
+            sprintf(
+                "Class '%s' should not have public methods that are not part of implemented interfaces.\nViolations:\n%s",
+                $className,
+                implode("\n", array_map(function ($item) {
+                    return " * $item";
+                }, $extraMethods))
+            )
+        );
+    }
+
+    /**
+     * @param string $className
+     *
      * @dataProvider provideTestClasses
      */
     public function testThatTestClassesAreAbstractOrFinal($className)
@@ -54,6 +127,16 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function provideSrcClasses()
+    {
+        return array_map(
+            function ($item) {
+                return array($item);
+            },
+            $this->getSrcClasses()
+        );
+    }
+
     public function provideTestClasses()
     {
         return array_map(
@@ -62,6 +145,39 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
             },
             $this->getTestClasses()
         );
+    }
+
+    private function getSrcClasses()
+    {
+        static $files;
+
+        if (null !== $files) {
+            return $files;
+        }
+
+        $finder = Finder::create()
+            ->files()
+            ->name('*.php')
+            ->in(__DIR__.'/../src')
+            ->exclude(array(
+                'Resources',
+            ))
+        ;
+
+        $files = array_map(
+            function (SplFileInfo $file) {
+                return sprintf(
+                    '%s\\%s%s%s',
+                    'PhpCsFixer',
+                    strtr($file->getRelativePath(), DIRECTORY_SEPARATOR, '\\'),
+                    $file->getRelativePath() ? '\\' : '',
+                    $file->getBasename('.'.$file->getExtension())
+                );
+            },
+            iterator_to_array($finder, false)
+        );
+
+        return $files;
     }
 
     private function getTestClasses()
@@ -91,9 +207,24 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
                     $file->getBasename('.'.$file->getExtension())
                 );
             },
-            iterator_to_array($finder)
+            iterator_to_array($finder, false)
         );
 
         return $files;
+    }
+
+    /**
+     * @param \ReflectionClass $rc
+     *
+     * @return string[]
+     */
+    private function getPublicMethodNames(\ReflectionClass $rc)
+    {
+        return array_map(
+            function (\ReflectionMethod $rm) {
+                return $rm->getName();
+            },
+            $rc->getMethods(\ReflectionMethod::IS_PUBLIC)
+        );
     }
 }
