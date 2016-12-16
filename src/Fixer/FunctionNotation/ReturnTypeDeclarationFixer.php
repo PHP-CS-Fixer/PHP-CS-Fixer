@@ -107,12 +107,12 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
                     $versionSpecification
                 ),
                 new VersionSpecificCodeSample(
-                    "<?php\nfunction foo(int \$a): string {};",
+                    "<?php\nfunction foo(int \$a):string {};",
                     $versionSpecification,
                     array('space_before' => 'none')
                 ),
                 new VersionSpecificCodeSample(
-                    "<?php\nfunction foo(int \$a): string {};",
+                    "<?php\nfunction foo(int \$a):string {};",
                     $versionSpecification,
                     array('space_before' => 'one')
                 ),
