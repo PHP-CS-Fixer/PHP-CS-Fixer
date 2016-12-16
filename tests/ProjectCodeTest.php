@@ -32,11 +32,13 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
     public function testThatSrcClassesNotAbuseInterfaces($className)
     {
         $rc = new \ReflectionClass($className);
-        $doc = new DocBlock($rc->getDocComment());
 
         if (
             $rc->isInterface()
-            || count($doc->getAnnotationsOfType('internal'))
+            || (
+                false !== $rc->getDocComment()
+                && count((new DocBlock($rc->getDocComment()))->getAnnotationsOfType('internal'))
+            )
             || 0 === count($rc->getInterfaces())
             || in_array($className, array(
                 'PhpCsFixer\Finder',
