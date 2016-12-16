@@ -521,7 +521,7 @@ Choose from the list of available rules:
    | Pre incrementation/decrementation should be used if possible.
 
 * **protected_to_private**
-   | Converts protected variables and methods to private where possible.
+   | Converts `protected` variables and methods to `private` where possible.
 
 * **psr0**
    | Classes must be in a path that matches their namespace, be at least one
