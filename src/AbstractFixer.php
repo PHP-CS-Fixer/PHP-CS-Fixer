@@ -83,6 +83,10 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
 
     public function setWhitespacesConfig(WhitespacesFixerConfig $config)
     {
+        if (!$this instanceof WhitespacesAwareFixerInterface) {
+            throw new \LogicException('Cannot run method for class not implementing `WhitespacesAwareFixerInterface`.');
+        }
+
         $this->whitespacesConfig = $config;
     }
 
