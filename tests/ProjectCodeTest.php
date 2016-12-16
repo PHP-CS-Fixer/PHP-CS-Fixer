@@ -102,6 +102,71 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $className
      *
+     * @dataProvider provideSrcClasses
+     */
+    public function testThatSrcClassesNotExposeProperties($className)
+    {
+        $rc = new \ReflectionClass($className);
+
+        if ('PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer' === $className) {
+            $this->markTestIncomplete('Public properties of fixer \'PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer\' will be remove on 3.0.');
+        }
+
+        $this->assertEmpty(
+            $rc->getProperties(\ReflectionProperty::IS_PUBLIC),
+            sprintf('Class \'%s\' should not have public properties.', $className)
+        );
+
+        if ($rc->isFinal()) {
+            return;
+        }
+
+        $allowedProps = array();
+        $definedProps = $rc->getProperties(\ReflectionProperty::IS_PROTECTED);
+
+        if (false !== $rc->getParentClass()) {
+            $allowedProps = $rc->getParentClass()->getProperties(\ReflectionProperty::IS_PROTECTED);
+        }
+
+        $allowedProps = array_map(function (\ReflectionProperty $item) {
+            return $item->getName();
+        }, $allowedProps);
+        $definedProps = array_map(function (\ReflectionProperty $item) {
+            return $item->getName();
+        }, $definedProps);
+
+        $exceptionPropsPerClass = array(
+            'PhpCsFixer\AbstractPhpdocTypesFixer' => array('tags'),
+            'PhpCsFixer\AbstractAlignFixerHelper' => array('deepestLevel'),
+            'PhpCsFixer\AbstractFixer' => array('whitespacesConfig'),
+            'PhpCsFixer\AbstractProxyFixer' => array('proxyFixer'),
+            'PhpCsFixer\Test\AbstractFixerTestCase' => array('fixer', 'linter'),
+            'PhpCsFixer\Test\AbstractIntegrationTestCase' => array('linter'),
+        );
+
+        $extraProps = array_diff(
+            $definedProps,
+            $allowedProps,
+            isset($exceptionPropsPerClass[$className]) ? $exceptionPropsPerClass[$className] : array()
+        );
+
+        sort($extraProps);
+
+        $this->assertEmpty(
+            $extraProps,
+            sprintf(
+                "Class '%s' should not have protected properties.\nViolations:\n%s",
+                $className,
+                implode("\n", array_map(function ($item) {
+                    return " * $item";
+                }, $extraProps))
+            )
+        );
+    }
+
+    /**
+     * @param string $className
+     *
      * @dataProvider provideTestClasses
      */
     public function testThatTestClassesAreAbstractOrFinal($className)
