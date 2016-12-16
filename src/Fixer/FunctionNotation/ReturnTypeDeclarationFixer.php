@@ -36,7 +36,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
     /**
      * @var string
      */
-    private $config;
+    private $configuration;
 
     /**
      * {@inheritdoc}
@@ -44,7 +44,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
-            $this->config = 'none';
+            $this->configuration = 'none';
 
             return;
         }
@@ -63,7 +63,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
             );
         }
 
-        $this->config = $configuration[$key];
+        $this->configuration = $configuration[$key];
     }
 
     /**
@@ -81,12 +81,12 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
             $previousToken = $tokens[$index - 1];
 
             if ($previousToken->isWhitespace()) {
-                if ('none' === $this->config) {
+                if ('none' === $this->configuration) {
                     $previousToken->clear();
                 } else {
                     $previousToken->setContent(' ');
                 }
-            } elseif ('one' === $this->config) {
+            } elseif ('one' === $this->configuration) {
                 $tokens->ensureWhitespaceAtIndex($index, 0, ' ');
                 ++$index;
             }
