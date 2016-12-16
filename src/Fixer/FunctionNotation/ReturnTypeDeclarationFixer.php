@@ -50,10 +50,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
         }
 
         $key = 'space_before';
-        $values = array(
-            'one',
-            'none',
-        );
+        $values = array('one', 'none');
 
         if (!array_key_exists($key, $configuration) || !in_array($configuration[$key], $values, true)) {
             throw new InvalidFixerConfigurationException(
