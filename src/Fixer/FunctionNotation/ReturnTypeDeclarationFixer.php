@@ -27,6 +27,13 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class ReturnTypeDeclarationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
+     * @var array
+     */
+    private static $defaultConfiguration = array(
+        'space_before' => 'none',
+    );
+
+    /**
      * @var string
      */
     private $config;
@@ -119,7 +126,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
             ),
             'Rule is applied only in a PHP 7+ environment.',
             "Configuration must have one element 'space_before' with value 'none' (default) or 'one'.",
-            array('space_before' => 'none')
+            self::$defaultConfiguration
         );
     }
 
