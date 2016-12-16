@@ -27,6 +27,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
      * @param string $className
      *
      * @dataProvider provideSrcClasses
+     * @requires PHP 5.4
      */
     public function testThatSrcClassesNotAbuseInterfaces($className)
     {
