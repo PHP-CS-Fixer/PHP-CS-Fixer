@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-16T23:22:07Z
+
+so...
+in PR you say it's a fix.
+what bug is fixed by this ?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-12-17T13:58:56Z
+
+@keradus
+
+Hmm, it's not a bug, but it's not a feature, either, right? Do you have a better idea for a category?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-17T14:02:13Z
+
+You don't need to stick to feature/bug. There are also docs, cleanups,
+refactoring and so on. Here I would say it's a DX change ;) same milestone,
+change is still good, it is just not a fix.
