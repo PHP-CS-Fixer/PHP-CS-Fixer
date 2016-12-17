@@ -1,0 +1,44 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-12-15T13:01:29Z
+
+Anonymous classes need to be in the configuration, otherwise, we'll have to remove this from the psr2 ruleset.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-15T13:18:26Z
+
+they are in the spirit of psr-2 anonymous methods.
+the thing is that when document was created, anonymous classes was not possible to made
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-12-15T13:26:23Z
+
+Right, but the psr-2 spec officially doesn't enforce anything, only psr-12, right?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-15T13:52:49Z
+
+>Anonymous classes need to be in the configuration, otherwise, we'll have to remove this from the psr2 ruleset.
+
+I vote to remove it from the PSR2 set than as imo there is no point in splitting up the fixer.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-15T13:57:33Z
+
+almost nobody uses psr-12
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-15T14:01:26Z
+
+I don't get it, the was done on 1.x and merged, than requested to do on master and now it is a problem?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-15T14:32:44Z
+
+i don't have problem with it, I am waiting for @gharlan check as you asked him ;)
