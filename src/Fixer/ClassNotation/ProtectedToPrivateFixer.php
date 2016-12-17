@@ -53,7 +53,7 @@ final class ProtectedToPrivateFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Converts protected variables and methods to private where possible.',
+            'Converts `protected` variables and methods to `private` where possible.',
             array(
                 new CodeSample(
                 '<?php
