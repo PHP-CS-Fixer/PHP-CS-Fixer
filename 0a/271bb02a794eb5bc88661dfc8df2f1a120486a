@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-12-12T09:40:38Z
+
+What happens if we add a multicatch?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-12T09:51:00Z
+
+>What happens if we add a multicatch?
+
+https://github.com/SpacePossum/PHP-CS-Fixer/blob/640e37c5938f8e94a238a8baddb5144f6803155a/tests/Fixtures/Integration/misc/PHP7_1.test#L21
+
+it is already part of the test (note that currently the main function of the test is to ensure the fixer doesn't break down or breaks code, not to prove it fixes all 7.1 features)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-12-12T09:54:59Z
+
+great :)
