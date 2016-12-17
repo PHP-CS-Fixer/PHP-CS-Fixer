@@ -233,7 +233,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
             ))
         ;
 
-        $files = array_map(
+        $names = array_map(
             function (SplFileInfo $file) {
                 return sprintf(
                     '%s\\%s%s%s',
@@ -246,7 +246,9 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
             iterator_to_array($finder, false)
         );
 
-        return $files;
+        sort($names);
+
+        return $names;
     }
 
     private function getTestClasses()
@@ -266,7 +268,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
             ))
         ;
 
-        $files = array_map(
+        $names = array_map(
             function (SplFileInfo $file) {
                 return sprintf(
                     '%s\\%s%s%s',
@@ -279,7 +281,9 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
             iterator_to_array($finder, false)
         );
 
-        return $files;
+        sort($names);
+
+        return $names;
     }
 
     /**
