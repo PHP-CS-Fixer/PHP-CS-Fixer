@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by localheinz at 2016-12-16T01:04:43Z
+
+Actually, using _single_ backticks has no effect for RST rendering, should we be using _double_ backticks to have those rendered as code?
+
+<img width="994" alt="screen shot 2016-12-15 at 20 10 18" src="https://cloud.githubusercontent.com/assets/605483/21248121/b5b1e000-c302-11e6-8f4d-b92e7c96f2e2.png">
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-16T08:01:33Z
+
+Single ones will be rendered as `<cite>private</cite>` in website html, but indeed github doesn't display them differently
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-16T08:03:00Z
+
+i think we could handle this on readme generator
