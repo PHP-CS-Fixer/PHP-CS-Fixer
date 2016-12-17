@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-16T11:57:09Z
+
+cc @SpacePossum
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-16T12:27:11Z
+
+nice idea :)
+(needs some tweaking for 5.3 but I'm sure that will be alright)
+Are you going to adopt the tests for public class properties as well?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-16T13:54:33Z
+
+added @SpacePossum
