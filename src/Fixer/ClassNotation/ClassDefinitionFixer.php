@@ -21,7 +21,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
- * Fixer for part of the rules defined in PSR2 ¶4.1 Extends and Implements.
+ * Fixer for part of the rules defined in PSR2 ¶4.1 Extends and Implements and PSR12 ¶8. Anonymous Classes.
  *
  * @author SpacePossum
  */
@@ -109,13 +109,11 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
     {
         $classDefInfo = $this->getClassyDefinitionInfo($tokens, $classyIndex);
 
-        // PSR: class definition open curly brace must go on a new line
-        $classDefInfo['open'] = $this->fixClassyDefinitionOpenSpacing($tokens, $classDefInfo['open']);
-
         // PSR2 4.1 Lists of implements MAY be split across multiple lines, where each subsequent line is indented once.
         // When doing so, the first item in the list MUST be on the next line, and there MUST be only one interface per line.
+
         if (false !== $classDefInfo['implements']) {
-            $this->fixClassyDefinitionImplements(
+            $classDefInfo['implements'] = $this->fixClassyDefinitionImplements(
                 $tokens,
                 $classDefInfo['open'],
                 $classDefInfo['implements']
@@ -123,13 +121,17 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
         }
 
         if (false !== $classDefInfo['extends']) {
-            $this->fixClassyDefinitionExtends(
+            $classDefInfo['extends'] = $this->fixClassyDefinitionExtends(
                 $tokens,
-                false === $classDefInfo['implements'] ? $classDefInfo['open'] : 1 + $classDefInfo['implements']['start'],
+                false === $classDefInfo['implements'] ? $classDefInfo['open'] : $classDefInfo['implements']['start'],
                 $classDefInfo['extends']
             );
         }
 
+        // PSR2: class definition open curly brace must go on a new line.
+        // PSR12: anonymous class curly brace on same line if not multi line implements.
+
+        $classDefInfo['open'] = $this->fixClassyDefinitionOpenSpacing($tokens, $classDefInfo);
         if ($classDefInfo['implements']) {
             $end = $classDefInfo['implements']['start'];
         } elseif ($classDefInfo['extends']) {
@@ -146,23 +148,37 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
         );
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $classOpenIndex
+     * @param array  $classExtendsInfo
+     *
+     * @return array
+     */
     private function fixClassyDefinitionExtends(Tokens $tokens, $classOpenIndex, $classExtendsInfo)
     {
         $endIndex = $tokens->getPrevNonWhitespace($classOpenIndex);
 
         if ($this->config['singleLine'] || false === $classExtendsInfo['multiLine']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classExtendsInfo['start'], $endIndex);
+            $classExtendsInfo['multiLine'] = false;
         } elseif ($this->config['singleItemSingleLine'] && 1 === $classExtendsInfo['numberOfExtends']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classExtendsInfo['start'], $endIndex);
+            $classExtendsInfo['multiLine'] = false;
         } elseif ($this->config['multiLineExtendsEachSingleLine'] && $classExtendsInfo['multiLine']) {
             $this->makeClassyInheritancePartMultiLine($tokens, $classExtendsInfo['start'], $endIndex);
+            $classExtendsInfo['multiLine'] = true;
         }
+
+        return $classExtendsInfo;
     }
 
     /**
      * @param Tokens $tokens
      * @param int    $classOpenIndex
      * @param array  $classImplementsInfo
+     *
+     * @return array
      */
     private function fixClassyDefinitionImplements(Tokens $tokens, $classOpenIndex, array $classImplementsInfo)
     {
@@ -170,32 +186,50 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
 
         if ($this->config['singleLine'] || false === $classImplementsInfo['multiLine']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classImplementsInfo['start'], $endIndex);
+            $classImplementsInfo['multiLine'] = false;
         } elseif ($this->config['singleItemSingleLine'] && 1 === $classImplementsInfo['numberOfImplements']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classImplementsInfo['start'], $endIndex);
+            $classImplementsInfo['multiLine'] = false;
         } else {
             $this->makeClassyInheritancePartMultiLine($tokens, $classImplementsInfo['start'], $endIndex);
+            $classImplementsInfo['multiLine'] = true;
         }
+
+        return $classImplementsInfo;
     }
 
     /**
      * @param Tokens $tokens
-     * @param int    $openIndex
+     * @param array  $classDefInfo
      *
      * @return int
      */
-    private function fixClassyDefinitionOpenSpacing(Tokens $tokens, $openIndex)
+    private function fixClassyDefinitionOpenSpacing(Tokens $tokens, $classDefInfo)
     {
-        if (false !== strpos($tokens[$openIndex - 1]->getContent(), "\n")) {
+        if ($classDefInfo['anonymousClass']) {
+            if (false !== $classDefInfo['implements']) {
+                $spacing = $classDefInfo['implements']['multiLine'] ? $spacing = $this->whitespacesConfig->getLineEnding() : ' ';
+            } elseif (false !== $classDefInfo['extends']) {
+                $spacing = $classDefInfo['extends']['multiLine'] ? $spacing = $this->whitespacesConfig->getLineEnding() : ' ';
+            } else {
+                $spacing = ' ';
+            }
+        } else {
+            $spacing = $this->whitespacesConfig->getLineEnding();
+        }
+
+        $openIndex = $tokens->getNextTokenOfKind($classDefInfo['classy'], array('{'));
+        if (' ' !== $spacing && false !== strpos($tokens[$openIndex - 1]->getContent(), "\n")) {
             return $openIndex;
         }
 
         if ($tokens[$openIndex - 1]->isWhitespace()) {
-            $tokens[$openIndex - 1]->setContent($this->whitespacesConfig->getLineEnding());
+            $tokens[$openIndex - 1]->setContent($spacing);
 
             return $openIndex;
         }
 
-        $tokens->insertAt($openIndex, new Token(array(T_WHITESPACE, $this->whitespacesConfig->getLineEnding())));
+        $tokens->insertAt($openIndex, new Token(array(T_WHITESPACE, $spacing)));
 
         return $openIndex + 1;
     }
@@ -218,11 +252,11 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
 
         if (!(defined('T_TRAIT') && $tokens[$classyIndex]->isGivenKind(T_TRAIT))) {
             $extends = $tokens->findGivenKind(T_EXTENDS, $classyIndex, $openIndex);
-            $extends = count($extends) ? $this->getClassyInheritanceInfo($tokens, key($extends), $openIndex, 'numberOfExtends') : false;
+            $extends = count($extends) ? $this->getClassyInheritanceInfo($tokens, key($extends), 'numberOfExtends') : false;
 
             if (!$tokens[$classyIndex]->isGivenKind(T_INTERFACE)) {
                 $implements = $tokens->findGivenKind(T_IMPLEMENTS, $classyIndex, $openIndex);
-                $implements = count($implements) ? $this->getClassyInheritanceInfo($tokens, key($implements), $openIndex, 'numberOfImplements') : false;
+                $implements = count($implements) ? $this->getClassyInheritanceInfo($tokens, key($implements), 'numberOfImplements') : false;
                 $tokensAnalyzer = new TokensAnalyzer($tokens);
                 $anonymousClass = $tokensAnalyzer->isAnonymousClass($classyIndex);
             }
@@ -240,17 +274,18 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
 
     /**
      * @param Tokens $tokens
-     * @param int    $implementsIndex
-     * @param int    $openIndex
+     * @param int    $startIndex
      * @param string $label
      *
      * @return array
      */
-    private function getClassyInheritanceInfo(Tokens $tokens, $implementsIndex, $openIndex, $label)
+    private function getClassyInheritanceInfo(Tokens $tokens, $startIndex, $label)
     {
-        $implementsInfo = array('start' => $implementsIndex, $label => 1, 'multiLine' => false);
-        $lastMeaningFul = $tokens->getPrevMeaningfulToken($openIndex);
-        for ($i = $implementsIndex; $i < $lastMeaningFul; ++$i) {
+        $implementsInfo = array('start' => $startIndex, $label => 1, 'multiLine' => false);
+        ++$startIndex;
+        $endIndex = $tokens->getNextTokenOfKind($startIndex, array('{', array(T_IMPLEMENTS), array(T_EXTENDS)));
+        $endIndex = $tokens[$endIndex]->equals('{') ? $tokens->getPrevNonWhitespace($endIndex) : $endIndex;
+        for ($i = $startIndex; $i < $endIndex; ++$i) {
             if ($tokens[$i]->equals(',')) {
                 ++$implementsInfo[$label];
 
@@ -281,12 +316,14 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
                     $tokens[$i]->clear();
                 } elseif (
                     !$tokens[$i + 1]->isComment()
-                    && !($tokens[$i - 1]->isGivenKind(T_COMMENT) && '//' === substr($tokens[$i - 1]->getContent(), 0, 2))
+                    && !($tokens[$i - 1]->isGivenKind(T_COMMENT)
+                        && ('#' === substr($tokens[$i - 1]->getContent(), 0, 1) || '//' === substr($tokens[$i - 1]->getContent(), 0, 2)))
                 ) {
                     $tokens[$i]->setContent(' ');
                 }
 
                 --$i;
+
                 continue;
             }
 
