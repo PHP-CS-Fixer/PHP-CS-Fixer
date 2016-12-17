@@ -33,12 +33,13 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
     {
         $rc = new \ReflectionClass($className);
 
+        $doc = false !== $rc->getDocComment()
+            ? new DocBlock($rc->getDocComment())
+            : null;
+
         if (
             $rc->isInterface()
-            || (
-                false !== $rc->getDocComment()
-                && count((new DocBlock($rc->getDocComment()))->getAnnotationsOfType('internal'))
-            )
+            || ($doc && count($doc->getAnnotationsOfType('internal')))
             || 0 === count($rc->getInterfaces())
             || in_array($className, array(
                 'PhpCsFixer\Finder',
