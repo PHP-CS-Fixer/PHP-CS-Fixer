@@ -78,7 +78,10 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
-            $configuration = self::$defaultConfiguration;
+            $this->tokenKindCallbackMap = array(T_WHITESPACE => 'removeMultipleBlankLines');;
+            $this->tokenEqualsMap = array();
+
+            return;
         }
 
         $this->tokenKindCallbackMap = array();

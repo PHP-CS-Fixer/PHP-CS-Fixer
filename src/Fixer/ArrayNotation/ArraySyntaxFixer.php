@@ -52,7 +52,11 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
-            $configuration = self::$defaultConfiguration;
+            $this->config = 'long';
+            $this->resolveCandidateTokenKind();
+            $this->resolveFixCallback();
+
+            return;
         }
 
         if (!array_key_exists('syntax', $configuration) || !in_array($configuration['syntax'], array('long', 'short'), true)) {

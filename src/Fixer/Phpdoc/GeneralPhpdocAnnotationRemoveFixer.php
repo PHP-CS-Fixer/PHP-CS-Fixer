@@ -39,7 +39,9 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
-            $configuration = self::$defaultConfiguration;
+            $this->configuration = self::$defaultConfiguration;
+
+            return;
         }
 
         $this->configuration = $configuration;

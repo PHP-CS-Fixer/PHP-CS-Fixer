@@ -43,7 +43,9 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
-            $configuration = self::$defaultConfiguration;
+            $this->fixCallback = 'fixConcatenationToNoSpace';
+
+            return;
         }
 
         if (!array_key_exists('spacing', $configuration)) {
