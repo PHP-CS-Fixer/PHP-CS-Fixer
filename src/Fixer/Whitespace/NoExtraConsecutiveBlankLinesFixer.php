@@ -41,6 +41,16 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
     /**
      * @var array<int, string> key is token id, value is name of callback
      */
+    private static $defaultTokenKindCallbackMap = array(T_WHITESPACE => 'removeMultipleBlankLines');
+
+    /**
+     * @var array<string, string> token prototype, value is name of callback
+     */
+    private static $defaultTokenEqualsMap = array();
+
+    /**
+     * @var array<int, string> key is token id, value is name of callback
+     */
     private $tokenKindCallbackMap;
 
     /**
@@ -78,8 +88,8 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
-            $this->tokenKindCallbackMap = array(T_WHITESPACE => 'removeMultipleBlankLines');;
-            $this->tokenEqualsMap = array();
+            $this->tokenKindCallbackMap = self::$defaultTokenKindCallbackMap;
+            $this->tokenEqualsMap = self::$defaultTokenEqualsMap;
 
             return;
         }
