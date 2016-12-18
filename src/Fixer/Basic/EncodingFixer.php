@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -29,14 +31,6 @@ final class EncodingFixer extends AbstractFixer
         parent::__construct();
 
         $this->BOM = pack('CCC', 0xef, 0xbb, 0xbf);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return true;
     }
 
     /**
@@ -61,6 +55,24 @@ final class EncodingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'PHP code MUST use only UTF-8 without BOM (remove BOM).',
+            array(
+                new CodeSample(
+$this->BOM.'<?php
+
+echo "Hello!";
+'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // must run first (at least before Fixers that using Tokens) - for speed reason of whole fixing process
@@ -70,8 +82,8 @@ final class EncodingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'PHP code MUST use only UTF-8 without BOM (remove BOM).';
+        return true;
     }
 }

@@ -201,7 +201,7 @@ Choose from the list of available rules:
    | A single space should be between cast and variable.
 
 * **class_definition** [@PSR2, @Symfony]
-   | Whitespace around the key words of a class, trait or interfaces
+   | Whitespace around the keywords of a class, trait or interfaces
    | definition should be one space.
    | *Rule is: configurable.*
 

@@ -466,7 +466,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testShortFixerDefinition()
     {
-        $guard = 51;
+        $guard = 40;
 
         $this->assertCount(
             $guard,

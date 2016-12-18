@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -21,14 +23,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NotOperatorWithSuccessorSpaceFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return true;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -50,6 +44,24 @@ final class NotOperatorWithSuccessorSpaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Logical NOT operators (!) should have one trailing whitespace.',
+            array(new CodeSample(
+'<?php
+
+if (!$bar) {
+    echo "Help!";
+}
+'
+            ))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run after the UnaryOperatorSpacesFixer
@@ -59,8 +71,8 @@ final class NotOperatorWithSuccessorSpaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Logical NOT operators (!) should have one trailing whitespace.';
+        return true;
     }
 }

@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\PhpTag;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -22,14 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class FullOpeningTagFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return true;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -101,6 +95,24 @@ final class FullOpeningTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'PHP code must use the long <?php ?> tags or the short-echo <?= ?> tags; it must not use the other tag variations.',
+            array(
+                new CodeSample(
+'<?
+
+echo "Hello!";
+'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // must run before all Token-based fixers
@@ -110,8 +122,8 @@ final class FullOpeningTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'PHP code must use the long <?php ?> tags or the short-echo <?= ?> tags; it must not use the other tag variations.';
+        return true;
     }
 }

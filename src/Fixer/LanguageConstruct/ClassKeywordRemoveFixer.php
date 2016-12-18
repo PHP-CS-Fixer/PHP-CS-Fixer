@@ -13,6 +13,9 @@
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -31,14 +34,6 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(CT::T_CLASS_CONSTANT);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $this->replaceClassKeywords($tokens);
@@ -47,9 +42,30 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Converts ::class keywords to FQCN strings.';
+        return new FixerDefinition(
+            'Converts ::class keywords to FQCN strings.',
+            array(
+                new VersionSpecificCodeSample(
+'<?php
+
+use Foo\Bar\Baz;
+
+$className = Baz::class; 
+',
+                    new VersionSpecification(50500)
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(CT::T_CLASS_CONSTANT);
     }
 
     /**
