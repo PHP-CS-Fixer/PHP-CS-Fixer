@@ -18,6 +18,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @author SpacePossum
+ */
 final class NoShortBoolCastFixer extends AbstractFixer
 {
     /**
