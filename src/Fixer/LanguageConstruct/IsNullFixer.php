@@ -95,15 +95,15 @@ final class IsNullFixer extends AbstractFixer
 
             /* before getting rind of `()` around a parameter, ensure it's not assignment/ternary invariant */
             $referenceEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $matches[1]);
-            $isContainTernary = false;
+            $isContainingDangerousConstructs = false;
             for ($paramTokenIndex = $matches[1]; $paramTokenIndex <= $referenceEnd; ++$paramTokenIndex) {
                 if (in_array($tokens[$paramTokenIndex]->getContent(), array('?', '?:', '='), true)) {
-                    $isContainTernary = true;
+                    $isContainingDangerousConstructs = true;
                     break;
                 }
             }
 
-            if (!$isContainTernary) {
+            if (!$isContainingDangerousConstructs) {
                 // closing parenthesis removed with leading spaces
                 $tokens->removeLeadingWhitespace($referenceEnd);
                 $tokens[$referenceEnd]->clear();
