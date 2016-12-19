@@ -52,7 +52,7 @@ final class IsNullFixer extends AbstractFixer
             $matches = array_keys($matches);
 
             // move the cursor just after the sequence
-            list ($isNullIndex, $currIndex) = $matches;
+            list($isNullIndex, $currIndex) = $matches;
 
             // skip all expressions which are not a function reference
             $inversionCandidateIndex = $prevTokenIndex = $tokens->getPrevMeaningfulToken($matches[0]);

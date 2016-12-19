@@ -101,6 +101,10 @@ FIXED;
                 '<?php $x = null === (null === $x ? z(null === $y) : z(null === $z));',
                 '<?php $x = is_null(is_null($x) ? z(is_null($y)) : z(is_null($z)));',
             ),
+            array(
+                '<?php $x = null === ($x = array());',
+                '<?php $x = is_null($x = array());',
+            ),
         );
     }
 }
