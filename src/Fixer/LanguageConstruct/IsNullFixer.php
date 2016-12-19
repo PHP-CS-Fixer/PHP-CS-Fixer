@@ -45,11 +45,11 @@ final class IsNullFixer extends AbstractFixer
         $this->configuration = array();
         foreach ($configuration as $option => $value) {
             if (!in_array($option, self::$configurableOptions, true)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration item "%s", expected any of "%s".', $item, implode('", "', self::$configurableOptions)));
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration item "%s", expected any of "%s".', $option, implode('", "', self::$configurableOptions)));
             }
 
             if (!is_bool($value)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected boolean got "%s".', is_object($item) ? get_class($item) : gettype($item)));
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected boolean got "%s".', is_object($value) ? get_class($value) : gettype($value)));
             }
 
             $this->configuration[$option] = $value;
