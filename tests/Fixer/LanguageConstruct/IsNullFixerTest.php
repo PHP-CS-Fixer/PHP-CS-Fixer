@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer;
 
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
@@ -21,6 +22,35 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  */
 final class IsNullFixerTest extends AbstractFixerTestCase
 {
+    /**
+     * @expectedException PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessage Unknown configuration item "yoda", expected any of "use_yoda_style".
+     */
+    public function testConfigurationWrongOption()
+    {
+        $fixer = new IsNullFixer();
+        $fixer->configure(array('yoda' => true));
+    }
+
+    /**
+     * @expectedException PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
+     * @expectedExceptionMessage Expected boolean got "integer"
+     */
+    public function testConfigurationWrongValue()
+    {
+        $fixer = new IsNullFixer();
+        $fixer->configure(array('use_yoda_style' => -1));
+    }
+
+    public function testCorrectConfiguration()
+    {
+        $fixer = new IsNullFixer();
+        $fixer->configure(array('use_yoda_style' => false));
+
+        $configuration = static::getObjectAttribute($fixer, 'configuration');
+        static::assertFalse($configuration['use_yoda_style']);
+    }
+
     /**
      * @dataProvider provideExamples
      *
