@@ -196,20 +196,21 @@ Choose from the list of available rules:
 * **braces** [@PSR2, @Symfony]
    | The body of each structure MUST be enclosed by braces. Braces should be
    | properly placed. Body of braces should be properly indented.
+   | *Rule is: configurable.*
 
 * **cast_spaces** [@Symfony]
    | A single space should be between cast and variable.
 
 * **class_definition** [@PSR2, @Symfony]
-   | Whitespace around the key words of a class, trait or interfaces
+   | Whitespace around the keywords of a class, trait or interfaces
    | definition should be one space.
    | *Rule is: configurable.*
 
 * **class_keyword_remove**
-   | Converts ::class keywords to FQCN strings.
+   | Converts ::class keywords to FQCN strings. Requires PHP >= 5.5.
 
 * **combine_consecutive_unsets**
-   | Calling `unset` on multiple items should be done in one call.
+   | Calling ``unset`` on multiple items should be done in one call.
 
 * **concat_space** [@Symfony]
    | Concatenation should be spaced according configuration.
@@ -223,19 +224,19 @@ Choose from the list of available rules:
    | *Rule is: risky.*
 
 * **dir_constant**
-   | Replaces `dirname(__FILE__)` expression with equivalent `__DIR__`
+   | Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__``
    | constant.
    | *Rule is: risky.*
 
 * **elseif** [@PSR2, @Symfony]
-   | The keyword `elseif` should be used instead of `else if` so that all
+   | The keyword ``elseif`` should be used instead of ``else if`` so that all
    | control keywords look like single words.
 
 * **encoding** [@PSR1, @PSR2, @Symfony]
    | PHP code MUST use only UTF-8 without BOM (remove BOM).
 
 * **ereg_to_preg**
-   | Replace deprecated `ereg` regular expression functions with preg.
+   | Replace deprecated ``ereg`` regular expression functions with preg.
    | *Rule is: risky.*
 
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
@@ -253,22 +254,25 @@ Choose from the list of available rules:
    | *Rule is: configurable.*
 
 * **hash_to_slash_comment** [@Symfony]
-   | Single line comments should use double slashes `//` and not hash `#`.
+   | Single line comments should use double slashes ``//`` and not hash ``#``.
 
 * **header_comment**
    | Add, replace or remove header comment.
    | *Rule is: configurable.*
 
-* **heredoc_to_nowdoc** [@Symfony]
-   | Convert `heredoc` to `nowdoc` where possible.
+* **heredoc_to_nowdoc**
+   | Convert ``heredoc`` to ``nowdoc`` where possible.
 
 * **include** [@Symfony]
    | Include/Require and file path should be divided with a single space.
    | File path should not be placed under brackets.
 
 * **indentation_type** [@PSR2, @Symfony]
-   | Code MUST use an indent of 4 spaces, and MUST NOT use tabs for
-   | indenting.
+   | Code MUST use configured indentation type.
+
+* **is_null**
+   | Replaces is_null(parameter) expression with ``null === parameter``.
+   | *Rule is: configurable, risky.*
 
 * **line_ending** [@PSR2, @Symfony]
    | All PHP files must use same line ending.
@@ -280,7 +284,7 @@ Choose from the list of available rules:
    | Cast should be written in lower case.
 
 * **lowercase_constants** [@PSR2, @Symfony]
-   | The PHP constants `true`, `false`, and `null` MUST be in lower case.
+   | The PHP constants ``true``, ``false``, and ``null`` MUST be in lower case.
 
 * **lowercase_keywords** [@PSR2, @Symfony]
    | PHP keywords MUST be in lower case.
@@ -297,7 +301,7 @@ Choose from the list of available rules:
    | Methods must be separated with one blank line.
 
 * **modernize_types_casting**
-   | Replaces `intval`, `floatval`, `doubleval`, `strval` and `boolval`
+   | Replaces ``intval``, ``floatval``, ``doubleval``, ``strval`` and ``boolval``
    | function calls with according type casting operator.
    | *Rule is: risky.*
 
@@ -307,8 +311,9 @@ Choose from the list of available rules:
 * **new_with_braces** [@Symfony]
    | All instances created with new keyword must be followed by braces.
 
-* **no_alias_functions** [@Symfony]
+* **no_alias_functions** [@Symfony:risky]
    | Master functions shall be used instead of aliases.
+   | *Rule is: risky.*
 
 * **no_blank_lines_after_class_opening** [@Symfony]
    | There should be no empty lines after class opening brace.
@@ -321,7 +326,7 @@ Choose from the list of available rules:
    | There should be no blank lines before a namespace declaration.
 
 * **no_closing_tag** [@PSR2, @Symfony]
-   | The closing `?>` tag MUST be omitted from files containing only PHP.
+   | The closing ``?>`` tag MUST be omitted from files containing only PHP.
 
 * **no_empty_comment** [@Symfony]
    | There should not be any empty comments.
@@ -343,7 +348,7 @@ Choose from the list of available rules:
    | The namespace declaration line shouldn't contain leading whitespace.
 
 * **no_mixed_echo_print** [@Symfony]
-   | Either language construct `print` or `echo` should be used.
+   | Either language construct ``print`` or ``echo`` should be used.
    | *Rule is: configurable.*
 
 * **no_multiline_whitespace_around_double_arrow** [@Symfony]
@@ -357,7 +362,7 @@ Choose from the list of available rules:
    | *Rule is: risky.*
 
 * **no_short_bool_cast** [@Symfony]
-   | Short cast `bool` using double exclamation mark should not be used.
+   | Short cast ``bool`` using double exclamation mark should not be used.
 
 * **no_short_echo_tag**
    | Replace short-echo <?= with long format <?php echo syntax.
@@ -393,7 +398,7 @@ Choose from the list of available rules:
    | Removes unneeded parentheses around control statements.
    | *Rule is: configurable.*
 
-* **no_unreachable_default_argument_value** [@Symfony]
+* **no_unreachable_default_argument_value**
    | In method arguments there must not be arguments with default values
    | before non-default ones.
 
@@ -401,7 +406,7 @@ Choose from the list of available rules:
    | Unused use statements must be removed.
 
 * **no_useless_else**
-   | There should not be useless `else` cases.
+   | There should not be useless ``else`` cases.
 
 * **no_useless_return**
    | There should not be an empty return statement at the end of a function.
@@ -430,6 +435,7 @@ Choose from the list of available rules:
 
 * **ordered_imports**
    | Ordering use statements.
+   | *Rule is: configurable.*
 
 * **php_unit_construct** [@Symfony:risky]
    | PHPUnit assertion method calls like "->assertSame(true, $foo)" should be
@@ -445,8 +451,8 @@ Choose from the list of available rules:
    | PHPUnit annotations should be a FQCNs including a root namespace.
 
 * **php_unit_strict**
-   | PHPUnit methods like `assertSame` should be used instead of
-   | `assertEquals`.
+   | PHPUnit methods like ``assertSame`` should be used instead of
+   | ``assertEquals``.
    | *Rule is: configurable, risky.*
 
 * **phpdoc_add_missing_param_annotation**
@@ -480,13 +486,21 @@ Choose from the list of available rules:
 * **phpdoc_no_package** [@Symfony]
    | @package and @subpackage annotations should be omitted from phpdocs.
 
+* **phpdoc_no_useless_inheritdoc**
+   | Classy that does not inherit must not have inheritdoc tags.
+
 * **phpdoc_order**
    | Annotations in phpdocs should be ordered so that param annotations come
    | first, then throws annotations, then return annotations.
 
+* **phpdoc_return_self_reference**
+   | The type of ``@return`` annotations of methods returning a reference to
+   | itself must the configured one.
+   | *Rule is: configurable.*
+
 * **phpdoc_scalar** [@Symfony]
-   | Scalar types should always be written in the same form. `int` not
-   | `integer`, `bool` not `boolean`, `float` not `real` or `double`.
+   | Scalar types should always be written in the same form. ``int`` not
+   | ``integer``, ``bool`` not ``boolean``, ``float`` not ``real`` or ``double``.
 
 * **phpdoc_separation** [@Symfony]
    | Annotations in phpdocs should be grouped together so that annotations of
@@ -514,14 +528,14 @@ Choose from the list of available rules:
    | @var and @type annotations should not contain the variable name.
 
 * **pow_to_exponentiation** [@PHP56Migration, @PHP70Migration, @PHP71Migration]
-   | Converts `pow()` to the `**` operator. Requires PHP >= 5.6.
+   | Converts ``pow()`` to the ``**`` operator. Requires PHP >= 5.6.
    | *Rule is: risky.*
 
 * **pre_increment** [@Symfony]
    | Pre incrementation/decrementation should be used if possible.
 
 * **protected_to_private**
-   | Converts `protected` variables and methods to `private` where possible.
+   | Converts ``protected`` variables and methods to ``private`` where possible.
 
 * **psr0**
    | Classes must be in a path that matches their namespace, be at least one
@@ -533,13 +547,14 @@ Choose from the list of available rules:
    | *Rule is: risky.*
 
 * **random_api_migration** [@PHP70Migration, @PHP71Migration]
-   | Replaces `rand`, `mt_rand`, `srand`, `getrandmax` functions calls with
-   | their `mt_*` analogs.
+   | Replaces ``rand``, ``mt_rand``, ``srand``, ``getrandmax`` functions calls with
+   | their ``mt_*`` analogs.
    | *Rule is: configurable, risky.*
 
 * **return_type_declaration** [@Symfony]
-   | There should be no space before colon and one space after it in return
-   | type declaration. Requires PHP >= 7.
+   | There should be one or no space before colon, and one space after it in
+   | return type declarations, according to configuration.
+   | *Rule is: configurable.*
 
 * **self_accessor** [@Symfony]
    | Inside a classy element "self" should be preferred to the class name
@@ -549,15 +564,15 @@ Choose from the list of available rules:
    | Instructions must be terminated with a semicolon.
 
 * **short_scalar_cast** [@Symfony]
-   | Cast `(boolean)` and `(integer)` should be written as `(bool)` and
-   | `(int)`, `(double)` and `(real)` as `(float)`.
+   | Cast ``(boolean)`` and ``(integer)`` should be written as ``(bool)`` and
+   | ``(int)``, ``(double)`` and ``(real)`` as ``(float)``.
 
 * **silenced_deprecation_error** [@Symfony:risky]
    | Ensures deprecation notices are silenced.
    | *Rule is: risky.*
 
 * **simplified_null_return**
-   | A return statement wishing to return `void` should not return `null`.
+   | A return statement wishing to return ``void`` should not return ``null``.
    | *Rule is: risky.*
 
 * **single_blank_line_at_eof** [@PSR2, @Symfony]
@@ -586,14 +601,14 @@ Choose from the list of available rules:
    | Fix whitespace after a semicolon.
 
 * **standardize_not_equals** [@Symfony]
-   | Replace all `<>` with `!=`.
+   | Replace all ``<>`` with ``!=``.
 
 * **strict_comparison**
    | Comparisons should be strict.
    | *Rule is: risky.*
 
 * **strict_param**
-   | Functions should be used with `$strict` param set to `true`.
+   | Functions should be used with ``$strict`` param set to ``true``.
    | *Rule is: risky.*
 
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]

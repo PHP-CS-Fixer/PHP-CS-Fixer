@@ -30,6 +30,9 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
      */
     private $configuration;
 
+    /**
+     * @var array
+     */
     private static $defaultConfiguration = array(
         'only_untyped' => true,
     );
@@ -97,7 +100,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
                 continue;
             }
 
-            if (1 === preg_match('/inheritdoc/i', $token->getContent())) {
+            if (false !== stripos($token->getContent(), 'inheritdoc')) {
                 continue;
             }
 

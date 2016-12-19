@@ -31,7 +31,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class VisibilityRequiredFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    private $options = array('property', 'method', 'const');
+    private static $options = array('property', 'method', 'const');
     private static $defaultConfiguration = array('property', 'method');
     private $configuration;
 
@@ -57,8 +57,8 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurabl
                 throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected string got "%s".', is_object($item) ? get_class($item) : gettype($item)));
             }
 
-            if (!in_array($item, $this->options, true)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration item "%s", expected any of "%s".', $item, implode('", "', $this->options)));
+            if (!in_array($item, self::$options, true)) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration item "%s", expected any of "%s".', $item, implode('", "', self::$options)));
             }
 
             if ('const' === $item && PHP_VERSION_ID < 70100) {

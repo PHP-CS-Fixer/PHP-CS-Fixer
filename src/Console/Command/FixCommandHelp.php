@@ -277,6 +277,7 @@ EOF
             }
 
             $description = wordwrap($description, 72, "\n   | ");
+            $description = str_replace('`', '``', $description);
 
             if (!empty($sets)) {
                 $help .= sprintf(" * <comment>%s</comment> [%s]\n   | %s\n", $fixer->getName(), implode(', ', $sets), $description);

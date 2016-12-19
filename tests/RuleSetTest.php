@@ -93,16 +93,16 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
             '@PSR1' => true,
             'braces' => true,
             'encoding' => false,
-            'strict_comparison' => true,
             'line_ending' => true,
+            'strict_comparison' => true,
         ));
 
         $this->assertSameRules(
             array(
                 'braces' => true,
                 'full_opening_tag' => true,
-                'strict_comparison' => true,
                 'line_ending' => true,
+                'strict_comparison' => true,
             ),
             $ruleSet->getRules()
         );
@@ -124,23 +124,23 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
                 'encoding' => true,
                 'full_opening_tag' => true,
                 'function_declaration' => true,
+                'indentation_type' => true,
+                'line_ending' => true,
                 'lowercase_constants' => true,
                 'lowercase_keywords' => true,
                 'method_argument_space' => true,
                 'no_closing_tag' => true,
                 'no_spaces_after_function_name' => true,
                 'no_spaces_inside_parenthesis' => true,
-                'indentation_type' => true,
                 'no_trailing_whitespace' => true,
                 'no_trailing_whitespace_in_comment' => true,
                 'single_blank_line_at_eof' => true,
+                'single_class_element_per_statement' => array('property'),
                 'single_import_per_statement' => true,
                 'single_line_after_imports' => true,
-                'single_class_element_per_statement' => array('property'),
                 'strict_comparison' => true,
                 'switch_case_semicolon_to_colon' => true,
                 'switch_case_space' => true,
-                'line_ending' => true,
                 'visibility_required' => true,
             ),
             $ruleSet->getRules()
@@ -163,22 +163,22 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
                 'elseif' => true,
                 'encoding' => true,
                 'function_declaration' => true,
+                'indentation_type' => true,
+                'line_ending' => true,
                 'lowercase_constants' => true,
                 'lowercase_keywords' => true,
                 'method_argument_space' => true,
                 'no_closing_tag' => true,
                 'no_spaces_after_function_name' => true,
                 'no_spaces_inside_parenthesis' => true,
-                'indentation_type' => true,
                 'no_trailing_whitespace' => true,
                 'no_trailing_whitespace_in_comment' => true,
                 'single_blank_line_at_eof' => true,
+                'single_class_element_per_statement' => array('property'),
                 'single_import_per_statement' => true,
                 'single_line_after_imports' => true,
-                'single_class_element_per_statement' => array('property'),
                 'switch_case_semicolon_to_colon' => true,
                 'switch_case_space' => true,
-                'line_ending' => true,
                 'visibility_required' => true,
             ),
             $ruleSet->getRules()
@@ -226,6 +226,59 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
         return array_map(function ($setDefinitionName) {
             return array($setDefinitionName);
         }, $setDefinitionNames);
+    }
+
+    /**
+     * @param array $set
+     * @param bool  $safe
+     *
+     * @dataProvider provideSafeSets
+     */
+    public function testRiskyRulesInSet(array $set, $safe)
+    {
+        $fixers = FixerFactory::create()
+            ->registerBuiltInFixers()
+            ->useRuleSet(new RuleSet($set))
+            ->getFixers()
+        ;
+
+        $fixerNames = array();
+        foreach ($fixers as $fixer) {
+            if ($safe === $fixer->isRisky()) {
+                $fixerNames[] = $fixer->getName();
+            }
+        }
+
+        $this->assertCount(
+            0,
+            $fixerNames,
+            sprintf(
+                'Set should only contain %s fixers, got: \'%s\'.',
+                $safe ? 'safe' : 'risky', implode('\', \'', $fixerNames)
+            )
+        );
+    }
+
+    public function provideSafeSets()
+    {
+        return array(
+            array(array('@PSR1' => true), true),
+            array(array('@PSR2' => true), true),
+            array(array('@Symfony' => true), true),
+            array(
+                array(
+                    '@Symfony:risky' => true,
+                    '@Symfony' => false,
+                ),
+                false,
+            ),
+            array(
+                array(
+                    '@Symfony:risky' => true,
+                ),
+                false,
+            ),
+        );
     }
 
     private function assertSameRules(array $expected, array $actual, $message = '')

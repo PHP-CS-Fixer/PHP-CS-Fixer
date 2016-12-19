@@ -16,6 +16,10 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -30,7 +34,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
     /**
      * @var array<string, bool>
      */
-    private static $defaultConfig = array(
+    private static $defaultConfiguration = array(
         // put class declaration on one line
         'singleLine' => false,
         // if a classy extends or implements only one element than put it on the same line
@@ -52,16 +56,16 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
-            $this->config = self::$defaultConfig;
+            $this->config = self::$defaultConfiguration;
 
             return;
         }
 
-        $configuration = array_merge(self::$defaultConfig, $configuration);
+        $configuration = array_merge(self::$defaultConfiguration, $configuration);
 
         foreach ($configuration as $item => $value) {
-            if (!array_key_exists($item, self::$defaultConfig)) {
-                throw new InvalidFixerConfigurationException('class_definition', sprintf('Unknown configuration item "%s", expected any of "%s".', $item, implode(', ', array_keys(self::$defaultConfig))));
+            if (!array_key_exists($item, self::$defaultConfiguration)) {
+                throw new InvalidFixerConfigurationException('class_definition', sprintf('Unknown configuration item "%s", expected any of "%s".', $item, implode(', ', array_keys(self::$defaultConfiguration))));
             }
 
             if (!is_bool($value)) {
@@ -70,14 +74,6 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
         }
 
         $this->config = $configuration;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
 
     /**
@@ -96,9 +92,83 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Whitespace around the key words of a class, trait or interfaces definition should be one space.';
+        return new FixerDefinition(
+            'Whitespace around the keywords of a class, trait or interfaces definition should be one space.',
+            array(
+                new CodeSample(
+'<?php
+
+class  Foo  extends  Bar  implements  Baz,  BarBaz
+{
+}'
+                ),
+                new VersionSpecificCodeSample(
+'<?php
+
+trait  Foo  
+{
+}',
+                    new VersionSpecification(50400)
+                ),
+                new VersionSpecificCodeSample(
+'<?php
+
+final  class  Foo  extends  Bar  implements  Baz,  BarBaz
+{
+}',
+                    new VersionSpecification(50500)
+                ),
+                new VersionSpecificCodeSample(
+'<?php
+
+$foo = new  class  extends  Bar  implements  Baz,  BarBaz {};
+',
+                    new VersionSpecification(70100)
+                ),
+                new CodeSample(
+'<?php
+
+class Foo 
+extends Bar 
+implements Baz, BarBaz
+{}
+',
+                    array('singleLine' => true)
+                ),
+                new CodeSample(
+'<?php
+
+class Foo 
+extends Bar 
+implements Baz
+{}
+',
+                    array('singleItemSingleLine' => true)
+                ),
+                new CodeSample(
+'<?php
+
+interface Bar extends 
+    Bar, BarBaz, FooBarBaz
+{}
+',
+                    array('multiLineExtendsEachSingleLine' => true)
+                ),
+            ),
+            null,
+            'Configure to have extra whitespace around the keywords of a class, trait or interface definition removed.',
+            self::$defaultConfiguration
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
 
     /**

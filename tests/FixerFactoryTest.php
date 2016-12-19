@@ -212,7 +212,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['method_separation'], $fixers['indentation_type']),
             array($fixers['no_leading_import_slash'], $fixers['ordered_imports']), // tested also in: no_leading_import_slash,ordered_imports.test
             array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['binary_operator_spaces']), // tested also in: no_multiline_whitespace_around_double_arrow,binary_operator_spaces.test
-            array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['trailing_comma_in_multiline_array']),
+            array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['trailing_comma_in_multiline_array']), // tested also in: no_multiline_whitespace_around_double_arrow,trailing_comma_in_multiline_array.test
             array($fixers['no_php4_constructor'], $fixers['ordered_class_elements']), // tested also in: no_php4_constructor,ordered_class_elements.test
             array($fixers['no_short_bool_cast'], $fixers['cast_spaces']), // tested also in: no_short_bool_cast,cast_spaces.test
             array($fixers['no_short_echo_tag'], $fixers['no_mixed_echo_print']), // tested also in: no_mixed_echo_print,no_short_echo_tag.test
@@ -220,7 +220,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_unneeded_control_parentheses'], $fixers['no_trailing_whitespace']), // tested also in: no_trailing_whitespace,no_unneeded_control_parentheses.test
             array($fixers['no_unused_imports'], $fixers['blank_line_after_namespace']), // tested also in: no_unused_imports,blank_line_after_namespace.test and no_unused_imports,blank_line_after_namespace_2.test
             array($fixers['no_unused_imports'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: no_unused_imports,no_extra_consecutive_blank_lines.test
-            array($fixers['no_unused_imports'], $fixers['no_leading_import_slash']),
+            array($fixers['no_unused_imports'], $fixers['no_leading_import_slash']), // no priority issue; for speed only
             array($fixers['ordered_class_elements'], $fixers['method_separation']), // tested also in: ordered_class_elements,method_separation.test
             array($fixers['ordered_class_elements'], $fixers['no_blank_lines_after_class_opening']), // tested also in: ordered_class_elements,no_blank_lines_after_class_opening.test
             array($fixers['ordered_class_elements'], $fixers['space_after_semicolon']), // tested also in: ordered_class_elements,space_after_semicolon.test
@@ -300,6 +300,9 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['protected_to_private'], $fixers['ordered_class_elements']), // tested also in: protected_to_private,ordered_class_elements.test
             array($fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_align']), // tested also in: phpdoc_add_missing_param_annotation,phpdoc_align.test
             array($fixers['phpdoc_no_alias_tag'], $fixers['phpdoc_add_missing_param_annotation']), // tested also in: phpdoc_no_alias_tag,phpdoc_add_missing_param_annotation.test
+            array($fixers['phpdoc_no_useless_inheritdoc'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_useless_inheritdoc,no_empty_phpdoc.test
+            array($fixers['phpdoc_no_useless_inheritdoc'], $fixers['phpdoc_inline_tag']), // tested also in: phpdoc_no_useless_inheritdoc,phpdoc_inline_tag.test
+            array($fixers['phpdoc_to_comment'], $fixers['phpdoc_no_useless_inheritdoc']), // tested also in: phpdoc_to_comment,phpdoc_no_useless_inheritdoc.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:
@@ -441,22 +444,13 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider provideFixersForFinalCheckCases
+     * @dataProvider provideFixerDefinitionsCases
      */
-    public function testFixersAreFinal(\ReflectionClass $class)
+    public function testFixersAreFinal(FixerInterface $fixer)
     {
-        $this->assertTrue($class->isFinal());
-    }
+        $reflection = new \ReflectionClass($fixer);
 
-    public function provideFixersForFinalCheckCases()
-    {
-        $cases = array();
-
-        foreach ($this->getAllFixers() as $fixer) {
-            $cases[] = array(new \ReflectionClass($fixer));
-        }
-
-        return $cases;
+        $this->assertTrue($reflection->isFinal(), sprintf('Fixer "%s" must be declared "final".', $fixer->getName()));
     }
 
     /**
@@ -466,7 +460,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testShortFixerDefinition()
     {
-        $guard = 51;
+        $guard = 39;
 
         $this->assertCount(
             $guard,

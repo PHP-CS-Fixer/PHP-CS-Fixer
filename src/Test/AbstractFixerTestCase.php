@@ -254,7 +254,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
                 ->getFixers()
             ;
         } catch (\UnexpectedValueException $e) {
-            throw new \UnexpectedValueException('Cannot determine fixer class, perhaps you forget to override `getFixerName` or `createFixerFactory` method?');
+            throw new \UnexpectedValueException('Cannot determine fixer class, perhaps you forget to override `getFixerName` or `createFixerFactory` method?', 0, $e);
         }
 
         if (1 !== count($fixers)) {

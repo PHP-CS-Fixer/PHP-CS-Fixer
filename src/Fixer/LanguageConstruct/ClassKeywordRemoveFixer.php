@@ -13,6 +13,9 @@
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -31,14 +34,6 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(CT::T_CLASS_CONSTANT);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $this->replaceClassKeywords($tokens);
@@ -47,9 +42,30 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Converts ::class keywords to FQCN strings.';
+        return new FixerDefinition(
+            'Converts ::class keywords to FQCN strings. Requires PHP >= 5.5.',
+            array(
+                new VersionSpecificCodeSample(
+'<?php
+
+use Foo\Bar\Baz;
+
+$className = Baz::class; 
+',
+                    new VersionSpecification(50500)
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return PHP_VERSION_ID >= 50500 && $tokens->isTokenKindFound(CT::T_CLASS_CONSTANT);
     }
 
     /**
@@ -65,7 +81,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
         $namespaceIndexes = array_keys($tokens->findGivenKind(T_NAMESPACE));
 
         // Namespace blocks
-        if (!empty($namespaceIndexes) && isset($namespaceIndexes[$namespaceNumber])) {
+        if (count($namespaceIndexes) && isset($namespaceIndexes[$namespaceNumber])) {
             $startIndex = $namespaceIndexes[$namespaceNumber];
 
             $namespaceBlockStartIndex = $tokens->getNextTokenOfKind($startIndex, array(';', '{'));
@@ -75,7 +91,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
             $endIndex = $endIndex ?: $tokens->count() - 1;
         } elseif (-1 === $namespaceNumber) { // Out of any namespace block
             $startIndex = 0;
-            $endIndex = !empty($namespaceIndexes) ? $namespaceIndexes[0] : $tokens->count() - 1;
+            $endIndex = count($namespaceIndexes) ? $namespaceIndexes[0] : $tokens->count() - 1;
         } else {
             return;
         }
@@ -155,11 +171,25 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
      */
     private function replaceClassKeyword(Tokens $tokens, $classIndex)
     {
-        $classEndIndex = $classIndex - 2;
+        $classEndIndex = $tokens->getPrevMeaningfulToken($classIndex);
+        $classEndIndex = $tokens->getPrevMeaningfulToken($classEndIndex);
+
         $classBeginIndex = $classEndIndex;
-        while ($tokens[--$classBeginIndex]->isGivenKind(array(T_NS_SEPARATOR, T_STRING)));
-        ++$classBeginIndex;
-        $classString = $tokens->generatePartialCode($classBeginIndex, $classEndIndex);
+        while (true) {
+            $prev = $tokens->getPrevMeaningfulToken($classBeginIndex);
+            if (!$tokens[$prev]->isGivenKind(array(T_NS_SEPARATOR, T_STRING))) {
+                break;
+            }
+
+            $classBeginIndex = $prev;
+        }
+
+        $classString = $tokens->generatePartialCode(
+            $tokens[$classBeginIndex]->isGivenKind(T_NS_SEPARATOR)
+                ? $tokens->getNextMeaningfulToken($classBeginIndex)
+                : $classBeginIndex,
+            $classEndIndex
+        );
 
         $classImport = false;
         foreach ($this->imports as $alias => $import) {
@@ -177,7 +207,12 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
             }
         }
 
-        $tokens->clearRange($classBeginIndex, $classIndex);
+        for ($i = $classBeginIndex; $i <= $classIndex; ++$i) {
+            if (!$tokens[$i]->isComment() && !($tokens[$i]->isWhitespace() && false !== strpos($tokens[$i]->getContent(), "\n"))) {
+                $tokens[$i]->clear();
+            }
+        }
+
         $tokens->insertAt($classBeginIndex, new Token(array(
             T_CONSTANT_ENCAPSED_STRING,
             "'".$this->makeClassFQN($classImport, $classString)."'",

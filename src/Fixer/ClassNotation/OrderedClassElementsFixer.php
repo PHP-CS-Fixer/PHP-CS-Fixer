@@ -67,7 +67,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * @var string[] Default order/configuration
      */
-    private static $defaultOrder = array(
+    private static $defaultConfiguration = array(
         'use_trait',
         'constant_public',
         'constant_protected',
@@ -95,7 +95,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
-            $configuration = self::$defaultOrder;
+            $configuration = self::$defaultConfiguration;
         }
 
         $this->typePosition = array();
@@ -360,6 +360,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
 
             $element['position'] = $this->typePosition[$type];
         }
+        unset($element);
 
         usort($elements, function (array $a, array $b) {
             if ($a['position'] === $b['position']) {

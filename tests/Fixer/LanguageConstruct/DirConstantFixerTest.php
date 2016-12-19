@@ -85,6 +85,20 @@ FIXED;
                 '<?php $x = /**//**/ /** x*//**//** */__DIR__/***//*xx*/;',
                 '<?php $x = /**/dirname/**/ /** x*/(/**//** */__FILE__/***/)/*xx*/;',
             ),
+            array(
+                '<?php 
+                interface Test 
+                {
+                    public function dirname($a);
+                }',
+            ),
+            array(
+                '<?php 
+                interface Test 
+                {
+                    public function &dirname($a);
+                }',
+            ),
         );
     }
 }

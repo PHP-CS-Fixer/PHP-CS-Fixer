@@ -76,7 +76,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
         // first criteria check: shall look like function call
         $functionNamePrefix = $tokens->getPrevMeaningfulToken($functionName);
         $functionNamePrecedingToken = $tokens[$functionNamePrefix];
-        if ($functionNamePrecedingToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION))) {
+        if ($functionNamePrecedingToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, CT::T_RETURN_REF))) {
             // this expression is differs from expected, resume
             return $this->find($functionNameToSearch, $tokens, $openParenthesis, $end);
         }

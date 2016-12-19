@@ -13,7 +13,11 @@
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -24,14 +28,39 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class BracesFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class BracesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
-     * {@inheritdoc}
+     * @var array
      */
-    public function isCandidate(Tokens $tokens)
+    private $configuration;
+
+    private static $defaultConfiguration = array(
+        'allow_single_line_closure' => false,
+    );
+
+    /**
+     * @param array<string, bool>|null $configuration
+     */
+    public function configure(array $configuration = null)
     {
-        return true;
+        if (null === $configuration) {
+            $this->configuration = self::$defaultConfiguration;
+
+            return;
+        }
+
+        foreach ($configuration as $functionName => $replacement) {
+            if (!array_key_exists($functionName, self::$defaultConfiguration)) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('"%s" is not handled by the fixer.', $functionName));
+            }
+
+            if (!is_bool($replacement)) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected bool got "%s".', is_object($replacement) ? get_class($replacement) : gettype($replacement)));
+            }
+        }
+
+        $this->configuration = $configuration;
     }
 
     /**
@@ -50,6 +79,57 @@ final class BracesFixer extends AbstractFixer implements WhitespacesAwareFixerIn
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.',
+            array(
+                new CodeSample(
+'<?php
+
+class Foo {
+    public function bar($baz) {
+        if ($baz = 900) echo "Hello!";
+        
+        if ($baz = 9000)
+            echo "Wait!";
+            
+        if ($baz == true) 
+        {
+            echo "Why?";
+        }
+        else
+        {
+            echo "Ha?";
+        }
+        
+        if (is_array($baz)) 
+            foreach ($baz as $b)
+            {
+                echo $b;
+            }
+    }
+}
+'
+                ),
+                new CodeSample(
+'<?php
+$positive = function ($item) { return $item >= 0; };
+$negative = function ($item) {
+                return $item < 0; };
+',
+                    array('allow_single_line_closure' => true)
+                ),
+            ),
+            null,
+            'The `allow_single_line_closure` key could be set to `true` to allow for single line lambda notation.',
+            self::$defaultConfiguration
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run after the ElseIfFixer, NoEmptyStatementFixer and NoUselessElseFixer
@@ -59,9 +139,9 @@ final class BracesFixer extends AbstractFixer implements WhitespacesAwareFixerIn
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.';
+        return true;
     }
 
     private function fixCommentBeforeBrace(Tokens $tokens)
@@ -188,12 +268,21 @@ final class BracesFixer extends AbstractFixer implements WhitespacesAwareFixerIn
                 continue;
             }
 
-            // do not change import of functions
             if (
-                $token->isGivenKind(T_FUNCTION)
-                && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_USE)
+                $this->configuration['allow_single_line_closure']
+                && $token->isGivenKind(T_FUNCTION)
+                && $tokensAnalyzer->isLambda($index)
             ) {
-                continue;
+                $braceEndIndex = $tokens->findBlockEnd(
+                    Tokens::BLOCK_TYPE_CURLY_BRACE,
+                    $tokens->getNextTokenOfKind($index, array('{'))
+                );
+
+                if (!$this->isMultilined($tokens, $index, $braceEndIndex)) {
+                    $index = $braceEndIndex;
+
+                    continue;
+                }
             }
 
             if ($token->isGivenKind($classyAndFunctionTokens)) {
@@ -259,7 +348,7 @@ final class BracesFixer extends AbstractFixer implements WhitespacesAwareFixerIn
                             if ($nextToken->isWhitespace()) {
                                 $nextWhitespace = rtrim($nextToken->getContent(), " \t");
 
-                                if (strlen($nextWhitespace)) {
+                                if ('' !== $nextWhitespace) {
                                     $nextWhitespace = preg_replace(
                                         sprintf('/%s$/', $this->whitespacesConfig->getLineEnding()),
                                         '',
@@ -350,6 +439,7 @@ final class BracesFixer extends AbstractFixer implements WhitespacesAwareFixerIn
             // if Token after parenthesis is { then we do not need to insert brace, but to fix whitespace before it
             if ($tokenAfterParenthesis->equals('{')) {
                 $tokens->ensureWhitespaceAtIndex($parenthesisEndIndex + 1, 0, ' ');
+
                 continue;
             }
 
@@ -649,5 +739,23 @@ final class BracesFixer extends AbstractFixer implements WhitespacesAwareFixerIn
                 $tokens[$i]->clear();
             }
         }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $startParenthesisIndex
+     * @param int    $endParenthesisIndex
+     *
+     * @return bool
+     */
+    private function isMultilined(Tokens $tokens, $startParenthesisIndex, $endParenthesisIndex)
+    {
+        for ($i = $startParenthesisIndex; $i < $endParenthesisIndex; ++$i) {
+            if (false !== strpos($tokens[$i]->getContent(), "\n")) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

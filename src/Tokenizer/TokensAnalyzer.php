@@ -244,9 +244,6 @@ final class TokensAnalyzer
 
         for ($i = $index; $i >= 0; --$i) {
             $tokenIndex = $tokens->getPrevMeaningfulToken($i);
-            if (null === $tokenIndex) {
-                break;
-            }
 
             $i = $tokenIndex;
             $token = $tokens[$tokenIndex];
