@@ -272,7 +272,7 @@ Choose from the list of available rules:
 
 * **is_null**
    | Replaces is_null(parameter) expression with `null === parameter`.
-   | *Rule is: risky.*
+   | *Rule is: configurable, risky.*
 
 * **line_ending** [@PSR2, @Symfony]
    | All PHP files must use same line ending.
