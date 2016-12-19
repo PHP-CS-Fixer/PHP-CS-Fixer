@@ -16,8 +16,10 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
+ *
+ * @internal
  */
-class IsNullFixerTest extends AbstractFixerTestCase
+final class IsNullFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideExamples
