@@ -125,4 +125,12 @@ final class IsNullFixer extends AbstractFixer
             'Risky when the function `is_null()` is overridden.'
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
+    }
 }
