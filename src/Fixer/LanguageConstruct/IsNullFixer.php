@@ -117,14 +117,6 @@ final class IsNullFixer extends AbstractFixer
                 $tokens[$inversionCandidateIndex]->clear();
             }
 
-            // sequence which we'll use as a replacement
-            $replacement = array(
-                new Token(array(T_STRING, 'null')),
-                new Token(array(T_WHITESPACE, ' ')),
-                new Token($isInvertedNullCheck ? array(T_IS_NOT_IDENTICAL, '!==') : array(T_IS_IDENTICAL, '===')),
-                new Token(array(T_WHITESPACE, ' ')),
-            );
-
             /* before getting rind of `()` around a parameter, ensure it's not assignment/ternary invariant */
             $referenceEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $matches[1]);
             $isContainingDangerousConstructs = false;
@@ -146,7 +138,25 @@ final class IsNullFixer extends AbstractFixer
                 $tokens[$matches[1]]->clear();
             }
 
-            $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
+            // sequence which we'll use as a replacement
+            $replacement = array(
+                new Token(array(T_STRING, 'null')),
+                new Token(array(T_WHITESPACE, ' ')),
+                new Token($isInvertedNullCheck ? array(T_IS_NOT_IDENTICAL, '!==') : array(T_IS_IDENTICAL, '===')),
+                new Token(array(T_WHITESPACE, ' ')),
+            );
+            if (true === $this->configuration['use_yoda_style']) {
+                $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
+            } else {
+                $replacement = array_reverse($replacement);
+                if ($isContainingDangerousConstructs) {
+                    array_unshift($replacement, new Token(array(')')));
+                }
+
+                $tokens[$isNullIndex]->clear();
+                $tokens->removeTrailingWhitespace($referenceEnd);
+                $tokens->overrideRange($referenceEnd, $referenceEnd, $replacement);
+            }
 
             // nested is_null's support
             $currIndex = $isNullIndex;

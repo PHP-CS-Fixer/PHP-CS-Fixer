@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
 use PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer;
+use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
@@ -22,23 +22,25 @@ use PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer;
  */
 final class IsNullFixerTest extends AbstractFixerTestCase
 {
-    /**
-     * @expectedException PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage Unknown configuration item "yoda", expected any of "use_yoda_style".
-     */
     public function testConfigurationWrongOption()
     {
         $fixer = new IsNullFixer();
+
+        $this->setExpectedException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            'Unknown configuration item "yoda", expected any of "use_yoda_style".'
+        );
         $fixer->configure(array('yoda' => true));
     }
 
-    /**
-     * @expectedException PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
-     * @expectedExceptionMessage Expected boolean got "integer"
-     */
     public function testConfigurationWrongValue()
     {
         $fixer = new IsNullFixer();
+
+        $this->setExpectedException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            'Expected boolean got "integer"'
+        );
         $fixer->configure(array('use_yoda_style' => -1));
     }
 
@@ -57,9 +59,16 @@ final class IsNullFixerTest extends AbstractFixerTestCase
      * @param mixed      $expected
      * @param null|mixed $input
      */
-    public function testFix($expected, $input = null)
+    public function testYodaFix($expected, $input = null)
     {
+        $this->fixer->configure(array('use_yoda_style' => true));
         $this->doTest($expected, $input);
+    }
+
+    public function testNonYodaFix()
+    {
+        $this->fixer->configure(array('use_yoda_style' => false));
+        $this->doTest('<?php $x = $y === null;', '<?php $x = is_null($y);');
     }
 
     public function provideExamples()
