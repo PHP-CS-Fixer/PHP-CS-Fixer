@@ -23,7 +23,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
-final class IsNullFixer extends AbstractFixer
+final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private static $configurableOptions = array('use_yoda_style');
     private static $defaultConfiguration = array('use_yoda_style' => true);
