@@ -94,15 +94,21 @@ final class IsNullFixer extends AbstractFixer
                 new Token(array(T_WHITESPACE, ' ')),
             );
 
-            // closing parenthesis removed with leading spaces
+            /* before getting rind of () around parameter, ensure it's not aternary of any kind */
             $referenceEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $matches[1]);
-            $tokens->removeLeadingWhitespace($referenceEnd);
-            $tokens[$referenceEnd]->clear();
+            $ternaryTokens = $tokens->findGivenKind(array('?', '?:', '??'), $matches[1], $referenceEnd);
+            $isContainTernary = count($ternaryTokens) > 0;
 
-            // opening parenthesis removed with trailing spaces
-            $tokens->removeLeadingWhitespace($matches[1]);
-            $tokens->removeTrailingWhitespace($matches[1]);
-            $tokens[$matches[1]]->clear();
+            if (!$isContainTernary) {
+                // closing parenthesis removed with leading spaces
+                $tokens->removeLeadingWhitespace($referenceEnd);
+                $tokens[$referenceEnd]->clear();
+
+                // opening parenthesis removed with trailing spaces
+                $tokens->removeLeadingWhitespace($matches[1]);
+                $tokens->removeTrailingWhitespace($matches[1]);
+                $tokens[$matches[1]]->clear();
+            }
 
             $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
 

@@ -98,7 +98,7 @@ FIXED;
                 '<?php $x = /**/is_null/**/ /** x*/(/**//** */json_decode($x)/***/)/*xx*/;',
             ),
             array(
-                '<?php $x = null === null === $x ? z(null === $y) : z(null === $z);',
+                '<?php $x = null === (null === $x ? z(null === $y) : z(null === $z));',
                 '<?php $x = is_null(is_null($x) ? z(is_null($y)) : z(is_null($z)));',
             ),
         );
