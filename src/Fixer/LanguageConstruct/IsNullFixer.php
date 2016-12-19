@@ -48,21 +48,21 @@ final class IsNullFixer extends AbstractFixer
                 break;
             }
 
-            // 0 and 1 accordingly are "is_null", "("
+            // 0 and 1 accordingly are "is_null", "(" tokens
             $matches = array_keys($matches);
 
-            // move cursor just after sequence
+            // move the cursor just after the sequence
             $currIndex = $matches[1];
             $isNullIndex = $matches[0];
 
-            // skip expressions which are not function reference
+            // skip all expressions which are not a function reference
             $inversionCandidateIndex = $prevTokenIndex = $tokens->getPrevMeaningfulToken($matches[0]);
             $prevToken = $tokens[$prevTokenIndex];
             if ($prevToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION))) {
                 continue;
             }
 
-            // handle function reference with namespaces
+            // handle function references with namespaces
             if ($prevToken->isGivenKind(T_NS_SEPARATOR)) {
                 $inversionCandidateIndex = $twicePrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
                 /* @var Token $twicePrevToken */
@@ -71,7 +71,7 @@ final class IsNullFixer extends AbstractFixer
                     continue;
                 }
 
-                // get rid of root namespace when it used and check if inversion provided
+                // get rid of the root namespace when it used and check if the inversion operator provided
                 $tokens->removeTrailingWhitespace($prevTokenIndex);
                 $tokens[$prevTokenIndex]->clear();
             }
