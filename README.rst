@@ -270,6 +270,9 @@ Choose from the list of available rules:
    | Code MUST use an indent of 4 spaces, and MUST NOT use tabs for
    | indenting.
 
+* **is_null**
+   | Replaces is_null(parameter) expression with `null === parameter`.
+
 * **line_ending** [@PSR2, @Symfony]
    | All PHP files must use same line ending.
 
