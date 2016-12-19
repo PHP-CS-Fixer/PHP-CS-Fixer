@@ -94,7 +94,7 @@ final class IsNullFixer extends AbstractFixer
                 new Token(array(T_WHITESPACE, ' ')),
             );
 
-            /* before getting rind of () around parameter, ensure it's not aternary of any kind */
+            /* before getting rind of `()` around a parameter, ensure it's not a ternary of any kind */
             $referenceEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $matches[1]);
             $ternaryTokens = $tokens->findGivenKind(array('?', '?:', '??'), $matches[1], $referenceEnd);
             $isContainTernary = count($ternaryTokens) > 0;
