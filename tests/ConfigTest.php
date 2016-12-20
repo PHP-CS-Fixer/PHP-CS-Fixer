@@ -149,4 +149,20 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
 
         return $cases;
     }
+
+    public function testConfigName()
+    {
+        $name = __CLASS__.__METHOD__;
+        $config = new Config($name);
+        $this->assertSame($name, $config->getName());
+
+        $config = new Config();
+        $this->assertSame('default', $config->getName());
+
+        $config = Config::create($name);
+        $this->assertSame($name, $config->getName());
+
+        $config = Config::create();
+        $this->assertSame('default', $config->getName());
+    }
 }

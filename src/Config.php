@@ -40,11 +40,13 @@ class Config implements ConfigInterface
     }
 
     /**
+     * @param string $name
+     *
      * @return static
      */
-    public static function create()
+    public static function create($name = 'default')
     {
-        return new static();
+        return new static($name);
     }
 
     /**
