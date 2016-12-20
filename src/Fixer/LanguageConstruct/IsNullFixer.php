@@ -70,7 +70,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $sequenceNeeded = array(array(T_STRING, 'is_null'), '(');
+        static $sequenceNeeded = array(array(T_STRING, 'is_null'), '(');
 
         $currIndex = 0;
         while (null !== $currIndex) {
@@ -110,7 +110,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
 
             // check if inversion being used, text comparison is due to not existing constant
             $isInvertedNullCheck = false;
-            if ('!' === $tokens[$inversionCandidateIndex]->getContent()) {
+            if ($tokens[$inversionCandidateIndex]->equals('!')) {
                 $isInvertedNullCheck = true;
 
                 // get rid of inverting for proper transformations
@@ -146,6 +146,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
                 new Token($isInvertedNullCheck ? array(T_IS_NOT_IDENTICAL, '!==') : array(T_IS_IDENTICAL, '===')),
                 new Token(array(T_WHITESPACE, ' ')),
             );
+
             if (true === $this->configuration['use_yoda_style']) {
                 $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
             } else {

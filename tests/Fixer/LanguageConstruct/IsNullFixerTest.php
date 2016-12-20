@@ -56,8 +56,8 @@ final class IsNullFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideExamples
      *
-     * @param mixed      $expected
-     * @param null|mixed $input
+     * @param string      $expected
+     * @param null|string $input
      */
     public function testYodaFix($expected, $input = null)
     {
