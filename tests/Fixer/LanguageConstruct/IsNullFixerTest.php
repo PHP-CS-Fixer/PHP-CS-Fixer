@@ -68,7 +68,12 @@ final class IsNullFixerTest extends AbstractFixerTestCase
     public function testNonYodaFix()
     {
         $this->fixer->configure(array('use_yoda_style' => false));
+
         $this->doTest('<?php $x = $y === null;', '<?php $x = is_null($y);');
+        $this->doTest(
+            '<?php $b = a(a(a(b() === null) === null) === null) === null;',
+            '<?php $b = \is_null(a(\is_null(a(\is_null(a(\is_null(b())))))));'
+        );
     }
 
     public function provideExamples()
@@ -143,6 +148,10 @@ FIXED;
             array(
                 '<?php $x = null === ($x = array());',
                 '<?php $x = is_null($x = array());',
+            ),
+            array(
+                '<?php null === a(null === a(null === a(null === b())));',
+                '<?php \is_null(a(\is_null(a(\is_null(a(\is_null(b())))))));',
             ),
         );
     }
