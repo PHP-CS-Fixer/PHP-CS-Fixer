@@ -172,7 +172,10 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
     {
         return new FixerDefinition(
             'Replaces is_null(parameter) expression with `null === parameter`.',
-            array(new CodeSample("<?php\n\$a = is_null(\$b);")),
+            array(
+                new CodeSample("<?php\n\$a = is_null(\$b);"),
+                new CodeSample("<?php\n\$a = is_null(\$b);", array('use_yoda_style' => false)),
+            ),
             null,
             'The following can be configured: `use_yoda_style => boolean`',
             array('use_yoda_style' => true),
