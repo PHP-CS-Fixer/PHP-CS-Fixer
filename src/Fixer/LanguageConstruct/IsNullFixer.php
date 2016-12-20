@@ -178,7 +178,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
             ),
             null,
             'The following can be configured: `use_yoda_style => boolean`',
-            array('use_yoda_style' => true),
+            self::$defaultConfiguration,
             'Risky when the function `is_null()` is overridden.'
         );
     }
