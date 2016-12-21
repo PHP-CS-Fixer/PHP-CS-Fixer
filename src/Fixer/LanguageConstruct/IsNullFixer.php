@@ -97,7 +97,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
             // handle function references with namespaces
             if ($prevToken->isGivenKind(T_NS_SEPARATOR)) {
                 $inversionCandidateIndex = $twicePrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
-                /* @var Token $twicePrevToken */
+                /** @var Token $twicePrevToken */
                 $twicePrevToken = $tokens[$twicePrevTokenIndex];
                 if ($twicePrevToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, T_STRING, CT::T_NAMESPACE_OPERATOR))) {
                     continue;
@@ -160,7 +160,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
                 $tokens->overrideRange($referenceEnd, $referenceEnd, $replacement);
             }
 
-            // nested is_null's support
+            // nested is_null calls support
             $currIndex = $isNullIndex;
         }
     }
