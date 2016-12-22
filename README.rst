@@ -1,4 +1,4 @@
-PHP Coding Standards Fixer
+PHP Coding Standards Fixer1
 ==========================
 
 The PHP Coding Standards Fixer tool fixes *most* issues in your code when you
