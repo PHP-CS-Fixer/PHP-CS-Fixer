@@ -441,22 +441,13 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider provideFixersForFinalCheckCases
+     * @dataProvider provideFixerDefinitionsCases
      */
-    public function testFixersAreFinal(\ReflectionClass $class)
+    public function testFixersAreFinal(FixerInterface $fixer)
     {
-        $this->assertTrue($class->isFinal());
-    }
+        $reflection = new \ReflectionClass($fixer);
 
-    public function provideFixersForFinalCheckCases()
-    {
-        $cases = array();
-
-        foreach ($this->getAllFixers() as $fixer) {
-            $cases[] = array(new \ReflectionClass($fixer));
-        }
-
-        return $cases;
+        $this->assertTrue($reflection->isFinal(), sprintf('Fixer "%s" must be declared "final".', $fixer->getName()));
     }
 
     /**
