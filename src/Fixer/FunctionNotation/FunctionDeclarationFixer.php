@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -115,9 +117,34 @@ final class FunctionDeclarationFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Spaces should be properly placed in a function declaration.';
+        return new FixerDefinition(
+            'Spaces should be properly placed in a function declaration.',
+            array(
+                new CodeSample(
+'<?php
+
+function  foo  ($bar, $baz)
+{
+    return false;
+}
+'
+                ),
+                new CodeSample(
+'<?php
+
+class Foo
+{
+    public static function  bar ($baz)
+    {
+        return false;
+    }
+}
+'
+                ),
+            )
+        );
     }
 
     private function fixParenthesisInnerEdge(Tokens $tokens, $start, $end)

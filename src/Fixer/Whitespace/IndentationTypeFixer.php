@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -23,14 +25,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(array(T_COMMENT, T_DOC_COMMENT, T_WHITESPACE));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -67,6 +61,17 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting.',
+            array(new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}"),
+        ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         return 50;
@@ -75,8 +80,8 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting.';
+        return $tokens->isAnyTokenKindsFound(array(T_COMMENT, T_DOC_COMMENT, T_WHITESPACE));
     }
 }

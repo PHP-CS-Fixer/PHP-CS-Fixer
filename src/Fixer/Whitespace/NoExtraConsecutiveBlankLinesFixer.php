@@ -16,6 +16,10 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -126,14 +130,6 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $this->tokens = $tokens;
@@ -141,6 +137,164 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
         for ($index = $tokens->getSize() - 1; $index > 0; --$index) {
             $this->fixByToken($tokens[$index], $index);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefinition()
+    {
+        $values = array(
+            'break',
+            'continue',
+            'curly_brace_block',
+            'extra',
+            'parenthesis_brace_block',
+            'return',
+            'square_brace_block',
+            'throw',
+            'use',
+            'useTrait',
+        );
+
+        return new FixerDefinition(
+            'Removes extra blank lines and/or blank lines following configuration.',
+            array(
+                new CodeSample(
+'<?php
+
+$foo = array("foo");
+
+
+$bar = "bar";'
+                ),
+                new CodeSample(
+'<?php
+
+switch ($foo) {
+    case 41:
+        echo "foo";
+        break;
+        
+    case 42:
+        break;
+}',
+                    array('break')
+                ),
+                new CodeSample(
+'<?php
+
+for ($i = 0; $i < 9000; ++$i) {
+    if (true) {
+        continue;
+
+    }
+}',
+                    array('continue')
+                ),
+                new CodeSample(
+'<?php
+
+for ($i = 0; $i < 9000; ++$i) {
+
+    echo $i;
+
+}',
+                    array('curly_brace_block')
+                ),
+                new CodeSample(
+'<?php
+
+$foo = array("foo");
+
+
+$bar = "bar";',
+                    array('extra')
+                ),
+                new CodeSample(
+'<?php
+
+$foo = array(
+
+    "foo"
+
+);',
+                    array('parenthesis_brace_block')
+                ),
+                new CodeSample(
+'<?php
+
+function foo($bar) 
+{
+    return $bar;
+
+}',
+                    array('return')
+                ),
+                new VersionSpecificCodeSample(
+'<?php
+
+$foo = [
+
+    "foo"
+
+];',
+                    new VersionSpecification(50400),
+                    array('square_brace_block')
+                ),
+                new CodeSample(
+'<?php
+
+function foo($bar) 
+{
+    throw new \Exception("Hello!");
+
+}',
+                    array('throw')
+                ),
+                new CodeSample(
+'<?php
+
+function foo($bar) 
+{
+    throw new \Exception("Hello!");
+
+}',
+                    array('throw')
+                ),
+                new CodeSample(
+'<?php
+
+namespace Foo;
+
+use Bar\Baz;
+
+use Baz\Bar;
+
+class Bar
+{
+}',
+                    array('use')
+                ),
+                new CodeSample(
+'<?php
+
+class Foo 
+{
+    use Bar;
+    
+    use Baz;
+}',
+                    array('useTrait')
+                ),
+            ),
+            null,
+            sprintf(
+                'Configure to use any combination of "%s"',
+                implode('", "', $values)
+            ),
+            array('extra')
+        );
     }
 
     /**
@@ -155,9 +309,9 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Removes extra blank lines and/or blank lines following configuration.';
+        return true;
     }
 
     private function fixByToken(Token $token, $index)

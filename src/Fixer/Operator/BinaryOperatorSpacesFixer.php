@@ -16,6 +16,8 @@ use PhpCsFixer\AbstractAlignFixerHelper;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -98,17 +100,72 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function getDefinition()
     {
-        return true;
+        return new FixerDefinition(
+            'Binary operators should be surrounded by at least one space.',
+            array(
+                new CodeSample(
+'<?php
+
+$a   = 9000;
+$abc = 90001;
+
+$foo = array(
+    "a"   => 9000,
+    "abc" => 9001,
+);
+'
+                ),
+                new CodeSample(
+'<?php
+
+$a   = 9000;
+$abc = 90001;
+',
+                    array('align_equals' => false)
+                ),
+                new CodeSample(
+'<?php
+
+$a = 9000;
+$abc = 90001;
+',
+                    array('align_equals' => true)
+                ),
+                new CodeSample(
+'<?php
+
+$foo = array(
+    "a"   => 9000,
+    "abc" => 9001,
+);
+',
+                    array('align_double_arrow' => false)
+                ),
+                new CodeSample(
+'<?php
+
+$foo = array(
+    "a" => 9000,
+    "abc" => 9001,
+);
+',
+                    array('align_double_arrow' => true)
+                ),
+            ),
+            null,
+            'Aligns or unaligns `=` in consecutive assignments, or `=>` in array initializations',
+            self::$defaultConfiguration
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Binary operators should be surrounded by at least one space.';
+        return true;
     }
 
     /**

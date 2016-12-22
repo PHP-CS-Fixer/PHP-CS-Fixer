@@ -16,6 +16,10 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -75,14 +79,6 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         // -4, one for count to index, 3 because min. of tokens for a classy location.
@@ -96,9 +92,83 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Whitespace around the key words of a class, trait or interfaces definition should be one space.';
+        return new FixerDefinition(
+            'Whitespace around the keywords of a class, trait or interfaces definition should be one space.',
+            array(
+                new CodeSample(
+'<?php
+
+class  Foo  extends  Bar  implements  Baz,  BarBaz
+{
+}'
+                ),
+                new VersionSpecificCodeSample(
+'<?php
+
+trait  Foo  
+{
+}',
+                    new VersionSpecification(50400)
+                ),
+                new VersionSpecificCodeSample(
+'<?php
+
+final  class  Foo  extends  Bar  implements  Baz,  BarBaz
+{
+}',
+                    new VersionSpecification(50500)
+                ),
+                new VersionSpecificCodeSample(
+'<?php
+
+$foo = new  class  extends  Bar  implements  Baz,  BarBaz {};
+',
+                    new VersionSpecification(70100)
+                ),
+                new CodeSample(
+'<?php
+
+class Foo 
+extends Bar 
+implements Baz, BarBaz
+{}
+',
+                    array('singleLine' => true)
+                ),
+                new CodeSample(
+'<?php
+
+class Foo 
+extends Bar 
+implements Baz
+{}
+',
+                    array('singleItemSingleLine' => true)
+                ),
+                new CodeSample(
+'<?php
+
+interface Bar extends 
+    Bar, BarBaz, FooBarBaz
+{}
+',
+                    array('multiLineExtendsEachSingleLine' => true)
+                ),
+            ),
+            null,
+            'Configure to have extra whitespace around the keywords of a class, trait or interface definition removed.',
+            self::$defaultConfig
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
 
     /**

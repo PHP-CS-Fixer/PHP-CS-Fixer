@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -26,14 +28,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class BracesFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return true;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -50,6 +44,44 @@ final class BracesFixer extends AbstractFixer implements WhitespacesAwareFixerIn
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.',
+            array(new CodeSample(
+'<?php
+
+class Foo {
+    public function bar($baz) {
+        if ($baz = 900) echo "Hello!";
+        
+        if ($baz = 9000)
+            echo "Wait!";
+            
+        if ($baz == true) 
+        {
+            echo "Why?";
+        }
+        else
+        {
+            echo "Ha?";
+        }
+        
+        if (is_array($baz)) 
+            foreach ($baz as $b)
+            {
+                echo $b;
+            }
+    }
+}
+'
+            ))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run after the ElseIfFixer, NoEmptyStatementFixer and NoUselessElseFixer
@@ -59,9 +91,9 @@ final class BracesFixer extends AbstractFixer implements WhitespacesAwareFixerIn
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.';
+        return true;
     }
 
     private function fixCommentBeforeBrace(Tokens $tokens)
