@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -26,8 +28,41 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class BracesFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class BracesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
+    /**
+     * @var array
+     */
+    private $configuration;
+
+    private static $defaultConfiguration = array(
+        'allow_single_line_closure' => false,
+    );
+
+    /**
+     * @param array<string, bool>|null $configuration
+     */
+    public function configure(array $configuration = null)
+    {
+        if (null === $configuration) {
+            $this->configuration = self::$defaultConfiguration;
+
+            return;
+        }
+
+        foreach ($configuration as $functionName => $replacement) {
+            if (!array_key_exists($functionName, self::$defaultConfiguration)) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('"%s" is not handled by the fixer.', $functionName));
+            }
+
+            if (!is_bool($replacement)) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected bool got "%s".', is_object($replacement) ? get_class($replacement) : gettype($replacement)));
+            }
+        }
+
+        $this->configuration = $configuration;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -48,7 +83,8 @@ final class BracesFixer extends AbstractFixer implements WhitespacesAwareFixerIn
     {
         return new FixerDefinition(
             'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.',
-            array(new CodeSample(
+            array(
+                new CodeSample(
 '<?php
 
 class Foo {
@@ -75,7 +111,19 @@ class Foo {
     }
 }
 '
-            ))
+                ),
+                new CodeSample(
+'<?php
+$positive = function ($item) { return $item >= 0; };
+$negative = function ($item) {
+                return $item < 0; };
+',
+                    array('allow_single_line_closure' => true)
+                ),
+            ),
+            null,
+            'The `allow_single_line_closure` key could be set to `true` to allow for single line lambda notation.',
+            self::$defaultConfiguration
         );
     }
 
@@ -218,6 +266,23 @@ class Foo {
                 && $tokensAnalyzer->isWhilePartOfDoWhile($index)
             ) {
                 continue;
+            }
+
+            if (
+                $this->configuration['allow_single_line_closure']
+                && $token->isGivenKind(T_FUNCTION)
+                && $tokensAnalyzer->isLambda($index)
+            ) {
+                $braceEndIndex = $tokens->findBlockEnd(
+                    Tokens::BLOCK_TYPE_CURLY_BRACE,
+                    $tokens->getNextTokenOfKind($index, array('{'))
+                );
+
+                if (!$this->isMultilined($tokens, $index, $braceEndIndex)) {
+                    $index = $braceEndIndex;
+
+                    continue;
+                }
             }
 
             if ($token->isGivenKind($classyAndFunctionTokens)) {
@@ -374,6 +439,7 @@ class Foo {
             // if Token after parenthesis is { then we do not need to insert brace, but to fix whitespace before it
             if ($tokenAfterParenthesis->equals('{')) {
                 $tokens->ensureWhitespaceAtIndex($parenthesisEndIndex + 1, 0, ' ');
+
                 continue;
             }
 
@@ -673,5 +739,23 @@ class Foo {
                 $tokens[$i]->clear();
             }
         }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $startParenthesisIndex
+     * @param int    $endParenthesisIndex
+     *
+     * @return bool
+     */
+    private function isMultilined(Tokens $tokens, $startParenthesisIndex, $endParenthesisIndex)
+    {
+        for ($i = $startParenthesisIndex; $i < $endParenthesisIndex; ++$i) {
+            if (false !== strpos($tokens[$i]->getContent(), "\n")) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
