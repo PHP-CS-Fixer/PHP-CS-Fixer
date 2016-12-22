@@ -43,6 +43,8 @@ class FooBar
 	 */
 	private function transformText($dummy, array $options = array(), $data = null)
 	{
+		$fnc = function () { return true; };
+
 		$mergedOptions = array_merge(
 			array(
 				'some_default' => 'values',

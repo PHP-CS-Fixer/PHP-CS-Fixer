@@ -80,11 +80,16 @@ class Foo implements FooInterface
     {
     }
 
-    public function getFnc()
+    public function getFnc1()
     {
         return function () {
             echo 1;
         };
+    }
+
+    public function getFnc2()
+    {
+        return function () { echo 1; };
     }
 
     public function gen1()
@@ -180,7 +185,13 @@ class Foo implements FooInterface
     // scalar typehinting
     public function bar2(int $a)   :   string{}
 
-    public function getFnc()
+    public function getFnc1()
+    {
+        return function () {
+                echo 1; };
+    }
+
+    public function getFnc2()
     {
         return function () { echo 1; };
     }
