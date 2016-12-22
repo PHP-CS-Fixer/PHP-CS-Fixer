@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-21T14:08:31Z
+
+@SpacePossum
+closing intentionally ?
+even if big `ProjectCodeTest` check the methods, it doesnt check the `final`
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-21T14:22:21Z
+
+>even if big ProjectCodeTest check the methods, it doesnt check the final
+
+ah I missed out, I thought it would be one big awesome test :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-21T15:06:15Z
+
+That test does not exist yet, and actually a lot of classes are not final and making them final is BC breaker
