@@ -206,7 +206,7 @@ Choose from the list of available rules:
    | *Rule is: configurable.*
 
 * **class_keyword_remove**
-   | Converts ::class keywords to FQCN strings.
+   | Converts ::class keywords to FQCN strings. Requires PHP >= 5.5.
 
 * **combine_consecutive_unsets**
    | Calling ``unset`` on multiple items should be done in one call.
