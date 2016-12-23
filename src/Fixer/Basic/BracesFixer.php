@@ -220,14 +220,6 @@ class Foo {
                 continue;
             }
 
-            // do not change import of functions
-            if (
-                $token->isGivenKind(T_FUNCTION)
-                && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_USE)
-            ) {
-                continue;
-            }
-
             if ($token->isGivenKind($classyAndFunctionTokens)) {
                 $startBraceIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
                 $startBraceToken = $tokens[$startBraceIndex];
