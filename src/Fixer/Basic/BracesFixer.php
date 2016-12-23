@@ -280,6 +280,7 @@ $negative = function ($item) {
 
                 if (!$this->isMultilined($tokens, $index, $braceEndIndex)) {
                     $index = $braceEndIndex;
+
                     continue;
                 }
             }
@@ -438,6 +439,7 @@ $negative = function ($item) {
             // if Token after parenthesis is { then we do not need to insert brace, but to fix whitespace before it
             if ($tokenAfterParenthesis->equals('{')) {
                 $tokens->ensureWhitespaceAtIndex($parenthesisEndIndex + 1, 0, ' ');
+
                 continue;
             }
 
