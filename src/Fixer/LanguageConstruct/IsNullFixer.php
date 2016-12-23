@@ -34,6 +34,8 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
      * 'use_yoda_style' can be configured wit a boolean value.
      *
      * @param string[]|null $configuration
+     *
+     * @throws InvalidFixerConfigurationException
      */
     public function configure(array $configuration = null)
     {
