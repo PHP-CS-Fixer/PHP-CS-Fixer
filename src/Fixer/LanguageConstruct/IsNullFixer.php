@@ -28,6 +28,10 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
 {
     private static $configurableOptions = array('use_yoda_style');
     private static $defaultConfiguration = array('use_yoda_style' => true);
+
+    /**
+     * @var array
+     */
     private $configuration;
 
     /**
@@ -46,6 +50,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
         }
 
         $this->configuration = array();
+        /** @var $option string */
         foreach ($configuration as $option => $value) {
             if (!in_array($option, self::$configurableOptions, true)) {
                 throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration item "%s", expected any of "%s".', $option, implode('", "', self::$configurableOptions)));
