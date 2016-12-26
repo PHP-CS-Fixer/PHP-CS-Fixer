@@ -259,7 +259,7 @@ Choose from the list of available rules:
    | Add, replace or remove header comment.
    | *Rule is: configurable.*
 
-* **heredoc_to_nowdoc** [@Symfony]
+* **heredoc_to_nowdoc**
    | Convert ``heredoc`` to ``nowdoc`` where possible.
 
 * **include** [@Symfony]
@@ -393,7 +393,7 @@ Choose from the list of available rules:
    | Removes unneeded parentheses around control statements.
    | *Rule is: configurable.*
 
-* **no_unreachable_default_argument_value** [@Symfony]
+* **no_unreachable_default_argument_value**
    | In method arguments there must not be arguments with default values
    | before non-default ones.
 
