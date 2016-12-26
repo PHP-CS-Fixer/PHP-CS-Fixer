@@ -1,0 +1,52 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-19T09:12:16Z
+
+>[...] we don't want to get on Symfony. The heredoc one being one of them.
+
+The was proposed to the SF community and accepted here:
+https://github.com/symfony/symfony/pull/17086
+
+so I'm not sure what we could've done more.
+
+> is the conversion of one-line anonymous functions to multiline ones.
+
+This is done by the `braces` fixer, which cannot be configured ATM.
+The fixer is following [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md#6-closures) so that is why it ended up in the SF set as default.
+
+Please regen. the [readme](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/CONTRIBUTING.md) (`php php-cs-fixer readme > README.rst`) to make Travis happy.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-22T20:30:47Z
+
+@fabpot , your further input about `heredoc` is needed to proceed.
+Rule was approved and apply on framework repo, so at one point it was accepted. Are you sure to remove it?
+
+lambdas - #2421
+
+---------------------------------------------------------------------------
+
+by fabpot at 2016-12-23T07:01:16Z
+
+I've just changed the configuration of Symfony to exclude it (symfony/symfony@d559e26).
+
+I still think it was a mistake to accept such a change in Symfony.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-23T10:05:24Z
+
+Then please apply both changes here and regenerate readme, as @SpacePossum asked.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2016-12-26T11:01:50Z
+
+Done
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-26T11:11:01Z
+
+:+1:
