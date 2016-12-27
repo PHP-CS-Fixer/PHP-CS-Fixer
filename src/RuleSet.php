@@ -21,7 +21,7 @@ namespace PhpCsFixer;
  */
 final class RuleSet implements RuleSetInterface
 {
-    private $setDefinitions = array(
+    private static $setDefinitions = array(
         '@PSR1' => array(
             'encoding' => true,
             'full_opening_tag' => true,
@@ -231,7 +231,7 @@ final class RuleSet implements RuleSetInterface
      */
     public function getSetDefinitionNames()
     {
-        return array_keys($this->setDefinitions);
+        return array_keys(self::$setDefinitions);
     }
 
     /**
@@ -243,11 +243,11 @@ final class RuleSet implements RuleSetInterface
      */
     private function getSetDefinition($name)
     {
-        if (!isset($this->setDefinitions[$name])) {
+        if (!isset(self::$setDefinitions[$name])) {
             throw new \InvalidArgumentException(sprintf('Set "%s" does not exist.', $name));
         }
 
-        return $this->setDefinitions[$name];
+        return self::$setDefinitions[$name];
     }
 
     /**

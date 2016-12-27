@@ -259,7 +259,7 @@ final class BracesFixer extends AbstractFixer implements WhitespacesAwareFixerIn
                             if ($nextToken->isWhitespace()) {
                                 $nextWhitespace = rtrim($nextToken->getContent(), " \t");
 
-                                if (strlen($nextWhitespace)) {
+                                if ('' !== $nextWhitespace) {
                                     $nextWhitespace = preg_replace(
                                         sprintf('/%s$/', $this->whitespacesConfig->getLineEnding()),
                                         '',

@@ -317,7 +317,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
                 } elseif (
                     !$tokens[$i + 1]->isComment()
                     && !($tokens[$i - 1]->isGivenKind(T_COMMENT)
-                        && ('#' === substr($tokens[$i - 1]->getContent(), 0, 1) || '//' === substr($tokens[$i - 1]->getContent(), 0, 2)))
+                        && ('#' === $tokens[$i - 1]->getContent()[0] || '//' === substr($tokens[$i - 1]->getContent(), 0, 2)))
                 ) {
                     $tokens[$i]->setContent(' ');
                 }

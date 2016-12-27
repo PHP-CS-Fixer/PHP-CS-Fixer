@@ -247,7 +247,7 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
      */
     private function fixInfiniteRecursion(Tokens $tokens, $start, $end)
     {
-        $seq = array(
+        static $seq = array(
             array(T_VARIABLE, '$this'),
             array(T_OBJECT_OPERATOR),
             array(T_STRING, '__construct'),
@@ -288,7 +288,7 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
             array(T_STRING, $method),
             '(',
         );
-        $case = array(3 => false);
+        static $case = array(3 => false);
 
         // parse method parameters, if any
         $index = $startIndex;
@@ -351,7 +351,7 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
         $function = array_keys($function);
 
         // find previous block, saving method modifiers for later use
-        $possibleModifiers = array(T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_ABSTRACT, T_FINAL);
+        static $possibleModifiers = array(T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_ABSTRACT, T_FINAL);
         $modifiers = array();
 
         $prevBlock = $tokens->getPrevMeaningfulToken($function[0]);

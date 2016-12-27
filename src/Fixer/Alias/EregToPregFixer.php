@@ -84,7 +84,7 @@ final class EregToPregFixer extends AbstractFixer
 
                 // convert to PCRE
                 $string = substr($tokens[$match[2]]->getContent(), 1, -1);
-                $quote = substr($tokens[$match[2]]->getContent(), 0, 1);
+                $quote = $tokens[$match[2]]->getContent()[0];
                 $delim = $this->getBestDelimiter($string);
                 $preg = $delim.addcslashes($string, $delim).$delim.'D'.$map[2];
 

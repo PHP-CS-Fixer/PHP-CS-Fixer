@@ -97,7 +97,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
                 continue;
             }
 
-            if (1 === preg_match('/inheritdoc/i', $token->getContent())) {
+            if (false !== stripos($token->getContent(), 'inheritdoc')) {
                 continue;
             }
 

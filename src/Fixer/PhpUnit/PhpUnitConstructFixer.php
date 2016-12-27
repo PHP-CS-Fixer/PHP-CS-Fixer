@@ -37,7 +37,7 @@ final class PhpUnitConstructFixer extends AbstractFixer implements ConfigurableF
      */
     private $configuration;
 
-    private $assertionFixers = array(
+    private static $assertionFixers = array(
         'assertSame' => 'fixAssertPositive',
         'assertEquals' => 'fixAssertPositive',
         'assertNotEquals' => 'fixAssertNegative',
@@ -56,7 +56,7 @@ final class PhpUnitConstructFixer extends AbstractFixer implements ConfigurableF
         }
 
         foreach ($configuration as $method) {
-            if (!array_key_exists($method, $this->assertionFixers)) {
+            if (!array_key_exists($method, self::$assertionFixers)) {
                 throw new InvalidFixerConfigurationException($this->getName(), sprintf('Configured method "%s" cannot be fixed by this fixer.', $method));
             }
         }
@@ -91,7 +91,7 @@ final class PhpUnitConstructFixer extends AbstractFixer implements ConfigurableF
         }
 
         foreach ($this->configuration as $assertionMethod) {
-            $assertionFixer = $this->assertionFixers[$assertionMethod];
+            $assertionFixer = self::$assertionFixers[$assertionMethod];
 
             for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
                 $index = $this->$assertionFixer($tokens, $index, $assertionMethod);
