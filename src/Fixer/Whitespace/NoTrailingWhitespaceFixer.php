@@ -70,6 +70,15 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // should be run after NoEmptyPhpdocFixer, NoUnneededControlParenthesesFixer, ClassDefinitionFixer, CombineConsecutiveUnsetsFixer, NoEmptyStatementFixer and NoUselessElseFixer.
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens)
     {
         return true;
