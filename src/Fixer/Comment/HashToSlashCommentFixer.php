@@ -30,8 +30,9 @@ final class HashToSlashCommentFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($i = 1, $count = count($tokens); $i < $count; ++$i) {
-            if ($tokens[$i]->isGivenKind(T_COMMENT) && '#' === substr($tokens[$i]->getContent(), 0, 1)) {
-                $tokens[$i]->setContent('//'.substr($tokens[$i]->getContent(), 1));
+            $originalContent = $tokens[$i]->isGivenKind(T_COMMENT) ? $tokens[$i]->getContent() : null;
+            if (null !== $originalContent && '#' === $originalContent[0]) {
+                $tokens[$i]->setContent('//'.substr($originalContent, 1));
             }
         }
     }

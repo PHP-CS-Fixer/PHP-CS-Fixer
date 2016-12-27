@@ -47,8 +47,9 @@ final class OrderedImportsFixer extends AbstractFixer
 
         $usesOrder = array();
         foreach ($namespacesImports as $uses) {
-            $usesOrder = array_replace($usesOrder, $this->getNewOrder(array_reverse($uses), $tokens));
+            $usesOrder[] = $this->getNewOrder(array_reverse($uses), $tokens);
         }
+        $usesOrder = call_user_func_array('array_replace', $usesOrder);
 
         $usesOrder = array_reverse($usesOrder, true);
         $mapStartToEnd = array();

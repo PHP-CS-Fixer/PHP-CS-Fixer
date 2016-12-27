@@ -23,7 +23,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpUnitDedicateAssertFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    private $fixMap = array(
+    private static $fixMap = array(
         'array_key_exists' => array('assertArrayNotHasKey', 'assertArrayHasKey'),
         'empty' => array('assertNotEmpty', 'assertEmpty'),
         'file_exists' => array('assertFileNotExists', 'assertFileExists'),
@@ -92,7 +92,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
 
         $this->configuration = array();
         foreach ($configuration as $method) {
-            if (!array_key_exists($method, $this->fixMap)) {
+            if (!array_key_exists($method, self::$fixMap)) {
                 throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration method "%s".', $method));
             }
 
@@ -241,9 +241,9 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
             return $assertCallCloseIndex;
         }
 
-        if (is_array($this->fixMap[$content])) {
-            if (false !== $this->fixMap[$content][$isPositive]) {
-                $tokens[$assertCallIndex]->setContent($this->fixMap[$content][$isPositive]);
+        if (is_array(self::$fixMap[$content])) {
+            if (false !== self::$fixMap[$content][$isPositive]) {
+                $tokens[$assertCallIndex]->setContent(self::$fixMap[$content][$isPositive]);
                 $this->removeFunctionCall($tokens, $testDefaultNamespaceTokenIndex, $testIndex, $testOpenIndex, $testCloseIndex);
             }
 
