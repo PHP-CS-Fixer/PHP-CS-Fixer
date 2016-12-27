@@ -271,7 +271,7 @@ Choose from the list of available rules:
    | indenting.
 
 * **is_null**
-   | Replaces is_null(parameter) expression with `null === parameter`.
+   | Replaces is_null(parameter) expression with ``null === parameter``.
    | *Rule is: configurable, risky.*
 
 * **line_ending** [@PSR2, @Symfony]
