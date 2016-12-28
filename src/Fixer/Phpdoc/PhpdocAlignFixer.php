@@ -35,7 +35,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
 
         $indent = '(?P<indent>(?: {2}|\t)*)';
         // e.g. @param <hint> <$var>
-        $paramTag = '(?P<tag>param)\s+(?P<hint>[^$]+?)\s+(?P<var>&?\$[^\s]+)';
+        $paramTag = '(?P<tag>param)\s+(?P<hint>[^$]+?)\s+(?P<var>(?:&|\.{3})?\$[^\s]+)';
         // e.g. @return <hint>
         $otherTags = '(?P<tag2>return|throws|var|type)\s+(?P<hint2>[^\s]+?)';
         // optional <desc>
