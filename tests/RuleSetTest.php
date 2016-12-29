@@ -236,7 +236,27 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
      */
     public function testRiskyRulesInSet(array $set, $safe)
     {
-        $this->assertSetSafety($set, $safe);
+        $fixers = FixerFactory::create()
+            ->registerBuiltInFixers()
+            ->useRuleSet(new RuleSet($set))
+            ->getFixers()
+        ;
+
+        $fixerNames = array();
+        foreach ($fixers as $fixer) {
+            if ($safe === $fixer->isRisky()) {
+                $fixerNames[] = $fixer->getName();
+            }
+        }
+
+        $this->assertCount(
+            0,
+            $fixerNames,
+            sprintf(
+                'Set should only contain %s fixers, got: \'%s\'.',
+                $safe ? 'safe' : 'risky', implode('\', \'', $fixerNames)
+            )
+        );
     }
 
     public function provideSafeSets()
@@ -267,35 +287,6 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
         ksort($actual);
 
         $this->assertSame($expected, $actual, $message);
-    }
-
-    /**
-     * @param array $set
-     * @param bool  $safe
-     */
-    private function assertSetSafety(array $set, $safe)
-    {
-        $fixers = FixerFactory::create()
-            ->registerBuiltInFixers()
-            ->useRuleSet(new RuleSet($set))
-            ->getFixers()
-        ;
-
-        $fixerNames = array();
-        foreach ($fixers as $fixer) {
-            if ($safe === $fixer->isRisky()) {
-                $fixerNames[] = $fixer->getName();
-            }
-        }
-
-        $this->assertCount(
-            0,
-            $fixerNames,
-            sprintf(
-                'Set should only contain %s fixers, got: \'%s\'.',
-                $safe ? 'safe' : 'risky', implode('\', \'', $fixerNames)
-            )
-        );
     }
 
     /**

@@ -117,7 +117,7 @@ $a = strchr($haystack, $needle);
             null,
             null,
             null,
-            'Risky when the any of alias functions are overridden.'
+            'Risky when any of the alias functions are overridden.'
         );
     }
 
