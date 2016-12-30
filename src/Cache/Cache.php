@@ -98,7 +98,7 @@ final class Cache implements CacheInterface
             ));
         }
 
-        static $requiredKeys = array(
+        $requiredKeys = array(
             'php',
             'version',
             'rules',
