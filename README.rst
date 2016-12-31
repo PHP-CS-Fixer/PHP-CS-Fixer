@@ -524,6 +524,10 @@ Choose from the list of available fixers:
 * **multiline_spaces_before_semicolon** [contrib]
    Multi-line whitespace before closing semicolon are prohibited.
 
+* **mysql_to_mysqli** [contrib]
+   Replace deprecated `mysql_*` functions with mysqli_* equivalents.
+   Warning: This could change code behaviour.
+
 * **newline_after_open_tag** [contrib]
    Ensure there is no code on the same line as the PHP open tag.
 
