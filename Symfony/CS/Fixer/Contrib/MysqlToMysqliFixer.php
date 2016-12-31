@@ -13,24 +13,20 @@ class MysqlToMysqliFixer extends AbstractFixer
      */
     public function fix(SplFileInfo $file, $content)
     {
-        $tokens     = Tokens::fromCode($content);
-        $position   = 0;
-        $end        = $tokens->count() - 1;
+        $tokens             = Tokens::fromCode($content);
+        $startPosition      = 0;
+        $end                = $tokens->count() - 1;
 
         foreach ($this->deprecatedMysqlFunctions() as $deprecatedMysqlFunction => $replacementInformation) {
-            $match = $tokens->findSequence(array(array(T_STRING, $deprecatedMysqlFunction), '('), $position, $end, false);
+            while ($match = $tokens->findSequence(array(array(T_STRING, $deprecatedMysqlFunction), '('), $startPosition, $end, false)) {
+                $meaningfulPositions = array_keys($match);
+                $startPosition = end($meaningfulPositions);
+                $replaceIf = $replacementInformation['replaceIf'];
+                $numberOfArguments = $this->numberOfArgumentsFrom($startPosition, $tokens);
 
-            if (null === $match) {
-                continue;
-            }
-
-            $meaningfulPositions = array_keys($match);
-            $position = end($meaningfulPositions);
-            $replaceIf = $replacementInformation['replaceIf'];
-            $numberOfArguments = $this->numberOfArgumentsFrom($position, $tokens);
-
-            if ($replaceIf($numberOfArguments)) {
-                $tokens[$meaningfulPositions[0]]->setContent($replacementInformation['replaceFor']);
+                if ($replaceIf($numberOfArguments)) {
+                    $tokens[$meaningfulPositions[0]]->setContent($replacementInformation['replaceFor']);
+                }
             }
         }
 

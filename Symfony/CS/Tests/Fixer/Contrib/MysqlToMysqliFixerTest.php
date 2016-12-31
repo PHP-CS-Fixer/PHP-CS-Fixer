@@ -93,4 +93,12 @@ class MysqlToMysqliFixerTest extends AbstractFixerTestBase
             array('<?php mysqli_thread_id($link);', '<?php mysql_thread_id($link);'),
         );
     }
+
+    public function testMultipleOcurrences()
+    {
+        $this->makeTest(
+            '<?php $x = mysqli_connect(); $y = mysqli_connect(); $z = mysqli_connect();',
+            '<?php $x = mysql_connect(); $y = mysqli_connect(); $z = mysql_connect();'
+        );
+    }
 }
