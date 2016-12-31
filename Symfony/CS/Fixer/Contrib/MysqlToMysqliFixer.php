@@ -84,25 +84,25 @@ class MysqlToMysqliFixer extends AbstractFixer
         return array(
             'mysql_connect' => array(
                 'replaceIf' => function ($numberOfArguments) {
-                    return $numberOfArguments <= 3;
+                    return 3 >= $numberOfArguments;
                 },
                 'replaceFor' => 'mysqli_connect',
             ),
             'mysql_affected_rows' => array(
                 'replaceIf' => function ($numberOfArguments) {
-                    return $numberOfArguments === 1;
+                    return 1 === $numberOfArguments;
                 },
                 'replaceFor' => 'mysqli_affected_rows',
             ),
             'mysql_client_encoding' => array(
                 'replaceIf' => function ($numberOfArguments) {
-                    return $numberOfArguments === 1;
+                    return 1 === $numberOfArguments;
                 },
                 'replaceFor' => 'mysqli_character_set_name',
             ),
             'mysql_close' => array(
                 'replaceIf' => function ($numberOfArguments) {
-                    return $numberOfArguments === 1;
+                    return 1 === $numberOfArguments;
                 },
                 'replaceFor' => 'mysqli_close',
             ),
@@ -114,31 +114,31 @@ class MysqlToMysqliFixer extends AbstractFixer
             ),
             'mysql_errno' => array(
                 'replaceIf' => function ($numberOfArguments) {
-                    return $numberOfArguments === 1;
+                    return 1 === $numberOfArguments;
                 },
                 'replaceFor' => 'mysqli_errno',
             ),
             'mysql_error' => array(
                 'replaceIf' => function ($numberOfArguments) {
-                    return $numberOfArguments === 1;
+                    return 1 === $numberOfArguments;
                 },
                 'replaceFor' => 'mysqli_error',
             ),
             'mysql_fetch_array' => array(
                 'replaceIf' => function ($numberOfArguments) {
-                    return $numberOfArguments === 1;
+                    return 1 === $numberOfArguments;
                 },
                 'replaceFor' => 'mysqli_fetch_array',
             ),
             'mysql_fetch_assoc' => array(
                 'replaceIf' => function ($numberOfArguments) {
-                    return $numberOfArguments === 1;
+                    return 1 === $numberOfArguments;
                 },
                 'replaceFor' => 'mysqli_fetch_assoc',
             ),
             'mysql_fetch_field' => array(
                 'replaceIf' => function ($numberOfArguments) {
-                    return $numberOfArguments === 1;
+                    return 1 === $numberOfArguments;
                 },
                 'replaceFor' => 'mysqli_fetch_field',
             ),
