@@ -524,6 +524,19 @@ Choose from the list of available fixers:
 * **multiline_spaces_before_semicolon** [contrib]
    Multi-line whitespace before closing semicolon are prohibited.
 
+* **mysql_to_mysqli** [contrib]
+   Replace deprecated `mysql_*` functions with mysqli_* equivalents. Not
+   all functions are supported since there are a few functions that don't
+   have a direct mysqli translation. The unsupported ones are:
+   `mysql_create_db`, `mysql_db_name`, `mysql_db_query`, `mysql_drop_db`,
+   `mysql_escape_string`, `mysql_field_flags`, `mysql_field_len`,
+   `mysql_field_name`, `mysql_field_table`, `mysql_field_type`,
+   `mysql_list_dbs`, `mysql_list_fields`, `mysql_list_processes`,
+   `mysql_list_tables`, `mysql_pconnect`, `mysql_query`,
+   `mysql_real_escape_string`, `mysql_result`, `mysql_select_db`,
+   `mysql_tablename`, `mysql_unbuffered_query`. Warning: This could change
+   code behaviour.
+
 * **newline_after_open_tag** [contrib]
    Ensure there is no code on the same line as the PHP open tag.
 
