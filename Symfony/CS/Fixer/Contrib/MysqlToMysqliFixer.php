@@ -13,9 +13,9 @@ class MysqlToMysqliFixer extends AbstractFixer
      */
     public function fix(SplFileInfo $file, $content)
     {
-        $tokens             = Tokens::fromCode($content);
-        $startPosition      = 0;
-        $end                = $tokens->count() - 1;
+        $tokens = Tokens::fromCode($content);
+        $startPosition = 0;
+        $end = $tokens->count() - 1;
 
         foreach ($this->deprecatedMysqlFunctions() as $deprecatedMysqlFunction => $replacementInformation) {
             while ($match = $tokens->findSequence(array(array(T_STRING, $deprecatedMysqlFunction), '('), $startPosition, $end, false)) {
@@ -59,7 +59,7 @@ class MysqlToMysqliFixer extends AbstractFixer
             return $numberOfArguments;
         }
 
-        $numberOfArguments++;
+        ++$numberOfArguments;
         $dontBreakLoop = false;
 
         while (!$dontBreakLoop) {
@@ -71,7 +71,7 @@ class MysqlToMysqliFixer extends AbstractFixer
                 $position = $index;
 
                 if ($tokens[$index]->equals(',')) {
-                    $numberOfArguments++;
+                    ++$numberOfArguments;
                 }
             }
         }
