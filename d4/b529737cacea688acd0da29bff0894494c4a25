@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by kalessil at 2016-12-30T12:42:43Z
+
+@keradus : static local variables and newly added preg_quote 2nd parameters are reverted now.
+
+Would you please check if the rest part of the PR looks good?
