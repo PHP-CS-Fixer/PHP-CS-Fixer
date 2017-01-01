@@ -48,7 +48,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
      */
     public function fixSpace(Tokens $tokens, $index)
     {
-        @trigger_error(sprintf('%s::%s is deprecated and will be removed in 3.0', __CLASS__, __METHOD__), E_USER_DEPRECATED);
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0', E_USER_DEPRECATED);
         $this->fixSpace2($tokens, $index);
     }
 

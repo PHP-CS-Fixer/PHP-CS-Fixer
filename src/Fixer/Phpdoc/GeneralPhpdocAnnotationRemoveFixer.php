@@ -29,12 +29,17 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
     protected $configuration;
 
     /**
+     * @var array
+     */
+    private static $defaultConfiguration = array();
+
+    /**
      * {@inheritdoc}
      */
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
-            $this->configuration = array();
+            $this->configuration = self::$defaultConfiguration;
 
             return;
         }

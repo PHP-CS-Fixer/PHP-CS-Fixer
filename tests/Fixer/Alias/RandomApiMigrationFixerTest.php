@@ -134,6 +134,16 @@ class srand extends SrandClass{
                 '<?php $a = rand(1,2) + mt_rand(3,4);',
                 array('rand' => 'random_int', 'mt_rand' => 'random_int'),
             ),
+            array(
+                '<?php 
+                interface Test 
+                {
+                    public function getrandmax();
+                    public function &rand();
+                }',
+                null,
+                array('rand' => 'random_int'),
+            ),
         );
     }
 }

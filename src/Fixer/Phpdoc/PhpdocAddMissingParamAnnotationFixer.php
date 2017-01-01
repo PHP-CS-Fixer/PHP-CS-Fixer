@@ -30,6 +30,9 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
      */
     private $configuration;
 
+    /**
+     * @var array
+     */
     private static $defaultConfiguration = array(
         'only_untyped' => true,
     );
