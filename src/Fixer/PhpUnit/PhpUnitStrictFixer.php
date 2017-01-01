@@ -39,7 +39,7 @@ final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurableFixe
      */
     private $configuration;
 
-    private $assertionMap = array(
+    private static $assertionMap = array(
         'assertAttributeEquals' => 'assertAttributeSame',
         'assertAttributeNotEquals' => 'assertAttributeNotSame',
         'assertEquals' => 'assertSame',
@@ -58,7 +58,7 @@ final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurableFixe
         }
 
         foreach ($configuration as $method) {
-            if (!array_key_exists($method, $this->assertionMap)) {
+            if (!array_key_exists($method, self::$assertionMap)) {
                 throw new InvalidFixerConfigurationException($this->getName(), sprintf('Configured method "%s" cannot be fixed by this fixer.', $method));
             }
         }
@@ -72,7 +72,7 @@ final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurableFixe
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($this->configuration as $methodBefore) {
-            $methodAfter = $this->assertionMap[$methodBefore];
+            $methodAfter = self::$assertionMap[$methodBefore];
 
             for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
                 $sequence = $tokens->findSequence(

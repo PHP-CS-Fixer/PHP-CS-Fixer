@@ -402,7 +402,7 @@ class Foo
      */
     private function fixStructureOpenCloseIfMultiLine($index)
     {
-        $blockTypeInfo = $this->tokens->detectBlockType($this->tokens[$index]);
+        $blockTypeInfo = Tokens::detectBlockType($this->tokens[$index]);
         $bodyEnd = $this->tokens->findBlockEnd($blockTypeInfo['type'], $index);
 
         for ($i = $bodyEnd - 1; $i >= $index; --$i) {

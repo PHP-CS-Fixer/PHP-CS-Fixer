@@ -360,6 +360,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
 
             $element['position'] = $this->typePosition[$type];
         }
+        unset($element);
 
         usort($elements, function (array $a, array $b) {
             if ($a['position'] === $b['position']) {

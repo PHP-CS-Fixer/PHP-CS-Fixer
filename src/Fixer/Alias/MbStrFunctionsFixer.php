@@ -108,12 +108,4 @@ $a = substr_count($a, $b);
     {
         return $tokens->isTokenKindFound(T_STRING);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return true;
-    }
 }

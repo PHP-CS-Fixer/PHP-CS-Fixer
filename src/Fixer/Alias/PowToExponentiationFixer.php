@@ -100,14 +100,6 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return true;
-    }
-
-    /**
      * @param Tokens $tokens
      *
      * @return array[]
