@@ -70,7 +70,6 @@ final class RuleSet implements RuleSetInterface
             'method_separation' => true,
             'native_function_casing' => true,
             'new_with_braces' => true,
-            'no_alias_functions' => true,
             'no_blank_lines_after_class_opening' => true,
             'no_blank_lines_after_phpdoc' => true,
             'no_empty_comment' => true,
@@ -132,6 +131,7 @@ final class RuleSet implements RuleSetInterface
             'whitespace_after_comma_in_array' => true,
         ),
         '@Symfony:risky' => array(
+            'no_alias_functions' => true,
             'php_unit_construct' => true,
             'php_unit_dedicate_assert' => true,
             'silenced_deprecation_error' => true,
