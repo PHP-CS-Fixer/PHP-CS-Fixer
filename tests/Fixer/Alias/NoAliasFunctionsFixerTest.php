@@ -119,6 +119,37 @@ class '.$alias.' extends '.ucfirst($alias).'ing{
             '<?php is_integer($a);',
         );
 
+        $cases[] = array(
+            '<?php $b=is_int(count(implode($b,$a)));',
+            '<?php $b=is_integer(sizeof(join($b,$a)));',
+        );
+
+        $cases[] = array(
+            '<?php
+interface JoinInterface
+{
+    public function &join();
+}
+
+abstract class A
+{
+    abstract public function join($a);
+
+    public function is_integer($a)
+    {
+        $fputs = "is_double(\$a);\n"; // key_exists($b, $c);
+        echo $fputs."\$is_writable";
+        \B::close();
+        Scope\is_long();
+        namespace\is_long();
+        $a->pos();
+        new join();
+        new \join();
+        new ScopeB\join(mt_rand(0, 100));
+    }
+}',
+        );
+
         return $cases;
     }
 }

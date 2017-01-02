@@ -52,6 +52,12 @@ final class NoAliasFunctionsFixer extends AbstractFixer
     {
         /** @var $token \PhpCsFixer\Tokenizer\Token */
         foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
+            // check mapping hit
+            $tokenContent = strtolower($token->getContent());
+            if (!isset(self::$aliases[$tokenContent])) {
+                continue;
+            }
+
             // skip expressions without parameters list
             $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
             if (!$nextToken->equals('(')) {
@@ -61,7 +67,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer
             // skip expressions which are not function reference
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevTokenIndex];
-            if ($prevToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION))) {
+            if ($prevToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, CT::T_RETURN_REF))) {
                 continue;
             }
 
@@ -72,12 +78,6 @@ final class NoAliasFunctionsFixer extends AbstractFixer
                 if ($twicePrevToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, T_STRING, CT::T_NAMESPACE_OPERATOR))) {
                     continue;
                 }
-            }
-
-            // check mapping hit
-            $tokenContent = strtolower($token->getContent());
-            if (!isset(self::$aliases[$tokenContent])) {
-                continue;
             }
 
             $token->setContent(self::$aliases[$tokenContent]);
