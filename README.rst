@@ -267,7 +267,7 @@ Choose from the list of available rules:
    | File path should not be placed under brackets.
 
 * **indentation_type** [@PSR2, @Symfony]
-   | Code must use the indent configured (default PSR2 4 spaces).
+   | Code MUST use configured indentation type.
 
 * **line_ending** [@PSR2, @Symfony]
    | All PHP files must use same line ending.

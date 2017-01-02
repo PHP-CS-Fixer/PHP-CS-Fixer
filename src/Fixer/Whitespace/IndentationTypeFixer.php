@@ -64,7 +64,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Code must use the indent configured (default PSR2 4 spaces).',
+            'Code MUST use configured indentation type.',
             array(new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}"),
         ));
     }
