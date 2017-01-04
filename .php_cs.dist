@@ -29,6 +29,7 @@ return PhpCsFixer\Config::create()
         'ordered_imports' => true,
         'php_unit_strict' => true,
         'phpdoc_add_missing_param_annotation' => true,
+        'phpdoc_order' => true,
         'psr4' => true,
         'strict_comparison' => true,
         'strict_param' => true,
