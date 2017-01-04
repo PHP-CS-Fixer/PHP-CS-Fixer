@@ -60,7 +60,7 @@ final class RuleSet implements RuleSetInterface
             'blank_line_after_opening_tag' => true,
             'blank_line_before_return' => true,
             'braces' => array(
-                'allow_oneline_lambda' => true,
+                'allow_single_line_closure' => true,
             ),
             'cast_spaces' => true,
             'class_definition' => array('singleLine' => true),

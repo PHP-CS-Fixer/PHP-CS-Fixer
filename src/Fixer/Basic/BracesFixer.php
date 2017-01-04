@@ -36,7 +36,7 @@ final class BracesFixer extends AbstractFixer implements ConfigurableFixerInterf
     private $configuration;
 
     private static $defaultConfiguration = array(
-        'allow_oneline_lambda' => false,
+        'allow_single_line_closure' => false,
     );
 
     /**
@@ -118,11 +118,11 @@ $positive = function ($item) { return $item >= 0; };
 $negative = function ($item) {
                 return $item < 0; };
 ',
-                    array('allow_oneline_lambda' => true)
+                    array('allow_single_line_closure' => true)
                 ),
             ),
             null,
-            'The `allow_oneline_lambda` key could be set to `true` to allow for single line lambda notation.',
+            'The `allow_single_line_closure` key could be set to `true` to allow for single line lambda notation.',
             self::$defaultConfiguration
         );
     }
@@ -269,7 +269,7 @@ $negative = function ($item) {
             }
 
             if (
-                $this->configuration['allow_oneline_lambda']
+                $this->configuration['allow_single_line_closure']
                 && $token->isGivenKind(T_FUNCTION)
                 && $tokensAnalyzer->isLambda($index)
             ) {

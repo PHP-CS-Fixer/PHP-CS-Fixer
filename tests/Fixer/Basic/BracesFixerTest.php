@@ -1719,7 +1719,7 @@ if (true) {
     public function testFixWithAllowOnelineLambda($expected, $input = null)
     {
         $this->fixer->configure(array(
-            'allow_oneline_lambda' => true,
+            'allow_single_line_closure' => true,
         ));
 
         $this->doTest($expected, $input);
