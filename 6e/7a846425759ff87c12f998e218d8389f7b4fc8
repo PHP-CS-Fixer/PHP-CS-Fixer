@@ -1,0 +1,52 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-06T01:25:19Z
+
+> Avoid description to be divided in to more then one row
+
+what for? this is perfectly valid MD syntax
+
+---------------------------------------------------------------------------
+
+by drAlberT at 2016-12-06T08:35:08Z
+
+@keradus it is valid, of course .. but the resulting output is splitted on two *different* rows, having different colors ...
+
+Before PR:
+![screen shot 2016-12-06 at 09 32 40](https://cloud.githubusercontent.com/assets/1442700/20918422/36f081a8-bb97-11e6-977d-2f956f0236c6.png)
+
+After PR:
+![screen shot 2016-12-06 at 09 33 19](https://cloud.githubusercontent.com/assets/1442700/20918431/421d240a-bb97-11e6-98cc-91209cd1459a.png)
+
+---------------------------------------------------------------------------
+
+by drAlberT at 2016-12-06T09:22:08Z
+
+WIP .. wait guys .. going to find a better solution .. sorry for noise .. not having a shell at the moment, but using GH editor is going to create a lot of confusion on this PR ..
+
+Will stash ASAP
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-07T09:13:28Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-07T10:31:29Z
+
+Table doesn't look nice now:
+https://github.com/drAlberT/PHP-CS-Fixer/blob/28df22ba370db84f5de9a4ebf6a77bc5f9fadfe4/UPGRADE.md#cli-options
+
+compare to
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/UPGRADE.md#cli-options
+
+the description column is way to wide.
+line breaker for long description is needed
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-07T10:53:53Z
+
+@drAlberT please throw in a `<br/`> and check how it looks ;)
