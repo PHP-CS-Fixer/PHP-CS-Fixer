@@ -470,6 +470,13 @@ EOF;
         );
     }
 
+    public function testCanFixBadFormatted()
+    {
+        $expected = "<?php\n    /**\n     * @var Foo */\n";
+
+        $this->doTest($expected);
+    }
+
     public function testFixUnicode()
     {
         $expected = <<<'EOF'
