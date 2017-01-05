@@ -17,16 +17,17 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  *
+ * @requires PHP 7.0
+ *
  * @internal
  */
 final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCases
-     * @requires PHP 7.0
      *
-     * @param mixed      $expected
-     * @param null|mixed $input
+     * @param string      $expected
+     * @param null|string $input
      */
     public function testFix($expected, $input = null)
     {
@@ -36,6 +37,7 @@ final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
     public function provideCases()
     {
         return array(
+            // Do not fix cases.
             array('<?php $x = isset($a) ? $a[1] : null;'),
             array('<?php $x = isset($a) and $a ? $a : "";'),
             array('<?php $x = "isset($a) ? $a : null";'),
@@ -58,10 +60,21 @@ final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
             array('<?php $x = function(){isset($a[yield]) ? $a[yield] : null;};'),
             array('<?php $x = isset($a[foo()]) ? $a[foo()] : null;'),
             array('<?php $x = isset($a[$callback()]) ? $a[$callback()] : null;'),
-
-            array(
+            array('<?php $y = isset($a) ? 2**3 : 3**2;'),
+            // Fix cases.
+            'Common fix case (I).' => array(
                 '<?php $x = $a ?? null;',
                 '<?php $x = isset($a) ? $a : null;',
+            ),
+            'Common fix case (II).' => array(
+                '<?php $x = $a[0] ?? 1;',
+                '<?php $x = isset($a[0]) ? $a[0] : 1;',
+            ),
+            'Minimal number of tokens case.' => array(
+                '<?php
+$x=$a??null?>',
+                '<?php
+$x=isset($a)?$a:null?>',
             ),
             array(
                 '<?php $x = $a ?? 1; $y = isset($b) ? "b" : 2; $x = $c ?? 3;',
@@ -101,9 +114,9 @@ $a
 ??
 // c5
 null
-// c6
+/* c6 */
 )
-// c7
+# c7
 ;',
                 '<?php $x = (
 // c1
@@ -116,9 +129,9 @@ $a
 :
 // c5
 null
-// c6
+/* c6 */
 )
-// c7
+# c7
 ;',
             ),
         );

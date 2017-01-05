@@ -29,59 +29,9 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $issets = array_keys($tokens->findGivenKind(T_ISSET));
-
-        while ($issetIndex = array_pop($issets)) {
-            $prevTokenIndex = $tokens->getPrevMeaningfulToken($issetIndex);
-            if ($this->isHigherPrecedenceAssociativityOperator($tokens[$prevTokenIndex])) {
-                continue;
-            }
-
-            $startBraceIndex = $tokens->getNextTokenOfKind($issetIndex, array('('));
-            $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startBraceIndex);
-
-            $ternaryQuestionMarkIndex = $tokens->getNextMeaningfulToken($endBraceIndex);
-            if (!$tokens[$ternaryQuestionMarkIndex]->equals('?')) {
-                // we are not in a ternary operator
-                continue;
-            }
-
-            // search what is inside the isset()
-            $issetTokens = $this->getMeaningfulSequence($tokens, $startBraceIndex, $endBraceIndex);
-
-            // search what is inside the middle argument of ternary operator
-            $ternaryColonIndex = $tokens->getNextTokenOfKind($ternaryQuestionMarkIndex, array(':'));
-            $ternaryFirstOperandTokens = $this->getMeaningfulSequence($tokens, $ternaryQuestionMarkIndex, $ternaryColonIndex);
-
-            if ($issetTokens->generateCode() !== $ternaryFirstOperandTokens->generateCode()) {
-                // regardless of non-meaningful tokens, the operands are different
-                continue;
-            }
-
-            if ($this->hasChangingContent($issetTokens)) {
-                // some weird stuff inside the isset
-                continue;
-            }
-
-            $ternaryFirstOperandIndex = $tokens->getNextMeaningfulToken($ternaryQuestionMarkIndex);
-
-            // preserve comments and spaces after them
-            $comments = array();
-            $commentStarted = false;
-            for ($index = $issetIndex; $index < $ternaryFirstOperandIndex; ++$index) {
-                if ($tokens[$index]->isComment()) {
-                    $comments[] = $tokens[$index];
-                    $commentStarted = true;
-                } elseif ($commentStarted) {
-                    if ($tokens[$index]->isWhitespace()) {
-                        $comments[] = $tokens[$index];
-                    }
-                    $commentStarted = false;
-                }
-            }
-
-            $tokens[$ternaryColonIndex]->override(array(T_COALESCE, '??'));
-            $tokens->overrideRange($issetIndex, $ternaryFirstOperandIndex - 1, $comments);
+        $issetIndexes = array_keys($tokens->findGivenKind(T_ISSET));
+        while ($issetIndex = array_pop($issetIndexes)) {
+            $this->fixIsset($tokens, $issetIndex);
         }
     }
 
@@ -91,7 +41,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Use null coalescing operator `??` wherever possible.',
+            'Use `null` coalescing operator `??` where possible.',
             array(
                 new VersionSpecificCodeSample(
                     "<?php\n\$sample = isset(\$a) ? \$a : \$b;",
@@ -110,9 +60,64 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
     }
 
     /**
+     * @param Tokens $tokens
+     * @param int    $index  of `T_ISSET` token
+     */
+    private function fixIsset(Tokens $tokens, $index)
+    {
+        $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
+        if ($this->isHigherPrecedenceAssociativityOperator($tokens[$prevTokenIndex])) {
+            return;
+        }
+
+        $startBraceIndex = $tokens->getNextTokenOfKind($index, array('('));
+        $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startBraceIndex);
+
+        $ternaryQuestionMarkIndex = $tokens->getNextMeaningfulToken($endBraceIndex);
+        if (!$tokens[$ternaryQuestionMarkIndex]->equals('?')) {
+            return; // we are not in a ternary operator
+        }
+
+        // search what is inside the isset()
+        $issetTokens = $this->getMeaningfulSequence($tokens, $startBraceIndex, $endBraceIndex);
+        if ($this->hasChangingContent($issetTokens)) {
+            return; // some weird stuff inside the isset
+        }
+
+        // search what is inside the middle argument of ternary operator
+        $ternaryColonIndex = $tokens->getNextTokenOfKind($ternaryQuestionMarkIndex, array(':'));
+        $ternaryFirstOperandTokens = $this->getMeaningfulSequence($tokens, $ternaryQuestionMarkIndex, $ternaryColonIndex);
+
+        if ($issetTokens->generateCode() !== $ternaryFirstOperandTokens->generateCode()) {
+            return; // regardless of non-meaningful tokens, the operands are different
+        }
+
+        $ternaryFirstOperandIndex = $tokens->getNextMeaningfulToken($ternaryQuestionMarkIndex);
+
+        // preserve comments and spaces
+        $comments = array();
+        $commentStarted = false;
+        for ($loopIndex = $index; $loopIndex < $ternaryFirstOperandIndex; ++$loopIndex) {
+            if ($tokens[$loopIndex]->isComment()) {
+                $comments[] = $tokens[$loopIndex];
+                $commentStarted = true;
+            } elseif ($commentStarted) {
+                if ($tokens[$loopIndex]->isWhitespace()) {
+                    $comments[] = $tokens[$loopIndex];
+                }
+
+                $commentStarted = false;
+            }
+        }
+
+        $tokens[$ternaryColonIndex]->override(array(T_COALESCE, '??'));
+        $tokens->overrideRange($index, $ternaryFirstOperandIndex - 1, $comments);
+    }
+
+    /**
      * Get the sequence of meaningful tokens and returns a new Tokens instance.
      *
-     * @param Tokens $tokens The original token list
+     * @param Tokens $tokens
      * @param int    $start  start index
      * @param int    $end    end index
      *
@@ -136,9 +141,9 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
 
     /**
      * Check if the requested token is an operator computed
-     * before the ternary operator along with the isset().
+     * before the ternary operator along with the `isset()`.
      *
-     * @param Token $token The original token
+     * @param Token $token
      *
      * @return bool
      */
@@ -187,7 +192,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
     }
 
     /**
-     * Check if the isset() content may change if called multiple times.
+     * Check if the `isset()` content may change if called multiple times.
      *
      * @param Tokens $tokens The original token list
      *
