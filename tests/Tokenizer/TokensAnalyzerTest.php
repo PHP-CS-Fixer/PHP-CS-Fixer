@@ -688,7 +688,7 @@ $b;',
      * @param string $source
      * @param int[]  $tokenIndexes
      *
-     * @dataProvider provideIsArray70Cases
+     * @dataProvider provideIsArray71Cases
      * @requires PHP 7.1
      */
     public function testIsArray71($source, $tokenIndexes)
@@ -706,7 +706,7 @@ $b;',
         }
     }
 
-    public function provideIsArray70Cases()
+    public function provideIsArray71Cases()
     {
         return array(
             array(
