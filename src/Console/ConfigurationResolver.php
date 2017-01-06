@@ -128,6 +128,11 @@ final class ConfigurationResolver
     private $usingCache;
 
     /**
+     * @var FixerFactory
+     */
+    private $fixerFactory;
+
+    /**
      * ConfigurationResolver constructor.
      *
      * @param ConfigInterface $config
@@ -513,15 +518,15 @@ final class ConfigurationResolver
      */
     private function createFixerFactory()
     {
-        static $fixerFactory = null;
-
-        if (null === $fixerFactory) {
+        if (null === $this->fixerFactory) {
             $fixerFactory = new FixerFactory();
             $fixerFactory->registerBuiltInFixers();
             $fixerFactory->registerCustomFixers($this->getConfig()->getCustomFixers());
+
+            $this->fixerFactory = $fixerFactory;
         }
 
-        return $fixerFactory;
+        return $this->fixerFactory;
     }
 
     /**
