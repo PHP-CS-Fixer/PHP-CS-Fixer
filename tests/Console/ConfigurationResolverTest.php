@@ -856,7 +856,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     {
         $resolver = new ConfigurationResolver(
             $this->config,
-            array('rules' => 'braces,-strict'),
+            array('rules' => 'braces,-strict_comparison'),
             ''
         );
 
@@ -866,6 +866,22 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ),
             $resolver->getRules()
         );
+    }
+
+    public function testResolveRulesWithUnknownRules()
+    {
+        $this->setExpectedException(
+            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            'The rules contain unknown fixers (bar).'
+        );
+
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            array('rules' => 'braces,-bar'),
+            ''
+        );
+
+        $resolver->getRules();
     }
 
     public function testResolveRulesWithConfigAndOption()
