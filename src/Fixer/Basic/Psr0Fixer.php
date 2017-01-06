@@ -24,6 +24,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @var array
+     */
+    private static $defaultConfiguration = array();
+
     private $configuration = array();
 
     /**
@@ -32,7 +37,7 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements Configurabl
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
-            $this->configuration = array();
+            $this->configuration = self::$defaultConfiguration;
 
             return;
         }

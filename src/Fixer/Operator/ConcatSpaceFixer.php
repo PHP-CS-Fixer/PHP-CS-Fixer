@@ -26,6 +26,13 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @var array
+     */
+    private static $defaultConfiguration = array(
+        'spacing' => 'none',
+    );
+
     private $fixCallback;
 
     /**
