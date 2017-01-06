@@ -90,7 +90,7 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
             ),
             array(
                 "<?php
-                echo '\DateTime';
+                echo 'DateTime';
                 ",
                 "<?php
                 echo \DateTime::class;
