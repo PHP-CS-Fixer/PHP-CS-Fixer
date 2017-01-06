@@ -513,9 +513,13 @@ final class ConfigurationResolver
      */
     private function createFixerFactory()
     {
-        $fixerFactory = new FixerFactory();
-        $fixerFactory->registerBuiltInFixers();
-        $fixerFactory->registerCustomFixers($this->getConfig()->getCustomFixers());
+        static $fixerFactory = null;
+
+        if (null === $fixerFactory) {
+            $fixerFactory = new FixerFactory();
+            $fixerFactory->registerBuiltInFixers();
+            $fixerFactory->registerCustomFixers($this->getConfig()->getCustomFixers());
+        }
 
         return $fixerFactory;
     }
