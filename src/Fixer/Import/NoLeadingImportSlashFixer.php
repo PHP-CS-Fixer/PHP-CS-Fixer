@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -21,14 +23,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class NoLeadingImportSlashFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_USE);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -61,6 +55,17 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Remove leading slashes in use clauses.',
+            array(new CodeSample("<?php\nnamespace Foo;\nuse \\Bar;"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run after the SingleImportPerStatementFixer (for fix separated use statements as well) and NoUnusedImportsFixer (just for save performance)
@@ -70,8 +75,8 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Remove leading slashes in use clauses.';
+        return $tokens->isTokenKindFound(T_USE);
     }
 }

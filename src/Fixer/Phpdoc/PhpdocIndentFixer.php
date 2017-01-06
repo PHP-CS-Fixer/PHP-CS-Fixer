@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
@@ -25,9 +27,36 @@ final class PhpdocIndentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function getDefinition()
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return new FixerDefinition(
+            'Docblocks should have the same indentation as the documented subject.',
+            array(new CodeSample('<?php
+class DocBlocks
+{
+/**
+ * Test constants
+ */
+    const INDENT = 1;
+}
+'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        /*
+         * Should be run before all other docblock fixers apart from the
+         * phpdoc_to_comment fixer to make sure all fixers apply correct
+         * indentation to new code they add, and the phpdoc_params fixer only
+         * works on correctly indented docblocks. We also need to be running
+         * after the psr2 indentation fixer for obvious reasons.
+         * comments.
+         */
+        return 20;
     }
 
     /**
@@ -71,25 +100,9 @@ final class PhpdocIndentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function isCandidate(Tokens $tokens)
     {
-        /*
-         * Should be run before all other docblock fixers apart from the
-         * phpdoc_to_comment fixer to make sure all fixers apply correct
-         * indentation to new code they add, and the phpdoc_params fixer only
-         * works on correctly indented docblocks. We also need to be running
-         * after the psr2 indentation fixer for obvious reasons.
-         * comments.
-         */
-        return 20;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDescription()
-    {
-        return 'Docblocks should have the same indentation as the documented subject.';
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
     /**
