@@ -159,7 +159,7 @@ interface Bar extends
             ),
             null,
             'Configure to have extra whitespace around the keywords of a class, trait or interface definition removed.',
-            self::$defaultConfig
+            self::$defaultConfiguration
         );
     }
 
