@@ -867,7 +867,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             $resolver->getRules()
         );
     }
-    
+
     public function testResolveRulesWithUnknownRules()
     {
         $this->setExpectedException(
