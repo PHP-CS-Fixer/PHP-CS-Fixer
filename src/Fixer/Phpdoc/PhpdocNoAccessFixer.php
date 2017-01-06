@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -23,9 +25,24 @@ final class PhpdocNoAccessFixer extends AbstractProxyFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return '@access annotations should be omitted from phpdocs.';
+        return new FixerDefinition(
+            '@access annotations should be omitted from phpdocs.',
+            array(
+                new CodeSample(
+                    '<?php
+class Foo
+{
+    /**
+     * @internal
+     * @access private
+     */
+    private $bar;
+}'
+                ),
+            )
+        );
     }
 
     /**

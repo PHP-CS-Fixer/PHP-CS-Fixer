@@ -18,6 +18,8 @@ use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -61,31 +63,6 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
         }
 
         $this->configuration = $configuration;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // must be run after PhpdocNoAliasTagFixer and before PhpdocAlignFixer
-        return -5;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return false;
     }
 
     /**
@@ -198,9 +175,70 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Phpdoc should contain @param for all params.';
+        return new FixerDefinition(
+            'Phpdoc should contain @param for all params.',
+            array(
+                new CodeSample(
+                    '<?php
+/**
+ * @param int $bar
+ *
+ * @return void
+ */
+function f9(string $foo, $bar, $baz) {}'
+                ),
+                new CodeSample(
+                    '<?php
+/**
+ * @param int $bar
+ *
+ * @return void
+ */
+function f9(string $foo, $bar, $baz) {}',
+                    array('only_untyped' => true)
+                ),
+                new CodeSample(
+                    '<?php
+/**
+ * @param int $bar
+ *
+ * @return void
+ */
+function f9(string $foo, $bar, $baz) {}',
+                    array('only_untyped' => false)
+                ),
+            ),
+            null,
+            'The following can be configured: `only_untyped => boolean`',
+            self::$defaultConfiguration
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must be run after PhpdocNoAliasTagFixer and before PhpdocAlignFixer
+        return -5;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return false;
     }
 
     /**

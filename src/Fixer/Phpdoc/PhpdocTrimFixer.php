@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -21,14 +23,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocTrimFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -51,6 +45,25 @@ final class PhpdocTrimFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Phpdocs should start and end with content, excluding the very first and last line of the docblocks.',
+            array(new CodeSample('<?php
+/**
+ *
+ * Foo must be final class.
+ *
+ *
+ */
+final class Foo {}
+'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         /*
@@ -64,9 +77,9 @@ final class PhpdocTrimFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Phpdocs should start and end with content, excluding the very first and last line of the docblocks.';
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
     /**

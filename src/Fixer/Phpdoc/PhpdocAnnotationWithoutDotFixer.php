@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -24,14 +26,6 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
     private $configuration = array(
         'tags' => array('throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type'),
     );
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
 
     /**
      * {@inheritdoc}
@@ -87,8 +81,24 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Phpdocs annotation descriptions should not be a sentence.';
+        return new FixerDefinition(
+            'Phpdocs annotation descriptions should not be a sentence.',
+            array(new CodeSample('<?php
+/**
+ * @param string $bar Some string.
+ */
+function foo ($bar) {}
+'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 }
