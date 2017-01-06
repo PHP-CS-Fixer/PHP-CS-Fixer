@@ -279,11 +279,7 @@ final class ConfigurationResolver
     public function getFixers()
     {
         if (null === $this->fixers) {
-            $fixerFactory = new FixerFactory();
-            $fixerFactory->registerBuiltInFixers();
-            $fixerFactory->registerCustomFixers($this->getConfig()->getCustomFixers());
-
-            $this->fixers = $fixerFactory
+            $this->fixers = $this->createFixerFactory()
                 ->useRuleSet($this->getRuleSet())
                 ->setWhitespacesConfig(new WhitespacesFixerConfig($this->config->getIndent(), $this->config->getLineEnding()))
                 ->getFixers();
@@ -510,6 +506,18 @@ final class ConfigurationResolver
         }
 
         return $candidates;
+    }
+
+    /**
+     * @return FixerFactory
+     */
+    private function createFixerFactory()
+    {
+        $fixerFactory = new FixerFactory();
+        $fixerFactory->registerBuiltInFixers();
+        $fixerFactory->registerCustomFixers($this->getConfig()->getCustomFixers());
+
+        return $fixerFactory;
     }
 
     /**
