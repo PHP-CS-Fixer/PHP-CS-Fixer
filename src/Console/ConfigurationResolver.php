@@ -615,15 +615,10 @@ final class ConfigurationResolver
         /* @var string[] $availableFixers */
         $configuredFixers = array_keys($ruleSet->getRules());
 
-        $fixerFactory = new FixerFactory();
-        $fixerFactory->registerBuiltInFixers();
-        $fixerFactory->registerCustomFixers($this->getConfig()->getCustomFixers());
-
-        $reflection = new \ReflectionProperty('PhpCsFixer\FixerFactory', 'fixersByName');
-        $reflection->setAccessible(true);
-
         /* @var string[] $availableFixers */
-        $availableFixers = array_keys($reflection->getValue($fixerFactory));
+        $availableFixers = array_map(function (FixerInterface $fixer) {
+            return $fixer->getName();
+        }, $this->createFixerFactory()->getFixers());
 
         $unknownFixers = array_diff(
             $configuredFixers,
