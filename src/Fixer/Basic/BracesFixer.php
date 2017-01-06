@@ -40,7 +40,7 @@ final class BracesFixer extends AbstractFixer implements ConfigurableFixerInterf
     );
 
     /**
-     * @param string[]|null $configuration
+     * @param array<string, bool>|null $configuration
      */
     public function configure(array $configuration = null)
     {

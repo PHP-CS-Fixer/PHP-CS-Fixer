@@ -1716,7 +1716,7 @@ if (true) {
      *
      * @dataProvider provideFixWithAllowOnelineLambdaCases
      */
-    public function testFixWithAllowOnelineLambda($expected, $input = null)
+    public function testFixWithAllowSingleLineClosure($expected, $input = null)
     {
         $this->fixer->configure(array(
             'allow_single_line_closure' => true,
