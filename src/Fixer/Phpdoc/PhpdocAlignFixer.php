@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
@@ -48,14 +50,6 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
@@ -63,6 +57,25 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
                 $tokens[$index]->setContent($this->fixDocBlock($token->getContent()));
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'All items of the @param, @throws, @return, @var, and @type phpdoc tags must be aligned vertically.',
+            array(new CodeSample('<?php
+/**
+ * @param  EngineInterface $templating
+ * @param string      $format
+ * @param  int  $code       an HTTP response status code
+ * @param    bool         $debug
+ * @param  mixed    &$reference     a parameter passed by reference
+ */
+'))
+        );
     }
 
     /**
@@ -83,9 +96,9 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'All items of the @param, @throws, @return, @var, and @type phpdoc tags must be aligned vertically.';
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
     /**

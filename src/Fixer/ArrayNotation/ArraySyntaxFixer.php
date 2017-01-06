@@ -107,7 +107,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
                 ),
             ),
             null,
-            'Configure to use "long" or "short" array declaration syntax.',
+            'The following can be configured: `only_untyped => "long"|"short"`',
             self::$defaultConfiguration
         );
     }

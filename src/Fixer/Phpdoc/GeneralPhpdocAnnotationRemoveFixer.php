@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -50,24 +52,6 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // must be run before the PhpdocSeparationFixer, PhpdocOrderFixer,
-        // PhpdocTrimFixer and PhpdocNoEmptyReturnFixer.
-        return 10;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         if (!count($this->configuration)) {
@@ -98,8 +82,42 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Configured annotations should be omitted from phpdocs.';
+        return new FixerDefinition(
+            'Configured annotations should be omitted from phpdocs.',
+            array(
+                new CodeSample(
+                    '<?php
+/**
+ * @internal
+ * @author someone
+ */
+function foo() {}',
+                    array('author')
+                ),
+            ),
+            null,
+            'Array of not wanted annotations could be configured, eg `[\'@author\']`.',
+            self::$defaultConfiguration
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must be run before the PhpdocSeparationFixer, PhpdocOrderFixer,
+        // PhpdocTrimFixer and PhpdocNoEmptyReturnFixer.
+        return 10;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 }
