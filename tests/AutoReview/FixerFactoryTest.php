@@ -107,6 +107,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_useless_return'], $fixers['no_whitespace_in_blank_line']], // tested also in: no_useless_return,no_whitespace_in_blank_line.test
             [$fixers['no_useless_return'], $fixers['no_extra_consecutive_blank_lines']], // tested also in: no_useless_return,no_extra_consecutive_blank_lines.test
             [$fixers['no_useless_return'], $fixers['blank_line_before_return']], // tested also in: no_useless_return,blank_line_before_return.test
+            [$fixers['no_useless_return'], $fixers['blank_line_before_control_statement']], // tested also in: no_useless_return,blank_line_before_control_statement.test
             [$fixers['no_empty_phpdoc'], $fixers['no_extra_consecutive_blank_lines']], // tested also in: no_empty_phpdoc,no_extra_consecutive_blank_lines.test
             [$fixers['no_empty_phpdoc'], $fixers['no_trailing_whitespace']], // tested also in: no_empty_phpdoc,no_trailing_whitespace.test
             [$fixers['no_empty_phpdoc'], $fixers['no_whitespace_in_blank_line']], // tested also in: no_empty_phpdoc,no_whitespace_in_blank_line.test

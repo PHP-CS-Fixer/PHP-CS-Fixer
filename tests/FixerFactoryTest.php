@@ -147,7 +147,7 @@ final class FixerFactoryTest extends TestCase
 
         $factory = FixerFactory::create()
             ->registerBuiltInFixers()
-            ->useRuleSet(new RuleSet(['strict_comparison' => true, 'blank_line_before_return' => false]))
+            ->useRuleSet(new RuleSet(['strict_comparison' => true, 'blank_line_before_control_statement' => false]))
         ;
         $fixers = $factory->getFixers();
         $this->assertCount(1, $fixers);

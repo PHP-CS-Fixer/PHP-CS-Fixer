@@ -12,17 +12,20 @@
 
 namespace PhpCsFixer\Fixer\ReturnNotation;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeControlStatementFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\Token;
-use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
+ * @deprecated
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Andreas Möller <am@localheinz.com>
  */
-final class BlankLineBeforeReturnFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -30,7 +33,7 @@ final class BlankLineBeforeReturnFixer extends AbstractFixer implements Whitespa
     public function getDefinition()
     {
         return new FixerDefinition(
-            'An empty line feed should precede a return statement.',
+            'An empty line feed should precede a return statement (deprecated, use `blank_line_before_control_statement` instead).',
             [new CodeSample("<?php\nfunction A()\n{\n    echo 1;\n    return 1;\n}")]
         );
     }
@@ -38,58 +41,16 @@ final class BlankLineBeforeReturnFixer extends AbstractFixer implements Whitespa
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function setWhitespacesConfig(WhitespacesFixerConfig $config)
     {
-        // should be run after NoUselessReturnFixer
-        return -19;
+        $this->proxyFixer->setWhitespacesConfig($config);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    protected function createProxyFixer()
     {
-        return $tokens->isTokenKindFound(T_RETURN);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $lineEnding = $this->whitespacesConfig->getLineEnding();
-
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind(T_RETURN)) {
-                continue;
-            }
-
-            $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
-
-            if (!$prevNonWhitespaceToken->equalsAny([';', '}'])) {
-                continue;
-            }
-
-            $prevIndex = $index - 1;
-            $prevToken = $tokens[$prevIndex];
-
-            if ($prevToken->isWhitespace()) {
-                $parts = explode("\n", $prevToken->getContent());
-                $countParts = count($parts);
-
-                if (1 === $countParts) {
-                    $tokens[$prevIndex] = new Token([T_WHITESPACE, rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding]);
-                } elseif (count($parts) <= 2) {
-                    $tokens[$prevIndex] = new Token([T_WHITESPACE, $lineEnding.$prevToken->getContent()]);
-                }
-            } else {
-                $tokens->insertAt($index, new Token([T_WHITESPACE, $lineEnding.$lineEnding]));
-
-                ++$index;
-                ++$limit;
-            }
-        }
+        return new BlankLineBeforeControlStatementFixer();
     }
 }

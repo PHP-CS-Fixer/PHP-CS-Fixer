@@ -931,13 +931,13 @@ final class ConfigurationResolverTest extends TestCase
 
         $resolver = new ConfigurationResolver(
             $this->config,
-            ['rules' => 'blank_line_before_return'],
+            ['rules' => 'blank_line_before_control_statement'],
             ''
         );
 
         $this->assertSameRules(
             [
-                'blank_line_before_return' => true,
+                'blank_line_before_control_statement' => true,
             ],
             $resolver->getRules()
         );
