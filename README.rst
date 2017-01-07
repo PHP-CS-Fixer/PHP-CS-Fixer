@@ -206,7 +206,7 @@ Choose from the list of available rules:
    | *Rule is: configurable.*
 
 * **class_keyword_remove**
-   | Converts ::class keywords to FQCN strings.
+   | Converts ::class keywords to FQCN strings. Requires PHP >= 5.5.
 
 * **combine_consecutive_unsets**
    | Calling ``unset`` on multiple items should be done in one call.
@@ -267,8 +267,7 @@ Choose from the list of available rules:
    | File path should not be placed under brackets.
 
 * **indentation_type** [@PSR2, @Symfony]
-   | Code MUST use an indent of 4 spaces, and MUST NOT use tabs for
-   | indenting.
+   | Code MUST use configured indentation type.
 
 * **line_ending** [@PSR2, @Symfony]
    | All PHP files must use same line ending.

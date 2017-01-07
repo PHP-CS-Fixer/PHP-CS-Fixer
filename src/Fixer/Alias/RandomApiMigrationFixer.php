@@ -29,6 +29,9 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
      */
     private $configuration;
 
+    /**
+     * @var array
+     */
     private static $defaultConfiguration = array(
         'getrandmax' => array('alternativeName' => 'mt_getrandmax', 'argumentCount' => array(0)),
         'mt_rand' => array('alternativeName' => 'mt_rand', 'argumentCount' => array(1, 2)),

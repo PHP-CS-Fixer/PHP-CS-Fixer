@@ -50,6 +50,14 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
             array('<?php $x = mb_strtolower(mb_strstr("bar", "a"));', '<?php $x = strtolower(strstr("bar", "a"));'),
             array('<?php $x = mb_strtolower( \mb_strstr ("bar", "a"));', '<?php $x = strtolower( \strstr ("bar", "a"));'),
             array('<?php $x = mb_substr("bar", 2, 1);', '<?php $x = substr("bar", 2, 1);'),
+            array(
+                '<?php 
+                interface Test 
+                {
+                    public function &strlen($a);
+                    public function strtolower($a);
+                }',
+            ),
         );
     }
 }

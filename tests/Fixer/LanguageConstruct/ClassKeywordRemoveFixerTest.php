@@ -37,64 +37,74 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
     {
         return array(
             array(
+                "<?php echo 'DateTime'
+# a
+ /* b */?>
+",
+                '<?php echo \
+DateTime:: # a
+ /* b */ class?>
+',
+            ),
+            array(
                 "<?php
-                use Foo\Bar\Thing;
+                use Foo\\Bar\\Thing;
 
-                echo 'Foo\Bar\Thing';
+                echo 'Foo\\Bar\\Thing';
                 ",
-                "<?php
+                '<?php
                 use Foo\Bar\Thing;
 
                 echo Thing::class;
-                ",
+                ',
             ),
             array(
-                "<?php
-                use Foo\Bar;
-            "."
-                echo 'Foo\Bar\Thing';
+                '<?php
+                use Foo\\Bar;
+            '."
+                echo 'Foo\\Bar\\Thing';
                 ",
-                "<?php
+                '<?php
                 use Foo\Bar;
-            "."
+            '.'
                 echo Bar\Thing::class;
-                ",
+                ',
             ),
             array(
                 "<?php
-                use Foo\Bar\Thing as Alias;
+                use Foo\\Bar\\Thing as Alias;
 
-                echo 'Foo\Bar\Thing';
+                echo 'Foo\\Bar\\Thing';
                 ",
-                "<?php
+                '<?php
                 use Foo\Bar\Thing as Alias;
 
                 echo Alias::class;
-                ",
+                ',
             ),
             array(
                 "<?php
-                use Foo\Bar\Dummy;
-                use Foo\Bar\Thing as Alias;
+                use Foo\\Bar\\Dummy;
+                use Foo\\Bar\\Thing as Alias;
 
-                echo 'Foo\Bar\Dummy';
-                echo 'Foo\Bar\Thing';
+                echo 'Foo\\Bar\\Dummy';
+                echo 'Foo\\Bar\\Thing';
                 ",
-                "<?php
+                '<?php
                 use Foo\Bar\Dummy;
                 use Foo\Bar\Thing as Alias;
 
                 echo Dummy::class;
                 echo Alias::class;
-                ",
+                ',
             ),
             array(
                 "<?php
-                echo '\DateTime';
+                echo 'DateTime';
                 ",
-                "<?php
+                '<?php
                 echo \DateTime::class;
-                ",
+                ',
             ),
             array(
                 "<?php
@@ -122,11 +132,11 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
             ),
             array(
                 "<?php
-                namespace A\B;
+                namespace A\\B;
 
-                use Foo\Bar;
+                use Foo\\Bar;
 
-                echo 'Foo\Bar';
+                echo 'Foo\\Bar';
                 ",
                 '<?php
                 namespace A\B;
@@ -139,27 +149,27 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
             array(
                 "<?php
 
-                namespace A\B {
+                namespace A\\B {
 
                     class D {
 
                     }
                 }
 
-                namespace B\B {
+                namespace B\\B {
                     class D {
 
                     }
                 }
 
                 namespace C {
-                    use A\B\D;
-                    var_dump('A\B\D');
+                    use A\\B\\D;
+                    var_dump('A\\B\\D');
                 }
 
                 namespace C1 {
-                    use B\B\D;
-                    var_dump('B\B\D');
+                    use B\\B\\D;
+                    var_dump('B\\B\\D');
                 }
                 ",
                 '<?php
@@ -208,12 +218,12 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
         return array(
             array(
                 "<?php
-                use Foo\\Bar\{ClassA, ClassB, ClassC as C};
-                use function Foo\\Bar\{fn_a, fn_b, fn_c};
-                use const Foo\\Bar\{ConstA, ConstB, ConstC};
+                use Foo\\Bar\\{ClassA, ClassB, ClassC as C};
+                use function Foo\\Bar\\{fn_a, fn_b, fn_c};
+                use const Foo\\Bar\\{ConstA, ConstB, ConstC};
 
-                echo 'Foo\\Bar\ClassB';
-                echo 'Foo\\Bar\ClassC';
+                echo 'Foo\\Bar\\ClassB';
+                echo 'Foo\\Bar\\ClassC';
                 ",
                 '<?php
                 use Foo\Bar\{ClassA, ClassB, ClassC as C};
