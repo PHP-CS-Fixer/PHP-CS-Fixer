@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_multiline_whitespace_around_double_arrow,trailing_comma_in_multiline_array.
+--RULESET--
+{"no_multiline_whitespace_around_double_arrow": true, "trailing_comma_in_multiline_array": true}
+--EXPECT--
+<?php
+array(2 => 'a');
+
+--INPUT--
+<?php
+array(2 =>
+
+'a');
