@@ -43,11 +43,19 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
     const SORT_LENGTH = 'length';
 
     /**
-     * Array of import types by which use statements should be ordered. If not defined in configuration only sort algorithm will be applied.
-     *
-     * @var null|int[]
+     * @var array<string, string|array>
      */
-    private $sortTypesOrder = null;
+    private static $defaultConfiguration = array(
+        // type of sort algorithm
+        'sortAlgorithm' => self::SORT_ALPHA,
+        // array of import types by which use statements should be ordered. If not defined in configuration only sort algorithm will be applied.
+        'importsOrder' => null,
+    );
+
+    /**
+     * @var array
+     */
+    private $config;
 
     /**
      * Array of supported sort types in configuration.
@@ -57,13 +65,6 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
     private $supportedSortTypes = array(self::IMPORT_TYPE_CLASS, self::IMPORT_TYPE_CONST, self::IMPORT_TYPE_FUNCTION);
 
     /**
-     * Default sort algorithm.
-     *
-     * @var string
-     */
-    private $sortAlgorithm = self::SORT_ALPHA;
-
-    /**
      * Array of supported sort algorithms in configuration.
      *
      * @var string[]
@@ -71,41 +72,37 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
     private $supportedSortAlgorithms = array(self::SORT_ALPHA, self::SORT_LENGTH);
 
     /**
-     * Configuration settings for sort algorithm and sor types.
+     * @param null|array $configuration
      *
-     * array['sortAlgorithm']   string defines sort algorithm
-     * array['typesOrder']      int[]|null defines import types order or null to sort only by algorithm
-     *
-     * @param string[]|null $configuration
+     * @throws InvalidFixerConfigurationException
      */
     public function configure(array $configuration = null)
     {
         // If no configuration was passed, stick to default.
         if (null === $configuration) {
-            $this->sortAlgorithm = self::SORT_ALPHA;
-            $this->sortTypesOrder = null;
+            $this->config = self::$defaultConfiguration;
 
             return;
         }
 
+        $configuration = array_merge(self::$defaultConfiguration, $configuration);
+
         /* Sort types order configuration */
 
         // If no import types order was provided, we will sort only by algorithm.
-        if (array_key_exists('typesOrder', $configuration) && null !== $configuration['typesOrder']) {
-            $typesOrder = $configuration['typesOrder'];
+        if (array_key_exists('importsOrder', $configuration) && null !== $configuration['importsOrder']) {
+            $importsOrder = $configuration['importsOrder'];
 
-            if (!is_array($typesOrder) || count($typesOrder) !== count($this->supportedSortTypes)) {
-                throw new InvalidFixerConfigurationException('ordered_imports', sprintf('$configuration["typesOrder"] should be array and should be composed of all import types in desired order.'));
+            if (!is_array($importsOrder) || count($importsOrder) !== count($this->supportedSortTypes)) {
+                throw new InvalidFixerConfigurationException('ordered_imports', sprintf('$configuration["importsOrder"] should be array and should be composed of all import types in desired order.'));
             }
 
             // Check if all provided sort types are supported.
-            foreach ($typesOrder as $type) {
+            foreach ($importsOrder as $type) {
                 if (!in_array($type, $this->supportedSortTypes, true)) {
                     throw new InvalidFixerConfigurationException('ordered_imports', sprintf('Unknown type "%s" in type order configuration, expected all types ["%s"] to be included in desired order.', $type, implode('","', $this->supportedSortTypes)));
                 }
             }
-
-            $this->sortTypesOrder = $typesOrder;
         }
 
         /* Sort algorithm configuration */
@@ -116,17 +113,13 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
         }
 
         $sortAlgorithm = $configuration['sortAlgorithm'];
-        // If no configuration was passed, stick to default.
-        if (null === $sortAlgorithm) {
-            return;
-        }
 
         // Check if passed sort type is supported.
         if (!is_string($sortAlgorithm) || !in_array($sortAlgorithm, $this->supportedSortAlgorithms, true)) {
             throw new InvalidFixerConfigurationException('ordered_imports', sprintf('Sort algorithm is invalid. Should be one of the: "%s".', implode('", "', $this->supportedSortAlgorithms)));
         }
 
-        $this->sortAlgorithm = $sortAlgorithm;
+        $this->config = $configuration;
     }
 
     /**
@@ -185,11 +178,67 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
             'Ordering use statements.',
             array(
                 new CodeSample("<?php\nuse Z; use A;"),
+                new CodeSample(
+'<?php
+use Acme;
+use Bar1;
+use Barr;
+use Acme/Bar;
+',
+                    array('sortAlgorithm' => self::SORT_LENGTH)
+                ),
                 new VersionSpecificCodeSample(
                     "<?php\nuse function AAA;\nuse const AAB;\nuse AAC;",
                     new VersionSpecification(70000)
                 ),
-            )
+                new VersionSpecificCodeSample(
+'<?php
+use const BBB;
+use const AAAA;
+
+use AAC;
+use Bar;
+use Acme;
+
+use function DDD;
+use function CCC\AA;
+',
+                    new VersionSpecification(70000),
+                    array(
+                        'sortAlgorithm' => self::SORT_LENGTH,
+                        'importsOrder' => array(
+                            self::IMPORT_TYPE_CONST,
+                            self::IMPORT_TYPE_CLASS,
+                            self::IMPORT_TYPE_FUNCTION,
+                        ),
+                    )
+                ),
+                new VersionSpecificCodeSample(
+                    '<?php
+use const AAAA;
+use const BBB;
+
+use AAC;
+use Acme;
+use Bar;
+
+use function CCC\AA;
+use function DDD;
+',
+                    new VersionSpecification(70000),
+                    array(
+                        'sortAlgorithm' => self::SORT_ALPHA,
+                        'importsOrder' => array(
+                            self::IMPORT_TYPE_CONST,
+                            self::IMPORT_TYPE_CLASS,
+                            self::IMPORT_TYPE_FUNCTION,
+                        ),
+                    )
+                ),
+            ),
+            null,
+            'Configure how \'use\' statements should be ordered, alphabetically or by length. Also specify how import types should be ordered.',
+            self::$defaultConfiguration
         );
     }
 
@@ -211,6 +260,14 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function getDescription()
+    {
+        return 'Ordering use statements.';
+    }
+
+    /**
      * This method is used for sorting the uses in a namespace.
      *
      * @param string[] $first
@@ -220,7 +277,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
      *
      * @internal
      */
-    public function sortAlphabetically(array $first, array $second)
+    private function sortAlphabetically(array $first, array $second)
     {
         if ($first['importType'] !== $second['importType']) {
             return $first['importType'] > $second['importType'] ? 1 : -1;
@@ -243,7 +300,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
      *
      * @internal
      */
-    public function sortByLength(array $first, array $second)
+    private function sortByLength(array $first, array $second)
     {
         $firstNamespace = $this->prepareNamespace($first['namespace']);
         $secondNamespace = $this->prepareNamespace($second['namespace']);
@@ -258,14 +315,6 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
         }
 
         return $sortResult;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDescription()
-    {
-        return 'Ordering use statements.';
     }
 
     /**
@@ -394,7 +443,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
         }
 
         // Is sort types provided, sorting by groups and each group by algorithm
-        if ($this->sortTypesOrder) {
+        if ($this->config['importsOrder']) {
             // Grouping indexes by import type.
             $groupedByTypes = array();
             foreach ($indexes as $startIndex => $item) {
@@ -408,7 +457,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
 
             // Ordering groups
             $sortedGroups = array();
-            foreach ($this->sortTypesOrder as $type) {
+            foreach ($this->config['importsOrder'] as $type) {
                 if (isset($groupedByTypes[$type]) && !empty($groupedByTypes[$type])) {
                     foreach ($groupedByTypes[$type] as $startIndex => $item) {
                         $sortedGroups[$startIndex] = $item;
@@ -439,7 +488,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
      */
     private function sortByAlgorithm($indexes)
     {
-        switch ($this->sortAlgorithm) {
+        switch ($this->config['sortAlgorithm']) {
             case self::SORT_ALPHA:
                 uasort($indexes, array($this, 'sortAlphabetically'));
                 break;
@@ -447,7 +496,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                 uasort($indexes, array($this, 'sortByLength'));
                 break;
             default:
-                throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $this->sortAlgorithm));
+                throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $this->config['sortAlgorithm']));
                 break;
         }
 
