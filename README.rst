@@ -174,33 +174,33 @@ automatically fix anything:
 
 Choose from the list of available rules:
 
-* **array_syntax**
+* **array_syntax** [@PhpCsFixer]
    | PHP arrays should be declared using the configured syntax (requires PHP
    | >= 5.4 for short syntax).
    | *Rule is: configurable.*
 
-* **binary_operator_spaces** [@Symfony]
+* **binary_operator_spaces** [@Symfony, @PhpCsFixer]
    | Binary operators should be surrounded by at least one space.
    | *Rule is: configurable.*
 
-* **blank_line_after_namespace** [@PSR2, @Symfony]
+* **blank_line_after_namespace** [@PSR2, @Symfony, @PhpCsFixer]
    | There MUST be one blank line after the namespace declaration.
 
-* **blank_line_after_opening_tag** [@Symfony]
+* **blank_line_after_opening_tag** [@Symfony, @PhpCsFixer]
    | Ensure there is no code on the same line as the PHP open tag and it is
    | followed by a blank line.
 
-* **blank_line_before_return** [@Symfony]
+* **blank_line_before_return** [@Symfony, @PhpCsFixer]
    | An empty line feed should precede a return statement.
 
-* **braces** [@PSR2, @Symfony]
+* **braces** [@PSR2, @Symfony, @PhpCsFixer]
    | The body of each structure MUST be enclosed by braces. Braces should be
    | properly placed. Body of braces should be properly indented.
 
-* **cast_spaces** [@Symfony]
+* **cast_spaces** [@Symfony, @PhpCsFixer]
    | A single space should be between cast and variable.
 
-* **class_definition** [@PSR2, @Symfony]
+* **class_definition** [@PSR2, @Symfony, @PhpCsFixer]
    | Whitespace around the keywords of a class, trait or interfaces
    | definition should be one space.
    | *Rule is: configurable.*
@@ -208,14 +208,14 @@ Choose from the list of available rules:
 * **class_keyword_remove**
    | Converts ::class keywords to FQCN strings. Requires PHP >= 5.5.
 
-* **combine_consecutive_unsets**
+* **combine_consecutive_unsets** [@PhpCsFixer]
    | Calling ``unset`` on multiple items should be done in one call.
 
-* **concat_space** [@Symfony]
+* **concat_space** [@Symfony, @PhpCsFixer]
    | Concatenation should be spaced according configuration.
    | *Rule is: configurable.*
 
-* **declare_equal_normalize** [@Symfony]
+* **declare_equal_normalize** [@Symfony, @PhpCsFixer]
    | Equal sign in declare statement should not be surrounded by spaces.
 
 * **declare_strict_types**
@@ -227,72 +227,72 @@ Choose from the list of available rules:
    | constant.
    | *Rule is: risky.*
 
-* **elseif** [@PSR2, @Symfony]
+* **elseif** [@PSR2, @Symfony, @PhpCsFixer]
    | The keyword ``elseif`` should be used instead of ``else if`` so that all
    | control keywords look like single words.
 
-* **encoding** [@PSR1, @PSR2, @Symfony]
+* **encoding** [@PSR1, @PSR2, @Symfony, @PhpCsFixer]
    | PHP code MUST use only UTF-8 without BOM (remove BOM).
 
 * **ereg_to_preg**
    | Replace deprecated ``ereg`` regular expression functions with preg.
    | *Rule is: risky.*
 
-* **full_opening_tag** [@PSR1, @PSR2, @Symfony]
+* **full_opening_tag** [@PSR1, @PSR2, @Symfony, @PhpCsFixer]
    | PHP code must use the long <?php ?> tags or the short-echo <?= ?> tags;
    | it must not use the other tag variations.
 
-* **function_declaration** [@PSR2, @Symfony]
+* **function_declaration** [@PSR2, @Symfony, @PhpCsFixer]
    | Spaces should be properly placed in a function declaration.
 
-* **function_typehint_space** [@Symfony]
+* **function_typehint_space** [@Symfony, @PhpCsFixer]
    | Add missing space between function's argument and its typehint.
 
-* **general_phpdoc_annotation_remove**
+* **general_phpdoc_annotation_remove** [@PhpCsFixer:risky]
    | Configured annotations should be omitted from phpdocs.
    | *Rule is: configurable.*
 
-* **hash_to_slash_comment** [@Symfony]
+* **hash_to_slash_comment** [@Symfony, @PhpCsFixer]
    | Single line comments should use double slashes ``//`` and not hash ``#``.
 
 * **header_comment**
    | Add, replace or remove header comment.
    | *Rule is: configurable.*
 
-* **heredoc_to_nowdoc**
+* **heredoc_to_nowdoc** [@PhpCsFixer]
    | Convert ``heredoc`` to ``nowdoc`` where possible.
 
-* **include** [@Symfony]
+* **include** [@Symfony, @PhpCsFixer]
    | Include/Require and file path should be divided with a single space.
    | File path should not be placed under brackets.
 
-* **indentation_type** [@PSR2, @Symfony]
+* **indentation_type** [@PSR2, @Symfony, @PhpCsFixer]
    | Code MUST use configured indentation type.
 
-* **line_ending** [@PSR2, @Symfony]
+* **line_ending** [@PSR2, @Symfony, @PhpCsFixer]
    | All PHP files must use same line ending.
 
 * **linebreak_after_opening_tag**
    | Ensure there is no code on the same line as the PHP open tag.
 
-* **lowercase_cast** [@Symfony]
+* **lowercase_cast** [@Symfony, @PhpCsFixer]
    | Cast should be written in lower case.
 
-* **lowercase_constants** [@PSR2, @Symfony]
+* **lowercase_constants** [@PSR2, @Symfony, @PhpCsFixer]
    | The PHP constants ``true``, ``false``, and ``null`` MUST be in lower case.
 
-* **lowercase_keywords** [@PSR2, @Symfony]
+* **lowercase_keywords** [@PSR2, @Symfony, @PhpCsFixer]
    | PHP keywords MUST be in lower case.
 
 * **mb_str_functions**
    | Replace non multibyte-safe functions with corresponding mb function.
    | *Rule is: risky.*
 
-* **method_argument_space** [@PSR2, @Symfony]
+* **method_argument_space** [@PSR2, @Symfony, @PhpCsFixer]
    | In method arguments and method call, there MUST NOT be a space before
    | each comma and there MUST be one space after each comma.
 
-* **method_separation** [@Symfony]
+* **method_separation** [@Symfony, @PhpCsFixer]
    | Methods must be separated with one blank line.
 
 * **modernize_types_casting**
@@ -300,53 +300,53 @@ Choose from the list of available rules:
    | function calls with according type casting operator.
    | *Rule is: risky.*
 
-* **native_function_casing** [@Symfony]
+* **native_function_casing** [@Symfony, @PhpCsFixer]
    | Function defined by PHP should be called using the correct casing.
 
-* **new_with_braces** [@Symfony]
+* **new_with_braces** [@Symfony, @PhpCsFixer]
    | All instances created with new keyword must be followed by braces.
 
-* **no_alias_functions** [@Symfony:risky]
+* **no_alias_functions** [@Symfony:risky, @PhpCsFixer:risky]
    | Master functions shall be used instead of aliases.
    | *Rule is: risky.*
 
-* **no_blank_lines_after_class_opening** [@Symfony]
+* **no_blank_lines_after_class_opening** [@Symfony, @PhpCsFixer]
    | There should be no empty lines after class opening brace.
 
-* **no_blank_lines_after_phpdoc** [@Symfony]
+* **no_blank_lines_after_phpdoc** [@Symfony, @PhpCsFixer]
    | There should not be blank lines between docblock and the documented
    | element.
 
 * **no_blank_lines_before_namespace**
    | There should be no blank lines before a namespace declaration.
 
-* **no_closing_tag** [@PSR2, @Symfony]
+* **no_closing_tag** [@PSR2, @Symfony, @PhpCsFixer]
    | The closing ``?>`` tag MUST be omitted from files containing only PHP.
 
-* **no_empty_comment** [@Symfony]
+* **no_empty_comment** [@Symfony, @PhpCsFixer]
    | There should not be any empty comments.
 
-* **no_empty_phpdoc** [@Symfony]
+* **no_empty_phpdoc** [@Symfony, @PhpCsFixer]
    | There should not be empty PHPDoc blocks.
 
-* **no_empty_statement** [@Symfony]
+* **no_empty_statement** [@Symfony, @PhpCsFixer]
    | Remove useless semicolon statements.
 
-* **no_extra_consecutive_blank_lines** [@Symfony]
+* **no_extra_consecutive_blank_lines** [@Symfony, @PhpCsFixer]
    | Removes extra blank lines and/or blank lines following configuration.
    | *Rule is: configurable.*
 
-* **no_leading_import_slash** [@Symfony]
+* **no_leading_import_slash** [@Symfony, @PhpCsFixer]
    | Remove leading slashes in use clauses.
 
-* **no_leading_namespace_whitespace** [@Symfony]
+* **no_leading_namespace_whitespace** [@Symfony, @PhpCsFixer]
    | The namespace declaration line shouldn't contain leading whitespace.
 
-* **no_mixed_echo_print** [@Symfony]
+* **no_mixed_echo_print** [@Symfony, @PhpCsFixer]
    | Either language construct ``print`` or ``echo`` should be used.
    | *Rule is: configurable.*
 
-* **no_multiline_whitespace_around_double_arrow** [@Symfony]
+* **no_multiline_whitespace_around_double_arrow** [@Symfony, @PhpCsFixer]
    | Operator => should not be surrounded by multi-line whitespaces.
 
 * **no_multiline_whitespace_before_semicolons**
@@ -356,63 +356,63 @@ Choose from the list of available rules:
    | Convert PHP4-style constructors to __construct.
    | *Rule is: risky.*
 
-* **no_short_bool_cast** [@Symfony]
+* **no_short_bool_cast** [@Symfony, @PhpCsFixer]
    | Short cast ``bool`` using double exclamation mark should not be used.
 
 * **no_short_echo_tag**
    | Replace short-echo <?= with long format <?php echo syntax.
 
-* **no_singleline_whitespace_before_semicolons** [@Symfony]
+* **no_singleline_whitespace_before_semicolons** [@Symfony, @PhpCsFixer]
    | Single-line whitespace before closing semicolon are prohibited.
 
-* **no_spaces_after_function_name** [@PSR2, @Symfony]
+* **no_spaces_after_function_name** [@PSR2, @Symfony, @PhpCsFixer]
    | When making a method or function call, there MUST NOT be a space between
    | the method or function name and the opening parenthesis.
 
-* **no_spaces_around_offset** [@Symfony]
+* **no_spaces_around_offset** [@Symfony, @PhpCsFixer]
    | There MUST NOT be spaces around offset braces.
    | *Rule is: configurable.*
 
-* **no_spaces_inside_parenthesis** [@PSR2, @Symfony]
+* **no_spaces_inside_parenthesis** [@PSR2, @Symfony, @PhpCsFixer]
    | There MUST NOT be a space after the opening parenthesis. There MUST NOT
    | be a space before the closing parenthesis.
 
-* **no_trailing_comma_in_list_call** [@Symfony]
+* **no_trailing_comma_in_list_call** [@Symfony, @PhpCsFixer]
    | Remove trailing commas in list function calls.
 
-* **no_trailing_comma_in_singleline_array** [@Symfony]
+* **no_trailing_comma_in_singleline_array** [@Symfony, @PhpCsFixer]
    | PHP single-line arrays should not have trailing comma.
 
-* **no_trailing_whitespace** [@PSR2, @Symfony]
+* **no_trailing_whitespace** [@PSR2, @Symfony, @PhpCsFixer]
    | Remove trailing whitespace at the end of non-blank lines.
 
-* **no_trailing_whitespace_in_comment** [@PSR2, @Symfony]
+* **no_trailing_whitespace_in_comment** [@PSR2, @Symfony, @PhpCsFixer]
    | There MUST be no trailing spaces inside comments and phpdocs.
 
-* **no_unneeded_control_parentheses** [@Symfony]
+* **no_unneeded_control_parentheses** [@Symfony, @PhpCsFixer]
    | Removes unneeded parentheses around control statements.
    | *Rule is: configurable.*
 
-* **no_unreachable_default_argument_value**
+* **no_unreachable_default_argument_value** [@PhpCsFixer]
    | In method arguments there must not be arguments with default values
    | before non-default ones.
 
-* **no_unused_imports** [@Symfony]
+* **no_unused_imports** [@Symfony, @PhpCsFixer]
    | Unused use statements must be removed.
 
-* **no_useless_else**
+* **no_useless_else** [@PhpCsFixer]
    | There should not be useless ``else`` cases.
 
-* **no_useless_return**
+* **no_useless_return** [@PhpCsFixer]
    | There should not be an empty return statement at the end of a function.
 
-* **no_whitespace_before_comma_in_array** [@Symfony]
+* **no_whitespace_before_comma_in_array** [@Symfony, @PhpCsFixer]
    | In array declaration, there MUST NOT be a whitespace before each comma.
 
-* **no_whitespace_in_blank_line** [@Symfony]
+* **no_whitespace_in_blank_line** [@Symfony, @PhpCsFixer]
    | Remove trailing whitespace at the end of blank lines.
 
-* **normalize_index_brace** [@Symfony]
+* **normalize_index_brace** [@Symfony, @PhpCsFixer]
    | Array index should always be written by using square braces.
 
 * **not_operator_with_space**
@@ -421,103 +421,103 @@ Choose from the list of available rules:
 * **not_operator_with_successor_space**
    | Logical NOT operators (!) should have one trailing whitespace.
 
-* **object_operator_without_whitespace** [@Symfony]
+* **object_operator_without_whitespace** [@Symfony, @PhpCsFixer]
    | There should not be space before or after object T_OBJECT_OPERATOR.
 
-* **ordered_class_elements**
+* **ordered_class_elements** [@PhpCsFixer]
    | Orders the elements of classes/interfaces/traits.
    | *Rule is: configurable.*
 
-* **ordered_imports**
+* **ordered_imports** [@PhpCsFixer]
    | Ordering use statements.
 
-* **php_unit_construct** [@Symfony:risky]
+* **php_unit_construct** [@Symfony:risky, @PhpCsFixer:risky]
    | PHPUnit assertion method calls like "->assertSame(true, $foo)" should be
    | written with dedicated method like "->assertTrue($foo)".
    | *Rule is: configurable, risky.*
 
-* **php_unit_dedicate_assert** [@Symfony:risky]
+* **php_unit_dedicate_assert** [@Symfony:risky, @PhpCsFixer:risky]
    | PHPUnit assertions like "assertInternalType", "assertFileExists", should
    | be used over "assertTrue".
    | *Rule is: configurable, risky.*
 
-* **php_unit_fqcn_annotation** [@Symfony]
+* **php_unit_fqcn_annotation** [@Symfony, @PhpCsFixer]
    | PHPUnit annotations should be a FQCNs including a root namespace.
 
-* **php_unit_strict**
+* **php_unit_strict** [@PhpCsFixer:risky]
    | PHPUnit methods like ``assertSame`` should be used instead of
    | ``assertEquals``.
    | *Rule is: configurable, risky.*
 
-* **phpdoc_add_missing_param_annotation**
+* **phpdoc_add_missing_param_annotation** [@PhpCsFixer]
    | Phpdoc should contain @param for all params.
    | *Rule is: configurable.*
 
-* **phpdoc_align** [@Symfony]
+* **phpdoc_align** [@Symfony, @PhpCsFixer]
    | All items of the @param, @throws, @return, @var, and @type phpdoc tags
    | must be aligned vertically.
 
-* **phpdoc_annotation_without_dot** [@Symfony]
+* **phpdoc_annotation_without_dot** [@Symfony, @PhpCsFixer]
    | Phpdocs annotation descriptions should not be a sentence.
 
-* **phpdoc_indent** [@Symfony]
+* **phpdoc_indent** [@Symfony, @PhpCsFixer]
    | Docblocks should have the same indentation as the documented subject.
 
-* **phpdoc_inline_tag** [@Symfony]
+* **phpdoc_inline_tag** [@Symfony, @PhpCsFixer]
    | Fix phpdoc inline tags, make inheritdoc always inline.
 
-* **phpdoc_no_access** [@Symfony]
+* **phpdoc_no_access** [@Symfony, @PhpCsFixer]
    | @access annotations should be omitted from phpdocs.
 
-* **phpdoc_no_alias_tag** [@Symfony]
+* **phpdoc_no_alias_tag** [@Symfony, @PhpCsFixer]
    | No alias PHPDoc tags should be used.
    | *Rule is: configurable.*
 
-* **phpdoc_no_empty_return** [@Symfony]
+* **phpdoc_no_empty_return** [@Symfony, @PhpCsFixer]
    | @return void and @return null annotations should be omitted from
    | phpdocs.
 
-* **phpdoc_no_package** [@Symfony]
+* **phpdoc_no_package** [@Symfony, @PhpCsFixer]
    | @package and @subpackage annotations should be omitted from phpdocs.
 
-* **phpdoc_order**
+* **phpdoc_order** [@PhpCsFixer]
    | Annotations in phpdocs should be ordered so that param annotations come
    | first, then throws annotations, then return annotations.
 
-* **phpdoc_scalar** [@Symfony]
+* **phpdoc_scalar** [@Symfony, @PhpCsFixer]
    | Scalar types should always be written in the same form. ``int`` not
    | ``integer``, ``bool`` not ``boolean``, ``float`` not ``real`` or ``double``.
 
-* **phpdoc_separation** [@Symfony]
+* **phpdoc_separation** [@Symfony, @PhpCsFixer]
    | Annotations in phpdocs should be grouped together so that annotations of
    | the same type immediately follow each other, and annotations of a
    | different type are separated by a single blank line.
 
-* **phpdoc_single_line_var_spacing** [@Symfony]
+* **phpdoc_single_line_var_spacing** [@Symfony, @PhpCsFixer]
    | Single line @var PHPDoc should have proper spacing.
 
-* **phpdoc_summary** [@Symfony]
+* **phpdoc_summary** [@Symfony, @PhpCsFixer]
    | Phpdocs summary should end in either a full stop, exclamation mark, or
    | question mark.
 
-* **phpdoc_to_comment** [@Symfony]
+* **phpdoc_to_comment** [@Symfony, @PhpCsFixer]
    | Docblocks should only be used on structural elements.
 
-* **phpdoc_trim** [@Symfony]
+* **phpdoc_trim** [@Symfony, @PhpCsFixer]
    | Phpdocs should start and end with content, excluding the very first and
    | last line of the docblocks.
 
-* **phpdoc_types** [@Symfony]
+* **phpdoc_types** [@Symfony, @PhpCsFixer]
    | The correct case must be used for standard PHP types in phpdoc.
 
-* **phpdoc_var_without_name** [@Symfony]
+* **phpdoc_var_without_name** [@Symfony, @PhpCsFixer]
    | @var and @type annotations should not contain the variable name.
 
 * **pow_to_exponentiation** [@PHP56Migration, @PHP70Migration, @PHP71Migration]
    | Converts ``pow()`` to the ``**`` operator. Requires PHP >= 5.6.
    | *Rule is: risky.*
 
-* **pre_increment** [@Symfony]
+* **pre_increment** [@Symfony, @PhpCsFixer]
    | Pre incrementation/decrementation should be used if possible.
 
 * **protected_to_private**
@@ -528,7 +528,7 @@ Choose from the list of available rules:
    | namespace deep and the class name should match the file name.
    | *Rule is: configurable, risky.*
 
-* **psr4**
+* **psr4** [@PhpCsFixer]
    | Class names should match the file name.
    | *Rule is: risky.*
 
@@ -537,22 +537,22 @@ Choose from the list of available rules:
    | their ``mt_*`` analogs.
    | *Rule is: configurable, risky.*
 
-* **return_type_declaration** [@Symfony]
+* **return_type_declaration** [@Symfony, @PhpCsFixer]
    | There should be no space before colon and one space after it in return
    | type declaration. Requires PHP >= 7.
 
-* **self_accessor** [@Symfony]
+* **self_accessor** [@Symfony, @PhpCsFixer]
    | Inside a classy element "self" should be preferred to the class name
    | itself.
 
 * **semicolon_after_instruction**
    | Instructions must be terminated with a semicolon.
 
-* **short_scalar_cast** [@Symfony]
+* **short_scalar_cast** [@Symfony, @PhpCsFixer]
    | Cast ``(boolean)`` and ``(integer)`` should be written as ``(bool)`` and
    | ``(int)``, ``(double)`` and ``(real)`` as ``(float)``.
 
-* **silenced_deprecation_error** [@Symfony:risky]
+* **silenced_deprecation_error** [@Symfony:risky, @PhpCsFixer:risky]
    | Ensures deprecation notices are silenced.
    | *Rule is: risky.*
 
@@ -560,68 +560,68 @@ Choose from the list of available rules:
    | A return statement wishing to return ``void`` should not return ``null``.
    | *Rule is: risky.*
 
-* **single_blank_line_at_eof** [@PSR2, @Symfony]
+* **single_blank_line_at_eof** [@PSR2, @Symfony, @PhpCsFixer]
    | A PHP file without end tag must always end with a single empty line
    | feed.
 
-* **single_blank_line_before_namespace** [@Symfony]
+* **single_blank_line_before_namespace** [@Symfony, @PhpCsFixer]
    | There should be exactly one blank line before a namespace declaration.
 
-* **single_class_element_per_statement** [@PSR2, @Symfony]
+* **single_class_element_per_statement** [@PSR2, @Symfony, @PhpCsFixer]
    | There MUST NOT be more than one property or constant declared per
    | statement.
    | *Rule is: configurable.*
 
-* **single_import_per_statement** [@PSR2, @Symfony]
+* **single_import_per_statement** [@PSR2, @Symfony, @PhpCsFixer]
    | There MUST be one use keyword per declaration.
 
-* **single_line_after_imports** [@PSR2, @Symfony]
+* **single_line_after_imports** [@PSR2, @Symfony, @PhpCsFixer]
    | Each namespace use MUST go on its own line and there MUST be one blank
    | line after the use statements block.
 
-* **single_quote** [@Symfony]
+* **single_quote** [@Symfony, @PhpCsFixer]
    | Convert double quotes to single quotes for simple strings.
 
-* **space_after_semicolon** [@Symfony]
+* **space_after_semicolon** [@Symfony, @PhpCsFixer]
    | Fix whitespace after a semicolon.
 
-* **standardize_not_equals** [@Symfony]
+* **standardize_not_equals** [@Symfony, @PhpCsFixer]
    | Replace all ``<>`` with ``!=``.
 
-* **strict_comparison**
+* **strict_comparison** [@PhpCsFixer:risky]
    | Comparisons should be strict.
    | *Rule is: risky.*
 
-* **strict_param**
+* **strict_param** [@PhpCsFixer:risky]
    | Functions should be used with ``$strict`` param set to ``true``.
    | *Rule is: risky.*
 
-* **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
+* **switch_case_semicolon_to_colon** [@PSR2, @Symfony, @PhpCsFixer]
    | A case should be followed by a colon and not a semicolon.
 
-* **switch_case_space** [@PSR2, @Symfony]
+* **switch_case_space** [@PSR2, @Symfony, @PhpCsFixer]
    | Removes extra spaces between colon and case value.
 
-* **ternary_operator_spaces** [@Symfony]
+* **ternary_operator_spaces** [@Symfony, @PhpCsFixer]
    | Standardize spaces around ternary operator.
 
-* **trailing_comma_in_multiline_array** [@Symfony]
+* **trailing_comma_in_multiline_array** [@Symfony, @PhpCsFixer]
    | PHP multi-line arrays should have a trailing comma.
 
-* **trim_array_spaces** [@Symfony]
+* **trim_array_spaces** [@Symfony, @PhpCsFixer]
    | Arrays should be formatted like function/method arguments, without
    | leading or trailing single line space.
 
-* **unary_operator_spaces** [@Symfony]
+* **unary_operator_spaces** [@Symfony, @PhpCsFixer]
    | Unary operators should be placed adjacent to their operands.
 
-* **visibility_required** [@PSR2, @Symfony, @PHP71Migration]
+* **visibility_required** [@PSR2, @Symfony, @PhpCsFixer, @PHP71Migration]
    | Visibility MUST be declared on all properties and methods; abstract and
    | final MUST be declared before the visibility; static MUST be declared
    | after the visibility.
    | *Rule is: configurable.*
 
-* **whitespace_after_comma_in_array** [@Symfony]
+* **whitespace_after_comma_in_array** [@Symfony, @PhpCsFixer]
    | In array declaration, there MUST be a whitespace after each comma.
 
 
