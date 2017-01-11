@@ -180,10 +180,10 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                 new CodeSample("<?php\nuse Z; use A;"),
                 new CodeSample(
 '<?php
-use Acme;
 use Bar1;
+use Acme;
 use Barr;
-use Acme/Bar;
+use Acme\Bar;
 ',
                     array('sortAlgorithm' => self::SORT_LENGTH)
                 ),
@@ -193,15 +193,15 @@ use Acme/Bar;
                 ),
                 new VersionSpecificCodeSample(
 '<?php
-use const BBB;
 use const AAAA;
+use const BBB;
 
-use AAC;
 use Bar;
+use AAC;
 use Acme;
 
-use function DDD;
 use function CCC\AA;
+use function DDD;
 ',
                     new VersionSpecification(70000),
                     array(
@@ -215,15 +215,15 @@ use function CCC\AA;
                 ),
                 new VersionSpecificCodeSample(
                     '<?php
-use const AAAA;
 use const BBB;
+use const AAAA;
 
-use AAC;
 use Acme;
+use AAC;
 use Bar;
 
-use function CCC\AA;
 use function DDD;
+use function CCC\AA;
 ',
                     new VersionSpecification(70000),
                     array(
