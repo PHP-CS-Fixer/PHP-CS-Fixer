@@ -270,6 +270,10 @@ Choose from the list of available rules:
 * **indentation_type** [@PSR2, @Symfony]
    | Code MUST use configured indentation type.
 
+* **is_null**
+   | Replaces is_null(parameter) expression with ``null === parameter``.
+   | *Rule is: configurable, risky.*
+
 * **line_ending** [@PSR2, @Symfony]
    | All PHP files must use same line ending.
 
