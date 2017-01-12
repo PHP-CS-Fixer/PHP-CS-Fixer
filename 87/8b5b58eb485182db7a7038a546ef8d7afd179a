@@ -1,0 +1,146 @@
+---------------------------------------------------------------------------
+
+by kalessil at 2016-12-19T18:17:34Z
+
+Ready for a review @keradus //cc @SpacePossum
+
+UPD: it's pretty much checked by UTs (interfaces, all descriptions and etc.) - really helpful
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-19T19:18:05Z
+
+out of the curiosity: self-checking the Fixer class by utests were nice for you or not really ?
+(things like interfaces, definition and so on)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-20T08:56:04Z
+
+Looking good :)
+Please add the following test cases (these pass btw, so :+1:)
+```php
+// config: not yoda style, nested calls
+        $this->doTest(
+            '<?php $b = a(a(a(b() === null) === null) === null) === null;',
+            '<?php $b = \is_null(a(\is_null(a(\is_null(a(\is_null(b())))))));'
+        );
+```
+
+```php
+// config: yoda style, nested calls
+            array(
+                '<?php null === a(null === a(null === a(null === b())));',
+                '<?php \is_null(a(\is_null(a(\is_null(a(\is_null(b())))))));',
+            ),
+```
+
+---------------------------------------------------------------------------
+
+by kalessil at 2016-12-20T09:29:55Z
+
+Added the suggested test cases as well.
+
+---------------------------------------------------------------------------
+
+by kalessil at 2016-12-20T10:16:24Z
+
+Added
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-20T10:29:38Z
+
+awesome :)
+:+1:
+
+---------------------------------------------------------------------------
+
+by kalessil at 2016-12-21T06:19:31Z
+
+Corrected
+
+---------------------------------------------------------------------------
+
+by kalessil at 2016-12-23T08:46:23Z
+
+Something wrong with travis builds:
+
+```log
+1) PhpCsFixer\Tests\ReadmeTest::testIfReadmeFileIsCorrect
+README.rst file is not up to date! Do not modify it manually! Regenerate readme with command: `php php-cs-fixer readme > README.rst`.
+Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+ * **is_null**
+-   | Replaces is_null(parameter) expression with ``null === parameter``.
++   | Replaces is_null(parameter) expression with `null === parameter`.
+    | *Rule is: configurable, risky.*
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-23T08:50:19Z
+
+I think you need to regen. the README (maybe rebase first), the generator has been modified not long ago
+(edit it was done here https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2419)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-23T12:45:07Z
+
+Like the utest message ask you for :D
+
+---------------------------------------------------------------------------
+
+by kalessil at 2016-12-27T12:36:16Z
+
+Rebased, force-pushed. Will reopen the PR as it green again.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-27T12:56:01Z
+
+it won't get green here if you don't reopen ;)
+did you do the regen?
+```bash
+$ php php-cs-fixer readme > README.rst`
+```
+
+---------------------------------------------------------------------------
+
+by kalessil at 2016-12-27T12:57:57Z
+
+Did exactly the same.
+
+If you login into travis with github account, it runs automated build for commits automatically. So I actually nedd just to wait for several minutes and will re-open the PR.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-27T13:00:59Z
+
+ah awesome : )
+
+---------------------------------------------------------------------------
+
+by kalessil at 2016-12-30T08:34:49Z
+
+Are we fine with the PR? Perhaps someone can even merge it?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-30T09:41:45Z
+
+please fix the little typo
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2415#discussion_r94065279
+
+and maybe update the config hint to:
+```php
+    /**
+      * @var array<string, bool>
+      */
+     private $configuration;
+```
+
+However IMO these are not blocking for merging. I'm :+1:
