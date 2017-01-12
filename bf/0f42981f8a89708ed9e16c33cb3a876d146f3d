@@ -1,0 +1,53 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-02T18:47:40Z
+
+I like the idea :)
+
+About failing tests, please decrease the guard, it would be a valid change as you up'ped the number of descriptions :+1:
+
+The other one is related to a limitation we have on the testing process itself. Currently when testing if a code sample is valid it is not possible to define the PHP requirement(s) of the sample. I would like suggest to run these test on PHP 7 only for now, as it would suit more (/most) cases, but that needs some discussion first.
+
+btw. just out of curiosity; how you like 2.0 so far?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-12-02T19:03:01Z
+
+Thank you, @SpacePossum!
+
+I like it a lot, and I am very happy it's finally been released. Great work! 👍
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-12-09T14:11:29Z
+
+@keradus @SpacePossum
+
+I have rebased this branch now following #2354!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-09T14:38:21Z
+
+thanks, looking good :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-16T09:05:26Z
+
+@localheinz please rebase and resolve the conflicts :)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-12-16T15:38:44Z
+
+@keradus @SpacePossum
+
+Rebased, and incorporated suggestions, as well as a default configuration as suggested in #2382.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-16T16:32:27Z
+
+awesome, shippit :)
