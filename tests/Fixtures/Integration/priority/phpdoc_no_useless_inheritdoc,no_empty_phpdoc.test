@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: phpdoc_no_useless_inheritdoc,no_empty_phpdoc.
+--RULESET--
+{"phpdoc_no_useless_inheritdoc": true, "no_empty_phpdoc": true}
+--EXPECT--
+<?php
+
+class A
+{
+
+public function A()
+{
+}
+}
+
+--INPUT--
+<?php
+
+class A
+{
+/** {@inheritdoc} */
+public function A()
+{
+}
+}

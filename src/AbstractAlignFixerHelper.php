@@ -35,9 +35,6 @@ abstract class AbstractAlignFixerHelper
      */
     protected $deepestLevel = 0;
 
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         // This fixer works partially on Tokens and partially on string representation of code.
