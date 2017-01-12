@@ -32,6 +32,9 @@ final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurableF
      */
     private $configuration;
 
+    /**
+     * @var array
+     */
     private static $defaultConfiguration = array(
         'property-read' => 'property',
         'property-write' => 'property',
@@ -62,7 +65,7 @@ final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurableF
                 throw new InvalidFixerConfigurationException($this->getName(), sprintf('Tag to replace to from "%s" must be a string.', $from));
             }
 
-            if (1 !== preg_match('#^[^\s]+$#', $to) || false !== strpos($to, '*/')) {
+            if (1 !== preg_match('#^\S+$#', $to) || false !== strpos($to, '*/')) {
                 throw new InvalidFixerConfigurationException($this->getName(), sprintf('Tag "%s" cannot be replaced by invalid tag "%s".', $from, $to));
             }
 

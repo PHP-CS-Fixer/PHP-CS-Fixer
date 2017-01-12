@@ -64,7 +64,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting.',
+            'Code MUST use configured indentation type.',
             array(new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}"),
         ));
     }

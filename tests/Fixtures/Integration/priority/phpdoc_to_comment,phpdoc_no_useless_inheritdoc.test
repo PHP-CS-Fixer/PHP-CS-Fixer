@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: phpdoc_to_comment,phpdoc_no_useless_inheritdoc.
+--RULESET--
+{"phpdoc_to_comment": true, "phpdoc_no_useless_inheritdoc": true}
+--EXPECT--
+<?php
+
+class A {
+/*
+ * {@inheritdoc}
+ */
+}
+
+--INPUT--
+<?php
+
+class A {
+/**
+ * {@inheritdoc}
+ */
+}

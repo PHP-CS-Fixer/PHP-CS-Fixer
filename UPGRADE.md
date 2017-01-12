@@ -20,21 +20,20 @@ Finally, the caching mechanism is enabled by default.
 CLI options
 -----------
 
-1.x           | 2.0           | Description                                     | Note
-------------- | ------------- | ----------------------------------------------- | ----
-              | --allow-risky | Are risky fixers allowed                        |
-              | --cache-file  | The path to the cache file                      | option was added
---config      |               | Config class codename                           | option was removed
---config-file | --config      | The path to a .php_cs file                      | option was renamed
---diff        | --diff        | Show diff                                       |
---dry-run     | --dry-run     | Run in dry-run mode                             |
---fixers      |               | Coding standard fixers                          | option was removed, see --rules
---format      | --format      | Choose format                                   |
---level       |               | Coding standard level                           | option was removed, see --rules
-              | --path-mode   | Should the finder from configuration be         | option was added
-              |               | overriden or intersected with `path` argument   |
-              | --rules       | Rules to be used                                | option was added
-              | --using-cache | Does cache should be used                       | option was added
+1.x             | 2.0             | Description                                                               | Note
+--------------- | --------------- | ------------------------------------------------------------------------- | ----
+                | --allow-risky   | Are risky fixers allowed                                                  |
+                | --cache-file    | The path to the cache file                                                | option was added
+--config        |                 | Config class codename                                                     | option was removed
+--config-file   | --config        | The path to a .php_cs file                                                | option was renamed
+--diff          | --diff          | Show diff                                                                 |
+--dry-run       | --dry-run       | Run in dry-run mode                                                       |
+--fixers        |                 | Coding standard fixers                                                    | option was removed, see --rules
+--format        | --format        | Choose format                                                             |
+--level         |                 | Coding standard level                                                     | option was removed, see --rules
+                | --path-mode     | Should the finder from config be<br/>overriden or intersected with `path` arg | option was added
+                | --rules         | Rules to be used                                                          | option was added
+                | --using-cache   | Does cache should be used                                                 | option was added
 
 
 CLI argument
@@ -94,7 +93,7 @@ eof_ending                                     | single_blank_line_at_eof
 extra_empty_lines                              | no_extra_consecutive_blank_lines
 function_call_space                            | no_spaces_after_function_name
 general_phpdoc_annotation_rename               | phpdoc_no_alias_tag                               | use configuration ['property-read' => 'property', 'property-write' => 'property']
-indentation                                    | no_tab_indentation
+indentation                                    | indentation_type
 join_function                                  | no_alias_functions                                | new one fixes more aliases
 line_after_namespace                           | blank_line_after_namespace
 linefeed                                       | line_ending                                       | whitespaces type aware
@@ -109,7 +108,6 @@ multiple_use                                   | single_import_per_statement
 namespace_no_leading_whitespace                | no_leading_namespace_whitespace
 newline_after_open_tag                         | linebreak_after_opening_tag
 no_empty_lines_after_phpdocs                   | no_blank_lines_after_phpdoc
-no_tab_indentation                             | indentation_type
 object_operator                                | object_operator_without_whitespace
 operators_spaces                               | binary_operator_spaces
 ordered_use                                    | ordered_imports

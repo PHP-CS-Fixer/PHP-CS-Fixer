@@ -33,6 +33,9 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
      */
     private $configuration;
 
+    /**
+     * @var array
+     */
     private static $defaultConfiguration = array(
         'align_equals' => false,
         'align_double_arrow' => false,

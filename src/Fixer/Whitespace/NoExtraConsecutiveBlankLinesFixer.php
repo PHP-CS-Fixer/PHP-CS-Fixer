@@ -32,6 +32,13 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
+     * @var array
+     */
+    private static $defaultConfiguration = array(
+        'extra',
+    );
+
+    /**
      * @var array<int, string> key is token id, value is name of callback
      */
     private static $defaultTokenKindCallbackMap = array(T_WHITESPACE => 'removeMultipleBlankLines');
@@ -402,7 +409,7 @@ class Foo
      */
     private function fixStructureOpenCloseIfMultiLine($index)
     {
-        $blockTypeInfo = $this->tokens->detectBlockType($this->tokens[$index]);
+        $blockTypeInfo = Tokens::detectBlockType($this->tokens[$index]);
         $bodyEnd = $this->tokens->findBlockEnd($blockTypeInfo['type'], $index);
 
         for ($i = $bodyEnd - 1; $i >= $index; --$i) {

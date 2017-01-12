@@ -28,35 +28,10 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isWhitespace()) {
-                continue;
-            }
-
-            $content = $token->getContent();
-            $lines = preg_split("/(\r\n|\n)/", $content);
-
-            if (
-                // fix T_WHITESPACES with at least 3 lines (eg `\n   \n`)
-                count($lines) > 2
-                // and T_WHITESPACES with at least 2 lines at the end of file
-                || (count($lines) > 1 && !isset($tokens[$index + 1]))
-            ) {
-                $lMax = count($lines) - 1;
-                if (!isset($tokens[$index + 1])) {
-                    ++$lMax;
-                }
-
-                $lStart = 1;
-                if (isset($tokens[$index - 1]) && $tokens[$index - 1]->isGivenKind(T_OPEN_TAG) && "\n" === substr($tokens[$index - 1]->getContent(), -1)) {
-                    $lStart = 0;
-                }
-
-                for ($l = $lStart; $l < $lMax; ++$l) {
-                    $lines[$l] = preg_replace('/^\h+$/', '', $lines[$l]);
-                }
-
-                $token->setContent(implode($this->whitespacesConfig->getLineEnding(), $lines));
+        // skip first as it cannot be a white space token
+        for ($i = 1, $count = count($tokens); $i < $count; ++$i) {
+            if ($tokens[$i]->isWhitespace()) {
+                $this->fixWhitespaceToken($tokens, $i);
             }
         }
     }
@@ -68,7 +43,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     {
         return new FixerDefinition(
             'Remove trailing whitespace at the end of blank lines.',
-            array(new CodeSample("<?php\n\n      \n\$a = 1;"))
+            array(new CodeSample("<?php\n   \n\$a = 1;"))
         );
     }
 
@@ -87,5 +62,36 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function fixWhitespaceToken(Tokens $tokens, $index)
+    {
+        $content = $tokens[$index]->getContent();
+        $lines = preg_split("/(\r\n|\n)/", $content);
+        $lineCount = count($lines);
+
+        if (
+            // fix T_WHITESPACES with at least 3 lines (eg `\n   \n`)
+            $lineCount > 2
+            // and T_WHITESPACES with at least 2 lines at the end of file or after open tag with linebreak
+            || ($lineCount > 0 && (!isset($tokens[$index + 1]) || $tokens[$index - 1]->isGivenKind(T_OPEN_TAG)))
+        ) {
+            $lMax = isset($tokens[$index + 1]) ? $lineCount - 1 : $lineCount;
+
+            $lStart = 1;
+            if ($tokens[$index - 1]->isGivenKind(T_OPEN_TAG) && "\n" === substr($tokens[$index - 1]->getContent(), -1)) {
+                $lStart = 0;
+            }
+
+            for ($l = $lStart; $l < $lMax; ++$l) {
+                $lines[$l] = preg_replace('/^\h+$/', '', $lines[$l]);
+            }
+
+            $tokens[$index]->setContent(implode($this->whitespacesConfig->getLineEnding(), $lines));
+        }
     }
 }

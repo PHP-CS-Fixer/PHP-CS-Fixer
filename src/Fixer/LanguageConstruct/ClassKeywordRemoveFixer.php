@@ -45,7 +45,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Converts ::class keywords to FQCN strings.',
+            'Converts ::class keywords to FQCN strings. Requires PHP >= 5.5.',
             array(
                 new VersionSpecificCodeSample(
 '<?php
@@ -65,7 +65,7 @@ $className = Baz::class;
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(CT::T_CLASS_CONSTANT);
+        return PHP_VERSION_ID >= 50500 && $tokens->isTokenKindFound(CT::T_CLASS_CONSTANT);
     }
 
     /**
@@ -81,7 +81,7 @@ $className = Baz::class;
         $namespaceIndexes = array_keys($tokens->findGivenKind(T_NAMESPACE));
 
         // Namespace blocks
-        if (!empty($namespaceIndexes) && isset($namespaceIndexes[$namespaceNumber])) {
+        if (count($namespaceIndexes) && isset($namespaceIndexes[$namespaceNumber])) {
             $startIndex = $namespaceIndexes[$namespaceNumber];
 
             $namespaceBlockStartIndex = $tokens->getNextTokenOfKind($startIndex, array(';', '{'));
@@ -91,7 +91,7 @@ $className = Baz::class;
             $endIndex = $endIndex ?: $tokens->count() - 1;
         } elseif (-1 === $namespaceNumber) { // Out of any namespace block
             $startIndex = 0;
-            $endIndex = !empty($namespaceIndexes) ? $namespaceIndexes[0] : $tokens->count() - 1;
+            $endIndex = count($namespaceIndexes) ? $namespaceIndexes[0] : $tokens->count() - 1;
         } else {
             return;
         }
@@ -171,11 +171,25 @@ $className = Baz::class;
      */
     private function replaceClassKeyword(Tokens $tokens, $classIndex)
     {
-        $classEndIndex = $classIndex - 2;
+        $classEndIndex = $tokens->getPrevMeaningfulToken($classIndex);
+        $classEndIndex = $tokens->getPrevMeaningfulToken($classEndIndex);
+
         $classBeginIndex = $classEndIndex;
-        while ($tokens[--$classBeginIndex]->isGivenKind(array(T_NS_SEPARATOR, T_STRING)));
-        ++$classBeginIndex;
-        $classString = $tokens->generatePartialCode($classBeginIndex, $classEndIndex);
+        while (true) {
+            $prev = $tokens->getPrevMeaningfulToken($classBeginIndex);
+            if (!$tokens[$prev]->isGivenKind(array(T_NS_SEPARATOR, T_STRING))) {
+                break;
+            }
+
+            $classBeginIndex = $prev;
+        }
+
+        $classString = $tokens->generatePartialCode(
+            $tokens[$classBeginIndex]->isGivenKind(T_NS_SEPARATOR)
+                ? $tokens->getNextMeaningfulToken($classBeginIndex)
+                : $classBeginIndex,
+            $classEndIndex
+        );
 
         $classImport = false;
         foreach ($this->imports as $alias => $import) {
@@ -193,7 +207,12 @@ $className = Baz::class;
             }
         }
 
-        $tokens->clearRange($classBeginIndex, $classIndex);
+        for ($i = $classBeginIndex; $i <= $classIndex; ++$i) {
+            if (!$tokens[$i]->isComment() && !($tokens[$i]->isWhitespace() && false !== strpos($tokens[$i]->getContent(), "\n"))) {
+                $tokens[$i]->clear();
+            }
+        }
+
         $tokens->insertAt($classBeginIndex, new Token(array(
             T_CONSTANT_ENCAPSED_STRING,
             "'".$this->makeClassFQN($classImport, $classString)."'",

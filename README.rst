@@ -196,6 +196,7 @@ Choose from the list of available rules:
 * **braces** [@PSR2, @Symfony]
    | The body of each structure MUST be enclosed by braces. Braces should be
    | properly placed. Body of braces should be properly indented.
+   | *Rule is: configurable.*
 
 * **cast_spaces** [@Symfony]
    | A single space should be between cast and variable.
@@ -206,7 +207,7 @@ Choose from the list of available rules:
    | *Rule is: configurable.*
 
 * **class_keyword_remove**
-   | Converts ::class keywords to FQCN strings.
+   | Converts ::class keywords to FQCN strings. Requires PHP >= 5.5.
 
 * **combine_consecutive_unsets**
    | Calling ``unset`` on multiple items should be done in one call.
@@ -267,8 +268,7 @@ Choose from the list of available rules:
    | File path should not be placed under brackets.
 
 * **indentation_type** [@PSR2, @Symfony]
-   | Code MUST use an indent of 4 spaces, and MUST NOT use tabs for
-   | indenting.
+   | Code MUST use configured indentation type.
 
 * **is_null**
    | Replaces is_null(parameter) expression with ``null === parameter``.
@@ -311,8 +311,9 @@ Choose from the list of available rules:
 * **new_with_braces** [@Symfony]
    | All instances created with new keyword must be followed by braces.
 
-* **no_alias_functions** [@Symfony]
+* **no_alias_functions** [@Symfony:risky]
    | Master functions shall be used instead of aliases.
+   | *Rule is: risky.*
 
 * **no_blank_lines_after_class_opening** [@Symfony]
    | There should be no empty lines after class opening brace.
@@ -434,6 +435,7 @@ Choose from the list of available rules:
 
 * **ordered_imports**
    | Ordering use statements.
+   | *Rule is: configurable.*
 
 * **php_unit_construct** [@Symfony:risky]
    | PHPUnit assertion method calls like "->assertSame(true, $foo)" should be
@@ -484,9 +486,17 @@ Choose from the list of available rules:
 * **phpdoc_no_package** [@Symfony]
    | @package and @subpackage annotations should be omitted from phpdocs.
 
+* **phpdoc_no_useless_inheritdoc**
+   | Classy that does not inherit must not have inheritdoc tags.
+
 * **phpdoc_order**
    | Annotations in phpdocs should be ordered so that param annotations come
    | first, then throws annotations, then return annotations.
+
+* **phpdoc_return_self_reference**
+   | The type of ``@return`` annotations of methods returning a reference to
+   | itself must the configured one.
+   | *Rule is: configurable.*
 
 * **phpdoc_scalar** [@Symfony]
    | Scalar types should always be written in the same form. ``int`` not
@@ -542,8 +552,9 @@ Choose from the list of available rules:
    | *Rule is: configurable, risky.*
 
 * **return_type_declaration** [@Symfony]
-   | There should be no space before colon and one space after it in return
-   | type declaration. Requires PHP >= 7.
+   | There should be one or no space before colon, and one space after it in
+   | return type declarations, according to configuration.
+   | *Rule is: configurable.*
 
 * **self_accessor** [@Symfony]
    | Inside a classy element "self" should be preferred to the class name

@@ -109,14 +109,14 @@ content inside:
 
 namespace PhpCsFixer\Tests\Fixer\Contrib;
 
-use PhpCsFixer\Tests\Fixer\AbstractFixerTestBase;
+use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @author Your name <your@email.com>
  *
  * @internal
  */
-final class RemoveCommentsFixerTest extends AbstractFixerTestBase
+final class RemoveCommentsFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
