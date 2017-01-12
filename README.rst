@@ -430,6 +430,7 @@ Choose from the list of available rules:
 
 * **ordered_imports**
    | Ordering use statements.
+   | *Rule is: configurable.*
 
 * **php_unit_construct** [@Symfony:risky]
    | PHPUnit assertion method calls like "->assertSame(true, $foo)" should be
