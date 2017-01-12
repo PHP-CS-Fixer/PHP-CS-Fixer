@@ -1,0 +1,46 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-12-28T10:42:17Z
+
+Annotations are case sensitive. You should first run the other fixer I wrote which normalizes annotation names.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-28T12:56:43Z
+
+>Annotations are case sensitive. You should first run the other fixer I wrote which normalizes annotation names.
+
+You mean [phpdoc_types](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2430#issue-197805359)? Well I didn't and the fixer still works so all good :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-12-28T13:01:40Z
+
+> Well I didn't and the fixer still works so all good :)
+
+What I'm saying is that it's incorrect to treat `@return` the same as `@Return`, because they are not the same.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-29T11:42:18Z
+
+>What I'm saying is that it's incorrect to treat `@return` the same as `@Return`, because they are not the same.
+
+So the `phpdoc_types` is either wrong or risky?
+Or maybe it doesn't matter at all and this fixer won't break anything just like `phpdoc_types`.
+If you want me to change anything here please provide an (common/widely) accepted standard showing this is wrong or a test proving an issue.
+These discussions are typically leading nowhere and take a lot of time that can used better.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-12-29T11:53:00Z
+
+> So the phpdoc_types is either wrong or risky?
+
+Yeh, probably should be marked as risky.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-06T19:11:48Z
+
+please revert annotation casing
