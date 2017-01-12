@@ -212,7 +212,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['method_separation'], $fixers['indentation_type']),
             array($fixers['no_leading_import_slash'], $fixers['ordered_imports']), // tested also in: no_leading_import_slash,ordered_imports.test
             array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['binary_operator_spaces']), // tested also in: no_multiline_whitespace_around_double_arrow,binary_operator_spaces.test
-            array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['trailing_comma_in_multiline_array']),
+            array($fixers['no_multiline_whitespace_around_double_arrow'], $fixers['trailing_comma_in_multiline_array']), // tested also in: no_multiline_whitespace_around_double_arrow,trailing_comma_in_multiline_array.test
             array($fixers['no_php4_constructor'], $fixers['ordered_class_elements']), // tested also in: no_php4_constructor,ordered_class_elements.test
             array($fixers['no_short_bool_cast'], $fixers['cast_spaces']), // tested also in: no_short_bool_cast,cast_spaces.test
             array($fixers['no_short_echo_tag'], $fixers['no_mixed_echo_print']), // tested also in: no_mixed_echo_print,no_short_echo_tag.test
@@ -220,7 +220,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_unneeded_control_parentheses'], $fixers['no_trailing_whitespace']), // tested also in: no_trailing_whitespace,no_unneeded_control_parentheses.test
             array($fixers['no_unused_imports'], $fixers['blank_line_after_namespace']), // tested also in: no_unused_imports,blank_line_after_namespace.test and no_unused_imports,blank_line_after_namespace_2.test
             array($fixers['no_unused_imports'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: no_unused_imports,no_extra_consecutive_blank_lines.test
-            array($fixers['no_unused_imports'], $fixers['no_leading_import_slash']),
+            array($fixers['no_unused_imports'], $fixers['no_leading_import_slash']), // no priority issue; for speed only
             array($fixers['ordered_class_elements'], $fixers['method_separation']), // tested also in: ordered_class_elements,method_separation.test
             array($fixers['ordered_class_elements'], $fixers['no_blank_lines_after_class_opening']), // tested also in: ordered_class_elements,no_blank_lines_after_class_opening.test
             array($fixers['ordered_class_elements'], $fixers['space_after_semicolon']), // tested also in: ordered_class_elements,space_after_semicolon.test
