@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-05T10:25:10Z
+
+what if documented `inheritdoc` method comes from trait, not parent class ? could it be a case ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-05T10:36:04Z
+
+>what if documented inheritdoc method comes from trait, not parent class ? could it be a case ?
+
+good point, I'll add a test for candidate if a class uses a trait
+
+---------------------------------------------------------------------------
+
+by localheinz at 2016-12-05T21:49:35Z
+
+Nice!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-12T12:15:04Z
+
+all points addressed
