@@ -1714,6 +1714,55 @@ if (true) {
      * @param string      $expected
      * @param null|string $input
      *
+     * @dataProvider provideFixWithAllowOnelineLambdaCases
+     */
+    public function testFixWithAllowSingleLineClosure($expected, $input = null)
+    {
+        $this->fixer->configure(array(
+            'allow_single_line_closure' => true,
+        ));
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithAllowOnelineLambdaCases()
+    {
+        return array(
+            array(
+                '<?php
+    $callback = function () { return true; };',
+            ),
+            array(
+                '<?php
+    $callback = function () { if ($a) { return true; } return false; };',
+                '<?php
+    $callback = function () { if($a){ return true; } return false; };',
+            ),
+            array(
+                '<?php
+    $callback = function () { if ($a) { return true; } return false; };',
+                '<?php
+    $callback = function () { if($a) return true; return false; };',
+            ),
+            array(
+                '<?php
+    $callback = function () {
+        if ($a) {
+            return true;
+        }
+        return false;
+    };',
+                '<?php
+    $callback = function () { if($a) return true;
+    return false; };',
+            ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces($expected, $input = null)

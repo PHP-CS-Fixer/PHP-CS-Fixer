@@ -196,6 +196,7 @@ Choose from the list of available rules:
 * **braces** [@PSR2, @Symfony]
    | The body of each structure MUST be enclosed by braces. Braces should be
    | properly placed. Body of braces should be properly indented.
+   | *Rule is: configurable.*
 
 * **cast_spaces** [@Symfony]
    | A single space should be between cast and variable.
