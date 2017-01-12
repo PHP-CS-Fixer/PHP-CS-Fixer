@@ -1,0 +1,71 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-11-10T20:31:31Z
+
+Lots of failing tests now.
+
+---------------------------------------------------------------------------
+
+by DarkaOnLine at 2016-11-16T09:06:53Z
+
+@keradus is there anything else I can do ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-16T09:10:53Z
+
+someone please kick the Travis tests again, it failed because it got stalled
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-16T10:21:48Z
+
+@DarkaOnLine https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2280#discussion_r87712447 is still not resolved
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-22T12:17:20Z
+
+@GrahamCampbell can you take a look (i think this a laravel standard)?
+
+---------------------------------------------------------------------------
+
+by DarkaOnLine at 2016-11-22T13:14:45Z
+
+@SpacePossum I think he already reviewed it here: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2148#issuecomment-258633327
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-22T13:38:08Z
+
+And then PR has been modified and adjusted for master branch, and then has few things raised to be updated (already done), so would be great to have final review, even if it would be quick one ;)
+
+---------------------------------------------------------------------------
+
+by DarkaOnLine at 2016-12-02T08:23:44Z
+
+@GrahamCampbell,  please review this :pray:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-12-02T19:04:10Z
+
+This looks reasonable in principle. I'll need a bit of time to test this in more detail.
+
+---------------------------------------------------------------------------
+
+by DarkaOnLine at 2016-12-14T08:16:45Z
+
+@keradus can we move forward ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-12-21T10:23:46Z
+
+Needs rebasing again. Might be an idea to actually "rebase", rather than having merge commits. Will make it much easier going forward.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-01-10T15:28:47Z
+
+![image](https://cloud.githubusercontent.com/assets/2829600/21811997/7a29e356-d749-11e6-8260-c6b875dec306.png)
