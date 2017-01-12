@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: phpdoc_no_useless_inheritdoc,no_trailing_whitespace_in_comment.
+--RULESET--
+{"phpdoc_no_useless_inheritdoc": true, "no_trailing_whitespace_in_comment": true}
+--EXPECT--
+<?php
+
+class A
+{
+    /**
+     *
+     */
+    public function B(){}
+}
+
+--INPUT--
+<?php
+
+class A
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function B(){}
+}

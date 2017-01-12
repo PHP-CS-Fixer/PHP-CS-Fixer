@@ -301,6 +301,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_align']), // tested also in: phpdoc_add_missing_param_annotation,phpdoc_align.test
             array($fixers['phpdoc_no_alias_tag'], $fixers['phpdoc_add_missing_param_annotation']), // tested also in: phpdoc_no_alias_tag,phpdoc_add_missing_param_annotation.test
             array($fixers['phpdoc_no_useless_inheritdoc'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_useless_inheritdoc,no_empty_phpdoc.test
+            array($fixers['phpdoc_no_useless_inheritdoc'], $fixers['no_trailing_whitespace_in_comment']), // tested also in: phpdoc_no_useless_inheritdoc,no_trailing_whitespace_in_comment.test
             array($fixers['phpdoc_no_useless_inheritdoc'], $fixers['phpdoc_inline_tag']), // tested also in: phpdoc_no_useless_inheritdoc,phpdoc_inline_tag.test
             array($fixers['phpdoc_to_comment'], $fixers['phpdoc_no_useless_inheritdoc']), // tested also in: phpdoc_to_comment,phpdoc_no_useless_inheritdoc.test
         );
