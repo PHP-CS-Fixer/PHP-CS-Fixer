@@ -1,0 +1,22 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-19T13:48:47Z
+
+but... those are different
+`this` - return exactly the same instance
+`self` - return new instance of exactly same type
+`static` - return new instance of same type or any subtype
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-19T14:15:48Z
+
+Well, if all your fellow dev's know it and did it right you might not need the fixer to replace that ;)
+Anyway `$this` != `this`,  `$self` != `self`, so there all kind of cases you could fix
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-12-19T14:50:04Z
+
+for handling `$` and `@` i'm :+1:
+but for changing self - static, I'm :-1:
