@@ -270,7 +270,7 @@ Choose from the list of available rules:
 * **indentation_type** [@PSR2, @Symfony]
    | Code MUST use configured indentation type.
 
-* **is_null**
+* **is_null** [@Symfony:risky]
    | Replaces is_null(parameter) expression with ``null === parameter``.
    | *Rule is: configurable, risky.*
 
@@ -486,14 +486,14 @@ Choose from the list of available rules:
 * **phpdoc_no_package** [@Symfony]
    | @package and @subpackage annotations should be omitted from phpdocs.
 
-* **phpdoc_no_useless_inheritdoc**
+* **phpdoc_no_useless_inheritdoc** [@Symfony]
    | Classy that does not inherit must not have inheritdoc tags.
 
 * **phpdoc_order**
    | Annotations in phpdocs should be ordered so that param annotations come
    | first, then throws annotations, then return annotations.
 
-* **phpdoc_return_self_reference**
+* **phpdoc_return_self_reference** [@Symfony]
    | The type of ``@return`` annotations of methods returning a reference to
    | itself must the configured one.
    | *Rule is: configurable.*
