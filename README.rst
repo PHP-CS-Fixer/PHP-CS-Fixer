@@ -484,6 +484,11 @@ Choose from the list of available rules:
    | Annotations in phpdocs should be ordered so that param annotations come
    | first, then throws annotations, then return annotations.
 
+* **phpdoc_return_self_reference**
+   | The type of ``@return`` annotations of methods returning a reference to
+   | itself must the configured one.
+   | *Rule is: configurable.*
+
 * **phpdoc_scalar** [@Symfony]
    | Scalar types should always be written in the same form. ``int`` not
    | ``integer``, ``bool`` not ``boolean``, ``float`` not ``real`` or ``double``.

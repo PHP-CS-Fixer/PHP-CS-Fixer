@@ -49,7 +49,7 @@ class Foo
             echo $arg . ' ' . $message;
         };
         $example('hello');
-    }
+    }function A(){}
 }
 
 function test(){}
@@ -65,7 +65,7 @@ PHP;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = array_values($tokensAnalyzer->getClassyElements());
 
-        $this->assertCount(8, $elements);
+        $this->assertCount(9, $elements);
         $this->assertSame('property', $elements[0]['type']);
         $this->assertSame('property', $elements[1]['type']);
         $this->assertSame('property', $elements[2]['type']);
@@ -73,7 +73,8 @@ PHP;
         $this->assertSame('const', $elements[4]['type']);
         $this->assertSame('method', $elements[5]['type']);
         $this->assertSame('method', $elements[6]['type']);
-        $this->assertSame('const', $elements[7]['type']);
+        $this->assertSame('method', $elements[7]['type']);
+        $this->assertSame('const', $elements[8]['type']);
     }
 
     /**
