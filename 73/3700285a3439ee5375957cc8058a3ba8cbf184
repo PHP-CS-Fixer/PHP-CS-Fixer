@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-01-05T17:48:19Z
+
+I've implemented a quick fix that should stop it crashing. A better fix would be to have it still able to fix such lines, but this'll do for now.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-01-12T22:42:35Z
+
+@keradus What do you make of this please?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-12T23:11:26Z
+
+please rebase on top of 2.0 branch
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-01-13T11:29:07Z
+
+Reset to 2.0, and cherry-picked my commits.
