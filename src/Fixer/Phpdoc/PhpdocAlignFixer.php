@@ -113,7 +113,17 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
             $current = $i;
             $items[] = $matches;
 
-            while ($matches = $this->getMatches($lines[++$i], true)) {
+            while (true) {
+                if (!isset($lines[++$i])) {
+                    break 2;
+                }
+
+                $matches = $this->getMatches($lines[$i], true);
+
+                if (!$matches) {
+                    break;
+                }
+
                 $items[] = $matches;
             }
 
