@@ -12,9 +12,11 @@
 
 namespace PhpCsFixer\Tests\Cache;
 
+use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
+use PhpCsFixer\ToolInfo;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -148,17 +150,11 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
         }, array_keys($data));
     }
 
-    public function testCanConvertToAndFromJson()
+    /**
+     * @dataProvider provideCanConvertToAndFromJsonCases
+     */
+    public function testCanConvertToAndFromJson(SignatureInterface $signature)
     {
-        $signature = new Signature(
-            PHP_VERSION,
-            '2.0',
-            array(
-                'foo',
-                'bar',
-            )
-        );
-
         $cache = new Cache($signature);
 
         $file = 'test.php';
@@ -172,6 +168,28 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($cached->getSignature()->equals($signature));
         $this->assertTrue($cached->has($file));
         $this->assertSame($hash, $cached->get($file));
+    }
+
+    public function provideCanConvertToAndFromJsonCases()
+    {
+        return array(
+            array(new Signature(
+                PHP_VERSION,
+                '2.0',
+                array(
+                    'foo' => true,
+                    'bar' => true,
+                )
+            )),
+            array(new Signature(
+                PHP_VERSION,
+                ToolInfo::getVersion(),
+                array(
+                    // value encoded in ANSI, not UTF
+                    'header_comment' => array('header' => 'Dariusz '.base64_decode('UnVtafFza2k=')),
+                )
+            )),
+        );
     }
 
     /**
