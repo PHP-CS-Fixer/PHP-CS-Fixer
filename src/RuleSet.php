@@ -110,6 +110,8 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_no_alias_tag' => true,
             'phpdoc_no_empty_return' => true,
             'phpdoc_no_package' => true,
+            'phpdoc_no_useless_inheritdoc' => true,
+            'phpdoc_return_self_reference' => true,
             'phpdoc_scalar' => true,
             'phpdoc_separation' => true,
             'phpdoc_single_line_var_spacing' => true,
@@ -134,6 +136,7 @@ final class RuleSet implements RuleSetInterface
             'whitespace_after_comma_in_array' => true,
         ),
         '@Symfony:risky' => array(
+            'is_null' => true,
             'no_alias_functions' => true,
             'php_unit_construct' => true,
             'php_unit_dedicate_assert' => true,
