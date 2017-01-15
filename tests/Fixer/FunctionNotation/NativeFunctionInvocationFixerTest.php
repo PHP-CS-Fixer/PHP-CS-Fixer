@@ -54,7 +54,7 @@ json_encode($foo);
             array(
 '<?php
 
-class Foo 
+class WithoutNamespace
 {
     public function bar($foo)
     {
@@ -66,18 +66,18 @@ class Foo
             array(
 '<?php
 
-namespace Foo {}
+namespace OneNamespaceWithBraces {}
 
 json_encode($foo);
 
-namespace Bar {}
+namespace AnotherNamespaceWithBraces {}
 ',
             ),
         );
     }
 
     /**
-     * @dataProvider provideCasesNotWithinNamespace
+     * @dataProvider provideCasesWithinNamespace
      *
      * @param string      $expected
      * @param null|string $input
@@ -96,9 +96,9 @@ namespace Bar {}
             array(
 '<?php
 
-namespace Foo;
+namespace WithoutClassPrefixed;
 
-if (isset($foo) {
+if (isset($foo)) {
     \json_encode($foo);
 }
 ',
@@ -106,17 +106,17 @@ if (isset($foo) {
             array(
 '<?php
 
-namespace Foo;
+namespace WithoutClassNotPrefixed;
 
-if (isset($foo) {
+if (isset($foo)) {
     \json_encode($foo);
 }
 ',
 '<?php
 
-namespace Foo;
+namespace WithoutClassNotPrefixed;
 
-if (isset($foo) {
+if (isset($foo)) {
     json_encode($foo);
 }
 ',
@@ -126,76 +126,75 @@ if (isset($foo) {
 
 namespace Foo;
 
-class Bar
+class WithClassPrefixed
 {
     public function baz($foo)
     {
-        if (isset($foo) {
+        if (isset($foo)) {
             \json_encode($foo);
         }
     }
-',
+}',
             ),
             array(
 '<?php
 
-namespace Foo;
+namespace WithClassNotPrefixed;
 
 class Bar
 {
     public function baz($foo)
     {
-        if (isset($foo) {
+        if (isset($foo)) {
             \json_encode($foo);
         }
     }
-',
+}',
 '<?php
 
-namespace Foo;
+namespace WithClassNotPrefixed;
 
 class Bar
 {
     public function baz($foo)
     {
-        if (isset($foo) {
+        if (isset($foo)) {
             json_encode($foo);
         }
     }
-',
+}',
             ),
             array(
 '<?php
 
-namespace Foo {}
+namespace OneNamespaceWithBraces {}
 
-namespace Bar
+namespace WithoutClassInNamespaceWithBracesNotPrefixed
 {
-    if (isset($foo) {
+    if (isset($foo)) {
         \json_encode($foo);
     }
-}
-',
+}',
             ),
             array(
 '<?php
 
-namespace Foo {}
+namespace OneNamespaceWithBraces {}
 
-namespace Bar
+namespace WithoutClassInNamespaceWithBracesPrefixed
 {
-    if (isset($foo) {
+    if (isset($foo)) {
         \json_encode($foo);
     }
 }
 ',
 '<?php
 
-namespace Foo {}
+namespace OneNamespaceWithBraces {}
 
-namespace Bar
+namespace WithoutClassInNamespaceWithBracesPrefixed
 {
-    if (isset($foo) {
+    if (isset($foo)) {
         json_encode($foo);
     }
 }
