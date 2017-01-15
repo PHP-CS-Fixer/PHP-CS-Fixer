@@ -63,7 +63,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
                 throw new InvalidFixerConfigurationException(
                     $this->getName(),
                     \sprintf(
-                        'Each element must be a non-empty string, got "%s" instead.',
+                        'Each element must be a non-empty, trimmed string, got "%s" instead.',
                         \is_object($functionName) ? \get_class($functionName) : \gettype($functionName)
                     )
                 );

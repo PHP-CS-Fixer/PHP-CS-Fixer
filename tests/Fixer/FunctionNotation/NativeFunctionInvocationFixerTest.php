@@ -41,7 +41,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     public function testConfigureRejectsInvalidConfigurationElement($element)
     {
         $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException', sprintf(
-            'Each element must be a non-empty string, got "%s" instead.',
+            'Each element must be a non-empty, trimmed string, got "%s" instead.',
             \is_object($element) ? \get_class($element) : \gettype($element)
         ));
 
@@ -65,6 +65,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
             'array' => array(array()),
             'float' => array(0.1),
             'object' => array(new \stdClass()),
+            'not-trimmed' => array('  json_encode  '),
         );
     }
 
