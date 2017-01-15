@@ -1,0 +1,224 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-11T08:13:28Z
+
+> The fixer is marked as risky because of this example (https://3v4l.org/Fjddg):
+
+It shouldn't be risky because it's broken. That's not what risky means.
+
+This fixer should correct any precedence issues it causes with brackets.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-08-11T08:22:54Z
+
+> This fixer should correct any precedence issues it causes with brackets.
+
+I'm sorry I don't understand, how
+
+``` php
+isset($a) ? $a : isset($b) ? $b : false
+```
+
+should be fixed?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-11T08:23:42Z
+
+Yeh, sure it should?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-11T08:30:24Z
+
+`isset($a) ? $a : isset($b) ? $b : false` needs fixing to `$a ?? isset($b) ? $b : false`, but no further, since this is evaluated as:
+
+`($a ?? isset($b)) ? $b : false`
+
+since the original was evaluated as:
+
+`(isset($a) ? $a : isset($b)) ? $b : false`.
+
+---
+
+Fixing to `$a ?? $b ?? false` would be wrong since that's not the same at all.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-08-11T14:25:13Z
+
+Ok, I excluded any subsequent ternary operator that isn't rounded by parenthesis, so the risky flag can be removed.
+
+Thanks for the hint
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-08-12T09:01:17Z
+
+Comments preserved, logics simplified.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-08-16T07:29:31Z
+
+@GrahamCampbell , could you please play with a fixer and make a full review ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-08-16T07:56:32Z
+
+Will do at the weekend. I'll try my best to break it. :trollface:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-14T10:07:46Z
+
+ping @GrahamCampbell did you find time to test?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-14T21:40:35Z
+
+> $x = isset($a[yield]) ? $a[yield] : null;
+
+is not valid PHP ;) please use https://3v4l.org/TDKnd (note that HHVM is acting diff. :/ )
+
+---------------------------------------------------------------------------
+
+by gharlan at 2016-09-14T21:42:28Z
+
+complete example: https://3v4l.org/KsmSR
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-09-15T07:28:39Z
+
+All higher precedence operators are now excluded because the behaviour actually changes:
+
+``` php
+$x = $a && isset($b) ? $b : null;
+$x = $a & isset($b) ? $b : null;
+$x = ! isset($a) ? $a : null;
+$x = false === isset($a) ? $a : 2;
+$x = 4 * isset($a) ? $a : 2;
+$x = 3 ** isset($a) ? $a : 2;
+$x = 1 | isset($a) ? $a : 2;
+$x = (array) isset($a) ? $a : 2; // That's OMG, but cannot be touched
+```
+
+Also every changing code and function calls are excluded:
+
+``` php
+$x = isset($a[++$i]) ? $a[++$i] : null;
+$x = function(){isset($a[yield]) ? $a[yield] : null;};
+$x = isset($a[foo()]) ? $a[foo()] : null;
+$x = isset($a[$callback()]) ? $a[$callback()] : null;
+```
+
+**NOTE**: what I don't like in my implementation for this cases is that I had to check everything "manually", i.e. explicitly writing `T_ARRAY_CAST`, `T_BOOLEAN_AND` etc.
+I tried to use `TokensAnalyzer` without success.
+
+If you have better ideas and/or cases ping me.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-11-24T08:51:07Z
+
+@keradus squashed and rebased. Is there a chance of seeing this on [v2.0.0 milestone](https://github.com/FriendsOfPHP/PHP-CS-Fixer/milestone/4)?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-24T14:39:36Z
+
+1. is it still risky ? or riskness has been fixed ?
+2. we need anyone first to review it (cc @GrahamCampbell @gharlan , maybe you could ?)
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-11-24T14:41:48Z
+
+Riskness has been fixed
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-24T14:58:26Z
+
+Great to hear ;)
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-12-14T16:09:04Z
+
+@SpacePossum I'm periodically rebasing this PR, and now I'm getting this error in tests:
+```
+1) PhpCsFixer\Tests\FixerFactoryTest::testShortFixerDefinition
+Not valid amount of fixers using ShortFixerDefinition.
+If this test is failing it means one of those scenario occurred:
+- you introduced new Fixer using `ShortFixerDefinition`, you should use `FixerDefinition` instead,
+- you update the Fixer to stop using `ShortFixerDefinition`, you should decrease the guard value.
+```
+Can you help me to fix it? I can't figure out how 😕
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-14T16:16:49Z
+
+Hi,
+
+For new fixers we added a test to make sure these come with a description.
+You might want to add some like this to your fixer:
+
+```php
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Use null coalescing operator (??) wherever possible.',
+            array(
+                new VersionSpecificCodeSample(
+                    "<?php\n\$sample = isset(\$a) ? \$a : \$b;",
+                    new VersionSpecification(70000)
+                ),
+            )
+        );
+    }
+```
+
+includes are like:
+```php
+use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+```
+
+and remove the `getDescription` method from the fixer
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-12-15T08:59:24Z
+
+Thank you, now everything is ok.
+
+Note: there is no evidence on https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.0.0/doc/COOKBOOK-FIXERS.md about the new `getDefinition()` method and the `FixerDefinition` class, it would be very usefull for newcomers.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-15T10:15:41Z
+
+Ah yes, always the docs ^_^
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/2404
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-12-16T08:22:27Z
+
+Backtick operator adopted in the description.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-05T08:00:44Z
+
+@Slamdunk please see https://github.com/Slamdunk/PHP-CS-Fixer/pull/2
