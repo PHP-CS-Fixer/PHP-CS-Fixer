@@ -59,12 +59,12 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
         }
 
         foreach ($configuration[$key] as $functionName) {
-            if (!\is_string($functionName) || \trim($functionName) === '' || trim($functionName) !== $functionName) {
+            if (!\is_string($functionName) || \trim($functionName) === '' || \trim($functionName) !== $functionName) {
                 throw new InvalidFixerConfigurationException(
                     $this->getName(),
                     \sprintf(
                         'Each element must be a non-empty string, got "%s" instead.',
-                        \is_object($functionName) ? get_class($functionName) : gettype($functionName)
+                        \is_object($functionName) ? \get_class($functionName) : \gettype($functionName)
                     )
                 );
             }
@@ -154,9 +154,9 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
                 }
             }
 
-            $lowerFunctionName = strtolower($tokenContent);
+            $lowerFunctionName = \strtolower($tokenContent);
 
-            if (!in_array($lowerFunctionName, $internalFunctionNames, true) || in_array($lowerFunctionName, $this->exclude, true)) {
+            if (!\in_array($lowerFunctionName, $internalFunctionNames, true) || \in_array($lowerFunctionName, $this->exclude, true)) {
                 continue;
             }
 
@@ -168,7 +168,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
             $indexes[] = $index;
         }
 
-        $indexes = array_reverse($indexes);
+        $indexes = \array_reverse($indexes);
 
         $namespaceSeparator = new Token(array(
             T_NS_SEPARATOR,
@@ -261,10 +261,10 @@ class Bar
      */
     private function getInternalFunctionNames()
     {
-        $definedFunctions = get_defined_functions();
+        $definedFunctions = \get_defined_functions();
 
-        return array_map(function ($name) {
-            return strtolower($name);
+        return \array_map(function ($name) {
+            return \strtolower($name);
         }, $definedFunctions['internal']);
     }
 }
