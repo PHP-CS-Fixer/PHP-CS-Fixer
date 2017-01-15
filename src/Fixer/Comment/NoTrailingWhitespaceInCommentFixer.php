@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -20,14 +22,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(array(T_COMMENT, T_DOC_COMMENT));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -60,8 +54,22 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'There MUST be no trailing spaces inside comments and phpdocs.';
+        return new FixerDefinition(
+            'There MUST be no trailing spaces inside comments and phpdocs.',
+            array(new CodeSample('<?php
+// This is '.'
+// a comment. '.'
+'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array(T_COMMENT, T_DOC_COMMENT));
     }
 }
