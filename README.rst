@@ -308,6 +308,11 @@ Choose from the list of available rules:
 * **native_function_casing** [@Symfony]
    | Function defined by PHP should be called using the correct casing.
 
+* **native_function_invocation**
+   | Add leading ``\`` before function invocation of internal function to speed
+   | up resolving.
+   | *Rule is: configurable, risky.*
+
 * **new_with_braces** [@Symfony]
    | All instances created with new keyword must be followed by braces.
 
