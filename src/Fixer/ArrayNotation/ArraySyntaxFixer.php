@@ -107,7 +107,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
                 ),
             ),
             null,
-            'The following can be configured: `only_untyped => "long"|"short"`',
+            'The following can be configured: `syntax => "long"|"short"`',
             self::$defaultConfiguration
         );
     }
