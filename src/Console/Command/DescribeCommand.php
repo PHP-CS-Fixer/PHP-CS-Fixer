@@ -18,8 +18,9 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
+use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\ShortFixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
@@ -106,7 +107,7 @@ final class DescribeCommand extends Command
         if ($fixer instanceof DefinedFixerInterface) {
             $definition = $fixer->getDefinition();
         } else {
-            $definition = new ShortFixerDefinition('Description is not available.');
+            $definition = new FixerDefinition('Description is not available.', array());
         }
 
         $output->writeln(sprintf('<info>Description of</info> %s <info>rule</info>.', $name));
@@ -170,7 +171,10 @@ final class DescribeCommand extends Command
                     $fixer->configure($codeSample->getConfiguration());
                 }
 
-                $fixer->fix(new StdinFileInfo(), $tokens);
+                $file = $codeSample instanceof FileSpecificCodeSampleInterface
+                    ? $codeSample->getSplFileInfo()
+                    : new StdinFileInfo();
+                $fixer->fix($file, $tokens);
                 $new = $tokens->generateCode();
                 $diff = $differ->diff($old, $new);
 
@@ -184,7 +188,7 @@ final class DescribeCommand extends Command
             }
         }
 
-        if ($definition instanceof ShortFixerDefinition) {
+        if (!($fixer instanceof DefinedFixerInterface)) {
             $output->writeln(sprintf('<question>This rule is not yet described, do you want to help us and describe it?</question>'));
             $output->writeln('Contribute at <comment>https://github.com/FriendsOfPHP/PHP-CS-Fixer</comment> !');
             $output->writeln('');

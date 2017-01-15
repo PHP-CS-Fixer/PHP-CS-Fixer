@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -62,18 +64,33 @@ final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getDefinition()
     {
-        // should be ran before the SingleBlankLineBeforeNamespaceFixer.
-        return 1;
+        return new FixerDefinition(
+            'There should not be blank lines between docblock and the documented element.',
+            array(
+                new CodeSample(
+                    '<?php
+
+/**
+ * This is the bar class.
+ */
+
+
+class Bar {}
+'
+                ),
+            )
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getPriority()
     {
-        return 'There should not be blank lines between docblock and the documented element.';
+        // should be ran before the SingleBlankLineBeforeNamespaceFixer.
+        return 1;
     }
 
     /**

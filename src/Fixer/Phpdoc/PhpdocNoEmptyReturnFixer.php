@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -58,18 +60,38 @@ final class PhpdocNoEmptyReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getDefinition()
     {
-        // must be run before the PhpdocSeparationFixer and PhpdocOrderFixer
-        return 10;
+        return new FixerDefinition(
+            '@return void and @return null annotations should be omitted from phpdocs.',
+            array(
+                new CodeSample(
+                    '<?php
+/**
+ * @return null
+*/
+function foo() {}
+'
+                ),
+                new CodeSample(
+                    '<?php
+/**
+ * @return void
+*/
+function foo() {}
+'
+                ),
+            )
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getPriority()
     {
-        return '@return void and @return null annotations should be omitted from phpdocs.';
+        // must be run before the PhpdocSeparationFixer and PhpdocOrderFixer
+        return 10;
     }
 
     /**

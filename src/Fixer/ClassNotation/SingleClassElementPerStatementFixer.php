@@ -16,6 +16,8 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -31,19 +33,19 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class SingleClassElementPerStatementFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
-     * @var string[]
-     */
-    private $configuration;
-
-    /**
      * Default target/configuration.
      *
      * @var string[]
      */
     private static $defaultConfiguration = array(
-        'property',
         'const',
+        'property',
     );
+
+    /**
+     * @var string[]
+     */
+    private $configuration;
 
     /**
      * {@inheritdoc}
@@ -93,9 +95,35 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'There MUST NOT be more than one property or constant declared per statement.';
+        return new FixerDefinition(
+            'There MUST NOT be more than one property or constant declared per statement.',
+            array(
+                new CodeSample(
+                    '<?php
+final class Example
+{
+    const FOO_1 = 1, FOO_2 = 2;
+    private static $bar1 = array(1,2,3), $bar2 = [1,2,3];
+}
+'
+                ),
+                new CodeSample(
+                    '<?php
+final class Example
+{
+    const FOO_1 = 1, FOO_2 = 2;
+    private static $bar1 = array(1,2,3), $bar2 = [1,2,3];
+}
+',
+                    array('property')
+                ),
+            ),
+            null,
+            'List of strings which element should be modified, possible values: `const`, `property`.',
+            self::$defaultConfiguration
+        );
     }
 
     /**
