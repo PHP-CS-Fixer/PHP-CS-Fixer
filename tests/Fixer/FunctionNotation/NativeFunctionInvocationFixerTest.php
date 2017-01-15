@@ -149,7 +149,7 @@ class Bar
 
 namespace OneNamespaceWithBraces {}
 
-namespace WithoutClassInNamespaceWithBracesNotPrefixed
+namespace WithoutClassInNamespaceWithBracesPrefixed
 {
     if (isset($foo)) {
         \json_encode($foo);
@@ -161,7 +161,7 @@ namespace WithoutClassInNamespaceWithBracesNotPrefixed
 
 namespace OneNamespaceWithBraces {}
 
-namespace WithoutClassInNamespaceWithBracesPrefixed
+namespace WithoutClassInNamespaceWithBracesNotPrefixed
 {
     if (isset($foo)) {
         \json_encode($foo);
@@ -172,7 +172,7 @@ namespace WithoutClassInNamespaceWithBracesPrefixed
 
 namespace OneNamespaceWithBraces {}
 
-namespace WithoutClassInNamespaceWithBracesPrefixed
+namespace WithoutClassInNamespaceWithBracesNotPrefixed
 {
     if (isset($foo)) {
         json_encode($foo);
