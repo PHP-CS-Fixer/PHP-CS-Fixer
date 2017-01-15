@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -22,14 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocVarWithoutNameFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -63,9 +57,34 @@ final class PhpdocVarWithoutNameFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return '@var and @type annotations should not contain the variable name.';
+        return new FixerDefinition(
+            '@var and @type annotations should not contain the variable name.',
+            array(new CodeSample('<?php
+final class Foo
+{
+    /**
+     * @var int $bar
+     */
+    public $bar;
+
+    /**
+     * @var $baz float
+     */
+    public $baz;
+
+}
+'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
     private function fixLine(Line $line)

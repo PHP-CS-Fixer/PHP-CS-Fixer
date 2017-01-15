@@ -13,6 +13,9 @@
 namespace PhpCsFixer\Fixer\PhpTag;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -21,24 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoShortEchoTagFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_OPEN_TAG_WITH_ECHO)
-            /*
-             * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
-             *
-             * @see https://github.com/facebook/hhvm/issues/4809
-             * @see https://github.com/facebook/hhvm/issues/7161
-             */
-            || (
-                defined('HHVM_VERSION')
-                && $tokens->isTokenKindFound(T_ECHO)
-            );
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -80,8 +65,29 @@ final class NoShortEchoTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Replace short-echo <?= with long format <?php echo syntax.';
+        return new FixerDefinition(
+            'Replace short-echo <?= with long format <?php echo syntax.',
+            array(new VersionSpecificCodeSample('<?= "foo";', new VersionSpecification(50400)))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_OPEN_TAG_WITH_ECHO)
+        /*
+         * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
+         *
+         * @see https://github.com/facebook/hhvm/issues/4809
+         * @see https://github.com/facebook/hhvm/issues/7161
+         */
+        || (
+            defined('HHVM_VERSION')
+            && $tokens->isTokenKindFound(T_ECHO)
+        );
     }
 }

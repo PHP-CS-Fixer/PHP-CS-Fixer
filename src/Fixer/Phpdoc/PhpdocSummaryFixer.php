@@ -16,6 +16,8 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -23,14 +25,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocSummaryFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -59,9 +53,25 @@ final class PhpdocSummaryFixer extends AbstractFixer implements WhitespacesAware
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Phpdocs summary should end in either a full stop, exclamation mark, or question mark.';
+        return new FixerDefinition(
+            'Phpdocs summary should end in either a full stop, exclamation mark, or question mark.',
+            array(new CodeSample('<?php
+/**
+ * Foo function is great
+ */
+function foo () {}
+'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
     /**
