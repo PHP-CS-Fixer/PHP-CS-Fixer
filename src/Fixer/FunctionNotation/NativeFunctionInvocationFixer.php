@@ -154,7 +154,7 @@ class Bar
             null,
             null,
             null,
-            'Risky if a function with the same name as a native function exists in the current namespace'
+            'Risky if a function with the same name as a native function exists in the current namespace, or a polyfill is used.'
         );
     }
 
