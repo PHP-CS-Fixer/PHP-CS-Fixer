@@ -57,7 +57,8 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should run before NoEmptyPhpdocFixer and PhpdocInlineTagFixer and after PhpdocToCommentFixer.
+        // Should run before NoEmptyPhpdocFixer, PhpdocInlineTagFixer and NoTrailingWhitespaceInCommentFixer
+        // and after PhpdocToCommentFixer.
         return 6;
     }
 
@@ -138,7 +139,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
     {
         $count = 0;
         $content = preg_replace_callback(
-            '#([\s]*(?:@{*|{*[ \t]*@)[ \t]*inheritdoc[\s]*)([^}]*)((?:}*)[\s]*)#i',
+            '#(\h*(?:@{*|{*\h*@)\h*inheritdoc\h*)([^}]*)((?:}*)\h*)#i',
             function ($matches) {
                 return ' '.$matches[2];
             },
