@@ -29,12 +29,12 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideCasesNotWithinNamespace
+     * @dataProvider provideCases
      *
      * @param string      $expected
      * @param null|string $input
      */
-    public function testFixNotWithinNamespace($expected, $input = null)
+    public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
@@ -42,7 +42,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     /**
      * @return array
      */
-    public function provideCasesNotWithinNamespace()
+    public function provideCases()
     {
         return array(
             array(
@@ -73,26 +73,6 @@ json_encode($foo);
 namespace AnotherNamespaceWithBraces {}
 ',
             ),
-        );
-    }
-
-    /**
-     * @dataProvider provideCasesWithinNamespace
-     *
-     * @param string      $expected
-     * @param null|string $input
-     */
-    public function testFixWithinNamespace($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return array
-     */
-    public function provideCasesWithinNamespace()
-    {
-        return array(
             array(
 '<?php
 
