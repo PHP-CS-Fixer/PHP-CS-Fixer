@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -21,8 +23,56 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Andreas Möller <am@localheinz.com>
  */
-final class NativeFunctionInvocationFixer extends AbstractFixer
+final class NativeFunctionInvocationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @var array
+     */
+    private $exclude = array();
+
+    /**
+     * @var array
+     */
+    private static $defaultConfiguration = array(
+        'exclude' => array(),
+    );
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration = null)
+    {
+        if (null === $configuration) {
+            return;
+        }
+
+        $key = 'exclude';
+
+        if (!\array_key_exists($key, $configuration) || !\is_array($configuration[$key])) {
+            throw new InvalidFixerConfigurationException(
+                $this->getName(),
+                \sprintf(
+                    'Configuration must define "%s" as an array.',
+                    $key
+                )
+            );
+        }
+
+        foreach ($configuration[$key] as $functionName) {
+            if (!\is_string($functionName) || \trim($functionName) === '' || trim($functionName) !== $functionName) {
+                throw new InvalidFixerConfigurationException(
+                    $this->getName(),
+                    \sprintf(
+                        'Each element must be a non-empty string, got "%s" instead.',
+                        \is_object($functionName) ? get_class($functionName) : gettype($functionName)
+                    )
+                );
+            }
+        }
+
+        $this->exclude = $configuration[$key];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -104,7 +154,9 @@ final class NativeFunctionInvocationFixer extends AbstractFixer
                 }
             }
 
-            if (!in_array(strtolower($tokenContent), $internalFunctionNames, true)) {
+            $lowerFunctionName = strtolower($tokenContent);
+
+            if (!in_array($lowerFunctionName, $internalFunctionNames, true) || in_array($lowerFunctionName, $this->exclude, true)) {
                 continue;
             }
 
@@ -135,25 +187,52 @@ final class NativeFunctionInvocationFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Add leading `\` before function invocation of internal function within namespaces to speed up resolving.',
-            array(new CodeSample(
+            array(
+                new CodeSample(
 '<?php
 
 namespace Foo;
 
 class Bar
 {
-    public function __construct($options) 
+    public function baz($options) 
     {
         if (!array_key_exists("foo", $options)) {
             throw new \InvalidArgumentException();
         }
+        
+        return json_encode($options);
     }
     
 }'
-            )),
+                ),
+                new CodeSample(
+'<?php
+
+namespace Foo;
+
+class Bar
+{
+    public function baz($options) 
+    {
+        if (!array_key_exists("foo", $options)) {
+            throw new \InvalidArgumentException();
+        }
+        
+        return json_encode($options);
+    }
+    
+}',
+                    array(
+                        'exclude' => array(
+                            'json_encode',
+                        ),
+                    )
+                ),
+            ),
             null,
-            null,
-            null,
+            'Configure names of functions to exclude',
+            self::$defaultConfiguration,
             'Risky if a function with the same name as a native function exists in the current namespace, or a polyfill is used.'
         );
     }
