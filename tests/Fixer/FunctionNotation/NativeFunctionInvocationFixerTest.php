@@ -69,6 +69,53 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         );
     }
 
+    public function testConfigureResetsExclude()
+    {
+        $this->fixer->configure(array(
+            'exclude' => array(
+                'json_encode',
+            ),
+        ));
+
+        $before = <<<'PHP'
+'<?php
+
+namespace WithClassNotPrefixed;
+
+class Bar
+{
+    public function baz($foo)
+    {
+        if (isset($foo)) {
+            json_encode($foo);
+        }
+    }
+}
+PHP;
+
+        $after = <<<'PHP'
+'<?php
+
+namespace WithClassNotPrefixed;
+
+class Bar
+{
+    public function baz($foo)
+    {
+        if (isset($foo)) {
+            \json_encode($foo);
+        }
+    }
+}
+PHP;
+
+        $this->doTest($before);
+
+        $this->fixer->configure(null);
+
+        $this->doTest($after, $before);
+    }
+
     public function testIsRisky()
     {
         $fixer = $this->createFixer();

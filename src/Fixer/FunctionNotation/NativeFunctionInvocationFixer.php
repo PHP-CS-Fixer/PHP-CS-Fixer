@@ -43,6 +43,8 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
+            $this->exclude = array();
+
             return;
         }
 
