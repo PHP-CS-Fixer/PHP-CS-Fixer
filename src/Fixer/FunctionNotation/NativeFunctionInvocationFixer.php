@@ -26,7 +26,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NativeFunctionInvocationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var array
+     * @var string[]
      */
     private $exclude = array();
 
