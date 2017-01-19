@@ -88,50 +88,10 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
 
         $indexes = array();
 
-        $openBracesCount = 0;
-        $isNamespaceWithBraces = false;
-        $isWithinNamespace = false;
-
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
             $token = $tokens[$index];
 
             $tokenContent = $token->getContent();
-
-            if ('{' === $tokenContent) {
-                ++$openBracesCount;
-
-                continue;
-            }
-
-            if ('}' === $tokenContent) {
-                --$openBracesCount;
-
-                if (true === $isWithinNamespace
-                    && true === $isNamespaceWithBraces
-                    && 0 === $openBracesCount
-                ) {
-                    $isWithinNamespace = false;
-                }
-
-                continue;
-            }
-
-            if ($token->isGivenKind(T_NAMESPACE)) {
-                $namespaceDeclarationEndIndex = $tokens->getNextTokenOfKind($index, array(
-                    ';',
-                    '{',
-                ));
-
-                if ($tokens[$namespaceDeclarationEndIndex]->getContent() === '{') {
-                    $isNamespaceWithBraces = true;
-                }
-
-                $isWithinNamespace = true;
-            }
-
-            if (!$isWithinNamespace) {
-                continue;
-            }
 
             // test if we are at a function call
             if (!$token->isGivenKind(T_STRING)) {
@@ -182,42 +142,30 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Add leading `\` before function invocation of internal function within namespaces to speed up resolving.',
+            'Add leading `\` before function invocation of internal function to speed up resolving.',
             array(
                 new CodeSample(
 '<?php
 
-namespace Foo;
-
-class Bar
+function baz($options) 
 {
-    public function baz($options) 
-    {
-        if (!array_key_exists("foo", $options)) {
-            throw new \InvalidArgumentException();
-        }
-        
-        return json_encode($options);
+    if (!array_key_exists("foo", $options)) {
+        throw new \InvalidArgumentException();
     }
     
+    return json_encode($options);
 }'
                 ),
                 new CodeSample(
 '<?php
 
-namespace Foo;
-
-class Bar
+function baz($options) 
 {
-    public function baz($options) 
-    {
-        if (!array_key_exists("foo", $options)) {
-            throw new \InvalidArgumentException();
-        }
-        
-        return json_encode($options);
+    if (!array_key_exists("foo", $options)) {
+        throw new \InvalidArgumentException();
     }
     
+    return json_encode($options);
 }',
                     array(
                         'exclude' => array(
@@ -238,10 +186,7 @@ class Bar
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAllTokenKindsFound(array(
-            T_NAMESPACE,
-            T_STRING,
-        ));
+        return $tokens->isTokenKindFound(T_STRING);
     }
 
     /**

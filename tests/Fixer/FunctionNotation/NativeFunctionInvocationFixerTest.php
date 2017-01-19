@@ -143,134 +143,49 @@ PHP;
             array(
 '<?php
 
+\json_encode($foo);
+',
+            ),
+            array(
+'<?php
+
+\json_encode($foo);
+',
+'<?php
+
 json_encode($foo);
 ',
             ),
             array(
 '<?php
 
-class WithoutNamespace
+class Foo
+{
+    public function bar($foo)
+    {
+        return \json_encode($foo);
+    }
+}
+',
+            ),
+            array(
+'<?php
+
+class Foo
+{
+    public function bar($foo)
+    {
+        return \json_encode($foo);
+    }
+}
+',
+'<?php
+
+class Foo
 {
     public function bar($foo)
     {
         return json_encode($foo);
-    }
-}
-',
-            ),
-            array(
-'<?php
-
-namespace OneNamespaceWithBraces {}
-
-json_encode($foo);
-
-namespace AnotherNamespaceWithBraces {}
-',
-            ),
-            array(
-'<?php
-
-namespace WithoutClassPrefixed;
-
-if (isset($foo)) {
-    \json_encode($foo);
-}
-',
-            ),
-            array(
-'<?php
-
-namespace WithoutClassNotPrefixed;
-
-if (isset($foo)) {
-    \json_encode($foo);
-}
-',
-'<?php
-
-namespace WithoutClassNotPrefixed;
-
-if (isset($foo)) {
-    json_encode($foo);
-}
-',
-            ),
-            array(
-'<?php
-
-namespace Foo;
-
-class WithClassPrefixed
-{
-    public function baz($foo)
-    {
-        if (isset($foo)) {
-            \json_encode($foo);
-        }
-    }
-}',
-            ),
-            array(
-'<?php
-
-namespace WithClassNotPrefixed;
-
-class Bar
-{
-    public function baz($foo)
-    {
-        if (isset($foo)) {
-            \json_encode($foo);
-        }
-    }
-}',
-'<?php
-
-namespace WithClassNotPrefixed;
-
-class Bar
-{
-    public function baz($foo)
-    {
-        if (isset($foo)) {
-            json_encode($foo);
-        }
-    }
-}',
-            ),
-            array(
-'<?php
-
-namespace OneNamespaceWithBraces {}
-
-namespace WithoutClassInNamespaceWithBracesPrefixed
-{
-    if (isset($foo)) {
-        \json_encode($foo);
-    }
-}',
-            ),
-            array(
-'<?php
-
-namespace OneNamespaceWithBraces {}
-
-namespace WithoutClassInNamespaceWithBracesNotPrefixed
-{
-    if (isset($foo)) {
-        \json_encode($foo);
-    }
-}
-',
-'<?php
-
-namespace OneNamespaceWithBraces {}
-
-namespace WithoutClassInNamespaceWithBracesNotPrefixed
-{
-    if (isset($foo)) {
-        json_encode($foo);
     }
 }
 ',
@@ -310,96 +225,11 @@ json_encode($foo);
             array(
 '<?php
 
-class WithoutNamespace
+class Foo
 {
     public function bar($foo)
     {
         return json_encode($foo);
-    }
-}
-',
-            ),
-            array(
-'<?php
-
-namespace OneNamespaceWithBraces {}
-
-json_encode($foo);
-
-namespace AnotherNamespaceWithBraces {}
-',
-            ),
-            array(
-'<?php
-
-namespace WithoutClassPrefixed;
-
-if (isset($foo)) {
-    \json_encode($foo);
-}
-',
-            ),
-            array(
-'<?php
-
-namespace WithoutClassNotPrefixed;
-
-if (isset($foo)) {
-    json_encode($foo);
-}
-',
-            ),
-            array(
-'<?php
-
-namespace Foo;
-
-class WithClassPrefixed
-{
-    public function baz($foo)
-    {
-        if (isset($foo)) {
-            \json_encode($foo);
-        }
-    }
-}',
-            ),
-            array(
-'<?php
-
-namespace WithClassNotPrefixed;
-
-class Bar
-{
-    public function baz($foo)
-    {
-        if (isset($foo)) {
-            json_encode($foo);
-        }
-    }
-}',
-            ),
-            array(
-'<?php
-
-namespace OneNamespaceWithBraces {}
-
-namespace WithoutClassInNamespaceWithBracesPrefixed
-{
-    if (isset($foo)) {
-        \json_encode($foo);
-    }
-}',
-            ),
-            array(
-'<?php
-
-namespace OneNamespaceWithBraces {}
-
-namespace WithoutClassInNamespaceWithBracesNotPrefixed
-{
-    if (isset($foo)) {
-        json_encode($foo);
     }
 }
 ',

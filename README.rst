@@ -309,8 +309,8 @@ Choose from the list of available rules:
    | Function defined by PHP should be called using the correct casing.
 
 * **native_function_invocation**
-   | Add leading ``\`` before function invocation of internal function within
-   | namespaces to speed up resolving.
+   | Add leading ``\`` before function invocation of internal function to speed
+   | up resolving.
    | *Rule is: configurable, risky.*
 
 * **new_with_braces** [@Symfony]
