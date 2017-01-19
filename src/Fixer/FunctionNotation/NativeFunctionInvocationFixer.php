@@ -171,14 +171,8 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
         }
 
         $indexes = \array_reverse($indexes);
-
-        $namespaceSeparator = new Token(array(
-            T_NS_SEPARATOR,
-            '\\',
-        ));
-
         foreach ($indexes as $index) {
-            $tokens->insertAt($index, $namespaceSeparator);
+            $tokens->insertAt($index, new Token(array(T_NS_SEPARATOR, '\\')));
         }
     }
 
