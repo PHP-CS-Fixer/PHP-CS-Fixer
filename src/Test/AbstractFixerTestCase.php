@@ -171,10 +171,8 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
             $this->assertNull($fixResult, '->fix method must return null.');
         }
 
-        $actual = $tokens->generateCode();
-
         $this->assertThat(
-            $actual,
+            $tokens->generateCode(),
             new SameStringsConstraint($expected),
             'Code build on expected code must not change.'
         );
