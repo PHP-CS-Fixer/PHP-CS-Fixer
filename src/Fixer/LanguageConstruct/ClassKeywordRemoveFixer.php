@@ -45,7 +45,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Converts ::class keywords to FQCN strings. Requires PHP >= 5.5.',
+            'Converts `::class` keywords to FQCN strings. Requires PHP >= 5.5.',
             array(
                 new VersionSpecificCodeSample(
 '<?php
