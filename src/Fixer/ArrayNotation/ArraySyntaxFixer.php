@@ -38,14 +38,14 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
         'syntax' => 'long',
     );
 
-    private $config = array();
+    private $config;
     private $candidateTokenKind;
     private $fixCallback;
 
     /**
      * Use 'syntax' => 'long'|'short'.
      *
-     * @param array|null $configuration
+     * @param array<string, string>|null $configuration
      *
      * @throws InvalidFixerConfigurationException
      */
