@@ -606,20 +606,20 @@ $b;',
     /**
      * @param string $source
      * @param int    $tokenIndex
-     * @param bool   $isMultilineArray
+     * @param bool   $isMultiLineArray
      *
-     * @dataProvider provideIsArray
+     * @dataProvider provideIsArrayCases
      * @requires PHP 5.4
      */
-    public function testIsArray($source, $tokenIndex, $isMultilineArray = false)
+    public function testIsArray($source, $tokenIndex, $isMultiLineArray = false)
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $this->assertTrue($tokensAnalyzer->isArray($tokenIndex), 'Expected to be an array.');
-        $this->assertSame($isMultilineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), sprintf('Expected %sto be a multiline array', $isMultilineArray ? '' : 'not '));
+        $this->assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
     }
 
-    public function provideIsArray()
+    public function provideIsArrayCases()
     {
         $cases = array(
             array(
@@ -683,6 +683,43 @@ $b;',
         );
 
         return $cases;
+    }
+
+    /**
+     * @param string $source
+     * @param int[]  $tokenIndexes
+     *
+     * @dataProvider provideIsArray71Cases
+     * @requires PHP 7.1
+     */
+    public function testIsArray71($source, $tokenIndexes)
+    {
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        foreach ($tokens as $index => $token) {
+            $expect = in_array($index, $tokenIndexes, true);
+            $this->assertSame(
+                $expect,
+                $tokensAnalyzer->isArray($index),
+                sprintf('Expected %sarray, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
+            );
+        }
+    }
+
+    public function provideIsArray71Cases()
+    {
+        return array(
+            array(
+                '<?php
+                    [$a] = $z;
+                    ["a" => $a, "b" => $b] = $array;
+                    $c = [$d, $e] = $array[$a];
+                    [[$a, $b], [$c, $d]] = $d;
+                ',
+                array(51, 59),
+            ),
+        );
     }
 
     /**
