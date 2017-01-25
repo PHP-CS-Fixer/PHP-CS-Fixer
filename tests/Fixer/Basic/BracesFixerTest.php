@@ -446,11 +446,12 @@ if (1) {
             ),
             array(
                 '<?php
-    declare(ticks=1) {
+    declare(ticks = 1) {
         $ticks = 1;
     }',
                 '<?php
-    declare(ticks=1) {
+    declare  (
+    ticks = 1  ) {
   $ticks = 1;
     }',
             ),
@@ -1438,7 +1439,7 @@ while (true) {
             ),
             array(
                 '<?php
-declare(ticks=1) {
+declare(ticks   =   1) {
 }',
                 '<?php
 declare   (   ticks   =   1   )   {
