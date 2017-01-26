@@ -225,7 +225,9 @@ Choose from the list of available rules:
    | *Rule is: configurable.*
 
 * **declare_equal_normalize** [@Symfony]
-   | Equal sign in declare statement should not be surrounded by spaces.
+   | Equal sign in declare statement should be surrounded by spaces or not
+   | following configuration.
+   | *Rule is: configurable.*
 
 * **declare_strict_types**
    | Force strict types declaration in all files. Requires PHP >= 7.0.

@@ -16,29 +16,80 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author SpacePossum
  *
  * @internal
  */
 final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
+     * @param string     $expected
+     * @param string     $input
+     * @param array|null $config
      *
      * @dataProvider provideCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input, $config)
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
     public function provideCases()
     {
         return array(
-            array(
+            'minimal case remove whitespace (default config)' => array(
                 '<?php declare(ticks=1);',
-                '<?php declare(ticks =  1);',
+                '<?php declare(ticks= 1);',
+                null,
             ),
+            'minimal case remove whitespace (no space config)' => array(
+                '<?php declare(ticks=1);',
+                '<?php declare(ticks  =  1);',
+                array('space' => 'none'),
+            ),
+            'minimal case add whitespace' => array(
+                '<?php declare(ticks = 1);',
+                '<?php declare(ticks=1);',
+                array('space' => 'single'),
+            ),
+            'to much whitespace case add whitespace' => array(
+                '<?php declare(ticks = 1);',
+                "<?php declare(ticks\n\t =   1);",
+                array('space' => 'single'),
+            ),
+            'repeating case remove whitespace (default config)' => array(
+                '<?php declare(ticks=1);declare(ticks=1)?>',
+                '<?php declare(ticks= 1);declare(ticks= 1)?>',
+                null,
+            ),
+            'repeating case add whitespace' => array(
+                '<?php declare ( ticks = 1 );declare( ticks = 1)  ?>',
+                '<?php declare ( ticks=1 );declare( ticks =1)  ?>',
+                array('space' => 'single'),
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideInvalidConfig
+     */
+    public function testInvalidConfig(array $config)
+    {
+        $this->setExpectedException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '[declare_equal_normalize] Configuration must define "space" being "single" or "none".'
+        );
+
+        $this->fixer->configure($config);
+    }
+
+    public function provideInvalidConfig()
+    {
+        return array(
+            array(array()),
+            array(array(1, 2)),
+            array(array('space' => 'tab')),
         );
     }
 }
