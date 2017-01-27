@@ -204,8 +204,6 @@ function baz($options)
     {
         $definedFunctions = \get_defined_functions();
 
-        return \array_map(function ($name) {
-            return \strtolower($name);
-        }, $definedFunctions['internal']);
+        return \array_map('strtolower', $definedFunctions['internal']);
     }
 }
