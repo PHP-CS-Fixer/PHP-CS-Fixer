@@ -141,6 +141,14 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
      */
     public function getDefinition()
     {
+        $riskyDescription = <<<TXT
+Rule is risky when a function with the same name as a native function exists in the current namespace.
++Two major situations when it could happen are:
++* polyfill is used to provide function from higher PHP version, if PHP CS Fixer would been run also on that higher PHP version, but software is also desired to work on lower PHP version that naively doesn't have that polyfilled function
++* function is mocked during tests execution, eg mocking `time` function - in that case after applying the rule src code will always use original, unmocked function
++To deal with described situation provide a configuration with function names you want to preserve unchanged.'
+TXT;
+
         return new FixerDefinition(
             'Add leading `\` before function invocation of internal function to speed up resolving.',
             array(
@@ -177,7 +185,7 @@ function baz($options)
             null,
             'Configure names of functions to exclude, for example, when using a polyfill.',
             self::$defaultConfiguration,
-            'Risky if a function with the same name as a native function exists in the current namespace, or a polyfill is used.'
+            $riskyDescription
         );
     }
 
