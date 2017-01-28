@@ -78,7 +78,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         ));
 
         $before = <<<'PHP'
-'<?php
+<?php
 
 namespace WithClassNotPrefixed;
 
@@ -94,7 +94,7 @@ class Bar
 PHP;
 
         $after = <<<'PHP'
-'<?php
+<?php
 
 namespace WithClassNotPrefixed;
 
