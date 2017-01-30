@@ -4,8 +4,6 @@ PHP 7.1 test.
 {
     "@Symfony": true
 }
---SETTINGS--
-{"checkPriority": false}
 --REQUIREMENTS--
 {"php": 70100}
 --EXPECT--

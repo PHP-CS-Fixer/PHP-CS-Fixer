@@ -2,5 +2,3 @@
 Integration of @PSR2.
 --RULESET--
 {"@PSR2": true}
---SETTINGS--
-{"checkPriority": false}

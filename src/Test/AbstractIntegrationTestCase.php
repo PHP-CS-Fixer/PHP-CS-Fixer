@@ -23,6 +23,7 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Runner\Runner;
+use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -44,7 +45,7 @@ use Symfony\Component\Finder\Finder;
  * --CONFIG--*
  * {"indent": "    ", "lineEnding": "\n"}
  * --SETTINGS--*
- * {"checkPriority": true}
+ * {"key": "value"} # optional extension point for custom IntegrationTestCase class
  * --REQUIREMENTS--*
  * {"php": 50600**, "hhvm": false***}
  * --EXPECT--
@@ -201,6 +202,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             new NullCacheManager()
         );
 
+        Tokens::clearCache();
         $result = $runner->fix();
         $changed = array_pop($result);
 
@@ -243,16 +245,7 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             )
         );
 
-        if ($case->shouldCheckPriority()) {
-            $priorities = array_map(
-                function (FixerInterface $fixer) {
-                    return $fixer->getPriority();
-                },
-                $fixers
-            );
-
-            $this->assertNotCount(1, array_unique($priorities), sprintf('All used fixers must not have the same priority, integration tests should cover fixers with different priorities. In "%s".', $case->getFileName()));
-
+        if (1 < count($fixers)) {
             $tmpFile = static::getTempFile();
             if (false === @file_put_contents($tmpFile, $input)) {
                 throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
@@ -269,14 +262,27 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
                 new NullCacheManager()
             );
 
+            Tokens::clearCache();
             $runner->fix();
             $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
 
-            $this->assertNotSame(
-                $fixedInputCode,
-                $fixedInputCodeWithReversedFixers,
-                sprintf('Set priorities must be significant. If fixers used in reverse order return same output then the integration test is not sufficient or the priority relation between used fixers should not be set. In "%s".', $case->getFileName())
-            );
+            // If output is different depends on rules order - we need to verify that the rules are ordered by priority.
+            // If not, any order is valid.
+            if ($fixedInputCode !== $fixedInputCodeWithReversedFixers) {
+                $this->assertGreaterThan(
+                    1,
+                    count(array_unique(array_map(
+                        function (FixerInterface $fixer) {
+                            return $fixer->getPriority();
+                        },
+                        $fixers
+                    ))),
+                    sprintf(
+                        'Rules priorities are not differential enough. If rules would be used in reverse order then final output would be different than the expected one. For that, different priorities must be set up for used rules to ensure stable order of them. In "%s".',
+                        $case->getFileName()
+                    )
+                );
+            }
         }
 
         // run the test again with the `expected` part, this should always stay the same

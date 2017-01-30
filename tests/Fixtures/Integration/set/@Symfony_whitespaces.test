@@ -4,5 +4,3 @@ Integration of @Symfony [whitespace version].
 {"@Symfony": true}
 --CONFIG--
 {"indent": "\t", "lineEnding": "\r\n"}
---SETTINGS--
-{"checkPriority": false}
