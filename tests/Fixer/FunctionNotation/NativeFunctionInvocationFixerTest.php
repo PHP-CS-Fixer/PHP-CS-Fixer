@@ -21,16 +21,28 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  */
 final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
 {
-    public function testConfigureRejectsInvalidConfiguration()
+    public function testConfigureRejectsUnknownConfigurationKey()
+    {
+        $key = 'foo';
+
+        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException', sprintf(
+            '"%s" is not handled by the fixer.',
+            $key
+        ));
+
+        $this->fixer->configure(array(
+            $key => 'bar',
+        ));
+    }
+
+    public function testConfigureRejectsEmptyConfiguration()
     {
         $this->setExpectedException(
             'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
             'Configuration must define "exclude" as an array.'
         );
 
-        $this->fixer->configure(array(
-            'foo' => 'bar',
-        ));
+        $this->fixer->configure(array());
     }
 
     /**

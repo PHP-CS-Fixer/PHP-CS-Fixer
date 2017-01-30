@@ -28,7 +28,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
     /**
      * @var string[]
      */
-    private $exclude = array();
+    private $configuration = array();
 
     /**
      * @var array
@@ -43,36 +43,43 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
     public function configure(array $configuration = null)
     {
         if (null === $configuration) {
-            $this->exclude = array();
+            $this->configuration = self::$defaultConfiguration;
 
             return;
         }
 
-        $key = 'exclude';
-
-        if (!\array_key_exists($key, $configuration) || !\is_array($configuration[$key])) {
-            throw new InvalidFixerConfigurationException(
-                $this->getName(),
-                \sprintf(
-                    'Configuration must define "%s" as an array.',
-                    $key
-                )
-            );
-        }
-
-        foreach ($configuration[$key] as $functionName) {
-            if (!\is_string($functionName) || \trim($functionName) === '' || \trim($functionName) !== $functionName) {
+        foreach ($configuration as $key => $value) {
+            if (!\array_key_exists($key, self::$defaultConfiguration)) {
                 throw new InvalidFixerConfigurationException(
                     $this->getName(),
                     \sprintf(
-                        'Each element must be a non-empty, trimmed string, got "%s" instead.',
-                        \is_object($functionName) ? \get_class($functionName) : \gettype($functionName)
+                        '"%s" is not handled by the fixer.',
+                        $key
                     )
                 );
             }
+
+            foreach ($configuration[$key] as $functionName) {
+                if (!\is_string($functionName) || \trim($functionName) === '' || \trim($functionName) !== $functionName) {
+                    throw new InvalidFixerConfigurationException(
+                        $this->getName(),
+                        \sprintf(
+                            'Each element must be a non-empty, trimmed string, got "%s" instead.',
+                            \is_object($functionName) ? \get_class($functionName) : \gettype($functionName)
+                        )
+                    );
+                }
+            }
         }
 
-        $this->exclude = $configuration[$key];
+        if (empty($configuration)) {
+            throw new InvalidFixerConfigurationException(
+                $this->getName(),
+                'Configuration must define "exclude" as an array.'
+            );
+        }
+
+        $this->configuration = $configuration;
     }
 
     /**
@@ -80,11 +87,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        static $internalFunctionNames = null;
-
-        if (null === $internalFunctionNames) {
-            $internalFunctionNames = $this->getInternalFunctionNames();
-        }
+        $functionNames = $this->getFunctionNames();
 
         $indexes = array();
 
@@ -118,7 +121,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
 
             $lowerFunctionName = \strtolower($tokenContent);
 
-            if (!\in_array($lowerFunctionName, $internalFunctionNames, true) || \in_array($lowerFunctionName, $this->exclude, true)) {
+            if (!\in_array($lowerFunctionName, $functionNames, true)) {
                 continue;
             }
 
@@ -207,10 +210,23 @@ function baz($options)
     /**
      * @return string[]
      */
-    private function getInternalFunctionNames()
+    private function getFunctionNames()
     {
         $definedFunctions = \get_defined_functions();
 
-        return \array_map('strtolower', $definedFunctions['internal']);
+        return \array_diff(
+            $this->normalizeFunctionNames($definedFunctions['internal']),
+            \array_unique($this->normalizeFunctionNames($this->configuration['exclude']))
+        );
+    }
+
+    /**
+     * @param string[] $functionNames
+     *
+     * @return string[]
+     */
+    private function normalizeFunctionNames(array $functionNames)
+    {
+        return \array_map('strtolower', $functionNames);
     }
 }
