@@ -124,6 +124,14 @@ problems as possible on a given file or files in a given directory and its subdi
     $ php php-cs-fixer.phar fix /path/to/dir
     $ php php-cs-fixer.phar fix /path/to/file
 
+By default ``--path-mode`` is set to ``override``, which means, that if you specify the path to a file or a directory via 
+command arguments, then the paths provided to a ``Finder`` in config file will be ignored. You can use ``--path-mode=intersection`` 
+to merge paths from the config file and from the argument:
+
+.. code-block:: bash
+
+    $ php php-cs-fixer.phar fix --path-mode=intersection /path/to/dir
+
 The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml`` and ``junit``.
 
 NOTE: When using ``junit`` format report generates in accordance with JUnit xml schema from Jenkins (see docs/junit-10.xsd).
