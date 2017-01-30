@@ -68,7 +68,7 @@ final class NoShortEchoTagFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Replace short-echo <?= with long format <?php echo syntax.',
+            'Replace short-echo `<?=` with long format `<?php echo` syntax.',
             array(new VersionSpecificCodeSample('<?= "foo";', new VersionSpecification(50400)))
         );
     }
