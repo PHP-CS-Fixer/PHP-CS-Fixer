@@ -143,8 +143,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
     {
         $riskyDescription = <<<'TXT'
 Rule is risky when a function with the same name as a native function exists in the current namespace.
-+Two major situations when it could happen are:
-+* polyfill is used to provide function from higher PHP version, if PHP CS Fixer would been run also on that higher PHP version, but software is also desired to work on lower PHP version that naively doesn't have that polyfilled function
++One major situation when it could happen is:
 +* function is mocked during tests execution, eg mocking `time` function - in that case after applying the rule src code will always use original, unmocked function
 +To deal with described situation provide a configuration with function names you want to preserve unchanged.'
 TXT;
