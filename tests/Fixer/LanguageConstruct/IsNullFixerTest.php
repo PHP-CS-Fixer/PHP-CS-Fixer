@@ -153,6 +153,13 @@ FIXED;
                 '<?php null === a(null === a(null === a(null === b())));',
                 '<?php \is_null(a(\is_null(a(\is_null(a(\is_null(b())))))));',
             ),
+            array(
+                '<?php $d= null === ($a)/*=?*/?>',
+                "<?php \$d= is_null(\n(\$a)/*=?*/\n)?>",
+            ),
+            array(
+                '<?php is_null()?>',
+            ),
         );
     }
 }
