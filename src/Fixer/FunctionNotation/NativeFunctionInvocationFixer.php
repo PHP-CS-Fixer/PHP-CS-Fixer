@@ -185,7 +185,7 @@ function baz($options)
                 ),
             ),
             null,
-            'Configure names of functions to exclude, for example, when using a polyfill.',
+            'Configure names of functions to exclude, for example, when mocking.',
             self::$defaultConfiguration,
             $riskyDescription
         );
