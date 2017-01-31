@@ -76,6 +76,15 @@ function foo( $bar, $baz )
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // must run before FunctionToConstantFixer
+        return 2;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound('(');

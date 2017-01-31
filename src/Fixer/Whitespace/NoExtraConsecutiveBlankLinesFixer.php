@@ -37,7 +37,7 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
     /**
      * @var string[]
      */
-    private $availableTokens = array(
+    private static $availableTokens = array(
         'break',
         'continue',
         'extra',
@@ -294,7 +294,7 @@ class Foo
         $tokens = $tokens
             ->setAllowedTypes(array('array'))
             ->setAllowedValues(array(
-                $generator->allowedValueIsSubsetOf($this->availableTokens),
+                $generator->allowedValueIsSubsetOf(self::$availableTokens),
             ))
             ->setNormalizer(function (Options $options, $tokens) {
                 foreach ($tokens as &$token) {

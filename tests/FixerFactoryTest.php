@@ -311,6 +311,13 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['phpdoc_to_comment'], $fixers['phpdoc_no_useless_inheritdoc']), // tested also in: phpdoc_to_comment,phpdoc_no_useless_inheritdoc.test
             array($fixers['declare_strict_types'], $fixers['declare_equal_normalize']), // tested also in: declare_strict_types,declare_equal_normalize.test
             array($fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_order']), // tested also in: phpdoc_add_missing_param_annotation,phpdoc_order.test
+            array($fixers['no_spaces_after_function_name'], $fixers['function_to_constant']), // tested also in: no_spaces_after_function_name,function_to_constant.test
+            array($fixers['no_spaces_inside_parenthesis'], $fixers['function_to_constant']), // tested also in: no_spaces_inside_parenthesis,function_to_constant.test
+            array($fixers['function_to_constant'], $fixers['native_function_casing']), // no priority issue; for speed only
+            array($fixers['function_to_constant'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: function_to_constant,no_extra_consecutive_blank_lines.test
+            array($fixers['function_to_constant'], $fixers['no_singleline_whitespace_before_semicolons']), // tested also in: function_to_constant,no_singleline_whitespace_before_semicolons.test
+            array($fixers['function_to_constant'], $fixers['no_trailing_whitespace']), // tested also in: function_to_constant,no_trailing_whitespace.test
+            array($fixers['function_to_constant'], $fixers['no_whitespace_in_blank_line']), // tested also in: function_to_constant,no_whitespace_in_blank_line.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:
