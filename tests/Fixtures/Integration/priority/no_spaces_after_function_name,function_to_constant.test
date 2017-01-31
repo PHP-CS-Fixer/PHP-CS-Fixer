@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_spaces_after_function_name,function_to_constant.
+--RULESET--
+{"no_spaces_after_function_name": true, "function_to_constant": true}
+--EXPECT--
+<?php
+
+echo M_PI;
+
+--INPUT--
+<?php
+
+echo pi ();

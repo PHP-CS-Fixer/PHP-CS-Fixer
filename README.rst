@@ -331,6 +331,17 @@ Choose from the list of available rules:
   - ``closure_function_spacing`` (``'none'``, ``'one'``): spacing to use before open
     parenthesis for closures; defaults to ``'one'``
 
+* **function_to_constant**
+
+  Replace core functions calls returning constants with the constants.
+
+  *Risky rule: risky when any of the configured functions to replace are overridden.*
+
+  Configuration options:
+
+  - ``functions`` (``array``): list of function names to fix; defaults to
+    ``['phpversion', 'php_sapi_name', 'pi']``
+
 * **function_typehint_space** [@Symfony]
 
   Add missing space between function's argument and its typehint.
