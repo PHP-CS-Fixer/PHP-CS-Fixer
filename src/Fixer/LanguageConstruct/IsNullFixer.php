@@ -67,14 +67,6 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         static $sequenceNeeded = array(array(T_STRING, 'is_null'), '(');
@@ -93,6 +85,11 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
 
             // move the cursor just after the sequence
             list($isNullIndex, $currIndex) = $matches;
+
+            $next = $tokens->getNextMeaningfulToken($currIndex);
+            if ($tokens[$next]->equals(')')) {
+                continue;
+            }
 
             // skip all expressions which are not a function reference
             $inversionCandidateIndex = $prevTokenIndex = $tokens->getPrevMeaningfulToken($matches[0]);
@@ -131,6 +128,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
             for ($paramTokenIndex = $matches[1]; $paramTokenIndex <= $referenceEnd; ++$paramTokenIndex) {
                 if (in_array($tokens[$paramTokenIndex]->getContent(), array('?', '?:', '='), true)) {
                     $isContainingDangerousConstructs = true;
+
                     break;
                 }
             }
@@ -188,6 +186,14 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
             self::$defaultConfiguration,
             'Risky when the function `is_null()` is overridden.'
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
     }
 
     /**

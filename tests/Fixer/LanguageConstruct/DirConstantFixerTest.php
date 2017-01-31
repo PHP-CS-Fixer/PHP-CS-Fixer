@@ -99,6 +99,10 @@ FIXED;
                     public function &dirname($a);
                 }',
             ),
+            array(
+                "<?php echo __DIR__\n?>",
+                "<?php echo dirname\n(\n__FILE__\n)\n?>",
+            ),
         );
     }
 }
