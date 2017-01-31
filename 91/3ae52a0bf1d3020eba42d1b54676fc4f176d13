@@ -1,0 +1,132 @@
+---------------------------------------------------------------------------
+
+by localheinz at 2017-01-13T11:49:58Z
+
+Because I'm lazy, I tried replacing
+
+As a heads-up, with some experimenting, I used PhpStorm regular expressions to find and replace, replacing
+
+```
+(^\s+|return\s|,\s|=\s|=>\s|\?\s|:\s|!|\()(?!(array|empty|exit|do|for|foreach|if|while|isset|list|unset|__))(\w+)\(
+```
+
+with
+
+```
+$1\\$3\(
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-13T11:51:29Z
+
+In general, I am for the change, but not in this form. It's hard to maintain and keep it consistent.
+
+Instead, I propose:
+1. PR with a rule to add that `\` without dummy regexes that will fail on edge cases
+2. then apply it on repo
+3. and keep rule running under CI
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-01-13T11:52:01Z
+
+@keradus
+
+Sounds good, let me take a look at it!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-01-13T11:52:17Z
+
+Actually missing quite a bunch of functions.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-13T12:42:49Z
+
+did someone compare if with the import of these function (`use function \array_keys;` etc.) also gives the same benefits?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-01-15T13:01:26Z
+
+@keradus @SpacePossum
+
+How about this one?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-15T16:38:16Z
+
+@SpacePossum it shall, as engine will, as well as with `echo \implode($x)`, do function lookup, but it will take it from import
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-01-15T21:24:43Z
+
+@keradus
+
+Updated! 🤓
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-19T07:40:31Z
+
+I let myself fix https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2462/files#r96804912
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-26T22:56:39Z
+
+@localheinz can you fix the 5.6 issue, it is a test thing only I think :)
+and please rebase as well.
+
+Love to see this in!
+(as I would like to build upon it to add config option to import rather than to add '\' for all native calls)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-27T03:26:20Z
+
+> as I would like to build upon it to add config option to import rather than to add '' for all native calls
+
+let us make it first as adding `\` (as it's simpler and easier), then with time we could add option to decide to import them instead of prefixing.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-01-28T00:45:18Z
+
+Ha, sorry for the delay, will take a look tomorrow!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-01-28T00:54:53Z
+
+Tests should pass, take a look!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-30T11:11:48Z
+
+@SpacePossum , I am not sure about that `include`... it's not good practice to create global functions... I'm not for encouraging people to use them by adding setting just for that
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-30T12:17:44Z
+
+@keradus fair enough :) @localheinz please ignore my comment :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-31T13:04:19Z
+
+@localheinz, is there anything left in this PR, or ready for merge ?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-01-31T13:05:00Z
+
+@keradus
+
+I can't think of anything, if you are all happy with it, let's 🚀 it!
