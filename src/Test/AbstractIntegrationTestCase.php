@@ -245,42 +245,44 @@ abstract class AbstractIntegrationTestCase extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $tmpFile = static::getTempFile();
-        if (false === @file_put_contents($tmpFile, $input)) {
-            throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
-        }
+        if (1 < count($fixers)) {
+            $tmpFile = static::getTempFile();
+            if (false === @file_put_contents($tmpFile, $input)) {
+                throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
+            }
 
-        $runner = new Runner(
-            new \ArrayIterator(array(new \SplFileInfo($tmpFile))),
-            array_reverse($fixers),
-            new SebastianBergmannDiffer(),
-            null,
-            $errorsManager,
-            $this->linter,
-            false,
-            new NullCacheManager()
-        );
-
-        Tokens::clearCache();
-        $runner->fix();
-        $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
-
-        // If output is different depends on rules order - we need to verify that the rules are ordered by priority.
-        // If not, any order is valid.
-        if ($fixedInputCode !== $fixedInputCodeWithReversedFixers) {
-            $this->assertGreaterThan(
-                1,
-                count(array_unique(array_map(
-                    function (FixerInterface $fixer) {
-                        return $fixer->getPriority();
-                    },
-                    $fixers
-                ))),
-                sprintf(
-                    'Rules priorities are not differential enough. If rules would be used in reverse order then final output would be different than the expected one. For that, different priorities must be set up for used rules to ensure stable order of them. In "%s".',
-                    $case->getFileName()
-                )
+            $runner = new Runner(
+                new \ArrayIterator(array(new \SplFileInfo($tmpFile))),
+                array_reverse($fixers),
+                new SebastianBergmannDiffer(),
+                null,
+                $errorsManager,
+                $this->linter,
+                false,
+                new NullCacheManager()
             );
+
+            Tokens::clearCache();
+            $runner->fix();
+            $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
+
+            // If output is different depends on rules order - we need to verify that the rules are ordered by priority.
+            // If not, any order is valid.
+            if ($fixedInputCode !== $fixedInputCodeWithReversedFixers) {
+                $this->assertGreaterThan(
+                    1,
+                    count(array_unique(array_map(
+                        function (FixerInterface $fixer) {
+                            return $fixer->getPriority();
+                        },
+                        $fixers
+                    ))),
+                    sprintf(
+                        'Rules priorities are not differential enough. If rules would be used in reverse order then final output would be different than the expected one. For that, different priorities must be set up for used rules to ensure stable order of them. In "%s".',
+                        $case->getFileName()
+                    )
+                );
+            }
         }
 
         // run the test again with the `expected` part, this should always stay the same
