@@ -18,6 +18,7 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
+use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\ShortFixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
@@ -170,7 +171,10 @@ final class DescribeCommand extends Command
                     $fixer->configure($codeSample->getConfiguration());
                 }
 
-                $fixer->fix(new StdinFileInfo(), $tokens);
+                $file = $codeSample instanceof FileSpecificCodeSampleInterface
+                    ? $codeSample->getSplFileInfo()
+                    : new StdinFileInfo();
+                $fixer->fix($file, $tokens);
                 $new = $tokens->generateCode();
                 $diff = $differ->diff($old, $new);
 

@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\NamespaceNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -72,9 +74,18 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'The namespace declaration line shouldn\'t contain leading whitespace.';
+        return new FixerDefinition(
+            'The namespace declaration line shouldn\'t contain leading whitespace.',
+            array(
+                new CodeSample(
+                    '<?php
+ namespace Test8a;
+    namespace Test8b;'
+                ),
+            )
+        );
     }
 
     private static function endsWithWhitespace($str)

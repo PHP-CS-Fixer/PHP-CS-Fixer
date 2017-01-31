@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -68,16 +70,15 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFix
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getDefinition()
     {
-        return 50;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDescription()
-    {
-        return 'All PHP files must use same line ending.';
+        return new FixerDefinition(
+            'All PHP files must use same line ending.',
+            array(
+                new CodeSample(
+                    "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\n"
+                ),
+            )
+        );
     }
 }

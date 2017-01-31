@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -26,8 +28,8 @@ final class PhpUnitConstructFixer extends AbstractFixer implements ConfigurableF
      * @var string[]
      */
     private static $defaultConfiguration = array(
-        'assertSame',
         'assertEquals',
+        'assertSame',
         'assertNotEquals',
         'assertNotSame',
     );
@@ -106,18 +108,43 @@ final class PhpUnitConstructFixer extends AbstractFixer implements ConfigurableF
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getDefinition()
     {
-        // should be run after the PhpUnitStrictFixer and before PhpUnitDedicateAssertFixer.
-        return -10;
+        return new FixerDefinition(
+            'PHPUnit assertion method calls like "->assertSame(true, $foo)" should be written with dedicated method like "->assertTrue($foo)".',
+            array(
+                new CodeSample(
+                    '<?php
+$this->assertEquals(false, $b);
+$this->assertSame(true, $a);
+$this->assertNotEquals(null, $c);
+$this->assertNotSame(null, $d);
+'
+                ),
+                new CodeSample(
+                    '<?php
+$this->assertEquals(false, $b);
+$this->assertSame(true, $a);
+$this->assertNotEquals(null, $c);
+$this->assertNotSame(null, $d);
+',
+                    array('assertSame', 'assertNotSame')
+                ),
+            ),
+            null,
+            'List of strings which methods should be modified.',
+            self::$defaultConfiguration,
+            'Fixer could be risky if one is overwritting PHPUnit\'s native methods.'
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getPriority()
     {
-        return 'PHPUnit assertion method calls like "->assertSame(true, $foo)" should be written with dedicated method like "->assertTrue($foo)".';
+        // should be run after the PhpUnitStrictFixer and before PhpUnitDedicateAssertFixer.
+        return -10;
     }
 
     /**

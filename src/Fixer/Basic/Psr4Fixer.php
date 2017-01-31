@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractPsrAutoloadingFixer;
+use PhpCsFixer\FixerDefinition\FileSpecificCodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -72,8 +74,23 @@ final class Psr4Fixer extends AbstractPsrAutoloadingFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Class names should match the file name.';
+        return new FixerDefinition(
+            'Class names should match the file name.',
+            array(
+                new FileSpecificCodeSample(
+                    '<?php
+namespace PhpCsFixer\FIXER\Basic;
+class InvalidName {}
+',
+                    new \SplFileInfo(__FILE__)
+                ),
+            ),
+            null,
+            null,
+            null,
+            'This fixer may change you class name, which will break the code that is depended on old name.'
+        );
     }
 }

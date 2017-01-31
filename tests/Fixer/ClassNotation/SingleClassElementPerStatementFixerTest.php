@@ -660,7 +660,7 @@ EOT
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[single_class_element_per_statement\] Unknown configuration option "foo"\. Expected any of "property", "const"\.$/'
+            '/^\[single_class_element_per_statement\] Unknown configuration option "foo"\. Expected any of "const", "property"\.$/'
         );
 
         $this->fixer->configure(array('foo'));
