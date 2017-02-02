@@ -70,7 +70,7 @@ final class PhpdocNoEmptyReturnFixer extends AbstractFixer
 /**
  * @return null
 */
-function foo() {}     
+function foo() {}
 '
                 ),
                 new CodeSample(
@@ -78,7 +78,7 @@ function foo() {}
 /**
  * @return void
 */
-function foo() {}     
+function foo() {}
 '
                 ),
             )

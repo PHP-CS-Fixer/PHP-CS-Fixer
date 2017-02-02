@@ -17,7 +17,6 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
-use PhpCsFixer\FixerDefinition\ShortFixerDefinition;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -88,13 +87,6 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
         }
 
         $this->whitespacesConfig = $config;
-    }
-
-    public function getDefinition()
-    {
-        return new ShortFixerDefinition(
-            $this->getDescription()
-        );
     }
 
     private function getDefaultWhitespacesFixerConfig()
