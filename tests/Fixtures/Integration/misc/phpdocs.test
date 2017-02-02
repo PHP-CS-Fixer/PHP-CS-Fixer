@@ -19,5 +19,3 @@ Integration of phpdocs fixers.
     "no_blank_lines_after_phpdoc": true,
     "no_empty_phpdoc": true
 }
---SETTINGS--
-{"checkPriority": false}

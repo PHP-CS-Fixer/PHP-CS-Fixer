@@ -2,5 +2,3 @@
 Integration of @Symfony.
 --RULESET--
 {"@Symfony": true}
---SETTINGS--
-{"checkPriority": false}
