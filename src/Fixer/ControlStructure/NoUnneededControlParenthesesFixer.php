@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -142,6 +144,46 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Removes unneeded parentheses around control statements.',
+            array(
+                new CodeSample(
+                    '<?php
+while ($x) { while ($y) { break (2); } }
+clone($a);
+while ($y) { continue (2); }
+echo("foo");
+print("foo");
+return (1 + 2);
+switch ($a) { case($x); }
+yield(2);
+'
+                ),
+                new CodeSample(
+                    '<?php
+while ($x) { while ($y) { break (2); } }
+clone($a);
+while ($y) { continue (2); }
+echo("foo");
+print("foo");
+return (1 + 2);
+switch ($a) { case($x); }
+yield(2);
+',
+                    array('break', 'continue')
+                ),
+            ),
+            null,
+            'List of strings which control structures should be modified.',
+            self::$defaultConfiguration
+        );
+    }
+
+    /**
      * Should be run before no_trailing_whitespace.
      *
      * {@inheritdoc}
@@ -149,13 +191,5 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     public function getPriority()
     {
         return 30;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDescription()
-    {
-        return 'Removes unneeded parentheses around control statements.';
     }
 }

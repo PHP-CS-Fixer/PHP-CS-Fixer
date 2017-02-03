@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\ArrayNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -23,14 +25,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOUBLE_ARROW);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -52,6 +46,17 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Operator `=>` should not be surrounded by multi-line whitespaces.',
+            array(new CodeSample("<?php\n\$a = array(1\n\n=> 2);"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // should be run before the TrailingCommaInMultilineArrayFixer and BinaryOperatorSpacesFixer.
@@ -61,9 +66,9 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Operator => should not be surrounded by multi-line whitespaces.';
+        return $tokens->isTokenKindFound(T_DOUBLE_ARROW);
     }
 
     private function fixWhitespace(Token $token)

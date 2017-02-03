@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -22,22 +24,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class NoPhp4ConstructorFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_CLASS);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return true;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -98,9 +84,24 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getDefinition()
     {
-        return 'no_php4_constructor';
+        return new FixerDefinition(
+            'Convert PHP4-style constructors to `__construct`.',
+            array(
+               new CodeSample('<?php
+class Foo
+{
+    public function Foo($bar)
+    {
+    }
+}'),
+            ),
+            null,
+            null,
+            null,
+            'Risky when old style constructor being fixed is overridden overrides parent one.'
+        );
     }
 
     /**
@@ -115,9 +116,17 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Convert PHP4-style constructors to __construct.';
+        return $tokens->isTokenKindFound(T_CLASS);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
     }
 
     /**
@@ -344,7 +353,7 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
         ), $startIndex, $endIndex, false);
 
         if (null === $function) {
-            return;
+            return null;
         }
 
         // keep only the indexes
