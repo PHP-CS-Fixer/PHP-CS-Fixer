@@ -1,0 +1,99 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-30T10:20:05Z
+
+cc @SpacePossum @juliendufresne
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-30T12:33:19Z
+
+Like the idea :+1:
+
+I think this should only be done for tests with more than one fixer (there may not be such case in this project, but one may have custom ones).
+
+Surprised not more tests are failing, IIRC I tried to run the test suit with `checkPriority = true` on all fixtures and some failed.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-31T10:11:42Z
+
+> I think this should only be done for tests with more than one fixer (there may not be such case in this project, but one may have custom ones).
+
+good point. on the same side, maybe just throw exception on integration test where there is only one rule, as this won't be an integration test at all... but yeah, it may be considered as a bc breaker.
+
+> Surprised not more tests are failing, IIRC I tried to run the test suit with checkPriority = true on all fixtures and some failed.
+
+didn't notice that. especially because of it I send that new integration test that would fail in described case to prove that mechanism is working.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-31T10:57:11Z
+
+>maybe just throw exception on integration test where there is only one rule
+
+please don't, I like the integration test for one fixer as I can put a lot of complex cases in there which I don't want to type out in utest ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-31T13:14:33Z
+
+if we skip the one-fixer cases than I'm :+1: (after tests are fixed of course and 1 minor)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-31T13:44:03Z
+
+one-fixer itest checked
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-02T10:56:18Z
+
+good to merge then ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-02T11:32:23Z
+
+Looks good to me :)
+
+btw. why doesn't this trigger the deprecation warning in the utests here?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-02T12:34:53Z
+
+not sure what do you refer to.
+where would you trigger it?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-02T12:41:35Z
+
+oh yeah nevermind, :+1: :ship:
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-02T13:38:10Z
+
+no no, seriously, what was it ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-02T14:06:09Z
+
+Just me not thinking correct.
+My initial thought was that there should be deprecation warnings triggered as long as we've integration tests with something like this in it:
+```
+--SETTINGS--
+{"checkPriority": false}
+```
+
+but that is not true, only calling `AbstractIntegrationTestCase::shouldCheckPriority` will trigger the warning. So users will not be notified the setting is no longer used by the tool, which is OK as users might still want to use this setting within their own test setup for something custom.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-02T14:36:09Z
+
+ok. btw, for that, i drop them from our ifiles
