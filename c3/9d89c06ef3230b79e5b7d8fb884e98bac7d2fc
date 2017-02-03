@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-15T17:47:35Z
+
+thanks :)  :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-03T13:45:06Z
+
+fabbot is modifying string that looks like PHPUnit code while we already have a fixer that updates it - only when it's a code
+cc @fabpot
