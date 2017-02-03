@@ -40,7 +40,7 @@ final class NoClosingTagFixer extends AbstractFixer
         list($index, $token) = each($closeTags);
 
         switch (true) {
-            case $index == count($tokens) - 2:
+            case $index === count($tokens) - 2:
                 $nextToken = $tokens[$tokens->getNextNonWhitespace($index)];
                 if (!$nextToken->isGivenKind(T_INLINE_HTML)) {
                     return;
@@ -50,7 +50,7 @@ final class NoClosingTagFixer extends AbstractFixer
                 }
                 $nextToken->clear();
                 break;
-            case $index == count($tokens) - 1:
+            case $index === count($tokens) - 1:
                 break;
             default:
                 return;
