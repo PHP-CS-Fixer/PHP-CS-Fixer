@@ -1,0 +1,133 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-01-27T20:02:02Z
+
+> PS: I didn't run php-cs-fixer fix because lots of tests files would be modified.
+
+Huh, what? That's not right. Travis runs php-cs-fixer on itself successfully.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-01-27T20:02:47Z
+
+If this is a bug fix, it should be targeted at 2.0.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-27T22:59:39Z
+
+LGTM :)
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-01-27T23:23:44Z
+
+Other than the target branch, 👍 from me too.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-01-27T23:23:57Z
+
+The target can normally be resolved on merge tho.
+
+---------------------------------------------------------------------------
+
+by juliendufresne at 2017-01-28T14:39:11Z
+
+> Huh, what? That's not right. Travis runs php-cs-fixer on itself successfully.
+
+@GrahamCampbell My bad on that. In the [CONTRIBUTING.md](/FriendsOfPHP/PHP-CS-Fixer/CONTRIBUTING.md) file I read:
+`php php-cs-fixer fix .` <- note the dot is inside the command
+instead of
+`php php-cs-fixer fix`. <- the dot is not in the command.
+
+Using the dot overide the Finder specified in the .php_cs.dist
+
+---------------------------------------------------------------------------
+
+by juliendufresne at 2017-01-28T14:47:31Z
+
+> If this is a bug fix, it should be targeted at 2.0.
+
+I rebased my work against the 2.0 branch.
+Sorry for the mistake.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-30T01:56:09Z
+
+>declare_strict_types must be run before blank_line_after_opening_tag is run.
+> Otherwise it will add a new line after the php tag and then add declare(strict_type=1); right after the php tag
+
+Your integration test is not confirming that statement.
+Adding only itests, without changing the priority:
+https://github.com/keradus/PHP-CS-Fixer/pull/23
+https://travis-ci.org/keradus/PHP-CS-Fixer/builds/196465517
+
+---------------------------------------------------------------------------
+
+by juliendufresne at 2017-01-30T06:18:12Z
+
+Nice catch! I fixed it. Thank you.
+
+Indeed, in my integration test I declared the `declare_strict_types` rule before the `blank_line_after_opening_tag` so php-cs-fixer runs the first one before the later and tests passed without requiring to change the order.
+
+When I switch the two fixers and keep the same priority, the test fails so the integration test is good now.
+
+Do you want me to change the name of the file?
+From
+`declare_strict_types,blank_line_after_opening_tag.test`
+to
+`blank_line_after_opening_tag,declare_strict_types.test`
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-30T07:03:04Z
+
+Please, could you remove a priority change for a fixer, push it, allow travis to crash, then fix it and push fix again as separated commit ?
+remember to temporary disable priority check: https://github.com/keradus/PHP-CS-Fixer/pull/23/files#diff-412d2e43a7ea3fbe07029a61789f7aa4R5
+
+---------------------------------------------------------------------------
+
+by juliendufresne at 2017-01-30T07:04:16Z
+
+But when I do this, I have to comment a lines checking that priorities are not the same.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-30T07:10:54Z
+
+feel free to temporary do it to prove that test will fail on fixing part.
+
+---------------------------------------------------------------------------
+
+by juliendufresne at 2017-01-30T07:34:39Z
+
+I rebased my work:
+* the first commit should fail in travis (proof the bug exists)
+* the second one should fix the issue
+
+Hope this will be accepted as I am facing lots of issue with this priority bug (and it requires me to run php-cs-fixer twice in order to fix it)
+
+Note: I didn't have to remove the assertion I talked about.
+
+---------------------------------------------------------------------------
+
+by juliendufresne at 2017-01-30T09:42:23Z
+
+Do you know why the appveyor check is not running for lots and lots PR?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-30T10:21:20Z
+
+Thanks @juliendufresne  !
+Please, take a look at #2483 before we will merge your PR.
+Ah, ignore AppVeyor queue busy all the time.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-03T16:40:12Z
+
+:+1: if Travis will be green
