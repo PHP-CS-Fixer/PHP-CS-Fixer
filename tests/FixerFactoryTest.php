@@ -290,6 +290,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['no_useless_else'], $fixers['no_trailing_whitespace']), // tested also in: no_useless_else,no_trailing_whitespace.test
             array($fixers['no_useless_else'], $fixers['no_whitespace_in_blank_line']), // tested also in: no_useless_else,no_whitespace_in_blank_line.test
             array($fixers['declare_strict_types'], $fixers['single_blank_line_before_namespace']), // tested also in: declare_strict_types,single_blank_line_before_namespace.test
+            array($fixers['declare_strict_types'], $fixers['blank_line_after_opening_tag']), // tested also in: declare_strict_types,blank_line_after_opening_tag.test
             array($fixers['array_syntax'], $fixers['binary_operator_spaces']), // tested also in: array_syntax,binary_operator_spaces.test
             array($fixers['array_syntax'], $fixers['ternary_operator_spaces']), // tested also in: array_syntax,ternary_operator_spaces.test
             array($fixers['class_keyword_remove'], $fixers['no_unused_imports']), // tested also in: class_keyword_remove,no_unused_imports.test
