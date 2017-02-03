@@ -116,13 +116,16 @@ final class FixCommand extends Command
     {
         $verbosity = $output->getVerbosity();
 
+        $passedConfig = $input->getOption('config');
+        $passedRules = $input->getOption('rules');
+
         $resolver = new ConfigurationResolver(
             $this->defaultConfig,
             array(
                 'allow-risky' => $input->getOption('allow-risky'),
-                'config' => $input->getOption('config'),
+                'config' => $passedConfig,
                 'dry-run' => $input->getOption('dry-run'),
-                'rules' => $input->getOption('rules'),
+                'rules' => $passedRules,
                 'path' => $input->getArgument('path'),
                 'path-mode' => $input->getOption('path-mode'),
                 'using-cache' => $input->getOption('using-cache'),
@@ -141,20 +144,26 @@ final class FixCommand extends Command
             : ('txt' === $reporter->getFormat() ? $output : null)
         ;
 
-        if (null !== $stdErr && extension_loaded('xdebug')) {
-            $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
-        }
-
-        $configFile = $resolver->getConfigFile();
-
         if (null !== $stdErr) {
-            $stdErr->writeln(sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
-        }
+            if (extension_loaded('xdebug')) {
+                $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
+            }
 
-        if (null !== $stdErr && $resolver->getUsingCache()) {
-            $cacheFile = $resolver->getCacheFile();
-            if (is_file($cacheFile)) {
-                $stdErr->writeln(sprintf('Using cache file "%s".', $cacheFile));
+            if (null !== $passedConfig && null !== $passedRules) {
+                $stdErr->writeln(array(
+                    sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'When passing both "--config" and "--rules" the rules within the configuration file are not used.'),
+                    sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Passing both options is deprecated; version v3.0 PHP-CS-Fixer will exit with an configuration error code.'),
+                ));
+            }
+
+            $configFile = $resolver->getConfigFile();
+            $stdErr->writeln(sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
+
+            if ($resolver->getUsingCache()) {
+                $cacheFile = $resolver->getCacheFile();
+                if (is_file($cacheFile)) {
+                    $stdErr->writeln(sprintf('Using cache file "%s".', $cacheFile));
+                }
             }
         }
 
@@ -193,11 +202,10 @@ final class FixCommand extends Command
             $output->isDecorated()
         );
 
-        if ($output->isDecorated()) {
-            $output->write($reporter->generate($reportSummary));
-        } else {
-            $output->write($reporter->generate($reportSummary), false, OutputInterface::OUTPUT_RAW);
-        }
+        $output->isDecorated()
+            ? $output->write($reporter->generate($reportSummary))
+            : $output->write($reporter->generate($reportSummary), false, OutputInterface::OUTPUT_RAW)
+        ;
 
         $invalidErrors = $this->errorsManager->getInvalidErrors();
         $exceptionErrors = $this->errorsManager->getExceptionErrors();
@@ -261,11 +269,10 @@ final class FixCommand extends Command
      */
     private function listErrors(OutputInterface $output, $process, array $errors)
     {
-        $output->writeln('');
-        $output->writeln(sprintf(
+        $output->writeln(array('', sprintf(
             'Files that were not fixed due to errors reported during %s:',
             $process
-        ));
+        )));
 
         foreach ($errors as $i => $error) {
             $output->writeln(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
