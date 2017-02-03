@@ -588,6 +588,12 @@ final class ConfigurationResolver
             return $this->getConfig()->getRules();
         }
 
+        $jsonRules = json_decode($this->options['rules'], true);
+
+        if (is_array($jsonRules)) {
+            return $jsonRules;
+        }
+
         $rules = array();
 
         foreach (array_map('trim', explode(',', $this->options['rules'])) as $rule) {
