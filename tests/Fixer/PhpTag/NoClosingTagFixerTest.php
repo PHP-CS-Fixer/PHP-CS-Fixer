@@ -53,7 +53,7 @@ final class NoClosingTagFixerTest extends AbstractFixerTestCase
             array('<?php echo \'Foo\';', '<?php echo \'Foo\'; ?>'),
             array('<?php echo \'Foo\';', '<?php echo \'Foo\';?>'),
             array('<?php echo \'Foo\'; ?> PLAIN TEXT'),
-            array('PLAIN TEXT<?php echo \'Foo\'; ?>'),
+            array('PLAIN TEXT<?php echo \'Foo\';', 'PLAIN TEXT<?php echo \'Foo\'; ?>'),
             array('<?php
 
 echo \'Foo\';',
@@ -63,7 +63,11 @@ echo \'Foo\';
 
 ?>',
             ),
-            array('<?php echo \'Foo\'; ?>
+            array(
+                '<?php echo \'Foo\'; ?>
+<p><?php echo \'this is a template\'; ?></p>
+<?php echo \'Foo\';',
+                '<?php echo \'Foo\'; ?>
 <p><?php echo \'this is a template\'; ?></p>
 <?php echo \'Foo\'; ?>',
             ),
