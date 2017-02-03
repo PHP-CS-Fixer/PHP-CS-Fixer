@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -66,19 +68,36 @@ final class MethodSeparationFixer extends AbstractFixer implements WhitespacesAw
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getDefinition()
     {
-        // Must run before BracesFixer and IndentationTypeFixer fixers because this fixer
-        // might add line breaks to the code without indenting.
-        return 55;
+        return new FixerDefinition(
+            'Methods must be separated with one blank line.',
+            array(
+                new CodeSample(
+                    '<?php
+final class Sample
+{
+    protected function foo()
+    {
+    }
+    protected function bar()
+    {
+    }
+}
+'
+                ),
+            )
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getPriority()
     {
-        return 'Methods must be separated with one blank line.';
+        // Must run before BracesFixer and IndentationTypeFixer fixers because this fixer
+        // might add line breaks to the code without indenting.
+        return 55;
     }
 
     /**

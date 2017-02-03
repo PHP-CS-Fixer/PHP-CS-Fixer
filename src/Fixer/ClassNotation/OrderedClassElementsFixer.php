@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -177,19 +179,62 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getDefinition()
     {
-        // must run before MethodSeparationFixer, NoBlankLinesAfterClassOpeningFixer and SpaceAfterSemicolonFixer.
-        // must run after ProtectedToPrivateFixer.
-        return 65;
+        $types = array_merge(array_keys(self::$typeHierarchy), array_keys(self::$specialTypes));
+        sort($types);
+
+        return new FixerDefinition(
+            'Orders the elements of classes/interfaces/traits.',
+            array(
+                new CodeSample(
+                    '<?php
+final class Example
+{
+    use BarTrait;
+    use BazTrait;
+    const C1 = 1;
+    const C2 = 2;
+    protected static $protStatProp;
+    public static $pubStatProp1;
+    public $pubProp1;
+    protected $protProp;
+    var $pubProp2;
+    private static $privStatProp;
+    private $privProp;
+    public static $pubStatProp2;
+    public $pubProp3;
+    protected function __construct() {}
+    private static function privStatFunc() {}
+    public function pubFunc1() {}
+    public function __toString() {}
+    protected function protFunc() {}
+    function pubFunc2() {}
+    public static function pubStatFunc1() {}
+    public function pubFunc3() {}
+    static function pubStatFunc2() {}
+    private function privFunc() {}
+    public static function pubStatFunc3() {}
+    protected static function protStatFunc() {}
+    public function __destruct() {}
+}
+'
+                ),
+            ),
+            null,
+            sprintf('List of strings defining order of elements. Possible values: %s.', implode(', ', $types)),
+            self::$defaultConfiguration
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getPriority()
     {
-        return 'Orders the elements of classes/interfaces/traits.';
+        // must run before MethodSeparationFixer, NoBlankLinesAfterClassOpeningFixer and SpaceAfterSemicolonFixer.
+        // must run after ProtectedToPrivateFixer.
+        return 65;
     }
 
     /**

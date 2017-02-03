@@ -17,6 +17,8 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -51,13 +53,6 @@ final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixe
 
     /**
      * {@inheritdoc}
-     *
-     * The following configuration options are allowed:
-     * - commentType  PHPDoc|comment*
-     * - location     after_open|after_declare_strict*
-     * - separate     top|bottom|none|both*
-     *
-     * (* is the default when the item is omitted)
      */
     public function configure(array $configuration = null)
     {
@@ -107,17 +102,75 @@ final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixe
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function getDefinition()
     {
-        return $tokens[0]->isGivenKind(T_OPEN_TAG) && $tokens->isMonolithicPhp();
+        return new FixerDefinition(
+            'Add, replace or remove header comment.',
+            array(
+                new CodeSample(
+                    '<?php
+declare(strict_types=1);
+
+namespace A\B;
+
+echo 1;
+',
+                    array(
+                        'header' => 'Made with love.',
+                    )
+                ),
+                new CodeSample(
+                    '<?php
+declare(strict_types=1);
+
+namespace A\B;
+
+echo 1;
+',
+                    array(
+                        'header' => 'Made with love.',
+                        'commentType' => 'PHPDoc',
+                        'location' => 'after_open',
+                        'separate' => 'bottom',
+                    )
+                ),
+                new CodeSample(
+                    '<?php
+declare(strict_types=1);
+
+namespace A\B;
+
+echo 1;
+',
+                    array(
+                        'header' => 'Made with love.',
+                        'commentType' => 'comment',
+                        'location' => 'after_declare_strict',
+                    )
+                ),
+            ),
+            null,
+            'The following configuration options are allowed:
+- header       proper header content here, this option is required
+- commentType  PHPDoc|comment*
+- location     after_open|after_declare_strict*
+- separate     top|bottom|none|both*
+
+* is the default when the item is omitted',
+            array(
+                'commentType' => 'comment',
+                'location' => 'after_declare_strict',
+                'separate' => 'both',
+            )
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function isCandidate(Tokens $tokens)
     {
-        return 'Add, replace or remove header comment.';
+        return $tokens[0]->isGivenKind(T_OPEN_TAG) && $tokens->isMonolithicPhp();
     }
 
     /**
