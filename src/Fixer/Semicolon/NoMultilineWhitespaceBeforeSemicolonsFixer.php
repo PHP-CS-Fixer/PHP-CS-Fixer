@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\Semicolon;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -58,8 +60,20 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imp
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Multi-line whitespace before closing semicolon are prohibited.';
+        return new FixerDefinition(
+            'Multi-line whitespace before closing semicolon are prohibited.',
+            array(
+                new CodeSample(
+                    '<?php
+function foo () {
+    return 1 + 2
+        ;
+}
+'
+                ),
+            )
+        );
     }
 }

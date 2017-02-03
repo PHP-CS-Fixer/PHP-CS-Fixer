@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -103,8 +105,36 @@ final class SingleLineAfterImportsFixer extends AbstractFixer implements Whitesp
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Each namespace use MUST go on its own line and there MUST be one blank line after the use statements block.';
+        return new FixerDefinition(
+            'Each namespace use MUST go on its own line and there MUST be one blank line after the use statements block.',
+            array(
+                new CodeSample(
+                    '<?php
+namespace Foo;
+
+use Bar;
+use Baz;
+final class Example
+{
+}
+'
+                ),
+                new CodeSample(
+                    '<?php
+namespace Foo;
+
+use Bar;
+use Baz;
+
+
+final class Example
+{
+}
+'
+                ),
+            )
+        );
     }
 }
