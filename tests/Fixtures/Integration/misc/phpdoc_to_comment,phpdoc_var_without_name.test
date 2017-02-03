@@ -5,8 +5,6 @@ Integration of fixers: phpdoc_to_comment,phpdoc_var_without_name.
     "phpdoc_to_comment": true,
     "phpdoc_var_without_name": true
 }
---SETTINGS--
-{"checkPriority": false}
 --EXPECT--
 <?php
 

@@ -2,8 +2,6 @@
 Integration of fixers: phpdoc_no_useless_inheritdoc,phpdoc_inline_tag.
 --RULESET--
 {"phpdoc_no_useless_inheritdoc": true, "phpdoc_inline_tag": true}
---SETTINGS--
-{"checkPriority": false}
 --EXPECT--
 <?php
 class A

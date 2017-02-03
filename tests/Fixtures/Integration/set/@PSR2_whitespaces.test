@@ -4,5 +4,3 @@ Integration of @PSR2 [whitespace version].
 {"@PSR2": true}
 --CONFIG--
 {"indent": "\t", "lineEnding": "\r\n"}
---SETTINGS--
-{"checkPriority": false}

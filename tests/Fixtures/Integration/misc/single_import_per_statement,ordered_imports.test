@@ -2,8 +2,6 @@
 Integration of fixers: single_import_per_statement,ordered_imports.
 --RULESET--
 {"single_import_per_statement": true, "ordered_imports": true}
---SETTINGS--
-{"checkPriority": false}
 --REQUIREMENTS--
 {"php": 70000}
 --EXPECT--
