@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -53,6 +55,31 @@ final class PhpdocOrderFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Annotations in phpdocs should be ordered so that param annotations come first, then throws annotations, then return annotations.',
+            array(
+                new CodeSample(
+                    '<?php
+/**
+ * Hello there!
+ *
+ * @throws Exception|RuntimeException dfsdf
+ * @custom Test!
+ * @return int  Return the number of changes.
+ * @param string $foo
+ * @param bool   $bar Bar
+ */
+'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // must be run before the PhpdocSeparationFixer
@@ -63,14 +90,6 @@ final class PhpdocOrderFixer extends AbstractFixer
          * about, we're still ok.
          */
         return 5;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDescription()
-    {
-        return 'Annotations in phpdocs should be ordered so that param annotations come first, then throws annotations, then return annotations.';
     }
 
     /**

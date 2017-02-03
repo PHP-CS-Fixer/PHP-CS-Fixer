@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\ReturnNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -48,18 +50,32 @@ final class NoUselessReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getDefinition()
     {
-        // should be run before BlankLineBeforeReturnFixer, NoExtraConsecutiveBlankLinesFixer, NoWhitespaceInBlankLineFixer and after SimplifiedNullReturnFixer and NoEmptyStatementFixer.
-        return -18;
+        return new FixerDefinition(
+            'There should not be an empty return statement at the end of a function.',
+            array(
+                new CodeSample(
+                    '<?php
+function example($b) {
+    if ($b) {
+        return;
+    }
+    return;
+}
+'
+                ),
+            )
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getPriority()
     {
-        return 'There should not be an empty return statement at the end of a function.';
+        // should be run before BlankLineBeforeReturnFixer, NoExtraConsecutiveBlankLinesFixer, NoWhitespaceInBlankLineFixer and after SimplifiedNullReturnFixer and NoEmptyStatementFixer.
+        return -18;
     }
 
     /**

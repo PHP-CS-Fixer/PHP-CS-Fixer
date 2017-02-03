@@ -38,14 +38,14 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
         'syntax' => 'long',
     );
 
-    private $config = array();
+    private $config;
     private $candidateTokenKind;
     private $fixCallback;
 
     /**
      * Use 'syntax' => 'long'|'short'.
      *
-     * @param array|null $configuration
+     * @param array<string, string>|null $configuration
      *
      * @throws InvalidFixerConfigurationException
      */
@@ -107,7 +107,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
                 ),
             ),
             null,
-            'The following can be configured: `only_untyped => "long"|"short"`',
+            'The following can be configured: `syntax => "long"|"short"`',
             self::$defaultConfiguration
         );
     }

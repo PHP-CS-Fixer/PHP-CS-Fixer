@@ -33,16 +33,22 @@ abstract class AbstractTransformerTestCase extends \PHPUnit_Framework_TestCase
                     return count($item);
                 },
                 $tokens->findGivenKind(array_unique(array_merge($observedKinds, array_values($expectedTokens))))
-            ))
+            )),
+            'Number of expected tokens does not match actual token count.'
         );
 
         foreach ($expectedTokens as $index => $tokenId) {
             $this->assertSame(
                 CT::has($tokenId) ? CT::getName($tokenId) : token_name($tokenId),
                 $tokens[$index]->getName(),
-                sprintf('Token kind should be the same at index %d.', $index)
+                sprintf('Token name should be the same. Got token "%s" at index %d.', $tokens[$index]->toJson(), $index)
             );
-            $this->assertSame($tokenId, $tokens[$index]->getId());
+
+            $this->assertSame(
+                $tokenId,
+                $tokens[$index]->getId(),
+                sprintf('Token id should be the same. Got token "%s" at index %d.', $tokens[$index]->toJson(), $index)
+            );
         }
     }
 }

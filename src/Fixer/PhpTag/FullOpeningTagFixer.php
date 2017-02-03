@@ -98,7 +98,7 @@ final class FullOpeningTagFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'PHP code must use the long <?php ?> tags or the short-echo <?= ?> tags; it must not use the other tag variations.',
+            'PHP code must use the long `<?php` tags or short-echo `<?=` tags and not other tag variations.',
             array(
                 new CodeSample(
 '<?

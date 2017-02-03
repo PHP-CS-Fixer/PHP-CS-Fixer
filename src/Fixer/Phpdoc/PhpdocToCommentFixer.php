@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -98,9 +100,22 @@ final class PhpdocToCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'Docblocks should only be used on structural elements.';
+        return new FixerDefinition(
+            'Docblocks should only be used on structural elements.',
+            array(
+                new CodeSample(
+                    '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** This should not be a docblock */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}'
+                ),
+            )
+        );
     }
 
     /**

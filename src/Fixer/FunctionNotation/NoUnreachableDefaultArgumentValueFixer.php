@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -48,9 +50,18 @@ final class NoUnreachableDefaultArgumentValueFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'In method arguments there must not be arguments with default values before non-default ones.';
+        return new FixerDefinition(
+            'In method arguments there must not be arguments with default values before non-default ones.',
+            array(
+                new CodeSample(
+                    '<?php
+function example($foo = "two words", $bar) {}
+'
+                ),
+            )
+        );
     }
 
     /**
