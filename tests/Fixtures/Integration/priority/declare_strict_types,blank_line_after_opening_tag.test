@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: declare_strict_types,blank_line_after_opening_tag.
+--RULESET--
+{"declare_strict_types" : true, "blank_line_after_opening_tag": true}
+--REQUIREMENTS--
+{"php": 70000}
+--EXPECT--
+<?php
+
+declare(strict_types=1);
+namespace A\B\C;
+class A {
+}
+
+--INPUT--
+<?php
+namespace A\B\C;
+class A {
+}
