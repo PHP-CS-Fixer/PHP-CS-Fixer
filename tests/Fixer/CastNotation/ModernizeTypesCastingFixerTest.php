@@ -144,8 +144,8 @@ OVERRIDDEN;
                 '<?php intval();intval(1,2,3);',
             ),
             array(
-                '<?php 
-                interface Test 
+                '<?php
+                interface Test
                 {
                     public function floatval($a);
                     public function &doubleval($a);

@@ -208,15 +208,15 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
                 '<?php echo pow(+$a, 2);',
             ),
             array(
-                '<?php 
-                interface Test 
+                '<?php
+                interface Test
                 {
                     public function pow($a, $b);
                 }',
             ),
             array(
-                '<?php 
-                interface Test 
+                '<?php
+                interface Test
                 {
                     public function &pow($a, $b);
                 }',

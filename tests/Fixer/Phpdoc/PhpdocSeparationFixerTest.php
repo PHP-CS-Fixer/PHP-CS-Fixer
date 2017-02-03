@@ -25,7 +25,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
     public function testFix()
     {
         $this->doTest('<?php
-/** @param EngineInterface $templating 
+/** @param EngineInterface $templating
 *@return void
 */');
 
