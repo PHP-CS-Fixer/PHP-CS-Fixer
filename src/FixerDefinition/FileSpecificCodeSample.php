@@ -25,13 +25,13 @@ final class FileSpecificCodeSample implements FileSpecificCodeSampleInterface
     private $codeSample;
 
     /**
-     * @var SplFileInfo
+     * @var \SplFileInfo
      */
     private $splFileInfo;
 
     /**
      * @param string      $code
-     * @param SplFileInfo $splFileInfo
+     * @param \SplFileInfo $splFileInfo
      * @param null|array  $configuration
      */
     public function __construct(
