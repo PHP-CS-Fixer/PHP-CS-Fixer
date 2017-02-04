@@ -13,9 +13,10 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
@@ -29,51 +30,38 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author SpacePossum
  */
-final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
+final class ClassDefinitionFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
-     * @var array<string, bool>
+     * {@inheritdoc}
      */
-    private static $defaultConfiguration = array(
-        // put class declaration on one line
-        'singleLine' => false,
-        // if a classy extends or implements only one element than put it on the same line
-        'singleItemSingleLine' => false,
-        // if an interface extends multiple interfaces declared over multiple lines put each interface on its own line
-        'multiLineExtendsEachSingleLine' => false,
-    );
-
-    /**
-     * @var array
-     */
-    private $config;
-
-    /**
-     * @param null|array $configuration
-     *
-     * @throws InvalidFixerConfigurationException
-     */
-    public function configure(array $configuration = null)
+    public function getConfigurationDefinition()
     {
-        if (null === $configuration) {
-            $this->config = self::$defaultConfiguration;
+        $configurationDefinition = new FixerConfigurationResolver();
 
-            return;
-        }
+        $singleLine = new FixerOption('singleLine', 'Whether definitions should be single line.');
+        $singleLine
+            ->setAllowedTypes('bool')
+            ->setDefault(false)
+        ;
 
-        $configuration = array_merge(self::$defaultConfiguration, $configuration);
+        $singleItemSingleLine = new FixerOption('singleItemSingleLine', 'Whether definitions should be single line when including a single item.');
+        $singleItemSingleLine
+            ->setAllowedTypes('bool')
+            ->setDefault(false)
+        ;
 
-        foreach ($configuration as $item => $value) {
-            if (!array_key_exists($item, self::$defaultConfiguration)) {
-                throw new InvalidFixerConfigurationException('class_definition', sprintf('Unknown configuration item "%s", expected any of "%s".', $item, implode(', ', array_keys(self::$defaultConfiguration))));
-            }
+        $multiLineExtendsEachSingleLine = new FixerOption('multiLineExtendsEachSingleLine', 'Whether definitions should be multiline.');
+        $multiLineExtendsEachSingleLine
+            ->setAllowedTypes('bool')
+            ->setDefault(false)
+        ;
 
-            if (!is_bool($value)) {
-                throw new InvalidFixerConfigurationException('class_definition', sprintf('Configuration value for item "%s" must be a bool, got "%s".', $item, is_object($value) ? get_class($value) : gettype($value)));
-            }
-        }
-
-        $this->config = $configuration;
+        return $configurationDefinition
+            ->addOption($singleLine)
+            ->addOption($singleItemSingleLine)
+            ->addOption($multiLineExtendsEachSingleLine)
+        ;
     }
 
     /**
@@ -156,10 +144,7 @@ interface Bar extends
 ',
                     array('multiLineExtendsEachSingleLine' => true)
                 ),
-            ),
-            null,
-            'Configure to have extra whitespace around the keywords of a class, trait or interface definition removed.',
-            self::$defaultConfiguration
+            )
         );
     }
 
@@ -229,13 +214,13 @@ interface Bar extends
     {
         $endIndex = $tokens->getPrevNonWhitespace($classOpenIndex);
 
-        if ($this->config['singleLine'] || false === $classExtendsInfo['multiLine']) {
+        if ($this->configuration['singleLine'] || false === $classExtendsInfo['multiLine']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classExtendsInfo['start'], $endIndex);
             $classExtendsInfo['multiLine'] = false;
-        } elseif ($this->config['singleItemSingleLine'] && 1 === $classExtendsInfo['numberOfExtends']) {
+        } elseif ($this->configuration['singleItemSingleLine'] && 1 === $classExtendsInfo['numberOfExtends']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classExtendsInfo['start'], $endIndex);
             $classExtendsInfo['multiLine'] = false;
-        } elseif ($this->config['multiLineExtendsEachSingleLine'] && $classExtendsInfo['multiLine']) {
+        } elseif ($this->configuration['multiLineExtendsEachSingleLine'] && $classExtendsInfo['multiLine']) {
             $this->makeClassyInheritancePartMultiLine($tokens, $classExtendsInfo['start'], $endIndex);
             $classExtendsInfo['multiLine'] = true;
         }
@@ -254,10 +239,10 @@ interface Bar extends
     {
         $endIndex = $tokens->getPrevNonWhitespace($classOpenIndex);
 
-        if ($this->config['singleLine'] || false === $classImplementsInfo['multiLine']) {
+        if ($this->configuration['singleLine'] || false === $classImplementsInfo['multiLine']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classImplementsInfo['start'], $endIndex);
             $classImplementsInfo['multiLine'] = false;
-        } elseif ($this->config['singleItemSingleLine'] && 1 === $classImplementsInfo['numberOfImplements']) {
+        } elseif ($this->configuration['singleItemSingleLine'] && 1 === $classImplementsInfo['numberOfImplements']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classImplementsInfo['start'], $endIndex);
             $classImplementsInfo['multiLine'] = false;
         } else {

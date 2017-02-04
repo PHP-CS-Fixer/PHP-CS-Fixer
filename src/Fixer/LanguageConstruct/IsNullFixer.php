@@ -13,8 +13,9 @@
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -24,44 +25,24 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
-final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class IsNullFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    private static $configurableOptions = array('use_yoda_style');
-    private static $defaultConfiguration = array('use_yoda_style' => true);
-
     /**
-     * @var array<string, bool>
+     * {@inheritdoc}
      */
-    private $configuration;
-
-    /**
-     * 'use_yoda_style' can be configured with a boolean value.
-     *
-     * @param string[]|null $configuration
-     *
-     * @throws InvalidFixerConfigurationException
-     */
-    public function configure(array $configuration = null)
+    public function getConfigurationDefinition()
     {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
+        $configurationDefinition = new FixerConfigurationResolver();
 
-            return;
-        }
+        $yoda = new FixerOption('use_yoda_style', 'Whether Yoda style conditions should be used.');
+        $yoda
+            ->setAllowedTypes('bool')
+            ->setDefault(true)
+        ;
 
-        $this->configuration = array();
-        /** @var $option string */
-        foreach ($configuration as $option => $value) {
-            if (!in_array($option, self::$configurableOptions, true)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration item "%s", expected any of "%s".', $option, implode('", "', self::$configurableOptions)));
-            }
-
-            if (!is_bool($value)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected boolean got "%s".', is_object($value) ? get_class($value) : gettype($value)));
-            }
-
-            $this->configuration[$option] = $value;
-        }
+        return $configurationDefinition
+            ->addOption($yoda)
+        ;
     }
 
     /**
@@ -182,8 +163,6 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
                 new CodeSample("<?php\n\$a = is_null(\$b);", array('use_yoda_style' => false)),
             ),
             null,
-            'The following can be configured: `use_yoda_style => boolean`',
-            self::$defaultConfiguration,
             'Risky when the function `is_null()` is overridden.'
         );
     }

@@ -21,6 +21,7 @@
         "symfony/event-dispatcher": "^2.1 || ^3.0",
         "symfony/filesystem": "^2.4 || ^3.0",
         "symfony/finder": "^2.2 || ^3.0",
+        "symfony/options-resolver": "^2.6 || ^3.0",
         "symfony/polyfill-php54": "^1.0",
         "symfony/polyfill-php55": "^1.3",
         "symfony/polyfill-xml": "^1.3",
@@ -32,7 +33,7 @@
         "justinrainbow/json-schema": "^5.0",
         "phpunit/phpunit": "^4.5 || ^5.0",
         "satooshi/php-coveralls": "^1.0",
-        "symfony/phpunit-bridge": "^3.2"
+        "symfony/phpunit-bridge": "^3.2.2"
     },
     "suggest": {
         "ext-xml": "For better performance."

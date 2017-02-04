@@ -13,73 +13,49 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
  */
-final class NativeFunctionInvocationFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class NativeFunctionInvocationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * @var string[]
-     */
-    private $configuration = array();
-
-    /**
-     * @var array
-     */
-    private static $defaultConfiguration = array(
-        'exclude' => array(),
-    );
-
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function getConfigurationDefinition()
     {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
+        $configurationDefinition = new FixerConfigurationResolver();
 
-            return;
-        }
-
-        foreach ($configuration as $key => $value) {
-            if (!\array_key_exists($key, self::$defaultConfiguration)) {
-                throw new InvalidFixerConfigurationException(
-                    $this->getName(),
-                    \sprintf(
-                        '"%s" is not handled by the fixer.',
-                        $key
-                    )
-                );
-            }
-
-            foreach ($configuration[$key] as $functionName) {
-                if (!\is_string($functionName) || \trim($functionName) === '' || \trim($functionName) !== $functionName) {
-                    throw new InvalidFixerConfigurationException(
-                        $this->getName(),
-                        \sprintf(
+        $exclude = new FixerOption('exclude', 'List of functions to ignore.');
+        $exclude
+            ->setAllowedTypes('array')
+            ->setNormalizer(function (Options $options, $value) {
+                foreach ($value as $functionName) {
+                    if (!\is_string($functionName) || \trim($functionName) === '' || \trim($functionName) !== $functionName) {
+                        throw new InvalidOptionsException(\sprintf(
                             'Each element must be a non-empty, trimmed string, got "%s" instead.',
                             \is_object($functionName) ? \get_class($functionName) : \gettype($functionName)
-                        )
-                    );
+                        ));
+                    }
                 }
-            }
-        }
 
-        if (empty($configuration)) {
-            throw new InvalidFixerConfigurationException(
-                $this->getName(),
-                'Configuration must define "exclude" as an array.'
-            );
-        }
+                return $value;
+            })
+            ->setDefault(array())
+        ;
 
-        $this->configuration = $configuration;
+        return $configurationDefinition
+            ->addOption($exclude)
+        ;
     }
 
     /**
@@ -185,8 +161,6 @@ function baz($options)
                 ),
             ),
             null,
-            'Configure names of functions to exclude, for example, when mocking.',
-            self::$defaultConfiguration,
             $riskyDescription
         );
     }

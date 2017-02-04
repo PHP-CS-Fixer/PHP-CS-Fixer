@@ -273,11 +273,25 @@ $var = $arr[0]{     0
      * @param string $expected
      * @param string $input
      *
+     * @group legacy
+     * @dataProvider provideConfigurationCases
+     * @expectedDeprecation Passing "positions" at the root of the configuration is deprecated and will not be supported in 3.0, use "positions" => array(...) option instead.
+     */
+    public function testLegacyFixWithConfiguration(array $configuration, $expected, $input)
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
      * @dataProvider provideConfigurationCases
      */
     public function testFixWithConfiguration(array $configuration, $expected, $input)
     {
-        $this->fixer->configure($configuration);
+        $this->fixer->configure(array('positions' => $configuration));
         $this->doTest($expected, $input);
     }
 
@@ -328,11 +342,11 @@ EOT
 
     public function testWrongConfig()
     {
-        $this->setExpectedExceptionRegExp(
+        $this->setExpectedException(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[no_spaces_around_offset\] Unknown configuration option "foo"\.$/'
+             '[no_spaces_around_offset] Invalid configuration: The option "positions" contains an invalid value.'
         );
 
-        $this->fixer->configure(array('foo'));
+        $this->fixer->configure(array('positions' => array('foo')));
     }
 }

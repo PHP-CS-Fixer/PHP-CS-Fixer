@@ -61,8 +61,6 @@ final class StrictParamFixer extends AbstractFixer
             'Functions should be used with `$strict` param set to `true`.',
             array(new CodeSample("<?php\n\$a = array_keys(\$b);\n\$a = array_search(\$b, \$c);\n\$a = base64_decode(\$b);\n\$a = in_array(\$b, \$c);\n\$a = mb_detect_encoding(\$b, \$c);\n")),
             'The functions "array_keys", "array_search", "base64_decode", "in_array" and "mb_detect_encoding" should be used with $strict param.',
-            null,
-            null,
             'Risky when the function fixed is overridden or if the code relies on non-strict usage.'
         );
     }

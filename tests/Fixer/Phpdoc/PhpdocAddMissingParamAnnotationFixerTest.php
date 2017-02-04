@@ -27,7 +27,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
         $key = 'foo';
 
         $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException', sprintf(
-            '"%s" is not handled by the fixer.',
+            '[phpdoc_add_missing_param_annotation] Invalid configuration: The option "%s" does not exist.',
             $key
         ));
 
@@ -44,7 +44,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     public function testConfigureRejectsInvalidConfigurationValue($value)
     {
         $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException', sprintf(
-            'Expected boolean got "%s".',
+            'expected to be of type "bool", but is of type "%s".',
             is_object($value) ? get_class($value) : gettype($value)
         ));
 

@@ -64,8 +64,6 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
                 ),
             ),
             null,
-            null,
-            null,
             'Forcing strict types will stop non script code from working.'
         );
     }

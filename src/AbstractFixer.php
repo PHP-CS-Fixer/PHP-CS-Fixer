@@ -12,11 +12,15 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use Symfony\Component\OptionsResolver\Exception\ExceptionInterface;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -26,6 +30,11 @@ use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
 {
     /**
+     * @var array<string, mixed>|null
+     */
+    protected $configuration;
+
+    /**
      * @var WhitespacesFixerConfig
      */
     protected $whitespacesConfig;
@@ -34,7 +43,7 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
     {
         if ($this instanceof ConfigurableFixerInterface) {
             try {
-                $this->configure(null);
+                $this->configure(array());
             } catch (RequiredFixerConfigurationException $e) {
                 // ignore
             }
@@ -78,6 +87,43 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
     public function supports(\SplFileInfo $file)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration = null)
+    {
+        if (!$this instanceof ConfigurationDefinitionFixerInterface) {
+            throw new \LogicException('Cannot run method for class not implementing `ConfigurationDefinitionFixerInterface`.');
+        }
+
+        if (null === $configuration) {
+            @trigger_error(
+                'Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.',
+                E_USER_DEPRECATED
+            );
+
+            $configuration = array();
+        }
+
+        try {
+            $this->configuration = $this->getConfigurationDefinition()->resolve($configuration);
+        } catch (MissingOptionsException $exception) {
+            throw new RequiredFixerConfigurationException(
+                $this->getName(),
+                sprintf('Missing required configuration: %s', $exception->getMessage()),
+                null,
+                $exception
+            );
+        } catch (ExceptionInterface $exception) {
+            throw new InvalidFixerConfigurationException(
+                $this->getName(),
+                sprintf('Invalid configuration: %s', $exception->getMessage()),
+                null,
+                $exception
+            );
+        }
     }
 
     public function setWhitespacesConfig(WhitespacesFixerConfig $config)

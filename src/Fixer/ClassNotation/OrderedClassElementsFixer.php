@@ -13,8 +13,9 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -24,7 +25,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Gregor Harlan <gharlan@web.de>
  */
-final class OrderedClassElementsFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class OrderedClassElementsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
      * @var array Array containing all class element base types (keys) and their parent types (values)
@@ -67,26 +68,6 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     );
 
     /**
-     * @var string[] Default order/configuration
-     */
-    private static $defaultConfiguration = array(
-        'use_trait',
-        'constant_public',
-        'constant_protected',
-        'constant_private',
-        'property_public',
-        'property_protected',
-        'property_private',
-        'construct',
-        'destruct',
-        'magic',
-        'phpunit',
-        'method_public',
-        'method_protected',
-        'method_private',
-    );
-
-    /**
      * @var array Resolved configuration array (type => position)
      */
     private $typePosition;
@@ -96,17 +77,11 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
      */
     public function configure(array $configuration = null)
     {
-        if (null === $configuration) {
-            $configuration = self::$defaultConfiguration;
-        }
+        parent::configure($configuration);
 
         $this->typePosition = array();
         $pos = 0;
-        foreach ($configuration as $type) {
-            if (!array_key_exists($type, self::$typeHierarchy) && !array_key_exists($type, self::$specialTypes)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown class element type "%s".', $type));
-            }
-
+        foreach ($this->configuration['order'] as $type) {
             $this->typePosition[$type] = $pos++;
         }
 
@@ -130,7 +105,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
             $this->typePosition[$type] = null;
         }
 
-        $lastPosition = count($configuration);
+        $lastPosition = count($this->configuration['order']);
         foreach ($this->typePosition as &$pos) {
             if (null === $pos) {
                 $pos = $lastPosition;
@@ -138,6 +113,40 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
             // last digit is used by phpunit method ordering
             $pos *= 10;
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationDefinition()
+    {
+        $configurationDefinition = new FixerConfigurationResolver();
+
+        $order = new FixerOption('order', 'List of strings defining order of elements.');
+        $order
+            ->setAllowedValueIsSubsetOf(array_keys(array_merge(self::$typeHierarchy, self::$specialTypes)))
+            ->setDefault(array(
+                'use_trait',
+                'constant_public',
+                'constant_protected',
+                'constant_private',
+                'property_public',
+                'property_protected',
+                'property_private',
+                'construct',
+                'destruct',
+                'magic',
+                'phpunit',
+                'method_public',
+                'method_protected',
+                'method_private',
+            ))
+        ;
+
+        return $configurationDefinition
+            ->addOption($order)
+            ->mapRootConfigurationTo('order')
+        ;
     }
 
     /**
@@ -220,10 +229,7 @@ final class Example
 }
 '
                 ),
-            ),
-            null,
-            sprintf('List of strings defining order of elements. Possible values: %s.', implode(', ', $types)),
-            self::$defaultConfiguration
+            )
         );
     }
 

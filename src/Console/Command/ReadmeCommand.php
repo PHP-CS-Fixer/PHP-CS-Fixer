@@ -216,9 +216,13 @@ EOF;
         $help = str_replace('%command.name%', $command->getName(), $help);
         $help = preg_replace('#</?(comment|info)>#', '``', $help);
         $help = preg_replace('#^(\s+)``(.+)``$#m', '$1$2', $help);
-        $help = preg_replace('#^ \* ``(.+)``#m', '* **$1**', $help);
-        $help = preg_replace("#^\n( +)#m", "\n.. code-block:: bash\n\n$1", $help);
-        $help = preg_replace("#^\.\. code-block:: bash\n\n( +<\?(\w+))#m", ".. code-block:: $2\n\n$1", $help);
+        $help = preg_replace('#^ \* ``(.+)``(.*?\n)#m', "* **$1**$2\n", $help);
+        $help = preg_replace('#^   \\| #m', '  ', $help);
+        $help = preg_replace('#^   \\|#m', '', $help);
+        $help = preg_replace('#^(?=  \\*Risky rule.\\*$)#m', "\n", $help);
+        $help = preg_replace("#^(  Configuration options:\n)(  - )#m", "$1\n$2", $help);
+        $help = preg_replace("#^\n( +\\$ )#m", "\n.. code-block:: bash\n\n$1", $help);
+        $help = preg_replace("#^\n( +<\\?php)#m", "\n.. code-block:: php\n\n$1", $help);
         $help = preg_replace_callback(
             "#^\s*<\?(\w+).*?\?>#ms",
             function ($matches) {

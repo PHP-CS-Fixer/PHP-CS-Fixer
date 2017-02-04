@@ -30,10 +30,12 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         parent::setUpBeforeClass();
 
         $fixer = new NoUnneededControlParenthesesFixer();
-        $fixer->configure(null);
-        $controlStatementsProperty = new \ReflectionProperty($fixer, 'controlStatements');
-        $controlStatementsProperty->setAccessible(true);
-        self::$defaultStatements = $controlStatementsProperty->getValue($fixer);
+        foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
+            if ('control_statements' === $option->getName()) {
+                self::$defaultStatements = $option->getDefault();
+                break;
+            }
+        }
     }
 
     /**
@@ -46,6 +48,20 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
     public function testFix($expected, $input = null, $fixStatement = null)
     {
         $this->fixerTest($expected, $input, $fixStatement);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|string $fixStatement
+     *
+     * @group legacy
+     * @dataProvider provideFixCases
+     * @expectedDeprecation Passing "control_statements" at the root of the configuration is deprecated and will not be supported in 3.0, use "control_statements" => array(...) option instead.
+     */
+    public function testLegacyFix($expected, $input = null, $fixStatement = null)
+    {
+        $this->fixerTest($expected, $input, $fixStatement, true);
     }
 
     /**
@@ -66,12 +82,42 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      * @param null|string $fixStatement
      *
+     * @group legacy
+     * @dataProvider provideFixCases55
+     * @expectedDeprecation Passing "control_statements" at the root of the configuration is deprecated and will not be supported in 3.0, use "control_statements" => array(...) option instead.
+     * @requires PHP 5.5
+     */
+    public function testLegacyFix55($expected, $input = null, $fixStatement = null)
+    {
+        $this->fixerTest($expected, $input, $fixStatement, true);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|string $fixStatement
+     *
      * @dataProvider provideFixCases70
      * @requires PHP 7.0
      */
     public function testFix70($expected, $input = null, $fixStatement = null)
     {
         $this->fixerTest($expected, $input, $fixStatement);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|string $fixStatement
+     *
+     * @group legacy
+     * @dataProvider provideFixCases70
+     * @expectedDeprecation Passing "control_statements" at the root of the configuration is deprecated and will not be supported in 3.0, use "control_statements" => array(...) option instead.
+     * @requires PHP 7.0
+     */
+    public function testLegacyFix70($expected, $input = null, $fixStatement = null)
+    {
+        $this->fixerTest($expected, $input, $fixStatement, true);
     }
 
     public function provideFixCases()
@@ -455,11 +501,14 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      * @param null|string $fixStatement
+     * @param bool        $legacy
      */
-    private function fixerTest($expected, $input = null, $fixStatement = null)
+    private function fixerTest($expected, $input = null, $fixStatement = null, $legacy = false)
     {
         // Default config. Fixes all statements.
-        $this->fixer->configure(self::$defaultStatements);
+        $this->doTest($expected, $input);
+
+        $this->fixer->configure($legacy ? self::$defaultStatements : array('control_statements' => self::$defaultStatements));
         $this->doTest($expected, $input);
 
         // Empty array config. Should not fix anything.
@@ -479,7 +528,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 }
             }
 
-            $this->fixer->configure(array($statement));
+            $this->fixer->configure($legacy ? array($statement) : array('control_statements' => array($statement)));
             $this->doTest(
                 $expected,
                 $withInput ? $input : null

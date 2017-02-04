@@ -13,7 +13,9 @@
 namespace PhpCsFixer\Fixer\ControlStructure;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -23,26 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
  */
-final class NoUnneededControlParenthesesFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class NoUnneededControlParenthesesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * @var string[]
-     */
-    private static $defaultConfiguration = array(
-        'break',
-        'clone',
-        'continue',
-        'echo_print',
-        'return',
-        'switch_case',
-        'yield',
-    );
-
-    /**
-     * @var string[] List of statements to fix
-     */
-    private $controlStatements;
-
     private static $loops = array(
         'break' => array('lookupTokens' => T_BREAK, 'neededSuccessors' => array(';')),
         'clone' => array('lookupTokens' => T_CLONE, 'neededSuccessors' => array(';', ':', ',', ')'), 'forbiddenContents' => array('?', ':')),
@@ -71,17 +55,30 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     }
 
     /**
-     * @param array $controlStatements
+     * {@inheritdoc}
      */
-    public function configure(array $controlStatements = null)
+    public function getConfigurationDefinition()
     {
-        if (null === $controlStatements) {
-            $this->controlStatements = self::$defaultConfiguration;
+        $configurationDefinition = new FixerConfigurationResolver();
 
-            return;
-        }
+        $controlStatements = new FixerOption('control_statements', 'List of control statements to fix.');
+        $controlStatements
+            ->setAllowedTypes('array')
+            ->setDefault(array(
+                'break',
+                'clone',
+                'continue',
+                'echo_print',
+                'return',
+                'switch_case',
+                'yield',
+            ))
+        ;
 
-        $this->controlStatements = $controlStatements;
+        return $configurationDefinition
+            ->addOption($controlStatements)
+            ->mapRootConfigurationTo('control_statements')
+        ;
     }
 
     /**
@@ -105,7 +102,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         // Checks if specific statements are set and uses them in this case.
-        $loops = array_intersect_key(self::$loops, array_flip($this->controlStatements));
+        $loops = array_intersect_key(self::$loops, array_flip($this->configuration['control_statements']));
 
         foreach ($tokens as $index => $token) {
             if (!$token->equals('(')) {
@@ -179,12 +176,9 @@ return (1 + 2);
 switch ($a) { case($x); }
 yield(2);
 ',
-                    array('break', 'continue')
+                    array('control_statements' => array('break', 'continue'))
                 ),
-            ),
-            null,
-            'List of strings which control structures should be modified.',
-            self::$defaultConfiguration
+            )
         );
     }
 

@@ -26,7 +26,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[concat_space\] Missing "spacing" configuration.$#'
+            '#^\[concat_space\] Invalid configuration: The option "a" does not exist\. (Known|Defined) options are: "spacing"\.$#'
         );
 
         $this->fixer->configure(array('a' => 1));
@@ -34,9 +34,9 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
 
     public function testInvalidConfigValue()
     {
-        $this->setExpectedExceptionRegExp(
+        $this->setExpectedException(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[concat_space\] "spacing" configuration must be "one" or "none".$#'
+            '[concat_space] Invalid configuration: The option "spacing" with value "tabs" is invalid. Accepted values are: "one", "none".'
         );
 
         $this->fixer->configure(array('spacing' => 'tabs'));

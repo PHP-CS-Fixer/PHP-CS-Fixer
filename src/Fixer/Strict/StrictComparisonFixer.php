@@ -53,8 +53,6 @@ final class StrictComparisonFixer extends AbstractFixer
             'Comparisons should be strict.',
             array(new CodeSample("<?php\n\$a = 1== \$b;")),
             null,
-            null,
-            null,
             'Changing comparisons to strict might change code behavior.'
         );
     }

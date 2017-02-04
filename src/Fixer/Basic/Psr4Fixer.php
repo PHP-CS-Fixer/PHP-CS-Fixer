@@ -88,8 +88,6 @@ class InvalidName {}
                 ),
             ),
             null,
-            null,
-            null,
             'This fixer may change you class name, which will break the code that is depended on old name.'
         );
     }

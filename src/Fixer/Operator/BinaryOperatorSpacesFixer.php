@@ -14,8 +14,9 @@ namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractAlignFixerHelper;
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -26,51 +27,36 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class BinaryOperatorSpacesFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class BinaryOperatorSpacesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * @var array<string, bool|null>
-     */
-    private $configuration;
-
-    /**
-     * @var array
-     */
-    private static $defaultConfiguration = array(
-        'align_equals' => false,
-        'align_double_arrow' => false,
-    );
-
     /**
      * @var AbstractAlignFixerHelper[]
      */
     private $alignFixerHelpers = array();
 
     /**
-     * Key any of; 'align_equals', 'align_double_arrow'.
-     * Value 'bool': 'false' do unalign, 'true' do align, or 'null': do not modify.
-     *
-     * @param array<string, bool|null> $configuration
+     * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function getConfigurationDefinition()
     {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
+        $configurationDefinition = new FixerConfigurationResolver();
 
-            return;
-        }
+        $alignEquals = new FixerOption('align_equals', 'Whether to apply, remove or ignore equals alignment.');
+        $alignEquals
+            ->setDefault(false)
+            ->setAllowedValues(array(true, false, null))
+        ;
 
-        foreach ($configuration as $name => $value) {
-            if (!array_key_exists($name, self::$defaultConfiguration)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration option "%s". Expected any of "%s".', $name, implode('", "', array_keys(self::$defaultConfiguration))));
-            }
+        $alignDoubleArrows = new FixerOption('align_double_arrow', 'Whether to apply, remove or ignore double arrows alignment.');
+        $alignDoubleArrows
+            ->setDefault(false)
+            ->setAllowedValues(array(true, false, null))
+        ;
 
-            if (null !== $value && !is_bool($value)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Invalid value type for configuration option "%s". Expected "bool" or "null" got "%s".', $name, is_object($value) ? get_class($value) : gettype($value)));
-            }
-        }
-
-        $this->configuration = array_merge(self::$defaultConfiguration, $configuration);
+        return $configurationDefinition
+            ->addOption($alignEquals)
+            ->addOption($alignDoubleArrows)
+        ;
     }
 
     /**
@@ -156,10 +142,7 @@ $foo = array(
 ',
                     array('align_double_arrow' => true)
                 ),
-            ),
-            null,
-            'Aligns or unaligns `=` in consecutive assignments, or `=>` in array initializations',
-            self::$defaultConfiguration
+            )
         );
     }
 

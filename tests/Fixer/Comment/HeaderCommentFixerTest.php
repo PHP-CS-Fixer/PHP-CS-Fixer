@@ -12,8 +12,6 @@
 
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
 use PhpCsFixer\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
@@ -258,17 +256,32 @@ echo 1;',
 
     public function testDefaultConfiguration()
     {
-        $method = new \ReflectionMethod($this->fixer, 'parseConfiguration');
-        $method->setAccessible(true);
+        $property = new \ReflectionProperty($this->fixer, 'configuration');
+        $property->setAccessible(true);
+        $this->fixer->configure(array('header' => 'a'));
         $this->assertSame(
             array(
-                "/*\n * a\n */",
-                HeaderCommentFixer::HEADER_COMMENT,
-                HeaderCommentFixer::HEADER_LOCATION_AFTER_DECLARE_STRICT,
-                HeaderCommentFixer::HEADER_LINE_SEPARATION_BOTH,
+                'commentType' => 'comment',
+                'location' => 'after_declare_strict',
+                'separate' => 'both',
+                'header' => "/*\n * a\n */",
             ),
-            $method->invoke($this->fixer, array('header' => 'a'))
+            $property->getValue($this->fixer)
         );
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
+     */
+    public function testLegacyMisconfiguration()
+    {
+        $this->setExpectedException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '[header_comment] Missing required configuration: The required option "header" is missing.'
+        );
+
+        $this->fixer->configure(null);
     }
 
     /**
@@ -279,50 +292,49 @@ echo 1;',
      */
     public function testMisconfiguration($configuration, $exceptionMessage)
     {
-        $exceptionMatch = false;
-        try {
-            $this->fixer->configure($configuration);
-        } catch (InvalidFixerConfigurationException $e) {
-            $this->assertSame('[header_comment] '.$exceptionMessage, $e->getMessage());
-            $exceptionMatch = true;
-        }
+        $this->setExpectedException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '[header_comment] '.$exceptionMessage
+        );
 
-        $this->assertTrue($exceptionMatch, sprintf('Expected InvalidFixerConfigurationException with message \"%s\" was not thrown.', $exceptionMessage));
+        $this->fixer->configure($configuration);
     }
 
     public function provideMisconfiguration()
     {
         return array(
-            array(null, 'Configuration is required.'),
-            array(array(), 'Configuration is required.'),
-            array(array('header' => 1), 'Header configuration is invalid. Expected "string", got "integer".'),
+            array(array(), 'Missing required configuration: The required option "header" is missing.'),
+            array(
+                array('header' => 1),
+                'Invalid configuration: The option "header" with value 1 is expected to be of type "string", but is of type "integer".',
+            ),
             array(
                 array(
                     'header' => '',
                     'commentType' => 'foo',
                 ),
-                'Header type configuration is invalid, expected "PHPDoc" or "comment", got "\'foo\'".',
+                'Invalid configuration: The option "commentType" with value "foo" is invalid. Accepted values are: "PHPDoc", "comment".',
             ),
             array(
                 array(
                     'header' => '',
                     'commentType' => new \stdClass(),
                 ),
-                'Header type configuration is invalid, expected "PHPDoc" or "comment", got "stdClass".',
+                'Invalid configuration: The option "commentType" with value stdClass is invalid. Accepted values are: "PHPDoc", "comment".',
             ),
             array(
                 array(
                     'header' => '',
                     'location' => new \stdClass(),
                 ),
-                'Header location configuration is invalid, expected "after_open" or "after_declare_strict", got "stdClass".',
+                'Invalid configuration: The option "location" with value stdClass is invalid. Accepted values are: "after_open", "after_declare_strict".',
             ),
             array(
                 array(
                     'header' => '',
                     'separate' => new \stdClass(),
                 ),
-                'Header separate configuration is invalid, expected "both", "top", "bottom" or "none", got "stdClass".',
+                'Invalid configuration: The option "separate" with value stdClass is invalid. Accepted values are: "both", "top", "bottom", "none".',
             ),
         );
     }
@@ -336,9 +348,14 @@ echo 1;',
      */
     public function testHeaderGeneration($expected, $header, $type)
     {
-        $method = new \ReflectionMethod($this->fixer, 'encloseTextInComment');
-        $method->setAccessible(true);
-        $this->assertSame($expected, $method->invoke($this->fixer, $header, $type));
+        $property = new \ReflectionProperty($this->fixer, 'configuration');
+        $property->setAccessible(true);
+        $this->fixer->configure(array(
+            'header' => $header,
+            'commentType' => $type,
+        ));
+        $configuration = $property->getValue($this->fixer);
+        $this->assertSame($expected, $configuration['header']);
     }
 
     public function provideHeaderGenerationCases()
@@ -349,14 +366,14 @@ echo 1;',
  * a
  */',
                 'a',
-                HeaderCommentFixer::HEADER_COMMENT,
+                'comment',
             ),
             array(
                 '/**
  * a
  */',
                 'a',
-                HeaderCommentFixer::HEADER_PHPDOC,
+                'PHPDoc',
             ),
         );
     }
@@ -477,6 +494,37 @@ declare(strict_types=1)?>',
                 "<?php\r\ndeclare(strict_types=1);\r\n/**\r\n * whitemess\r\n */\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
                 "<?php\r\ndeclare(strict_types=1);\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
             ),
+        );
+    }
+
+    public function testConfigurationUpdatedWithWhitespsacesConfig()
+    {
+        $this->fixer->configure(array('header' => 'Foo'));
+        
+        $this->doTest(
+            "<?php\n\n/*\n * Foo\n */\n\necho 1;",
+            "<?php\necho 1;"
+        );
+
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('    ', "\r\n"));
+
+        $this->doTest(
+            "<?php\r\n\r\n/*\r\n * Foo\r\n */\r\n\r\necho 1;",
+            "<?php\r\necho 1;"
+        );
+
+        $this->fixer->configure(array('header' => 'Bar'));
+
+        $this->doTest(
+            "<?php\r\n\r\n/*\r\n * Bar\r\n */\r\n\r\necho 1;",
+            "<?php\r\necho 1;"
+        );
+
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('    ', "\n"));
+
+        $this->doTest(
+            "<?php\n\n/*\n * Bar\n */\n\necho 1;",
+            "<?php\necho 1;"
         );
     }
 }

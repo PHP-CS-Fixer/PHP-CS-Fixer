@@ -24,11 +24,16 @@ use PhpCsFixer\Console\Command\FixCommand;
 class InvalidFixerConfigurationException extends InvalidConfigurationException
 {
     /**
-     * @param string $fixerName
-     * @param string $message
+     * @param string          $fixerName
+     * @param string          $message
+     * @param \Exception|null $previous
      */
-    public function __construct($fixerName, $message)
+    public function __construct($fixerName, $message, \Exception $previous = null)
     {
-        parent::__construct(sprintf('[%s] %s', $fixerName, $message), FixCommand::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG);
+        parent::__construct(
+            sprintf('[%s] %s', $fixerName, $message),
+            FixCommand::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG,
+            $previous
+        );
     }
 }

@@ -13,9 +13,10 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -30,41 +31,27 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author SpacePossum
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class SingleClassElementPerStatementFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
+final class SingleClassElementPerStatementFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
-    /**
-     * Default target/configuration.
-     *
-     * @var string[]
-     */
-    private static $defaultConfiguration = array(
-        'const',
-        'property',
-    );
-
-    /**
-     * @var string[]
-     */
-    private $configuration;
-
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function getConfigurationDefinition()
     {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
+        $configurationDefinition = new FixerConfigurationResolver();
 
-            return;
-        }
+        $values = array('const', 'property');
 
-        foreach ($configuration as $name) {
-            if (!in_array($name, self::$defaultConfiguration, true)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration option "%s". Expected any of "%s".', $name, implode('", "', self::$defaultConfiguration)));
-            }
-        }
+        $elements = new FixerOption('elements', 'List of strings which element should be modified.');
+        $elements
+            ->setDefault($values)
+            ->setAllowedValueIsSubsetOf($values)
+        ;
 
-        $this->configuration = $configuration;
+        return $configurationDefinition
+            ->addOption($elements)
+            ->mapRootConfigurationTo('elements')
+        ;
     }
 
     /**
@@ -76,7 +63,7 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
         $elements = array_reverse($analyzer->getClassyElements(), true);
 
         foreach ($elements as $index => $element) {
-            if (!in_array($element['type'], $this->configuration, true)) {
+            if (!in_array($element['type'], $this->configuration['elements'], true)) {
                 continue; // not in configuration
             }
 
@@ -117,12 +104,9 @@ final class Example
     private static $bar1 = array(1,2,3), $bar2 = [1,2,3];
 }
 ',
-                    array('property')
+                    array('elements' => array('property'))
                 ),
-            ),
-            null,
-            'List of strings which element should be modified, possible values: `const`, `property`.',
-            self::$defaultConfiguration
+            )
         );
     }
 

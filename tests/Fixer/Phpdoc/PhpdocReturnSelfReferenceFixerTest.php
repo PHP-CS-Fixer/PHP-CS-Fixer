@@ -22,19 +22,32 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected      PHP code
-     * @param string|null $input         PHP code
-     * @param array|null  $configuration
+     * @param string      $expected PHP code
+     * @param string|null $input    PHP code
      *
-     * @dataProvider provideTestCases
+     * @group legacy
+     * @dataProvider provideDefaultConfigurationTestCases
+     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
      */
-    public function testFix($expected, $input = null, array $configuration = null)
+    public function testLegacyFixWithDefaultConfiguration($expected, $input = null)
     {
-        $this->fixer->configure($configuration);
+        $this->fixer->configure(null);
         $this->doTest($expected, $input);
     }
 
-    public function provideTestCases()
+    /**
+     * @param string      $expected PHP code
+     * @param string|null $input    PHP code
+     *
+     * @dataProvider provideDefaultConfigurationTestCases
+     */
+    public function testFixWithDefaultConfiguration($expected, $input = null)
+    {
+        $this->fixer->configure(array());
+        $this->doTest($expected, $input);
+    }
+
+    public function provideDefaultConfigurationTestCases()
     {
         return array(
             array(
@@ -46,15 +59,49 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
                 '<?php interface B{/** @return $SELF|int */function test();}',
             ),
             array(
-                '<?php interface C{/** @return $self|int */function test();}',
-                null,
-                array('$static' => 'static'),
-            ),
-            array(
                 '<?php class D {} /** @return {@this} */ require_once($a);echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;',
             ),
             array(
                 '<?php /** @return this */ require_once($a);echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1; class E {}',
+            ),
+        );
+    }
+
+    /**
+     * @param string      $expected      PHP code
+     * @param string|null $input         PHP code
+     * @param array       $configuration
+     *
+     * @group legacy
+     * @dataProvider provideTestCases
+     * @expectedDeprecation Passing "replacements" at the root of the configuration is deprecated and will not be supported in 3.0, use "replacements" => array(...) option instead.
+     */
+    public function testLegacyFix($expected, $input = null, array $configuration = array())
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected      PHP code
+     * @param string|null $input         PHP code
+     * @param array       $configuration
+     *
+     * @dataProvider provideTestCases
+     */
+    public function testFix($expected, $input = null, array $configuration = array())
+    {
+        $this->fixer->configure(array('replacements' => $configuration));
+        $this->doTest($expected, $input);
+    }
+
+    public function provideTestCases()
+    {
+        return array(
+            array(
+                '<?php interface C{/** @return $self|int */function test();}',
+                null,
+                array('$static' => 'static'),
             ),
         );
     }
@@ -67,7 +114,7 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
      */
     public function testGeneratedFix($expected, $input)
     {
-        $config = array($input => $expected);
+        $config = array('replacements' => array($input => $expected));
         $this->fixer->configure($config);
 
         $expected = sprintf('<?php
@@ -146,14 +193,14 @@ class F
     {
         return array(
             array(
-                array(1 => 'a'),
-                'Unknown key "integer#1", expected any of "this", "@this", "$self", "@self", "$static", "@static".',
+                array('replacements' => array(1 => 'a')),
+                'Invalid configuration: Unknown key "integer#1", expected any of "this", "@this", "$self", "@self", "$static", "@static".',
             ),
             array(
-                array(
+                array('replacements' => array(
                     'this' => 'foo',
-                ),
-                'Unknown value "string#foo", expected any of "$this", "static", "self".',
+                )),
+                'Invalid configuration: Unknown value "string#foo", expected any of "$this", "static", "self".',
             ),
         );
     }

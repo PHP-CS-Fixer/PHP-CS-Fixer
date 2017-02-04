@@ -13,8 +13,9 @@
 namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -24,10 +25,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  * @author SpacePossum
  */
-final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
-     * @deprecated will not be publicly available on 3.0
+     * @deprecated will be removed in 3.0
      */
     public static $defaultConfig = array('use' => 'echo');
 
@@ -46,18 +47,33 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
      */
     public function configure(array $configuration = null)
     {
-        if (null === $configuration) {
-            $configuration = self::$defaultConfig;
-        } else {
-            if (1 !== count($configuration) || !array_key_exists('use', $configuration) || !in_array($configuration['use'], array('print', 'echo'), true)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf(
-                    'Expected array of element "use" with value "echo" or "print", got "%s".',
-                    var_export($configuration, true)
-                ));
-            }
-        }
+        parent::configure($configuration);
 
-        $this->resolveConfig($configuration);
+        if ('echo' === $this->configuration['use']) {
+            $this->candidateTokenType = T_PRINT;
+            $this->callBack = 'fixPrintToEcho';
+        } else {
+            $this->candidateTokenType = T_ECHO;
+            $this->callBack = 'fixEchoToPrint';
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationDefinition()
+    {
+        $configurationDefinition = new FixerConfigurationResolver();
+
+        $use = new FixerOption('use', 'The desired language construct.');
+        $use
+            ->setAllowedValues(array('print', 'echo'))
+            ->setDefault('echo')
+        ;
+
+        return $configurationDefinition
+            ->addOption($use)
+        ;
     }
 
     /**
@@ -83,10 +99,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
             array(
                 new CodeSample('<?php print \'example\';'),
                 new CodeSample('<?php echo(\'example\');', array('use' => 'print')),
-            ),
-            null,
-            "The fixer can be configured to change `print` to `echo` `['use' => 'echo']` or `echo` to `print` `['use' => 'print']`.",
-            self::$defaultConfig
+            )
         );
     }
 
@@ -162,16 +175,5 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
         }
 
         $tokens->overrideAt($index, array(T_ECHO, 'echo'));
-    }
-
-    private function resolveConfig(array $configuration)
-    {
-        if ('echo' === $configuration['use']) {
-            $this->candidateTokenType = T_PRINT;
-            $this->callBack = 'fixPrintToEcho';
-        } else {
-            $this->candidateTokenType = T_ECHO;
-            $this->callBack = 'fixEchoToPrint';
-        }
     }
 }

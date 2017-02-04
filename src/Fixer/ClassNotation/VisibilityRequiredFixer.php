@@ -13,8 +13,9 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
@@ -22,6 +23,8 @@ use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Options;
 
 /**
  * Fixer for rules defined in PSR2 ¶4.3, ¶4.5.
@@ -29,44 +32,32 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class VisibilityRequiredFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class VisibilityRequiredFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    private static $options = array('property', 'method', 'const');
-    private static $defaultConfiguration = array('property', 'method');
-    private $configuration;
-
     /**
-     * Any of the class elements 'property', 'method' or 'const' can be configured.
-     *
-     * Note: the 'const' configuration is only valid when running on PHP >= 7.1
-     * Use 'null' for default configuration ('property', 'method').
-     *
-     * @param string[]|null $configuration
+     * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function getConfigurationDefinition()
     {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
+        $configurationDefinition = new FixerConfigurationResolver();
 
-            return;
-        }
+        $elements = new FixerOption('elements', 'The structural elements to fix (PHP >= 7.1 required for `const`).');
+        $elements
+            ->setAllowedValueIsSubsetOf(array('property', 'method', 'const'))
+            ->setNormalizer(function (Options $options, $value) {
+                if (PHP_VERSION_ID < 70100 && in_array('const', $value, true)) {
+                    throw new InvalidOptionsException('"const" option can only be enabled with PHP 7.1+.');
+                }
 
-        $this->configuration = array();
-        foreach ($configuration as $item) {
-            if (!is_string($item)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected string got "%s".', is_object($item) ? get_class($item) : gettype($item)));
-            }
+                return $value;
+            })
+            ->setDefault(array('property', 'method'))
+        ;
 
-            if (!in_array($item, self::$options, true)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration item "%s", expected any of "%s".', $item, implode('", "', self::$options)));
-            }
-
-            if ('const' === $item && PHP_VERSION_ID < 70100) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Invalid configuration item "%s" for PHP "%s".', $item, phpversion()));
-            }
-
-            $this->configuration[] = $item;
-        }
+        return $configurationDefinition
+            ->addOption($elements)
+            ->mapRootConfigurationTo('elements')
+        ;
     }
 
     /**
@@ -78,7 +69,7 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurabl
         $elements = $tokensAnalyzer->getClassyElements();
 
         foreach (array_reverse($elements, true) as $index => $element) {
-            if (!in_array($element['type'], $this->configuration, true)) {
+            if (!in_array($element['type'], $this->configuration['elements'], true)) {
                 continue;
             }
 
@@ -128,12 +119,9 @@ class Sample
 }
 ',
                     new VersionSpecification(70100),
-                    array('const')
+                    array('elements' => array('const'))
                 ),
-            ),
-            null,
-            'The following type of properties can be configured to fix `property`, `method` and `const`. For `const` PHP >= 7.1 is required.',
-            array('property', 'method')
+            )
         );
     }
 
