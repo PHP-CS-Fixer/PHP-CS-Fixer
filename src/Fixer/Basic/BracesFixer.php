@@ -121,7 +121,7 @@ class Foo
     }
 }
 ',
-                    array('classy_constructs' => self::SAME_LINE)
+                    array('position_after_functions_and_oop_constructs' => self::SAME_LINE)
                 ),
             )
         );
@@ -156,8 +156,8 @@ class Foo
             ->getOption()
         ;
 
-        $classyConstructs = new FixerOptionBuilder('classy_constructs', 'whether the opening brace should be placed on "next" or "same" line after classy constructs (non-anonymous classes, interfaces, traits, methods and non-lambda functions).');
-        $classyConstructs = $classyConstructs
+        $positionAfterFunctionsAndOopConstructs = new FixerOptionBuilder('position_after_functions_and_oop_constructs', 'whether the opening brace should be placed on "next" or "same" line after classy constructs (non-anonymous classes, interfaces, traits, methods and non-lambda functions).');
+        $positionAfterFunctionsAndOopConstructs = $positionAfterFunctionsAndOopConstructs
             ->setAllowedValues(array(self::NEXT_LINE, self::SAME_LINE))
             ->setDefault(self::NEXT_LINE)
             ->getOption()
@@ -165,7 +165,7 @@ class Foo
 
         return new FixerConfigurationResolver(array(
             $allowSingleLineClosure,
-            $classyConstructs,
+            $positionAfterFunctionsAndOopConstructs,
         ));
     }
 
@@ -428,9 +428,9 @@ class Foo
             }
 
             if ($token->isGivenKind($classyTokens) && !$tokensAnalyzer->isAnonymousClass($index)) {
-                if ($this->configuration['classy_constructs'] === self::NEXT_LINE) {
+                if ($this->configuration['position_after_functions_and_oop_constructs'] === self::NEXT_LINE) {
                     $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
-                } elseif ($this->configuration['classy_constructs'] === self::SAME_LINE) {
+                } elseif ($this->configuration['position_after_functions_and_oop_constructs'] === self::SAME_LINE) {
                     $ensuredWhitespace = ' ';
                 }
 
@@ -447,9 +447,9 @@ class Foo
                         $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
                     }
                 } else {
-                    if ($this->configuration['classy_constructs'] === self::NEXT_LINE) {
+                    if ($this->configuration['position_after_functions_and_oop_constructs'] === self::NEXT_LINE) {
                         $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
-                    } elseif ($this->configuration['classy_constructs'] === self::SAME_LINE) {
+                    } elseif ($this->configuration['position_after_functions_and_oop_constructs'] === self::SAME_LINE) {
                         $ensuredWhitespace = ' ';
                     }
 

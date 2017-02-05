@@ -29,7 +29,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
             '#^\[braces\] Position of the opening brace is invalid\. Should be one of: "next", "same"\.$#'
         );
 
-        $this->fixer->configure(array('classy_constructs' => 'neither'));
+        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'neither'));
     }
 
     /**
@@ -205,7 +205,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
      */
     public function testFixControlContinuationBracesClassyConstructsSame($expected, $input = null)
     {
-        $this->fixer->configure(array('classy_constructs' => 'same'));
+        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -1080,7 +1080,7 @@ class Foo
      */
     public function testFixMissingBracesAndIndentClassyConstructsSame($expected, $input = null)
     {
-        $this->fixer->configure(array('classy_constructs' => 'same'));
+        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -1891,7 +1891,7 @@ function foo()
      */
     public function testFixClassyBracesClassyConstructsSame($expected, $input = null)
     {
-        $this->fixer->configure(array('classy_constructs' => 'same'));
+        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -2001,7 +2001,7 @@ function foo()
      */
     public function testFixClassyBraces54ClassyConstructsSame($expected, $input = null)
     {
-        $this->fixer->configure(array('classy_constructs' => 'same'));
+        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -2078,7 +2078,7 @@ function foo()
      */
     public function testFixAnonFunctionInShortArraySyntax54ClassyConstructsSame($expected, $input = null)
     {
-        $this->fixer->configure(array('classy_constructs' => 'same'));
+        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -2138,7 +2138,7 @@ function foo()
      */
     public function testFixCommentBeforeBraceClassyConstructsSame($expected, $input = null)
     {
-        $this->fixer->configure(array('classy_constructs' => 'same'));
+        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -2192,7 +2192,7 @@ function foo()
      */
     public function testFixCommentBeforeBrace70ClassyConstructsSame($expected, $input = null)
     {
-        $this->fixer->configure(array('classy_constructs' => 'same'));
+        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -2232,7 +2232,7 @@ function foo()
      */
     public function testFixWhitespaceBeforeBraceClassyConstructsSame($expected, $input = null)
     {
-        $this->fixer->configure(array('classy_constructs' => 'same'));
+        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -2470,7 +2470,7 @@ class Foo
      */
     public function testFixFunctionsClassyConstructsSame($expected, $input = null)
     {
-        $this->fixer->configure(array('classy_constructs' => 'same'));
+        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -2637,7 +2637,7 @@ class Foo
      */
     public function testFixSpaceAroundTokenClassyConstructsSame($expected, $input = null)
     {
-        $this->fixer->configure(array('classy_constructs' => 'same'));
+        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -2753,7 +2753,7 @@ declare   (   ticks   =   1   )   {
      */
     public function test55ClassyConstructsSame($expected, $input = null)
     {
-        $this->fixer->configure(array('classy_constructs' => 'same'));
+        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -2808,7 +2808,7 @@ declare   (   ticks   =   1   )   {
      */
     public function test56ClassyConstructsSame($expected, $input = null)
     {
-        $this->fixer->configure(array('classy_constructs' => 'same'));
+        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -2998,7 +2998,7 @@ use const some\a\{ConstA, ConstB, ConstC};
      */
     public function test70ClassyConstructsSame($expected, $input = null)
     {
-        $this->fixer->configure(array('classy_constructs' => 'same'));
+        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -3164,7 +3164,7 @@ use const some\a\{ConstA, ConstB, ConstC};
      */
     public function testPreserveLineAfterControlBraceClassyConstructsSame($expected, $input = null)
     {
-        $this->fixer->configure(array('classy_constructs' => 'same'));
+        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -3294,7 +3294,7 @@ if (true) {
      */
     public function testMessyWhitespacesClassyConstructsSame($expected, $input = null)
     {
-        $this->fixer->configure(array('classy_constructs' => 'same'));
+        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
