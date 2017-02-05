@@ -298,7 +298,12 @@ $negative = function ($item) {
             if (!$startBraceToken->equals('{')) {
                 continue;
             }
-
+            
+            // if CLOSE_TAG is after brace`{`, do not indent
+            if ($tokens[$tokens->getNextNonWhitespace($startBraceIndex)]->getId() == T_CLOSE_TAG) {
+                continue;
+            }
+            
             $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startBraceIndex);
 
             $indent = $this->detectIndent($tokens, $index);
