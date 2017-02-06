@@ -123,7 +123,16 @@ $negative = function ($item) {
             ),
             null,
             'The `allow_single_line_closure` key could be set to `true` to allow for single line lambda notation.',
-            self::$defaultConfiguration
+            self::$defaultConfiguration,
+            null,
+            array(
+                'properties' => array(
+                    'allow_single_line_closure' => array(
+                        'type' => 'boolean',
+                    ),
+                ),
+                'additionalProperties' => false,
+            )
         );
     }
 
