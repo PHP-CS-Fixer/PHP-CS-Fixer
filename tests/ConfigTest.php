@@ -35,9 +35,14 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
             ),
             getcwd()
         );
-        $fixers = $configResolver->getFixers();
-        $this->assertInstanceOf(\PhpCsFixer\Fixer\CastNotation\CastSpacesFixer::class, $fixers[0]);
-        $this->assertInstanceOf(\PhpCsFixer\Fixer\Basic\BracesFixer::class, $fixers[1]);
+
+        $this->assertArraySubset(
+            array(
+                'cast_spaces' => true,
+                'braces' => true,
+            ),
+            $configResolver->getRules()
+        );
     }
 
     public function testConfigRulesUsingJsonMethod()
@@ -49,13 +54,22 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
             ),
             getcwd()
         );
-        $fixers = $configResolver->getFixers();
-        $this->assertInstanceOf(\PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer::class, $fixers[0]);
-        $this->assertInstanceOf(\PhpCsFixer\Fixer\CastNotation\CastSpacesFixer::class, $fixers[1]);
+
+        $this->assertArraySubset(
+            array(
+                'array_syntax' => array(
+                    'syntax' => 'short',
+                ),
+                'cast_spaces' => true,
+            ),
+            $configResolver->getRules()
+        );
     }
 
     public function testConfigRulesUsingInvalidJson()
     {
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
+
         $config = new Config();
         $configResolver = new ConfigurationResolver(
             $config, array(
@@ -63,8 +77,7 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
             ),
             getcwd()
         );
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
-        $configResolver->getFixers();
+        $configResolver->getRules();
     }
 
     public function testCustomConfig()
