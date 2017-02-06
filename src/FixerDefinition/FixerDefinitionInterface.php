@@ -48,4 +48,11 @@ interface FixerDefinitionInterface
      * @return CodeSampleInterface[]
      */
     public function getCodeSamples();
+
+    /**
+     * Configuration Schema (null for non-configurable fixer, false if not implemented)
+     *
+     *  @return array|null|false
+     */
+    public function getConfigurationSchema();
 }
