@@ -28,22 +28,50 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
 {
     public function testConfigRulesUsingJson()
     {
+        // tests separated by comma
         $config = new Config();
         $configResolver = new ConfigurationResolver(
-            $config, [
-                'rules' => 'cast_spaces'
-            ],
+            $config, array(
+                'rules' => 'cast_spaces,braces',
+            ),
             getcwd()
         );
-        $this->assertInstanceOf(\PhpCsFixer\Fixer\CastNotation\CastSpacesFixer::class, $configResolver->getFixers()[0]);
+        $fixers = $configResolver->getFixers();
+        $this->assertInstanceOf(\PhpCsFixer\Fixer\CastNotation\CastSpacesFixer::class, $fixers[0]);
+        $this->assertInstanceOf(\PhpCsFixer\Fixer\Basic\BracesFixer::class, $fixers[1]);
+
+        // tests valid json
+        $configResolver = new ConfigurationResolver(
+            $config, array(
+                'rules' => '{"array_syntax": {"syntax": "short"}, "cast_spaces": true}',
+            ),
+            getcwd()
+        );
+        $fixers = $configResolver->getFixers();
+        $this->assertInstanceOf(\PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer::class, $fixers[0]);
+        $this->assertInstanceOf(\PhpCsFixer\Fixer\CastNotation\CastSpacesFixer::class, $fixers[1]);
+
+        // tests invalid json
+        $configResolver = new ConfigurationResolver(
+            $config, array(
+                'rules' => '"blah blah"',
+            ),
+            getcwd()
+        );
+        try {
+            $fixers = $configResolver->getFixers();
+        } catch (\Exception $e) {
+            $this->assertSame($e->getMessage(), 'The rules contain unknown fixers ("blah blah").');
+        }
 
         $configResolver = new ConfigurationResolver(
-            $config, [
-                'rules' => '{"array_syntax": {"syntax": "short"}, "cast_spaces": true}'
-            ],
+            $config, array(
+                'rules' => '["hello", "abc"]',
+            ),
             getcwd()
         );
-        $this->assertInstanceOf(\PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer::class, $configResolver->getFixers()[0]);
+        $this->expectException(\InvalidArgumentException::class);
+        $fixers = $configResolver->getFixers();
     }
 
     public function testCustomConfig()
