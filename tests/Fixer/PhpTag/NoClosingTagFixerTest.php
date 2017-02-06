@@ -108,6 +108,14 @@ if (true) {
     echo "Here I am!";
 }?>',
             ),
+            'Trailing linebreak, priority issue with SingleBlankLineAtEofFixer.' => array(
+                '<?php echo 1;',
+                "<?php echo 1;\n?>\n",
+            ),
+            'Trailing comment.' => array(
+                '<?php echo 1;// test',
+                "<?php echo 1;// test\n?>",
+            ),
         );
     }
 
