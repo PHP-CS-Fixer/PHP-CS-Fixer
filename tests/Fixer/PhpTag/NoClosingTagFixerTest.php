@@ -116,10 +116,6 @@ if (true) {
                 '<?php echo 1;// test',
                 "<?php echo 1;// test\n?>",
             ),
-            array(
-                "<?php echo 1;\n#1",
-                "<?php echo 1;\n#1\n?>\n",
-            ),
         );
     }
 
