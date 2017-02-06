@@ -22,6 +22,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  */
 final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
 {
+    const CONFIGURATION_CLOSURE_SPACING_NONE = array('closure_function_spacing' => 'none');
+
     public function testInvalidConfigurationClosureFunctionSpacing()
     {
         $this->setExpectedExceptionRegExp(
@@ -35,11 +37,16 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provideCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null, $configuration = null)
     {
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -164,89 +171,90 @@ function foo() /* bar */
 {              /* baz */
 }',
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideClosureFunctionSpacingNoneCases
-     */
-    public function testFixClosureFunctionSpacingNone($expected, $input = null)
-    {
-        $this->fixer->configure(array('closure_function_spacing' => 'none'));
-        $this->doTest($expected, $input);
-    }
-
-    public function provideClosureFunctionSpacingNoneCases()
-    {
-        return array(
             array(
                 // non-PHP test
                 'function foo () {}',
+                null,
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php function foo() {}',
                 '<?php function	foo() {}',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php function foo() {}',
                 '<?php function foo () {}',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php function foo() {}',
                 '<?php function foo	() {}',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php function foo() {}',
                 '<?php function
 foo () {}',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php function($i) {};',
+                null,
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php function _function() {}',
                 '<?php function _function () {}',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php function foo($a, $b = true) {}',
                 '<?php function foo($a, $b = true){}',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php function foo($a, $b = true) {}',
                 '<?php function foo($a, $b = true)    {}',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php function foo($a)
 {}',
+                null,
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php function($a) use ($b) {};',
                 '<?php function ($a) use ($b)     {};',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php $foo = function($foo) use ($bar, $baz) {};',
                 '<?php $foo = function ($foo) use($bar, $baz) {};',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php $foo = function($foo) use ($bar, $baz) {};',
                 '<?php $foo = function ($foo)use ($bar, $baz) {};',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php $foo = function($foo) use ($bar, $baz) {};',
                 '<?php $foo = function ($foo)use($bar, $baz) {};',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php function &foo($a) {}',
                 '<?php function &foo( $a ) {}',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php function foo($a)
 	{}',
                 '<?php function foo( $a)
 	{}',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php
@@ -255,29 +263,38 @@ foo () {}',
         $b,
         $c
     ) {}',
+                null,
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php $function = function() {};',
                 '<?php $function = function (){};',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php $function("");',
+                null,
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php function($a) use ($b) {};',
                 '<?php function ($a)use($b) {};',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php function($a) use ($b) {};',
                 '<?php function ($a)         use      ($b) {};',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php function($a) use ($b) {};',
                 '<?php function ($a) use ( $b ) {};',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php function&($a) use ($b) {};',
                 '<?php function &(  $a   ) use (   $b      ) {};',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php
@@ -285,6 +302,8 @@ foo () {}',
     {
         public function setConfig(ConfigInterface $config);
     }',
+                null,
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             // do not remove multiline space before { when end of previous line is a comment
             array(
@@ -292,12 +311,16 @@ foo () {}',
 function foo() // bar
 {              // baz
 }',
+                null,
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
             array(
                 '<?php
 function foo() /* bar */
 {              /* baz */
 }',
+                null,
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
         );
     }
@@ -305,12 +328,17 @@ function foo() /* bar */
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provide54Cases
      * @requires PHP 5.4
      */
-    public function test54($expected, $input = null)
+    public function test54($expected, $input = null, $configuration = null)
     {
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -329,25 +357,6 @@ function foo() /* bar */
                     };
                 ',
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provide54ClosureFunctionSpacingNoneCases
-     * @requires PHP 5.4
-     */
-    public function test54ClosureFunctionSpacingNone($expected, $input = null)
-    {
-        $this->fixer->configure(array('closure_function_spacing' => 'none'));
-        $this->doTest($expected, $input);
-    }
-
-    public function provide54ClosureFunctionSpacingNoneCases()
-    {
-        return array(
             array(
                 '<?php
                     $b = static function($a) {
@@ -359,6 +368,7 @@ function foo() /* bar */
                         echo $a;
                     };
                 ',
+                self::CONFIGURATION_CLOSURE_SPACING_NONE,
             ),
         );
     }
@@ -366,12 +376,17 @@ function foo() /* bar */
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provide70Cases
      * @requires PHP 7.0
      */
-    public function test70($expected, $input = null)
+    public function test70($expected, $input = null, $configuration = null)
     {
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -381,19 +396,9 @@ function foo() /* bar */
             array('<?php use function Foo\bar; bar ( 1 );'),
             array('<?php use function some\test\{fn_a, fn_b, fn_c};'),
             array('<?php use function some\test\{fn_a, fn_b, fn_c} ?>'),
+            array('<?php use function Foo\bar; bar ( 1 );', null, self::CONFIGURATION_CLOSURE_SPACING_NONE),
+            array('<?php use function some\test\{fn_a, fn_b, fn_c};', null, self::CONFIGURATION_CLOSURE_SPACING_NONE),
+            array('<?php use function some\test\{fn_a, fn_b, fn_c} ?>', null, self::CONFIGURATION_CLOSURE_SPACING_NONE),
         );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provide70Cases
-     * @requires PHP 7.0
-     */
-    public function test70ClosureFunctionSpacingNone($expected, $input = null)
-    {
-        $this->fixer->configure(array('closure_function_spacing' => 'none'));
-        $this->doTest($expected, $input);
     }
 }
