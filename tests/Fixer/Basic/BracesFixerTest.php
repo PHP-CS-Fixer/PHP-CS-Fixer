@@ -22,6 +22,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class BracesFixerTest extends AbstractFixerTestCase
 {
+    private static $configurationOopPositionSameLine = array('position_after_functions_and_oop_constructs' => 'same');
+
     public function testInvalidConfigurationClassyConstructs()
     {
         $this->setExpectedExceptionRegExp(
@@ -35,11 +37,16 @@ final class BracesFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provideFixControlContinuationBracesCases
      */
-    public function testFixControlContinuationBraces($expected, $input = null)
+    public function testFixControlContinuationBraces($expected, $input = null, $configuration = null)
     {
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -194,30 +201,14 @@ final class BracesFixerTest extends AbstractFixerTestCase
                     }
                 ',
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixControlContinuationBracesClassyConstructsSameCases
-     */
-    public function testFixControlContinuationBracesClassyConstructsSame($expected, $input = null)
-    {
-        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixControlContinuationBracesClassyConstructsSameCases()
-    {
-        return array(
             array(
                 '<?php
     $a = function() {
         $a = 1;
         while (false);
     };',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -225,6 +216,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
         $a = 1;
         for ($i=0;$i<5;++$i);
     };',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -247,6 +240,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
             $a = 1;
         }
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -262,6 +256,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     else {
         $b = 2;
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -281,6 +276,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     catch (\Exception $e) {
         // do nothing
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -296,6 +292,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     {
         echo 2;
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -313,6 +310,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     {
         echo 2;
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -334,6 +332,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         ){
         }
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -344,6 +343,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
         self::${$type}[$rule] = $pattern + self::${$type}["rules"];
     }
                 ',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -352,6 +353,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
             $a = 1;
         } while (true);
     }',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -359,6 +362,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     }',
                 '<?php
     if /* 1 */ (2) {}',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -367,6 +371,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
                         echo $collection->items{1}->property;
                     }
                 ',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
         );
     }
@@ -374,11 +380,16 @@ final class BracesFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provideFixMissingBracesAndIndentCases
      */
-    public function testFixMissingBracesAndIndent($expected, $input = null)
+    public function testFixMissingBracesAndIndent($expected, $input = null, $configuration = null)
     {
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -1069,39 +1080,27 @@ class Foo
         {}
     }',
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixMissingBracesAndIndentClassyConstructsSameCases
-     */
-    public function testFixMissingBracesAndIndentClassyConstructsSame($expected, $input = null)
-    {
-        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixMissingBracesAndIndentClassyConstructsSameCases()
-    {
-        return array(
             array(
                 '<?php
 if (true):
     $foo = 0;
 endif;',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
 if (true)  :
     $foo = 0;
 endif;',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
     if (true) : $foo = 1; endif;',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1110,6 +1109,7 @@ if (true) {
 }',
                 '<?php
 if (true)$foo = 1;',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1118,6 +1118,7 @@ if (true) {
 }',
                 '<?php
 if (true)    $foo = 2;',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1126,6 +1127,7 @@ if (true) {
 }',
                 '<?php
 if (true){$foo = 3;}',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1136,6 +1138,7 @@ if (true) {
 }',
                 '<?php
 if(true) { echo 1; } else echo 2;',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1146,6 +1149,7 @@ if (true) {
 }',
                 '<?php
 if(true) echo 3; else { echo 4; }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1156,6 +1160,7 @@ if (true) {
 }',
                 '<?php
 if (true) echo 5; else echo 6;',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1167,6 +1172,7 @@ if (true) {
 }',
                 '<?php
 if (true) while (true) { $foo = 1; $bar = 2;}',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1181,6 +1187,7 @@ if (true) {
 }',
                 '<?php
 if (true) if (true) echo 1; else echo 2; else echo 3;',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1197,6 +1204,7 @@ if (true) {
 
     if ($a && ($b || $c)) $d = 1;
 }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1209,6 +1217,7 @@ for ($i = 1; $i < 10; ++$i) {
                 '<?php
 for ($i = 1; $i < 10; ++$i) echo $i;
 for ($i = 1; $i < 10; ++$i) { echo $i; }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1219,6 +1228,7 @@ for ($i = 1; $i < 5; ++$i) {
 }',
                 '<?php
 for ($i = 1; $i < 5; ++$i) for ($i = 1; $i < 10; ++$i) { echo $i; }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1227,10 +1237,13 @@ do {
 } while (false);',
                 '<?php
 do { echo 1; } while (false);',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
 while ($foo->next());',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1239,6 +1252,7 @@ foreach ($foo as $bar) {
 }',
                 '<?php
 foreach ($foo as $bar) echo $bar;',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1247,6 +1261,7 @@ if (true) {
 }',
                 '<?php
 if (true) {$a = 1;}',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1257,6 +1272,7 @@ if (true) {
 if (true) {
  $a = 1;
 }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1277,6 +1293,7 @@ if (true) {
                         }
         $d = 4;
 }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1286,6 +1303,8 @@ if (true) {
 
     $b = 2;
 }',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1294,6 +1313,8 @@ if (1) {
 
     // comment at end
 }',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1308,6 +1329,8 @@ if (1) {
     }
     $d = "d";
 }',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1317,6 +1340,8 @@ foreach ($numbers as $num) {
     }
     $b = "b";
 }',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1329,6 +1354,8 @@ if (1) {
         }
     }
 }',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1340,6 +1367,7 @@ if (1) {
     ticks = 1  ) {
   $ticks = 1;
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1356,6 +1384,7 @@ if (1) {
     {
         bar();
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1367,6 +1396,7 @@ if (1) {
     {
         foo();
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1379,6 +1409,7 @@ if (1) {
         echo $test;
     }
     while ($test = $this->getTest());',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1390,6 +1421,7 @@ if (1) {
     {
         echo $test;
     }while ($test = $this->getTest());',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1417,6 +1449,7 @@ if (1) {
 
 
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1427,6 +1460,8 @@ if (1) {
             // do nothing
         }
     }',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1438,6 +1473,7 @@ if (1) {
     {
         public function setConfig(ConfigInterface $config);
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1449,6 +1485,7 @@ function bar()
 {
     $a = 1; //comment
 }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1464,6 +1501,7 @@ function & lambda()
     return function () {
     };
 }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1475,6 +1513,7 @@ function nested()
 {
     $a = "a{$b->c()}d";
 }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1496,6 +1535,7 @@ function foo()
     $p = array($q->{$r}, $s->{$t});
     $u->{$v}->w = 1;
 }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1507,6 +1547,7 @@ function mixed()
 {
     $a = $b->{"a{$c}d"}();
 }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1518,6 +1559,7 @@ function mixedComplex()
 {
     $a = $b->{"a{$c->{\'foo-bar\'}()}d"}();
 }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1529,6 +1571,7 @@ function mixedComplex()
 {
     $a = ${"b{$foo}"}->{"a{$c->{\'foo-bar\'}()}d"}();
 }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1538,12 +1581,16 @@ function mixedComplex()
         echo 2;
     endif;
 ',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
     if ($test) { //foo
         echo 1;
     }',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1566,6 +1613,7 @@ function mixedComplex()
             print("bar");
         }
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1587,12 +1635,14 @@ function mixedComplex()
             print("bar");
         }
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php if (true) {
     echo "s";
 } ?>x',
                 '<?php if (true) echo "s" ?>x',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1622,6 +1672,7 @@ function mixedComplex()
                 });
         }
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1644,6 +1695,7 @@ if(true)
     else
         echo 3;
 ',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1668,6 +1720,7 @@ if(true)
         echo 3;
 echo 4;
 ',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1682,6 +1735,7 @@ if (true) {
 }',
                 '<?php
 if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1696,6 +1750,7 @@ if (true) {
 }',
                 '<?php
 if(true) if(true) echo 1; else echo 2; else echo 3;',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1711,6 +1766,7 @@ foreach ($data as $val)
     if ($val === "errors") {
         echo "!";
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1729,6 +1785,7 @@ if (1)
         if ($val === "errors") {
             echo "!";
         }',
+                self::$configurationOopPositionSameLine,
             ),
 
             array(
@@ -1746,6 +1803,7 @@ if (1)
         echo "Hello";
       }
     }',
+                self::$configurationOopPositionSameLine,
             ),
 
             array(
@@ -1763,6 +1821,7 @@ class Foo
     echo "Hello";
   }
 }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1776,6 +1835,7 @@ class Foo
                 public $bar;
                 public $baz;
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1787,6 +1847,7 @@ class Foo
     {
         return \Foo::{$foo}($bar);
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1804,6 +1865,7 @@ class Foo
         //comment
         {}
     }',
+                self::$configurationOopPositionSameLine,
             ),
         );
     }
@@ -1811,11 +1873,16 @@ class Foo
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provideFixClassyBracesCases
      */
-    public function testFixClassyBraces($expected, $input = null)
+    public function testFixClassyBraces($expected, $input = null, $configuration = null)
     {
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -1880,30 +1947,13 @@ function foo()
     return "$c ($d)";
 }',
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixClassyBracesClassyConstructsSameCases
-     */
-    public function testFixClassyBracesClassyConstructsSame($expected, $input = null)
-    {
-        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixClassyBracesClassyConstructsSameCases()
-    {
-        return array(
             array(
                 '<?php
                     class FooA {
                     }',
                 '<?php
                     class FooA {}',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1911,6 +1961,7 @@ function foo()
                     }',
                 '<?php
                     class FooB{}',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1919,6 +1970,7 @@ function foo()
                 '<?php
                     class FooC
 {}',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1926,6 +1978,7 @@ function foo()
                     }',
                 '<?php
                     interface FooD {}',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1934,6 +1987,7 @@ function foo()
                 }',
                 '<?php
                 class TestClass extends BaseTestClass implements TestInterface { private $foo;}',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1950,6 +2004,7 @@ abstract class Foo
         return true;
     }
 }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -1961,6 +2016,7 @@ function foo()
 {
     return "$c ($d)";
 }',
+                self::$configurationOopPositionSameLine,
             ),
         );
     }
@@ -1968,12 +2024,17 @@ function foo()
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provideFixClassyBraces54Cases
      * @requires PHP 5.4
      */
-    public function testFixClassyBraces54($expected, $input = null)
+    public function testFixClassyBraces54($expected, $input = null, $configuration = null)
     {
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -1989,25 +2050,6 @@ function foo()
                 '<?php
     trait TFoo {public $a;}',
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixClassyBraces54ClassyConstructsSameCases
-     * @requires PHP 5.4
-     */
-    public function testFixClassyBraces54ClassyConstructsSame($expected, $input = null)
-    {
-        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixClassyBraces54ClassyConstructsSameCases()
-    {
-        return array(
             array(
                 '<?php
     trait TFoo {
@@ -2015,6 +2057,7 @@ function foo()
     }',
                 '<?php
     trait TFoo {public $a;}',
+                self::$configurationOopPositionSameLine,
             ),
         );
     }
@@ -2022,12 +2065,17 @@ function foo()
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provideFixAnonFunctionInShortArraySyntax54Cases
      * @requires PHP 5.4
      */
-    public function testFixAnonFunctionInShortArraySyntax54($expected, $input = null)
+    public function testFixAnonFunctionInShortArraySyntax54($expected, $input = null, $configuration = null)
     {
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -2066,25 +2114,6 @@ function foo()
         ];
     }',
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixAnonFunctionInShortArraySyntax54ClassyConstructsSameCases
-     * @requires PHP 5.4
-     */
-    public function testFixAnonFunctionInShortArraySyntax54ClassyConstructsSame($expected, $input = null)
-    {
-        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixAnonFunctionInShortArraySyntax54ClassyConstructsSameCases()
-    {
-        return array(
             array(
                 '<?php
     function myFunction() {
@@ -2115,6 +2144,7 @@ function foo()
             ],
         ];
     }',
+                self::$configurationOopPositionSameLine,
             ),
         );
     }
@@ -2122,23 +2152,16 @@ function foo()
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provideFixCommentBeforeBraceCases
      */
-    public function testFixCommentBeforeBrace($expected, $input = null)
+    public function testFixCommentBeforeBrace($expected, $input = null, $configuration = null)
     {
-        $this->doTest($expected, $input);
-    }
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixCommentBeforeBraceCases
-     */
-    public function testFixCommentBeforeBraceClassyConstructsSame($expected, $input = null)
-    {
-        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -2168,31 +2191,50 @@ function foo()
         echo 1;
     };',
             ),
+            array('<?php ', null, self::$configurationOopPositionSameLine),
+            array(
+                '<?php
+    if ($test) { // foo
+        echo 1;
+    }',
+                '<?php
+    if ($test) // foo
+    {
+        echo 1;
+    }',
+                null,
+                self::$configurationOopPositionSameLine,
+            ),
+            array(
+                '<?php
+    $foo = function ($x) use ($y) { // foo
+        echo 1;
+    };',
+                '<?php
+    $foo = function ($x) use ($y) // foo
+    {
+        echo 1;
+    };',
+                null,
+                self::$configurationOopPositionSameLine,
+            ),
         );
     }
 
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provideFixCommentBeforeBrace70Cases
      * @requires PHP 7.0
      */
-    public function testFixCommentBeforeBrace70($expected, $input = null)
+    public function testFixCommentBeforeBrace70($expected, $input = null, $configuration = null)
     {
-        $this->doTest($expected, $input);
-    }
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixCommentBeforeBrace70Cases
-     * @requires PHP 7.0
-     */
-    public function testFixCommentBeforeBrace70ClassyConstructsSame($expected, $input = null)
-    {
-        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -2210,29 +2252,34 @@ function foo()
         private $x;
     };',
             ),
+            array(
+                '<?php
+    $foo = new class ($a) extends Foo implements Bar { // foo
+        private $x;
+    };',
+                '<?php
+    $foo = new class ($a) extends Foo implements Bar // foo
+    {
+        private $x;
+    };',
+                self::$configurationOopPositionSameLine,
+            ),
         );
     }
 
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provideFixWhitespaceBeforeBraceCases
      */
-    public function testFixWhitespaceBeforeBrace($expected, $input = null)
+    public function testFixWhitespaceBeforeBrace($expected, $input = null, $configuration = null)
     {
-        $this->doTest($expected, $input);
-    }
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixWhitespaceBeforeBraceCases
-     */
-    public function testFixWhitespaceBeforeBraceClassyConstructsSame($expected, $input = null)
-    {
-        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -2302,17 +2349,90 @@ function foo()
             echo 4;
     }',
             ),
+            array(
+                '<?php
+    if (true) {
+        echo 1;
+    }',
+                '<?php
+    if (true)
+    {
+        echo 1;
+    }',
+                self::$configurationOopPositionSameLine,
+            ),
+            array(
+                '<?php
+    if (true) {
+        echo 1;
+    }',
+                '<?php
+    if (true){
+        echo 1;
+    }',
+                self::$configurationOopPositionSameLine,
+            ),
+            array(
+                '<?php
+    if (true) {
+        echo 1;
+    }',
+                '<?php
+    if (true)           {
+        echo 1;
+    }',
+                self::$configurationOopPositionSameLine,
+            ),
+            array(
+                '<?php
+    while ($file = $this->getFile()) {
+    }',
+                '<?php
+    while ($file = $this->getFile())
+    {
+    }',
+                self::$configurationOopPositionSameLine,
+            ),
+            array(
+                '<?php
+    switch (n) {
+        case label1:
+            echo 1;
+            echo 2;
+            break;
+        default:
+            echo 3;
+            echo 4;
+    }',
+                '<?php
+    switch (n)
+    {
+        case label1:
+            echo 1;
+            echo 2;
+            break;
+        default:
+            echo 3;
+            echo 4;
+    }',
+                self::$configurationOopPositionSameLine,
+            ),
         );
     }
 
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provideFixFunctionsCases
      */
-    public function testFixFunctions($expected, $input = null)
+    public function testFixFunctions($expected, $input = null, $configuration = null)
     {
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -2459,28 +2579,12 @@ class Foo
         return 0;
     };',
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixFunctionsClassyConstructsSameCases
-     */
-    public function testFixFunctionsClassyConstructsSame($expected, $input = null)
-    {
-        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixFunctionsClassyConstructsSameCases()
-    {
-        return array(
             array(
                 '<?php
     function download() {
     }',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -2507,6 +2611,7 @@ class Foo
     {
     }
 }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -2514,6 +2619,8 @@ class Foo
         return true;
     });
 ',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -2522,6 +2629,7 @@ class Foo
                 '<?php
     filter(function   ($a)
     {});',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -2529,6 +2637,7 @@ class Foo
     });',
                 '<?php
     filter(function   ($b){});',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -2539,6 +2648,7 @@ class Foo
     }, $collection));',
                 '<?php
     foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -2555,12 +2665,15 @@ class Foo
         return 1;
     }
 }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
     usort($this->fixers, function &($a, $b) use ($selfName) {
         return 1;
     });',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -2570,6 +2683,8 @@ class Foo
             return 1;
         }
     );',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -2581,6 +2696,7 @@ class Foo
     {
         return 0;
     };',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -2592,6 +2708,7 @@ class Foo
     {
         return 0;
     };',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -2603,6 +2720,7 @@ class Foo
     {
         return 0;
     };',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -2614,6 +2732,7 @@ class Foo
     {
         return 0;
     };',
+                self::$configurationOopPositionSameLine,
             ),
         );
     }
@@ -2621,23 +2740,16 @@ class Foo
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provideFixSpaceAroundTokenCases
      */
-    public function testFixSpaceAroundToken($expected, $input = null)
+    public function testFixSpaceAroundToken($expected, $input = null, $configuration = null)
     {
-        $this->doTest($expected, $input);
-    }
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixSpaceAroundTokenCases
-     */
-    public function testFixSpaceAroundTokenClassyConstructsSame($expected, $input = null)
-    {
-        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -2729,31 +2841,117 @@ declare(ticks   =   1) {
 declare   (   ticks   =   1   )   {
 }',
             ),
+            array(
+                '<?php
+    try {
+        throw new Exception();
+    } catch (Exception $e) {
+        log($e);
+    }',
+                '<?php
+    try{
+        throw new Exception();
+    }catch (Exception $e){
+        log($e);
+    }',
+                self::$configurationOopPositionSameLine,
+            ),
+            array(
+                '<?php
+    do {
+        echo 1;
+    } while ($test);',
+                '<?php
+    do{
+        echo 1;
+    }while($test);',
+                self::$configurationOopPositionSameLine,
+            ),
+            array(
+                '<?php
+    if (true === true
+        && true === true
+    ) {
+    }',
+                '<?php
+    if(true === true
+        && true === true
+    )     {
+    }',
+                self::$configurationOopPositionSameLine,
+            ),
+            array(
+                '<?php
+    if (1) {
+    }
+    if ($this->tesT ($test)) {
+    }',
+                '<?php
+    if(1){
+    }
+    if ($this->tesT ($test)) {
+    }',
+                self::$configurationOopPositionSameLine,
+            ),
+            array(
+                '<?php
+    if (true) {
+    } elseif (false) {
+    } else {
+    }',
+                '<?php
+    if(true){
+    }elseif(false){
+    }else{
+    }',
+                self::$configurationOopPositionSameLine,
+            ),
+            array(
+                '<?php
+    $foo = function& () use ($bar) {
+    };',
+                '<?php
+    $foo = function& ()use($bar){};',
+                self::$configurationOopPositionSameLine,
+            ),
+            array(
+                '<?php
+
+// comment
+declare(strict_types=1);
+
+// comment
+while (true) {
+}',
+                null,
+                self::$configurationOopPositionSameLine,
+            ),
+            array(
+                '<?php
+declare(ticks   =   1) {
+}',
+                '<?php
+declare   (   ticks   =   1   )   {
+}',
+                self::$configurationOopPositionSameLine,
+            ),
         );
     }
 
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provide55Cases
      * @requires PHP 5.5
      */
-    public function test55($expected, $input = null)
+    public function test55($expected, $input = null, $configuration = null)
     {
-        $this->doTest($expected, $input);
-    }
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provide55Cases
-     * @requires PHP 5.5
-     */
-    public function test55ClassyConstructsSame($expected, $input = null)
-    {
-        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -2784,31 +2982,48 @@ declare   (   ticks   =   1   )   {
         echo "finish!";
     }',
             ),
+            array(
+                '<?php
+    try {
+        throw new \Exception();
+    } catch (\LogicException $e) {
+        // do nothing
+    } catch (\Exception $e) {
+        // do nothing
+    } finally {
+        echo "finish!";
+    }',
+                '<?php
+    try {
+        throw new \Exception();
+    }catch (\LogicException $e) {
+        // do nothing
+    }
+    catch (\Exception $e) {
+        // do nothing
+    }
+    finally     {
+        echo "finish!";
+    }',
+                self::$configurationOopPositionSameLine,
+            ),
         );
     }
 
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provide56Cases
      * @requires PHP 5.6
      */
-    public function test56($expected, $input = null)
+    public function test56($expected, $input = null, $configuration = null)
     {
-        $this->doTest($expected, $input);
-    }
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provide56Cases
-     * @requires PHP 5.6
-     */
-    public function test56ClassyConstructsSame($expected, $input = null)
-    {
-        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -2821,18 +3036,31 @@ declare   (   ticks   =   1   )   {
     if (true) {
     }',
             ),
+            array(
+                '<?php
+    use function Foo\bar;
+    if (true) {
+    }',
+                null,
+                self::$configurationOopPositionSameLine,
+            ),
         );
     }
 
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provide70Cases
      * @requires PHP 7.0
      */
-    public function test70($expected, $input = null)
+    public function test70($expected, $input = null, $configuration = null)
     {
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -2986,25 +3214,6 @@ use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
 ',
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provide70ClassyConstructsSameCases
-     * @requires PHP 7.0
-     */
-    public function test70ClassyConstructsSame($expected, $input = null)
-    {
-        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
-        $this->doTest($expected, $input);
-    }
-
-    public function provide70ClassyConstructsSameCases()
-    {
-        return array(
             array(
                 '<?php
     function foo($a) {
@@ -3020,6 +3229,7 @@ use const some\a\{ConstA, ConstB, ConstC};
         // foo
         $foo = new class($a) extends Foo { public function bar() {} };
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -3030,6 +3240,7 @@ use const some\a\{ConstA, ConstB, ConstC};
     }, 3);',
                 '<?php
     foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -3037,11 +3248,13 @@ $message = (new class() implements FooInterface {
 });',
                 '<?php
 $message = (new class() implements FooInterface{});',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php $message = (new class() {
 });',
                 '<?php $message = (new class() {});',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -3059,6 +3272,7 @@ if (1) {
     public function bar() { echo 1; }
   });
 }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -3080,6 +3294,7 @@ if (1) {
         }
     }
                 ',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -3108,6 +3323,7 @@ if (1) {
     function a() {
     }
                 ',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -3126,6 +3342,7 @@ if (1) {
             return function (int $foo) use ($bar): string { return $bar; };
         }
     }',
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -3134,6 +3351,8 @@ use function some\a\{
     test2
  };
 test();',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
             array(
                 '<?php
@@ -3141,6 +3360,8 @@ use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
 ',
+                null,
+                self::$configurationOopPositionSameLine,
             ),
         );
     }
@@ -3148,23 +3369,16 @@ use const some\a\{ConstA, ConstB, ConstC};
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider providePreserveLineAfterControlBrace
      */
-    public function testPreserveLineAfterControlBrace($expected, $input = null)
+    public function testPreserveLineAfterControlBrace($expected, $input = null, $configuration = null)
     {
-        $this->doTest($expected, $input);
-    }
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider providePreserveLineAfterControlBrace
-     */
-    public function testPreserveLineAfterControlBraceClassyConstructsSame($expected, $input = null)
-    {
-        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->doTest($expected, $input);
     }
 
@@ -3221,17 +3435,41 @@ if (true) {
             array(
                 "<?php if (true) {\r\n\r\n// CRLF newline\n}",
             ),
+            array(
+                '<?php
+if (true) {
+
+    //  The blank line helps with legibility in nested control structures
+    if (true) {
+        // if body
+    }
+
+    // if body
+}',
+                null,
+                self::$configurationOopPositionSameLine,
+            ),
+            array(
+                "<?php if (true) {\r\n\r\n// CRLF newline\n}",
+                null,
+                self::$configurationOopPositionSameLine,
+            ),
         );
     }
 
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provideFixWithAllowOnelineLambdaCases
      */
-    public function testFixWithAllowSingleLineClosure($expected, $input = null)
+    public function testFixWithAllowSingleLineClosure($expected, $input = null, $configuration = null)
     {
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->fixer->configure(array(
             'allow_single_line_closure' => true,
         ));
@@ -3276,25 +3514,16 @@ if (true) {
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces($expected, $input = null, $configuration = null)
     {
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        if (isset($configuration)) {
+            $this->fixer->configure($configuration);
+        }
 
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideMessyWhitespacesCases
-     */
-    public function testMessyWhitespacesClassyConstructsSame($expected, $input = null)
-    {
-        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'same'));
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
@@ -3316,6 +3545,21 @@ if (true) {'."\r\n"
 .'}',
                 '<?php
 if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
+            ),
+            array(
+                '<?php
+if (true) {'."\r\n"
+    ."\t".'if (true) {'."\r\n"
+        ."\t\t".'echo 1;'."\r\n"
+    ."\t".'} elseif (true) {'."\r\n"
+        ."\t\t".'echo 2;'."\r\n"
+    ."\t".'} else {'."\r\n"
+        ."\t\t".'echo 3;'."\r\n"
+    ."\t".'}'."\r\n"
+.'}',
+                '<?php
+if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
+                self::$configurationOopPositionSameLine,
             ),
         );
     }
