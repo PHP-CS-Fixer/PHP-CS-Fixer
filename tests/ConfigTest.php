@@ -51,26 +51,13 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer::class, $fixers[0]);
         $this->assertInstanceOf(\PhpCsFixer\Fixer\CastNotation\CastSpacesFixer::class, $fixers[1]);
 
-        // tests invalid json
         $configResolver = new ConfigurationResolver(
             $config, array(
-                'rules' => '"blah blah"',
+                'rules' => '{blah',
             ),
             getcwd()
         );
-        try {
-            $fixers = $configResolver->getFixers();
-        } catch (\Exception $e) {
-            $this->assertSame($e->getMessage(), 'The rules contain unknown fixers ("blah blah").');
-        }
-
-        $configResolver = new ConfigurationResolver(
-            $config, array(
-                'rules' => '["hello", "abc"]',
-            ),
-            getcwd()
-        );
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
         $fixers = $configResolver->getFixers();
     }
 
