@@ -84,6 +84,22 @@ echo \'Foo\';
             array(
                 'foo <?php  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
             ),
+            array(
+                '<?php
+$a = <<<           "TEST"
+<?Php <?
+TEST;?>
+TEST;
+
+?>
+<?php $a = <<<           \'TEST\'
+<?PHP <?
+TEST;?>
+TEST;
+
+?>
+',
+            ),
         );
     }
 
