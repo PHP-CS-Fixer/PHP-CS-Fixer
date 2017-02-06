@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -24,9 +26,57 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class FunctionDeclarationFixer extends AbstractFixer
+final class FunctionDeclarationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @internal
+     */
+    const SPACING_NONE = 'none';
+
+    /**
+     * @internal
+     */
+    const SPACING_ONE = 'one';
+
+    private $supportedSpacings = array(self::SPACING_NONE, self::SPACING_ONE);
+
     private $singleLineWhitespaceOptions = " \t";
+
+    /**
+     * @var array
+     */
+    private static $defaultConfiguration = array(
+        'closure_function_spacing' => self::SPACING_ONE,
+    );
+
+    /**
+     * @param array|null $configuration
+     *
+     * @throws InvalidFixerConfigurationException
+     */
+    public function configure(array $configuration = null)
+    {
+        if (null === $configuration) {
+            $this->configuration = self::$defaultConfiguration;
+
+            return;
+        }
+
+        foreach ($configuration as $key => $value) {
+            if (!array_key_exists($key, self::$defaultConfiguration)) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('"%s" is not handled by the fixer.', $key));
+            }
+
+            if ('closure_function_spacing' === $key && !in_array($value, $this->supportedSpacings, true)) {
+                throw new InvalidFixerConfigurationException(
+                    $this->getName(),
+                    sprintf('Spacing is invalid. Should be one of: "%s".', implode('", "', $this->supportedSpacings))
+                );
+            }
+        }
+
+        $this->configuration = array_merge(self::$defaultConfiguration, $configuration);
+    }
 
     /**
      * {@inheritdoc}
@@ -99,9 +149,17 @@ final class FunctionDeclarationFixer extends AbstractFixer
                 $tokens[$startParenthesisIndex - 1]->clear();
             }
 
-            // fix whitespace after T_FUNCTION
-            // eg: `function     foo() {}` => `function foo() {}`
-            $tokens->ensureWhitespaceAtIndex($index + 1, 0, ' ');
+            if ($isLambda && self::SPACING_NONE === $this->configuration['closure_function_spacing']) {
+                // optionally remove whitespace after T_FUNCTION of a closure
+                // eg: `function () {}` => `function() {}`
+                if ($tokens[$index + 1]->isWhitespace()) {
+                    $tokens[$index + 1]->clear();
+                }
+            } else {
+                // otherwise, enforce whitespace after T_FUNCTION
+                // eg: `function     foo() {}` => `function foo() {}`
+                $tokens->ensureWhitespaceAtIndex($index + 1, 0, ' ');
+            }
 
             if ($isLambda) {
                 $prev = $tokens->getPrevMeaningfulToken($index);
@@ -143,7 +201,16 @@ class Foo
 }
 '
                 ),
-            )
+                new CodeSample(
+'<?php
+$f = function () {};
+',
+                    array('closure_function_spacing' => self::SPACING_NONE)
+                ),
+            ),
+            null,
+            'The `closure_function_spacing` key configures whether there should be a space character after the `function` keyword of an anonymous function; it can be either "none" or "one".',
+            self::$defaultConfiguration
         );
     }
 

@@ -269,6 +269,7 @@ Choose from the list of available rules:
 
 * **function_declaration** [@PSR2, @Symfony]
    | Spaces should be properly placed in a function declaration.
+   | *Rule is: configurable.*
 
 * **function_typehint_space** [@Symfony]
    | Add missing space between function's argument and its typehint.
