@@ -588,10 +588,15 @@ final class ConfigurationResolver
             return $this->getConfig()->getRules();
         }
 
-        $jsonRules = json_decode($this->options['rules'], true);
+        $rules = trim($this->options['rules']);
 
-        if (is_array($jsonRules)) {
-            return $jsonRules;
+        if (in_array($rules[0], array('[', '{', '"', "'"), true)) {
+            $rules = json_decode($rules, true);
+            if (!is_array($rules)) {
+                throw new InvalidConfigurationException('Invalid rules input.');
+            }
+
+            return $rules;
         }
 
         $rules = array();
