@@ -1067,6 +1067,7 @@ class Tokens extends \SplFixedArray
             return false;
         }
 
+        $HHVM = defined('HHVM_VERSION');
         for ($index = 1; $index < $size; ++$index) {
             if (
                 $this[$index]->isGivenKind(array(T_INLINE_HTML, T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO))
@@ -1077,8 +1078,7 @@ class Tokens extends \SplFixedArray
                      * @see https://github.com/facebook/hhvm/issues/4809
                      * @see https://github.com/facebook/hhvm/issues/7161
                      */
-                    defined('HHVM_VERSION')
-                    && $this[$index]->equals(array(T_ECHO, '<?='))
+                    $HHVM && $this[$index]->equals(array(T_ECHO, '<?='))
                 )
             ) {
                 return false;
