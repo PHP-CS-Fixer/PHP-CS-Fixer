@@ -26,9 +26,8 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  */
 final class ConfigTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConfigRulesUsingJson()
+    public function testConfigRulesUsingSeparateMethod()
     {
-        // tests separated by comma
         $config = new Config();
         $configResolver = new ConfigurationResolver(
             $config, array(
@@ -39,8 +38,11 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
         $fixers = $configResolver->getFixers();
         $this->assertInstanceOf(\PhpCsFixer\Fixer\CastNotation\CastSpacesFixer::class, $fixers[0]);
         $this->assertInstanceOf(\PhpCsFixer\Fixer\Basic\BracesFixer::class, $fixers[1]);
+    }
 
-        // tests valid json
+    public function testConfigRulesUsingJsonMethod()
+    {
+        $config = new Config();
         $configResolver = new ConfigurationResolver(
             $config, array(
                 'rules' => '{"array_syntax": {"syntax": "short"}, "cast_spaces": true}',
@@ -50,7 +52,11 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
         $fixers = $configResolver->getFixers();
         $this->assertInstanceOf(\PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer::class, $fixers[0]);
         $this->assertInstanceOf(\PhpCsFixer\Fixer\CastNotation\CastSpacesFixer::class, $fixers[1]);
+    }
 
+    public function testConfigRulesUsingInvalidJson()
+    {
+        $config = new Config();
         $configResolver = new ConfigurationResolver(
             $config, array(
                 'rules' => '{blah',
@@ -58,7 +64,7 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
             getcwd()
         );
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
-        $fixers = $configResolver->getFixers();
+        $configResolver->getFixers();
     }
 
     public function testCustomConfig()
