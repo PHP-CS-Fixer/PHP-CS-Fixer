@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Config;
 use PhpCsFixer\Console\Command\FixCommand;
+use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\FixerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,6 +26,26 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  */
 final class ConfigTest extends \PHPUnit_Framework_TestCase
 {
+    public function testConfigRulesUsingJson()
+    {
+        $config = new Config();
+        $configResolver = new ConfigurationResolver(
+            $config, [
+                'rules' => 'cast_spaces'
+            ],
+            getcwd()
+        );
+        $this->assertInstanceOf(\PhpCsFixer\Fixer\CastNotation\CastSpacesFixer::class, $configResolver->getFixers()[0]);
+
+        $configResolver = new ConfigurationResolver(
+            $config, [
+                'rules' => '{"array_syntax": {"syntax": "short"}, "cast_spaces": true}'
+            ],
+            getcwd()
+        );
+        $this->assertInstanceOf(\PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer::class, $configResolver->getFixers()[0]);
+    }
+
     public function testCustomConfig()
     {
         $customConfigFile = __DIR__.'/Fixtures/.php_cs_custom.php';
