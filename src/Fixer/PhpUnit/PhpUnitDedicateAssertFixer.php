@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -144,18 +146,39 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getDefinition()
     {
-        // should be run after the PhpUnitConstructFixer.
-        return -15;
+        return new FixerDefinition(
+            'PHPUnit assertions like "assertInternalType", "assertFileExists", should be used over "assertTrue".',
+            array(
+                new CodeSample(
+                    '<?php
+$this->assertTrue(is_float( $a), "my message");
+$this->assertTrue(is_nan($a));
+'
+                ),
+                new CodeSample(
+                    '<?php
+$this->assertTrue(is_float( $a), "my message");
+$this->assertTrue(is_nan($a));
+',
+                    array('is_nan')
+                ),
+            ),
+            null,
+            'List of strings which methods should be modified.',
+            self::$defaultConfiguration,
+            'Fixer could be risky if one is overwritting PHPUnit\'s native methods.'
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getPriority()
     {
-        return 'PHPUnit assertions like "assertInternalType", "assertFileExists", should be used over "assertTrue".';
+        // should be run after the PhpUnitConstructFixer.
+        return -15;
     }
 
     /**

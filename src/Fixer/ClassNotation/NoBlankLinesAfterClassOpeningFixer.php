@@ -14,6 +14,8 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -53,9 +55,24 @@ final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer implements 
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'There should be no empty lines after class opening brace.';
+        return new FixerDefinition(
+            'There should be no empty lines after class opening brace.',
+            array(
+                new CodeSample(
+                    '<?php
+final class Sample
+{
+
+    protected function foo()
+    {
+    }
+}
+'
+                ),
+            )
+        );
     }
 
     /**

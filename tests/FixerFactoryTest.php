@@ -13,9 +13,7 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\FixerDefinition\ShortFixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
@@ -385,10 +383,6 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertRegExp('/^[A-Z@].*\.$/', $definition->getSummary(), sprintf('[%s] Description must start with capital letter or an @ and end with dot.', $fixer->getName()));
 
-        if ($definition instanceof ShortFixerDefinition) {
-            $this->markTestIncomplete(sprintf('[%s] ShortFixerDefinition does not contains all needed information.', $fixer->getName()));
-        }
-
         $samples = $definition->getCodeSamples();
         $this->assertNotEmpty($samples, sprintf('[%s] Code samples are required.', $fixer->getName()));
 
@@ -455,29 +449,11 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * This method is a guard to not introduce new Fixer using `ShortFixerDefinition`.
-     *
-     * Will be removed with `ShortFixerDefinition` removal.
+     * @dataProvider provideFixerDefinitionsCases
      */
-    public function testShortFixerDefinition()
+    public function testFixersAreDefined(FixerInterface $fixer)
     {
-        $guard = 25;
-
-        $this->assertCount(
-            $guard,
-            array_filter(array_map(function (FixerInterface $fixer) {
-                return
-                    !$fixer instanceof DefinedFixerInterface
-                    || $fixer->getDefinition() instanceof ShortFixerDefinition
-                ;
-            }, $this->getAllFixers())),
-            implode("\n", array(
-                'Not valid amount of fixers using ShortFixerDefinition.',
-                'If this test is failing it means one of those scenario occurred:',
-                '- you introduced new Fixer using `ShortFixerDefinition`, you should use `FixerDefinition` instead,',
-                '- you update the Fixer to stop using `ShortFixerDefinition`, you should decrease the guard value.',
-            ))
-        );
+        $this->assertInstanceOf('PhpCsFixer\Fixer\DefinedFixerInterface', $fixer);
     }
 
     /**

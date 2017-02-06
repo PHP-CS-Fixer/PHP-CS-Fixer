@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\NamespaceNotation;
 
 use PhpCsFixer\AbstractLinesBeforeNamespaceFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -47,8 +49,15 @@ final class NoBlankLinesBeforeNamespaceFixer extends AbstractLinesBeforeNamespac
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'There should be no blank lines before a namespace declaration.';
+        return new FixerDefinition(
+            'There should be no blank lines before a namespace declaration.',
+            array(
+                new CodeSample(
+                    "<?php\n\n\n\nnamespace Example;"
+                ),
+            )
+        );
     }
 }

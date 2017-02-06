@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: short_array_syntax,ternary_operator_spaces.
+Integration of fixers: array_syntax,ternary_operator_spaces.
 --RULESET--
 {"array_syntax": {"syntax":"short"}, "ternary_operator_spaces":true}
 --REQUIREMENTS--

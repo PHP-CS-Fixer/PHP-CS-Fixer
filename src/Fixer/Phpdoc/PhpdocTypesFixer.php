@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractPhpdocTypesFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -48,6 +50,27 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
         '$this',
     );
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'The correct case must be used for standard PHP types in phpdoc.',
+            array(
+                new CodeSample(
+                    '<?php
+/**
+ * @param STRING|String[] $bar
+ *
+ * @return inT[]
+ */
+'
+                ),
+            )
+        );
+    }
+
     public function getPriority()
     {
         /*
@@ -59,14 +82,6 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
          * the phpdoc_scalar_fixer so that it can make changes after us.
          */
         return 16;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDescription()
-    {
-        return 'The correct case must be used for standard PHP types in phpdoc.';
     }
 
     /**

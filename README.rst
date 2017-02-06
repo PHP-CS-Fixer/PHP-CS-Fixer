@@ -124,6 +124,14 @@ problems as possible on a given file or files in a given directory and its subdi
     $ php php-cs-fixer.phar fix /path/to/dir
     $ php php-cs-fixer.phar fix /path/to/file
 
+By default ``--path-mode`` is set to ``override``, which means, that if you specify the path to a file or a directory via 
+command arguments, then the paths provided to a ``Finder`` in config file will be ignored. You can use ``--path-mode=intersection`` 
+to merge paths from the config file and from the argument:
+
+.. code-block:: bash
+
+    $ php php-cs-fixer.phar fix --path-mode=intersection /path/to/dir
+
 The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml`` and ``junit``.
 
 NOTE: When using ``junit`` format report generates in accordance with JUnit xml schema from Jenkins (see docs/junit-10.xsd).
@@ -207,7 +215,7 @@ Choose from the list of available rules:
    | *Rule is: configurable.*
 
 * **class_keyword_remove**
-   | Converts ::class keywords to FQCN strings. Requires PHP >= 5.5.
+   | Converts ``::class`` keywords to FQCN strings. Requires PHP >= 5.5.
 
 * **combine_consecutive_unsets**
    | Calling ``unset`` on multiple items should be done in one call.
@@ -240,8 +248,8 @@ Choose from the list of available rules:
    | *Rule is: risky.*
 
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
-   | PHP code must use the long <?php ?> tags or the short-echo <?= ?> tags;
-   | it must not use the other tag variations.
+   | PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
+   | other tag variations.
 
 * **function_declaration** [@PSR2, @Symfony]
    | Spaces should be properly placed in a function declaration.
@@ -357,20 +365,20 @@ Choose from the list of available rules:
    | *Rule is: configurable.*
 
 * **no_multiline_whitespace_around_double_arrow** [@Symfony]
-   | Operator => should not be surrounded by multi-line whitespaces.
+   | Operator ``=>`` should not be surrounded by multi-line whitespaces.
 
 * **no_multiline_whitespace_before_semicolons**
    | Multi-line whitespace before closing semicolon are prohibited.
 
 * **no_php4_constructor**
-   | Convert PHP4-style constructors to __construct.
+   | Convert PHP4-style constructors to ``__construct``.
    | *Rule is: risky.*
 
 * **no_short_bool_cast** [@Symfony]
    | Short cast ``bool`` using double exclamation mark should not be used.
 
 * **no_short_echo_tag**
-   | Replace short-echo <?= with long format <?php echo syntax.
+   | Replace short-echo ``<?=`` with long format ``<?php echo`` syntax.
 
 * **no_singleline_whitespace_before_semicolons** [@Symfony]
    | Single-line whitespace before closing semicolon are prohibited.
@@ -426,13 +434,15 @@ Choose from the list of available rules:
    | Array index should always be written by using square braces.
 
 * **not_operator_with_space**
-   | Logical NOT operators (!) should have leading and trailing whitespaces.
+   | Logical NOT operators (``!``) should have leading and trailing
+   | whitespaces.
 
 * **not_operator_with_successor_space**
-   | Logical NOT operators (!) should have one trailing whitespace.
+   | Logical NOT operators (``!``) should have one trailing whitespace.
 
 * **object_operator_without_whitespace** [@Symfony]
-   | There should not be space before or after object T_OBJECT_OPERATOR.
+   | There should not be space before or after object ``T_OBJECT_OPERATOR``
+   | ``->``.
 
 * **ordered_class_elements**
    | Orders the elements of classes/interfaces/traits.

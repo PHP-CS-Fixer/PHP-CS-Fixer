@@ -16,6 +16,8 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -117,8 +119,42 @@ final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurableF
     /**
      * {@inheritdoc}
      */
-    protected function getDescription()
+    public function getDefinition()
     {
-        return 'No alias PHPDoc tags should be used.';
+        return new FixerDefinition(
+            'No alias PHPDoc tags should be used.',
+            array(
+                new CodeSample(
+                    '<?php
+/**
+ * @property string $foo
+ * @property-read string $bar
+ *
+ * @link baz
+ */
+final class Example
+{
+}
+'
+                ),
+                new CodeSample(
+                    '<?php
+/**
+ * @property string $foo
+ * @property-read string $bar
+ *
+ * @link baz
+ */
+final class Example
+{
+}
+',
+                    array('link' => 'website')
+                ),
+            ),
+            null,
+            'Array that maps current annotations into new ones.',
+            self::$defaultConfiguration
+        );
     }
 }
