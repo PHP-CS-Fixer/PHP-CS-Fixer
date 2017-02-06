@@ -30,7 +30,7 @@ final class NoShortEchoTagFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $i = count($tokens);
-
+        $HHVM = defined('HHVM_VERSION');
         while ($i--) {
             $token = $tokens[$i];
 
@@ -43,8 +43,7 @@ final class NoShortEchoTagFixer extends AbstractFixer
                      * @see https://github.com/facebook/hhvm/issues/4809
                      * @see https://github.com/facebook/hhvm/issues/7161
                      */
-                    defined('HHVM_VERSION')
-                    && $token->equals(array(T_ECHO, '<?='))
+                    $HHVM && $token->equals(array(T_ECHO, '<?='))
                 )
             ) {
                 continue;
