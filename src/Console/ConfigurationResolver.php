@@ -593,8 +593,7 @@ final class ConfigurationResolver
         if ($rules[0] === '{') {
             $rules = json_decode($rules, true);
             if ($error = json_last_error()) {
-                $error = function_exists('json_last_error_msg') ? json_last_error_msg() : "Error $error";
-                throw new InvalidConfigurationException("Invalid JSON rules input: $error");
+                throw new InvalidConfigurationException("Invalid JSON rules input: Error $error");
             }
 
             return $rules;
