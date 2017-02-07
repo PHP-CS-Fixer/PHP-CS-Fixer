@@ -123,7 +123,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     public function testRegisterFixerWithOccupiedName()
     {
         $this->setExpectedException(
-                 'UnexpectedValueException',
+            'UnexpectedValueException',
             'Fixer named "non_unique_name" is already registered.'
         );
 
