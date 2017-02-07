@@ -151,7 +151,7 @@ implements Baz
 '<?php
 
 interface Bar extends
-    Bar, BarBaz, FooBarBaz
+    Bar, BarBaz, FooBarBaz  
 {}
 ',
                     array('multiLineExtendsEachSingleLine' => true)
