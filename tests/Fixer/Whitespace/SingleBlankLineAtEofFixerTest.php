@@ -36,9 +36,11 @@ final class SingleBlankLineAtEofFixerTest extends AbstractFixerTestCase
     public function provideCases()
     {
         return array(
-            array(
-                // test for not adding an empty line in empty file
+            'Not adding an empty line in empty file.' => array(
                 '',
+            ),
+            'Not adding an empty line in file with only white space.' => array(
+                '  ',
             ),
             array(
                 "<?php\n",
