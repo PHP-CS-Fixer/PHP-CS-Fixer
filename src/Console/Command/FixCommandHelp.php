@@ -40,8 +40,8 @@ problems as possible on a given file or files in a given directory and its subdi
     <info>$ php %command.full_name% /path/to/dir</info>
     <info>$ php %command.full_name% /path/to/file</info>
 
-By default <comment>--path-mode</comment> is set to ``override``, which means, that if you specify the path to a file or a directory via 
-command arguments, then the paths provided to a ``Finder`` in config file will be ignored. You can use <comment>--path-mode=intersection</comment> 
+By default <comment>--path-mode</comment> is set to ``override``, which means, that if you specify the path to a file or a directory via
+command arguments, then the paths provided to a ``Finder`` in config file will be ignored. You can use <comment>--path-mode=intersection</comment>
 to merge paths from the config file and from the argument:
 
     <info>$ php %command.full_name% --path-mode=intersection /path/to/dir</info>

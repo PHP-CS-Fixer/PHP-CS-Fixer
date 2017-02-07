@@ -182,7 +182,7 @@ switch ($foo) {
     case 41:
         echo "foo";
         break;
-        
+
     case 42:
         break;
 }',
@@ -231,7 +231,7 @@ $foo = array(
                 new CodeSample(
 '<?php
 
-function foo($bar) 
+function foo($bar)
 {
     return $bar;
 
@@ -252,7 +252,7 @@ $foo = [
                 new CodeSample(
 '<?php
 
-function foo($bar) 
+function foo($bar)
 {
     throw new \Exception("Hello!");
 
@@ -262,7 +262,7 @@ function foo($bar)
                 new CodeSample(
 '<?php
 
-function foo($bar) 
+function foo($bar)
 {
     throw new \Exception("Hello!");
 
@@ -286,10 +286,10 @@ class Bar
                 new CodeSample(
 '<?php
 
-class Foo 
+class Foo
 {
     use Bar;
-    
+
     use Baz;
 }',
                     array('useTrait')

@@ -124,8 +124,8 @@ problems as possible on a given file or files in a given directory and its subdi
     $ php php-cs-fixer.phar fix /path/to/dir
     $ php php-cs-fixer.phar fix /path/to/file
 
-By default ``--path-mode`` is set to ``override``, which means, that if you specify the path to a file or a directory via 
-command arguments, then the paths provided to a ``Finder`` in config file will be ignored. You can use ``--path-mode=intersection`` 
+By default ``--path-mode`` is set to ``override``, which means, that if you specify the path to a file or a directory via
+command arguments, then the paths provided to a ``Finder`` in config file will be ignored. You can use ``--path-mode=intersection``
 to merge paths from the config file and from the argument:
 
 .. code-block:: bash

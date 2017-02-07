@@ -244,7 +244,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                 class A
                 {
                     use T;
-                    
+
                     /** @inheritdoc */
                     public function importFromTrait()
                     {
@@ -264,7 +264,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                 class A
                 {
                     use T;
-                    
+
                     /** @inheritdoc */
                     public function importFromTrait()
                     {

@@ -135,8 +135,8 @@ class srand extends SrandClass{
                 array('rand' => 'random_int', 'mt_rand' => 'random_int'),
             ),
             array(
-                '<?php 
-                interface Test 
+                '<?php
+                interface Test
                 {
                     public function getrandmax();
                     public function &rand();
