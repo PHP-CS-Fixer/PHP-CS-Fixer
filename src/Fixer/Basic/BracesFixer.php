@@ -54,11 +54,11 @@ final class BracesFixer extends AbstractFixer implements WhitespacesAwareFixerIn
 class Foo {
     public function bar($baz) {
         if ($baz = 900) echo "Hello!";
-        
+
         if ($baz = 9000)
             echo "Wait!";
-            
-        if ($baz == true) 
+
+        if ($baz == true)
         {
             echo "Why?";
         }
@@ -66,8 +66,8 @@ class Foo {
         {
             echo "Ha?";
         }
-        
-        if (is_array($baz)) 
+
+        if (is_array($baz))
             foreach ($baz as $b)
             {
                 echo $b;

@@ -52,7 +52,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
 
 use Foo\Bar\Baz;
 
-$className = Baz::class; 
+$className = Baz::class;
 ',
                     new VersionSpecification(50500)
                 ),

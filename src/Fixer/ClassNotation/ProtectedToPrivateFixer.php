@@ -60,7 +60,7 @@ final class ProtectedToPrivateFixer extends AbstractFixer
 final class Sample
 {
     protected $a;
-    
+
     protected function test()
     {
     }

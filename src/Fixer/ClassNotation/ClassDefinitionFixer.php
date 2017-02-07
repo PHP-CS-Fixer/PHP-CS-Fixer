@@ -107,7 +107,7 @@ class  Foo  extends  Bar  implements  Baz,  BarBaz
                 new VersionSpecificCodeSample(
 '<?php
 
-trait  Foo  
+trait  Foo
 {
 }',
                     new VersionSpecification(50400)
@@ -130,8 +130,8 @@ $foo = new  class  extends  Bar  implements  Baz,  BarBaz {};
                 new CodeSample(
 '<?php
 
-class Foo 
-extends Bar 
+class Foo
+extends Bar
 implements Baz, BarBaz
 {}
 ',
@@ -140,8 +140,8 @@ implements Baz, BarBaz
                 new CodeSample(
 '<?php
 
-class Foo 
-extends Bar 
+class Foo
+extends Bar
 implements Baz
 {}
 ',
@@ -150,7 +150,7 @@ implements Baz
                 new CodeSample(
 '<?php
 
-interface Bar extends 
+interface Bar extends
     Bar, BarBaz, FooBarBaz
 {}
 ',
