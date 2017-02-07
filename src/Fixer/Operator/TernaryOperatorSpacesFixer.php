@@ -31,10 +31,6 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
         $ternaryLevel = 0;
 
         foreach ($tokens as $index => $token) {
-            if ($token->isArray()) {
-                continue;
-            }
-
             if ($token->equals('?')) {
                 ++$ternaryLevel;
 
@@ -110,7 +106,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
             return;
         }
 
-        $indexChange = $after ? 0 : 1;
-        $tokens->insertAt($index + $indexChange, new Token(array(T_WHITESPACE, ' ')));
+        $index += $after ? 0 : 1;
+        $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
     }
 }

@@ -37,7 +37,6 @@ final class ElseifFixer extends AbstractFixer
             }
 
             $ifTokenIndex = $tokens->getNextMeaningfulToken($index);
-            $beforeIfTokenIndex = $tokens->getPrevNonWhitespace($ifTokenIndex);
 
             // if next meaning token is not T_IF - continue searching, this is not the case for fixing
             if (!$tokens[$ifTokenIndex]->isGivenKind(T_IF)) {
@@ -53,6 +52,8 @@ final class ElseifFixer extends AbstractFixer
 
             // 3. clear succeeding T_IF
             $tokens[$ifTokenIndex]->clear();
+
+            $beforeIfTokenIndex = $tokens->getPrevNonWhitespace($ifTokenIndex);
 
             // 4. clear extra whitespace after T_IF in T_COMMENT,T_WHITESPACE?,T_IF,T_WHITESPACE sequence
             if ($tokens[$beforeIfTokenIndex]->isComment() && $tokens[$ifTokenIndex + 1]->isWhitespace()) {

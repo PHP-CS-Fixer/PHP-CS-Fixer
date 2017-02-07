@@ -75,6 +75,6 @@ if (!$bar) {
      */
     public function isCandidate(Tokens $tokens)
     {
-        return true;
+        return $tokens->isTokenKindFound('!');
     }
 }
