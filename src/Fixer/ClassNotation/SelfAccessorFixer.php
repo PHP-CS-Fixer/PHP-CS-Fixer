@@ -63,7 +63,7 @@ class Sample
 {
     const BAZ = 1;
     const BAR = Sample::BAZ;
-    
+
     public function getBar()
     {
         return Sample::BAR;
