@@ -68,7 +68,7 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function testConfigRulesUsingInvalidJson()
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidConfigurationException');
 
         $config = new Config();
         $configResolver = new ConfigurationResolver(
