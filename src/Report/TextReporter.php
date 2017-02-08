@@ -88,9 +88,9 @@ final class TextReporter implements ReporterInterface
     }
 
     /**
-     * @param float $time
-     * @param float $memory
-     * @param bool  $isDryRun
+     * @param int  $time
+     * @param int  $memory
+     * @param bool $isDryRun
      *
      * @return string
      */

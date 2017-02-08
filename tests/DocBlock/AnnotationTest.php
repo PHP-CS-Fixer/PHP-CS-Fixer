@@ -75,7 +75,7 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
     /**
      * This represents the tag type of each annotation.
      *
-     * @var int[]
+     * @var string[]
      */
     private static $tags = array('param', 'param', 'param', 'throws', 'return');
 

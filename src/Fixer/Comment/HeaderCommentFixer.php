@@ -42,7 +42,7 @@ final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixe
     /** @var string */
     private $headerComment;
 
-    /** @var int */
+    /** @var string */
     private $headerCommentType;
 
     /** @var int */
@@ -177,7 +177,7 @@ echo 1;
      * Enclose the given text in a comment block.
      *
      * @param string $header
-     * @param int    $type
+     * @param string $type
      *
      * @return string
      */
