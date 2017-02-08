@@ -20,7 +20,7 @@ namespace PhpCsFixer\FixerDefinition;
 interface FileSpecificCodeSampleInterface extends CodeSampleInterface
 {
     /**
-     * @return SplFileInfo
+     * @return \SplFileInfo
      */
     public function getSplFileInfo();
 }
