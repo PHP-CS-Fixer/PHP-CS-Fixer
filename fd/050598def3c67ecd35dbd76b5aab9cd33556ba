@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-02-05T01:35:00Z
+
+Probably best to target this at 2.1 since it's a feature?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-06T11:17:22Z
+
+please focus on code rather the target ;) (for most cases) I could easily change the target during merging.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-06T11:20:04Z
+
+:+1: but minors
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-06T11:20:50Z
+
+I see no feature here, just better DX with more verbose CLI self-documentation comments
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-06T13:46:01Z
+
+@SpacePossum , would you mind adding the same warning for path when not in intersect mode ?
