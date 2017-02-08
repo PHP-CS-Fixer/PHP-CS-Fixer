@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-08T15:12:06Z
+
+@fabpot, fabbot is still wrong about phpunit assertion :(
+previously repored here: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2466#issuecomment-277249672
+
+---------------------------------------------------------------------------
+
+by fabpot at 2017-02-08T15:19:01Z
+
+@keradus fixed, for real this time :) fabbot is green!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-08T15:33:31Z
+
+thanks @fabpot :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-08T15:44:21Z
+
+@fabpot thank you, hopefully ;)
