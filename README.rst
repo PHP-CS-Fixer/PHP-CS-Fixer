@@ -462,6 +462,9 @@ Choose from the list of available rules:
    | There should not be space before or after object ``T_OBJECT_OPERATOR``
    | ``->``.
 
+* **opening_tag_plus_echo_to_short_echo_tag**
+   | Replace ``<?php echo`` with short-echo ``<?=`` syntax.
+
 * **ordered_class_elements**
    | Orders the elements of classes/interfaces/traits.
    | *Rule is: configurable.*
