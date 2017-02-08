@@ -169,7 +169,7 @@ function baz($options)
                 new CodeSample(
 '<?php
 
-function baz($options) 
+function baz($options)
 {
     if (!array_key_exists("foo", $options)) {
         throw new \InvalidArgumentException();
