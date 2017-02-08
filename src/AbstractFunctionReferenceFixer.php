@@ -67,7 +67,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
         $matches = $tokens->findSequence($candidateSequence, $start, $end, false);
         if (null === $matches) {
             // not found, simply return without further attempts
-            return;
+            return null;
         }
 
         // translate results for humans

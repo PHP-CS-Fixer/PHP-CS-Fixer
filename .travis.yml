@@ -75,7 +75,7 @@ install:
 
 script:
     - if [ $TASK_SCA == 1 ]; then php php-cs-fixer fix --rules declare_strict_types,native_function_invocation -q; fi
-    - if [ $TASK_SCA == 1 ]; then files_with_trailing_spaces=`find . -type f -not -path "./.git/*" -not -path "./vendor/*" -not -path "./tests/Fixtures/*" -exec egrep -l " $" {} \;` && [[ $files_with_trailing_spaces ]] && echo $files_with_trailing_spaces && travis_terminate 1 || echo "No trailing spaces detected."; fi
+    - if [ $TASK_SCA == 1 ]; then files_with_trailing_spaces=`find . -type f -not -path "./.git/*" -not -path "./vendor/*" -not -path "./tests/Fixtures/*" -exec egrep -nH " $" {} \;` && [[ $files_with_trailing_spaces ]] && echo $files_with_trailing_spaces && travis_terminate 1 || echo "No trailing spaces detected."; fi
 
     - if [ $TASK_TESTS == 1 ] && [ $TASK_TESTS_COVERAGE == 0 ]; then vendor/bin/phpunit --verbose; fi
     - if [ $TASK_TESTS == 1 ] && [ $TASK_TESTS_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml; fi

@@ -204,7 +204,7 @@ $this->assertNotSame(null, $d);
         );
 
         if (null === $sequence) {
-            return;
+            return null;
         }
 
         $sequenceIndexes = array_keys($sequence);
@@ -212,14 +212,14 @@ $this->assertNotSame(null, $d);
         $firstParameterToken = $tokens[$sequenceIndexes[4]];
 
         if (!$firstParameterToken->isNativeConstant()) {
-            return;
+            return null;
         }
 
         $sequenceIndexes[5] = $tokens->getNextMeaningfulToken($sequenceIndexes[4]);
 
         // return if first method argument is an expression, not value
         if (!$tokens[$sequenceIndexes[5]]->equals(',')) {
-            return;
+            return null;
         }
 
         $tokens[$sequenceIndexes[2]]->setContent($map[$firstParameterToken->getContent()]);

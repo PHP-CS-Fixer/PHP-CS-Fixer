@@ -49,7 +49,7 @@ class Line
     /**
      * Get the content of this line.
      *
-     * @return int
+     * @return string
      */
     public function getContent()
     {
