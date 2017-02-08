@@ -1,0 +1,16 @@
+--TEST--
+Integration of fixers: declare_strict_types,declare_equal_normalize.
+--RULESET--
+{"declare_strict_types": true, "declare_equal_normalize": {"space":"single"}}
+--REQUIREMENTS--
+{"php": 70000}
+--EXPECT--
+<?php declare(strict_types = 1);
+class A {
+}
+
+--INPUT--
+<?php
+
+class A {
+}
