@@ -1,0 +1,61 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-01-27T19:51:41Z
+
+Should target 2.1 rather than 2.0?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-27T22:56:02Z
+
+>Should target 2.1 rather than 2.0?
+
+there is no 2.1 branch
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-01-28T00:14:44Z
+
+> there is no 2.1 branch
+
+The branch for which the version is 2.1, ie, master.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-01-28T00:14:57Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/composer.json#L48
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-28T09:32:15Z
+
+why not make 2.1 from 2.0 and use master for next major?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-01-28T23:55:44Z
+
+> why not make 2.1 from 2.0 and use master for next major?
+
+No point for now.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-29T09:32:39Z
+
+>No point for now.
+
+so no point for retarget, as master and 2.0 are the same
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-30T04:23:07Z
+
+`master` is `2.1@dev`, `2.0` is 2.0 bugfixes and docs line, retargetted, please resolve conflicts
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-30T07:11:36Z
+
+done, please :shipit:
