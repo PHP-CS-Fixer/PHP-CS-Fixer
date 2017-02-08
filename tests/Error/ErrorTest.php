@@ -27,7 +27,7 @@ final class ErrorTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorSetsValues()
     {
-        $type = 'foo';
+        $type = 123;
         $filePath = 'foo.php';
 
         $error = new Error(

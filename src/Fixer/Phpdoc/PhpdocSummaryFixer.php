@@ -95,7 +95,7 @@ function foo () {}
 
             // no short description was found
             if ($line->containsATag()) {
-                return;
+                return null;
             }
 
             // we've reached content, but need to check the next lines too

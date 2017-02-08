@@ -415,7 +415,10 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             $this->assertStringIsNotEmpty($definition->getConfigurationDescription(), sprintf('[%s] Configuration description is required.', $fixer->getName()));
             $default = $definition->getDefaultConfiguration();
             $this->assertInternalType('array', $default, sprintf('[%s] Default configuration must be an array.', $fixer->getName()));
-            $this->assertNotEmpty('array', $default, sprintf('[%s] Default configuration is required.', $fixer->getName()));
+
+            if (!in_array($fixer->getName(), array('general_phpdoc_annotation_remove', 'psr0'), true)) {
+                $this->assertNotEmpty($default, sprintf('[%s] Default configuration is required.', $fixer->getName()));
+            }
         } else {
             $this->assertNull($definition->getConfigurationDescription(), sprintf('[%s] No configuration description expected.', $fixer->getName()));
             $this->assertNull($definition->getDefaultConfiguration(), sprintf('[%s] No default configuration expected.', $fixer->getName()));
@@ -511,7 +514,6 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $fixer = $this->prophesize('PhpCsFixer\Fixer\FixerInterface');
         $fixer->getName()->willReturn($name);
         $fixer->getPriority()->willReturn($priority);
-        //$fixer->configure(Argument::is(null))->willReturn(null); Needed?
 
         return $fixer->reveal();
     }
