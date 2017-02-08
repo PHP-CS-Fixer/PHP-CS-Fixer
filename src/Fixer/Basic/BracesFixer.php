@@ -633,15 +633,17 @@ class Foo {
         $tokens->removeTrailingWhitespace($index);
 
         $startParenthesisIndex = $tokens->getNextTokenOfKind($index, array('('));
+        $tokens->removeTrailingWhitespace($startParenthesisIndex);
+
         $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
+        $tokens->removeLeadingWhitespace($endParenthesisIndex);
+
         $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, array(';', '{'));
         $startBraceToken = $tokens[$startBraceIndex];
 
         if ($startBraceToken->equals('{')) {
             $this->fixSingleLineWhitespaceForDeclare($tokens, $startBraceIndex);
         }
-
-        $this->removeWhitespaceInParenthesis($tokens, $startParenthesisIndex, $endParenthesisIndex);
     }
 
     /**
@@ -658,20 +660,6 @@ class Foo {
             $tokens[$startBraceIndex - 1]->isWhitespace(" \t")
         ) {
             $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
-        }
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $startParenthesisIndex
-     * @param int    $endParenthesisIndex
-     */
-    private function removeWhitespaceInParenthesis(Tokens $tokens, $startParenthesisIndex, $endParenthesisIndex)
-    {
-        for ($i = $startParenthesisIndex; $i < $endParenthesisIndex; ++$i) {
-            if ($tokens[$i]->isWhitespace()) {
-                $tokens[$i]->clear();
-            }
         }
     }
 }
