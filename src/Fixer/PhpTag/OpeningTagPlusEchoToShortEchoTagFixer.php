@@ -13,8 +13,9 @@
 namespace PhpCsFixer\Fixer\PhpTag;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -35,7 +36,7 @@ final class OpeningTagPlusEchoToShortEchoTagFixer extends AbstractFixer
 
             if ($token->isWhitespace()) {
                 continue;
-            } elseif ($token->isGivenKind(T_ECHO)) {
+            } elseif ($token->equals(array(T_ECHO, 'echo'))) {
                 $lastEcho = $i;
                 continue;
             } elseif (!$token->isGivenKind(T_OPEN_TAG)) {
@@ -59,7 +60,7 @@ final class OpeningTagPlusEchoToShortEchoTagFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Replace `<?php echo` with short-echo `<?=` syntax.',
-            array(new CodeSample('<?php echo "foo";'))
+            array(new VersionSpecificCodeSample('<?php echo "foo";', new VersionSpecification(50400)))
         );
     }
 
