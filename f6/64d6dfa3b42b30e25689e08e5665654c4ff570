@@ -1,0 +1,47 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-03T15:48:36Z
+
+Hi and thanks for the PR!
+Please provide a utest for some cases. For example I think if someone passes a string that is not valid json this will result in an exception/error being raised.
+
+---------------------------------------------------------------------------
+
+by ptcong at 2017-02-04T00:20:35Z
+
+When json_decode a string, it will returns null if failed, doesn't throw anything. So if user passes a string, it will run the code block under.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-05T21:11:40Z
+
+Hi. Still, utest is required
+
+---------------------------------------------------------------------------
+
+by ptcong at 2017-02-06T04:31:52Z
+
+I've just added test for this case.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-06T09:26:52Z
+
+(Please fix the tests by fixing the code style of the project itself.)
+
+I think it would be nice improvement to allow JSON (that decodes to `array`), or rules comma separated list of fixer names.
+This PR aims for that, however it would be nice to check if either one of two formats is used.
+Now if you pass invalid JSON (or valid but resolves to non-array) the user does not get an error message that makes sense, because the tool will try to explode the invalid JSON input. WDYT?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-07T07:07:01Z
+
+:+1: after travis will be fixed (one cannot use `::class` on lower PHP versions)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-07T07:17:51Z
+
+:+1:
+(after test is green)
