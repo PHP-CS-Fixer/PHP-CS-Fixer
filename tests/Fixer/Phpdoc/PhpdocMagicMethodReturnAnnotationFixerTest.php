@@ -222,7 +222,7 @@ class A
 
     /**
      */
-    public function __set(){}
+    public function __set($a, $b){}
 }
 ',
 '<?php
@@ -241,7 +241,7 @@ class A
     /**
      * @return A
      */
-    public function __set(){}
+    public function __set($a, $b){}
 }
 ',
             ),
