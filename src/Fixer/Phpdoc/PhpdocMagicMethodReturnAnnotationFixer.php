@@ -125,7 +125,15 @@ class Sample
      */
     public function getPriority()
     {
-        // FIXME must run before empty PHPDoc and maybe other requirements?
+        // FIXME add to fixer factory test
+        // must run after phpdoc_to_comment
+        // must run before no_empty_phpdoc
+        // should (for speed only) before phpdoc_align, phpdoc_annotation_without_dot, phpdoc_return_self_reference, phpdoc_scalar.
+
+        // FIXME check these ones
+        // must before before phpdoc_trim, phpdoc_order (this can be the other way around)
+        // no_trailing_whitespace_in_comment, phpdoc_separation, phpdoc_trim, phpdoc_types
+
         return 1;
     }
 
