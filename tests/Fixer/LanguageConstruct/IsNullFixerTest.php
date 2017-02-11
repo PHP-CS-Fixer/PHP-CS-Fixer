@@ -126,6 +126,9 @@ FIXED;
             array('<?php $x = null !== json_decode($x);', '<?php $x = ! is_null(json_decode($x));'),
             array('<?php $x = null !== json_decode($x);', '<?php $x = ! is_null( json_decode($x) );'),
 
+            array('<?php $x = null === json_decode($x);', '<?php $x = is_null(json_decode($x)) === true;'),
+            array('<?php $x = null !== json_decode($x);', '<?php $x = is_null(json_decode($x)) !== true;'),
+
             array('<?php $x = null === json_decode($x);', '<?php $x = \\is_null(json_decode($x));'),
             array('<?php $x = null !== json_decode($x);', '<?php $x = !\\is_null(json_decode($x));'),
             array('<?php $x = null !== json_decode($x);', '<?php $x = ! \\is_null(json_decode($x));'),
