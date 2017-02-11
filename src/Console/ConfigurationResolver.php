@@ -113,6 +113,7 @@ final class ConfigurationResolver
         'rules' => null,
         'diff' => null,
         'verbosity' => null,
+        'stop-on-violation' => null,
     );
 
     private $cacheFile;
@@ -469,6 +470,11 @@ final class ConfigurationResolver
         }
 
         return $this->isDryRun;
+    }
+
+    public function shouldStopOnViolation()
+    {
+        return $this->options['stop-on-violation'];
     }
 
     /**

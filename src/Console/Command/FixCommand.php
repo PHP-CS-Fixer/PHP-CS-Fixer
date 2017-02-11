@@ -102,6 +102,7 @@ final class FixCommand extends Command
                     new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file.'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
+                    new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
                 )
             )
             ->setDescription('Fixes a directory or a file.')
@@ -132,6 +133,7 @@ final class FixCommand extends Command
                 'cache-file' => $input->getOption('cache-file'),
                 'format' => $input->getOption('format'),
                 'diff' => $input->getOption('diff'),
+                'stop-on-violation' => $input->getOption('stop-on-violation'),
                 'verbosity' => $verbosity,
             ),
             getcwd()
@@ -177,7 +179,8 @@ final class FixCommand extends Command
             $resolver->getLinter(),
             $resolver->isDryRun(),
             $resolver->getCacheManager(),
-            $resolver->getDirectory()
+            $resolver->getDirectory(),
+            $resolver->shouldStopOnViolation()
         );
 
         $progressOutput = $showProgress && $stdErr

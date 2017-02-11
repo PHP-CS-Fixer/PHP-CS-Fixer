@@ -83,6 +83,8 @@ display a summary of proposed fixes, leaving your files unchanged.
 The <comment>--allow-risky</comment> option allows you to set whether risky rules may run. Default value is taken from config file.
 Risky rule is a rule, which could change code behaviour. By default no risky rules are run.
 
+The <comment>--stop-on-violation<comment> flag stops execution upon first file that needs to be fixed.
+
 The command can also read from standard input, in which case it won't
 automatically fix anything:
 
@@ -208,7 +210,7 @@ Require ``friendsofphp/php-cs-fixer`` as a ``dev`` dependency:
 Then, add the following command to your CI:
 
     $ IFS=\$'\\n'; COMMIT_SCA_FILES=($(git diff --name-only --diff-filter=ACMRTUXB "\${COMMIT_RANGE}")); unset IFS
-    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --using-cache=no --path-mode=intersection "\${COMMIT_SCA_FILES[@]}"
+    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no --path-mode=intersection "\${COMMIT_SCA_FILES[@]}"
 
 Where ``\$COMMIT_RANGE`` is your range of commits, eg ``\$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 

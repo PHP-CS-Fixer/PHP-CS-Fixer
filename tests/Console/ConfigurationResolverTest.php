@@ -915,7 +915,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
         $options = $definition->getOptions();
         $this->assertSame(
-            array('path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format'),
+            array('path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format', 'stop-on-violation'),
             array_keys($options),
             'Expected options mismatch, possibly test needs updating.'
         );
@@ -931,10 +931,12 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
                 'using-cache' => false,
                 'diff' => true,
                 'format' => 'json',
+                'stop-on-violation' => true,
             ),
             ''
         );
 
+        $this->assertTrue($resolver->shouldStopOnViolation());
         $this->assertTrue($resolver->getRiskyAllowed());
         $this->assertTrue($resolver->isDryRun());
         $this->assertSame(array('php_unit_construct' => true), $resolver->getRules());
