@@ -3,6 +3,26 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.1.0
+--------------------
+
+* feature #2124 Add TernaryToNullCoalescingFixer (Slamdunk, SpacePossum)
+* feature #2280 Configurable OrderedImportsFixer (DarkaOnLine)
+* feature #2351 Enhancement: Allow to configure return_type_declaration rule (localheinz)
+* feature #2359 Add PhpdocNoUselessInheritdocFixer (SpacePossum, keradus)
+* feature #2414 Add PhpdocReturnSelfReferenceFixer (SpacePossum)
+* feature #2415 Add IsNullFixer (kalessil, keradus)
+* feature #2421 BracesFixer - Add allow_single_line_closure configuration (keradus)
+* feature #2461 PhpdocNoUselessInheritdocFixer - support multiline docblock (keradus)
+* feature #2462 Add NativeFunctionInvocationFixer (localheinz, keradus, Slamdunk)
+* feature #2478 DeclareEqualNormalizeFixer - Add config option (SpacePossum)
+* feature #2494 FixCommand - Support rules with params (ptcong, keradus)
+* minor #2452 Provide rules definitions (keradus)
+* minor #2460 RuleSet - extend Symfony (keradus)
+* minor #2483 DX: AbstractIntegrationTestCase does not use IntegrationCase::shouldCheckPriority, logic is now automated and method is now deprecated (keradus)
+* minor #2488 IsNullFixer - Fix bug when calling without params (SpacePossum)
+* minor #2519 remove trailing whitespace (keradus)
+
 Changelog for v2.0.1
 --------------------
 
