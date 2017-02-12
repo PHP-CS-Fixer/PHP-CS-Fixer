@@ -31,6 +31,9 @@
     "conflict": {
         "hhvm": "<3.9"
     },
+    "suggest": {
+        "friendsofphp/php-cs-fixer": "v1 is not maintained anymore, please update to v2"
+    },
     "autoload": {
         "psr-4": { "Symfony\\CS\\": "Symfony/CS/" }
     },
