@@ -22,7 +22,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  */
-final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
+final class AlignOperatorSpacesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string      $expected
