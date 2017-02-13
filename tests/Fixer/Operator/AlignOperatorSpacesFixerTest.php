@@ -39,6 +39,134 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
     {
         return array(
             array(
+                '<?php $a +      /** */
+                $b;',
+                '<?php $a    +      /** */
+                $b;',
+            ),
+            array(
+                '<?php '.'
+                    $a
+                    + $b
+                    + $d;
+                ;',
+                '<?php '.'
+                    $a
+                    +$b
+                    +  $d;
+                ;',
+            ),
+            array(
+                '<?php
+                    $a
+               /***/ + $b
+            /***/   + $d;
+                ;',
+                '<?php
+                    $a
+               /***/+   $b
+            /***/   +$d;
+                ;',
+            ),
+            array(
+                '<?php $a + $b;',
+                '<?php $a+$b;',
+            ),
+            array(
+                '<?php 1 + $b;',
+                '<?php 1+$b;',
+            ),
+            array(
+                '<?php 0.2 + $b;',
+                '<?php 0.2+$b;',
+            ),
+            array(
+                '<?php $a[1] + $b;',
+                '<?php $a[1]+$b;',
+            ),
+            array(
+                '<?php FOO + $b;',
+                '<?php FOO+$b;',
+            ),
+            array(
+                '<?php foo() + $b;',
+                '<?php foo()+$b;',
+            ),
+            array(
+                '<?php ${"foo"} + $b;',
+                '<?php ${"foo"}+$b;',
+            ),
+            array(
+                '<?php $a & $b;',
+                '<?php $a&$b;',
+            ),
+            array(
+                '<?php $a &= $b;',
+                '<?php $a&=$b;',
+            ),
+            array(
+                '<?php $a &= $b;',
+                '<?php $a &=$b;',
+            ),
+            array(
+                '<?php $a &= $b;',
+                '<?php $a&= $b;',
+            ),
+            array(
+                '<?php $a &= $b;',
+                '<?php $a  &=   $b;',
+            ),
+            array(
+                '<?php $a &=
+$b;',
+            ),
+
+            array(
+                '<?php $a
+&= $b;',
+                '<?php $a
+&=$b;',
+            ),
+            array(
+                '<?php (1) and 2;',
+                '<?php (1)and 2;',
+            ),
+            array(
+                '<?php 1 or ($b - $c);',
+                '<?php 1 or($b-$c);',
+            ),
+            array(
+                '<?php "a" xor (2);',
+                '<?php "a"xor(2);',
+            ),
+            array(
+                '<?php $a * -$b;',
+                '<?php $a*-$b;',
+            ),
+            array(
+                '<?php $a = -2 / +5;',
+                '<?php $a=-2/+5;',
+            ),
+            array(
+                '<?php $a = &$b;',
+                '<?php $a=&$b;',
+            ),
+            array(
+                '<?php $a++ + $b;',
+                '<?php $a+++$b;',
+            ),
+            array(
+                '<?php __LINE__ - 1;',
+                '<?php __LINE__-1;',
+            ),
+            array(
+                '<?php `echo 1` + 1;',
+                '<?php `echo 1`+1;',
+            ),
+            array(
+                '<?php function foo(&$a, array &$b, Bar &$c) {}',
+            ),
+            array(
                 '<?php $a = 1 //
                     || 2;
                 ',
@@ -48,19 +176,7 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
                     2;',
             ),
             array(
-                '<?php declare(ticks = 1);',
                 '<?php declare(ticks=1);',
-            ),
-            array(
-                '<?php declare(ticks = 1);',
-                '<?php declare(ticks =1);',
-            ),
-            array(
-                '<?php declare(ticks = 1);',
-                '<?php declare(ticks= 1);',
-            ),
-            array(
-                '<?php declare(ticks = 1);',
             ),
             array(
                 '<?php declare(ticks =  1);',
