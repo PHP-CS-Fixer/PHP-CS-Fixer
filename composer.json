@@ -31,6 +31,9 @@
     "conflict": {
         "hhvm": "<3.9"
     },
+    "suggest": {
+        "friendsofphp/php-cs-fixer": ""
+    },
     "autoload": {
         "psr-4": { "Symfony\\CS\\": "Symfony/CS/" }
     },
