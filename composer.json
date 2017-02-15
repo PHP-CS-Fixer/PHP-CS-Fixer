@@ -32,7 +32,7 @@
         "hhvm": "<3.9"
     },
     "suggest": {
-        "friendsofphp/php-cs-fixer": "v1 is not maintained anymore, please update to v2"
+        "friendsofphp/php-cs-fixer": ""
     },
     "autoload": {
         "psr-4": { "Symfony\\CS\\": "Symfony/CS/" }
