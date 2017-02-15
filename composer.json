@@ -32,7 +32,7 @@
         "hhvm": "<3.9"
     },
     "suggest": {
-        "friendsofphp/php-cs-fixer": ""
+        "friendsofphp/php-cs-fixer2": ""
     },
     "autoload": {
         "psr-4": { "Symfony\\CS\\": "Symfony/CS/" }
