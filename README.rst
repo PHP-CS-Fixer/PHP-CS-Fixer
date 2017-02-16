@@ -674,7 +674,7 @@ which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It
 is a good practice to add that file into your ``.gitignore`` file.
-With the ``--config`` option you can specify the path to the
+With the ``--config-file`` option you can specify the path to the
 ``.php_cs`` file.
 
 The example below will add two rules to the default list of PSR2 set rules:
@@ -781,7 +781,7 @@ Then, add the following command to your CI:
 
 .. code-block:: bash
 
-    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`
+    $ vendor/bin/php-cs-fixer fix --config-file=.php_cs.dist -v --dry-run --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`
 
 Where ``$COMMIT_RANGE`` is your range of commits, eg ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 

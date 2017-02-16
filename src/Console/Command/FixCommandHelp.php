@@ -100,7 +100,7 @@ which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create <comment>.php_cs</comment> file, which is
 the local configuration that will be used instead of the project configuration. It
 is a good practice to add that file into your <comment>.gitignore</comment> file.
-With the <comment>--config</comment> option you can specify the path to the
+With the <comment>--config-file</comment> option you can specify the path to the
 <comment>.php_cs</comment> file.
 
 The example below will add two rules to the default list of PSR2 set rules:
@@ -203,7 +203,7 @@ Require ``friendsofphp/php-cs-fixer`` as a ``dev`` dependency:
 
 Then, add the following command to your CI:
 
-    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB \$COMMIT_RANGE`
+    $ vendor/bin/php-cs-fixer fix --config-file=.php_cs.dist -v --dry-run --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB \$COMMIT_RANGE`
 
 Where ``\$COMMIT_RANGE`` is your range of commits, eg ``\$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
