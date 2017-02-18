@@ -1,0 +1,46 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-12T18:06:29Z
+
+btw, dir is a file with extra attribute on FS level, so it doesn't matter would there be trailing `/` or not
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-13T07:15:32Z
+
+I know what directories are ;)
+
+Git has a special handling for ignore entries that end with a `/` as these will only match directories instead of any file. So this entry can be read like _"Ignore the `vendor` directory"_ instead of _"Ignore `vendor`"_ and it looks better to me. But as the result here will be the same, I can remove it if you prefer.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-13T07:20:27Z
+
+out of curiosity, would git ignore a file called `vendor` now?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-13T07:22:52Z
+
+If we keep the ending `/`: no. But is it to ever happen?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-13T08:08:55Z
+
+its nice if the file 'vendor' is excluded, as it should not exist so :+1:
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-13T18:51:26Z
+
+Rebased onto `2.1` and removed ending `/` to vendor entry.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-18T20:25:20Z
+
+> its nice if the file 'vendor' is excluded, as it should not exist so
+
+but `vendor` dir is existing dir for a reason - composer will create it. that is why we exclude it.
+`vendor` file is not there, as well as `foobarbaz` file. no need for special handling of it
