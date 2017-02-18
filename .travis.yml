@@ -64,7 +64,7 @@ before_install:
     # Composer: enforce given Symfony components version
     - |
       if [[ -n $SYMFONY_VERSION ]]; then
-        sed -i "s/\"symfony\/\([^\"]*\)\": \"^2[^\"]*\"/\"symfony\/\1\": \"$SYMFONY_VERSION\"/g" composer.json
+        sed -i 's|"symfony/\([^"]*\)": "^2[^"]*"|"symfony/\1": "'"$SYMFONY_VERSION"'"|g' composer.json
       fi
 
     # display tasks configuration for a job
@@ -96,7 +96,7 @@ script:
     - |
       if ((TASK_TESTS)); then
         if ((!TASK_TESTS_COVERAGE)); then
-          vendor/bin/phpunit --verbose;
+          vendor/bin/phpunit --verbose
         else
           phpdbg -qrr vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
         fi
