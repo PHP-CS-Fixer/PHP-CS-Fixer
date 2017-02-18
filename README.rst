@@ -25,7 +25,7 @@ Download the `php-cs-fixer.phar`_ file and store it somewhere on your computer.
 Globally (manual)
 ~~~~~~~~~~~~~~~~~
 
-You can run these commands to easily access newest ``php-cs-fixer`` from anywhere on
+You can run these commands to easily access latest ``php-cs-fixer`` from anywhere on
 your system:
 
 .. code-block:: bash
