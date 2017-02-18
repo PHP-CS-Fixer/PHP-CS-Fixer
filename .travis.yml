@@ -46,10 +46,13 @@ cache:
         - $HOME/.composer/cache
 
 before_install:
+    # Stop on first error.
+    - set -e
+
     # check phpdbg
     - phpdbg --version 2> /dev/null || { echo 'No phpdbg'; export TASK_TESTS_COVERAGE=0; }
 
-    # turn off XDebug
+    # Turn off Xdebug. Ignores failure on HHVM builds due to missing xdebug.ini.
     - phpenv config-rm xdebug.ini || true
 
     # validate tasks configuration
@@ -104,7 +107,7 @@ script:
 
     - if ((TASK_SCA)); then git checkout . -q; fi
 
-    - if (($TASK_CS)); then php php-cs-fixer --diff --dry-run -v fix; fi
+    - if ((TASK_CS)); then php php-cs-fixer --diff --dry-run -v fix; fi
 
 after_success:
     - if ((TASK_TESTS_COVERAGE)); then vendor/bin/coveralls -v; fi
