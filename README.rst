@@ -25,8 +25,14 @@ Download the `php-cs-fixer.phar`_ file and store it somewhere on your computer.
 Globally (manual)
 ~~~~~~~~~~~~~~~~~
 
-You can run these commands to easily access ``php-cs-fixer`` from anywhere on
+You can run these commands to easily access latest ``php-cs-fixer`` from anywhere on
 your system:
+
+.. code-block:: bash
+
+    $ wget http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -O php-cs-fixer
+
+or with specified version:
 
 .. code-block:: bash
 
@@ -36,7 +42,7 @@ or with curl:
 
 .. code-block:: bash
 
-    $ curl -L https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.1.0/php-cs-fixer.phar -o php-cs-fixer
+    $ curl -L http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -o php-cs-fixer
 
 then:
 
@@ -831,7 +837,7 @@ scanned by the tool when run in the directory of your project. It is useful for
 projects that follow a well-known directory structures (like for Symfony
 projects for instance).
 
-.. _php-cs-fixer.phar: https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.1.0/php-cs-fixer.phar
+.. _php-cs-fixer.phar: http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar
 .. _Atom:              https://github.com/Glavin001/atom-beautify
 .. _NetBeans:          http://plugins.netbeans.org/plugin/49042/php-cs-fixer
 .. _PhpStorm:          http://tzfrs.de/2015/01/automatically-format-code-to-match-psr-standards-with-phpstorm
