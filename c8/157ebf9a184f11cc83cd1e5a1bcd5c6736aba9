@@ -1,0 +1,37 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-17T17:15:50Z
+
+@keksa thanks for the PR!
+Please could you target the 2.1 branch? A bug fix as this is nice to have in the upcoming minor release.
+Secondly please change the test. The change you made causes all test cases not to run on PHP > 7,
+while there is only the new case that should only run on PHP >= 7.
+
+---------------------------------------------------------------------------
+
+by keksa at 2017-02-17T21:59:48Z
+
+@SpacePossum Hello, I changed the branch and rebased.
+For the tests, you're not correct. When `@dataProvider` is used it calls the method again for every case in the data provider, so only the "??" test is skipped on PHP < 7.0.
+I just tried it locally on PHP 5.5.12 with added `@group` on this method and it ran 42 tests, 3977 assertions and on PHP 7.1.2 it ran 42 tests, 4022 assertions.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-18T10:22:17Z
+
+Thanks :)
+I was wrong about the test. What we typically do is something like this:
+https://gist.github.com/SpacePossum/24f078aee6c96fc33cf4ba96bbd5f231
+So use diff. dataproviders for diff. PHP versions when needed, WDYT.
+
+---------------------------------------------------------------------------
+
+by keksa at 2017-02-18T11:11:30Z
+
+Oh, ok, that looks much better. :) I just used basically the same as was already there for PHP 5.5. I'll update it in a moment.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-18T12:33:34Z
+
+looking good :)
