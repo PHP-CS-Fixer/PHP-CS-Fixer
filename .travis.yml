@@ -56,7 +56,7 @@ before_install:
     - if ((!TASK_TESTS & TASK_TESTS_COVERAGE)); then travis_terminate 1; fi
 
     # for building a tag release we don't need to run SCA tools, collect code coverage or self-fix CS
-    - $TRAVIS_TAG && export TASK_SCA=0 TASK_TESTS_COVERAGE=0 TASK_CS=0
+    - if [[ -n $TRAVIS_TAG ]]; then export TASK_SCA=0 TASK_TESTS_COVERAGE=0 TASK_CS=0; fi
 
     # Composer: boost installation
     - travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
