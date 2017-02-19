@@ -169,9 +169,9 @@ final class Runner
                 $fixer->fix($file, $tokens);
 
                 if ($tokens->isChanged()) {
+                    $appliedFixers[$fixer->getName()] = $tokens->findChangedLines();
                     $tokens->clearEmptyTokens();
                     $tokens->clearChanged();
-                    $appliedFixers[] = $fixer->getName();
                 }
             }
         } catch (\Exception $e) {

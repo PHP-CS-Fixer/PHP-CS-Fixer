@@ -37,6 +37,13 @@ class Token
     private $id;
 
     /**
+     * Line number from which this token was parsed.
+     *
+     * @var int|null
+     */
+    private $line;
+
+    /**
      * If token prototype is an array.
      *
      * @var bool
@@ -61,6 +68,11 @@ class Token
             $this->isArray = true;
             $this->id = $token[0];
             $this->content = $token[1];
+
+            // Line number is unavailable for some tokens.
+            if (isset($token[2])) {
+                $this->line = $token[2];
+            }
         } else {
             $this->isArray = false;
             $this->content = $token;
@@ -232,6 +244,16 @@ class Token
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Gets the line number from which this token was parsed.
+     *
+     * @return int|null Line number
+     */
+    public function getLineNumber()
+    {
+        return $this->line;
     }
 
     /**

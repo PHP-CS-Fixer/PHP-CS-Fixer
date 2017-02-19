@@ -81,7 +81,7 @@ final class XmlReporter implements ReporterInterface
     {
         $appliedFixersXML = $dom->createElement('applied_fixers');
 
-        foreach ($fixResult['appliedFixers'] as $appliedFixer) {
+        foreach (array_keys($fixResult['appliedFixers']) as $appliedFixer) {
             $appliedFixerXML = $dom->createElement('applied_fixer');
             $appliedFixerXML->setAttribute('name', $appliedFixer);
             $appliedFixersXML->appendChild($appliedFixerXML);

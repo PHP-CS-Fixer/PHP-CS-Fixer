@@ -413,6 +413,24 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Finds all unique changed lines numbers.
+     *
+     * @return int[] Line numbers
+     */
+    public function findChangedLines()
+    {
+        $lines = array();
+
+        foreach ($this as $index => $token) {
+            if ($token->isChanged()) {
+                $lines[] = $this->findNearestPrevTokenLineNumber($index);
+            }
+        }
+
+        return array_values(array_unique($lines));
+    }
+
+    /**
      * Find tokens of given kind.
      *
      * @param int|array $possibleKind kind or array of kind
@@ -1136,6 +1154,26 @@ class Tokens extends \SplFixedArray
         }
 
         $this[$nextIndex]->clear();
+    }
+
+    /**
+     * Finds the line number of the first token previous to the one at the specified index, including itself.
+     *
+     * @param int $index Token index
+     *
+     * @return int Line number
+     */
+    private function findNearestPrevTokenLineNumber($index)
+    {
+        if ($index <= 0) {
+            return 1;
+        }
+
+        if (null !== $line = $this[$index]->getLineNumber()) {
+            return $line;
+        }
+
+        return $this->findNearestPrevTokenLineNumber(--$index);
     }
 
     /**
