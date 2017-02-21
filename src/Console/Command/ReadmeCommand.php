@@ -68,12 +68,18 @@ Download the `php-cs-fixer.phar`_ file and store it somewhere on your computer.
 Globally (manual)
 ~~~~~~~~~~~~~~~~~
 
-You can run these commands to easily access ``php-cs-fixer`` from anywhere on
+You can run these commands to easily access latest ``php-cs-fixer`` from anywhere on
 your system:
 
 .. code-block:: bash
 
     $ wget %download.url% -O php-cs-fixer
+
+or with specified version:
+
+.. code-block:: bash
+
+    $ wget %download.version_url% -O php-cs-fixer
 
 or with curl:
 
@@ -204,8 +210,6 @@ projects for instance).
 
 EOF;
 
-        $downloadUrl = $this->getLatestDownloadUrl();
-
         $command = $this->getApplication()->get('fix');
         $help = $command->getHelp();
         $help = str_replace('%command.full_name%', 'php-cs-fixer.phar '.$command->getName(), $help);
@@ -232,7 +236,13 @@ EOF;
         );
         $help = preg_replace('#^                        #m', '  ', $help);
         $help = preg_replace('#\*\* +\[#', '** [', $help);
+
+        $downloadLatestUrl = $this->getLatestDownloadUrl();
+        $downloadUrl = 'http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar';
+
+        $header = str_replace('%download.version_url%', $downloadLatestUrl, $header);
         $header = str_replace('%download.url%', $downloadUrl, $header);
+        $footer = str_replace('%download.version_url%', $downloadLatestUrl, $footer);
         $footer = str_replace('%download.url%', $downloadUrl, $footer);
 
         $output->write($header."\n".$help."\n".$footer);

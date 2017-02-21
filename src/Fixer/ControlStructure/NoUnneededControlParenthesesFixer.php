@@ -63,6 +63,11 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         if (defined('T_YIELD')) {
             self::$loops['yield'] = array('lookupTokens' => T_YIELD, 'neededSuccessors' => array(';', ')'));
         }
+
+        // To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 7.0+
+        if (defined('T_COALESCE')) {
+            self::$loops['clone']['forbiddenContents'][] = array(T_COALESCE, '??');
+        }
     }
 
     /**
