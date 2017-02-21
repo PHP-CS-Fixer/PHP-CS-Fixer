@@ -45,38 +45,33 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
      */
     public function testFix($expected, $input = null, $fixStatement = null)
     {
-        // PHP <5.5 BC
-        if (version_compare(PHP_VERSION, '5.5', '<') && false !== strpos($input, 'yield')) {
-            $input = null;
-        }
+        $this->fixerTest($expected, $input, $fixStatement);
+    }
 
-        // Default config. Fixes all statements.
-        $this->fixer->configure(self::$defaultStatements);
-        $this->doTest($expected, $input);
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|string $fixStatement
+     *
+     * @dataProvider provideFixCases55
+     * @requires PHP 5.5
+     */
+    public function testFix55($expected, $input = null, $fixStatement = null)
+    {
+        $this->fixerTest($expected, $input, $fixStatement);
+    }
 
-        // Empty array config. Should not fix anything.
-        $this->fixer->configure(array());
-        $this->doTest($expected, null);
-
-        // Test with only one statement
-        foreach (self::$defaultStatements as $statement) {
-            $withInput = false;
-
-            if ($input && (!$fixStatement || $fixStatement === $statement)) {
-                foreach (explode('_', $statement) as $singleStatement) {
-                    if (false !== strpos($input, $singleStatement)) {
-                        $withInput = true;
-                        break;
-                    }
-                }
-            }
-
-            $this->fixer->configure(array($statement));
-            $this->doTest(
-                $expected,
-                $withInput ? $input : null
-            );
-        }
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|string $fixStatement
+     *
+     * @dataProvider provideFixCases70
+     * @requires PHP 7.0
+     */
+    public function testFix70($expected, $input = null, $fixStatement = null)
+    {
+        $this->fixerTest($expected, $input, $fixStatement);
     }
 
     public function provideFixCases()
@@ -103,48 +98,6 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             array(
                 '<?php while ($x) { while ($y) { continue 2; } }',
                 '<?php while ($x) { while ($y) { continue(2); } }',
-            ),
-            array(
-                '<?php
-                function foo() { yield "prod"; }
-                ',
-            ),
-            array(
-                '<?php
-                function foo() { yield (1 + 2) * 10; }
-                ',
-            ),
-            array(
-                '<?php
-                function foo() { yield (1 + 2) * 10; }
-                ',
-                '<?php
-                function foo() { yield ((1 + 2) * 10); }
-                ',
-            ),
-            array(
-                '<?php
-                function foo() { yield "prod"; }
-                ',
-                '<?php
-                function foo() { yield ("prod"); }
-                ',
-            ),
-            array(
-                '<?php
-                function foo() { yield 2; }
-                ',
-                '<?php
-                function foo() { yield(2); }
-                ',
-            ),
-            array(
-                '<?php
-                function foo() { $a = (yield $x); }
-                ',
-                '<?php
-                function foo() { $a = (yield($x)); }
-                ',
             ),
             array(
                 '<?php
@@ -437,5 +390,100 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 'switch_case',
             ),
         );
+    }
+
+    public function provideFixCases55()
+    {
+        return array(
+            array(
+                '<?php
+                function foo() { yield "prod"; }
+                ',
+            ),
+            array(
+                '<?php
+                function foo() { yield (1 + 2) * 10; }
+                ',
+            ),
+            array(
+                '<?php
+                function foo() { yield (1 + 2) * 10; }
+                ',
+                '<?php
+                function foo() { yield ((1 + 2) * 10); }
+                ',
+            ),
+            array(
+                '<?php
+                function foo() { yield "prod"; }
+                ',
+                '<?php
+                function foo() { yield ("prod"); }
+                ',
+            ),
+            array(
+                '<?php
+                function foo() { yield 2; }
+                ',
+                '<?php
+                function foo() { yield(2); }
+                ',
+            ),
+            array(
+                '<?php
+                function foo() { $a = (yield $x); }
+                ',
+                '<?php
+                function foo() { $a = (yield($x)); }
+                ',
+            ),
+        );
+    }
+
+    public function provideFixCases70()
+    {
+        return array(
+            array(
+                '<?php
+                $var = clone ($obj1->getSubject() ?? $obj2);
+                ',
+            ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|string $fixStatement
+     */
+    private function fixerTest($expected, $input = null, $fixStatement = null)
+    {
+        // Default config. Fixes all statements.
+        $this->fixer->configure(self::$defaultStatements);
+        $this->doTest($expected, $input);
+
+        // Empty array config. Should not fix anything.
+        $this->fixer->configure(array());
+        $this->doTest($expected, null);
+
+        // Test with only one statement
+        foreach (self::$defaultStatements as $statement) {
+            $withInput = false;
+
+            if ($input && (!$fixStatement || $fixStatement === $statement)) {
+                foreach (explode('_', $statement) as $singleStatement) {
+                    if (false !== strpos($input, $singleStatement)) {
+                        $withInput = true;
+                        break;
+                    }
+                }
+            }
+
+            $this->fixer->configure(array($statement));
+            $this->doTest(
+                $expected,
+                $withInput ? $input : null
+            );
+        }
     }
 }
