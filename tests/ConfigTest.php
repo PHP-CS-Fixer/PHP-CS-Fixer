@@ -106,10 +106,13 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
     {
         $config = new Config();
 
-        $iterator = $config->getFinder()->in(__DIR__.'/Fixtures/FinderDirectory')->getIterator();
-        $this->assertSame(1, count($iterator));
-        $iterator->rewind();
-        $this->assertSame('somefile.php', $iterator->current()->getFilename());
+        $items = iterator_to_array(
+            $config->getFinder()->in(__DIR__.'/Fixtures/FinderDirectory'),
+            false
+        );
+
+        $this->assertCount(1, $items);
+        $this->assertSame('somefile.php', $items[0]->getFilename());
     }
 
     public function testThatCustomFinderWorks()
@@ -119,10 +122,13 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
 
         $config = Config::create()->setFinder($finder);
 
-        $iterator = $config->getFinder()->getIterator();
-        $this->assertSame(1, count($iterator));
-        $iterator->rewind();
-        $this->assertSame('somefile.php', $iterator->current()->getFilename());
+        $items = iterator_to_array(
+            $config->getFinder(),
+            false
+        );
+
+        $this->assertCount(1, $items);
+        $this->assertSame('somefile.php', $items[0]->getFilename());
     }
 
     public function testThatCustomSymfonyFinderWorks()
@@ -132,10 +138,13 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
 
         $config = Config::create()->setFinder($finder);
 
-        $iterator = $config->getFinder()->getIterator();
-        $this->assertSame(1, count($iterator));
-        $iterator->rewind();
-        $this->assertSame('somefile.php', $iterator->current()->getFilename());
+        $items = iterator_to_array(
+            $config->getFinder(),
+            false
+        );
+
+        $this->assertCount(1, $items);
+        $this->assertSame('somefile.php', $items[0]->getFilename());
     }
 
     public function testThatCacheFileHasDefaultValue()

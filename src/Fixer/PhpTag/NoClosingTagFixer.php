@@ -40,10 +40,10 @@ final class NoClosingTagFixer extends AbstractFixer
             return;
         }
 
-        list($index, $token) = each($closeTags);
+        $index = key($closeTags);
 
         $tokens->removeLeadingWhitespace($index);
-        $token->clear();
+        $closeTags[$index]->clear();
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
         $prevToken = $tokens[$prevIndex];
