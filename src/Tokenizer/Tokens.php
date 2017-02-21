@@ -413,7 +413,7 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Finds all unique changed lines numbers.
+     * Finds all changed lines numbers.
      *
      * @return int[] Line numbers
      */
@@ -423,10 +423,13 @@ class Tokens extends \SplFixedArray
 
         foreach ($this as $index => $token) {
             if ($token->isChanged()) {
-                $lines[] = $this->findNearestPrevTokenLineNumber($index);
+                $lines[] = $this->backtrackToNearestLineNumber($index);
             }
         }
 
+        sort($lines);
+
+        // Call to array_values ensures keys are contiguous, especially for JSON output.
         return array_values(array_unique($lines));
     }
 
@@ -1160,23 +1163,27 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Finds the line number of the first token previous to the one at the specified index, including itself.
+     * Backtracks through the token list to find the line number of the nearest token, including itself, starting at
+     * the specified token index.
      *
      * @param int $index Token index
      *
      * @return int Line number
      */
-    private function findNearestPrevTokenLineNumber($index)
+    private function backtrackToNearestLineNumber($index)
     {
-        if ($index <= 0) {
-            return 1;
-        }
+        $newlines = 0;
 
-        if (null !== $line = $this[$index]->getLineNumber()) {
-            return $line;
-        }
+        do {
+            $token = $this[$index];
+            $newlines += $token->countNewlines();
 
-        return $this->findNearestPrevTokenLineNumber(--$index);
+            if (null !== $originalLineNumber = $token->getOriginalLineNumber()) {
+                return $originalLineNumber + $newlines;
+            }
+        } while (--$index > 0);
+
+        return 1;
     }
 
     /**
