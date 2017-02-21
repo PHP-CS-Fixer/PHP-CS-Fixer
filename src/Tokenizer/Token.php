@@ -58,24 +58,35 @@ class Token
     private $changed = false;
 
     /**
-     * Constructor.
+     * Initializes this instance with the specified token prototype, and optionally, the previous token. When the
+     * previous token is specified, the line number for single-character tokens is derived from the previous token.
      *
      * @param string|array $token token prototype
+     * @param Token|null $previousToken Optional. Previous token.
      */
-    public function __construct($token)
+    public function __construct($token, $previousToken = null)
     {
         if (is_array($token)) {
             $this->isArray = true;
             $this->id = $token[0];
             $this->content = $token[1];
 
-            // Line number is unavailable for some tokens.
+            // Line number may be unspecified for fabricated tokens.
             if (isset($token[2])) {
                 $this->line = $token[2];
             }
         } else {
             $this->isArray = false;
             $this->content = $token;
+
+            if ($previousToken) {
+                $this->line = $previousToken->getLineNumber();
+
+                // When previous line contained one or more newlines, this token must appear that many lines ahead.
+                if ($previousToken->isWhitespace() && $newlineCount = substr_count($previousToken->content, "\n")) {
+                    $this->line += $newlineCount;
+                }
+            }
         }
     }
 
@@ -486,6 +497,16 @@ class Token
         $this->isArray = false;
         $this->id = null;
         $this->content = $prototype;
+    }
+
+    /**
+     * Sets the changed flag to the specified value.
+     *
+     * @param bool $changed True if this token has changed, otherwise false.
+     */
+    public function setChanged($changed)
+    {
+        $this->changed = (bool)$changed;
     }
 
     /**

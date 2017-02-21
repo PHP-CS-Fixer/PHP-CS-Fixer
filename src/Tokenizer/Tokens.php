@@ -834,6 +834,9 @@ class Tokens extends \SplFixedArray
                 throw new \InvalidArgumentException('Must not add empty token to collection.');
             }
 
+            // Mark inserted token as changed.
+            $items[$i]->setChanged(true);
+
             $this[$i + $index] = $items[$i];
         }
     }
@@ -968,7 +971,7 @@ class Tokens extends \SplFixedArray
         $this->setSize(count($tokens));
 
         foreach ($tokens as $index => $token) {
-            $this[$index] = new Token($token);
+            $this[$index] = $previousToken = new Token($token, isset($previousToken) ? $previousToken : null);
         }
 
         $transformers = Transformers::create();
