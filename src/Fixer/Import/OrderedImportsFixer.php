@@ -480,7 +480,6 @@ use function CCC\AA;
                 break;
             default:
                 throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $this->configuration['sortAlgorithm']));
-                break;
         }
 
         return $indexes;

@@ -34,9 +34,9 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
 
     public function testInvalidConfigValue()
     {
-        $this->setExpectedException(
+        $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[concat_space] Invalid configuration: The option "spacing" with value "tabs" is invalid. Accepted values are: "one", "none".'
+            '#^\[concat_space\] Invalid configuration: The option "spacing" with value "tabs" is invalid\. Accepted values are: "one", "none"\.$#'
         );
 
         $this->fixer->configure(array('spacing' => 'tabs'));

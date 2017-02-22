@@ -146,9 +146,9 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 
     public function testInvalidConfigurationValueType()
     {
-        $this->setExpectedException(
+        $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[class_definition] Invalid configuration: The option "singleLine" with value "z" is expected to be of type "bool", but is of type "string".'
+            '/^\[class_definition\] Invalid configuration: The option "singleLine" with value "z" is expected to be of type "bool", but is of type "string"\.$/'
         );
 
         $fixer = new ClassDefinitionFixer();

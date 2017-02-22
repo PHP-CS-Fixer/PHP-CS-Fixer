@@ -89,13 +89,10 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration = null)
     {
         if (!$this instanceof ConfigurationDefinitionFixerInterface) {
-            throw new \LogicException('Cannot run method for class not implementing `ConfigurationDefinitionFixerInterface`.');
+            throw new \LogicException('Cannot configure using Abstact parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
         }
 
         if (null === $configuration) {

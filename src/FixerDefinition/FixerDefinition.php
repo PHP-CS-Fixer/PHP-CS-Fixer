@@ -41,9 +41,9 @@ final class FixerDefinition implements FixerDefinitionInterface
         $riskyDescription = null
     ) {
         if (6 === func_num_args()) {
-            @trigger_error('Arguments #5 and #6 of FixerDefinition::__construct() is deprecated and will be dropped in 3.0, use argument #4 instead.', E_USER_DEPRECATED);
+            @trigger_error('Arguments #5 and #6 of FixerDefinition::__construct() are deprecated and will be removed in 3.0, use argument #4 instead.', E_USER_DEPRECATED);
         } elseif (5 === func_num_args()) {
-            @trigger_error('Argument #5 of FixerDefinition::__construct() is deprecated and will be dropped in 3.0.', E_USER_DEPRECATED);
+            @trigger_error('Argument #5 of FixerDefinition::__construct() is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
         } else {
             $riskyDescription = $configurationDescription;
             $configurationDescription = null;
@@ -69,14 +69,14 @@ final class FixerDefinition implements FixerDefinitionInterface
 
     public function getConfigurationDescription()
     {
-        @trigger_error('The getConfigurationDescription() method is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        @trigger_error(sprintf('%s is deprecated and will be removed in 3.0.', __METHOD__), E_USER_DEPRECATED);
 
         return $this->configurationDescription;
     }
 
     public function getDefaultConfiguration()
     {
-        @trigger_error('The getDefaultConfiguration() method is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        @trigger_error(sprintf('%s is deprecated and will be removed in 3.0.', __METHOD__), E_USER_DEPRECATED);
 
         return $this->defaultConfiguration;
     }

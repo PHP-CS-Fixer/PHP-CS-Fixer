@@ -680,9 +680,9 @@ EOT
 
     public function testWrongConfig()
     {
-        $this->setExpectedException(
+        $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[single_class_element_per_statement] Invalid configuration: The option "elements" contains an invalid value.'
+            '/^\[single_class_element_per_statement\] Invalid configuration: The option "elements" contains an invalid value.$/'
         );
 
         $this->fixer->configure(array('elements' => array('foo')));
