@@ -81,6 +81,7 @@ Complete configuration for rules can be supplied using a ``json`` formatted stri
 
 A combination of <comment>--dry-run</comment> and <comment>--diff</comment> will
 display a summary of proposed fixes, leaving your files unchanged.
+Optionally the <comment>--diff</comment> can be used to specify the diff. output format; ``--diff=sbd`` (default) or ``--diff=sbd-short``.
 
 The <comment>--allow-risky</comment> option allows you to set whether risky rules may run. Default value is taken from config file.
 Risky rule is a rule, which could change code behaviour. By default no risky rules are run.

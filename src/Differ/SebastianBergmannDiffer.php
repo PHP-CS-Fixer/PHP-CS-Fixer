@@ -24,9 +24,9 @@ final class SebastianBergmannDiffer implements DifferInterface
      */
     private $differ;
 
-    public function __construct()
+    public function __construct($shortDiff = true)
     {
-        $this->differ = new Differ();
+        $this->differ = new Differ("--- Original\n+++ New\n", $shortDiff);
     }
 
     /**

@@ -103,18 +103,19 @@ final class ConfigurationResolver
      */
     private $options = array(
         'allow-risky' => null,
+        'cache-file' => null,
         'config' => null,
+        'diff' => null,
+        'differ' => null,
         'dry-run' => null,
         'format' => null,
         'path' => array(),
         'path-mode' => self::PATH_MODE_OVERRIDE,
-        'using-cache' => null,
-        'cache-file' => null,
         'rules' => null,
-        'diff' => null,
-        'verbosity' => null,
-        'stop-on-violation' => null,
         'show-progress' => null,
+        'stop-on-violation' => null,
+        'using-cache' => null,
+        'verbosity' => null,
     );
 
     private $cacheFile;
@@ -253,7 +254,25 @@ final class ConfigurationResolver
     public function getDiffer()
     {
         if (null === $this->differ) {
-            $this->differ = false === $this->options['diff'] ? new NullDiffer() : new SebastianBergmannDiffer();
+            switch ($this->options['diff']) {
+                case false:
+                    $this->differ = new NullDiffer();
+
+                    break;
+                case 'sbd':
+                    $this->differ = new SebastianBergmannDiffer(true);
+
+                    break;
+                case 'sbd-short':
+                    $this->differ = new SebastianBergmannDiffer(false);
+
+                    break;
+                default:
+                    throw new InvalidConfigurationException(sprintf(
+                        'Differ must be "sbd" or "sbd-short", got "%s".',
+                        $this->options['diff']
+                    ));
+            }
         }
 
         return $this->differ;
