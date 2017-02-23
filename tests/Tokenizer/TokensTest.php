@@ -40,12 +40,13 @@ final class TokensTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $source
-     * @param string $expected
+     * @param string     $source
+     * @param null|array $expected
+     * @param array      $params
      *
      * @dataProvider provideFindSequence
      */
-    public function testFindSequence($source, $expected, array $params)
+    public function testFindSequence($source, array $expected = null, array $params)
     {
         $tokens = Tokens::fromCode($source);
 

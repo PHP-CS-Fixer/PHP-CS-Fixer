@@ -217,7 +217,7 @@ final class RuleSet implements RuleSetInterface
         }
 
         if ($this->rules[$rule] === true) {
-            return;
+            return null;
         }
 
         return $this->rules[$rule];
