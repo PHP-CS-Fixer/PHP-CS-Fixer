@@ -1019,6 +1019,61 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('json', $resolver->getReporter()->getFormat());
     }
 
+    /**
+     * @param string      $expected
+     * @param string|bool $differConfig
+     *
+     * @dataProvider provideDifferCases
+     */
+    public function testResolveDiffer($expected, $differConfig)
+    {
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            array('diff' => $differConfig),
+            ''
+        );
+
+        $this->assertInstanceOf($expected, $resolver->getDiffer());
+    }
+
+    public function provideDifferCases()
+    {
+        return array(
+            array(
+                '\PhpCsFixer\Differ\NullDiffer',
+                false,
+            ),
+            array(
+                '\PhpCsFixer\Differ\SebastianBergmannDiffer',
+                true,
+            ),
+            array(
+                '\PhpCsFixer\Differ\SebastianBergmannDiffer',
+                'sbd',
+            ),
+            array(
+                '\PhpCsFixer\Differ\SebastianBergmannShortDiffer',
+                'sbd-short',
+            ),
+        );
+    }
+
+    public function testUnknownDiffConfiguration()
+    {
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            array('diff' => '_unknown_'),
+            ''
+        );
+
+        $this->setExpectedExceptionRegExp(
+            '\PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            '#^Differ must be "sbd" or "sbd-short", got "_unknown_"\.$#'
+        );
+
+        $resolver->getDiffer();
+    }
+
     public function testResolveConfigFileOverridesDefault()
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_8';

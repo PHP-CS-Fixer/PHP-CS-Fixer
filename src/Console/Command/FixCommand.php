@@ -100,7 +100,7 @@ final class FixCommand extends Command
                     new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'The rules.'),
                     new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no).'),
                     new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
-                    new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file.'),
+                    new InputOption('diff', '', InputOption::VALUE_OPTIONAL, 'Also produce diff for each file.', 'sbd'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
                     new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
                     new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, run-in, or estimating).'),
