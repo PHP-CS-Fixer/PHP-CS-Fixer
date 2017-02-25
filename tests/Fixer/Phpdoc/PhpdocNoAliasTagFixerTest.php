@@ -57,7 +57,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[phpdoc_no_alias_tag\] Cannot change tag "link" to tag "see", as the tag is set configured to be replaced to "link".$#'
+            '#^\[phpdoc_no_alias_tag\] Cannot change tag "link" to tag "see", as the tag "see" is configured to be replaced to "link"\.$#'
         );
 
         $this->fixer->configure(array(
@@ -71,7 +71,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[phpdoc_no_alias_tag\] Cannot change tag "b" to tag "see", as the tag is set configured to be replaced to "link".$#'
+            '#^\[phpdoc_no_alias_tag\] Cannot change tag "b" to tag "see", as the tag "see" is configured to be replaced to "link"\.$#'
         );
 
         $this->fixer->configure(array(
