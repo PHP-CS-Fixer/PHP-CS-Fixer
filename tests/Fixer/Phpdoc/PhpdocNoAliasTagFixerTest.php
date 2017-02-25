@@ -61,9 +61,9 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         );
 
         $this->fixer->configure(array(
-            'see' => 'link',
-            'a' => 'b',
             'link' => 'see',
+            'a' => 'b',
+            'see' => 'link',
         ));
     }
 
@@ -75,9 +75,22 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         );
 
         $this->fixer->configure(array(
+            'b' => 'see',
             'see' => 'link',
             'link' => 'b',
-            'b' => 'see',
+        ));
+    }
+
+    public function testInvalidConfigCase6()
+    {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            '#^\[phpdoc_no_alias_tag\] Cannot change tag "see" to tag "link", as the tag "link" is configured to be replaced to "b"\.$#'
+        );
+
+        $this->fixer->configure(array(
+            'see' => 'link',
+            'link' => 'b',
         ));
     }
 

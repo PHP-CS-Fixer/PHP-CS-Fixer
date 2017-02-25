@@ -72,6 +72,9 @@ final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurableF
             }
 
             $this->configuration[trim($from)] = trim($to);
+        }
+
+        foreach ($this->configuration as $from => $to) {
             if (isset($this->configuration[$to])) {
                 throw new InvalidFixerConfigurationException(
                     $this->getName(),
