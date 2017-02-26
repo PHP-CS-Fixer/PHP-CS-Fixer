@@ -32,7 +32,7 @@ final class FullOpeningTagFixer extends AbstractFixer
         $content = $tokensOrg->generateCode();
 
         // replace all <? with <?php to replace all short open tags even without short_open_tag option enabled
-        $newContent = preg_replace('/<\?(\s|$)/', '<?php$1', $content, -1, $count);
+        $newContent = preg_replace('/<\?(?:phP|pHp|pHP|Php|PhP|PHp|PHP)?(\s|$)/', '<?php$1', $content, -1, $count);
 
         if (!$count) {
             return;
@@ -52,7 +52,7 @@ final class FullOpeningTagFixer extends AbstractFixer
             if ($token->isGivenKind(T_OPEN_TAG)) {
                 $tokenContent = $token->getContent();
 
-                if ('<?php' !== substr($content, $tokensOldContentLength, 5)) {
+                if ('<?php' !== strtolower(substr($content, $tokensOldContentLength, 5))) {
                     $tokenContent = '<? ';
                 }
 
@@ -72,8 +72,9 @@ final class FullOpeningTagFixer extends AbstractFixer
                     $tokenContentLength += strlen($part);
 
                     if ($i !== $iLast) {
-                        if ('<?php' === substr($content, $tokensOldContentLength + $tokenContentLength, 5)) {
-                            $tokenContent .= '<?php';
+                        $originalTokenContent = substr($content, $tokensOldContentLength + $tokenContentLength, 5);
+                        if ('<?php' === strtolower($originalTokenContent)) {
+                            $tokenContent .= $originalTokenContent;
                             $tokenContentLength += 5;
                         } else {
                             $tokenContent .= '<?';

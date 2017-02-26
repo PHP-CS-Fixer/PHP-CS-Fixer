@@ -34,6 +34,7 @@ final class FullOpeningTagFixerTest extends AbstractFixerTestCase
     {
         return array(
             array('<?php echo \'Foo\';', '<? echo \'Foo\';'),
+            array('<?php echo \'Foo\';', '<?pHp echo \'Foo\';'),
             array('<?= \'Foo\';'),
             array('<?php echo \'Foo\'; ?> PLAIN TEXT'),
             array('PLAIN TEXT<?php echo \'Foo\'; ?>'),
@@ -54,6 +55,10 @@ echo \'Foo\';
                 "<? if ('<?php' === '<?') { }",
             ),
             array(
+                '<?php // <?php',
+                '<?pHP // <?php',
+            ),
+            array(
                 "<?php
 '<?
 ';",
@@ -61,6 +66,10 @@ echo \'Foo\';
             array(
                 '<?php
 // Replace all <? with <?php !',
+            ),
+            array(
+                '<?php
+// Replace all <? with <?pHp !',
             ),
             array(
                 '<?php
@@ -74,6 +83,22 @@ echo \'Foo\';
             ),
             array(
                 'foo <?php  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
+            ),
+            array(
+                '<?php
+$a = <<<           "TEST"
+<?Php <?
+TEST;?>
+TEST;
+
+?>
+<?php $a = <<<           \'TEST\'
+<?PHP <?
+TEST;?>
+TEST;
+
+?>
+',
             ),
         );
     }
