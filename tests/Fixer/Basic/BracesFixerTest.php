@@ -1695,6 +1695,41 @@ use const some\a\{ConstA, ConstB, ConstC};
         return array(
             array(
                 '<?php
+if (1==1) { // test
+ $a = 1;
+}
+echo $a;',
+                '<?php
+if (1==1) // test
+{ $a = 1; }
+echo $a;',
+            ),
+            array(
+                '<?php
+if ($test) { // foo
+    echo 1;
+}
+if (1 === 1) {//a
+$a = "b"; /*d*/
+}//c
+echo $a;
+if ($a === 3) /**/
+{echo 1;}
+',
+                '<?php
+if ($test) // foo
+ {
+    echo 1;
+}
+if (1 === 1)//a
+{$a = "b"; /*d*/}//c
+echo $a;
+if ($a === 3) /**/
+{echo 1;}
+',
+            ),
+            array(
+                '<?php
 if (true) {
 
     //  The blank line helps with legibility in nested control structures

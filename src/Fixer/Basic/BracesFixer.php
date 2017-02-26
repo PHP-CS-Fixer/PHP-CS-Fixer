@@ -155,8 +155,8 @@ $negative = function ($item) {
             if ($token->isGivenKind($controlTokens)) {
                 $prevIndex = $this->findParenthesisEnd($tokens, $index);
             } elseif (
-                $token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($index) ||
-                $token->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)
+                ($token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($index)) ||
+                ($token->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($index))
             ) {
                 $prevIndex = $tokens->getNextTokenOfKind($index, array('{'));
                 $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
@@ -167,7 +167,7 @@ $negative = function ($item) {
             $commentIndex = $tokens->getNextNonWhitespace($prevIndex);
             $commentToken = $tokens[$commentIndex];
 
-            if (!$commentToken->isGivenKind(T_COMMENT) || '/*' === substr($commentToken->getContent(), 0, 2)) {
+            if (!$commentToken->isGivenKind(T_COMMENT) || 0 === strpos($commentToken->getContent(), '/*')) {
                 continue;
             }
 
@@ -179,17 +179,22 @@ $negative = function ($item) {
             }
 
             $tokenTmp = $tokens[$braceIndex];
-            $trimIndex = $tokens->getPrevNonWhitespace($braceIndex);
-            $tokens[$trimIndex]->setContent(rtrim($tokens[$trimIndex]->getContent()));
 
             $newBraceIndex = $prevIndex + 1;
             for ($i = $braceIndex; $i > $newBraceIndex; --$i) {
+                // we might be moving one white space next to another, these have to be merged
                 $tokens[$i] = $tokens[$i - 1];
+                if ($tokens[$i]->isWhitespace() && $tokens[$i + 1]->isWhitespace()) {
+                    $tokens[$i]->setContent($tokens[$i]->getContent().$tokens[$i + 1]->getContent());
+                    $tokens[$i + 1]->clear();
+                }
             }
 
             $tokens[$newBraceIndex] = $tokenTmp;
-            if ($tokens[$braceIndex]->isWhitespace()) {
-                $tokens[$braceIndex]->clear();
+            $c = $tokens[$braceIndex]->getContent();
+            if (substr_count($c, "\n") > 1) {
+                // left trim till last line break
+                $tokens[$braceIndex]->setContent(substr($c, strrpos($c, "\n")));
             }
         }
     }
