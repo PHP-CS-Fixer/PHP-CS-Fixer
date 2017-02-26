@@ -40,7 +40,7 @@ final class JunitReporterTest extends \PHPUnit_Framework_TestCase
 
     public function testGenerateNoErrors()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="0" errors="0">
@@ -49,7 +49,7 @@ final class JunitReporterTest extends \PHPUnit_Framework_TestCase
 </testsuites>
 XML;
 
-        $actualXml = $this->reporter->generate(
+        $actualReport = $this->reporter->generate(
             new ReportSummary(
                 array(),
                 0,
@@ -60,13 +60,13 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualXml);
-        $this->assertXmlStringEqualsXmlString($expectedXml, $actualXml);
+        $this->assertJunitXmlSchema($actualReport);
+        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
     public function testGenerateSimple()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="1" errors="0">
@@ -77,7 +77,7 @@ XML;
 </testsuites>
 XML;
 
-        $actualXml = $this->reporter->generate(
+        $actualReport = $this->reporter->generate(
             new ReportSummary(
                 array(
                     'someFile.php' => array(
@@ -92,13 +92,13 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualXml);
-        $this->assertXmlStringEqualsXmlString($expectedXml, $actualXml);
+        $this->assertJunitXmlSchema($actualReport);
+        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
     public function testGenerateWithDiff()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="1" errors="0">
@@ -114,7 +114,7 @@ this text is a diff ;)]]></failure>
 </testsuites>
 XML;
 
-        $actualXml = $this->reporter->generate(
+        $actualReport = $this->reporter->generate(
             new ReportSummary(
                 array(
                     'someFile.php' => array(
@@ -130,13 +130,13 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualXml);
-        $this->assertXmlStringEqualsXmlString($expectedXml, $actualXml);
+        $this->assertJunitXmlSchema($actualReport);
+        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
     public function testGenerateWithAppliedFixers()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="2" failures="2" errors="0">
@@ -150,7 +150,7 @@ XML;
 </testsuites>
 XML;
 
-        $actualXml = $this->reporter->generate(
+        $actualReport = $this->reporter->generate(
             new ReportSummary(
                 array(
                     'someFile.php' => array(
@@ -165,13 +165,13 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualXml);
-        $this->assertXmlStringEqualsXmlString($expectedXml, $actualXml);
+        $this->assertJunitXmlSchema($actualReport);
+        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
     public function testGenerateWithTimeAndMemory()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="1" errors="0" time="1.234">
@@ -182,7 +182,7 @@ XML;
 </testsuites>
 XML;
 
-        $actualXml = $this->reporter->generate(
+        $actualReport = $this->reporter->generate(
             new ReportSummary(
                 array(
                     'someFile.php' => array(
@@ -197,13 +197,13 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualXml);
-        $this->assertXmlStringEqualsXmlString($expectedXml, $actualXml);
+        $this->assertJunitXmlSchema($actualReport);
+        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
     public function testGenerateComplex()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0"?>
 <testsuites>
   <testsuite assertions="3" errors="0" failures="3" name="PHP CS Fixer" tests="2" time="1.234">
@@ -232,7 +232,7 @@ another diff here ;)</failure>
 </testsuites>
 XML;
 
-        $actualXml = $this->reporter->generate(
+        $actualReport = $this->reporter->generate(
             new ReportSummary(
                 array(
                     'someFile.php' => array(
@@ -252,8 +252,8 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualXml);
-        $this->assertXmlStringEqualsXmlString($expectedXml, $actualXml);
+        $this->assertJunitXmlSchema($actualReport);
+        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
     /**

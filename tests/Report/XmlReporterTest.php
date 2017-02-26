@@ -40,7 +40,7 @@ final class XmlReporterTest extends \PHPUnit_Framework_TestCase
 
     public function testGenerateNoErrors()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <report>
   <files />
@@ -48,7 +48,7 @@ final class XmlReporterTest extends \PHPUnit_Framework_TestCase
 XML;
 
         $this->assertXmlStringEqualsXmlString(
-            $expectedXml,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(),
@@ -64,7 +64,7 @@ XML;
 
     public function testGenerateSimple()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <report>
   <files>
@@ -74,7 +74,7 @@ XML;
 XML;
 
         $this->assertXmlStringEqualsXmlString(
-            $expectedXml,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(
@@ -94,7 +94,7 @@ XML;
 
     public function testGenerateWithDiff()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <report>
   <files>
@@ -106,7 +106,7 @@ XML;
 XML;
 
         $this->assertXmlStringEqualsXmlString(
-            $expectedXml,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(
@@ -127,7 +127,7 @@ XML;
 
     public function testGenerateWithAppliedFixers()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <report>
   <files>
@@ -141,7 +141,7 @@ XML;
 XML;
 
         $this->assertXmlStringEqualsXmlString(
-            $expectedXml,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(
@@ -161,7 +161,7 @@ XML;
 
     public function testGenerateWithTimeAndMemory()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <report>
   <files>
@@ -175,7 +175,7 @@ XML;
 XML;
 
         $this->assertXmlStringEqualsXmlString(
-            $expectedXml,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(
@@ -195,7 +195,7 @@ XML;
 
     public function testGenerateComplex()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <report>
   <files>
@@ -220,7 +220,7 @@ XML;
 XML;
 
         $this->assertXmlStringEqualsXmlString(
-            $expectedXml,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(
