@@ -21,6 +21,7 @@
         "symfony/event-dispatcher": "^2.1 || ^3.0",
         "symfony/filesystem": "^2.4 || ^3.0",
         "symfony/finder": "^2.2 || ^3.0",
+        "symfony/phpunit-bridge": "^3.2",
         "symfony/polyfill-php54": "^1.0",
         "symfony/polyfill-php55": "^1.3",
         "symfony/polyfill-xml": "^1.3",
