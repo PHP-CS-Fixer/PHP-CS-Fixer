@@ -17,22 +17,26 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocInlineTagFixer
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocInlineTagNormalizerFixer
  */
-final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
+final class PhpdocInlineTagNormalizerFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideTestFixInlineDocCases
+     * @dataProvider provideFixCases
      */
-    public function testFixInlineDoc($expected, $input = null)
+    public function testFix($expected, $input = null, array $configuration = null)
     {
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixInlineDocCases()
+    public function provideFixCases()
     {
         $cases = [
             [
@@ -40,7 +44,7 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
     /**
      * {link} { LINK }
      * { test }
-     * {@inheritdoc rire éclatant des écoliers qui décontenança®¶ñ¿}
+     * {@inheritDoc rire éclatant des écoliers qui décontenança®¶ñ¿}
      * test other comment
      * {@inheritdoc test} a
      * {@inheritdoc test} b
@@ -66,6 +70,33 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
      * end comment {@inheritdoc here we are done} @spacepossum {1}
      */
 ',
+            ],
+            [
+                '<?php
+    /**
+     * {@foo}
+     * @{ bar }
+     */',
+                '<?php
+    /**
+     * @{ foo }
+     * @{ bar }
+     */',
+                [
+                    'tags' => ['foo'],
+                ],
+            ],
+            [
+                '<?php
+    /**
+     * @inheritDoc
+     * {@inheritDoc}
+     */',
+                '<?php
+    /**
+     * @inheritDoc
+     * @{ inheritDoc }
+     */',
             ],
         ];
 
@@ -105,92 +136,29 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
             ];
         }
 
-        // don't touch custom tags
-        $tag = 'foo';
-        $cases[] = [
-            sprintf("<?php\n     /**\n      * @{%s}a\n      */\n", $tag),
-        ];
-        $cases[] = [
-            sprintf("<?php\n     /**\n      * {{@%s}} b\n      */\n", $tag),
-        ];
-        $cases[] = [
-            sprintf("<?php\n     /**\n      * c @{{%s}}\n      */\n", $tag),
-        ];
-
-        // don't auto inline tags with the exception of inheritdoc
-        foreach (['example', 'id', 'internal', 'foo', 'link', 'source', 'toc', 'tutorial'] as $tag) {
+        // don't auto inline tags
+        foreach (['example', 'id', 'internal', 'inheritdoc', 'foo', 'link', 'source', 'toc', 'tutorial'] as $tag) {
             $cases[] = [
                 sprintf("<?php\n     /**\n      * @%s\n      */\n", $tag),
             ];
         }
 
         // don't touch well formatted tags
-        foreach (['example', 'id', 'internal', 'inheritdoc', 'link', 'source', 'toc', 'tutorial'] as $tag) {
+        foreach (['example', 'id', 'internal', 'inheritdoc', 'foo', 'link', 'source', 'toc', 'tutorial'] as $tag) {
             $cases[] = [
                 sprintf("<?php\n     /**\n      * {@%s}\n      */\n", $tag),
             ];
         }
 
-        // common typos
-        $cases[] = [
-            '<?php
-    /**
-     * Typo {@inheritdoc} {@example} {@id} {@source} {@tutorial} {links}
-     * inheritdocs
-     */
-',
-            '<?php
-    /**
-     * Typo {@inheritdocs} {@exampleS} { @ids} { @sources } {{{ @tutorials }} {links}
-     * inheritdocs
-     */
-',
-        ];
-
         // invalid syntax
         $cases[] = [
             '<?php
     /**
-     * {@link https://www.ietf.org/rfc/rfc1035.txt)
+     * {@link http://www.ietf.org/rfc/rfc1035.text)
      */
     $someVar = "hello";',
         ];
 
         return $cases;
-    }
-
-    /**
-     * @dataProvider provideTestFixInheritDocCases
-     */
-    public function testFixInheritDoc($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideTestFixInheritDocCases()
-    {
-        return [
-            [
-                '<?php
-    /**
-     * {@inheritdoc should this be inside the tag?}
-     * {@inheritdoc}
-     * {@inheritdoc}
-     * {@inheritdoc}
-     * inheritdoc
-     */
-',
-                // missing { } test for inheritdoc
-                '<?php
-    /**
-     * @inheritdoc should this be inside the tag?
-     * @inheritdoc
-     * @inheritdocs
-     * {@inheritdocs}
-     * inheritdoc
-     */
-',
-            ],
-        ];
     }
 }
