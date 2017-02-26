@@ -17,6 +17,7 @@ use PhpCsFixer\Report\ReportSummary;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
@@ -51,19 +52,19 @@ final class JsonReporterTest extends \PHPUnit_Framework_TestCase
 }
 JSON;
 
-        $this->assertJsonStringEqualsJsonString(
-            $expectedReport,
-            $this->reporter->generate(
-                new ReportSummary(
-                    array(),
-                    0,
-                    0,
-                    false,
-                    false,
-                    false
-                )
+        $actualReport = $this->reporter->generate(
+            new ReportSummary(
+                array(),
+                0,
+                0,
+                false,
+                false,
+                false
             )
         );
+
+        $this->assertJsonSchema($actualReport);
+        $this->assertJsonStringEqualsJsonString($expectedReport, $actualReport);
     }
 
     public function testGenerateSimple()
@@ -82,23 +83,23 @@ JSON;
 }
 JSON;
 
-        $this->assertJsonStringEqualsJsonString(
-            $expectedReport,
-            $this->reporter->generate(
-                new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                        ),
+        $actualReport = $this->reporter->generate(
+            new ReportSummary(
+                array(
+                    'someFile.php' => array(
+                        'appliedFixers' => array('some_fixer_name_here'),
                     ),
-                    5 * 1000,
-                    2 * 1024 * 1024,
-                    false,
-                    false,
-                    false
-                )
+                ),
+                5 * 1000,
+                2 * 1024 * 1024,
+                false,
+                false,
+                false
             )
         );
+
+        $this->assertJsonSchema($actualReport);
+        $this->assertJsonStringEqualsJsonString($expectedReport, $actualReport);
     }
 
     public function testGenerateWithDiff()
@@ -118,24 +119,24 @@ JSON;
 }
 JSON;
 
-        $this->assertJsonStringEqualsJsonString(
-            $expectedReport,
-            $this->reporter->generate(
-                new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                            'diff' => 'this text is a diff ;)',
-                        ),
+        $actualReport = $this->reporter->generate(
+            new ReportSummary(
+                array(
+                    'someFile.php' => array(
+                        'appliedFixers' => array('some_fixer_name_here'),
+                        'diff' => 'this text is a diff ;)',
                     ),
-                    5 * 1000,
-                    2 * 1024 * 1024,
-                    false,
-                    false,
-                    false
-                )
+                ),
+                5 * 1000,
+                2 * 1024 * 1024,
+                false,
+                false,
+                false
             )
         );
+
+        $this->assertJsonSchema($actualReport);
+        $this->assertJsonStringEqualsJsonString($expectedReport, $actualReport);
     }
 
     public function testGenerateWithAppliedFixers()
@@ -155,23 +156,23 @@ JSON;
 }
 JSON;
 
-        $this->assertJsonStringEqualsJsonString(
-            $expectedReport,
-            $this->reporter->generate(
-                new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                        ),
+        $actualReport = $this->reporter->generate(
+            new ReportSummary(
+                array(
+                    'someFile.php' => array(
+                        'appliedFixers' => array('some_fixer_name_here'),
                     ),
-                    5 * 1000,
-                    2 * 1024 * 1024,
-                    true,
-                    false,
-                    false
-                )
+                ),
+                5 * 1000,
+                2 * 1024 * 1024,
+                true,
+                false,
+                false
             )
         );
+
+        $this->assertJsonSchema($actualReport);
+        $this->assertJsonStringEqualsJsonString($expectedReport, $actualReport);
     }
 
     public function testGenerateWithTimeAndMemory()
@@ -190,23 +191,23 @@ JSON;
 }
 JSON;
 
-        $this->assertJsonStringEqualsJsonString(
-            $expectedReport,
-            $this->reporter->generate(
-                new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                        ),
+        $actualReport = $this->reporter->generate(
+            new ReportSummary(
+                array(
+                    'someFile.php' => array(
+                        'appliedFixers' => array('some_fixer_name_here'),
                     ),
-                    1234,
-                    2.5 * 1024 * 1024,
-                    false,
-                    false,
-                    false
-                )
+                ),
+                1234,
+                2.5 * 1024 * 1024,
+                false,
+                false,
+                false
             )
         );
+
+        $this->assertJsonSchema($actualReport);
+        $this->assertJsonStringEqualsJsonString($expectedReport, $actualReport);
     }
 
     public function testGenerateComplex()
@@ -232,25 +233,52 @@ JSON;
 }
 JSON;
 
-        $this->assertJsonStringEqualsJsonString(
-            $expectedReport,
-            $this->reporter->generate(
-                new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                            'diff' => 'this text is a diff ;)',
-                        ),
-                        'anotherFile.php' => array(
-                            'appliedFixers' => array('another_fixer_name_here'),
-                            'diff' => 'another diff here ;)',
-                        ),
+        $actualReport = $this->reporter->generate(
+            new ReportSummary(
+                array(
+                    'someFile.php' => array(
+                        'appliedFixers' => array('some_fixer_name_here'),
+                        'diff' => 'this text is a diff ;)',
                     ),
-                    1234,
-                    2.5 * 1024 * 1024,
-                    true,
-                    true,
-                    true
+                    'anotherFile.php' => array(
+                        'appliedFixers' => array('another_fixer_name_here'),
+                        'diff' => 'another diff here ;)',
+                    ),
+                ),
+                1234,
+                2.5 * 1024 * 1024,
+                true,
+                true,
+                true
+            )
+        );
+
+        $this->assertJsonSchema($actualReport);
+        $this->assertJsonStringEqualsJsonString($expectedReport, $actualReport);
+    }
+
+    /**
+     * @param string $json
+     */
+    private function assertJsonSchema($json)
+    {
+        $jsonPath = __DIR__.'/../../doc/schema.json';
+
+        $data = json_decode($json);
+
+        $validator = new \JsonSchema\Validator();
+        $validator->validate(
+            $data,
+            (object) ['$ref' => 'file://' . realpath($jsonPath)]
+        );
+
+        $this->assertTrue(
+            $validator->isValid(),
+            implode(
+                "\n",
+                array_map(
+                    function (array $item) { return sprintf('Property `%s`: %s.', $item['property'], $item['message']); },
+                    $validator->getErrors()
                 )
             )
         );
