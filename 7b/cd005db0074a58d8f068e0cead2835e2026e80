@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-25T15:29:21Z
+
+Looking good :) please escape the dots and the end of the exception messages (in the regex), other than that this looks good to me, thanks! good catch
