@@ -40,7 +40,7 @@ final class JsonReporterTest extends \PHPUnit_Framework_TestCase
 
     public function testGenerateNoErrors()
     {
-        $expectedJson = <<<'JSON'
+        $expectedReport = <<<'JSON'
 {
     "files": [
     ],
@@ -52,7 +52,7 @@ final class JsonReporterTest extends \PHPUnit_Framework_TestCase
 JSON;
 
         $this->assertJsonStringEqualsJsonString(
-            $expectedJson,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(),
@@ -68,7 +68,7 @@ JSON;
 
     public function testGenerateSimple()
     {
-        $expectedJson = <<<'JSON'
+        $expectedReport = <<<'JSON'
 {
     "files": [
         {
@@ -83,7 +83,7 @@ JSON;
 JSON;
 
         $this->assertJsonStringEqualsJsonString(
-            $expectedJson,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(
@@ -103,7 +103,7 @@ JSON;
 
     public function testGenerateWithDiff()
     {
-        $expectedJson = <<<'JSON'
+        $expectedReport = <<<'JSON'
 {
     "files": [
         {
@@ -119,7 +119,7 @@ JSON;
 JSON;
 
         $this->assertJsonStringEqualsJsonString(
-            $expectedJson,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(
@@ -140,7 +140,7 @@ JSON;
 
     public function testGenerateWithAppliedFixers()
     {
-        $expectedJson = <<<'JSON'
+        $expectedReport = <<<'JSON'
 {
     "files": [
         {
@@ -156,7 +156,7 @@ JSON;
 JSON;
 
         $this->assertJsonStringEqualsJsonString(
-            $expectedJson,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(
@@ -176,7 +176,7 @@ JSON;
 
     public function testGenerateWithTimeAndMemory()
     {
-        $expectedJson = <<<'JSON'
+        $expectedReport = <<<'JSON'
 {
     "files": [
         {
@@ -191,7 +191,7 @@ JSON;
 JSON;
 
         $this->assertJsonStringEqualsJsonString(
-            $expectedJson,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(
@@ -211,7 +211,7 @@ JSON;
 
     public function testGenerateComplex()
     {
-        $expectedJson = <<<'JSON'
+        $expectedReport = <<<'JSON'
 {
     "files": [
         {
@@ -233,7 +233,7 @@ JSON;
 JSON;
 
         $this->assertJsonStringEqualsJsonString(
-            $expectedJson,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(
