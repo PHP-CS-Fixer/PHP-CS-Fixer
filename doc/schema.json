@@ -4,7 +4,7 @@
     "properties": {
         "files": {
             "type": "array",
-            "uniqueItems": false,
+            "uniqueItems": true,
             "items": {
                 "type": "object",
                 "properties": {
@@ -13,7 +13,7 @@
                     },
                     "appliedFixers": {
                         "type": "array",
-                        "uniqueItems": false,
+                        "uniqueItems": true,
                         "items": {
                             "type": "string"
                         }
