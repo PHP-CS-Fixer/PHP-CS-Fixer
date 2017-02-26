@@ -72,10 +72,13 @@ final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurableF
             }
 
             $this->configuration[trim($from)] = trim($to);
+        }
+
+        foreach ($this->configuration as $from => $to) {
             if (isset($this->configuration[$to])) {
                 throw new InvalidFixerConfigurationException(
                     $this->getName(),
-                    sprintf('Cannot change tag "%s" to tag "%s", as the tag is set configured to be replaced to "%s".', $from, $to, $this->configuration[$to])
+                    sprintf('Cannot change tag "%1$s" to tag "%2$s", as the tag "%2$s" is configured to be replaced to "%3$s".', $from, $to, $this->configuration[$to])
                 );
             }
         }
