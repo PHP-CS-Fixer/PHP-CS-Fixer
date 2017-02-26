@@ -1,0 +1,56 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-06T14:30:26Z
+
+edit --ignore--
+
+---------------------------------------------------------------------------
+
+by jtojnar at 2017-02-06T16:38:53Z
+
+The code had to iterate through all the tokens every time so I changed the regex not to match lowercase opening tags, otherwise we could just get rid of this short-circuiting..
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-06T17:51:55Z
+
+looking good,
+please add this test:
+```php
+            array(
+                '<?php
+$a = <<<           "TEST"
+<?Php <?
+TEST;?>
+TEST;
+
+?>
+<?php $a = <<<           \'TEST\'
+<?PHP <?
+TEST;?>
+TEST;
+
+?>
+'
+            ),
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-08T08:12:33Z
+
+Please add a empty line before the `continue;` (https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2509/files#diff-33adb6f1f275b90be6606f68146b502cR61)
+
+The `foreach` @ https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2509/files#diff-33adb6f1f275b90be6606f68146b502cR70 can be changed to a `for` which remove the `if ($i !== $iLast) {` check within the loop.
+
+---------------------------------------------------------------------------
+
+by jtojnar at 2017-02-08T08:17:24Z
+
+@SpacePossum should refactorings really be part of feature pull requests?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-08T09:04:06Z
+
+you can leave it out, I can PR it after yours :+1:
