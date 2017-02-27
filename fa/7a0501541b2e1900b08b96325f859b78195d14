@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-26T21:41:45Z
+
+I think you could easily extract bridge and new tests to be not dependent on referred PR.
+If not (or it would require more work), let us freeze this PR until it's parent is merged, at least in terms of reviewing it.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-26T21:45:58Z
+
+Yeah, I've been a bit lazy here ;)
+Rebasing.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-27T05:27:26Z
+
+:+1:
