@@ -1,0 +1,60 @@
+---------------------------------------------------------------------------
+
+by jaymecd at 2017-02-27T14:35:04Z
+
+rebased, to avoid extra master merge commit.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-27T14:45:44Z
+
+:+1: for idea, could you pls check out minors I have rised?
+Also, I have targetted this to 2.1 line, don't bother to change PR target on your own.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-27T14:47:09Z
+
+with change:
+```
+Loaded config default from ".php_cs.dist".
+FF
+Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error
+   1) src/tmp/file.php (header_comment, single_blank_line_at_eof)
+   2) src/tmp/long name.php (header_comment, single_blank_line_at_eof)
+```
+
+without change:
+```
+Loaded config default from ".php_cs.dist".
+
+  [PhpCsFixer\ConfigurationException\InvalidConfigurationException (16)]
+  The path "src/tmp/long" is not readable.
+
+Exception trace:
+ () at /home/keradus/github/PHP-CS-Fixer/src/Console/ConfigurationResolver.php:347
+ PhpCsFixer\Console\ConfigurationResolver->PhpCsFixer\Console\{closure}() at n/a:n/a
+ array_map() at /home/keradus/github/PHP-CS-Fixer/src/Console/ConfigurationResolver.php:355
+ PhpCsFixer\Console\ConfigurationResolver->getPath() at /home/keradus/github/PHP-CS-Fixer/src/Console/ConfigurationResolver.php:685
+ PhpCsFixer\Console\ConfigurationResolver->resolveFinder() at /home/keradus/github/PHP-CS-Fixer/src/Console/ConfigurationResolver.php:449
+ PhpCsFixer\Console\ConfigurationResolver->getFinder() at /home/keradus/github/PHP-CS-Fixer/src/Console/Command/FixCommand.php:172
+ PhpCsFixer\Console\Command\FixCommand->execute() at /home/keradus/github/PHP-CS-Fixer/vendor/symfony/console/Command/Command.php:262
+ Symfony\Component\Console\Command\Command->run() at /home/keradus/github/PHP-CS-Fixer/vendor/symfony/console/Application.php:826
+ Symfony\Component\Console\Application->doRunCommand() at /home/keradus/github/PHP-CS-Fixer/vendor/symfony/console/Application.php:189
+ Symfony\Component\Console\Application->doRun() at /home/keradus/github/PHP-CS-Fixer/vendor/symfony/console/Application.php:120
+ Symfony\Component\Console\Application->run() at /home/keradus/github/PHP-CS-Fixer/php-cs-fixer:45
+```
+
+for that, I treat it not only as doc change, but also bugfix @SpacePossum
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-27T15:06:43Z
+
+note: sadly, `IFS` won't work on Windows. (I'm fine with that)
+
+---------------------------------------------------------------------------
+
+by jaymecd at 2017-02-27T15:10:43Z
+
+fixed and rebased onto `2.1`
