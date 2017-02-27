@@ -157,24 +157,24 @@ TXT;
                 new CodeSample(
 '<?php
 
-function baz($options) 
+function baz($options)
 {
     if (!array_key_exists("foo", $options)) {
         throw new \InvalidArgumentException();
     }
-    
+
     return json_encode($options);
 }'
                 ),
                 new CodeSample(
 '<?php
 
-function baz($options) 
+function baz($options)
 {
     if (!array_key_exists("foo", $options)) {
         throw new \InvalidArgumentException();
     }
-    
+
     return json_encode($options);
 }',
                     array(

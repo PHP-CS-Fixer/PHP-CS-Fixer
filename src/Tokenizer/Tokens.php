@@ -533,7 +533,7 @@ class Tokens extends \SplFixedArray
             $index += $direction;
 
             if (!$this->offsetExists($index)) {
-                return;
+                return null;
             }
 
             $token = $this[$index];
@@ -590,7 +590,7 @@ class Tokens extends \SplFixedArray
             $index += $direction;
 
             if (!$this->offsetExists($index)) {
-                return;
+                return null;
             }
 
             $token = $this[$index];
@@ -616,7 +616,7 @@ class Tokens extends \SplFixedArray
             $index += $direction;
 
             if (!$this->offsetExists($index)) {
-                return;
+                return null;
             }
 
             $token = $this[$index];
@@ -664,7 +664,7 @@ class Tokens extends \SplFixedArray
             $index += $direction;
 
             if (!$this->offsetExists($index)) {
-                return;
+                return null;
             }
 
             if (!$this[$index]->isEmpty()) {
@@ -720,7 +720,7 @@ class Tokens extends \SplFixedArray
         $end = null === $end ? count($this) - 1 : min($end, count($this) - 1);
 
         if ($start + $sequenceCount - 1 > $end) {
-            return;
+            return null;
         }
 
         // make sure the sequence content is "meaningful"
@@ -753,7 +753,7 @@ class Tokens extends \SplFixedArray
 
             // ensure we found a match and didn't get past the end index
             if (null === $index || $index > $end) {
-                return;
+                return null;
             }
 
             // initialise the result array with the current index
@@ -768,7 +768,7 @@ class Tokens extends \SplFixedArray
 
                 // ensure we didn't go too far
                 if (null === $currIdx || $currIdx > $end) {
-                    return;
+                    return null;
                 }
 
                 if (!$this[$currIdx]->equals($token, Token::isKeyCaseSensitive($caseSensitive, $key))) {
@@ -1067,6 +1067,7 @@ class Tokens extends \SplFixedArray
             return false;
         }
 
+        $HHVM = defined('HHVM_VERSION');
         for ($index = 1; $index < $size; ++$index) {
             if (
                 $this[$index]->isGivenKind(array(T_INLINE_HTML, T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO))
@@ -1077,8 +1078,7 @@ class Tokens extends \SplFixedArray
                      * @see https://github.com/facebook/hhvm/issues/4809
                      * @see https://github.com/facebook/hhvm/issues/7161
                      */
-                    defined('HHVM_VERSION')
-                    && $this[$index]->equals(array(T_ECHO, '<?='))
+                    $HHVM && $this[$index]->equals(array(T_ECHO, '<?='))
                 )
             ) {
                 return false;
@@ -1143,11 +1143,11 @@ class Tokens extends \SplFixedArray
      *
      * @param string $code
      *
-     * @return int
+     * @return string
      */
     private static function calculateCodeHash($code)
     {
-        return crc32($code);
+        return (string) crc32($code);
     }
 
     /**

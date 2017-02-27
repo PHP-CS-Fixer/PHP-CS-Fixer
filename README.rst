@@ -25,18 +25,24 @@ Download the `php-cs-fixer.phar`_ file and store it somewhere on your computer.
 Globally (manual)
 ~~~~~~~~~~~~~~~~~
 
-You can run these commands to easily access ``php-cs-fixer`` from anywhere on
+You can run these commands to easily access latest ``php-cs-fixer`` from anywhere on
 your system:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.0.0/php-cs-fixer.phar -O php-cs-fixer
+    $ wget http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -O php-cs-fixer
+
+or with specified version:
+
+.. code-block:: bash
+
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.1.0/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
 .. code-block:: bash
 
-    $ curl -L https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.0.0/php-cs-fixer.phar -o php-cs-fixer
+    $ curl -L http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -o php-cs-fixer
 
 then:
 
@@ -124,8 +130,8 @@ problems as possible on a given file or files in a given directory and its subdi
     $ php php-cs-fixer.phar fix /path/to/dir
     $ php php-cs-fixer.phar fix /path/to/file
 
-By default ``--path-mode`` is set to ``override``, which means, that if you specify the path to a file or a directory via 
-command arguments, then the paths provided to a ``Finder`` in config file will be ignored. You can use ``--path-mode=intersection`` 
+By default ``--path-mode`` is set to ``override``, which means, that if you specify the path to a file or a directory via
+command arguments, then the paths provided to a ``Finder`` in config file will be ignored. You can use ``--path-mode=intersection``
 to merge paths from the config file and from the argument:
 
 .. code-block:: bash
@@ -225,7 +231,9 @@ Choose from the list of available rules:
    | *Rule is: configurable.*
 
 * **declare_equal_normalize** [@Symfony]
-   | Equal sign in declare statement should not be surrounded by spaces.
+   | Equal sign in declare statement should be surrounded by spaces or not
+   | following configuration.
+   | *Rule is: configurable.*
 
 * **declare_strict_types**
    | Force strict types declaration in all files. Requires PHP >= 7.0.
@@ -829,7 +837,7 @@ scanned by the tool when run in the directory of your project. It is useful for
 projects that follow a well-known directory structures (like for Symfony
 projects for instance).
 
-.. _php-cs-fixer.phar: https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.0.0/php-cs-fixer.phar
+.. _php-cs-fixer.phar: http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar
 .. _Atom:              https://github.com/Glavin001/atom-beautify
 .. _NetBeans:          http://plugins.netbeans.org/plugin/49042/php-cs-fixer
 .. _PhpStorm:          http://tzfrs.de/2015/01/automatically-format-code-to-match-psr-standards-with-phpstorm

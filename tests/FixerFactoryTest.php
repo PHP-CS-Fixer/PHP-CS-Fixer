@@ -123,7 +123,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     public function testRegisterFixerWithOccupiedName()
     {
         $this->setExpectedException(
-                 'UnexpectedValueException',
+            'UnexpectedValueException',
             'Fixer named "non_unique_name" is already registered.'
         );
 
@@ -303,6 +303,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['phpdoc_no_useless_inheritdoc'], $fixers['no_trailing_whitespace_in_comment']), // tested also in: phpdoc_no_useless_inheritdoc,no_trailing_whitespace_in_comment.test
             array($fixers['phpdoc_no_useless_inheritdoc'], $fixers['phpdoc_inline_tag']), // tested also in: phpdoc_no_useless_inheritdoc,phpdoc_inline_tag.test
             array($fixers['phpdoc_to_comment'], $fixers['phpdoc_no_useless_inheritdoc']), // tested also in: phpdoc_to_comment,phpdoc_no_useless_inheritdoc.test
+            array($fixers['declare_strict_types'], $fixers['declare_equal_normalize']), // tested also in: declare_strict_types,declare_equal_normalize.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:
@@ -419,7 +420,10 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             $this->assertStringIsNotEmpty($definition->getConfigurationDescription(), sprintf('[%s] Configuration description is required.', $fixer->getName()));
             $default = $definition->getDefaultConfiguration();
             $this->assertInternalType('array', $default, sprintf('[%s] Default configuration must be an array.', $fixer->getName()));
-            $this->assertNotEmpty('array', $default, sprintf('[%s] Default configuration is required.', $fixer->getName()));
+
+            if (!in_array($fixer->getName(), array('general_phpdoc_annotation_remove', 'psr0'), true)) {
+                $this->assertNotEmpty($default, sprintf('[%s] Default configuration is required.', $fixer->getName()));
+            }
         } else {
             $this->assertNull($definition->getConfigurationDescription(), sprintf('[%s] No configuration description expected.', $fixer->getName()));
             $this->assertNull($definition->getDefaultConfiguration(), sprintf('[%s] No default configuration expected.', $fixer->getName()));
@@ -515,7 +519,6 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $fixer = $this->prophesize('PhpCsFixer\Fixer\FixerInterface');
         $fixer->getName()->willReturn($name);
         $fixer->getPriority()->willReturn($priority);
-        //$fixer->configure(Argument::is(null))->willReturn(null); Needed?
 
         return $fixer->reveal();
     }

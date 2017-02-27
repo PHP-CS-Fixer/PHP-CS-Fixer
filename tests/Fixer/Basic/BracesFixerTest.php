@@ -446,11 +446,12 @@ if (1) {
             ),
             array(
                 '<?php
-    declare(ticks=1) {
+    declare(ticks = 1) {
         $ticks = 1;
     }',
                 '<?php
-    declare(ticks=1) {
+    declare  (
+    ticks = 1  ) {
   $ticks = 1;
     }',
             ),
@@ -1438,7 +1439,7 @@ while (true) {
             ),
             array(
                 '<?php
-declare(ticks=1) {
+declare(ticks   =   1) {
 }',
                 '<?php
 declare   (   ticks   =   1   )   {
@@ -1692,6 +1693,41 @@ use const some\a\{ConstA, ConstB, ConstC};
     public function providePreserveLineAfterControlBrace()
     {
         return array(
+            array(
+                '<?php
+if (1==1) { // test
+ $a = 1;
+}
+echo $a;',
+                '<?php
+if (1==1) // test
+{ $a = 1; }
+echo $a;',
+            ),
+            array(
+                '<?php
+if ($test) { // foo
+    echo 1;
+}
+if (1 === 1) {//a
+$a = "b"; /*d*/
+}//c
+echo $a;
+if ($a === 3) /**/
+{echo 1;}
+',
+                '<?php
+if ($test) // foo
+ {
+    echo 1;
+}
+if (1 === 1)//a
+{$a = "b"; /*d*/}//c
+echo $a;
+if ($a === 3) /**/
+{echo 1;}
+',
+            ),
             array(
                 '<?php
 if (true) {

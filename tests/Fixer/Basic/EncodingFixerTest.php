@@ -22,9 +22,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class EncodingFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string $expected
-     * @param string $input
-     * @param string $file
+     * @param string       $expected
+     * @param string       $input
+     * @param \SplFileInfo $file
      *
      * @dataProvider provideExamples
      */

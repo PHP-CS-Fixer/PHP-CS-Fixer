@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Config;
 use PhpCsFixer\Console\Command\FixCommand;
+use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\FixerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,6 +26,60 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  */
 final class ConfigTest extends \PHPUnit_Framework_TestCase
 {
+    public function testConfigRulesUsingSeparateMethod()
+    {
+        $config = new Config();
+        $configResolver = new ConfigurationResolver(
+            $config, array(
+                'rules' => 'cast_spaces,braces',
+            ),
+            getcwd()
+        );
+
+        $this->assertArraySubset(
+            array(
+                'cast_spaces' => true,
+                'braces' => true,
+            ),
+            $configResolver->getRules()
+        );
+    }
+
+    public function testConfigRulesUsingJsonMethod()
+    {
+        $config = new Config();
+        $configResolver = new ConfigurationResolver(
+            $config, array(
+                'rules' => '{"array_syntax": {"syntax": "short"}, "cast_spaces": true}',
+            ),
+            getcwd()
+        );
+
+        $this->assertArraySubset(
+            array(
+                'array_syntax' => array(
+                    'syntax' => 'short',
+                ),
+                'cast_spaces' => true,
+            ),
+            $configResolver->getRules()
+        );
+    }
+
+    public function testConfigRulesUsingInvalidJson()
+    {
+        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException');
+
+        $config = new Config();
+        $configResolver = new ConfigurationResolver(
+            $config, array(
+                'rules' => '{blah',
+            ),
+            getcwd()
+        );
+        $configResolver->getRules();
+    }
+
     public function testCustomConfig()
     {
         $customConfigFile = __DIR__.'/Fixtures/.php_cs_custom.php';

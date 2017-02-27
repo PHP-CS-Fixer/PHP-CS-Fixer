@@ -90,11 +90,11 @@ final class BracesFixer extends AbstractFixer implements ConfigurableFixerInterf
 class Foo {
     public function bar($baz) {
         if ($baz = 900) echo "Hello!";
-        
+
         if ($baz = 9000)
             echo "Wait!";
-            
-        if ($baz == true) 
+
+        if ($baz == true)
         {
             echo "Why?";
         }
@@ -102,8 +102,8 @@ class Foo {
         {
             echo "Ha?";
         }
-        
-        if (is_array($baz)) 
+
+        if (is_array($baz))
             foreach ($baz as $b)
             {
                 echo $b;
@@ -155,8 +155,8 @@ $negative = function ($item) {
             if ($token->isGivenKind($controlTokens)) {
                 $prevIndex = $this->findParenthesisEnd($tokens, $index);
             } elseif (
-                $token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($index) ||
-                $token->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)
+                ($token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($index)) ||
+                ($token->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($index))
             ) {
                 $prevIndex = $tokens->getNextTokenOfKind($index, array('{'));
                 $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
@@ -167,7 +167,7 @@ $negative = function ($item) {
             $commentIndex = $tokens->getNextNonWhitespace($prevIndex);
             $commentToken = $tokens[$commentIndex];
 
-            if (!$commentToken->isGivenKind(T_COMMENT) || '/*' === substr($commentToken->getContent(), 0, 2)) {
+            if (!$commentToken->isGivenKind(T_COMMENT) || 0 === strpos($commentToken->getContent(), '/*')) {
                 continue;
             }
 
@@ -179,17 +179,22 @@ $negative = function ($item) {
             }
 
             $tokenTmp = $tokens[$braceIndex];
-            $trimIndex = $tokens->getPrevNonWhitespace($braceIndex);
-            $tokens[$trimIndex]->setContent(rtrim($tokens[$trimIndex]->getContent()));
 
             $newBraceIndex = $prevIndex + 1;
             for ($i = $braceIndex; $i > $newBraceIndex; --$i) {
+                // we might be moving one white space next to another, these have to be merged
                 $tokens[$i] = $tokens[$i - 1];
+                if ($tokens[$i]->isWhitespace() && $tokens[$i + 1]->isWhitespace()) {
+                    $tokens[$i]->setContent($tokens[$i]->getContent().$tokens[$i + 1]->getContent());
+                    $tokens[$i + 1]->clear();
+                }
             }
 
             $tokens[$newBraceIndex] = $tokenTmp;
-            if ($tokens[$braceIndex]->isWhitespace()) {
-                $tokens[$braceIndex]->clear();
+            $c = $tokens[$braceIndex]->getContent();
+            if (substr_count($c, "\n") > 1) {
+                // left trim till last line break
+                $tokens[$braceIndex]->setContent(substr($c, strrpos($c, "\n")));
             }
         }
     }
@@ -704,15 +709,17 @@ $negative = function ($item) {
         $tokens->removeTrailingWhitespace($index);
 
         $startParenthesisIndex = $tokens->getNextTokenOfKind($index, array('('));
+        $tokens->removeTrailingWhitespace($startParenthesisIndex);
+
         $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
+        $tokens->removeLeadingWhitespace($endParenthesisIndex);
+
         $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, array(';', '{'));
         $startBraceToken = $tokens[$startBraceIndex];
 
         if ($startBraceToken->equals('{')) {
             $this->fixSingleLineWhitespaceForDeclare($tokens, $startBraceIndex);
         }
-
-        $this->removeWhitespaceInParenthesis($tokens, $startParenthesisIndex, $endParenthesisIndex);
     }
 
     /**
@@ -729,20 +736,6 @@ $negative = function ($item) {
             $tokens[$startBraceIndex - 1]->isWhitespace(" \t")
         ) {
             $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
-        }
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $startParenthesisIndex
-     * @param int    $endParenthesisIndex
-     */
-    private function removeWhitespaceInParenthesis(Tokens $tokens, $startParenthesisIndex, $endParenthesisIndex)
-    {
-        for ($i = $startParenthesisIndex; $i < $endParenthesisIndex; ++$i) {
-            if ($tokens[$i]->isWhitespace()) {
-                $tokens[$i]->clear();
-            }
         }
     }
 

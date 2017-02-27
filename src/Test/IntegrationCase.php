@@ -93,11 +93,6 @@ final class IntegrationCase
         $this->inputCode = $inputCode;
     }
 
-    public static function create()
-    {
-        return new self();
-    }
-
     public function hasInputCode()
     {
         return null !== $this->inputCode;

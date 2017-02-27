@@ -76,7 +76,7 @@ final class PhpdocInlineTagFixer extends AbstractFixer
 /**
  * @{TUTORIAL}
  * {{ @link }}
- * {@examples} 
+ * {@examples}
  * @inheritdocs
  */
 '

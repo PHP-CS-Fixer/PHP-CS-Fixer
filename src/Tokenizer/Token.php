@@ -242,7 +242,7 @@ class Token
     public function getName()
     {
         if (!isset($this->id)) {
-            return;
+            return null;
         }
 
         if (CT::has($this->id)) {
