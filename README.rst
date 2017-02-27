@@ -151,7 +151,7 @@ project:
 
     $ php php-cs-fixer.phar fix /path/to/project --rules=@PSR2
 
-By default, all PSR rules are run.
+By default the PSR1 and PSR2 rules are used.
 
 The ``--rules`` option lets you choose the exact rules to
 apply (the rule names must be separated by a comma):
@@ -172,6 +172,12 @@ When using combinations of exact and blacklist rules, applying exact rules along
 .. code-block:: bash
 
     $ php php-cs-fixer.phar fix /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_return,strict_comparison
+
+Complete configuration for rules can be supplied using a ``json`` formatted string.
+
+.. code-block:: bash
+
+    $ php php-cs-fixer.phar fix /path/to/project --rules='{"concat_space": {"spacing": "none"}}'
 
 A combination of ``--dry-run`` and ``--diff`` will
 display a summary of proposed fixes, leaving your files unchanged.
@@ -787,7 +793,8 @@ Then, add the following command to your CI:
 
 .. code-block:: bash
 
-    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`
+    $ IFS=$'\n'; COMMIT_SCA_FILES=($(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}")); unset IFS
+    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --using-cache=no --path-mode=intersection "${COMMIT_SCA_FILES[@]}"
 
 Where ``$COMMIT_RANGE`` is your range of commits, eg ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
