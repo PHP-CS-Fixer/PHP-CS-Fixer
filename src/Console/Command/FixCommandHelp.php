@@ -57,7 +57,7 @@ project:
 
     <info>$ php %command.full_name% /path/to/project --rules=@PSR2</info>
 
-By default, all PSR rules are run.
+By default the PSR1 and PSR2 rules are used.
 
 The <comment>--rules</comment> option lets you choose the exact rules to
 apply (the rule names must be separated by a comma):
@@ -72,6 +72,10 @@ using <comment>-name_of_fixer</comment>:
 When using combinations of exact and blacklist rules, applying exact rules along with above blacklisted results:
 
     <info>$ php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_return,strict_comparison</info>
+
+Complete configuration for rules can be supplied using a ``json`` formatted string.
+
+    <info>$ php %command.full_name% /path/to/project --rules='{"concat_space": {"spacing": "none"}}'</info>
 
 A combination of <comment>--dry-run</comment> and <comment>--diff</comment> will
 display a summary of proposed fixes, leaving your files unchanged.
