@@ -44,7 +44,7 @@ final class ErrorOutputTest extends \PHPUnit_Framework_TestCase
         $output->setVerbosity($verbosityLevel);
 
         $errorOutput = new ErrorOutput($output);
-        $errorOutput->listErrors($process, array($error));
+        $errorOutput->listErrors($process, [$error]);
 
         rewind($output->getStream());
         $displayed = stream_get_contents($output->getStream());
@@ -95,12 +95,12 @@ Files that were not fixed due to errors reported during %s:
         list($exceptionLineNumber, $error) = $this->getErrorAndLineNumber(); // note: keep call and __LINE__ separated with one line break
         ++$lineNumber;
 
-        return array(
-            array($error, OutputInterface::VERBOSITY_NORMAL, $lineNumber, $exceptionLineNumber, 'VN'),
-            array($error, OutputInterface::VERBOSITY_VERBOSE, $lineNumber, $exceptionLineNumber, 'VV'),
-            array($error, OutputInterface::VERBOSITY_VERY_VERBOSE, $lineNumber, $exceptionLineNumber, 'VVV'),
-            array($error, OutputInterface::VERBOSITY_DEBUG, $lineNumber, $exceptionLineNumber, 'DEBUG'),
-        );
+        return [
+            [$error, OutputInterface::VERBOSITY_NORMAL, $lineNumber, $exceptionLineNumber, 'VN'],
+            [$error, OutputInterface::VERBOSITY_VERBOSE, $lineNumber, $exceptionLineNumber, 'VV'],
+            [$error, OutputInterface::VERBOSITY_VERY_VERBOSE, $lineNumber, $exceptionLineNumber, 'VVV'],
+            [$error, OutputInterface::VERBOSITY_DEBUG, $lineNumber, $exceptionLineNumber, 'DEBUG'],
+        ];
     }
 
     private function getErrorAndLineNumber()
@@ -112,6 +112,6 @@ Files that were not fixed due to errors reported during %s:
             new \InvalidArgumentException('PHPUnit IAE')
         );
 
-        return array($lineNumber + 1, new Error(Error::TYPE_EXCEPTION, __FILE__, $exception));
+        return [$lineNumber + 1, new Error(Error::TYPE_EXCEPTION, __FILE__, $exception)];
     }
 }

@@ -29,7 +29,7 @@ final class SingleQuoteFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Convert double quotes to single quotes for simple strings.',
-            array(new CodeSample('<?php $a = "sample";'))
+            [new CodeSample('<?php $a = "sample";')]
         );
     }
 
@@ -59,7 +59,7 @@ final class SingleQuoteFixer extends AbstractFixer
                 !preg_match('/(?<!\\\\)(?:\\\\{2})*\\\\(?!["$\\\\])/', $content)
             ) {
                 $content = substr($content, 1, -1);
-                $content = str_replace(array('\\"', '\\$'), array('"', '$'), $content);
+                $content = str_replace(['\\"', '\\$'], ['"', '$'], $content);
                 $token->setContent('\''.$content.'\'');
             }
         }

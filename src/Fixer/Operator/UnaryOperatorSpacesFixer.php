@@ -30,7 +30,7 @@ final class UnaryOperatorSpacesFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Unary operators should be placed adjacent to their operands.',
-            array(new CodeSample("<?php\n\$sample ++;\n-- \$sample;\n\$sample = ! ! \$a;\n\$sample = ~  \$c;\nfunction & foo(){}"))
+            [new CodeSample("<?php\n\$sample ++;\n-- \$sample;\n\$sample = ! ! \$a;\n\$sample = ~  \$c;\nfunction & foo(){}")]
         );
     }
 

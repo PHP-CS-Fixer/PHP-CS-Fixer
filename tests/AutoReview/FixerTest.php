@@ -38,7 +38,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
      */
     public function testFixerDefinitions(FixerInterface $fixer)
     {
-        $this->assertInstanceOf('PhpCsFixer\Fixer\DefinedFixerInterface', $fixer);
+        $this->assertInstanceOf(\PhpCsFixer\Fixer\DefinedFixerInterface::class, $fixer);
 
         $definition = $fixer->getDefinition();
 
@@ -51,7 +51,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
         $sampleCounter = 0;
         foreach ($samples as $sample) {
             ++$sampleCounter;
-            $this->assertInstanceOf('PhpCsFixer\FixerDefinition\CodeSampleInterface', $sample, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
+            $this->assertInstanceOf(\PhpCsFixer\FixerDefinition\CodeSampleInterface::class, $sample, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
             $code = $sample->getCode();
             $this->assertStringIsNotEmpty($code, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
 
@@ -119,13 +119,13 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
      */
     public function testFixersAreDefined(FixerInterface $fixer)
     {
-        $this->assertInstanceOf('PhpCsFixer\Fixer\DefinedFixerInterface', $fixer);
+        $this->assertInstanceOf(\PhpCsFixer\Fixer\DefinedFixerInterface::class, $fixer);
     }
 
     public function provideFixerDefinitionsCases()
     {
         return array_map(function (FixerInterface $fixer) {
-            return array($fixer);
+            return [$fixer];
         }, $this->getAllFixers());
     }
 
@@ -138,7 +138,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
     {
         $configurationDefinition = $fixer->getConfigurationDefinition();
 
-        $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface', $configurationDefinition);
+        $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface::class, $configurationDefinition);
 
         foreach ($configurationDefinition->getOptions() as $option) {
             $this->assertNotEmpty($option->getDescription());
@@ -152,7 +152,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
         });
 
         return array_map(function (FixerInterface $fixer) {
-            return array($fixer);
+            return [$fixer];
         }, $fixers);
     }
 

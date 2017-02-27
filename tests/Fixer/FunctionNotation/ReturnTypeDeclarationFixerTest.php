@@ -27,11 +27,11 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
     public function testInvalidConfiguration()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '#^\[return_type_declaration\] Invalid configuration: The option "s" does not exist. (Known|Defined) options are: "space_before".$#'
         );
 
-        $this->fixer->configure(array('s' => 9000));
+        $this->fixer->configure(['s' => 9000]);
     }
 
     /**
@@ -57,7 +57,7 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
      */
     public function testFixWithDefaultConfiguration($expected, $input = null)
     {
-        $this->fixer->configure(array());
+        $this->fixer->configure([]);
 
         $this->doTest($expected, $input);
     }
@@ -70,31 +70,31 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
      */
     public function testFixWithSpaceBeforeNone($expected, $input = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'space_before' => 'none',
-        ));
+        ]);
 
         $this->doTest($expected, $input);
     }
 
     public function testFixProviderWithSpaceBeforeNone()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php function foo1(int $a) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php function foo2(int $a): string {}',
                 '<?php function foo2(int $a):string {}',
-            ),
-            array(
+            ],
+            [
                 '<?php function foo3(int $c)/**/ : /**/ string {}',
-            ),
-            array(
+            ],
+            [
                 '<?php function foo4(int $a): string {}',
                 '<?php function foo4(int $a)  :  string {}',
-            ),
-            array(
+            ],
+            [
                 '<?php function foo5(int $e)#
 : #
 #
@@ -103,8 +103,8 @@ string {}',
 :#
 #
 string {}',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     function foo1(int $a): string {}
                     function foo2(int $a): string {}
@@ -127,8 +127,8 @@ string {}',
                     function foo8(int $a):string {}
                     function foo9(int $a):string {}
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -139,34 +139,34 @@ string {}',
      */
     public function testFixWithSpaceBeforeOne($expected, $input = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'space_before' => 'one',
-        ));
+        ]);
 
         $this->doTest($expected, $input);
     }
 
     public function testFixProviderWithSpaceBeforeOne()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php function fooA(int $a) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php function fooB(int $a) : string {}',
                 '<?php function fooB(int $a):string {}',
-            ),
-            array(
+            ],
+            [
                 '<?php function fooC(int $a)/**/ : /**/string {}',
                 '<?php function fooC(int $a)/**/:/**/string {}',
-            ),
-            array(
+            ],
+            [
                 '<?php function fooD(int $a) : string {}',
                 '<?php function fooD(int $a)  :  string {}',
-            ),
-            array(
+            ],
+            [
                 '<?php function fooE(int $a) /**/ : /**/ string {}',
-            ),
-        );
+            ],
+        ];
     }
 }

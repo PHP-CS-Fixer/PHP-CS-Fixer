@@ -38,8 +38,8 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     /**/use Foo;
 use FooB;
@@ -47,8 +47,8 @@ use FooB;
                 '<?php
                     /**/use Foo,FooB;
                 ',
-            ),
-            array(
+            ],
+            [
                 <<<'EOF'
 use Some, Not, PHP, Like, Use, Statement;
 <?php
@@ -82,8 +82,8 @@ use FooF,
 use FooZ;
 
 EOF
-            ),
-            array(
+            ],
+            [
                 <<<'EOF'
 <?php
 
@@ -145,8 +145,8 @@ namespace Boo {
 }
 
 EOF
-            ),
-            array(
+            ],
+            [
                 '<?php
                     use FooA;
                     use FooB;
@@ -154,13 +154,13 @@ EOF
                 '<?php
                     use FooA, FooB;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php use FooA;
 use FooB?>',
                 '<?php use FooA, FooB?>',
-            ),
-            array(
+            ],
+            [
                 '<?php
 use B;
 use C;
@@ -174,8 +174,8 @@ use B,C;
     use E,F;
         use G,H;
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 use B;
 /*
@@ -186,8 +186,8 @@ use B,
 /*
 */C;
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 use A;
 use B;
@@ -201,13 +201,13 @@ use A,B,
 #,{} use ; :
 /*,{} use ; :*/
 C  ; ',
-            ),
-            array(
+            ],
+            [
                 '<?php use Z ;
 use X ?><?php new X(); // run before white space around semicolon',
                 '<?php use Z , X ?><?php new X(); // run before white space around semicolon',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -224,8 +224,8 @@ use X ?><?php new X(); // run before white space around semicolon',
 
     public function provide70Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 use some\a\ClassA;
 use some\a\ClassB;
@@ -250,8 +250,8 @@ ConstC};
 use A\{B};
 use D\{E,F};
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php use FooA#
 ;#
 #
@@ -260,8 +260,8 @@ use FooB;',
 ,#
 #
 FooB;',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -279,11 +279,11 @@ FooB;',
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\r\n    use FooA;\r\n    use FooB;",
                 "<?php\r\n    use FooA, FooB;",
-            ),
-        );
+            ],
+        ];
     }
 }

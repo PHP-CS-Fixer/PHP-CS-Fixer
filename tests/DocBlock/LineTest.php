@@ -50,7 +50,7 @@ final class LineTest extends \PHPUnit_Framework_TestCase
      *
      * @var string[]
      */
-    private static $content = array(
+    private static $content = [
         "/**\n",
         "     * Test docblock.\n",
         "     *\n",
@@ -66,14 +66,14 @@ final class LineTest extends \PHPUnit_Framework_TestCase
         "     *\n",
         "     * @return void\n",
         '     */',
-    );
+    ];
 
     /**
      * This represents the if each line is "useful".
      *
      * @var bool[]
      */
-    private static $useful = array(
+    private static $useful = [
         false,
         true,
         false,
@@ -89,14 +89,14 @@ final class LineTest extends \PHPUnit_Framework_TestCase
         false,
         true,
         false,
-    );
+    ];
 
     /**
      * This represents the if each line "contains a tag".
      *
      * @var bool[]
      */
-    private static $tag = array(
+    private static $tag = [
         false,
         false,
         false,
@@ -112,7 +112,7 @@ final class LineTest extends \PHPUnit_Framework_TestCase
         false,
         true,
         false,
-    );
+    ];
 
     /**
      * @param int    $pos
@@ -155,10 +155,10 @@ final class LineTest extends \PHPUnit_Framework_TestCase
 
     public function provideLines()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$content as $index => $content) {
-            $cases[] = array($index, $content);
+            $cases[] = [$index, $content];
         }
 
         return $cases;
@@ -180,10 +180,10 @@ final class LineTest extends \PHPUnit_Framework_TestCase
 
     public function provideLinesWithUseful()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$useful as $index => $useful) {
-            $cases[] = array($index, $useful);
+            $cases[] = [$index, $useful];
         }
 
         return $cases;
@@ -205,10 +205,10 @@ final class LineTest extends \PHPUnit_Framework_TestCase
 
     public function provideLinesWithTag()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$tag as $index => $tag) {
-            $cases[] = array($index, $tag);
+            $cases[] = [$index, $tag];
         }
 
         return $cases;

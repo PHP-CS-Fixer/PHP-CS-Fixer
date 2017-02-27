@@ -27,25 +27,25 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param string|null $input
      *
-     * @dataProvider provideDoFixCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideDoFixCases()
+    public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\n/** */class min1{}",
                 "<?php\n/** @inheritdoc */class min1{}",
-            ),
-            array(
+            ],
+            [
                 "<?php\nclass min2{/** */}",
                 "<?php\nclass min2{/** @inheritdoc */}",
-            ),
-            array(
+            ],
+            [
                 '<?php
                 class A
                 {
@@ -86,8 +86,8 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     public function C($c){}
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 class B
                 {
@@ -102,8 +102,8 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     public function B(){}
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 /** D C */
                 class C
@@ -116,8 +116,8 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                 {
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 /** E */
                 class E
@@ -130,8 +130,8 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                 {
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 /** F */
                 class F
@@ -144,8 +144,8 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                 {
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     /** */
                     class G1{}
@@ -158,8 +158,8 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     /** @inheritdoc */
                     class G2{}
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 class H
                 {
@@ -167,8 +167,8 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     public function H(){}
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 class J extends Z
                 {
@@ -176,8 +176,8 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     public function H(){}
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 interface K extends Z
                 {
@@ -185,8 +185,8 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     public function H();
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 /** */
                 interface K
@@ -203,26 +203,8 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     public function H();
                 }
                 ',
-            ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provide54Cases
-     * @requires PHP 5.4
-     */
-    public function testFix54($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provide54Cases()
-    {
-        return array(
-            array(
+            ],
+            [
                 '<?php
                 trait T
                 {
@@ -231,8 +213,8 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     {
                     }
                 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 class B
                 {
@@ -273,8 +255,8 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     }
                 }
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -291,8 +273,8 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
 
     public function provide70Cases()
     {
-        return array(
-            array(
+        return [
+            [
 '<?php
 
 /** delete 1 */
@@ -381,7 +363,7 @@ class A
     }
 }
 ',
-            ),
-        );
+            ],
+        ];
     }
 }

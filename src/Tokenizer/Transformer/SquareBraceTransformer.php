@@ -36,12 +36,12 @@ final class SquareBraceTransformer extends AbstractTransformer
      */
     public function getCustomTokens()
     {
-        return array(
+        return [
             CT::T_ARRAY_SQUARE_BRACE_OPEN,
             CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
             CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-        );
+        ];
     }
 
     /**
@@ -79,8 +79,8 @@ final class SquareBraceTransformer extends AbstractTransformer
     {
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
 
-        $tokens[$index]->override(array(CT::T_ARRAY_SQUARE_BRACE_OPEN, '['));
-        $tokens[$endIndex]->override(array(CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'));
+        $tokens[$index]->override([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']);
+        $tokens[$endIndex]->override([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']);
     }
 
     /**
@@ -91,8 +91,8 @@ final class SquareBraceTransformer extends AbstractTransformer
     {
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
 
-        $tokens[$index]->override(array(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '['));
-        $tokens[$endIndex]->override(array(CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'));
+        $tokens[$index]->override([CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '[']);
+        $tokens[$endIndex]->override([CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']']);
     }
 
     /**
@@ -105,20 +105,20 @@ final class SquareBraceTransformer extends AbstractTransformer
      */
     private function isShortArray(Tokens $tokens, $index)
     {
-        static $disallowedPrevTokens = array(
+        static $disallowedPrevTokens = [
             ')',
             ']',
             '}',
             '"',
-            array(T_CONSTANT_ENCAPSED_STRING),
-            array(T_STRING),
-            array(T_STRING_VARNAME),
-            array(T_VARIABLE),
-            array(CT::T_ARRAY_SQUARE_BRACE_CLOSE),
-            array(CT::T_DYNAMIC_PROP_BRACE_CLOSE),
-            array(CT::T_DYNAMIC_VAR_BRACE_CLOSE),
-            array(CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE),
-        );
+            [T_CONSTANT_ENCAPSED_STRING],
+            [T_STRING],
+            [T_STRING_VARNAME],
+            [T_VARIABLE],
+            [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
+            [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
+            [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
+            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
+        ];
 
         $token = $tokens[$index];
 
@@ -151,19 +151,19 @@ final class SquareBraceTransformer extends AbstractTransformer
             return false;
         }
 
-        static $disallowedPrevTokens = array(
+        static $disallowedPrevTokens = [
             ')',
             ']',
             '"',
-            array(T_CONSTANT_ENCAPSED_STRING),
-            array(T_STRING),
-            array(T_STRING_VARNAME),
-            array(T_VARIABLE),
-            array(CT::T_ARRAY_SQUARE_BRACE_CLOSE),
-            array(CT::T_DYNAMIC_PROP_BRACE_CLOSE),
-            array(CT::T_DYNAMIC_VAR_BRACE_CLOSE),
-            array(CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE),
-        );
+            [T_CONSTANT_ENCAPSED_STRING],
+            [T_STRING],
+            [T_STRING_VARNAME],
+            [T_VARIABLE],
+            [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
+            [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
+            [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
+            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
+        ];
 
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
         if ($prevToken->equalsAny($disallowedPrevTokens)) {

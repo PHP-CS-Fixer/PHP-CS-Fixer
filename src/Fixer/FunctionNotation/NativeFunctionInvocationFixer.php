@@ -34,7 +34,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
     {
         return new FixerDefinition(
             'Add leading `\` before function invocation of internal function to speed up resolving.',
-            array(
+            [
                 new CodeSample(
 '<?php
 
@@ -58,13 +58,13 @@ function baz($options)
 
     return json_encode($options);
 }',
-                    array(
-                        'exclude' => array(
+                    [
+                        'exclude' => [
                             'json_encode',
-                        ),
-                    )
+                        ],
+                    ]
                 ),
-            ),
+            ],
             null,
             'Risky when any of the functions are overridden.'
         );
@@ -93,7 +93,7 @@ function baz($options)
     {
         $functionNames = $this->getFunctionNames();
 
-        $indexes = array();
+        $indexes = [];
 
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
             $token = $tokens[$index];
@@ -111,14 +111,14 @@ function baz($options)
             }
 
             $functionNamePrefix = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$functionNamePrefix]->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION))) {
+            if ($tokens[$functionNamePrefix]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION])) {
                 continue;
             }
 
             if ($tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR)) {
                 // skip if the call is to a constructor or to a function in a namespace other than the default
                 $prev = $tokens->getPrevMeaningfulToken($functionNamePrefix);
-                if ($tokens[$prev]->isGivenKind(array(T_STRING, T_NEW))) {
+                if ($tokens[$prev]->isGivenKind([T_STRING, T_NEW])) {
                     continue;
                 }
             }
@@ -139,7 +139,7 @@ function baz($options)
 
         $indexes = \array_reverse($indexes);
         foreach ($indexes as $index) {
-            $tokens->insertAt($index, new Token(array(T_NS_SEPARATOR, '\\')));
+            $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
         }
     }
 
@@ -150,8 +150,8 @@ function baz($options)
     {
         $exclude = new FixerOptionBuilder('exclude', 'List of functions to ignore.');
         $exclude = $exclude
-            ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(function ($value) {
+            ->setAllowedTypes(['array'])
+            ->setAllowedValues([function ($value) {
                 foreach ($value as $functionName) {
                     if (!\is_string($functionName) || \trim($functionName) === '' || \trim($functionName) !== $functionName) {
                         throw new InvalidOptionsException(\sprintf(
@@ -162,12 +162,12 @@ function baz($options)
                 }
 
                 return true;
-            }))
-            ->setDefault(array())
+            }])
+            ->setDefault([])
             ->getOption()
         ;
 
-        return new FixerConfigurationResolver(array($exclude));
+        return new FixerConfigurationResolver([$exclude]);
     }
 
     /**

@@ -74,205 +74,205 @@ final class TokensTest extends \PHPUnit_Framework_TestCase
 
     public function provideFindSequence()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $x = 1;',
                 null,
-                array(
+                [
                     new Token(';'),
-                ),
+                ],
                 7,
-            ),
-            array(
+            ],
+            [
                 '<?php $x = 2;',
                 null,
-                array(
-                    array(T_OPEN_TAG),
-                    array(T_VARIABLE, '$y'),
-                ),
-            ),
-            array(
+                [
+                    [T_OPEN_TAG],
+                    [T_VARIABLE, '$y'],
+                ],
+            ],
+            [
                 '<?php $x = 3;',
-                array(
-                    0 => new Token(array(T_OPEN_TAG, '<?php ')),
-                    1 => new Token(array(T_VARIABLE, '$x')),
-                ),
-                array(
-                    array(T_OPEN_TAG),
-                    array(T_VARIABLE, '$x'),
-                ),
-            ),
-            array(
+                [
+                    0 => new Token([T_OPEN_TAG, '<?php ']),
+                    1 => new Token([T_VARIABLE, '$x']),
+                ],
+                [
+                    [T_OPEN_TAG],
+                    [T_VARIABLE, '$x'],
+                ],
+            ],
+            [
                 '<?php $x = 4;',
-                array(
+                [
                     3 => new Token('='),
-                    5 => new Token(array(T_LNUMBER, '4')),
+                    5 => new Token([T_LNUMBER, '4']),
                     6 => new Token(';'),
-                ),
-                array(
+                ],
+                [
                     '=',
-                    array(T_LNUMBER, '4'),
+                    [T_LNUMBER, '4'],
                     ';',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php $x = 5;',
-                array(
-                    0 => new Token(array(T_OPEN_TAG, '<?php ')),
-                    1 => new Token(array(T_VARIABLE, '$x')),
-                ),
-                array(
-                    array(T_OPEN_TAG),
-                    array(T_VARIABLE, '$x'),
-                ),
+                [
+                    0 => new Token([T_OPEN_TAG, '<?php ']),
+                    1 => new Token([T_VARIABLE, '$x']),
+                ],
+                [
+                    [T_OPEN_TAG],
+                    [T_VARIABLE, '$x'],
+                ],
                 0,
-            ),
-            array(
+            ],
+            [
                 '<?php $x = 6;',
                 null,
-                array(
-                    array(T_OPEN_TAG),
-                    array(T_VARIABLE, '$x'),
-                ),
+                [
+                    [T_OPEN_TAG],
+                    [T_VARIABLE, '$x'],
+                ],
                 1,
-            ),
-            array(
+            ],
+            [
                 '<?php $x = 7;',
-                array(
+                [
                     3 => new Token('='),
-                    5 => new Token(array(T_LNUMBER, '7')),
+                    5 => new Token([T_LNUMBER, '7']),
                     6 => new Token(';'),
-                ),
-                array(
+                ],
+                [
                     '=',
-                    array(T_LNUMBER, '7'),
+                    [T_LNUMBER, '7'],
                     ';',
-                ),
+                ],
                 3,
                 6,
-            ),
-            array(
+            ],
+            [
                 '<?php $x = 8;',
                 null,
-                array(
+                [
                     '=',
-                    array(T_LNUMBER, '8'),
+                    [T_LNUMBER, '8'],
                     ';',
-                ),
+                ],
                 4,
                 6,
-            ),
-            array(
+            ],
+            [
                 '<?php $x = 9;',
                 null,
-                array(
+                [
                     '=',
-                    array(T_LNUMBER, '9'),
+                    [T_LNUMBER, '9'],
                     ';',
-                ),
+                ],
                 3,
                 5,
-            ),
-            array(
+            ],
+            [
                 '<?php $x = 10;',
-                array(
-                    0 => new Token(array(T_OPEN_TAG, '<?php ')),
-                    1 => new Token(array(T_VARIABLE, '$x')),
-                ),
-                array(
-                    array(T_OPEN_TAG),
-                    array(T_VARIABLE, '$x'),
-                ),
+                [
+                    0 => new Token([T_OPEN_TAG, '<?php ']),
+                    1 => new Token([T_VARIABLE, '$x']),
+                ],
+                [
+                    [T_OPEN_TAG],
+                    [T_VARIABLE, '$x'],
+                ],
                 0,
                 1,
                 true,
-            ),
-            array(
+            ],
+            [
                 '<?php $x = 11;',
                 null,
-                array(
-                    array(T_OPEN_TAG),
-                    array(T_VARIABLE, '$X'),
-                ),
+                [
+                    [T_OPEN_TAG],
+                    [T_VARIABLE, '$X'],
+                ],
                 0,
                 1,
                 true,
-            ),
-            array(
+            ],
+            [
                 '<?php $x = 12;',
                 null,
-                array(
-                    array(T_OPEN_TAG),
-                    array(T_VARIABLE, '$X'),
-                ),
+                [
+                    [T_OPEN_TAG],
+                    [T_VARIABLE, '$X'],
+                ],
                 0,
                 1,
-                array(1, true),
-            ),
-            array(
+                [1, true],
+            ],
+            [
                 '<?php $x = 13;',
-                array(
-                    0 => new Token(array(T_OPEN_TAG, '<?php ')),
-                    1 => new Token(array(T_VARIABLE, '$x')),
-                ),
-                array(
-                    array(T_OPEN_TAG),
-                    array(T_VARIABLE, '$X'),
-                ),
+                [
+                    0 => new Token([T_OPEN_TAG, '<?php ']),
+                    1 => new Token([T_VARIABLE, '$x']),
+                ],
+                [
+                    [T_OPEN_TAG],
+                    [T_VARIABLE, '$X'],
+                ],
                 0,
                 1,
                 false,
-            ),
-            array(
+            ],
+            [
                 '<?php $x = 14;',
-                array(
-                    0 => new Token(array(T_OPEN_TAG, '<?php ')),
-                    1 => new Token(array(T_VARIABLE, '$x')),
-                ),
-                array(
-                    array(T_OPEN_TAG),
-                    array(T_VARIABLE, '$X'),
-                ),
+                [
+                    0 => new Token([T_OPEN_TAG, '<?php ']),
+                    1 => new Token([T_VARIABLE, '$x']),
+                ],
+                [
+                    [T_OPEN_TAG],
+                    [T_VARIABLE, '$X'],
+                ],
                 0,
                 1,
-                array(1, false),
-            ),
-            array(
+                [1, false],
+            ],
+            [
                 '<?php $x = 15;',
-                array(
-                    0 => new Token(array(T_OPEN_TAG, '<?php ')),
-                    1 => new Token(array(T_VARIABLE, '$x')),
-                ),
-                array(
-                    array(T_OPEN_TAG),
-                    array(T_VARIABLE, '$X'),
-                ),
+                [
+                    0 => new Token([T_OPEN_TAG, '<?php ']),
+                    1 => new Token([T_VARIABLE, '$x']),
+                ],
+                [
+                    [T_OPEN_TAG],
+                    [T_VARIABLE, '$X'],
+                ],
                 0,
                 1,
-                array(1 => false),
-            ),
-            array(
+                [1 => false],
+            ],
+            [
                 '<?php $x = 16;',
                 null,
-                array(
-                    array(T_OPEN_TAG),
-                    array(T_VARIABLE, '$X'),
-                ),
+                [
+                    [T_OPEN_TAG],
+                    [T_VARIABLE, '$X'],
+                ],
                 0,
                 1,
-                array(2 => false),
-            ),
-            array(
+                [2 => false],
+            ],
+            [
                 '<?php $x = 17;',
                 null,
-                array(
-                    array(T_VARIABLE, '$X'),
+                [
+                    [T_VARIABLE, '$X'],
                     '=',
-                ),
+                ],
                 0,
                 10,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -284,7 +284,7 @@ final class TokensTest extends \PHPUnit_Framework_TestCase
     public function testFindSequenceException($message, array $sequence)
     {
         $this->setExpectedException(
-            'InvalidArgumentException',
+            \InvalidArgumentException::class,
             $message
         );
 
@@ -297,18 +297,18 @@ final class TokensTest extends \PHPUnit_Framework_TestCase
         $emptyToken = new Token('!');
         $emptyToken->clear();
 
-        return array(
-            array('Invalid sequence.', array()),
-            array('Non-meaningful token at position: 0.', array(
-                array(T_WHITESPACE, '   '),
-            )),
-            array('Non-meaningful token at position: 1.', array(
-                '{', array(T_COMMENT, '// Foo'), '}',
-            )),
-            array('Non-meaningful token at position: 2.', array(
+        return [
+            ['Invalid sequence.', []],
+            ['Non-meaningful token at position: 0.', [
+                [T_WHITESPACE, '   '],
+            ]],
+            ['Non-meaningful token at position: 1.', [
+                '{', [T_COMMENT, '// Foo'], '}',
+            ]],
+            ['Non-meaningful token at position: 2.', [
                 '{', '!', $emptyToken, '}',
-            )),
-        );
+            ]],
+        ];
     }
 
     public function testClearRange()
@@ -356,16 +356,16 @@ PHP;
 
     public function provideMonolithicPhpDetection()
     {
-        return array(
-            array("<?php\n", true),
-            array("<?php\n?>", true),
-            array('', false),
-            array(' ', false),
-            array("#!/usr/bin/env php\n<?php\n", false),
-            array(" <?php\n", false),
-            array("<?php\n?> ", false),
-            array("<?php\n?><?php\n", false),
-        );
+        return [
+            ["<?php\n", true],
+            ["<?php\n?>", true],
+            ['', false],
+            [' ', false],
+            ["#!/usr/bin/env php\n<?php\n", false],
+            [" <?php\n", false],
+            ["<?php\n?> ", false],
+            ["<?php\n?><?php\n", false],
+        ];
     }
 
     /**
@@ -391,17 +391,17 @@ PHP;
 
     public function provideShortOpenTagMonolithicPhpDetection()
     {
-        return array(
-            array("<?\n", true),
-            array("<?\n?>", true),
-            array(" <?\n", false),
-            array("<?\n?> ", false),
-            array("<?\n?><?\n", false),
-            array("<?\n?><?php\n", false),
-            array("<?\n?><?=' ';\n", false),
-            array("<?php\n?><?\n", false),
-            array("<?=' '\n?><?\n", false),
-        );
+        return [
+            ["<?\n", true],
+            ["<?\n?>", true],
+            [" <?\n", false],
+            ["<?\n?> ", false],
+            ["<?\n?><?\n", false],
+            ["<?\n?><?php\n", false],
+            ["<?\n?><?=' ';\n", false],
+            ["<?php\n?><?\n", false],
+            ["<?=' '\n?><?\n", false],
+        ];
     }
 
     /**
@@ -412,30 +412,21 @@ PHP;
      */
     public function testShortOpenTagEchoMonolithicPhpDetection($source, $monolithic)
     {
-        /*
-         * short_open_tag setting is ignored by HHVM
-         * @see https://github.com/facebook/hhvm/issues/4758
-         */
-        if (!ini_get('short_open_tag') && 50400 > PHP_VERSION_ID && !defined('HHVM_VERSION')) {
-            // Short open tag echo is parsed as T_INLINE_HTML
-            $monolithic = false;
-        }
-
         $tokens = Tokens::fromCode($source);
         $this->assertSame($monolithic, $tokens->isMonolithicPhp());
     }
 
     public function provideShortOpenTagEchoMonolithicPhpDetection()
     {
-        return array(
-            array("<?=' ';\n", true),
-            array("<?=' '?>", true),
-            array(" <?=' ';\n", false),
-            array("<?=' '?> ", false),
-            array("<?php\n?><?=' ';\n", false),
-            array("<?=' '\n?><?php\n", false),
-            array("<?=' '\n?><?=' ';\n", false),
-        );
+        return [
+            ["<?=' ';\n", true],
+            ["<?=' '?>", true],
+            [" <?=' ';\n", false],
+            ["<?=' '?> ", false],
+            ["<?php\n?><?=' ';\n", false],
+            ["<?=' '\n?><?php\n", false],
+            ["<?=' '\n?><?=' ';\n", false],
+        ];
     }
 
     public function testTokenKindsFound()
@@ -463,12 +454,12 @@ EOF;
         $this->assertFalse($tokens->isTokenKindFound(T_INTERFACE));
         $this->assertFalse($tokens->isTokenKindFound(T_ARRAY));
 
-        $this->assertTrue($tokens->isAllTokenKindsFound(array(T_CLASS, T_RETURN)));
-        $this->assertFalse($tokens->isAllTokenKindsFound(array(T_CLASS, T_INTERFACE)));
+        $this->assertTrue($tokens->isAllTokenKindsFound([T_CLASS, T_RETURN]));
+        $this->assertFalse($tokens->isAllTokenKindsFound([T_CLASS, T_INTERFACE]));
 
-        $this->assertTrue($tokens->isAnyTokenKindsFound(array(T_CLASS, T_RETURN)));
-        $this->assertTrue($tokens->isAnyTokenKindsFound(array(T_CLASS, T_INTERFACE)));
-        $this->assertFalse($tokens->isAnyTokenKindsFound(array(T_INTERFACE, T_ARRAY)));
+        $this->assertTrue($tokens->isAnyTokenKindsFound([T_CLASS, T_RETURN]));
+        $this->assertTrue($tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]));
+        $this->assertFalse($tokens->isAnyTokenKindsFound([T_INTERFACE, T_ARRAY]));
     }
 
     public function testFindGivenKind()
@@ -497,7 +488,7 @@ PHP;
         $this->assertSame(T_CLASS, $found[1]->getId());
 
         /** @var array $found */
-        $found = $tokens->findGivenKind(array(T_CLASS, T_FUNCTION));
+        $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION]);
         $this->assertCount(2, $found);
         $this->assertArrayHasKey(T_CLASS, $found);
         $this->assertInternalType('array', $found[T_CLASS]);
@@ -514,12 +505,12 @@ PHP;
         $this->assertSame(T_FUNCTION, $found[T_FUNCTION][26]->getId());
 
         // test offset and limits of the search
-        $found = $tokens->findGivenKind(array(T_CLASS, T_FUNCTION), 10);
+        $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION], 10);
         $this->assertCount(0, $found[T_CLASS]);
         $this->assertCount(1, $found[T_FUNCTION]);
         $this->assertArrayHasKey(26, $found[T_FUNCTION]);
 
-        $found = $tokens->findGivenKind(array(T_CLASS, T_FUNCTION), 2, 10);
+        $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION], 2, 10);
         $this->assertCount(0, $found[T_CLASS]);
         $this->assertCount(1, $found[T_FUNCTION]);
         $this->assertArrayHasKey(9, $found[T_FUNCTION]);
@@ -542,91 +533,91 @@ PHP;
 
     public function getClearTokenAndMergeSurroundingWhitespaceCases()
     {
-        $clearToken = new Token(array(null, ''));
+        $clearToken = new Token([null, '']);
         $clearToken->clear();
 
-        return array(
-            array(
+        return [
+            [
                 '<?php if($a){}else{}',
-                array(7, 8, 9),
-                array(
-                    new Token(array(T_OPEN_TAG, '<?php ')),
-                    new Token(array(T_IF, 'if')),
+                [7, 8, 9],
+                [
+                    new Token([T_OPEN_TAG, '<?php ']),
+                    new Token([T_IF, 'if']),
                     new Token('('),
-                    new Token(array(T_VARIABLE, '$a')),
+                    new Token([T_VARIABLE, '$a']),
                     new Token(')'),
                     new Token('{'),
                     new Token('}'),
                     $clearToken,
                     $clearToken,
                     $clearToken,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php $a;/**/;',
-                array(2),
-                array(
+                [2],
+                [
                     // <?php $a /**/;
-                    new Token(array(T_OPEN_TAG, '<?php ')),
-                    new Token(array(T_VARIABLE, '$a')),
+                    new Token([T_OPEN_TAG, '<?php ']),
+                    new Token([T_VARIABLE, '$a']),
                     $clearToken,
-                    new Token(array(T_COMMENT, '/**/')),
+                    new Token([T_COMMENT, '/**/']),
                     new Token(';'),
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php ; ; ;',
-                array(3),
-                array(
+                [3],
+                [
                     // <?php ;  ;
-                    new Token(array(T_OPEN_TAG, '<?php ')),
+                    new Token([T_OPEN_TAG, '<?php ']),
                     new Token(';'),
-                    new Token(array(T_WHITESPACE, '  ')),
+                    new Token([T_WHITESPACE, '  ']),
                     $clearToken,
                     $clearToken,
                     new Token(';'),
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php ; ; ;',
-                array(1, 5),
-                array(
+                [1, 5],
+                [
                     // <?php  ;
-                    new Token(array(T_OPEN_TAG, '<?php ')),
-                    new Token(array(T_WHITESPACE, ' ')),
+                    new Token([T_OPEN_TAG, '<?php ']),
+                    new Token([T_WHITESPACE, ' ']),
                     $clearToken,
                     new Token(';'),
-                    new Token(array(T_WHITESPACE, ' ')),
+                    new Token([T_WHITESPACE, ' ']),
                     $clearToken,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php ; ; ;',
-                array(1, 3),
-                array(
+                [1, 3],
+                [
                     // <?php   ;
-                    new Token(array(T_OPEN_TAG, '<?php ')),
-                    new Token(array(T_WHITESPACE, '  ')),
+                    new Token([T_OPEN_TAG, '<?php ']),
+                    new Token([T_WHITESPACE, '  ']),
                     $clearToken,
                     $clearToken,
                     $clearToken,
                     new Token(';'),
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php ; ; ;',
-                array(1),
-                array(
+                [1],
+                [
                     // <?php  ; ;
-                    new Token(array(T_OPEN_TAG, '<?php ')),
-                    new Token(array(T_WHITESPACE, ' ')),
+                    new Token([T_OPEN_TAG, '<?php ']),
+                    new Token([T_WHITESPACE, ' ']),
                     $clearToken,
                     new Token(';'),
-                    new Token(array(T_WHITESPACE, ' ')),
+                    new Token([T_WHITESPACE, ' ']),
                     new Token(';'),
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -668,31 +659,31 @@ PHP;
 
     public function provideTokenOfKindSiblingCases()
     {
-        return array(
+        return [
             // find next cases
-            array(
-                35, 1, 34, array(';'),
-            ),
-            array(
-                14, 1, 0, array(array(T_RETURN)),
-            ),
-            array(
-                32, 1, 14, array(array(T_RETURN)),
-            ),
-            array(
-                6, 1, 0, array(array(T_RETURN), array(T_FUNCTION)),
-            ),
+            [
+                35, 1, 34, [';'],
+            ],
+            [
+                14, 1, 0, [[T_RETURN]],
+            ],
+            [
+                32, 1, 14, [[T_RETURN]],
+            ],
+            [
+                6, 1, 0, [[T_RETURN], [T_FUNCTION]],
+            ],
             // find previous cases
-            array(
-                14, -1, 32, array(array(T_RETURN), array(T_FUNCTION)),
-            ),
-            array(
-                6, -1, 7, array(array(T_FUNCTION)),
-            ),
-            array(
-                null, -1, 6, array(array(T_FUNCTION)),
-            ),
-        );
+            [
+                14, -1, 32, [[T_RETURN], [T_FUNCTION]],
+            ],
+            [
+                6, -1, 7, [[T_FUNCTION]],
+            ],
+            [
+                null, -1, 6, [[T_FUNCTION]],
+            ],
+        ];
     }
 
     /**
@@ -710,16 +701,16 @@ PHP;
 
     public function provideFindBlockEndCases()
     {
-        return array(
-            array(4, '<?php ${$bar};', Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2),
-            array(4, '<?php test(1);', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2),
-            array(4, '<?php $a{1};', Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, 2),
-            array(4, '<?php $a[1];', Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, 2),
-            array(6, '<?php [1, "foo"];', Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 1),
-            array(5, '<?php $foo->{$bar};', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3),
-            array(4, '<?php list($a) = $b;', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2),
-            array(6, '<?php if($a){}?>', Tokens::BLOCK_TYPE_CURLY_BRACE, 5),
-        );
+        return [
+            [4, '<?php ${$bar};', Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2],
+            [4, '<?php test(1);', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2],
+            [4, '<?php $a{1};', Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, 2],
+            [4, '<?php $a[1];', Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, 2],
+            [6, '<?php [1, "foo"];', Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 1],
+            [5, '<?php $foo->{$bar};', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3],
+            [4, '<?php list($a) = $b;', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2],
+            [6, '<?php if($a){}?>', Tokens::BLOCK_TYPE_CURLY_BRACE, 5],
+        ];
     }
 
     /**
@@ -738,16 +729,16 @@ PHP;
 
     public function provideFindBlockEndCases71()
     {
-        return array(
-            array(10, '<?php use a\{ClassA, ClassB};', Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, 5),
-            array(3, '<?php [$a] = $array;', Tokens::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE, 1),
-        );
+        return [
+            [10, '<?php use a\{ClassA, ClassB};', Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, 5],
+            [3, '<?php [$a] = $array;', Tokens::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE, 1],
+        ];
     }
 
     public function testFindBlockEndInvalidType()
     {
         $this->setExpectedExceptionRegExp(
-            'InvalidArgumentException',
+            \InvalidArgumentException::class,
             '/^Invalid param type: -1\.$/'
         );
 
@@ -759,7 +750,7 @@ PHP;
     public function testFindBlockEndInvalidStart()
     {
         $this->setExpectedExceptionRegExp(
-            'InvalidArgumentException',
+            \InvalidArgumentException::class,
             '/^Invalid param \$startIndex - not a proper block start\.$/'
         );
 
@@ -774,7 +765,7 @@ PHP;
             $this->markTestSkipped('Skip tests for PHP compiler when running on non HHVM compiler.');
         }
 
-        $this->setExpectedException('ParseError');
+        $this->setExpectedException(\ParseError::class);
         Tokens::fromCode('<?php# this will cause T_HH_ERROR');
     }
 
@@ -792,7 +783,7 @@ PHP;
         $code = '';
 
         $tokens = Tokens::fromCode($code);
-        $tokens->insertAt(0, new Token(array(T_WHITESPACE, ' ')));
+        $tokens->insertAt(0, new Token([T_WHITESPACE, ' ']));
         $this->assertCount(1, $tokens);
         $this->assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
 
@@ -815,7 +806,7 @@ PHP;
 
     public function testFromArrayEmpty()
     {
-        $tokens = Tokens::fromArray(array());
+        $tokens = Tokens::fromArray([]);
         $this->assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
     }
 

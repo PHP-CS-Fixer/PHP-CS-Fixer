@@ -40,7 +40,7 @@ final class AlignDoubleArrowFixerHelper extends AbstractAlignFixerHelper
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(array(T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH))) {
+            if ($token->isGivenKind([T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH])) {
                 $index = $tokens->getNextMeaningfulToken($index);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
                 continue;
@@ -57,7 +57,7 @@ final class AlignDoubleArrowFixerHelper extends AbstractAlignFixerHelper
 
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
-                if ($prevToken->isGivenKind(array(T_STRING, T_VARIABLE))) {
+                if ($prevToken->isGivenKind([T_STRING, T_VARIABLE])) {
                     continue;
                 }
 
@@ -95,7 +95,7 @@ final class AlignDoubleArrowFixerHelper extends AbstractAlignFixerHelper
                         break;
                     }
 
-                    if ($tokens[$i + 1]->isGivenKind(array(T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN))) {
+                    if ($tokens[$i + 1]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                         $arrayStartIndex = $tokens[$i + 1]->isGivenKind(T_ARRAY)
                             ? $tokens->getNextMeaningfulToken($i + 1)
                             : $i + 1

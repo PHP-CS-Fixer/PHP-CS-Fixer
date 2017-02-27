@@ -64,7 +64,7 @@ Fixing examples:
 EOT;
 
         $this->assertSame(
-            str_replace(array('%spaces%', "\n"), array('   ', PHP_EOL), $expected),
+            str_replace(['%spaces%', "\n"], ['   ', PHP_EOL], $expected),
             $this->execute()->getDisplay()
         );
     }
@@ -83,11 +83,11 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedException('InvalidArgumentException', 'Rule Foo/bar not found.');
-        $commandTester->execute(array(
+        $this->setExpectedException(\InvalidArgumentException::class, 'Rule Foo/bar not found.');
+        $commandTester->execute([
             'command' => $command->getName(),
             'name' => 'Foo/bar',
-        ));
+        ]);
     }
 
     public function testExecuteWithoutName()
@@ -99,10 +99,10 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedExceptionRegExp('RuntimeException', '/^Not enough arguments( \(missing: "name"\))?\.$/');
-        $commandTester->execute(array(
+        $this->setExpectedExceptionRegExp(\RuntimeException::class, '/^Not enough arguments( \(missing: "name"\))?\.$/');
+        $commandTester->execute([
             'command' => $command->getName(),
-        ));
+        ]);
     }
 
     /**
@@ -111,26 +111,26 @@ EOT;
     private function execute()
     {
         $fixer = $this->prophesize();
-        $fixer->willImplement('PhpCsFixer\Fixer\DefinedFixerInterface');
-        $fixer->willImplement('PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface');
+        $fixer->willImplement(\PhpCsFixer\Fixer\DefinedFixerInterface::class);
+        $fixer->willImplement(\PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface::class);
 
         $fixer->getName()->willReturn('Foo/bar');
         $fixer->getPriority()->willReturn(0);
         $fixer->isRisky()->willReturn(false);
-        $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver(array(
-            new FixerOption('things', 'Enables fixing things as well.', false, false, array('bool')),
-        )));
+        $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver([
+            new FixerOption('things', 'Enables fixing things as well.', false, false, ['bool']),
+        ]));
         $fixer->getDefinition()->willReturn(new FixerDefinition(
             'Fixes stuff.',
-            array(
+            [
                 new CodeSample(
                     '<?php echo \'bad stuff and bad thing\';'
                 ),
                 new CodeSample(
                     '<?php echo \'bad stuff and bad thing\';',
-                    array('things' => true)
+                    ['things' => true]
                 ),
-            ),
+            ],
             'Replaces bad stuff with good stuff.',
             'Can break stuff.'
         ));
@@ -139,12 +139,12 @@ EOT;
         $fixer->configure(null)->will(function () use (&$things) {
             $things = false;
         });
-        $fixer->configure(array('things' => true))->will(function () use (&$things) {
+        $fixer->configure(['things' => true])->will(function () use (&$things) {
             $things = true;
         });
         $fixer->fix(
-            Argument::type('SplFileInfo'),
-            Argument::type('PhpCsFixer\Tokenizer\Tokens')
+            Argument::type(\SplFileInfo::class),
+            Argument::type(\PhpCsFixer\Tokenizer\Tokens::class)
         )->will(function (array $arguments) use (&$things) {
             $arguments[1][3]->setContent($things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\'');
         });
@@ -159,13 +159,13 @@ EOT;
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
-            array(
+            [
                 'command' => $command->getName(),
                 'name' => 'Foo/bar',
-            ),
-            array(
+            ],
+            [
                 'decorated' => false,
-            )
+            ]
         );
 
         return $commandTester;

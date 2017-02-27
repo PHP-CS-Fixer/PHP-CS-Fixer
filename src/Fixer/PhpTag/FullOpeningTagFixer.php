@@ -31,14 +31,14 @@ final class FullOpeningTagFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'PHP code must use the long `<?php` tags or short-echo `<?=` tags and not other tag variations.',
-            array(
+            [
                 new CodeSample(
 '<?
 
 echo "Hello!";
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -96,7 +96,7 @@ echo "Hello!";
                 continue;
             }
 
-            if ($token->isGivenKind(array(T_COMMENT, T_DOC_COMMENT, T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_STRING))) {
+            if ($token->isGivenKind([T_COMMENT, T_DOC_COMMENT, T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_STRING])) {
                 $tokenContent = '';
                 $tokenContentLength = 0;
                 $parts = explode('<?php', $token->getContent());

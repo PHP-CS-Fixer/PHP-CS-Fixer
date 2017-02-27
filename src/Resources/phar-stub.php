@@ -21,8 +21,8 @@ if (defined('HHVM_VERSION_ID')) {
             exit(1);
         }
     }
-} elseif (!defined('PHP_VERSION_ID') || PHP_VERSION_ID < 50306 || PHP_VERSION_ID >= 70200) {
-    fwrite(STDERR, "PHP needs to be a minimum version of PHP 5.3.6 and maximum version of PHP 7.1.*.\n");
+} elseif (!defined('PHP_VERSION_ID') || PHP_VERSION_ID < 50600 || PHP_VERSION_ID >= 70200) {
+    fwrite(STDERR, "PHP needs to be a minimum version of PHP 5.6.0 and maximum version of PHP 7.1.*.\n");
 
     if (getenv('PHP_CS_FIXER_IGNORE_ENV')) {
         fwrite(STDERR, "Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.\n");

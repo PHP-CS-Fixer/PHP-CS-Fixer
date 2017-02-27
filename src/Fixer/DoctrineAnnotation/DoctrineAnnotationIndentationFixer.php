@@ -30,9 +30,9 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
     {
         return new FixerDefinition(
             'Doctrine annotations must be indented with four spaces.',
-            array(
+            [
                 new CodeSample("<?php\n/**\n *  @Foo(\n *   foo=\"foo\"\n *  )\n */\nclass Bar {}"),
-            )
+            ]
         );
     }
 
@@ -91,12 +91,12 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
                 break;
             }
 
-            if ($token->isType(array(DocLexer::T_OPEN_PARENTHESIS, DocLexer::T_OPEN_CURLY_BRACES))) {
+            if ($token->isType([DocLexer::T_OPEN_PARENTHESIS, DocLexer::T_OPEN_CURLY_BRACES])) {
                 ++$lineBracesDelta;
                 continue;
             }
 
-            if ($token->isType(array(DocLexer::T_CLOSE_PARENTHESIS, DocLexer::T_CLOSE_CURLY_BRACES))) {
+            if ($token->isType([DocLexer::T_CLOSE_PARENTHESIS, DocLexer::T_CLOSE_CURLY_BRACES])) {
                 --$lineBracesDelta;
                 continue;
             }

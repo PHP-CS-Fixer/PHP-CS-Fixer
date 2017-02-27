@@ -91,7 +91,7 @@ final class FixCommand extends Command
         $this
             ->setName('fix')
             ->setDefinition(
-                array(
+                [
                     new InputArgument('path', InputArgument::IS_ARRAY, 'The path.'),
                     new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be override or intersection).', 'override'),
                     new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no).'),
@@ -104,7 +104,7 @@ final class FixCommand extends Command
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
                     new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
                     new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, run-in, or estimating).'),
-                )
+                ]
             )
             ->setDescription('Fixes a directory or a file.')
             ->setHelp(CommandHelp::getHelpCopy())
@@ -123,7 +123,7 @@ final class FixCommand extends Command
 
         $resolver = new ConfigurationResolver(
             $this->defaultConfig,
-            array(
+            [
                 'allow-risky' => $input->getOption('allow-risky'),
                 'config' => $passedConfig,
                 'dry-run' => $input->getOption('dry-run'),
@@ -137,7 +137,7 @@ final class FixCommand extends Command
                 'stop-on-violation' => $input->getOption('stop-on-violation'),
                 'verbosity' => $verbosity,
                 'show-progress' => $input->getOption('show-progress'),
-            ),
+            ],
             getcwd()
         );
 
@@ -154,10 +154,10 @@ final class FixCommand extends Command
             }
 
             if (null !== $passedConfig && null !== $passedRules) {
-                $stdErr->writeln(array(
+                $stdErr->writeln([
                     sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'When passing both "--config" and "--rules" the rules within the configuration file are not used.'),
                     sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Passing both options is deprecated; version v3.0 PHP-CS-Fixer will exit with an configuration error code.'),
-                ));
+                ]);
             }
 
             $configFile = $resolver->getConfigFile();

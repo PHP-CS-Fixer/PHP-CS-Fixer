@@ -42,7 +42,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There should not be any empty comments.',
-            array(new CodeSample("<?php\n//\n#\n/* */\n"))
+            [new CodeSample("<?php\n//\n#\n/* */\n")]
         );
     }
 
@@ -109,7 +109,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
             }
         }
 
-        return array($start, $index - 1, $empty);
+        return [$start, $index - 1, $empty];
     }
 
     /**

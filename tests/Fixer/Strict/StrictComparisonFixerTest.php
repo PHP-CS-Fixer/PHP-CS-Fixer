@@ -36,11 +36,11 @@ final class StrictComparisonFixerTest extends AbstractFixerTestCase
 
     public function provideTestFixCases()
     {
-        return array(
-            array('<?php $a === $b;', '<?php $a == $b;'),
-            array('<?php $a !== $b;', '<?php $a != $b;'),
-            array('<?php $a !== $b;', '<?php $a <> $b;'),
-            array('<?php echo "$a === $b";'),
-        );
+        return [
+            ['<?php $a === $b;', '<?php $a == $b;'],
+            ['<?php $a !== $b;', '<?php $a != $b;'],
+            ['<?php $a !== $b;', '<?php $a <> $b;'],
+            ['<?php echo "$a === $b";'],
+        ];
     }
 }

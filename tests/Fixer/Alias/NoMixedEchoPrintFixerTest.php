@@ -32,89 +32,89 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
      */
     public function testFixEchoToPrint($expected, $input = null)
     {
-        $this->fixer->configure(array('use' => 'print'));
+        $this->fixer->configure(['use' => 'print']);
 
         $this->doTest($expected, $input);
     }
 
     public function provideEchoToPrintFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                 print "test";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 print ("test");
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 print("test");
                 ',
-            ),
+            ],
             // `echo` can take multiple parameters (although such usage is rare) while `print` can take only one argument,
             // @see https://secure.php.net/manual/en/function.echo.php and @see https://secure.php.net/manual/en/function.print.php
-            array(
+            [
                 '<?php
                 echo "This ", "string ", "was ", "made ", "with multiple parameters.";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 print "test";
                 ',
                 '<?php
                 echo "test";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 print ("test");
                 ',
                 '<?php
                 echo ("test");
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 print("test");
                 ',
                 '<?php
                 echo("test");
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 print foo(1, 2);
                 ',
                 '<?php
                 echo foo(1, 2);
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 print ["foo", "bar", "baz"][$x];
                 ',
                 '<?php
                 echo ["foo", "bar", "baz"][$x];
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 print $foo ? "foo" : "bar";
                 ',
                 '<?php
                 echo $foo ? "foo" : "bar";
                 ',
-            ),
-            array(
+            ],
+            [
                 "<?php print 'foo' ?>...<?php echo 'bar', 'baz' ?>",
                 "<?php echo 'foo' ?>...<?php echo 'bar', 'baz' ?>",
-            ),
-            array(
+            ],
+            [
                 '<?php
                 if ($foo) {
                     print "foo";
@@ -127,15 +127,15 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 }
                 echo "bar";
                 ',
-            ),
-            array(
+            ],
+            [
                 "<div><?php print 'foo' ?></div>",
                 "<div><?php echo 'foo' ?></div>",
-            ),
-            array(
+            ],
+            [
                 '<?=$foo?>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -146,48 +146,48 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
      */
     public function testFixPrintToEcho($expected, $input = null)
     {
-        $this->fixer->configure(array('use' => 'echo'));
+        $this->fixer->configure(['use' => 'echo']);
 
         $this->doTest($expected, $input);
     }
 
     public function providePrintToEchoFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                 echo "test";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 echo ("test");
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 echo("test");
                 ',
-            ),
+            ],
             // https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/1502#issuecomment-156436229
-            array(
+            [
                 '<?php
                 ($some_var) ? print "true" : print "false";
                 ',
-            ),
+            ],
             // echo has no return value while print has a return value of 1 so it can be used in expressions.
             // http://www.w3schools.com/php/php_echo_print.asp
-            array(
+            [
                 '<?php
                 $ret = print "test";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 @print foo();
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 function testFunction() {
                     return print("test");
@@ -201,8 +201,8 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 switch(print(\'a\')) {}
                 if (1 === print($a)) {}
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 some_function_call();
                 echo "test";
@@ -211,48 +211,48 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 some_function_call();
                 print "test";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 echo "test";
                 ',
                 '<?php
                 print "test";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 echo ("test");
                 ',
                 '<?php
                 print ("test");
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 echo("test");
                 ',
                 '<?php
                 print("test");
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 echo foo(1, 2);
                 ',
                 '<?php
                 print foo(1, 2);
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 echo $foo ? "foo" : "bar";
                 ',
                 '<?php
                 print $foo ? "foo" : "bar";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 if ($foo) {
                     echo "foo";
@@ -265,12 +265,12 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 }
                 print "bar";
                 ',
-            ),
-            array(
+            ],
+            [
                 "<div><?php echo 'foo' ?></div>",
                 "<div><?php print 'foo' ?></div>",
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -286,7 +286,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 
     public function testDefaultConfig()
     {
-        $this->fixer->configure(array());
+        $this->fixer->configure([]);
 
         $this->assertAttributeSame(T_PRINT, 'candidateTokenType', $this->fixer);
     }
@@ -300,7 +300,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     public function testWrongConfig($wrongConfig, $expectedMessage)
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             $expectedMessage
         );
 
@@ -309,23 +309,23 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 
     public function provideWrongConfig()
     {
-        return array(
-            array(
-                array('a' => 'b'),
+        return [
+            [
+                ['a' => 'b'],
                 '#^\[no_mixed_echo_print\] Invalid configuration: The option "a" does not exist\. (Known|Defined) options are: "use"\.$#',
-            ),
-            array(
-                array('a' => 'b', 'b' => 'c'),
+            ],
+            [
+                ['a' => 'b', 'b' => 'c'],
                 '#^\[no_mixed_echo_print\] Invalid configuration: The options "a", "b" do not exist\. (Known|Defined) options are: "use"\.$#',
-            ),
-            array(
-                array(1),
+            ],
+            [
+                [1],
                 '#^\[no_mixed_echo_print\] Invalid configuration: The option "0" does not exist\. (Known|Defined) options are: "use"\.$#',
-            ),
-            array(
-                array('use' => '_invalid_'),
+            ],
+            [
+                ['use' => '_invalid_'],
                 '#^\[no_mixed_echo_print\] Invalid configuration: The option "use" with value "_invalid_" is invalid\. Accepted values are: "print", "echo".$#',
-            ),
-        );
+            ],
+        ];
     }
 }

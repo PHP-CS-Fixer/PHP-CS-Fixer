@@ -28,9 +28,9 @@ final class VersionSpecificCodeSampleTest extends \PHPUnit_Framework_TestCase
     public function testConstructorSetsValues()
     {
         $code = '<php echo $foo;';
-        $configuration = array(
+        $configuration = [
             'foo' => 'bar',
-        );
+        ];
 
         $codeSample = new VersionSpecificCodeSample(
             $code,
@@ -79,10 +79,10 @@ final class VersionSpecificCodeSampleTest extends \PHPUnit_Framework_TestCase
      */
     public function providerIsSuitableForVersionUsesVersionSpecification()
     {
-        return array(
-            'is-satisfied' => array(PHP_VERSION_ID, true),
-            'is-not-satisfied' => array(PHP_VERSION_ID, false),
-        );
+        return [
+            'is-satisfied' => [PHP_VERSION_ID, true],
+            'is-not-satisfied' => [PHP_VERSION_ID, false],
+        ];
     }
 
     /**
@@ -90,6 +90,6 @@ final class VersionSpecificCodeSampleTest extends \PHPUnit_Framework_TestCase
      */
     private function createVersionSpecificationMock()
     {
-        return $this->prophesize('PhpCsFixer\FixerDefinition\VersionSpecificationInterface');
+        return $this->prophesize(\PhpCsFixer\FixerDefinition\VersionSpecificationInterface::class);
     }
 }

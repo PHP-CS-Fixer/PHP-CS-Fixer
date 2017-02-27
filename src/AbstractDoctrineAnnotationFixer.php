@@ -69,8 +69,8 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
     {
         $ignoredTags = new FixerOptionBuilder('ignored_tags', 'List of tags that must not be treated as Doctrine Annotations.');
         $ignoredTags = $ignoredTags
-            ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(function ($values) {
+            ->setAllowedTypes(['array'])
+            ->setAllowedValues([function ($values) {
                 foreach ($values as $value) {
                     if (!is_string($value)) {
                         return false;
@@ -78,8 +78,8 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
                 }
 
                 return true;
-            }))
-            ->setDefault(array(
+            }])
+            ->setDefault([
                  // PHPDocumentor 1
                  'abstract',
                  'access',
@@ -183,11 +183,11 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
                  'FIXME',
                  'fixme',
                  'override',
-            ))
+            ])
             ->getOption()
         ;
 
-        return new FixerConfigurationResolver(array($ignoredTags));
+        return new FixerConfigurationResolver([$ignoredTags]);
     }
 
     /**
@@ -200,13 +200,13 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
     {
         do {
             $index = $tokens->getNextMeaningfulToken($index);
-        } while ($tokens[$index]->isGivenKind(array(T_ABSTRACT, T_FINAL)));
+        } while ($tokens[$index]->isGivenKind([T_ABSTRACT, T_FINAL]));
 
         if ($tokens[$index]->isClassy()) {
             return true;
         }
 
-        while ($tokens[$index]->isGivenKind(array(T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT))) {
+        while ($tokens[$index]->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT])) {
             $index = $tokens->getNextMeaningfulToken($index);
         }
 

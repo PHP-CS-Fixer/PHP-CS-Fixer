@@ -39,7 +39,7 @@ final class PhpdocNoEmptyReturnFixer extends AbstractFixer
     {
         return new FixerDefinition(
             '@return void and @return null annotations should be omitted from phpdocs.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 /**
@@ -56,7 +56,7 @@ function foo() {}
 function foo() {}
 '
                 ),
-            )
+            ]
         );
     }
 

@@ -33,12 +33,12 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     {
         return new FixerDefinition(
             'Force strict types declaration in all files. Requires PHP >= 7.0.',
-            array(
+            [
                 new VersionSpecificCodeSample(
                     '<?php ',
                     new VersionSpecification(70000)
                 ),
-            ),
+            ],
             null,
             'Forcing strict types will stop non strict code from working.'
         );
@@ -112,7 +112,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         }
 
         if (!$tokens[1 + $endIndex]->isWhitespace()) {
-            $tokens->insertAt(1 + $endIndex, new Token(array(T_WHITESPACE, $lineEnding)));
+            $tokens->insertAt(1 + $endIndex, new Token([T_WHITESPACE, $lineEnding]));
 
             return;
         }
@@ -137,14 +137,14 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         // - semicolon or end tag must be there to be valid PHP
         // - empty tokens and comments are dealt with later
         if (null === $sequence) {
-            $sequence = array(
-                new Token(array(T_DECLARE, 'declare')),
+            $sequence = [
+                new Token([T_DECLARE, 'declare']),
                 new Token('('),
-                new Token(array(T_STRING, 'strict_types')),
+                new Token([T_STRING, 'strict_types']),
                 new Token('='),
-                new Token(array(T_LNUMBER, '1')),
+                new Token([T_LNUMBER, '1']),
                 new Token(')'),
-            );
+            ];
         }
 
         return $sequence;
@@ -187,7 +187,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
 
         $lineEnding = $this->whitespacesConfig->getLineEnding();
         if (!$tokens[1 + $endIndex]->isWhitespace()) {
-            $tokens->insertAt(1 + $endIndex, new Token(array(T_WHITESPACE, $lineEnding)));
+            $tokens->insertAt(1 + $endIndex, new Token([T_WHITESPACE, $lineEnding]));
 
             return;
         }

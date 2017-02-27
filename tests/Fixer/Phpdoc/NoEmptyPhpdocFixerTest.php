@@ -36,8 +36,8 @@ final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     /** a */
 
@@ -76,7 +76,7 @@ final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
 
                      /** *test* */
                 ',
-            ),
-        );
+            ],
+        ];
     }
 }

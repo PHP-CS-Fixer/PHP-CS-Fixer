@@ -37,9 +37,9 @@ final class NoUselessElseFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There should not be useless `else` cases.',
-            array(
+            [
                 new CodeSample("<?php\nif (\$a) {\n    return 1;\n} else {\n    return 2;\n}"),
-            )
+            ]
         );
     }
 
@@ -63,7 +63,7 @@ final class NoUselessElseFixer extends AbstractFixer
             }
 
             // `else if` vs. `else` and alternative syntax `else:` checks
-            if ($tokens[$tokens->getNextMeaningfulToken($index)]->equalsAny(array(':', array(T_IF)))) {
+            if ($tokens[$tokens->getNextMeaningfulToken($index)]->equalsAny([':', [T_IF]])) {
                 continue;
             }
 
@@ -105,22 +105,22 @@ final class NoUselessElseFixer extends AbstractFixer
 
             $candidateIndex = $tokens->getPrevTokenOfKind(
                 $previous,
-                array(
+                [
                     ';',
-                    array(T_CLOSE_TAG),
-                    array(T_IF),
-                    array(T_BREAK),
-                    array(T_CONTINUE),
-                    array(T_EXIT),
-                    array(T_GOTO),
-                    array(T_RETURN),
-                    array(T_THROW),
-                )
+                    [T_CLOSE_TAG],
+                    [T_IF],
+                    [T_BREAK],
+                    [T_CONTINUE],
+                    [T_EXIT],
+                    [T_GOTO],
+                    [T_RETURN],
+                    [T_THROW],
+                ]
             );
 
             if (
                 null === $candidateIndex ||
-                $tokens[$candidateIndex]->equalsAny(array(';', array(T_CLOSE_TAG), array(T_IF))) ||
+                $tokens[$candidateIndex]->equalsAny([';', [T_CLOSE_TAG], [T_IF]]) ||
                 $this->isInConditional($tokens, $candidateIndex, $previousBlockStart)
             ) {
                 return;
@@ -152,7 +152,7 @@ final class NoUselessElseFixer extends AbstractFixer
             $previous = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $close, false);
         }
 
-        $open = $tokens->getPrevTokenOfKind($previous, array(array(T_IF), array(T_ELSE), array(T_ELSEIF)));
+        $open = $tokens->getPrevTokenOfKind($previous, [[T_IF], [T_ELSE], [T_ELSEIF]]);
         if ($tokens[$open]->isGivenKind(T_IF)) {
             $elseCandidate = $tokens->getPrevMeaningfulToken($open);
             if ($tokens[$elseCandidate]->isGivenKind(T_ELSE)) {
@@ -160,7 +160,7 @@ final class NoUselessElseFixer extends AbstractFixer
             }
         }
 
-        return array($open, $close);
+        return [$open, $close];
     }
 
     /**
@@ -184,7 +184,7 @@ final class NoUselessElseFixer extends AbstractFixer
         }
 
         // short `else`
-        $end = $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG)));
+        $end = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
         if ($next === $end) {
             $this->clearElse($tokens, $index);
         }
@@ -217,7 +217,7 @@ final class NoUselessElseFixer extends AbstractFixer
      */
     private function isInConditional(Tokens $tokens, $index, $lowerLimitIndex)
     {
-        $candidateIndex = $tokens->getPrevTokenOfKind($index, array(')', ';', ':'));
+        $candidateIndex = $tokens->getPrevTokenOfKind($index, [')', ';', ':']);
         if ($tokens[$candidateIndex]->equals(':')) {
             return true;
         }

@@ -12,7 +12,7 @@ projects. This tool does not only detect them, but also fixes them for you.
 Requirements
 ------------
 
-PHP needs to be a minimum version of PHP 5.3.6.
+PHP needs to be a minimum version of PHP 5.6.0.
 
 Installation
 ------------
@@ -210,8 +210,7 @@ Choose from the list of available rules:
 
 * **array_syntax**
 
-  PHP arrays should be declared using the configured syntax (requires PHP
-  >= 5.4 for short syntax).
+  PHP arrays should be declared using the configured syntax.
 
   Configuration options:
 
@@ -276,7 +275,7 @@ Choose from the list of available rules:
 
 * **class_keyword_remove**
 
-  Converts ``::class`` keywords to FQCN strings. Requires PHP >= 5.5.
+  Converts ``::class`` keywords to FQCN strings.
 
 * **combine_consecutive_unsets**
 
@@ -930,7 +929,7 @@ Choose from the list of available rules:
 
 * **pow_to_exponentiation** [@PHP56Migration, @PHP70Migration, @PHP71Migration]
 
-  Converts ``pow()`` to the ``**`` operator. Requires PHP >= 5.6.
+  Converts ``pow()`` to the ``**`` operator.
 
   *Risky rule: risky when the function ``pow()`` is overridden.*
 

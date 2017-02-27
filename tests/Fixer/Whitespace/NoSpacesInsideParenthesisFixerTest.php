@@ -59,12 +59,12 @@ EOF;
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php foo();',
                 '<?php foo( );',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     // if body
@@ -73,8 +73,8 @@ if (true) {
 if ( true ) {
     // if body
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     // if body
@@ -83,8 +83,8 @@ if (true) {
 if (     true   ) {
     // if body
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function foo($bar, $baz)
 {
@@ -95,30 +95,30 @@ function foo( $bar, $baz )
 {
     // function body
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $foo->bar($arg1, $arg2);',
                 '<?php
 $foo->bar(  $arg1, $arg2   );',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $var = array( 1, 2, 3 );
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $var = [ 1, 2, 3 ];
 ',
-            ),
+            ],
             // list call with trailing comma - need to leave alone
-            array(
+            [
                 '<?php list($path, $mode, ) = foo();',
-            ),
-            array(
+            ],
+            [
                 '<?php list($path, $mode,) = foo();',
-            ),
-        );
+            ],
+        ];
     }
 }
