@@ -15,9 +15,9 @@ namespace PhpCsFixer\Console\Command;
 use PhpCsFixer\Config;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Console\ConfigurationResolver;
+use PhpCsFixer\Console\Output\ErrorOutput;
 use PhpCsFixer\Console\Output\NullOutput;
 use PhpCsFixer\Console\Output\ProcessOutput;
-use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Report\ReportSummary;
 use PhpCsFixer\Runner\Runner;
@@ -215,16 +215,18 @@ final class FixCommand extends Command
         $lintErrors = $this->errorsManager->getLintErrors();
 
         if (null !== $stdErr) {
+            $errorOutput = new ErrorOutput($stdErr);
+
             if (count($invalidErrors) > 0) {
-                $this->listErrors($stdErr, 'linting before fixing', $invalidErrors);
+                $errorOutput->listErrors('linting before fixing', $invalidErrors);
             }
 
             if (count($exceptionErrors) > 0) {
-                $this->listErrors($stdErr, 'fixing', $exceptionErrors);
+                $errorOutput->listErrors('fixing', $exceptionErrors);
             }
 
             if (count($lintErrors) > 0) {
-                $this->listErrors($stdErr, 'linting after fixing', $lintErrors);
+                $errorOutput->listErrors('linting after fixing', $lintErrors);
             }
         }
 
@@ -263,22 +265,5 @@ final class FixCommand extends Command
         }
 
         return $exitStatus;
-    }
-
-    /**
-     * @param OutputInterface $output
-     * @param string          $process
-     * @param Error[]         $errors
-     */
-    private function listErrors(OutputInterface $output, $process, array $errors)
-    {
-        $output->writeln(array('', sprintf(
-            'Files that were not fixed due to errors reported during %s:',
-            $process
-        )));
-
-        foreach ($errors as $i => $error) {
-            $output->writeln(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
-        }
     }
 }
