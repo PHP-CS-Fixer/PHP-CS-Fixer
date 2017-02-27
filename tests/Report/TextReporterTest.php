@@ -40,11 +40,11 @@ final class TextReporterTest extends \PHPUnit_Framework_TestCase
 
     public function testGenerateNoErrors()
     {
-        $expectedText = <<<'TEXT'
+        $expectedReport = <<<'TEXT'
 TEXT;
 
         $this->assertSame(
-            $expectedText,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(),
@@ -60,14 +60,14 @@ TEXT;
 
     public function testGenerateSimple()
     {
-        $expectedText = str_replace("\n", PHP_EOL, <<<'TEXT'
+        $expectedReport = str_replace("\n", PHP_EOL, <<<'TEXT'
    1) someFile.php
 
 TEXT
         );
 
         $this->assertSame(
-            $expectedText,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(
@@ -87,7 +87,7 @@ TEXT
 
     public function testGenerateWithDiff()
     {
-        $expectedText = str_replace("\n", PHP_EOL, <<<'TEXT'
+        $expectedReport = str_replace("\n", PHP_EOL, <<<'TEXT'
    1) someFile.php
       ---------- begin diff ----------
 this text is a diff ;)
@@ -98,7 +98,7 @@ TEXT
         );
 
         $this->assertSame(
-            $expectedText,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(
@@ -119,14 +119,14 @@ TEXT
 
     public function testGenerateWithAppliedFixers()
     {
-        $expectedText = str_replace("\n", PHP_EOL, <<<'TEXT'
+        $expectedReport = str_replace("\n", PHP_EOL, <<<'TEXT'
    1) someFile.php (some_fixer_name_here)
 
 TEXT
         );
 
         $this->assertSame(
-            $expectedText,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(
@@ -146,7 +146,7 @@ TEXT
 
     public function testGenerateWithTimeAndMemory()
     {
-        $expectedText = str_replace("\n", PHP_EOL, <<<'TEXT'
+        $expectedReport = str_replace("\n", PHP_EOL, <<<'TEXT'
    1) someFile.php
 
 Fixed all files in 1.234 seconds, 2.500 MB memory used
@@ -155,7 +155,7 @@ TEXT
         );
 
         $this->assertSame(
-            $expectedText,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(
@@ -175,7 +175,7 @@ TEXT
 
     public function testGenerateComplexWithDecoratedOutput()
     {
-        $expectedText = str_replace("\n", PHP_EOL, <<<'TEXT'
+        $expectedReport = str_replace("\n", PHP_EOL, <<<'TEXT'
    1) someFile.php (<comment>some_fixer_name_here</comment>)
 <comment>      ---------- begin diff ----------</comment>
 this text is a diff ;)
@@ -193,7 +193,7 @@ TEXT
         );
 
         $this->assertSame(
-            $expectedText,
+            $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
                     array(
