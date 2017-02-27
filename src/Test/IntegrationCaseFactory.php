@@ -121,9 +121,9 @@ final class IntegrationCaseFactory
             'php' => PHP_VERSION_ID,
         ));
 
-        if (!is_int($parsed['php']) || $parsed['php'] < 50306) {
+        if (!is_int($parsed['php'])) {
             throw new \InvalidArgumentException(sprintf(
-                'Expected int >= 50306 value for "php", got "%s".',
+                'Expected int value like 50509 for "php", got "%s".',
                 is_object($parsed['php']) ? get_class($parsed['php']) : gettype($parsed['php']).'#'.$parsed['php'])
             );
         }
