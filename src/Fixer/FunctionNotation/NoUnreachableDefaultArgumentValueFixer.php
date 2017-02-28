@@ -25,11 +25,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoUnreachableDefaultArgumentValueFixer extends AbstractFixer
 {
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_FUNCTION);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -53,15 +48,35 @@ final class NoUnreachableDefaultArgumentValueFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'In method arguments there must not be arguments with default values before non-default ones.',
+            'In function arguments there must not be arguments with default values before non-default ones.',
             array(
                 new CodeSample(
                     '<?php
 function example($foo = "two words", $bar) {}
 '
                 ),
-            )
+            ),
+            null,
+            null,
+            null,
+            'Modifies the signature of functions; therefor risky when using systems (such as some Symfony components) that rely on those (for example through reflection).'
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_FUNCTION);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
     }
 
     /**
