@@ -34,12 +34,12 @@ final class BracesFixer extends AbstractFixer implements ConfigurationDefinition
     /**
      * @internal
      */
-    const NEXT_LINE = 'next';
+    const LINE_NEXT = 'next';
 
     /**
      * @internal
      */
-    const SAME_LINE = 'same';
+    const LINE_SAME = 'same';
 
     /**
      * {@inheritdoc}
@@ -127,7 +127,7 @@ class Foo
     }
 }
 ',
-                    array('position_after_functions_and_oop_constructs' => self::SAME_LINE)
+                    array('position_after_functions_and_oop_constructs' => self::LINE_SAME)
                 ),
             )
         );
@@ -164,8 +164,8 @@ class Foo
 
         $positionAfterFunctionsAndOopConstructs = new FixerOptionBuilder('position_after_functions_and_oop_constructs', 'whether the opening brace should be placed on "next" or "same" line after classy constructs (non-anonymous classes, interfaces, traits, methods and non-lambda functions).');
         $positionAfterFunctionsAndOopConstructs = $positionAfterFunctionsAndOopConstructs
-            ->setAllowedValues(array(self::NEXT_LINE, self::SAME_LINE))
-            ->setDefault(self::NEXT_LINE)
+            ->setAllowedValues(array(self::LINE_NEXT, self::LINE_SAME))
+            ->setDefault(self::LINE_NEXT)
             ->getOption()
         ;
 
@@ -434,9 +434,9 @@ class Foo
             }
 
             if ($token->isGivenKind($classyTokens) && !$tokensAnalyzer->isAnonymousClass($index)) {
-                if ($this->configuration['position_after_functions_and_oop_constructs'] === self::NEXT_LINE) {
+                if ($this->configuration['position_after_functions_and_oop_constructs'] === self::LINE_NEXT) {
                     $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
-                } elseif ($this->configuration['position_after_functions_and_oop_constructs'] === self::SAME_LINE) {
+                } elseif ($this->configuration['position_after_functions_and_oop_constructs'] === self::LINE_SAME) {
                     $ensuredWhitespace = ' ';
                 }
 
@@ -453,9 +453,9 @@ class Foo
                         $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
                     }
                 } else {
-                    if ($this->configuration['position_after_functions_and_oop_constructs'] === self::NEXT_LINE) {
+                    if ($this->configuration['position_after_functions_and_oop_constructs'] === self::LINE_NEXT) {
                         $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
-                    } elseif ($this->configuration['position_after_functions_and_oop_constructs'] === self::SAME_LINE) {
+                    } elseif ($this->configuration['position_after_functions_and_oop_constructs'] === self::LINE_SAME) {
                         $ensuredWhitespace = ' ';
                     }
 
