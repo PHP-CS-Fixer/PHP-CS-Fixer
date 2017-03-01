@@ -426,8 +426,9 @@ Choose from the list of available rules:
    | *Rule is: configurable.*
 
 * **no_unreachable_default_argument_value**
-   | In method arguments there must not be arguments with default values
+   | In function arguments there must not be arguments with default values
    | before non-default ones.
+   | *Rule is: risky.*
 
 * **no_unused_imports** [@Symfony]
    | Unused use statements must be removed.
