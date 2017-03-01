@@ -28,8 +28,14 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class FunctionDeclarationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @internal
+     */
     const SPACING_NONE = 'none';
 
+    /**
+     * @internal
+     */
     const SPACING_ONE = 'one';
 
     private $supportedSpacings = array(self::SPACING_NONE, self::SPACING_ONE);
