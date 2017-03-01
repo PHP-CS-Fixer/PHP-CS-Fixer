@@ -31,8 +31,14 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class BracesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
+    /**
+     * @internal
+     */
     const NEXT_LINE = 'next';
 
+    /**
+     * @internal
+     */
     const SAME_LINE = 'same';
 
     /**
