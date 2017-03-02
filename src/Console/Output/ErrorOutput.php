@@ -56,19 +56,34 @@ final class ErrorOutput
         foreach ($errors as $i => $error) {
             $this->output->writeln(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
             if ($showDetails && null !== $e = $error->getSource()) {
-                $this->output->writeln(array(
-                    '      <bg=yellow;fg=black;>Details</>',
-                    sprintf('      <comment>Class</comment>    %s', $this->prepareOutput(get_class($e))),
-                    sprintf('      <comment>Message</comment>  %s', $this->prepareOutput($e->getMessage())),
-                    sprintf('      <comment>Code</comment>     %d', $e->getCode()),
-                    sprintf('      <comment>File</comment>     %s:%d', $this->prepareOutput($e->getFile()), $e->getLine()),
-                ));
+                $class = sprintf('[%s]', get_class($e));
+                $message = $e->getMessage();
+                if (0 !== $code = $e->getCode()) {
+                    $message .= " ($code)";
+                }
+
+                $length = max(strlen($class), strlen($message));
+                $lines = array(
+                    '',
+                    $class,
+                    $message,
+                    '',
+                );
+
+                $this->output->writeln('');
+                foreach ($lines as $line) {
+                    if (strlen($line) < $length) {
+                        $line .= str_repeat(' ', $length - strlen($line));
+                    }
+
+                    $this->output->writeln(sprintf('      <error>  %s  </error>', $this->prepareOutput($line)));
+                }
 
                 if ($showTrace && !$e instanceof LintingException) { // stack trace of lint exception is of no interest
-                    $this->output->writeln('      <bg=yellow;fg=black;>Stack trace</>');
+                    $this->output->writeln('');
                     $stackTrace = $e->getTrace();
                     foreach ($stackTrace as $trace) {
-                        $this->outputTrace($trace, '      ');
+                        $this->outputTrace($trace);
                     }
                 }
             }
@@ -76,25 +91,23 @@ final class ErrorOutput
     }
 
     /**
-     * @param array  $trace
-     * @param string $indent
+     * @param array $trace
      */
-    private function outputTrace(array $trace, $indent)
+    private function outputTrace(array $trace)
     {
-        if (isset($trace['file'])) {
-            $this->output->writeln(sprintf('%s<comment>File</comment>      %s:%d', $indent, $this->prepareOutput($trace['file']), $trace['line']));
-        }
-
         if (isset($trace['class'], $trace['type'], $trace['function'])) {
             $this->output->writeln(sprintf(
-                '%s<comment> Method</comment>   %s%s%s',
-                $indent,
+                '      <comment>%s</comment>%s<comment>%s()</comment>',
                 $this->prepareOutput($trace['class']),
                 $this->prepareOutput($trace['type']),
                 $this->prepareOutput($trace['function'])
             ));
         } elseif (isset($trace['function'])) {
-            $this->output->writeln(sprintf('%s<comment> Function</comment> %s', $indent, $this->prepareOutput($trace['function'])));
+            $this->output->writeln(sprintf('      <comment>%s()</comment>', $this->prepareOutput($trace['function'])));
+        }
+
+        if (isset($trace['file'])) {
+            $this->output->writeln(sprintf('        in <info>%s</info> at line <info>%d</info>', $this->prepareOutput($trace['file']), $trace['line']));
         }
     }
 

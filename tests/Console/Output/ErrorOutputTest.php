@@ -56,24 +56,24 @@ Files that were not fixed due to errors reported during %s:
 
         if ($verbosityLevel >= OutputInterface::VERBOSITY_VERBOSE) {
             $startWith .= sprintf('
-      Details
-      Class    %s
-      Message  %s
-      Code     %d
-      File     %s:%s
+
+                            
+        [%s]  
+        %s (%d)    
+                            
 ',
                 get_class($source),
                 $source->getMessage(),
-                $source->getCode(),
-                __FILE__,
-                $exceptionLineNumber);
+                $source->getCode()
+            );
         }
 
         if ($verbosityLevel >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
-            $startWith .= sprintf('      Stack trace
-      File      %s:%d
-       Method   PhpCsFixer\Tests\Console\Output\ErrorOutputTest->getErrorAndLineNumber
-       Method   PhpCsFixer\Tests\Console\Output\ErrorOutputTest->provideTestCases
+            $startWith .= sprintf('
+      PhpCsFixer\Tests\Console\Output\ErrorOutputTest->getErrorAndLineNumber()
+        in %s at line %d
+      PhpCsFixer\Tests\Console\Output\ErrorOutputTest->provideTestCases()
+      ReflectionMethod->invoke()
 ',
                 __FILE__,
                 $lineNumber
