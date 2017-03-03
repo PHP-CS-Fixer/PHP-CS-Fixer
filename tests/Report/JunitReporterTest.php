@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Report;
 
+use GeckoPackages\PHPUnit\Constraints\XML\XMLMatchesXSDConstraint;
 use PhpCsFixer\Report\JunitReporter;
 use PhpCsFixer\Report\ReportSummary;
 
@@ -22,12 +23,24 @@ use PhpCsFixer\Report\ReportSummary;
  */
 final class JunitReporterTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var JunitReporter */
+    /**
+     * @var JunitReporter
+     */
     private $reporter;
+
+    /**
+     * JUnit XML schema from Jenkins.
+     *
+     * @var string
+     *
+     * @see https://github.com/jenkinsci/xunit-plugin/blob/master/src/main/resources/org/jenkinsci/plugins/xunit/types/model/xsd/junit-10.xsd
+     */
+    private $xsd;
 
     protected function setUp()
     {
         $this->reporter = new JunitReporter();
+        $this->xsd = file_get_contents(__DIR__.'/../../doc/junit-10.xsd');
     }
 
     /**
@@ -60,7 +73,7 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualReport);
+        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
         $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
@@ -92,7 +105,7 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualReport);
+        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
         $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
@@ -130,7 +143,7 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualReport);
+        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
         $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
@@ -165,7 +178,7 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualReport);
+        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
         $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
@@ -197,7 +210,7 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualReport);
+        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
         $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
@@ -252,59 +265,7 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualReport);
+        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
         $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
-    }
-
-    /**
-     * Validates generated xml report with schema.
-     * Uses JUnit XML schema from Jenkins.
-     *
-     * @see https://github.com/jenkinsci/xunit-plugin/blob/master/src/main/resources/org/jenkinsci/plugins/xunit/types/model/xsd/junit-10.xsd
-     *
-     * @param string $xml
-     */
-    private function assertJunitXmlSchema($xml)
-    {
-        $xsdPath = __DIR__.'/../../doc/junit-10.xsd';
-
-        static $errorLevels = array(
-            LIBXML_ERR_WARNING => 'Warning',
-            LIBXML_ERR_ERROR => 'Error',
-            LIBXML_ERR_FATAL => 'Fatal Error',
-        );
-
-        $internal = libxml_use_internal_errors(true);
-
-        $dom = new \DOMDocument();
-
-        $loaded = $dom->loadXML($xml);
-        if (true !== $loaded) {
-            libxml_use_internal_errors($internal);
-            $this->fail(sprintf('XML loading failed, expected "true", got "%s".', var_export($loaded, true)));
-        }
-
-        $dom->schemaValidate($xsdPath);
-
-        $errors = array();
-        foreach (libxml_get_errors() as $error) {
-            $errors[] = sprintf(
-                '%s #%s: %s (%s:%s)',
-                isset($errorLevels[$error->level]) ? $errorLevels[$error->level] : null,
-                $error->code,
-                trim($error->message),
-                $error->file,
-                $error->line
-            );
-        }
-
-        $errors = implode(PHP_EOL, $errors);
-
-        libxml_clear_errors();
-        libxml_use_internal_errors($internal);
-
-        if (strlen($errors) > 0) {
-            $this->fail('Actual xml does not match schema: '.PHP_EOL.$errors);
-        }
     }
 }
