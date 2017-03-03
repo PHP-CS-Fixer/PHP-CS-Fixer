@@ -51,39 +51,50 @@ final class ErrorOutput
             $process
         )));
 
-        $showDetails = $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE;
-        $showTrace = $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE;
+        $showDetails = $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE;
+        $showTrace = $this->output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG;
         foreach ($errors as $i => $error) {
             $this->output->writeln(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
-            if ($showDetails && null !== $e = $error->getSource()) {
-                $class = sprintf('[%s]', get_class($e));
-                $message = $e->getMessage();
-                if (0 !== $code = $e->getCode()) {
-                    $message .= " ($code)";
-                }
-
-                $length = max(strlen($class), strlen($message));
-                $lines = array(
-                    '',
-                    $class,
-                    $message,
-                    '',
-                );
-
-                $this->output->writeln('');
-                foreach ($lines as $line) {
-                    if (strlen($line) < $length) {
-                        $line .= str_repeat(' ', $length - strlen($line));
+            if ($showDetails) {
+                $e = $error->getSource();
+                if (null !== $e) {
+                    $class = sprintf('[%s]', get_class($e));
+                    $message = $e->getMessage();
+                    $code = $e->getCode();
+                    if (0 !== $code) {
+                        $message .= " ($code)";
                     }
 
-                    $this->output->writeln(sprintf('      <error>  %s  </error>', $this->prepareOutput($line)));
-                }
+                    $length = max(strlen($class), strlen($message));
+                    $lines = array(
+                        '',
+                        $class,
+                        $message,
+                        '',
+                    );
 
-                if ($showTrace && !$e instanceof LintingException) { // stack trace of lint exception is of no interest
                     $this->output->writeln('');
-                    $stackTrace = $e->getTrace();
-                    foreach ($stackTrace as $trace) {
-                        $this->outputTrace($trace);
+
+                    foreach ($lines as $line) {
+                        if (strlen($line) < $length) {
+                            $line .= str_repeat(' ', $length - strlen($line));
+                        }
+
+                        $this->output->writeln(sprintf('      <error>  %s  </error>', $this->prepareOutput($line)));
+                    }
+
+                    if ($showTrace && !$e instanceof LintingException) { // stack trace of lint exception is of no interest
+                        $this->output->writeln('');
+                        $stackTrace = $e->getTrace();
+                        foreach ($stackTrace as $trace) {
+                            if (isset($trace['class'], $trace['function']) && 'Symfony\Component\Console\Command\Command' === $trace['class'] && 'run' === $trace['function']) {
+                                $this->output->writeln('      [ ... ]');
+
+                                break;
+                            }
+
+                            $this->outputTrace($trace);
+                        }
                     }
                 }
             }

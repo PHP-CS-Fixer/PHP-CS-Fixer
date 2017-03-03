@@ -46,6 +46,10 @@ final class ErrorOutputTest extends \PHPUnit_Framework_TestCase
 
         rewind($output->getStream());
         $displayed = stream_get_contents($output->getStream());
+        // normalize line breaks,
+        // as we output using SF `writeln` we are not sure what line ending has been used as it is
+        // based on the platform/console/terminal used
+        $displayed = str_replace(PHP_EOL, "\n", $displayed);
 
         $startWith = sprintf('
 Files that were not fixed due to errors reported during %s:
@@ -54,13 +58,13 @@ Files that were not fixed due to errors reported during %s:
             __FILE__
         );
 
-        if ($verbosityLevel >= OutputInterface::VERBOSITY_VERBOSE) {
+        if ($verbosityLevel >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
             $startWith .= sprintf('
 
-                            
-        [%s]  
-        %s (%d)    
-                            
+                            '.'
+        [%s]  '.'
+        %s (%d)    '.'
+                            '.'
 ',
                 get_class($source),
                 $source->getMessage(),
@@ -68,7 +72,7 @@ Files that were not fixed due to errors reported during %s:
             );
         }
 
-        if ($verbosityLevel >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
+        if ($verbosityLevel >= OutputInterface::VERBOSITY_DEBUG) {
             $startWith .= sprintf('
       PhpCsFixer\Tests\Console\Output\ErrorOutputTest->getErrorAndLineNumber()
         in %s at line %d
@@ -93,6 +97,7 @@ Files that were not fixed due to errors reported during %s:
             array($error, OutputInterface::VERBOSITY_NORMAL, $lineNumber, $exceptionLineNumber, 'VN'),
             array($error, OutputInterface::VERBOSITY_VERBOSE, $lineNumber, $exceptionLineNumber, 'VV'),
             array($error, OutputInterface::VERBOSITY_VERY_VERBOSE, $lineNumber, $exceptionLineNumber, 'VVV'),
+            array($error, OutputInterface::VERBOSITY_DEBUG, $lineNumber, $exceptionLineNumber, 'DEBUG'),
         );
     }
 
