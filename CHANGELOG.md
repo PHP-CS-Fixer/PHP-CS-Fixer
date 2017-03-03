@@ -3,6 +3,24 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.1.1
+--------------------
+
+* bug #2547 NoUnneededControlParenthesesFixer - Handle T_COALESCE in clone (keksa)
+* bug #2557 BracesFixer - Better comments handling (SpacePossum)
+* bug #2558 require symfony/polyfill-xml (SpacePossum)
+* bug #2560 PhpdocNoAliasTagFixer - Fix circular replacements detection (julienfalque)
+* bug #2567 Filename with spaces usage (jaymecd)
+* bug #2572 NoUnreachableDefaultArgumentValueFixer - Mark as risky (SpacePossum)
+* minor #2533 AppVeyor - adjust phpunit version (keradus)
+* minor #2535 Make .gitignore entries more specific (julienfalque)
+* minor #2541 README.rst - provide download link for latest version (keradus)
+* minor #2562 Add schema.json (keradus)
+* minor #2563 Add deprecation notices tests (julienfalque)
+* minor #2564 Add rules configuration by passing json encode config by CLI (SpacePossum)
+* minor #2569 Make symfony/phpunit-bridge a dev dependency only (julienfalque)
+* minor #2574 Add xml.xsd (keradus)
+
 Changelog for v2.1.0
 --------------------
 
