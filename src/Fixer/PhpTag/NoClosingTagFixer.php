@@ -30,17 +30,31 @@ final class NoClosingTagFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        if (!$tokens->isMonolithicPhp()) {
-            return;
-        }
-
         $closeTags = $tokens->findGivenKind(T_CLOSE_TAG);
 
         if (empty($closeTags)) {
             return;
         }
 
+        end($closeTags);
         list($index, $token) = each($closeTags);
+
+        switch (true) {
+            case $index === count($tokens) - 2:
+                $nextToken = $tokens[$tokens->getNextNonWhitespace($index)];
+                if (!$nextToken->isGivenKind(T_INLINE_HTML)) {
+                    return;
+                }
+                if (trim($nextToken->getContent())) {
+                    return;
+                }
+                $nextToken->clear();
+                break;
+            case $index === count($tokens) - 1:
+                break;
+            default:
+                return;
+        }
 
         $tokens->removeLeadingWhitespace($index);
         $token->clear();
