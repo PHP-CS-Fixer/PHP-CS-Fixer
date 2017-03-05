@@ -324,6 +324,7 @@ PHP;
         return array(
             array("<?php\n", true),
             array("<?php\n?>", true),
+            array("<?php\n?>\n", false),
             array('', false),
             array(' ', false),
             array("#!/usr/bin/env php\n<?php\n", false),

@@ -1083,6 +1083,13 @@ class Tokens extends \SplFixedArray
             ) {
                 return false;
             }
+
+            if ($this[$index]->isGivenKind(T_CLOSE_TAG)) {
+                // a line break might be attached to the close tag
+                if (substr($this[$index]->getContent(), -1) !== '>') {
+                    return false;
+                }
+            }
         }
 
         return true;
