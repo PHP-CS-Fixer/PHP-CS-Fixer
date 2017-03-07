@@ -50,11 +50,10 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
             new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
         );
 
-        foreach ($fixers as $fixer) {
-            if ($fixer instanceof Fixer\ConfigurableFixerInterface) {
-                $fixer->configure(null);
-            }
-        }
+        $expectedChangedInfo = array(
+            'appliedFixers' => array('visibility_required'),
+            'diff' => '',
+        );
 
         $path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix';
         $runner = new Runner(
@@ -66,17 +65,34 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
             $linterProphecy->reveal(),
             true,
             new NullCacheManager(),
-            new Directory($path)
+            new Directory($path),
+            false
         );
 
         $changed = $runner->fix();
 
-        $pathToInvalidFile = 'somefile.php';
+        $this->assertCount(2, $changed);
+        $this->assertArraySubset($expectedChangedInfo, array_pop($changed));
+        $this->assertArraySubset($expectedChangedInfo, array_pop($changed));
+
+        $path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix';
+        $runner = new Runner(
+            Finder::create()->in($path),
+            $fixers,
+            new NullDiffer(),
+            null,
+            new ErrorsManager(),
+            $linterProphecy->reveal(),
+            true,
+            new NullCacheManager(),
+            new Directory($path),
+            true
+        );
+
+        $changed = $runner->fix();
 
         $this->assertCount(1, $changed);
-        $this->assertCount(2, $changed[$pathToInvalidFile]);
-        $this->assertSame(array('appliedFixers', 'diff'), array_keys($changed[$pathToInvalidFile]));
-        $this->assertSame('visibility_required', $changed[$pathToInvalidFile]['appliedFixers'][0]);
+        $this->assertArraySubset($expectedChangedInfo, array_pop($changed));
     }
 
     /**

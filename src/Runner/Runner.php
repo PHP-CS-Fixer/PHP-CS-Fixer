@@ -78,6 +78,11 @@ final class Runner
      */
     private $fixers;
 
+    /**
+     * @var bool
+     */
+    private $stopOnViolation;
+
     public function __construct(
         $finder,
         array $fixers,
@@ -87,7 +92,8 @@ final class Runner
         LinterInterface $linter,
         $isDryRun,
         CacheManagerInterface $cacheManager,
-        DirectoryInterface $directory = null
+        DirectoryInterface $directory = null,
+        $stopOnViolation = false
     ) {
         $this->finder = $finder;
         $this->fixers = $fixers;
@@ -98,6 +104,7 @@ final class Runner
         $this->isDryRun = $isDryRun;
         $this->cacheManager = $cacheManager;
         $this->directory = $directory ?: new Directory('');
+        $this->stopOnViolation = $stopOnViolation;
     }
 
     /**
@@ -122,13 +129,17 @@ final class Runner
         foreach ($collection as $file) {
             $fixInfo = $this->fixFile($file, $collection->currentLintingResult());
 
+            // we do not need Tokens to still caching just fixed file - so clear the cache
+            Tokens::clearCache();
+
             if ($fixInfo) {
                 $name = $this->directory->getRelativePathTo($file);
                 $changed[$name] = $fixInfo;
-            }
 
-            // we do not need Tokens to still caching just fixed file - so clear the cache
-            Tokens::clearCache();
+                if ($this->stopOnViolation) {
+                    break;
+                }
+            }
         }
 
         return $changed;
