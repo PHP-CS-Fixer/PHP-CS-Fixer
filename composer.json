@@ -30,7 +30,7 @@
     "require-dev": {
         "gecko-packages/gecko-php-unit": "^2.0",
         "justinrainbow/json-schema": "^5.0",
-        "phpunit/phpunit": "^4.5|^5",
+        "phpunit/phpunit": "^4.5 || ^5.0",
         "satooshi/php-coveralls": "^1.0",
         "symfony/phpunit-bridge": "^3.2"
     },
