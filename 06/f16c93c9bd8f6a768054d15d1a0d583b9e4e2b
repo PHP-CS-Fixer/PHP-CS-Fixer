@@ -1,0 +1,64 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-21T07:27:13Z
+
+👍 but shouldn't we allow it to fail?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-21T11:08:30Z
+
+I would rather want to have nightly fixed and then keep it green all the time.
+After that, I don't want to allow users to break it with new PRs.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-21T12:46:04Z
+
+Nightlies are very unstable. Once you have fixed all errors and the code runs fine on nightly, you can't be sure that it won't break again because of some bug or unexpected change introduced later in nightly. You may end up having failing builds on PRs that don't even change the code.
+
+I think getting feedback on whether the code runs on nightlies is great, as it will allow to anticipate on future PHP releases. But IMO it should not be a mandatory requirement of the build to succeed. At least for now. Maybe later, when we will be closer to a new PHP release, would be more appropriate.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-21T13:04:16Z
+
+> You may end up having failing builds on PRs that don't even change the code.
+
+I agree it may happen, and it would be a prio then to fix it for project maintainers.
+
+Let us first focus on having that nightly build running green
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-21T13:15:17Z
+
+> it would be a prio then to fix it for project maintainers.
+
+Alright then 👍
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-25T10:39:13Z
+
+how about adding;
+```
+ - 7.0snapshot
+ - 7.1snapshot
+```
+(for ref.: https://github.com/travis-ci/travis-ci/issues/7268#issuecomment-277669166)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-25T10:49:52Z
+
+I see no value in adding `7.1snapshot` while we have added latest stable of `7.1` already.
+`7.1@dev` is not that much different for us than `7.1@stable` in context of code syntax.
+What we care about is `7.2` vs `7.1`.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-07T11:42:29Z
+
+Sad HHVM never fix the iterator issue, IMHO this is the best away around.
+Thanks @keradus :+1:
