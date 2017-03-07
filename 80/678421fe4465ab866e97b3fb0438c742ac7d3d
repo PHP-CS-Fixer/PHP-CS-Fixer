@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-13T19:49:18Z
+
+I think a line of text added to the README @ sub chapter `Usage` would be nice.
+But with or without it; I'm :+1: nice idea, nice implementation
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-13T21:42:47Z
+
+Do you want to propose one ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-17T17:24:24Z
+
+At sub chapter [`Usage`](https://github.com/FriendsOfPHP/PHP-CS-Fixer#usage) we provide information on the CLI options/arguments.
+So I suggest to add at the end of this sub chapter;
+`--stop-on-violation` stop PHP-CS-Fixer on the first detection of a file that needs to be fixed.
