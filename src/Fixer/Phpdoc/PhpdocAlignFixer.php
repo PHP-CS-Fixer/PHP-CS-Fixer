@@ -224,6 +224,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
             if (!empty($matches['tag2'])) {
                 $matches['tag'] = $matches['tag2'];
                 $matches['hint'] = $matches['hint2'];
+                $matches['var'] = '';
             }
 
             return $matches;

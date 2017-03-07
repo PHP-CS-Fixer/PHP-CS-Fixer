@@ -20,6 +20,8 @@ matrix:
           env: DEPLOY=yes TASK_TESTS_COVERAGE=1
         - php: 7.1
           env: TASK_SCA=1
+        - php: nightly
+          env: TASK_SCA=1 COMPOSER_FLAGS="--ignore-platform-reqs" SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_IGNORE_ENV=1
         - php: 5.3
           env: SKIP_LINT_TEST_CASES=1 COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
         - php: 5.4

@@ -18,12 +18,22 @@
 
 if (defined('HHVM_VERSION_ID')) {
     if (HHVM_VERSION_ID < 30900) {
-        fwrite(STDERR, "HHVM needs to be a minimum version of HHVM 3.9.0\n");
-        exit(1);
+        fwrite(STDERR, "HHVM needs to be a minimum version of HHVM 3.9.0.\n");
+
+        if (getenv('PHP_CS_FIXER_IGNORE_ENV')) {
+            fwrite(STDERR, "Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.\n");
+        } else {
+            exit(1);
+        }
     }
 } elseif (!defined('PHP_VERSION_ID') || PHP_VERSION_ID < 50306 || PHP_VERSION_ID >= 70200) {
-    fwrite(STDERR, "PHP needs to be a minimum version of PHP 5.3.6 and maximum version of PHP 7.1.*\n");
-    exit(1);
+    fwrite(STDERR, "PHP needs to be a minimum version of PHP 5.3.6 and maximum version of PHP 7.1.*.\n");
+
+    if (getenv('PHP_CS_FIXER_IGNORE_ENV')) {
+        fwrite(STDERR, "Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.\n");
+    } else {
+        exit(1);
+    }
 }
 
 set_error_handler(function ($severity, $message, $file, $line) {
