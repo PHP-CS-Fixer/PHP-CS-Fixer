@@ -436,7 +436,7 @@ class Foo
             if ($token->isGivenKind($classyTokens) && !$tokensAnalyzer->isAnonymousClass($index)) {
                 if ($this->configuration['position_after_functions_and_oop_constructs'] === self::LINE_NEXT) {
                     $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
-                } elseif ($this->configuration['position_after_functions_and_oop_constructs'] === self::LINE_SAME) {
+                } else {
                     $ensuredWhitespace = ' ';
                 }
 
@@ -455,7 +455,7 @@ class Foo
                 } else {
                     if ($this->configuration['position_after_functions_and_oop_constructs'] === self::LINE_NEXT) {
                         $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
-                    } elseif ($this->configuration['position_after_functions_and_oop_constructs'] === self::LINE_SAME) {
+                    } else {
                         $ensuredWhitespace = ' ';
                     }
 
