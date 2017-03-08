@@ -1,0 +1,46 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-08T14:48:58Z
+
+Thanks, nice spotted!
+Please be aware I've changed the target to 2.1.
+I expect the tests to fail because the copy you corrected is also used in the README.rst which is generated. If you have the time, than please regenerate the readme using;
+>$ php php-cs-fixer readme > README.rst
+
+and add it to the PR.
+If not I can do it later on.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-08T14:49:57Z
+
+I moved target back to master.
+
+So. We have this PR with one commit. GitHub is not smart enough when changing base branch.
+It will just take whole branch and target it against 2.1 - just like one would create branch on master and then target it against 2.1 - in effect, **all** commits from master that are not on 2.1 would be included into this PR.
+
+For that, every time one is changing base branch for older one on GitHub interface, owner of branch is forced to rebase his work on new targed.
+Note that this is not an issue you would change base branch for newer one (eg 2.1->master).
+
+Here, I moved base branch back to master to not enforce author to rebase his branch.
+
+----------
+
+You are correct that this should be shipped for 2.1.
+I set up the milestone for that.
+I will change target branch during merging as usual.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-08T14:55:25Z
+
+> I expect the tests to fail because the copy you corrected is also used in the README.rst
+
+Reasoning for riskiness is not part of readme file.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-08T15:00:03Z
+
+thanks @keradus  :)
+LGTM
