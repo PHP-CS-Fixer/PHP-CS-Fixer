@@ -41,7 +41,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixControlContinuationBracesCases
      */
-    public function testFixControlContinuationBraces($expected, $input = null, $configuration = null)
+    public function testFixControlContinuationBraces($expected, $input = null, array $configuration = null)
     {
         if (isset($configuration)) {
             $this->fixer->configure($configuration);
@@ -384,7 +384,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixMissingBracesAndIndentCases
      */
-    public function testFixMissingBracesAndIndent($expected, $input = null, $configuration = null)
+    public function testFixMissingBracesAndIndent($expected, $input = null, array $configuration = null)
     {
         if (isset($configuration)) {
             $this->fixer->configure($configuration);
@@ -1915,7 +1915,7 @@ function D() /**
      *
      * @dataProvider provideFixClassyBracesCases
      */
-    public function testFixClassyBraces($expected, $input = null, $configuration = null)
+    public function testFixClassyBraces($expected, $input = null, array $configuration = null)
     {
         if (isset($configuration)) {
             $this->fixer->configure($configuration);
@@ -2067,7 +2067,7 @@ function foo()
      * @dataProvider provideFixClassyBraces54Cases
      * @requires PHP 5.4
      */
-    public function testFixClassyBraces54($expected, $input = null, $configuration = null)
+    public function testFixClassyBraces54($expected, $input = null, array $configuration = null)
     {
         if (isset($configuration)) {
             $this->fixer->configure($configuration);
@@ -2108,7 +2108,7 @@ function foo()
      * @dataProvider provideFixAnonFunctionInShortArraySyntax54Cases
      * @requires PHP 5.4
      */
-    public function testFixAnonFunctionInShortArraySyntax54($expected, $input = null, $configuration = null)
+    public function testFixAnonFunctionInShortArraySyntax54($expected, $input = null, array $configuration = null)
     {
         if (isset($configuration)) {
             $this->fixer->configure($configuration);
@@ -2194,7 +2194,7 @@ function foo()
      *
      * @dataProvider provideFixCommentBeforeBraceCases
      */
-    public function testFixCommentBeforeBrace($expected, $input = null, $configuration = null)
+    public function testFixCommentBeforeBrace($expected, $input = null, array $configuration = null)
     {
         if (isset($configuration)) {
             $this->fixer->configure($configuration);
@@ -2267,7 +2267,7 @@ function foo()
      * @dataProvider provideFixCommentBeforeBrace70Cases
      * @requires PHP 7.0
      */
-    public function testFixCommentBeforeBrace70($expected, $input = null, $configuration = null)
+    public function testFixCommentBeforeBrace70($expected, $input = null, array $configuration = null)
     {
         if (isset($configuration)) {
             $this->fixer->configure($configuration);
@@ -2312,7 +2312,7 @@ function foo()
      *
      * @dataProvider provideFixWhitespaceBeforeBraceCases
      */
-    public function testFixWhitespaceBeforeBrace($expected, $input = null, $configuration = null)
+    public function testFixWhitespaceBeforeBrace($expected, $input = null, array $configuration = null)
     {
         if (isset($configuration)) {
             $this->fixer->configure($configuration);
@@ -2465,7 +2465,7 @@ function foo()
      *
      * @dataProvider provideFixFunctionsCases
      */
-    public function testFixFunctions($expected, $input = null, $configuration = null)
+    public function testFixFunctions($expected, $input = null, array $configuration = null)
     {
         if (isset($configuration)) {
             $this->fixer->configure($configuration);
@@ -2782,7 +2782,7 @@ class Foo
      *
      * @dataProvider provideFixSpaceAroundTokenCases
      */
-    public function testFixSpaceAroundToken($expected, $input = null, $configuration = null)
+    public function testFixSpaceAroundToken($expected, $input = null, array $configuration = null)
     {
         if (isset($configuration)) {
             $this->fixer->configure($configuration);
@@ -2984,7 +2984,7 @@ declare   (   ticks   =   1   )   {
      * @dataProvider provide55Cases
      * @requires PHP 5.5
      */
-    public function test55($expected, $input = null, $configuration = null)
+    public function test55($expected, $input = null, array $configuration = null)
     {
         if (isset($configuration)) {
             $this->fixer->configure($configuration);
@@ -3056,7 +3056,7 @@ declare   (   ticks   =   1   )   {
      * @dataProvider provide56Cases
      * @requires PHP 5.6
      */
-    public function test56($expected, $input = null, $configuration = null)
+    public function test56($expected, $input = null, array $configuration = null)
     {
         if (isset($configuration)) {
             $this->fixer->configure($configuration);
@@ -3093,7 +3093,7 @@ declare   (   ticks   =   1   )   {
      * @dataProvider provide70Cases
      * @requires PHP 7.0
      */
-    public function test70($expected, $input = null, $configuration = null)
+    public function test70($expected, $input = null, array $configuration = null)
     {
         if (isset($configuration)) {
             $this->fixer->configure($configuration);
@@ -3411,7 +3411,7 @@ use const some\a\{ConstA, ConstB, ConstC};
      *
      * @dataProvider providePreserveLineAfterControlBrace
      */
-    public function testPreserveLineAfterControlBrace($expected, $input = null, $configuration = null)
+    public function testPreserveLineAfterControlBrace($expected, $input = null, array $configuration = null)
     {
         if (isset($configuration)) {
             $this->fixer->configure($configuration);
@@ -3502,7 +3502,7 @@ if (true) {
      *
      * @dataProvider provideFixWithAllowOnelineLambdaCases
      */
-    public function testFixWithAllowSingleLineClosure($expected, $input = null, $configuration = null)
+    public function testFixWithAllowSingleLineClosure($expected, $input = null, array $configuration = null)
     {
         if (isset($configuration)) {
             $this->fixer->configure($configuration);
@@ -3556,7 +3556,7 @@ if (true) {
      *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null, $configuration = null)
+    public function testMessyWhitespaces($expected, $input = null, array $configuration = null)
     {
         if (isset($configuration)) {
             $this->fixer->configure($configuration);
