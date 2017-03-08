@@ -434,10 +434,10 @@ class Foo
             }
 
             if ($token->isGivenKind($classyTokens) && !$tokensAnalyzer->isAnonymousClass($index)) {
-                if ($this->configuration['position_after_functions_and_oop_constructs'] === self::LINE_NEXT) {
-                    $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
-                } else {
+                if ($this->configuration['position_after_functions_and_oop_constructs'] === self::LINE_SAME && !$tokens[$startBraceIndex - 2]->isGivenKind(T_COMMENT)) {
                     $ensuredWhitespace = ' ';
+                } else {
+                    $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
                 }
 
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $ensuredWhitespace);
@@ -453,10 +453,10 @@ class Foo
                         $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
                     }
                 } else {
-                    if ($this->configuration['position_after_functions_and_oop_constructs'] === self::LINE_NEXT) {
-                        $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
-                    } else {
+                    if ($this->configuration['position_after_functions_and_oop_constructs'] === self::LINE_SAME && !$tokens[$startBraceIndex - 2]->isGivenKind(T_COMMENT)) {
                         $ensuredWhitespace = ' ';
+                    } else {
+                        $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
                     }
 
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $ensuredWhitespace);
