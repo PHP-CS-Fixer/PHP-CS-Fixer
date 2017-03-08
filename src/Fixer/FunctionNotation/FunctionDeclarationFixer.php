@@ -149,7 +149,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
                 $tokens[$startParenthesisIndex - 1]->clear();
             }
 
-            if ($this->configuration['closure_function_spacing'] === self::SPACING_NONE && $isLambda) {
+            if ($isLambda && self::SPACING_NONE === $this->configuration['closure_function_spacing']) {
                 // optionally remove whitespace after T_FUNCTION of a closure
                 // eg: `function () {}` => `function() {}`
                 if ($tokens[$index + 1]->isWhitespace()) {
