@@ -183,7 +183,7 @@ A combination of ``--dry-run`` and ``--diff`` will
 display a summary of proposed fixes, leaving your files unchanged.
 
 The ``--allow-risky`` option allows you to set whether risky rules may run. Default value is taken from config file.
-Risky rule is a rule, which could change code behaviour. By default no risky rules are run.
+Risky rule is a rule, which could change code behaviour. By default no risky rules are run. Allowed input for this flag is ``yes`` or ``no``
 
 The ``--stop-on-violation`` flag stops execution upon first file that needs to be fixed.
 
