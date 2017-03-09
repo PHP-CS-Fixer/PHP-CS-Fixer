@@ -116,6 +116,14 @@ if (true) {
                 '<?php echo 1;// test',
                 "<?php echo 1;// test\n?>",
             ),
+            'No code' => array(
+                '<?php ',
+                '<?php ?>',
+            ),
+            'No code, only comment' => array(
+                '<?php /* license */ ',
+                '<?php /* license */ ?>',
+            ),
         );
     }
 
