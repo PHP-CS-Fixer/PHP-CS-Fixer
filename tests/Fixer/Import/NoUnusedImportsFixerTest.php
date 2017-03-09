@@ -130,11 +130,14 @@ namespace Foo\Bar\FooBar;
 
 use Foo\Bar\FooBar\Foo as Fooz;
 use Foo\Bar\FooBar\Aaa\Bbb;
+use XYZ\FQCN_XYZ;
 
 $a = new Baz();
 $b = new Fooz();
 $c = new Bar\Fooz();
 $d = new Bbb();
+$e = new FQCN_Babo();
+$f = new FQCN_XYZ();
 EOF;
 
         $input = <<<'EOF'
@@ -146,11 +149,15 @@ use Foo\Bar\FooBar\Baz;
 use Foo\Bar\FooBar\Foo as Fooz;
 use Foo\Bar\FooBar\Bar;
 use Foo\Bar\FooBar\Aaa\Bbb;
+use \Foo\Bar\FooBar\FQCN_Babo;
+use XYZ\FQCN_XYZ;
 
 $a = new Baz();
 $b = new Fooz();
 $c = new Bar\Fooz();
 $d = new Bbb();
+$e = new FQCN_Babo();
+$f = new FQCN_XYZ();
 EOF;
 
         $this->doTest($expected, $input);

@@ -262,11 +262,13 @@ final class NoUnusedImportsFixer extends AbstractFixer
                 continue;
             }
 
-            if (0 !== strpos($useDeclaration['fullName'], $namespace.'\\')) {
+            $useDeclarationFullName = ltrim($useDeclaration['fullName'], '\\');
+
+            if (0 !== strpos($useDeclarationFullName, $namespace.'\\')) {
                 continue;
             }
 
-            $partName = substr($useDeclaration['fullName'], $nsLength);
+            $partName = substr($useDeclarationFullName, $nsLength);
 
             if (false === strpos($partName, '\\')) {
                 $this->removeUseDeclaration($tokens, $useDeclaration);
