@@ -135,6 +135,7 @@ $a = new Baz();
 $b = new Fooz();
 $c = new Bar\Fooz();
 $d = new Bbb();
+$e = new FQCN_Babo();
 EOF;
 
         $input = <<<'EOF'
@@ -146,11 +147,13 @@ use Foo\Bar\FooBar\Baz;
 use Foo\Bar\FooBar\Foo as Fooz;
 use Foo\Bar\FooBar\Bar;
 use Foo\Bar\FooBar\Aaa\Bbb;
+use \Foo\Bar\FooBar\FQCN_Babo;
 
 $a = new Baz();
 $b = new Fooz();
 $c = new Bar\Fooz();
 $d = new Bbb();
+$e = new FQCN_Babo();
 EOF;
 
         $this->doTest($expected, $input);
