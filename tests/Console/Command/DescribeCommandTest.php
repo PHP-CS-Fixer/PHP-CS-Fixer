@@ -69,10 +69,6 @@ EOT;
 
     public function testExecuteStatusCode()
     {
-        if (!method_exists('Symfony\Component\Console\Tester\CommandTester', 'getStatusCode')) {
-            $this->markTestSkipped('Symfony 2.4+ required.');
-        }
-
         $this->assertSame(0, $this->execute()->getStatusCode());
     }
 
