@@ -42,7 +42,6 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         'PhpCsFixer\Console\Command\ReadmeCommand',
         'PhpCsFixer\Console\Command\SelfUpdateCommand',
         'PhpCsFixer\Console\Output\NullOutput',
-        'PhpCsFixer\Console\Output\ProcessOutput',
         'PhpCsFixer\Differ\DiffConsoleFormatter',
         'PhpCsFixer\Differ\NullDiffer',
         'PhpCsFixer\Differ\SebastianBergmannDiffer',

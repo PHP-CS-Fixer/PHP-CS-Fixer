@@ -68,7 +68,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ''
         );
 
-        $this->assertFalse($resolver->getProgress());
+        $this->assertSame('none', $resolver->getProgress());
     }
 
     public function testResolveProgressWithPositiveConfigAndNegativeOption()
@@ -84,7 +84,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ''
         );
 
-        $this->assertFalse($resolver->getProgress());
+        $this->assertSame('none', $resolver->getProgress());
     }
 
     public function testResolveProgressWithNegativeConfigAndPositiveOption()
@@ -100,7 +100,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ''
         );
 
-        $this->assertTrue($resolver->getProgress());
+        $this->assertSame('run-in', $resolver->getProgress());
     }
 
     public function testResolveProgressWithNegativeConfigAndNegativeOption()
@@ -116,7 +116,80 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ''
         );
 
-        $this->assertFalse($resolver->getProgress());
+        $this->assertSame('none', $resolver->getProgress());
+    }
+
+    /**
+     * @param string $progressType
+     *
+     * @dataProvider getProgressTypeCases
+     */
+    public function testResolveProgressWithPositiveConfigAndExplicitProgress($progressType)
+    {
+        $this->config->setHideProgress(true);
+
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            array(
+                'format' => 'txt',
+                'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
+                'show-progress' => $progressType,
+            ),
+            ''
+        );
+
+        $this->assertSame($progressType, $resolver->getProgress());
+    }
+
+    /**
+     * @param string $progressType
+     *
+     * @dataProvider getProgressTypeCases
+     */
+    public function testResolveProgressWithNegativeConfigAndExplicitProgress($progressType)
+    {
+        $this->config->setHideProgress(false);
+
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            array(
+                'format' => 'txt',
+                'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
+                'show-progress' => $progressType,
+            ),
+            ''
+        );
+
+        $this->assertSame($progressType, $resolver->getProgress());
+    }
+
+    public function getProgressTypeCases()
+    {
+        return array(
+            array('none'),
+            array('run-in'),
+            array('estimating'),
+        );
+    }
+
+    public function testResolveProgressWithInvalidExplicitProgress()
+    {
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            array(
+                'format' => 'txt',
+                'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
+                'show-progress' => 'foo',
+            ),
+            ''
+        );
+
+        $this->setExpectedException(
+            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            'The progress type "foo" is not defined, supported are "none", "run-in", "estimating".'
+        );
+
+        $resolver->getProgress();
     }
 
     public function testResolveConfigFileDefault()
@@ -915,7 +988,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
         $options = $definition->getOptions();
         $this->assertSame(
-            array('path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format', 'stop-on-violation'),
+            array('path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress'),
             array_keys($options),
             'Expected options mismatch, possibly test needs updating.'
         );
