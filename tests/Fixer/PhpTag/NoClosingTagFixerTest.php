@@ -121,8 +121,11 @@ if (true) {
                 '<?php ?>',
             ),
             'No code, only comment' => array(
-                '<?php /* license */ ',
+                '<?php /* license */',
                 '<?php /* license */ ?>',
+            ),
+            array(
+                '<?php ?>aa',
             ),
         );
     }
@@ -130,13 +133,24 @@ if (true) {
     public function provideCasesWithShortOpenTag()
     {
         return array(
-            array('<? echo \'Foo\';', '<? echo \'Foo\'; ?>'),
-            array('<? echo \'Foo\';', '<? echo \'Foo\';?>'),
+            array(
+                '<? echo \'Foo\';',
+                '<? echo \'Foo\'; ?>',
+            ),
+            array(
+                '<? echo \'Foo\';',
+                '<? echo \'Foo\';?>',
+                ),
             array('<? echo \'Foo\'; ?>
 <p><? echo \'this is a template\'; ?></p>
 <? echo \'Foo\'; ?>',
             ),
+            array('<? /**/', '<? /**/?>'),
             array('<?= "somestring"; ?> <?= "anotherstring"; ?>'),
+            array(
+                '<?= 1;',
+                '<?= 1; ?>',
+            ),
         );
     }
 }

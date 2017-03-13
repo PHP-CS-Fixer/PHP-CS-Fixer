@@ -30,7 +30,7 @@ final class NoClosingTagFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        if (!$tokens->isMonolithicPhp()) {
+        if (count($tokens) < 2 || !$tokens->isMonolithicPhp()) {
             return;
         }
 
@@ -46,9 +46,7 @@ final class NoClosingTagFixer extends AbstractFixer
         $token->clear();
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        $prevToken = $tokens[$prevIndex];
-
-        if (!$prevToken->equalsAny(array(';', '}'))) {
+        if (!$tokens[$prevIndex]->equalsAny(array(';', '}', array(T_OPEN_TAG)))) {
             $tokens->insertAt($prevIndex + 1, new Token(';'));
         }
     }
