@@ -15,6 +15,7 @@ cache:
     - C:\tools\php -> .appveyor.yml
 
 install:
+    - ps: Set-Service wuauserv -StartupType Manual
     - IF NOT EXIST C:\tools\php (choco install --yes --allow-empty-checksums php --version %php_ver% --params '/InstallDir:C:\tools\php')
     - cd C:\tools\php
     - copy php.ini-production php.ini
