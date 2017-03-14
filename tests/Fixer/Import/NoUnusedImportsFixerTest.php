@@ -381,6 +381,26 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testPropertyName()
+    {
+        $expected = <<<'EOF'
+<?php
+
+
+$foo->bar = null;
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use Foo\Bar;
+
+$foo->bar = null;
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testNamespacePart()
     {
         $expected = <<<'EOF'
