@@ -1,0 +1,217 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-07T21:41:15Z
+
+now it's failing :D
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-07T21:41:16Z
+
+Well that's not a huge success for now 😅
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-07T23:05:51Z
+
+wow, 25 minutes for 5.x
+on Travis it's like twice slower than 7.x, not 8 times
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-08T09:27:09Z
+
+@keradus If I ever succeed at improving AppVeyor build time, it will only be one or two minutes. The longest step is the PHPUnit test suite itself so it looks like PHP-CS-Fixer has a real performance issue on Windows.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-08T10:05:44Z
+
+I really don't understand why AppVeyor won't restore Composer cache. Is it something that must be enabled on AppVeyor side?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-08T10:09:00Z
+
+The only reason I could see is that your file is not in use.
+AppVeyor default config file is `appveyor.yml`. You have renamed it.
+One may use custom filename, but first he has to set it up in settings on web. We do not configure anything in CI services directly (keeping whole configuration in file).
+Try to un-rename the file.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-08T10:10:44Z
+
+Thats it
+
+in different PR, we have two builds (2 different PHP versions): https://ci.appveyor.com/project/keradus/php-cs-fixer/build/dev-5016
+
+in this PR, we have only one: https://ci.appveyor.com/project/keradus/php-cs-fixer/build/dev-5022
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-08T10:12:54Z
+
+@keradus This is because I commented out the PHP 5.x test for now, just to make the whole build faster :) This proves the new filename is taken into account though.
+
+Edit: see https://www.appveyor.com/docs/build-configuration/#yaml-file-alternative-naming.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-08T10:20:36Z
+
+:+1:
+-------------
+5.x is indeed that slower on Windows, Idid just run it.
+On unix it's 2x slower, on Windows.. argh. Slow part is linting. Please set up `SKIP_LINT_TEST_CASES=1` for PHP 5.x
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-08T10:27:54Z
+
+I don't see any config for cache on AppVeyor account settings. Please play with it.
+also, you could install `hirak/prestissimo` globally like we do in Travis, it should increase speed a bit.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-08T10:29:41Z
+
+Looks like we have no choice but merging the PR to see if the cache works: http://help.appveyor.com/discussions/problems/4048-build-cache-not-restored#comment_39042560.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-08T10:34:05Z
+
+Wow, definitely faster with `SKIP_LINT_TEST_CASES=1`!
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-08T10:43:08Z
+
+I don't see any real improvement with `hirak/prestissimo` but downloading it does take time, not sure it's worth it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-08T10:47:27Z
+
+just before prestissimo: https://ci.appveyor.com/project/keradus/php-cs-fixer/build/dev-5023
+just after: https://ci.appveyor.com/project/keradus/php-cs-fixer/build/dev-5024
+
+about 14s boost per job
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-08T10:51:53Z
+
+@keradus Installing `hirak/prestissimo` takes more than 14s. But if the cache works, it should not on subsequent builds so 👍
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-08T10:54:39Z
+
+> Installing `hirak/prestissimo` takes more than 14s.
+
+And yet, overall time of whole build is 14s faster, and that includes time of installing prestissimo. Prestissimo parallelize installing of packages, and we ask for installing 44 packages...
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-08T11:02:13Z
+
+I would also like to try to add `C:\tools\php -> .appveyor.yml` to the cache items and install PHP only when the directory does not exist. But I'm not sure whether this will speed up builds or just break everything 😁. Shall I do it?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-08T11:09:42Z
+
+what about 5.x vs 7.x ?
+currently, they are installed in same dir.
+Won't it mix the cache? or cache is stored per job, not per build ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-08T11:10:13Z
+
+(btw, don't cache whole `C:\tools\`, there were other autoinstalled apps there as well)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-08T13:09:46Z
+
+I couldn't find information about whether cache is per job or per build. I hope it's per job, otherwise we obviously can't use it for PHP, and we might even face issues with Composer. So what do we do?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-08T13:23:09Z
+
+If you are willing to play with it on some private playground repo it would be great.
+If not, let us not include `php` dir into cache - as a safe approach.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-08T13:36:20Z
+
+Sure, I'll see what I can do with my fork of the project.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-09T17:07:56Z
+
+Good news: cache works fine and is job dependent so caching PHP installation is not an issue, see [builds on my fork](https://ci.appveyor.com/project/julienfalque/php-cs-fixer/history).
+
+I made more tests with and without `hirak/prestissimo` and it actually makes the build take more time when Composer cache is available:
+* in [this job](https://ci.appveyor.com/project/julienfalque/php-cs-fixer/build/dev-5/job/jshdoyaspd8e3q59): installing the plugin took 16 seconds, updating the project dependencies took 22 seconds: total is **38 seconds**;
+* in [this job](https://ci.appveyor.com/project/julienfalque/php-cs-fixer/build/dev-6/job/upwxnrrr6vv4953t): no plugin installation, updating the project dependencies took **25 seconds**.
+
+Do you still want to use the plugin anyway?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-09T21:42:00Z
+
+Great to hear that you found some time to play with it ;)
+
+Really nice with installing PHP !
+
+-------------
+
+ > Do you still want to use the plugin anyway?
+
+What if we would cache both:
+> '%APPDATA%\Composer'
+> '%LOCALAPPDATA%\Composer'
+
+?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-10T07:28:57Z
+
+It won't change anything: on master `%APPDATA%\Composer` is used and Composer never retrieves vendors from cache so I think the directory is never used at all and AppVeyor just stores an empty cache for it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-10T09:11:58Z
+
+I let myself modify a bit config for debugging.
+I restored the Roaming caching and see the cache - sadly, as you pointed, it was never used so it's empty as we didn't install anything globally on master yet.
+But my point is that we could follow the approach you made with `php` package. `composer g show -ND` will tell us if there is already plugin installed or not, if not - we could install it, if yes, we won't.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-10T14:40:54Z
+
+Sure, will try that.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-11T18:15:43Z
+
+I think we're good now :)
+
+`%LOCALAPPDATA%\Composer%` is used for cache while `%APPDATA%\Composer` is used for everything else so both are required.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-14T09:34:31Z
+
+could we apply same approach for composer plugin for Travis ?
