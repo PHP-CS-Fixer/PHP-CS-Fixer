@@ -12,8 +12,8 @@
  */
 
 if (defined('HHVM_VERSION_ID')) {
-    if (HHVM_VERSION_ID < 30900) {
-        fwrite(STDERR, "HHVM needs to be a minimum version of HHVM 3.9.0.\n");
+    if (HHVM_VERSION_ID < 31800) {
+        fwrite(STDERR, "HHVM needs to be a minimum version of HHVM 3.18.0.\n");
 
         if (getenv('PHP_CS_FIXER_IGNORE_ENV')) {
             fwrite(STDERR, "Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.\n");

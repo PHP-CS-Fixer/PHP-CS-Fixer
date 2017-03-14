@@ -38,7 +38,7 @@
         "ext-xml": "For better performance."
     },
     "conflict": {
-        "hhvm": "<3.9"
+        "hhvm": "<3.18"
     },
     "config": {
         "sort-packages": true
