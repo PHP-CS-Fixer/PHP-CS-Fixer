@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Fixer\PhpTag;
+namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
 
