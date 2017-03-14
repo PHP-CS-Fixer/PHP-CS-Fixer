@@ -14,6 +14,9 @@ cache:
     - '%LOCALAPPDATA%\Composer'
     - C:\tools\php -> .appveyor.yml
 
+init:
+    - SET PATH=C:\tools\php;%PATH%
+
 install:
     - ps: Set-Service wuauserv -StartupType Manual
     - IF NOT EXIST C:\tools\php (choco install --yes --allow-empty-checksums php --version %php_ver% --params '/InstallDir:C:\tools\php')
