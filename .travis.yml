@@ -45,7 +45,7 @@ matrix:
 
 cache:
     directories:
-        - $HOME/.composer/cache
+        - $HOME/.composer
 
 before_install:
     # check phpdbg
@@ -63,7 +63,7 @@ before_install:
     - if [ $TRAVIS_TAG ]; then export TASK_CS=0; fi
 
     # Composer: boost installation
-    - travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
+    - composer global show -ND 2>&1 | grep "hirak/prestissimo" || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
 
     # Composer: enforce given Symfony components version
     - 'if [ "$SYMFONY_VERSION" != "" ]; then sed -i "s/\"symfony\/\([^\"]*\)\": \"^2[^\"]*\"/\"symfony\/\1\": \"$SYMFONY_VERSION\"/g" composer.json; fi'

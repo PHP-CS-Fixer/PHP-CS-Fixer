@@ -1,4 +1,4 @@
-build: off
+build: false
 version: dev-{build}
 shallow_clone: false
 clone_folder: C:\projects\php-cs-fixer
@@ -6,14 +6,19 @@ clone_folder: C:\projects\php-cs-fixer
 environment:
     matrix:
         - php_ver: 5.6.17
+          SKIP_LINT_TEST_CASES: 1
         - php_ver: 7.0.9
 
 cache:
     - '%APPDATA%\Composer'
+    - '%LOCALAPPDATA%\Composer'
+    - C:\tools\php -> .appveyor.yml
+
+init:
+    - SET PATH=C:\tools\php;%PATH%
 
 install:
-    - choco install -my --allow-empty-checksums php -version %php_ver%
-    - SET PATH=C:\tools\php;%PATH%
+    - IF NOT EXIST C:\tools\php (choco install --yes --allow-empty-checksums php --version %php_ver%)
     - cd C:\tools\php
     - copy php.ini-production php.ini
     - echo date.timezone="UTC" >> php.ini
@@ -21,16 +26,16 @@ install:
     - echo extension_dir=ext >> php.ini
     - echo extension=php_curl.dll >> php.ini
     - echo extension=php_openssl.dll >> php.ini
-    - cd C:\tools
+    - cd C:\projects\php-cs-fixer
     - appveyor DownloadFile https://getcomposer.org/composer.phar
-    - appveyor DownloadFile https://phar.phpunit.de/phpunit-5.7.phar
     - git config --global github.accesstoken 5e7538aa415005c606ea68de2bbbade0409b4b8c
+    - php composer.phar global show -ND 2>1 | findstr "hirak/prestissimo" || php composer.phar global require hirak/prestissimo
 
 before_test:
     - cd C:\projects\php-cs-fixer
-    - php C:\tools\composer.phar update --no-interaction --no-progress --optimize-autoloader --prefer-stable --no-ansi
+    - php composer.phar update --no-interaction --no-progress --optimize-autoloader --prefer-stable --no-ansi
 
 test_script:
     - cd C:\projects\php-cs-fixer
-    - php C:\tools\phpunit-5.7.phar --verbose
+    - vendor\bin\phpunit --verbose
     - php php-cs-fixer --diff --dry-run -v fix
