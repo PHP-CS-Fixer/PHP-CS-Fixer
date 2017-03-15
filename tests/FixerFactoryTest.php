@@ -506,6 +506,21 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @param FixerInterface $fixer
+     *
+     * @dataProvider provideFixerDefinitionsCases
+     */
+    public function testAllFixerHaveDedicatedUnitTest(FixerInterface $fixer)
+    {
+        $class = get_class($fixer);
+        // determine expected unit test class name
+        $testClass = 'PhpCsFixer\Tests'.substr($class, strpos($class, '\\')).'Test';
+
+        $this->assertTrue(class_exists($testClass), sprintf('Expected test class "%s" for fixer "%s" not found.', $testClass, $fixer->getName()));
+        $this->assertTrue(is_subclass_of($testClass, '\PHPUnit_Framework_TestCase'), sprintf('Expected test class "%s" to be a subclass of "\PHPUnit_Framework_TestCase".', $testClass));
+    }
+
     private function getAllFixers()
     {
         $factory = new FixerFactory();
