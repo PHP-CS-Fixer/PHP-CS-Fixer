@@ -260,14 +260,16 @@ EOF
                 array('', ' ', '[$1]', '[', ']', ''),
             );
 
-            return preg_replace(
+            $str = preg_replace(
                 $replaces[0],
                 $replaces[1],
                 var_export($value, true)
             );
+        } else {
+            $str = var_export($value, true);
         }
 
-        return var_export($value, true);
+        return preg_replace('/\bNULL\b/', 'null', $str);
     }
 
     /**
@@ -286,7 +288,12 @@ EOF
                 return !is_callable($value);
             });
 
-            sort($allowed);
+            usort($allowed, function ($valueA, $valueB) {
+                return strcasecmp(
+                    CommandHelp::toString($valueA),
+                    CommandHelp::toString($valueB)
+                );
+            });
 
             if (0 === count($allowed)) {
                 $allowed = null;
@@ -347,7 +354,10 @@ EOF
             }
 
             if ($fixer->isRisky()) {
-                $help .= "   | *Risky rule.*\n";
+                $help .= sprintf(
+                    "   | *Risky rule: %s.*\n",
+                    str_replace('`', '``', lcfirst(preg_replace('/\.$/', '', $fixer->getDefinition()->getRiskyDescription())))
+                );
             }
 
             if ($fixer instanceof ConfigurationDefinitionFixerInterface) {
@@ -404,6 +414,8 @@ EOF
     }
 
     /**
+     * Wraps a string to the given number of characters, ignoring style tags.
+     *
      * @param string $string
      * @param int    $width
      *

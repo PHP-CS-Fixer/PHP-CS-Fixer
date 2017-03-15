@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\Import;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
@@ -57,54 +57,6 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurationDe
      * @var string[]
      */
     private $supportedSortAlgorithms = array(self::SORT_ALPHA, self::SORT_LENGTH);
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationDefinition()
-    {
-        $supportedSortTypes = $this->supportedSortTypes;
-
-        $sortAlgorithm = new FixerOption('sortAlgorithm', 'whether the statements should be sorted alphabetically or by length');
-        $sortAlgorithm
-            ->setAllowedValues($this->supportedSortAlgorithms)
-            ->setDefault(self::SORT_ALPHA)
-        ;
-
-        $importsOrder = new FixerOption('importsOrder', 'Defines the order of import types.');
-        $importsOrder
-            ->setAllowedTypes(array('array', 'null'))
-            ->setAllowedValues(array(function ($value) use ($supportedSortTypes) {
-                if (null !== $value) {
-                    $missing = array_diff($supportedSortTypes, $value);
-                    if (count($missing)) {
-                        throw new InvalidOptionsException(sprintf(
-                            'Missing sort %s "%s".',
-                            1 === count($missing) ? 'type' : 'types',
-                            implode('", "', $missing)
-                        ));
-                    }
-
-                    $unknown = array_diff($value, $supportedSortTypes);
-                    if (count($unknown)) {
-                        throw new InvalidOptionsException(sprintf(
-                            'Unknown sort %s "%s".',
-                            1 === count($unknown) ? 'type' : 'types',
-                            implode('", "', $unknown)
-                        ));
-                    }
-                }
-
-                return true;
-            }))
-            ->setDefault(null)
-        ;
-
-        return new FixerConfigurationResolver(array(
-            $sortAlgorithm,
-            $importsOrder,
-        ));
-    }
 
     /**
      * {@inheritdoc}
@@ -238,6 +190,54 @@ use function CCC\AA;
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_USE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $supportedSortTypes = $this->supportedSortTypes;
+
+        $sortAlgorithm = new FixerOptionBuilder('sortAlgorithm', 'whether the statements should be sorted alphabetically or by length');
+        $sortAlgorithm
+            ->setAllowedValues($this->supportedSortAlgorithms)
+            ->setDefault(self::SORT_ALPHA)
+        ;
+
+        $importsOrder = new FixerOptionBuilder('importsOrder', 'Defines the order of import types.');
+        $importsOrder
+            ->setAllowedTypes(array('array', 'null'))
+            ->setAllowedValues(array(function ($value) use ($supportedSortTypes) {
+                if (null !== $value) {
+                    $missing = array_diff($supportedSortTypes, $value);
+                    if (count($missing)) {
+                        throw new InvalidOptionsException(sprintf(
+                            'Missing sort %s "%s".',
+                            1 === count($missing) ? 'type' : 'types',
+                            implode('", "', $missing)
+                        ));
+                    }
+
+                    $unknown = array_diff($value, $supportedSortTypes);
+                    if (count($unknown)) {
+                        throw new InvalidOptionsException(sprintf(
+                            'Unknown sort %s "%s".',
+                            1 === count($unknown) ? 'type' : 'types',
+                            implode('", "', $unknown)
+                        ));
+                    }
+                }
+
+                return true;
+            }))
+            ->setDefault(null)
+        ;
+
+        return new FixerConfigurationResolver(array(
+            $sortAlgorithm->getOption(),
+            $importsOrder->getOption(),
+        ));
     }
 
     /**

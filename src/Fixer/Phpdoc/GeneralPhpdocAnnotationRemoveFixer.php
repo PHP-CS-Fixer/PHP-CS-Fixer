@@ -16,7 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -27,22 +27,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationDefinition()
-    {
-        $annotations = new FixerOption('annotations', 'List of annotations to remove, e.g. `["@author"]`.');
-        $annotations
-            ->setAllowedTypes(array('array'))
-            ->setDefault(array())
-        ;
-
-        return new FixerConfigurationResolverRootless('annotations', array(
-            $annotations,
-        ));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -110,5 +94,20 @@ function foo() {}',
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $annotations = new FixerOptionBuilder('annotations', 'List of annotations to remove, e.g. `["@author"]`.');
+        $annotations = $annotations
+            ->setAllowedTypes(array('array'))
+            ->setDefault(array())
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolverRootless('annotations', array($annotations));
     }
 }

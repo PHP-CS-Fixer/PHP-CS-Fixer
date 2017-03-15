@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\FunctionNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
@@ -27,22 +27,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ReturnTypeDeclarationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationDefinition()
-    {
-        $spaceBefore = new FixerOption('space_before', 'Spacing to apply before colon.');
-        $spaceBefore
-            ->setAllowedValues(array('one', 'none'))
-            ->setDefault('none')
-        ;
-
-        return new FixerConfigurationResolver(array(
-            $spaceBefore,
-        ));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -110,5 +94,20 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
     public function isCandidate(Tokens $tokens)
     {
         return PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(CT::T_TYPE_COLON);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $spaceBefore = new FixerOptionBuilder('space_before', 'Spacing to apply before colon.');
+        $spaceBefore = $spaceBefore
+            ->setAllowedValues(array('one', 'none'))
+            ->setDefault('none')
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolver(array($spaceBefore));
     }
 }

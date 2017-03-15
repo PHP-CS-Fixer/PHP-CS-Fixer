@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -50,50 +50,6 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
         'is_scalar' => true,
         'is_string' => true,
     );
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationDefinition()
-    {
-        $values = array(
-            'array_key_exists',
-            'empty',
-            'file_exists',
-            'is_infinite',
-            'is_nan',
-            'is_null',
-            'is_array',
-            'is_bool',
-            'is_boolean',
-            'is_callable',
-            'is_double',
-            'is_float',
-            'is_int',
-            'is_integer',
-            'is_long',
-            'is_numeric',
-            'is_object',
-            'is_real',
-            'is_resource',
-            'is_scalar',
-            'is_string',
-        );
-        $generator = new FixerOptionValidatorGenerator();
-
-        $functions = new FixerOption('functions', 'List of assertions to fix.');
-        $functions
-            ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(
-                $generator->allowedValueIsSubsetOf($values),
-            ))
-            ->setDefault($values)
-        ;
-
-        return new FixerConfigurationResolverRootless('functions', array(
-            $functions,
-        ));
-    }
 
     /**
      * {@inheritdoc}
@@ -159,7 +115,7 @@ $this->assertTrue(is_nan($a));
                 ),
             ),
             null,
-            'Fixer could be risky if one is overwritting PHPUnit\'s native methods.'
+            'Fixer could be risky if one is overriding PHPUnit\'s native methods.'
         );
     }
 
@@ -170,6 +126,49 @@ $this->assertTrue(is_nan($a));
     {
         // should be run after the PhpUnitConstructFixer.
         return -15;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $values = array(
+            'array_key_exists',
+            'empty',
+            'file_exists',
+            'is_infinite',
+            'is_nan',
+            'is_null',
+            'is_array',
+            'is_bool',
+            'is_boolean',
+            'is_callable',
+            'is_double',
+            'is_float',
+            'is_int',
+            'is_integer',
+            'is_long',
+            'is_numeric',
+            'is_object',
+            'is_real',
+            'is_resource',
+            'is_scalar',
+            'is_string',
+        );
+        $generator = new FixerOptionValidatorGenerator();
+
+        $functions = new FixerOptionBuilder('functions', 'List of assertions to fix.');
+        $functions = $functions
+            ->setAllowedTypes(array('array'))
+            ->setAllowedValues(array(
+                $generator->allowedValueIsSubsetOf($values),
+            ))
+            ->setDefault($values)
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolverRootless('functions', array($functions));
     }
 
     /**

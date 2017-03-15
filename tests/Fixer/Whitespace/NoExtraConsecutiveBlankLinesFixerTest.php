@@ -625,6 +625,56 @@ $a = new Qux();',
 
     public function testRemoveBetweenUseTraits()
     {
+        $this->fixer->configure(array('tokens' => array('use_trait')));
+        $this->doTest(
+            '<?php
+            namespace T\A;
+            use V;
+
+
+            use W;
+
+            class Test {
+                use A;
+                use B;
+
+                private function test($b) {
+
+                    $a = function() use ($b) { echo $b;};
+
+                    $b = function() use ($b) { echo $b;};
+
+                }
+            }',
+            '<?php
+            namespace T\A;
+            use V;
+
+
+            use W;
+
+            class Test {
+                use A;
+
+                use B;
+
+                private function test($b) {
+
+                    $a = function() use ($b) { echo $b;};
+
+                    $b = function() use ($b) { echo $b;};
+
+                }
+            }'
+        );
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Token "useTrait" is deprecated and will be removed in 3.0, use "use_trait" instead.
+     */
+    public function testRemoveBetweenUseTraitsDeprecatedToken()
+    {
         $this->fixer->configure(array('tokens' => array('useTrait')));
         $this->doTest(
             '<?php

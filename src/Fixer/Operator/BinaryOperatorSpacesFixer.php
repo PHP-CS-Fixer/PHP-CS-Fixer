@@ -16,7 +16,7 @@ use PhpCsFixer\AbstractAlignFixerHelper;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -33,29 +33,6 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
      * @var AbstractAlignFixerHelper[]
      */
     private $alignFixerHelpers = array();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationDefinition()
-    {
-        $alignDoubleArrows = new FixerOption('align_double_arrow', 'Whether to apply, remove or ignore double arrows alignment.');
-        $alignDoubleArrows
-            ->setDefault(false)
-            ->setAllowedValues(array(true, false, null))
-        ;
-
-        $alignEquals = new FixerOption('align_equals', 'Whether to apply, remove or ignore equals alignment.');
-        $alignEquals
-            ->setDefault(false)
-            ->setAllowedValues(array(true, false, null))
-        ;
-
-        return new FixerConfigurationResolver(array(
-            $alignDoubleArrows,
-            $alignEquals,
-        ));
-    }
 
     /**
      * {@inheritdoc}
@@ -150,6 +127,29 @@ $foo = array(
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $alignDoubleArrows = new FixerOptionBuilder('align_double_arrow', 'Whether to apply, remove or ignore double arrows alignment.');
+        $alignDoubleArrows
+            ->setDefault(false)
+            ->setAllowedValues(array(true, false, null))
+        ;
+
+        $alignEquals = new FixerOptionBuilder('align_equals', 'Whether to apply, remove or ignore equals alignment.');
+        $alignEquals
+            ->setDefault(false)
+            ->setAllowedValues(array(true, false, null))
+        ;
+
+        return new FixerConfigurationResolver(array(
+            $alignDoubleArrows->getOption(),
+            $alignEquals->getOption(),
+        ));
     }
 
     /**

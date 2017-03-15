@@ -32,7 +32,7 @@ final class FixerOption implements FixerOptionInterface
     /**
      * @var bool
      */
-    private $useDefault = false;
+    private $isRequired = true;
 
     /**
      * @var null|string[]
@@ -50,13 +50,44 @@ final class FixerOption implements FixerOptionInterface
     private $normalizer;
 
     /**
-     * @param string $name
-     * @param string $description
+     * @param string        $name
+     * @param string        $description
+     * @param bool          $isRequired
+     * @param mixed         $default
+     * @param string[]|null $allowedTypes
+     * @param array|null    $allowedValues
+     * @param \Closure|null $normalizer
      */
-    public function __construct($name, $description)
-    {
+    public function __construct(
+        $name,
+        $description,
+        $isRequired = true,
+        $default = null,
+        array $allowedTypes = null,
+        array $allowedValues = null,
+        \Closure $normalizer = null
+    ) {
+        if ($isRequired && null !== $default) {
+            throw new \LogicException('Required options cannot have a default value.');
+        }
+
+        if (null !== $allowedValues) {
+            foreach ($allowedValues as &$allowedValue) {
+                if ($allowedValue instanceof \Closure) {
+                    $allowedValue = $this->unbind($allowedValue);
+                }
+            }
+        }
+
         $this->name = $name;
         $this->description = $description;
+        $this->isRequired = $isRequired;
+        $this->default = $default;
+        $this->allowedTypes = $allowedTypes;
+        $this->allowedValues = $allowedValues;
+        if (null !== $normalizer) {
+            $this->normalizer = $this->unbind($normalizer);
+        }
     }
 
     /**
@@ -76,24 +107,11 @@ final class FixerOption implements FixerOptionInterface
     }
 
     /**
-     * @param mixed $default
-     *
-     * @return $this
-     */
-    public function setDefault($default)
-    {
-        $this->default = $default;
-        $this->useDefault = true;
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function hasDefault()
     {
-        return $this->useDefault;
+        return !$this->isRequired;
     }
 
     /**
@@ -109,35 +127,11 @@ final class FixerOption implements FixerOptionInterface
     }
 
     /**
-     * @param string[] $allowedTypes
-     *
-     * @return $this
-     */
-    public function setAllowedTypes(array $allowedTypes)
-    {
-        $this->allowedTypes = $allowedTypes;
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getAllowedTypes()
     {
         return $this->allowedTypes;
-    }
-
-    /**
-     * @param array $allowedValues
-     *
-     * @return $this
-     */
-    public function setAllowedValues(array $allowedValues)
-    {
-        $this->allowedValues = $allowedValues;
-
-        return $this;
     }
 
     /**
@@ -149,22 +143,38 @@ final class FixerOption implements FixerOptionInterface
     }
 
     /**
-     * @param \Closure $normalizer
-     *
-     * @return $this
-     */
-    public function setNormalizer(\Closure $normalizer)
-    {
-        $this->normalizer = $normalizer;
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getNormalizer()
     {
         return $this->normalizer;
+    }
+
+    /**
+     * Unbinds the given closure to avoid memory leaks.
+     *
+     * The closures provided to this class were probably defined in a fixer
+     * class and thus bound to it by default. The configuration will then be
+     * stored in {@see AbstractFixer::$configurationDefinition}, leading to the
+     * following cyclic reference:
+     *
+     *     fixer -> configuration definition -> options -> closures -> fixer
+     *
+     * This cyclic reference prevent the garbage collector to free memory as
+     * all elements are still referenced.
+     *
+     * See {@see https://bugs.php.net/bug.php?id=69639 Bug #69639} for details.
+     *
+     * @param \Closure $closure
+     *
+     * @return \Closure
+     */
+    private function unbind(\Closure $closure)
+    {
+        if (PHP_VERSION_ID < 50400) {
+            return $closure;
+        }
+
+        return $closure->bindTo(null);
     }
 }

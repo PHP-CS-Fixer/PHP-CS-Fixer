@@ -12,8 +12,6 @@
 
 namespace PhpCsFixer\FixerConfiguration;
 
-use Symfony\Component\OptionsResolver\Options;
-
 /**
  * @internal
  *

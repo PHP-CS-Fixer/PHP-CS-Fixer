@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -119,42 +119,6 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function getConfigurationDefinition()
-    {
-        $generator = new FixerOptionValidatorGenerator();
-
-        $order = new FixerOption('order', 'List of strings defining order of elements.');
-        $order
-            ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(
-                $generator->allowedValueIsSubsetOf(array_keys(array_merge(self::$typeHierarchy, self::$specialTypes))),
-            ))
-            ->setDefault(array(
-                'use_trait',
-                'constant_public',
-                'constant_protected',
-                'constant_private',
-                'property_public',
-                'property_protected',
-                'property_private',
-                'construct',
-                'destruct',
-                'magic',
-                'phpunit',
-                'method_public',
-                'method_protected',
-                'method_private',
-            ))
-        ;
-
-        return new FixerConfigurationResolverRootless('order', array(
-            $order,
-        ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
@@ -244,6 +208,41 @@ final class Example
         // must run before MethodSeparationFixer, NoBlankLinesAfterClassOpeningFixer and SpaceAfterSemicolonFixer.
         // must run after ProtectedToPrivateFixer.
         return 65;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $generator = new FixerOptionValidatorGenerator();
+
+        $order = new FixerOptionBuilder('order', 'List of strings defining order of elements.');
+        $order = $order
+            ->setAllowedTypes(array('array'))
+            ->setAllowedValues(array(
+                $generator->allowedValueIsSubsetOf(array_keys(array_merge(self::$typeHierarchy, self::$specialTypes))),
+            ))
+            ->setDefault(array(
+                'use_trait',
+                'constant_public',
+                'constant_protected',
+                'constant_private',
+                'property_public',
+                'property_protected',
+                'property_private',
+                'construct',
+                'destruct',
+                'magic',
+                'phpunit',
+                'method_public',
+                'method_protected',
+                'method_private',
+            ))
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolverRootless('order', array($order));
     }
 
     /**

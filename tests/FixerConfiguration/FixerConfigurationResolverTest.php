@@ -73,10 +73,8 @@ final class FixerConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveWithDefault()
     {
-        $option = new FixerOption('foo', 'Bar.');
-        $option->setDefault('baz');
         $configuration = new FixerConfigurationResolver(array(
-            $option,
+            new FixerOption('foo', 'Bar.', false, 'baz'),
         ));
 
         $this->assertSame(
@@ -87,10 +85,8 @@ final class FixerConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveWithAllowedTypes()
     {
-        $option = new FixerOption('foo', 'Bar.');
-        $option->setAllowedTypes(array('int'));
         $configuration = new FixerConfigurationResolver(array(
-            $option,
+            new FixerOption('foo', 'Bar.', true, null, array('int')),
         ));
 
         $this->assertSame(
@@ -107,10 +103,8 @@ final class FixerConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveWithAllowedValues()
     {
-        $option = new FixerOption('foo', 'Bar.');
-        $option->setAllowedValues(array(true, false));
         $configuration = new FixerConfigurationResolver(array(
-            $option,
+            new FixerOption('foo', 'Bar.', true, null, null, array(true, false)),
         ));
 
         $this->assertSame(
@@ -137,12 +131,10 @@ final class FixerConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveWithNormalizers()
     {
-        $option = new FixerOption('foo', 'Bar.');
-        $option->setNormalizer(function (Options $options, $value) {
-            return (int) $value;
-        });
         $configuration = new FixerConfigurationResolver(array(
-            $option,
+            new FixerOption('foo', 'Bar.', true, null, null, null, function (Options $options, $value) {
+                return (int) $value;
+            }),
         ));
 
         $this->assertSame(
@@ -151,9 +143,11 @@ final class FixerConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         );
 
         $exception = new InvalidOptionsException('');
-        $option->setNormalizer(function (Options $options, $value) use ($exception) {
-            throw $exception;
-        });
+        $configuration = new FixerConfigurationResolver(array(
+            new FixerOption('foo', 'Bar.', true, null, null, null, function (Options $options, $value) use ($exception) {
+                throw $exception;
+            }),
+        ));
 
         $catched = null;
         try {

@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\Basic;
 use PhpCsFixer\AbstractPsrAutoloadingFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -28,19 +28,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationDefinition()
-    {
-        $dir = new FixerOption('dir', 'The directory where the project code is placed.');
-        $dir->setAllowedTypes(array('string'));
-
-        return new FixerConfigurationResolver(array(
-            $dir,
-        ));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -159,7 +146,21 @@ class InvalidName {}
                 ),
             ),
             null,
-            'This fixer may change you class name, which will break the code that is depended on old name.'
+            'This fixer may change your class name, which will break the code that is depended on old name.'
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $dir = new FixerOptionBuilder('dir', 'The directory where the project code is placed.');
+        $dir = $dir
+            ->setAllowedTypes(array('string'))
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolver(array($dir));
     }
 }

@@ -74,6 +74,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
 
         $exceptionMethods = array(
             'configure', // due to AbstractFixer::configure
+            'getConfigurationDefinition', // due to AbstractFixer::getDefaultConfiguration
             'getDefaultConfiguration', // due to AbstractFixer::getDefaultConfiguration
             'setWhitespacesConfig', // due to AbstractFixer::setWhitespacesConfig
         );
@@ -83,12 +84,6 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
             'PhpCsFixer\Config' => array('create'),
             'PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer' => array('fixSpace'),
             'PhpCsFixer\Fixer\Import\OrderedImportsFixer' => array('sortingCallBack'),
-            'PhpCsFixer\FixerConfiguration\FixerOption' => array(
-                'setAllowedTypes',
-                'setAllowedValues',
-                'setDefault',
-                'setNormalizer',
-            ),
         );
 
         $definedMethods = $this->getPublicMethodNames($rc);
@@ -153,7 +148,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         $exceptionPropsPerClass = array(
             'PhpCsFixer\AbstractPhpdocTypesFixer' => array('tags'),
             'PhpCsFixer\AbstractAlignFixerHelper' => array('deepestLevel'),
-            'PhpCsFixer\AbstractFixer' => array('configuration', 'whitespacesConfig'),
+            'PhpCsFixer\AbstractFixer' => array('configuration', 'configurationDefinition', 'whitespacesConfig'),
             'PhpCsFixer\AbstractProxyFixer' => array('proxyFixer'),
             'PhpCsFixer\Test\AbstractFixerTestCase' => array('fixer', 'linter'),
             'PhpCsFixer\Test\AbstractIntegrationTestCase' => array('linter'),

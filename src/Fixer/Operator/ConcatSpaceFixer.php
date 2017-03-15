@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\Operator;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -41,22 +41,6 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
         } else {
             $this->fixCallback = 'fixConcatenationToNoSpace';
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationDefinition()
-    {
-        $spacing = new FixerOption('spacing', 'Spacing to apply around concatenation operator.');
-        $spacing
-            ->setAllowedValues(array('one', 'none'))
-            ->setDefault('none')
-        ;
-
-        return new FixerConfigurationResolver(array(
-            $spacing,
-        ));
     }
 
     /**
@@ -101,6 +85,21 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound('.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $spacing = new FixerOptionBuilder('spacing', 'Spacing to apply around concatenation operator.');
+        $spacing = $spacing
+            ->setAllowedValues(array('one', 'none'))
+            ->setDefault('none')
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolver(array($spacing));
     }
 
     /**

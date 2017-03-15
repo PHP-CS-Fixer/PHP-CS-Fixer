@@ -98,7 +98,7 @@ class Foo
 }'),
             ),
             null,
-            'Risky when old style constructor being fixed is overridden overrides parent one.'
+            'Risky when old style constructor being fixed is overridden or overrides parent one.'
         );
     }
 

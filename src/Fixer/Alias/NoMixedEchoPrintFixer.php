@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\Alias;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -61,22 +61,6 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
     /**
      * {@inheritdoc}
      */
-    public function getConfigurationDefinition()
-    {
-        $use = new FixerOption('use', 'The desired language construct.');
-        $use
-            ->setAllowedValues(array('print', 'echo'))
-            ->setDefault('echo')
-        ;
-
-        return new FixerConfigurationResolver(array(
-            $use,
-        ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $callBack = $this->callBack;
@@ -116,6 +100,21 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound($this->candidateTokenType);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $use = new FixerOptionBuilder('use', 'The desired language construct.');
+        $use = $use
+            ->setAllowedValues(array('print', 'echo'))
+            ->setDefault('echo')
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolver(array($use));
     }
 
     /**

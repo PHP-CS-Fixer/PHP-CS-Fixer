@@ -16,7 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -34,29 +34,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class SingleClassElementPerStatementFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationDefinition()
-    {
-        $generator = new FixerOptionValidatorGenerator();
-
-        $values = array('const', 'property');
-
-        $elements = new FixerOption('elements', 'List of strings which element should be modified.');
-        $elements
-            ->setDefault($values)
-            ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(
-                $generator->allowedValueIsSubsetOf($values),
-            ))
-        ;
-
-        return new FixerConfigurationResolverRootless('elements', array(
-            $elements,
-        ));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -111,6 +88,28 @@ final class Example
                 ),
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $generator = new FixerOptionValidatorGenerator();
+
+        $values = array('const', 'property');
+
+        $elements = new FixerOptionBuilder('elements', 'List of strings which element should be modified.');
+        $elements = $elements
+            ->setDefault($values)
+            ->setAllowedTypes(array('array'))
+            ->setAllowedValues(array(
+                $generator->allowedValueIsSubsetOf($values),
+            ))
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolverRootless('elements', array($elements));
     }
 
     /**

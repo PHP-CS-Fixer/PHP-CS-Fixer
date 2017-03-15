@@ -18,7 +18,7 @@ use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -28,22 +28,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferenceFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationDefinition()
-    {
-        $onlyUntyped = new FixerOption('only_untyped', 'Whether to add missing `@param` annotations for untyped parameters only.');
-        $onlyUntyped
-            ->setDefault(true)
-            ->setAllowedTypes(array('bool'))
-        ;
-
-        return new FixerConfigurationResolver(array(
-            $onlyUntyped,
-        ));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -215,6 +199,21 @@ function f9(string $foo, $bar, $baz) {}',
     public function isRisky()
     {
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $onlyUntyped = new FixerOptionBuilder('only_untyped', 'Whether to add missing `@param` annotations for untyped parameters only.');
+        $onlyUntyped = $onlyUntyped
+            ->setDefault(true)
+            ->setAllowedTypes(array('bool'))
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolver(array($onlyUntyped));
     }
 
     /**

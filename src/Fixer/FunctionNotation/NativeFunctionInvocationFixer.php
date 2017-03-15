@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\FunctionNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -27,34 +27,6 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  */
 final class NativeFunctionInvocationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationDefinition()
-    {
-        $exclude = new FixerOption('exclude', 'List of functions to ignore.');
-        $exclude
-            ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(function ($value) {
-                foreach ($value as $functionName) {
-                    if (!\is_string($functionName) || \trim($functionName) === '' || \trim($functionName) !== $functionName) {
-                        throw new InvalidOptionsException(\sprintf(
-                            'Each element must be a non-empty, trimmed string, got "%s" instead.',
-                            \is_object($functionName) ? \get_class($functionName) : \gettype($functionName)
-                        ));
-                    }
-                }
-
-                return true;
-            }))
-            ->setDefault(array())
-        ;
-
-        return new FixerConfigurationResolver(array(
-            $exclude,
-        ));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -117,13 +89,6 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
      */
     public function getDefinition()
     {
-        $riskyDescription = <<<'TXT'
-Rule is risky when a function with the same name as a native function exists in the current namespace.
-+One major situation when it could happen is:
-+* function is mocked during tests execution, eg mocking `time` function - in that case after applying the rule src code will always use original, unmocked function
-+To deal with described situation provide a configuration with function names you want to preserve unchanged.'
-TXT;
-
         return new FixerDefinition(
             'Add leading `\` before function invocation of internal function to speed up resolving.',
             array(
@@ -158,7 +123,7 @@ function baz($options)
                 ),
             ),
             null,
-            $riskyDescription
+            'Risky when any of the functions are overridden.'
         );
     }
 
@@ -176,6 +141,33 @@ function baz($options)
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $exclude = new FixerOptionBuilder('exclude', 'List of functions to ignore.');
+        $exclude = $exclude
+            ->setAllowedTypes(array('array'))
+            ->setAllowedValues(array(function ($value) {
+                foreach ($value as $functionName) {
+                    if (!\is_string($functionName) || \trim($functionName) === '' || \trim($functionName) !== $functionName) {
+                        throw new InvalidOptionsException(\sprintf(
+                            'Each element must be a non-empty, trimmed string, got "%s" instead.',
+                            \is_object($functionName) ? \get_class($functionName) : \gettype($functionName)
+                        ));
+                    }
+                }
+
+                return true;
+            }))
+            ->setDefault(array())
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolver(array($exclude));
     }
 
     /**

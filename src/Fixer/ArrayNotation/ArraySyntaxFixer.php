@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\ArrayNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
@@ -46,32 +46,6 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurationDefin
 
         $this->resolveCandidateTokenKind();
         $this->resolveFixCallback();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationDefinition()
-    {
-        $syntax = new FixerOption('syntax', 'Whether to use the `long` or `short` array syntax.');
-        $syntax
-            ->setAllowedValues(array('long', 'short'))
-            ->setNormalizer(function (Options $options, $value) {
-                if (PHP_VERSION_ID < 50400 && 'short' === $value) {
-                    throw new InvalidOptionsException(sprintf(
-                        'Short array syntax is supported from PHP5.4 (your PHP version is %d).',
-                        PHP_VERSION_ID
-                    ));
-                }
-
-                return $value;
-            })
-            ->setDefault('long')
-        ;
-
-        return new FixerConfigurationResolver(array(
-            $syntax,
-        ));
     }
 
     /**
@@ -123,6 +97,31 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurationDefin
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound($this->candidateTokenKind);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $syntax = new FixerOptionBuilder('syntax', 'Whether to use the `long` or `short` array syntax.');
+        $syntax = $syntax
+            ->setAllowedValues(array('long', 'short'))
+            ->setNormalizer(function (Options $options, $value) {
+                if (PHP_VERSION_ID < 50400 && 'short' === $value) {
+                    throw new InvalidOptionsException(sprintf(
+                        'Short array syntax is supported from PHP5.4 (your PHP version is %d).',
+                        PHP_VERSION_ID
+                    ));
+                }
+
+                return $value;
+            })
+            ->setDefault('long')
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolver(array($syntax));
     }
 
     /**

@@ -16,7 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -31,22 +31,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class BracesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationDefinition()
-    {
-        $allowSingleLineClosure = new FixerOption('allow_single_line_closure', 'Whether single line lambda notation should be allowed.');
-        $allowSingleLineClosure
-            ->setAllowedTypes(array('bool'))
-            ->setDefault(false)
-        ;
-
-        return new FixerConfigurationResolver(array(
-            $allowSingleLineClosure,
-        ));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -123,6 +107,21 @@ $negative = function ($item) {
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $allowSingleLineClosure = new FixerOptionBuilder('allow_single_line_closure', 'Whether single line lambda notation should be allowed.');
+        $allowSingleLineClosure = $allowSingleLineClosure
+            ->setAllowedTypes(array('bool'))
+            ->setDefault(false)
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolver(array($allowSingleLineClosure));
     }
 
     private function fixCommentBeforeBrace(Tokens $tokens)

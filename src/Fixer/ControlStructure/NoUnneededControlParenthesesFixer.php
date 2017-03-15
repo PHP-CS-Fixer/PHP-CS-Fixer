@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -57,30 +57,6 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     /**
      * {@inheritdoc}
      */
-    public function getConfigurationDefinition()
-    {
-        $controlStatements = new FixerOption('control_statements', 'List of control statements to fix.');
-        $controlStatements
-            ->setAllowedTypes(array('array'))
-            ->setDefault(array(
-                'break',
-                'clone',
-                'continue',
-                'echo_print',
-                'return',
-                'switch_case',
-                'yield',
-            ))
-        ;
-
-        return new FixerConfigurationResolverRootless('control_statements', array(
-            $controlStatements,
-        ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens)
     {
         $types = array();
@@ -99,7 +75,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         // Checks if specific statements are set and uses them in this case.
-        $loops = array_intersect_key(self::$loops, array_flip($this->configuration['control_statements']));
+        $loops = array_intersect_key(self::$loops, array_flip($this->configuration['statements']));
 
         foreach ($tokens as $index => $token) {
             if (!$token->equals('(')) {
@@ -173,7 +149,7 @@ return (1 + 2);
 switch ($a) { case($x); }
 yield(2);
 ',
-                    array('control_statements' => array('break', 'continue'))
+                    array('statements' => array('break', 'continue'))
                 ),
             )
         );
@@ -187,5 +163,28 @@ yield(2);
     public function getPriority()
     {
         return 30;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $statements = new FixerOptionBuilder('statements', 'List of control statements to fix.');
+        $statements = $statements
+            ->setAllowedTypes(array('array'))
+            ->setDefault(array(
+                'break',
+                'clone',
+                'continue',
+                'echo_print',
+                'return',
+                'switch_case',
+                'yield',
+            ))
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolverRootless('statements', array($statements));
     }
 }

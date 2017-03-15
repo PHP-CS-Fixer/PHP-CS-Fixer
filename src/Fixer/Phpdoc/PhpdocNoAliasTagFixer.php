@@ -16,7 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -32,66 +32,6 @@ use Symfony\Component\OptionsResolver\Options;
  */
 final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationDefinition()
-    {
-        $replacements = new FixerOption('replacements', 'Mapping between replaced annotations with new ones.');
-        $replacements
-            ->setAllowedTypes(array('array'))
-            ->setNormalizer(function (Options $options, $value) {
-                $normalizedValue = array();
-
-                foreach ($value as $from => $to) {
-                    if (!is_string($from)) {
-                        throw new InvalidOptionsException('Tag to replace must be a string.');
-                    }
-
-                    if (!is_string($to)) {
-                        throw new InvalidOptionsException(sprintf(
-                            'Tag to replace to from "%s" must be a string.',
-                            $from
-                        ));
-                    }
-
-                    if (1 !== preg_match('#^\S+$#', $to) || false !== strpos($to, '*/')) {
-                        throw new InvalidOptionsException(sprintf(
-                            'Tag "%s" cannot be replaced by invalid tag "%s".',
-                            $from,
-                            $to
-                        ));
-                    }
-
-                    $normalizedValue[trim($from)] = trim($to);
-                }
-
-                foreach ($normalizedValue as $from => $to) {
-                    if (isset($normalizedValue[$to])) {
-                        throw new InvalidOptionsException(sprintf(
-                            'Cannot change tag "%1$s" to tag "%2$s", as the tag "%2$s" is configured to be replaced to "%3$s".',
-                            $from,
-                            $to,
-                            $normalizedValue[$to]
-                        ));
-                    }
-                }
-
-                return $normalizedValue;
-            })
-            ->setDefault(array(
-                'property-read' => 'property',
-                'property-write' => 'property',
-                'type' => 'var',
-                'link' => 'see',
-            ))
-        ;
-
-        return new FixerConfigurationResolverRootless('replacements', array(
-            $replacements,
-        ));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -164,5 +104,64 @@ final class Example
                 ),
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $replacements = new FixerOptionBuilder('replacements', 'Mapping between replaced annotations with new ones.');
+        $replacements = $replacements
+            ->setAllowedTypes(array('array'))
+            ->setNormalizer(function (Options $options, $value) {
+                $normalizedValue = array();
+
+                foreach ($value as $from => $to) {
+                    if (!is_string($from)) {
+                        throw new InvalidOptionsException('Tag to replace must be a string.');
+                    }
+
+                    if (!is_string($to)) {
+                        throw new InvalidOptionsException(sprintf(
+                            'Tag to replace to from "%s" must be a string.',
+                            $from
+                        ));
+                    }
+
+                    if (1 !== preg_match('#^\S+$#', $to) || false !== strpos($to, '*/')) {
+                        throw new InvalidOptionsException(sprintf(
+                            'Tag "%s" cannot be replaced by invalid tag "%s".',
+                            $from,
+                            $to
+                        ));
+                    }
+
+                    $normalizedValue[trim($from)] = trim($to);
+                }
+
+                foreach ($normalizedValue as $from => $to) {
+                    if (isset($normalizedValue[$to])) {
+                        throw new InvalidOptionsException(sprintf(
+                            'Cannot change tag "%1$s" to tag "%2$s", as the tag "%2$s" is configured to be replaced to "%3$s".',
+                            $from,
+                            $to,
+                            $normalizedValue[$to]
+                        ));
+                    }
+                }
+
+                return $normalizedValue;
+            })
+            ->setDefault(array(
+                'property-read' => 'property',
+                'property-write' => 'property',
+                'type' => 'var',
+                'link' => 'see',
+            ))
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolverRootless('replacements', array($replacements));
     }
 }

@@ -31,25 +31,18 @@ final class FixerOptionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Bar.', $option->getDescription());
     }
 
-    public function testSetDefault()
-    {
-        $option = new FixerOption('foo', 'Bar.');
-        $this->assertSame($option, $option->setDefault('baz'));
-    }
-
     public function testHasDefault()
     {
         $option = new FixerOption('foo', 'Bar.');
         $this->assertFalse($option->hasDefault());
 
-        $option->setDefault('baz');
+        $option = new FixerOption('foo', 'Bar.', false, 'baz');
         $this->assertTrue($option->hasDefault());
     }
 
     public function testGetDefault()
     {
-        $option = new FixerOption('foo', 'Bar.');
-        $option->setDefault('baz');
+        $option = new FixerOption('foo', 'Bar.', false, 'baz');
         $this->assertSame('baz', $option->getDefault());
     }
 
@@ -61,28 +54,16 @@ final class FixerOptionTest extends \PHPUnit_Framework_TestCase
         $option->getDefault();
     }
 
-    public function testSetAllowedTypes()
-    {
-        $option = new FixerOption('foo', 'Bar.');
-        $this->assertSame($option, $option->setAllowedTypes(array('bool')));
-    }
-
     public function testGetAllowedTypes()
     {
         $option = new FixerOption('foo', 'Bar.');
         $this->assertNull($option->getAllowedTypes());
 
-        $option->setAllowedTypes(array('bool'));
+        $option = new FixerOption('foo', 'Bar.', true, null, array('bool'));
         $this->assertSame(array('bool'), $option->getAllowedTypes());
 
-        $option->setAllowedTypes(array('bool', 'string'));
+        $option = new FixerOption('foo', 'Bar.', true, null, array('bool', 'string'));
         $this->assertSame(array('bool', 'string'), $option->getAllowedTypes());
-    }
-
-    public function testSetAllowedValues()
-    {
-        $option = new FixerOption('foo', 'Bar.');
-        $this->assertSame($option, $option->setAllowedValues(array('baz')));
     }
 
     public function testGetAllowedValues()
@@ -90,21 +71,18 @@ final class FixerOptionTest extends \PHPUnit_Framework_TestCase
         $option = new FixerOption('foo', 'Bar.');
         $this->assertNull($option->getAllowedValues());
 
-        $option->setAllowedValues(array('baz'));
+        $option = new FixerOption('foo', 'Bar.', true, null, null, array('baz'));
         $this->assertSame(array('baz'), $option->getAllowedValues());
 
-        $option->setAllowedValues(array('baz', 'qux'));
+        $option = new FixerOption('foo', 'Bar.', true, null, null, array('baz', 'qux'));
         $this->assertSame(array('baz', 'qux'), $option->getAllowedValues());
 
-        $function = function () {};
-        $option->setAllowedValues(array($function));
-        $this->assertSame(array($function), $option->getAllowedValues());
-    }
-
-    public function testAddNormalizer()
-    {
-        $option = new FixerOption('foo', 'Bar.');
-        $this->assertSame($option, $option->setNormalizer(function () {}));
+        $option = new FixerOption('foo', 'Bar.', true, null, null, array(function () {}));
+        $allowedTypes = $option->getAllowedValues();
+        $this->assertInternalType('array', $allowedTypes);
+        $this->assertCount(1, $allowedTypes);
+        $this->assertArrayHasKey(0, $allowedTypes);
+        $this->assertInstanceOf('Closure', $allowedTypes[0]);
     }
 
     public function testGetNormalizers()
@@ -112,8 +90,14 @@ final class FixerOptionTest extends \PHPUnit_Framework_TestCase
         $option = new FixerOption('foo', 'Bar.');
         $this->assertNull($option->getNormalizer());
 
-        $normalizer = function () {};
-        $option->setNormalizer($normalizer);
-        $this->assertSame($normalizer, $option->getNormalizer());
+        $option = new FixerOption('foo', 'Bar.', true, null, null, null, function () {});
+        $this->assertInstanceOf('Closure', $option->getNormalizer());
+    }
+
+    public function testRequiredWithDefaultValue()
+    {
+        $this->setExpectedException('LogicException', 'Required options cannot have a default value.');
+
+        new FixerOption('foo', 'Bar.', true, false);
     }
 }

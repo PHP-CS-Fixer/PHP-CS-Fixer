@@ -212,9 +212,9 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``align_double_arrow`` (``NULL``, ``false``, ``true``): whether to apply, remove or
+  - ``align_double_arrow`` (``false``, ``null``, ``true``): whether to apply, remove or
     ignore double arrows alignment; defaults to ``false``
-  - ``align_equals`` (``NULL``, ``false``, ``true``): whether to apply, remove or ignore
+  - ``align_equals`` (``false``, ``null``, ``true``): whether to apply, remove or ignore
     equals alignment; defaults to ``false``
 
 * **blank_line_after_namespace** [@PSR2, @Symfony]
@@ -289,14 +289,14 @@ Choose from the list of available rules:
 
   Force strict types declaration in all files. Requires PHP >= 7.0.
 
-  *Risky rule.*
+  *Risky rule: forcing strict types will stop non strict code from working.*
 
 * **dir_constant**
 
   Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__``
   constant.
 
-  *Risky rule.*
+  *Risky rule: risky when the function ``dirname()`` is overridden.*
 
 * **elseif** [@PSR2, @Symfony]
 
@@ -311,7 +311,7 @@ Choose from the list of available rules:
 
   Replace deprecated ``ereg`` regular expression functions with preg.
 
-  *Risky rule.*
+  *Risky rule: risky if the ``ereg`` funcion is overridden.*
 
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
@@ -321,7 +321,11 @@ Choose from the list of available rules:
 * **function_declaration** [@PSR2, @Symfony]
 
   Spaces should be properly placed in a function declaration.
-  *Configurable rule.*
+
+  Configuration options:
+
+  - ``closure_function_spacing`` (``'none'``, ``'one'``): spacing to use before open
+    parenthesis for closures; defaults to ``'one'``
 
 * **function_typehint_space** [@Symfony]
 
@@ -346,7 +350,7 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``commentType`` (``'PHPDoc'``, ``'comment'``): comment syntax type; defaults to
+  - ``commentType`` (``'comment'``, ``'PHPDoc'``): comment syntax type; defaults to
     ``'comment'``
   - ``header`` (``string``): proper header content; required
   - ``location`` (``'after_declare_strict'``, ``'after_open'``): the location of the
@@ -371,7 +375,7 @@ Choose from the list of available rules:
 
   Replaces is_null(parameter) expression with ``null === parameter``.
 
-  *Risky rule.*
+  *Risky rule: risky when the function ``is_null()`` is overridden.*
 
   Configuration options:
 
@@ -402,7 +406,7 @@ Choose from the list of available rules:
 
   Replace non multibyte-safe functions with corresponding mb function.
 
-  *Risky rule.*
+  *Risky rule: risky when any of the functions are overridden.*
 
 * **method_argument_space** [@PSR2, @Symfony]
 
@@ -418,7 +422,7 @@ Choose from the list of available rules:
   Replaces ``intval``, ``floatval``, ``doubleval``, ``strval`` and ``boolval``
   function calls with according type casting operator.
 
-  *Risky rule.*
+  *Risky rule: risky if any of the functions ``intval``, ``floatval``, ``doubleval``, ``strval`` or ``boolval`` are overridden.*
 
 * **native_function_casing** [@Symfony]
 
@@ -429,7 +433,7 @@ Choose from the list of available rules:
   Add leading ``\`` before function invocation of internal function to speed
   up resolving.
 
-  *Risky rule.*
+  *Risky rule: risky when any of the functions are overridden.*
 
   Configuration options:
 
@@ -443,7 +447,7 @@ Choose from the list of available rules:
 
   Master functions shall be used instead of aliases.
 
-  *Risky rule.*
+  *Risky rule: risky when any of the alias functions are overridden.*
 
 * **no_blank_lines_after_class_opening** [@Symfony]
 
@@ -511,7 +515,7 @@ Choose from the list of available rules:
 
   Convert PHP4-style constructors to ``__construct``.
 
-  *Risky rule.*
+  *Risky rule: risky when old style constructor being fixed is overridden or overrides parent one.*
 
 * **no_short_bool_cast** [@Symfony]
 
@@ -566,16 +570,16 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``control_statements`` (``array``): list of control statements to fix; defaults
-    to ``['break', 'clone', 'continue', 'echo_print', 'return',
-    'switch_case', 'yield']``
+  - ``statements`` (``array``): list of control statements to fix; defaults to
+    ``['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case',
+    'yield']``
 
 * **no_unreachable_default_argument_value**
 
   In function arguments there must not be arguments with default values
   before non-default ones.
 
-  *Risky rule.*
+  *Risky rule: modifies the signature of functions; therefore risky when using systems (such as some Symfony components) that rely on those (for example through reflection).*
 
 * **no_unused_imports** [@Symfony]
 
@@ -634,7 +638,7 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``importsOrder`` (``array``, ``null``): defines the order of import types; defaults
-    to ``NULL``
+    to ``null``
   - ``sortAlgorithm`` (``'alpha'``, ``'length'``): whether the statements should be
     sorted alphabetically or by length; defaults to ``'alpha'``
 
@@ -643,7 +647,7 @@ Choose from the list of available rules:
   PHPUnit assertion method calls like "->assertSame(true, $foo)" should be
   written with dedicated method like "->assertTrue($foo)".
 
-  *Risky rule.*
+  *Risky rule: fixer could be risky if one is overriding PHPUnit's native methods.*
 
   Configuration options:
 
@@ -655,7 +659,7 @@ Choose from the list of available rules:
   PHPUnit assertions like "assertInternalType", "assertFileExists", should
   be used over "assertTrue".
 
-  *Risky rule.*
+  *Risky rule: fixer could be risky if one is overriding PHPUnit's native methods.*
 
   Configuration options:
 
@@ -675,7 +679,7 @@ Choose from the list of available rules:
   PHPUnit methods like ``assertSame`` should be used instead of
   ``assertEquals``.
 
-  *Risky rule.*
+  *Risky rule: risky when any of the functions are overridden.*
 
   Configuration options:
 
@@ -794,7 +798,7 @@ Choose from the list of available rules:
 
   Converts ``pow()`` to the ``**`` operator. Requires PHP >= 5.6.
 
-  *Risky rule.*
+  *Risky rule: risky when the function ``pow()`` is overridden.*
 
 * **pre_increment** [@Symfony]
 
@@ -809,7 +813,7 @@ Choose from the list of available rules:
   Classes must be in a path that matches their namespace, be at least one
   namespace deep and the class name should match the file name.
 
-  *Risky rule.*
+  *Risky rule: this fixer may change your class name, which will break the code that is depended on old name.*
 
   Configuration options:
 
@@ -819,14 +823,14 @@ Choose from the list of available rules:
 
   Class names should match the file name.
 
-  *Risky rule.*
+  *Risky rule: this fixer may change you class name, which will break the code that is depended on old name.*
 
 * **random_api_migration** [@PHP70Migration, @PHP71Migration]
 
   Replaces ``rand``, ``mt_rand``, ``srand``, ``getrandmax`` functions calls with
   their ``mt_*`` analogs.
 
-  *Risky rule.*
+  *Risky rule: risky when the configured functions are overridden.*
 
   Configuration options:
 
@@ -862,13 +866,13 @@ Choose from the list of available rules:
 
   Ensures deprecation notices are silenced.
 
-  *Risky rule.*
+  *Risky rule: silencing of deprecation errors might cause changes to code behaviour.*
 
 * **simplified_null_return**
 
   A return statement wishing to return ``void`` should not return ``null``.
 
-  *Risky rule.*
+  *Risky rule: risky since PHP 7.1 as ``null`` and ``void`` can be hinted as return type and have different meaning.*
 
 * **single_blank_line_at_eof** [@PSR2, @Symfony]
 
@@ -914,13 +918,13 @@ Choose from the list of available rules:
 
   Comparisons should be strict.
 
-  *Risky rule.*
+  *Risky rule: changing comparisons to strict might change code behavior.*
 
 * **strict_param**
 
   Functions should be used with ``$strict`` param set to ``true``.
 
-  *Risky rule.*
+  *Risky rule: risky when the fixed function is overridden or if the code relies on non-strict usage.*
 
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
 

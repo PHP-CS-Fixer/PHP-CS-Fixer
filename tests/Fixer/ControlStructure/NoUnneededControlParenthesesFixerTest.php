@@ -31,7 +31,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 
         $fixer = new NoUnneededControlParenthesesFixer();
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
-            if ('control_statements' === $option->getName()) {
+            if ('statements' === $option->getName()) {
                 self::$defaultStatements = $option->getDefault();
                 break;
             }
@@ -57,7 +57,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
      *
      * @group legacy
      * @dataProvider provideFixCases
-     * @expectedDeprecation Passing "control_statements" at the root of the configuration is deprecated and will not be supported in 3.0, use "control_statements" => array(...) option instead.
+     * @expectedDeprecation Passing "statements" at the root of the configuration is deprecated and will not be supported in 3.0, use "statements" => array(...) option instead.
      */
     public function testLegacyFix($expected, $input = null, $fixStatement = null)
     {
@@ -84,7 +84,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
      *
      * @group legacy
      * @dataProvider provideFixCases55
-     * @expectedDeprecation Passing "control_statements" at the root of the configuration is deprecated and will not be supported in 3.0, use "control_statements" => array(...) option instead.
+     * @expectedDeprecation Passing "statements" at the root of the configuration is deprecated and will not be supported in 3.0, use "statements" => array(...) option instead.
      * @requires PHP 5.5
      */
     public function testLegacyFix55($expected, $input = null, $fixStatement = null)
@@ -112,7 +112,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
      *
      * @group legacy
      * @dataProvider provideFixCases70
-     * @expectedDeprecation Passing "control_statements" at the root of the configuration is deprecated and will not be supported in 3.0, use "control_statements" => array(...) option instead.
+     * @expectedDeprecation Passing "statements" at the root of the configuration is deprecated and will not be supported in 3.0, use "statements" => array(...) option instead.
      * @requires PHP 7.0
      */
     public function testLegacyFix70($expected, $input = null, $fixStatement = null)
@@ -508,7 +508,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         // Default config. Fixes all statements.
         $this->doTest($expected, $input);
 
-        $this->fixer->configure($legacy ? self::$defaultStatements : array('control_statements' => self::$defaultStatements));
+        $this->fixer->configure($legacy ? self::$defaultStatements : array('statements' => self::$defaultStatements));
         $this->doTest($expected, $input);
 
         // Empty array config. Should not fix anything.
@@ -528,7 +528,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 }
             }
 
-            $this->fixer->configure($legacy ? array($statement) : array('control_statements' => array($statement)));
+            $this->fixer->configure($legacy ? array($statement) : array('statements' => array($statement)));
             $this->doTest(
                 $expected,
                 $withInput ? $input : null

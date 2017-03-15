@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -32,32 +32,6 @@ final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurationDef
         'assertEquals' => 'assertSame',
         'assertNotEquals' => 'assertNotSame',
     );
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationDefinition()
-    {
-        $generator = new FixerOptionValidatorGenerator();
-
-        $assertions = new FixerOption('assertions', 'List of assertion methods to fix.');
-        $assertions
-            ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(
-                $generator->allowedValueIsSubsetOf(array_keys(self::$assertionMap)),
-            ))
-            ->setDefault(array(
-                'assertAttributeEquals',
-                'assertAttributeNotEquals',
-                'assertEquals',
-                'assertNotEquals',
-            ))
-        ;
-
-        return new FixerConfigurationResolverRootless('assertions', array(
-            $assertions,
-        ));
-    }
 
     /**
      * {@inheritdoc}
@@ -114,7 +88,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             null,
-            'Risky when the any of functions are overridden.'
+            'Risky when any of the functions are overridden.'
         );
     }
 
@@ -132,5 +106,30 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $generator = new FixerOptionValidatorGenerator();
+
+        $assertions = new FixerOptionBuilder('assertions', 'List of assertion methods to fix.');
+        $assertions = $assertions
+            ->setAllowedTypes(array('array'))
+            ->setAllowedValues(array(
+                $generator->allowedValueIsSubsetOf(array_keys(self::$assertionMap)),
+            ))
+            ->setDefault(array(
+                'assertAttributeEquals',
+                'assertAttributeNotEquals',
+                'assertEquals',
+                'assertNotEquals',
+            ))
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolverRootless('assertions', array($assertions));
     }
 }
