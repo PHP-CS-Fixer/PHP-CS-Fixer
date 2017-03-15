@@ -32,11 +32,6 @@ matrix:
         - php: 7.1
           env: SYMFONY_VERSION="^2.8"
         # Use the newer stack for HHVM as HHVM does not support Precise anymore since a long time and so Precise has an outdated version
-        - php: hhvm-3.9
-          env: SKIP_LINT_TEST_CASES=1
-          sudo: required
-          dist: trusty
-          group: edge
         - php: hhvm
           env: SKIP_LINT_TEST_CASES=1
           sudo: required
