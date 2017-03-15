@@ -5,9 +5,9 @@ clone_folder: C:\projects\php-cs-fixer
 
 environment:
     matrix:
-        - php_ver: 5.6.17
+        - php_ver: 7.1.2
+        - php_ver: 5.6.30
           SKIP_LINT_TEST_CASES: 1
-        - php_ver: 7.0.9
 
 cache:
     - '%APPDATA%\Composer'
@@ -18,7 +18,8 @@ init:
     - SET PATH=C:\tools\php;%PATH%
 
 install:
-    - IF NOT EXIST C:\tools\php (choco install --yes --allow-empty-checksums php --version %php_ver%)
+    - ps: Set-Service wuauserv -StartupType Manual
+    - IF NOT EXIST C:\tools\php (choco install --yes --allow-empty-checksums php --version %php_ver% --params '/InstallDir:C:\tools\php')
     - cd C:\tools\php
     - copy php.ini-production php.ini
     - echo date.timezone="UTC" >> php.ini
