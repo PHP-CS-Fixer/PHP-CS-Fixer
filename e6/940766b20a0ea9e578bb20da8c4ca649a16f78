@@ -1,0 +1,36 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-06T09:16:47Z
+
+Thanks for picking this up.
+As this is a PSR2 rule I wonder if we need config at all and not just always remove the space, but ey thats just my vote ;)
+
+---------------------------------------------------------------------------
+
+by jtojnar at 2017-02-06T09:18:34Z
+
+Well, PSR states that there **should be** a space. This option allows the opposite.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-08T15:09:11Z
+
+@keradus after rebase RTM, however should the configuration options here also be changed to match https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2500?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-08T15:19:13Z
+
+This PR is already compatible with #2500.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-08T15:35:54Z
+
+alright than, @jtojnar please rebase :)
+
+---------------------------------------------------------------------------
+
+by jtojnar at 2017-03-08T19:07:40Z
+
+@SpacePossum rebased.
