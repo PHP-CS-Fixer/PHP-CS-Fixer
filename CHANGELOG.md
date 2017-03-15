@@ -3,6 +3,18 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.1.2
+--------------------
+
+* bug #2580 NoSpacesAfterFunctionNameFixer - Fix after dynamic call (SpacePossum, keradus)
+* bug #2586 NoUnusedImportsFixerTest - handle FQCN import (keradus)
+* bug #2587 NoClosingTagFixerTest - handle file without operations (keradus, SpacePossum)
+* minor #2552 Initial compatibility with PHP 7.2-DEV (keradus)
+* minor #2582 Improve AppVeyor and Travis CI build time (julienfalque)
+* minor #2584 NoUnreachableDefaultArgumentValueFixer - fix typo (chadburrus)
+* minor #2593 PhpUnitFqcnAnnotationFixer - move test to proper namespace (keradus)
+* minor #2596 AppVeyor - update PHP versions (keradus)
+
 Changelog for v2.1.1
 --------------------
 
