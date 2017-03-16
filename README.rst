@@ -477,6 +477,9 @@ Choose from the list of available rules:
 
   Code MUST use configured indentation type.
 
+* **invisible_symbols**
+   | Remove ZWSP, NBSP and other unicode symbols.
+
 * **is_null** [@Symfony:risky]
 
   Replaces is_null(parameter) expression with ``null === parameter``.
