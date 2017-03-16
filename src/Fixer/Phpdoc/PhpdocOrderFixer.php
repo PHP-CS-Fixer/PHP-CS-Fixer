@@ -89,7 +89,7 @@ final class PhpdocOrderFixer extends AbstractFixer
          * create incorrect annotation grouping while moving the annotations
          * about, we're still ok.
          */
-        return 5;
+        return -2;
     }
 
     /**
