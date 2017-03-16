@@ -18,7 +18,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Fixer ZWSP, NBSP and other unicode symbols.
+ * Fixer Zero-width space (ZWSP), Non-breaking space (NBSP) and other unicode symbols.
  *
  * @author Ivan Boprzenkov <ivan.borzenkov@gmail.com>
  */
