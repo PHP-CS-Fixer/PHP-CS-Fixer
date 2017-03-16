@@ -478,7 +478,8 @@ Choose from the list of available rules:
   Code MUST use configured indentation type.
 
 * **invisible_symbols**
-   | Remove ZWSP, NBSP and other unicode symbols.
+   | Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other
+   | unicode symbols.
 
 * **is_null** [@Symfony:risky]
 

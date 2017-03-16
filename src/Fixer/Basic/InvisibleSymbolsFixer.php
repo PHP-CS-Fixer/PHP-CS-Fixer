@@ -54,7 +54,7 @@ final class InvisibleSymbolsFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Remove ZWSP, NBSP and other unicode symbols.',
+            'Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other unicode symbols.',
             array(
                 new CodeSample(
 '<?php
