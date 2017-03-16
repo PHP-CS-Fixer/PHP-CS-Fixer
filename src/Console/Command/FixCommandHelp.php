@@ -83,7 +83,7 @@ display a summary of proposed fixes, leaving your files unchanged.
 The <comment>--allow-risky</comment> option allows you to set whether risky rules may run. Default value is taken from config file.
 Risky rule is a rule, which could change code behaviour. By default no risky rules are run.
 
-The <comment>--stop-on-violation<comment> flag stops execution upon first file that needs to be fixed.
+The <comment>--stop-on-violation</comment> flag stops execution upon first file that needs to be fixed.
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
