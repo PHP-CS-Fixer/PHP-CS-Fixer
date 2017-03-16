@@ -68,10 +68,10 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
         'is_int',
         'is_integer',
         'is_long',
-        'is_​numeric',
+        'is_numeric',
         'is_object',
         'is_real',
-        'is_​resource',
+        'is_resource',
         'is_scalar',
         'is_string',
     );
