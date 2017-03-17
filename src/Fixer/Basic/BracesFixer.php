@@ -333,8 +333,7 @@ $negative = function ($item) {
                             !$nextNonWhitespaceNestToken->isComment() ||
                             (
                                 substr($nextNonWhitespaceNestToken->getContent(), 0, 2) === '//' &&
-                                strpos($tokens[$nestIndex + 1]->getContent(), $this->whitespacesConfig->getLineEnding()) !== false/* ||
-                                (echo $tokens[$nestIndex]->getContent()) && false*/
+                                strpos($tokens[$nestIndex + 1]->getContent(), $this->whitespacesConfig->getLineEnding()) !== false
                             )
                         ) &&
                         // and it is not a `$foo = function () {};` situation
