@@ -18,7 +18,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Fixer Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.
+ * Removes Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.
  *
  * @author Ivan Boprzenkov <ivan.borzenkov@gmail.com>
  */
@@ -66,7 +66,7 @@ echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'Wor
             null,
             null,
             null,
-            'Risky if invisible unicode contains in data strings.'
+            'Risky when strings contain intended invisible characters.'
         );
     }
 
@@ -76,15 +76,6 @@ echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'Wor
     public function isRisky()
     {
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // must run first (at least before Fixers that using Tokens) - for speed reason of whole fixing process
-        return 90;
     }
 
     /**
