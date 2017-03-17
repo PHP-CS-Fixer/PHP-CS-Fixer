@@ -318,12 +318,23 @@ $negative = function ($item) {
             for ($nestIndex = $lastCommaIndex; $nestIndex >= $startBraceIndex; --$nestIndex) {
                 $nestToken = $tokens[$nestIndex];
 
+                // fix indent before comments starting with double slash
+                if ($nestToken->isComment() && substr($nestToken->getContent(), 0, 2) == '//') {
+                    $tokens->ensureWhitespaceAtIndex(
+                        $nestIndex - 1,
+                        0,
+                        rtrim($tokens[$nestIndex - 1]->getContent(), ' ')
+                            . $indent
+                            . $this->whitespacesConfig->getIndent()
+                    );
+                }
+
                 if ($nestToken->equals(')')) {
                     $nestIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nestIndex, false);
                     continue;
                 }
 
-                if (1 === $nestLevel && $nestToken->equalsAny(array(';', '}'))) {
+                if (1 === $nestLevel && $nestToken->equalsAny(array(';', '}', array(T_COMMENT)))) {
                     $nextNonWhitespaceNestIndex = $tokens->getNextNonWhitespace($nestIndex);
                     $nextNonWhitespaceNestToken = $tokens[$nextNonWhitespaceNestIndex];
 
