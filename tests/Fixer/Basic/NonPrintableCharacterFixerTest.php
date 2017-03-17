@@ -22,33 +22,26 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string       $expected
-     * @param string       $input
-     * @param \SplFileInfo $file
+     * @param string      $expected
+     * @param null|string $input
      *
      * @dataProvider provideExamples
      */
-    public function testFix($expected, $input, $file)
+    public function testFix($expected, $input = null)
     {
-        $this->doTest($expected, $input, $file);
+        $this->doTest($expected, $input);
     }
 
     public function provideExamples()
     {
         return array(
-            $this->prepareTestCase('test-utf.case1.php', 'test-utf.case1-utf.php'),
-        );
-    }
-
-    private function prepareTestCase($expectedFilename, $inputFilename = null)
-    {
-        $expectedFile = $this->getTestFile(__DIR__.'/../../Fixtures/FixerTest/utf/'.$expectedFilename);
-        $inputFile = $inputFilename ? $this->getTestFile(__DIR__.'/../../Fixtures/FixerTest/utf/'.$inputFilename) : null;
-
-        return array(
-            file_get_contents($expectedFile->getRealPath()),
-            $inputFile ? file_get_contents($inputFile->getRealPath()) : null,
-            $inputFile ?: $expectedFile,
+            array(
+                '<?php echo "Hello World !";',
+            ),
+            array(
+                '<?php echo "Hello World !";',
+                '<?php echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'World'.pack('CC', 0xc2, 0xa0).'!";',
+            ),
         );
     }
 }
