@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
@@ -30,7 +31,7 @@ final class FixCommandHelp
     /**
      * @return string
      */
-    public static function getHelpCopy()
+    public static function getHelpCopy(ConfigInterface $config)
     {
         $template =
             <<<EOF
@@ -233,16 +234,18 @@ EOF
 
         return str_replace(
            '%%%FIXERS_DETAILS%%%',
-            self::getFixersHelp(),
+            self::getFixersHelp($config),
             $template
         );
     }
 
-    private static function getFixersHelp()
+    private static function getFixersHelp(ConfigInterface $config)
     {
         $help = '';
         $fixerFactory = new FixerFactory();
-        $fixers = $fixerFactory->registerBuiltInFixers()->getFixers();
+        $fixerFactory->registerBuiltInFixers();
+        $fixerFactory->registerCustomFixers($config->getCustomFixers());
+        $fixers = $fixerFactory->getFixers();
 
         // sort fixers by name
         usort(

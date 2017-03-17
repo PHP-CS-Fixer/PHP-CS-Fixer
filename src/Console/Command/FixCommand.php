@@ -73,14 +73,14 @@ final class FixCommand extends Command
      */
     private $defaultConfig;
 
-    public function __construct()
+    public function __construct(ConfigInterface $config = null)
     {
-        parent::__construct();
-
-        $this->defaultConfig = new Config();
+        $this->defaultConfig = $config ?: new Config();
         $this->errorsManager = new ErrorsManager();
         $this->eventDispatcher = new EventDispatcher();
         $this->stopwatch = new Stopwatch();
+
+        parent::__construct();
     }
 
     /**
@@ -106,7 +106,7 @@ final class FixCommand extends Command
                 )
             )
             ->setDescription('Fixes a directory or a file.')
-            ->setHelp(FixCommandHelp::getHelpCopy())
+            ->setHelp(FixCommandHelp::getHelpCopy($this->defaultConfig))
         ;
     }
 

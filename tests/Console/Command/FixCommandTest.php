@@ -56,4 +56,41 @@ final class FixCommandTest extends \PHPUnit_Framework_TestCase
             array(76, true, true, true, true),
         );
     }
+
+    public function testUsePreregisteredCustomFixers()
+    {
+        $mockMethod = 'createMock';
+        if (version_compare(\PHPUnit_Runner_Version::id(), '5.4.0') < 0) {
+            $mockMethod = 'getMock';
+        }
+
+        $fixerName = uniqid('My/custom_fixer_');
+
+        $fixer = $this->{$mockMethod}('PhpCsFixer\Fixer\FixerInterface');
+
+        $fixer
+            ->expects($this->atLeastOnce())
+            ->method('getName')
+            ->willReturn($fixerName)
+        ;
+        $fixer
+            ->expects($this->any())
+            ->method('getPriority')
+            ->willReturn(0)
+        ;
+
+        $config = $this->{$mockMethod}('PhpCsFixer\ConfigInterface');
+
+        $config
+            ->expects($this->once())
+            ->method('getCustomFixers')
+            ->willReturn(array(
+                $fixer,
+            ))
+        ;
+
+        $command = new FixCommand($config);
+
+        $this->assertContains($fixerName, $command->getHelp());
+    }
 }
