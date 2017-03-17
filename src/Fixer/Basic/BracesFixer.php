@@ -319,13 +319,13 @@ $negative = function ($item) {
                 $nestToken = $tokens[$nestIndex];
 
                 // fix indent before comments starting with double slash
-                if ($nestToken->isComment() && substr($nestToken->getContent(), 0, 2) == '//') {
+                if ($nestToken->isComment() && substr($nestToken->getContent(), 0, 2) === '//') {
                     $tokens->ensureWhitespaceAtIndex(
                         $nestIndex - 1,
                         0,
                         rtrim($tokens[$nestIndex - 1]->getContent(), ' ')
-                            . $indent
-                            . $this->whitespacesConfig->getIndent()
+                            .$indent
+                            .$this->whitespacesConfig->getIndent()
                     );
                 }
 
