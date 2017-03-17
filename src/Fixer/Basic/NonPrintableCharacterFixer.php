@@ -66,7 +66,7 @@ echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'Wor
             null,
             null,
             null,
-            'Risky change strings data.'
+            'Risky if invisible unicode contains in data strings.'
         );
     }
 
